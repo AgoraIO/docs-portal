@@ -1,6 +1,6 @@
 ---
 title: "User attributes management"
-description: "Shows how to call the Agora Chat RESTful APIs to create and manage contacts."
+description: "Agora Chat RESTful APIs for managing user attributes."
 ---
 
 User attributes refers to the label information added for the user, including key-value pairs.

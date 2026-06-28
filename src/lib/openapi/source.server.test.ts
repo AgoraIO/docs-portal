@@ -7,6 +7,7 @@ import { getOpenApiOperation, getOpenApiOperations } from './source.server';
 
 describe('openapi source loader', () => {
   const lane = OPENAPI_LANES[0];
+  const rtcLane = OPENAPI_LANES.find((item) => item.id === 'rtc-rest');
 
   it('loads lane operations by operationId', async () => {
     const operations = await getOpenApiOperations(lane);
@@ -26,17 +27,44 @@ describe('openapi source loader', () => {
   });
 
   it('dereferences local parameter refs before normalization', async () => {
-    const operation = await getOpenApiOperation(lane, 'start-agent');
+    expect(rtcLane).toBeDefined();
+
+    const operation = await getOpenApiOperation(
+      rtcLane!,
+      'cma-query-channel-list',
+    );
 
     expect(operation.parameters).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          in: 'header',
-          name: 'Authorization',
+          in: 'path',
+          name: 'appid',
         }),
+        expect.objectContaining({
+          in: 'query',
+          name: 'page_no',
+        }),
+      ]),
+    );
+  });
+
+  it('preserves OpenAPI security without treating auth as a parameter', async () => {
+    const operation = await getOpenApiOperation(lane, 'start-agent');
+
+    expect(operation.security).toBeUndefined();
+    expect(operation.parameters).toEqual(
+      expect.arrayContaining([
         expect.objectContaining({
           in: 'path',
           name: 'appid',
+        }),
+      ]),
+    );
+    expect(operation.parameters).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          in: 'header',
+          name: 'Authorization',
         }),
       ]),
     );

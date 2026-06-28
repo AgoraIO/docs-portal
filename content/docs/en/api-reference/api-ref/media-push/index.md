@@ -581,7 +581,8 @@ For details about the fields, see the [Create request body](#request-body).
 > - `transcodeOptions.videoOptions.codecProfile`
 
 :::info
-<li>After calling the <code>Create</code> method to create a Converter that outputs video stream only or audio stream only, you cannot update it to a Converter that outputs audio stream only or video stream only through the <code>Update</code> method.</li><li>When using Media Push with vertical layout (<code>layoutType</code> is <code>1</code>), you can only update the <code>rtmpUrl</code> field.</li>
+- After calling the `Create` method to create a Converter that outputs video stream only or audio stream only, you cannot update it to a Converter that outputs audio stream only or video stream only through the `Update` method.
+- When using Media Push with vertical layout (`layoutType` is `1`), you can only update the `rtmpUrl` field.
 :::
 
 ### HTTP response

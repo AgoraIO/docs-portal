@@ -1,3 +1,4 @@
+import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import type { MethodInformation, RenderContext } from 'fumadocs-openapi';
 import type {
   CodeUsageGeneratorRegistry,
@@ -11,7 +12,6 @@ import {
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
 } from 'fumadocs-ui/components/codeblock';
-import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import {
@@ -84,6 +84,7 @@ const ClientAPIPage = createClientAPIPage({
   schemaUI: {
     render: (options, ctx) => (
       <OpenApiSchemaRows
+        document={ctx.schema.dereferenced}
         readOnly={options.readOnly}
         renderMarkdown={ctx.renderMarkdown}
         root={options.root}
@@ -177,10 +178,6 @@ type OpenApiCodeSample = OpenApiRecord & {
   lang?: string;
   source?: string;
 };
-type OpenApiCodeSampleGroup = OpenApiRecord & {
-  samples?: unknown[];
-  title?: string;
-};
 type OpenApiResolvedCodeSample = OpenApiCodeSample & {
   source: string;
 };
@@ -222,18 +219,22 @@ function OpenApiOperationLayout({
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
-        {slots.description}
-        <OpenApiDocsCallouts
-          operation={method}
-          position="after-description"
-        />
+        <OpenApiDocsSections operation={method} position="after-description" />
+        <OpenApiDocsCallouts operation={method} position="after-description" />
         <OpenApiParameters operation={method} />
         <OpenApiDocsSections operation={method} position="after-parameters" />
         {slots.body}
-        <OpenApiDocsSections operation={method} position="before-response-body" />
+        <OpenApiDocsSections
+          operation={method}
+          position="before-response-body"
+        />
         {slots.responses}
+        <OpenApiResponseBodySchemas operation={method} />
         <OpenApiResponseHeaders operation={method} />
-        <OpenApiDocsSections operation={method} position="after-response-body" />
+        <OpenApiDocsSections
+          operation={method}
+          position="after-response-body"
+        />
         <OpenApiDocsCallouts operation={method} position="after-responses" />
         <OpenApiDocsSections
           operation={method}
@@ -263,14 +264,12 @@ function mergeOpenApiOperationExtensions(
     ...method,
     __path: method.__path ?? sourceOperation.__path,
     'x-codeSamples':
-      method['x-codeSamples'] ?? sourceOperation['x-codeSamples'],
-    'x-docs-callouts':
-      method['x-docs-callouts'] ?? sourceOperation['x-docs-callouts'],
+      sourceOperation['x-codeSamples'] ?? method['x-codeSamples'],
+    'x-docs-callouts': sourceOperation['x-docs-callouts'],
     'x-docs-code-sample-groups':
-      method['x-docs-code-sample-groups'] ??
-      sourceOperation['x-docs-code-sample-groups'],
-    'x-docs-sections':
-      method['x-docs-sections'] ?? sourceOperation['x-docs-sections'],
+      sourceOperation['x-docs-code-sample-groups'] ??
+      method['x-docs-code-sample-groups'],
+    'x-docs-sections': sourceOperation['x-docs-sections'],
   } satisfies OpenApiOperation;
 }
 
@@ -321,9 +320,7 @@ function OpenApiRightSection({
         className,
       )}
     >
-      <h3 className="mb-2 font-semibold text-fd-foreground text-sm">
-        {title}
-      </h3>
+      <h3 className="mb-2 font-semibold text-fd-foreground text-sm">{title}</h3>
       {children}
     </section>
   );
@@ -362,11 +359,7 @@ function OpenApiAuthorizationSection({
   );
 }
 
-function OpenApiEndpointBar({
-  operation,
-}: {
-  operation: OpenApiOperation;
-}) {
+function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
   const method = typeof operation.method === 'string' ? operation.method : '';
 
@@ -456,11 +449,7 @@ function getCurrentOperation(
     : undefined;
 }
 
-function OpenApiParameters({
-  operation,
-}: {
-  operation?: OpenApiOperation;
-}) {
+function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
   const parameters = arrayOfRecords(operation?.parameters)
     .map((parameter) => resolveLocalReference(operation?.__document, parameter))
     .filter(isDisplayableParameter) as OpenApiParameter[];
@@ -491,10 +480,7 @@ function OpenApiParameters({
             fields={groupParameters.map((parameter) => ({
               callouts: getOpenApiDocsCallouts(parameter),
               description: parameter.description,
-              metadata: getOpenApiSchemaMetadata(
-                parameter.schema,
-                parameter,
-              ),
+              metadata: getOpenApiSchemaMetadata(parameter.schema, parameter),
               name: parameter.name ?? '',
               required: parameter.required === true,
               type: getSchemaTypeLabel(parameter.schema),
@@ -513,40 +499,41 @@ function OpenApiResponseHeaders({
 }: {
   operation?: OpenApiOperation;
 }) {
-  const responseHeaders = Object.entries(getRecord(operation?.responses) ?? {})
-    .flatMap(([statusCode, response]) => {
-      const headers = getRecord(response)?.headers;
+  const responseHeaders = Object.entries(
+    getRecord(operation?.responses) ?? {},
+  ).flatMap(([statusCode, response]) => {
+    const headers = getRecord(response)?.headers;
 
-      if (!isRecord(headers)) {
+    if (!isRecord(headers)) {
+      return [];
+    }
+
+    return Object.entries(headers).flatMap(([name, header]) => {
+      const resolvedHeader = resolveLocalReference(
+        operation?.__document,
+        header,
+      );
+
+      if (!isRecord(resolvedHeader)) {
         return [];
       }
 
-      return Object.entries(headers).flatMap(([name, header]) => {
-        const resolvedHeader = resolveLocalReference(
-          operation?.__document,
-          header,
-        );
-
-        if (!isRecord(resolvedHeader)) {
-          return [];
-        }
-
-        return [
-          {
-            callouts: getOpenApiDocsCallouts(resolvedHeader),
-            description: getString(resolvedHeader.description),
-            metadata: getOpenApiSchemaMetadata(
-              resolvedHeader.schema,
-              resolvedHeader,
-            ),
-            name,
-            required: false,
-            statusCode,
-            type: getSchemaTypeLabel(resolvedHeader.schema),
-          },
-        ];
-      });
+      return [
+        {
+          callouts: getOpenApiDocsCallouts(resolvedHeader),
+          description: getString(resolvedHeader.description),
+          metadata: getOpenApiSchemaMetadata(
+            resolvedHeader.schema,
+            resolvedHeader,
+          ),
+          name,
+          required: false,
+          statusCode,
+          type: getSchemaTypeLabel(resolvedHeader.schema),
+        },
+      ];
     });
+  });
 
   if (responseHeaders.length === 0) {
     return null;
@@ -570,6 +557,78 @@ function OpenApiResponseHeaders({
       }))}
       title="Response Headers"
     />
+  );
+}
+
+function OpenApiResponseBodySchemas({
+  operation,
+}: {
+  operation?: OpenApiOperation;
+}) {
+  const responses = Object.entries(getRecord(operation?.responses) ?? {})
+    .map(([statusCode, response]) => {
+      const resolvedResponse = getRecord(
+        resolveLocalReference(
+          operation?.__document,
+          response,
+        ),
+      );
+      const content = getRecord(resolvedResponse?.content);
+      const jsonContent = getRecord(content?.['application/json']);
+      const schema = jsonContent?.schema;
+      const rows = buildOpenApiSchemaRows(schema, {
+        document: operation?.__document,
+        usage: 'response',
+      });
+
+      return {
+        description: getString(resolvedResponse?.description),
+        rows,
+        schema,
+        statusCode,
+      };
+    })
+    .filter(
+      (response) => response.description || response.rows.length > 0,
+    );
+
+  if (responses.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="mt-8">
+      <h3 className="mb-3 font-semibold text-xl">Response schema</h3>
+      <div className="space-y-4">
+        {responses.map((response) => (
+          <div key={response.statusCode}>
+            <div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
+              <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 font-medium text-fd-foreground text-xs">
+                {response.statusCode}
+              </code>
+              <span className="font-mono text-fd-muted-foreground text-xs">
+                application/json
+              </span>
+            </div>
+            {response.description ? (
+              <div className="prose-no-margin mb-3 text-fd-muted-foreground text-sm">
+                {renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(response.description),
+                )}
+              </div>
+            ) : null}
+            {response.rows.length > 0 ? (
+              <OpenApiSchemaRows
+                document={operation?.__document}
+                readOnly
+                renderMarkdown={renderOpenApiMarkdown}
+                root={response.schema}
+              />
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -597,9 +656,7 @@ function OpenApiFieldList({
             key={`${title}:${field.name}`}
           >
             <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <code className="font-medium text-fd-primary">
-                {field.name}
-              </code>
+              <code className="font-medium text-fd-primary">{field.name}</code>
               {field.required ? (
                 <span className="font-medium text-red-500">*</span>
               ) : (
@@ -634,12 +691,22 @@ function OpenApiCodeSampleUsageTabs({
 }) {
   const operation = useContext(OpenApiOperationContext);
   const groups = getOpenApiCodeSampleGroups(operation);
+  const samples = getOpenApiCodeSamples(operation);
 
   if (groups.length > 0) {
     return (
       <OpenApiCodeSampleGroupSelector
         groups={groups}
         renderCodeBlock={ctx.renderCodeBlock}
+      />
+    );
+  }
+
+  if (samples.length > 0) {
+    return (
+      <OpenApiCodeSampleTabs
+        renderCodeBlock={ctx.renderCodeBlock}
+        samples={samples}
       />
     );
   }
@@ -698,9 +765,55 @@ function getOpenApiCodeSampleGroups(operation?: OpenApiOperation) {
         title,
       };
     })
-    .filter((group): group is OpenApiResolvedCodeSampleGroup =>
-      Boolean(group),
-    );
+    .filter((group): group is OpenApiResolvedCodeSampleGroup => Boolean(group));
+}
+
+function getOpenApiCodeSamples(operation?: OpenApiOperation) {
+  return arrayOfRecords(operation?.['x-codeSamples']).filter(isCodeSample);
+}
+
+function OpenApiCodeSampleTabs({
+  renderCodeBlock,
+  samples,
+}: {
+  renderCodeBlock: RenderContext['renderCodeBlock'];
+  samples: OpenApiResolvedCodeSample[];
+}) {
+  const [selectedSampleValue, setSelectedSampleValue] = useState('');
+  const sampleEntries = samples.map((sample, index) => ({
+    sample,
+    value: getCodeSampleValue(sample, index),
+  }));
+  const activeSampleValue = sampleEntries.some(
+    (entry) => entry.value === selectedSampleValue,
+  )
+    ? selectedSampleValue
+    : (sampleEntries[0]?.value ?? '');
+
+  if (sampleEntries.length === 0) {
+    return null;
+  }
+
+  return (
+    <CodeBlockTabs
+      className="openapi-request-code-tabs my-0"
+      onValueChange={setSelectedSampleValue}
+      value={activeSampleValue}
+    >
+      <CodeBlockTabsList>
+        {sampleEntries.map(({ sample, value }) => (
+          <CodeBlockTabsTrigger key={value} value={value}>
+            {sample.label ?? getCodeSampleLanguage(sample.lang)}
+          </CodeBlockTabsTrigger>
+        ))}
+      </CodeBlockTabsList>
+      {sampleEntries.map(({ sample, value }) => (
+        <CodeBlockTab key={value} value={value}>
+          {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+        </CodeBlockTab>
+      ))}
+    </CodeBlockTabs>
+  );
 }
 
 function OpenApiCodeSampleGroupSelector({
@@ -734,10 +847,7 @@ function OpenApiCodeSampleGroupSelector({
 
   return (
     <div className="openapi-code-sample-groups">
-      <label
-        className="sr-only"
-        htmlFor="openapi-code-sample-group-select"
-      >
+      <label className="sr-only" htmlFor="openapi-code-sample-group-select">
         Request example scenario
       </label>
       <select
@@ -780,10 +890,14 @@ function getCodeSampleLanguage(lang: unknown) {
 }
 
 function getCodeSampleValue(sample: OpenApiResolvedCodeSample, index: number) {
-  return getString(sample.id) ?? sample.label ?? sample.lang ?? `sample-${index}`;
+  return (
+    getString(sample.id) ?? sample.label ?? sample.lang ?? `sample-${index}`
+  );
 }
 
-function isCodeSample(sample: OpenApiRecord): sample is OpenApiResolvedCodeSample {
+function isCodeSample(
+  sample: OpenApiRecord,
+): sample is OpenApiResolvedCodeSample {
   return typeof sample.source === 'string';
 }
 
@@ -798,9 +912,9 @@ function OpenApiInlineCallouts({
 
   return (
     <div className="mt-3 space-y-3">
-      {callouts.map((callout, index) => (
+      {callouts.map((callout) => (
         <OpenApiCallout
-          key={`${callout.title ?? callout.type ?? 'callout'}:${index}`}
+          key={getOpenApiCalloutKey(callout)}
           title={callout.title}
           type={toCalloutType(callout.type)}
         >
@@ -834,9 +948,9 @@ function OpenApiDocsCallouts({
 
   return (
     <div className={position === 'before-description' ? 'mb-6' : 'mt-6'}>
-      {callouts.map((callout, index) => (
+      {callouts.map((callout) => (
         <OpenApiCallout
-          key={`${position}:${callout.title ?? callout.type ?? 'callout'}:${index}`}
+          key={`${position}:${getOpenApiCalloutKey(callout)}`}
           title={callout.title}
           type={toCalloutType(callout.type)}
         >
@@ -851,12 +965,21 @@ function OpenApiDocsCallouts({
   );
 }
 
+function getOpenApiCalloutKey(callout: OpenApiDisplayCallout) {
+  return [
+    callout.title ?? 'callout',
+    callout.type ?? 'info',
+    callout.markdown.slice(0, 80),
+  ].join(':');
+}
+
 function OpenApiDocsSections({
   operation,
   position,
 }: {
   operation?: OpenApiOperation;
   position:
+    | 'after-description'
     | 'after-parameters'
     | 'after-response-body'
     | 'after-response-example'
@@ -941,17 +1064,20 @@ function OpenApiMetadata({ items }: { items: OpenApiMetadataItem[] }) {
 }
 
 function OpenApiSchemaRows({
+  document,
   readOnly,
   renderMarkdown,
   root,
   writeOnly,
 }: {
+  document?: unknown;
   readOnly?: boolean;
   renderMarkdown: (markdown: string) => ReactNode;
   root: unknown;
   writeOnly?: boolean;
 }) {
   const rows = buildOpenApiSchemaRows(root, {
+    document,
     usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
   });
 
@@ -1020,6 +1146,12 @@ function OpenApiSchemaRowItem({
 }
 
 function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {
+  const rangeMetadata = getRangeMetadata({
+    exclusiveMaximum: row.exclusiveMaximum,
+    exclusiveMinimum: row.exclusiveMinimum,
+    maximum: row.maximum,
+    minimum: row.minimum,
+  });
   const items = [
     row.defaultValue !== undefined
       ? ['Default', formatOpenApiSchemaValue(row.defaultValue)]
@@ -1028,8 +1160,10 @@ function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {
       ? ['Allowed', row.enumValues.map(formatOpenApiSchemaValue).join(' | ')]
       : null,
     row.format ? ['Format', row.format] : null,
-    row.minimum !== undefined ? ['Minimum', String(row.minimum)] : null,
-    row.maximum !== undefined ? ['Maximum', String(row.maximum)] : null,
+    rangeMetadata,
+    rangeMetadata ? null : getConstraintTuple('Minimum', row.minimum),
+    rangeMetadata ? null : getConstraintTuple('Maximum', row.maximum),
+    row.pattern ? ['Pattern', row.pattern] : null,
     row.example !== undefined
       ? ['Example', formatOpenApiSchemaValue(row.example)]
       : null,
@@ -1058,6 +1192,7 @@ function getOpenApiSchemaMetadata(
   owner: OpenApiRecord,
 ): OpenApiMetadataItem[] {
   const schemaRecord = getRecord(schema);
+  const rangeMetadata = getRangeMetadata(schemaRecord);
   const items: Array<OpenApiMetadataItem | null> = [
     schemaRecord?.default !== undefined
       ? {
@@ -1077,8 +1212,14 @@ function getOpenApiSchemaMetadata(
           value: getString(schemaRecord?.format) ?? '',
         }
       : null,
-    getConstraintMetadata('Minimum', schemaRecord?.minimum),
-    getConstraintMetadata('Maximum', schemaRecord?.maximum),
+    rangeMetadata
+      ? {
+          label: rangeMetadata[0],
+          value: rangeMetadata[1],
+        }
+      : null,
+    rangeMetadata ? null : getConstraintMetadata('Minimum', schemaRecord?.minimum),
+    rangeMetadata ? null : getConstraintMetadata('Maximum', schemaRecord?.maximum),
     getConstraintMetadata('Min length', schemaRecord?.minLength),
     getConstraintMetadata('Max length', schemaRecord?.maxLength),
     getConstraintMetadata('Min items', schemaRecord?.minItems),
@@ -1124,6 +1265,44 @@ function getConstraintMetadata(label: string, value: unknown) {
         value: String(value),
       }
     : null;
+}
+
+function getConstraintTuple(label: string, value: unknown): [string, string] | null {
+  return typeof value === 'number' ? [label, String(value)] : null;
+}
+
+function getRangeMetadata(schema: {
+  exclusiveMaximum?: unknown;
+  exclusiveMinimum?: unknown;
+  maximum?: unknown;
+  minimum?: unknown;
+} | null | undefined): [string, string] | null {
+  const minimum = getNumberBound(schema?.minimum, schema?.exclusiveMinimum);
+  const maximum = getNumberBound(schema?.maximum, schema?.exclusiveMaximum);
+
+  if (!minimum || !maximum) {
+    return null;
+  }
+
+  const lowerBracket = minimum.exclusive ? '(' : '[';
+  const upperBracket = maximum.exclusive ? ')' : ']';
+
+  return [
+    'Range',
+    `${lowerBracket}${minimum.value}, ${maximum.value}${upperBracket}`,
+  ];
+}
+
+function getNumberBound(inclusive: unknown, exclusive: unknown) {
+  if (typeof inclusive === 'number') {
+    return { exclusive: false, value: inclusive };
+  }
+
+  if (typeof exclusive === 'number') {
+    return { exclusive: true, value: exclusive };
+  }
+
+  return null;
 }
 
 function getFirstExample(examples: unknown) {
@@ -1225,8 +1404,6 @@ function toCalloutType(type: string | undefined) {
       return 'idea';
     case 'success':
       return 'success';
-    case 'info':
-    case 'note':
     default:
       return 'info';
   }

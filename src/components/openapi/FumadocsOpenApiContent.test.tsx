@@ -130,11 +130,26 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
+    const curlTab = await screen.findByRole('tab', { name: 'curl' });
+    const requestExamples = curlTab.closest('.openapi-request-examples');
+    expect(requestExamples).not.toBeNull();
+    const examplesScope = within(requestExamples as HTMLElement);
+    expect(examplesScope.getByRole('tab', { name: 'curl' })).toBeInTheDocument();
     expect(
-      await screen.findByRole('tab', { name: 'curl' }),
+      examplesScope.getByRole('tab', { name: 'Python' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Python' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Node.js' })).toBeInTheDocument();
+    expect(
+      examplesScope.getByRole('tab', { name: 'Node.js' }),
+    ).toBeInTheDocument();
+    expect(
+      examplesScope.getByText('curl --request POST https://example.com/join'),
+    ).toBeInTheDocument();
+    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
+    expect(examplesScope.getByText('import requests')).toBeInTheDocument();
+    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
+    expect(
+      examplesScope.getByText('fetch("https://example.com/join")'),
+    ).toBeInTheDocument();
 
     expect(screen.queryByRole('tab', { name: 'cURL' })).not.toBeInTheDocument();
     expect(
@@ -427,7 +442,7 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText((_content, element) =>
         Boolean(
           element?.tagName === 'LI' &&
-          element.textContent?.includes('returned status code is 200'),
+            element.textContent?.includes('returned status code is 200'),
         ),
       ),
     ).toBeInTheDocument();
@@ -538,7 +553,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
     expect(within(pathSection).getByText('sid')).toBeInTheDocument();
     expect(within(pathSection).getByText('mode')).toBeInTheDocument();
-    expect(within(pathSection).getByText('individual | mix | web')).toBeInTheDocument();
+    expect(
+      within(pathSection).getByText('individual | mix | web'),
+    ).toBeInTheDocument();
     expect(within(headerSection).getByText('Content-Type')).toBeInTheDocument();
     expect(
       within(headerSection).getByText('application/json'),
@@ -657,10 +674,151 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTreeElement = document.querySelector('.openapi-schema-tree');
     expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
     expect(
+      within(schemaTreeElement as HTMLElement).getByText(
+        /production callback URLs/,
+      ),
+    ).toBeInTheDocument();
+
+    const requestBodyHeading = screen.getByRole('heading', {
+      name: 'Request Body',
+    });
+    const operationTopText =
+      document.body.textContent?.slice(
+        0,
+        document.body.textContent.indexOf(requestBodyHeading.textContent ?? ''),
+      ) ?? '';
+
+    expect(operationTopText).not.toContain('production callback URLs');
+    expect(
       within(schemaTreeElement as HTMLElement).queryByPlaceholderText(
         'Filter Properties',
       ),
     ).not.toBeInTheDocument();
+  });
+
+  it('renders response body fields inherited through local refs and nested allOf schemas', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v1/apps/{appid}/cloud_recording/query',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Cloud Recording API',
+              },
+              openapi: '3.2.0',
+              components: {
+                schemas: {
+                  baseSession: {
+                    properties: {
+                      cname: {
+                        description: 'The name of the channel being recorded.',
+                        type: 'string',
+                      },
+                      uid: {
+                        description:
+                          'The UID used by the cloud recording service in the RTC channel.',
+                        type: 'string',
+                      },
+                    },
+                    type: 'object',
+                  },
+                  queryResponse: {
+                    type: 'object',
+                    allOf: [
+                      {
+                        type: 'object',
+                        allOf: [
+                          { $ref: '#/components/schemas/baseSession' },
+                          {
+                            properties: {
+                              resourceId: { type: 'string' },
+                              sid: { type: 'string' },
+                            },
+                            type: 'object',
+                          },
+                        ],
+                      },
+                      {
+                        properties: {
+                          serverResponse: {
+                            properties: {
+                              status: {
+                                description:
+                                  'Current status of the cloud recording service.',
+                                type: 'integer',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                        type: 'object',
+                      },
+                    ],
+                  },
+                },
+              },
+              paths: {
+                '/v1/apps/{appid}/cloud_recording/query': {
+                  get: {
+                    operationId: 'query-cloud-recording',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                        content: {
+                          'application/json': {
+                            schema: {
+                              $ref: '#/components/schemas/queryResponse',
+                            },
+                          },
+                        },
+                      },
+                    },
+                    summary: 'Query status',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', {
+      name: 'Response Body',
+    });
+    fireEvent.click(screen.getByRole('button', { name: '200' }));
+
+    const schemaTreeElement = document.querySelector('.openapi-schema-tree');
+
+    expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText('cname'),
+    ).toBeInTheDocument();
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText(
+        'The name of the channel being recorded.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText('uid'),
+    ).toBeInTheDocument();
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText(
+        'The UID used by the cloud recording service in the RTC channel.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText('serverResponse'),
+    ).toBeInTheDocument();
+    expect(
+      within(schemaTreeElement as HTMLElement).getByText('status'),
+    ).toBeInTheDocument();
   });
 
   it('renders scalar parameters, response headers, callouts, and parameter metadata', async () => {
@@ -706,6 +864,30 @@ describe('FumadocsOpenApiContent', () => {
                             default: 'cn',
                             enum: ['cn', 'na', 'eu'],
                             type: 'string',
+                          },
+                        },
+                        {
+                          description: 'The number of channels per page.',
+                          in: 'query',
+                          name: 'page_size',
+                          required: false,
+                          schema: {
+                            default: 100,
+                            maximum: 500,
+                            minimum: 1,
+                            type: 'number',
+                          },
+                        },
+                        {
+                          description: 'Voice activity detection sensitivity.',
+                          in: 'query',
+                          name: 'speech_threshold',
+                          required: false,
+                          schema: {
+                            default: 0.5,
+                            exclusiveMaximum: 1,
+                            exclusiveMinimum: 0,
+                            type: 'number',
                           },
                         },
                         {
@@ -822,7 +1004,8 @@ describe('FumadocsOpenApiContent', () => {
                     },
                     'x-docs-callouts': [
                       {
-                        markdown: 'A 401 response does not include this header.',
+                        markdown:
+                          'A 401 response does not include this header.',
                         title: 'Caution',
                         type: 'caution',
                       },
@@ -863,9 +1046,20 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(pathSection).getByText('Pattern')).toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
+    const querySection = screen
+      .getByRole('heading', { name: 'Query Parameters' })
+      .closest('section') as HTMLElement;
+    expect(within(querySection).getByText('page_size')).toBeInTheDocument();
+    expect(within(querySection).getAllByText('Range')).toHaveLength(2);
+    expect(within(querySection).getByText('[1, 500]')).toBeInTheDocument();
     expect(
-      within(headerSection).getByText('X-Request-ID'),
+      within(querySection).getByText('speech_threshold'),
     ).toBeInTheDocument();
+    expect(within(querySection).getByText('(0, 1)')).toBeInTheDocument();
+    expect(within(querySection).queryByText('Minimum')).not.toBeInTheDocument();
+    expect(within(querySection).queryByText('Maximum')).not.toBeInTheDocument();
+
+    expect(within(headerSection).getByText('X-Request-ID')).toBeInTheDocument();
     expect(
       within(headerSection).getByText(/provide for troubleshooting/),
     ).toBeInTheDocument();
@@ -911,9 +1105,9 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText((_content, element) =>
         Boolean(
           element?.tagName === 'P' &&
-          element?.textContent?.includes(
-            'If the status code is not 200, the request fails.',
-          ),
+            element?.textContent?.includes(
+              'If the status code is not 200, the request fails.',
+            ),
         ),
       ),
     ).toBeInTheDocument();
@@ -921,9 +1115,9 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText((_content, element) =>
         Boolean(
           element?.tagName === 'P' &&
-          element?.textContent?.includes(
-            'If the status code is 200, the request succeeds',
-          ),
+            element?.textContent?.includes(
+              'If the status code is 200, the request succeeds',
+            ),
         ),
       ),
     ).toBeInTheDocument();
@@ -949,9 +1143,7 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText(/response example for a successful request/),
     ).toBeInTheDocument();
     expect(screen.getByText('Info')).toBeInTheDocument();
-    expect(
-      screen.getByText(/RESTful API parameters/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/RESTful API parameters/)).toBeInTheDocument();
     expect(
       screen.getByRole('link', { name: 'Postman API reference' }),
     ).toHaveAttribute('href', 'https://example.com/postman');
@@ -1059,13 +1251,11 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Authorization')).toBeInTheDocument();
     expect(screen.getByText('basicAuth')).toBeInTheDocument();
-    const requestExamples = scenarioSelect.closest(
-      '.openapi-request-examples',
-    );
+    const requestExamples = scenarioSelect.closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
-    expect(
-      document.querySelectorAll('.openapi-request-examples'),
-    ).toHaveLength(1);
+    expect(document.querySelectorAll('.openapi-request-examples')).toHaveLength(
+      1,
+    );
     const examplesScope = within(requestExamples as HTMLElement);
     expect(
       examplesScope.getByLabelText('Request example scenario'),
@@ -1073,7 +1263,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       examplesScope.getByRole('option', { name: 'Saved agent configuration' }),
     ).toBeInTheDocument();
-    expect(examplesScope.getByRole('tab', { name: 'curl' })).toBeInTheDocument();
+    expect(
+      examplesScope.getByRole('tab', { name: 'curl' }),
+    ).toBeInTheDocument();
     expect(
       examplesScope.getByRole('tab', { name: 'Python' }),
     ).toBeInTheDocument();
@@ -1081,14 +1273,11 @@ describe('FumadocsOpenApiContent', () => {
       examplesScope.getByText('curl --request POST https://example.com/join'),
     ).toBeInTheDocument();
 
-    fireEvent.change(
-      examplesScope.getByLabelText('Request example scenario'),
-      {
-        target: {
-          value: 'Saved agent configuration',
-        },
+    fireEvent.change(examplesScope.getByLabelText('Request example scenario'), {
+      target: {
+        value: 'Saved agent configuration',
       },
-    );
+    });
 
     expect(
       examplesScope.getByRole('tab', { name: 'Node.js' }),
@@ -1100,6 +1289,194 @@ describe('FumadocsOpenApiContent', () => {
       examplesScope.queryByText('curl --request POST https://example.com/join'),
     ).not.toBeInTheDocument();
     expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
-    expect(screen.queryByText('x-docs-code-sample-groups')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('x-docs-code-sample-groups'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders operation prose sections without repeating the page summary', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/think',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents/{agentId}/think': {
+                  post: {
+                    description:
+                      'Sends a custom text instruction to a specified Conversational AI agent instance.',
+                    operationId: 'agent-think',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Send a custom instruction',
+                    'x-docs-sections': [
+                      {
+                        markdown: [
+                          'Use this endpoint to send a custom text instruction to the specified Conversational AI agent instance.',
+                          '',
+                          'Use this endpoint for the following scenarios:',
+                          '',
+                          '- **Implicit instruction injection**: Inject hidden context or directives into the conversation.',
+                          '- **Client-side event triggering**: Notify the agent of client-side events, such as a user clicking a button.',
+                          '- **Voice and text collaboration**: Combine text instructions with voice input for richer interaction.',
+                        ].join('\n'),
+                        position: 'after-description',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByText(
+        /Use this endpoint to send a custom text instruction/,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        'Sends a custom text instruction to a specified Conversational AI agent instance.',
+      ),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText(/Implicit instruction injection/)).toBeInTheDocument();
+    expect(screen.getByText(/Client-side event triggering/)).toBeInTheDocument();
+    expect(screen.getByText(/Voice and text collaboration/)).toBeInTheDocument();
+  });
+
+  it('renders response body schema field descriptions', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/{region}/v1/projects/{appId}/rtls/ingress/streamkeys',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Media Gateway RESTful API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/{region}/v1/projects/{appId}/rtls/ingress/streamkeys': {
+                  post: {
+                    operationId: 'create-media-gateway-streaming-key',
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                status: {
+                                  description:
+                                    'Request status. `success` means the request succeeds.',
+                                  type: 'string',
+                                },
+                                data: {
+                                  properties: {
+                                    channel: {
+                                      description:
+                                        'Agora channel name associated with the streaming key.',
+                                      type: 'string',
+                                    },
+                                    createdAt: {
+                                      description:
+                                        'Unix timestamp, in seconds, when the streaming key was created.',
+                                      type: 'string',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description:
+                          'The request succeeded and returned the created streaming key.',
+                      },
+                      '401': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                message: {
+                                  description:
+                                    'Description of why the request failed.',
+                                  type: 'string',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description:
+                          'A `401 (Unauthorized)` response status code means the request is not authorized.',
+                      },
+                    },
+                    summary: 'Create streaming key',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const responseBody = await screen.findByRole('heading', {
+      name: 'Response schema',
+    });
+    expect(responseBody).toBeInTheDocument();
+    const responseScope = within(document.body);
+    const visibleText = document.body.textContent?.replace(/\s+/g, ' ') ?? '';
+
+    expect(
+      responseScope.getByText(
+        'The request succeeded and returned the created streaming key.',
+      ),
+    ).toBeInTheDocument();
+    expect(responseScope.getByText('status')).toBeInTheDocument();
+    expect(responseScope.getByText('data')).toBeInTheDocument();
+    expect(responseScope.getByText('channel')).toBeInTheDocument();
+    expect(responseScope.getByText('createdAt')).toBeInTheDocument();
+    expect(visibleText).toContain(
+      'Request status. success means the request succeeds.',
+    );
+    expect(
+      responseScope.getByText(
+        'Agora channel name associated with the streaming key.',
+      ),
+    ).toBeInTheDocument();
+    expect(
+      responseScope.getByText(
+        'Unix timestamp, in seconds, when the streaming key was created.',
+      ),
+    ).toBeInTheDocument();
+    expect(visibleText).toContain(
+      'A 401 (Unauthorized) response status code means the request is not authorized.',
+    );
+    expect(
+      responseScope.getByText('Description of why the request failed.'),
+    ).toBeInTheDocument();
   });
 });

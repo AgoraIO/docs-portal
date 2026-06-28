@@ -1,6 +1,6 @@
 ---
 title: "Message management"
-description: "Shows how to call Agora Chat RESTful APIs to send different types of messages, upload and download files, and retrieve historical messages."
+description: "Agora Chat RESTful APIs for messages, files, and message history."
 ---
 
 This page shows how to call Chat RESTful APIs to send different types of messages, upload and download files, and retrieve historical messages.
