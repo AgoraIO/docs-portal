@@ -1186,6 +1186,125 @@ describe('common MDX registry', () => {
     );
   });
 
+  it('renders nested parameters in a dedicated child region outside the parent description', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="mllm" required>
+        <Parameter name="messages" required={false} type="array[object]">
+          <p>Conversation history items passed to the model.</p>
+          <Parameter name="role" required type="string">
+            The role of the message author.
+          </Parameter>
+          <Parameter name="content" required type="string">
+            The message text.
+          </Parameter>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const parent = screen
+      .getByText('messages')
+      .closest('[data-parameter-item]');
+
+    expect(parent).toBeInTheDocument();
+
+    const description = parent?.querySelector('[data-parameter-description]');
+    const nestedParameters = parent?.querySelector('[data-parameter-children]');
+
+    expect(description).toHaveTextContent(
+      'Conversation history items passed to the model.',
+    );
+    expect(description).not.toHaveTextContent('role');
+    expect(description).not.toHaveTextContent('content');
+    expect(nestedParameters).toHaveTextContent('role');
+    expect(nestedParameters).toHaveTextContent('content');
+  });
+
+  it('renders nested ParameterList blocks in the same dedicated child region', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="llm" required>
+        <Parameter name="config" required={false} type="object">
+          Additional parameters passed to the vendor.
+          <ParameterList title="params">
+            <Parameter name="model" required type="string">
+              The model to use.
+            </Parameter>
+          </ParameterList>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const parent = screen.getByText('config').closest('[data-parameter-item]');
+
+    expect(parent).toBeInTheDocument();
+
+    const description = parent?.querySelector('[data-parameter-description]');
+    const nestedParameters = parent?.querySelector('[data-parameter-children]');
+
+    expect(description).toHaveTextContent(
+      'Additional parameters passed to the vendor.',
+    );
+    expect(description).not.toHaveTextContent('model');
+    expect(nestedParameters).toHaveTextContent('params');
+    expect(nestedParameters).toHaveTextContent('model');
+  });
+
+  it('renders comma-separated possible values as scannable chips', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="turn_detection">
+        <Parameter
+          name="mode"
+          possibleValues="agora_vad, server_vad"
+          type="string"
+        >
+          Turn detection mode.
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const possibleValues = screen.getByLabelText('Possible values for mode');
+
+    expect(possibleValues).toHaveAttribute('data-parameter-possible-values');
+    expect(within(possibleValues).getByText('agora_vad')).toBeInTheDocument();
+    expect(within(possibleValues).getByText('server_vad')).toBeInTheDocument();
+    expect(possibleValues).not.toHaveTextContent('agora_vad, server_vad');
+  });
+
+  it('keeps bracketed numeric ranges as a single possible value chip', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="params">
+        <Parameter name="pitch" possibleValues="[-0.75,0.75]" type="number">
+          Pitch adjustment.
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const possibleValues = screen.getByLabelText('Possible values for pitch');
+
+    expect(
+      within(possibleValues).getByText('[-0.75,0.75]'),
+    ).toBeInTheDocument();
+    expect(
+      within(possibleValues).queryByText('[-0.75'),
+    ).not.toBeInTheDocument();
+    expect(within(possibleValues).queryByText('0.75]')).not.toBeInTheDocument();
+  });
+
   it('does not expose overview-only widgets from the common registry by default', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
