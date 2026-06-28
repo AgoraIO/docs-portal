@@ -1,0 +1,1800 @@
+---
+title: "Manage local conversations"
+description: "Introduces how to use the Agora Chat SDK to implement managing local messages functionalities."
+---
+
+<PlatformStructured platform="web">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+:::tip
+This feature supports Chrome, Firefox, Safari, and other browsers that use
+    these engines (for example, Microsoft Edge). It does not support Internet
+    Explorer.
+:::
+
+## Understand the tech
+
+The Chat SDK allows you to implement the following functions in your project by calling APIs:
+
+- `getLocalConversations`: Get the local conversation list
+- `getLocalConversation`: Get a single local conversation
+- `setLocalConversationCustomField`: Set conversation custom fields
+- `clearConversationUnreadCount`: Clear the number of unread messages in the conversation
+- `removeLocalConversation`: Delete a single local conversation
+- `getServerConversations`: Synchronize the server conversation list to the local database
+
+## Prerequisites
+
+Before proceeding, take the following steps:
+
+- Import the Web SDK files as required
+
+  1. Install the SDK using npm, yarn, or another package management tool
+
+     ```shell
+     # npm
+     npm install agora-chat
+
+     # yarn
+     yarn add agora-chat
+     ```
+
+  1. Import the SDK and required modules
+
+     Introduce the corresponding functional modules according to project requirements. For example, introduce the user relationship module:
+
+     ```javascript
+     import MiniCore from "agora-chat/miniCore/miniCore";
+     import * as contactPlugin from "agora-chat/contact/contact";
+     ```
+
+  1. Register the module to miniCore
+
+     Register the imported function module into miniCore:
+
+     ```javascript
+     const miniCore = new MiniCore({
+       appKey: "your appKey",
+     });
+
+     // "contact" Fixed value
+     miniCore.usePlugin(contactPlugin, "contact");
+     ```
+
+  1. Use registered modules
+
+     After registering the required modules, you can use the functions provided by these modules in your project:
+
+     ```javascript
+     // Get contact list
+     miniCore.contact.getContacts();
+     ```
+
+- Integrate the plugin
+
+  If local conversation storage is supported, you need to integrate the local storage plugin. The sample code is as follows:
+
+  ```javascript
+  import MiniCore from "agora-chat/miniCore/miniCore";
+  import * as contactPlugin from "agora-chat/contact/contact";
+  import * as localCachePlugin from "agora-chat/localCache/localCache";
+
+  const miniCore = new MiniCore({
+    appKey: "your appKey",
+  });
+  // Use the contact plugin, "contact" is a fixed value.
+  miniCore.usePlugin(contactPlugin, "contact");
+  // Use the local storage plugin, "localCache" is a fixed value.
+  miniCore.usePlugin(localCachePlugin, "localCache");
+
+  // Log in to Chat
+  miniCore.open({
+    username: "userId",
+    accessToken: "accessToken",
+  });
+  ```
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+The structure of the conversation object is as follows:
+
+```javascript
+interface ConversationItem {
+  // Conversation ID.
+  conversationId: string;
+  // Conversation type: single chat and group chat are `singleChat` and `groupChat` respectively.
+  conversationType: ConversationType;
+  // The number of unread messages in the conversation.
+  unReadCount?: number;
+  // The latest message.
+  lastMessage?: LocalMessageBody;
+  // Conversation custom fields.
+  customField?: Record;
+}
+```
+
+### Retrieve conversations
+
+You can call the `getLocalConversations` method to get a list of all local conversations at once. After obtaining the conversations, the SDK returns the list in the reverse order of the conversation active time (the timestamp of the latest message). The conversation list data is a `` structure.
+
+The sample code is as follows:
+
+```javascript
+miniCore.localCache.getLocalConversations().then((res) => {
+  // Obtain local conversation list successfully.
+  console.log(res);
+});
+```
+
+### Retrieve a local conversation
+
+You can call the `getLocalConversation` method to obtain a single local conversation object. The sample code is as follows:
+
+```javascript
+const options = {
+  // Conversation type: single chat and group chat are `singleChat` and `groupChat` respectively.
+  conversationType: "singleChat",
+  // Conversation ID.
+  conversationId: "conversationId",
+};
+
+miniCore.localCache.getLocalConversation(options).then((res) => {
+  // Obtained local conversation successfully.
+  console.log(res);
+});
+```
+
+### Set conversation custom fields
+
+You can call the `setLocalConversationCustomField` method to set the custom field of the local conversation, that is, pass in the key-value object, where key is the field name and value is the field value.
+
+The sample code is as follows:
+
+```javascript
+const options = {
+  // Conversation type: single chat and group chat are `singleChat` and `groupChat` respectively.
+  conversationType: "singleChat",
+  // Conversation ID.
+  conversationId: "conversationId",
+  // Conversation custom fields.
+  customField: { custom: "custom" },
+};
+
+miniCore.localCache.setLocalConversationCustomField(options).then(() => {
+  // Set conversation custom fields successfully.
+});
+```
+
+### Clear the number of unread messages in a conversation
+
+You can call the `clearConversationUnreadCount` method to clear the number of unread messages in a single local conversation. The sample code is as follows:
+
+```javascript
+const options = {
+  // Conversation type: single chat and group chat are `singleChat` and `groupChat` respectively.
+  conversationType: "singleChat",
+  // Conversation ID.
+  conversationId: "conversationId",
+};
+
+miniCore.localCache.clearConversationUnreadCount(options).then(() => {
+  // Successfully cleared the number of unread messages for the specified conversation.
+});
+```
+
+### Delete a conversation
+
+You can call the `removeLocalConversation` method to delete a single local conversation. The sample code is as follows:
+
+```javascript
+const options = {
+  // Conversation type: single chat and group chat are `singleChat` and `groupChat` respectively.
+  conversationType: "singleChat",
+  // Conversation ID.
+  conversationId: "conversationId",
+  // Whether to delete local messages, the default value is `true`.
+  isRemoveLocalMessage: true,
+};
+
+miniCore.localCache.removeLocalConversation(options).then(() => {
+  // Deleted local conversation successfully.
+});
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `deleteAllMessagesAndConversations` method. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```javascript
+chatClient.deleteAllMessagesAndConversations().then(() => {
+  // Cleared all conversation and message records successfully
+});
+```
+
+### Synchronize server conversation list to local
+
+You can call the `getServerConversations` method to get the server conversation list and synchronize it to the local database. The sample code is as follows:
+
+```javascript
+const options = {
+  /** The expected number of conversations per page. The value range is [1,50], and the default is `20`. */
+  pageSize: 20,
+  /** The cursor position to start getting data. If an empty string ('') is passed, the SDK starts to obtain the conversations from the latest active conversation. */
+  cursor: "",
+};
+miniCore.contact.getServerConversations(options).then((res) => {
+  // Obtain the server conversation list and synchronize the local successfully.
+  console.log(res);
+});
+```
+
+### Import the Web SDK files as required
+
+If you want to minimize the SDK size, you can import the SDK files as required.
+
+| Function            | File for import                                                             | Usage                                                   |
+| :------------------ | :-------------------------------------------------------------------------- | :------------------------------------------------------ |
+| Contact and message | `import \* as contactPlugin from "agora-chat/contact/contact";`             | `miniCore.usePlugin(contactPlugin, "contact");`         |
+| Group               | `import \* as groupPlugin from "agora-chat/group/group";`                   | `miniCore.usePlugin(groupPlugin, "group");`             |
+| Chat room           | `import \* as chatroomPlugin from "agora-chat/chatroom/chatroom";`          | `miniCore.usePlugin(chatroomPlugin, "chatroom");`       |
+| Thread              | `import \* as threadPlugin from "agora-chat/thread/thread";`                | `miniCore.usePlugin(threadPlugin, "thread");`           |
+| Translation         | `import \* as translationPlugin from "agora-chat/translation/translation";` | `miniCore.usePlugin(translationPlugin, "translation");` |
+| Presence            | `import \* as presencePlugin from "agora-chat/presence/presence";`          | `miniCore.usePlugin(presencePlugin, "presence");`       |
+
+The sample code is as follows:
+
+```javascript
+
+const miniCore = new MiniCore({
+  appKey: "your appKey",
+});
+
+// The fixed value "contact" is used here.
+miniCore.usePlugin(contactPlugin, "contact");
+
+// Get the contact list.
+miniCore.contact.getContacts();
+
+// Add the listener.
+miniCore.addEventHandler("handlerId", {
+  onTextMessage: (message) => {},
+});
+
+// Login
+miniCore.open({
+  username: "username",
+  accessToken: "accessToken",
+});
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. Followings are the core methods:
+
+- `getAllConversationsBySort`: Loads the conversation list on the local device.
+- `Conversation.getUnreadMsgCount`: Retrieves the count of unread messages in the specified conversation.
+- `getUnreadMessageCount`: Retrieves the count of all unread messages.
+- `asyncPinConversation`: Pins a conversation.
+- `asyncFetchPinnedConversationsFromServer`: Retrieves the pinned conversations from the server with pagination.
+- `searchMsgFromDB`: Searches for messages from the local database.
+- `Conversation.insertMessage`: Inserts messages in the specified conversation.
+- `asyncDeleteAllMsgsAndConversations`: Clears the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms. You can also choose whether to clear the chat history on the server in one direction.
+- `clearAllMessages`: Deletes all messages of the local specified conversation.
+- `removeMessages`: Deletes local messages in the specified time period.
+- `removeMessage`: Deletes the specified message of a single local conversation.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+You can call the `getAllConversationsBySort` method to get all local conversations. The SDK first retrieves the conversations from the memory. If no conversation is loaded from the local database, the SDK will load the conversations to the memory. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation), with the pinned conversations coming before the unpinned ones. The conversation list is of the `List` structure:
+
+```java
+List conversations = ChatClient.getInstance().chatManager().getAllConversationsBySort();
+```
+
+### Retrieve messages in the specified conversation
+
+Call `getAllMessages` to retrieve all the messages of this conversation in the memory. Alternatively, you can call `loadMoreMsgFromDB` to load messages from the local database. The loaded message will be placed in the memory based on the timestamp of the messages.
+```java
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+
+List messages = conversation.getAllMessages();
+// startMsgId: Starting message ID for query. The SDK loads messages, starting from the specified one, in the descending order of the timestamp included in the messages.
+// pageSize: Number of message to load on each page. The value range is [1,400].
+List messages = conversation.loadMoreMsgFromDB(startMsgId, pagesize);
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```java
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+conversation.getUnreadMsgCount();
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```java
+ChatClient.getInstance().chatManager().getUnreadMessageCount();
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```java
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+// Mark all the messages in the current conversation as read.
+conversation.markAllMessagesAsRead();
+// Mark the specified message as read.
+conversation.markMessageAsRead(messageId);
+// Mark all unread messages as read.
+ChatClient.getInstance().chatManager().markAllConversationsAsRead();
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `ChatManager#asyncDeleteAllMsgsAndConversations` method. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```java
+boolean clearServerData=true;
+ChatClient.getInstance().chatManager().asyncDeleteAllMsgsAndConversations(clearServerData, new CallBack() {
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+```
+
+### Delete all messages in a local conversation
+
+You can call `clearAllMessages` to delete all messages sent and received in a local conversation:
+
+```java
+// conversationId: The conversation ID, which is the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+if(conversation != null) {
+    conversation.clearAllMessages();
+}
+```
+
+### Delete messages in a local conversation by time period
+
+You can call `removeMessages` to delete messages sent and received in a certain period in a local conversation.
+
+```java
+// conversationId: The conversation ID, which is the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
+// startTime: The starting UNIX timestamp for message deletion.
+// endTime: The end UNIX timestamp for message deletion.
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+if(conversation != null) {
+    conversation.removeMessages(startTime, endTime);
+}
+```
+
+### Delete a specific message
+
+You can delete a specific message from a local conversation. The sample code is as follows:
+
+```java
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+if(conversation != null) {
+    conversation.removeMessage(messageId);
+}
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `searchMsgFromDB` to search for messages by keywords, timestamp, and message sender:
+
+```java
+List messages = conversation.searchMsgFromDB(keywords, timeStamp, maxCount, from, Conversation.SearchDirection.UP);
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `ChatManager#searchMsgFromDB(String, long, int, String, Conversation.SearchDirection, Conversation.EMMessageSearchScope)` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```java
+List chatMessages = ChatClient.getInstance().chatManager().searchMsgFromDB("keyword", System.currentTimeMillis(), 100, "message sender id", Conversation.SearchDirection.UP, Conversation.ChatMessageSearchScope.ALL);
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can call `Conversation#searchMsgFromDB(String, long, int, String, Conversation.SearchDirection, Conversation.EMMessageSearchScope)` method to search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```java
+List chatMessages = ChatClient.getInstance().chatManager().getConversation("conversationId").searchMsgFromDB("keyword", System.currentTimeMillis(), 100, "message sender id", Conversation.SearchDirection.UP, Conversation.ChatMessageSearchScope.ALL);
+```
+
+### Import messages
+
+Call importMessages to import multiple messages to the local database.
+
+```java
+ChatClient.getInstance().chatManager().importMessages(msgs);
+```
+
+### Insert messages
+
+If you want to insert a message to the current conversation without actually sending the message, construct the message body and call `insertMessage`. This can be used to send notification messages such as "XXX recalls a message", "XXX joins the chat group", and "Typing ...".
+
+```java
+// Insert a message to the specified conversation.
+Conversation conversation = ChatClient.getInstance().chatManager().getConversation(conversationId);
+conversation.insertMessage(message);
+// Insert a message.
+// ChatClient.getInstance().chatManager().saveMessage(message);
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. Followings are the core methods:
+
+- `getAllConversations`: Loads the conversation list on the local device.
+- `loadMessagesStartFromId`: Loads messages of a conversation.
+- `deleteMessage`: Deletes a message sent or received in a local conversation.
+- `deleteAllMessages`: Deletes all messages in a local conversation.
+- `removeMessagesStart`: Deletes messages sent and received in a certain period in a local conversation.
+- `AgoraChatConversation.unreadMessagesCount`: Retrieves the count of unread messages in the specified conversation.
+- `pinConversation`: Pins a conversation.
+- `getPinnedConversationsFromServerWithCursor`: Retrieves the pinned conversations from the server with pagination.
+- `deleteServerConversation`: Deletes a conversation from the server.
+- `AgoraChatConversation.loadMessagesStartFromId`: Searches for messages from the local database.
+- `AgoraChatConversation.insertMessage`: Inserts messages in the specified conversation.
+- `deleteAllMessagesAndConversations`: Clears the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms. You can also choose whether to clear the chat history on the server in one direction.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+Call `getAllConversations` to retrieve all the conversations on the local device:
+
+```objc
+NSArray *conversations = [[AgoraChatClient sharedClient].chatManager getAllConversations];
+```
+
+### Retrieve messages in the specified conversation
+
+Refer to the following code sample to retrieve the messages in the specified conversation:
+
+```objc
+// Retrieves the conversation ID
+AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:conversationId type:type createIfNotExist:YES];
+// Only one message is loaded during SDK initialization. Call loadMessagesStartFromId to retrieve more messages.
+NSArray *messages = [conversation loadMessagesStartFromId:startMsgId count:count searchDirection:MessageSearchDirectionUp];
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```objc
+// Retrieves the ID of the specified conversation.
+AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:conversationId type:type createIfNotExist:YES];
+// Retrieves the count of unread messages.
+NSInteger unreadCount = conversation.unreadMessagesCount;
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```objc
+NSArray *conversations = [[AgoraChatClient sharedClient].chatManager getAllConversations];
+NSInteger unreadCount = 0;
+for (AgoraChatConversation *conversation in conversations) {
+  unreadCount += conversation.unreadMessagesCount;
+}
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```objc
+AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:conversationId type:type createIfNotExist:YES];
+// Marks all messages of the specified conversation as read.
+[conversation markAllMessagesAsRead:nil];
+// Marks the specified message as read.
+[conversation markMessageAsReadWithId:messageId error:nil];
+```
+
+### Clear chat history
+
+You can call the `deleteAllMessagesAndConversations:completion:` method to clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```swift
+AgoraChatClient.shared().chatManager?.deleteAllMessagesAndConversations(true, completion: { err in
+    if err == nil {
+        // Succeeded in deleting conversations and messages in them.
+    }
+})
+```
+
+### Delete all messages in a local conversation
+
+You can call `deleteAllMessages` to delete all messages in a local conversation:
+
+```swift
+if let conversation = AgoraChatClient.shared().chatManager?.getConversationWithConvId("conversationId") {
+    var err: AgoraChatError? = nil
+    conversation.deleteAllMessages(&err)
+     if let err = err {
+         // Failed to delete messages
+     } else {
+        // Messages deleted successfully
+     }
+}
+```
+
+### Delete messages in a local conversation by time period
+
+You can call `removeMessagesStart` to delete messages sent and received in a certain period in a local conversation.
+
+```swift
+if let conversation = AgoraChatClient.shared().chatManager?.getConversationWithConvId("conversationId") {
+    conversation.removeMessagesStart(startTime, to: endTime)
+}
+```
+
+### Delete a specific message
+
+You can delete a specific message from a local conversation. The sample code is as follows:
+
+```swift
+if let conversation = AgoraChatClient.shared().chatManager?.getConversationWithConvId("conversationId") {
+    var err: AgoraChatError? = nil
+    conversation.deleteMessage(withId: "messageId", error:&err)
+    if let err = err {
+        // Failed to delete message
+    } else {
+        // Message deleted successfully
+    }
+}
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `loadMessagesWithKeyword` to search for messages by keywords, timestamp, and message sender:
+
+```objc
+NSArray *messages = [conversation loadMessagesWithKeyword:keyword timestamp:0 count:50 fromUser:nil searchDirection:MessageSearchDirectionDown];
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `AgoraChatManager#loadMessagesWithKeyword:timestamp:count:fromUser:searchDirection:scope:completion:` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```swift
+AgoraChatClient.shared().chatManager?.loadMessages(withKeyword: "keyword", timestamp: Int64((Date().timeIntervalSince1970 * 1000)), count: 100, fromUser: "", searchDirection: .up, scope: .content, completion: { messages, err in
+    if err == nil {
+        // Successfully retrieved messages.
+    }
+})
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can call `Conversation#loadMessagesWithKeyword:timestamp:count:fromUser:searchDirection:scope:completion:` method to search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```swift
+if let conversation = AgoraChatClient.shared().chatManager?.getConversationWithConvId("conversationsId") {
+    conversation.loadMessages(withKeyword: "keyword", timestamp: 0, count: 50, fromUser: "", searchDirection: .down, scope: .content, completion: { messages, aError in
+
+    })
+}
+```
+
+### Import messages
+
+Call `importMessages` to import multiple messages to the specified conversation. This applies to use-cases where chat users want to formard messages from another conversation.
+
+```objc
+[[AgoraChatClient sharedClient].chatManager importMessages:messages completion:nil];
+```
+
+### Insert messages
+
+If you want to insert a message to the current conversation without actually sending the message, construct the message body and call `insertMessage`. This can be used to send notification messages such as "XXX recalls a message", "XXX joins the chat group", and "Typing ...".
+
+```objc
+// Inserts a message to the specified conversation.
+AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:conversationId type:type createIfNotExist:YES];
+[conversation insertMessage:message error:nil];
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. Followings are the core methods:
+
+- `ChatManager.loadAllConversations`: Loads the conversation list on the local device.
+- `ChatManager.deleteAllMessageAndConversation`: Clears the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms. You can also choose whether to clear the chat history on the server in one direction.
+- `ChatManage.deleteConversation`: Deletes the specified conversation.
+- `ChatManager.deleteMessage`: Deletes a message sent or received in a local conversation.
+- `ChatManager.deleteAllMessages`: Deletes all messages sent and received in a local conversation.
+- `ChatManager.deleteMessagesWithTs`: Deletes messages sent and received in a certain period in a local conversation.
+- `ChatConversation.getUnreadMessageCount`: Retrieves the count of unread messages in the specified conversation.
+- `ChatManager.getUnreadMessageCount`: Retrieves the count of all unread messages.
+- `ChatManager.pinConversation`: Pins a conversation.
+- `ChatManager.fetchPinnedConversations`: Retrieves the pinned conversations from the server with pagination.
+- `ChatManager.deleteRemoteConversation`: Deletes the conversation and historical messages from the server.
+- `ChatManager.searchMsgFromDB`: Searches for messages from the local database.
+- `ChatManager#loadMessagesWithKeyword`: Searches for messages in all conversations based on the search scope.
+- `ChatManager#loadMessagesWithKeyword`: Searches for messages in a single conversation based on the search scope.
+- `conversation#loadMessagesWithKeyword`: Inserts messages in the specified conversation.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+Call `loadAllConversations` to retrieve all the conversations on the local device:
+
+```dart
+try {
+  List lists =
+      await ChatClient.getInstance.chatManager.loadAllConversations();
+  // Loading conversations succeeds
+} on ChatError catch (e) {
+  // recall failed, code: e.code, reason: e.description
+}
+```
+
+### Retrieve messages in the specified conversation
+
+You can retrieve the messages in the specified conversation from the local database by specifying the conversation ID and chat type:
+
+```dart
+// Retrieves the conversation ID
+ChatConversation? conversation = await ChatClient.getInstance.chatManager
+    .getConversation(conversationId, type: ChatConversationType.Chat);
+// Only one message is loaded during SDK initialization. Call loadMessages to retrieve more messages.
+List messages = await conversation!.loadMessages(
+  startMsgId: startMsgId,
+  loadCount: count,
+  direction: ChatSearchDirection.Up,
+);
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```dart
+int unreadCount = await conversation.unreadCount();
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```dart
+// Gets the count of all unread messages
+int unreadCount =
+        await ChatClient.getInstance.chatManager.getUnreadMessageCount();
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```dart
+await conversation.markMessageAsRead(message.msgId);
+```
+
+You can also mark all unread messages of the specified conversation as read:
+
+```dart
+await conversation.markAllMessagesAsRead();
+```
+
+To mark all the conversations as read:
+
+```dart
+await ChatClient.getInstance.chatManager.markAllConversationsAsRead();
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `ChatManager#deleteAllMessageAndConversation` method. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```dart
+try {
+  await ChatClient.getInstance.chatManager.deleteAllMessageAndConversation(clearServerData: true);
+} on ChatError catch (e) {
+  debugPrint('deleteAllMessageAndConversation error: ${e.code} ${e.description}');
+}
+```
+
+### Delete all messages in a local conversation
+
+You can delete all messages in a local conversation:
+
+```dart
+Conversation? conversation = await ChatClient.getInstance.chatManager
+    .getConversation(conversationId);
+await conversation?.deleteAllMessages();
+```
+
+### Delete messages in a local conversation by time period
+
+You can delete messages sent and received in a certain period in a local conversation.
+
+```dart
+Conversation? conversation = await ChatClient.getInstance.chatManager
+    .getConversation(conversationId);
+await conversation?.deleteMessagesWithTs(startTs, endTs);
+```
+
+### Delete a specific message
+
+You can delete a specific message from a local conversation. The sample code is as follows:
+
+```dart
+Conversation? conversation = await ChatClient.getInstance.chatManager
+    .getConversation(conversationId);
+await conversation?.deleteMessage(messageId);
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `SearchMsgFromDB` to search for messages by keywords, timestamp, and message sender:
+
+```dart
+// The keyword for searchING
+String keywords = 'key';
+// The Unix timestamp (ms) of the message from which to start searching
+int timestamp = 1653971593000;
+// The maximum message count for searching
+int maxCount = 10;
+// The message sender
+String from = 'tom';
+// The search direction
+EMSearchDirection direction = EMSearchDirection.Up;
+List list =
+    await ChatClient.getInstance.chatManager.searchMsgFromDB(
+  keywords,
+  timeStamp: timestamp,
+  maxCount: maxCount,
+  from: from,
+  direction: direction,
+);
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `ChatManager#loadMessagesWithKeyword` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```dart
+try {
+  List msgs = await ChatClient.getInstance.chatManager.loadMessagesWithKeyword(
+    'keyword',
+    searchScope: MessageSearchScope.All,
+  );
+} on ChatError catch (e) {
+  debugPrint('loadMessagesWithKeyword error: ${e.code} ${e.description}');
+}
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can call the `conversation#loadMessagesWithKeyword` method to search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```dart
+ try {
+  ChatConversation? conversation = await ChatClient.getInstance.chatManager.getConversation(targetId);
+  List? msgs = await conversation?.loadMessagesWithKeyword(
+    'keyword',
+    searchScope: MessageSearchScope.All,
+  );
+} on ChatError catch (e) {
+  debugPrint('loadMessagesWithKeyword error: ${e.code} ${e.description}');
+}
+```
+
+### Import messages
+
+To import multiple messages to the specified conversation, create a `ChatMessage` object and call `importMessages`.
+
+```dart
+// Construct a message object and pass it in messages
+await ChatClient.getInstance.chatManager.importMessages(messages);
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. Followings are the core methods:
+
+- `ChatManager.getAllConversations`: Loads the conversation list on the local device.
+- `ChatManager.deleteConversation`: Deletes the specified conversation.
+- `ChatManager.deleteAllMessages`: Deletes all messages sent and received in a local conversation.
+- `ChatManager.deleteMessagesWithTimestamp`: Deletes messages sent and received in a certain period in a local conversation.
+- `ChatManager.pinConversation`: Pins a conversation.
+- `ChatManager.getPinnedConversationsFromServerWithCursor`: Retrieves the pinned conversations from the server with pagination.
+- `ChatManager.removeConversationFromServer`: Deletes the conversation and historical messages from the server.
+- `ChatManager.getMsgsWithMsgType`: Searches for messages from the local database.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+Call `getAllConversations` to retrieve all the conversations on the local device:
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.getAllConversations()
+  .then(() => {
+    console.log("Loading conversations succeeds");
+  })
+  .catch((reason) => {
+    console.log("Loading conversations fails", reason);
+  });
+```
+
+### Retrieve messages in the specified conversation
+
+You can retrieve the messages in the specified conversation from the local database by specifying the conversation ID and chat type:
+
+```typescript
+// Specify the conversation ID.
+const convId = "convId";
+// Whether to create a conversation if the specified one does not exist. If you set it as true, this method always returns a conversation object.
+const createIfNeed = true;
+// Set conversation type. For details, see descriptions in ChatConversationType.
+const convType = ChatConversationType.PeerChat;
+// Call getConversation to retrieve the specified conversation.
+ChatClient.getInstance()
+  .chatManager.getConversation(convId, convType, createIfNeed)
+  .then((conversation) => {
+    console.log("Getting conversations succeeds", conversation);
+  })
+  .catch((reason) => {
+    console.log("Getting conversations fails.", reason);
+  });
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```typescript
+// Specify the conversation ID.
+const convId = "convId";
+// Specify the conversation type. For details, see descriptions in ChatConversationType.
+const convType = ChatConversationType.PeerChat;
+// Call getConversationUnreadCount to retrieve the count of unread messages in the current conversation.
+ChatClient.getInstance()
+  .chatManager.getConversationUnreadCount(convId, convType)
+  .then((count) => {
+    console.log("Getting conversations succeeds: ", count);
+  })
+  .catch((reason) => {
+    console.log("Getting conversations fails.", reason);
+  });
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.getUnreadCount()
+  .then((count) => {
+    console.log("Getting all conversations succeeds: ", count);
+  })
+  .catch((reason) => {
+    console.log("Getting all conversations fails.", reason);
+  });
+```
+
+### Retrieve messages of a certain type in a local conversation
+
+You can call the `getMsgsWithMsgType` method to retrieve messages of a certain type in a conversation in the local database. You can retrieve a maximum of 400 messages each time. If no message is retrieved, the SDK returns an empty list. To use this function, you need to upgrade the SDK to 1.3.0 or later.
+
+```typescript
+// convId: The conversation ID.
+// convType: The conversation type, which is `PeerChat` for one-to-one chat, `GroupChat` for group chat, and `RoomChat` for chat room chat.
+// msgType: The message type.
+// direction: The message search direction
+// `ChatSearchDirection.UP`: Messages are retrieved in the descending order of the Unix timestamp included in them.
+// `ChatSearchDirection.DOWN`: Messages are retrieved in the ascending order of the Unix timestamp included in them.
+// timestamp: The starting Unix timestamp in the message for query. The unit is millisecond. After this parameter is set, the SDK retrieves messages, starting from the specified one, according to the message search direction.
+// If you set this parameter as a negative value, the SDK retrieves messages, starting from the current time, in the descending order of the timestamp included in them.
+// count: The maximum number of messages to retrieve each time. The value range is [1,400].
+// sender：The message sender, which is the user ID of the peer user for one-to-one chat or group ID for group chat.
+// isChatThread: Whether the conversation is a thread conversation.
+ChatClient.getInstance()
+  .getMsgsWithMsgType({
+    convId,
+    convType,
+    msgType,
+    direction,
+    timestamp,
+    count,
+    sender,
+    isChatThread,
+  })
+  .then((messages) => {
+    console.log("get message success");
+  })
+  .catch((reason) => {
+    console.log("get message fail.", reason);
+  });
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```typescript
+// Specify the conversation ID.
+const convId = "convId";
+// Specify the message ID that you want to mark as read.
+const msgId = "100";
+// Specify the conversation type. For details, see descriptions in ChatConversationType.
+const convType = ChatConversationType.PeerChat;
+// Call markMessageAsRead
+ChatClient.getInstance()
+  .chatManager.markMessageAsRead(convId, convType, msgId)
+  .then(() => {
+    console.log("Marking message read succeeds: ");
+  })
+  .catch((reason) => {
+    console.log("Marking message read fails.", reason);
+  });
+```
+
+You can also mark all unread messages of the specified conversation as read:
+
+```typescript
+// Call markAllMessagesAsRead
+ChatClient.getInstance()
+  .chatManager.markAllMessagesAsRead("convId", ChatConversationType.PeerChat)
+  .then((count) => {
+    console.log("Marking conversations read succeeds: ", count);
+  })
+  .catch((reason) => {
+    console.log("Marking conversations read fails.", reason);
+  });
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `ChatManager#deleteAllMessageAndConversation` method. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.deleteAllMessageAndConversation(clearServerData)
+  .then(() => {
+    // Operation successful
+  })
+  .catch((error) => {
+    // An error occurred
+  });
+
+```
+
+### Delete conversations and historical messages
+
+The SDK provides two methods, which enable you to delete the conversations and historical messages on the local device and on the server respectively.
+
+To delete them on the local device, call `deleteConversation`:
+
+```typescript
+// Specify the conversation ID.
+const convId = "convId";
+// Whether to delete the messages as well.
+const withMessage = true;
+// Call deleteConversation
+ChatClient.getInstance()
+  .chatManager.deleteConversation(convId, withMessage)
+  .then(() => {
+    console.log("Removing conversations succeeds: ");
+  })
+  .catch((reason) => {
+    console.log("Removing conversations fails.", reason);
+  });
+```
+
+To delete them on the server, call `removeConversationFromServer`:
+
+```typescript
+// Specify the conversation ID
+const convId = "convId";
+// Whether to delete the messages as well.
+const isDeleteMessage = true;
+// Specify the conversation type. For details, see descriptions in ChatConversationType.
+const convType = ChatConversationType.PeerChat;
+// Call removeConversationFromServer.
+ChatClient.getInstance()
+  .chatManager.removeConversationFromServer(convId, convType, isDeleteMessage)
+  .then(() => {
+    console.log("Removing conversations succeeds: ");
+  })
+  .catch((reason) => {
+    console.log("Removing conversations fails.", reason);
+  });
+```
+
+### Delete all messages in a local conversation
+
+You can call `deleteAllMessages` to delete all messages sent and received in a local conversation:
+
+```typescript
+// convId: The conversation ID.
+// convType: The conversation type, which is `Chat` for one-to-one chat, `Group` for group chat, and `Room` for room chat.
+ChatClient.getInstance()
+  .chatManager.deleteAllMessages(convId, convType)
+  .then(() => {
+    console.log("delete message success");
+  })
+  .catch((reason) => {
+    console.log("delete message fail.", reason);
+  });
+```
+
+### Delete messages in a local conversation by time period
+
+You can call `deleteMessagesWithTimestamp` to delete messages sent and received in a certain period in a local conversation.
+
+```typescript
+// startTs: The starting UNIX timestamp for message deletion.
+// endTs: The end UNIX timestamp for message deletion.
+ChatClient.getInstance()
+  .chatManager.deleteMessagesWithTimestamp({ startTs, endTs })
+  .then(() => {
+    console.log("delete message success");
+  })
+  .catch((reason) => {
+    console.log("delete message fail.", reason);
+  });
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `getMsgsWithMsgType` to search for messages by keywords, timestamp, and message sender:
+
+```typescript
+// Specify the keyword,
+const keywords = 'key';
+// timestamp,
+const timestamp = 10000000;
+// the maximum count of searched messages,
+const maxCount = 10;
+// the message sender,
+const from = 'tom';
+// and the search direction. For details, see descriptions in ChatSearchDirection.
+const direction = ChatSearchDirection.UP;
+// Call getMsgsWithMsgType
+ChatClient.getInstance().chatManager.getMsgsWithMsgType(
+              keywords,
+              timestamp,
+              maxCount,
+              from,
+              direction
+            )
+  .then((messages[]) => {
+    console.log("Searching conversations succeeds: ", messages);
+  })
+  .catch((reason) => {
+    console.log("Searching conversations fails.", reason);
+  });
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `ChatManager#getMsgsWithKeyword` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```typescript
+ChatClient.getInstance()
+  .chatManager.getMsgsWithKeyword({
+    keywords, // Search keyword
+    direction, // Search direction
+    timestamp, // Message timestamp. Search starts from this timestamp in the specified direction.
+    maxCount: 20, // Number of messages to request
+    from: "", // Message sender
+    searchScope: ChatMessageSearchScope.All, // Search scope. See the ChatMessageSearchScope type.
+  })
+  .then((res) => {
+    // Operation succeeded. Handle the returned result.
+  })
+  .catch((error) => {
+    // An error occurred.
+  });
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both. You can do this using one of the two methods:
+
+- Method 1
+
+    ```typescript
+    // Call directly
+     ChatClient.getInstance()
+       .chatManager.getConvMsgsWithKeyword({
+         convId, // Conversation ID.
+         convType, // Conversation type: `PeerChat` for single chat and `GroupChat` for group chat.
+         keywords, // Search keywords
+         direction, // Search direction
+         timestamp, // The timestamp of the search message, starting from this timestamp and searching in the search direction `direction`.
+         count: 20, // Requested number of messages
+         sender: "", // Message sender
+         isChatThread: false, // Whether it is a sub-area message. Sub-area messages are only used within sub-areas.
+         searchScope: ChatMessageSearchScope.All, // Search scope, see `ChatMessageSearchScope` type for details.
+       })
+       .then((res) => {
+         // todo: operation successful, process the returned result
+       })
+       .catch((error) => {
+         // todo: an error occurred
+       });
+    ```
+
+- Method 2
+
+    ```typescript
+    // Called through the conversation object
+         const conv = ChatClient.getInstance().chatManager.getConversation(
+           convId,
+           convType
+         );
+         conv
+           .getMsgsWithKeyword({
+             keywords, // Search keywords
+             direction, // Search direction
+             timestamp, // The timestamp of the search message, starting from this timestamp and searching in the search direction `direction`.
+             count: 20, // Requested number of messages
+             sender: "", // Message sender
+             searchScope: ChatMessageSearchScope.All, // Search scope, see `ChatMessageSearchScope` type for details.
+           })
+           .then((res) => {
+             // Operation successful, process the returned result
+           })
+           .catch((error) => {
+             // An error occurred
+           });
+    ```
+
+### Import messages
+
+Call `importMessages` to import multiple messages to the specified conversation.
+
+```typescript
+// Construct the messages.
+const msgs = [];
+ChatClient.getInstance()
+  // Call importMessages.
+  .chatManager.importMessages(msgs)
+  .then(() => {
+    console.log("Importing conversations succeeds: ");
+  })
+  .catch((reason) => {
+    console.log("Importing conversations fails.", reason);
+  });
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. Followings are the core methods:
+
+- `IChatManager.LoadAllConversations`: Loads the conversation list on the local device.
+- `IChatManage.DeleteConversation`: Deletes the specified conversation.
+- `Conversation#DeleteAllMessages`：Deletes all messages sent and received in a local conversation.
+- `Conversation#DeleteMessages`: Deletes messages sent and received in a certain period in a local conversation.
+- `IConversationManager.UnReadCount`: Retrieves the count of unread messages in the specified conversation.
+- `IChatManager.GetUnreadMessageCount`: Retrieves the count of all unread messages.
+- `IChatManager.PinConversation`: Pins a conversation.
+- `IChatManager.GetConversationsFromServerWithCursor`: Retrieves conversations from the server.
+- `IChatManager.DeleteConversationFromServer`: Deletes the conversation from the server.
+- `IChatManager.searchMsgFromDB`: Searches for messages from the local database.
+- `Conversation.insertMessage`: Inserts messages in the specified conversation.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+Call `LoadAllConversations` to retrieve all the conversations on the local device:
+
+```csharp
+Listlist = SDKClient.Instance.ChatManager.LoadAllConversations();
+```
+
+### Retrieve messages in the specified conversation
+
+Refer to the following code sample to retrieve the messages in the specified conversation:
+
+```csharp
+// Get the specified conversation on the local device.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+// Call LoadMessages to retrieve messages by specifying the `startMsgId` and `pageSize`.
+conv.LoadMessages(startMsgId, pagesize, callback:new ValueCallBack>(
+  onSuccess: (list) => {
+     Debug.Log($"{list.Count} Messages retrieved.");
+  },
+  onError:(code, desc) => {
+     Debug.Log($"Fails to retrieve the message, errCode={code}, errDesc={desc}");
+  }
+));
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+int unread = conv.UnReadCount;
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```csharp
+SDKClient.Instance.ChatManager.GetUnreadMessageCount();
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+// Mark all the messages in the current conversation as read.
+conv.MarkAllMessageAsRead();
+// Mark the specified message as read.
+conv.MarkMessageAsRead(msgId);
+// Mark all unread messages as read.
+SDKClient.Instance.ChatManager.MarkAllConversationsAsRead();
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `DeleteAllMessagesAndConversations` method. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```csharp
+bool clearServerData = false; // or true
+SDKClient.Instance.ChatManager.DeleteAllMessagesAndConversations(clearServerData, new CallBack(
+    onSuccess: () =>
+    {
+    },
+    onError: (code, desc) =>
+    {
+    }
+));
+```
+
+### Delete conversations and historical messages
+
+You can delete conversations on both the local device and the server.
+
+To delete them on the local device, call `DeleteConversation` and `DeleteMessage`:
+
+```csharp
+// Call DeleteConversation to delete the specified conversation.
+// `true` indicates to keep the historical messages while deleting the conversation. To remove the historical messages as well, set it as `false`.
+SDKClient.Instance.ChatManager.DeleteConversation(conversationId, true);
+// Delete the specified message in the current conversaiton.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.DeleteMessage(msgId);
+```
+
+To delete conversations on the server, call `DeleteConversationFromServer`:
+
+```csharp
+// Delete a conversation on the server. If you want to keep the historical messages, pass “false” to the third parameter.
+SDKClient.Instance.ChatManager.DeleteConversationFromServer(conversationId, type, true, new CallBack(
+    onSuccess: () => {
+    },
+    onError: (code, desc) => {
+    }
+));
+```
+
+### Delete all messages in a local conversation
+
+You can call `DeleteAllMessages` to delete all messages sent and received in a local conversation:
+
+```csharp
+// conversationId: The conversation ID, which is the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
+// conversationType: The conversation type, which is `Chat` for one-to-one chat, `Group` for group chat, and `Room` for room chat.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversionId, conversationType);
+
+if (conv.DeleteAllMessages()){
+    //Succeeded in deleting messages
+}
+else{
+    //Failed to delete messages
+}
+```
+
+### Delete messages in a local conversation by time period
+
+You can call `DeleteMessages` to delete messages sent and received in a certain period in a local conversation.
+
+```csharp
+// conversationId: The conversation ID, which is the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
+// conversationType: The conversation type, which is `Chat` for one-to-one chat, `Group` for group chat, and `Room` for room chat.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversionId, conversationType);
+
+if (conv.DeleteMessages(startTime, endTime)) {
+    //Succeeded in deleting messages
+}
+else {
+    //Failed to delete messages
+}
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `SearchMsgFromDB` to search for messages by keywords, timestamp, and message sender:
+
+```csharp
+List list = SDKClient.Instance.ChatManager.SearchMsgFromDB(keywords, timeStamp, maxCount, from, MessageSearchDirection.UP);
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `ChatManager#SearchMsgFromDB(string, long, in, string, MessageSearchDirection, MessageSearchScope, ValueCallBack>)` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```csharp
+SDKClient.Instance.ChatManager.SearchMsgFromDB("keywords", -1, 10, "from", MessageSearchDirection.UP, MessageSearchScope.CONTENT, new ValueCallBack>(
+  onSuccess: (list) => {
+      foreach (var it in list)
+      {
+          //Iterate over the List list
+      }
+  },
+  onError: (code, desc) => {
+}));
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can call `Conversation#LoadMessagesWithScope(string, MessageSearchScope, long, int, string, MessageSearchDirection, ValueCallBack>)` method to search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```csharp
+conv.LoadMessagesWithScope("keywords", MessageSearchScope.CONTENT, -1, 10, "from", MessageSearchDirection.UP, new ValueCallBack>(
+    onSuccess: (list) => {
+        foreach (var it in list)
+        {
+            //Iterate over the List list
+        }
+    },
+    onError: (code, desc) => {
+    }
+));
+```
+
+### Import messages
+
+Call `ImportMessages` to import multiple messages to the specified conversation.
+
+```csharp
+SDKClient.Instance.ChatManager.ImportMessages(messages, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) =>
+  {
+  }
+));
+```
+
+### Insert messages
+
+If you want to insert a message to the current conversation without actually sending the message, construct the message body and call `InsertMessage`. This can be used to send notification messages such as "XXX recalls a message", "XXX joins the chat group", and "Typing ...".
+
+```csharp
+// Insert the message to the current conversation.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.InsertMessage(message);
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+In chat apps, a conversation is composed of all the messages in a peer-to-peer chat, chat group, or chatroom. The Chat SDK supports managing messages by conversations, including retrieving and managing unread messages, deleting the historical messages on the local device, and searching historical messages.
+
+This page introduces how to use the Chat SDK to implement these functionalities.
+
+## Understand the tech
+
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. Followings are the core methods:
+
+- `IChatManager.LoadAllConversations`: Loads the conversation list on the local device.
+- `IChatManage.DeleteConversation`: Deletes the specified conversation.
+- `Conversation#DeleteAllMessages`：Deletes all messages sent and received in a local conversation.
+- `Conversation#DeleteMessages`: Deletes messages sent and received in a certain period in a local conversation.
+- `IConversationManager.UnReadCount`: Retrieves the count of unread messages in the specified conversation.
+- `IChatManager.GetUnreadMessageCount`: Retrieves the count of all unread messages.
+- `IChatManager.PinConversation`: Pins a conversation.
+- `IChatManager.GetConversationsFromServerWithCursor`: Retrieves the pinned conversations from the server with pagination.
+- `IChatManager.DeleteConversationFromServer`: Deletes the conversation from the server.
+- `IChatManager.searchMsgFromDB`: Searches for messages from the local database.
+- `Conversation.insertMessage`: Inserts messages in the specified conversation.
+
+## Prerequisites
+
+Before proceeding, ensure that you meet the following requirements:
+
+- You have integrated the Chat SDK, initialized the SDK and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
+- You understand the API call frequency limits as described in [Limitations](../../limitations).
+
+## Implementation
+
+This section shows how to implement managing messages.
+
+### Retrieve conversations
+
+Call `LoadAllConversations` to retrieve all the conversations on the local device:
+
+```csharp
+Listlist = SDKClient.Instance.ChatManager.LoadAllConversations();
+```
+
+### Retrieve messages in the specified conversation
+
+Refer to the following code sample to retrieve the messages in the specified conversation:
+
+```csharp
+// Get the specified conversation on the local device.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+// Call LoadMessages to retrieve messages by specifying the `startMsgId` and `pageSize`.
+conv.LoadMessages(startMsgId, pagesize, callback:new ValueCallBack>(
+  onSuccess: (list) => {
+     Debug.Log($"{list.Count} Messages retrieved.");
+  },
+  onError:(code, desc) => {
+     Debug.Log($"Fails to retrieve the message, errCode={code}, errDesc={desc}");
+  }
+));
+```
+
+### Retrieve the count of unread messages in the specified conversation
+
+Refer to the following code example to retrieve the count of unread messages:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+int unread = conv.UnReadCount;
+```
+
+### Retrieve the count of unread messages in all conversations
+
+Refer to the following code example to retrieve the count of all unread messages:
+
+```csharp
+SDKClient.Instance.ChatManager.GetUnreadMessageCount();
+```
+
+### Mark unread messages as read
+
+Refer to the following code example to mark the specified messages as read:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+// Mark all the messages in the current conversation as read.
+conv.MarkAllMessageAsRead();
+// Mark the specified message as read.
+conv.MarkMessageAsRead(msgId);
+// Mark all unread messages as read.
+SDKClient.Instance.ChatManager.MarkAllConversationsAsRead();
+```
+
+### Clear chat history
+
+To clear the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms, you can call the `DeleteAllMessagesAndConversations` method. Additionally, you can choose whether to clear the chat history on the server. Note that clearing the chat history on the server means that you will not be able to retrieve conversations and messages from the server, although other users will not be affected.
+
+```csharp
+bool clearServerData = false; // or true
+SDKClient.Instance.ChatManager.DeleteAllMessagesAndConversations(clearServerData, new CallBack(
+    onSuccess: () =>
+    {
+    },
+    onError: (code, desc) =>
+    {
+    }
+));
+```
+
+### Delete conversations and historical messages
+
+You can delete conversations on both the local device and the server.
+
+To delete them on the local device, call `DeleteConversation` and `DeleteMessage`:
+
+```csharp
+// Call DeleteConversation to delete the specified conversation.
+// `true` indicates to keep the historical messages while deleting the conversation. To remove the historical messages as well, set it as `false`.
+SDKClient.Instance.ChatManager.DeleteConversation(conversationId, true);
+// Delete the specified message in the current conversation.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.DeleteMessage(msgId);
+```
+
+To delete conversations on the server, call `DeleteConversationFromServer`:
+
+```csharp
+// Delete a conversation on the server. If you want to keep the historical messages, pass “false” to the third parameter.
+SDKClient.Instance.ChatManager.DeleteConversationFromServer(conversationId, type, true, new CallBack(
+    onSuccess: () => {
+    },
+    onError: (code, desc) => {
+    }
+));
+```
+
+### Delete all messages in the local conversation
+
+You can delete all messages in the local conversation. The sample code is as follows:
+
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversionId, conversationType);
+
+```csharp
+if (conv.DeleteAllMessages()){
+     // Message deleted successfully
+}
+else {
+     // Delete message failed
+}
+```
+
+### Delete messages from a single local conversation within a specified time period
+
+You can delete local messages for a specified conversation within a period of time. The sample code is as follows:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversionId, conversationType);
+
+if (conv.DeleteMessages(startTime, endTime)) {
+     // Message deleted successfully
+}
+else {
+     // Delete message failed
+}
+```
+
+### Delete the specified message of a local conversation
+
+You can delete specified messages of a single local conversation. The sample code is as follows:
+
+```csharp
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversionId, conversationType);
+
+if (conv.DeleteMessage(msgid)){
+     // Message deleted successfully
+}
+else {
+     // Delete message failed
+}
+```
+
+### Search for messages using keywords
+
+Search methods provided on this page can be used to search the local database for all types of messages except command messages, because command messages are not stored in the local database.
+
+Call `SearchMsgFromDB` to search for messages by keywords, timestamp, and message sender:
+
+```csharp
+List list = SDKClient.Instance.ChatManager.SearchMsgFromDB(keywords, timeStamp, maxCount, from, MessageSearchDirection.UP);
+```
+
+### Search for messages in all conversations based on search scope
+
+You can call the `ChatManager#SearchMsgFromDB(string, long, in, string, MessageSearchDirection, MessageSearchScope, ValueCallBack>)` method to search in all conversations based on the search scope. This means that, in addition to setting the keywords, message timestamps, number of messages, sender, and search direction, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```csharp
+SDKClient.Instance.ChatManager.SearchMsgFromDB("keywords", -1, 10, "from", MessageSearchDirection.UP, MessageSearchScope.CONTENT, new ValueCallBack>(
+  onSuccess: (list) => {
+      foreach (var it in list)
+      {
+          //Iterate over the List list
+      }
+  },
+  onError: (code, desc) => {
+}));
+```
+
+### Search for messages in the current conversation based on search scope
+
+You can call `Conversation#LoadMessagesWithScope(string, MessageSearchScope, long, int, string, MessageSearchDirection, ValueCallBack>)` method to search for messages in the current conversation based on the search scope. This means that, in addition to setting keywords, message timestamps, number of messages, sender, direction, and other parameters, you can also choose to search only in the message content, only in the message extension information, or in both.
+
+```csharp
+conv.LoadMessagesWithScope("keywords", MessageSearchScope.CONTENT, -1, 10, "from", MessageSearchDirection.UP, new ValueCallBack>(
+    onSuccess: (list) => {
+        foreach (var it in list)
+        {
+            //Iterate over the List list
+        }
+    },
+    onError: (code, desc) => {
+    }
+));
+```
+
+### Import messages
+
+Call `ImportMessages` to import multiple messages to the specified conversation.
+
+```csharp
+SDKClient.Instance.ChatManager.ImportMessages(messages, new CallBack(
+  onSuccess: () => {
+  },
+  onError: (code, desc) =>
+  {
+  }
+));
+```
+
+### Insert messages
+
+If you want to insert a message to the current conversation without actually sending the message, construct the message body and call `InsertMessage`. This can be used to send notification messages such as "XXX recalls a message", "XXX joins the chat group", and "Typing ...".
+
+```csharp
+// Insert the message to the current conversation.
+Conversation conv = SDKClient.Instance.ChatManager.GetConversation(conversationId, convType);
+conv.InsertMessage(message);
+```
+
+## Next steps
+
+After implementing managing messages, you can refer to the following documents to add more messaging functionalities to your app:
+
+- [Retrieve conversations and messages from the server](./retrieve-messages)
+- [Message receipts](./message-receipts)
+
+</PlatformStructured>
