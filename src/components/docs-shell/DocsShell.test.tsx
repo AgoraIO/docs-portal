@@ -176,11 +176,6 @@ describe('DocsShell', () => {
       .find((button) =>
         button.textContent?.includes('Search docs, APIs, guides...'),
       );
-    const siteControl = within(mainHeaderRow)
-      .getAllByRole('button', {
-        name: 'Site',
-      })
-      .find((button) => button.textContent?.includes('International site'));
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
     });
@@ -198,12 +193,7 @@ describe('DocsShell', () => {
     if (!desktopSearch) {
       throw new Error('expected desktop search trigger in main header row');
     }
-    expect(siteControl).toBeDefined();
-    if (!siteControl) {
-      throw new Error('expected desktop site trigger in main header row');
-    }
     expect(mainHeaderRow).toContainElement(desktopSearch);
-    expect(mainHeaderRow).toContainElement(siteControl);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
@@ -249,14 +239,6 @@ describe('DocsShell', () => {
     expect(githubControl.className).toContain(
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
-    expect(siteControl).toHaveAttribute('data-variant', 'ghost');
-    expect(siteControl.className).not.toContain(
-      'border-[color:var(--line-strong)]',
-    );
-    expect(siteControl.className).not.toContain('bg-card');
-    expect(siteControl.className).toContain('hover:bg-accent');
-    expect(siteControl.className).toContain('data-[state=open]:bg-accent');
-    expect(siteControl).toHaveTextContent('International site');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
@@ -875,79 +857,7 @@ describe('DocsShell', () => {
     });
   });
 
-  it('switches locale while preserving the current tab and slug path', async () => {
-    const rootRoute = createRootRoute({
-      component: () => <Outlet />,
-    });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$',
-      component: () => (
-        <AppProviders>
-          <DocsShell
-            activePath="/en/ai/get-started/quickstart"
-            activeTab="ai"
-            localeLinks={[
-              {
-                href: '/en/ai/get-started/quickstart',
-                isActive: true,
-                locale: 'en',
-              },
-              {
-                href: '/zh-CN/ai/get-started/quickstart',
-                isActive: false,
-                locale: 'zh-CN',
-              },
-            ]}
-            locale="en"
-            loadPages={async () => []}
-            sidebar={[]}
-            tabs={tabs}
-            toc={[]}
-          >
-            <article>Body</article>
-          </DocsShell>
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/en/ai/get-started/quickstart'],
-      }),
-    });
-    const navigateSpy = vi.spyOn(router, 'navigate');
-
-    render(<RouterProvider router={router} />);
-
-    const siteButton = (
-      await screen.findAllByRole('button', {
-        name: 'Site',
-      })
-    ).find((button) => button.textContent?.includes('International site'));
-
-    if (!siteButton) {
-      throw new Error('expected desktop site button');
-    }
-
-    fireEvent.pointerDown(siteButton, { button: 0 });
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'China site' }),
-    );
-
-    await waitFor(() => {
-      expect(navigateSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: '/zh-CN/ai/get-started/quickstart',
-        }),
-      );
-    });
-    await waitFor(() => {
-      expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('zh-CN');
-    });
-  });
-
-  it('renders locale options as crawlable links for static discovery', async () => {
+  it('renders alternate-language links as crawlable links for static discovery', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
       activeTab: 'ai',
@@ -965,34 +875,21 @@ describe('DocsShell', () => {
       ],
     });
 
-    fireEvent.pointerDown(
-      (
-        await screen.findAllByRole('button', {
-          name: 'Site',
-        })
-      ).find((button) => button.textContent?.includes('International site')) ??
-        (() => {
-          throw new Error('expected desktop site button');
-        })(),
-      { button: 0 },
-    );
-
-    const siteOptions = await screen.findByRole('menu', {
-      name: 'Site',
+    const altNav = await screen.findByRole('navigation', {
+      name: 'Alternate languages',
     });
 
-    expect(siteOptions).toHaveAttribute('data-slot', 'dropdown-menu-content');
-    expect(
-      within(siteOptions).getByRole('menuitem', { name: 'China site' }),
-    ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
-    expect(
-      within(siteOptions).getByText(
-        'Product coverage differs between the two sites.',
-      ),
-    ).toBeInTheDocument();
+    const enLink = within(altNav).getByRole('link', { name: 'en' });
+    expect(enLink).toHaveAttribute('href', '/en/ai/get-started/quickstart');
+    expect(enLink).toHaveAttribute('hreflang', 'en');
+    expect(enLink).toHaveAttribute('aria-current', 'page');
+
+    const zhLink = within(altNav).getByRole('link', { name: 'zh-CN' });
+    expect(zhLink).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+    expect(zhLink).toHaveAttribute('hreflang', 'zh-CN');
   });
 
-  it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
+  it('keeps compact mobile header controls and exposes theme in the sheet', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -1086,8 +983,8 @@ describe('DocsShell', () => {
       within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(
-      within(mobileSheet).getByRole('button', { name: 'Site' }),
-    ).toBeInTheDocument();
+      within(mobileSheet).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
     ).toBeInTheDocument();
