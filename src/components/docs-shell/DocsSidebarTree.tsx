@@ -31,25 +31,25 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'min-h-[30px] h-auto items-start justify-between rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'min-h-[24px] h-auto items-center justify-between rounded-[7px] px-3 py-0.5 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSectionTitleClassName =
   'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
 
 const sidebarSubButtonClassName =
-  'relative min-h-[28px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[24px] h-auto items-center overflow-visible rounded-[7px] px-3 py-0.5 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[30px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[24px] h-auto items-center overflow-visible rounded-[7px] px-3 py-0.5 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
-  'h-auto min-h-[28px] items-start overflow-visible py-1';
+  'h-auto min-h-[24px] items-center overflow-visible py-0.5';
 
 const expandedSidebarChildrenClassName =
   'border-l border-[color:var(--line-strong)] pl-3';
 
 const nestedExpandedSidebarChildrenClassName =
-  'mt-1 flex flex-col gap-1 border-l border-[color:var(--line-strong)] pl-3';
+  'mt-0.5 flex flex-col gap-px border-l border-[color:var(--line-strong)] pl-3';
 
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
@@ -164,7 +164,7 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-3.5 mb-1.5 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <SidebarGroupLabel className="mt-2 mb-0.5 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
           <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
