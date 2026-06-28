@@ -38,4 +38,4 @@ When calling Signaling SDK APIs, failures are typically returned through the SDK
 For currently maintained SDK-side error handling details, see:
 
 - [Troubleshooting](./troubleshooting) for logging setup and the SDK error payload structure available in this portal.
-- [Signaling API reference](https://docs.agora.io/en/signaling/reference/api) for platform-specific SDK enumerations, callback contracts, and error-related data structures.
+- [Signaling API reference](/en/api-reference/api-ref/signaling) for platform-specific SDK enumerations, callback contracts, and error-related data structures.

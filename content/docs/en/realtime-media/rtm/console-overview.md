@@ -307,8 +307,19 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
    1. On the **Configure SAML** tab, fill in the following SAML configurations generated in Agora Console:
 
-      - In the **Single sign on URL** field, enter `https://sso2.agora.io/api/v0/saml/idp/callback`.
-      - In the **Audience URI (SP Entity ID)** field, enter `https://sso2.agora.io/{companyId}/saml/SSO` where `{companyId}` is your company ID.
+      - In the **Single sign on URL** field, enter:
+
+        ```text
+        https://sso2.agora.io/api/v0/saml/idp/callback
+        ```
+
+      - In the **Audience URI (SP Entity ID)** field, enter:
+
+        ```text
+        https://sso2.agora.io/{companyId}/saml/SSO
+        ```
+
+        where `{companyId}` is your company ID.
       - In the **Attribute Statements (optional)** section, add the following attribute:
 
         |Name             |Value                |
@@ -437,8 +448,6 @@ To ask Agora support a question, follow these steps:
     ![Create a support ticket](/images/common/console-create-support-ticket.png)
 
 1.  Type in your question or keywords to see if the question has been answered. If you cannot find your answer, select a category and submit a ticket to Agora’s customer support.
-
-    ![](https://web-cdn.agora.io/docs-files/1658716858508)
 
 You can track the status of your ticket under **Tickets**.
 

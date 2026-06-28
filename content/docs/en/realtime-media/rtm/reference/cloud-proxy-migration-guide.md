@@ -14,7 +14,7 @@ Agora has updated IP whitelist configuration to enhance security and simplify ma
 * All IP addresses and network ranges have been technically verified.
 * Update your firewall rules according to the specified timeline.
 * Continue using your current configuration if you must configure before the new delivery dates.
-* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+* Test your configuration thoroughly using the validation steps in [Firewall requirements](./firewall).
 
 ## Summary of changes
 Following are the key changes:
@@ -245,4 +245,4 @@ After implementing the changes, verify your new configuration and check the conn
 
 ### Get support
 
-For implementation assistance, contact [support@agora.io](mailto:support@agora.io.md) with your specific SDK version and region requirements.
+For implementation assistance, contact [support@agora.io](mailto:support@agora.io) with your specific SDK version and region requirements.

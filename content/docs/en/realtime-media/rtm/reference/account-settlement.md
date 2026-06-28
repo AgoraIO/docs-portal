@@ -14,19 +14,19 @@ For uninterrupted access to Agora's products and services, ensure at least one o
 
 Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
 
-### Real-time usage and estimated bill
+## Real-time usage and estimated bill
  
 You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
 
 ![bill estimate preview](/images/console/bill-estimate-preview.png)
  
-### Real-time reservation of balance
+## Real-time reservation of balance
  
 Your reserved balance is updated continuously based on your real-time bill estimation. The corresponding estimated amount is reserved from your available balance at all times.
  
 ![Available and reserved balance](/images/console/available-reserved-balance.png)
 
-### Auto-recharge and account suspension
+## Auto-recharge and account suspension
  
 On the **7th, 14th, 21st, and 28th** of each calendar month (excluding February 28), if your available balance is in arrears by more than **$50**:
  
@@ -35,14 +35,14 @@ On the **7th, 14th, 21st, and 28th** of each calendar month (excluding February 
 - Top up your wallet within the **24-hour grace period** to avoid account suspension.
 - If your balance remains in arrears after 24 hours, your account is suspended until the balance is restored to zero or above.
 
-### Monthly billing
+## Monthly billing
  
 Your final bill is issued monthly. After bill finalization:
  
 - Any overpaid amount is refunded to your balance.
 - Any undercharged amount is deducted accordingly.
 
-### Balance withdrawal
+## Balance withdrawal
  
 You can withdraw your available balance at any time directly from the Agora Console.
 

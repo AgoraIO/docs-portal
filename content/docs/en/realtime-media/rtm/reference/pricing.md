@@ -229,7 +229,7 @@ Normalization is the process of standardizing billing calculations to 30-day mon
 
 Storage Cost = 3.93 GB × $15.00 per GB = $58.95
 
-If you still have questions, refer to the [FAQ on the recently announced package changes​](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io.md).
+If you still have questions, refer to the [FAQ on the recently announced package changes​](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io).
 
 ### Package feature comparison
 
@@ -367,7 +367,7 @@ Depending on the features you enable for your project and your actual usage, Sig
 
 - Call `removeChannelMetadata` or `removeUserMetadata`
 - Disable Storage from the project configuration page of Agora Console.
-- Contact [Agora support](mailto:support@agora.io.md)
+- Contact [Agora support](mailto:support@agora.io)
 
 </Slot>
 
@@ -380,4 +380,4 @@ Depending on the features you enable for your project and your actual usage, Sig
 
 ### See also
 
-- [Billing policies and free-of-charge policy](../billing-policies.md)
+- [Billing policies and free-of-charge policy](./billing-policies)

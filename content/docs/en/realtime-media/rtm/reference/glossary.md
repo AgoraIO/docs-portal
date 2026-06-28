@@ -53,7 +53,7 @@ A callee is a Signaling user who receives a [call invitation](#call-invitation).
 
 ### Caller
 
-A caller is an Signaling user who sends a [call invitation](#call-invitation).
+A caller is a Signaling user who sends a [call invitation](#call-invitation).
 
 ###  Call invitation
 
@@ -185,7 +185,7 @@ Mirroring is an effect that a video image renders.
 
 ### Offline
 
-Offline describes the status of an Signaling user who has successfully logged out of Signaling.
+Offline describes the status of a Signaling user who has successfully logged out of Signaling.
 
 ### Offline message
 
@@ -281,7 +281,7 @@ User attributes are tags added to Signaling users, including property names and 
 
 In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback. 
 
-In the Agora Signaling SDK, a user ID identifiers a user in Signaling. 
+In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
 The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
 
