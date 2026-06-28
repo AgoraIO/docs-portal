@@ -719,6 +719,48 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders a linked section with children as a whole-row collapse toggle', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/api-reference/faq/integration',
+            title: 'Integration',
+            type: 'page',
+            url: '/en/api-reference/faq/integration',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-faq',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/api-reference/faq',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/api-reference/other');
+
+    // The whole row is a single collapse toggle button — not a navigating link.
+    const toggle = await screen.findByRole('button', { name: 'FAQ' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'FAQ' })).toBeNull();
+
+    // Children stay hidden until the row is clicked.
+    expect(
+      screen.queryByRole('link', { name: 'Integration' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: 'Integration' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'FAQ' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  });
+
   it('renders full sidebar labels for long Build document titles', async () => {
     const tree: DocsSidebarNode[] = [
       {

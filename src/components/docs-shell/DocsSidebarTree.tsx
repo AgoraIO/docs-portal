@@ -315,39 +315,23 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <div className="flex items-stretch gap-1">
-        <SidebarMenuButton
-          asChild
+      <SidebarMenuButton
+        aria-expanded={isOpen}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
+        onClick={() => setIsOpen((value) => !value)}
+        type="button"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={icon} />
+          <span className={sidebarSectionTitleClassName}>{title}</span>
+        </span>
+        <ChevronDownIcon
           className={cn(
-            sidebarToggleClassName,
-            'min-w-0 flex-1 justify-start overflow-visible',
+            'size-4 shrink-0 transition-transform',
+            isOpen ? 'rotate-0' : '-rotate-90',
           )}
-          isActive={url === activePath}
-        >
-          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-            <span className="flex min-w-0 items-center gap-2">
-              <SidebarConfiguredIcon icon={icon} />
-              <span className={sidebarSectionTitleClassName}>{title}</span>
-            </span>
-          </Link>
-        </SidebarMenuButton>
-        <SidebarMenuButton
-          aria-expanded={isOpen}
-          className={cn(
-            sidebarToggleClassName,
-            'w-10 shrink-0 justify-center px-0',
-          )}
-          onClick={() => setIsOpen((value) => !value)}
-          type="button"
-        >
-          <ChevronDownIcon
-            className={cn(
-              'size-4 shrink-0 transition-transform',
-              isOpen ? 'rotate-0' : '-rotate-90',
-            )}
-          />
-        </SidebarMenuButton>
-      </div>
+        />
+      </SidebarMenuButton>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
@@ -649,8 +633,10 @@ function mergeBestPracticesIntoBuild(
 function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
+  // Linked sections (those with a url) manage their own collapsible state, so
+  // don't force them always-open here — only plain root sections are flattened.
   return nodes.map((node) =>
-    node.type === 'section'
+    node.type === 'section' && !node.url
       ? {
           ...node,
           collapsible: false,
