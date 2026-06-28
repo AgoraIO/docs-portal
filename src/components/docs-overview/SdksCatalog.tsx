@@ -13,6 +13,7 @@ import {
 } from './sdk-install-command';
 
 const platformGroups = [
+  { label: 'Server', platformIds: ['typescript', 'python', 'go'] },
   {
     label: 'Mobile',
     platformIds: ['android', 'ios', 'react-native', 'flutter'],
@@ -285,6 +286,9 @@ function CopyButton({ value }: { value: string }) {
 function productIconKind(productLabel: string): SolutionCardIconKind {
   const normalized = productLabel.toLowerCase();
 
+  if (normalized.includes('agent')) {
+    return 'ai';
+  }
   if (normalized.includes('voice')) {
     return 'voice-calling';
   }
