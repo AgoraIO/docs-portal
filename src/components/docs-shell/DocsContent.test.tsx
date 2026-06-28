@@ -279,6 +279,26 @@ describe('DocsContent', () => {
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
   });
 
+  it('uses a tight header-to-body gap on non-platform-tabs pages', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        description="Learn the platform basics."
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+    expect(article).toHaveClass('gap-6');
+    expect(article).not.toHaveClass('gap-9');
+
+    const header = article.querySelector('header');
+    expect(header).toHaveClass('pb-5');
+    expect(header).not.toHaveClass('pb-7');
+  });
+
   it('renders split-file platform group pages with tabbed panels', async () => {
     renderWithRouter(
       <DocsContent

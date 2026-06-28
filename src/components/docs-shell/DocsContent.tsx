@@ -111,14 +111,14 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        platformTabs ? 'gap-6' : 'gap-9',
+        'gap-6',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-7',
+          platformTabs ? 'pb-0' : 'pb-5',
         )}
       >
         {showBreadcrumb ? (
