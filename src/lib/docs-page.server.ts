@@ -912,7 +912,7 @@ function resolveSolutionsApiReferenceRedirect(
     'interactive-live-streaming/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'interactive-live-streaming/reference/api-sunset':
-      '/en/api-reference/api-ref/solutions-api-sunset',
+      '/en/api-reference/api-ref/rtc/api-sunset',
     'iot/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'iot/reference/channel-management-rest-api':
