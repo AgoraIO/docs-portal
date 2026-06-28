@@ -1,6 +1,6 @@
 ---
 title: "Offline push configuration"
-description: "Shows how to call Chat RESTful APIs to set the display name, display style, push notification mode, and do-not-disturb (DND) mode."
+description: "Chat RESTful APIs for offline push display and notification settings."
 ---
 
 ### Web

@@ -109,6 +109,11 @@ describe('openapi schema tree', () => {
           minimum: 1,
           type: 'integer',
         },
+        ratio: {
+          exclusiveMaximum: 1,
+          exclusiveMinimum: 0,
+          type: 'number',
+        },
       },
       type: 'object',
     });
@@ -125,6 +130,11 @@ describe('openapi schema tree', () => {
           maximum: 10,
           minimum: 1,
           path: 'count',
+        }),
+        expect.objectContaining({
+          exclusiveMaximum: 1,
+          exclusiveMinimum: 0,
+          path: 'ratio',
         }),
       ]),
     );
@@ -166,6 +176,79 @@ describe('openapi schema tree', () => {
             }),
           ],
           path: 'startParameter',
+        }),
+      ]),
+    );
+  });
+
+  it('resolves local refs before expanding nested allOf response schemas', () => {
+    const document = {
+      components: {
+        schemas: {
+          baseSession: {
+            properties: {
+              cname: {
+                description: 'The name of the channel being recorded.',
+                type: 'string',
+              },
+              uid: {
+                description:
+                  'The UID used by the cloud recording service in the RTC channel.',
+                type: 'string',
+              },
+            },
+            type: 'object',
+          },
+          queryResponse: {
+            allOf: [
+              {
+                allOf: [
+                  { $ref: '#/components/schemas/baseSession' },
+                  {
+                    properties: {
+                      resourceId: { type: 'string' },
+                      sid: { type: 'string' },
+                    },
+                    type: 'object',
+                  },
+                ],
+              },
+              {
+                properties: {
+                  serverResponse: {
+                    properties: {
+                      status: { type: 'integer' },
+                    },
+                    type: 'object',
+                  },
+                },
+                type: 'object',
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const rows = buildOpenApiSchemaRows(
+      { $ref: '#/components/schemas/queryResponse' },
+      { document, usage: 'response' },
+    );
+
+    expect(rows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          description: 'The name of the channel being recorded.',
+          path: 'cname',
+        }),
+        expect.objectContaining({
+          description:
+            'The UID used by the cloud recording service in the RTC channel.',
+          path: 'uid',
+        }),
+        expect.objectContaining({
+          path: 'serverResponse.status',
+          type: 'integer',
         }),
       ]),
     );

@@ -1,6 +1,6 @@
 ---
 title: "Contact management"
-description: "Shows how to call the Agora Chat RESTful APIs to create and manage contacts."
+description: "Agora Chat RESTful APIs for creating and managing contacts."
 ---
 
 Contact management refers to operations such as adding and removing contacts, and adding and removing users from the blocklist.
