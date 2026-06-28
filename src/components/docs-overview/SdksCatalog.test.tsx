@@ -3,126 +3,87 @@ import { describe, expect, it } from 'vitest';
 import { SdksCatalog } from './SdksCatalog';
 
 describe('SdksCatalog', () => {
-  it('renders a compact platform matrix and full-width SDK cards', () => {
-    window.history.pushState(
-      null,
-      '',
-      '/en/api-reference/sdks?platform=android',
-    );
-
+  it('lists each product once with platform tabs and a default install command', () => {
     render(<SdksCatalog />);
 
-    expect(screen.getByText('Platforms')).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Android' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(screen.getByRole('heading', { name: 'Android SDKs' })).toBeVisible();
+    // Product appears exactly once even though it spans many platforms.
+    const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+
+    // Default platform (Android, first in canonical order) → Gradle command.
     expect(
-      screen.getByText('Latest versions are selected by default.'),
+      within(videoCard).getByText(
+        "implementation 'io.agora.rtc:full-sdk:4.6.3'",
+      ),
     ).toBeVisible();
     expect(
-      screen.getByRole('heading', { name: 'Core Products' }),
-    ).toBeVisible();
-
-    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-
-    expect(within(voiceCard).getByText('Selected version')).toBeVisible();
+      within(videoCard).getByRole('tab', { name: 'Android' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    // Tabs list other platforms this product supports.
     expect(
-      within(voiceCard).getByRole('combobox', {
-        name: 'Voice SDK version',
-      }),
-    ).toHaveValue('0');
-    expect(within(voiceCard).getByText('Latest')).toBeVisible();
-    expect(within(voiceCard).getByText('Download options')).toBeVisible();
+      within(videoCard).getByRole('tab', { name: 'Web' }),
+    ).toBeInTheDocument();
+
+    // No global platform picker remains.
+    expect(
+      screen.queryByRole('heading', { name: 'Platforms' }),
+    ).not.toBeInTheDocument();
   });
 
-  it('keeps latest direct download as the primary card action', () => {
-    window.history.pushState(
-      null,
-      '',
-      '/en/api-reference/sdks?platform=android',
-    );
-
-    render(<SdksCatalog />);
-
-    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-
-    const links = within(voiceCard).getAllByRole('link');
-
-    expect(links[0]).toHaveAccessibleName('Download SDK');
-    expect(links[0]).toHaveAttribute(
-      'href',
-      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_VOICE.zip',
-    );
-    expect(links[1]).toHaveAccessibleName('Package Manager');
-    expect(links[1]).toHaveAttribute(
-      'href',
-      'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.3/aar',
-    );
-  });
-
-  it('shows release state badges when the selected version changes', () => {
-    window.history.pushState(
-      null,
-      '',
-      '/en/api-reference/sdks?platform=android',
-    );
-
+  it('switches the install command when the platform tab changes', () => {
     render(<SdksCatalog />);
 
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
 
-    const versionSelect = within(videoCard).getByRole('combobox', {
-      name: 'Video SDK version',
-    });
+    fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByRole('option', {
-        name: 'v4.6.3 Lite - Latest, Lite',
-      }),
-    ).toBeInTheDocument();
-
-    fireEvent.change(versionSelect, { target: { value: '1' } });
-
-    expect(within(videoCard).getByText('Latest')).toBeVisible();
-    expect(within(videoCard).getByText('Lite')).toBeVisible();
-
-    fireEvent.change(versionSelect, { target: { value: '2' } });
-
-    expect(within(videoCard).getByText('Previous')).toBeVisible();
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.3'),
+    ).toBeVisible();
+    expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
-  it('uses the platform query parameter and keeps platform changes in the URL', () => {
-    window.history.pushState(null, '', '/en/api-reference/sdks?platform=ios');
-
+  it('updates the command when the version changes', () => {
     render(<SdksCatalog />);
 
-    expect(screen.getByRole('button', { name: 'iOS' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(screen.getByRole('heading', { name: 'iOS SDKs' })).toBeVisible();
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    const select = within(voiceCard).getByRole('combobox', {
+      name: 'Voice SDK version',
+    });
+
+    fireEvent.change(select, { target: { value: '1' } });
+
     expect(
-      screen.queryByRole('heading', { level: 3, name: 'IoT SDK' }),
+      within(voiceCard).getByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+      ),
+    ).toBeVisible();
+  });
+
+  it('falls back to a download button when the platform has no derivable command', () => {
+    render(<SdksCatalog />);
+
+    const chatCard = screen.getByRole('article', { name: 'Chat SDK' });
+
+    fireEvent.click(within(chatCard).getByRole('tab', { name: 'iOS' }));
+
+    expect(
+      within(chatCard).queryByRole('button', { name: /copy/i }),
     ).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Linux' }));
-
-    expect(window.location.search).toBe('?platform=linux');
-    expect(screen.getByRole('button', { name: 'Linux' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
+    expect(
+      within(chatCard).getByRole('link', { name: /download sdk/i }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/sdk/release/AgoraChat1_3_1.xcframework.zip',
     );
-    expect(screen.getByRole('heading', { name: 'Linux SDKs' })).toBeVisible();
-    expect(
-      screen.getByRole('heading', { name: 'Product Add-ons' }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Server Gateway SDK' }),
-    ).toBeVisible();
-    expect(
-      screen.getByRole('combobox', { name: 'Server Gateway SDK version' }),
-    ).toHaveValue('0');
+  });
+
+  it('renders a product icon in each card', () => {
+    render(<SdksCatalog />);
+
+    const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    expect(videoCard.querySelector('svg')).toBeTruthy();
   });
 });
