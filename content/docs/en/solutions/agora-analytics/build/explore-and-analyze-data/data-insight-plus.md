@@ -8,7 +8,7 @@ Data insights in Agora Analytics offer periodic analysis of call usage and quali
 The regular version of Data Studio currently supports query analysis of time series graphs and one-dimensional
 queries. Data Insights Plus offers additional capabilities, including multi-dimensional cross analysis, sampling
 analysis, comparative analysis, and extended querying of service indicators for Video Calling, Voice Calling,
-Interactive Live Streaming, and Broadcast Streaming. For a detailed comparison of  Agora Analytics
+Interactive Live Streaming, and Broadcast Streaming. For a detailed comparison of Agora Analytics
 Standard and Premium, see [pricing](../../reference/pricing.md).
 
 **Want to try out this functionality? There is a 30 day trial period just for you. Please [submit a ticket](https://agora-ticket.agora.io/) to enroll for the trial.**
@@ -53,7 +53,7 @@ To set up Agora Analytics for your account, take the following steps:
 
     ![](/images/analytics/diplus-dimension-and-time-filter.png)
 
-    * **Dimension filtering**: Click the **Add Filter** button on the left to select a dimension in the drop-down box for filtering. Up to three [dimensions](#dimensions) can be selected at the same time, and the effective range is the time series analysis area and the dimension analysis area. The dimension values ​​in the drop-down box are sorted in descending order of the number of active calls.
+    * **Dimension filtering**: Click the **Add Filter** button on the left to select a dimension in the drop-down box for filtering. Up to three [dimensions](#dimensions) can be selected at the same time, and the effective range is the time series analysis area and the dimension analysis area. The dimension values in the drop-down box are sorted in descending order of the number of active calls.
     
     * **Time filtering**: Use the right side of the global filter area to customize the time range, time granularity (by day/hour) and time zone (local/UTC time). It supports querying data within 90 days. The long query range is 30 days. The time series thumbnail in the indicator selection area depends on the time filter conditions in the global filter.
 

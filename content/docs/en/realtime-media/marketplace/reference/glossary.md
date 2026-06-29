@@ -53,7 +53,7 @@ A callee is a Signaling user who receives a [call invitation](#call-invitation).
 
 ### Caller
 
-A caller is an Signaling user who sends a [call invitation](#call-invitation).
+A caller is a Signaling user who sends a [call invitation](#call-invitation).
 
 ### Call invitation
 
@@ -185,7 +185,7 @@ Mirroring is an effect that a video image renders.
 
 ### Offline
 
-Offline describes the status of an Signaling user who has successfully logged out of Signaling.
+Offline describes the status of a Signaling user who has successfully logged out of Signaling.
 
 ### Offline message
 
@@ -261,7 +261,7 @@ TCP (Transmission Control Protocol) is a connection-oriented and reliable transp
 
 ### Token
 
-A token, also known as a dynamic key, is used for authentication when an app user joins an channel or logs onto the Agora Signaling.
+A token, also known as a dynamic key, is used for authentication when an app user joins a channel or logs onto the Agora Signaling.
 
 ### Transcoding
 

@@ -119,7 +119,7 @@ Where:
 - `message`: String. The error message.
 - `requestId`: String. The unique identifier of the HTTP request corresponding to this HTTP response.
 - `total_size`: Number. The total number of returned calls.
-- `page_no`:  Number. The page number.
+- `page_no`: Number. The page number.
 - `page_size`: Number. The number of calls on each page.
 - `has_more`: Boolean. Whether there are calls not included in `call_lists`. 
     - `true` Indicates that some calls that meet the search criteria are not listed. 
@@ -214,7 +214,7 @@ Where:
     
     If the call you need is not in `call_lists`, try narrowing the search and resend the request.
 - `total_size`: Number. The total number of returned user sessions.
-- `page_no`:  Number. The page number.
+- `page_no`: Number. The page number.
 - `page_size`: Number. The number of user sessions on each page.
 - `call_info`: JSONArray. Information of each user in the call in descending order of the joining time per page. Each user has the following properties:
   - `sid`: String. The unique ID of the user session.

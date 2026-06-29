@@ -61,7 +61,7 @@ Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording
 
 ### Start recording
 
-To enable [web page recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode), set `mode` to `web` when calling  [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `extensionServiceConfig` to configure web page recording, and use `storageConfig` to configure your third-party cloud storage.
+To enable [web page recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode), set `mode` to `web` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `extensionServiceConfig` to configure web page recording, and use `storageConfig` to configure your third-party cloud storage.
 
 You cannot switch to a different recording mode once you start recording.
 
@@ -188,7 +188,7 @@ Before starting the process, call the [`acquire`](/en/api-reference/api-ref/clou
 
 ### Start a process
 
-To enable [web page recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode), set `mode` to `web` when calling  [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `extensionServiceConfig` to configure web page recording, and use `storageConfig` to configure your third-party cloud storage.
+To enable [web page recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode), set `mode` to `web` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `extensionServiceConfig` to configure web page recording, and use `storageConfig` to configure your third-party cloud storage.
 
 You cannot switch to a different recording mode once you start recording.
 
@@ -321,7 +321,7 @@ Web page recording mode is free to use by November 1, 2021. See [Pricing for Web
 
 ### Other considerations
 
-- During a recording,  when the length of the recorded file reaches around the value of `maxVideoDuration`, or when the size of the file exceeds around 2 GB, the recording service automatically creates another MP4 file.
+- During a recording, when the length of the recorded file reaches around the value of `maxVideoDuration`, or when the size of the file exceeds around 2 GB, the recording service automatically creates another MP4 file.
 - In a web page recording, the recording service can be considered a client of your web application.
   - If the URL you specify in the `start` method automatically enables the client to publish streams, the browser engine started by the recording server becomes a video sender. As a result, the recording server's video may be displayed as empty in the video panel of your application.
   - If your application displays a user list, we recommend you hide the recording server from the list to avoid confusion among other users.

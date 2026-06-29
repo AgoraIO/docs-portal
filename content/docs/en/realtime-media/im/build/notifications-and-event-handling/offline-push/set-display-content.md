@@ -56,7 +56,7 @@ For group chats, "Push nickname of message sender" and "Chat user ID of message 
 
 ## Use the default push template
 
-The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in  English. If you need to use push titles and content in another language, you can set the push template in the corresponding language.
+The default push template is mainly used when the default configuration provided by the server does not meet your needs. It allows you to set the global push title and push content. For example, the default settings provided by the server are push titles and content in English. If you need to use push titles and content in another language, you can set the push template in the corresponding language.
 
 To use the default template, create a default push template in [Agora Console](https://console.agora.io/v2) or [call RESTful API](/en/api-reference/api-ref/im/offline-push/offline-push-configuration). The template name is `default`. After setting, the default template is automatically used when pushing messages, and there is no need to enter the template name when creating messages.
 
