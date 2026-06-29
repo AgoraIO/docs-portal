@@ -760,7 +760,7 @@ The request body is a JSON object, which contains the following parameters:
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
 | `to` | Array | An array of the chat room IDs that receives the message. Within one second, you can send messages to a maximum of 100 chat rooms, and for each request, you can send messages to a maximum of 10 chat rooms. | Yes |
-| `chatroom_msg_level` | String | The chat room message priority: `high`(Default) `normal``low` | No       |
+| `chatroom_msg_level` | String | The chat room message priority: `high` (default), `normal`, or `low`. | No       |
 
 The other parameters and descriptions are the same with those of [Sending a one-to-one message method](#request).
 
@@ -1029,7 +1029,7 @@ The request body is a JSON object, which contains the following parameters:
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
 | `from` | String | The user ID of the message sender. If you do not set this field, the Chat server takes the `admin` as the sender. If you set it as the empty string "", this request fails.  | No |
-| `chatroom_msg_level` | String | The chat room message priority: `high`(Default) `normal``low` | No  |
+| `chatroom_msg_level` | String | The chat room message priority: `high` (default), `normal`, or `low`. | No  |
 | `msg` | String | The message body. | Yes |
 | `msg.type` | String | The broadcast message type: `txt`: Text message`img`: Image message`audio`: Audio message`video`: Video message`file`: File message`loc`: Location message`cmd`: Command message`custom`: Custom message | Yes |
 | `msg.msg` | String | The message content. For different message types, this parameter contains different fields. For details, see [Body of different message types](#body). | Yes |
@@ -1492,7 +1492,7 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Description | Required |
 | :-------------- | :--------------------- | :------- |
-| `Accept`       | String  | The content type. Set it to `application/json`.  | Yes |
+| `Accept`       | The content type. Set it to `application/json`.  | Yes |
 | `Authorization` | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
 ### HTTP response

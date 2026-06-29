@@ -49,7 +49,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `data` | JSON | The details of the response. |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
 | `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
-| `chatroomid` | String | The unique identifier of the chat room. | Yes |
+| `chatroomid` | String | The unique identifier of the chat room. |
 
 ## Authorization
 

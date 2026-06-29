@@ -85,7 +85,7 @@ For the descriptions of other path parameters, see [Common parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
 
 | Parameter     | Type  | Description  |
-| :---------------- | :----- | :- |
+| :---------------- | :----- | :--- |
 | `data`| Object | The push result. The server determines the push status based on the push result. |
 | `data.pushStatus` | String | The push status:  - `SUCCESS`: The push succeeds. - `FAIL`: The push fails due to an error that is not caused by the server, like `bad device token`, indicating that the mobile device delivers an incorrect device token to the server and the server does not accept it. - `ERROR`: The push exception occurs due to a server error, for example, connection timeout or read or write timeout.|
 | `data.data`       | Object | The push result data returned by the push service used by the push notification recipient. |
@@ -474,7 +474,7 @@ The following table lists basic configuration fields available to all:
 | `ext`      | JSON   | The custom extension of the notification stored in key-value pairs. The number of key-value pairs can be a maximum of 10, and the total length of key-value pairs can be 1024 characters at most.      | Android & iOS   | No |
 | `config`   | JSON   | The configuration of click action and badge value in the notifications center. | Android & iOS   | No |
 | `config.clickAction` | JSON   | The action triggered by a user click on the notification, which contains the following fields:`url`: Direct to a URL. Specify a custom URL; otherwise, the user click on notifications cannot work as expected.`action`: Open a specific page in the app. Specify the address of an in-app page.Open a package or an Activity component. Specify a package name or component path.| Android  | No       |
-| `config.badge`       | JSON    | The value of the badge displayed on the app’s icon, which contains the following fields (Int):`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android |
+| `config.badge`       | JSON    | The value of the badge displayed on the app’s icon, which contains the following fields (Int):`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android | No |
 
 ### Advanced configurations
 
@@ -526,7 +526,7 @@ An Agora push notification example is as follows:
 The following table lists advanced configuration fields provided by Agora:
 
 | Field  | Type    | Description   | Supported platforms    |
-| :----------------- | :------ | : | :--------------------- |
+| :----------------- | :------ | :---------- | :--------------------- |
 | `title`| String  | The title of the notification.        | iOS & Android |
 | `content`          | String  | The body text of the notification.    | iOS & Android |
 | `subTitle`         | String  | The subtitle of the notification that provides additional information.     | iOS           |

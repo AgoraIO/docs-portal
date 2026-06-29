@@ -235,9 +235,9 @@ The following table uses a one-to-one chat text message as an example to introdu
 
 | Parameter settings | Push display | Image |
 | :--------- | :----- |:------------- |
-| `pushDisplayStyle`: (default) `AgoraChatPushDisplayStyleSimpleBanner``displayName`: Set or not. | Push title: "You have a new message"Push content: "Please click to view" | ![push_displayattribute_1](/images/im/push_displayattribute_1.png) |
-| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary``displayName`: Set a specific value.| Push title: "You have a new message"Push content: "Push nickname of the message sender: message content" | ![push_displayattribute_2](/images/im/push_displayattribute_2.png) |
-| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary``displayName`: Not set. | Push title: "You have a new message"Push content: "Message sender's Chat user ID: Message content" | ![push_displayattribute_3](/images/im/push_displayattribute_3.png) |
+| `pushDisplayStyle`: (default) `AgoraChatPushDisplayStyleSimpleBanner`<br />`displayName`: Set or not. | Push title: "You have a new message"<br />Push content: "Please click to view" | ![push_displayattribute_1](/images/im/push_displayattribute_1.png) |
+| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary`<br />`displayName`: Set a specific value. | Push title: "You have a new message"<br />Push content: "Push nickname of the message sender: message content" | ![push_displayattribute_2](/images/im/push_displayattribute_2.png) |
+| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary`<br />`displayName`: Not set. | Push title: "You have a new message"<br />Push content: "Message sender's Chat user ID: Message content" | ![push_displayattribute_3](/images/im/push_displayattribute_3.png) |
 
 ## Use the default push template
 
