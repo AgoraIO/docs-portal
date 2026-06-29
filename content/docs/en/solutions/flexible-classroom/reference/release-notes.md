@@ -387,7 +387,7 @@ v1.1.5 adds a countdown timer in Flexible Classroom. The teacher can find the co
 
 **Teachers making notes on their shared screen**
 
-As of v1.1.5, teachers can make notes notes on the screen that they share with the basic whiteboard tools.
+As of v1.1.5, teachers can make notes on the screen that they share with the basic whiteboard tools.
 
 **Support for custom user properties and classroom properties (Web/Electron/Android/iOS)**
 

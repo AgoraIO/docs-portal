@@ -188,7 +188,7 @@ ChatClient.getInstance().kickDeviceWithToken(userId, token, deviceInfos.get(sele
 
 ### Force the specified account to log out from all devices
 
-Call `kickAllDevicesWithToken` and pass in the user ID and user token to force the specified account to log out from from all logged-in devices. The logged-out device will receive the `ConnectionListener#onLogout` event.
+Call `kickAllDevicesWithToken` and pass in the user ID and user token to force the specified account to log out from all logged-in devices. The logged-out device will receive the `ConnectionListener#onLogout` event.
 
 :::info
 You can also use this interface without logging in.

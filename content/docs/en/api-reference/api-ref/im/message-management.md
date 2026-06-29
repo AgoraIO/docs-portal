@@ -1659,7 +1659,7 @@ The fields of `bodies` for different message types vary:
     | Field | Type | Description |
     | :------------ | :----- | :-------------------------------------------------------------------------------- |
     | `file_length` | Number | The size of the audio file, in bytes. |
-    | `filename` | String | The audio file name, including a suffix that indicates the the audio file format. |
+    | `filename` | String | The audio file name, including a suffix that indicates the audio file format. |
     | `secret` | String | The audio file access key. This field exists if you set the access restriction when calling the [upload-file](#upload) method. |
     | `length` | Number | The duration of the audio file, in seconds. |
     | `type` | String | The message type. For voice messages, set it as `audio`. |
