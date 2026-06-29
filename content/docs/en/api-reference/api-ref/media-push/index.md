@@ -90,7 +90,7 @@ Details for these fields are shown in the following table:
 | transcodeOptions.videoOptions.vertical | (Optional) JSON Object | Vertical layout. This parameter must be set when `layoutType` is 1. See [vertical](./restful-type-definition#vertical) for details. |
 | transcodeOptions.videoOptions.defaultPlaceholderImageUrl | (Optional) String | <Slot name="transcodeoptions-videooptions-defaultplaceholderimageurl" /> |
 | transcodeOptions.videoOptions.bitrate | (Required) Number | The encoding bitrate (Kbps) of the video. The value range is [1,10000]. |
-| transcodeOptions.videoOptions.gop | (Optional) Number | The GOP of the video. The defalt value is the value of `frameRate` * 2。 |
+| transcodeOptions.videoOptions.gop | (Optional) Number | The GOP of the video. The default value is the value of `frameRate` * 2. |
 | transcodeOptions.videoOptions.frameRate | (Optional) Number | The encoding frame rate (fps) of the video. The value range is [1,30]. The default value is 15. |
 | transcodeOptions.videoOptions.codec | (Optional) String | <Slot name="transcodeoptions-videooptions-codec" /> |
 | transcodeOptions.videoOptions.codecProfile | (Optional) String | <Slot name="transcodeoptions-videooptions-codecprofile" /> |
@@ -952,7 +952,7 @@ If the status code is 2XX, the request is successful.
 - `cname`: (Required) String. The Agora channel name. This is the channel to which the stream processed by the Converter belongs. The maximum length of the string is 64 characters, and the following character sets (89 characters in total) are supported:
  - All lowercase English letters (a-z)
  - All uppercase English letters (A-Z)
- - Numbers 0-9The space character
+ - Numbers 0-9 and the space character
  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
 
 #### Query Parameters

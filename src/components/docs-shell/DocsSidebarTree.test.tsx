@@ -44,7 +44,7 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
-  it('renders section labels and active page links', async () => {
+  it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -64,8 +64,11 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/introduction/about-agora');
 
-    expect(await screen.findByText('Get Started')).toBeInTheDocument();
-    expect(document.querySelector('.docs-side-icon svg')).toBeInTheDocument();
+    const sectionTitle = await screen.findByText('Get Started');
+
+    expect(sectionTitle).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon')).toBeNull();
+    expect(document.querySelector('.docs-side-icon svg')).toBeNull();
     expect(screen.getByTitle('About Agora')).toHaveClass('whitespace-normal');
 
     const activeLink = screen.getByRole('link', { name: 'About Agora' });
@@ -78,10 +81,11 @@ describe('DocsSidebarTree', () => {
       'items-center',
       'py-1',
     );
-    const sectionLabel = screen
-      .getByText('Get Started')
-      .closest('[data-slot="sidebar-group-label"]');
-    expect(sectionLabel).toHaveClass('mt-3', 'mb-1');
+    const sectionLabel = sectionTitle.closest(
+      '[data-slot="sidebar-group-label"]',
+    );
+    expect(sectionLabel).toHaveClass('mt-3', 'mb-1', 'gap-2', 'items-center');
+    expect(sectionLabel?.querySelector('.docs-side-icon')).toBeNull();
     expect(activeButton?.className).toContain(
       'data-[active=true]:font-semibold',
     );
@@ -96,7 +100,7 @@ describe('DocsSidebarTree', () => {
     );
   });
 
-  it('only renders configured icons and does not infer page badges', async () => {
+  it('does not render sidebar category icons or infer page badges', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -107,8 +111,9 @@ describe('DocsSidebarTree', () => {
             url: '/en/ai/quick-start',
           },
         ],
+        icon: 'Bot',
         id: 'ai-section',
-        title: 'AI section without icon',
+        title: 'AI section with icon metadata',
         type: 'section',
       },
     ];
@@ -116,8 +121,9 @@ describe('DocsSidebarTree', () => {
     renderSidebarTree(tree, '/en/ai/quick-start');
 
     expect(
-      await screen.findByText('AI section without icon'),
+      await screen.findByText('AI section with icon metadata'),
     ).toBeInTheDocument();
+    expect(document.querySelector('.docs-side-icon')).toBeNull();
     expect(document.querySelector('.docs-side-icon svg')).toBeNull();
     expect(screen.queryByText('New')).toBeNull();
     expect(screen.queryByText('Beta')).toBeNull();
@@ -147,6 +153,103 @@ describe('DocsSidebarTree', () => {
       await screen.findByText('AI section with invalid icon'),
     ).toBeInTheDocument();
     expect(document.querySelector('.docs-side-icon')).toBeNull();
+  });
+
+  it('removes configured icons from nested, linked, and merged section headings', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/en/ai/enable-service',
+            title: 'Enable service',
+            type: 'page',
+            url: '/en/ai/enable-service',
+          },
+        ],
+        icon: 'BookOpen',
+        id: 'getting-started',
+        title: 'Getting Started',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/ai/quick-start',
+            title: 'Quickstart',
+            type: 'page',
+            url: '/en/ai/quick-start',
+          },
+        ],
+        collapsible: true,
+        icon: 'Rocket',
+        id: 'sdk-quickstarts',
+        title: 'SDK Quickstarts',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            children: [
+              {
+                id: '/en/ai/build/tools',
+                title: 'Tool setup',
+                type: 'page',
+                url: '/en/ai/build/tools',
+              },
+            ],
+            collapsible: true,
+            icon: 'Wrench',
+            id: 'nested-tools',
+            title: 'Nested tools',
+            type: 'section',
+          },
+        ],
+        icon: 'Hammer',
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+      {
+        children: [],
+        collapsible: true,
+        icon: 'CircleHelp',
+        id: 'faq',
+        title: 'FAQ',
+        type: 'section',
+        url: '/en/ai/faq',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/ai/enable-service');
+
+    expect(
+      await screen.findByRole('link', { name: 'Enable service' }),
+    ).toBeInTheDocument();
+
+    const quickstartsToggle = screen.getByRole('button', {
+      name: /SDK Quickstarts/i,
+    });
+    const nestedToggle = screen.getByRole('button', { name: /Nested tools/i });
+
+    expect(screen.getByText('Build')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /FAQ/i })).toHaveAttribute(
+      'href',
+      '/en/ai/faq',
+    );
+    expect(document.querySelector('.docs-side-icon')).toBeNull();
+    expect(document.querySelector('.docs-side-icon svg')).toBeNull();
+    expect(quickstartsToggle.firstElementChild).toHaveClass(
+      'flex',
+      'min-w-0',
+      'items-center',
+      'gap-2',
+    );
+    expect(nestedToggle.firstElementChild).toHaveClass(
+      'flex',
+      'min-w-0',
+      'items-center',
+      'gap-2',
+    );
   });
 
   it('allows long labels to wrap instead of truncating to one line', async () => {
@@ -261,6 +364,7 @@ describe('DocsSidebarTree', () => {
             url: '/en/introduction/about-agora',
           },
         ],
+        icon: 'BookOpen',
         id: 'get-started',
         title: 'Get Started',
         type: 'section',
@@ -274,7 +378,14 @@ describe('DocsSidebarTree', () => {
     const activeLink = screen.getByRole('link', { name: 'About Agora' });
     const activeButton = activeLink.closest('[data-sidebar="menu-button"]');
 
-    expect(labelWrapper).toHaveClass('mt-3', 'mb-1', 'py-0.5');
+    expect(labelWrapper).toHaveClass(
+      'mt-3',
+      'mb-1',
+      'py-0.5',
+      'gap-2',
+      'items-center',
+    );
+    expect(labelWrapper?.querySelector('.docs-side-icon')).toBeNull();
     expect(activeButton).toHaveClass('min-h-[28px]', 'py-1');
   });
 

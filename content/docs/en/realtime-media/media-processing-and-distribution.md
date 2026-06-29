@@ -55,4 +55,4 @@ Optimizes end-to-end playback through multi-CDN scheduling and distribution.
 
 <div id="rm-ppt-conversion"></div>
 
-Additional note: the broader Shengwang content system also includes PPT Conversion. For this IA pass, it can stay as an extension of transcoding rather than a first-class left-nav item.
+Additional note: the broader Agora content system also includes PPT Conversion. For this IA pass, it can stay as an extension of transcoding rather than a first-class left-nav item.
