@@ -97,7 +97,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `requestStatusCode` | String | The status code of this request. `ok` means that the request succeeds. |
 | `id` | String | The reaction ID. |
 | `msgId` | String | The message ID. |
-| `msgType` | String | The message type:`chat`: One-to-one chat.`groupchat`: Group chat. |
+| `msgType` | String | The message type: `chat`: One-to-one chat. `groupchat`: Group chat. |
 | `groupId` | String | The group ID. If the message type is `chat`, the server returns null. |
 | `reaction` | String | The ID of the emoji added as the reaction, same as `message` in the request body. |
 | `createAt` | Instant | The time when the reaction is created. |
@@ -161,7 +161,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 | Parameter| Type   | Description       | Required |
 | :---------- | :----- | :------------ | :------- |
 | `msgIdList` | Array  |  The ID of the message from which you attempt to retrieve reactions. You can pass in up to 20 message IDs.  | Yes      |
-| `msgType`   | String | The chat type:`chat`: One-to-one chat.`groupchat`: Group chat.  | Yes     |
+| `msgType`   | String | The chat type: `chat`: One-to-one chat. `groupchat`: Group chat.  | Yes     |
 | `groupId`   | String | The ID of the group. This parameter is only required if you set `msgType` to `groupchat`.  |  No    |
 
 #### Request header
@@ -184,7 +184,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `reactionId` | String | The reaction ID returned in the response body of [Create a reaction](#create). |
 | `reaction` | String | The emoji ID that is the same as the `message` parameter specified in the request body when [adding a reaction](#create).    |
 | `count` | Number | The number of users that have added this reaction to the message. |
-| `state` | Bool  | Whether the user sending this request has added a reaction to this message:`true`: Yes.`false`: No. |
+| `state` | Bool  | Whether the user sending this request has added a reaction to this message: `true`: Yes. `false`: No. |
 | `userList` | Array | The list of user IDs that have added this reaction. It contains a maximum of three users that first added this reaction. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](./http-status-codes) for possible reasons.
@@ -352,7 +352,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `reactionId` | String | The reaction ID. |
 | `reaction` | String | The emoji ID that is the same as the `message` parameter specified in the request body when [adding a reaction](#create). |
 | `count` | Number | The number of users that have added the reaction. |
-| `state` | Bool | Whether the user sending this request has added a reaction to this message:`true`: Yes.`false`: No. |
+| `state` | Bool | Whether the user sending this request has added a reaction to this message: `true`: Yes. `false`: No. |
 | `userList` | Array | The list of the users that have added this reaction. Users are listed in the ascending order of the reaction addition time.|
 | `cursor` | String | The cursor that indicates that starting position of the next query. |
 

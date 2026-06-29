@@ -294,14 +294,14 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 | `id` | String | The chat room ID. |
 | `name` | String | The chat room name. |
 | `description` | String | The chat room description. |
-| `membersonly` | Bool | Whether a user requesting to join the chat room requires approval from the chat room administrator.`true`: Yes`false`: No |
-| `allowinvites` | Bool | Whether to allow a chat room member to invite others to join the chat room.`true`: A chat room member can invite others to join the chat room.`false`: Only the chat room administrator can invite others to join the chat room. |
+| `membersonly` | Bool | Whether a user requesting to join the chat room requires approval from the chat room administrator. `true`: Yes. `false`: No |
+| `allowinvites` | Bool | Whether to allow a chat room member to invite others to join the chat room. `true`: A chat room member can invite others to join the chat room. `false`: Only the chat room administrator can invite others to join the chat room. |
 | `maxusers` | Int | The maximum number of members that can join the chat room. |
 | `owner` | String | The username of the chat room creator. |
 | `created` | Number | The Unix timestamp (ms) when the chat room is created. |
 | `custom` | String | Custom information added during creation of the chat room. |
 | `affiliations_count` | Number  | The number of members (including the chat room creator) in the chat room. |
-| `affiliations` | JSONArray | The chat room member array, which contains the following fields:`owner`: The username of the chat room creator.`member`: The username of each chat room member. |
+| `affiliations` | JSONArray | The chat room member array, which contains the following fields: `owner`: The username of the chat room creator. `member`: The username of each chat room member. |
 | `public` | Bool | It is a reserved parameter. You can safely ignore this parameter. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -418,9 +418,9 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :------------ | :--- | :---------------------------------------------------------------------------------------------- |
-| `groupname` | Bool | Whether the chat room name is successfully changed.`true`: Success`false`: Failure |
-| `description` | Bool | Whether the chat room description is successfully modified.`true`: Success`false`: Failure |
-| `maxusers` | Bool | Whether the maximum number of members that can join the chat room is successfully changed.`true`: Success`false`: Failure |
+| `groupname` | Bool | Whether the chat room name is successfully changed. `true`: Success. `false`: Failure. |
+| `description` | Bool | Whether the chat room description is successfully modified. `true`: Success. `false`: Failure. |
+| `maxusers` | Bool | Whether the maximum number of members that can join the chat room is successfully changed. `true`: Success. `false`: Failure. |
 
 If the returned HTTP status code is not `200`, the request failed. You can refer to [Status codes](#code) for possible reasons.
 
@@ -482,7 +482,7 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :-------- | :----- | :---------------------------------------------------------------- |
-| `success` | Bool | Whether the chat room is successfully deleted.`true`: Success`false`: Failure |
+| `success` | Bool | Whether the chat room is successfully deleted. `true`: Success. `false`: Failure. |
 | `id` | String | The ID of the chat room that is deleted. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -616,7 +616,7 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 | Parameter      | Type    | Description                                                       |
 | :-------- | :------ | :--------------------------------------------------------- |
 | data.id | String | The chat room ID. |
-| data.result | Boolean | Whether the chat room announcement is successfully modified:  - `true`: Success - `false`: Failure |
+| data.result | Boolean | Whether the chat room announcement is successfully modified:  - `true`: Success - `false`: Failure. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

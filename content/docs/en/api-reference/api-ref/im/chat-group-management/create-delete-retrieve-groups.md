@@ -88,11 +88,11 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 | `groupname` | String | The group name. It cannot exceed 128 characters. | No |
 | `avatar` | String | The group avatar URL. It cannot exceed 1024 characters. | No |
 | `description` | String | The group description. It cannot exceed 512 characters. | No |
-| `public` | Boolean | Whether the group is a public group. Public groups can be searched and chat users can apply to join a public group. Private groups cannot be searched, and chat users can join a private group only if the group owner or admin invites the user to join the group.`true`: Yes`false`: No | No |
+| `public` | Boolean | Whether the group is a public group. Public groups can be searched and chat users can apply to join a public group. Private groups cannot be searched, and chat users can join a private group only if the group owner or admin invites the user to join the group. `true`: Yes. `false`: No | No |
 | `maxusers` | String | The maximum number of group members (including the group owner). The default value is `200`. If you set this parameter to a value greater than `3000`, the offline push function is not available to such a large group. To enable the offline push function for a large group, contact [support@agora.io](mailto:support@agora.io) before creating it. Note that it is impossible to enable the offline push function for a large group that is created. The upper limit varies with your price plans. For details, see [Pricing Plan Details](./agora_chat_plan#group). | No |
-| `allowinvites` | Boolean | Whether a regular group member is allowed to invite other users to join the group.`true`: Yes.`false`: (Default) No. Only the group owner or admin can invite other users to join the group. When creating a group, this parameter is only valid for private groups and not for public groups. That is to say, when creating a public group (`public` is set to `true`), even if `allowinvites` is set to `true`, this setting will be automatically modified to `false`. If you want to allow ordinary members of a public group to add people to the group, you can call the [Modify Group Information](#Modify Group Information) interface to modify the setting of `allowinvites` to `true` after creating the group.| No |
-| `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin:`true`: Yes.`false`: (Default) No. The parameter is valid only for public groups as users can only be invited to join private groups and cannot apply to join them. | No |
-| `invite_need_confirm` | Boolean | Whether the invitee needs to confirm the received group invitation before joining the group:`true`: Yes. `false`: No. The invitee automatically joins the group after receiving the group invitation. | No|
+| `allowinvites` | Boolean | Whether a regular group member is allowed to invite other users to join the group. `true`: Yes. `false`: (Default) No. Only the group owner or admin can invite other users to join the group. When creating a group, this parameter is only valid for private groups and not for public groups. That is to say, when creating a public group (`public` is set to `true`), even if `allowinvites` is set to `true`, this setting will be automatically modified to `false`. If you want to allow ordinary members of a public group to add people to the group, you can call the [Modify Group Information](#Modify Group Information) interface to modify the setting of `allowinvites` to `true` after creating the group.| No |
+| `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin: `true`: Yes. `false`: (Default) No. The parameter is valid only for public groups as users can only be invited to join private groups and cannot apply to join them. | No |
+| `invite_need_confirm` | Boolean | Whether the invitee needs to confirm the received group invitation before joining the group: `true`: Yes. `false`: No. The invitee automatically joins the group after receiving the group invitation. | No |
 | `owner` | String | The group owner. | Yes |
 | `members` | Array | The array of user IDs of group members, excluding the group owner. The number of user IDs in the array cannot exceed the value of `maxusers`. | No |
 | `custom` | String | The extension information of the group. The extension information cannot exceed 8 KB. | No |
@@ -177,7 +177,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 
 | Parameter | Type | Description |
 | :------ | :-------- | :--- |
-| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
+| `disabled` | Bool | Whether the group is banned: `true`: Yes. `false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
 
@@ -239,7 +239,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 
 | Parameter | Type | Description |
 | :------ | :-------- | :--- |
-| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
+| `disabled` | Bool | Whether the group is banned: `true`: Yes. `false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
 
@@ -301,7 +301,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter | Type | Descriptions |
 | :------------- | :----- | :-------- |
-| `data` | Boolean | Whether the user has joined the group: `true`: Yes. The user has joined the group.`false`: No. The user has not joined the group. |
+| `data` | Boolean | Whether the user has joined the group: `true`: Yes. The user has joined the group. `false`: No. The user has not joined the group. |
 
 For other fields and descriptions, see [Common parameters](#param).
 
@@ -368,15 +368,15 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 | `name` | String | The group name. |
 | `avatar` | String | The group avatar URL. |
 | `description` | String | The group description. |
-| `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin:`true`: Yes.`false`: (Default) No. |
-| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. |
+| `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin: `true`: Yes. `false`: (Default) No. |
+| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group. `true`: Yes. `false`: No. |
 | `maxusers` | Number | The maximum number of members (including the group owner) allowed in the group. |
 | `owner` | String | The username of the group owner, for example, `{"owner":"user1"}`. |
 | `created` | Long | The Unix timestamp for creating the group. |
 | `affiliations_count` | Number | The total number of group members. |
-| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
+| `disabled` | Bool | Whether the group is banned: `true`: Yes. `false`: No. |
 | `affiliations` | Array | The list of existing group members, including the group owner and regular group members, for example, `[{"owner":"user1"},{"member":"user2"},{"member":"user3"}]`. |
-| `public` | Boolean | Whether the group is a public group.`true`: Yes.`false`: No. |
+| `public` | Boolean | Whether the group is a public group. `true`: Yes. `false`: No. |
 | `custom` | String | The extension information of the group. |
 | `count` | Number | The number of retrieved groups. |
 
@@ -468,11 +468,11 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 | `avatar` | String | The group avatar URL. It cannot exceed 1024 characters. | No |
 | `description` | String | The group description. It cannot exceed 512 characters. The group name cannot contain "/" or spaces. You can use "+" to represent the space. | Yes |
 | `maxusers` | String | The maximum number of group members (including the group owner). The default value is 200 and the maximum value is 2000.  The upper limit varies with your price plans. For details, see [Pricing Plan Details](../pricing-plan-details#group). | No |
-| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. Only the group owner or admin can invite other users to join the group.  | No |
-| `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin:`true`: Yes.`false`: (Default) No. | No |
+| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group. `true`: Yes. `false`: No. Only the group owner or admin can invite other users to join the group.  | No |
+| `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin: `true`: Yes. `false`: (Default) No. | No |
 | `custom` | String | The extension information of the group. The extension information cannot exceed 1024 characters. | No |
-| `invite_need_confirm` | Boolean | Whether the invitee needs to accept the group invitation before joining the group: `true`: Yes.`false`: No.. The invitee directly joins the group without confirming the group invitation. | No |
-| `public` | Boolean | Whether the group is a public one: `true`: Public group.`false`: Private group.| Yes |
+| `invite_need_confirm` | Boolean | Whether the invitee needs to accept the group invitation before joining the group: `true`: Yes. `false`: No. The invitee directly joins the group without confirming the group invitation. | No |
+| `public` | Boolean | Whether the group is a public one: `true`: Public group. `false`: Private group. | Yes |
 
 ### HTTP response
 
@@ -484,9 +484,9 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 | :------------------- | :------ | :----------------------------------------------------------- |
 | `groupname` | String | The group name. |
 | `description` | String | The group description. |
-| `avatar` | Boolean |  Whether the group avatar is successfully modified:`true`: Yes. `false`: No. |
-| `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin:`true`: Yes.`false`: (Default) No. |
-| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. |
+| `avatar` | Boolean |  Whether the group avatar is successfully modified: `true`: Yes. `false`: No. |
+| `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin: `true`: Yes. `false`: (Default) No. |
+| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group. `true`: Yes. `false`: No. |
 | `maxusers` | Number | The maximum number of group members (including the group owner). |
 
 For other fields and descriptions, see [Common parameters](#pubparam).
@@ -640,7 +640,7 @@ If neither the `limit` nor `cursor` parameter is specified, the server returns t
 
 #### Response body
 
-If the returned HTTP status code is 200, the request succeeds， and the `data` field in the response body contains the following parameters.
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
 
 | Parameter | Type | Description |
 | :------------ | :----- | :---------------------------------------- |

@@ -90,7 +90,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The mute result:`true: `Success`false`: Failure |
+| `result` | Bool | The mute result: `true: `Success. `false`: Failure. |
 | `expire` | Number | The Unix timestamp (ms) when the mute state expires. |
 | `user` | Array | The username of the muted  member. |
 
@@ -176,7 +176,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------- |
-| `result` | Bool | The unmute result: `true: `Success`false`: Failure |
+| `result` | Bool | The unmute result: `true: `Success. `false`: Failure. |
 | `user` | String | The username of the unmuted  member. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -318,7 +318,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Parameter | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | Whether all members are successfully muted:`true`: Yes.`false`: No.|
+| `result` | Bool | Whether all members are successfully muted: `true`: Yes. `false`: No. |
 | `expire` | Long | The Unix timestamp when the global mute state expires. Unit: milliseconds. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -382,7 +382,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Parameter     | Type    | Description                                              |
 | :------- | :------ | :---------------------------------------------------- |
-| `result` | Boolean | Whether all chat room members are successfully unmuted:`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether all chat room members are successfully unmuted: `true`: Yes. `false`: No. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

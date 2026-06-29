@@ -167,9 +167,7 @@ When you [Display live subtitles](../transcripts), the Conversational AI Engine 
 To enable the agent to segment the audio based on subtitle content during playback, make sure that the LLM sends both the `audio.data` and `audio.words` fields in the response.
 
 ### Agent message broadcasts
-If the agent you created is not configured with a TTS module but is set to use audio output with  `output_modalities` is set to ["audio"], you can enable it to broadcast custom messages by adapting your LLM as follows:
-
-If the agent isn't configured with a TTS module but is set to use audio output (output_modalities is set to ["audio"]), you can enable it to broadcast custom messages by adapting your LLM as follows:
+If the agent isn't configured with a TTS module but has `output_modalities` set to `["audio"]`, you can enable it to broadcast custom messages by adapting your LLM as follows:
 
 In the `messages` list received by the agent and passed to the LLM, the model should handle the last message based on its `role`:
 

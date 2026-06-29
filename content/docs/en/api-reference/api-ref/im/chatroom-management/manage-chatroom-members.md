@@ -93,7 +93,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The addition result:`true`: Success`false`: Failure |
+| `result` | Bool | The addition result: `true`: Success. `false`: Failure. |
 | `action` | String | The operation that is performed. `add_member` means to add a member to the chat room. |
 | `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat service. |
 | `user` | String | The array of usernames of the existing chat room members. |
@@ -329,7 +329,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The deletion result:`true`: Success`false`: Failure |
+| `result` | Bool | The deletion result: `true`: Success. `false`: Failure. |
 | `action` | String | The operation that is performed. `remove_member` means to delete a chat room member. |
 | `user` | String | The username of the chat room member that is removed. |
 | `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat service. |
@@ -403,7 +403,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The deletion result:`true`: Success`false`: Failure |
+| `result` | Bool | The deletion result: `true`: Success. `false`: Failure. |
 | `action` | String | The operation that is performed. `remove_member` means to remove a chat room member. |
 | `reason` | String | The reason why the method fails. |
 | `user` | String | The list of usernames of chat room members that are deleted. |
@@ -490,7 +490,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :--------- | :----- | :---------------------------------------------- |
-| `result` | Bool | The addition result: `true`: Success`false`: Failure |
+| `result` | Bool | The addition result: `true`: Success. `false`: Failure. |
 | `newadmin` | String | The username of the chat room administrator that is added. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -623,7 +623,7 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :--------- | :------ | :---------------------------------------------- |
-| `result` | Boolean | The revocation result: `true`: Success`false`: Failure |
+| `result` | Boolean | The revocation result: `true`: Success. `false`: Failure. |
 | `oldadmin` | String | The username of the chat room administrator whose administrative privileges are revoked. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).

@@ -50,7 +50,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `entities.created`   | Number     | The Unix timestamp (ms) when the user is registered.   |
 | `entities.modified`  | Number     | The Unix timestamp (ms) when the user information is last modified.   |
 | `entities.username`  | String     | The username. The unique account the user is logged in with.          |
-| `entities.activated` | Bool       | Whether the user is active:`true`: The user is active.`false`: The user is in banned. To use a banned user account, you need to call the [unban-user](#unban) method to unban the account. |
+| `entities.activated` | Bool       | Whether the user is active: `true`: The user is active. `false`: The user is banned. To use a banned user account, you need to call the [unban-user](#unban) method to unban the account. |
 | `timestamp`          | Number     | The Unix timestamp (ms) of the HTTP response.          |
 | `duration`           | Number     | The duration (ms) from when the HTTP request is sent to the time the response is received.          |
 
@@ -403,7 +403,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter | Type | Description |
 | :------------------ | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `cursor` | String | The cursor used for paginating the user lists. You do not need to set `cursor` at the first query. When the request succeeds, you can get the `cursor` from the response body, and pass this `cursor` in the URL of the next query, until there is no longer a `cursor` filed in the response body, which indicates that all the users in the app have been queried. |
+| `cursor` | String | The cursor used for paginating the user lists. You do not need to set `cursor` at the first query. When the request succeeds, you can get the `cursor` from the response body, and pass this `cursor` in the URL of the next query, until there is no longer a `cursor` field in the response body, which indicates that all the users in the app have been queried. |
 | `count` | Number | The number of users. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -1140,7 +1140,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter   | Type | Description                                                       |
 | :----- | :-----| :----------------------------------------------------------- |
-| `data` | JSON | The delivery state of an offline message, in the format of `"message id": "delivery state"`. The delivery state:  `delivered`: The offline message has been delivered to the user.  `undelivered`: The offline message is temporarily stored at the server and has not been pulled from the server and delivered to the user. |
+| `data` | JSON | The delivery state of an offline message, in the format of `"message id": "delivery state"`. The delivery state: `delivered`: The offline message has been delivered to the user.  `undelivered`: The offline message is temporarily stored at the server and has not been pulled from the server and delivered to the user. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](./http-status-codes) for possible reasons.
 

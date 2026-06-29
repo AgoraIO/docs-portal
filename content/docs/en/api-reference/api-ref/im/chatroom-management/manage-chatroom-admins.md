@@ -100,7 +100,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :--------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The addition result:`true`: Success`false`: Failure |
+| `result` | Bool | The addition result: `true`: Success. `false`: Failure. |
 | `resource` | String | It is a reserved parameter. You can safely ignore this parameter. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
