@@ -710,7 +710,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
 
     Navigate to the `server` directory and run the following commands:
 
-    ```shell
+    ```bash
     npm i
     node DemoServer.js
     ```
@@ -739,13 +739,13 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 1. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
-    ```shell
+    ```bash
     docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
     ```
 
 1. Run the following command to request a token from the token generator you just deployed:
 
-    ```shell
+    ```bash
     curl --location 'http://localhost:8080/token/generate' \
     --header 'Content-Type: application/json' \
     --data '{
@@ -936,7 +936,7 @@ func BuildTokenWithUid(
 * `appId`: The App ID generated when you create a project in Agora Console.
 * `appCertificate`: The App certificate of your project.
 * `channelName`: Channel name, length should be less than 64 bytes.
-* `uid`: The unique user ID of the user to be authenticated. It is a 32-bit signed integer with a value range from -231 to 231 - 1.
+* `uid`: The unique user ID of the user to be authenticated. It is a 32-bit signed integer with a value range from -2<sup>31</sup> to 2<sup>31</sup> - 1.
 * `role`: User permissions, which determine whether the user can send streams in the channel.
     * `kRolePublisher` (1): (Default) The user has the permission to send streams in the channel.
     * `kRoleSubscriber` (2): The user has receiving permission only. The user can receive streams in the channel, but cannot send streams. This parameter only takes effect after Co-host authentication is enabled.
@@ -964,7 +964,7 @@ func BuildTokenWithUidAndPrivilege(
 * `appId`: The App ID generated when you create a project in Agora Console.
 * `appCertificate`: The App certificate of your project.
 * `channelName`: Channel name, length should be less than 64 bytes.
-* `uid`: The unique user ID of the user to be authenticated. It is a 32-bit signed integer with a value range from -231 to 231 - 1.
+* `uid`: The unique user ID of the user to be authenticated. It is a 32-bit signed integer with a value range from -2<sup>31</sup> to 2<sup>31</sup> - 1.
 * `tokenExpire`: The token validity period (seconds). The maximum validity period is 24 hours.
 * `joinChannelPrivilegeExpire`: Validity in seconds for the permission to join the channel (seconds).
 * `pubAudioPrivilegeExpire`: Validity in seconds for the permission to publish audio streams in the channel.

@@ -28,33 +28,9 @@ The following presets are available:
 
 | Category | Available presets |
 |----------|------------------|
-| ASR | <Slot name="asr" /> |
-| LLM | <Slot name="llm" /> |
-| TTS | <Slot name="tts" /> |
-
-<Slot for="asr">
-
-- `deepgram_nova_2`
-- `deepgram_nova_3`
-
-</Slot>
-
-<Slot for="llm">
-
-- `openai_gpt_4o_mini`
-- `openai_gpt_4_1_mini`
-- `openai_gpt_5_nano`
-- `openai_gpt_5_mini`
-
-</Slot>
-
-<Slot for="tts">
-
-- `minimax_speech_2_6_turbo`
-- `minimax_speech_2_8_turbo`
-- `openai_tts_1`
-
-</Slot>
+| ASR | `deepgram_nova_2`, `deepgram_nova_3` |
+| LLM | `openai_gpt_4o_mini`, `openai_gpt_4_1_mini`, `openai_gpt_5_nano`, `openai_gpt_5_mini` |
+| TTS | `minimax_speech_2_6_turbo`, `minimax_speech_2_8_turbo`, `openai_tts_1` |
 
 You can specify one preset per category. If you specify a preset for a
 category, any API key or endpoint URL fields for that category are ignored.
@@ -231,13 +207,13 @@ const data = await response.json();
 console.log(response.status);
 console.log(data);
 ```
+</TabsContent>
+</Tabs>
 
 In this example:
 
-- The `preset` field configures Deepgram Nova 3 for ASR, GPT-5 Mini for LLM,
-  and MiniMax Speech 2.6 Turbo for TTS.
-- The `llm` field sets the system prompt, greeting, and history length without
-  specifying an endpoint or API key, because those are provided by the preset.
+- The `preset` field configures Deepgram Nova 3 for ASR, GPT-5 Mini for LLM, and MiniMax Speech 2.6 Turbo for TTS.
+- The `llm` field sets the system prompt, greeting, and history length without specifying an endpoint or API key, because those are provided by the preset.
 - The `tts` field overrides the default voice selection for MiniMax.
 - The `asr` field passes a keyword hint to Deepgram.
 
@@ -250,6 +226,3 @@ Presets are independent: you can use one, two, or all three categories in the sa
 For the full list of request parameters, see [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join).
 
 For provider-specific configuration options available within [`asr`](../../models/asr/deepgram), [`llm`](../../models/llm/openai), and [`tts`](../../models/tts/minimax) fields when using presets, see the relevant provider page.
-
-</TabsContent>
-</Tabs>

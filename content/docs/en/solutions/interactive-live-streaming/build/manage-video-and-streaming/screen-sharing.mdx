@@ -96,24 +96,24 @@ dependencies {
 
 2. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
 
-  ```java
-  implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
-  ```
+   ```java
+   implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
+   ```
 
 3. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
 
 4. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
 
-  ```java
-  android {
-     // ...
-     sourceSets {
-      main {
-       jniLibs.srcDirs = ['src/main/jniLibs']
+   ```java
+   android {
+      // ...
+      sourceSets {
+       main {
+        jniLibs.srcDirs = ['src/main/jniLibs']
+       }
       }
      }
-    }
-  ```
+   ```
 
 ### Set up the audio scenario
 
@@ -559,16 +559,16 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
 
   2. Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording. The sample code is as follows:
 
-    ``` swift
-    let frame = CGRect(x: 0, y:0, width: 60, height: 60)
-    systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
-    systemBroadcastPicker?.showsMicrophoneButton = false
-    systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-    // Get the Bundle Identifier of the main application
-    let bundleId = Bundle.main.bundleIdentifier ?? ""
-    // Set the Extension Name
-    systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
-    ```
+     ``` swift
+     let frame = CGRect(x: 0, y:0, width: 60, height: 60)
+     systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
+     systemBroadcastPicker?.showsMicrophoneButton = false
+     systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+     // Get the Bundle Identifier of the main application
+     let bundleId = Bundle.main.bundleIdentifier ?? ""
+     // Set the Extension Name
+     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
+     ```
 
     :::warning
     `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
@@ -1105,12 +1105,12 @@ To customize the selection interface, refer to the following steps:
 
 4. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
 
-  ``` javascript
-  AgoraRTC.createScreenVideoTrack({
-   // Fill in the sourceId selected by the user
-   electronScreenSourceId： sourceId,
-  }).then(localScreenTrack => );
-  ```
+   ``` javascript
+   AgoraRTC.createScreenVideoTrack({
+    // Fill in the sourceId selected by the user
+    electronScreenSourceId： sourceId,
+   }).then(localScreenTrack => );
+   ```
 
 ##### Additional notes
 
@@ -1689,7 +1689,7 @@ The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sur
 
    - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
 
-     ``` objective-c
+     ```objc
      #import "SampleHandler.h"
 
      @implementation SampleHandler
@@ -2034,7 +2034,7 @@ Take the following steps to set up your screen sharing project:
 
      - To implement additional business logic, refer to the following code to modify the `SampleHandler.h` file:
 
-       ``` objective-c
+       ```objc
        #import "SampleHandler.h"
        #import "AgoraReplayKitExt.h"
        #import <sys/time.h>
@@ -2298,7 +2298,7 @@ Take the following steps to set up your screen sharing project:
 
      - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
 
-       ``` objective-c
+       ```objc
        #import "SampleHandler.h"
        #import "AgoraReplayKitExt.h"
        #import <sys/time.h>
@@ -2382,27 +2382,27 @@ Take the following steps to implement screen sharing on macOS and Windows:
 
 3. Get a list of screens and windows that can be shared. Call `GetScreenCaptureSources` method to get the **Display ID** of the screen or the **Window ID** of the window to be shared:
 
-  ``` csharp
-  SIZE thumbSize = new SIZE(360,240);
-  SIZE iconSize = new SIZE(360,240);
-  ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
-  ```
+   ``` csharp
+   SIZE thumbSize = new SIZE(360,240);
+   SIZE iconSize = new SIZE(360,240);
+   ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
+   ```
 
 4. Share the specified screen or window. Depending on the sharing object, call the `StartScreenCaptureByDisplayId` or `StartScreenCaptureByWindowId` method to start screen sharing:
 
-  ``` csharp
-  ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
-  if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Screen)
-  {
-    ulong displayId = info.sourceId;
-    RtcEngine.StartScreenCaptureByDisplayId((uint)displayId, default(Rectangle),default(ScreenCaptureParameters));
-  }
-   else if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Window)
-  {
-     ulong windowId = info.sourceId;
-     RtcEngine.StartScreenCaptureByWindowId(windowId, default(Rectangle),default(ScreenCaptureParameters));
-  }
-  ```
+   ``` csharp
+   ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
+   if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Screen)
+   {
+     ulong displayId = info.sourceId;
+     RtcEngine.StartScreenCaptureByDisplayId((uint)displayId, default(Rectangle),default(ScreenCaptureParameters));
+   }
+    else if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Window)
+   {
+      ulong windowId = info.sourceId;
+      RtcEngine.StartScreenCaptureByWindowId(windowId, default(Rectangle),default(ScreenCaptureParameters));
+   }
+   ```
 
 5. Join a channel and publish screen sharing stream.
 

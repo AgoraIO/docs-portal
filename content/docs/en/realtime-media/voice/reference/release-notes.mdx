@@ -769,7 +769,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 :::note
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.md).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.mdx).
 :::
 **2. Cross-device synchronization**
 
@@ -1901,7 +1901,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 :::note
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.md).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.mdx).
 :::
 **2. Cross-device synchronization**
 
@@ -3430,17 +3430,17 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   **Workaround**: On iOS 15.0 to 15.3, use `WebAudio` to play the audio, and use `GainNode` to increase the audio volume level. Use the following workaround:
   1. Upgrade to the Web SDK 4.9.0 or later versions.
   2. Set the SDK private parameter `REMOTE_AUDIO_TRACK_USES_WEB_AUDIO` as `true`. The SDK uses `WebAudio` to play the remote audio stream. Sample code:
-    ```javascript
-    function isIOS15(ua){
-      // Use UA to judge whether the iOS version is 15
-    }
+     ```javascript
+     function isIOS15(ua){
+       // Use UA to judge whether the iOS version is 15
+     }
 
-    if(isIOS15(navigator.userAgent)){
-      // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
-      // @ts-ignore
-      AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
-    }
-    ```
+     if(isIOS15(navigator.userAgent)){
+       // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
+       // @ts-ignore
+       AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
+     }
+     ```
 
   **iOS 15.x: The video playback goes black**
 
@@ -3468,21 +3468,21 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - Safari on iOS 15.x.
   - Browsers and apps that use WKWebView (such as Chrome) on iOS 14.4 to iOS 15.x.
 
-  
+
 
   **Reason**:
   - For Safari: This happens primarily due to this WebKit [bug](https://bugs.webkit.org/show_bug.cgi?id=231105). After the browser switches to the background, the `AudioContext` of `WebAudio` stops processing audio.
   - For browsers and apps using WKWebView: This happens because iOS `WKWebView` prohibits microphone usage while in the background. For details, see [Microphone gets muted in background](https://developer.apple.com/forums/thread/689182).
 
-  
+
 
   **Workaround**: Currently there is no workaround for browsers and apps using WKWebView. For Safari on iOS 15.x, you can follow these steps to avoid this issue:
   1. Upgrade to the Web SDK v4.7.3 or later versions.
   2. When calling `createMicrophoneAudioTrack`, set `bypassWebAudio` as `true`. The Web SDK directly publishes the local audio stream without processing it through `WebAudio`.
 
-    ```javascript
-    const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
-    ```
+     ```javascript
+     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
+     ```
 
     > Note that this workaround has a side effect. After applying this workaround, the audio mixing function (`MixingAudioTrack`) in the SDK fails.
 
@@ -3583,11 +3583,11 @@ Reason: iOS and iOS WebView do not support setting the volume of a media object 
   1. Upgrade to the Web SDK v4.6.0 or later versions.
   2. Listen to the `AgoraRTC.onAutoplayFailed` event. Instruct the user to click on the page to resume playback:
 
-    ```javascript
-    AgoraRTC.onAutoplayFailed = ()=>{
-      document.alert('Please click the page to resume playback');
-    }
-    ```
+     ```javascript
+     AgoraRTC.onAutoplayFailed = ()=>{
+       document.alert('Please click the page to resume playback');
+     }
+     ```
 
   **If a local user wears a Bluetooth headset, after they start to send the audio, the remote audio is lost**
 
@@ -3897,7 +3897,7 @@ To further reduce the package size, this version splits the Channel Media Relay 
 
 **Optimize channel preload**
 
-When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](/en/realtime-media/video/build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](pricing.md).
+When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](/en/realtime-media/video/build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](pricing.mdx).
 
 **Support for AV1 encoding (Beta)**
 
@@ -4890,7 +4890,7 @@ As of v4.6.0, the Voice Calling supports Interactive Live Streaming Standard. Th
 
 -  Interactive Live Streaming Standard: Low latency (1500 ms to 2000 ms) from the host’s client to an audience member’s client.
 
-The charges for Standard and Premium are different. For details, see the [product overview](../product-overview.md) and [pricing](pricing.md) of Interactive Live Streaming Standard.
+The charges for Standard and Premium are different. For details, see the [product overview](../product-overview.md) and [pricing](pricing.mdx) of Interactive Live Streaming Standard.
 
 You can set the latency level of the audience role in the following two ways:
 
@@ -10093,7 +10093,7 @@ Upon upgrading to this version, make the following modifications:
 
 - Adjust the import of the `AgoraRTC` interface from the Web SDK. Taking the combined import of `AgoraRTC` and `AgoraRTCProvider` as an example:
 
-  ```jsx
+  ```tsx
   // Before this version
   import AgoraRTC from "agora-rtc-sdk-ng";
   import { AgoraRTCProvider } from "agora-rtc-react";
@@ -11471,7 +11471,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
     The audio module of the Agora Unreal SDK is incompatible with the AudioMixer module in Unreal Engine 5.3 and 5.4. If you use Unreal Engine 5.3 or 5.4, you need to add the following code to the `/Config/IOS/IOSEngine.ini` file in your project to disable Unreal Engine’s AudioMixer module and avoid conflicts.
 
-    ```ini
+    ```text
     [Audio]
     AudioMixerModuleName=
     ```
@@ -11785,7 +11785,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
     The audio module of the Agora Blueprint SDK is incompatible with the AudioMixer module in Unreal Engine 5.3 and 5.4. If you use Unreal Engine 5.3 or 5.4, you need to add the following code to the `/Config/IOS/IOSEngine.ini` file in your project to disable Unreal Engine’s AudioMixer module and avoid conflicts.
 
-    ```ini
+    ```text
     [Audio]
     AudioMixerModuleName=
     ```

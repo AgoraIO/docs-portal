@@ -33,13 +33,13 @@ Included in this release:
 
 - The Android Maven package name has changed from `io.agora:agora-rtm` to `io.agora.rtm:rtm-sdk`. Update your `build.gradle` dependency as follows:
 
-    ```groovy
+    ```text
     implementation 'io.agora.rtm:rtm-sdk:x.y.z'
     ```
     
 - A lite version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     
-    ```groovy
+    ```text
     implementation 'io.agora.rtm:rtm-sdk-lite:2.2.8'
     ```
 

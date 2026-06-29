@@ -53,7 +53,7 @@ This section describes how to receive transcript content from the transcript pro
 
 1. **Integrate the toolkit**
 
-   Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import the toolkit before calling the toolkit API. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import the toolkit before calling the toolkit API. Refer to [Folder structure](#reference) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -147,7 +147,7 @@ This section describes how to receive transcript content from the transcript pro
 
 1. **Integrate the toolkit**
 
-   Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import the toolkit before calling the toolkit APIs. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import the toolkit before calling the toolkit APIs. Refer to [Folder structure](#reference) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -246,7 +246,7 @@ This section describes how to receive transcript content from the transcript pro
 
 1. **Integrate the toolkit**
 
-   Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import the toolkit before calling its APIs. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import the toolkit before calling its APIs. Refer to [Folder structure](#reference) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -275,8 +275,8 @@ This section describes how to receive transcript content from the transcript pro
    In word-by-word rendering mode, you must receive audio timestamp metadata from RTC to synchronize subtitles with speech. Before creating the client object, configure the following parameter:
 
    ```ts
-   AgoraRTC.setParameter("ENABLE_AUDIO_PTS_METADATA", true);
-   const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+   AgoraRTC.setParameter('ENABLE_AUDIO_PTS_METADATA', true)
+   const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
    ```
 
 4. **Subscribe to the channel**
@@ -292,14 +292,14 @@ This section describes how to receive transcript content from the transcript pro
    Register an event listener to receive transcript updates:
 
    ```tsx
-   import * as React from "react"
+   import * as React from 'react'
    import {
      type IUserTranscription,
      type IAgentTranscription,
      type ISubtitleHelperItem,
      EConversationalAIAPIEvents,
-   } from "@/conversational-ai-api/type"
-   import { ConversationalAIAPI } from "@/conversational-ai-api"
+   } from '@/conversational-ai-api/type'
+   import { ConversationalAIAPI } from '@/conversational-ai-api'
 
    export const ChatHistory = () => {
      const [chatHistory, setChatHistory] = React.useState<
@@ -339,7 +339,7 @@ This section describes how to receive transcript content from the transcript pro
 
 7. **Unsubscribe from the channel**
 
-   After each agent session ends, unsubscribe from channel messages to release resources associated with callback events:
+   After each agent session ends, unsubscribe from channel messages to release resources associated with callback events.
 
    ```ts
    conversationalAIAPI.unsubscribeMessage(channel_name)
@@ -353,15 +353,12 @@ This section describes how to receive transcript content from the transcript pro
    conversationalAIAPI.destroy()
    ```
 
+</TabsContent>
+</Tabs>
+
 ## Reference
 
 This section contains supporting information that completes the guidance on this page.
-
-</TabsContent>
-</Tabs>
-### Folder structure
-
-{/* Source content used a shared FolderStructure MDX component. The structure is inlined below. */}
 
 <Tabs>
 <TabsList>
@@ -371,6 +368,8 @@ This section contains supporting information that completes the guidance on this
 </TabsList>
 
 <TabsContent value="android">
+
+**Folder structure**
 
 - `IConversationalAIAPI.kt`: API interface and related data structures and enumerations
 - `ConversationalAIAPIImpl.kt`: ConversationalAI API main implementation logic
@@ -380,40 +379,7 @@ This section contains supporting information that completes the guidance on this
   - `TranscriptionController.kt`: transcription controller
   - `MessageParser.kt`: message parser
 
-</TabsContent>
-
-<TabsContent value="ios">
-
-- `ConversationalAIAPI.swift`: API interface and related data structures and enumerations
-- `ConversationalAIAPIImpl.swift`: ConversationalAI API main implementation logic
-- `Transcription/`
-  - `TranscriptionController.swift`: transcription controller
-
-</TabsContent>
-
-<TabsContent value="web">
-
-- `index.ts`: API class
-- `type.ts`: API interface and related data structures and enumerations
-- `utils/`
-  - `index.ts`: API utility functions
-  - `events.ts`: event management class
-  - `sub-render.ts`: transcription module
-
-</TabsContent>
-</Tabs>
-### API reference
-
-This section provides API reference entry points for the transcript module.
-
-<Tabs>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
+**API reference**
 
 - [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
@@ -425,6 +391,15 @@ This section provides API reference entry points for the transcript module.
 
 <TabsContent value="ios">
 
+**Folder structure**
+
+- `ConversationalAIAPI.swift`: API interface and related data structures and enumerations
+- `ConversationalAIAPIImpl.swift`: ConversationalAI API main implementation logic
+- `Transcription/`
+  - `TranscriptionController.swift`: transcription controller
+
+**API reference**
+
 - [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
 - [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#unsubscribemessage)
@@ -435,7 +410,18 @@ This section provides API reference entry points for the transcript module.
 
 <TabsContent value="web">
 
-- [`IConversationalAIAPIEventHandlers interface`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+**Folder structure**
+
+- `index.ts`: API class
+- `type.ts`: API interface and related data structures and enumerations
+- `utils/`
+  - `index.ts`: API utility functions
+  - `events.ts`: event management class
+  - `sub-render.ts`: transcription module
+
+**API reference**
+
+- [`IConversationalAIAPIEventHandler interface`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
 - [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
 - [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)

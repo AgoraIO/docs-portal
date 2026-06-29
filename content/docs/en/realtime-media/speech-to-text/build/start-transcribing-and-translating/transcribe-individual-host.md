@@ -28,7 +28,7 @@ server. For details, see [Agora account management](/en/realtime-media/voice/man
 
 To transcribe a specific host, follow the API call sequence from the [REST Quickstart](../../get-started/quickstart) and modify the `start` request to add the `subscribeAudioUids` parameter as follows:
 
-```shell
+```bash
 curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/join' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic <credentials>' \

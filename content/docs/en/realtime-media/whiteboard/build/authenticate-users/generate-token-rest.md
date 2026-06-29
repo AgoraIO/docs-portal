@@ -35,7 +35,7 @@ Pass in the following parameters in the request header:
 
 ### Request example
 
-```
+```bash
 POST /v5/tokens/teams
 Host: api.netless.link
 region: us-sv
@@ -57,7 +57,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 The following is a response example for a successful request:
 
-```
+```json
 "status": 201,
 "body":
 { "NETLESSSDK_YWs9xxxxxxY2E2OQ"
@@ -101,7 +101,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 POST /v5/tokens/rooms/a7exxxxxca69
 Host: api.netless.link
 token: NETLESSSDK_YWs9Qxxxxxx2MjRi
@@ -122,7 +122,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 { "NETLESSROOM_YWs9xxxxxxY2E2OQ"
@@ -167,7 +167,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 POST /v5/tokens/tasks/a7e0xxxxxxxca69
 Host: api.netless.link
 token: NETLESSSDK_YWs9QlxxxxxxM2MjRi
@@ -188,7 +188,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 { "NETLESSTASK_YWxxxxxxM2ViMQ"

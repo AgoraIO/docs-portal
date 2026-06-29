@@ -6,7 +6,13 @@ This page describes how to call the Conversational AI Engine APIs to start and s
 
 ## Understand the tech
 
-A user joins a channel and triggers your business server to start an agent via the Conversational AI Engine API. The agent joins the same channel and communicates with the user through voice, using the specified LLM, TTS service, and Agora's low-latency backend. When the conversation ends, the business server stops the agent and the user leaves the channel.
+Agora’s Conversational AI technology enables real-time voice interactions between users and an AI-driven agent within an Agora channel. The basic process is as follows:
+
+1. **User joins a Agora channel**: A user joins an Agora channel.
+2. **Start an AI agent**: The user sends a request to your business server, which then makes an API call to the Conversational AI Engine to start an agent. The agent joins the same channel as the user.
+3. **Real-time interaction**: The user communicates with the AI agent through voice, leveraging the specified LLM, a text-to-speech service, and Agora's low-latency backend.
+4. **Stop the AI agent**: When the user ends the conversation, the business server sends a request to stop the AI agent. The agent then leaves the Agora channel.
+5. **User leaves the Agora channel**: The user disconnects from the session.
 
 <details>
 <summary>Conversational AI Engine workflow</summary>
@@ -18,10 +24,16 @@ A user joins a channel and triggers your business server to start an agent via t
 
 - [Enabled Agora conversational AI](../reference/enable-conversational-ai#enable-conversational-ai) for your project.
 - The following information from Agora Console:
-  - [App ID](../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project.
-  - [App Certificate](../reference/enable-conversational-ai#get-the-app-certificate): Required by the SDK to generate authentication tokens automatically.
-  - For Curl only: [Customer ID and Customer secret](../../api-reference/conversational-ai/rest-api/authentication#generate-customer-id-and-customer-secret) and a [temporary token](../reference/enable-conversational-ai#generate-temporary-tokens).
-- API keys for a supported LLM provider such as [OpenAI](https://openai.com/index/openai-api/) and a supported TTS provider such as [Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-services/ai-speech).
+  - [App ID](../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine REST API.
+  - [Customer ID and Customer secret](../../api-reference/conversational-ai/rest-api/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the REST APIs.
+  - A [temporary token](../reference/enable-conversational-ai#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel.
+- Obtained API keys for:
+  - A supported Large Language Model (LLM) provider such as [OpenAI](https://openai.com/index/openai-api/).
+  - A supported text-to-speech (TTS) provider such as [Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-services/ai-speech).
+
+:::note[Tips]
+If you don't yet have API keys from a third-party LLM or TTS provider, [use presets](custom-model-integration/presets) to start your first agent without ASR, LLM, and TTS credentials.
+:::
 
 - Implemented the [Voice Calling](../../introduction/realtime-audio-video) or [Video Calling](../../introduction/realtime-audio-video) quickstart.
 
@@ -67,11 +79,11 @@ go get github.com/AgoraIO/agora-agents-go/v2@v2.2.0
 
 ## Implementation
 
-This section introduces how to use the Agora Conversational AI SDKs or REST API to start and stop a conversational AI agent. In a production environment, implement this logic on your business server.
+This section introduces the basic RESTful API requests you use to start and stop a conversational AI agent. In a production environment, implement these requests on your business server.
 
 ### Start a conversational AI agent
 
-Call the SDK method or the `join` endpoint to create an agent instance that joins an Agora channel. For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../api-reference/conversational-ai/rest-api/authentication).
+Call the `join` endpoint to create an agent instance that joins an Agora channel. For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](../../api-reference/conversational-ai/rest-api/authentication).
 
 <Tabs>
 <TabsList>
@@ -284,9 +296,8 @@ curl --request POST \
 }'
 ```
 
-:::note[Tips]
-If you don't yet have API keys from a third-party LLM or TTS provider, [use presets](custom-model-integration/presets) to start your first agent without ASR, LLM, and TTS credentials.
-:::
+</TabsContent>
+</Tabs>
 
 If the request is successful, you receive the following response:
 
@@ -299,14 +310,11 @@ If the request is successful, you receive the following response:
 }
 ```
 
-</TabsContent>
-</Tabs>
-
 If the request is successful, the agent ID is returned. Store the agent ID to manage the agent in subsequent calls.
 
 ### Stop the conversational AI agent
 
-To end the conversation with the AI agent, call the SDK method or the `leave` endpoint. This causes the agent to leave the Agora channel.
+To end the conversation with the AI agent, call the `leave` endpoint. This causes the agent to leave the Agora channel.
 
 <Tabs>
 <TabsList>
@@ -350,15 +358,15 @@ curl --request POST \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
+</TabsContent>
+</Tabs>
+
 If the request is successful, the server responds with a `200 OK` status and an empty JSON object.
 
 ```json
 // 200 OK
 {}
 ```
-
-</TabsContent>
-</Tabs>
 
 :::info[Info]
 The number of Peak Concurrent Users (PCU) allowed to call the server API under a single App ID is limited to 20. If you need to increase this limit, please [contact technical support](mailto:support@agora.io).

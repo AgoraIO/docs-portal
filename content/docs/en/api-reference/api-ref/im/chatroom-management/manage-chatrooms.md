@@ -154,6 +154,7 @@ For the parameters and detailed descriptions, see [Common parameters ](#param).
 | :------- | :----- | :------------------------ | :------- |
 | `limit`  | Number | The number of s expected to be fetched each time. The value range is [1,100], the default is `10`, This parameter is only required when fetching pages.  | No  |
 | `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns s of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all s in the app are retrieved. | No  |
+
 :::info
  If neither is set in the request `limit` and `cursor`, before the server returns the first page of the  list 10 .
 :::
@@ -186,16 +187,19 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```json
+```bash
 # Replace  with the app token you generated on the server
 curl --location --request GET 'http://XXXX/XXXX/XXXX/chatrooms?limit=10' \
---header 'Authorization: Bearer s that a user joins
+--header 'Authorization: Bearer '
+```
 
-Retrieves all the s that a user joins.
+## Retrieving chat rooms that a user joins
+
+Retrieves all the chat rooms that a user joins.
 
 ### HTTP request
 
-```html
+```bash
 GET https://{host}/{org_name}/{app_name}/users/{username}/joined_chatrooms?pagenum={N}&pagesize={N}
 ```
 
@@ -523,7 +527,7 @@ Retrieves the announcement text for the specified .
 
 ### HTTP request
 
-```
+```bash
 GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 ```
 
@@ -554,13 +558,13 @@ The response body contains the following fields:
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/announcement'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "get",
   "application": "52XXXXf0",
@@ -582,7 +586,7 @@ Modifies the announcement text of the specified . The length cannot exceed 512 c
 
 ### HTTP request
 
-```
+```bash
 POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 ```
 
@@ -626,13 +630,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/12XXXX11/announcement' -d '{"announcement" : "chat room announcement"}'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "52XXXXf0",

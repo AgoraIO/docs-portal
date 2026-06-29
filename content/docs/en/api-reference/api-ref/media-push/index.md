@@ -355,7 +355,7 @@ This example shows that the video of the two specified users in the `show68` cha
 }
 ```
 The sample code for setting SEI information (`seiOptions`) is as follows:
-```
+```json
 {
     "converter": {
         "transcodeOptions": {

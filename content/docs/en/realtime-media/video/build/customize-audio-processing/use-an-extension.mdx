@@ -37,22 +37,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -60,25 +60,25 @@ In order to integrate an extension into your project:
 
   In the extension detail page, click **Download**, then unzip the extension in a local directory.
 
-1. **Install the extension in your project**
+4. **Install the extension in your project**
 
-   - Android Archive file (`.aar`)
+    - Android Archive file (`.aar`)
 
-     1. Save the extension `.aar` file to `/app/libs` in your project.
+      1. Save the extension `.aar` file to `/app/libs` in your project.
 
-     2. In `/Gradle Scripts/build.gradle(Module: <ProjectName> app)`, add the following line under `dependencies`:
+      2. In `/Gradle Scripts/build.gradle(Module: <ProjectName> app)`, add the following line under `dependencies`:
 
-       ```java
-       implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-       ```
+        ```java
+        implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+        ```
 
-   - Shared Library (`.so`)
+    - Shared Library (`.so`)
 
-     Save the `.so` file to the following paths in your project:
+      Save the `.so` file to the following paths in your project:
 
-     1. `/app/src/main/jniLibs/arm64-v8a`
+      1. `/app/src/main/jniLibs/arm64-v8a`
 
-     2. `/app/src/main/jniLibs/armeabi-v7a`
+      2. `/app/src/main/jniLibs/armeabi-v7a`
 
 You are now ready to integrate the extension in your app.
 
@@ -89,59 +89,59 @@ in your Agora project:
 
 1. **Import the necessary classes**
 
-  1. Download the [watermark extension](https://web-cdn.agora.io/docs-files/1630400262363) and follow the steps for `.aar` files in [setup](#project-setup).
+    1. Download the [watermark extension](https://web-cdn.agora.io/docs-files/1630400262363) and follow the steps for `.aar` files in [setup](#project-setup).
 
-  2. In `app/src/main/java/com.example.<projectname>/MainActivity`:
+    2. In `app/src/main/java/com.example.<projectname>/MainActivity`:
 
-    1. Add the following lines to import the Android classes used by the extension:
+        1. Add the following lines to import the Android classes used by the extension:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+        <CodeBlockTabs defaultValue="java">
+        <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-    ```java
-    import org.json.JSONException;
-        import org.json.JSONObject;
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="java">
+            ```java
+            import org.json.JSONException;
+                import org.json.JSONObject;
+            ```
+        </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-    ```kotlin
-    import org.json.JSONException
-        import org.json.JSONObject
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="kotlin">
+            ```kotlin
+            import org.json.JSONException
+                import org.json.JSONObject
+            ```
+        </CodeBlockTab>
 
-</CodeBlockTabs>
-    2. Add the following lines to import the Agora classes used by the extension:
+        </CodeBlockTabs>
+        2. Add the following lines to import the Agora classes used by the extension:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+        <CodeBlockTabs defaultValue="java">
+        <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-    ```java
-    // ExtensionManager is used to pass in basic info about the extension
-        import io.agora.extension.ExtensionManager;
-        import io.agora.rtc2.IMediaExtensionObserver;
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="java">
+            ```java
+            // ExtensionManager is used to pass in basic info about the extension
+                import io.agora.extension.ExtensionManager;
+                import io.agora.rtc2.IMediaExtensionObserver;
+            ```
+        </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-    ```kotlin
-    // ExtensionManager is used to pass in basic info about the extension
-        import io.agora.extension.ExtensionManager
-        import io.agora.rtc2.IMediaExtensionObserver
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="kotlin">
+            ```kotlin
+            // ExtensionManager is used to pass in basic info about the extension
+                import io.agora.extension.ExtensionManager
+                import io.agora.rtc2.IMediaExtensionObserver
+            ```
+        </CodeBlockTab>
 
-</CodeBlockTabs>
-1. **Add the extension and register the event handler**
+        </CodeBlockTabs>
+2. **Add the extension and register the event handler**
 
   In `setupVideoSDKEngine`, add the following code before `agoraEngine = RtcEngine.create(config);`:
 
@@ -211,7 +211,7 @@ in your Agora project:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. **Enable the extension**
+3. **Enable the extension**
 
   Call `enableExtension` to enable the extension. To enable multiple extensions, call `enableExtension` as many times. The sequence of enabling multiple extensions determines the order of these extensions in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from the SDK before extension B.
 
@@ -240,7 +240,7 @@ in your Agora project:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. **Set extension properties**
+4. **Set extension properties**
 
   In the `joinChannel(View view)` method, add the following code after `agoraEngine.joinChannel`:
 
@@ -350,22 +350,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -373,13 +373,13 @@ In order to integrate an extension into your project:
 
   In the extension detail page, click **Download**, then unzip the extension in a local directory.
 
-1. **Install the extension in your project**
+4. **Install the extension in your project**
 
-  1. Save the extension `.framework` or `.xcframwork` files to your project folder.
+    1. Save the extension `.framework` or `.xcframwork` files to your project folder.
 
-  2. In Xcode, open your project and select your target. Go to **General** > **Frameworks, Libraries, and Embedded Content**.
+    2. In Xcode, open your project and select your target. Go to **General** > **Frameworks, Libraries, and Embedded Content**.
 
-  3. Click **+** > **Add Other…** > **Add Files** and select the `.framework` or `.xcframwork` files you saved earlier.
+    3. Click **+** > **Add Other…** > **Add Files** and select the `.framework` or `.xcframwork` files you saved earlier.
 
 You are now ready to integrate the extension in your app.
 
@@ -442,22 +442,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -465,13 +465,13 @@ In order to integrate an extension into your project:
 
   In the extension detail page, click **Download**, then unzip the extension in a local directory.
 
-1. **Install the extension in your project**
+4. **Install the extension in your project**
 
-  1. Save the extension `.framework` or `.xcframwork` files to your project folder.
+    1. Save the extension `.framework` or `.xcframwork` files to your project folder.
 
-  2. In Xcode, open your project and select your target. Go to **General** > **Frameworks, Libraries, and Embedded Content**.
+    2. In Xcode, open your project and select your target. Go to **General** > **Frameworks, Libraries, and Embedded Content**.
 
-  3. Click **+** > **Add Other…** > **Add Files** and select the `.framework` or `.xcframwork` files you saved earlier.
+    3. Click **+** > **Add Other…** > **Add Files** and select the `.framework` or `.xcframwork` files you saved earlier.
 
 You are now ready to integrate the extension in your app.
 
@@ -536,22 +536,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -561,13 +561,13 @@ In order to integrate an extension into your project:
 
 1. **Install the extension in your project**
 
-  1. In the extension npm page, copy the **Install** command.
+    1. In the extension npm page, copy the **Install** command.
 
-  1. In the root of your project, install the extension package. For example, for AI Noise Suppression:
+    2. In the root of your project, install the extension package. For example, for AI Noise Suppression:
 
-    ```bash
-    npm i agora-extension-ai-denoiser
-    ```
+      ```bash
+      npm i agora-extension-ai-denoiser
+      ```
 
 You are now ready to integrate the extension in your app.
 
@@ -609,7 +609,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- <Link to= "{{global.API_REF_WEB_ROOT}}/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link>
+- <Link to= "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link>
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
@@ -646,22 +646,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -669,9 +669,9 @@ In order to integrate an extension into your project:
 
   In the extension detail page, click **Download**, then unzip the extension in a local directory.
 
-1. **Install the extension in your project**
+4. **Install the extension in your project**
 
-  Add the extension `.dll` to your project.
+    Add the extension `.dll` to your project.
 
 You are now ready to integrate the extension in your app.
 
@@ -702,54 +702,54 @@ Integrating an extension into your project involves a few important steps to ens
     // The default value is UNKNOWN_MEDIA_SOURCE.
     agora::media::MEDIA_SOURCE_TYPE extensionMediaType = agora::media::UNKNOWN_MEDIA_SOURCE; // insert the media souce type as per your context
     ```
-1. **Register extension callbacks to `<strong>`IRtcEngineEventHandler`</strong>` event handler**
+2. **Register extension callbacks to `<strong>`IRtcEngineEventHandler`</strong>` event handler**
 
-  1. In `AgoraImplementationDlg.h`, add the following declarations to the `AgoraEventHandler` class after `onLeaveChannel`:
+    1. In `AgoraImplementationDlg.h`, add the following declarations to the `AgoraEventHandler` class after `onLeaveChannel`:
 
-    ```cpp
-    virtual void onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)override;
-    virtual void onExtensionStopped(const char* provider, const char* extension)override;
-    virtual void onExtensionStarted(const char* provider, const char* extension)override;
-    virtual void onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)override;
-    ```
-  2. Define these callbacks in `AgoraImplementationDlg.cpp`:
+      ```cpp
+      virtual void onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)override;
+      virtual void onExtensionStopped(const char* provider, const char* extension)override;
+      virtual void onExtensionStarted(const char* provider, const char* extension)override;
+      virtual void onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)override;
+      ```
+    2. Define these callbacks in `AgoraImplementationDlg.cpp`:
 
-    ```cpp
-    // Extension Callbacks
-    void AgoraEventHandler::onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)
-    {
-      // Handle the event
-      CString extension_provider(provider);
-      CString extension_name(extension);
-      CString extension_key(key);
-      CString extension_value(value);
+      ```cpp
+      // Extension Callbacks
+      void AgoraEventHandler::onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)
+      {
+        // Handle the event
+        CString extension_provider(provider);
+        CString extension_name(extension);
+        CString extension_key(key);
+        CString extension_value(value);
 
-      CString message;
-      message.Format(_T("Extension Provider: %s\nExtension Name: %s\nKey: %s\nValue: %s\n is enabled to run."), extension_provider, extension_name);
-      AfxMessageBox(message);
-    }
+        CString message;
+        message.Format(_T("Extension Provider: %s\nExtension Name: %s\nKey: %s\nValue: %s\n is enabled to run."), extension_provider, extension_name);
+        AfxMessageBox(message);
+      }
 
-    void AgoraEventHandler::onExtensionStopped(const char* provider, const char* extension)
-    {
-      AfxMessageBox(L"Extension stopped.");
-    }
+      void AgoraEventHandler::onExtensionStopped(const char* provider, const char* extension)
+      {
+        AfxMessageBox(L"Extension stopped.");
+      }
 
-    void AgoraEventHandler::onExtensionStarted(const char* provider, const char* extension)
-    {
-      AfxMessageBox(Extension started);
-    }
+      void AgoraEventHandler::onExtensionStarted(const char* provider, const char* extension)
+      {
+        AfxMessageBox(Extension started);
+      }
 
-    void AgoraEventHandler::onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)
-    {
-      // Handle the error event
-      CString error_message(errorMessage);
-      CString message;
-      message.Format(_T("Error: %s\n with error code %d"), error_message, error);
-      AfxMessageBox(message);
-    }
-    ```
+      void AgoraEventHandler::onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)
+      {
+        // Handle the error event
+        CString error_message(errorMessage);
+        CString message;
+        message.Format(_T("Error: %s\n with error code %d"), error_message, error);
+        AfxMessageBox(message);
+      }
+      ```
 
-1. **Enable the extension and set the extension properties**
+3. **Enable the extension and set the extension properties**
 
     To use the extension you downloaded in your app:
 
@@ -766,14 +766,14 @@ Integrating an extension into your project involves a few important steps to ens
         // Function to load, register and enable the extension. Here you also set the extension propertties for your specific extension
         void setupMarketExtension(IRtcEngine* agoraEngine);
         ```
-      1. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
+      2. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
      initializing Agora Engine `agoraEngine->initialize(context);`:
 
         ```cpp
         // Integrate extension to the Agora SDK.
         setupMarketExtension(agoraEngine);
         ```
-      1. Define `setupMarketExtension()`:
+      3. Define `setupMarketExtension()`:
 
         ```cpp
         void CAgoraImplementationDlg::setupMarketExtension(IRtcEngine* agoraEngine)
@@ -793,7 +793,7 @@ Integrating an extension into your project involves a few important steps to ens
           agoraEngine->setExtensionProperty(extensionProvider, extensionName, extensionKey, extensionValue, extensionMediaType);
         }
         ```
-1. **Disable the extension before closing the application**
+4. **Disable the extension before closing the application**
 
   You must unload and disable all extensions before the app closes. As you set `unload_after_use` to
      `true` in `loadExtensionProvider()`, the extension dynamic link library unloads automatically after it has
@@ -875,22 +875,22 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
@@ -1007,8 +1007,9 @@ To ensure that you have integrated the extension in your app:
     ```
 
     You see your app opens a window named **Get started with Video Calling**.
+3. Press Join to connect to the same channel as your web demo.
 
-3. Press **Enable Extension**. Your app start using the Agora video filter extension.
+4. Press **Enable Extension**. Your app start using the Agora video filter extension.
 
 ## Reference
 
@@ -1064,13 +1065,13 @@ To test the code used in this page you need to have:
 - [Android Studio](https://developer.android.com/studio), IntelliJ, VS Code, or any other IDE that supports Flutter, see [Set up an editor](https://docs.flutter.dev/get-started/editor).
 
 - If your target platform is iOS:
- - Xcode on macOS (latest version recommended)
- - A physical iOS device
- - iOS version 12.0 or later
+  - Xcode on macOS (latest version recommended)
+  - A physical iOS device
+  - iOS version 12.0 or later
 
 - If your target platform is Android:
- - Android Studio on macOS or Windows (latest version recommended)
- - An Android emulator or a physical Android device.
+  - Android Studio on macOS or Windows (latest version recommended)
+  - An Android emulator or a physical Android device.
 
 - If you are developing a desktop application for Windows, macOS or Linux, make sure your development device meets the [Flutter desktop development requirements](https://docs.flutter.dev/development/platform-integration/desktop).
 
@@ -1080,30 +1081,30 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your Flutter project
+3. Open your Flutter project
 
   Load the [SDK quickstart](/en/realtime-media/video/get-started-sdk) Video Calling project you created previously.
 
-1. Get the extension
+4. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1121,7 +1122,7 @@ This section presents the framework code you add to your Flutter project to inte
   agoraEngine.loadExtensionProvider("<extensionLibraryPath>");
   ````
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   To enable the extension, add the following code to the `setupVideoSDKEngine` method before `await agoraEngine.enableVideo();`:
 
@@ -1138,7 +1139,7 @@ This section presents the framework code you add to your Flutter project to inte
 
   To enable multiple extensions, call `enableExtension` for each extension. The calls to `enableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from Video SDK before extension B.
 
-1. **Set extension properties**
+3. **Set extension properties**
 
   To customize the extension for your particular app, set suitable values for the extension properties. Refer to the extension documentation for a list of available property names and allowable values. To set a property, add the following code to the `setupVideoSDKEngine` method after `agoraEngine.enableExtension`:
 
@@ -1156,17 +1157,17 @@ To ensure that you have integrated the extension in your app:
 
 1. Set the variables and properties in the framework code to values suitable for your chosen extension.
 
-1. In your IDE, open `/lib/main.dart` and update `appId`, `channelName` and `token` with the values from Agora Console.
+2. In your IDE, open `/lib/main.dart` and update `appId`, `channelName` and `token` with the values from Agora Console.
 
-1. Connect a test device to your development device.
+3. Connect a test device to your development device.
 
-1. In your IDE, click **Run app** or execute the `flutter run` command in the terminal. A moment later, you see the project installed on your device.
+4. In your IDE, click **Run app** or execute the `flutter run` command in the terminal. A moment later, you see the project installed on your device.
 
   If this is the first time you run the app, grant camera and microphone permissions.
 
-1. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
+5. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
 
-1. Experience the features of your new extension.
+6. Experience the features of your new extension.
 
 ## Reference
 
@@ -1234,30 +1235,30 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your React-native project
+3. Open your React-native project
 
   Load the [SDK quickstart](/en/realtime-media/video/get-started-sdk) Video Calling project you created previously.
 
-1. Get the extension
+4. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1279,7 +1280,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   Switch,
   ```
 
-1. **Render the switch**
+2. **Render the switch**
 
   Add the following code in the return statement, after `Leave </Text>`:
 
@@ -1314,7 +1315,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   const [enable_extension, setEnableExtension] = useState(false);
   ```
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   You call `enableExtension` to enable your extension. To do this using the `switch`, add the following code after the `leave` function:
 
@@ -1328,7 +1329,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   };
   ```
 
-1. **Disable the extension**
+3. **Disable the extension**
 
   You call `disableExtension` to disable your extension. To do this using the `switch`, add the following code after the `enableExtension` function:
 
@@ -1339,7 +1340,7 @@ You can use a `switch` to enable and disable the extension you wish to integrate
   };
   ````
 
-1. **Add the necessary callbacks**
+4. **Add the necessary callbacks**
 
   To get notified of important events, add the following callbacks to `agoraEngine.registerEventHandler({`:
 
@@ -1411,17 +1412,18 @@ To ensure that you have integrated the extension in your app:
    - *Android*
 
      1. Enable Developer options on your Android device, and then connect it to your computer using a USB cable.
-     1. Run `npx react-native run-android` in the project root directory.
+     2. Run `npx react-native run-android` in the project root directory.
 
    - *iOS:*
 
      1. Run your app with Xcode.
 
    If this is the first time you run the project, you need to grant microphone and camera access to your app.
+2. Click Join to start a call.
 
 3. Join the same channel from another test device or the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html).
 
-1. Experience the features of your new extension.
+4. Experience the features of your new extension.
 
 ## Reference
 
@@ -1466,30 +1468,30 @@ In order to integrate an extension into your project:
 
 1. **Activate an extension**
 
-  1. Log in to [Agora Console](https://console.agora.io/v2).
-  2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
+    1. Log in to [Agora Console](https://console.agora.io/v2).
+    2. In the left navigation panel, click **Extension Marketplace**, then click the extension you want to activate.
 
-    You are now on the extension detail page.
+      You are now on the extension detail page.
 
-  3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+    3. Select a pricing plan and click **Buy and Activate**.
+      - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+        The **Projects** section appears and lists all of your projects.
+      - If you have not created an Agora project:
 
-       [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
+        [Create a new project](../manage-agora-account.mdx), the project appears in the **Projects** section.
 
-  4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
+    4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
-1. **Get the apiKey and apiSecret for the extension**
+2. **Get the apiKey and apiSecret for the extension**
 
   If required for the extension, to get the extension apiKey and apiSecret, in the **Projects** extension detail page, click **View** in the **Secret** column.
 
-1. Open your Unity project
+3. Open your Unity project
 
   Load the [SDK quickstart](/en/realtime-media/video/get-started-sdk) Video Calling project you created previously.
 
-1. Get the extension
+4. Get the extension
 
   Visit the [Agora Extensions Marketplace](https://www.agora.io/en/agora-extensions-marketplace/) and follow the procedure to download and install the desired extension.
 
@@ -1507,7 +1509,7 @@ This section presents the framework code you add to your Unity project to integr
   RtcEngine.LoadExtensionProvider("<extensionLibraryPath>");
   ```
 
-1. **Enable the extension**
+2. **Enable the extension**
 
   To enable the extension, add the following code to the `Join` method before `RtcEngine.EnableVideo();`:
 
@@ -1526,7 +1528,7 @@ Extensions marketplace hosts both third-party extensions as well as those develo
 :::
   To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, Video SDK processes data from extension A before extension B.
 
-1. **Set extension properties**
+3. **Set extension properties**
 
   To customize the extension for your particular game, set suitable values for the extension properties. Refer to the extension documentation for a list of available property names and allowable values. To set a property, add the following code to the `Join` method after `RtcEngine.EnableExtension`:
 
@@ -1552,6 +1554,8 @@ To ensure that you have integrated the extension in your game:
 4. In **Unity Editor**, in `Assets/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Code/JoinChannelVideo.cs`, update `_appID`, `_channelName`, and `_token` with the values for your temporary token.
 
 5. In **Unity Editor**, click **Play**. A moment later you see the game installed on your device.
+
+6. Click Join to start a call.
 
 7. Experience the features of your new extension.
 

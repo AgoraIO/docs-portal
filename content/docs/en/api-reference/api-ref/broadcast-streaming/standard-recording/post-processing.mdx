@@ -11,7 +11,7 @@ Cuts out a specific part of a video recording of a live stream and generates an 
 
 ### HTTP request
 
-```shellscript
+```bash
 POST https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/cutting/{stream_name}
 ```
 
@@ -44,7 +44,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 POST https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/record/standard/regions/{region}/cutting/{stream_name} HTTP/1.1
 ```
 
@@ -60,7 +60,7 @@ POST https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/r
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -70,7 +70,7 @@ Takes a snapshot from a video recording of a live stream and generates a JPEG fi
 
 ### HTTP request
 
-```shellscript
+```bash
 POST https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/snapshot/{stream_name}
 ```
 
@@ -102,7 +102,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 POST https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/record/standard/regions/{region}/snapshot/{stream_name} HTTP/1.1
 ```
 
@@ -117,7 +117,7 @@ POST https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/r
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -127,7 +127,7 @@ Lists the recording files for the specified live stream within a time range.
 
 ### HTTP request
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/preview_list?start_time={start_time}&end_time={end_time}&stream_name={stream_name}
 ```
 
@@ -163,19 +163,19 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/record/standard/regions/{region}/preview_list?start_time={start_time}&end_time={end_time}&stream_name={stream_name} HTTP/1.1
 ```
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
 **Request body**
 
-```shellscript
+```bash
 {
     "list": [
         {

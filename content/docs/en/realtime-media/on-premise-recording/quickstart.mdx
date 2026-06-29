@@ -50,11 +50,11 @@ This section shows how to integrate the On-Premise Recording SDK into your app.
 
 ### Integrate the SDK
 
-1. Download the latest On-Premise Recording SDK package from the [SDKs](/en/api-reference/sdks?platform=linux-cpp) page.
+1. Download the latest On-Premise Recording SDK package from the [SDKs](/en/api-reference/sdks?product=on-premise-recording&platform=linux) page.
 
 2. Extract the package. The directory structure should look like this:
 
-    ```
+    ```text
     .
     ├── agora_sdk
     │   ├── include
@@ -412,16 +412,16 @@ Add the following dependencies to your project’s` pom.xml` file based on your 
 <TabsContent value="manual">
 ### Download and unzip
 
-1. Download the latest On-Premise Recording SDK package from the [SDKs](/sdks?platform=linux) page.
+1. Download the latest On-Premise Recording SDK package from the [SDKs](/en/api-reference/sdks?product=on-premise-recording&platform=linux) page.
 
 1. Unzip the SDK and you see the following contents:
-```txt
-doc/                            JavaDoc documentation
-   examples/                       Sample projects and code
-   sdk/                            Core SDK files
-     sdk/agora-recording-sdk.jar     Java class library
-     sdk/agora-recording-sdk-javadoc.jar  JavaDoc (optional, for IDE support)
-```
+   ```txt
+   doc/                            JavaDoc documentation
+      examples/                       Sample projects and code
+      sdk/                            Core SDK files
+        sdk/agora-recording-sdk.jar     Java class library
+        sdk/agora-recording-sdk-javadoc.jar  JavaDoc (optional, for IDE support)
+   ```
 
 ### Integrate the SDK
 
@@ -455,27 +455,27 @@ mvn install:install-file \\
 ```
 
 1. Add the dependency to your `pom.xml`:
-```xml
-<dependency>
-      <groupId>io.agora.rtc</groupId>
-      <artifactId>linux-recording-java-sdk</artifactId>
-      <version>4.4.150.5</version>
-    </dependency>
-```
+   ```xml
+   <dependency>
+         <groupId>io.agora.rtc</groupId>
+         <artifactId>linux-recording-java-sdk</artifactId>
+         <version>4.4.150.5</version>
+       </dependency>
+   ```
 
 #### Reference the JAR directly
 
 1. Create a `libs` directory and copy the JAR files:
-```bash
-mkdir -p libs
-   cp sdk/agora-recording-sdk.jar libs/
-   cp sdk/agora-recording-sdk-javadoc.jar libs/  # Optional, for IDE JavaDoc support
-```
+   ```bash
+   mkdir -p libs
+      cp sdk/agora-recording-sdk.jar libs/
+      cp sdk/agora-recording-sdk-javadoc.jar libs/  # Optional, for IDE JavaDoc support
+   ```
 
 2. Add the JAR file to your classpath when compiling or running:
-```xml
-java -cp .:libs/agora-recording-sdk.jar YourMainClass
-```
+   ```xml
+   java -cp .:libs/agora-recording-sdk.jar YourMainClass
+   ```
 
 :::info[info]
 To enable JavaDoc support in your IDE (such as IntelliJ IDEA or Eclipse), attach `agora-recording-sdk-javadoc.jar` to the library reference.
@@ -490,10 +490,10 @@ The SDK depends on native `.so` libraries written in C++. Whether you integrate 
 The native `.so` files are bundled inside the `agora-recording-sdk.jar` or `linux-recording-java-sdk-<version>.jar` file. You need to extract them manually:
 
 1. Create a directory to store the native library files:
-```bash
-mkdir -p libs
-   cd libs
-```
+   ```bash
+   mkdir -p libs
+      cd libs
+   ```
 
 2. Use the `jar` command to extract contents:
 
@@ -532,18 +532,18 @@ The JVM must be configured to locate the extracted `.so` files. You can do this 
 * **Option 1: Use `LD_LIBRARY_PATH` (Recommended)**
 
     1. Set the environment variable before launching your app:
-```bash
-# Assuming the .so files are in ./libs/native/linux/x86_64
-       LIB_DIR=$(pwd)/libs/native/linux/x86_64
-       export LD_LIBRARY_PATH=$LIB_DIR:$LD_LIBRARY_PATH
-```
+       ```bash
+       # Assuming the .so files are in ./libs/native/linux/x86_64
+              LIB_DIR=$(pwd)/libs/native/linux/x86_64
+              export LD_LIBRARY_PATH=$LIB_DIR:$LD_LIBRARY_PATH
+       ```
 
     2. Run your application:
-```xml
-java -jar your-app.jar
-       # Or with classpath:
-       java -cp "your-classpath" YourMainClass
-```
+       ```xml
+       java -jar your-app.jar
+              # Or with classpath:
+              java -cp "your-classpath" YourMainClass
+       ```
 
 * **Option 2: Use JVM option `-Djava.library.path`**
 
@@ -832,7 +832,7 @@ Follow these steps to compile, configure, and run the Agora recording sample usi
 
    In the `Examples-Mvn` directory, create a `.keys` file and add your Agora credentials:
 
-   ```
+   ```text
    appId=YOUR_APP_ID
    token=YOUR_TOKEN
    ```

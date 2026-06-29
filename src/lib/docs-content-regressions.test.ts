@@ -206,6 +206,217 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('keeps screenshot upload provider details grouped in tabs across screenshot upload docs', () => {
+    const screenshotUploadDocs = [
+      'realtime-media/video/build/add-advanced-video-features/screenshot-upload.mdx',
+      'realtime-media/broadcast-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
+      'solutions/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
+    ];
+
+    for (const relativePath of screenshotUploadDocs) {
+      const content = readDoc(relativePath);
+      const startMarker = 'Fill in the following information:';
+      const endMarker = '3. **Integrate Video SDK**';
+      const startIndex = content.indexOf(startMarker);
+      const endIndex = content.indexOf(endMarker, startIndex + 1);
+
+      expect(startIndex).toBeGreaterThanOrEqual(0);
+      expect(endIndex).toBeGreaterThan(startIndex);
+
+      const providerSection = content.slice(startIndex, endIndex);
+
+      expect(providerSection).toContain(
+        '<Tabs defaultValue="aws" groupId="storage-provider" persist>',
+      );
+      expect(providerSection).toContain('<TabsList>');
+      expect(providerSection).toContain(
+        '<TabsTrigger value="aws">AWS</TabsTrigger>',
+      );
+      expect(providerSection).toContain(
+        '<TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>',
+      );
+      expect(providerSection).toContain('<TabsContent value="aws">');
+      expect(providerSection).toContain(
+        '<TabsContent value="alibaba-cloud">',
+      );
+    }
+  });
+
+  it('keeps connection status management free of undefined Vg placeholders', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain('<Vg ');
+    expect(content).not.toContain('</Vg>');
+  });
+
+  it('keeps connection status management free of undefined Vpl placeholders', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain('<Vpl ');
+    expect(content).not.toContain('</Vpl>');
+  });
+
+  it('keeps the iOS reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="ios">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="macos">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const iosSection = content.slice(platformStart, platformEnd);
+
+    expect(iosSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps the macOS reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="macos">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="react-native">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const macosSection = content.slice(platformStart, platformEnd);
+
+    expect(macosSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps the Windows reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="windows">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="blueprint">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const windowsSection = content.slice(platformStart, platformEnd);
+
+    expect(windowsSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps required reconnection diagrams for remaining video platforms', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    const expectations = [
+      {
+        next: '<PlatformStructured platform="electron">',
+        platform: '<PlatformStructured platform="android">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="flutter">',
+        platform: '<PlatformStructured platform="electron">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="ios">',
+        platform: '<PlatformStructured platform="flutter">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="unity">',
+        platform: '<PlatformStructured platform="react-native">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="web">',
+        platform: '<PlatformStructured platform="unreal">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      },
+    ] as const;
+
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+
+    for (const { image, next, platform } of expectations) {
+      const platformStart = content.indexOf(platform, reconnectionHeading + 1);
+      const platformEnd = content.indexOf(next, platformStart + 1);
+
+      expect(platformStart).toBeGreaterThanOrEqual(0);
+      expect(platformEnd).toBeGreaterThan(platformStart);
+
+      const section = content.slice(platformStart, platformEnd);
+
+      expect(section).toContain(image);
+    }
+  });
+
+  it('keeps web connection status management free of shared prerequisite and implementation headings', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain(
+      '\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n',
+    );
+  });
+
+  it('separates the reconnection platform group from the implementation platform group', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).toContain(
+      '</PlatformStructured>\n\n{/* Separate platform groups: reconnection flow vs implementation guide. */}\n\n<PlatformStructured platform="android">',
+    );
+  });
+
   it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
     const multihostDocs = [
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
@@ -392,6 +603,46 @@ describe('docs content regressions', () => {
     );
     expect(rtmDownloads).toContain('agora_rtm: ^2.2.1');
     expect(rtmDownloads).not.toMatch(/<\/?(details|summary|PlatformWrapper)>/);
+
+    const appSizeOptimizationDocs = [
+      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+    ];
+
+    for (const relativePath of appSizeOptimizationDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toContain('<Accordions>');
+      expect(content).toContain('<Accordion title="AI Noise Suppression">');
+      expect(content).toContain('<Accordion title="AI Echo Cancellation">');
+      expect(content).toContain('<Accordion title="Audio Beauty">');
+      expect(content).toContain('<Accordion title="Video Enhancement">');
+      expect(content).toContain('<Accordion title="Local Screenshot Upload">');
+    }
+
+    const voicePricing = readDoc('realtime-media/voice/reference/pricing.mdx');
+
+    expect(voicePricing).toContain('### FAQs');
+    expect(voicePricing).toContain('#### Free minutes');
+    expect(voicePricing).toContain('#### Billing');
+    expect(voicePricing).toContain('#### Duration and usage');
+    expect(voicePricing).toContain('#### Video resolution');
+    expect(voicePricing).toContain('#### Arrears');
+    expect(voicePricing).toContain(
+      '<Accordion title="If I purchase a paid package, do I still get 10,000 free minutes each month?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="If a user doesn’t publish or subscribe to any audio or video streams in a channel, will they still be charged?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="How is usage duration calculated in the bill?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="Can I view individual user usage in the bill?">',
+    );
+    expect(voicePricing).toContain(
+      '<Accordion title="Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?">',
+    );
 
     const rtmpCoreConcepts = readDoc(
       'realtime-media/rtmp-gateway/reference/core-concepts.md',
@@ -781,6 +1032,24 @@ describe('docs content regressions', () => {
     }
   });
 
+  it('keeps shared geofencing pages with the web, react-js, and unreal platform sections', () => {
+    const pages = [
+      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).toContain('<PlatformStructured platform="web">');
+      expect(source).toContain('<PlatformStructured platform="react-js">');
+      expect(source).toContain('<PlatformStructured platform="unreal">');
+    }
+  });
+
+
   it('does not leave multi-host optimization pages as placeholder stubs', () => {
     const pages = [
       'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
@@ -872,6 +1141,38 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps simulcasting implementation details from the legacy shared Android content', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      'The following snippet shows how `SimulcastConfig` and related classes are defined in the SDK:',
+    );
+    expect(source).toContain('public class SimulcastConfig {');
+    expect(source).toContain('STREAM_LAYER_6(5)');
+    expect(source).toContain('publishFallbackEnable');
+    expect(source).toContain(
+      'Constants.VideoStreamType videoStreamType = Constants.VideoStreamType.valueOf(videoStream);',
+    );
+    expect(source).toContain(
+      'Compared with dual-stream video, simulcasting offers the following improvements:',
+    );
+    expect(source).toContain(
+      '**More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8.',
+    );
+    expect(source).toContain(
+      'If bandwidth or device performance is limited, the sender automatically disables extra streams.',
+    );
+    expect(source).toContain(
+      'Simulcasting supports publishing video streams at specific tiers based on the subscriber\'s settings.',
+    );
+  });
+
   it('keeps video quickstart free of the broken gradle code fence structure', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
@@ -903,6 +1204,138 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps realtime video get-started-sdk sections that were missing in the PDF review', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      '### Complete sample code for real-time Video Calling',
+    );
+    expect(source).toContain('### Display the local video');
+    expect(source).toContain('### Create a basic UI');
+    expect(source).toContain(
+      'Create a new project</TabsTrigger>\n  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>',
+    );
+    expect(source).toContain(
+      '4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.',
+    );
+    expect(source).toContain(
+      '1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.',
+    );
+    expect(source).toContain('### Create a level');
+  });
+
+  it('keeps the video web quickstart top-of-page sample entry link', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const webSectionStart = source.indexOf('<PlatformStructured platform="web">');
+    const unrealSectionStart = source.indexOf(
+      '<PlatformStructured platform="unreal">',
+    );
+
+    expect(webSectionStart).toBeGreaterThanOrEqual(0);
+    expect(unrealSectionStart).toBeGreaterThan(webSectionStart);
+
+    const webSection = source.slice(webSectionStart, unrealSectionStart);
+
+    expect(webSection).toContain('<Cards>');
+    expect(webSection).toContain('<Card');
+    expect(webSection).toContain('title="RTC SDK API examples"');
+    expect(webSection).toContain(
+      'href="https://github.com/AgoraIO/API-Examples-Web"',
+    );
+    expect(webSection).not.toContain(
+      'Explore sample implementations to quickly integrate Conversational AI.',
+    );
+  });
+
+  it('keeps the video unreal setup section fully populated', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const unrealSectionStart = source.indexOf(
+      '<PlatformStructured platform="unreal">',
+    );
+    const blueprintSectionStart = source.indexOf(
+      '<PlatformStructured platform="blueprint">',
+    );
+
+    expect(unrealSectionStart).toBeGreaterThanOrEqual(0);
+    expect(blueprintSectionStart).toBeGreaterThan(unrealSectionStart);
+
+    const unrealSection = source.slice(unrealSectionStart, blueprintSectionStart);
+
+    expect(unrealSection).toContain('<TabsList>');
+    expect(unrealSection).toContain(
+      '<TabsTrigger value="existing">Add to an existing project</TabsTrigger>',
+    );
+    expect(unrealSection).toContain(
+      '1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.',
+    );
+    expect(unrealSection).toContain('3. Add the Agora dependency library');
+    expect(unrealSection).toContain('1. Create a new C++ class and generate header and library files');
+    expect(unrealSection).toContain('1. Associate C++ classes and Widgets');
+    expect(unrealSection).toContain(
+      '1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.',
+    );
+  });
+
+  it('keeps the react-js video quickstart local video section before remote video', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const reactJsSectionStart = source.indexOf(
+      '<PlatformStructured platform="react-js">',
+    );
+    const unitySectionStart = source.indexOf(
+      '<PlatformStructured platform="unity">',
+    );
+
+    expect(reactJsSectionStart).toBeGreaterThanOrEqual(0);
+    expect(unitySectionStart).toBeGreaterThan(reactJsSectionStart);
+
+    const reactJsSection = source.slice(reactJsSectionStart, unitySectionStart);
+
+    expect(reactJsSection).toContain('### Display the local video');
+    expect(reactJsSection).toContain('### Display remote video');
+    expect(reactJsSection.indexOf('### Display the local video')).toBeLessThan(
+      reactJsSection.indexOf('### Display remote video'),
+    );
+    expect(reactJsSection).toContain('<LocalUser');
+    expect(reactJsSection).toContain('videoTrack={localCameraTrack}');
+  });
+
+  it('keeps the blueprint video quickstart new-project steps fully populated', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const blueprintSectionStart = source.indexOf(
+      '<PlatformStructured platform="blueprint">',
+    );
+
+    expect(blueprintSectionStart).toBeGreaterThanOrEqual(0);
+
+    const blueprintSection = source.slice(blueprintSectionStart);
+
+    expect(blueprintSection).toContain(
+      '2. Configure your project as follows:',
+    );
+    expect(blueprintSection).toContain(
+      '* **Language**: Select **Blueprint**.',
+    );
+    expect(blueprintSection).toContain(
+      '* **Target Platform**: Pick **Desktop**.',
+    );
+    expect(blueprintSection).toContain('Click **Create**.');
+  });
+
   it('keeps voice api-examples populated with sample repositories and next steps', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/voice/reference/api-examples.mdx'),
@@ -913,6 +1346,78 @@ describe('docs content regressions', () => {
     expect(source).toContain('## Sample project repositories');
     expect(source).toContain('AgoraIO/API-Examples');
     expect(source).toContain('## Next steps');
+  });
+
+  it('keeps voice supported platforms expanded into the shared multi-platform structure', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/voice/reference/supported-platforms.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="web">');
+    expect(source).toContain('<PlatformStructured platform="windows">');
+    expect(source).toContain('<PlatformStructured platform="unreal">');
+    expect(source).toContain('Voice SDK supports the following ABIs.');
+    expect(source).not.toContain('| Android | <Slot name="android" /> |');
+  });
+
+  it('keeps video migration guide expanded into the shared ten-platform structure from the legacy source', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/reference/migration-guide.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="web">');
+    expect(source).toContain('<PlatformStructured platform="macos">');
+    expect(source).toContain('<PlatformStructured platform="windows">');
+    expect(source).toContain('<PlatformStructured platform="electron">');
+    expect(source).toContain('<PlatformStructured platform="flutter">');
+    expect(source).toContain('<PlatformStructured platform="react-native">');
+    expect(source).toContain('<PlatformStructured platform="unity">');
+    expect(source).toContain('<PlatformStructured platform="unreal">');
+    expect(source).not.toContain('<PlatformStructured platform="react-js">');
+    expect(source).not.toContain('<PlatformStructured platform="blueprint">');
+  });
+
+  it('keeps optimize-multihost-video fully split into android ios and flutter platform sections', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="ios">');
+    expect(source).toContain('<PlatformStructured platform="flutter">');
+    expect(source).not.toContain('<Tabs defaultValue="android"');
+    expect(source).not.toContain('<TabsList>');
+    expect(source).not.toContain('<TabsContent value="android">');
+    expect(source).not.toContain('<TabsContent value="ios">');
+    expect(source).not.toContain('<TabsContent value="flutter">');
+  });
+
+  it('keeps prevent-stream-bombing aligned with the legacy shared security guidance', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain('description: "Procedures to prevent and respond to room bombing."');
+    expect(source).toContain('This page describes a series of measures to deal with room bombing and disruptive behavior');
+    expect(source).toContain('[Secure authentication with tokens](../token-authentication/authentication-workflow)');
+    expect(source).toContain('[Channel Management RESTful API](/en/api-reference/api-ref/video)');
+    expect(source).toContain('`unsubscribe`');
+    expect(source).not.toContain('description: "Procedures to prevent and respond to housebreaking."');
+    expect(source).not.toContain('[Secure authentication with tokens](../../authenticate-users/use-tokens.mdx)');
   });
 
   it('keeps voice error codes page in the condensed reference format', () => {

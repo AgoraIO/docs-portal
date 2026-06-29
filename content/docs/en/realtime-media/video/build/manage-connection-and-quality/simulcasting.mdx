@@ -3,27 +3,28 @@ title: 'Simulcasting multi-bitrate video streams (Beta)'
 description: 'Publish multiple video stream layers from one source to adapt Video Calling quality across devices and network conditions.'
 ---
 
-In real-time interactive scenarios such as live broadcasts, conferences, and large-class lectures, dynamically adjusting video resolution improves the user experience across terminals and network conditions.
+In real-time interactive scenarios such as live broadcasts, conferences, and large-class lectures, adjusting video resolution dynamically improves the user experience across different terminals and network conditions.
 
 Common use cases include:
 
-- **Live streaming**: Push high resolution and fall back to lower resolutions under poor network conditions.
-- **Video conferencing**: Use high resolution for the main speaker and lower resolution for thumbnails.
-- **Multi-terminal adaptation**: Deliver different resolutions to devices with different performance capabilities.
+- **Live streaming**: Push high resolution, and fall back to low resolution under poor network conditions.
+- **Video conferencing**: Use high resolution for the main speaker and low resolution for thumbnails.
+- **Multi-terminal adaptation**: Deliver high resolution to high-performance devices and low resolution to low-performance devices to optimize bandwidth.
 - **Multi-screen adaptation**: Stream different resolutions for large, medium, and small screens.
 
-This guide shows you how to use Video SDK to implement multi-bitrate video streaming in Video Calling.
+This guide shows you how to use the Video SDK to implement multi-bitrate video streaming.
 
 ## Understand the tech
 
-Starting with v4.6.0, Video SDK introduces simulcasting. It enables you to send up to four simultaneous streams of different configurations from the same video source: one source stream and up to three additional configurations. Subscribers can choose different stream levels based on rendering window size or business logic, balancing image quality, performance, bandwidth, and network conditions.
+Starting with v4.6.0, Video SDK introduces simulcasting, which enables you to send up to four simultaneous streams of different configurations (resolutions and frame rates) from the same video source: one source stream and up to three additional configurations. Subscribers can choose different stream levels based on rendering window size or business logic, balancing image quality, performance, bandwidth, and network conditions. If bandwidth or device performance is limited, the sender automatically disables extra streams.
 
-Compared to dual-stream video, simulcasting supports more stream configurations and smoother switching. If you already use dual-stream video, see [Simulcasting vs. Dual-stream video](#simulcasting-vs-dual-stream-video).
+Compared to dual-stream video, simulcasting supports more stream configurations and smoother switching. If you already use dual-stream video, see [Simulcasting vs. Dual-stream video](#simulcasting-vs-dual-stream-video) to choose the right solution for your needs.
 
 :::info[Additional information about simulcasting]
-- Each client can publish up to four simulcast configurations by default.
-- Simulcasting is currently available only on native platforms. It is not supported on the Web platform.
-- Cloud recording supports only the large or small stream when simulcasting is enabled.
+- Each client can publish up to four simulcast configurations, including both the large and small streams. If you need more (up to eight streams), [contact technical support](mailto:support@agora.io).
+- Simulcasting supports publishing video streams at specific tiers based on the subscriber's settings. This feature is disabled by default. [Contact technical support](mailto:support@agora.io) to enable.
+- Simulcasting is currently available only for video publishing and subscription on the native platforms. It is not supported on the Web platform. [Contact technical support](mailto:support@agora.io) if you need it.
+- Cloud recording supports only large or small stream when simulcasting is enabled.
 :::
 
 ## Prerequisites
@@ -34,89 +35,35 @@ Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/g
 
 To enable and implement this feature, contact [Agora support](mailto:support@agora.io).
 
-<PlatformStructured platform="android">
-Before joining a channel, call `setSimulcastConfig` and configure the `SimulcastConfig` parameters.
-
-```java
-public abstract int setSimulcastConfig(SimulcastConfig simulcastConfig);
-```
-
-### Sample code
-
-```java
-private SimulcastConfig simulcastConfig = new SimulcastConfig();
-
-int layer1 = SimulcastConfig.StreamLayerIndex.STREAM_LAYER_1.getValue();
-simulcastConfig.configs[layer1].dimensions.width = 1280;
-simulcastConfig.configs[layer1].dimensions.height = 720;
-simulcastConfig.configs[layer1].framerate = 30;
-simulcastConfig.configs[layer1].enable = true;
-
-engine.setSimulcastConfig(simulcastConfig);
-```
-
-### Subscribe to a stream
-
-```java
-engine.setRemoteVideoStreamType(uid, Constants.VideoStreamType.VIDEO_STREAM_LAYER_1);
-```
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-Before joining a channel, call `setSimulcastConfig` and configure `AgoraSimulcastConfig`.
-
-```objc
-- (int)setSimulcastConfig:(AgoraSimulcastConfig* _Nonnull)simulcastConfig;
-```
-
-### Sample code
-
-```swift
-let ret = agoraKit.setSimulcastConfig(simulcastConfig)
-```
-
-### Subscribe to a stream
-
-```swift
-let ret = agoraKit.setRemoteVideoStream(uid, type: .layer1)
-```
-</PlatformStructured>
-
-<PlatformStructured platform="macos">
-Before joining a channel, call `setSimulcastConfig` and configure `AgoraSimulcastConfig`.
-
-```objc
-- (int)setSimulcastConfig:(AgoraSimulcastConfig* _Nonnull)simulcastConfig;
-```
-</PlatformStructured>
-
-<PlatformStructured platform="windows">
-Before joining a channel, call `setSimulcastConfig` and configure `SimulcastConfig`.
-
-```cpp
-virtual int setSimulcastConfig(const SimulcastConfig& simulcastConfig) = 0;
-```
-
-### Subscribe to a stream
-
-```cpp
-rtcEngine->setRemoteVideoStreamType(remoteUid, VIDEO_STREAM_LAYER_1);
-```
-</PlatformStructured>
-
 ## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
 
 ### Simulcasting vs. Dual-stream video
 
-Simulcasting and dual-stream video are mutually exclusive. The API you set later overrides the earlier one. Choose the solution that fits your business needs and disable the other.
+Simulcasting and dual-stream video (`setDualStreamMode`) are mutually exclusive. The API you set later overrides the earlier one. Choose the solution that fits your business needs and disable the other.
 
-Compared with dual-stream video, simulcasting offers:
+Compared with dual-stream video, simulcasting offers the following improvements:
 
-- More subscribed stream layers
-- Smoother switching between bitrate levels
-- Better flexibility for different business scenarios
+<PlatformStructured platform="android">
+- **More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8. On top of the original large (`VideoStreamType.VIDEO_STREAM_HIGH`) and small (`VideoStreamType.VIDEO_STREAM_LOW`) streams, simulcasting adds six additional configurations. These are defined as `VIDEO_STREAM_LAYER_1` to `VIDEO_STREAM_LAYER_6`, corresponding to `SimulcastConfig.StreamLayerIndex.STREAM_LAYER_1` to `SimulcastConfig.StreamLayerIndex.STREAM_LAYER_6`.
+</PlatformStructured>
 
-To better balance simulcasting performance and network consumption, Agora applies the following strategies:
+<PlatformStructured platform="ios">
+- **More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8. On top of the original large (`VideoStreamType.high`) and small (`VideoStreamType.low`) streams, simulcasting adds six additional configurations. These are defined as `VIDEO_STREAM_LAYER_1` to `VIDEO_STREAM_LAYER_6`, corresponding to `AgoraStreamLayerIndex.layer1` to `AgoraStreamLayerIndex.layer6`.
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+- **More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8. On top of the original large (`VideoStreamType.high`) and small (`VideoStreamType.low`) streams, simulcasting adds six additional configurations. These are defined as `VIDEO_STREAM_LAYER_1` to `VIDEO_STREAM_LAYER_6`, corresponding to `AgoraStreamLayerIndex.layer1` to `AgoraStreamLayerIndex.layer6`.
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+- **More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8. On top of the original large (`VideoStreamType.VIDEO_STREAM_HIGH`) and small (`VideoStreamType.VIDEO_STREAM_LOW`) streams, simulcasting adds six additional configurations. These are defined as `VIDEO_STREAM_LAYER_1` to `VIDEO_STREAM_LAYER_6`, corresponding to `SimulcastConfig.StreamLayerIndex.STREAM_LAYER_1` to `SimulcastConfig.StreamLayerIndex.STREAM_LAYER_6`.
+</PlatformStructured>
+
+- **Smoother switching experience**: Instead of the two-level switching between large and small streams, simulcasting supports multi-level bitrate switching. This provides a smoother experience and more flexibility for different business scenarios.
+
+To better balance simulcasting performance and network consumption, Agora has implemented the following strategies:
 
 - When the sender device is performance-limited, upstream configurations are automatically disabled, and subscribers adapt to the remaining streams.
 - When the uplink bandwidth is limited, additional configurations are disabled first. Then, the previous dual-stream rate control strategy is applied to ensure smooth publishing and subscription.
@@ -124,30 +71,9 @@ To better balance simulcasting performance and network consumption, Agora applie
 In terms of functionality, the differences between simulcasting and dual-stream video are summarized in the following table. Agora will continue to close the feature gap in future releases.
 
 | Feature | Simulcasting | Dual-stream video |
-|---------|:------------:|:-----------------:|
-| Supports multi-channel scenarios | Yes | Yes |
-| Small stream automatically adapts video attributes | No | Yes |
-| Publisher sends video streams based on subscriber's chosen configuration | Yes. Contact technical support to enable. | Yes |
-| When the sender is performance-limited, video streams other than the source stream can be disabled | Yes | No |
-| When the downlink network is limited, the upstream small stream can be enabled automatically | No | Yes |
-
-### API reference
-
-<PlatformStructured platform="android">
-- [`setSimulcastConfig`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setsimulcastconfig)
-- [`setRemoteVideoStreamType`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremotevideostreamtype2)
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-- [`setSimulcastConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/Classes/AgoraRtcEngineKit.html)
-- [`setRemoteVideoStreamType`](https://api-ref.agora.io/en/video-sdk/ios/4.x/Classes/AgoraRtcEngineKit.html)
-</PlatformStructured>
-
-<PlatformStructured platform="macos">
-- [`setSimulcastConfig`](https://api-ref.agora.io/en/video-sdk/macos/4.x/Classes/AgoraRtcEngineKit.html)
-</PlatformStructured>
-
-<PlatformStructured platform="windows">
-- [`setSimulcastConfig`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setsimulcastconfig)
-- [`setRemoteVideoStreamType`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setremotevideostreamtype)
-</PlatformStructured>
+| --- | :---: | :---: |
+| Supports multi-channel scenarios | ✔ | ✔ |
+| Small stream automatically adapts video attributes | ✘ | ✔ |
+| Publisher sends video streams based on subscriber's chosen configuration | ✔ Contact technical support to enable | ✔ |
+| When the sender is performance-limited, video streams other than the source stream can be disabled | ✔ | ✘ |
+| When the downlink network is limited, the upstream small stream can be enabled automatically | ✘ | ✔ |

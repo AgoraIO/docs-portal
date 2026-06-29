@@ -518,7 +518,7 @@ Call `getConversationsFromServerWithCursor:pageSize:completion` to retrieve conv
 
 For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `EMOptions#loadEmptyConversations` to `YES` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
 
-```objective-c
+```objc
 //pageSize: The number of conversations that you expect to get on each page. The value range is [1,50].
 [AgoraChatClient.sharedClient.chatManager getConversationsFromServerWithCursor:@"" pageSize:20 completion:^(AgoraChatCursorResult * _Nullable result, AgoraChatError * _Nullable error) {
 
@@ -545,7 +545,7 @@ To ensure data reliability, we recommend retrieving less than 50 historical mess
 
 Refer to the following code sample:
 
-```objective-c
+```objc
 AgoraChatFetchServerMessagesOption* option = [[AgoraChatFetchServerMessagesOption alloc] init];
     [AgoraChatClient.sharedClient.chatManager fetchMessagesFromServerBy:@"conversationId" conversationType:AgoraChatConversationTypeGroupChat cursor:@"" pageSize:20 option:option completion:^(AgoraChatCursorResult * _Nullable result, AgoraChatError * _Nullable aError) {
 
@@ -604,7 +604,7 @@ Call `removeMessagesFromServerWithTimeStamp` or `removeMessagesFromServerMessage
 
 Other devices logged in to the account will receive the `MultiDevicesDelegate` callback `multiDevicesMessageBeRemoved`, and the deleted messages will be automatically removed from the device locally.
 
-```objective-c
+```objc
 // Delete messages by timestamp
 AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversationId"];
     [conversation removeMessagesFromServerWithTimeStamp:timeToRemove completion:^(AgoraChatError * _Nullable aError) {
@@ -620,7 +620,7 @@ AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager 
 
 Call `deleteServerConversation` to delete conversations and their historical messages unidirectionally from the server. After the conversations and messages are deleted from the server, you can no longer get them from the server. The deleted conversations still exist on the local device, but the messages are automatically removed from the device. Other chat users can still get the conversations and their historical messages from the server.
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.chatManager deleteServerConversation:@"conversationId1" conversationType:AgoraChatConversationTypeChat isDeleteServerMessages:YES completion:^(NSString *aConversationId, AgoraChatError *aError) {
 
     }];

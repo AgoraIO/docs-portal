@@ -429,15 +429,31 @@ This section contains content that completes the information on this page, or po
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="android-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="android-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="android-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="android-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -447,22 +463,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LEAVE_CHANNEL` (5): The user leaves the channel.
-- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`CONNECTING` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JOIN_SUCCESS` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="android-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="android-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="android-troubleshooting-2-failed" /> |
+
+<Slot for="android-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="android-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `LOST` (16): The SDK lost connection with the server.
 - `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="android-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
 - `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -474,15 +510,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="electron-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="electron-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="electron-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="electron-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -492,22 +544,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LeaveChannel` (5): The user leaves the channel.
-- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`Connecting` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JoinSuccess` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="electron-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="electron-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="electron-troubleshooting-2-failed" /> |
+
+<Slot for="electron-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="electron-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `Lost` (16): The SDK lost connection with the server.
 - `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RenewToken` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BannedByServer` (3): The user is banned by the server.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="electron-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
 - `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -519,15 +591,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="flutter-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="flutter-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="flutter-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="flutter-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -537,22 +625,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LeaveChannel` (5): The user leaves the channel.
-- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`Connecting` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JoinSuccess` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="flutter-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="flutter-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="flutter-troubleshooting-2-failed" /> |
+
+<Slot for="flutter-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="flutter-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `Lost` (16): The SDK lost connection with the server.
 - `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RenewToken` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BannedByServer` (3): The user is banned by the server.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="flutter-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
 - `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -564,15 +672,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannelByToken`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannelByToken`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+| **Disconnected** | <Slot name="ios-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannelByToken`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="ios-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+
+<Slot for="ios-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannelByToken`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="ios-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -582,22 +706,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LeaveChannel` (5): The user leaves the channel.
-- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`Connecting` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JoinSuccess` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="ios-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="ios-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="ios-troubleshooting-2-failed" /> |
+
+<Slot for="ios-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="ios-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `Lost` (16): The SDK lost connection with the server.
 - `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RenewToken` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BannedByServer` (3): The user is banned by the server.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="ios-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
 - `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannelByToken` to rejoin the channel.
 - `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannelByToken` to rejoin the channel.
-<ul><li>`RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannelByToken` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannelByToken` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -609,15 +753,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannelByToken`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannelByToken`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+| **Disconnected** | <Slot name="macos-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannelByToken`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="macos-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+
+<Slot for="macos-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannelByToken`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="macos-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -627,22 +787,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LeaveChannel` (5): The user leaves the channel.
-- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`Connecting` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JoinSuccess` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="macos-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="macos-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="macos-troubleshooting-2-failed" /> |
+
+<Slot for="macos-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="macos-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `Lost` (16): The SDK lost connection with the server.
 - `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RenewToken` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BannedByServer` (3): The user is banned by the server.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="macos-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
 - `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannelByToken` to rejoin the channel.
 - `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannelByToken` to rejoin the channel.
-<ul><li>`RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannelByToken` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannelByToken` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -654,15 +834,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="react-native-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="react-native-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="react-native-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="react-native-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -672,22 +868,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LeaveChannel` (5): The user leaves the channel.
-- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`Connecting` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JoinSuccess` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="react-native-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="react-native-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="react-native-troubleshooting-2-failed" /> |
+
+<Slot for="react-native-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="react-native-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `Lost` (16): The SDK lost connection with the server.
 - `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RenewToken` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BannedByServer` (3): The user is banned by the server.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="react-native-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
 - `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -699,15 +915,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `JoinChannel`.
-- After calling `LeaveChannel`. |
-|**Connecting** |The transient state after calling `JoinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `OnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `OnRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `OnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="unity-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `JoinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `OnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="unity-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+
+<Slot for="unity-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `JoinChannel`.
+- After calling `LeaveChannel`.
+
+</Slot>
+
+<Slot for="unity-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `OnRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `OnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -717,22 +949,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LEAVE_CHANNEL` (5): The user leaves the channel.
-- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`CONNECTING` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JOIN_SUCCESS` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="unity-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="unity-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="unity-troubleshooting-2-failed" /> |
+
+<Slot for="unity-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="unity-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `LOST` (16): The SDK lost connection with the server.
 - `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="unity-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
 - `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `LeaveChannel` to leave the current channel and then call `JoinChannel` to rejoin the channel.
 - `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `JoinChannel` to rejoin the channel.
-<ul><li>`REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `JoinChannel` again after the local user has joined the channel.</li><li>The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `JoinChannel` again after the local user has joined the channel.
+  - The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -744,15 +996,31 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="unreal-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="unreal-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="unreal-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="unreal-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -762,22 +1030,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LEAVE_CHANNEL` (5): The user leaves the channel.
-- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`CONNECTING` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JOIN_SUCCESS` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="unreal-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="unreal-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="unreal-troubleshooting-2-failed" /> |
+
+<Slot for="unreal-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="unreal-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `LOST` (16): The SDK lost connection with the server.
 - `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="unreal-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
 - `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -789,15 +1077,23 @@ The following table maps the relationships between different connection states a
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**DISCONNECTED** |Connection disconnected. The SDK will not automatically reconnect while in this state. This state indicates that the user is in one of the following stages: - Has not joined the channel using `join`.
+| **DISCONNECTED** | <Slot name="web-states-1-disconnected" /> |
+| **CONNECTING** | Joining. The instantaneous state after calling `join`. |
+| **CONNECTED** | Occurs after the app has successfully joined the channel. At this point the user can publish or subscribe to the audio and video in the channel. |
+| **RECONNECTING** | Occurs when the connection is interrupted due to a network disconnection or switch. The SDK automatically tries to reconnect after an interruption. |
+| **DISCONNECTING** | Disconnecting. This is the state when `leave` is called. |
+
+<Slot for="web-states-1-disconnected">
+
+Connection disconnected. The SDK will not automatically reconnect while in this state. This state indicates that the user is in one of the following stages:
+
+- Has not joined the channel using `join`.
 - Has left the channel using `leave`.
-- Kicked out of the channel by the Agora server or failed to connect. |
-|**CONNECTING** |Joining. The instantaneous state after calling `join`. |
-|**CONNECTED** |Occurs after the app has successfully joined the channel. At this point the user can publish or subscribe to the audio and video in the channel. |
-|**RECONNECTING** |Occurs when the connection is interrupted due to a network disconnection or switch. The SDK automatically tries to reconnect after an interruption. |
-|**DISCONNECTING** |Disconnecting. This is the state when `leave` is called. |
+- Kicked out of the channel by the Agora server or failed to connect.
+
+</Slot>
 
 ### API reference
 
@@ -816,15 +1112,31 @@ The app may have the following connection states before joining, during a sessio
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `joinChannel`.
-- After calling `leaveChannel`. |
-|**Connecting** |The transient state after calling `joinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="windows-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="windows-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="windows-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="windows-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -834,22 +1146,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LEAVE_CHANNEL` (5): The user leaves the channel.
-- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`CONNECTING` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JOIN_SUCCESS` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="windows-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="windows-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="windows-troubleshooting-2-failed" /> |
+
+<Slot for="windows-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="windows-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `LOST` (16): The SDK lost connection with the server.
 - `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="windows-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
 - `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
 - `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
-<ul><li>`REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `joinChannel` again after the local user has joined the channel.</li><li>The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 
@@ -864,15 +1196,31 @@ The app may have the following connection states before joining, during a sessio
 
 The app may have the following connection states before joining, during a session, and after leaving a channel:
 
-|Connection state |Description	|
+|Connection state |Description |
 |:-----------------|:-----------|
-|**Disconnected** |Initial connection state. Usually occurs: - Before calling `JoinChannel`.
-- After calling `LeaveChannel`. |
-|**Connecting** |The transient state after calling `JoinChannel`. |
-|**Connected** |Occurs after the app successfully joins a channel. The SDK also triggers the `FOnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
-|**Reconnecting** |Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption. - If the client successfully rejoins the channel, the SDK triggers the `FOnRejoinChannelSuccess` callback.
-- If the channel is not rejoined within 10 seconds, the SDK triggers `FOnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel. |
-|**Failed** |Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+| **Disconnected** | <Slot name="blueprint-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `JoinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `FOnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="blueprint-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+
+<Slot for="blueprint-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `JoinChannel`.
+- After calling `LeaveChannel`.
+
+</Slot>
+
+<Slot for="blueprint-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `FOnRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `FOnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel.
+
+</Slot>
 
 ### State description and troubleshooting
 
@@ -882,22 +1230,42 @@ The following table maps the relationships between different connection states a
 
 |Connection state |Description and troubleshooting guide |
 |:-----------------|:-----------|
-|**Disconnected** |- `LEAVE_CHANNEL` (5): The user leaves the channel.
-- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel. |
-|**Connecting** |`CONNECTING` (0): The app is trying to join the Agora channel. |
-|**Connected** |`JOIN_SUCCESS` (1): The app has successfully joined the channel. |
-|**Reconnecting** |- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+| **Disconnected** | <Slot name="blueprint-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="blueprint-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="blueprint-troubleshooting-2-failed" /> |
+
+<Slot for="blueprint-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="blueprint-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
 - `LOST` (16): The SDK lost connection with the server.
 - `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
 - `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
 - `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
-- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status. |
-|**Failed** |- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="blueprint-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
 - `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `LeaveChannel` to leave the current channel and then call `JoinChannel` to rejoin the channel.
 - `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
 - `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
 - `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `JoinChannel` to rejoin the channel.
-<ul><li>`REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:<ul><li>The app calls `JoinChannel` again after the local user has joined the channel.</li><li>The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.</li></ul></li></ul> |
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `JoinChannel` again after the local user has joined the channel.
+  - The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.
+
+</Slot>
 
 ### API reference
 

@@ -13,13 +13,13 @@ This page explains how to generate a signature.
 The signature combines the source string (`SourceString`) and your secret key (`apiSecret&`) using an encryption algorithm, as follows:
 - GET methods:
 
-  ```
+  ```text
   signature = URLEncode(Base64( HMAC-SHA1( apiSecret&, SourceString) ), "UTF-8")
   ```
 
 - POST and PUT methods:
 
-  ```
+  ```text
   signature = Base64( HMAC-SHA1( apiSecret&, SourceString) )
   ```
 
@@ -50,14 +50,14 @@ To construct `SourceString`, follow these steps:
 
 1. Get the type of the HTTP request and add an "&":
 
-   ```
+   ```text
    GET&
    ```
 
 2. In the request URL, leave only the path after `[host]` and before `?` (if any), URL-encode the resulting string (that is, `/usage`), and add an "&". The source string now looks like:
 
 
-   ```
+   ```text
    GET&%2Fusage&
    ```
 
@@ -84,7 +84,7 @@ For example, if the apiSecret you provide when applying to become a vendor is U1
 
 The encryption algorithm for GET methods is as follows:
 
-```
+```text
 signature = URLEncode(Base64( HMAC-SHA1( apiSecret&, SourceString) ), "UTF-8")
 ```
 
@@ -128,7 +128,7 @@ To construct `SourceString`, follow these steps:
 
 1. Get the type of the HTTP request and add an "&":
 
-   ```
+   ```text
    POST&
    ```
 
@@ -160,7 +160,7 @@ For example, if the apiSecret you provide when applying to become a vendor is U1
 
 The encryption algorithm for POST and PUT methods is as follows:
 
-```
+```text
 signature = Base64( HMAC-SHA1( apiSecret&, SourceString) )
 ```
 

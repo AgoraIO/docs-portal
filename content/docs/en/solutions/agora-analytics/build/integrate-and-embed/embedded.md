@@ -49,7 +49,7 @@ To obtain the URL for embedding Agora Analytics feature page in your portal, sen
 
 The response is in JSON format and returns the URL to the `feature` page you request. For example, if your request specifies `feature` as `callSearch`, the response looks like the following:
 
-```
+```text
 https://analytics-lab.agora.io/analytics/call/search?token=xxxxxxxxxxxxxxxxxxxxxx
 ```
 
@@ -105,7 +105,7 @@ The following table lists the available setting in **Page Attributes** and their
 
 Copy the following code snippet into your portal, and replace `iframeUrl` with the complete URL you built from the previous steps.
 
-```jsx
+```tsx
 <iframe
     src={iframeUrl}
     frameBorder={0}
@@ -121,7 +121,7 @@ Copy the following code snippet into your portal, and replace `iframeUrl` with t
 
 To get the URL for a detailed Call Inspector page, append the required parameters to the following base URL: 
 
-```
+```text
 https://analytics-lab.agora.io/api/analytics/research
 ```
 

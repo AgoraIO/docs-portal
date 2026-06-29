@@ -3,8 +3,6 @@ title: "Alpha transparency effect"
 description: "Procedures to prevent and respond to housebreaking."
 ---
 
-**Supported platforms:** Android, iOS, macOS, Windows, React Native, and Unity.
-
 In various real-time video interaction use-cases, segmenting the host's background and applying transparent special effects can make the interaction more engaging, enhance immersion, and improve the overall interactive experience.
 
 <PlatformStructured platform="android">
@@ -587,12 +585,12 @@ rtcEngine.setVideoEncoderConfiguration({advanceOptions: {encodeAlpha: true}});
 1. Use the `RtcSurfaceView` component to create local and remote views.
 1. In the `canvas` parameter of the `RtcRenderViewProps` property, set `enableAlphaMask` of the `VideoCanvas` to `true` to enable alpha mask rendering and alpha transparency effects.
 
-```jsx
-<RtcSurfaceView
-  canvas={{ uid: 0, enableAlphaMask: true }}
-  style={styles.videoView}
-/>
-```
+   ```tsx
+   <RtcSurfaceView
+     canvas={{ uid: 0, enableAlphaMask: true }}
+     style={styles.videoView}
+   />
+   ```
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -631,44 +629,44 @@ Refer to the following steps to process the self-captured video data, push the s
 
 1. Process texture data. Extract and convert the color data of the `Texture2D` object into two byte arrays, one containing the RGBA data and the other containing the alpha channel data for subsequent processing and transmission.
 
-  ```csharp
-  // The Read/Write enable property is set to true and bound to the TextureWithAlphaBuffer variable
-  public Texture2D TextureWithAlphaBuffer;
-  private byte[] _rgbaData = null;
-  private byte[] _alphaData = null;
-  private int _textureWidth;
-  private int _textureHeight;
-  // Customized video track IDs
-  private uint _videoTrackId = 0;
+   ```csharp
+   // The Read/Write enable property is set to true and bound to the TextureWithAlphaBuffer variable
+   public Texture2D TextureWithAlphaBuffer;
+   private byte[] _rgbaData = null;
+   private byte[] _alphaData = null;
+   private int _textureWidth;
+   private int _textureHeight;
+   // Customized video track IDs
+   private uint _videoTrackId = 0;
 
-  // Convert color data from the Color32 array to rgbaData and alphaData arrays
-  private void ConvertColor32(Color32[] colors, byte[] rgbaData, byte[] alphaData)
-  {
-    int i = 0;
-    int l = 0;
-    foreach (var color in colors)
-    {
-      rgbaData[i++] = color.r;
-      rgbaData[i++] = color.g;
-      rgbaData[i++] = color.b;
-      rgbaData[i++] = color.a;
+   // Convert color data from the Color32 array to rgbaData and alphaData arrays
+   private void ConvertColor32(Color32[] colors, byte[] rgbaData, byte[] alphaData)
+   {
+     int i = 0;
+     int l = 0;
+     foreach (var color in colors)
+     {
+       rgbaData[i++] = color.r;
+       rgbaData[i++] = color.g;
+       rgbaData[i++] = color.b;
+       rgbaData[i++] = color.a;
 
-      alphaData[l++] = color.a;
-    }
-  }
+       alphaData[l++] = color.a;
+     }
+   }
 
-  // Read the color data from the texture and initialize the _rgbaData and _alphaData arrays, as well as record the width and height of the texture
-  public void InitTextureDataWithAlphaBuffer()
-  {
-    Color32[] color32s = TextureWithAlphaBuffer.GetPixels32(0);
-    _rgbaData = new byte[color32s.Length * 4];
-    _alphaData = new byte[color32s.Length];
-    ConvertColor32(color32s, _rgbaData, _alphaData);
-    _textureWidth = TextureWithAlphaBuffer.width;
-    _textureHeight = TextureWithAlphaBuffer.height;
-    this.Log.UpdateLog(string.Format("AlphaBuffer width: {0}, height: {1}", _textureWidth, _textureHeight));
-  }
-  ```
+   // Read the color data from the texture and initialize the _rgbaData and _alphaData arrays, as well as record the width and height of the texture
+   public void InitTextureDataWithAlphaBuffer()
+   {
+     Color32[] color32s = TextureWithAlphaBuffer.GetPixels32(0);
+     _rgbaData = new byte[color32s.Length * 4];
+     _alphaData = new byte[color32s.Length];
+     ConvertColor32(color32s, _rgbaData, _alphaData);
+     _textureWidth = TextureWithAlphaBuffer.width;
+     _textureHeight = TextureWithAlphaBuffer.height;
+     this.Log.UpdateLog(string.Format("AlphaBuffer width: {0}, height: {1}", _textureWidth, _textureHeight));
+   }
+   ```
 
 2. Configure the video encoding parameters to send alpha data to the remote end. Call `SetVideoEncoderConfiguration` to set the video encoding properties and set `encodeAlpha` to `true` to encode and send alpha data to the remote end.
 
@@ -755,50 +753,50 @@ Refer to the following steps to merge the captured video data with the alpha cha
 
 1. Merge the captured video data with the alpha data.
 
-  ```csharp
-  public void InitTextureDataWithAlphaStitchMode()
-  {
-    // Read raw texture data
-    Color32[] color32s = TextureWithAlphaBuffer.GetPixels32(0);
+   ```csharp
+   public void InitTextureDataWithAlphaStitchMode()
+   {
+     // Read raw texture data
+     Color32[] color32s = TextureWithAlphaBuffer.GetPixels32(0);
 
-    // Get the width and height of the original texture
-    var width = TextureWithAlphaBuffer.width;
-    var height = TextureWithAlphaBuffer.height;
+     // Get the width and height of the original texture
+     var width = TextureWithAlphaBuffer.width;
+     var height = TextureWithAlphaBuffer.height;
 
-    // Create a new texture that is twice the height of the original texture.
-    TextureWithAlphaStitchMode = new Texture2D(width, height * 2, TextureFormat.RGBA32, false);
+     // Create a new texture that is twice the height of the original texture.
+     TextureWithAlphaStitchMode = new Texture2D(width, height * 2, TextureFormat.RGBA32, false);
 
-    // Initialize a new color array to store the spliced pixel data
-    Color32[] newColor32s = new Color32[color32s.Length * 2];
+     // Initialize a new color array to store the spliced pixel data
+     Color32[] newColor32s = new Color32[color32s.Length * 2];
 
-    // Copy the original color data to the top half of the new color array  Array.Copy(color32s, newColor32s, color32s.Length);
+     // Copy the original color data to the top half of the new color array  Array.Copy(color32s, newColor32s, color32s.Length);
 
-    // Splice the alpha channel data into the lower half of the new color array
-    for (int i = color32s.Length; i < newColor32s.Length; i++)  {
-      newColor32s[i].r = color32s[i - color32s.Length].a;
-      newColor32s[i].g = newColor32s[i].r;
-      newColor32s[i].b = newColor32s[i].r;
-      newColor32s[i].a = 255;
-    }
+     // Splice the alpha channel data into the lower half of the new color array
+     for (int i = color32s.Length; i < newColor32s.Length; i++)  {
+       newColor32s[i].r = color32s[i - color32s.Length].a;
+       newColor32s[i].g = newColor32s[i].r;
+       newColor32s[i].b = newColor32s[i].r;
+       newColor32s[i].a = 255;
+     }
 
-    // Apply the new color array to the new texture
-    TextureWithAlphaStitchMode.SetPixels32(newColor32s);  TextureWithAlphaStitchMode.Apply();
+     // Apply the new color array to the new texture
+     TextureWithAlphaStitchMode.SetPixels32(newColor32s);  TextureWithAlphaStitchMode.Apply();
 
-    // Convert color data and stores it in _rgbaData and _alphaData arrays
-    _rgbaData = new byte[newColor32s.Length * 4];
-    _alphaData = new byte[newColor32s.Length];
-    ConvertColor32(newColor32s, _rgbaData, _alphaData);
+     // Convert color data and stores it in _rgbaData and _alphaData arrays
+     _rgbaData = new byte[newColor32s.Length * 4];
+     _alphaData = new byte[newColor32s.Length];
+     ConvertColor32(newColor32s, _rgbaData, _alphaData);
 
-    // Update texture width and height
-    _textureWidth = TextureWithAlphaStitchMode.width;
-    _textureHeight = TextureWithAlphaStitchMode.height;
-    this.Log.UpdateLog(string.Format("AlphaStitchMode width: {0}, height: {1}", _textureWidth, _textureHeight));
+     // Update texture width and height
+     _textureWidth = TextureWithAlphaStitchMode.width;
+     _textureHeight = TextureWithAlphaStitchMode.height;
+     this.Log.UpdateLog(string.Format("AlphaStitchMode width: {0}, height: {1}", _textureWidth, _textureHeight));
 
-    // Bind the new texture to the RawImage component in the UI.
-    GameObject.Find("RawImage").GetComponent<RawImage>().texture = TextureWithAlphaStitchMode;
-    GameObject.Find("RawImage").GetComponent<RectTransform>().sizeDelta = new Vector2(_textureWidth, _textureHeight);
-  }
-  ```
+     // Bind the new texture to the RawImage component in the UI.
+     GameObject.Find("RawImage").GetComponent<RawImage>().texture = TextureWithAlphaStitchMode;
+     GameObject.Find("RawImage").GetComponent<RectTransform>().sizeDelta = new Vector2(_textureWidth, _textureHeight);
+   }
+   ```
 
 2. Configure the video encoding parameters to send alpha data to the remote end. Call `SetVideoEncoderConfiguration` to set the video encoding properties and set `encodeAlpha` to `true` to encode and send alpha data to the remote end.
 
@@ -880,10 +878,10 @@ Take the following steps to implement this logic:
 
 1. When rendering local video using the `VideoSurface` component, call `SetLocalVideoDataSourcePosition` to get the position of the video frame. Setting the position to `POSITION_POST_CAPTURER` means getting the video frame after the local video capture is done.
 
-```csharp
-// Set the local video frame position to POSITION_POST_CAPTURER
-RtcEngine.SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER);
-```
+   ```csharp
+   // Set the local video frame position to POSITION_POST_CAPTURER
+   RtcEngine.SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER);
+   ```
 
 2. Call `EnableVirtualBackground` on the host to enable the background segmentation algorithm and get the alpha data of the portrait area. The recommended parameters are as follows:
    - `enabled`: Set to `true` to enable virtual background.
@@ -899,23 +897,23 @@ this.Log.UpdateLog("EnableVirtualBackground true :" + nRet);
 
 3. Call `SetVideoEncoderConfiguration` to set `encodeAlpha` to `true`. This encodes the alpha information and sends it to the remote end. Call `JoinChannel`[2/2] to join the channel.
 
-```csharp
-VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();
-videoEncoderConfiguration.advanceOptions.encodeAlpha = true;
-RtcEngine.SetVideoEncoderConfiguration(videoEncoderConfiguration);
-RtcEngine.JoinChannel(_token, _channelName, "", 0);
-```
+   ```csharp
+   VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();
+   videoEncoderConfiguration.advanceOptions.encodeAlpha = true;
+   RtcEngine.SetVideoEncoderConfiguration(videoEncoderConfiguration);
+   RtcEngine.JoinChannel(_token, _channelName, "", 0);
+   ```
 
 4. Render views with alpha transparency effects using the `VideoSurfaceYUVA` component.
 
-```csharp
-private VideoSurface MakeImageSurface(string goName)
-{
-  // ......
-  // Render with VideoSurfaceYUVA
-  VideoSurface videoSurface = go.AddComponent<VideoSurfaceYUVA>();
-  return videoSurface;
-}
-```
+   ```csharp
+   private VideoSurface MakeImageSurface(string goName)
+   {
+     // ......
+     // Render with VideoSurfaceYUVA
+     VideoSurface videoSurface = go.AddComponent<VideoSurfaceYUVA>();
+     return videoSurface;
+   }
+   ```
 </PlatformStructured>
 
