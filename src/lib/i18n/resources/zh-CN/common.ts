@@ -25,6 +25,7 @@ const zhCnCommon = {
     searchEmpty: '没有找到匹配页面。',
     searchUnavailable: '搜索索引不可用。',
     tabsLabel: 'Tabs',
+    sectionPickerLabel: '分区',
     pagesLabel: 'Pages',
     toc: '本页目录',
     tocEmpty: '当前页面没有标题。',
