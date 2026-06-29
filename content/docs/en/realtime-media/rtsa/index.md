@@ -14,7 +14,7 @@ RTSA provides high-quality realtime media streaming and signaling for hardware-o
 - device-to-device media interop
 - IoT realtime products
 
-## What the existing Shengwang docs usually contain
+## What the existing Agora docs usually contain
 
 - landing page
 - runnable examples
