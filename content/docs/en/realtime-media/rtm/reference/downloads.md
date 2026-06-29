@@ -129,6 +129,7 @@ To manually install the Signaling SDK for Android from a downloaded package:
 | `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
 | `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
 | `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
+
 </TabsContent>
 
 <TabsContent value="ios">
@@ -418,6 +419,7 @@ To manually install the Signaling SDK for Unity, do one of the following:
 | macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
 | Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
 | Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
+
 </TabsContent>
 
 <TabsContent value="flutter">

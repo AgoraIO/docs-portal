@@ -80,7 +80,7 @@ The request body is a JSON object, which contains the following fields:
 | Field | Type | Description | Required |
 | :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `mute_duration` | Number | The length of time to mute speech from the current time. The unit is milliseconds.`-1` indicates that the member is muted permanently. | Yes |
-| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs.
+| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
 
 ### HTTP response
 
@@ -158,6 +158,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/mute/{member
 | Parameter | Type | Description | Required |
 | :------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `member` | String | The username of the  member to be unmuted. You can pass in a maximum of 60 user IDs that are separated with commas (","). In the URL, use "%2C" to represent ",". | Yes |
+
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
 #### Request header

@@ -55,7 +55,7 @@ In Native/third-party framework SDKs (v4.x), `H.264` video data is sent and rece
 To send and receive `JPEG` video data, use the following methods:
 
 | Video SDK type | Method |
-|--|:-----------|
+| --- | :----------- |
 | Android | `agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
 | iOS/macOS | `agoraKit.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
 | Windows | `agora::base::AParameter apm(agoraEngine);`<br/>`apm->setParameters("{\"engine.video.codec_type\": \"20\"}")` |

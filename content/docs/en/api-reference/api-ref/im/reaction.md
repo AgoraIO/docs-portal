@@ -67,7 +67,7 @@ POST https://{host}/{org_name}/{app_name}/reaction/user/{userId}
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -75,14 +75,14 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/json` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
 #### Request body
 
 | Parameter | Type | Description |
-| :-------------- | :----- | :-- |
+| :-------------- | :----- | :--- |
 | `msg_Id`  | String | The message ID to which you want to add the reaction. |
 | `message` | String | The ID of the emoji, same as that on the client. The maximum length is 128 characters.  |
 
@@ -151,7 +151,7 @@ GET https://{host}/{org_name}/{app_name}/reaction/user/{userId}?msgIdList={N,M}&
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -167,7 +167,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
@@ -251,7 +251,7 @@ DELETE https://{host}/{org_name}/{app_name}/reaction/user/{userId}
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -259,7 +259,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
@@ -315,7 +315,7 @@ https://{host}/{org_name}/{app_name}/reaction/user/{userId}/detail?msgId={msgId}
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -336,7 +336,7 @@ If the pagination parameters are specified, the server returns the users that ad
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 

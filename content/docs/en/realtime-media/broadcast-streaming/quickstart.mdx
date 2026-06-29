@@ -1436,6 +1436,7 @@ To access the camera and microphone on iOS devices, add the required permissions
 |:----|:-----|:------|
 | Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
 | Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
+
 :::note
 - If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
 - For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
@@ -2052,6 +2053,7 @@ To access the camera and microphone on macOS devices, add the required permissio
 |:----|:-----|:------|
 | Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
 | Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
+
 :::note
 - If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
 - For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
@@ -2892,6 +2894,7 @@ Support for these formats may vary across browsers and devices. The following ta
 | Safari 12.1+    | ✔  | ✔       | ✔(Requires Safari 16+) |
 | Safari < 12.1    | ✘  | ✔       | ✘         |
 | AndroidChrome 58+  | ✔  | No clear information | ✔(Requires Chrome 68+) |
+
 :::note
 - H.264 support on Firefox depends on the `OpenH264` video codec plug-in from Cisco Systems, Inc.
 - For Chrome, support for H.264 on Android devices varies based on device hardware compatibility with hardware codecs mandated by Chrome.
@@ -4716,6 +4719,7 @@ If your target platform is iOS or macOS, add the microphone and camera permissio
 |:-------------|:--------------------|:------------------|
 | Microphone  | Privacy - Microphone Usage Description | for audio calls |
 | Camera    | Privacy - Camera Usage Description   | for video calls |
+
 ### Start and close the app
 
 To start Broadcast Streaming, request microphone and camera permissions, initialize the Agora SDK instance, set up event handlers, join a channel, and display the local video.
@@ -7767,7 +7771,7 @@ In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the 
 The following table lists the main nodes:
 
 | # | Node | Type | Description |
-|:--|:-----|:-----|:------------|
+| :--- | :----- | :----- | :------------ |
 | 1 | **Set Show Mouse Cursor** | Native* | <Slot name="1" /> |
 | 2 | **Load Agora Config** | Custom** | Loads Agora configuration. Used to verify user identity when creating and joining channels. |
 | 3 | **Create BP Video Widget** | Native | <Slot name="3" /> |

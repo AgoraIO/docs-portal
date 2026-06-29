@@ -48,7 +48,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `data` | JSON | The details of the response. |
 | `timestamp` | Number | The Unix timestamp (ms) when the user is registered. |
 | `duration` | Number | The time duration (ms) from sending the HTTP request to receiving the response. |
-| `chatroomid` | String | The unique identifier of the chat room. | Yes |
+| `chatroomid` | String | The unique identifier of the chat room. |
 
 ## Authorization
 

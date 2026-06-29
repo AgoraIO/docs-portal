@@ -940,6 +940,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | Parameter     | Type | Description                                          |
 | :------- | :---------------- | :------------------------------------------- |
 | `data` | JSON | The online state of a user, in the format of `"username": "online state"`. For example, if user1 is online, returns `"user1": "online"`; otherwise, returns `"user1": "offline"`. |
+
 For the parameters and detailed descriptions, see [Common parameters](#param).
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](./http-status-codes) for possible reasons.
@@ -1007,6 +1008,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | Parameter     |  Type | Description                                             |
 | :------- | :-----| :----------------------------------------------------------- |
 | `data` | JSON | The online state of a user, in the format of `"username": "online state"`. For example, if user1 is online, returns `"user1": "online"`; otherwise, returns `"user1": "offline"`.|
+
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](./http-status-codes) for possible reasons.
 
 ### Example

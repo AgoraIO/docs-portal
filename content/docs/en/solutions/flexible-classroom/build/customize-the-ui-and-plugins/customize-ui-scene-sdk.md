@@ -260,7 +260,7 @@ UI stores are located in `packages/fcr-ui-scene/src/uistores`:
 | `/action-bar`  | The UI Store customized for large class classes.   |
 | `/breakout`    | The UI Store customized for H5 large class classes.|
 | `/device-setting`| The UI Store customized for one-on-one scenarios.|
-| `/gallery-view | The UI Store customized for large class classes.   |
+| `/gallery-view` | The UI Store customized for large class classes.   |
 | `/layout`      | The UI Store customized for H5 large class classes.|
 | `/notification`| The Store customized for one-on-one scenarios.     |
 | `/participants`| The UI Store customized for large class classes.   |

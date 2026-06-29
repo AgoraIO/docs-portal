@@ -177,7 +177,7 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the `data` field in the response body contains the following parameters:
 
 | Parameter | Type | Description |
-|:------|:--------|:--|
+| :------ | :-------- | :--- |
 | `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
@@ -240,7 +240,7 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the `data` field in the response body contains the following parameters:
 
 | Parameter | Type | Description |
-|:------|:--------|:--|
+| :------ | :-------- | :--- |
 | `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
