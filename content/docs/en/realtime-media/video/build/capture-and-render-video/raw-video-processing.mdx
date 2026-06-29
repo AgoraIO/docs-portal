@@ -67,67 +67,67 @@ private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver(
     Log.i(TAG, "OnEncodedVideoImageReceived" + \Thread.currentThread().getName());
     if (isSnapshot) {
       isSnapshot = false;
-      
+
       // Get the image bitmap
       VideoFrame.Buffer buffer = videoFrame.getBuffer();
       VideoFrame.I420Buffer i420Buffer = buffer.toI420();
       int width = i420Buffer.getWidth();
       int height = i420Buffer.getHeight();
-      
+
       ByteBuffer bufferY = i420Buffer.getDataY();
       ByteBuffer bufferU = i420Buffer.getDataU();
       ByteBuffer bufferV = i420Buffer.getDataV();
-      
+
       byte[] i420 = YUVUtils.toWrappedI420(bufferY, bufferU, bufferV, width, height);
-      
+
       Bitmap bitmap = YUVUtils.NV21ToBitmap(getContext(),
         YUVUtils.I420ToNV21(i420, width, height),
         width,
         height);
-      
+
       Matrix matrix = new Matrix();
       matrix.setRotate(270);
       // Rotate around the center
       Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
       // Save to file
       saveBitmap2Gallery(newBitmap);
-      
+
       bitmap.recycle();
       i420Buffer.release();
     }
     return false;
   }
-  
+
   @Override
   public boolean onScreenCaptureVideoFrame(VideoFrame videoFrame) {
     return false;
   }
-  
+
   @Override
   public boolean onMediaPlayerVideoFrame(VideoFrame videoFrame, int i) {
     return false;
   }
-  
+
   @Override
   public boolean onRenderVideoFrame(String s, int i, VideoFrame videoFrame) {
     return false;
   }
-  
+
   @Override
   public int getVideoFrameProcessMode() {
     return 0;
   }
-  
+
   @Override
   public int getVideoFormatPreference() {
     return 1;
   }
-  
+
   @Override
   public int getRotationApplied() {
     return 0;
   }
-  
+
   @Override
   public boolean getMirrorApplied() {
     return false;
@@ -437,7 +437,7 @@ To implement raw video data functionality in your project, refer to the followin
   // Register or unregister the video observer
   BOOL CGrayVideoProcFrameObserver::RegisterVideoFrameObserver(
     BOOL bEnable, IVideoFrameObserver *videoFrameObserver) {
-    
+
     // Create an AutoPtr instance using IMediaEngine as a template for IMediaEngine
     agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
     // Use the queryInterface method through AutoPtr instance to get a pointer to IMediaEngine instance
@@ -445,11 +445,11 @@ To implement raw video data functionality in your project, refer to the followin
     // Call registerVideoFrameObserver through IMediaEngine instance using AutoPtr instance
     mediaEngine.queryInterface(m_rtcEngine, AGORA_IID_MEDIA_ENGINE);
     int nRet = 0;
-    
+
     agora::base::AParameter apm(*m_rtcEngine);
-    
+
     if (mediaEngine.get() == NULL) return FALSE;
-    
+
     if (bEnable) {
       // Register the video frame observer
       nRet = mediaEngine->registerVideoFrameObserver(videoFrameObserver);
@@ -457,77 +457,77 @@ To implement raw video data functionality in your project, refer to the followin
       // Unregister the video observer
       nRet = mediaEngine->registerVideoFrameObserver(nullptr);
     }
-    
+
     return nRet == 0 ? TRUE : FALSE;
   }
   ```
 
 2. Obtain video data through the `onCaptureVideoFrame` and `onRenderVideoFrame` callbacks and process the video frames according to your requirements.
 
-  ```cpp
-  // Process locally captured raw video data from the camera, perform grayscale processing, and then send it back to the SDK
-  bool CGrayVideoProcFrameObserver::onCaptureVideoFrame(VideoFrame &videoFrame) {
-    // Calculate the size of the video frame
-    int nSize = videoFrame.height * videoFrame.width;
-    
-    // Apply grayscale processing to the U and V components of the video frame
-    memset(videoFrame.uBuffer, 128, nSize / 4);
-    memset(videoFrame.vBuffer, 128, nSize / 4);
-    
-    // Return true to indicate successful processing
-    return true;
-  }
+   ```cpp
+   // Process locally captured raw video data from the camera, perform grayscale processing, and then send it back to the SDK
+   bool CGrayVideoProcFrameObserver::onCaptureVideoFrame(VideoFrame &videoFrame) {
+     // Calculate the size of the video frame
+     int nSize = videoFrame.height * videoFrame.width;
 
-  // Process raw video data received from a remote user
-  bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId, 
-                            rtc::uid_t remoteUid, 
-                            VideoFrame &videoFrame) {
-    // Return true to indicate that the received video frame is processed successfully
-    return true;
-  }
+     // Apply grayscale processing to the U and V components of the video frame
+     memset(videoFrame.uBuffer, 128, nSize / 4);
+     memset(videoFrame.vBuffer, 128, nSize / 4);
 
-  // Apply an average filter to the locally captured raw video data
-  bool CAverageFilterVideoProcFrameObserver::onCaptureVideoFrame(
-    VideoFrame &videoFrame) {
-    // Static variables to control the step size and direction of the average filter
-    static int step = 1;
-    static bool flag = true;
-    
-    // Update the step size based on the flag
-    if (flag) {
-      step += 2;
-    } else {
-      step -= 2;
-    }
-    
-    // Adjust step size and direction based on certain conditions
-    if (step >= 151) {
-      flag = false;
-      step -= 4;
-    } else if (step <= 0) {
-      flag = true;
-      step += 4;
-    }
-    
-    // Apply average filtering to the Y, U, and V components of the video frame
-    AverageFiltering((unsigned char *)videoFrame.yBuffer, videoFrame.width, 
-            videoFrame.height, step);
-    AverageFiltering((unsigned char *)videoFrame.uBuffer, videoFrame.width / 2, 
-            videoFrame.height / 2, step);
-    AverageFiltering((unsigned char *)videoFrame.vBuffer, videoFrame.width / 2, 
-            videoFrame.height / 2, step);
-    
-    // Return true to indicate successful processing
-    return true;
-  }
+     // Return true to indicate successful processing
+     return true;
+   }
 
-  // Process the locally captured raw video data from screen capture
-  bool CGrayVideoProcFrameObserver::onScreenCaptureVideoFrame(
-    VideoFrame &videoFrame) {
-    // Return true to indicate that the screen-captured video frame is processed successfully
-    return true;
-  }
-  ```
+   // Process raw video data received from a remote user
+   bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId,
+                             rtc::uid_t remoteUid,
+                             VideoFrame &videoFrame) {
+     // Return true to indicate that the received video frame is processed successfully
+     return true;
+   }
+
+   // Apply an average filter to the locally captured raw video data
+   bool CAverageFilterVideoProcFrameObserver::onCaptureVideoFrame(
+     VideoFrame &videoFrame) {
+     // Static variables to control the step size and direction of the average filter
+     static int step = 1;
+     static bool flag = true;
+
+     // Update the step size based on the flag
+     if (flag) {
+       step += 2;
+     } else {
+       step -= 2;
+     }
+
+     // Adjust step size and direction based on certain conditions
+     if (step >= 151) {
+       flag = false;
+       step -= 4;
+     } else if (step <= 0) {
+       flag = true;
+       step += 4;
+     }
+
+     // Apply average filtering to the Y, U, and V components of the video frame
+     AverageFiltering((unsigned char *)videoFrame.yBuffer, videoFrame.width,
+             videoFrame.height, step);
+     AverageFiltering((unsigned char *)videoFrame.uBuffer, videoFrame.width / 2,
+             videoFrame.height / 2, step);
+     AverageFiltering((unsigned char *)videoFrame.vBuffer, videoFrame.width / 2,
+             videoFrame.height / 2, step);
+
+     // Return true to indicate successful processing
+     return true;
+   }
+
+   // Process the locally captured raw video data from screen capture
+   bool CGrayVideoProcFrameObserver::onScreenCaptureVideoFrame(
+     VideoFrame &videoFrame) {
+     // Return true to indicate that the screen-captured video frame is processed successfully
+     return true;
+   }
+   ```
 
 ## Reference
 
@@ -572,49 +572,49 @@ To implement raw video data functionality in your project, refer to the followin
 
 1. Before joining the channel, create an `IVideoFrameObserver` object and register the video observer by calling the `RegisterVideoFrameObserver` method. To apply pre-processed video data, set the `formatPreference` to `FRAME_TYPE_YUV420` and the `mode` to `INTPTR`.
 
-  ```csharp
-  // Register the video observer
-  RtcEngine.RegisterVideoFrameObserver(
-    new VideoFrameObserver(this),
-    VIDEO_OBSERVER_FRAME_TYPE.FRAME_TYPE_YUV420,
-    VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER |
-    VIDEO_MODULE_POSITION.POSITION_PRE_RENDERER |
-    VIDEO_MODULE_POSITION.POSITION_PRE_ENCODER,
-    OBSERVER_MODE.INTPTR
-  );
-  ```
+   ```csharp
+   // Register the video observer
+   RtcEngine.RegisterVideoFrameObserver(
+     new VideoFrameObserver(this),
+     VIDEO_OBSERVER_FRAME_TYPE.FRAME_TYPE_YUV420,
+     VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER |
+     VIDEO_MODULE_POSITION.POSITION_PRE_RENDERER |
+     VIDEO_MODULE_POSITION.POSITION_PRE_ENCODER,
+     OBSERVER_MODE.INTPTR
+   );
+   ```
 
 1. After obtaining video data via the `OnCaptureVideoFrame` and `OnRenderVideoFrame` callbacks, process it according to your requirements.
 
-  ```csharp
-  class VideoFrr : IVideoFrameObserver {
-    // Get the original video data captured by the local camera
-    public override bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame) {
-      ProcessVideoFrame(videoFrame);
-      return true;
-    }
+   ```csharp
+   class VideoFrr : IVideoFrameObserver {
+     // Get the original video data captured by the local camera
+     public override bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame) {
+       ProcessVideoFrame(videoFrame);
+       return true;
+     }
 
-    // Get the video data sent by the remote user
-    public override bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame) {
-      ProcessVideoFrame(videoFrame);
-      return true;
-    }
+     // Get the video data sent by the remote user
+     public override bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame) {
+       ProcessVideoFrame(videoFrame);
+       return true;
+     }
 
-    public void ProcessVideoFrame(VideoFrame videoFrame) {
-      int yBufferLength = videoFrame.yStride * videoFrame.height;
-      int uBufferLength = videoFrame.uStride * videoFrame.height / 2;
-      int vBufferLength = videoFrame.vStride * videoFrame.height / 2;
+     public void ProcessVideoFrame(VideoFrame videoFrame) {
+       int yBufferLength = videoFrame.yStride * videoFrame.height;
+       int uBufferLength = videoFrame.uStride * videoFrame.height / 2;
+       int vBufferLength = videoFrame.vStride * videoFrame.height / 2;
 
-      byte[] bytes = new byte[uBufferLength];
-      for (int i = 0; i < uBufferLength; i++) {
-        bytes[i] = 128;
-      }
+       byte[] bytes = new byte[uBufferLength];
+       for (int i = 0; i < uBufferLength; i++) {
+         bytes[i] = 128;
+       }
 
-      System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.uBufferPtr, uBufferLength);
-      System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.vBufferPtr, vBufferLength);
-    }
-  }
-  ```
+       System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.uBufferPtr, uBufferLength);
+       System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.vBufferPtr, vBufferLength);
+     }
+   }
+   ```
 
 :::warning
 
@@ -676,13 +676,13 @@ To implement raw video data functionality in your project, refer to the followin
     RtcEngineContext.appId = StdStrAppId.c_str();
     RtcEngineContext.eventHandler = UserRtcEventHandlerEx.Get();
     RtcEngineContext.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
-    
+
     // Initialize the RtcEngine
     int ret = AgoraUERtcEngine::Get()->initialize(RtcEngineContext);
-    
+
     // Query for the MediaEngine interface
     AgoraUERtcEngine::Get()->queryInterface(AGORA_IID_MEDIA_ENGINE, (void**)&MediaEngine);
-    
+
     // Create and register video frame observer
     UserVideoFrameObserver = MakeShared<FUserVideoFrameObserver>(this);
     MediaEngine->registerVideoFrameObserver(UserVideoFrameObserver.Get());
@@ -700,7 +700,7 @@ To implement raw video data functionality in your project, refer to the followin
     AgoraUERtcEngine::Get()->enableVideo();
     AgoraUERtcEngine::Get()->setClientRole(CLIENT_ROLE_BROADCASTER);
     int ret = AgoraUERtcEngine::Get()->joinChannel(TCHAR_TO_UTF8(*Token), TCHAR_TO_UTF8(*ChannelName), "", 0);
-    
+
     // Set up UI for raw video rendering
     MakeVideoViewForRawData();
   }
@@ -760,7 +760,7 @@ To implement raw video data functionality in your project, refer to the followin
 
   private:
     UProcessVideoRawDataWidget* WidgetPtr;
-    
+
     bool IsWidgetValid() const
     {
       return WidgetPtr && IsValid(WidgetPtr);
@@ -793,7 +793,7 @@ To implement raw video data functionality in your project, refer to the followin
       if (!VideoRenderViewWeakPtr.IsValid())
         return;
 
-      if (RenderTexture == nullptr || !RenderTexture->IsValidLowLevel() || 
+      if (RenderTexture == nullptr || !RenderTexture->IsValidLowLevel() ||
         RenderTexture->GetSizeX() != Width || RenderTexture->GetSizeY() != Height)
       {
         RenderTexture = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);

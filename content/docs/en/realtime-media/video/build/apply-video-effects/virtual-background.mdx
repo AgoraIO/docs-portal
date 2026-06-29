@@ -242,7 +242,7 @@ fun removeBackground() {
 </CodeBlockTabs>
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -305,7 +305,7 @@ func blurBackground() {
 
 ### Set a color background
 
-To apply a solid color as the virtual background, use a hexadecimal color code. 
+To apply a solid color as the virtual background, use a hexadecimal color code.
 
 ```swift
 func colorBackground() {
@@ -347,7 +347,7 @@ agoraEngine.enableVirtualBackground(false, backData: nil, segData: nil)
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -502,12 +502,12 @@ async function setBackgroundImage() {
   }
   imgElement.src = '/images/background.png';
 }
-``` 
+```
 
 ### Integrate the virtual background extension
 
   Run the following comment in the root directory of your project:
-  
+
   ```bash
   npm install agora-extension-virtual-background
   ```
@@ -518,15 +518,15 @@ async function setBackgroundImage() {
 
   1. Add the following code to the script file:
 
-    ```typescript
-    import VirtualBackgroundExtension from "agora-extension-virtual-background";
-    ```
+     ```typescript
+     import VirtualBackgroundExtension from "agora-extension-virtual-background";
+     ```
 
   1. Add the following code to the html file:
 
-    ```html
-    <script src="../agora-extension-virtual-background.js"></script>
-    ```
+     ```html
+     <script src="../agora-extension-virtual-background.js"></script>
+     ```
 
 ### Create and register the extension instance
 
@@ -549,16 +549,16 @@ async function setBackgroundImage() {
 ### Inject a processor into the local video stream
 
   1. Call `extension.createProcessor` to create a `VirtualBackgroundProcessor` instance.
-    
-    ```javascript
-    processor = extension.createProcessor();
-    ```
+
+     ```javascript
+     processor = extension.createProcessor();
+     ```
   2. Call `processor.init` to initialize the plugin. When resource loading or plug-in initialization fails, this method will throw an exception, and the application can catch the exception and handle it accordingly:
 
-    ```javascript
-    await processor.init();
-    ```
-  
+     ```javascript
+     await processor.init();
+     ```
+
   3. After creating the local camera video track, call `videoTrack.pipe` and specify the `videoTrack.processorDestination` attribute to inject the plug-in into the SDK's media processing pipeline.
       :::note
       For computing performance reasons, Agora recommends using the virtual background plug-in on a single video track.
@@ -574,27 +574,27 @@ Call `processor.setOptions` to set the virtual background type and corresponding
 
   1. Set a solid color background: Set the `type` parameter to `color`, then set the `color` parameter to a color value:
 
-    ```javascript
-    processor.setOptions({type: 'color', color: '#00ff00'});
-    ```
+     ```javascript
+     processor.setOptions({type: 'color', color: '#00ff00'});
+     ```
 
   2. Set the picture background: Set the `type` parameter to `img`, and then set the `source` parameter to `HTMLImageElement`:
 
-    ```javascript
-    processor.setOptions({type: 'img', source: HTMLImageElement});
-    ```
+     ```javascript
+     processor.setOptions({type: 'img', source: HTMLImageElement});
+     ```
 
   3. Blur the user's actual background: Set the `type` parameter to `blur`, and then set the `blurDegree` parameter to low (`1`), medium (`2`), or high (`3`):
 
-    ```javascript
-    processor.setOptions({type: 'blur', blurDegree: 2});
-    ```
+     ```javascript
+     processor.setOptions({type: 'blur', blurDegree: 2});
+     ```
 
   4. Set a dynamic background: Set the `type` parameter to `video`, and then set the `source` parameter to a video object:
-    
-    ```javascript
-    processor.setOptions({type: 'video', source: HTMLVideoElement});
-    ```
+
+     ```javascript
+     processor.setOptions({type: 'video', source: HTMLVideoElement});
+     ```
 
 ### Enable the virtual background
 
@@ -623,7 +623,7 @@ Call `processor.setOptions` to set the virtual background type and corresponding
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 - For a working example, check out the [Virtual background web demo](https://webdemo.agora.io/virtualBackground/index.html) and the associated [source code](https://github.com/AgoraIO/API-Examples-Web/tree/main/Demo/virtualBackground).
 
@@ -815,7 +815,7 @@ To blur the video background, use the following code:
 
 ```cpp
 void SetBackgroundBlur(VirtualBackgroundSource& virtualBackgroundSource) {
-  
+
   VirtualBackgroundSource virtualBackgroundSource;
   SegmentationProperty segmentationProperty;
 
@@ -851,7 +851,7 @@ void SetBackgroundColor(VirtualBackgroundSource& virtualBackgroundSource) {
 
   segmentationProperty.greenCapacity = 0.5F;
   // Enable or disable virtual background
-  m_rtcEngine->enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);  
+  m_rtcEngine->enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
 }
 ```
 
@@ -903,7 +903,7 @@ void ResetVirtualBackground() {
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -963,7 +963,7 @@ To avoid performance degradation or unavailable features when enabling Virtual B
 ### Set a blurred background
 
 To blur the video background, use the following code:
- 
+
 ```typescript
 public setBackgroundBlur = () => {
   this.engine?.enableVirtualBackground(true, BackgroundSourceType.BackgroundBlur, {
@@ -975,7 +975,7 @@ public setBackgroundBlur = () => {
 ### Set a color background
 
 To apply a solid color as the virtual background, use a hexadecimal color code. For example, `0x0000FF` for blue:
- 
+
 ```typescript
 public setBackgroundColor = () => {
   this.engine?.enableVirtualBackground(true, BackgroundSourceType.BackgroundColor, {
@@ -987,7 +987,7 @@ public setBackgroundColor = () => {
 ### Set an image background
 
 To set a custom image as the virtual background, specify the absolute path to the image file.
- 
+
 ```typescript
 public setBackgroundImage = (imagePath: string) => {
   this.engine?.enableVirtualBackground(true, BackgroundSourceType.BackgroundImg, {}, {}, imagePath);
@@ -1006,7 +1006,7 @@ private disableVirtualBackground = () => {
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -1064,7 +1064,7 @@ Future<void> setBlurBackground() async {
     modelType: SegModelType.segModelAi,
     greenCapacity: 0.5,
   );
-  
+
   // Enable or disable virtual background
   _engine.enableVirtualBackground(
     enabled: true,
@@ -1094,7 +1094,7 @@ Future<void> setColorBackground() async {
     enabled: true,
     backgroundSource: virtualBackgroundSource,
     segproperty: segmentationProperty);
-} 
+}
 ```
 
 ### Set an image background
@@ -1131,12 +1131,12 @@ Future<void> resetVirtualBackground() async {
     const VirtualBackgroundSource(),
     const SegmentationProperty(),
   );
-} 
+}
 ```
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -1216,7 +1216,7 @@ const setColorBackground = () => {
     },
     {},
   );
-}; 
+};
 ```
 
 ### Set an image background
@@ -1252,7 +1252,7 @@ const resetVirtualBackground = () => {
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 
@@ -1292,7 +1292,7 @@ To avoid performance degradation or unavailable features when enabling Virtual B
 ```csharp
 private bool IsFeatureAvailable() {
   return agoraEngine.IsFeatureAvailableOnDevice(FeatureType.VIDEO_VIRTUAL_BACKGROUND);
-}  
+}
 ```
 
 ### Set a blurred background
@@ -1313,7 +1313,7 @@ private void SetBackgroundBlur()
   // Set background blur
   virtualBackgroundSource.background_source_type = BACKGROUND_SOURCE_TYPE.BACKGROUND_BLUR;
   virtualBackgroundSource.blur_degree = BACKGROUND_BLUR_DEGREE.BLUR_DEGREE_HIGH;
-  
+
   // Set processing properties for background
   SegmentationProperty segmentationProperty = new SegmentationProperty();
   segmentationProperty.modelType = SEG_MODEL_TYPE.SEG_MODEL_AI; // Use SEG_MODEL_GREEN if you have a green background
@@ -1365,13 +1365,13 @@ private void SetBackgroundImage()
     Debug.Log("Device does not support the virtual background feature");
     return;
   }
-  
+
   VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource();
 
   virtualBackgroundSource.background_source_type = BACKGROUND_SOURCE_TYPE.BACKGROUND_IMG;
   string filePath = Path.Combine(Application.persistentDataPath, "<path-of-the-file>.png");
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-    filePath = filePath.Replace('/', '\\');  
+    filePath = filePath.Replace('/', '\\');
 #endif
   virtualBackgroundSource.source = filePath;
 
@@ -1395,7 +1395,7 @@ Resets the virtual background, disabling any applied effects and reverting to th
 
 ## Reference
 
-This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product. 
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 ### API reference
 

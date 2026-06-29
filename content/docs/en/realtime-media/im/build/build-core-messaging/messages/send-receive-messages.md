@@ -15,11 +15,11 @@ After logging in to Chat, users can send the following types of messages to a pe
 
 - Custom messages.
 
-The Chat message feature is language agnostic. End users can send messages in any language, as long as their devices support input in that language. 
+The Chat message feature is language agnostic. End users can send messages in any language, as long as their devices support input in that language.
 
 In addition to sending messages, users can also forward one or more messages. When forwarding multiple messages, users have the following options:
 
-* Forward messages one-by-one 
+* Forward messages one-by-one
 * Forward combined messages as message history
 
 This page shows how to implement sending, receiving, forwarding multiple messages, and modifying sent messages using the Chat SDK.
@@ -97,7 +97,7 @@ The process of sending and receiving a message is as follows:
 ## Prerequisites
 
 Before proceeding, ensure that you meet the following requirements:
-- You have integrated the Chat SDK, initialized the SDK, and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk). 
+- You have integrated the Chat SDK, initialized the SDK, and implemented the functionality of registering accounts and login. For details, see [Chat SDK quickstart](../../../../get-started-sdk).
 
     Use Chat SDK 1.2 or higher if you intend to enable users to forward multiple messages, or to modify sent messages.
 
@@ -111,7 +111,7 @@ This section shows how to implement sending and receiving the various types of m
 
 ### Send a text message
 
-Use the `ChatMessage` class to create a text message, and send the message. 
+Use the `ChatMessage` class to create a text message, and send the message.
 
 ```java
 // Call createTextSendMessage to create a text message.
@@ -348,7 +348,7 @@ if (message.getType() == ChatMessage.Type.VIDEO) {
         }
    };
 
-	    message.setMessageStatusCallback(callback);
+      message.setMessageStatusCallback(callback);
 
         ChatClient.getInstance().chatManager().downloadAttachment(message);
 }
@@ -774,19 +774,19 @@ Refer to the following code example to create and send a voice message:
 ```objc
 // Set localPath as the local path of the voice file and displayName the display name of the attachment.
 AgoraChatVoiceMessageBody *body = [[AgoraChatVoiceMessageBody alloc] initWithLocalPath:localPath
-                          							     displayName:displayName];
+                                             displayName:displayName];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:nil];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 
 When the recipient receives the message, refer to the following code example to get the audio file:
@@ -808,19 +808,19 @@ Refer to the following code example to create and send an image message:
 ```objc
 // Set imageData as the path of the image file on the local device, and displayName as the display name of the file.
 AgoraChatImageMessageBody *body = [[AgoraChatImageMessageBody alloc] initWithData:imageData
-                          							            displayName:displayName];
+                                                    displayName:displayName];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 
 When the recipient receives the message, refer to the following code example to get the thumbnail and attachment file of the image message:
@@ -854,16 +854,16 @@ AgoraChatVideoMessageBody *body = [[AgoraChatVideoMessageBody alloc] initWithLoc
 body.duration = duration;
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 
 By default, when the recipient receives the message, the SDK downloads the thumbnail of the video message.
@@ -891,26 +891,26 @@ Refer to the following code example to create, send, and receive a file message:
 ```objc
 // Set fileData as the path of the file on the local device, and fileName the display name of the attachment file.
 AgoraChatFileMessageBody *body = [AgoraChatFileMessageBody  initWithData:fileData
-                           							            displayName:fileName];
+                                                     displayName:fileName];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     								                    to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 
 While sending a file message, refer to the following sample code to get the progress for uploading the attachment file:
 
 ```objc
 [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:^(int progress) {
-		//progress indicates the progress of uploading the attachment
+    //progress indicates the progress of uploading the attachment
 } completion:^(AgoraChatMessage *message, AgoraChatError *error) {
     //error indicates the result of sending the message, and message indicates the sent message
 }];
@@ -934,16 +934,16 @@ To send and receive a location message, you need to integrate a third-party map 
 AgoraChatLocationMessageBody *body = [[AgoraChatLocationMessageBody alloc] initWithLatitude:latitude longitude:longitude address:aAddress];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 ### Send and receive a CMD message
 
@@ -957,16 +957,16 @@ CMD messages are not stored in the local database.Actions beginning with `em_` a
 AgoraChatCmdMessageBody *body = [[AgoraChatCmdMessageBody alloc] initWithAction:action];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											                       progress:nil
-  											                     completion:nil];
+                                               progress:nil
+                                             completion:nil];
 ```
 
 To notify the recipient that a CMD message is received, use a separate delegate so that users can deal with the message differently.
@@ -990,16 +990,16 @@ The following code example shows how to create and send a customized message:
 AgoraChatCustomMessageBody* body = [[AgoraChatCustomMessageBody alloc] initWithEvent:@"userCard" ext:@{@"uid":aUid ,@"nickname":aNickName,@"avatar":aUrl}];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                       from:fromChatUsername
-                     									                  to:toChatUsername
-                     								                  body:body
+                                                         to:toChatUsername
+                                                       body:body
                                                        ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Set the chat type as Group chat. You can also set it as chat (one-to-one chat) or chat room.
 // message.chatType = AgoraChatTypeGroupChat;
 // Sends the message.
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  											   progress:nil
-  											 completion:nil];
+                           progress:nil
+                         completion:nil];
 
 ```
 ### Use message extensions
@@ -1012,14 +1012,14 @@ AgoraChatTextMessageBody *textMessageBody = [[AgoraChatTextMessageBody alloc] in
 NSDictionary *messageExt = @{@"attribute":@"value"};
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
                                                        from:fromChatUsername
-                     																		 to:toChatUsername
-                     																	 body:textMessageBody
+                                                          to:toChatUsername
+                                                        body:textMessageBody
                                                         ext:messageExt];
 message.chatType = AgoraChatTypeChat;
 // Sends the message
 [[AgoraChatClient sharedClient].chatManager sendMessage:message
-  																						 progress:nil
-  																					 completion:nil];
+                                               progress:nil
+                                             completion:nil];
 // Retrieves the extension when receiving the message
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
@@ -1313,7 +1313,7 @@ You can also use `onRecallMessage` to listen for the message recall state:
 chatClient.addEventHandler('handlerId',{
    onRecallMessage: (msg) =>  {
        // You can insert a message here, for example, XXX has recalled a message.
-   	   console.log('Recalling the message succeeds'，msg)
+        console.log('Recalling the message succeeds'，msg)
    },
 })
 ```
@@ -1833,105 +1833,105 @@ Follow the steps to create and send a message, and listen for the result of send
 
 1. Use the `ChatMessage` class to create a message.
 
-```dart
-// Sets the message type. Agora Chat supports 8 message types.
-MessageType messageType = MessageType.TXT;
-// Sets `targetId` to the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
-String targetId = "tom";
-// Sets `chatType` as `Chat`, `GroupChat`, or `ChatRoom` for one-to-one chat, group chat, or room chat.
-ChatType chatType = ChatType.Chat;
-// Creates a message. Parameters vary with message types.
-// Creates a text message.
-ChatMessage msg = ChatMessage.createTxtSendMessage(
-    targetId: targetId,
-    content: "This is text message",
-);
-// Creates an image message. You need to set the local path, length, and width of the image file, and the image name displayed on the UI.
-String imgPath = "/data/.../image.jpg";
-double imgWidth = 100;
-double imgHeight = 100;
-String imgName = "image.jpg";
-int imgSize = 3000;
-ChatMessage msg = ChatMessage.createImageSendMessage(
-    targetId: targetId,
-    filePath: imgPath,
-    width: imgWidth,
-    height: imgHeight,
-    displayName: imgName,
-    fileSize: imgSize,
-);
-// Creates a CMD message. A CMD message contains a command for the recipient to take action. You can customize the command.
-String action = "writing";
-ChatMessage msg = ChatMessage.createCmdSendMessage(
-    targetId: targetId,
-    action: action,
-);
-// Creates a custom message. A custom message contains the message event type and the extension field.
-// You can customize the extension field according to your use case.
-String event = "gift";
-Map params = {"key": "value"};
-ChatMessage msg = ChatMessage.createCustomSendMessage(
-    targetId: targetId,
-    event: event,
-    params: params,
-);
-// Creates a file message. A file message contains the local file path and the name displayed on the UI.
-String filePath = "data/.../foo.zip";
-String fileName = "foo.zip";
-int fileSize = 6000;
-ChatMessage fileMsg = ChatMessage.createFileSendMessage(
-    targetId: targetId,
-    filePath: filePath,
-    displayName: fileName,
-    fileSize: fileSize,
-);
-// Creates a location message. You need to set the longitude and latitude information of the location, as well as the name of the location.
-// To send a location message, you need to integrate a third-party map service to get the longitude and latitude information of the location. When the recipient receives the location information, the service renders the location on the map according to the longitude and latitude information.
-double latitude = 114.78;
-double longitude = 39.89;
-String address = "darwin";
-ChatMessage msg = ChatMessage.createLocationSendMessage(
-    targetId: targetId,
-    latitude: latitude,
-    longitude: longitude,
-    address: address,
-);
-// Creates a video message. A video message includes two attachment files, including the video file and the thumbnail of the video. The SDK uses the first frame of the video as the thumbnail. You also need to set the local path, length, width, display name, and duration of the video file.
-String videoPath = "data/.../foo.mp4";
-double videoWidth = 100;
-double videoHeight = 100;
-String videoName = "foo.mp4";
-int videoDuration = 5;
-int videoSize = 4000;
-ChatMessage msg = ChatMessage.createVideoSendMessage(
-    targetId: targetId,
-    filePath: videoPath,
-    width: videoWidth,
-    height: videoHeight,
-    duration: videoDuration,
-    fileSize: videoSize,
-    displayName: videoName,
-);
-// Creates a voice message. A voice message contains the local path, display name, and duration of the audio file.
-String voicePath = "data/.../foo.wav";
-String voiceName = "foo.wav";
-int voiceDuration = 5;
-int voiceSize = 1000;
-ChatMessage.createVoiceSendMessage(
-    targetId: targetId,
-    filePath: voicePath,
-    duration: voiceDuration,
-    fileSize: voiceSize,
-    displayName: voiceName,
-);
-```
+   ```dart
+   // Sets the message type. Agora Chat supports 8 message types.
+   MessageType messageType = MessageType.TXT;
+   // Sets `targetId` to the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
+   String targetId = "tom";
+   // Sets `chatType` as `Chat`, `GroupChat`, or `ChatRoom` for one-to-one chat, group chat, or room chat.
+   ChatType chatType = ChatType.Chat;
+   // Creates a message. Parameters vary with message types.
+   // Creates a text message.
+   ChatMessage msg = ChatMessage.createTxtSendMessage(
+       targetId: targetId,
+       content: "This is text message",
+   );
+   // Creates an image message. You need to set the local path, length, and width of the image file, and the image name displayed on the UI.
+   String imgPath = "/data/.../image.jpg";
+   double imgWidth = 100;
+   double imgHeight = 100;
+   String imgName = "image.jpg";
+   int imgSize = 3000;
+   ChatMessage msg = ChatMessage.createImageSendMessage(
+       targetId: targetId,
+       filePath: imgPath,
+       width: imgWidth,
+       height: imgHeight,
+       displayName: imgName,
+       fileSize: imgSize,
+   );
+   // Creates a CMD message. A CMD message contains a command for the recipient to take action. You can customize the command.
+   String action = "writing";
+   ChatMessage msg = ChatMessage.createCmdSendMessage(
+       targetId: targetId,
+       action: action,
+   );
+   // Creates a custom message. A custom message contains the message event type and the extension field.
+   // You can customize the extension field according to your use case.
+   String event = "gift";
+   Map params = {"key": "value"};
+   ChatMessage msg = ChatMessage.createCustomSendMessage(
+       targetId: targetId,
+       event: event,
+       params: params,
+   );
+   // Creates a file message. A file message contains the local file path and the name displayed on the UI.
+   String filePath = "data/.../foo.zip";
+   String fileName = "foo.zip";
+   int fileSize = 6000;
+   ChatMessage fileMsg = ChatMessage.createFileSendMessage(
+       targetId: targetId,
+       filePath: filePath,
+       displayName: fileName,
+       fileSize: fileSize,
+   );
+   // Creates a location message. You need to set the longitude and latitude information of the location, as well as the name of the location.
+   // To send a location message, you need to integrate a third-party map service to get the longitude and latitude information of the location. When the recipient receives the location information, the service renders the location on the map according to the longitude and latitude information.
+   double latitude = 114.78;
+   double longitude = 39.89;
+   String address = "darwin";
+   ChatMessage msg = ChatMessage.createLocationSendMessage(
+       targetId: targetId,
+       latitude: latitude,
+       longitude: longitude,
+       address: address,
+   );
+   // Creates a video message. A video message includes two attachment files, including the video file and the thumbnail of the video. The SDK uses the first frame of the video as the thumbnail. You also need to set the local path, length, width, display name, and duration of the video file.
+   String videoPath = "data/.../foo.mp4";
+   double videoWidth = 100;
+   double videoHeight = 100;
+   String videoName = "foo.mp4";
+   int videoDuration = 5;
+   int videoSize = 4000;
+   ChatMessage msg = ChatMessage.createVideoSendMessage(
+       targetId: targetId,
+       filePath: videoPath,
+       width: videoWidth,
+       height: videoHeight,
+       duration: videoDuration,
+       fileSize: videoSize,
+       displayName: videoName,
+   );
+   // Creates a voice message. A voice message contains the local path, display name, and duration of the audio file.
+   String voicePath = "data/.../foo.wav";
+   String voiceName = "foo.wav";
+   int voiceDuration = 5;
+   int voiceSize = 1000;
+   ChatMessage.createVoiceSendMessage(
+       targetId: targetId,
+       filePath: voicePath,
+       duration: voiceDuration,
+       fileSize: voiceSize,
+       displayName: voiceName,
+   );
+   ```
 
 2. Send the message using `sendMessage` in `ChatManager`.
 
-```dart
-ChatClient.getInstance.chatManager.sendMessage(message).then((value) {
-});
-```
+   ```dart
+   ChatClient.getInstance.chatManager.sendMessage(message).then((value) {
+   });
+   ```
 
 To get the progress and result of the message sending, you need to implement `ChatManager#addMessageEvent`. For CMD messages which do not necessarily need a result, you do not need to set the callback.
 
@@ -2040,50 +2040,50 @@ For image and video messages, the SDK automatically generates a thumbnail when y
 
 1. Set `isAutoDownloadThumbnail` as `false` when initializing the SDK.
 
-```dart
-ChatOptions options = ChatOptions(
-    appKey: "",
-    isAutoDownloadThumbnail: false,
-);
-```
+   ```dart
+   ChatOptions options = ChatOptions(
+       appKey: "",
+       isAutoDownloadThumbnail: false,
+   );
+   ```
 
 2. Set the status callback for the download.
 
-```dart
-// Adds a message status listener.
-ChatClient.getInstance.chatManager.addMessageEvent(
-    "UNIQUE_HANDLER_ID",
-    ChatMessageEvent(
-        // Occurs when the message is downloaded successfully.
-        onSuccess: (msgId, msg) {
-        // msgId: The message ID.
-        // msg: The message that is downloaded successfully.
-        },
-        // Occurs when the message fails to be downloaded.
-        onError: (msgId, msg, error) {
-        // msgId: The message ID.
-        // msg: The message that fails to be downloaded.
-        // error: The reason for the download failure.
-        },
-        // For attachment messages such as image, voice, file, and video, you can get a progress value for uploading or downloading them in this callback.
-        onProgress: (msgId, progress) {
-        // msgId: The message ID.
-        // progress: The upload or download progress.
-        },
-    ),
-);
-void dispose() {
-    // Removes the message status listener.
-    ChatClient.getInstance.chatManager.removeMessageEvent("UNIQUE_HANDLER_ID");
-    super.dispose();
-}
-```
+   ```dart
+   // Adds a message status listener.
+   ChatClient.getInstance.chatManager.addMessageEvent(
+       "UNIQUE_HANDLER_ID",
+       ChatMessageEvent(
+           // Occurs when the message is downloaded successfully.
+           onSuccess: (msgId, msg) {
+           // msgId: The message ID.
+           // msg: The message that is downloaded successfully.
+           },
+           // Occurs when the message fails to be downloaded.
+           onError: (msgId, msg, error) {
+           // msgId: The message ID.
+           // msg: The message that fails to be downloaded.
+           // error: The reason for the download failure.
+           },
+           // For attachment messages such as image, voice, file, and video, you can get a progress value for uploading or downloading them in this callback.
+           onProgress: (msgId, progress) {
+           // msgId: The message ID.
+           // progress: The upload or download progress.
+           },
+       ),
+   );
+   void dispose() {
+       // Removes the message status listener.
+       ChatClient.getInstance.chatManager.removeMessageEvent("UNIQUE_HANDLER_ID");
+       super.dispose();
+   }
+   ```
 
 3. Download the thumbnail and get the path to it.
 
-```dart
-ChatClient.getInstance.chatManager.downloadThumbnail(message);
-```
+   ```dart
+   ChatClient.getInstance.chatManager.downloadThumbnail(message);
+   ```
 
   Get the path to the thumbnail from the `thumbnailLocalPath` member in the message body.
 
@@ -2096,9 +2096,9 @@ String? thumbnailLocalPath = imgBody.thumbnailLocalPath;
 
 4. Call `downloadAttachment` to download the file.
 
-  ```dart
-  ChatClient.getInstance.chatManager.downloadAttachment(message);
-  ```
+   ```dart
+   ChatClient.getInstance.chatManager.downloadAttachment(message);
+   ```
 
   Get the path to the attachment from the `localPath` member in the message body.
 
@@ -2251,7 +2251,7 @@ For further details see [Sent message modification limitations](../../limitation
 
 ### Send a message
 
-Implement the `ChatMessageStatusCallback` class to listen for the progress and result of the message sending. 
+Implement the `ChatMessageStatusCallback` class to listen for the progress and result of the message sending.
 
 ```typescript
 // Implement ChatMessageStatusCallback
@@ -2630,7 +2630,7 @@ For further details see [Sent message modification limitations](../../limitation
 
 ### Send a text message
 
-Use the `Message` class to create a text message, and `IChannelManager` to send the message. 
+Use the `Message` class to create a text message, and `IChannelManager` to send the message.
 
 ```csharp
 // Call CreateTextSendMessage to create a text message.

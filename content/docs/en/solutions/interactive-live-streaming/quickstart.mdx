@@ -482,23 +482,23 @@ To access the camera and microphone on Android devices, declare the necessary pe
 
 1. Open your project's `AndroidManifest.xml` file and add the following permissions before `<application>`:
 
-  ```xml
-  <uses-feature android:name="android.hardware.camera" android:required="false" />
-  <!--Required permissions-->
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-  <!--Optional permissions-->
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH"/>
-  <!-- For devices running Android 12 (API level 32) or higher and integrating Agora Video SDK version v4.1.0 or lower, you also need to add the following permissions -->
-  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-  <!-- For Android 12.0 or higher, the following permissions are also required -->
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
-  ```
+   ```xml
+   <uses-feature android:name="android.hardware.camera" android:required="false" />
+   <!--Required permissions-->
+   <uses-permission android:name="android.permission.INTERNET"/>
+   <uses-permission android:name="android.permission.CAMERA"/>
+   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+   <!--Optional permissions-->
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+   <uses-permission android:name="android.permission.BLUETOOTH"/>
+   <!-- For devices running Android 12 (API level 32) or higher and integrating Agora Video SDK version v4.1.0 or lower, you also need to add the following permissions -->
+   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+   <!-- For Android 12.0 or higher, the following permissions are also required -->
+   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+   <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+   ```
 
 1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Interactive Live Streaming. In your `MainActivity` file, add the following code:
 
@@ -1399,12 +1399,12 @@ Follow the steps below to set up the video module.
 1. To enable the video module, call `enableVideo`.
 1. To enable local video preview, call `startPreview`.
 
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
+   ```swift
+   // Enable video functionality (audio is enabled by default)
+   agoraKit.enableVideo()
+   // Enable local video preview
+   agoraKit.startPreview()
+   ```
 
 ### Display the local video
 
@@ -1452,25 +1452,25 @@ When the user launches the app, it joins the channel and starts Interactive Live
 
 1. To start Interactive Live Streaming, call the following methods:
 
-  ```swift
-  // Initialize the Agora engine
-  initializeAgoraVideoSDK()
-  // Start the local video preview
-  setupLocalVideo()
-  // Join an Agora channel
-  joinChannel()
-  ```
+   ```swift
+   // Initialize the Agora engine
+   initializeAgoraVideoSDK()
+   // Start the local video preview
+   setupLocalVideo()
+   // Join an Agora channel
+   joinChannel()
+   ```
 
 1. To leave the channel and release SDK resources when the app is closed, call the following methods:
 
-  ```swift
-  // Stop local video preview
-  agoraKit.stopPreview()
-  // Leave the channel and release session-related resources
-  agoraKit.leaveChannel(nil)
-  // Release all resources used by the Agora SDK
-  AgoraRtcEngineKit.destroy()
-  ```
+   ```swift
+   // Stop local video preview
+   agoraKit.stopPreview()
+   // Leave the channel and release session-related resources
+   agoraKit.leaveChannel(nil)
+   // Release all resources used by the Agora SDK
+   AgoraRtcEngineKit.destroy()
+   ```
 
 :::warning
 After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
@@ -1705,45 +1705,45 @@ Agora provides an open source sample project on [GitHub](https://github.com/Agor
 
 2. Add the items in `PrivacyInfo.xcprivacy` file of the Video SDK to `PrivacyInfo.xcprivacy` of the app using the following source code:
 
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-  <dict>
-    <key>NSPrivacyTracking</key>
-    <false/>
-    <key>NSPrivacyCollectedDataTypes</key>
-    <array/>
-    <key>NSPrivacyAccessedAPITypes</key>
-    <array>
-      <dict>
-        <key>NSPrivacyAccessedAPIType</key>
-        <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
-        <key>NSPrivacyAccessedAPITypeReasons</key>
-        <array>
-          <string>35F9.1</string>
-        </array>
-      </dict>
-      <dict>
-        <key>NSPrivacyAccessedAPIType</key>
-        <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
-        <key>NSPrivacyAccessedAPITypeReasons</key>
-        <array>
-          <string>DDA9.1</string>
-        </array>
-      </dict>
-      <dict>
-        <key>NSPrivacyAccessedAPIType</key>
-        <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
-        <key>NSPrivacyAccessedAPITypeReasons</key>
-        <array>
-          <string>E174.1</string>
-        </array>
-      </dict>
-    </array>
-  </dict>
-  </plist>
-  ```
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+     <key>NSPrivacyTracking</key>
+     <false/>
+     <key>NSPrivacyCollectedDataTypes</key>
+     <array/>
+     <key>NSPrivacyAccessedAPITypes</key>
+     <array>
+       <dict>
+         <key>NSPrivacyAccessedAPIType</key>
+         <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+         <key>NSPrivacyAccessedAPITypeReasons</key>
+         <array>
+           <string>35F9.1</string>
+         </array>
+       </dict>
+       <dict>
+         <key>NSPrivacyAccessedAPIType</key>
+         <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+         <key>NSPrivacyAccessedAPITypeReasons</key>
+         <array>
+           <string>DDA9.1</string>
+         </array>
+       </dict>
+       <dict>
+         <key>NSPrivacyAccessedAPIType</key>
+         <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+         <key>NSPrivacyAccessedAPITypeReasons</key>
+         <array>
+           <string>E174.1</string>
+         </array>
+       </dict>
+     </array>
+   </dict>
+   </plist>
+   ```
 
 ### API reference
 
@@ -2018,12 +2018,12 @@ Follow the steps below to set up the video module.
 1. To enable the video module, call `enableVideo`.
 1. To enable local video preview, call `startPreview`.
 
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
+   ```swift
+   // Enable video functionality (audio is enabled by default)
+   agoraKit.enableVideo()
+   // Enable local video preview
+   agoraKit.startPreview()
+   ```
 
 ### Display the local video
 
@@ -2100,25 +2100,25 @@ When the user launches the app, it joins the channel and starts Interactive Live
 
 1. To start Interactive Live Streaming, call the following methods:
 
-  ```swift
-  // Initialize the Agora engine
-  initializeAgoraVideoSDK()
-  // Start the local video preview
-  setupLocalVideo()
-  // Join an Agora channel
-  joinChannel()
-  ```
+   ```swift
+   // Initialize the Agora engine
+   initializeAgoraVideoSDK()
+   // Start the local video preview
+   setupLocalVideo()
+   // Join an Agora channel
+   joinChannel()
+   ```
 
 1. To leave the channel and release SDK resources when the app is closed, call the following methods:
 
-  ```swift
-  // Stop local video preview
-  agoraKit.stopPreview()
-  // Leave the channel and release session-related resources
-  agoraKit.leaveChannel(nil)
-  // Release all resources used by the Agora SDK
-  AgoraRtcEngineKit.destroy()
-  ```
+   ```swift
+   // Stop local video preview
+   agoraKit.stopPreview()
+   // Leave the channel and release session-related resources
+   agoraKit.leaveChannel(nil)
+   // Release all resources used by the Agora SDK
+   AgoraRtcEngineKit.destroy()
+   ```
 
 :::warning
 After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
@@ -2390,18 +2390,18 @@ To initialize a new Vite project, take the following steps:
 
 1. Open a terminal and run the following command:
 
-  ```bash
-  npm create vite@latest agora_web_quickstart -- --template vanilla
-  ```
+   ```bash
+   npm create vite@latest agora_web_quickstart -- --template vanilla
+   ```
 
   This creates a new folder named `agora_web_quickstart` and initialize a Vite project inside it using the `vanilla` JavaScript template.
 
 1. Navigate to the newly created folder. Download and set up dependencies for your project:
 
-  ```bash
-  cd agora_web_quickstart
-  npm install
-  ```
+   ```bash
+   cd agora_web_quickstart
+   npm install
+   ```
 
  1. Create a user interface for your project. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones html layout.
 
@@ -2414,9 +2414,9 @@ To add Interactive Live Streaming to your existing project, take the following s
 
  4. Include the JavaScript file in your HTML file.
 
-  ```html
-  <script type="module" src="/src/main.js"></script>
-  ```
+    ```html
+    <script type="module" src="/src/main.js"></script>
+    ```
 
 ### Install the SDK
 
@@ -2812,9 +2812,9 @@ Take the following steps to run and test the sample code:
 
 2. To start the development server, use the following command:
 
-  ```bash
-  npm run dev
-  ```
+   ```bash
+   npm run dev
+   ```
 
 3. Open your browser and navigate to the URL displayed in your terminal, for example, `http://localhost:5173`.
 
@@ -3226,21 +3226,21 @@ Follow these steps to set up and start the local video preview:
 1. Call the `setupLocalVideo` method to apply the `VideoCanvas` configuration.
 1. Call the `startPreview` method to start the local video preview.
 
-```cpp
-void CAgoraQuickStartDlg::setupLocalVideo() {
-  // Set local video display properties
-  VideoCanvas canvas;
-  // Set video to be scaled proportionally
-  canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
-  // User ID
-  canvas.uid = 0;
-  // Video display window
-  canvas.view = m_staLocal.GetSafeHwnd();
-  m_rtcEngine->setupLocalVideo(canvas);
-  // Preview the local video
-  m_rtcEngine->startPreview();
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::setupLocalVideo() {
+     // Set local video display properties
+     VideoCanvas canvas;
+     // Set video to be scaled proportionally
+     canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
+     // User ID
+     canvas.uid = 0;
+     // Video display window
+     canvas.view = m_staLocal.GetSafeHwnd();
+     m_rtcEngine->setupLocalVideo(canvas);
+     // Preview the local video
+     m_rtcEngine->startPreview();
+   }
+   ```
 
 ### Display remote video
 
@@ -3249,21 +3249,21 @@ To display the remote user's video:
 1. Define the video display properties using `VideoCanvas`.
 1. Call `setupRemoteVideo` to render the video.
 
-```cpp
-void CAgoraQuickStartDlg::setupRemoteVideo(uid_t remoteUid) {
-  // Set remote video display properties
-  VideoCanvas canvas;
-  // Set video size to be proportionally scaled
-  canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
-  // Remote user ID
-  canvas.uid = remoteUid;
-  // You can only choose to set either view or surfaceTexture. If both are set, only the settings in view take effect.
-  canvas.view = m_staRemote.GetSafeHwnd();
-  m_rtcEngine->setupRemoteVideo(canvas);
-  m_remoteRender = true;
-  return 0;
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::setupRemoteVideo(uid_t remoteUid) {
+     // Set remote video display properties
+     VideoCanvas canvas;
+     // Set video size to be proportionally scaled
+     canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
+     // Remote user ID
+     canvas.uid = remoteUid;
+     // You can only choose to set either view or surfaceTexture. If both are set, only the settings in view take effect.
+     canvas.view = m_staRemote.GetSafeHwnd();
+     m_rtcEngine->setupRemoteVideo(canvas);
+     m_remoteRender = true;
+     return 0;
+   }
+   ```
 
 ### Leave the channel
 
@@ -3274,21 +3274,21 @@ To stop the local video preview and clear the view:
 1. Call `stopPreview` to stop playing the local video.
 1. Call `setupLocalVideo`, passing an empty `VideoCanvas` to reset the view.
 
-```cpp
-void CAgoraQuickStartDlg::LeaveChannel() {
-  if (m_rtcEngine) {
-    // Stop local video preview
-    m_rtcEngine->stopPreview();
-    // Leave the channel
-    m_rtcEngine->leaveChannel();
-    // Clear local view
-    VideoCanvas canvas;
-    canvas.uid = 0;
-    m_rtcEngine->setupLocalVideo(canvas);
-    m_remoteRender = false;
-  }
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::LeaveChannel() {
+     if (m_rtcEngine) {
+       // Stop local video preview
+       m_rtcEngine->stopPreview();
+       // Leave the channel
+       m_rtcEngine->leaveChannel();
+       // Clear local view
+       VideoCanvas canvas;
+       canvas.uid = 0;
+       m_rtcEngine->setupLocalVideo(canvas);
+       m_remoteRender = false;
+     }
+   }
+   ```
 
 ### Release resources
 
@@ -4160,12 +4160,12 @@ When a user launches your app, start Interactive Live Streaming. When a user clo
 
 2. When Interactive Live Streaming ends, leave the channel and clean up resources:
 
-  ```javascript
-  // Stop the preview
-  rtcEngine.stopPreview();
-  // Leave the channel
-  rtcEngine.leaveChannel();
-  ```
+   ```javascript
+   // Stop the preview
+   rtcEngine.stopPreview();
+   // Leave the channel
+   rtcEngine.leaveChannel();
+   ```
 
   When you no longer need to interact, unregister the event handler and call `release` to release engine resources.
 
@@ -4409,9 +4409,9 @@ Take the following steps to test the sample code:
 
 2. To run the app, execute the following command in the project root directory:
 
-  ```bash
-  npm start
-  ```
+   ```bash
+   npm start
+   ```
 
   You see a window pop up showing the local video.
 
@@ -4522,15 +4522,15 @@ Install the Agora Video SDK and other dependencies.
 
 1. Add the [latest version](https://pub.dev/packages/agora_rtc_engine) of Agora Video SDK to your Flutter project:
 
-  ```bash
-  flutter pub add agora_rtc_engine
-  ```
+   ```bash
+   flutter pub add agora_rtc_engine
+   ```
 
 2. Add the permission processing package:
 
-  ```bash
-  flutter pub add permission_handler
-  ```
+   ```bash
+   flutter pub add permission_handler
+   ```
 
   The `dependencies` in your `pubspec.yaml` file should should look like the following:
 
@@ -4988,9 +4988,9 @@ Take the following steps to test the sample code:
 
 3. Open Terminal and execute the following command in the project folder to run the sample project:
 
-  ```bash
-  flutter run
-  ```
+   ```bash
+   flutter run
+   ```
 
 3. Launch the App, grant microphone and camera permissions. If you set the user role to host, you see yourself in the local view.
 
@@ -5869,9 +5869,9 @@ To create a new ReactJS project with the necessary dependencies:
 
 1. Open a terminal and execute:
 
-  ```bash
-  npm create vite@latest agora-sdk-quickstart -- --template react-ts
-  ```
+   ```bash
+   npm create vite@latest agora-sdk-quickstart -- --template react-ts
+   ```
 
   This creates a new project folder named `agora-sdk-quickstart`. Open the folder in your preferred IDE.
 
@@ -6294,10 +6294,10 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
 
   3. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
 
-    ```csharp
-    using UnityEngine;
-    using UnityEngine.UI;
-    ```
+     ```csharp
+     using UnityEngine;
+     using UnityEngine.UI;
+     ```
 1. Bind the script to the canvas.
 
   In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
@@ -6484,33 +6484,33 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 
 1. Include the `UnityEngine.Android` namespace, which contains Android-specific classes for interacting with Android devices from Unity:
 
-  ```csharp
-  #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
-  using UnityEngine.Android;
-  #endif
-  ```
+   ```csharp
+   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+   using UnityEngine.Android;
+   #endif
+   ```
 
 2. Create a list of permissions to be obtained.
 
-  ```csharp
-  #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
-  private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
-  #endif
-  ```
+   ```csharp
+   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+   private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
+   #endif
+   ```
 
 3. Check if the required permissions have been granted. If not, prompt the user to grant the necessary permissions.
 
-  ```csharp
-  private void CheckPermissions() {
-    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
-    foreach (string permission in permissionList) {
-      if (!Permission.HasUserAuthorizedPermission(permission)) {
-        Permission.RequestUserPermission(permission);
-      }
-    }
-    #endif
-  }
-  ```
+   ```csharp
+   private void CheckPermissions() {
+     #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+     foreach (string permission in permissionList) {
+       if (!Permission.HasUserAuthorizedPermission(permission)) {
+         Permission.RequestUserPermission(permission);
+       }
+     }
+     #endif
+   }
+   ```
 
 **iOS and macOS**
 For iOS and macOS platforms, the Video SDK includes a post-build script named `BL_BuildPostProcess.cs`. When you build and export your Unity project as an iOS project, this script automatically inserts camera and microphone permission entries into the `Info.plist` file, eliminating the need for manual updates.
@@ -6519,35 +6519,35 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 1. When the game starts, ensure that device permissions have been granted.
 
-  ```csharp
-  void Update() {
-    CheckPermissions();
-  }
-  ```
+   ```csharp
+   void Update() {
+     CheckPermissions();
+   }
+   ```
 
 2. To start Interactive Live Streaming, initialize the engine and set up the event handler.
 
-  ```csharp
-  void Start()
-  {
-    SetupVideoSDKEngine();
-    InitEventHandler();
-    PreviewSelf();
-  }
-  ```
+   ```csharp
+   void Start()
+   {
+     SetupVideoSDKEngine();
+     InitEventHandler();
+     PreviewSelf();
+   }
+   ```
 
 3. To clean up all session-related resources when a user exits the game, call the `Dispose` method of the `IRtcEngine`.
 
-  ```csharp
-  void OnApplicationQuit() {
-    if (RtcEngine != null) {
-      Leave();
-      // Destroy IRtcEngine
-      RtcEngine.Dispose();
-      RtcEngine = null;
-    }
-  }
-  ```
+   ```csharp
+   void OnApplicationQuit() {
+     if (RtcEngine != null) {
+       Leave();
+       // Destroy IRtcEngine
+       RtcEngine.Dispose();
+       RtcEngine = null;
+     }
+   }
+   ```
 
   :::note
   After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Interactive Live Streaming features again, create a new engine instance.
@@ -7173,20 +7173,20 @@ Add the `AndroidPermission` library to obtain device and network permissions:
 
 1. Add the following code to your header file:
 
-  ```cpp
-  #if PLATFORM_ANDROID
-    #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
-    #endif
-  ```
+   ```cpp
+   #if PLATFORM_ANDROID
+     #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+     #endif
+   ```
 
 2. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
 
-  ```cpp
-  if (Target.Platform == UnrealTargetPlatform.Android)
-    {
-      PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
-    }
-  ```
+   ```cpp
+   if (Target.Platform == UnrealTargetPlatform.Android)
+     {
+       PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+     }
+   ```
 
 3. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
 
@@ -7234,22 +7234,22 @@ Add the `AndroidPermission` library to obtain device and network permissions:
 
 2. In `Project/Source/Project.Target.cs`, add the following code:
 
-  ```cpp
-  public class unrealstartTarget : TargetRules
-    {
-      public unrealstartTarget( TargetInfo Target) : base(Target)
-      {
-        Type = TargetType.Game;
-        DefaultBuildSettings = BuildSettingsVersion.V2;
-        if (Target.Platform == UnrealTargetPlatform.IOS)
-        {
-          bOverrideBuildEnvironment = true;
-          GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
-        }
-        ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
-      }
-    }
-  ```
+   ```cpp
+   public class unrealstartTarget : TargetRules
+     {
+       public unrealstartTarget( TargetInfo Target) : base(Target)
+       {
+         Type = TargetType.Game;
+         DefaultBuildSettings = BuildSettingsVersion.V2;
+         if (Target.Platform == UnrealTargetPlatform.IOS)
+         {
+           bOverrideBuildEnvironment = true;
+           GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
+         }
+         ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
+       }
+     }
+   ```
 
 ### Display the local video
 
@@ -8040,21 +8040,21 @@ This section shows you how to set up your Python project and install the Agora V
 
 1. Install the build tools for compiling the SDK.
 
-  ```text
-  sudo apt install build-essential python3-dev
-  ```
+   ```text
+   sudo apt install build-essential python3-dev
+   ```
 
 2. To implement structured, asynchronous event handling in Python, install the `pyee` library.
 
-  ```bash
-  pip3 install pyee
-  ```
+   ```bash
+   pip3 install pyee
+   ```
 
 3. Install the Agora server side Python SDK.
 
-  ```bash
-  pip3 install agora-python-server-sdk
-  ```
+   ```bash
+   pip3 install agora-python-server-sdk
+   ```
 
   :::note
   The Python SDK is a server side SDK.
@@ -9036,40 +9036,40 @@ Follow these steps to test the demo code:
 
 2. Create a file named `main.py` in the same folder as `rtc.py` and copy the following code to the file:
 
-  ```python
-  import asyncio
-  from rtc import RtcEngine # Import the RtcEngine class from rtc.py
+   ```python
+   import asyncio
+   from rtc import RtcEngine # Import the RtcEngine class from rtc.py
 
-  async def main():
-    appid = "<Your app Id>" # Replace with your Agora App ID
-    channelId = "demo" # Replace with your desired channel ID
-    uid = "123" # Replace with your unique user ID
+   async def main():
+     appid = "<Your app Id>" # Replace with your Agora App ID
+     channelId = "demo" # Replace with your desired channel ID
+     uid = "123" # Replace with your unique user ID
 
-    rtc_engine = RtcEngine(appid)
-    channel = await rtc_engine.connect(channelId, uid)
+     rtc_engine = RtcEngine(appid)
+     channel = await rtc_engine.connect(channelId, uid)
 
-    # Keep the script running to listen for events
-    await asyncio.Event().wait()
+     # Keep the script running to listen for events
+     await asyncio.Event().wait()
 
-  if __name__ == "__main__":
-    asyncio.run(main())
-  ```
+   if __name__ == "__main__":
+     asyncio.run(main())
+   ```
 
 3. To specify the audio parameters, create a folder named `realtimeapi` and add a file `util.py` containing the following code:
 
-  ```python
-  # Number of audio channels (1 for mono, 2 for stereo)
-  CHANNELS = 2
+   ```python
+   # Number of audio channels (1 for mono, 2 for stereo)
+   CHANNELS = 2
 
-  # Sample rate for audio processing (in Hz)
-  SAMPLE_RATE = 44100 # Common sample rates include 8000, 16000, 44100, 48000
-  ```
+   # Sample rate for audio processing (in Hz)
+   SAMPLE_RATE = 44100 # Common sample rates include 8000, 16000, 44100, 48000
+   ```
 
 4. To run the app, execute the following command in your terminal:
 
-  ```bash
-  python3 main.py
-  ```
+   ```bash
+   python3 main.py
+   ```
 
   You see output similar to the following:
 

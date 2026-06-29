@@ -8,7 +8,7 @@ To protect your business, it is best practice to authenticate every client that 
 ## Understand the tech
 
 <PlatformStructured platform="android">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -29,7 +29,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -75,7 +75,7 @@ engine.joinChannel(token, channelId, 0, option)
 </CodeBlockTab>
 
 </CodeBlockTabs>
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -136,16 +136,16 @@ class RtcEngineEventHandlerImpl : IRtcEngineEventHandler() {
 
 </CodeBlockTabs>
 ### Complete sample code
-This section presents sample code to implement token authentication in your client. 
+This section presents sample code to implement token authentication in your client.
 
 1. In `/Gradle Scripts/build.gradle(Module: <projectname>.app)`, add the following dependencies for making HTTP requests to the token server:
 
-  ```yaml
-  dependencies {
-   implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-   implementation 'com.google.code.gson:gson:2.8.4'
-  }
-  ```
+   ```yaml
+   dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.google.code.gson:gson:2.8.4'
+   }
+   ```
 
 1. In `MainActivity`, replace the content with the following code:
 
@@ -164,7 +164,7 @@ This section presents sample code to implement token authentication in your clie
     import android.os.Bundle;
     import androidx.core.app.ActivityCompat;
     import androidx.core.content.ContextCompat;
-  
+
     import android.Manifest;
     import android.content.pm.PackageManager;
     import android.view.SurfaceView;
@@ -175,7 +175,7 @@ This section presents sample code to implement token authentication in your clie
     import io.agora.rtc2.RtcEngine;
     import io.agora.rtc2.video.VideoCanvas;
     import io.agora.rtc2.ChannelMediaOptions;
-  
+
     import okhttp3.MediaType;
     import okhttp3.OkHttpClient;
     import okhttp3.Request;
@@ -183,15 +183,15 @@ This section presents sample code to implement token authentication in your clie
     import okhttp3.Response;
     import okhttp3.Call;
     import okhttp3.Callback;
-  
+
     import com.google.gson.Gson;
     import java.util.Map;
     import org.json.JSONException;
     import org.json.JSONObject;
     import java.io.IOException;
-  
+
     public class MainActivity extends AppCompatActivity {
-  
+
      // Fill in the App ID from Agora console
      private String appId = "Your App ID";
      // Fill in the channel name
@@ -199,13 +199,13 @@ This section presents sample code to implement token authentication in your clie
      private String token = "";
      private RtcEngine mRtcEngine;
      private int joined = 1;
-  
+
      private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
        @Override
        public void onUserJoined(int uid, int elapsed) {
           runOnUiThread(() -> setupRemoteVideo(uid));
        }
-  
+
        @Override
        public void onTokenPrivilegeWillExpire(String token) {
           fetchToken(1234, channelName, 1);
@@ -215,7 +215,7 @@ This section presents sample code to implement token authentication in your clie
           });
           super.onTokenPrivilegeWillExpire(token);
        }
-  
+
        @Override
        public void onRequestToken() {
           joined = 1;
@@ -223,14 +223,14 @@ This section presents sample code to implement token authentication in your clie
           super.onRequestToken();
        }
      };
-  
+
      private static final int PERMISSION_REQ_ID = 22;
-  
+
      private static final String[] REQUESTED_PERMISSIONS = {
           Manifest.permission.RECORD_AUDIO,
           Manifest.permission.CAMERA
      };
-  
+
      private boolean checkSelfPermission(String permission, int requestCode) {
        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
           ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, requestCode);
@@ -238,7 +238,7 @@ This section presents sample code to implement token authentication in your clie
        }
        return true;
      }
-  
+
      // Get RTC Token
      private void fetchToken(int uid, String channelName, int tokenRole) {
        OkHttpClient client = new OkHttpClient();
@@ -251,7 +251,7 @@ This section presents sample code to implement token authentication in your clie
        } catch (JSONException e) {
           e.printStackTrace();
        }
-  
+
        RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
        Request request = new Request.Builder()
            .url("http://<Your Host URL and port>/fetch_rtc_token")
@@ -263,7 +263,7 @@ This section presents sample code to implement token authentication in your clie
           @Override
           public void onFailure(Call call, IOException e) {
           }
-  
+
           @Override
           public void onResponse(Call call, Response response) throws IOException {
            if (response.isSuccessful()) {
@@ -283,36 +283,36 @@ This section presents sample code to implement token authentication in your clie
           }
        });
      }
-  
+
      @Override
      protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_main);
-  
+
        if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
            checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
           initializeAndJoinChannel();
        }
      }
-  
+
      @Override
      protected void onDestroy() {
        super.onDestroy();
        mRtcEngine.leaveChannel();
        mRtcEngine.destroy();
      }
-  
+
      private void initializeAndJoinChannel() {
        try {
           mRtcEngine = RtcEngine.create(getBaseContext(), appId, mRtcEventHandler);
        } catch (Exception e) {
           throw new RuntimeException("Check the error.");
        }
-  
+
        mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
        mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
        mRtcEngine.enableVideo();
-  
+
        FrameLayout container = findViewById(R.id.local_video_view_container);
        SurfaceView surfaceView = new SurfaceView(getBaseContext());
        container.addView(surfaceView);
@@ -320,7 +320,7 @@ This section presents sample code to implement token authentication in your clie
        mRtcEngine.startPreview();
        fetchToken(1234, channelName, 1);
      }
-  
+
      private void setupRemoteVideo(int uid) {
        FrameLayout container = findViewById(R.id.remote_video_view_container);
        SurfaceView surfaceView = new SurfaceView(getBaseContext());
@@ -335,30 +335,30 @@ This section presents sample code to implement token authentication in your clie
 <CodeBlockTab value="kotlin">
   ```kotlin
   package com.example.rtcquickstart
-    
+
     import android.Manifest;
     import android.content.pm.PackageManager;
     import android.os.Bundle;
     import android.view.SurfaceView;
     import android.widget.FrameLayout;
     import android.widget.Toast;
-  
+
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.core.app.ActivityCompat;
     import androidx.core.content.ContextCompat;
-  
+
     import io.agora.rtc2.*;
     import io.agora.rtc2.video.VideoCanvas;
-  
+
     import com.google.gson.Gson;
     import okhttp3.*;
     import org.json.JSONException;
     import org.json.JSONObject;
     import java.io.IOException;
     import java.util.*;
-    
+
     class MainActivity : AppCompatActivity() {
-    
+
      // Fill in the App ID from Agora console
      private val appId = "Your App ID"
      // Fill in the channel name
@@ -366,7 +366,7 @@ This section presents sample code to implement token authentication in your clie
      private var token = ""
      private var mRtcEngine: RtcEngine? = null
      private var joined = 1
-    
+
      private val mRtcEventHandler = object : IRtcEngineEventHandler() {
        override fun onUserJoined(uid: Int, elapsed: Int) {
           runOnUiThread {
@@ -374,7 +374,7 @@ This section presents sample code to implement token authentication in your clie
            setupRemoteVideo(uid)
           }
        }
-    
+
        override fun onTokenPrivilegeWillExpire(token: String) {
           fetchToken(1234, channelName, 1)
           runOnUiThread {
@@ -383,14 +383,14 @@ This section presents sample code to implement token authentication in your clie
           }
           super.onTokenPrivilegeWillExpire(token)
        }
-    
+
        override fun onRequestToken() {
           joined = 1
           fetchToken(1234, channelName, 1)
           super.onRequestToken()
        }
      }
-    
+
      companion object {
        private const val PERMISSION_REQ_ID = 22
        private val REQUESTED_PERMISSIONS = arrayOf(
@@ -398,7 +398,7 @@ This section presents sample code to implement token authentication in your clie
           Manifest.permission.CAMERA
        )
      }
-    
+
      private fun checkSelfPermission(permission: String, requestCode: Int): Boolean {
        return if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
           ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, requestCode)
@@ -407,7 +407,7 @@ This section presents sample code to implement token authentication in your clie
           true
        }
      }
-    
+
      // Get RTC Token
      private fun fetchToken(uid: Int, channelName: String, tokenRole: Int) {
        val client = OkHttpClient()
@@ -420,19 +420,19 @@ This section presents sample code to implement token authentication in your clie
        } catch (e: JSONException) {
           e.printStackTrace()
        }
-    
+
        val requestBody = RequestBody.create(JSON, json.toString())
        val request = Request.Builder()
           .url("http://<Your Host URL and port>/fetch_rtc_token")
           .header("Content-Type", "application/json; charset=UTF-8")
           .post(requestBody)
           .build()
-    
+
        client.newCall(request).enqueue(object : Callback {
           override fun onFailure(call: Call, e: IOException) {
            // Handle failure
           }
-    
+
           override fun onResponse(call: Call, response: Response) {
            if (response.isSuccessful) {
              val gson = Gson()
@@ -452,39 +452,39 @@ This section presents sample code to implement token authentication in your clie
           }
        })
      }
-    
+
      override fun onCreate(savedInstanceState: Bundle?) {
        super.onCreate(savedInstanceState)
        setContentView(R.layout.activity_main)
-    
+
        // If all permissions are granted, initialize the RtcEngine object and join the channel
        if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
           checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
           initializeAndJoinChannel()
        }
      }
-    
+
      override fun onDestroy() {
        super.onDestroy()
        mRtcEngine?.leaveChannel()
        mRtcEngine?.destroy()
      }
-    
+
      private fun initializeAndJoinChannel() {
        try {
           mRtcEngine = RtcEngine.create(baseContext, appId, mRtcEventHandler)
        } catch (e: Exception) {
           throw RuntimeException("Check the error.")
        }
-    
+
        // In interactive live broadcast, set the channel scene to BROADCASTING
        mRtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
        // Depending on the actual situation, set the user role to BROADCASTER or AUDIENCE
        mRtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
-    
+
        // SDK turns off video by default. Call enableVideo to enable video
        mRtcEngine?.enableVideo()
-    
+
        val container: FrameLayout = findViewById(R.id.local_video_view_container)
        // Call CreateRendererView to create a SurfaceView object and add it as a child to the FrameLayout
        val surfaceView = SurfaceView(baseContext)
@@ -496,7 +496,7 @@ This section presents sample code to implement token authentication in your clie
        // Get a token from the token server
        fetchToken(1234, channelName, 1)
      }
-    
+
      private fun setupRemoteVideo(uid: Int) {
        val container: FrameLayout = findViewById(R.id.remote_video_view_container)
        val surfaceView = SurfaceView(baseContext)
@@ -526,7 +526,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -547,7 +547,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -568,7 +568,7 @@ mediaOption.clientRoleType = .broadcaster
 agoraKit.joinChannel(byToken: token, channelId: channelId, uid: uid, mediaOptions: mediaOption)
 ```
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -802,7 +802,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -823,7 +823,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -844,7 +844,7 @@ mediaOption.clientRoleType = .broadcaster
 agoraKit.joinChannel(byToken: token, channelId: channelId, uid: uid, mediaOptions: mediaOption)
 ```
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -1078,7 +1078,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -1099,7 +1099,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -1109,54 +1109,54 @@ This section shows you how to integrate token authentication in your app.
 
 2. In `index.html`, include an HTTP client library such as `axios` for sending token requests to the authentication server.
 
-  ```html
-  <html>
-    <head>
-      <title>Token demo</title>
-    </head>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <body>
-      <h1>Token demo</h1>
-      <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.0.js"></script>
-      <script src="../agoraLogic.js"></script>
-    </body>
-  </html>
-  ```
+   ```html
+   <html>
+     <head>
+       <title>Token demo</title>
+     </head>
+     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <body>
+       <h1>Token demo</h1>
+       <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.0.js"></script>
+       <script src="../agoraLogic.js"></script>
+     </body>
+   </html>
+   ```
 
 3. Add a `fetchToken` method to retrieve a token from your token server to join a channel.
 
-  ```js
-  // Retrieve a token from your token server
-  function fetchToken(uid, channelName, tokenRole) {
+   ```js
+   // Retrieve a token from your token server
+   function fetchToken(uid, channelName, tokenRole) {
 
-    return new Promise(function (resolve) {
-      axios.post('http://<Your host URL and port>/fetch_rtc_token', {
-        uid: uid,
-        channelName: channelName,
-        role: tokenRole
-      }, {
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      })
-        .then(function (response) {
-          const token = response.data.token;
-          resolve(token);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    })
-  }
-  ```
+     return new Promise(function (resolve) {
+       axios.post('http://<Your host URL and port>/fetch_rtc_token', {
+         uid: uid,
+         channelName: channelName,
+         role: tokenRole
+       }, {
+         headers: {
+           'Content-Type': 'application/json; charset=UTF-8'
+         }
+       })
+         .then(function (response) {
+           const token = response.data.token;
+           resolve(token);
+         })
+         .catch(function (error) {
+           console.log(error);
+         });
+     })
+   }
+   ```
 
 4. Use the token to join a channel
 
-  ```js
-  // Assign the obtained token to the token parameter in the join method
-  let token = await fetchToken(uid, options.channel, 1);
-  await client.join(options.appId, options.channel, token, uid);
-  ```
+   ```js
+   // Assign the obtained token to the token parameter in the join method
+   let token = await fetchToken(uid, options.channel, 1);
+   await client.join(options.appId, options.channel, token, uid);
+   ```
 
 ### Token expiration
 
@@ -1164,7 +1164,7 @@ After you join a channel using a token, the SDK triggers the `token-privilege-wi
 
   ```javascript
   client.on("token-privilege-will-expire", async function () {
-    // When you receive the token-privilege-will-expire callback, request a fresh token from the server 
+    // When you receive the token-privilege-will-expire callback, request a fresh token from the server
     let token = await fetchToken(uid, options.channel, 1);
     // Call renewToken to pass the new token to the SDK
     await client.renewToken(token);
@@ -1174,10 +1174,10 @@ After you join a channel using a token, the SDK triggers the `token-privilege-wi
 When the token expires, the SDK triggers the `token-privilege-did-expire` callback. In this case, retrieve a fresh token from the server and call the `join` method to rejoin the channel with the new token:
 
   ```javascript
-  // The token expired. 
+  // The token expired.
   client.on("token-privilege-did-expire", async function () {
   console.log("Fetching a new token")
-  // Request a new token from the server 
+  // Request a new token from the server
   let token = await fetchToken(uid, options.channel, 1);
   console.log("Rejoining the channel with new token")
   // Call join to rejoin the channel
@@ -1197,20 +1197,20 @@ For a complete implementation of token authentication, refer to the following co
       localAudioTrack: null,
       localVideoTrack: null,
     };
-  
+
     var options = {
       // Fill in app ID
       appId: "<Your app ID>",
       // Fill in a channel name
       channel: "test",
-      // Set the user as host or audience 
+      // Set the user as host or audience
       role: "host"
     };
-  
+
     // Get a token from your token server
-  
+
     function fetchToken(uid, channelName, tokenRole) {
-  
+
       return new Promise(function (resolve) {
         axios.post('http://<Your host URL and port>/fetch_rtc_token', {
           uid: uid,
@@ -1230,16 +1230,16 @@ For a complete implementation of token authentication, refer to the following co
           });
       })
     }
-  
+
     async function startBasicCall() {
-  
+
       const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
       client.setClientRole(options.role);
       const uid = 123456;
-  
+
       // Assign the obtained token to the token parameter of the join method, and join the channel
       let token = await fetchToken(uid, options.channel, 1);
-  
+
       await client.join(options.appId, options.channel, token, uid);
       rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
       rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -1249,15 +1249,15 @@ For a complete implementation of token authentication, refer to the following co
       localPlayerContainer.style.width = "640px";
       localPlayerContainer.style.height = "480px";
       document.body.append(localPlayerContainer);
-  
+
       rtc.localVideoTrack.play(localPlayerContainer);
-  
+
       console.log("publish success!");
-  
+
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
         console.log("subscribe success");
-  
+
         if (mediaType === "video") {
           const remoteVideoTrack = user.videoTrack;
           const remotePlayerContainer = document.createElement("div");
@@ -1266,27 +1266,27 @@ For a complete implementation of token authentication, refer to the following co
           remotePlayerContainer.style.height = "480px";
           document.body.append(remotePlayerContainer);
           remoteVideoTrack.play(remotePlayerContainer);
-  
+
         }
-  
+
         if (mediaType === "audio") {
           const remoteAudioTrack = user.audioTrack;
           remoteAudioTrack.play();
         }
-  
+
         client.on("user-unpublished", user => {
           const remotePlayerContainer = document.getElementById(user.uid);
           remotePlayerContainer.remove();
         });
-  
+
       });
-  
+
       // When you receive the token-privilege-will-expire callback, request a new token from the server and call renewToken to pass the new token to the SDK
       client.on("token-privilege-will-expire", async function () {
         let token = await fetchToken(uid, options.channel, 1);
         await client.renewToken(token);
       });
-  
+
       // When you receive the token-privilege-did-expire callback, request a new token from the server and call join to rejoin the channel.
       client.on("token-privilege-did-expire", async function () {
         console.log("Fetching a new token")
@@ -1294,9 +1294,9 @@ For a complete implementation of token authentication, refer to the following co
         console.log("Rejoining the channel with a new token")
         await client.join(options.appId, options.channel, token, uid);
       });
-  
+
     }
-  
+
     startBasicCall()
   ```
 
@@ -1316,7 +1316,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -1337,7 +1337,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -1358,7 +1358,7 @@ options.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
 m_rtcEngine->joinChannel(token, channelId, uid, options);
 ```
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -1409,7 +1409,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -1430,7 +1430,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -1451,12 +1451,12 @@ This section shows you how to integrate token authentication in your app.
       ChannelProfileType,
       ClientRoleType,
     } = require("agora-electron-sdk");
-  
+
     let rtcEngine;
     let localVideoContainer;
     let remoteVideoContainer;
     let isJoined = false;
-  
+
     const EventHandles = {
       // Listen to local user joining channel events
       onJoinChannelSuccess: ({ channelId, localUid }, elapsed) => {
@@ -1470,12 +1470,12 @@ This section shows you how to integrate token authentication in your app.
           renderMode: RenderModeType.RenderModeFit,
         });
       },
-  
+
       onLeaveChannel: ({ channelId, localUid }, stats) => {
         console.log('Successfully left the channel:' + channelId);
         isJoined = false;
       },
-  
+
       // Listen to remote user join event
       onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
         console.log('Remote user ' + remoteUid + ' 已加入');
@@ -1491,21 +1491,21 @@ This section shows you how to integrate token authentication in your app.
           { channelId },
         );
       },
-  
+
       // Listen for the token expiration event
       onTokenPrivilegeWillExpire: ({ channelId, localUid }, token) => {
         console.log('token ' + token + '即将过期');
         // Obtain a new token from the server
         fetchToken(channelId, localUid, ClientRoleType.ClientRoleBroadcaster)
       },
-  
+
       // Listen for the token expired event
       onRequestToken: ({ channelId, localUid }) => {
         console.log('token expired');
         token = ''
       }
     };
-  
+
     // Send a token request to the token server
     function fetchToken(channelName, uid, role) {
       //Token server URL example: http://12.123.1.123:8082/fetch_rtc_token
@@ -1532,44 +1532,44 @@ This section shows you how to integrate token authentication in your app.
           return res;
         });
     }
-  
+
     window.onload = () => {
       const os = require("os");
       const path = require("path");
-  
+
       // Fill in your app ID
       const APPID = "<Your app ID>";
-      // Fill in the channel name 
+      // Fill in the channel name
       const channel = "Test";
-  
+
       localVideoContainer = document.getElementById("join-channel-local-video");
       remoteVideoContainer = document.getElementById("join-channel-remote-video");
       const sdkLogPath = path.resolve(os.homedir(), "./test.log");
-  
+
       // Create an RtcEngine instance
       rtcEngine = createAgoraRtcEngine();
-  
+
       // Initialize the RtcEngine instance
       rtcEngine.initialize({
         appId: APPID,
         logConfig: { filePath: sdkLogPath }
       });
-  
+
       // Register event handler
       rtcEngine.registerEventHandler(EventHandles);
-  
-      //Set the channel profile to live broadcast 
+
+      //Set the channel profile to live broadcast
       rtcEngine.setChannelProfile(ChannelProfileType.ChannelProfileLiveBroadcasting);
-  
+
       // Set the user role, for host use ClientRoleBroadcaster, for audience use ClientRoleAudience
       rtcEngine.setClientRole(ClientRoleType.ClientRoleBroadcaster);
-  
+
       // Enable the video module
       rtcEngine.enableVideo();
-  
+
       // Enable camera preview
       rtcEngine.startPreview();
-  
+
       // Use the token to join a channel
       // You need to specify the user ID yourself and ensure its uniqueness within the channel
       fetchToken(channel, 123456, ClientRoleType.ClientRoleBroadcaster);
@@ -1590,7 +1590,7 @@ Build and run the project on the local device, the app performs the following op
 
 * Obtains a token from your token server.
 * Joins the channel.
-* Automatically renews the token when it is about to expire. 
+* Automatically renews the token when it is about to expire.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -1606,7 +1606,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -1627,7 +1627,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -1635,38 +1635,38 @@ This section shows you how to integrate token authentication in your app.
 
 1. Add the following to the `pubspec.yaml` file, under `dependencies`:
 
-  ```yaml
-  dependencies:
-    # Agora Flutter SDK, use the latest version of agora_rtc_engine
-    agora_rtc_engine: ^6.3.0
-    # For making http requests
-    http: ^0.13.5
-  ```
+   ```yaml
+   dependencies:
+     # Agora Flutter SDK, use the latest version of agora_rtc_engine
+     agora_rtc_engine: ^6.3.0
+     # For making http requests
+     http: ^0.13.5
+   ```
 
-2. Replace the contents in `/lib/main.dart` with the following code. 
+2. Replace the contents in `/lib/main.dart` with the following code.
 
   **Sample code for basic authentication**
 
 ```dart
   import 'dart:convert';
-  
+
     import 'package:agora_rtc_engine/agora_rtc_engine.dart';
     import 'package:flutter/material.dart';
     import 'package:http/http.dart' as http;
-  
+
     void main() => runApp(const MyApp());
-  
+
     /// This widget is the root of your application.
     class MyApp extends StatefulWidget {
     /// Construct the [MyApp]
     const MyApp({Key? key}) : super(key: key);
-  
+
     @override
     State<MyApp> createState() => _MyAppState();
     }
-  
+
     class _MyAppState extends State<MyApp> {
-  
+
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
@@ -1681,47 +1681,47 @@ This section shows you how to integrate token authentication in your app.
       );
     }
     }
-  
+
     class JoinChannelVideoToken extends StatefulWidget {
     const JoinChannelVideoToken({Key? key}) : super(key: key);
-  
+
     @override
     State<StatefulWidget> createState() => _State();
     }
-  
+
     class _State extends State<JoinChannelVideoToken> {
     late final RtcEngine _engine;
     bool _isReadyPreview = false;
-  
+
     bool isJoined = false, switchCamera = true, switchRender = true;
     Set<int> remoteUid = {};
     static const String appId = '<Your app ID>'; // Fill in the information from Agora console
     static const String channelId = '<Your channel name>'; // Fill in the channel name
     static const String hostUrl = '<Your host URL and port>'; // Fill in the server URL and port
-  
+
     @override
     void initState() {
       super.initState();
       _initEngine();
     }
-  
+
     @override
     void dispose() {
       super.dispose();
       _dispose();
     }
-  
+
     Future<void> _dispose() async {
       await _engine.leaveChannel();
       await _engine.release();
     }
-  
+
     Future<void> _initEngine() async {
       _engine = createAgoraRtcEngine();
       await _engine.initialize(const RtcEngineContext(
       appId: appId,
       ));
-  
+
       _engine.registerEventHandler(RtcEngineEventHandler(
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
         setState(() {
@@ -1752,17 +1752,17 @@ This section shows you how to integrate token authentication in your app.
         _fetchToken(1234, channelId, 1, true);
       },
       ));
-  
+
       await _engine.enableVideo();
-  
+
       await _engine.startPreview();
       await _fetchToken(1234, channelId, 1, true);
-  
+
       setState(() {
       _isReadyPreview = true;
       });
     }
-  
+
     Future<void> _fetchToken(
       int uid,
       String channelName,
@@ -1775,13 +1775,13 @@ This section shows you how to integrate token authentication in your app.
         'Content-type': 'application/json',
         'Accept': 'application/json',
       };
-  
+
       var response = await client.post(Uri.parse(hostUrl),
         headers: headers,
         body: jsonEncode(
           {'uid': uid, 'ChannelName': channelName, 'role': toeknRole}));
       var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
-  
+
       final token = decodedResponse['token'];
       if (needJoinChannel) {
         await _engine.joinChannel(
@@ -1800,7 +1800,7 @@ This section shows you how to integrate token authentication in your app.
       client.close();
       }
     }
-  
+
     @override
     Widget build(BuildContext context) {
       if (!_isReadyPreview) return Container();
@@ -1853,7 +1853,7 @@ Build and run the project on the local device, the app performs the following op
 
 * Obtains a token from your token server.
 * Joins the channel.
-* Automatically renews the token when it is about to expire. 
+* Automatically renews the token when it is about to expire.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -1871,7 +1871,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -1892,7 +1892,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -1916,7 +1916,7 @@ This section shows you how to integrate token authentication in your app.
       Text,
       View,
     } from 'react-native';
-  
+
     import {
       ChannelProfileType,
       ClientRoleType,
@@ -1926,12 +1926,12 @@ This section shows you how to integrate token authentication in your app.
       RtcConnection,
       RtcSurfaceView,
     } from 'react-native-agora';
-  
+
     // Define basic information
     const appId = '<Your app ID>';
     const channelName = 'test';
     const uid = 123; // Local user Uid
-  
+
     const App = () => {
     const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine instance
     const eventHandlerRef = useRef<IRtcEngineEventHandler>(); // IRtcEngine event handler
@@ -1940,7 +1940,7 @@ This section shows you how to integrate token authentication in your app.
     const [isHost, setIsHost] = useState(true); // User role
     const [remoteUid, setRemoteUid] = useState(0); // Uid of remote user
     const [message, setMessage] = useState(''); // Message to the user
-  
+
     // Send a request to obtain a token to the token server
     const fetchToken = useCallback(() => {
       // Token server URL example: http://12.123.1.123:8082/fetch_rtc_token
@@ -1966,7 +1966,7 @@ This section shows you how to integrate token authentication in your app.
         return res;
       });
       }, [isHost]);
-  
+
     // Use the obtained token to join the channel
     const join = useCallback(async () => {
       if (!token) {
@@ -1995,7 +1995,7 @@ This section shows you how to integrate token authentication in your app.
       }
     }
     }, [fetchToken, isHost, token]);
-  
+
     const leave = () => {
       try {
         agoraEngineRef.current?.leaveChannel();
@@ -2006,7 +2006,7 @@ This section shows you how to integrate token authentication in your app.
         console.error(e);
       }
     };
-  
+
     useEffect(() => {
       const setupVideoSDKEngine = async () => {
       try {
@@ -2050,14 +2050,14 @@ This section shows you how to integrate token authentication in your app.
         console.error(e);
       }
     };
-  
+
       setupVideoSDKEngine();
-  
+
       return () => {
         agoraEngineRef.current?.release();
       };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  
+
     useEffect(() => {
       const checkJoined = () => {
       if (isJoined) {
@@ -2070,7 +2070,7 @@ This section shows you how to integrate token authentication in your app.
       };
       checkJoined();
     }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
-  
+
     // Render the user interface
     return (
       <SafeAreaView style={styles.main}>
@@ -2123,14 +2123,14 @@ This section shows you how to integrate token authentication in your app.
       </ScrollView>
       </SafeAreaView>
     );
-  
+
     // Show message
     function showMessage(msg: string) {
       console.info(msg);
       setMessage(msg);
     }
     };
-  
+
     // Define user interface style
     const styles = StyleSheet.create({
       button: {
@@ -2149,7 +2149,7 @@ This section shows you how to integrate token authentication in your app.
       head: { fontSize: 20 },
       info: { backgroundColor: '#ffffe0', paddingHorizontal: 8, color: '#0000ff' },
     });
-  
+
     const getPermission = async () => {
       if (Platform.OS === 'android') {
         await PermissionsAndroid.requestMultiple([
@@ -2158,7 +2158,7 @@ This section shows you how to integrate token authentication in your app.
         ]);
       }
     };
-  
+
     export default App;
   ```
 
@@ -2176,7 +2176,7 @@ Build and run the project on the local device, the app performs the following op
 
 * Obtains a token from your token server.
 * Joins the channel.
-* Automatically renews the token when it is about to expire. 
+* Automatically renews the token when it is about to expire.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -2192,7 +2192,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="react-js">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2213,37 +2213,37 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token
 
 1. **Import the components and hooks you need to handle the authentication workflow**:
 
-  ```typescript
-  import { useClientEvent, useRTCClient } from "agora-rtc-react";
-  ```
+   ```typescript
+   import { useClientEvent, useRTCClient } from "agora-rtc-react";
+   ```
 
 2. **Retrieve a token from the authentication server**:
 
-  ```typescript
-  async function fetchRTCToken(channelName: string) {
-   if (config.serverUrl !== "") {
-    try {
-     const response = await fetch(
-      `${config.proxyUrl}${config.serverUrl}/rtc/${channelName}/publisher/uid/${config.uid}/?expiry=${config.tokenExpiryTime}`
-     );
-     const data = await response.json();
-     console.log("RTC token fetched from server: ", data.rtcToken);
-     return data.rtcToken;
-    } catch (error) {
-     console.error(error);
-     throw error;
+   ```typescript
+   async function fetchRTCToken(channelName: string) {
+    if (config.serverUrl !== "") {
+     try {
+      const response = await fetch(
+       `${config.proxyUrl}${config.serverUrl}/rtc/${channelName}/publisher/uid/${config.uid}/?expiry=${config.tokenExpiryTime}`
+      );
+      const data = await response.json();
+      console.log("RTC token fetched from server: ", data.rtcToken);
+      return data.rtcToken;
+     } catch (error) {
+      console.error(error);
+      throw error;
+     }
+    } else {
+     return config.rtcToken;
     }
-   } else {
-    return config.rtcToken;
    }
-  }
-  ```
+   ```
 
 3. **Handle the event triggered by Agora SDRTN® when the token is about to expire**:
 
@@ -2279,7 +2279,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2300,7 +2300,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -2319,7 +2319,7 @@ This section shows you how to integrate token authentication in your game.
     using Agora.Rtc;
     using Agora.Util;
     using Logger = Agora.Util.Logger;
-  
+
     namespace Agora_RTC_Plugin.API_Example.Examples.Advanced.JoinChannelVideoToken
     {
       public class JoinChannelVideoToken : MonoBehaviour
@@ -2330,26 +2330,26 @@ This section shows you how to integrate token authentication in your game.
         public uint localUid = 0;
         internal static string channelToken = "";
         internal IRtcEngine RtcEngine = null;
-  
+
         internal CONNECTION_STATE_TYPE _state = CONNECTION_STATE_TYPE.CONNECTION_STATE_DISCONNECTED;
-  
+
         private void Start()
         {
-  
+
           if (CheckAppId())
           {
             InitEngine();
             JoinChannel();
           }
         }
-  
+
         internal void RenewOrJoinToken(TokenObject tokenObject)
         {
           if (tokenObject == null || tokenObject.code != 200) {
             Debug.Log("get token failed");
             return;
           }
-  
+
           JoinChannelVideoToken.channelToken = tokenObject.token;
           if (_state == CONNECTION_STATE_TYPE.CONNECTION_STATE_DISCONNECTED
             || _state == CONNECTION_STATE_TYPE.CONNECTION_STATE_DISCONNECTED
@@ -2365,19 +2365,19 @@ This section shows you how to integrate token authentication in your game.
             UpdateToken();
           }
         }
-  
+
         private void Update()
         {
           PermissionHelper.RequestMicrophonePermission();
           PermissionHelper.RequestCameraPermission();
         }
-  
+
         private void UpdateToken()
         {
           RtcEngine.RenewToken(JoinChannelVideoToken.channelToken);
           Debug.Log("renewToken: " + JoinChannelVideoToken.channelToken);
         }
-  
+
         private bool CheckAppId()
         {
           if (appID.Length < 10) {
@@ -2386,7 +2386,7 @@ This section shows you how to integrate token authentication in your game.
           }
           return true;
         }
-  
+
         // Initialization
         private void InitEngine()
         {
@@ -2404,25 +2404,25 @@ This section shows you how to integrate token authentication in your game.
           RtcEngine.SetClientRole(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
           RtcEngine.EnableAudio();
           RtcEngine.EnableVideo();
-  
+
           if (channelToken.Length == 0)
           {
             StartCoroutine(HelperClass.FetchToken(this.localUid, channelName,CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER, this.RenewOrJoinToken));
             return;
           }
-  
+
           RtcEngine.JoinChannel(channelToken, channelName, "");
           Debug.Log("joinChannel with token:" + channelToken);
         }
-  
+
         internal void StartUpdateTokenEveryTenSecond() {
           InvokeRepeating("RequestToken", 10, 10);
         }
-  
+
         private void RequestToken() {
           StartCoroutine(HelperClass.FetchToken(this.localUid, channelName, CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER, this.RenewOrJoinToken));
         }
-  
+
         private void OnDestroy()
         {
           Debug.Log("OnDestroy");
@@ -2431,14 +2431,14 @@ This section shows you how to integrate token authentication in your game.
           RtcEngine.LeaveChannel();
           RtcEngine.Dispose();
         }
-  
+
         internal string GetChannelName()
         {
           return channelName;
         }
-  
+
         #region -- Video Render UI Logic ---
-  
+
         internal static void MakeVideoView(uint uid, string channelId = "")
         {
           GameObject go = GameObject.Find(uid.ToString());
@@ -2446,11 +2446,11 @@ This section shows you how to integrate token authentication in your game.
           {
             return;
           }
-  
+
           VideoSurface videoSurface = MakeImageSurface(uid.ToString());
           if (!ReferenceEquals(videoSurface, null))
           {
-  
+
             if (uid == 0)
             {
               videoSurface.SetForUser(uid, channelId);
@@ -2459,46 +2459,46 @@ This section shows you how to integrate token authentication in your game.
             {
               videoSurface.SetForUser(uid, channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
             }
-  
+
             videoSurface.OnTextureSizeModify += (int width, int height) =>
             {
               float scale = (float)height / (float)width;
               videoSurface.transform.localScale = new Vector3(-5, 5 * scale, 1);
               Debug.Log("OnTextureSizeModify: " + width + " " + height);
             };
-  
+
             videoSurface.SetEnable(true);
           }
         }
-  
+
         private static VideoSurface MakePlaneSurface(string goName)
         {
           GameObject go = GameObject.CreatePrimitive(PrimitiveType.Plane);
-  
+
           if (go == null)
           {
             return null;
           }
-  
+
           go.name = goName;
-  
+
           go.transform.Rotate(-90.0f, 0.0f, 0.0f);
           go.transform.position = Vector3.zero;
           go.transform.localScale = new Vector3(0.25f, 0.5f, .5f);
-  
+
           var videoSurface = go.AddComponent<VideoSurface>();
           return videoSurface;
         }
-  
+
         private static VideoSurface MakeImageSurface(string goName)
         {
           GameObject go = new GameObject();
-  
+
           if (go == null)
           {
             return null;
           }
-  
+
           go.name = goName;
           go.AddComponent<RawImage>();
           go.AddComponent<UIElementDrag>();
@@ -2512,15 +2512,15 @@ This section shows you how to integrate token authentication in your game.
           {
             Debug.Log("Canvas is null video view");
           }
-  
+
           go.transform.Rotate(0f, 0.0f, 180.0f);
           go.transform.localPosition = Vector3.zero;
           go.transform.localScale = new Vector3(3f, 4f, 1f);
-  
+
           var videoSurface = go.AddComponent<VideoSurface>();
           return videoSurface;
         }
-  
+
         internal static void DestroyVideoView(uint uid)
         {
           GameObject go = GameObject.Find(uid.ToString());
@@ -2529,19 +2529,19 @@ This section shows you how to integrate token authentication in your game.
             Object.Destroy(go);
           }
         }
-  
+
         #endregion
       }
-  
+
       internal class UserEventHandler : IRtcEngineEventHandler
       {
         private readonly JoinChannelVideoToken _helloVideoTokenAgora;
-  
+
         internal UserEventHandler(JoinChannelVideoToken helloVideoTokenAgora)
         {
           _helloVideoTokenAgora= helloVideoTokenAgora;
         }
-  
+
         public override void OnError(int err, string msg)
         {
           Debug.Log(string.Format("OnError err: {0}, msg: {1}", err, msg));
@@ -2558,18 +2558,18 @@ This section shows you how to integrate token authentication in your game.
           Debug.Log(string.Format("New Token: {0}",
             JoinChannelVideoToken.channelToken));
           JoinChannelVideoToken.MakeVideoView(0);
-  
+
           _helloVideoTokenAgora.localUid = connection.localUid;
           _helloVideoTokenAgora.StartUpdateTokenEveryTenSecond();
         }
-  
+
         public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
         {
           Debug.Log(string.Format("OnUserJoined uid: ${0} elapsed: ${1}", uid,
             elapsed));
           JoinChannelVideoToken.MakeVideoView(uid, _helloVideoTokenAgora.GetChannelName());
         }
-  
+
         public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason)
         {
           Debug.Log(string.Format("OnUserOffLine uid: ${0}, reason: ${1}", uid,
@@ -2582,44 +2582,44 @@ This section shows you how to integrate token authentication in your game.
           _helloVideoTokenAgora.StartCoroutine(HelperClass.FetchToken(_helloVideoTokenAgora.localUid,
             _helloVideoTokenAgora.GetChannelName(), CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER, _helloVideoTokenAgora.RenewOrJoinToken));
         }
-  
+
         public override void OnConnectionStateChanged(RtcConnection connection, CONNECTION_STATE_TYPE state,
           CONNECTION_CHANGED_REASON_TYPE reason)
         {
           _helloVideoTokenAgora._state = state;
         }
-  
+
         public override void OnConnectionLost(RtcConnection connection)
         {
           Debug.Log(string.Format("OnConnectionLost "));
         }
       }
-  
+
       #endregion
     }
-  
+
     namespace Agora.Util
     {
       public static class HelperClass
       {
         public static IEnumerator FetchToken(uint uid, string channelName, CLIENT_ROLE_TYPE role, Action<TokenObject> callback = null)
         {
-  
+
           Dictionary<string, object> postParams = new Dictionary<string, object>();
           postParams.Add("uid", uid);
           postParams.Add("ChannelName", channelName);
           postParams.Add("role", role);
           string json = AgoraJson.ToJson<Dictionary<string, object>>(postParams);
           var url = "http://127.0.0.1/fetch_rtc_token";
-  
+
           byte[] postBytes = System.Text.Encoding.Default.GetBytes(json);
           UnityWebRequest request = new UnityWebRequest(url, "POST");
-  
+
           request.uploadHandler = (UploadHandler)new UploadHandlerRaw(postBytes);
           request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
           request.SetRequestHeader("Content-Type", "application/json");
           yield return request.SendWebRequest();
-  
+
           if (request.isNetworkError || request.isHttpError)
           {
             Debug.Log(request.error);
@@ -2646,7 +2646,7 @@ Build and run the project on the local device, the game performs the following o
 
 * Obtains a token from your token server.
 * Joins the channel.
-* Automatically renews the token when it is about to expire. 
+* Automatically renews the token when it is about to expire.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -2656,7 +2656,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
-When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2677,7 +2677,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -2698,7 +2698,7 @@ options.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
 m_rtcEngine->joinChannel(token, channelId, uid, options);
 ```
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -2747,7 +2747,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
-When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your game retrieves a token from the token server in your security infrastructure. Your game then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2768,7 +2768,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -2789,7 +2789,7 @@ options.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
 m_rtcEngine->joinChannel(token, channelId, uid, options);
 ```
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -2832,7 +2832,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="python">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2853,7 +2853,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -2863,7 +2863,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="linux-cpp">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2884,7 +2884,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::
@@ -2894,7 +2894,7 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="linux-c">
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora Interactive Live Streaming:
 
@@ -2915,7 +2915,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 :::note
 The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
 :::

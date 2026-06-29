@@ -3430,17 +3430,17 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   **Workaround**: On iOS 15.0 to 15.3, use `WebAudio` to play the audio, and use `GainNode` to increase the audio volume level. Use the following workaround:
   1. Upgrade to the Web SDK 4.9.0 or later versions.
   2. Set the SDK private parameter `REMOTE_AUDIO_TRACK_USES_WEB_AUDIO` as `true`. The SDK uses `WebAudio` to play the remote audio stream. Sample code:
-    ```javascript
-    function isIOS15(ua){
-      // Use UA to judge whether the iOS version is 15
-    }
+     ```javascript
+     function isIOS15(ua){
+       // Use UA to judge whether the iOS version is 15
+     }
 
-    if(isIOS15(navigator.userAgent)){
-      // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
-      // @ts-ignore
-      AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
-    }
-    ```
+     if(isIOS15(navigator.userAgent)){
+       // If you are using Typescript, add the "@ts-ignore" tag before calling setParameter
+       // @ts-ignore
+       AgoraRTC.setParameter("REMOTE_AUDIO_TRACK_USES_WEB_AUDIO", true);
+     }
+     ```
 
   **iOS 15.x: The video playback goes black**
 
@@ -3468,21 +3468,21 @@ The list of known issues page is continuously updated as the systems evolve. Ago
   - Safari on iOS 15.x.
   - Browsers and apps that use WKWebView (such as Chrome) on iOS 14.4 to iOS 15.x.
 
-  
+
 
   **Reason**:
   - For Safari: This happens primarily due to this WebKit [bug](https://bugs.webkit.org/show_bug.cgi?id=231105). After the browser switches to the background, the `AudioContext` of `WebAudio` stops processing audio.
   - For browsers and apps using WKWebView: This happens because iOS `WKWebView` prohibits microphone usage while in the background. For details, see [Microphone gets muted in background](https://developer.apple.com/forums/thread/689182).
 
-  
+
 
   **Workaround**: Currently there is no workaround for browsers and apps using WKWebView. For Safari on iOS 15.x, you can follow these steps to avoid this issue:
   1. Upgrade to the Web SDK v4.7.3 or later versions.
   2. When calling `createMicrophoneAudioTrack`, set `bypassWebAudio` as `true`. The Web SDK directly publishes the local audio stream without processing it through `WebAudio`.
 
-    ```javascript
-    const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
-    ```
+     ```javascript
+     const localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({bypassWebAudio: true});
+     ```
 
     > Note that this workaround has a side effect. After applying this workaround, the audio mixing function (`MixingAudioTrack`) in the SDK fails.
 
@@ -3583,11 +3583,11 @@ Reason: iOS and iOS WebView do not support setting the volume of a media object 
   1. Upgrade to the Web SDK v4.6.0 or later versions.
   2. Listen to the `AgoraRTC.onAutoplayFailed` event. Instruct the user to click on the page to resume playback:
 
-    ```javascript
-    AgoraRTC.onAutoplayFailed = ()=>{
-      document.alert('Please click the page to resume playback');
-    }
-    ```
+     ```javascript
+     AgoraRTC.onAutoplayFailed = ()=>{
+       document.alert('Please click the page to resume playback');
+     }
+     ```
 
   **If a local user wears a Bluetooth headset, after they start to send the audio, the remote audio is lost**
 

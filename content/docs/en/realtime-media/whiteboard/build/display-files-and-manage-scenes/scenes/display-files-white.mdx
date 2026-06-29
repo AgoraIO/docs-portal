@@ -47,103 +47,103 @@ The following section extends the [Join The Whiteboard Room](../../set-up-and-bu
 
 3. Add the following lines to the `joinWhiteboard.js` file to create new scenes and implement scene switching:
 
-```javascript
-var whiteWebSdk = new WhiteWebSdk({
-    appIdentifier: "RMmxxxxAQ", // Your App Identifier
-});
+   ```javascript
+   var whiteWebSdk = new WhiteWebSdk({
+       appIdentifier: "RMmxxxxAQ", // Your App Identifier
+   });
 
-var joinRoomParams = {
-    uuid: "a7xxxxx69", // Room UUID
-    roomToken: "NETLESSROOM_YWxxxxjk", // Room Token
-};
+   var joinRoomParams = {
+       uuid: "a7xxxxx69", // Room UUID
+       roomToken: "NETLESSROOM_YWxxxxjk", // Room Token
+   };
 
-whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+   whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
 
-    room.bindHtmlElement(document.getElementById("whiteboard"));
+       room.bindHtmlElement(document.getElementById("whiteboard"));
 
-    // Specify the width (px), height (px), and URL of each PPTX slide, and create a new set of scenes.
-    var width = 1280;
-    var height = 720;
-    var imageURLs = [
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/19.slide",
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/20.slide",
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/21.slide",
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/22.slide",
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/23.slide",
-        "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/24.slide",
-    ];
-    var scenes = imageURLs.map(function(url, index) {
-        return {
-            name: "" + (index + 1),
-            ppt: {
-                src: url,
-                width: width,
-                height: height,
-            },
-        };
-    });
+       // Specify the width (px), height (px), and URL of each PPTX slide, and create a new set of scenes.
+       var width = 1280;
+       var height = 720;
+       var imageURLs = [
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/19.slide",
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/20.slide",
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/21.slide",
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/22.slide",
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/23.slide",
+           "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016xxx82/24.slide",
+       ];
+       var scenes = imageURLs.map(function(url, index) {
+           return {
+               name: "" + (index + 1),
+               ppt: {
+                   src: url,
+                   width: width,
+                   height: height,
+               },
+           };
+       });
 
-   // Add the scenes to a specified scene directory.
-   room.putScenes("/AgoraFPA", scenes);
+      // Add the scenes to a specified scene directory.
+      room.putScenes("/AgoraFPA", scenes);
 
-   // Switch to the first newly inserted scene.
-   room.setScenePath("/AgoraFPA/1");
+      // Switch to the first newly inserted scene.
+      room.setScenePath("/AgoraFPA/1");
 
-   // Define the "Next Page" and "Previous Page" buttons.
-   var nextpage = document.getElementById("nextpage");
-   var prepage = document.getElementById("prepage");
+      // Define the "Next Page" and "Previous Page" buttons.
+      var nextpage = document.getElementById("nextpage");
+      var prepage = document.getElementById("prepage");
 
-   // Click the "Next Page" button to switch to the next scene.
-   nextpage.addEventListener("click", function(){
-       var nextIndex = room.state.sceneState.index + 1;
+      // Click the "Next Page" button to switch to the next scene.
+      nextpage.addEventListener("click", function(){
+          var nextIndex = room.state.sceneState.index + 1;
+          var scenes = room.state.sceneState.scenes;
+
+          if (nextIndex < scenes.length) {
+              room.setSceneIndex(nextIndex);
+          };
+      });
+
+      // Click the "Previous Page" button to switch to the previous scene.
+      prepage.addEventListener("click", function(){
+       var preIndex = room.state.sceneState.index - 1;
        var scenes = room.state.sceneState.scenes;
 
-       if (nextIndex < scenes.length) {
-           room.setSceneIndex(nextIndex);
+       if (preIndex>=0) {
+           room.setSceneIndex(preIndex);
        };
    });
 
-   // Click the "Previous Page" button to switch to the previous scene.
-   prepage.addEventListener("click", function(){
-    var preIndex = room.state.sceneState.index - 1;
-    var scenes = room.state.sceneState.scenes;
+   }).catch(function(err) {
 
-    if (preIndex>=0) {
-        room.setSceneIndex(preIndex);
-    };
-});
-
-}).catch(function(err) {
-
-    console.error(err);
-});
-```
+       console.error(err);
+   });
+   ```
 
 4. Add the following code to the `index.html` file to load the button for switching scenes on the web page:
 
-```html
-<!DOCTYPE html>
-<html>
-    <head>
-        <script src="https://sdk.netless.link/white-web-sdk/2.13.11.js"></script>
-        <script src="./index.js"></script>
+   ```html
+   <!DOCTYPE html>
+   <html>
+       <head>
+           <script src="https://sdk.netless.link/white-web-sdk/2.13.11.js"></script>
+           <script src="./index.js"></script>
 
-    </head>
-    <body>
-        <div id="whiteboard" style="width: 100%; height: 100vh;">
-        </div>
-        <!--Define the style of the buttons and add them to the web page-->
-        <div style="display: inline-block;">
-        <div id="nextpage" class="Next" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 400px;">
-            Next Page
-        </div>
-        <div id="prepage" class="Prev" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 430px;">
-            Previous page
-        </div>
-    </div>
-    </body>
-</html>
-```
+       </head>
+       <body>
+           <div id="whiteboard" style="width: 100%; height: 100vh;">
+           </div>
+           <!--Define the style of the buttons and add them to the web page-->
+           <div style="display: inline-block;">
+           <div id="nextpage" class="Next" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 400px;">
+               Next Page
+           </div>
+           <div id="prepage" class="Prev" style="width: 50px; border: 1px solid lightskyblue;display: inline-block;position: fixed; bottom: 430px;">
+               Previous page
+           </div>
+       </div>
+       </body>
+   </html>
+   ```
 
 After saving the changes and reopening the `index.html` file with your browser, you can see the first page of the PPTX file. Click the **Next Page** button to move through the PPTX file sequentially. You can also see the animation effect in the source file display on the whiteboard scene.
 

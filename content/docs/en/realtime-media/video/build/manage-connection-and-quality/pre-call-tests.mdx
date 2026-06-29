@@ -719,28 +719,28 @@ To test that the local audio playback device is working properly, refer to the f
 1. If the user hears the audio, the playback device is working properly. The SDK triggers the `OnAudioVolumeIndication` callback to report `uid = 1` and the volume information of the playback device.
 
 1. When you are done testing, call `stopPlaybackDeviceTest` to stop the test.
-``` csharp
-RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
-UserEventHandler handler = new UserEventHandler(this);
-RtcEngineContext context = new RtcEngineContext(_appID, 0,
-                        CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
-                        AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
-RtcEngine.Initialize(context);
-// Set up listen callbacks
-RtcEngine.InitEventHandler(handler);
-// Test the local audio playback device
-IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
-audioDeviceManager.StartPlaybackDeviceTest("/User/hello.mp3");
+   ``` csharp
+   RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+   UserEventHandler handler = new UserEventHandler(this);
+   RtcEngineContext context = new RtcEngineContext(_appID, 0,
+                           CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+                           AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+   RtcEngine.Initialize(context);
+   // Set up listen callbacks
+   RtcEngine.InitEventHandler(handler);
+   // Test the local audio playback device
+   IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+   audioDeviceManager.StartPlaybackDeviceTest("/User/hello.mp3");
 
-class UserEventHandler : IRtcEngineEventHandler
-{
-    // Implement the audio volume callback interface
-    public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
-    {
+   class UserEventHandler : IRtcEngineEventHandler
+   {
+       // Implement the audio volume callback interface
+       public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+       {
 
-    }
-}
-```
+       }
+   }
+   ```
 
 #### Audio equipment loop detection
 

@@ -68,7 +68,7 @@ dependencies {
  //...
 }
 ```
-  
+
 
 ## Reference
 
@@ -349,7 +349,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -1070,7 +1070,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -1362,7 +1362,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Integrating extensions into your project
 
-When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table: 
+When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table:
 
 **iOS Video SDK**
 | Dynamic Library | Category | `subspecs` field |
@@ -1435,7 +1435,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 - `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
 
 </Slot>
- 
+
 
 ### Frequently asked questions
 
@@ -1766,7 +1766,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -2058,7 +2058,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Integrating extensions into your project
 
-When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table: 
+When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table:
 
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
@@ -2140,26 +2140,26 @@ Starting from version 4.22.0, in addition to the core modules, the SDK also prov
 :::note
 The optimization effect of tree shaking is currently limited by the SDK architecture. Agora will continue to improve the tree shaking effect in future versions.
 :::
-To use tree shaking, follow these steps to integrate the SDK: 
+To use tree shaking, follow these steps to integrate the SDK:
 
 1. Run the following command to install the latest SDK package using npm:
 
-  ```bash
-  npm install agora-rtc-sdk-ng
-  ```
+   ```bash
+   npm install agora-rtc-sdk-ng
+   ```
 
 2. Import all used methods, enumerations, constants, types, and so on by adding `/esm` at the end of the package name `agora-rtc-sdk-ng`:
 
-  ```javascript
-  // Example of correct reference citation method
-  import { createClient } from "agora-rtc-sdk-ng/esm";
-  // Import enum
-  import { ConnectionDisconnectedReason } from "agora-rtc-sdk-ng/esm";
-  // Import constant
-  import { VERSION } from "agora-rtc-sdk-ng/esm";
-  // Import type
-  import type { ICameraVideoTrack } from "agora-rtc-sdk-ng/esm";
-  ```
+   ```javascript
+   // Example of correct reference citation method
+   import { createClient } from "agora-rtc-sdk-ng/esm";
+   // Import enum
+   import { ConnectionDisconnectedReason } from "agora-rtc-sdk-ng/esm";
+   // Import constant
+   import { VERSION } from "agora-rtc-sdk-ng/esm";
+   // Import type
+   import type { ICameraVideoTrack } from "agora-rtc-sdk-ng/esm";
+   ```
 
 3. Starting from version 4.23.0, you can integrate the functional modules you need as follows:
 
@@ -2169,7 +2169,7 @@ To use tree shaking, follow these steps to integrate the SDK:
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import Plan-B module
     import { PlanBConnectionService } from "agora-rtc-sdk-ng/services/planb-connection";
-  
+
     AgoraRTC.use(PlanBConnectionService);
   ```
 
@@ -2180,7 +2180,7 @@ To use tree shaking, follow these steps to integrate the SDK:
     // Import real-time moderation (content moderation) module
     import { ImageModerationService } from "agora-rtc-sdk-ng/services/image-moderation";
     import { ContentInspectService } from "agora-rtc-sdk-ng/services/content-inspect";
-  
+
     AgoraRTC.use(ImageModerationService)
     .use(ContentInspectService);
   ```
@@ -2191,7 +2191,7 @@ To use tree shaking, follow these steps to integrate the SDK:
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import cross-channel media relay module
     import { ChannelMediaRelayService } from "agora-rtc-sdk-ng/services/channel-media-relay";
-  
+
     AgoraRTC.use(ChannelMediaRelayService);
   ```
 
@@ -2201,7 +2201,7 @@ To use tree shaking, follow these steps to integrate the SDK:
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import live streaming service module
     import { LiveStreamingService } from "agora-rtc-sdk-ng/services/live-streaming";
-  
+
     AgoraRTC.use(LiveStreamingService);
   ```
 
@@ -2508,7 +2508,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3100,7 +3100,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3435,31 +3435,31 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 1. Add the following script to the Podfile under the target section for the `agora_rtc_engine` dependency. This script marks unnecessary extensions as [weak frameworks](https://guides.cocoapods.org/syntax/podspec.html#weak_frameworks):
 
-  ```ruby
-  post_install do |installer|
-   installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
+   ```ruby
+   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+     flutter_additional_ios_build_settings(target)
 
-    targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
-    # Add more -weak_framework flags for other unnecessary extensions if needed
-    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+     targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
+     # Add more -weak_framework flags for other unnecessary extensions if needed
+     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
 
-    next unless targets_to_weaklink.include?(target.name)
+     next unless targets_to_weaklink.include?(target.name)
 
-    target.build_configurations.each do |config|
-     base_config_reference = config.base_configuration_reference
-     unless base_config_reference. nil?
-      xcconfig_path = base_config_reference.real_path
-      xcconfig = File.read(xcconfig_path)
-      frameworks_to_weaklink.each do |framework|
-       xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
+     target.build_configurations.each do |config|
+      base_config_reference = config.base_configuration_reference
+      unless base_config_reference. nil?
+       xcconfig_path = base_config_reference.real_path
+       xcconfig = File.read(xcconfig_path)
+       frameworks_to_weaklink.each do |framework|
+        xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
+       end
+       File.open(xcconfig_path, "w") { |file| file << xcconfig }
       end
-      File.open(xcconfig_path, "w") { |file| file << xcconfig }
      end
     end
    end
-  end
-  ```
+   ```
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
@@ -3467,15 +3467,15 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-    ```bash
-    $stderr.puts "Removing Unnecessary Frameworks"
-    # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-    for framework in frameworks_to_weaklink
-      framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-      `rm -Rf "#{framework_path}"`
-    end
-    ```
+     ```bash
+     $stderr.puts "Removing Unnecessary Frameworks"
+     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+     for framework in frameworks_to_weaklink
+       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+       `rm -Rf "#{framework_path}"`
+     end
+     ```
     The following figure shows the required steps:
 
     ![reduce app size step 2](/images/video-sdk/reduce-app-size-flutter-step-2.png)
@@ -3759,7 +3759,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -4094,31 +4094,31 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 1. Add the following script to the Podfile under the target section for the `agora_rtc_engine` dependency. This script marks unnecessary extensions as [weak frameworks](https://guides.cocoapods.org/syntax/podspec.html#weak_frameworks):
 
-  ```ruby
-  post_install do |installer|
-   installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
+   ```ruby
+   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+     flutter_additional_ios_build_settings(target)
 
-    targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
-    # Add more -weak_framework flags for other unnecessary extensions if needed
-    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+     targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
+     # Add more -weak_framework flags for other unnecessary extensions if needed
+     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
 
-    next unless targets_to_weaklink.include?(target.name)
+     next unless targets_to_weaklink.include?(target.name)
 
-    target.build_configurations.each do |config|
-     base_config_reference = config.base_configuration_reference
-     unless base_config_reference. nil?
-      xcconfig_path = base_config_reference.real_path
-      xcconfig = File.read(xcconfig_path)
-      frameworks_to_weaklink.each do |framework|
-       xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
+     target.build_configurations.each do |config|
+      base_config_reference = config.base_configuration_reference
+      unless base_config_reference. nil?
+       xcconfig_path = base_config_reference.real_path
+       xcconfig = File.read(xcconfig_path)
+       frameworks_to_weaklink.each do |framework|
+        xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
+       end
+       File.open(xcconfig_path, "w") { |file| file << xcconfig }
       end
-      File.open(xcconfig_path, "w") { |file| file << xcconfig }
      end
     end
    end
-  end
-  ```
+   ```
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
@@ -4126,15 +4126,15 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-    ```bash
-    $stderr.puts "Removing Unnecessary Frameworks"
-    # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-    for framework in frameworks_to_weaklink
-      framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-      `rm -Rf "#{framework_path}"`
-    end
-    ```
+     ```bash
+     $stderr.puts "Removing Unnecessary Frameworks"
+     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+     for framework in frameworks_to_weaklink
+       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+       `rm -Rf "#{framework_path}"`
+     end
+     ```
     The following figure shows the required steps:
 
     ![reduce app size step 2](/images/video-sdk/reduce-app-size-flutter-step-2.png)
@@ -4418,7 +4418,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -4743,9 +4743,9 @@ Open the `Assets/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins` folder in Unity E
 
 - **iOS**: If your target platform is iOS, you can safely delete any unused `<*>Extension.framework` files located in the `iOS` folder of your project.
 
-- **macOS**: For macOS targets, you may delete any unused `<*>Extension.framework` files found in the `macOS/AgoraRtcWrapperUnity.bundle/Contents/Frameworks` path. 
+- **macOS**: For macOS targets, you may delete any unused `<*>Extension.framework` files found in the `macOS/AgoraRtcWrapperUnity.bundle/Contents/Frameworks` path.
 
-- **Windows**: If targeting Windows, you have the option to delete `<*>extension.dll` or `<*>extension.dll.lib` files located in the `x86` or `x86_64` folder. 
+- **Windows**: If targeting Windows, you have the option to delete `<*>extension.dll` or `<*>extension.dll.lib` files located in the `x86` or `x86_64` folder.
 
 Exercise caution when deleting files, and always make sure that any removals do not impact the functionality of your application.
 
@@ -5032,7 +5032,7 @@ The name of the extension for each platform and the increase in the size of your
 
 **Face Capture**
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 

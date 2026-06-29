@@ -180,31 +180,31 @@ In `AgoraEduUI.swift`, make the following changes:
 2. Change `var chat: AgoraEduWidget` to `var chat: AgoraBaseWidget`.
 3. Add the following code to add the `initWidgets` method:
 
-```swift
-func initWidgets() {
-        guard let widgetInfos = contextPool.widget.getWidgetInfos() else {
-            return
-        }
+   ```swift
+   func initWidgets() {
+           guard let widgetInfos = contextPool.widget.getWidgetInfos() else {
+               return
+           }
 
-        for info in widgetInfos {
-            switch info.widgetId {
-            case "AgoraChatWidget":
-                info.properties = ["contextPool": contextPool]
-                let chat = contextPool.widget.create(with: info)
-                chat.addMessageObserver(self)
+           for info in widgetInfos {
+               switch info.widgetId {
+               case "AgoraChatWidget":
+                   info.properties = ["contextPool": contextPool]
+                   let chat = contextPool.widget.create(with: info)
+                   chat.addMessageObserver(self)
 
-                let hasConversation = (viewType == .oneToOne ? 0 : 1)
-                if let message = ["hasConversation": hasConversation].jsonString() {
-                    chat.widgetDidReceiveMessage(message)
-                }
+                   let hasConversation = (viewType == .oneToOne ? 0 : 1)
+                   if let message = ["hasConversation": hasConversation].jsonString() {
+                       chat.widgetDidReceiveMessage(message)
+                   }
 
-                self.chat = chat
-            default:
-                break
-            }
-        }
-}
-```
+                   self.chat = chat
+               default:
+                   break
+               }
+           }
+   }
+   ```
 
 #### Step 4: Replace the files in the `SDKs/Modules/AgraUIEduBaseViews` directory
 
@@ -230,38 +230,38 @@ In `AgoraChatWidget.swift`, make the following changes:
 
 1. Replace the initialization method with the following code:
 
-```swift
-public required init(widgetId: String,
-                     contextPool: AgoraEduContextPool,
-                     properties: [AnyHashable : Any]?) {
-    super.init(widgetId: widgetId,
-               contextPool: contextPool,
-               properties: properties)
-    initViews()
-    initLayout()
-    initData()
-}
-```
+   ```swift
+   public required init(widgetId: String,
+                        contextPool: AgoraEduContextPool,
+                        properties: [AnyHashable : Any]?) {
+       super.init(widgetId: widgetId,
+                  contextPool: contextPool,
+                  properties: properties)
+       initViews()
+       initLayout()
+       initData()
+   }
+   ```
 
 2. To add the `AgoraEduMessageContext` property, add the following code:
 
-```swift
-private weak var context: AgoraEduMessageContext?
+   ```swift
+   private weak var context: AgoraEduMessageContext?
 
-public required override init(widgetId: String,
-                              properties: [AnyHashable: Any]?) {
-    super.init(widgetId: widgetId,
-               properties: properties)
+   public required override init(widgetId: String,
+                                 properties: [AnyHashable: Any]?) {
+       super.init(widgetId: widgetId,
+                  properties: properties)
 
-    initViews()
-    initLayout()
+       initViews()
+       initLayout()
 
-    if let contextPool = properties?["contextPool"] as? AgoraEduContextPool {
-        context = contextPool.chat
-        initData()
-    }
-}
-```
+       if let contextPool = properties?["contextPool"] as? AgoraEduContextPool {
+           context = contextPool.chat
+           initData()
+       }
+   }
+   ```
 
 ## Web
 

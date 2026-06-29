@@ -376,32 +376,32 @@ After successfully logging in to the Chat SDK, you can configure the push policy
 
 1. Pass the certificate name to the SDK:
 
-```objc
-#import
+   ```objc
+   #import
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Apply for notification permission
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            if (granted) {
-                NSLog(@"request authorization succeed");
-            }
-        }];
+   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+       // Apply for notification permission
+       UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+           [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+               if (granted) {
+                   NSLog(@"request authorization succeed");
+               }
+           }];
 
-    // Register push
-    [application registerForRemoteNotifications];
+       // Register push
+       [application registerForRemoteNotifications];
 
-    // Initialize options and set App Key
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"XXXX#XXXX"];
+       // Initialize options and set App Key
+       AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"XXXX#XXXX"];
 
-    // Fill in the name you set when uploading the certificate. Make sure the certificate name you set here is consistent with the certificate name you filled in on Agora Console.
-    options.apnsCertName = @"PushCertName";
+       // Fill in the name you set when uploading the certificate. Make sure the certificate name you set here is consistent with the certificate name you filled in on Agora Console.
+       options.apnsCertName = @"PushCertName";
 
-    [AgoraChatClient.sharedClient initializeSDKWithOptions:options];
+       [AgoraChatClient.sharedClient initializeSDKWithOptions:options];
 
-    return YES;
-}
-```
+       return YES;
+   }
+   ```
 
 1. Get the device token and pass it to the server.
 
