@@ -255,28 +255,28 @@ Depending on the Web SDK version you are using, refer to the corresponding imple
 
 4. Video SDK provides a `client.on("is-using-cloud-proxy")` event that triggers the callback after the media stream is successfully published locally, to inform whether the current media stream is forwarded by the cloud proxy service.
 
-  ```javascript
-  const client = AgoraRTC.createClient({mode: 'live',codec: 'vp8'});
-  // Enable cloud proxy
-  client.startProxyServer(3);
-  // Join channel
-  client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => );
+   ```javascript
+   const client = AgoraRTC.createClient({mode: 'live',codec: 'vp8'});
+   // Enable cloud proxy
+   client.startProxyServer(3);
+   // Join channel
+   client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => );
 
-  ```
+   ```
 
 5. To stop using the proxy server, call `stopProxyServer` after leaving the channel.
 
-  ```javascript
-  // Leave channel
-  client.leave();
+   ```javascript
+   // Leave channel
+   client.leave();
 
-  // Turn off the cloud proxy service
-  client.stopProxyServer();
+   // Turn off the cloud proxy service
+   client.stopProxyServer();
 
-  // Rejoin channel
-  client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => );
+   // Rejoin channel
+   client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => );
 
-  ```
+   ```
 
 **v4.0.0-v4.2.1**
 1. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
@@ -370,7 +370,7 @@ Alternatively, you can whitelist the following domains and ports to ensure seaml
 
 * **v4.4.0 and above**
 
-  ```
+  ```text
   .agora.io
   .edge.agora.io
   .sd-rtn.com
@@ -382,7 +382,7 @@ Alternatively, you can whitelist the following domains and ports to ensure seaml
 
 * **v4.0.0 - v4.4.0**
 
-  ```
+  ```text
   .agora.io
   .edge.agora.io
   .agoraio.cn

@@ -42,27 +42,51 @@ describe('app prose CSS regressions', () => {
     const thirdLevel = getRuleBody(
       '.prose :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *))',
     );
+    const topLevelOverride = getRuleBody(
+      ':where(html) .prose :where(ol):not(:where(.not-prose, .not-prose *))',
+    );
+    const secondLevelOverride = getRuleBody(
+      ':where(html) .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *))',
+    );
+    const thirdLevelOverride = getRuleBody(
+      `:where(html)
+        .prose
+        :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *))`,
+    );
 
-    expect(topLevel.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'list-style',
-        value: 'decimal',
-      }),
-    );
-    expect(secondLevel.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'list-style',
-        value: 'lower-alpha',
-      }),
-    );
-    expect(thirdLevel.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'list-style',
-        value: 'lower-roman',
-      }),
-    );
+    for (const rule of [topLevel.rule, topLevelOverride.rule]) {
+      expect(rule.nodes).toContainEqual(
+        expect.objectContaining({
+          prop: 'list-style',
+          value: 'decimal',
+        }),
+      );
+    }
+    for (const rule of [secondLevel.rule, secondLevelOverride.rule]) {
+      expect(rule.nodes).toContainEqual(
+        expect.objectContaining({
+          prop: 'list-style',
+          value: 'lower-alpha',
+        }),
+      );
+    }
+    for (const rule of [thirdLevel.rule, thirdLevelOverride.rule]) {
+      expect(rule.nodes).toContainEqual(
+        expect.objectContaining({
+          prop: 'list-style',
+          value: 'lower-roman',
+        }),
+      );
+    }
     expect(topLevel.sourceStart).toBeLessThan(secondLevel.sourceStart);
     expect(secondLevel.sourceStart).toBeLessThan(thirdLevel.sourceStart);
+    expect(thirdLevel.sourceStart).toBeLessThan(topLevelOverride.sourceStart);
+    expect(topLevelOverride.sourceStart).toBeLessThan(
+      secondLevelOverride.sourceStart,
+    );
+    expect(secondLevelOverride.sourceStart).toBeLessThan(
+      thirdLevelOverride.sourceStart,
+    );
   });
 
   it('keeps wrapped prose tables intrinsic while raw tables retain scroll fallback', () => {
@@ -279,6 +303,41 @@ describe('app prose CSS regressions', () => {
       expect.objectContaining({
         prop: 'height',
         value: 'auto',
+      }),
+    );
+  });
+
+  it('lets long prose inline code break without changing pre code styling', () => {
+    const inlineCode = getRuleBody(
+      '.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))',
+    );
+    const preCode = getRuleBody(
+      '.prose :where(pre code):not(:where(.not-prose, .not-prose *))',
+    );
+
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: '100%',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'word-break',
+        value: 'break-word',
+      }),
+    );
+    expect(inlineCode.sourceStart).toBeLessThan(preCode.sourceStart);
+    expect(preCode.rule.nodes).not.toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
       }),
     );
   });

@@ -90,7 +90,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X POST http://XXXX.com/XXXX/testapp/thread -H 'Authorization: Bearer ' -H 'Content-Type:application/json' -d '
 {
     "group_id": 179800091197441,
@@ -164,7 +164,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X PUT http://XXXX.com/XXXX/testapp/thread/177916702949377 -H 'Authorization: Bearer ' -d '{"name": "test4"}'
 ```
 
@@ -224,7 +224,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE http://XXXX.com/XXXX/testapp/thread/177916702949377 -H 'Authorization: Bearer '
 ```
 
@@ -368,7 +368,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X GET http://XXXX.com/XXXX/testapp/threads/user/test4 -H 'Authorization: Bearer '
 ```
 
@@ -456,7 +456,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X GET http://XXXX.com/XXXX/testapp/threads/user/test4 -H 'Authorization: Bearer '
 ```
 

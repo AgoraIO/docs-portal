@@ -50,7 +50,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 POST /v5/rooms/a7e04xxxxx7d1eca69/screenshots
 Host: api.netless.link
 region: us-sv
@@ -71,7 +71,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 {
@@ -133,7 +133,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 POST /v5/rooms/faed3130727911ebaea37759ee91947c/screenshot-list
 Host: api.netless.link
 region: us-sv
@@ -155,7 +155,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 [

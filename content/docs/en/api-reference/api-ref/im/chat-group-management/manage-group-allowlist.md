@@ -65,7 +65,7 @@ This method retrieves the list of all the members on the  allow list.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/white/users
 ```
 #### Path parameter
@@ -95,7 +95,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/{The group ID}/white/users'
 ```
 
@@ -170,7 +170,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/{The group ID}/white/users/{username}'
 ```
 
@@ -244,7 +244,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' -d '{"usernames" : ["user1"]}' 'http://XXXX/XXXX/XXXX/chatgroups/{The group ID}/white/users'
 ```
 
@@ -323,7 +323,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/1208XXXX5169153/white/users/{username}'
 ```
 

@@ -23,7 +23,7 @@ To manually install the Signaling SDK for Web, do one of the following:
 
 ## Through the Agora website
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder. In the SDK folder, find the JS file in the `libs` folder, and save it to your project directory.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=web) to a local folder. In the SDK folder, find the JS file in the `libs` folder, and save it to your project directory.
 
 1. Open the HTML file in your project directory, and add the following code to refer to the JS file:
 
@@ -97,7 +97,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 1. Add the JitPack repository in the `build.gradle` file under the root directory of your project:
 
-    ```groovy
+    ```text
     allprojects {
         repositories {
             ...
@@ -108,7 +108,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 1. Add the `com.github.agorabuilder:rtm-sdk` dependency in the `/app/build.gradle` file under your project. For `X.Y.Z`, use the current SDK version number. You can visit JitPack.io to see the latest version number.
 
-    ```groovy
+    ```text
     dependencies {
         implementation 'com.github.agorabuilder:rtm-sdk:X.Y.Z'
     }
@@ -118,7 +118,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 To manually install the Signaling SDK for Android from a downloaded package:
 
-1. Extract [Signaling SDK](/en/api-reference/sdks) to a local directory, such as `<unzipped_package>`.
+1. Extract [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=android) to a local directory, such as `<unzipped_package>`.
 
 1. Copy the following files or folders from the `libs` folder to your Android project.
 
@@ -129,6 +129,7 @@ To manually install the Signaling SDK for Android from a downloaded package:
 | `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
 | `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
 | `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
+
 </TabsContent>
 
 <TabsContent value="ios">
@@ -163,7 +164,7 @@ To manually install the Signaling SDK for iOS, do one of the following:
 
 iOS apps integrated with Signaling SDK v1.4.4 cannot be published on the App Store due to review issues. If you want to publish your app on the App Store, you must use other versions of the SDK.
 
-1. Extract the files in [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=ios) to a local folder.
 
 1. Copy `AgoraRtmKit.xcframework` from the SDK to your project.
 
@@ -234,7 +235,7 @@ To manually install the Signaling SDK for macOS, do one of the following:
 
 Apps integrated with Signaling SDK v1.4.4 cannot be published on the App Store due to review issues. If you want to publish your app on the App Store, you must use other versions of the SDK.
 
-1. Extract the files in [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=macos) to a local folder.
 
 1. Copy `AgoraRtmKit.xcframework` from the SDK to your project.
 
@@ -276,7 +277,7 @@ The steps to execute these scripts are as follows:
 <TabsContent value="linux-java">
 To manually install the Signaling SDK for Linux Java:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
 
 1. Copy the `*.so` file and the `*.jar` file to the `lib` folder.
 
@@ -339,13 +340,13 @@ To manually install the Signaling SDK for Linux Java:
 <TabsContent value="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
 
 1. Copy the `*.so` file in the SDK folder into your `lib` folder, and copy the `*.h` file in the SDK folder into your `include` folder.
 
 1. Create a file named `CMakeLists.txt` under the `RTM_quickstart` directory to use CMake to build the project. The text file should contain the following content:
 
-    ```cmake
+    ```text
     cmake_minimum_required(VERSION 2.8)
     project(rtmQuickstart)
 
@@ -367,7 +368,7 @@ To manually install the Signaling SDK for Linux C++:
 <TabsContent value="windows">
 To manually install the Signaling SDK for Windows:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=windows) to a local folder.
 
 1. Copy all subfolders of the SDK folder to the solution directory of your Visual Studio project.
 
@@ -405,7 +406,7 @@ To manually install the Signaling SDK for Unity, do one of the following:
 
 ## Manually add the SDK files
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=unity) to a local folder.
 
 1. Copy the `Rtm-Scripts` folder under the `libs` folder in the SDK package to the `Assets` folder of the project path.
 
@@ -418,6 +419,7 @@ To manually install the Signaling SDK for Unity, do one of the following:
 | macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
 | Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
 | Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
+
 </TabsContent>
 
 <TabsContent value="flutter">

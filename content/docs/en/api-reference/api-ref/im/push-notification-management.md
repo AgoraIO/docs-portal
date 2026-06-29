@@ -85,7 +85,7 @@ For the descriptions of other path parameters, see [Common parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the response body contains the following fields:
 
 | Parameter     | Type  | Description  |
-| :---------------- | :----- | :- |
+| :---------------- | :----- | :--- |
 | `data`| Object | The push result. The server determines the push status based on the push result. |
 | `data.pushStatus` | String | The push status:  - `SUCCESS`: The push succeeds. - `FAIL`: The push fails due to an error that is not caused by the server, like `bad device token`, indicating that the mobile device delivers an incorrect device token to the server and the server does not accept it. - `ERROR`: The push exception occurs due to a server error, for example, connection timeout or read or write timeout.|
 | `data.data`       | Object | The push result data returned by the push service used by the push notification recipient. |
@@ -99,7 +99,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST 'http://XXXX/XXXX/XXXX/push/sync/test1' \
 -H 'Authorization: Bearer ' \
@@ -118,57 +118,57 @@ curl -X POST 'http://XXXX/XXXX/XXXX/push/sync/test1' \
 
 1. The push succeeds:
 
-```json
-{
-    "timestamp": 1689154498019,
-    "data": [
-       {
-"pushStatus": "SUCCESS",
-"data": {
-    "code": 200,
-    "data": {
-        "expireTokens": [],
-        "sendResult": true,
-        "requestId": "104410638-fd96648b6bb4344bc4f5e29b158fdb07",
-        "failTokens": [],
-        "msgCode": 200
-   },
-    "message": "Success"
-           }
-       }
-   ],
-    "duration": 2
-}
-```
+   ```json
+   {
+       "timestamp": 1689154498019,
+       "data": [
+          {
+   "pushStatus": "SUCCESS",
+   "data": {
+       "code": 200,
+       "data": {
+           "expireTokens": [],
+           "sendResult": true,
+           "requestId": "104410638-fd96648b6bb4344bc4f5e29b158fdb07",
+           "failTokens": [],
+           "msgCode": 200
+      },
+       "message": "Success"
+              }
+          }
+      ],
+       "duration": 2
+   }
+   ```
 
 2. When a third-party push service is used, the push fails because the push-related information (like the push token or certificate) is not bound with the device:
 
-```json
-{
-    "timestamp": 1689154624797,
-    "data": [
-       {
-"pushStatus": "FAIL",
-"desc": "no push binding"
-       }
-   ],
-    "duration": 0
-}
-```
+   ```json
+   {
+       "timestamp": 1689154624797,
+       "data": [
+          {
+   "pushStatus": "FAIL",
+   "desc": "no push binding"
+          }
+      ],
+       "duration": 0
+   }
+   ```
 
 3. When a third-party push service is used, the push fails because the user ID of the push notification recipient does not exist:
-```json
-{
-    "timestamp": 1689154534352,
-    "data": [
-       {
-"pushStatus": "FAIL",
-"desc": "appUser not exists"
-       }
-   ],
-    "duration": 0
-}
-```
+   ```json
+   {
+       "timestamp": 1689154534352,
+       "data": [
+          {
+   "pushStatus": "FAIL",
+   "desc": "appUser not exists"
+          }
+      ],
+       "duration": 0
+   }
+   ```
 
 ## Send a push notification to users in an asynchronous way
 
@@ -220,7 +220,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -X POST "http://XXXX/XXXX/XXXX/push/single" -H "Authorization: Bearer " -H "Content-Type: application/json" --data-raw "{
     "targets": [
         "test2"
@@ -315,7 +315,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/list/label' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -404,7 +404,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -X POST "http://XXXX/XXXX/XXXX/push/task" -H "Content-Type: application/json" --data-raw "{
     "pushMessage": {
         "title": "Hello1234",
@@ -474,7 +474,7 @@ The following table lists basic configuration fields available to all:
 | `ext`      | JSON   | The custom extension of the notification stored in key-value pairs. The number of key-value pairs can be a maximum of 10, and the total length of key-value pairs can be 1024 characters at most.      | Android & iOS   | No |
 | `config`   | JSON   | The configuration of click action and badge value in the notifications center. | Android & iOS   | No |
 | `config.clickAction` | JSON   | The action triggered by a user click on the notification, which contains the following fields:`url`: Direct to a URL. Specify a custom URL; otherwise, the user click on notifications cannot work as expected.`action`: Open a specific page in the app. Specify the address of an in-app page.Open a package or an Activity component. Specify a package name or component path.| Android  | No       |
-| `config.badge`       | JSON    | The value of the badge displayed on the app’s icon, which contains the following fields (Int):`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android |
+| `config.badge`       | JSON    | The value of the badge displayed on the app’s icon, which contains the following fields (Int):`addNum`: The new notification adds on the badge number.`setNum`: The new notification resets the badge number. | iOS & Android | No |
 
 ### Advanced configurations
 
@@ -526,7 +526,7 @@ An Agora push notification example is as follows:
 The following table lists advanced configuration fields provided by Agora:
 
 | Field  | Type    | Description   | Supported platforms    |
-| :----------------- | :------ | : | :--------------------- |
+| :----------------- | :------ | :---------- | :--------------------- |
 | `title`| String  | The title of the notification.        | iOS & Android |
 | `content`          | String  | The body text of the notification.    | iOS & Android |
 | `subTitle`         | String  | The subtitle of the notification that provides additional information.     | iOS           |
@@ -711,7 +711,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -781,7 +781,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/90' \
 -H 'Authorization: Bearer '
 ```
@@ -850,7 +850,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'localhost/hx/hxdemo/push/label' \
 -H 'Authorization: Bearer YWMt5lyAUJnNEeyHUS2MdMYkPAAAAAAAAAAAAAAAAAAAAAEHMpqy501HZr2ms92z-Hz9AQMAAAF_SGRs1QBPGgBOIAaoCYWXntKF-h0vuvlyUCNB-IXTM4eEpSVqIdei9A'
 ```
@@ -920,7 +920,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s' \
 -H 'Authorization: Bearer '
 ```
@@ -988,7 +988,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -1058,7 +1058,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user/hx1' \
 -H 'Authorization: Bearer '
 ```
@@ -1126,7 +1126,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user?limit=1' \
 -H 'Authorization: Bearer '
 ```
@@ -1198,7 +1198,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \

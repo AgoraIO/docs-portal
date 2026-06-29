@@ -67,19 +67,19 @@ Signaling `2.x` makes adjustments to initialization parameters. It introduces ne
             @Override
             public void onConnectionStateChanged(int state, int reason) {
             }
-            
+
             @Override
             public void onMessageReceived(RtmMessage rtmMessage, String peerId) {
             }
-            
+
             @Override
             public void onTokenExpired() {
             }
-            
+
             @Override
             public void onTokenPrivilegeWillExpire() {
             }
-            
+
             @Override
             public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
             }
@@ -90,7 +90,7 @@ Signaling `2.x` makes adjustments to initialization parameters. It introduces ne
     ```
 
 - Sample code for `2.x`:
-    
+
     ```java
     RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
         .eventListener(eventListener)
@@ -107,7 +107,7 @@ Signaling `2.x` makes adjustments to initialization parameters. It introduces ne
 The login method for `2.x` differs from `1.x`:
 
 - Sample code for `1.x`:
-    
+
     ```java
     rtmClient.login("your_token", "your_userId", new ResultCallback<Void>() {
         @Override
@@ -129,7 +129,7 @@ The login method for `2.x` differs from `1.x`:
         public void onSuccess(Void responseInfo) {
             // Handle login success
         }
-        
+
         @Override
         public void onFailure(ErrorInfo errorInfo) {
             // Handle errors
@@ -179,7 +179,7 @@ Consider the example of listening to channel message events:
         }
         // Add other event notifications
     };
-    
+
     // Option 1: Add event listener when initializing RTM Client instance with create method
     RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
         .eventListener(eventListener)
@@ -189,7 +189,7 @@ Consider the example of listening to channel message events:
     } catch (Exception e) {
         e.printStackTrace();
     }
-    
+
     // Option 2: Add event listener at any time during the app's lifecycle
     rtmClient.addEventListener(eventListener);
     ```
@@ -220,20 +220,20 @@ The disadvantage to this design is that you cannot independently send messages. 
         }
         // Add other event notifications
     });
-    
+
     // Join channel
     rtmChannel.join(new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
             // Handle join channel result
         }
-        
+
         @Override
         public void onFailure(ErrorInfo errorInfo) {
             // Handle errors
         }
     });
-    
+
     // Send message
     RtmMessage message = rtmClient.createMessage();
     message.setText("Hello World!");
@@ -242,7 +242,7 @@ The disadvantage to this design is that you cannot independently send messages. 
         public void onSuccess(Void aVoid) {
             // Handle message send result
         }
-        
+
         @Override
         public void onFailure(ErrorInfo errorInfo) {
             // Handle errors
@@ -267,7 +267,7 @@ The disadvantage to this design is that you cannot independently send messages. 
             // Handle errors
         }
     });
-    
+
     // Subscribe to Message Channel
     SubscribeOptions options = new SubscribeOptions();
     options.setWithMessage(true);
@@ -281,7 +281,7 @@ The disadvantage to this design is that you cannot independently send messages. 
             // Handle errors
         }
     });
-    
+
     // Handle received messages
     rtmClient.addEventListener(new RtmEventListener() {
         @Override
@@ -383,7 +383,7 @@ When using Amazon S3 for static file storage, go to the Amazon S3 console and se
 
 ## User presence and custom status
 
-In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module. 
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
 
 :::info
 Presence features require Signaling SDK version 2.2.0 or later.
@@ -492,7 +492,7 @@ rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
 });
 ```
 
-In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes: 
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
 
 1. Real-time notification mode (Announce)
 1. Scheduled notification mode (Interval)
@@ -540,34 +540,34 @@ Events for channel attributes and user attributes are distributed to users throu
 1. Implement the Storage event listener.
 1. When subscribing to a channel, turn on the `withMetadata` switch.
 
-```java
-// 2.x
-// 1. Implement the Storage event listener
-RtmEventListener eventListener = new RtmEventListener() {
-    @Override
-    public void onStorageEvent(StorageEvent event) {
-        // Handle Storage event notifications
-    }
+   ```java
+   // 2.x
+   // 1. Implement the Storage event listener
+   RtmEventListener eventListener = new RtmEventListener() {
+       @Override
+       public void onStorageEvent(StorageEvent event) {
+           // Handle Storage event notifications
+       }
 
-     // Add other event notifications
-};
-rtmClient.addEventListener(eventListener);
+        // Add other event notifications
+   };
+   rtmClient.addEventListener(eventListener);
 
-// 2. When subscribing to a channel, turn on the withMetadata switch
-SubscribeOptions options = new SubscribeOptions();
-options.setWithMetadata(true);
-rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        // Handle message subscription result
-    }
+   // 2. When subscribing to a channel, turn on the withMetadata switch
+   SubscribeOptions options = new SubscribeOptions();
+   options.setWithMetadata(true);
+   rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
+       @Override
+       public void onSuccess(Void responseInfo) {
+           // Handle message subscription result
+       }
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        // Handle errors
-    }
-});
-```
+       @Override
+       public void onFailure(ErrorInfo errorInfo) {
+           // Handle errors
+       }
+   });
+   ```
 
 ## Restrict access area
 

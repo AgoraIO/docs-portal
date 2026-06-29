@@ -33,9 +33,7 @@ The Scale Statistics page shows the scale of users, s, and s on the current day 
 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](/en/realtime-media/im/reference/console/data-metrics).
- [Scale Metrics](./data-metrics).
-  | N/A |
+| Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](/en/realtime-media/im/reference/console/data-metrics). | N/A |
 | Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | The maximum time range to query is the past 30 days.Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay (except for Daily  PCU, which has a delay of 10 minutes). |
 
 ![](https://web-cdn.agora.io/docs-files/1656493263570)
@@ -56,12 +54,8 @@ The Message Statistics page shows the historical numbers of messages and distrib
 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics).
- [Message metrics](./data-metrics).
- | The maximum time range to query is the past 6 months.Each metric in this section is calculated at an interval of a day, and the data has a one minute delay. |
-| Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown (the percentage of each type of messages). For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics).
- [Message metrics](./data-metrics).
- | See Message Count Trends |
+| Message Count Trends | Line charts showing how the total numbers of messages change within a certain time range. For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics). | The maximum time range to query is the past 6 months.Each metric in this section is calculated at an interval of a day, and the data has a one minute delay. |
+| Message Type Trends | Line charts showing the number of messages by type in a certain time range, and pie charts showing the message type breakdown (the percentage of each type of messages). For a detailed description of each metric, see [Message metrics](/en/realtime-media/im/reference/console/data-metrics). | See Message Count Trends |
 
 ![](https://web-cdn.agora.io/docs-files/1656491965158)
 

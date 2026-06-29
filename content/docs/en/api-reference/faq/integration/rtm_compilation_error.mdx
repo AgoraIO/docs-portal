@@ -6,7 +6,7 @@ title: "Why do errors occur when compiling the Agora Signaling Linux Java SDK?"
 
 The following error occurs when compiling the Agora Signaling Linux Java SDK in Linux:
 
-```shell
+```bash
 Exception in thread “main” java.lang.UnsatisfiedLinkError:no agora_rtm_sdk in java.library.path
 ```
 
@@ -22,7 +22,7 @@ You can use one of the following solutions to solve this problem. For either sol
 
 Add the following line to any file that configures Linux environment variables, such as `~/.bashrc`, `~/bash_profile`, or `/etc/profile`.
 
-```shell
+```bash
 export LD_LIBRARY_PATH=<path>/agora/rtm/sdk:$LD_LIBRARY_PATH
 ```
 
@@ -30,6 +30,6 @@ export LD_LIBRARY_PATH=<path>/agora/rtm/sdk:$LD_LIBRARY_PATH
 
 You can launch Java with the `Djava.library.path` argument to add the absolute path to the Signaling Linux Java SDK to the library path:
 
-```shell
+```bash
 java -Djava.library.path=<path>/agora/rtm/sdk
 ```

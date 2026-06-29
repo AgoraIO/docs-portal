@@ -22,7 +22,7 @@ When a user activates your extension, Agora calls this method to pass the basic 
 ### HTTP request
 
 **URL**
-```
+```bash
 POST https://{host}/customers/new
 ```
 
@@ -88,7 +88,7 @@ When a user enables your extension for an Agora project, Agora calls this method
 ### HTTP request
 
 **URL**
-```
+```bash
 POST https://{host}/customers/{customerId}/projects/new
 ```
 
@@ -166,7 +166,7 @@ Once the user deactivates your extension on Agora Console, Agora calls this meth
 
 ### HTTP request
 **URL**
-```
+```bash
 PUT http://{host}/customers/{customerId}/deactivate
 ```
 
@@ -226,7 +226,7 @@ Once the user disables your extension for an Agora project, Agora calls this met
 
 ### HTTP request
 **URL**
-```
+```bash
 PUT http://{host}//customers/{customerId}/projects/{projectId}/deactivate
 ```
 

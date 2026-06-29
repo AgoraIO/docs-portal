@@ -91,13 +91,13 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     - Groovy
     
-        ```groovy
+        ```text
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
         ```
 
         To resolve integration issues when co-integrating with the RTC SDK use: 
 
-        ```groovy
+        ```text
         implementation 'io.agora.rtm:rtm-sdk-lite:x.y.z'
         ```
 
@@ -116,13 +116,13 @@ Use either of the following methods to integrate Signaling SDK into your project
     Replace `x.y.z` with the specific SDK version number, such as `2.2.8`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
 **Using CDN**
-1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK for Android.
+1. [Download](/en/api-reference/sdks?product=signaling&platform=android) the latest version of Signaling SDK for Android.
 1. Copy all files in the `sdk` folder of the package to the `/app/libs` folder of the project.
 1. To add the SDK reference, open the project file `/Gradle Scripts/build.gradle(Module: <projectname>.app)` and add the following code:
 
     1. Add a `ndk` node under the default `Config` node, to specify the supported architectures:
 
-        ```groovy
+        ```text
         Config {
                     // ...
                     ndk{
@@ -137,7 +137,7 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     1. Add a `sourceSets` node under the `android` node to include the jni libraries copied to the `libs` folder:
 
-        ```groovy
+        ```text
         android {
                     // ...
                     sourceSets {
@@ -150,7 +150,7 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     1. To include all `jar` files in the `libs` folder as dependencies, add the following under the `dependencies` node:
 
-        ```groovy
+        ```text
         dependencies {
                     implementation fileTree(dir: 'libs', include: ['*.jar'])
                     // ...
@@ -1290,7 +1290,7 @@ In Xcode, create a Single View app under the iOS platform. Configure the project
 Use either of the following methods to integrate Signaling SDK into your project.
 
 **Using CDN**
-1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK.
+1. [Download](/en/api-reference/sdks?product=signaling&platform=ios) the latest version of Signaling SDK.
 
 1. Copy the files in the SDK package folder `/libs/AgoraRtmKit.xcframework` to the project path.
 
@@ -2434,7 +2434,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 To create a folder for your project, and an `index.html` file for your app, execute the following commands in the terminal:
 
-```shell
+```bash
 mkdir HelloWorld
 cd HelloWorld
 touch index.html
@@ -2445,7 +2445,7 @@ touch index.html
 Use either of the following methods to integrate Signaling SDK into your project.
 
 **Using CDN**
-1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK for Web.
+1. [Download](/en/api-reference/sdks?product=signaling&platform=web) the latest version of Signaling SDK for Web.
 
 1. Add the following code to your project to reference the SDK:
 
@@ -3194,7 +3194,7 @@ Take the following steps to test the sample code:
 
     You see the following output in the terminal:
 
-    ```
+    ```text
     flutter: publish success! message number:0
     flutter: publish success! message number:1
     flutter: publish success! message number:2
@@ -3205,7 +3205,7 @@ Take the following steps to test the sample code:
 
     You see the following notifications for messages sent from the first app instance:
 
-    ```
+    ```text
     flutter: received a message from channel: getting-started, channel type : RtmChannelType.message
     flutter: message content: message number : 0, custom type: PlainText
     flutter: received a message from channel: getting-started, channel type : RtmChannelType.message
@@ -3269,7 +3269,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 Create the following folder structure for your project:
 
-```shell
+```bash
 RTMProject/
 ├── include/
 └── lib/
@@ -3279,7 +3279,7 @@ RTMProject/
 
 To integrate the Linux C++ Signaling SDK into your project:
 
-1. [Download](/en/api-reference/sdks?platform=linux) the latest version of the SDK and unzip it.
+1. [Download](/en/api-reference/sdks?product=signaling&platform=linux) the latest version of the SDK and unzip it.
 
     :::note
     To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
@@ -3294,7 +3294,7 @@ To integrate the Linux C++ Signaling SDK into your project:
 
     * `CMakeLists.txt`
 
-        ```shell
+        ```bash
         # CMakeLists.txt
         cmake_minimum_required (VERSION 2.8)
         project(RTMProject)
@@ -3311,7 +3311,7 @@ To integrate the Linux C++ Signaling SDK into your project:
 
     * `clean_build.sh`
 
-        ```shell
+        ```bash
         # clean_build.sh
         rm -fr build
         mkdir -p build
@@ -3723,13 +3723,13 @@ Take the following steps to test the sample code:
 
 3. In the terminal, run the following command to compile the project:
 
-    ```shell
+    ```bash
     sh +x clean_build.sh
     ```
 
 4. Use the following commands to navigate to the `build` folder and run the app:
 
-    ```shell
+    ```bash
     cd build
     ./RTMQuickStart
     ```
@@ -3813,7 +3813,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 ### Integrate the SDK
 
-1. [Download](/en/api-reference/sdks?platform=unity) the latest version of the Agora Signaling SDK, and unzip the contents to a local folder.
+1. [Download](/en/api-reference/sdks?product=signaling&platform=unity) the latest version of the Agora Signaling SDK, and unzip the contents to a local folder.
 
 1. In Unity, click **Assets > Import Package > Custom Package**.
 
@@ -3825,7 +3825,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 To create a simple UI for verifying the basic features of Signaling, add the following elements to your interface:
 
-```c
+```text
 SampleScene
 
 - Main Camera
@@ -3861,7 +3861,7 @@ A complete code sample that implements the basic features of Signaling is presen
 
 **Complete sample code for Signaling**
 
-```cs
+```csharp
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

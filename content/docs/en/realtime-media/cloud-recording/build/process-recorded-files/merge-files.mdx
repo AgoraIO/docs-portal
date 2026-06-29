@@ -90,14 +90,14 @@ The following examples show different merged files with different `-m` settings.
 Suppose that two users, with user IDs 100 and 125, stay in the channel, and you start Agora Cloud Recording in individual recording mode. user ID 100 leaves the channel and rejoins the channel in 30 seconds, thus causing two segments in this recording instance. When the recording ends, user ID 100 has four recorded files: one audio file and one video file for each of the two segments. user ID 123 has one audio file and one video file.
 
 To merge the audio and video files of the same user ID into one file, use the following command:
-```
+```bash
 python convert.py -f <directory of the files to be transcoded> -m 1 -s -p 30 -r 640 360
 ```
 
 Two files are generated after transcoding: `100_0_merge_av.mp4` and `123_0_merge_av.mp4`. The 30 seconds when user ID 100 is absent is not included in the merged file. To include the time interval, do not set `-s`.
 
 To merge the audio and video files of the same user ID based on the recording segment, use the following command:
-```
+```bash
 python convert.py -f <directory of the files to be transcoded> -m 0 -p 30 -r 640 360
 ```
 

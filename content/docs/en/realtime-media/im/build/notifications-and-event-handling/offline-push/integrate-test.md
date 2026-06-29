@@ -376,38 +376,38 @@ After successfully logging in to the Chat SDK, you can configure the push policy
 
 1. Pass the certificate name to the SDK:
 
-```objective-c
-#import
+   ```objc
+   #import
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Apply for notification permission
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            if (granted) {
-                NSLog(@"request authorization succeed");
-            }
-        }];
+   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+       // Apply for notification permission
+       UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+           [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+               if (granted) {
+                   NSLog(@"request authorization succeed");
+               }
+           }];
 
-    // Register push
-    [application registerForRemoteNotifications];
+       // Register push
+       [application registerForRemoteNotifications];
 
-    // Initialize options and set App Key
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"XXXX#XXXX"];
+       // Initialize options and set App Key
+       AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"XXXX#XXXX"];
 
-    // Fill in the name you set when uploading the certificate. Make sure the certificate name you set here is consistent with the certificate name you filled in on Agora Console.
-    options.apnsCertName = @"PushCertName";
+       // Fill in the name you set when uploading the certificate. Make sure the certificate name you set here is consistent with the certificate name you filled in on Agora Console.
+       options.apnsCertName = @"PushCertName";
 
-    [AgoraChatClient.sharedClient initializeSDKWithOptions:options];
+       [AgoraChatClient.sharedClient initializeSDKWithOptions:options];
 
-    return YES;
-}
-```
+       return YES;
+   }
+   ```
 
 1. Get the device token and pass it to the server.
 
 After the device token is registered, the iOS system will call back the device token to you in the following way. Pass the device token to the SDK.
 
-```objective-c
+```objc
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [AgoraChatClient.sharedClient registerForRemoteNotificationsWithDeviceToken:deviceToken completion:^(AgoraChatError *aError) {
         if (aError) {
@@ -749,7 +749,7 @@ Take the following steps to integrate FCM on the client:
     1. Download the `google-services.json` file and put it in the following path in your project: `/android/app/google - services.json`.
     1. In your `/android/build.gradle` file, add the google-services plugin as a dependency:
 
-        ```groovy
+        ```text
         buildscript {
           dependencies {
             classpath 'com.google.gms:google-services:4.3.15'
@@ -759,7 +759,7 @@ Take the following steps to integrate FCM on the client:
 
     1. Add the google-services plugin to the `/android/app/build.gradle` file and execute the plugin:
 
-        ```groovy
+        ```text
         apply plugin: 'com.google.gms.google-services' //  true
           pod 'FirebaseCore', :modular_headers => true
         end
@@ -775,13 +775,13 @@ Take the following steps to integrate FCM on the client:
 
     1. At the top of the file, import the Firebase SDK after **#import "AppDelegate.h"**.
 
-        ```objective-c
+        ```objc
         #import
         ```
 
     1. In the `didFinishLaunchingWithOptions` method, add the following code at the top:
 
-        ```objective-c
+        ```objc
         - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
           [FIRApp configure];
         }

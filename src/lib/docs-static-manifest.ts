@@ -69,11 +69,13 @@ type PlatformStaticPayload = {
     kind: string;
     platformTabs?: {
       canonicalPlatform: string;
+      defaultPlatform?: string;
       initialPlatform?: string;
       platforms: string;
     };
   };
   markdownUrl: string;
+  toc?: unknown[];
 };
 
 export async function resolvePlatformStaticDocsPayload<
@@ -130,16 +132,40 @@ export async function resolvePlatformStaticDocsPayload<
     return null;
   }
 
-  return {
-    ...canonicalPayload,
-    body: {
-      ...canonicalPayload.body,
-      platformTabs: {
-        ...canonicalPayload.body.platformTabs,
-        initialPlatform: platform,
+  return clearStalePlatformFallbackToc(
+    {
+      ...canonicalPayload,
+      body: {
+        ...canonicalPayload.body,
+        platformTabs: {
+          ...canonicalPayload.body.platformTabs,
+          initialPlatform: platform,
+        },
       },
+      markdownUrl: getPlatformMarkdownUrl(
+        canonicalPayload.markdownUrl,
+        platform,
+      ),
     },
-    markdownUrl: getPlatformMarkdownUrl(canonicalPayload.markdownUrl, platform),
+    platform,
+  );
+}
+
+function clearStalePlatformFallbackToc<T extends PlatformStaticPayload>(
+  payload: T,
+  platform: string,
+) {
+  const tocPlatform =
+    payload.body.platformTabs?.defaultPlatform ??
+    payload.body.platformTabs?.canonicalPlatform;
+
+  if (!('toc' in payload) || tocPlatform === platform) {
+    return payload;
+  }
+
+  return {
+    ...payload,
+    toc: [],
   };
 }
 
@@ -155,6 +181,10 @@ function platformsInclude(platformsJson: string, platform: string) {
 function getPlatformMarkdownUrl(markdownUrl: string, platform: string) {
   return markdownUrl.replace(/\/([^/]+)\.md$/, (_match, leaf: string) => {
     if (leaf === 'index') {
+      return `/${platform}.md`;
+    }
+
+    if (isKnownPlatform(leaf)) {
       return `/${platform}.md`;
     }
 

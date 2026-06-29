@@ -33,7 +33,7 @@ Follow the API call sequence from the [REST Quickstart](../../get-started/quicks
 
 - Update the transcription language:
 
-    ```shell
+    ```bash
     curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/agents/{agentId}/update?sequenceId=1&updateMask=languages' \
     --header 'Content-Type: application/json' \
     --header 'Authorization: Basic <credentials>' \
@@ -47,7 +47,7 @@ Follow the API call sequence from the [REST Quickstart](../../get-started/quicks
 
 - Update the UID
 
-    ```shell
+    ```bash
     curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/agents/{agentId}/update?sequenceId=1&updateMask=rtcConfig.subscribeAudioUids' \
     --header 'Content-Type: application/json' \
     --header 'Authorization: Basic <credentials>' \

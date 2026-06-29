@@ -62,6 +62,53 @@ const sidebar: DocsSidebarNode[] = [
   },
 ];
 
+const realtimeMediaSidebar: DocsSidebarNode[] = [
+  {
+    children: [
+      {
+        children: [
+          {
+            id: '/en/realtime-media/video/overview',
+            title: 'Voice overview',
+            type: 'page',
+            url: '/en/realtime-media/video/overview',
+          },
+        ],
+        collapsible: true,
+        id: 'voice-video',
+        title: 'Voice & Video',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtm/build/presence',
+            title: 'Presence',
+            type: 'page',
+            url: '/en/realtime-media/rtm/build/presence',
+          },
+        ],
+        collapsible: true,
+        id: 'signaling',
+        title: 'Signaling',
+        type: 'section',
+      },
+    ],
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    type: 'section',
+  },
+];
+
+const realtimeMediaTabs: TabSummary[] = [
+  {
+    icon: 'Radio',
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    url: '/en/realtime-media',
+  },
+];
+
 type DocsShellProps = ComponentProps<typeof DocsShell>;
 
 const loadSearchPages = async () => [
@@ -166,6 +213,76 @@ function renderWithRouter(
   });
 
   return render(<RouterProvider router={router} />);
+}
+
+function renderRealtimeMediaDocsShell(
+  initialEntry = '/en/realtime-media/video/overview',
+) {
+  const videoPath = '/en/realtime-media/video/overview';
+  const signalingPath = '/en/realtime-media/rtm/build/presence';
+  const history = createMemoryHistory({
+    initialEntries: [initialEntry],
+  });
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$',
+    component: () => {
+      const params = docsRoute.useParams();
+      const activePath = `/${params.locale}/${params.tab}/${params._splat}`;
+
+      return (
+        <AppProviders>
+          <DocsShell
+            activePath={activePath}
+            activeTab="realtime-media"
+            localeLinks={[
+              {
+                href: activePath,
+                isActive: true,
+                locale: 'en',
+              },
+            ]}
+            locale="en"
+            loadPages={loadSearchPages}
+            next={
+              activePath === videoPath
+                ? {
+                    title: 'Presence',
+                    url: signalingPath,
+                  }
+                : undefined
+            }
+            previous={
+              activePath === signalingPath
+                ? {
+                    title: 'Voice overview',
+                    url: videoPath,
+                  }
+                : undefined
+            }
+            sidebar={realtimeMediaSidebar}
+            tabs={realtimeMediaTabs}
+            toc={[]}
+          >
+            <article>{activePath}</article>
+          </DocsShell>
+        </AppProviders>
+      );
+    },
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history,
+  });
+
+  return {
+    history,
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
 }
 
 describe('DocsShell', () => {
@@ -953,6 +1070,108 @@ describe('DocsShell', () => {
     });
   });
 
+  it('reveals active nested sidebar sections after footer and history navigation', async () => {
+    const { history, router } = renderRealtimeMediaDocsShell();
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const voiceToggle = within(sidebarRegion).getByRole('button', {
+      name: /Voice & Video/i,
+    });
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(sidebarRegion).queryByRole('link', { name: 'Presence' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(
+      within(mainColumn).getByRole('link', { name: /Next Presence/i }),
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(
+      within(mainColumn).getByRole('link', {
+        name: /Previous Voice overview/i,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
+    });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(signalingToggle);
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.back();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.forward();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
+    });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
+  });
+
+  it('expands the active nested sidebar section on direct deep links', async () => {
+    renderRealtimeMediaDocsShell('/en/realtime-media/rtm/build/presence');
+
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+  });
+
   it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
@@ -1205,6 +1424,10 @@ describe('DocsShell', () => {
     );
 
     const mobileSheet = await screen.findByRole('dialog');
+    const mobileSheetContent = screen.getByTestId('docs-mobile-sidebar-sheet');
+    const mobileScroll = within(mobileSheet).getByTestId(
+      'docs-mobile-sidebar-scroll',
+    );
     const tabList = within(mobileSheet).getByRole('tablist');
     const referenceTab = within(mobileSheet).getByRole('tab', {
       name: 'Reference',
@@ -1214,10 +1437,30 @@ describe('DocsShell', () => {
     });
     const pagesLabel = within(mobileSheet).getByText('Pages');
 
+    expect(mobileSheetContent).toBe(mobileSheet);
+    expect(mobileSheetContent).toHaveClass(
+      'w-[min(92vw,24rem)]',
+      'max-w-[calc(100vw-1rem)]',
+      'overflow-hidden',
+    );
+    expect(mobileScroll).toHaveClass(
+      'min-w-0',
+      'overflow-hidden',
+      'px-3',
+      'sm:px-4',
+    );
     expect(tabList).toHaveAttribute('aria-orientation', 'vertical');
     expect(tabList).toHaveClass('h-auto', 'gap-1.5');
     expect(referenceTab).toHaveAttribute('aria-selected', 'true');
-    expect(referenceTab).toHaveClass('min-w-0', 'w-full', 'whitespace-normal');
+    expect(referenceTab).toHaveClass(
+      'h-auto',
+      'min-w-0',
+      'w-full',
+      'overflow-hidden',
+      'whitespace-normal',
+      '[overflow-wrap:anywhere]',
+      'after:hidden',
+    );
     expect(referenceTab.className).toContain(
       'data-[state=active]:bg-[color:var(--accent-brand-soft)]',
     );
@@ -1228,7 +1471,8 @@ describe('DocsShell', () => {
     expect(
       within(mobileSheet).getByRole('link', { name: 'API Reference' }),
     ).toBeInTheDocument();
-    expect(currentPageLink).toHaveClass('min-w-0');
+    expect(currentPageLink).toHaveClass('w-full', 'min-w-0', 'overflow-hidden');
+    expect(currentPageLink).toHaveAttribute('aria-current', 'page');
     expect(currentPageLink.className).toContain(
       'bg-[color:var(--accent-brand-soft)]',
     );
@@ -1236,6 +1480,90 @@ describe('DocsShell', () => {
       'before:bg-[color:var(--accent-brand)]',
     );
     expect(currentPageLink.className).toContain('focus-visible:ring-[3px]');
+  });
+
+  it('wraps long mobile sidebar labels and limits nested indentation', async () => {
+    const longTabTitle =
+      'RealtimeMediaWithAnExtremelyLongUnbrokenMobileNavigationTitle';
+    const longSectionTitle =
+      'CloudRecordingEndpointsWithVeryLongUnbrokenSectionTitle';
+    const longPageTitle =
+      'AcquireCloudRecordingResourceWithExtremelyLongUnbrokenIdentifierForMobileDrawer';
+
+    renderDocsShell(
+      {
+        activePath: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+        activeTab: 'api-reference',
+        sidebar: [
+          {
+            children: [
+              {
+                id: 'long-endpoint',
+                method: 'POST',
+                title: longPageTitle,
+                type: 'page',
+                url: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+              },
+            ],
+            id: 'long-section',
+            title: longSectionTitle,
+            type: 'section',
+          },
+        ],
+        tabs: [
+          {
+            id: 'long-realtime-media',
+            title: longTabTitle,
+            url: '/en/realtime-media',
+          },
+          {
+            id: 'api-reference',
+            title: 'Reference',
+            url: '/en/api-reference',
+          },
+        ],
+      },
+      '/en/api-reference/long-endpoint',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const longTab = within(mobileSheet).getByRole('tab', {
+      name: longTabTitle,
+    });
+    const sectionLabel = within(mobileSheet)
+      .getByText(longSectionTitle)
+      .closest('p');
+    const pageLink = within(mobileSheet).getByRole('link', {
+      name: `${longPageTitle} POST`,
+    });
+    const pageTitle = within(pageLink).getByText(longPageTitle);
+    const nestedList = sectionLabel?.nextElementSibling;
+
+    expect(longTab).toHaveClass(
+      'max-w-full',
+      'overflow-hidden',
+      '[overflow-wrap:anywhere]',
+      'after:hidden',
+    );
+    expect(sectionLabel).toBeInstanceOf(HTMLElement);
+    expect(sectionLabel).toHaveAttribute('data-active', 'true');
+    expect(sectionLabel).toHaveClass('max-w-full', '[overflow-wrap:anywhere]');
+    expect(nestedList).toBeInstanceOf(HTMLElement);
+    expect(nestedList).toHaveClass('max-w-full', 'border-l', 'pl-2', 'ml-2');
+    expect(pageLink).toHaveClass(
+      'max-w-full',
+      'overflow-hidden',
+      '[&>span:first-child]:[overflow-wrap:anywhere]',
+    );
+    expect(pageTitle).toHaveClass('min-w-0', 'flex-1');
+    expect(within(pageLink).getByText('POST')).toHaveClass(
+      'shrink-0',
+      'font-mono',
+    );
   });
 
   it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {

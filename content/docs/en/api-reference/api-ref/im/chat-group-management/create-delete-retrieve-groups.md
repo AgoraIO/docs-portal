@@ -115,7 +115,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
     "groupname": "testgroup",
     "avatar": "https://www.XXXX.com/XXX/image",
@@ -177,7 +177,7 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the `data` field in the response body contains the following parameters:
 
 | Parameter | Type | Description |
-|:------|:--------|:--|
+| :------ | :-------- | :--- |
 | `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
@@ -188,7 +188,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/XXXX/disable' 
 ```
 
@@ -240,7 +240,7 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 If the returned HTTP status code is `200`, the request succeeds, and the `data` field in the response body contains the following parameters:
 
 | Parameter | Type | Description |
-|:------|:--------|:--|
+| :------ | :-------- | :--- |
 | `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
@@ -251,7 +251,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/XXXX/enable' 
 ```
 
@@ -313,7 +313,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https://XXXX/XXXX/XXXX/chatgroups/XXXX/user/XXXX/is_joined'
 ```
@@ -339,7 +339,7 @@ If you specify multiple groups, details of the existing groups are returned. If 
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_ids}
 ```
 
@@ -390,7 +390,7 @@ If the returned HTTP status code is not 200, it means the request fails. You can
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585'
 ```
 
@@ -442,7 +442,7 @@ Modifies the  information. You can modify the `groupname`, `avatar`, `descriptio
 
 ### HTTP request
 
-```shell
+```bash
 PUT https://{host}/{org_name}/{app_name}/chatgroups/{group_id}
 ```
 
@@ -499,7 +499,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X PUT -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/6XXXX7' -d {
 "groupname": "test groupname",
 "description": "updategroupinfo12311",
@@ -545,7 +545,7 @@ Deletes the specified . Once a  is deleted, all the threads in this  are deleted
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}
 ```
 
@@ -581,7 +581,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617'
 ```
 
@@ -610,7 +610,7 @@ Retrieves all the s under the app.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups
 
 // Gets all groups under the app with pagination
@@ -664,7 +664,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 // Gets the group information of the first page.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups?limit=2'
 
@@ -715,7 +715,7 @@ Retrieves all the s that a user joins.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/users/{username}/joined_chatgroups?pagesize={}&pagenum={}
 ```
 
@@ -756,7 +756,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/users/user1/joined_chatgroups?pagesize=100&pagenum=1'
 ```
 

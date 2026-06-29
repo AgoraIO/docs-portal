@@ -138,7 +138,7 @@ When a user sends a message in a one-to-one chat, chat group, or chat room of th
 ```
 
 | Field | Data Type | Description |
-| -- | -- | -- |
+| --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
 | `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as end users are offline. |
 | `timestamp` | Long | The Unix timestamp when the Chat server receives the callback event, in milliseconds. |

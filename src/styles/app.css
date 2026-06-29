@@ -573,6 +573,12 @@
     font-weight: 500;
   }
 
+  .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
     overflow: hidden;
     border: 0;
@@ -1123,6 +1129,23 @@
       background-clip: padding-box;
     }
   }
+}
+
+/* Fumadocs ships unlayered prose list styles after Tailwind layers.
+   Keep these unlayered overrides after the base layer so nested ordered
+   lists retain decimal, alpha, and roman markers by depth. */
+:where(html) .prose :where(ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: decimal;
+}
+
+:where(html) .prose :where(ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: lower-alpha;
+}
+
+:where(html)
+  .prose
+  :where(ol > li > ol > li > ol):not(:where(.not-prose, .not-prose *)) {
+  list-style: lower-roman;
 }
 
 /* Fumadocs ships unlayered prose table styles with `overflow: hidden`.

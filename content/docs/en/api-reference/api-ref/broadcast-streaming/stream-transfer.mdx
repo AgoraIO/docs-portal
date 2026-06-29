@@ -13,7 +13,7 @@ Sets the transfer configuration for an entry point.
 
 ### HTTP request
 
-```shellscript
+```bash
 PATCH https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transfer
 ```
 
@@ -54,7 +54,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 PATCH https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/settings/transfer HTTP/1.1
 ```
 
@@ -69,7 +69,7 @@ PATCH https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/settin
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -79,7 +79,7 @@ Gets the transfer configuration for an entry point.
 
 ### HTTP request
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transfer
 ```
 
@@ -115,13 +115,13 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/settings/transfer HTTP/1.1
 ```
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -139,7 +139,7 @@ HTTP/1.1 200 OK
 
 If you specify `callbackUrl` when calling the [Set transfer configuration](#patch) API, Agora sends requests to this URL to get the platform addresses where the live stream are published. The request sent by Agora has the following format:
 
-```shellscript
+```bash
 POST https://example.transfer.com/callback?entry_point={entry_point}&stream_name={stream_name} HTTP/1.1
 ```
 

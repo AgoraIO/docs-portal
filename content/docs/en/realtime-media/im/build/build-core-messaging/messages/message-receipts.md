@@ -86,7 +86,7 @@ The message delivery receipts and read receipts are implemented as follows:
 
 The Chat SDK uses `ChatManager` to provide message receipt, which includes delivery receipts and read receipts. Followings are the core methods:
 
-- `ChatOptions.requireDeliveryAck`: Enable message delivery receipts. 
+- `ChatOptions.requireDeliveryAck`: Enable message delivery receipts.
 - `ChatOptions.requireAck`: Enable conversation and message read receipts.
 - `ChatManager.sendConversationReadAck`: Send a conversation read receipt.
 - `ChatManager.sendMessageReadAck`: Send a message read receipt.
@@ -110,7 +110,7 @@ The logic for implementing these receipts are as follows:
 
 The Chat SDK uses `IChatManager` to provide message receipt, which includes delivery receipts and read receipts. Followings are the core methods:
 
-- `ChatOptions.requireDeliveryAck`: Enable message delivery receipts. 
+- `ChatOptions.requireDeliveryAck`: Enable message delivery receipts.
 - `ChatOptions.requireAck`: Enable conversation and message read receipts.
 - `ChatManager.sendConversationReadAck`: Send a conversation read receipt.
 - `ChatManager.sendMessageReadAck`: Send a message read receipt.
@@ -197,41 +197,41 @@ To send a message delivery receipt, take the following steps:
 
 ### Conversation and message read receipts
 
-In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats. 
+In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats.
 
 #### One-to-one chats
 
-In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI. 
+In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI.
 
 - Conversation read receipts
 
     Follow the steps to implement conversation read receipts in one-to-one chats.
 
     1. When a user enters the conversation UI, check whether the conversation contains unread messages. If yes, call `ackConversationRead` to send a conversation read receipt.
-    
-    ```java
-    // The message receiver calls ackConversationRead to send the conversation read receipt.
-    // This is an asynchronous method.
-    try {
-        ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
-    } catch (ChatException e) {
-        e.printStackTrace();
-    }
-    ```
+
+       ```java
+       // The message receiver calls ackConversationRead to send the conversation read receipt.
+       // This is an asynchronous method.
+       try {
+           ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
+       } catch (ChatException e) {
+           e.printStackTrace();
+       }
+       ```
 
     2. The message sender listens for message events and receives the conversation read receipt in `onConversationRead`.
 
-    ```java
-    // The message sender calls addConversationListener to listen for conversation events.
-    ChatClient.getInstance().chatManager().addConversationListener(new ConversationListener() {
-                ...
-                @Override
-                // Occurs when the all the messages in the conversation is read.
-                public void onConversationRead(String from, String to) {
-                    // Add follow-up logics such as poping up a notification.
-                }
-            });
-    ```
+       ```java
+       // The message sender calls addConversationListener to listen for conversation events.
+       ChatClient.getInstance().chatManager().addConversationListener(new ConversationListener() {
+                   ...
+                   @Override
+                   // Occurs when the all the messages in the conversation is read.
+                   public void onConversationRead(String from, String to) {
+                       // Add follow-up logics such as poping up a notification.
+                   }
+               });
+       ```
 
     :::info
 In use-cases where a user is logged in multiple devices, if the user sends a conversation read receipt from one device, the server sets the count of unread messages in the conversation as 0, and all the other devices receive `onConversationRead`.
@@ -243,65 +243,65 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
 
     1. Send a conversation read receipt when the recipient enters the conversation.
 
-    ```java
-    // The message receiver calls ackConversationRead to send the conversation read receipt.
-    try {
-        ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
-    }catch (ChatException e) {
-        e.printStackTrace();
-    }
-    ```
+       ```java
+       // The message receiver calls ackConversationRead to send the conversation read receipt.
+       try {
+           ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
+       }catch (ChatException e) {
+           e.printStackTrace();
+       }
+       ```
 
     2. When a new message arrives, send the message read receipt and add proper handling logics for the different message types.
 
-    ```java
-    ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
-        ......
+       ```java
+       ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
+           ......
 
-        @Override
-        // Occurs when the specified message is received.
-        public void onMessageReceived(List messages) {
-            ......
-            // Send the message read receipt.
-            sendReadAck(message);
-            ......
-        }
-        ......
-    });
-    // Send the message read receipt.
-    public void sendReadAck(ChatMessage message) {
-        // For messages in one-to-one chat
-        if(message.direct() == ChatMessage.Direct.RECEIVE
-                undefined message.getChatType() == ChatMessage.ChatType.Chat) {
-            ChatMessage.Type type = message.getType();
-            // For voice, video, and file messages, you need to send the receipt after clicking the files.
-            if(type == ChatMessage.Type.VIDEO || type == ChatMessage.Type.VOICE || type == ChatMessage.Type.FILE) {
-                return;
-            }
-            try {
-                // Call ackMessageRead to send the message read receipt.
-                ChatClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
-            } catch (ChatException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    ```
+           @Override
+           // Occurs when the specified message is received.
+           public void onMessageReceived(List messages) {
+               ......
+               // Send the message read receipt.
+               sendReadAck(message);
+               ......
+           }
+           ......
+       });
+       // Send the message read receipt.
+       public void sendReadAck(ChatMessage message) {
+           // For messages in one-to-one chat
+           if(message.direct() == ChatMessage.Direct.RECEIVE
+                   undefined message.getChatType() == ChatMessage.ChatType.Chat) {
+               ChatMessage.Type type = message.getType();
+               // For voice, video, and file messages, you need to send the receipt after clicking the files.
+               if(type == ChatMessage.Type.VIDEO || type == ChatMessage.Type.VOICE || type == ChatMessage.Type.FILE) {
+                   return;
+               }
+               try {
+                   // Call ackMessageRead to send the message read receipt.
+                   ChatClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
+               } catch (ChatException e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+       ```
 
     3. The message sender listens for the message receipt:
 
-    ```java
-    // The message sender calls addMessageListener to listen for message events.
-    ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
-        ......
-        @Override
-        // Occurs when the specified message is read.
-        public void onMessageRead(List messages) {
-            // Add follow-up logics such as poping up a notification.
-        }
-        ......
-    });
-    ```
+       ```java
+       // The message sender calls addMessageListener to listen for message events.
+       ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
+           ......
+           @Override
+           // Occurs when the specified message is read.
+           public void onMessageRead(List messages) {
+               // Add follow-up logics such as poping up a notification.
+           }
+           ......
+       });
+       ```
 
 #### Chat groups
 
@@ -312,10 +312,10 @@ The following table shows the restrictions of this feature:
 | Feature Restriction| Default | Description |
 | :--------- | :----- | :------- |
 | Enabling the function | Disabled | To use this feature, contact support@agora.io to enable it. |
-| Permission  | All group members  | By default, all group members can request read receipts when sending a message. You can contact [support@agora.io](mailto:support@agora.io) to grant the permission only to the group owner and administrators.| 
-| Number of days before read receipts cannot be returned after the message is sent   | 3 days    | The server no longer records the group members that read the message three days after it is sent, nor sends the read receipts.   | 
-| Chat group size   | 200 members   | This feature is available only to groups with up to 200 members. If the upper limit is exceeded, no read receipts are returned for the message sent within the group. To increase the upper limit of group member count, you can contact support@agora.io.  | 
-| View the number of read receipts returned for a group message   | Message sender | By default, only the message sender can view the number of read receipts returned for a group message (or the number of group members that have returned the read receipts). To allow all group members to view the count, you can contact [support@agora.io](mailto:support@agora.io). | 
+| Permission  | All group members  | By default, all group members can request read receipts when sending a message. You can contact [support@agora.io](mailto:support@agora.io) to grant the permission only to the group owner and administrators.|
+| Number of days before read receipts cannot be returned after the message is sent   | 3 days    | The server no longer records the group members that read the message three days after it is sent, nor sends the read receipts.   |
+| Chat group size   | 200 members   | This feature is available only to groups with up to 200 members. If the upper limit is exceeded, no read receipts are returned for the message sent within the group. To increase the upper limit of group member count, you can contact support@agora.io.  |
+| View the number of read receipts returned for a group message   | Message sender | By default, only the message sender can view the number of read receipts returned for a group message (or the number of group members that have returned the read receipts). To allow all group members to view the count, you can contact [support@agora.io](mailto:support@agora.io). |
 
 Follow the steps to implement read receipts for a chat group message:
 
@@ -412,11 +412,11 @@ To send a message delivery receipt, take the following steps:
 
 ### Conversation and message read receipts
 
-In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats. 
+In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats.
 
 #### One-to-one chats
 
-In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI. 
+In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI.
 
 - Conversation read receipts
 
@@ -427,7 +427,7 @@ In one-to-one chats, the SDK supports sending both the conversation read receipt
     ```objc
     [[AgoraChatClient sharedClient].chatManager ackConversationRead:conversationId completion:nil];
     ```
-    
+
 
  2. The message sender listens for message events and receives the conversation read receipt in `onConversationRead`.
 
@@ -469,12 +469,12 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
         // The received message
         if (aMessage.direction == AgoraChatMessageDirectionSend || aMessage.isReadAcked || aMessage.chatType != AgoraChatTypeChat)
             return;
-    
+
         MessageBody *body = aMessage.body;
         // For audio, video, and file messages, send them after the user clicks the file.
         if (body.type == MessageBodyTypeFile || body.type == MessageBodyTypeVoice || body.type == MessageBodyTypeImage)
             return;
-            
+
         [[AgoraChatClient sharedClient].chatManager sendMessageReadAck:aMessage.messageId toUser:aMessage.conversationId completion:nil];
     }
     ```
@@ -522,7 +522,7 @@ Follow the steps to implement read receipts for a chat group message:
         if (msg.isNeedGroupAck && !msg.isReadAcked) {
             [[AgoraChatClient sharedClient].chatManager sendGroupMessageReadAck:msg.messageId toGroup:msg.conversationId content:@"123" completion:^(AgoraChatError *error) {
                 if (error) {
-                
+
                 }
             }];
         }
@@ -538,7 +538,7 @@ Follow the steps to implement read receipts for a chat group message:
         for (AgoraChatGroupMessageAck *messageAck in aGroupAcks) {
             //receive group message read ack
         }
-    } 
+    }
     ```
 
 4. The message sender can get the detailed information of the read receipt using `asyncFetchGroupMessageAcksFromServer`.
@@ -921,7 +921,7 @@ Follow the steps to implement read receipts for a chat group message:
 
 To send a message delivery receipt, take the following steps:
 
-1. When initializing the SDK, set `requireDeliveryAck` in `ChatOptions` as `true` on the sender's client. 
+1. When initializing the SDK, set `requireDeliveryAck` in `ChatOptions` as `true` on the sender's client.
 
     ```typescript
     // Set the SDK app key.
@@ -959,11 +959,11 @@ To send a message delivery receipt, take the following steps:
 
 ### Conversation and message read receipts
 
-In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats. 
+In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats.
 
 #### One-to-one chats
 
-In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI. 
+In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI.
 
 ##### Conversation read receipts
 
@@ -1103,7 +1103,7 @@ To implement the message read receipt in one-to-one chats, take the following st
         console.log("send message read fail.", reason);
     });
     ```
-    
+
 #### Chat groups
 
 For a group chat, group members can determine whether to require message read receipts when sending a message. If yes, after a group member reads the message, the SDK sends a read receipt. In a group chat, the number of message read receipts that are sent for the message refers to the number of group members that have read this message.
@@ -1206,11 +1206,11 @@ To send a message delivery receipt, take the following steps:
 
 ### Conversation and message read receipts
 
-In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats. 
+In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats.
 
 #### One-to-one chats
 
-In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI. 
+In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI.
 
 - Conversation read receipts
 
@@ -1221,10 +1221,10 @@ In one-to-one chats, the SDK supports sending both the conversation read receipt
         ```csharp
         SDKClient.Instance.ChatManager.SendConversationReadAck(conversationId, new CallBack(
         onSuccess: () => {
-                            
+
         },
         onError:(code, desc) => {
-                    
+
         }
         ));
         ```
@@ -1260,10 +1260,10 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
         ```csharp
         SDKClient.Instance.ChatManager.SendConversationReadAck(conversationId, new CallBack(
         onSuccess: () => {
-                            
+
         },
         onError:(code, desc) => {
-                    
+
         }
         ));
         ```
@@ -1296,7 +1296,7 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
                 }
                 SDKClient.Instance.ChatManager.SendMessageReadAck(message.MsgId, new CallBack(
                 onSuccess: () => {
-                        
+
                 },
                 onError: (code, desc) => {
                 }
@@ -1353,11 +1353,11 @@ Follow the steps to implement read receipts for a chat group message:
         SDKClient.Instance.ChatManager.SendReadAckForGroupMessage(messageId, ackContent，callback: new CallBack(
             onSuccess: () =>
             {
-                        
+
             },
             onError: (code, desc) =>
             {
-                        
+
             }
         ));
     }
@@ -1426,11 +1426,11 @@ To send a message delivery receipt, take the following steps:
 
 ### Conversation and message read receipts
 
-In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats. 
+In both one-to-one chats and group chats, you can use message read receipts to notify the message sender that the message has been read. To minimize the method call for message read receipts, the SDK also supports conversation read receipts in one-to-one chats.
 
 #### One-to-one chats
 
-In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI. 
+In one-to-one chats, the SDK supports sending both the conversation read receipts and message read receipts. Agora recommends using conversation read receipts if the new message arrives when the message recipient has not entered the conversation UI.
 
 - Conversation read receipts
 
@@ -1441,10 +1441,10 @@ In one-to-one chats, the SDK supports sending both the conversation read receipt
         ```csharp
         SDKClient.Instance.ChatManager.SendConversationReadAck(conversationId, new CallBack(
         onSuccess: () => {
-                            
+
         },
         onError:(code, desc) => {
-                    
+
         }
         ));
         ```
@@ -1480,10 +1480,10 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
         ```csharp
         SDKClient.Instance.ChatManager.SendConversationReadAck(conversationId, new CallBack(
         onSuccess: () => {
-                            
+
         },
         onError:(code, desc) => {
-                    
+
         }
         ));
         ```
@@ -1516,7 +1516,7 @@ In use-cases where a user is logged in multiple devices, if the user sends a con
                 }
                 SDKClient.Instance.ChatManager.SendMessageReadAck(message.MsgId, new CallBack(
                 onSuccess: () => {
-                        
+
                 },
                 onError: (code, desc) => {
                 }
@@ -1573,11 +1573,11 @@ Follow the steps to implement read receipts for a chat group message:
         SDKClient.Instance.ChatManager.SendReadAckForGroupMessage(messageId, ackContent，callback: new CallBack(
             onSuccess: () =>
             {
-                        
+
             },
             onError: (code, desc) =>
             {
-                        
+
             }
         ));
     }
