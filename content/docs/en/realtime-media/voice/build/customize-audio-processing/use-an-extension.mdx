@@ -43,12 +43,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -93,202 +93,202 @@ in your Agora project:
 
     2. In `app/src/main/java/com.example.<projectname>/MainActivity`:
 
-    1. Add the following lines to import the Android classes used by the extension:
+        1. Add the following lines to import the Android classes used by the extension:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+        <CodeBlockTabs defaultValue="java">
+        <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-    ```java
-    import org.json.JSONException;
-        import org.json.JSONObject;
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="java">
+            ```java
+            import org.json.JSONException;
+                import org.json.JSONObject;
+            ```
+        </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-    ```kotlin
-    import org.json.JSONException
-        import org.json.JSONObject
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="kotlin">
+            ```kotlin
+            import org.json.JSONException
+                import org.json.JSONObject
+            ```
+        </CodeBlockTab>
 
-</CodeBlockTabs>
-    2. Add the following lines to import the Agora classes used by the extension:
+        </CodeBlockTabs>
+            2. Add the following lines to import the Agora classes used by the extension:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+        <CodeBlockTabs defaultValue="java">
+        <CodeBlockTabsList>
+        <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+        <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-    ```java
-    // ExtensionManager is used to pass in basic info about the extension
-        import io.agora.extension.ExtensionManager;
-        import io.agora.rtc2.IMediaExtensionObserver;
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="java">
+            ```java
+            // ExtensionManager is used to pass in basic info about the extension
+                import io.agora.extension.ExtensionManager;
+                import io.agora.rtc2.IMediaExtensionObserver;
+            ```
+        </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-    ```kotlin
-    // ExtensionManager is used to pass in basic info about the extension
-        import io.agora.extension.ExtensionManager
-        import io.agora.rtc2.IMediaExtensionObserver
-    ```
-</CodeBlockTab>
+        <CodeBlockTab value="kotlin">
+            ```kotlin
+            // ExtensionManager is used to pass in basic info about the extension
+                import io.agora.extension.ExtensionManager
+                import io.agora.rtc2.IMediaExtensionObserver
+            ```
+        </CodeBlockTab>
 
-</CodeBlockTabs>
+        </CodeBlockTabs>
 1. **Add the extension and register the event handler**
 
     In `setupVideoSDKEngine`, add the following code before `agoraEngine = RtcEngine.create(config);`:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  config.addExtension(ExtensionManager.EXTENSION_NAME);
-    // Register IMediaExtensionObserver to receive events from the extension.
-    config.mExtensionObserver = new IMediaExtensionObserver() {
-      @Override
-      public void onEvent(String vendor, String extension, String key, String value) {
-        // Add callback handling logics for extension events.
-        showMessage("Extension: " + extension + "
-   Key: " + key + "
-  Value:" + value);
-      }
+    <CodeBlockTab value="java">
+      ```java
+      config.addExtension(ExtensionManager.EXTENSION_NAME);
+        // Register IMediaExtensionObserver to receive events from the extension.
+        config.mExtensionObserver = new IMediaExtensionObserver() {
+          @Override
+          public void onEvent(String vendor, String extension, String key, String value) {
+            // Add callback handling logics for extension events.
+            showMessage("Extension: " + extension + "
+      Key: " + key + "
+      Value:" + value);
+          }
 
-      @Override
-      public void onStarted(String provider, String extension) {
-        showMessage("Extension started");
-      }
+          @Override
+          public void onStarted(String provider, String extension) {
+            showMessage("Extension started");
+          }
 
-      @Override
-      public void onStopped(String provider, String extension) {
-        showMessage("Extension stopped");
-      }
+          @Override
+          public void onStopped(String provider, String extension) {
+            showMessage("Extension stopped");
+          }
 
-      @Override
-      public void onError(String provider, String extension, int error, String message) {
-        showMessage(message);
-      }
-    };
-  ```
-</CodeBlockTab>
+          @Override
+          public void onError(String provider, String extension, int error, String message) {
+            showMessage(message);
+          }
+        };
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  config.addExtension(ExtensionManager.EXTENSION_NAME)
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      config.addExtension(ExtensionManager.EXTENSION_NAME)
 
-    // Register IMediaExtensionObserver to receive events from the extension.
-    config.mExtensionObserver = object : IMediaExtensionObserver {
-      override fun onEvent(vendor: String, extension: String, key: String, value: String) {
-        // Add callback handling logics for extension events.
-        showMessage("Extension: $extension
-   Key: $key
-  Value: $value")
-      }
+        // Register IMediaExtensionObserver to receive events from the extension.
+        config.mExtensionObserver = object : IMediaExtensionObserver {
+          override fun onEvent(vendor: String, extension: String, key: String, value: String) {
+            // Add callback handling logics for extension events.
+            showMessage("Extension: $extension
+      Key: $key
+      Value: $value")
+          }
 
-      override fun onStarted(provider: String, extension: String) {
-        showMessage("Extension started")
-      }
+          override fun onStarted(provider: String, extension: String) {
+            showMessage("Extension started")
+          }
 
-      override fun onStopped(provider: String, extension: String) {
-        showMessage("Extension stopped")
-      }
+          override fun onStopped(provider: String, extension: String) {
+            showMessage("Extension stopped")
+          }
 
-      override fun onError(provider: String, extension: String, error: Int, message: String) {
-        showMessage(message)
-      }
-    }
-  ```
-</CodeBlockTab>
+          override fun onError(provider: String, extension: String, error: Int, message: String) {
+            showMessage(message)
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 1. **Enable the extension**
 
     Call `enableExtension` to enable the extension. To enable multiple extensions, call `enableExtension` as many times. The sequence of enabling multiple extensions determines the order of these extensions in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from the SDK before extension B.
 
     In `setupVideoSDKEngine`, add the following code before `agoraEngine = RtcEngine.create(config);`:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  agoraEngine.enableExtension(ExtensionManager.EXTENSION_VENDOR_NAME, ExtensionManager.EXTENSION_VIDEO_FILTER_NAME, true);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      agoraEngine.enableExtension(ExtensionManager.EXTENSION_VENDOR_NAME, ExtensionManager.EXTENSION_VIDEO_FILTER_NAME, true);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  agoraEngine.enableExtension(
-      ExtensionManager.EXTENSION_VENDOR_NAME,
-      ExtensionManager.EXTENSION_VIDEO_FILTER_NAME,
-      true
-    )
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      agoraEngine.enableExtension(
+          ExtensionManager.EXTENSION_VENDOR_NAME,
+          ExtensionManager.EXTENSION_VIDEO_FILTER_NAME,
+          true
+        )
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 1. **Set extension properties**
 
     In the `joinChannel(View view)` method, add the following code after `agoraEngine.joinChannel`:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  JSONObject o = new JSONObject();
-    try {
-      // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
-      o.put("plugin.watermark.wmStr", "Agora");
-      o.put("plugin.watermark.wmEffectEnabled", true);
+    <CodeBlockTab value="java">
+      ```java
+      JSONObject o = new JSONObject();
+        try {
+          // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
+          o.put("plugin.watermark.wmStr", "Agora");
+          o.put("plugin.watermark.wmEffectEnabled", true);
 
-      // Call setExtensionProperty to use the watermark feature.
-      agoraEngine.setExtensionProperty(ExtensionManager.EXTENSION_VENDOR_NAME,
-          ExtensionManager.EXTENSION_VIDEO_FILTER_NAME, "key", o.toString());
-    } catch (JSONException e) {
-      e.printStackTrace();
-    }
-  ```
-</CodeBlockTab>
+          // Call setExtensionProperty to use the watermark feature.
+          agoraEngine.setExtensionProperty(ExtensionManager.EXTENSION_VENDOR_NAME,
+              ExtensionManager.EXTENSION_VIDEO_FILTER_NAME, "key", o.toString());
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  val o = JSONObject()
-    try {
-      // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
-      o.put("plugin.watermark.wmStr", "Agora")
-      o.put("plugin.watermark.wmEffectEnabled", true)
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      val o = JSONObject()
+        try {
+          // Pass in the key-value pairs defined by the extension provider to configure the feature you want to use.
+          o.put("plugin.watermark.wmStr", "Agora")
+          o.put("plugin.watermark.wmEffectEnabled", true)
 
-      // Call setExtensionProperty to use the watermark feature.
-      agoraEngine.setExtensionProperty(
-        ExtensionManager.EXTENSION_VENDOR_NAME,
-        ExtensionManager.EXTENSION_VIDEO_FILTER_NAME,
-        "key",
-        o.toString()
-      )
-    } catch (e: JSONException) {
-      e.printStackTrace()
-    }
-  ```
-</CodeBlockTab>
+          // Call setExtensionProperty to use the watermark feature.
+          agoraEngine.setExtensionProperty(
+            ExtensionManager.EXTENSION_VENDOR_NAME,
+            ExtensionManager.EXTENSION_VIDEO_FILTER_NAME,
+            "key",
+            o.toString()
+          )
+        } catch (e: JSONException) {
+          e.printStackTrace()
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ## Test your implementation
 
 To ensure that you have integrated the extension in your app:
@@ -356,12 +356,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -448,12 +448,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -542,12 +542,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -652,12 +652,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -881,12 +881,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1064,13 +1064,13 @@ To test the code used in this page you need to have:
 - [Android Studio](https://developer.android.com/studio), IntelliJ, VS Code, or any other IDE that supports Flutter, see [Set up an editor](https://docs.flutter.dev/get-started/editor).
 
 - If your target platform is iOS:
- - Xcode on macOS (latest version recommended)
- - A physical iOS device
- - iOS version 12.0 or later
+    - Xcode on macOS (latest version recommended)
+    - A physical iOS device
+    - iOS version 12.0 or later
 
 - If your target platform is Android:
- - Android Studio on macOS or Windows (latest version recommended)
- - An Android emulator or a physical Android device.
+    - Android Studio on macOS or Windows (latest version recommended)
+    - An Android emulator or a physical Android device.
 
 - If you are developing a desktop application for Windows, macOS or Linux, make sure your development device meets the [Flutter desktop development requirements](https://docs.flutter.dev/development/platform-integration/desktop).
 
@@ -1086,12 +1086,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1240,12 +1240,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1472,12 +1472,12 @@ In order to integrate an extension into your project:
     You are now on the extension detail page.
 
     3. Select a pricing plan and click **Buy and Activate**.
-     - If you have already created an Agora project:
+        - If you have already created an Agora project:
 
-       The **Projects** section appears and lists all of your projects.
-     - If you have not created an Agora project:
+          The **Projects** section appears and lists all of your projects.
+        - If you have not created an Agora project:
 
-       [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
+          [Create a new project](../../manage-agora-account.md), the project appears in the **Projects** section.
 
     4. Under **Projects** on the extension detail page, find the project in which you want to use the extension, then turn on the switch in the **Action** column.
 
@@ -1520,11 +1520,11 @@ This section presents the framework code you add to your Unity project to integr
     );
     ```
 
-:::note
-  Extensions marketplace hosts both third-party extensions as well as those developed by Agora. To use an Agora extension, you do not need to call EnableExtension.
-:::
+    :::note
+      Extensions marketplace hosts both third-party extensions as well as those developed by Agora. To use an Agora extension, you do not need to call EnableExtension.
+    :::
 
-  To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, Video SDK processes data from extension A before extension B.
+    To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, Video SDK processes data from extension A before extension B.
 
 1. **Set extension properties**
 

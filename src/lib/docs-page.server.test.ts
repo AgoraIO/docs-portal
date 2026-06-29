@@ -1505,6 +1505,57 @@ Web body
     });
   });
 
+  it('keeps the selected platform route but marks opted-out pages to hide platform labels', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        hidePlatformTabs: true,
+      },
+    };
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'android']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        hidePlatformTabs: true,
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          initialPlatform: 'android',
+          platforms: '["android","web"]',
+        },
+      },
+    });
+  });
+
   it('builds split-file platform group body payloads and hides panel pages', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
@@ -2092,6 +2143,30 @@ Web body
     }
 
     expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+  });
+
+  it('propagates hidePlatformTabs into mdx body payloads for opted-out pages', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        hidePlatformTabs: true,
+      },
+    };
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : page,
+    );
+    mockedGetPages.mockReturnValue([page]);
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora']),
+    ).resolves.toMatchObject({
+      body: {
+        hidePlatformTabs: true,
+        kind: 'mdx',
+      },
+    });
   });
 
   it('keeps a plain nav scope as a linked folder group in the parent Realtime & Media sidebar', async () => {
