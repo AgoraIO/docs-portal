@@ -22,6 +22,7 @@ import {
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -179,6 +180,17 @@ export async function loadDocsPagePayload(
   if (legacyProductRedirect) {
     return {
       redirectUrl: legacyProductRedirect,
+    };
+  }
+
+  const legacySitemapRedirect = resolveLegacySitemapRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (legacySitemapRedirect) {
+    return {
+      redirectUrl: legacySitemapRedirect,
     };
   }
 
@@ -781,6 +793,17 @@ function resolveLegacyProductRedirect(
   };
 
   return redirects[`${tab}/${normalizedPath}`] ?? null;
+}
+
+export function resolveLegacySitemapRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
+  const rule = resolveLegacySitemapRedirectPath(legacyPath);
+
+  return rule?.target ?? null;
 }
 
 function resolveRealtimeMediaRedirect(
