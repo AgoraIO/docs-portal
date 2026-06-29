@@ -8,7 +8,10 @@ import {
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (page: { path: string }, platform?: string) => {
+  getPageMarkdownUrl: (
+    page: { path: string; type?: string; url: string },
+    platform?: string,
+  ) => {
     const segments = page.path
       .split('/')
       .filter(Boolean)
@@ -25,7 +28,10 @@ vi.mock('./source.server', () => ({
 
     return {
       segments: markdownSegments,
-      url: `/llms.mdx/docs/${markdownSegments.join('/')}`,
+      url:
+        platform || page.type === 'openapi'
+          ? `/llms.mdx/docs/${markdownSegments.join('/')}`
+          : `${page.url}.md`,
     };
   },
   source: {
@@ -1312,7 +1318,7 @@ describe('loadDocsPagePayload', () => {
           locale: 'zh-CN',
         },
       ],
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
+      markdownUrl: '/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
       toc: [
