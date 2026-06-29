@@ -809,7 +809,10 @@ function OpenApiCodeSampleTabs({
       </CodeBlockTabsList>
       {sampleEntries.map(({ sample, value }) => (
         <CodeBlockTab key={value} value={value}>
-          {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+          {renderCodeBlock({
+            code: sample.source,
+            lang: getCodeSampleLanguage(sample.lang),
+          })}
         </CodeBlockTab>
       ))}
     </CodeBlockTabs>
@@ -877,7 +880,10 @@ function OpenApiCodeSampleGroupSelector({
         </CodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTab key={value} value={value}>
-            {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+            {renderCodeBlock({
+              code: sample.source,
+              lang: getCodeSampleLanguage(sample.lang),
+            })}
           </CodeBlockTab>
         ))}
       </CodeBlockTabs>
