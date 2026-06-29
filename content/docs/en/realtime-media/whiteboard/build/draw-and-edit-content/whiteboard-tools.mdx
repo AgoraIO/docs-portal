@@ -96,64 +96,64 @@ This section extends the [Join the Whiteboard Room](../set-up-and-build-your-fir
 
 1. Add the following code to the `joinWhiteboard.js` file:
 
-```javascript
-...
+   ```javascript
+   ...
 
-whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+   whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
 
-    room.bindHtmlElement(document.getElementById("whiteboard"));
+       room.bindHtmlElement(document.getElementById("whiteboard"));
 
-    // Define a toolbar and buttons.
-    var toolbar = document.getElementById("toolbar");
-    var toolNames = ["clicker","selector","rectangle","eraser","text","arrow","ellipse","hand","laserPointer","shape","straight"];
+       // Define a toolbar and buttons.
+       var toolbar = document.getElementById("toolbar");
+       var toolNames = ["clicker","selector","rectangle","eraser","text","arrow","ellipse","hand","laserPointer","shape","straight"];
 
-    for(var idx in toolNames){
-        var toolName = toolNames[idx];
-        var btn = document.createElement("BUTTON");
-        btn.setAttribute("id","btn"+toolName);
-        var t=document.createTextNode(toolName);
-        btn.appendChild(t);
+       for(var idx in toolNames){
+           var toolName = toolNames[idx];
+           var btn = document.createElement("BUTTON");
+           btn.setAttribute("id","btn"+toolName);
+           var t=document.createTextNode(toolName);
+           btn.appendChild(t);
 
-        // Listen for the event of clicking a button.
-        btn.addEventListener("click", function(obj){
-            var ele = obj.target;
-            // Call the setMemberState method to set the whiteboard tool.
-            room.setMemberState(
-                {currentApplianceName: ele.getAttribute("id").substring(3),
-                 shapeType: "pentagram",
-                 strokeColor: [255,182,200],
-                 strokeWidth: 12,
-                 textSize: 40,});
-        });
-        toolbar.appendChild(btn);
-        console.log(btn.getAttribute("id"));
-    }
+           // Listen for the event of clicking a button.
+           btn.addEventListener("click", function(obj){
+               var ele = obj.target;
+               // Call the setMemberState method to set the whiteboard tool.
+               room.setMemberState(
+                   {currentApplianceName: ele.getAttribute("id").substring(3),
+                    shapeType: "pentagram",
+                    strokeColor: [255,182,200],
+                    strokeWidth: 12,
+                    textSize: 40,});
+           });
+           toolbar.appendChild(btn);
+           console.log(btn.getAttribute("id"));
+       }
 
-}).catch(function(err) {
+   }).catch(function(err) {
 
-    console.error(err);
-});
-```
+       console.error(err);
+   });
+   ```
 
 2. Add the following code to the `index.html` file to display the toolbar on the web page:
 
-```
-<!DOCTYPE html>
-<html>
-    <head>
-        <script src="https://sdk.netless.link/white-web-sdk/2.12.20.js"></script>
-        <script src="./joinWhiteboard.js"></script>
+   ```text
+   <!DOCTYPE html>
+   <html>
+       <head>
+           <script src="https://sdk.netless.link/white-web-sdk/2.12.20.js"></script>
+           <script src="./joinWhiteboard.js"></script>
 
-    </head>
-    <body>
-        <div id="whiteboard" style="width: 100%; height: 100vh;">
-        </div>
-        <!--Define the style of the toolbar and add it to the web page-->
-        <div id="toolbar" style="position:relative; top:40px;height:100px;z-index:10;">
-        </div>
-    </body>
-</html>
-```
+       </head>
+       <body>
+           <div id="whiteboard" style="width: 100%; height: 100vh;">
+           </div>
+           <!--Define the style of the toolbar and add it to the web page-->
+           <div id="toolbar" style="position:relative; top:40px;height:100px;z-index:10;">
+           </div>
+       </body>
+   </html>
+   ```
 
 Save the changes, and refresh the `index.html` page. The following toolbar displays in the lower left corner of the page. You can click any button and use the corresponding tool to write and draw on the whiteboard.
 ![](https://web-cdn.agora.io/docs-files/1629373521835)

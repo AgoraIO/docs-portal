@@ -278,7 +278,7 @@ public class Base64Encoding {
 }
 ```
 
-```cs tab="C#"
+```csharp tab="C#"
 using System;
 using System.IO;
 using System.Net;

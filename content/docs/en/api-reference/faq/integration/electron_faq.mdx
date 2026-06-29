@@ -16,7 +16,7 @@ This issue is usually caused by a network or proxy problem. Try one of the follo
 
     `https://registry.npmjs.org/` is the original official npm mirror download address which is slow for domestic users. Switching to a reliable mirror source can improve the download speed:
 
-    ```shell
+    ```bash
     # Set npm mirror source to Taobao source
     npm config set registry https://registry.npmmirror.com/
     # Set npm Electron mirror source as a Taobao mirror source
@@ -27,7 +27,7 @@ This issue is usually caused by a network or proxy problem. Try one of the follo
 
     If you are using a network proxy, make sure that the proxy settings for the command line tool are correct:
 
-    ```shell
+    ```bash
     # View Global Proxy Address
     npm config get proxy
     # Set the global proxy (HTTP proxy address)
@@ -63,7 +63,7 @@ Once the setup is complete, reopen a command line tool and run `npm install` to 
 
 Run the following command in a terminal to modify the environment variables:
 
-```shell
+```bash
 export ELECTRON_MIRROR='https://npmmirror.com/mirrors/electron/'
 export ELECTRON_GET_USE_PROXY=true
 ```
@@ -84,7 +84,7 @@ In this case, Agora recommends that you first refer to [npm install is slow or t
 
 Refer to the following commands to set up the proxy and mirror source for yarn:
 
-```shell
+```bash
 # Set up a proxy
 yarn config set proxy <proxy-server-address>:<port-number>
 yarn config set https-proxy <proxy-server-address>:<port-number>
@@ -102,7 +102,7 @@ The error indicates that there are too many layers of symbolic links (also calle
 
 Use the following command to prevent symbolic links from being created when installing npm packages:
 
-```shell
+```bash
 npm install --no-bin-links
 ```
 
@@ -132,7 +132,7 @@ Try one of the following methods to fix the issue:
 
     Create a new `.npmrc` file directly in the root directory of your project and write the following to configure the **npm environment variables**:
 
-    ```shell
+    ```bash
     agora_electron_sdk_arch=ia32
     arch=ia32
     ```

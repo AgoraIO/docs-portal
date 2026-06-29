@@ -106,7 +106,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 #### Request example
 
-```shell
+```bash
 # Replaces  with the app token generated from your token server.
 curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "metaData": {
@@ -174,7 +174,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 #### Request example
 
-```shell
+```bash
 # Replaces  with the app token generated from your token server.
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "keys": ["key1","key2"]
@@ -245,7 +245,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 #### Request example
 
-```shell
+```bash
 # Replaces  with the app token generated from your token server.
 DELETE -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "keys": ["key1","key2"]
@@ -312,7 +312,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 #### Request example
 
-```shell
+```bash
 # Replaces  with the app token generated from your token server.
 curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' -d '{
     "metaData": {
@@ -378,7 +378,7 @@ For other fields and detailed descriptions, see [Common parameters](#param).
 
 #### Request example
 
-```shell
+```bash
 # Replaces  with the app token generated from your token server.
 curl  -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
     "keys": ["key1","key2"]

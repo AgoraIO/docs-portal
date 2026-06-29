@@ -236,7 +236,7 @@ If you still have questions, refer to the [FAQ on the recently announced package
 The following table compares the features included in each package:
 
 | Feature | Free Package | Lite Package | Starter Package | Pro Package | Business Package | Enterprise Package |
-|:--------|:---------:|:--:|:-----------:|:-------:|:-----------:|:----------:|
+| :-------- | :---------: | :---: | :-----------: | :-------: | :-----------: | :----------: |
 | Publish/Subscribe Messaging<br/>(Message Channel) | ✔ | ✔  | ✔| ✔   | ✔  | ✔   |
 | Stream Channel    | ✘ | ✘           | ✔| ✔           | ✔  | ✔   |
 | Presence          | ✔ | ✔           | ✔| ✔           | ✔  | ✔   |

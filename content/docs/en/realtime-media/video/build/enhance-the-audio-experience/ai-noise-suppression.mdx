@@ -294,16 +294,16 @@ The following implementation steps apply to the latest version of the AI Noise S
    ```
 8. Set the noise suppression mode and level
 
-  ```javascript
-  // Listen for the callback reporting that the noise suppression process takes too long
-  processor.on("overload", async (elapsedTime) => {
-   console.log("overload!!!");
-   // Switch to steady-state noise reduction mode, temporarily disable AI noise reduction.
-   await processor.setMode("STATIONARY_NS");
-   // Completely disable AI noise reduction and use the browser's built-in noise reduction.
-   // await processor.disable()
-  });
-  ```
+   ```javascript
+   // Listen for the callback reporting that the noise suppression process takes too long
+   processor.on("overload", async (elapsedTime) => {
+    console.log("overload!!!");
+    // Switch to steady-state noise reduction mode, temporarily disable AI noise reduction.
+    await processor.setMode("STATIONARY_NS");
+    // Completely disable AI noise reduction and use the browser's built-in noise reduction.
+    // await processor.disable()
+   });
+   ```
 
 9. Dump audio data
 

@@ -65,7 +65,7 @@ Retrieves the member list of the specified chat group with pagination.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users
 
 // Gets the member list of the group with pagination.
@@ -114,7 +114,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/users?pagenum=2&pagesize=2' -H 'Authorization: Bearer '
 ```
 
@@ -156,7 +156,7 @@ Adds the specified user to the chat group.  If the user is already a member of t
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
 ```
 
@@ -197,7 +197,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user4'
 ```
 
@@ -227,7 +227,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 Adds multiple users to the specified chat group. You can add a maximum of 60 users into a chat group each time. If the users are already members of the chat group, an error is returned in the response body.
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{chatgroupid}/users
 ```
 
@@ -273,7 +273,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
     "usernames": [
       "user4","user5"
@@ -312,7 +312,7 @@ Once a member is removed from a chat group, they are also removed from all the t
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}
 ```
 
@@ -352,7 +352,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/user3'
 ```
 
@@ -385,7 +385,7 @@ Once a member is removed from a chat group, they are also removed from all the t
 
 ### HTTP request
 
-```
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/users/{members}
 ```
 
@@ -427,7 +427,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/users/ttestuser0015981,user2,user3'
 ```
 
@@ -471,7 +471,7 @@ Sets the custom attributes of a group member, such as adding a nickname or avata
 
 ### HTTP request
 
-```shell
+```bash
 PUT https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
 ```
  
@@ -515,7 +515,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl --location --request PUT 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
@@ -545,7 +545,7 @@ Retrieves all custom attributes of a group member.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/user/{username}
 ```
 
@@ -583,7 +583,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl --location --request GET 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/user/test2' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
@@ -609,7 +609,7 @@ Retrieves custom attributes of multiple group members by attribute key. You can 
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/metadata/chatgroup/{group_id}/get
 ```
 
@@ -650,7 +650,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl --location --request POST 'https://XXXX/XXXX/XXXX/metadata/chatgroup/207059303858177/get' \
 -H 'Content-Type: application/json' \
 -H 'Accept: application/json'
@@ -684,7 +684,7 @@ Retrieves the list of the chat group admins.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
 ```
 
@@ -715,7 +715,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET HTTP://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin -H 'Authorization: Bearer '
 ```
 
@@ -742,7 +742,7 @@ Adds a regular group member to the group admin list. A chat group admin has the 
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin
 ```
 
@@ -787,7 +787,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin' -d '{"newadmin":"user1"}' -H 'Authorization: Bearer '
 ```
 
@@ -817,7 +817,7 @@ Removes the specified user from the chat group admin list.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/admin/{username}
 ```
 
@@ -855,7 +855,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/admin/user1' -H 'Authorization: Bearer '
 ```
 
@@ -884,7 +884,7 @@ Changes the group owner to another group member. Group owners possess all group 
 
 ### HTTP request
 
-```shell
+```bash
 PUT https://{host}/{org_name}/{app_name}/chatgroups/{group_id}
 ```
 
@@ -928,7 +928,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{     "newowner": "user2"   }' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585'
 ```
 

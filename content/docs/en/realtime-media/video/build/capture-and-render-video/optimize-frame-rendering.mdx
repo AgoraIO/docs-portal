@@ -286,22 +286,22 @@ Joining a channel typically takes the most time before the first video frame app
 3. Subscribe manually when the user is ready to view content.
 
 
-```kotlin
-// Define connection and event handler
-val connection = RtcConnection(channelId, uid)
-val eventHandler = mRtcEventHandler
+   ```kotlin
+   // Define connection and event handler
+   val connection = RtcConnection(channelId, uid)
+   val eventHandler = mRtcEventHandler
 
-// Set channel media options
-val options = ChannelMediaOptions().apply {
-    channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-    clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
-    autoSubscribeAudio = false
-    autoSubscribeVideo = false
-}
+   // Set channel media options
+   val options = ChannelMediaOptions().apply {
+       channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+       clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
+       autoSubscribeAudio = false
+       autoSubscribeVideo = false
+   }
 
-// Join the channel without subscribing
-mRtcEngine?.joinChannelEx(token, connection, options, mRtcEventHandler)
-```
+   // Join the channel without subscribing
+   mRtcEngine?.joinChannelEx(token, connection, options, mRtcEventHandler)
+   ```
 
 
 ### Subscribe to streams and start rendering
@@ -313,16 +313,16 @@ When the user chooses to view content:
 3. The SDK reports results in the [`onVideoRenderingTracingResult`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onvideorenderingtracingresult) callback, which you can use for performance analysis.
 
 
-```kotlin
-fun switchToChannel() {
-    // Start video rendering tracing
-    mRtcEngine?.startMediaRenderingTracingEx(connection)
+   ```kotlin
+   fun switchToChannel() {
+       // Start video rendering tracing
+       mRtcEngine?.startMediaRenderingTracingEx(connection)
 
-    // Resume remote media subscriptions
-    mRtcEngine?.muteRemoteVideoStreamEx(remoteUid, false, connection)
-    mRtcEngine?.muteRemoteAudioStreamEx(remoteUid, false, connection)
-}
-```
+       // Resume remote media subscriptions
+       mRtcEngine?.muteRemoteVideoStreamEx(remoteUid, false, connection)
+       mRtcEngine?.muteRemoteAudioStreamEx(remoteUid, false, connection)
+   }
+   ```
 
 
 </TabsContent>
@@ -626,21 +626,21 @@ Joining a channel typically takes the most time before the first video frame app
 3. Subscribe manually when the user is ready to view content.
 
 
-```swift
-// Define connection and event handler
-let connection = AgoraRtcConnection(channelId: channelId, localUid: uid)
-let eventHandler = self
+   ```swift
+   // Define connection and event handler
+   let connection = AgoraRtcConnection(channelId: channelId, localUid: uid)
+   let eventHandler = self
 
-// Set channel media options
-let options = AgoraRtcChannelMediaOptions()
-options.channelProfile = .liveBroadcasting
-options.clientRoleType = .audience
-options.autoSubscribeAudio = false
-options.autoSubscribeVideo = false
+   // Set channel media options
+   let options = AgoraRtcChannelMediaOptions()
+   options.channelProfile = .liveBroadcasting
+   options.clientRoleType = .audience
+   options.autoSubscribeAudio = false
+   options.autoSubscribeVideo = false
 
-// Join the channel without subscribing
-agoraKit?.joinChannelEx(byToken: token, connection: connection, delegate: self, mediaOptions: options, joinSuccess: nil)
-```
+   // Join the channel without subscribing
+   agoraKit?.joinChannelEx(byToken: token, connection: connection, delegate: self, mediaOptions: options, joinSuccess: nil)
+   ```
 
 
 ### Subscribe to streams and start rendering
@@ -652,16 +652,16 @@ When the user chooses to view content:
 3. The SDK reports results in the [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>) callback, which you can use for performance analysis.
 
 
-```swift
-func switchToChannel() {
-    // Start video rendering tracing
-    agoraKit?.startMediaRenderingTracingEx(connection)
+   ```swift
+   func switchToChannel() {
+       // Start video rendering tracing
+       agoraKit?.startMediaRenderingTracingEx(connection)
 
-    // Resume remote media subscriptions
-    agoraKit?.muteRemoteVideoStreamEx(remoteUid, mute: false, connection: connection)
-    agoraKit?.muteRemoteAudioStreamEx(remoteUid, mute: false, connection: connection)
-}
-```
+       // Resume remote media subscriptions
+       agoraKit?.muteRemoteVideoStreamEx(remoteUid, mute: false, connection: connection)
+       agoraKit?.muteRemoteAudioStreamEx(remoteUid, mute: false, connection: connection)
+   }
+   ```
 
 
 </TabsContent>
@@ -965,21 +965,21 @@ Joining a channel typically takes the most time before the first video frame app
 3. Subscribe manually when the user is ready to view content.
 
 
-```swift
-// Define connection and event handler
-let connection = AgoraRtcConnection(channelId: channelId, localUid: uid)
-let eventHandler = self
+   ```swift
+   // Define connection and event handler
+   let connection = AgoraRtcConnection(channelId: channelId, localUid: uid)
+   let eventHandler = self
 
-// Set channel media options
-let options = AgoraRtcChannelMediaOptions()
-options.channelProfile = .liveBroadcasting
-options.clientRoleType = .audience
-options.autoSubscribeAudio = false
-options.autoSubscribeVideo = false
+   // Set channel media options
+   let options = AgoraRtcChannelMediaOptions()
+   options.channelProfile = .liveBroadcasting
+   options.clientRoleType = .audience
+   options.autoSubscribeAudio = false
+   options.autoSubscribeVideo = false
 
-// Join the channel without subscribing
-agoraKit?.joinChannelEx(byToken: token, connection: connection, delegate: self, mediaOptions: options, joinSuccess: nil)
-```
+   // Join the channel without subscribing
+   agoraKit?.joinChannelEx(byToken: token, connection: connection, delegate: self, mediaOptions: options, joinSuccess: nil)
+   ```
 
 
 ### Subscribe to streams and start rendering
@@ -991,16 +991,16 @@ When the user chooses to view content:
 3. The SDK reports results in the [`videoRenderingTracingResultOfUid`](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:videorenderingtracingresultofuid:currentevent:tracinginfo:)>) callback, which you can use for performance analysis.
 
 
-```swift
-func switchToChannel() {
-    // Start video rendering tracing
-    agoraKit?.startMediaRenderingTracingEx(connection)
+   ```swift
+   func switchToChannel() {
+       // Start video rendering tracing
+       agoraKit?.startMediaRenderingTracingEx(connection)
 
-    // Resume remote media subscriptions
-    agoraKit?.muteRemoteVideoStreamEx(remoteUid, mute: false, connection: connection)
-    agoraKit?.muteRemoteAudioStreamEx(remoteUid, mute: false, connection: connection)
-}
-```
+       // Resume remote media subscriptions
+       agoraKit?.muteRemoteVideoStreamEx(remoteUid, mute: false, connection: connection)
+       agoraKit?.muteRemoteAudioStreamEx(remoteUid, mute: false, connection: connection)
+   }
+   ```
 
 
 </TabsContent>
@@ -1282,19 +1282,19 @@ Joining a channel typically takes the most time before the first video frame app
 3. Subscribe manually when the user is ready to view content.
 
 
-```cpp
-// Set channel media options
-ChannelMediaOptions options;
-options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
-options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
-options.autoSubscribeAudio = false;
-options.autoSubscribeVideo = false;
+   ```cpp
+   // Set channel media options
+   ChannelMediaOptions options;
+   options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+   options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
+   options.autoSubscribeAudio = false;
+   options.autoSubscribeVideo = false;
 
-RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
+   RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
 
-// Join the channel without subscribing
-m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
-```
+   // Join the channel without subscribing
+   m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
+   ```
 
 
 ### Subscribe to streams and start rendering
@@ -1306,18 +1306,18 @@ When the user chooses to view content:
 3. The SDK reports results in the [`onVideoRenderingTracingResult`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onvideorenderingtracingresult) callback, which you can use for performance analysis.
 
 
-```cpp
-void CAgoraQuickStartDlg::switchNextChannel() {
-    RtcConnection connection(next_channel.channel_id.c_str(), localUid);
+   ```cpp
+   void CAgoraQuickStartDlg::switchNextChannel() {
+       RtcConnection connection(next_channel.channel_id.c_str(), localUid);
 
-    // Start video rendering tracing
-    m_rtcEngine->startMediaRenderingTracingEx(connection);
+       // Start video rendering tracing
+       m_rtcEngine->startMediaRenderingTracingEx(connection);
 
-    // Resume remote media subscriptions
-    m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
-    m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
-}
-```
+       // Resume remote media subscriptions
+       m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
+       m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
+   }
+   ```
 
 
 </TabsContent>

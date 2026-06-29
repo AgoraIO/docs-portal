@@ -318,7 +318,7 @@ The table below shows the recommended sampling rates and corresponding data size
 ### Definition levels of a webcam
 
 | Gear	| Resolution	| Frame rate	| Bit rate range (kbps) | 
-|:---:|:---|:-:|:---:|
+| :---: | :--- | :---: | :---: |
 | SD	| L1: 640*360	| 15 | 400 - 800 |
 | HD	| L2: 1280*720	| 15	| 1130 - 2260 | 
 | Ultra HD	| L3: 1920*1080	| 15	| 1130 - 4160 | 

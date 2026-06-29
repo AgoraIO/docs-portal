@@ -28,7 +28,7 @@ To get started, use the FaceUnity sample project on GitHub:
 
 1. Clone the repository:
 
-   ```shell
+   ```bash
    git clone https://github.com/AgoraIO-Community/AgoraMarketPlace.git
    ```
 
@@ -46,7 +46,7 @@ To get started, use the FaceUnity sample project on GitHub:
 3. Save the required model and prop files from the resource package to `/app/src/main/assets`.
 4. Add the following Gradle dependency:
 
-   ```groovy
+   ```text
    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
    ```
 
@@ -107,6 +107,7 @@ When you stop using FaceUnity, call `setExtensionProperty` with the `fuDestroyLi
 | `setExtensionProperty` | `-1` (extension layer) | Invalid or repeated extension initialization or model loading. |
 | `setExtensionProperty` | `-2` (SDK layer or extension layer) | The timing of the call is wrong or the parameter is invalid. |
 | `setExtensionProperty` | `-20` (extension layer) | The incoming key is not supported or the resource is already loaded or destroyed. |
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -125,7 +126,7 @@ To quickly integrate FaceUnity AR filter capabilities in your app, set extension
 
 1. Clone the FaceUnity sample project:
 
-   ```shell
+   ```bash
    git clone https://github.com/AgoraIO-Community/AgoraMarketPlace.git
    ```
 
@@ -138,7 +139,7 @@ To quickly integrate FaceUnity AR filter capabilities in your app, set extension
 
 ### Enable the extension
 
-```objective-c
+```objc
 [self.agoraKit enableExtensionWithVendor:@"FaceUnity"
                                extension:@"Effect"
                                  enabled:self.enable];

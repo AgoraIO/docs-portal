@@ -68,9 +68,9 @@ In order to integrate an extension into your project:
 
      2. In `/Gradle Scripts/build.gradle(Module: <ProjectName> app)`, add the following line under `dependencies`:
 
-       ```java
-       implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-       ```
+        ```java
+        implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+        ```
 
     - Shared Library (`.so`)
 
@@ -565,9 +565,9 @@ In order to integrate an extension into your project:
 
     1. In the root of your project, install the extension package. For example, for AI Noise Suppression:
 
-    ```bash
-    npm i agora-extension-ai-denoiser
-    ```
+       ```bash
+       npm i agora-extension-ai-denoiser
+       ```
 
 You are now ready to integrate the extension in your app.
 
@@ -706,48 +706,48 @@ Integrating an extension into your project involves a few important steps to ens
 
     1. In `AgoraImplementationDlg.h`, add the following declarations to the `AgoraEventHandler` class after `onLeaveChannel`:
 
-    ```cpp
-    virtual void onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)override;
-    virtual void onExtensionStopped(const char* provider, const char* extension)override;
-    virtual void onExtensionStarted(const char* provider, const char* extension)override;
-    virtual void onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)override;
-    ```
+       ```cpp
+       virtual void onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)override;
+       virtual void onExtensionStopped(const char* provider, const char* extension)override;
+       virtual void onExtensionStarted(const char* provider, const char* extension)override;
+       virtual void onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)override;
+       ```
     2. Define these callbacks in `AgoraImplementationDlg.cpp`:
 
-    ```cpp
-    // Extension Callbacks
-    void AgoraEventHandler::onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)
-    {
-      // Handle the event
-      CString extension_provider(provider);
-      CString extension_name(extension);
-      CString extension_key(key);
-      CString extension_value(value);
+       ```cpp
+       // Extension Callbacks
+       void AgoraEventHandler::onExtensionEvent(const char* provider, const char* extension, const char* key, const char* value)
+       {
+         // Handle the event
+         CString extension_provider(provider);
+         CString extension_name(extension);
+         CString extension_key(key);
+         CString extension_value(value);
 
-      CString message;
-      message.Format(_T("Extension Provider: %s\nExtension Name: %s\nKey: %s\nValue: %s\n is enabled to run."), extension_provider, extension_name);
-      AfxMessageBox(message);
-    }
+         CString message;
+         message.Format(_T("Extension Provider: %s\nExtension Name: %s\nKey: %s\nValue: %s\n is enabled to run."), extension_provider, extension_name);
+         AfxMessageBox(message);
+       }
 
-    void AgoraEventHandler::onExtensionStopped(const char* provider, const char* extension)
-    {
-      AfxMessageBox(L"Extension stopped.");
-    }
+       void AgoraEventHandler::onExtensionStopped(const char* provider, const char* extension)
+       {
+         AfxMessageBox(L"Extension stopped.");
+       }
 
-    void AgoraEventHandler::onExtensionStarted(const char* provider, const char* extension)
-    {
-      AfxMessageBox(Extension started);
-    }
+       void AgoraEventHandler::onExtensionStarted(const char* provider, const char* extension)
+       {
+         AfxMessageBox(Extension started);
+       }
 
-    void AgoraEventHandler::onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)
-    {
-      // Handle the error event
-      CString error_message(errorMessage);
-      CString message;
-      message.Format(_T("Error: %s\n with error code %d"), error_message, error);
-      AfxMessageBox(message);
-    }
-    ```
+       void AgoraEventHandler::onExtensionError(const char* provider, const char* extension, int error, const char* errorMessage)
+       {
+         // Handle the error event
+         CString error_message(errorMessage);
+         CString message;
+         message.Format(_T("Error: %s\n with error code %d"), error_message, error);
+         AfxMessageBox(message);
+       }
+       ```
 
 1. **Enable the extension and set the extension properties**
 
@@ -762,10 +762,10 @@ Integrating an extension into your project involves a few important steps to ens
 
       1. In `AgoraImplementationDlg.h`, declare `setupMarketExtension()` before `setupVideoSDKEngine();``:
 
-        ```cpp
-        // Function to load, register and enable the extension. Here you also set the extension propertties for your specific extension
-        void setupMarketExtension(IRtcEngine* agoraEngine);
-        ```
+         ```cpp
+         // Function to load, register and enable the extension. Here you also set the extension propertties for your specific extension
+         void setupMarketExtension(IRtcEngine* agoraEngine);
+         ```
       1. In `AgoraImplementationDlg.cpp`, put the following in the `setupVideoSDKEngine` function just after
      initializing Agora Engine `agoraEngine->initialize(context);`:
 
@@ -775,24 +775,24 @@ Integrating an extension into your project involves a few important steps to ens
         ```
       1. Define `setupMarketExtension()`:
 
-        ```cpp
-        void CAgoraImplementationDlg::setupMarketExtension(IRtcEngine* agoraEngine)
-        {
-          // Load the extension with the file path to the dynamic library (.dll file on Windows) and a boolean flag 'unload_after_use' is true here mean
-          // unload the dynamic library after it has been used.
-          agoraEngine->loadExtensionProvider(extensionLibrarayPath,true);
+         ```cpp
+         void CAgoraImplementationDlg::setupMarketExtension(IRtcEngine* agoraEngine)
+         {
+           // Load the extension with the file path to the dynamic library (.dll file on Windows) and a boolean flag 'unload_after_use' is true here mean
+           // unload the dynamic library after it has been used.
+           agoraEngine->loadExtensionProvider(extensionLibrarayPath,true);
 
-          // Register the extension
-          agoraEngine->registerExtension(extensionProvider, extensionName, extensionMediaType);
+           // Register the extension
+           agoraEngine->registerExtension(extensionProvider, extensionName, extensionMediaType);
 
-          // Enable the extension
-          agoraEngine->enableExtension(extensionProvider, extensionName, true, extensionMediaType);
+           // Enable the extension
+           agoraEngine->enableExtension(extensionProvider, extensionName, true, extensionMediaType);
 
-          // Set Extension property. The extension key and extension value would be specific to the extension you are using.
-          // This function is used to set the value of a specific property of an extension
-          agoraEngine->setExtensionProperty(extensionProvider, extensionName, extensionKey, extensionValue, extensionMediaType);
-        }
-        ```
+           // Set Extension property. The extension key and extension value would be specific to the extension you are using.
+           // This function is used to set the value of a specific property of an extension
+           agoraEngine->setExtensionProperty(extensionProvider, extensionName, extensionKey, extensionValue, extensionMediaType);
+         }
+         ```
 1. **Disable the extension before closing the application**
 
     You must unload and disable all extensions before the app closes. As you set `unload_after_use` to

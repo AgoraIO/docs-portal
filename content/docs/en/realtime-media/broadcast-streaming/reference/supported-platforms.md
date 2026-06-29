@@ -32,6 +32,6 @@ This section lists the platforms and products you use to develop apps that inter
 - *MediaPlayer Kit*:
 
   | Type of media    | Formats    |
-  |:--|:----|
+  | :--- | :---- |
   |Local files |AVI, MP4, MP3, MKV, and FLV     |
   |Online media streams |HTTP, HTTPS, RTMP and RTSP protocols |

@@ -30,9 +30,9 @@ To install the [Super Clarity extension](https://www.npmjs.com/package/agora-ext
 
   1. Run the following command in the root directory of your project:
 
-    ```bash
-    npm install agora-extension-super-clarity
-    ```
+     ```bash
+     npm install agora-extension-super-clarity
+     ```
 
   1. To import the Super Clarity extension, use one of the following methods:
 
@@ -151,23 +151,23 @@ To stop using the Super Clarity extension, follow these steps to ensure proper c
 1. Call the extension's `release` method to destroy the `processor`.
 1. Call the SDK's `stop` method to stop the video track, set it to `null`, and destroy it.
 
-```typescript
-async function onUserUnpublished(user, mediaType) {
- if (!context.client || mediaType !== "video" || context.uid !== user.uid) {
-  return;
- }
+   ```typescript
+   async function onUserUnpublished(user, mediaType) {
+    if (!context.client || mediaType !== "video" || context.uid !== user.uid) {
+     return;
+    }
 
- // Disconnect the pipeline between the processor and the current video track
- context.processor.unpipe();
- context.track.unpipe();
+    // Disconnect the pipeline between the processor and the current video track
+    context.processor.unpipe();
+    context.track.unpipe();
 
- // Destroy the processor and video track
- await context.processor.release();
- context.processor = undefined;
- context.track.stop();
- context.track = undefined;
-}
-```
+    // Destroy the processor and video track
+    await context.processor.release();
+    context.processor = undefined;
+    context.track.stop();
+    context.track = undefined;
+   }
+   ```
 
 ### Complete sample code
 

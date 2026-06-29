@@ -17,9 +17,9 @@ Take the following steps to set up and run the middleware project:
 
 1. **Clone the repository**
 
-  ```bash
-  git clone https://github.com/AgoraIO-Community/agora-go-backend-middleware.git
-  ```
+   ```bash
+   git clone https://github.com/AgoraIO-Community/agora-go-backend-middleware.git
+   ```
 
 2. **Install dependencies**
   Ensure you have [Go](https://go.dev/doc/install) installed on your system. Navigate to the project directory and install the project dependencies:
@@ -33,9 +33,9 @@ Take the following steps to set up and run the middleware project:
 
   1. Copy the example `.env` file.
 
-   ```bash
-   cp .env.example .env
-   ```
+     ```bash
+     cp .env.example .env
+     ```
 
   2. Update the following variables in the `.env` file:
 

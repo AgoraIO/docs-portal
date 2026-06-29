@@ -40,7 +40,7 @@ If you need to run the SDK on other architectures, [submit a ticket](https://ago
 
 If you are using Ubuntu, taking Ubuntu 20.04.3 LTS as an example, install the following dependencies in your server:
 
-```shell
+```bash
 # Install aptitude
 sudo apt install aptitude
 # Install build-essential libx11-dev libxcomposite-dev libxext-dev libxfixes-dev libxdamage-dev cmake
@@ -49,7 +49,7 @@ sudo aptitude install libx11-dev libxcomposite-dev libxext-dev libxfixes-dev lib
 
 If you are using CentOS, taking CentOS 7.9.2009 as an example, install the following dependencies in your server:
 
-```shell
+```bash
 sudo yum groupinstall "Development Tools"
 sudo yum install wget
 sudo yum groupinstall X11
@@ -61,4 +61,4 @@ See [Manage your Agora account](build/manage-agora-account.md) to learn how to g
 
 ## Get the SDK
 
-[Download](/en/api-reference/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+[Download](/en/api-reference/sdks?product=server-gateway&platform=linux) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.

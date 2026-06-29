@@ -1,6 +1,18 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { SdksCatalog } from './SdksCatalog';
+
+beforeEach(() => {
+  window.history.replaceState(null, '', '/en/api-reference/sdks');
+});
 
 describe('SdksCatalog', () => {
   it('lists each product once with platform tabs and a default install command', () => {
@@ -90,7 +102,9 @@ describe('SdksCatalog', () => {
   it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
     render(<SdksCatalog />);
 
-    const agentsCard = screen.getByRole('article', { name: 'Agora Agents SDK' });
+    const agentsCard = screen.getByRole('article', {
+      name: 'Agora Agents SDK',
+    });
 
     // Default tab is Python → pip install command.
     expect(
@@ -109,7 +123,9 @@ describe('SdksCatalog', () => {
     ).toBeInTheDocument();
 
     // Switching to TypeScript shows the npm command.
-    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'TypeScript' }));
+    fireEvent.click(
+      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
+    );
     expect(
       within(agentsCard).getByText('npm i agora-agents@2.3.1'),
     ).toBeVisible();
@@ -121,5 +137,138 @@ describe('SdksCatalog', () => {
         'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
       ),
     ).toBeVisible();
+  });
+
+  it('filters to the product requested by the query string', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?product=voice',
+    );
+
+    render(<SdksCatalog />);
+
+    expect(screen.getByText('Showing SDKs for Voice SDK')).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /show all sdks/i }),
+    ).toHaveAttribute('href', '/en/api-reference/sdks');
+    expect(screen.getByRole('article', { name: 'Voice SDK' })).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: 'Video SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('preselects the requested platform for a product-specific SDK link', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?product=voice&platform=unity',
+    );
+
+    render(<SdksCatalog />);
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    expect(
+      within(voiceCard).getByRole('tab', { name: 'Unity' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(voiceCard).getByRole('tab', { name: 'Android' }),
+    ).toHaveAttribute('aria-selected', 'false');
+  });
+
+  it('uses a platform-only query to show SDKs available on that platform', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?platform=unity',
+    );
+
+    render(<SdksCatalog />);
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    expect(screen.getByText('Showing SDKs for Unity')).toBeVisible();
+    expect(
+      within(voiceCard).getByRole('tab', { name: 'Unity' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      screen.queryByRole('article', { name: 'Agora Agents SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('updates product and platform filters when search params change after mount', async () => {
+    render(<SdksCatalog />);
+
+    expect(screen.getByRole('article', { name: 'Video SDK' })).toBeVisible();
+
+    act(() => {
+      window.history.pushState(
+        null,
+        '',
+        '/en/api-reference/sdks?product=voice&platform=unity',
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Showing SDKs for Voice SDK')).toBeVisible();
+    });
+
+    const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
+    expect(
+      screen.queryByRole('article', { name: 'Video SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).getByRole('tab', { name: 'Unity' }),
+    ).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('renders the unfiltered static catalog on the server', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?product=voice&platform=unity',
+    );
+
+    const html = renderToString(<SdksCatalog />);
+
+    expect(html).not.toContain('Showing SDKs for Voice SDK');
+    expect(html).toContain('Voice SDK');
+    expect(html).toContain('Video SDK');
+  });
+
+  it('groups whiteboard and fastboard SDKs for the whiteboard product query', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?product=whiteboard',
+    );
+
+    render(<SdksCatalog />);
+
+    expect(screen.getByText('Showing SDKs for Whiteboard SDKs')).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: 'Interactive Whiteboard SDK' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: 'Interactive Whiteboard Fastboard' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: 'Voice SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('ignores invalid product and platform query values', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/en/api-reference/sdks?product=unknown&platform=not-a-platform',
+    );
+
+    render(<SdksCatalog />);
+
+    const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    expect(screen.queryByText(/showing sdks for/i)).not.toBeInTheDocument();
+    expect(
+      within(videoCard).getByRole('tab', { name: 'Android' }),
+    ).toHaveAttribute('aria-selected', 'true');
   });
 });

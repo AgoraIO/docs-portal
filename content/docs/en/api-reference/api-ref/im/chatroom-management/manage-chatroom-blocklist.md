@@ -48,7 +48,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `data` | JSON | The details of the response. |
 | `timestamp` | Number | The Unix timestamp (ms) when the user is registered. |
 | `duration` | Number | The time duration (ms) from sending the HTTP request to receiving the response. |
-| `chatroomid` | String | The unique identifier of the chat room. | Yes |
+| `chatroomid` | String | The unique identifier of the chat room. |
 
 ## Authorization
 
@@ -102,13 +102,13 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/blocks/users'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "get",
   "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
@@ -170,13 +170,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer YWMt7CoyjusbEeixOi3iod4eDAAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnJlhJIwBPGgCqtjiyVnR209iyr8kNbhJhhanNQDdP9CMmpK2G-NIUOQ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/blocks/users/user1'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
@@ -246,7 +246,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer YWMt7CoyjusbEeixOi3iod4eDAAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnJlhJIwBPGgCqtjiyVnR209iyr8kNbhJhhanNQDdP9CMmpK2G-NIUOQ' -d '{  
    "usernames": [  
      "user3","user4"  
@@ -256,7 +256,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
@@ -326,13 +326,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer YWMt7CoyjusbEeixOi3iod4eDAAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnJlhJIwBPGgCqtjiyVnR209iyr8kNbhJhhanNQDdP9CMmpK2G-NIUOQ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/blocks/users/user1'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "delete",
   "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
@@ -401,13 +401,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer YWMt7CoyjusbEeixOi3iod4eDAAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnJlhJIwBPGgCqtjiyVnR209iyr8kNbhJhhanNQDdP9CMmpK2G-NIUOQ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/blocks/users/user1%2Cuser2'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "delete",
   "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",

@@ -8,13 +8,13 @@ Agora provides a runnable sample project with the Server Gateway SDK. This page 
 
 ## Get the sample project
 
-[Download](/en/api-reference/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+[Download](/en/api-reference/sdks?product=server-gateway&platform=linux) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
 
 ## Compile the sample project
 
 Run the following commands to compile the sample project:
 
-```shell
+```bash
 # Switch to the sample project folder
 cd agora_rtc_sdk/example
 # Build the sample project
@@ -34,7 +34,7 @@ This section uses the `sample_send_h264_pcm` project to demonstrate sending med
 
 Run the following command to execute the `sample_send_h264_pcm` sample project. 
 
-```shell
+```bash
 # Run sample_send_h264_pcm to send video in H.264 format and audio in PCM format
 ./sample_send_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel --videoFile test_data/send_video.h264 --audioFile test_data/send_audio_16k_1ch.pcm
 ```
@@ -67,7 +67,7 @@ This section  uses the `sample_receive_h264_pcm` project to demonstrate receivin
 
 Run the following command to launch the `sample_receive_h264_pcm` project. 
 
-```shell
+```bash
 # Run sample_receive_h264_pcm to receive video in H.264 format and audio in PCM format
 ./sample_receive_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel
 ```

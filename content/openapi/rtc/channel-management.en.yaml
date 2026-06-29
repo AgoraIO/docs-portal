@@ -963,7 +963,7 @@ paths:
           markdown: Use this endpoint to create a rule for banning specified user privileges.
         - title: Reference
           position: after-response-body
-          markdown: >
+          markdown: |
             ### Banning rule behavior
 
 
@@ -975,40 +975,22 @@ paths:
 
 
             | `ip` | `cname` | `uid` | Rule |
-
             |:----:|:-------:|:-----:|:-----|
-
-            | ✔ | ✘ | ✘ | All users with this `ip` cannot join any channel in the app. Using `ip` as
-            a filter field may incorrectly block users who should not be blocked, for example, in a
-            use-case where multiple users share an IP address. |
-
-            | ✘ | ✔ | ✘ | No one can join the channel specified by the `cname` field. Using `cname`
-            as a filter field directly blocks the named channel. |
-
+            | ✔ | ✘ | ✘ | All users with this `ip` cannot join any channel in the app. Using `ip` as a filter field may incorrectly block users who should not be blocked, for example, in a use-case where multiple users share an IP address. |
+            | ✘ | ✔ | ✘ | No one can join the channel specified by the `cname` field. Using `cname` as a filter field directly blocks the named channel. |
             | ✘ | ✘ | ✔ | The user with the `uid` cannot join any channel in the app. |
-
-            | ✘ | ✔ | ✔ | The user with the `uid` cannot join the channel specified by the `cname`
-            field. |
+            | ✘ | ✔ | ✔ | The user with the `uid` cannot join the channel specified by the `cname` field. |
 
 
             **When `privileges` is `publish_audio` or `publish_video`:**
 
 
             | `ip` | `cname` | `uid` | Rule |
-
             |:----:|:-------:|:-----:|:-----|
-
-            | ✔ | ✘ | ✘ | The users with this `ip` cannot publish audio or video in any channel of
-            the app. |
-
-            | ✘ | ✔ | ✘ | No one can publish audio or video in the channel specified by the `cname`
-            field. |
-
-            | ✘ | ✘ | ✔ | The user with the `uid` cannot publish audio or video in any channel of
-            the app. |
-
-            | ✘ | ✔ | ✔ | The user with the `uid` cannot publish audio or video in the channel
-            specified by the `cname` field. |
+            | ✔ | ✘ | ✘ | The users with this `ip` cannot publish audio or video in any channel of the app. |
+            | ✘ | ✔ | ✘ | No one can publish audio or video in the channel specified by the `cname` field. |
+            | ✘ | ✘ | ✔ | The user with the `uid` cannot publish audio or video in any channel of the app. |
+            | ✘ | ✔ | ✔ | The user with the `uid` cannot publish audio or video in the channel specified by the `cname` field. |
 
 
             ### Client callbacks for `join_channel` bans

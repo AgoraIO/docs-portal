@@ -114,6 +114,7 @@ The comprehensive QoE for real-time communication services is based on multiple 
 | End-to-end responsiveness | Measures responsiveness and smoothness of services    | Ratio of network delay to total audio and video duration   |
 | Audio fluency | Measures audio playback continuity  | Ratio of audio freeze duration to total audio duration    |
 | Video fluency | Measures video playback smoothness  | Ratio of video freeze duration to total video duration    |
+
 :::note
 Use the **Expand** button under the comprehensive Real-Time Communication QoE index to view the historical data for each metric.
 :::

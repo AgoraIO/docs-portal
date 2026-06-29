@@ -45,31 +45,31 @@ Refer to the following steps to generate an SDK Token:
 
 2. Go to the `netless-token-master/Node/JavaScript` folder and run the following command to install Node.js dependencies:
 
-```
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Create a file named `sdktoken.js` and copy the following code into it:
 
-```javascript
-const  { sdkToken, TokenPrefix } = require("./index");
-// Generate a SDK Token
-const netlessSDKToken = sdkToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       role: 0 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
-      }
-);
-console.log(netlessSDKToken)
-```
+   ```javascript
+   const  { sdkToken, TokenPrefix } = require("./index");
+   // Generate a SDK Token
+   const netlessSDKToken = sdkToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          role: 0 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
+         }
+   );
+   console.log(netlessSDKToken)
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```
-node sdktoken.js
-```
+   ```bash
+   node sdktoken.js
+   ```
 
 ### Generate a Room Token
 
@@ -79,32 +79,32 @@ Refer to the following steps to generate a Room Token:
 
 2. Go to the `netless-token-master/Node/JavaScript` folder and run the following command to install Node.js dependencies:
 
-```
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Create a file named `roomtoken.js` and copy the following code into it:
 
-```javascript
-const  { roomToken, TokenPrefix } = require("./index");
-// Generate a Room token
-const netlessRoomToken = roomToken(
-  "Your AK", // Fill in the AK you get from Agora Console
-  "Your SK", // Fill in the SK you get from Agora Console
-  1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-    {
-      role: 1 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
-      uuid: "Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-    }
-);
-console.log(netlessRoomToken)
-```
+   ```javascript
+   const  { roomToken, TokenPrefix } = require("./index");
+   // Generate a Room token
+   const netlessRoomToken = roomToken(
+     "Your AK", // Fill in the AK you get from Agora Console
+     "Your SK", // Fill in the SK you get from Agora Console
+     1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+       {
+         role: 1 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
+         uuid: "Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+       }
+   );
+   console.log(netlessRoomToken)
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```
-node roomtoken.js
-```
+   ```bash
+   node roomtoken.js
+   ```
 
 ### Generate a Task Token
 
@@ -114,32 +114,32 @@ Refer to the following steps to generate a Task Token:
 
 2. Go to the `netless-token-master/Node/JavaScript` folder and run the following command to install Node.js dependencies:
 
-```
-npm install
-```
+   ```bash
+   npm install
+   ```
 
 3. Create a file named `tasktoken.js`, and copy the following code into it:
 
-```javascript
-const  { taskToken, TokenPrefix } = require("./index");
-// Generate a Task Token
-const netlessTaskToken = taskToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       role: 1 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
-       uuid: "Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-      }
-);
-console.log(netlessTaskToken)
-```
+   ```javascript
+   const  { taskToken, TokenPrefix } = require("./index");
+   // Generate a Task Token
+   const netlessTaskToken = taskToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          role: 1 // Define the permissions granted by the token. You can set it to 0 (Admin), 1 (Writer), or 2 (Reader)
+          uuid: "Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+         }
+   );
+   console.log(netlessTaskToken)
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```
-node tasktoken.js
-```
+   ```bash
+   node tasktoken.js
+   ```
 
 </TabsContent>
 
@@ -160,35 +160,35 @@ Refer to the following steps to generate an SDK Token:
 
 2. Go to the `netless-token-master/Node/TypeScript` folder and run the following command to install TypeScript:
 
-```
-npm install -g typescript
-```
+   ```bash
+   npm install -g typescript
+   ```
 
 3. Create a file named `sdktoken.ts` and copy the following code into it:
 
-```typescript
-const netlessSDKToken = sdkToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       role: TokenRole.Admin // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-      }
-);
-console.log(netlessSDKToken)
-```
+   ```typescript
+   const netlessSDKToken = sdkToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          role: TokenRole.Admin // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+         }
+   );
+   console.log(netlessSDKToken)
+   ```
 
 4. Run the following command to generate the corresponding `sdktoken.js` file:
 
-```
-tsc sdktoken.ts
-```
+   ```text
+   tsc sdktoken.ts
+   ```
 
 5. Run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```
-node sdktoken.js
-```
+   ```bash
+   node sdktoken.js
+   ```
 
 ### Generate a Room Token
 
@@ -198,36 +198,36 @@ Refer to the following steps to generate a Room Token:
 
 2. Go to the `netless-token-master/Node/TypeScript` folder and run the following command to install TypeScript:
 
-```
-npm install -g typescript
-```
+   ```bash
+   npm install -g typescript
+   ```
 
 3. Create a file named `roomtoken.ts` and copy the following code into it:
 
-```typescript
-const netlessRoomToken = roomToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       role: TokenRole.Admin // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-       uuid: "Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-      }
-);
-console.log(netlessRoomToken)
-```
+   ```typescript
+   const netlessRoomToken = roomToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          role: TokenRole.Admin // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+          uuid: "Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+         }
+   );
+   console.log(netlessRoomToken)
+   ```
 
 4. Run the following command to generate the corresponding `roomtoken.js` file:
 
-```
-tsc roomtoken.ts
-```
+   ```text
+   tsc roomtoken.ts
+   ```
 
 5. Run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```
-node roomtoken.js
-```
+   ```bash
+   node roomtoken.js
+   ```
 
 ### Generate a Task Token
 
@@ -237,36 +237,36 @@ Refer to the following steps to generate a Task Token:
 
 2. Go to the `netless-token-master/Node/TypeScript` folder and run the following command to install TypeScript:
 
-```
-npm install -g typescript
-```
+   ```bash
+   npm install -g typescript
+   ```
 
 3. Create a file named `tasktoken.ts` and copy the following code into it:
 
-```typescript
-const netlessTaskToken = taskToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-           role: TokenRole.Writer // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-           uuid: "Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file conversion task
-              }
-);
-console.log(netlessTaskToken)
-```
+   ```typescript
+   const netlessTaskToken = taskToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+              role: TokenRole.Writer // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+              uuid: "Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file conversion task
+                 }
+   );
+   console.log(netlessTaskToken)
+   ```
 
 4. Run the following command to generate the corresponding `tasktoken.js` file:
 
-```
-tsc tasktoken.ts
-```
+   ```text
+   tsc tasktoken.ts
+   ```
 
 5. Run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```
-node tasktoken.js
-```
+   ```bash
+   node tasktoken.js
+   ```
 
 </TabsContent>
 
@@ -287,33 +287,33 @@ Refer to the following steps to generate an SDK Token:
 
 2. Go to the `netless-token-master/Java` folder and add the following code to the `Token.java` file:
 
-```java
-public static void main(String[] args) throws Exception {
-   Map<String, String> map = new HashMap<>();
-      // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-      map.put("role", Token.TokenRole.Admin.getValue());
+   ```java
+   public static void main(String[] args) throws Exception {
+      Map<String, String> map = new HashMap<>();
+         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+         map.put("role", Token.TokenRole.Admin.getValue());
 
-      String sdkToken = Token.sdkToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              map);
+         String sdkToken = Token.sdkToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 map);
 
-      System.out.println(sdkToken);
-}
-```
+         System.out.println(sdkToken);
+   }
+   ```
 
 3. Go to the directory of the `Token.java` file and run the following command:
 
-```java
-javac Token.java
-```
+   ```java
+   javac Token.java
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```java
-java Token
-```
+   ```java
+   java Token
+   ```
 
 ### Generate a Room Token
 
@@ -323,35 +323,35 @@ Refer to the following steps to generate a Room Token:
 
 2. Go to the `netless-token-master/Java` folder and add the following code to the `Token.java` file:
 
-```java
-public static void main(String[] args) throws Exception {
-   Map<String, String> map = new HashMap<>();
-      // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-      map.put("role", Token.TokenRole.Reader.getValue());
-      // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-      map.put("uuid", "Your Room UUID");
+   ```java
+   public static void main(String[] args) throws Exception {
+      Map<String, String> map = new HashMap<>();
+         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+         map.put("role", Token.TokenRole.Reader.getValue());
+         // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+         map.put("uuid", "Your Room UUID");
 
-      String roomToken = Token.roomToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              map);
+         String roomToken = Token.roomToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 map);
 
-      System.out.println(roomToken);
-}
-```
+         System.out.println(roomToken);
+   }
+   ```
 
 3. Go to the directory of the `Token.java` file and run the following command:
 
-```java
-javac Token.java
-```
+   ```java
+   javac Token.java
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```java
-java Token
-```
+   ```java
+   java Token
+   ```
 
 ### Generate a Task Token
 
@@ -361,35 +361,35 @@ Refer to the following steps to generate a Task Token:
 
 2. Go to the `netless-token-master/Java` folder and add the following code to the `Token.java` file:
 
-```java
-public static void main(String[] args) throws Exception {
-   Map<String, String> map = new HashMap<>();
-      // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-      map.put("role", Token.TokenRole.Writer.getValue());
-      // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-      map.put("uuid", "Your Task UUID");
+   ```java
+   public static void main(String[] args) throws Exception {
+      Map<String, String> map = new HashMap<>();
+         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+         map.put("role", Token.TokenRole.Writer.getValue());
+         // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+         map.put("uuid", "Your Task UUID");
 
-      String taskToken = Token.taskToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              map);
+         String taskToken = Token.taskToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 map);
 
-      System.out.println(taskToken);
-}
-```
+         System.out.println(taskToken);
+   }
+   ```
 
 3. Go to the directory of the `Token.java` file and run the following command:
 
-```java
-javac Token.java
-```
+   ```java
+   javac Token.java
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```java
-java Token
-```
+   ```java
+   java Token
+   ```
 
 </TabsContent>
 
@@ -410,32 +410,32 @@ Refer to the following steps to generate an SDK Token:
 
 2. Create a file named `sdktoken.go` and copy the following code into it:
 
-```go
-package main
-import (
-   "fmt"
-   "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
-)
-func main() {
-   c := token.SDKContent{
-       // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
-       Role: token.AdminRole,
-   }
-   netlessSDKToken := token.SDKToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              &c,
+   ```go
+   package main
+   import (
+      "fmt"
+      "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
    )
-    fmt.Println(netlessSDKToken)
-}
-```
+   func main() {
+      c := token.SDKContent{
+          // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
+          Role: token.AdminRole,
+      }
+      netlessSDKToken := token.SDKToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 &c,
+      )
+       fmt.Println(netlessSDKToken)
+   }
+   ```
 
 3. Go to the directory of the `sdktoken.go` file and run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```go
-go sdktoken.go
-```
+   ```go
+   go sdktoken.go
+   ```
 
 ### Generate a Room Token
 
@@ -445,34 +445,34 @@ Refer to the following steps to generate a Room Token:
 
 2. Create a file named `roomtoken.go` and copy the following code into it:
 
-```go
-package main
-import (
-   "fmt"
-   "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
-)
-func main() {
-   c := token.RoomContent{
-       // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
-       Role: token.AdminRole,
-       // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-       Uuid: "Your Room UUID",
-   }
-   netlessRoomToken := token.RoomToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              &c,
+   ```go
+   package main
+   import (
+      "fmt"
+      "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
    )
-    fmt.Println(netlessRoomToken)
-}
-```
+   func main() {
+      c := token.RoomContent{
+          // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
+          Role: token.AdminRole,
+          // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+          Uuid: "Your Room UUID",
+      }
+      netlessRoomToken := token.RoomToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 &c,
+      )
+       fmt.Println(netlessRoomToken)
+   }
+   ```
 
 3. Go to the directory of the `roomtoken.go` file and run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```go
-go roomtoken.go
-```
+   ```go
+   go roomtoken.go
+   ```
 
 ### Generate a Task Token
 
@@ -482,34 +482,34 @@ Refer to the following steps to generate a Task Token:
 
 2. Create a file named `tasktoken.go` and copy the following code into it:
 
-```go
-package main
-import (
-   "fmt"
-   "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
-)
-func main() {
-   c := token.TaskContent{
-       // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
-       Role: token.WriterRole,
-       // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-       Uuid: "Task UUID",
-   }
-   netlessTaskToken := token.TaskToken(
-       "Your AK", // Fill in the AK you get from Agora Console
-       "Your SK", // Fill in the SK you get from Agora Console
-	   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-              &c,
+   ```go
+   package main
+   import (
+      "fmt"
+      "../golang" // Replace ../golang with the path to the netless-token folder in your local directory
    )
-    fmt.Println(netlessTaskToken)
-}
-```
+   func main() {
+      c := token.TaskContent{
+          // Define the permissions granted by the token. You can set it to token.AdminRole, token.ReaderRole, or token.WriterRole
+          Role: token.WriterRole,
+          // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+          Uuid: "Task UUID",
+      }
+      netlessTaskToken := token.TaskToken(
+          "Your AK", // Fill in the AK you get from Agora Console
+          "Your SK", // Fill in the SK you get from Agora Console
+        1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+                 &c,
+      )
+       fmt.Println(netlessTaskToken)
+   }
+   ```
 
 3. Go to the directory of the `tasktoken.go` file and run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```go
-go tasktoken.go
-```
+   ```go
+   go tasktoken.go
+   ```
 
 </TabsContent>
 
@@ -530,28 +530,28 @@ Refer to the following steps to generate an SDK Token:
 
 2. Go to the `netless-token-master/php` folder, create a file named `sdktoken.php`, and copy the following code into it:
 
-```php
-<?php
-// Import Composer to manage dependencies
-require __DIR__ . '/vendor/autoload.php';
-use Netless\Token\Generate;
-$netlessToken = new Generate;
-$sdkToken = $netlessToken->sdkToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      array(
-       "role" => Generate::AdminRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
-      )
-);
-echo $sdkToken;
-```
+   ```php
+   <?php
+   // Import Composer to manage dependencies
+   require __DIR__ . '/vendor/autoload.php';
+   use Netless\Token\Generate;
+   $netlessToken = new Generate;
+   $sdkToken = $netlessToken->sdkToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         array(
+          "role" => Generate::AdminRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
+         )
+   );
+   echo $sdkToken;
+   ```
 
 3. Run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```php
-php sdktoken.php
-```
+   ```php
+   php sdktoken.php
+   ```
 
 ### Generate a Room Token
 
@@ -561,29 +561,29 @@ Refer to the following steps to generate a Room Token:
 
 2. Go to the `netless-token-master/php` folder, create a file named `roomtoken.php`, and copy the following code into it:
 
-```php
-<?php
-// Import Composer to manage dependencies
-require __DIR__ . '/vendor/autoload.php';
-use Netless\Token\Generate;
-$netlessToken = new Generate;
-$roomToken = $netlessToken->roomToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      array(
-       "role" => Generate::ReaderRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
-       "uuid" => "Your Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-      )
-);
-echo $roomToken;
-```
+   ```php
+   <?php
+   // Import Composer to manage dependencies
+   require __DIR__ . '/vendor/autoload.php';
+   use Netless\Token\Generate;
+   $netlessToken = new Generate;
+   $roomToken = $netlessToken->roomToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         array(
+          "role" => Generate::ReaderRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
+          "uuid" => "Your Room UUID" // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+         )
+   );
+   echo $roomToken;
+   ```
 
 3. Run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```php
-php roomtoken.php
-```
+   ```php
+   php roomtoken.php
+   ```
 
 ### Generate a Task Token
 
@@ -593,29 +593,29 @@ Refer to the following steps to generate a Task Token:
 
 2. Go to the `netless-token-master/php` folder, create a file named `tasktoken.php`, and copy the following code into it:
 
-```php
-<?php
-// Import Composer to manage dependencies
-require __DIR__ . '/vendor/autoload.php';
-use Netless\Token\Generate;
-$netlessToken = new Generate;
-$roomToken = $netlessToken->roomToken(
-   "Your AK", // Fill in the AK you get from Agora Console
-   "Your SK", // Fill in the SK you get from Agora Console
-   1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
-      array(
-       "role" => Generate::ReaderRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
-              "uuid" => "Your Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-      )
-);
-echo $sdkToken;
-```
+   ```php
+   <?php
+   // Import Composer to manage dependencies
+   require __DIR__ . '/vendor/autoload.php';
+   use Netless\Token\Generate;
+   $netlessToken = new Generate;
+   $roomToken = $netlessToken->roomToken(
+      "Your AK", // Fill in the AK you get from Agora Console
+      "Your SK", // Fill in the SK you get from Agora Console
+      1000 * 60 * 10, // Token validity period in milliseconds. If you set it to 0, the token will never expire
+         array(
+          "role" => Generate::ReaderRole, // Define the permissions granted by the token. You can set it to AdminRole, WriterRole, or ReaderRole
+                 "uuid" => "Your Task UUID" // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+         )
+   );
+   echo $sdkToken;
+   ```
 
 3. Run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```php
-php tasktoken.php
-```
+   ```php
+   php tasktoken.php
+   ```
 
 </TabsContent>
 
@@ -636,30 +636,30 @@ Refer to the following steps to generate an SDK Token:
 
 2. Go to the `netless-token-master/ruby` folder and run the following command to install `uuidtools`:
 
-```
-gem install uuidtools
-```
+   ```bash
+   gem install uuidtools
+   ```
 
 3. In the `ruby` folder, create a file named `sdktoken.rb` and copy the following code into it:
 
-```ruby
-require './lib/token.rb'
-sdktoken = NetlessToken.sdk_token(
-   "Your AK", # Fill in the AK you get from Agora Console
-   "Your SK", # Fill in the SK you get from Agora Console
-   1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
-      }
-)
-puts sdktoken
-```
+   ```ruby
+   require './lib/token.rb'
+   sdktoken = NetlessToken.sdk_token(
+      "Your AK", # Fill in the AK you get from Agora Console
+      "Your SK", # Fill in the SK you get from Agora Console
+      1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
+         }
+   )
+   puts sdktoken
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSSDK_` in the terminal:
 
-```ruby
-ruby sdktoken.rb
-```
+   ```ruby
+   ruby sdktoken.rb
+   ```
 
 ### Generate a Room Token
 
@@ -669,31 +669,31 @@ Refer to the following steps to generate a Room Token:
 
 2. Go to the `netless-token-master/ruby` folder and run the following command to install `uuidtools`:
 
-```
-gem install uuidtools
-```
+   ```bash
+   gem install uuidtools
+   ```
 
 3. In the `ruby` folder, create a file named `roomtoken.rb` and copy the following code into it:
 
-```ruby
-require './lib/token.rb'
-roomtoken = NetlessToken.room_token(
-   "Your AK", # Fill in the AK you get from Agora Console
-   "Your SK", # Fill in the SK you get from Agora Console
-   1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
-       :uuid => "Your Room UUID" # Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-      }
-)
-puts roomtoken
-```
+   ```ruby
+   require './lib/token.rb'
+   roomtoken = NetlessToken.room_token(
+      "Your AK", # Fill in the AK you get from Agora Console
+      "Your SK", # Fill in the SK you get from Agora Console
+      1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
+          :uuid => "Your Room UUID" # Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+         }
+   )
+   puts roomtoken
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSROOM_` in the terminal:
 
-```ruby
-ruby roomtoken.rb
-```
+   ```ruby
+   ruby roomtoken.rb
+   ```
 
 ### Generate a Task Token
 
@@ -703,31 +703,31 @@ Refer to the following steps to generate a Task Token:
 
 2. Go to the `netless-token-master/ruby` folder, and run the following command to install `uuidtools`:
 
-```
-gem install uuidtools
-```
+   ```bash
+   gem install uuidtools
+   ```
 
 3. In the `ruby` folder, create a file named `tasktoken.rb` and copy the following code into it:
 
-```ruby
-require './lib/token.rb'
-tasktoken = NetlessToken.task_token(
-   "Your AK", # Fill in the AK you get from Agora Console
-   "netless sk", # Fill in the SK you get from Agora Console
-   1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
-      {
-       :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
-       :uuid => "Your Room UUID" # Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-      }
-)
-puts tasktoken
-```
+   ```ruby
+   require './lib/token.rb'
+   tasktoken = NetlessToken.task_token(
+      "Your AK", # Fill in the AK you get from Agora Console
+      "netless sk", # Fill in the SK you get from Agora Console
+      1000 * 60 * 10, # Token validity period in milliseconds. If you set it to 0, the token will never expire
+         {
+          :role => NetlessToken::ROLE::ADMIN # Define the permissions granted by the token. You can set it to ADMIN, WRITER, or READER
+          :uuid => "Your Room UUID" # Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+         }
+   )
+   puts tasktoken
+   ```
 
 4. Run the following command, after which you should see a token prefixed with `NETLESSTASK_` in the terminal:
 
-```ruby
-ruby tasktoken.rb
-```
+   ```ruby
+   ruby tasktoken.rb
+   ```
 
 </TabsContent>
 
@@ -750,26 +750,26 @@ Refer to the following steps to generate an SDK Token:
 
 3. Fill in your AK, SK, token validity period, and token role in the `Program.cs` file.
 
-```csharp
-using System;
-using Netless;
-class Program
-{
- static void Main(string[] args)
- {
-     string token = NetlessToken.SdkToken(
-         // Fill in the AK you get from Agora Console
-         "ak",
-         // Fill in the SK you get from Agora Console
-         "sk",
-         // Set the Token validity period. If you set it to 0, the token will never expire
-         1000 * 60 * 10,
-         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-         new SdkContent(TokenRole.Admin));
-     Console.WriteLine(token);
- }
-}
-```
+   ```csharp
+   using System;
+   using Netless;
+   class Program
+   {
+    static void Main(string[] args)
+    {
+        string token = NetlessToken.SdkToken(
+            // Fill in the AK you get from Agora Console
+            "ak",
+            // Fill in the SK you get from Agora Console
+            "sk",
+            // Set the Token validity period. If you set it to 0, the token will never expire
+            1000 * 60 * 10,
+            // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+            new SdkContent(TokenRole.Admin));
+        Console.WriteLine(token);
+    }
+   }
+   ```
 
 4. Run the project in Visual Studio. You should see a token prefixed with `NETLESSSDK_` in the terminal.
 
@@ -783,28 +783,28 @@ Refer to the following steps to generate a Room Token:
 
 3. Delete the code in the `Program.cs` file and copy the following sample code into it:
 
-```csharp
-using System;
-using Netless;
-class Program
-{
- static void Main(string[] args)
- {
-     string token = NetlessToken.RoomToken(
-         // Fill in the AK you get from Agora Console
-         "ak",
-         // Fill in the SK you get from Agora Console
-         "sk",
-         // Set the Token validity period. If you set it to 0, the token will never expire
-         1000 * 60 * 10,
-         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-         // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
-         new RoomContent(TokenRole.Admin, "房间的 UUID")
-         );
-     Console.WriteLine(token);
- }
-}
-```
+   ```csharp
+   using System;
+   using Netless;
+   class Program
+   {
+    static void Main(string[] args)
+    {
+        string token = NetlessToken.RoomToken(
+            // Fill in the AK you get from Agora Console
+            "ak",
+            // Fill in the SK you get from Agora Console
+            "sk",
+            // Set the Token validity period. If you set it to 0, the token will never expire
+            1000 * 60 * 10,
+            // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+            // Fill in the Room UUID. You can get it by calling the RESTful API to create a room or get a room list
+            new RoomContent(TokenRole.Admin, "房间的 UUID")
+            );
+        Console.WriteLine(token);
+    }
+   }
+   ```
 
 4. Run the project in Visual Studio. You should see a token prefixed with `NETLESSROOM_` in the terminal.
 
@@ -818,28 +818,28 @@ Refer to the following steps to generate a Task Token:
 
 3. Delete the code in the `Program.cs` file and copy the following sample code into it:
 
-```csharp
-using System;
-using Netless;
-class Program
-{
- static void Main(string[] args)
- {
-     string token = NetlessToken.RoomToken(
-         // Fill in the AK you get from Agora Console
-         "ak",
-         // Fill in the SK you get from Agora Console
-         "sk",
-         // Set the Token validity period. If you set it to 0, the token will never expire
-         1000 * 60 * 10,
-         // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
-         // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
-         new TaskContent(TokenRole.Admin, "Your Task UUID")
-         );
-     Console.WriteLine(token);
- }
-}
-```
+   ```csharp
+   using System;
+   using Netless;
+   class Program
+   {
+    static void Main(string[] args)
+    {
+        string token = NetlessToken.RoomToken(
+            // Fill in the AK you get from Agora Console
+            "ak",
+            // Fill in the SK you get from Agora Console
+            "sk",
+            // Set the Token validity period. If you set it to 0, the token will never expire
+            1000 * 60 * 10,
+            // Define the permissions granted by the token. You can set it to TokenRole.Admin, TokenRole.Writer, or TokenRole.Reader
+            // Fill in the Task UUID. You can get it by calling the RESTful API to start a file-conversion task
+            new TaskContent(TokenRole.Admin, "Your Task UUID")
+            );
+        Console.WriteLine(token);
+    }
+   }
+   ```
 
 4. Run the project in Visual Studio. You should see a token prefixed with `NETLESSTASK_` in the terminal.
 

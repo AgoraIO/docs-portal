@@ -392,11 +392,11 @@ Follow these steps to implement custom audio capture in your project:
 
 1. After initializing `AgoraRtcEngineKit`, call `createCustomAudioTrack` to create a custom audio track and retrieve the audio track ID.
 
-  ```swift
-  let audioTrack = AgoraAudioTrackConfig()
-  audioTrack.enableLocalPlayback = true
-  trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
-  ```
+   ```swift
+   let audioTrack = AgoraAudioTrackConfig()
+   audioTrack.enableLocalPlayback = true
+   trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
+   ```
 
 2. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
 
@@ -449,9 +449,9 @@ Follow these steps to implement custom audio capture in your project:
 
 5. To stop publishing custom audio, call `destroyCustomAudioTrack` to remove the custom audio track.
 
-  ```swift
-  agoraKit.destroyCustomAudioTrack(Int(trackId))
-  ```
+   ```swift
+   agoraKit.destroyCustomAudioTrack(Int(trackId))
+   ```
 
 ### Custom audio rendering
 
@@ -539,11 +539,11 @@ Follow these steps to implement custom audio capture in your project:
 
 1. After initializing `AgoraRtcEngineKit`, call `createCustomAudioTrack` to create a custom audio track and retrieve the audio track ID.
 
-  ```swift
-  let audioTrack = AgoraAudioTrackConfig()
-  audioTrack.enableLocalPlayback = true
-  trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
-  ```
+   ```swift
+   let audioTrack = AgoraAudioTrackConfig()
+   audioTrack.enableLocalPlayback = true
+   trackId = agoraKit.createCustomAudioTrack(.mixable, config: audioTrack)
+   ```
 
 2. Use `joinChannelByToken` to join the channel. In `AgoraRtcChannelMediaOptions`, set the `publishCustomAudioTrackId` parameter to the audio track ID you obtained. Set `publishCustomAudioTrack` to `YES` to publish the custom audio track in the channel.
 
@@ -596,9 +596,9 @@ Follow these steps to implement custom audio capture in your project:
 
 5. To stop publishing custom audio, call `destroyCustomAudioTrack` to remove the custom audio track.
 
-  ```swift
-  agoraKit.destroyCustomAudioTrack(Int(trackId))
-  ```
+   ```swift
+   agoraKit.destroyCustomAudioTrack(Int(trackId))
+   ```
 
 ### Custom audio rendering
 
@@ -903,90 +903,90 @@ Follow these steps to implement custom audio capture in your project:
 
   1. Load audio data from a file and start a thread to push the frames:
 
-    ```cpp
-    void StartPushAudio()
-    {
-      FString LoadDir = FPaths::ProjectContentDir() / TEXT("Audio/Agora.io-Interactions.wav");
-      TArray<uint8> AudioData;
-      FFileHelper::LoadFileToArray(AudioData, *LoadDir, 0);
-      Runnable = new FAgoraCaptureRunnable(MediaEngine, AudioData.GetData(), AudioData.Num() * sizeof(uint8));
-      FRunnableThread* RunnableThread = FRunnableThread::Create(Runnable, TEXT("AgoraUE-UserThread"));
-    }
-    ```
+     ```cpp
+     void StartPushAudio()
+     {
+       FString LoadDir = FPaths::ProjectContentDir() / TEXT("Audio/Agora.io-Interactions.wav");
+       TArray<uint8> AudioData;
+       FFileHelper::LoadFileToArray(AudioData, *LoadDir, 0);
+       Runnable = new FAgoraCaptureRunnable(MediaEngine, AudioData.GetData(), AudioData.Num() * sizeof(uint8));
+       FRunnableThread* RunnableThread = FRunnableThread::Create(Runnable, TEXT("AgoraUE-UserThread"));
+     }
+     ```
 
   2. This class reads audio data at 10ms intervals, converts it into `AudioFrame` format, and sends it to the Agora SDK using `pushAudioFrame`.
 
-    ```cpp
-    class FAgoraCaptureRunnable : public FRunnable
-    {
-    public:
-      FAgoraCaptureRunnable(agora::media::IMediaEngine* MediaEngine, const uint8* audioData, int dataLength)
-        : MediaEngine(MediaEngine), dataLength(dataLength)
-      {
-        this->audioData = new uint8[dataLength];
-        FMemory::Memcpy(this->audioData, audioData, dataLength * sizeof(uint8));
-      }
+     ```cpp
+     class FAgoraCaptureRunnable : public FRunnable
+     {
+     public:
+       FAgoraCaptureRunnable(agora::media::IMediaEngine* MediaEngine, const uint8* audioData, int dataLength)
+         : MediaEngine(MediaEngine), dataLength(dataLength)
+       {
+         this->audioData = new uint8[dataLength];
+         FMemory::Memcpy(this->audioData, audioData, dataLength * sizeof(uint8));
+       }
 
-      virtual uint32 Run() override
-      {
-        auto tic = getTimeStamp();
-        bStopThread = false;
-        const uint8* Ptr = reinterpret_cast<const uint8*>(audioData);
+       virtual uint32 Run() override
+       {
+         auto tic = getTimeStamp();
+         bStopThread = false;
+         const uint8* Ptr = reinterpret_cast<const uint8*>(audioData);
 
-        while (!bStopThread)
-        {
-          if (MediaEngine == nullptr) break;
+         while (!bStopThread)
+         {
+           if (MediaEngine == nullptr) break;
 
-          auto toc = getTimeStamp();
-          if ((toc - tic) >= 10) // Push every 10ms
-          {
-            if (dataLength <= 0) break;
+           auto toc = getTimeStamp();
+           if ((toc - tic) >= 10) // Push every 10ms
+           {
+             if (dataLength <= 0) break;
 
-            if (sendByte == nullptr)
-            {
-              sendByte = FMemory::Malloc(SAMPLE_RATE / PUSH_FREQ_PER_SEC *
-                          agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
-            }
+             if (sendByte == nullptr)
+             {
+               sendByte = FMemory::Malloc(SAMPLE_RATE / PUSH_FREQ_PER_SEC *
+                           agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
+             }
 
-            FMemory::Memcpy(sendByte, Ptr, SAMPLE_RATE / PUSH_FREQ_PER_SEC *
-                   agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
+             FMemory::Memcpy(sendByte, Ptr, SAMPLE_RATE / PUSH_FREQ_PER_SEC *
+                    agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE * CHANNEL);
 
-            // Prepare audio frame
-            agora::media::IAudioFrameObserverBase::AudioFrame externalAudioFrame;
-            externalAudioFrame.bytesPerSample = agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE;
-            externalAudioFrame.type = agora::media::IAudioFrameObserver::FRAME_TYPE_PCM16;
-            externalAudioFrame.samplesPerChannel = SAMPLE_RATE / PUSH_FREQ_PER_SEC;
-            externalAudioFrame.samplesPerSec = SAMPLE_RATE;
-            externalAudioFrame.channels = CHANNEL;
-            externalAudioFrame.buffer = sendByte;
-            externalAudioFrame.renderTimeMs = 10;
+             // Prepare audio frame
+             agora::media::IAudioFrameObserverBase::AudioFrame externalAudioFrame;
+             externalAudioFrame.bytesPerSample = agora::rtc::BYTES_PER_SAMPLE::TWO_BYTES_PER_SAMPLE;
+             externalAudioFrame.type = agora::media::IAudioFrameObserver::FRAME_TYPE_PCM16;
+             externalAudioFrame.samplesPerChannel = SAMPLE_RATE / PUSH_FREQ_PER_SEC;
+             externalAudioFrame.samplesPerSec = SAMPLE_RATE;
+             externalAudioFrame.channels = CHANNEL;
+             externalAudioFrame.buffer = sendByte;
+             externalAudioFrame.renderTimeMs = 10;
 
-            // Push audio frame to SDK
-            agora::rtc::track_id_t trackId = 0;
-            int ret = MediaEngine->pushAudioFrame(&externalAudioFrame, trackId);
+             // Push audio frame to SDK
+             agora::rtc::track_id_t trackId = 0;
+             int ret = MediaEngine->pushAudioFrame(&externalAudioFrame, trackId);
 
-            Ptr += SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
-            dataLength -= SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
-            tic = toc;
-          }
-          FPlatformProcess::Sleep(0.001f);
-        }
-        return 0;
-      }
+             Ptr += SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
+             dataLength -= SAMPLE_RATE / PUSH_FREQ_PER_SEC * 2 * CHANNEL;
+             tic = toc;
+           }
+           FPlatformProcess::Sleep(0.001f);
+         }
+         return 0;
+       }
 
-    private:
-      agora::media::IMediaEngine* MediaEngine = nullptr;
-      uint8* audioData = nullptr;
-      void* sendByte = nullptr;
-      int dataLength = 0;
-      bool bStopThread = false;
+     private:
+       agora::media::IMediaEngine* MediaEngine = nullptr;
+       uint8* audioData = nullptr;
+       void* sendByte = nullptr;
+       int dataLength = 0;
+       bool bStopThread = false;
 
-      // Audio configuration
-      const int CHANNEL = 2;
-      const int SAMPLE_RATE = 48000;
-      const int PUSH_FREQ_PER_SEC = 100;
-    };
-    ```
+       // Audio configuration
+       const int CHANNEL = 2;
+       const int SAMPLE_RATE = 48000;
+       const int PUSH_FREQ_PER_SEC = 100;
+     };
+     ```
 
 ### Custom audio rendering
 

@@ -18,7 +18,7 @@ Validation helps ensure your TEN app graphs function correctly when deployed.
 
 The basic syntax for the `check graph` command is:
 
-```shell
+```bash
 tman check graph --app APP_PATH [OPTIONS]
 ```
 
@@ -41,19 +41,19 @@ The following examples illustrate the use of the `tman check graph` command:
 
 - **Check all predefined graphs in `property.json`**:
 
-    ```shell
+    ```bash
     tman check graph --app /home/TEN-Agent/agents
     ```
 
 - **Check a specific predefined graph**:
 
-    ```shell
+    ```bash
     tman check graph --predefined-graph-name va.openai.azure --app /home/TEN-Agent/agents
     ```
 
 - **Check a `start_graph` command**:
 
-    ```shell
+    ```bash
     tman check graph --graph '{
     "type": "start_graph",
     "seq_id": "55",
@@ -96,7 +96,7 @@ The `nodes` array is required in any graph definition. If absent, an error is th
 
 - **Example: No nodes defined**
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "type": "start_graph",
       "seq_id": "55",
@@ -120,7 +120,7 @@ Each node in the `nodes` array represents an extension instance within a group o
 
 - **Example: Duplicate nodes**
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "type": "start_graph",
       "seq_id": "55",
@@ -197,7 +197,7 @@ All extension instances referenced in the `connections` field, whether as a sour
     }
     ```
 
-    ```shell
+    ```bash
     tman check graph --app /home/TEN-Agent/agents
     ```
 
@@ -268,7 +268,7 @@ All extension instances referenced in the `connections` field, whether as a sour
     }
     ```
 
-    ```shell
+    ```bash
     tman check graph --app /home/TEN-Agent/agents
     ```
 
@@ -312,7 +312,7 @@ All node addons must be installed using `tman install` and have matching app URI
     }
     ```
 
-    ```shell
+    ```bash
     tman check graph --app /home/TEN-Agent/agents
     ```
 
@@ -353,7 +353,7 @@ All node addons must be installed using `tman install` and have matching app URI
     }
     ```
 
-    ```shell
+    ```bash
     tman check graph --app /home/TEN-Agent/agents
     ```
 
@@ -375,7 +375,7 @@ All messages sent from an extension must be defined within a single connection s
 
     Suppose that all the packages have been installed.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -440,7 +440,7 @@ Each message sent from an extension must have a unique name within its message t
 
     Suppose that all the packages have been installed.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -575,7 +575,7 @@ Messages are validated for schema compatibility based on the schema definitions 
 
     Check the graph with the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -635,7 +635,7 @@ The `app` field in each node must follow specific rules to ensure proper app ide
 
     Check the graph with the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -668,7 +668,7 @@ The `app` field in each node must follow specific rules to ensure proper app ide
 
     Check the graph using the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -716,7 +716,7 @@ The `app` field in each node must follow specific rules to ensure proper app ide
 
     Check the graph using the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -768,7 +768,7 @@ The `app` field in each node must follow specific rules to ensure proper app ide
 
     Check the graph using the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {
@@ -813,7 +813,7 @@ The `app` field in each node must follow specific rules to ensure proper app ide
 
     Check the graph using the following command.
 
-    ```shell
+    ```bash
     tman check graph --graph '{
       "nodes": [
         {

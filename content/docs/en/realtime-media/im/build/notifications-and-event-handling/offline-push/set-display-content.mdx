@@ -198,7 +198,7 @@ Call `updatePushDisplayName` and `updatePushDisplayStyle` methods to set the nic
 
 This nickname indicates the nickname of the message sender that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [Set user attributes](..//en/realtime-media/im/build/build-core-messaging/user-attributes#set-user-attributes).
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager updatePushDisplayName:@"displayName" completion:^(NSString * aDisplayName, AgoraChatError * aError) {
     if (aError)
     {
@@ -207,7 +207,7 @@ This nickname indicates the nickname of the message sender that is displayed in 
 }];
 ```
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager updatePushDisplayStyle:AgoraChatPushDisplayStyleSimpleBanner completion:^(AgoraChatError * aError)
 {
     if(aError)
@@ -219,7 +219,7 @@ This nickname indicates the nickname of the message sender that is displayed in 
 
 Call `getPushNotificationOptionsFromServerWithCompletion` to get the display attributes for a push notification, as shown in the following code example:
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager getPushNotificationOptionsFromServerWithCompletion:^(AgoraChatPushOptions *aOptions, AgoraChatError *aError) {
         if (!aError) {
             // Get the nickname displayed in the push notification.
@@ -237,9 +237,57 @@ The following table uses a one-to-one chat text message as an example to introdu
 
 | Parameter settings | Push display | Image |
 | :--------- | :----- |:------------- |
-| `pushDisplayStyle`: (default) `AgoraChatPushDisplayStyleSimpleBanner``displayName`: Set or not. | Push title: "You have a new message"Push content: "Please click to view" | ![push_displayattribute_1](/images/im/push_displayattribute_1.png) |
-| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary``displayName`: Set a specific value.| Push title: "You have a new message"Push content: "Push nickname of the message sender: message content" | ![push_displayattribute_2](/images/im/push_displayattribute_2.png) |
-| `pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary``displayName`: Not set. | Push title: "You have a new message"Push content: "Message sender's Chat user ID: Message content" | ![push_displayattribute_3](/images/im/push_displayattribute_3.png) |
+| <Slot name="simple-banner-settings" /> | <Slot name="simple-banner-display" /> | ![push_displayattribute_1](/images/im/push_displayattribute_1.png) |
+| <Slot name="message-summary-named-settings" /> | <Slot name="message-summary-named-display" /> | ![push_displayattribute_2](/images/im/push_displayattribute_2.png) |
+| <Slot name="message-summary-unnamed-settings" /> | <Slot name="message-summary-unnamed-display" /> | ![push_displayattribute_3](/images/im/push_displayattribute_3.png) |
+
+<Slot for="simple-banner-settings">
+
+`pushDisplayStyle`: (default) `AgoraChatPushDisplayStyleSimpleBanner`
+
+`displayName`: Set or not.
+
+</Slot>
+
+<Slot for="simple-banner-display">
+
+Push title: "You have a new message"
+
+Push content: "Please click to view"
+
+</Slot>
+
+<Slot for="message-summary-named-settings">
+
+`pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary`
+
+`displayName`: Set a specific value.
+
+</Slot>
+
+<Slot for="message-summary-named-display">
+
+Push title: "You have a new message"
+
+Push content: "Push nickname of the message sender: message content"
+
+</Slot>
+
+<Slot for="message-summary-unnamed-settings">
+
+`pushDisplayStyle`: `AgoraPushDisplayStyleMessageSummary`
+
+`displayName`: Not set.
+
+</Slot>
+
+<Slot for="message-summary-unnamed-display">
+
+Push title: "You have a new message"
+
+Push content: "Message sender's Chat user ID: Message content"
+
+</Slot>
 
 ## Use the default push template
 
@@ -269,7 +317,7 @@ Follow the steps below to create a default push template in [Agora Console](http
 When creating a push message, you can set the message extension fields to customize the push content to be displayed.
 For the display attributes of push notifications, that is, the display attributes and display style of push notifications, in addition to calling specific methods to set them, you can also set them through custom fields. If you use both methods at the same time, the custom fields have a higher priority.
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
     message.ext = @{@"em_apns_ext":@{@"em_push_content":@"custom push content",@"em_push_title":@"custom push title"}};
@@ -302,7 +350,7 @@ The steps to use a custom push template are as follows:
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 
-    ```objective-c
+    ```objc
     // The following takes text messages as an example. The setting methods for other types of messages are the same.
     AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc]initWithText:@"test"];
     AgoraChatMessage *message = [[AgoraChatMessage alloc]initWithConversationID:@"conversationId" from:@"currentUsername" to:@"conversationId" body:body ext:nil];
@@ -338,7 +386,7 @@ The message receiver can call `setPushTemplate` to pass in the push template nam
 
 If the sender uses a push template when sending a message, the content displayed in the push notification bar is based on the sender's push template.
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager setPushTemplate:@"templateName" completion:^(AgoraChatError * _Nullable aError) {
 
 }];

@@ -158,7 +158,7 @@ The HTTP responses cannot exceed 1,000 characters; otherwise, the callbacks fail
 
 #### Request example
 
-```shell
+```bash
 {
     "callId":"easemob-demo#test_XXXX-dp01-6c50-XXXX-cf3b48b20e7e",
     "timestamp":1600060847294,
@@ -230,7 +230,7 @@ The callback data can be stored on the Chat server for up to 3 days by default. 
 
 Agora Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
 
-```shell
+```bash
 Authorization: Bearer ${YourAppToken}
 ```
 
@@ -238,7 +238,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 #### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/callbacks/storage/info
 ```
 
@@ -275,7 +275,7 @@ GET https://{host}/{org_name}/{app_name}/callbacks/storage/info
 
 #### Request example
 
-```shell
+```bash
 curl -X GET 'https://a1.easemob.com/easemob-demo/easeim/callbacks/storage/info' \
 -H 'Authorization: Bearer '
 ```
@@ -313,7 +313,7 @@ You can resend the callback data stored on the Chat server by date key. It is re
 
 #### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/callbacks/storage/retry
 ```
 
@@ -355,7 +355,7 @@ POST https://{host}/{org_name}/{app_name}/callbacks/storage/retry
 
 #### Request example
 
-```shell
+```bash
 curl -X POST 'https://XXXX/XXXX/XXXX/callback/storage/retry' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \

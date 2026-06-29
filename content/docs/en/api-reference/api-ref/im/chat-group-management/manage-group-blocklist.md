@@ -67,7 +67,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/blocks/users?pageSize={N}&cursor={cursor}
 ```
 
@@ -109,7 +109,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https://XXXX/XXXX/XXXX/chatgroups/66XXXX85/blocks/users?pageSize=2'
 ```
 
@@ -141,7 +141,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/blocks/users/{username}
 ```
 
@@ -182,7 +182,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/blocks/users/user1'
 ```
 
@@ -217,7 +217,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/blocks/users
 ```
 
@@ -265,7 +265,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{
     "usernames": [
       "user3","user4"
@@ -311,7 +311,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/blocks/users/{username}
 ```
 
@@ -351,7 +351,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/blocks/users/user1'
 ```
 
@@ -384,7 +384,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/blocks/users/{usernames}
 ```
 
@@ -426,7 +426,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66016455491585/blocks/users/user1%2Cuser2'
 ```
 

@@ -93,29 +93,29 @@ In one-to-one chats, the SDK supports sending both the conversation read receipt
 
     1. When a user enters the conversation UI, check whether the conversation contains unread messages. If yes, call `ackConversationRead` to send a conversation read receipt.
 
-    ```java
-    // The message receiver calls ackConversationRead to send the conversation read receipt.
-    // This is an asynchronous method.
-    try {
-        ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
-    } catch (ChatException e) {
-        e.printStackTrace();
-    }
-    ```
+       ```java
+       // The message receiver calls ackConversationRead to send the conversation read receipt.
+       // This is an asynchronous method.
+       try {
+           ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
+       } catch (ChatException e) {
+           e.printStackTrace();
+       }
+       ```
 
     2. The message sender listens for message events and receives the conversation read receipt in `onConversationRead`.
 
-    ```java
-    // The message sender calls addConversationListener to listen for conversation events.
-    ChatClient.getInstance().chatManager().addConversationListener(new ConversationListener() {
-                ...
-                @Override
-                // Occurs when the all the messages in the conversation is read.
-                public void onConversationRead(String from, String to) {
-                    // Add follow-up logics such as poping up a notification.
-                }
-            });
-    ```
+       ```java
+       // The message sender calls addConversationListener to listen for conversation events.
+       ChatClient.getInstance().chatManager().addConversationListener(new ConversationListener() {
+                   ...
+                   @Override
+                   // Occurs when the all the messages in the conversation is read.
+                   public void onConversationRead(String from, String to) {
+                       // Add follow-up logics such as poping up a notification.
+                   }
+               });
+       ```
 
     :::info
     In use-cases where a user is logged in multiple devices, if the user sends a conversation read receipt from one device, the server sets the count of unread messages in the conversation as 0, and all the other devices receive `onConversationRead`.
@@ -127,65 +127,65 @@ In one-to-one chats, the SDK supports sending both the conversation read receipt
 
     1. Send a conversation read receipt when the recipient enters the conversation.
 
-    ```java
-    // The message receiver calls ackConversationRead to send the conversation read receipt.
-    try {
-        ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
-    }catch (ChatException e) {
-        e.printStackTrace();
-    }
-    ```
+       ```java
+       // The message receiver calls ackConversationRead to send the conversation read receipt.
+       try {
+           ChatClient.getInstance().chatManager().ackConversationRead(conversationId);
+       }catch (ChatException e) {
+           e.printStackTrace();
+       }
+       ```
 
     2. When a new message arrives, send the message read receipt and add proper handling logics for the different message types.
 
-    ```java
-    ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
-        ......
+       ```java
+       ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
+           ......
 
-        @Override
-        // Occurs when the specified message is received.
-        public void onMessageReceived(List messages) {
-            ......
-            // Send the message read receipt.
-            sendReadAck(message);
-            ......
-        }
-        ......
-    });
-    // Send the message read receipt.
-    public void sendReadAck(ChatMessage message) {
-        // For messages in one-to-one chat
-        if(message.direct() == ChatMessage.Direct.RECEIVE
-                undefined message.getChatType() == ChatMessage.ChatType.Chat) {
-            ChatMessage.Type type = message.getType();
-            // For voice, video, and file messages, you need to send the receipt after clicking the files.
-            if(type == ChatMessage.Type.VIDEO || type == ChatMessage.Type.VOICE || type == ChatMessage.Type.FILE) {
-                return;
-            }
-            try {
-                // Call ackMessageRead to send the message read receipt.
-                ChatClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
-            } catch (ChatException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    ```
+           @Override
+           // Occurs when the specified message is received.
+           public void onMessageReceived(List messages) {
+               ......
+               // Send the message read receipt.
+               sendReadAck(message);
+               ......
+           }
+           ......
+       });
+       // Send the message read receipt.
+       public void sendReadAck(ChatMessage message) {
+           // For messages in one-to-one chat
+           if(message.direct() == ChatMessage.Direct.RECEIVE
+                   undefined message.getChatType() == ChatMessage.ChatType.Chat) {
+               ChatMessage.Type type = message.getType();
+               // For voice, video, and file messages, you need to send the receipt after clicking the files.
+               if(type == ChatMessage.Type.VIDEO || type == ChatMessage.Type.VOICE || type == ChatMessage.Type.FILE) {
+                   return;
+               }
+               try {
+                   // Call ackMessageRead to send the message read receipt.
+                   ChatClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
+               } catch (ChatException e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+       ```
 
     3. The message sender listens for the message receipt:
 
-    ```java
-    // The message sender calls addMessageListener to listen for message events.
-    ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
-        ......
-        @Override
-        // Occurs when the specified message is read.
-        public void onMessageRead(List messages) {
-            // Add follow-up logics such as poping up a notification.
-        }
-        ......
-    });
-    ```
+       ```java
+       // The message sender calls addMessageListener to listen for message events.
+       ChatClient.getInstance().chatManager().addMessageListener(new MessageListener() {
+           ......
+           @Override
+           // Occurs when the specified message is read.
+           public void onMessageRead(List messages) {
+               // Add follow-up logics such as poping up a notification.
+           }
+           ......
+       });
+       ```
 
 #### Chat groups
 
@@ -590,28 +590,28 @@ Refer to the following steps to implement message read receipt in one-to-one cha
 
    - If there are several unread messages in the conversation, to minimize the number of sent message read receipts, we recommend that a conversation read receipt be sent when the message recipient enters the conversation.
 
-   ```javascript
-   const options = {
-     chatType: "singleChat", // The chat type: singleChat for one-to-one chat.
-     type: "channel", // The type of read receipt: channel indicates the conversation read receipt.
-     to: "userId", // The user ID of the message receipt.
-   };
-   const msg = AgoraChat.message.create(options);
-   chatClient.send(msg);
-   ```
+     ```javascript
+     const options = {
+       chatType: "singleChat", // The chat type: singleChat for one-to-one chat.
+       type: "channel", // The type of read receipt: channel indicates the conversation read receipt.
+       to: "userId", // The user ID of the message receipt.
+     };
+     const msg = AgoraChat.message.create(options);
+     chatClient.send(msg);
+     ```
 
    - If there is only one unread message in the conversation, after reading it, call `send` from the recipient's client to send the message read receipt.
 
-   ```javascript
-   const options = {
-     type: "read", // The message read receipt.
-     chatType: "singleChat", // The chat type: singleChat for one-to-one chat.
-     to: "userId", // The user ID of the message receipt.
-     id: "id", // The ID of the message that requires the read receipt.
-   };
-   const msg = AgoraChat.message.create(options);
-   chatClient.send(msg);
-   ```
+     ```javascript
+     const options = {
+       type: "read", // The message read receipt.
+       chatType: "singleChat", // The chat type: singleChat for one-to-one chat.
+       to: "userId", // The user ID of the message receipt.
+       id: "id", // The ID of the message that requires the read receipt.
+     };
+     const msg = AgoraChat.message.create(options);
+     chatClient.send(msg);
+     ```
 
 2. The message sender listens for `onReadMessage` to receive the message read receipt.
 
@@ -684,26 +684,26 @@ Follow the steps to implement read receipts for a chat group message:
    - `onReadMessage`, when the message sender is online.
    - `onStatisticsMessage`, when the message sender is offline.
 
-   ```javascript
-   // You can listen in onReadMessage when online.
-   chatClient.addEventHandler("handlerId", {
-     onReadMessage: (message) => {
-       let { mid } = message;
-       let msg = {
-         id: mid,
-       };
-       if (message.groupReadCount) {
-         // The message has been read.
-         msg.groupReadCount = message.groupReadCount[message.mid];
-       }
-     },
-     // You can listen for onStatisticMessage upon login when the read receipt is received when you are offline.
-     onStatisticMessage: (message) => {
-       let statisticMsg = message.location && JSON.parse(message.location);
-       let groupAck = statisticMsg.group_ack || [];
-     },
-   });
-   ```
+     ```javascript
+     // You can listen in onReadMessage when online.
+     chatClient.addEventHandler("handlerId", {
+       onReadMessage: (message) => {
+         let { mid } = message;
+         let msg = {
+           id: mid,
+         };
+         if (message.groupReadCount) {
+           // The message has been read.
+           msg.groupReadCount = message.groupReadCount[message.mid];
+         }
+       },
+       // You can listen for onStatisticMessage upon login when the read receipt is received when you are offline.
+       onStatisticMessage: (message) => {
+         let statisticMsg = message.location && JSON.parse(message.location);
+         let groupAck = statisticMsg.group_ack || [];
+       },
+     });
+     ```
 
 4. After receiving the read receipt, the message sender can retrieve the detailed information of the group members that have read the message.
 

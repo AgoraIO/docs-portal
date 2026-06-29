@@ -67,7 +67,7 @@ POST https://{host}/{org_name}/{app_name}/reaction/user/{userId}
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -75,14 +75,14 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/json` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
 #### Request body
 
 | Parameter | Type | Description |
-| :-------------- | :----- | :-- |
+| :-------------- | :----- | :--- |
 | `msg_Id`  | String | The message ID to which you want to add the reaction. |
 | `message` | String | The ID of the emoji, same as that on the client. The maximum length is 128 characters.  |
 
@@ -111,7 +111,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X POST 'http://XXXX/XXXX/XXXX/reaction/user/e1' -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' --data-raw '{
     "msgId":"997625372793113144",
     "message":"emoji_40"
@@ -144,14 +144,14 @@ For each method call, you can retrieve reactions in either s or s, but not in bo
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/reaction/user/{userId}?msgIdList={N,M}&msgType={msgType}&groupId={groupId}
 ```
 
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -167,7 +167,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
@@ -193,7 +193,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/{{userId}}?msgIdList=msgId1&msgType=chat' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
@@ -244,14 +244,14 @@ This method deletes a reaction.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/reaction/user/{userId}
 ```
 
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -259,7 +259,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
@@ -289,7 +289,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X DELETE 'http://XXXX/XXXX/XXXX/reaction/user/wz?msgId=997625372793113144&message=emoji_40' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
@@ -308,14 +308,14 @@ This method retrieves the detailed information of the reaction by specifying the
 
 ### HTTP request
 
-```shell
+```bash
 https://{host}/{org_name}/{app_name}/reaction/user/{userId}/detail?msgId={msgId}&message={message}&limit={limit}&cursor={cursor}
 ```
 
 #### Path parameter
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `userId` | String | The user ID of the current user. | Yes |
 
 For other parameters and the detailed descriptions, see [Common parameters](#param).
@@ -336,7 +336,7 @@ If the pagination parameters are specified, the server returns the users that ad
 #### Request header
 
 | Parameter | Type | Description | Required |
-| :-------------- | :----- | :-- | :------- |
+| :-------------- | :----- | :--- | :------- |
 | `Content-Type` | String | `application/x-www-form-urlencoded` | Yes |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. | Yes |
 
@@ -364,7 +364,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 // Starts querying from the first page
 curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&limit=50' -H 'Authorization: Bearer {YourAppToken}'
 
