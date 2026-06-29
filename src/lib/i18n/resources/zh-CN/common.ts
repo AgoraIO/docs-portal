@@ -24,6 +24,7 @@ const zhCnCommon = {
     searchPlaceholder: '搜索文档、API、指南...',
     searchEmpty: '没有找到匹配页面。',
     searchUnavailable: '搜索索引不可用。',
+    searchLoading: '正在搜索...',
     tabsLabel: 'Tabs',
     sectionPickerLabel: '分区',
     pagesLabel: 'Pages',

@@ -1,6 +1,7 @@
 'use client';
 
 import { useNavigate } from '@tanstack/react-router';
+import { useDocsSearch } from 'fumadocs-core/search/client';
 import { SearchIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +21,8 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
+import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 
 type PagesState =
   | {
@@ -57,6 +60,27 @@ export function DocsSearchDialog({
   const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
   const searchIndexFailed =
     pagesState?.locale === searchLocale && pagesState.status === 'error';
+  const algoliaConfig = getAlgoliaSearchConfig();
+  const searchClient = algoliaConfig
+    ? createAlgoliaDocsClient({
+        ...algoliaConfig,
+        locale: searchLocale,
+      })
+    : createLocalDocsClient(pages);
+  const {
+    search,
+    setSearch,
+    query: { data: searchResults, isLoading },
+  } = useDocsSearch(
+    {
+      client: searchClient,
+      delayMs: algoliaConfig ? 100 : 0,
+    },
+    [algoliaConfig, pages, searchLocale],
+  );
+  const normalizedSearchResults =
+    !searchResults || searchResults === 'empty' ? [] : searchResults;
+  const showFallbackPages = !algoliaConfig && !search.trim();
 
   async function handleSelect(url: string) {
     setOpen(false);
@@ -68,27 +92,29 @@ export function DocsSearchDialog({
   async function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
 
-    if (nextOpen && pages.length === 0) {
-      try {
-        if (pagesPromiseRef.current?.locale !== searchLocale) {
-          pagesPromiseRef.current = {
-            locale: searchLocale,
-            promise: loadPages(),
-          };
-        }
-        setPagesState({
+    if (algoliaConfig || !nextOpen || pages.length > 0) {
+      return;
+    }
+
+    try {
+      if (pagesPromiseRef.current?.locale !== searchLocale) {
+        pagesPromiseRef.current = {
           locale: searchLocale,
-          pages: await pagesPromiseRef.current.promise,
-          status: 'loaded',
-        });
-      } catch {
-        pagesPromiseRef.current = null;
-        setPagesState({
-          locale: searchLocale,
-          pages: [],
-          status: 'error',
-        });
+          promise: loadPages(),
+        };
       }
+      setPagesState({
+        locale: searchLocale,
+        pages: await pagesPromiseRef.current.promise,
+        status: 'loaded',
+      });
+    } catch {
+      pagesPromiseRef.current = null;
+      setPagesState({
+        locale: searchLocale,
+        pages: [],
+        status: 'error',
+      });
     }
   }
 
@@ -121,17 +147,24 @@ export function DocsSearchDialog({
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         open={open}
+        shouldFilter={false}
         title={t('docs.search')}
       >
-        <CommandInput placeholder={t('docs.searchPlaceholder')} />
+        <CommandInput
+          onValueChange={setSearch}
+          placeholder={t('docs.searchPlaceholder')}
+          value={search}
+        />
         <CommandList>
           <CommandEmpty>
-            {searchIndexFailed
-              ? t('docs.searchUnavailable')
-              : t('docs.searchEmpty')}
+            {isLoading
+              ? t('docs.searchLoading')
+              : searchIndexFailed
+                ? t('docs.searchUnavailable')
+                : t('docs.searchEmpty')}
           </CommandEmpty>
           <CommandGroup heading={t('docs.tabsLabel')}>
-            {tabs.map((tab) => (
+            {filterTabs(tabs, search).map((tab) => (
               <CommandItem
                 key={tab.url}
                 onSelect={() => void handleSelect(tab.url)}
@@ -153,7 +186,14 @@ export function DocsSearchDialog({
                 {t('docs.searchUnavailable')}
               </div>
             ) : (
-              pages.map((page) => (
+              (showFallbackPages
+                ? pages
+                : normalizedSearchResults.map((result) => ({
+                    description: result.breadcrumbs?.join(' / '),
+                    title: result.content,
+                    url: result.url,
+                  }))
+              ).map((page) => (
                 <CommandItem
                   key={page.url}
                   onSelect={() => void handleSelect(page.url)}
@@ -174,4 +214,45 @@ export function DocsSearchDialog({
       </CommandDialog>
     </>
   );
+}
+
+function filterTabs(tabs: TabSummary[], query: string) {
+  const normalizedQuery = query.trim().toLowerCase();
+
+  if (!normalizedQuery) {
+    return tabs;
+  }
+
+  return tabs.filter((tab) =>
+    `${tab.title}\n${tab.description ?? ''}\n${tab.url}`
+      .toLowerCase()
+      .includes(normalizedQuery),
+  );
+}
+
+function createLocalDocsClient(pages: SearchEntry[]) {
+  return {
+    deps: [pages],
+    search(query: string) {
+      const normalizedQuery = query.trim().toLowerCase();
+
+      if (!normalizedQuery) {
+        return [];
+      }
+
+      return pages
+        .filter((page) =>
+          `${page.title}\n${page.description ?? ''}\n${page.url}`
+            .toLowerCase()
+            .includes(normalizedQuery),
+        )
+        .slice(0, 12)
+        .map((page) => ({
+          content: page.title,
+          id: page.url,
+          type: 'page' as const,
+          url: page.url,
+        }));
+    },
+  };
 }
