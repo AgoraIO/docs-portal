@@ -27,6 +27,20 @@ When audio-strength stream selection is enabled, all audio streams in the channe
 
 To exclude a user from audio-strength stream selection and ensure that their stream is transmitted to the receiving end regardless of its volume, use one of the following methods:
 
+<PlatformStructured platform="web">
+To exclude a user from audio-strength stream selection and ensure that their stream is transmitted to the receiving end regardless of its volume, contact [technical support](mailto:support@agora.io).
+
+### Use case example
+
+In a large enterprise meeting, with audio-strength stream selection enabled, certain key participants may designate their published audio streams to be excluded from selection based on audio strength. Instead, these streams are transmitted directly to the receiving end.
+
+If there are 500 participants in the channel, and `N` is set to 4, it means that Agora transmits the top 4 audio streams with the highest volume to the receiving end. However, the main speaker A, representing headquarters, and other branch representatives B, C, D set their published audio streams not to participate in the selection. This setting reduces stuttering when playing audio streams at the receiving end. It also ensures that key users have their audio streams received by the audience, even if their speaking volume is low.
+
+**Audio strength selection use case**
+
+![Use Case use-case](/images/video-sdk/audio-strength-selection-use-case.svg)
+</PlatformStructured>
+
 <PlatformStructured platform="android">
 - When calling `joinChannel` or `joinChannelWithUserAccount` to join a channel, set `isAudioFilterable` to `false` in `ChannelMediaOptions` and pass the object in the `options` argument.
 
@@ -246,4 +260,3 @@ This section contains content that completes the information on this page, or po
 - [`UpdateChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_updatechannelmediaoptions)
 - [`SetParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setparameters)
 </PlatformStructured>
-

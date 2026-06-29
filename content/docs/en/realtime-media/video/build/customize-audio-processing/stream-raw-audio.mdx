@@ -155,7 +155,6 @@ Video SDK uses a synchronous callback mechanism for processing raw audio data. W
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
-* [Audio module](../core-concepts.mdx)
 
 ### Sample project
 
@@ -523,16 +522,90 @@ Agora provides an open-source example project [ProcessRawAudioData](https://gite
 - [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onmixedaudioframe)
 </PlatformStructured>
 
-<PlatformStructured platform="electron">
-**This feature implementation is not yet available for Electron.**
-</PlatformStructured>
+<PlatformStructured platform="web">
+This article shows you how to pre-process and post-process collected raw audio data.
 
-<PlatformStructured platform="flutter">
-**This feature implementation is not yet available for Flutter.**
-</PlatformStructured>
+## Understand the tech
 
-<PlatformStructured platform="react-native">
-**This feature implementation is not yet available for React Native.**
+For use-cases that require self-processing of audio data, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with Agora Video SDK to enable raw audio data processing. The Web Audio API allows you to modify the captured audio signal before transmitting it to the channel.
+
+The following figure shows the basic processing of raw audio data:
+
+**Process raw audio**
+
+![Raw Audio Processing](/images/video-sdk/process-raw-audio-web.svg)
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement raw audio processing
+
+To modify raw audio frames before publishing, follow these steps:
+
+1. Create a local audio track and publish it to the channel.
+2. Use the Web Audio API to create an `AudioContext` and connect the audio track to an `AnalyserNode`.
+3. Extract audio data using an `AnalyserNode` and process it.
+
+The following example extracts the audio data and logs it to the console.
+
+```js
+async function createAndProcessAudioTrack() {
+  try {
+    // Create a microphone audio track
+    localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+
+    // Publish the audio track to the RTC client
+    await client.publish([localAudioTrack]);
+
+    // Initialize the Web Audio API context for audio processing
+    audioContext = new AudioContext();
+
+    // Create a media stream source from the microphone track
+    const source = audioContext.createMediaStreamSource(
+      new MediaStream([localAudioTrack.getMediaStreamTrack()])
+    );
+
+    // Create an AnalyserNode to extract real-time audio frequency data
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+
+    // Create a buffer to store the frequency data
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    // Connect the audio source to the analyser
+    source.connect(analyser);
+
+    // Start continuously processing audio frames
+    processAudioFrames();
+  } catch (error) {
+    console.error('Error creating or processing audio track:', error);
+  }
+}
+
+function processAudioFrames() {
+  if (!analyser) {
+    console.warn('Analyser not initialized.');
+    return;
+  }
+
+  // Retrieve frequency data from the analyser node
+  analyser.getByteFrequencyData(dataArray);
+  console.log('Audio Data:', dataArray);
+
+  // Schedule the next frame for continuous audio analysis
+  animationFrameId = requestAnimationFrame(processAudioFrames);
+}
+```
+
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+* [Audio module](../core-concepts.mdx)
+
+### API reference
+
+- [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack)
+- [`publish`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#publish)
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -667,3 +740,228 @@ Agora provides an open-source example project [ProcessAudioRawData](https://gith
 - [`OnMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_iaudioframeobserver.html#callback_iaudioframeobserverbase_onmixedaudioframe)
 </PlatformStructured>
 
+<PlatformStructured platform="unreal">
+This article shows you how to pre-process and post-process collected raw audio data.
+
+## Understand the tech
+
+For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+
+To implement processing of raw audio data in your game, take the following steps.
+
+- Register an instance of the audio frame observer before joining a channel.
+- Set the format of audio frames captured by each callback.
+- Implement callbacks in the frame observers to process raw audio data.
+- Unregister the frame observers before you leave a channel.
+
+The following figure shows the basic processing of raw audio data:
+
+**Process raw audio**
+
+![Raw Audio Processing](/images/video-sdk/process-raw-audio.svg)
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement raw audio processing
+
+Follow these steps to implement raw audio data processing functionality in your game:
+
+1. **Initialize MediaEngine and register the audio observer**
+
+   Before joining a channel, obtain the MediaEngine interface and create an instance of `IAudioFrameObserver`, then call `registerAudioFrameObserver` to register it:
+
+   ```cpp
+   void InitAgoraEngine(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
+   {
+       // Initialize RtcEngine context and event handler
+       agora::rtc::RtcEngineContext RtcEngineContext;
+       UserRtcEventHandlerEx = MakeShared<FUserRtcEventHandlerEx>(this);
+       std::string StdStrAppId = TCHAR_TO_UTF8(*APP_ID);
+       RtcEngineContext.appId = StdStrAppId.c_str();
+       RtcEngineContext.eventHandler = UserRtcEventHandlerEx.Get();
+       RtcEngineContext.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+
+       // Initialize the RtcEngine
+       int ret = AgoraUERtcEngine::Get()->initialize(RtcEngineContext);
+
+       // Query for the MediaEngine interface
+       AgoraUERtcEngine::Get()->queryInterface(AGORA_IID_MEDIA_ENGINE, (void**)&MediaEngine);
+
+       // Create and register audio frame observer
+       UserAudioFrameObserver = MakeShared<FUserAudioFrameObserver>(this);
+       MediaEngine->registerAudioFrameObserver(UserAudioFrameObserver.Get());
+   }
+   ```
+
+2. **Configure audio parameters**
+
+   Set the audio frame format by initializing the `AudioParams` structure. This determines the sample rate, number of channels, and other audio processing configurations.
+
+   ```cpp
+   void InitConfig()
+   {
+       // Configure AudioParam
+       audioParams.channels = 2;
+       audioParams.sample_rate = 44100;
+       audioParams.mode = agora::rtc::RAW_AUDIO_FRAME_OP_MODE_TYPE::RAW_AUDIO_FRAME_OP_MODE_READ_WRITE;
+       audioParams.samples_per_call = 1024;
+   }
+   ```
+
+3. **Implement audio frame observer class**
+
+   Create a class that inherits from `IAudioFrameObserver` and implement the required callbacks to receive and process audio frames. Returning `false` from any of these callbacks indicates that the processing of the audio frame was invalid.
+
+   ```cpp
+   class FUserAudioFrameObserver : public agora::media::IAudioFrameObserver
+   {
+   public:
+       FUserAudioFrameObserver(UProcessAudioRawDataWidget* InWidgetPtr) : WidgetPtr(InWidgetPtr) {}
+
+       bool onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::rtc::uid_t uid, AudioFrame& audioFrame) override
+       {
+           if (!IsWidgetValid())
+               return false;
+
+           if (WidgetPtr->GetFirstRemoteUID() == uid) {
+               // Process audio frames for specific remote user
+               WidgetPtr->GetAgoraSoundWaveProcedural()->AddToFrames(audioFrame);
+           }
+           return true;
+       }
+
+       bool onRecordAudioFrame(const char* channelId, AudioFrame& audioFrame) override
+       {
+           if (!IsWidgetValid())
+               return false;
+
+           return true;
+       }
+
+       bool onPlaybackAudioFrame(const char* channelId, AudioFrame& audioFrame) override
+       {
+           if (!IsWidgetValid())
+               return false;
+
+           return true;
+       }
+
+       bool onMixedAudioFrame(const char* channelId, AudioFrame& audioFrame) override
+       {
+           return true;
+       }
+
+       bool onEarMonitoringAudioFrame(AudioFrame& audioFrame) override
+       {
+           return true;
+       }
+
+       int getObservedAudioFramePosition() override
+       {
+           return (int)(AUDIO_FRAME_POSITION::AUDIO_FRAME_POSITION_PLAYBACK |
+               AUDIO_FRAME_POSITION::AUDIO_FRAME_POSITION_RECORD |
+               AUDIO_FRAME_POSITION::AUDIO_FRAME_POSITION_BEFORE_MIXING |
+               AUDIO_FRAME_POSITION::AUDIO_FRAME_POSITION_MIXED |
+               AUDIO_FRAME_POSITION::AUDIO_FRAME_POSITION_EAR_MONITORING);
+       }
+
+       agora::media::IAudioFrameObserverBase::AudioParams getPlaybackAudioParams() override
+       {
+           if (!IsWidgetValid())
+               return agora::media::IAudioFrameObserverBase::AudioParams();
+           return WidgetPtr->GetAudioParams();
+       }
+
+       agora::media::IAudioFrameObserverBase::AudioParams getRecordAudioParams() override
+       {
+           if (!IsWidgetValid())
+               return agora::media::IAudioFrameObserverBase::AudioParams();
+           return WidgetPtr->GetAudioParams();
+       }
+
+       agora::media::IAudioFrameObserverBase::AudioParams getMixedAudioParams() override
+       {
+           if (!IsWidgetValid())
+               return agora::media::IAudioFrameObserverBase::AudioParams();
+           return WidgetPtr->GetAudioParams();
+       }
+
+       agora::media::IAudioFrameObserverBase::AudioParams getEarMonitoringAudioParams() override
+       {
+           if (!IsWidgetValid())
+               return agora::media::IAudioFrameObserverBase::AudioParams();
+           return WidgetPtr->GetAudioParams();
+       }
+
+   private:
+       UProcessAudioRawDataWidget* WidgetPtr;
+
+       bool IsWidgetValid() const
+       {
+           return WidgetPtr && IsValid(WidgetPtr);
+       }
+   };
+   ```
+
+4. **Join channel and configure audio**
+
+   Join the channel and optionally configure audio settings. You can mute the original playback to handle audio independently.
+
+   ```cpp
+   void OnBtnJoinChannelClicked()
+   {
+       // Mute the playback volume of SDK (not UE) to handle audio independently
+       AgoraUERtcEngine::Get()->adjustPlaybackSignalVolume(0);
+
+       AgoraUERtcEngine::Get()->enableAudio();
+       AgoraUERtcEngine::Get()->setClientRole(CLIENT_ROLE_BROADCASTER);
+       int ret = AgoraUERtcEngine::Get()->joinChannel(TCHAR_TO_UTF8(*Token), TCHAR_TO_UTF8(*ChannelName), "", 0);
+   }
+   ```
+
+5. **Unregister the audio frame observer**
+
+   Call `registerAudioFrameObserver` with `nullptr` to unregister the audio frame observer before leaving the channel:
+
+   ```cpp
+   void UnInitAgoraEngine()
+   {
+       if (AgoraUERtcEngine::Get() != nullptr)
+       {
+           AgoraUERtcEngine::Get()->leaveChannel();
+           if (MediaEngine != nullptr)
+           {
+               // Unregister the audio frame observer
+               MediaEngine->registerAudioFrameObserver(nullptr);
+           }
+           AgoraUERtcEngine::Get()->unregisterEventHandler(UserRtcEventHandlerEx.Get());
+           AgoraUERtcEngine::Release();
+       }
+   }
+   ```
+
+:::info
+Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+  - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
+  - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
+
+:::
+## Reference
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+* [Audio module](../core-concepts.mdx)
+
+### Sample project
+
+Agora provides an open-source example project [ProcessAudioRawData](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/ProcessAudioRawData) for your reference. Download or view the project for a more detailed example.
+
+### API reference
+
+- [`registerAudioFrameObserver`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaplayer.html#api_imediaplayer_registeraudioframeobserver)
+- [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
+- [`onRecordAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onrecordaudioframe)
+- [`onPlaybackAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onplaybackaudioframe)
+- [`onplaybackaudioframebeforemixing`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserver.html#class_iaudioframeobserver)
+- [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onmixedaudioframe)
+</PlatformStructured>

@@ -68,14 +68,13 @@ To integrate Interactive Live Streaming into your Magic Leap project, do the fol
   1. In **Player settings** > **Android** > **Publishing settings**, enable **Custom Main Manifest**.
   1. In **Magic Leap** > **Permissions**, enable `android.permission.CAMERA` and `android.permission.RECORD_AUDIO`.
 
-You are ready to add Interactive Live Streaming features to your Magic Leap project
+You are ready to add Interactive Live Streaming features to your Magic Leap project.
 
 ## Integrate the Interactive Live Streaming demo
 
 When a user opens the app, you initialize Agora Engine. When the user taps a button, the app joins or leaves a channel. When another user joins the same channel, their video and audio is rendered in the app. This simple workflow enables you to concentrate on implementing Agora features and not UX bells and whistles.
 
-This section shows how to integrate the Video SDK to implement the Interactive Live Streaming demo into your Magic
- Leap project.
+This section shows how to integrate the Video SDK to implement the Interactive Live Streaming demo into your Magic Leap project.
 
 1. [Download](../../../sdks.md) the latest version of Video SDK for Magic Leap to a local folder.
 

@@ -1341,7 +1341,7 @@ The logic of joining a chat group varies according to the `GroupStyle` setting y
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
-  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
+  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all chat group members receive the `IGroupManagerDelegate#OnMemberJoinedFromGroup` callback.
   - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
 
 :::info
@@ -1380,7 +1380,7 @@ SDKClient.Instance.GroupManager.JoinPublicGroup(groupId, new CallBack(
 
 ### Leave a chat group
 
-Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all all chat group members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback.
+Chat group members can call `LeaveGroup` to leave the specified chat group, whereas the inviter cannot perform this operation. Once a member leaves a chat group, all chat group members receive the `IGroupManagerDelegate#OnMemberExitedFromGroup` callback.
 
 The following code sample shows how to leave a chat group:
 

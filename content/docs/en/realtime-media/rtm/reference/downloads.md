@@ -3,8 +3,6 @@ title: "Manual install"
 description: "Links to the manual downloads for this product, and explanations on how to install them."
 ---
 
-**Supported platforms:** Web, Android, iOS, macOS, Linux Java, Linux C++, Windows, Unity, and Flutter.
-
 <Tabs defaultValue="web" groupId="platform">
 <TabsList>
   <TabsTrigger value="web">Web</TabsTrigger>

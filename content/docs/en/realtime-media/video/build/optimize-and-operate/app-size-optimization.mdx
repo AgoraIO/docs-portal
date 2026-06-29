@@ -3,8 +3,6 @@ title: "App size optimization"
 description: "Reduce the size of apps that integrate Agora SDK"
 ---
 
-**Supported platforms:** Android, iOS, macOS, Web, Windows, Electron, Flutter, React Native, and Unity.
-
 <PlatformStructured platform="android">
 Reducing the app size is of great significance in improving user experience. A smaller package size means that users consume less bandwidth and time to download the app. Consider the following use-cases where app size optimization is critical:
 
@@ -40,7 +38,15 @@ When integrating the Android SDK through Maven Central, you can modify the `/Gra
 
 Refer to the following samples to include, all, none, or selected extensions.
 
-**Use all extensions**
+<CodeBlockTabs defaultValue="all">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="all">Use all extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="none">Don't use any extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="selected">Use selected extensions</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="all">
+
 ```js
 dependencies {
  implementation 'io.agora.rtc:full-sdk:4.0.1'
@@ -49,7 +55,10 @@ dependencies {
 }
 ```
 
-**Don**
+</CodeBlockTab>
+
+<CodeBlockTab value="none">
+
 ```js
 dependencies {
  implementation 'io.agora.rtc:full-rtc-basic:4.0.1'
@@ -57,7 +66,10 @@ dependencies {
 }
 ```
 
-**Use selected extensions**
+</CodeBlockTab>
+
+<CodeBlockTab value="selected">
+
 ```js
 dependencies {
  def agora_sdk_version = "4.3.0"
@@ -69,6 +81,10 @@ dependencies {
 }
 ```
 
+</CodeBlockTab>
+
+</CodeBlockTabs>
+  
 
 ## Reference
 
@@ -80,7 +96,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -118,7 +138,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -155,8 +178,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -179,8 +204,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -203,8 +230,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -222,8 +251,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -243,7 +274,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -262,7 +296,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -279,7 +316,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -325,7 +365,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -347,9 +390,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -364,7 +410,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -380,7 +429,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 :::warning
@@ -401,7 +453,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -420,7 +475,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -591,7 +649,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -610,7 +671,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -627,7 +691,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -730,6 +797,10 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -764,7 +835,15 @@ When integrating the iOS or macOS SDK through CocoaPods, use the `subspecs` fiel
 
 Refer to the following samples to use all, none, or some extensions:
 
-**Use all extensions**
+<CodeBlockTabs defaultValue="all">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="all">Use all extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="none">Don't use any extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="some">Use some extensions</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="all">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
@@ -772,7 +851,10 @@ target 'Your App' do
 end
 ```
 
-**Don**
+</CodeBlockTab>
+
+<CodeBlockTab value="none">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
@@ -780,13 +862,20 @@ target 'Your App' do
 end
 ```
 
-**Use some extensions**
+</CodeBlockTab>
+
+<CodeBlockTab value="some">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
   pod 'AgoraRtcEngine_iOS', '4.3.1', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
 end
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 When using the above pod command, make sure that the SDK version you specify includes the extension you have selected, and that the `subspecs` field is correct, otherwise a pod installation error is reported. For example, if you use `pod 'AgoraRtcEngine_iOS', '4.0.0', :subspecs => ['RtcBasic', 'AgoraRtcAINS']`, an error is reported.
@@ -801,7 +890,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -839,7 +932,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -876,8 +972,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -900,8 +998,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -924,8 +1024,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -943,8 +1045,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -964,7 +1068,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -983,7 +1090,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -1000,7 +1110,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -1046,7 +1159,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -1068,9 +1184,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -1085,7 +1204,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -1101,7 +1223,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -1119,7 +1244,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1138,7 +1266,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -1309,7 +1440,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1328,7 +1462,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1345,7 +1482,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1362,7 +1502,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Integrating extensions into your project
 
-When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table:
+When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table: 
 
 **iOS Video SDK**
 | Dynamic Library | Category | `subspecs` field |
@@ -1435,11 +1575,15 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 - `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
 
 </Slot>
-
+ 
 
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
@@ -1460,7 +1604,15 @@ When integrating the iOS or macOS SDK through CocoaPods, use the `subspecs` fiel
 
 Refer to the following samples to use all, none, or some extensions:
 
-**Use all extensions**
+<CodeBlockTabs defaultValue="all">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="all">Use all extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="none">Don't use any extensions</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="some">Use some extensions</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="all">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
@@ -1468,7 +1620,10 @@ target 'Your App' do
 end
 ```
 
-**Don**
+</CodeBlockTab>
+
+<CodeBlockTab value="none">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
@@ -1476,13 +1631,20 @@ target 'Your App' do
 end
 ```
 
-**Use some extensions**
+</CodeBlockTab>
+
+<CodeBlockTab value="some">
+
 ```ruby
 # platform :ios, '9.0'
 target 'Your App' do
   pod 'AgoraRtcEngine_macOS', '4.3.1', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
 end
 ```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
 
 :::info
 When using the above pod command, make sure that the SDK version you specify includes the extension you have selected, and that the `subspecs` field is correct, otherwise a pod installation error is reported. For example, if you use `pod 'AgoraRtcEngine_iOS', '4.0.0', :subspecs => ['RtcBasic', 'AgoraRtcAINS']`, an error is reported.
@@ -1497,7 +1659,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -1535,7 +1701,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1572,8 +1741,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -1596,8 +1767,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -1620,8 +1793,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -1639,8 +1814,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -1660,7 +1837,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -1679,7 +1859,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -1696,7 +1879,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -1742,7 +1928,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -1764,9 +1953,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -1781,7 +1973,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -1797,7 +1992,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -1815,7 +2013,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -1834,7 +2035,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -2005,7 +2209,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2024,7 +2231,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2041,7 +2251,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2058,7 +2271,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Integrating extensions into your project
 
-When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table:
+When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table: 
 
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
@@ -2112,6 +2325,10 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -2140,70 +2357,92 @@ Starting from version 4.22.0, in addition to the core modules, the SDK also prov
 :::note
 The optimization effect of tree shaking is currently limited by the SDK architecture. Agora will continue to improve the tree shaking effect in future versions.
 :::
-To use tree shaking, follow these steps to integrate the SDK:
+To use tree shaking, follow these steps to integrate the SDK: 
 
 1. Run the following command to install the latest SDK package using npm:
 
-   ```bash
-   npm install agora-rtc-sdk-ng
-   ```
+  ```bash
+  npm install agora-rtc-sdk-ng
+  ```
 
 1. Import all used methods, enumerations, constants, types, and so on by adding `/esm` at the end of the package name `agora-rtc-sdk-ng`:
 
-   ```javascript
-   // Example of correct reference citation method
-   import { createClient } from "agora-rtc-sdk-ng/esm";
-   // Import enum
-   import { ConnectionDisconnectedReason } from "agora-rtc-sdk-ng/esm";
-   // Import constant
-   import { VERSION } from "agora-rtc-sdk-ng/esm";
-   // Import type
-   import type { ICameraVideoTrack } from "agora-rtc-sdk-ng/esm";
-   ```
+  ```javascript
+  // Example of correct reference citation method
+  import { createClient } from "agora-rtc-sdk-ng/esm";
+  // Import enum
+  import { ConnectionDisconnectedReason } from "agora-rtc-sdk-ng/esm";
+  // Import constant
+  import { VERSION } from "agora-rtc-sdk-ng/esm";
+  // Import type
+  import type { ICameraVideoTrack } from "agora-rtc-sdk-ng/esm";
+  ```
 
 1. Starting from version 4.23.0, you can integrate the functional modules you need as follows:
 
-  **Plan B**
+  <CodeBlockTabs defaultValue="plan-b">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="plan-b">Plan B</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="content-moderation">Content moderation</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="relay">Channel media relay</CodeBlockTabsTrigger>
+    <CodeBlockTabsTrigger value="live">Live streaming</CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="plan-b">
+
   ```js
   // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import Plan-B module
     import { PlanBConnectionService } from "agora-rtc-sdk-ng/services/planb-connection";
-
+  
     AgoraRTC.use(PlanBConnectionService);
   ```
 
-  **Content moderation**
+  </CodeBlockTab>
+
+  <CodeBlockTab value="content-moderation">
+
   ```js
   // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import real-time moderation (content moderation) module
     import { ImageModerationService } from "agora-rtc-sdk-ng/services/image-moderation";
     import { ContentInspectService } from "agora-rtc-sdk-ng/services/content-inspect";
-
+  
     AgoraRTC.use(ImageModerationService)
     .use(ContentInspectService);
   ```
 
-  **Channel media relay**
+  </CodeBlockTab>
+
+  <CodeBlockTab value="relay">
+
   ```js
   // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import cross-channel media relay module
     import { ChannelMediaRelayService } from "agora-rtc-sdk-ng/services/channel-media-relay";
-
+  
     AgoraRTC.use(ChannelMediaRelayService);
   ```
 
-  **Live streaming**
+  </CodeBlockTab>
+
+  <CodeBlockTab value="live">
+
   ```js
   // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import live streaming service module
     import { LiveStreamingService } from "agora-rtc-sdk-ng/services/live-streaming";
-
+  
     AgoraRTC.use(LiveStreamingService);
   ```
+
+  </CodeBlockTab>
+
+  </CodeBlockTabs>
 
 ## Reference
 
@@ -2239,7 +2478,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -2277,7 +2520,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2314,8 +2560,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -2338,8 +2586,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -2362,8 +2612,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -2381,8 +2633,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -2402,7 +2656,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -2421,7 +2678,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -2438,7 +2698,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -2484,7 +2747,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -2506,9 +2772,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -2523,7 +2792,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -2539,7 +2811,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -2557,7 +2832,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2576,7 +2854,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -2747,7 +3028,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2766,7 +3050,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2783,7 +3070,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2801,6 +3091,10 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
@@ -2831,7 +3125,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -2869,7 +3167,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -2906,8 +3207,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -2930,8 +3233,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -2954,8 +3259,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -2973,8 +3280,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -2994,7 +3303,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -3013,7 +3325,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -3030,7 +3345,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -3076,7 +3394,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -3098,9 +3419,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3115,7 +3439,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -3131,7 +3458,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -3149,7 +3479,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3168,7 +3501,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -3339,7 +3675,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3358,7 +3697,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3375,7 +3717,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3393,6 +3738,10 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -3419,7 +3768,7 @@ If your target platform is Android, use Gradle's `packagingOptions.exclude` prop
 
 In the `build.gradle` file in the project root directory, find the `android` configuration block. Under the module `packagingOptions`, use the `exclude` attribute to specify the extension dynamic libraries you want to exclude. Refer to the following example to exclude specific extensions:
 
-```text
+```groovy
 android {
   // ...
   packagingOptions {
@@ -3443,31 +3792,31 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 1. Add the following script to the Podfile under the target section for the `agora_rtc_engine` dependency. This script marks unnecessary extensions as [weak frameworks](https://guides.cocoapods.org/syntax/podspec.html#weak_frameworks):
 
-   ```ruby
-   post_install do |installer|
-    installer.pods_project.targets.each do |target|
-     flutter_additional_ios_build_settings(target)
+  ```ruby
+  post_install do |installer|
+   installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
 
-     targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
-     # Add more -weak_framework flags for other unnecessary extensions if needed
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+    targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
+    # Add more -weak_framework flags for other unnecessary extensions if needed
+    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
 
-     next unless targets_to_weaklink.include?(target.name)
+    next unless targets_to_weaklink.include?(target.name)
 
-     target.build_configurations.each do |config|
-      base_config_reference = config.base_configuration_reference
-      unless base_config_reference. nil?
-       xcconfig_path = base_config_reference.real_path
-       xcconfig = File.read(xcconfig_path)
-       frameworks_to_weaklink.each do |framework|
-        xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
-       end
-       File.open(xcconfig_path, "w") { |file| file << xcconfig }
+    target.build_configurations.each do |config|
+     base_config_reference = config.base_configuration_reference
+     unless base_config_reference. nil?
+      xcconfig_path = base_config_reference.real_path
+      xcconfig = File.read(xcconfig_path)
+      frameworks_to_weaklink.each do |framework|
+       xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
       end
+      File.open(xcconfig_path, "w") { |file| file << xcconfig }
      end
     end
    end
-   ```
+  end
+  ```
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
@@ -3475,15 +3824,15 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-     ```bash
-     $stderr.puts "Removing Unnecessary Frameworks"
-     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-     for framework in frameworks_to_weaklink
-       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-       `rm -Rf "#{framework_path}"`
-     end
-     ```
+    ```shell
+    $stderr.puts "Removing Unnecessary Frameworks"
+    # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+    for framework in frameworks_to_weaklink
+      framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+      `rm -Rf "#{framework_path}"`
+    end
+    ```
     The following figure shows the required steps:
 
     ![reduce app size step 2](/images/video-sdk/reduce-app-size-flutter-step-2.png)
@@ -3502,7 +3851,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -3540,7 +3893,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3577,8 +3933,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -3601,8 +3959,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -3625,8 +3985,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -3644,8 +4006,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -3665,7 +4029,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -3684,7 +4051,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -3701,7 +4071,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -3747,7 +4120,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -3769,9 +4145,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3786,7 +4165,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -3802,7 +4184,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -3820,7 +4205,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -3839,7 +4227,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -4010,7 +4401,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4029,7 +4423,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4046,7 +4443,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4064,6 +4464,10 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -4090,7 +4494,7 @@ If your target platform is Android, use Gradle's `packagingOptions.exclude` prop
 
 In the `build.gradle` file in the project root directory, find the `android` configuration block. Under the module `packagingOptions`, use the `exclude` attribute to specify the extension dynamic libraries you want to exclude. Refer to the following example to exclude specific extensions:
 
-```text
+```groovy
 android {
   // ...
   packagingOptions {
@@ -4114,31 +4518,31 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 1. Add the following script to the Podfile under the target section for the `agora_rtc_engine` dependency. This script marks unnecessary extensions as [weak frameworks](https://guides.cocoapods.org/syntax/podspec.html#weak_frameworks):
 
-   ```ruby
-   post_install do |installer|
-    installer.pods_project.targets.each do |target|
-     flutter_additional_ios_build_settings(target)
+  ```ruby
+  post_install do |installer|
+   installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
 
-     targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
-     # Add more -weak_framework flags for other unnecessary extensions if needed
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+    targets_to_weaklink=['Pods-Runner', "agora_rtc_engine"]
+    # Add more -weak_framework flags for other unnecessary extensions if needed
+    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
 
-     next unless targets_to_weaklink.include?(target.name)
+    next unless targets_to_weaklink.include?(target.name)
 
-     target.build_configurations.each do |config|
-      base_config_reference = config.base_configuration_reference
-      unless base_config_reference. nil?
-       xcconfig_path = base_config_reference.real_path
-       xcconfig = File.read(xcconfig_path)
-       frameworks_to_weaklink.each do |framework|
-        xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
-       end
-       File.open(xcconfig_path, "w") { |file| file << xcconfig }
+    target.build_configurations.each do |config|
+     base_config_reference = config.base_configuration_reference
+     unless base_config_reference. nil?
+      xcconfig_path = base_config_reference.real_path
+      xcconfig = File.read(xcconfig_path)
+      frameworks_to_weaklink.each do |framework|
+       xcconfig = xcconfig.gsub(/-framework "#{framework}"/, "-weak_framework \"#{framework}\"")
       end
+      File.open(xcconfig_path, "w") { |file| file << xcconfig }
      end
     end
    end
-   ```
+  end
+  ```
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
@@ -4146,15 +4550,15 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-     ```bash
-     $stderr.puts "Removing Unnecessary Frameworks"
-     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-     for framework in frameworks_to_weaklink
-       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-       `rm -Rf "#{framework_path}"`
-     end
-     ```
+    ```shell
+    $stderr.puts "Removing Unnecessary Frameworks"
+    # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+    frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+    for framework in frameworks_to_weaklink
+      framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+      `rm -Rf "#{framework_path}"`
+    end
+    ```
     The following figure shows the required steps:
 
     ![reduce app size step 2](/images/video-sdk/reduce-app-size-flutter-step-2.png)
@@ -4173,7 +4577,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -4211,7 +4619,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4248,8 +4659,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -4272,8 +4685,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -4296,8 +4711,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -4315,8 +4732,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -4336,7 +4755,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -4355,7 +4777,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -4372,7 +4797,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -4418,7 +4846,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -4440,9 +4871,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -4457,7 +4891,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -4473,7 +4910,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -4491,7 +4931,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4510,7 +4953,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -4681,7 +5127,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4700,7 +5149,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4717,7 +5169,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4735,6 +5190,10 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -4767,9 +5226,9 @@ Open the `Assets/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins` folder in Unity E
 
 - **iOS**: If your target platform is iOS, you can safely delete any unused `<*>Extension.framework` files located in the `iOS` folder of your project.
 
-- **macOS**: For macOS targets, you may delete any unused `<*>Extension.framework` files found in the `macOS/AgoraRtcWrapperUnity.bundle/Contents/Frameworks` path.
+- **macOS**: For macOS targets, you may delete any unused `<*>Extension.framework` files found in the `macOS/AgoraRtcWrapperUnity.bundle/Contents/Frameworks` path. 
 
-- **Windows**: If targeting Windows, you have the option to delete `<*>extension.dll` or `<*>extension.dll.lib` files located in the `x86` or `x86_64` folder.
+- **Windows**: If targeting Windows, you have the option to delete `<*>extension.dll` or `<*>extension.dll.lib` files located in the `x86` or `x86_64` folder. 
 
 Exercise caution when deleting files, and always make sure that any removals do not impact the functionality of your application.
 
@@ -4787,7 +5246,11 @@ Refer to the following information for an introduction to each Video SDK extensi
 :::note
 The information in this section is based on version 4.4.0 of the Video SDK.
 :::
-**AI Noise Suppression**
+
+<Accordions>
+
+<Accordion title="AI Noise Suppression">
+
 
 The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI ​​noise reduction extension, call the `setAINSMode` method to enable the AI ​​noise reduction function and select the noise reduction mode.
 
@@ -4825,7 +5288,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_ai_noise_suppression_ll_extension.dll` | 374 |
 | Windows | x86_64 | `libagora_ai_noise_suppression_ll_extension.dll` | 462 |
 
-**AI Echo Cancellation**
+</Accordion>
+
+<Accordion title="AI Echo Cancellation">
+
 
 Since version 4.1.0, the SDK provides an AI echo cancellation extension that preserves complete, clear, and smooth near-end human voice under poor echo-to-signal conditions. It significantly improves the system's echo cancellation and dual-talk performance, and brings users a more comfortable call and live broadcast experience. It is widely used in conferences, voice chats, karaoke, and other use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -4862,8 +5328,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAiEchoCancellationLLExtension.xcframework` | 480 |
 | Windows | x86 | `libagora_ai_echo_cancellation_ll_extension.dll` | 560 |
 | Windows | x86_64 | `libagora_ai_echo_cancellation_ll_extension.dll` | 734 |
+</Accordion>
 
-**Audio Beauty**
+<Accordion title="Audio Beauty">
+
 
 The Audio Beauty extension provides a series of preset vocal effects, and also supports custom vocal effects through pitch, sound balance, and reverberation settings. It is widely used in voice chat, PK live broadcast, K song room, music radio, and other use-cases. After integrating the Audio Beauty extension, call the following methods to enable the desired audio effect:
 
@@ -4886,8 +5354,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraAudioBeautyExtension.xcframework` | 1440 |
 | Windows | x86 | `libagora_audio_beauty_extension.dll` | 1756 |
 | Windows | x86_64 | `libagora_audio_beauty_extension.dll` | 1893 |
+</Accordion>
 
-**Video Enhancement**
+<Accordion title="Video Enhancement">
+
 
 The Video Enhancement extension provides basic beauty, video noise reduction, dark light enhancement, color enhancement, and other capabilities. After integrating the extension, call the following methods to enable the enhancement function you want:
 
@@ -4910,8 +5380,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraClearVisionExtension.xcframework` | 3264 |
 | Windows | x86 | `libagora_clear_vision_extension.dll` | 3002 |
 | Windows | x86_64 | `libagora_clear_vision_extension.dll` | 3327 |
+</Accordion>
 
-**Local Screenshot Upload**
+<Accordion title="Local Screenshot Upload">
+
 
 The Local Screenshot Upload extension enables you to take screenshots and upload videos sent by local users to meet the needs of video content moderation. After integrating the extension, call `enableContentInspect` to enable local screenshot upload.
 
@@ -4929,8 +5401,10 @@ The name of the extension for each platform and the increase in the size of your
 | macOS | x86_64 | `AgoraContentInspectExtension.xcframework` | 1264 |
 | Windows | x86 | `libagora_content_inspect_extension.dll` | 1386 |
 | Windows | x86_64 | `libagora_content_inspect_extension.dll` | 1542 |
+</Accordion>
 
-**Perceptual Video Coding (PVC)**
+<Accordion title="Perceptual Video Coding (PVC)">
+
 
 Perceptual Video Coding is a video encoding method that reduces bandwidth consumption while ensuring the same image quality. It improves video fluency in bandwidth-constrained use-cases and reduces data consumption in mobile network use-cases. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -4950,7 +5424,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_pvc_extension.dll` | 814 |
 | Windows | x86_64 | `libagora_pvc_extension.dll` | 974 |
 
-**Spatial Audio**
+</Accordion>
+
+<Accordion title="Spatial Audio">
+
 
 The Spatial Audio extension shapes the direction of the remote user's voice and simulates the propagation process of sound in 3D space. It enables the local user to hear the spatial audio of the remote user.
 
@@ -4969,7 +5446,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_spatial_audio_extension.dll` | 4279 |
 | Windows | x86_64 | `libagora_spatial_audio_extension.dll` | 4389 |
 
-**Virtual Background**
+</Accordion>
+
+<Accordion title="Virtual Background">
+
 
 After integrating the Virtual Background extension, call `enableVirtualBackground` to enable the virtual background. Use a custom background image or green screen to replace the local user's original background, or blur the background.
 
@@ -4986,7 +5466,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_segmentation_extension.dll` | 2159 |
 | Windows | x86_64 | `libagora_segmentation_extension.dll` | 2488 |
 
-**Copyright Music**
+</Accordion>
+
+<Accordion title="Copyright Music">
+
 
 Since version 4.1.0, the SDK provides a copyrighted music extension (DRM, Data Rights Management) to implement functions related to playing copyrighted music in real-time interactive use-cases, such as retrieving music resources, obtaining music charts and chart details, preloading and playing music resources, downloading lyrics and posters, etc. For details, see [v4.1.0 release notes](../../reference/release-notes).
 :::warning
@@ -5032,7 +5515,10 @@ The name of the extension for each platform and the increase in the size of your
 
 </Slot>
 
-**Face Detection**
+</Accordion>
+
+<Accordion title="Face Detection">
+
 
 Since version 4.1.1, the SDK provides a Face Detection extension, which uses an algorithm to identify faces or portraits, and uses higher quality encoding for the Region of Interest (ROI) area during the encoding process to achieve a clearer effect for faces or portraits. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::warning
@@ -5054,9 +5540,12 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_detection_extension.dll` | 867 |
 | Windows | x86_64 | `libagora_face_detection_extension.dll` | 1060 |
 
-**Face Capture**
+</Accordion>
 
-Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters.
+<Accordion title="Face Capture">
+
+
+Since version 4.3.0, the SDK provides a Face Capture extension for obtaining facial expressions, head rotation, head translation and other facial information. This information is useful to drive the expression changes and head displacement of virtual human characters. 
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -5071,7 +5560,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_face_capture_extension.dll` | 2322 |
 | Windows | x86_64 | `libagora_face_capture_extension.dll` | 2701 |
 
-**Super Resolution**
+</Accordion>
+
+<Accordion title="Super Resolution">
+
 
 After integrating the Super Resolution extension, call `enableRemoteSuperResolution` to improve the image resolution of the remote video.
 :::warning
@@ -5087,7 +5579,10 @@ The name of the extension for each platform and the increase in the size of your
 | iOS | arm64 | `AgoraSuperResolutionExtension.xcframework` | 161 |
 | iOS | armv7 | `AgoraSuperResolutionExtension.xcframework` | 165 |
 
-**Screen Sharing**
+</Accordion>
+
+<Accordion title="Screen Sharing">
+
 
 The Screen Sharing extension enables a local user to share their screen contents with other users to improve communication efficiency. For details, see [Screen Sharing](screen-sharing.mdx).
 
@@ -5105,7 +5600,10 @@ The library name and the size of the app after integration are shown in the foll
 | Windows | x86 | `libagora_screen_capture_extension.dll` | 1080 |
 | Windows | x86_64 | `libagora_screen_capture_extension.dll` | 1244 |
 
-**Video Quality Analyzer**
+</Accordion>
+
+<Accordion title="Video Quality Analyzer">
+
 
 Since version 4.1.0, the SDK provides a Video Quality Analyzer (VQA) extension, which simulates real-person subjective feelings to score video quality. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -5124,7 +5622,10 @@ The name of the extension for each platform and the increase in the size of your
 | Windows | x86 | `libagora_video_quality_analyzer_extension.dll` | 873 |
 | Windows | x86_64 | `libagora_video_quality_analyzer_extension.dll` | 1046 |
 
-**Video Encoding**
+</Accordion>
+
+<Accordion title="Video Encoding">
+
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
 :::note
@@ -5295,7 +5796,10 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
-**AV1 Stream Encoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Encoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Encoding extension that enables encoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -5314,7 +5818,10 @@ Starting with v4.6.2, to improve the video decoding experience, the `av1_decoder
 | Windows | x86 | `libagora_video_av1_encoder_extension.dll` | 1877 |
 | Windows | x86_64 | `libagora_video_av1_encoder_extension.dll` | 2064 |
 
-**AV1 Stream Decoding**
+</Accordion>
+
+<Accordion title="AV1 Stream Decoding">
+
 
 Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enables decoding of video streams in the AV1 format. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -5331,7 +5838,10 @@ Since version 4.3.0, the SDK includes an AV1 Stream Decoding extension that enab
 | Windows | x86 | `libagora_video_av1_decoder_extension.dll` | 1449 |
 | Windows | x86_64 | `libagora_video_av1_decoder_extension.dll` | 2289 |
 
-**Voice Driver**
+</Accordion>
+
+<Accordion title="Voice Driver">
+
 
 Since version 4.3.1, the SDK provides a Voice Driver extension that converts voice information into facial information corresponding to the mouth shape. You use this information to drive the virtual human face to make the mouth shape change corresponding to the voice. To use this feature, please [contact technical support](mailto:support@agora.io).
 
@@ -5349,4 +5859,8 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 ### Frequently asked questions
 
 - [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>

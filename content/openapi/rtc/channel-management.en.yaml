@@ -481,7 +481,13 @@ paths:
             - If the status code is not `200`, the request fails. See the `message` field in the
             response body for the reason for this failure. Refer to [Response status
             codes](../../response-status-code) for details.
-        - markdown: "### Synchronizing host online status"
+        - markdown: >-
+            ### Synchronizing host online status
+
+
+            To synchronize the online status of hosts, you can use this endpoint or the [query user
+            status](query-user-status) endpoint. This endpoint requires a lower call frequency and
+            offers higher efficiency, so Agora recommends it for this purpose.
           position: after-response-body
           title: Reference
       operationId: cma-query-host-list
@@ -963,7 +969,7 @@ paths:
           markdown: Use this endpoint to create a rule for banning specified user privileges.
         - title: Reference
           position: after-response-body
-          markdown: |
+          markdown: >
             ### Banning rule behavior
 
 
@@ -975,22 +981,42 @@ paths:
 
 
             | `ip` | `cname` | `uid` | Rule |
+
             |:----:|:-------:|:-----:|:-----|
-            | ✔ | ✘ | ✘ | All users with this `ip` cannot join any channel in the app. Using `ip` as a filter field may incorrectly block users who should not be blocked, for example, in a use-case where multiple users share an IP address. |
-            | ✘ | ✔ | ✘ | No one can join the channel specified by the `cname` field. Using `cname` as a filter field directly blocks the named channel. |
+
+            | ✔ | ✘ | ✘ | All users with this `ip` cannot join any channel in the app. Using `ip` as
+            a filter field may incorrectly block users who should not be blocked, for example, in a
+            use-case where multiple users share an IP address. |
+
+            | ✘ | ✔ | ✘ | No one can join the channel specified by the `cname` field. Using `cname`
+            as a filter field directly blocks the named channel. |
+
             | ✘ | ✘ | ✔ | The user with the `uid` cannot join any channel in the app. |
-            | ✘ | ✔ | ✔ | The user with the `uid` cannot join the channel specified by the `cname` field. |
+
+            | ✘ | ✔ | ✔ | The user with the `uid` cannot join the channel specified by the `cname`
+            field. |
+
 
 
             **When `privileges` is `publish_audio` or `publish_video`:**
 
 
             | `ip` | `cname` | `uid` | Rule |
+
             |:----:|:-------:|:-----:|:-----|
-            | ✔ | ✘ | ✘ | The users with this `ip` cannot publish audio or video in any channel of the app. |
-            | ✘ | ✔ | ✘ | No one can publish audio or video in the channel specified by the `cname` field. |
-            | ✘ | ✘ | ✔ | The user with the `uid` cannot publish audio or video in any channel of the app. |
-            | ✘ | ✔ | ✔ | The user with the `uid` cannot publish audio or video in the channel specified by the `cname` field. |
+
+            | ✔ | ✘ | ✘ | The users with this `ip` cannot publish audio or video in any channel of
+            the app. |
+
+            | ✘ | ✔ | ✘ | No one can publish audio or video in the channel specified by the `cname`
+            field. |
+
+            | ✘ | ✘ | ✔ | The user with the `uid` cannot publish audio or video in any channel of
+            the app. |
+
+            | ✘ | ✔ | ✔ | The user with the `uid` cannot publish audio or video in the channel
+            specified by the `cname` field. |
+
 
 
             ### Client callbacks for `join_channel` bans

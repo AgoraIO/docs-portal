@@ -1584,6 +1584,8 @@ describe('DocsShell', () => {
     renderDocsShell({ layoutMode: 'docs', hideToc: true });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
 
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
@@ -1594,6 +1596,8 @@ describe('DocsShell', () => {
       'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
     expect(docsBodyShell).not.toHaveClass('max-w-[min(100%,1600px)]');
+    expect(pageFooter).toHaveClass('max-w-none');
+    expect(pageFooter).not.toHaveClass('max-w-[var(--content-max)]');
   });
 
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {

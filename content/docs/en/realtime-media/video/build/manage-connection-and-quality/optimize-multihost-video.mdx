@@ -3,13 +3,15 @@ title: "Optimize video experience in multi-host scenarios"
 description: "Video experience optimization when multiple hosts are streaming."
 ---
 
+<PlatformStructured platform="android">
+
 In multi-host streaming scenarios where 4 or more hosts stream videos simultaneously, users with the audience role face the following challenges:
 
 - **Device performance and bandwidth pressure**: Subscribing to multiple video streams can put significant pressure on device performance and downstream bandwidth, especially for mid-to-low-end devices. Audience members might experience lag or frame drops, leading to a suboptimal viewing experience.
 
 - **Flexible layout needs**: A custom video layout is often required, allowing viewers to adjust the position of each host's video to suit their individual preferences.
 
-- **Window switching and zooming**: With multiple hosts, the video size of each host may be limited. Flexible switching, and resizing allow for a more personalized "thousand people, thousand faces" viewing experience.
+- **Window switching and zooming**: With multiple hosts, the video size of each host may be limited. Flexible switching and resizing allow for a more personalized viewing experience.
 
 Agora offers a video experience optimization solution for multi-host video scenarios through a client-customized composite layout, designed to enhance user experience by focusing on smooth, personalized viewing.
 
@@ -33,40 +35,31 @@ After the audience receives the transcoded composite video stream, the custom co
 
 Make sure you have:
 
-- Implemented basic real-time audio and video functionality with SDK version 4.5 or later. See the [SDK quickstart](/en/realtime-media/video/quickstart).
+- Implemented basic real-time audio and video functionality with SDK version 4.5 or later. See the [SDK quickstart](/en/realtime-media/video/get-started-sdk).
 - Implemented [Cloud Transcoding](/en/realtime-media/transcoding) to forward composite video to other channels. Make sure you set the following parameters when you configure transcoding:
 
-    ```json
-    "outputs": [
-      {
-        "seiOption": {
-          "source": {
-            "agora": {
-              "uidvideoLayout": true
-            }
-          },
-          "sink": {
-            "type": 100
+  ```json
+  "outputs": [
+    {
+      "seiOption": {
+        "source": {
+          "agora": {
+            "uidvideoLayout": true
           }
+        },
+        "sink": {
+          "type": 100
         }
       }
-    ]
-    ```
+    }
+  ]
+  ```
 
 ## Implementation
 
 This section explains how to implement a client-customized composite layout, with the API call sequence illustrated in the diagram.
 
 ![Multihost workflow](/images/video-sdk/multihost-workflow.svg)
-
-<Tabs defaultValue="android" groupId="platform">
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
 
 To implement a client-customized composite layout for the audience, follow these steps:
 
@@ -90,10 +83,8 @@ To implement a client-customized composite layout for the audience, follow these
    - `subviewUid`: The user ID corresponding to a specific sub-stream within the composite stream.
 
    :::info
-
    - When `subviewUid` is not `0`, the default value of `setupMode` is `VIEW_SETUP_MODE_REPLACE` (add a view).
    - If `subviewUid` is set, the setting of `rect` does not take effect.
-
    :::
 
    Use the following sample code as a reference for calling `setupRemoteVideoEx` in a multi-channel scenario. Calling `setupRemoteVideo` in a single-channel scenario is similar.
@@ -150,23 +141,23 @@ To implement a client-customized composite layout for the audience, follow these
 4. When the layout of the composite stream changes, the `onTranscodedStreamLayoutInfo` callback fires again. Each time it fires, call `setupRemoteVideo` with the updated information to adjust the local rendering layout.
 
    :::info
-
    Layout changes can occur in the following situations:
 
    - The coordinates of a sub-stream on the composite canvas change.
    - The width or height of the composite stream or a sub-stream changes.
    - The state of a sub-stream changes. When the host publishing a sub-stream leaves the channel, the `videoState` parameter for that sub-stream changes from `0` (normal) to `1` (no video available). To stop rendering that host's video, call `setupRemoteVideo` with `subviewUid` set to that host's user ID and `setupMode` set to `VIEW_SETUP_MODE_REMOVE`.
-
    :::
 
 5. Listen for the `onUserOffline` callback. When the user forwarding the composite stream leaves the channel, stop rendering the composite stream on the receiving end.
 
-:::caution[Note]
-
+:::warning[Note]
 - Client-customized composite layout is currently supported on mobile platforms only.
 - If a watermark is applied to the composite stream, the watermark renders within its designated region and may appear split across sub-stream boundaries.
-
 :::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
 
 ### API reference
 
@@ -174,9 +165,65 @@ To implement a client-customized composite layout for the audience, follow these
 - [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setupremotevideo)
 - [`setupRemoteVideoEx`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineex.html#api_irtcengineex_setupremotevideoex)
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="ios">
+<PlatformStructured platform="ios">
+
+In multi-host streaming scenarios where 4 or more hosts stream videos simultaneously, users with the audience role face the following challenges:
+
+- **Device performance and bandwidth pressure**: Subscribing to multiple video streams can put significant pressure on device performance and downstream bandwidth, especially for mid-to-low-end devices. Audience members might experience lag or frame drops, leading to a suboptimal viewing experience.
+
+- **Flexible layout needs**: A custom video layout is often required, allowing viewers to adjust the position of each host's video to suit their individual preferences.
+
+- **Window switching and zooming**: With multiple hosts, the video size of each host may be limited. Flexible switching and resizing allow for a more personalized viewing experience.
+
+Agora offers a video experience optimization solution for multi-host video scenarios through a client-customized composite layout, designed to enhance user experience by focusing on smooth, personalized viewing.
+
+This solution is ideal for scenarios such as:
+
+- Team battle PK
+- Multi-person conference
+- Online education for large classes
+
+## Understand the tech
+
+The following figure shows how the client-customized composite layout is used in conjunction with the Cloud Transcoding service:
+
+![Multihost video streaming optimization](/images/video-sdk/multihost-video-optimization.png)
+
+After the audience receives the transcoded composite video stream, the custom composite layout is implemented locally as follows:
+
+![Multihost composite layout](/images/video-sdk/multihost-composite-layout.png)
+
+## Prerequisites
+
+Make sure you have:
+
+- Implemented basic real-time audio and video functionality with SDK version 4.5 or later. See the [SDK quickstart](/en/realtime-media/video/get-started-sdk).
+- Implemented [Cloud Transcoding](/en/realtime-media/transcoding) to forward composite video to other channels. Make sure you set the following parameters when you configure transcoding:
+
+  ```json
+  "outputs": [
+    {
+      "seiOption": {
+        "source": {
+          "agora": {
+            "uidvideoLayout": true
+          }
+        },
+        "sink": {
+          "type": 100
+        }
+      }
+    }
+  ]
+  ```
+
+## Implementation
+
+This section explains how to implement a client-customized composite layout, with the API call sequence illustrated in the diagram.
+
+![Multihost workflow](/images/video-sdk/multihost-workflow.svg)
 
 To implement a client-customized composite layout for the audience, follow these steps:
 
@@ -201,10 +248,8 @@ To implement a client-customized composite layout for the audience, follow these
    - `subviewUid`: The user ID corresponding to a specific sub-stream within the composite stream.
 
    :::info
-
    - When `subviewUid` is not `0`, the default value of `setupMode` is `.replace` (add a view).
    - If `subviewUid` is set, the setting of `cropArea` does not take effect.
-
    :::
 
    Use the following sample code as a reference for calling `setupRemoteVideoEx` in a multi-channel scenario. Calling `setupRemoteVideo` in a single-channel scenario is similar.
@@ -257,23 +302,23 @@ To implement a client-customized composite layout for the audience, follow these
 4. When the layout of the composite stream changes, the `didTranscodedStreamLayoutInfoUpdatedWithUserId` callback fires again. Each time it fires, call `setupRemoteVideo` with the updated information to adjust the local rendering layout.
 
    :::info
-
    Layout changes can occur in the following situations:
 
    - The coordinates of a sub-stream on the composite canvas change.
    - The width or height of the composite stream or a sub-stream changes.
    - The state of a sub-stream changes. When the host publishing a sub-stream leaves the channel, the `videoState` parameter for that sub-stream changes from `0` (normal) to `1` (no video available). To stop rendering that host's video, call `setupRemoteVideo` with `subviewUid` set to that host's user ID and `setupMode` set to `.remove`.
-
    :::
 
 5. Listen for the `didOfflineOfUid` callback. When the user forwarding the composite stream leaves the channel, stop rendering the composite stream on the receiving end.
 
-:::caution[Note]
-
+:::warning[Note]
 - Client-customized composite layout is currently supported on mobile platforms only.
 - If a watermark is applied to the composite stream, the watermark renders within its designated region and may appear split across sub-stream boundaries.
-
 :::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
 
 ### API reference
 
@@ -281,9 +326,65 @@ To implement a client-customized composite layout for the audience, follow these
 - [`setupRemoteVideo(_:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideo(_:))
 - [`setupRemoteVideoEx(_:connection:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setupremotevideoex(_:connection:))
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
+
+In multi-host streaming scenarios where 4 or more hosts stream videos simultaneously, users with the audience role face the following challenges:
+
+- **Device performance and bandwidth pressure**: Subscribing to multiple video streams can put significant pressure on device performance and downstream bandwidth, especially for mid-to-low-end devices. Audience members might experience lag or frame drops, leading to a suboptimal viewing experience.
+
+- **Flexible layout needs**: A custom video layout is often required, allowing viewers to adjust the position of each host's video to suit their individual preferences.
+
+- **Window switching and zooming**: With multiple hosts, the video size of each host may be limited. Flexible switching and resizing allow for a more personalized viewing experience.
+
+Agora offers a video experience optimization solution for multi-host video scenarios through a client-customized composite layout, designed to enhance user experience by focusing on smooth, personalized viewing.
+
+This solution is ideal for scenarios such as:
+
+- Team battle PK
+- Multi-person conference
+- Online education for large classes
+
+## Understand the tech
+
+The following figure shows how the client-customized composite layout is used in conjunction with the Cloud Transcoding service:
+
+![Multihost video streaming optimization](/images/video-sdk/multihost-video-optimization.png)
+
+After the audience receives the transcoded composite video stream, the custom composite layout is implemented locally as follows:
+
+![Multihost composite layout](/images/video-sdk/multihost-composite-layout.png)
+
+## Prerequisites
+
+Make sure you have:
+
+- Implemented basic real-time audio and video functionality with SDK version 4.5 or later. See the [SDK quickstart](/en/realtime-media/video/get-started-sdk).
+- Implemented [Cloud Transcoding](/en/realtime-media/transcoding) to forward composite video to other channels. Make sure you set the following parameters when you configure transcoding:
+
+  ```json
+  "outputs": [
+    {
+      "seiOption": {
+        "source": {
+          "agora": {
+            "uidvideoLayout": true
+          }
+        },
+        "sink": {
+          "type": 100
+        }
+      }
+    }
+  ]
+  ```
+
+## Implementation
+
+This section explains how to implement a client-customized composite layout, with the API call sequence illustrated in the diagram.
+
+![Multihost workflow](/images/video-sdk/multihost-workflow.svg)
 
 To implement a client-customized composite layout for the audience, follow these steps:
 
@@ -308,10 +409,8 @@ To implement a client-customized composite layout for the audience, follow these
    - `renderMode`: Set to `RenderModeType.renderModeFit`.
 
    :::info
-
    - When `subviewUid` is not `0`, the default value of `setupMode` is `VideoViewSetupMode.videoViewSetupReplace` (add a view).
    - If `subviewUid` is set, the setting of `cropArea` does not take effect.
-
    :::
 
    The following sample code demonstrates this in a multi-channel scenario. The usage in a single-channel scenario is similar.
@@ -378,23 +477,23 @@ To implement a client-customized composite layout for the audience, follow these
 4. When the layout of the composite stream changes, the `onTranscodedStreamLayoutInfo` callback fires again. Each time it fires, update your widget state with the new layout list and rebuild the `AgoraVideoView` widgets to reflect the updated layout.
 
    :::info
-
    Layout changes can occur in the following situations:
 
    - The coordinates of a sub-stream on the composite canvas change.
    - The width or height of the composite stream or a sub-stream changes.
    - The state of a sub-stream changes. When the host publishing a sub-stream leaves the channel, the `videoState` parameter for that sub-stream changes from `0` (normal) to `1` (no video available). Remove the corresponding `AgoraVideoView` from the widget tree to stop rendering that host's video.
-
    :::
 
 5. Listen for the `onUserOffline` callback. When the user forwarding the composite stream leaves the channel, clear the layout list and stop rendering the composite stream.
 
-:::caution[Note]
-
+:::warning[Note]
 - Client-customized composite layout is currently supported on mobile platforms only.
 - If a watermark is applied to the composite stream, the watermark renders within its designated region and may appear split across sub-stream boundaries.
-
 :::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
 
 ### API reference
 
@@ -402,5 +501,4 @@ To implement a client-customized composite layout for the audience, follow these
 - [`setupRemoteVideo`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setupremotevideo)
 - [`setupRemoteVideoEx`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineex.html#api_irtcengineex_setupremotevideoex)
 
-</TabsContent>
-</Tabs>
+</PlatformStructured>

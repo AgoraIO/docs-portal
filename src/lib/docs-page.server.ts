@@ -351,6 +351,9 @@ export async function loadDocsPagePayload(
       }
     : {
         contentPath: page.path,
+        ...('hidePlatformTabs' in page.data && page.data.hidePlatformTabs
+          ? { hidePlatformTabs: true }
+          : {}),
         kind: 'mdx' as const,
         ...(structuredPlatformTabs
           ? {
@@ -1496,7 +1499,7 @@ function buildAiProductSidebar(
   const serverSdkTypescriptPage = {
     id: serverSdkTypescriptUrl,
     linked: true,
-    title: isZhCn ? 'Server SDK API' : 'Server SDK API',
+    title: isZhCn ? 'Agora Agent SDK' : 'Agora Agent SDK',
     type: 'page',
     url: serverSdkTypescriptUrl,
   } satisfies DocsSidebarPageNode;

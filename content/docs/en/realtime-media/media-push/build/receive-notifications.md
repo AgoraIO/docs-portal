@@ -281,7 +281,7 @@ The following sample code uses `crypto/sha1`.
 
 To add signature verification to your server, take the following steps:
 
-1. In the `main.go` file, replace your imports with with the following:
+1. In the `main.go` file, replace your imports with the following:
 
     ```go
     import (
@@ -513,7 +513,7 @@ The `eventType` is`1 (Converter Created)`. The following is an example the `payl
       - `idleTimeOut`: Number type field. The maximum time (s) that the Converter is idle. Idle means that all users of the corresponding media streams processed by the Converter have left the channel. After the idle state exceeds the set idleTimeOut, the Converter is destroyed automatically.
       - `createTs`: Number type field. The Unix timestamp (s) when the Converter was created.
       - `updateTs`: Number type field. The Unix timestamp (s)  when the Converter configurationwas last updated.
-      - `state`: String type field. The status of the Converter. If if the state is reported `"connecting"`, the Converter is connecting to the Agora server.
+      - `state`: String type field. The status of the Converter. If the state is reported `"connecting"`, the Converter is connecting to the Agora server.
 - `lts`: Number type field. The Unix timestamp (ms) when the event occurred on the Agora server.
 - `xRequestId`: String type field, which identifies the UUID (Universal Unique Identifier) of this request. This is the same as the `X-Request-ID` field in the request header.
 
