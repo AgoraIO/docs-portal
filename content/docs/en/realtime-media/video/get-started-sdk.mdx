@@ -3053,7 +3053,7 @@ startBasicCall();
 
 
 
-### Create a user interface​
+### Create a user interface
 
 Open `index.html` in the project's root folder and replace the contents with the following code to implement a basic client user interface:
 
@@ -3599,7 +3599,7 @@ To display the remote user's video:
 
 ### Leave the channel
 
-When a user ends a call, or closes the client  call `leaveChannel` to exit the current channel.
+When a user ends a call, or closes the client call `leaveChannel` to exit the current channel.
 
 
 To stop the local video preview and clear the view:
@@ -5015,8 +5015,8 @@ The following figure illustrates the essential steps:
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
-### Import package​s
-Import the following package​s in your dart file.
+### Import packages
+Import the following packages in your dart file.
 
 ```dart
 import 'dart:async';
@@ -5171,7 +5171,7 @@ Widget _remoteVideo() {
 ```
 
 
-### Handle permissions​
+### Handle permissions
 
 
 Request microphone and camera permissions for Video Calling.
@@ -5474,7 +5474,7 @@ Take the following steps to test the sample code:
 
 3. Launch the App, grant microphone and camera permissions. If you set the user role to host, you see yourself in the local view.
 
-1. On a second target device, repeat the previous steps to install and launch the client.  Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
+1. On a second target device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
@@ -6562,7 +6562,7 @@ To manage and display the list of remote users connected to a channel, use the `
     ```
 
 
-### Leave the channel​
+### Leave the channel
 
 To leave a channel, destroy the component, close the browser window, or refresh the browser tab. The `useJoin` hook automatically handles the destruction of the React component.
 
@@ -6866,7 +6866,7 @@ Before proceeding, create and set up a script to implement Video Calling and bin
     In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
 
 
-### Import Agora classes​
+### Import Agora classes
 
 Import the `Agora.Rtc` namespace, which contains various classes and interfaces required to implement real-time audio and video functions.
 
@@ -7351,7 +7351,7 @@ public class JoinChannelVideo : MonoBehaviour
 
 ### Create a user interface
 
-Follow these steps to set up a basic UI for your project or to integrate essential UI elements into your existing interface.  A basic UI consists of the following components:
+Follow these steps to set up a basic UI for your project or to integrate essential UI elements into your existing interface. A basic UI consists of the following components:
 
 
 * Local view window
@@ -7808,7 +7808,7 @@ The Video SDK provides an interface for subscribing to channel events. To use it
 
 
 
- ### Handle permissions​
+ ### Handle permissions
 
 To access the media devices, follow the steps for your target platform:
 
@@ -8418,7 +8418,7 @@ This section guides you through the implementation of basic real-time audio and 
     ![](/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
 
-### Implement basic processes​
+### Implement basic processes
 In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Video Calling logic:
 
 ![](/images/video-sdk/quickstart-implementation-blueprint-2.png)
@@ -8482,7 +8482,7 @@ If your target platform is Android, create this node to check system permissions
 \* Native nodes are nodes that come with the blueprint and can be added and called directly.<br />
 \** Custom nodes are not included in the blueprint. You create a custom function before you can add the corresponding node.
 
-### Add channel-related variables​
+### Add channel-related variables
 Add variables to create an engine instance and join a channel.
 
 1. Create three variables:
@@ -8493,7 +8493,7 @@ Add variables to create an engine instance and join a channel.
 
     ![](/images/video-sdk/quickstart-implementation-blueprint-4.png)
 
-### Initialize RTC engine​
+### Initialize RTC engine
 
 1. If your target platform is Android, check whether system permissions have been granted before initializing the RTC engine. Refer to the following figure to create nodes for adding permissions to access the microphone and camera in the **CheckPermission** function.
 
@@ -8560,7 +8560,7 @@ Add variables to create an engine instance and join a channel.
 
 
 
-### Bind UI events​
+### Bind UI events
 
 To bind UI events:
 
@@ -8596,7 +8596,7 @@ You can also bind UI events in Unreal Motion Graphics (UMG). This document only 
 :::
 
 
-### Set up local and remote views​
+### Set up local and remote views
 
 1. Create and implement the **MakeVideoView** function to load the view when local or remote users join the channel:
 
@@ -8615,7 +8615,7 @@ You can also bind UI events in Unreal Motion Graphics (UMG). This document only 
     1. Release the remote view.
 
 
-### Implement callback function​
+### Implement callback function
 
 Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback functions as follows:
 
@@ -8641,7 +8641,7 @@ Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUs
 
 
 
-### Leave the channel and release resources​
+### Leave the channel and release resources
 
 To leave the channel, implement the following steps:
 

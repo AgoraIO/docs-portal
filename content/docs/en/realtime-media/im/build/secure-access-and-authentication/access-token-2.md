@@ -3,14 +3,14 @@ title: "Update the token-based authentication mechanism"
 description: "Describes how to build and update the token-based authentication mechanism step-by-step."
 ---
 
-If you integrate the Chat SDK and Agora  at the same time, Agora recommends you update the token-based authentication mechanism from [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to [AccessToken2](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken2.h). 
+If you integrate the Chat SDK and Agora RTC SDK at the same time, Agora recommends you update the token-based authentication mechanism from [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to [AccessToken2](https://github.com/AgoraIO/Tools/blob/release/accesstoken2/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken2.h).
 
 This document uses the JAVA server and the Web client as examples to guide you how to build and update the token-based authentication mechanism step-by-step. 
 
 ## Prerequisites 
 - You have built a token server based on Spring Framework and a Web client using Chat according to [Authenticate Your Users with Tokens](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
-- You have added the  Token service based on [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to the token server of Chat. To do this, in `AgoraChatTokenController.java` file, import the `RtcTokenBuilder` with `import com.agora.chat.token.io.agora.media.RtcTokenBuilder;` and add the following method: 
+- You have added the RTC Token service based on [AccessToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/AccessToken.h) to the token server of Chat. To do this, in `AgoraChatTokenController.java` file, import the `RtcTokenBuilder` with `import com.agora.chat.token.io.agora.media.RtcTokenBuilder;` and add the following method:
 
   ```java
   // Generate  AccessToken
@@ -38,8 +38,8 @@ This document uses the JAVA server and the Web client as examples to guide you h
       return builder.buildTokenWithUid(appid, appcert, rtcChannelName, rtcUserId, rtcRole, expire);
   }
   ```
-- You have added the authentication logic to the client using the using the . To do this, create a `agoraRtcTokenClient` folder with the following two files: 
-  - `index.html  `：
+- You have added the authentication logic to the client using the RTC SDK. To do this, create a `agoraRtcTokenClient` folder with the following two files:
+  - `index.html`:
 
     ```html
     
@@ -56,7 +56,7 @@ This document uses the JAVA server and the Web client as examples to guide you h
     
     ```
   
-  - `client.js`. Replace `` with your App ID. 
+  - `client.js`. Replace `appId` with your App ID.
   
     ```javascript
     var rtc = {
@@ -216,22 +216,22 @@ This section introduces token generator libraries, version requirements, and rel
 
 ### SDK compatibility for AccessToken2
 
-AccessToken2 supports the following versions of the Agora ：
+AccessToken2 supports the following versions of the Agora SDKs:
 
 | SDK                | First SDK version to support AccessToken2 |
 | :------------------- | :------------------------------- |
 |  Native SDK       | 3.5.2                            |
-|  ELectron SDK     | 3.5.2                            |
+|  Electron SDK     | 3.5.2                            |
 |  Unity SDK        | 3.5.2                            |
 |  React Native SDK | 3.5.2                            |
 |  Flutter SDK      | 4.2.0                            |
 |  Web SDK          | 4.8.0                            |
 |  WeChat Mini Program SDK   | Not supported                    |
 
- SDKs that use AccessToken2 can interoperate with  SDKs that use AccessToken. Also, the  that supports AccessToken2 also supports AccessToken. 
+SDKs that use AccessToken2 can interoperate with SDKs that use AccessToken. Also, the SDKs that support AccessToken2 also support AccessToken.
 
 :::info
-If you use other  extentions, such as Agora Cloud Recording and Media Push, contact [support@agora.io](mailto:support@agora.io) for technical support before upgrading to AccessToken2. 
+If you use other extensions, such as Agora Cloud Recording and Media Push, contact [support@agora.io](mailto:support@agora.io) for technical support before upgrading to AccessToken2.
 :::
 
 ### Token generator libraries
@@ -280,23 +280,23 @@ Take Java as an example:
 public String buildTokenWithUid(String appId, String appCertificate, String channelName, int uid, int tokenExpire, int joinChannelPrivilegeExpire, int pubAudioPrivilegeExpire, int pubVideoPrivilegeExpire, int pubDataStreamPrivilegeExpire) 
 ```
 
-This method generates an  AccessToken2 and supports configuring the following privileges:
+This method generates an AccessToken2 and supports configuring the following privileges:
 
 - The expiration time of AccessToken2
-- Joining an  channel
-- Publishing audio in an  channel
-- Publishing video in an  channel
-- Publishing data stream in an  channel
+- Joining an RTC channel
+- Publishing audio in an RTC channel
+- Publishing video in an RTC channel
+- Publishing data stream in an RTC channel
 
-The privileges of publishing audio in an  channel, publishing video in an  channel, and publishing data stream in an  channel only take effect after enabling co-host authentication. 
+The privileges of publishing audio in an RTC channel, publishing video in an RTC channel, and publishing data stream in an RTC channel only take effect after enabling co-host authentication.
 
-You can assign multiple privileges to a user. The maximum valid period of each privilege is 24 hours. When a privilege is about to expire or has expired, the  triggers the `onTokenPriviegeWillExpire` callback or the `onRequestToken` callback. You need to take the following actions in your own app logic:
+You can assign multiple privileges to a user. The maximum valid period of each privilege is 24 hours. When a privilege is about to expire or has expired, the SDK triggers the `onTokenPriviegeWillExpire` callback or the `onRequestToken` callback. You need to take the following actions in your own app logic:
 
 1. Tag the type of privilege which is about to expire or has expired in your app logic.
 2. The app fetches a new AccessToken2 from the token server.
 3. The SDK calls `renewToken` to renew the AccessToken2, or `joinChannel`to rejoin the channel.  
 
-You need to set an appropriate expiration timestamp. For example, if the expiration time of joining a channel is earlier than that of publishing audio in the channel, when the privilege of joining a channel expires, the user is kicked out of the  channel. Even if the privilege of publishing audio is still valid, the privilege does not mean anything for the user. 
+You need to set an appropriate expiration timestamp. For example, if the expiration time of joining a channel is earlier than that of publishing audio in the channel, when the privilege of joining a channel expires, the user is kicked out of the RTC channel. Even if the privilege of publishing audio is still valid, the privilege does not mean anything for the user.
 
 | Parameter                      | Description                                                  |
 | :----------------------------- | :----------------------------------------------------------- |

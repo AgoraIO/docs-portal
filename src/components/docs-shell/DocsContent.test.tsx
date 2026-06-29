@@ -972,14 +972,11 @@ describe('DocsTableOfContents', () => {
       screen.getByRole('link', { name: 'Edit this page' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs',
+      'https://github.com/AgoraIO/docs-portal/tree/main/content/docs',
     );
     expect(
       screen.getByRole('link', { name: 'View on GitHub' }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/Shengwang-Community/docs-portal',
-    );
+    ).toHaveAttribute('href', 'https://github.com/AgoraIO/docs-portal');
   });
 
   it('keeps mobile heading links interactive and collapses after a selection', async () => {
@@ -1614,9 +1611,7 @@ describe('DocsPageFeedback placement', () => {
     const issueBody = new URL(href).searchParams.get('body') ?? '';
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(href).toContain(
-      'https://github.com/Shengwang-Community/docs-portal/issues/new',
-    );
+    expect(href).toContain('https://github.com/AgoraIO/docs-portal/issues/new');
     expect(issueBody).toContain(
       'Page: http://localhost:3000/en/introduction/about-agora?platform=web#what-is',
     );

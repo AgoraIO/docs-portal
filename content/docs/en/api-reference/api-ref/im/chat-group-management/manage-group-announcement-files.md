@@ -57,9 +57,9 @@ Authorization: Bearer ${YourAppToken}
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
-## Retrieving the  announcement
+## Retrieving the group announcement
 
-Retrieves the announcement of the specified .
+Retrieves the announcement of the specified group.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -125,9 +125,9 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 }
 ```
 
-## Modifying the  announcement
+## Modifying the group announcement
 
-Modifies the announcement of the specified . The group announcement cannot exceed 512 characters.
+Modifies the announcement of the specified group. The group announcement cannot exceed 512 characters.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -201,9 +201,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Retrieving the  shared files
+## Retrieving the group shared files
 
-Retrieves the shared files of the specified  with pagination. Each page can have a maximum of 1000 shared files.
+Retrieves the shared files of the specified with pagination. Each page can have a maximum of 1000 shared files.
 
 After successfully calling this method, you can get the `file_id` from the response, which is the unique file ID that identifies the shared file. This field can be used to specify a shared file when you download or remove it.
 
@@ -242,10 +242,10 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 
 | Parameter | Type | Description |
 | :--------- | :----- | :----------------------------------------------------------- |
-| `file_id` | String | The ID of the  shared file. This field is required if you want to download or remove a group's shared files. |
-| `file_name` | String | The name of the  shared file. |
+| `file_id` | String | The ID of the group shared file. This field is required if you want to download or remove a group's shared files. |
+| `file_name` | String | The name of the group shared file. |
 | `file_owner` | String | The ID of the user uploading the shared file. |
-| `file_size` | Number | The size of the  shared file, in bytes. |
+| `file_size` | Number | The size of the group shared file, in bytes. |
 | `created` | Long | The Unix timestamp for uploading the group shared file. |
 
 For other fields and descriptions, see [Common parameter](#param).
@@ -299,9 +299,9 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 }
 ```
 
-## Uploading a  shared file
+## Uploading a group shared file
 
-Uploads a  shared file. This shared file cannot exceed 10 MB.
+Uploads a group shared file. This shared file cannot exceed 10 MB.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -377,9 +377,9 @@ curl -X POST 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files' -H 'A
 }
 ```
 
-## Downloading the  shared file
+## Downloading the group shared file
 
-Downloads a shared file of the . You can get the file ID (`file_id`) from the response body of [Retrieving the  shared files](#getall).
+Downloads a shared file of the group. You can get the file ID (`file_id`) from the response body of [Retrieving the group shared files](#getall).
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -425,9 +425,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 
 The response contains only the content of the uploaded file. For example, the content of the uploaded file is `Hello world`, the response only contains `Hello world`.
 
-## Deleting a  shared file
+## Deleting a group shared file
 
-Deletes a  shared file. You can get the file ID (`file_id`) from the response body of [Retrieving the  shared files](#getall).
+Deletes a group shared file. You can get the file ID (`file_id`) from the response body of [Retrieving the group shared files](#getall).
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -457,12 +457,12 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 
 #### Response body
 
-If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body  contains the following parameters.
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the following parameters.
 
 | Parameter | Type | Description |
 | :------- | :------ | :----------------------------------------------------------- |
 | `group_id` | String | The group ID. |
-| `file_id` | String | The ID of the  shared file. This field is required if you want to download or remove a shared files. |
+| `file_id` | String | The ID of the group shared file. This field is required if you want to download or remove a shared file. |
 | `result` | Boolean | The result of deleting the file: true: Success.false: Failure. |
 
 For other fields and descriptions, see [Common parameter](#param).

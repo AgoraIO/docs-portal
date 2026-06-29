@@ -3,7 +3,7 @@ title: "Create, delete, and retrieve chat groups"
 description: "Shows how to create, retrieve, modify, and delete a group by calling Agora Chat RESTful APIs."
 ---
 
-Upon login to the Chat, you can create, modify, or delete a .
+Upon login to Chat, you can create, modify, or delete a group.
 
 This page shows how to create, retrieve, modify, and delete a group by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
@@ -61,7 +61,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Creating a group
 
-Creates a new  and sets the group information. The group information includes the group name, description, whether the group is public or private, the maximum number of group members (including the group owner), whether a user requesting to join the group requires approval, the group owner, and group members.
+Creates a new group and sets the group information. The group information includes the group name, description, whether the group is public or private, the maximum number of group members (including the group owner), whether a user requesting to join the group requires approval, the group owner, and group members.
 
 ### HTTP request
 
@@ -89,19 +89,19 @@ For the descriptions of other path parameters, see [Common Parameters](#param).
 | `avatar` | String | The group avatar URL. It cannot exceed 1024 characters. | No |
 | `description` | String | The group description. It cannot exceed 512 characters. | No |
 | `public` | Boolean | Whether the group is a public group. Public groups can be searched and chat users can apply to join a public group. Private groups cannot be searched, and chat users can join a private group only if the group owner or admin invites the user to join the group.`true`: Yes`false`: No | No |
-| `maxusers` | String | The maximum number of group members (including the group owner). The default value is `200`. If you set this parameter to a value greater than `3000`, the offline push function is not available to such a large group. To enable the offline push function for a large group, contact [support@agoro.io](mailto:support@agoro.io) before creating it. Note that it is impossible to enable the offline push function for a large group that is created. The upper limit varies with your price plans. For details, see [Pricing Plan Details](./agora_chat_plan#group). | No |
-| `allowinvites` | Boolean | Whether a regular group member is allowed to invite other users to join the .`true`: Yes.`false`: (Default) No. Only the group owner or admin can invite other users to join the .  When creating a group, this parameter is only valid for private groups and not for public groups. That is to say, when creating a public group (`public` is set to `true`), even if `allowinvites` is set to `true`, this setting will be automatically modified to `false`. If you want to allow ordinary members of a public group to add people to the group, you can call the [Modify Group Information](#Modify Group Information) interface to modify the setting of `allowinvites` to `true` after creating the group.| No |
+| `maxusers` | String | The maximum number of group members (including the group owner). The default value is `200`. If you set this parameter to a value greater than `3000`, the offline push function is not available to such a large group. To enable the offline push function for a large group, contact [support@agora.io](mailto:support@agora.io) before creating it. Note that it is impossible to enable the offline push function for a large group that is created. The upper limit varies with your price plans. For details, see [Pricing Plan Details](./agora_chat_plan#group). | No |
+| `allowinvites` | Boolean | Whether a regular group member is allowed to invite other users to join the group.`true`: Yes.`false`: (Default) No. Only the group owner or admin can invite other users to join the group. When creating a group, this parameter is only valid for private groups and not for public groups. That is to say, when creating a public group (`public` is set to `true`), even if `allowinvites` is set to `true`, this setting will be automatically modified to `false`. If you want to allow ordinary members of a public group to add people to the group, you can call the [Modify Group Information](#Modify Group Information) interface to modify the setting of `allowinvites` to `true` after creating the group.| No |
 | `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin:`true`: Yes.`false`: (Default) No. The parameter is valid only for public groups as users can only be invited to join private groups and cannot apply to join them. | No |
-| `invite_need_confirm` | Boolean | Whether the invitee needs to confirm the received group invitation before joining the group:`true`: Yes. `false`: No. The invitee automatically joins the  after receiving the group invitation. | No|
-| `owner` | String | The  owner. | Yes |
-| `members` | Array | The array of user IDs of  members, excluding the group owner. The number of user IDs in the array cannot exceed the value of `maxusers`. | No |
-| `custom` | String | The extension information of the . The extension information cannot exceed 8 KB. | No |
+| `invite_need_confirm` | Boolean | Whether the invitee needs to confirm the received group invitation before joining the group:`true`: Yes. `false`: No. The invitee automatically joins the group after receiving the group invitation. | No|
+| `owner` | String | The group owner. | Yes |
+| `members` | Array | The array of user IDs of group members, excluding the group owner. The number of user IDs in the array cannot exceed the value of `maxusers`. | No |
+| `custom` | String | The extension information of the group. The extension information cannot exceed 8 KB. | No |
 
 ### HTTP response
 
 #### Response body
 
-If the returned HTTP status code is 200, the request succeeds, and the data field in the response body  contains the following parameters.
+If the returned HTTP status code is 200, the request succeeds, and the data field in the response body contains the following parameters.
 
 | Parameter | Type | Descriptions |
 | :------ | :----- | :-------- |
@@ -146,11 +146,10 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
     "applicationName": "XXXX"
 }
 ```
-## Banning a 
+## Banning a group
+Bans the specified group. Groups are typically banned when too many users or messages violate community guidelines.
 
-Bans the specified . Groups are typically banned when too many users or messages violate community guidelines.
-
-Once a  is banned, the  members in the group can no longer send or receive messages, and the owner and admins cannot perform supervisory operations.
+Once a group is banned, the group members in the group can no longer send or receive messages, and the owner and admins cannot perform supervisory operations.
 
 ### HTTP request
 
@@ -178,7 +177,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 
 | Parameter | Type | Description |
 | :------ | :-------- | :--- |
-| `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
+| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
 
@@ -211,11 +210,10 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Unbanning a 
+## Unbanning a group
+Lifts a ban on the specified group.
 
-Lifts a ban on the specified .
-
-After unbanning a , all  members regain permission to send and receive messages in the group, and the owner and admins regain the privileges necessary to perform supervisory operations.
+After unbanning a group, all group members regain permission to send and receive messages in the group, and the owner and admins regain the privileges necessary to perform supervisory operations.
 
 ### HTTP request
 
@@ -241,7 +239,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 
 | Parameter | Type | Description |
 | :------ | :-------- | :--- |
-| `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
+| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameters](#param).
 
@@ -371,16 +369,16 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 | `avatar` | String | The group avatar URL. |
 | `description` | String | The group description. |
 | `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin:`true`: Yes.`false`: (Default) No. |
-| `allowinvites` | Boolean | Whether a regular  member can invite other users to join the group.`true`: Yes.`false`: No. |
-| `maxusers` | Number | The maximum number of members (including the group owner) allowed in the . |
+| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. |
+| `maxusers` | Number | The maximum number of members (including the group owner) allowed in the group. |
 | `owner` | String | The username of the group owner, for example, `{"owner":"user1"}`. |
-| `created` | Long | The Unix timestamp for creating the . |
-| `affiliations_count` | Number | The total number of the  members. |
-| `disabled` | Bool | Whether the  is banned:`true`: Yes.`false`: No. |
+| `created` | Long | The Unix timestamp for creating the group. |
+| `affiliations_count` | Number | The total number of group members. |
+| `disabled` | Bool | Whether the group is banned:`true`: Yes.`false`: No. |
 | `affiliations` | Array | The list of existing group members, including the group owner and regular group members, for example, `[{"owner":"user1"},{"member":"user2"},{"member":"user3"}]`. |
-| `public` | Boolean | Whether the  is a public group.`true`: Yes.`false`: No. |
-| `custom` | String | The extension information of the . |
-| `count` | Number | The number of retrieved s. |
+| `public` | Boolean | Whether the group is a public group.`true`: Yes.`false`: No. |
+| `custom` | String | The extension information of the group. |
+| `count` | Number | The number of retrieved groups. |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -438,7 +436,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 
 ## Modifying group information
 
-Modifies the  information. You can modify the `groupname`, `avatar`, `description`, `maxusers`, `membersonly`, `allowinvites`, `public`, `invite_need_confirm`, and `custom` fields. If you pass in fields that cannot be modified or do not exist in the request, an error is reported.
+Modifies the group information. You can modify the `groupname`, `avatar`, `description`, `maxusers`, `membersonly`, `allowinvites`, `public`, `invite_need_confirm`, and `custom` fields. If you pass in fields that cannot be modified or do not exist in the request, an error is reported.
 
 ### HTTP request
 
@@ -469,10 +467,10 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 | `groupname` | String | The group name. It cannot exceed 128 characters. The group name cannot contain "/" or spaces. You can use "+" to represent the space. | Yes |
 | `avatar` | String | The group avatar URL. It cannot exceed 1024 characters. | No |
 | `description` | String | The group description. It cannot exceed 512 characters. The group name cannot contain "/" or spaces. You can use "+" to represent the space. | Yes |
-| `maxusers` | String | The maximum number of  members (including the group owner). The default value is 200 and the maximum value is 2000.  The upper limit varies with your price plans. For details, see [Pricing Plan Details](../pricing-plan-details#group). | No |
-| `allowinvites` | Boolean | Whether a regular  member can invite other users to join the group.`true`: Yes.`false`: No. Only the group owner or admin can invite other users to join the group.  | No |
+| `maxusers` | String | The maximum number of group members (including the group owner). The default value is 200 and the maximum value is 2000.  The upper limit varies with your price plans. For details, see [Pricing Plan Details](../pricing-plan-details#group). | No |
+| `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. Only the group owner or admin can invite other users to join the group.  | No |
 | `membersonly` | Boolean | Whether the user requesting to join the public group requires approval from the group owner or admin:`true`: Yes.`false`: (Default) No. | No |
-| `custom` | String | The extension information of the . The extension information cannot exceed 1024 characters. | No |
+| `custom` | String | The extension information of the group. The extension information cannot exceed 1024 characters. | No |
 | `invite_need_confirm` | Boolean | Whether the invitee needs to accept the group invitation before joining the group: `true`: Yes.`false`: No.. The invitee directly joins the group without confirming the group invitation. | No |
 | `public` | Boolean | Whether the group is a public one: `true`: Public group.`false`: Private group.| Yes |
 
@@ -489,7 +487,7 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 | `avatar` | Boolean |  Whether the group avatar is successfully modified:`true`: Yes. `false`: No. |
 | `membersonly` | Boolean | Whether a user requesting to join the group requires the approval from the group owner or admin:`true`: Yes.`false`: (Default) No. |
 | `allowinvites` | Boolean | Whether a regular group member can invite other users to join the group.`true`: Yes.`false`: No. |
-| `maxusers` | Number | The maximum number of  members (including the group owner. |
+| `maxusers` | Number | The maximum number of group members (including the group owner). |
 
 For other fields and descriptions, see [Common parameters](#pubparam).
 
@@ -539,9 +537,8 @@ curl -X PUT -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Deleting a 
-
-Deletes the specified . Once a  is deleted, all the threads in this  are deleted as well.
+## Deleting a group
+Deletes the specified group. Once a group is deleted, all the threads in this group are deleted as well.
 
 ### HTTP request
 
@@ -604,9 +601,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 }
 ```
 
-## Retrieving all s
+## Retrieving all groups
 
-Retrieves all the s under the app.
+Retrieves all the groups under the app.
 
 ### HTTP request
 
@@ -625,8 +622,8 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Type   | Description   | Required |
 | :------- | :----- | :------------------------ | :------- |
-| `limit`  | Number |  The number of s to retrieve per page. The default value is `10`. The value range is [1,1000]. This parameter is required only for paginated queries.   | No  |
-| `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns s of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all s in the app are retrieved.  | No  |
+| `limit`  | Number |  The number of groups to retrieve per page. The default value is `10`. The value range is [1,1000]. This parameter is required only for paginated queries.   | No  |
+| `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns groups of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all groups in the app are retrieved.  | No  |
 
 :::info
 If neither the `limit` nor `cursor` parameter is specified, the server returns the latest 10 groups by creation time.
@@ -709,9 +706,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Retrieving all the s a user joins
+## Retrieving all the groups a user joins
 
-Retrieves all the s that a user joins.
+Retrieves all the groups that a user joins.
 
 ### HTTP request
 
@@ -727,7 +724,7 @@ For the descriptions of path parameters of this method, see [Common parameters](
 
 | Parameter | Type   | Description   | Required |
 | :------- | :----- | :------------------------ | :------- |
-| `pagesize` | String | The number of s to retrieve per page. The value range is [1,20] and the default value is `5`. If you pass in a value greater than `20`, the server still returns 20 groups. | No |
+| `pagesize` | String | The number of groups to retrieve per page. The value range is [1,20] and the default value is `5`. If you pass in a value greater than `20`, the server still returns 20 groups. | No |
 | `pagenum` | String |  The start position for the next query.  | No  |
 
 #### Request header

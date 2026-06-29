@@ -776,9 +776,9 @@ void onUserInfoUpdate(String userName){
 }
 ```
 
-### Authenticate users with the  token
+### Authenticate users with the RTC token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate), and `setEnableRTCToken` in the `AgoraChatCallKit` is set to `true`.
+To enhance communication security, Agora recommends that you authenticate app users with the RTC token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate), and `setEnableRTCToken` in the `AgoraChatCallKit` is set to `true`.
 
 ```java
 EaseCallKitConfig callKitConfig = new EaseCallKitConfig();
@@ -788,9 +788,9 @@ EaseCallKitConfig callKitConfig = new EaseCallKitConfig();
  EaseCallKit.getInstance().init(context, callKitConfig);
 ```
 
-Once you enable token authentication, the SDK triggers the `onGenerateRTCToken` callback. You need to retrieve an  token in this callback following the steps:
+Once you enable token authentication, the SDK triggers the `onGenerateRTCToken` callback. You need to retrieve an RTC token in this callback following the steps:
 
-1. Retrieve the  token and Agora UID from your app server.
+1. Retrieve the RTC token and Agora UID from your app server.
 2. Trigger `onSetToken` to pass the token and UID to the callback object.
 3. `AgoraChatCallKit` uses the token and UID to join the channel.
 
@@ -837,9 +837,9 @@ AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname imag
 [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:userId info:user];
 ```
 
-### Authenticate users with the  token
+### Authenticate users with the RTC token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate), and `enableRTCTokenValidate` in the `AgoraChatCallKit` is set to `YES`.
+To enhance communication security, Agora recommends that you authenticate app users with the RTC token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate), and `enableRTCTokenValidate` in the `AgoraChatCallKit` is set to `YES`.
 
 ```objc
 config.enableRTCTokenValidate = YES;  
@@ -857,11 +857,11 @@ Once you enable token authentication, ensure that you listen for the `callDidReq
 
 ### Web
 
-### Authenticate users with the  token
+### Authenticate users with the RTC token
 
-To enhance communication security, Agora recommends that you authenticate app users with the  token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate).
+To enhance communication security, Agora recommends that you authenticate app users with the RTC token before they join a call. To do this, you need to make sure that the [Primary Certificate of your project is enabled](/en/realtime-media/im/get-started/manage-agora-account#enable-the-primary-certificate).
 
-Tokens are generated on your app server using the token generator provided by Agora. After you retrieve the token, pass the token to the callkit when calling `startCall` and `answerCall`. For how to generate a token on the server and retrieve and renew the token on the client, see  [Secure authentication with tokens](../secure-access-and-authentication/authentication).
+Tokens are generated on your app server using the token generator provided by Agora. After you retrieve the token, pass the token to the callkit when calling `startCall` and `answerCall`. For how to generate a token on the server and retrieve and renew the token on the client, see [Secure authentication with tokens](../secure-access-and-authentication/authentication).
 
 ## Reference
 
@@ -890,7 +890,7 @@ The `AgoraChatCallKit` provides the following APIs:
 | onEndCallWithReason | Occurs when the call ends. |
 | onInviteUsers | Occurs when a member of the group call invites other users to the call. |
 | onReceivedCall | Occurs when the call invitation is received and the device rings. |
-| onGenerateToken | Requests the  token. You need to pass the token to AgoraChatCallKit with callbacks. |
+| onGenerateToken | Requests the RTC token. You need to pass the token to AgoraChatCallKit with callbacks. |
 | onCallError | Reports exceptions and errors during the call. |
 | onInviteCallMessageSent | Occurs when the call invitation is sent. |
 | onRemoteUserJoinChannel | Occurs when a remote user joins the call. |
@@ -907,14 +907,14 @@ The `AgoraChatCallKit` provides the following APIs:
 
 | Event | Description |
 | --- | --- |
-| onSetToken | Occurs when the app passes the retrieved  token to the AgoraChatCallKit. |
-| onGetTokenError | Occurs when the app fails to get the  token. |
+| onSetToken | Occurs when the app passes the retrieved RTC token to the AgoraChatCallKit. |
+| onGetTokenError | Occurs when the app fails to get the RTC token. |
 
 ### Sample project
 
 Agora provides an open-source [AgoraChat-android](https://github.com/AgoraIO-Usecase/AgoraChat-android) sample project on GitHub. You can download the sample to try it out or view the source code.
 
-The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora  to start a call, you can also use the Integer UID to join a channel.
+The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora to start a call, you can also use the Integer UID to join a channel.
 
 ### iOS
 
@@ -930,7 +930,7 @@ The following table lists the core methods in `AgoraChatCallManager`:
 | startSingleCallWithUId:type:ext:completion | Starts a one-to-one call. | 
 | startInviteUsers:groupId:callType:ext:completion:  | Starts a group call. |
 | getAgoraChatCallConfig | Retrieves the configurations of AgoraChatCallKit. |
-| setRTCToken:channelName:uid: | Sets the  Token. |
+| setRTCToken:channelName:uid: | Sets the RTC Token. |
 | setUsers:channelName: | Sets the mapping between Chat user ID and Agora user ID (UID). |  
 
 The following table lists the callbacks in `AgoraChatCallDelegate`:
@@ -940,7 +940,7 @@ The following table lists the callbacks in `AgoraChatCallDelegate`:
 | callDidEnd:reason:time:type: | Occurs when the call ends. |
 | multiCallDidInvitingWithCurVC:callType:excludeUsers:ext: | Occurs when a member of the group call invites other users to the call. |
 | callDidReceive:inviter:ext: | Occurs when the call invitation is received and the device rings. |
-| callDidRequestRTCTokenForAppId:channelName:account:uid: | Requests the  token. |
+| callDidRequestRTCTokenForAppId:channelName:account:uid: | Requests the RTC token. |
 | callDidOccurError: | Reports exceptions and errors during the call. |
 | remoteUserDidJoinChannel:uid:username: | Occurs when a remote user joins the call. |
 | callDidJoinChannel:uid: | Occurs when the current user joins the call. |
@@ -949,7 +949,7 @@ The following table lists the callbacks in `AgoraChatCallDelegate`:
 
 Agora provides an open-source [AgoraChat-ios](https://github.com/AgoraIO-Usecase/AgoraChat-ios) sample project on GitHub. You can download the sample to try it out or view the source code.
 
-The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora  to start a call, you can also use the Integer UID to join a channel.
+The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora to start a call, you can also use the Integer UID to join a channel.
 
 ### Import AgoraChatCallKit manually
 
@@ -1001,4 +1001,4 @@ Attributes:
 
 Agora provides an open-source [AgoraChatCallKit](https://github.com/AgoraIO-Usecase/AgoraChat-CallKit-web/tree/master/demo) sample project on GitHub. You can download the sample to try it out or view the source code.
 
-The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora  to start a call, you can also use the Integer UID to join a channel.
+The sample project uses the Chat user ID to join a channel, which enables displaying the user ID in the view of the call. If you use the methods of the Agora to start a call, you can also use the Integer UID to join a channel.

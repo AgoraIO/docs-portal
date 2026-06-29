@@ -501,7 +501,7 @@ DELETE https://api.agora.io/{region}/v1/projects/{appId}/rtmp-converters/{conver
 #### Path parameter
 
 - `region`: (Required) String. The region where the Converter is created in, which must be the same as the `region` set when creating Converter.
-- `appId`: (Required) String type parameter. The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
+- `appId`: (Required) String type parameter. The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
 - `converterId`: (Required) String type parameter. The **ID** of the Converter.
 
 #### Request header
@@ -686,7 +686,7 @@ GET https://api.agora.io/{region}/v1/projects/{appId}/rtmp-converters/{converter
 #### Path parameter
 
 - `region`: (Required) String. The region where the Converter is created in, which must be the same as the `region` set when creating Converter.
-- `appId`: (Required) String type parameter. The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
+- `appId`: (Required) String type parameter. The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
 - `converterId`: (Required) String type parameter. The **ID** of the Converter.
 
 #### Request header
@@ -1005,7 +1005,7 @@ Details for these fields are shown in the following table:
 | `data.members.rtcChannel` | String | The Agora channel name. This is the channel to which the stream processed by the Converter belongs. |
 | `data.members.converterName` | String | The name of the Converter. |
 | `data.members.updateTs` | Number | The Unix timestamp(seconds) when the Converter configuration was last updated. |
-| `data.members.appId` | String | The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
+| `data.members.appId` | String | The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
 | `data.members.rtmpUrl` | String | The CDN streaming address. |
 | `data.members.converterId` | String | The **ID** of the Converter. The unique identifier for the Converter. |
 | `data.members.create` | Number | The Unix timestamp(seconds) when the Converter was created. |

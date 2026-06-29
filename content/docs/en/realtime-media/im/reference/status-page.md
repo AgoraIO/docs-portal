@@ -3,19 +3,19 @@ title: "Product and service status"
 description: "Track service performance and maintenance events."
 ---
 
-The  provides up-to-date insights into the operational status and Quality of Experience (QoE) of Agora’s products and services. It displays historical service stability over the past 90 days and real-time quality data for the past 24 hours, enabling efficient monitoring of real-time interactions. You can access the  directly at https://status.agora.io/ or at any time from the [Agora Support Center](https://agoraio.zendesk.com/hc/en-us) by selecting **System Status** from the profile menu.
+The Agora Status Page provides up-to-date insights into the operational status and Quality of Experience (QoE) of Agora’s products and services. It displays historical service stability over the past 90 days and real-time quality data for the past 24 hours, enabling efficient monitoring of real-time interactions. You can access the Agora Status Page directly at https://status.agora.io/ or at any time from the [Agora Support Center](https://agoraio.zendesk.com/hc/en-us) by selecting **System Status** from the profile menu.
 
-Use the  page to track service performance, maintenance events, and disruptions. The  offers RSS push notifications for updates on ongoing events and combines multiple indicators to deliver comprehensive QoE data.
+Use the Agora Status Page to track service performance, maintenance events, and disruptions. The page offers RSS push notifications for updates on ongoing events and combines multiple indicators to deliver comprehensive QoE data.
 
 ## Features
 
-The [](https://status.agora.io/) interface is divided into the following functional areas:
+The [Agora Status Page](https://status.agora.io/) interface is divided into the following functional areas:
 
 - [Health banner](#health-banner)
 - [Product and service filter](#product-and-service-filter)
 - [Status dashboard](#status-dashboard)
 
-The following image shows a snapshot of the Agora .
+The following image shows a snapshot of the Agora Status Page.
 
 ![](/images/status-page/status-page.png)
 
@@ -105,15 +105,15 @@ Currently, the status dashboard provides information regarding the following Ago
 
 ## Quality metrics
 
-The  computes the quality metrics as follows:
+The Agora Status Page computes the quality metrics as follows:
 
 ### Real-Time Communication QoE
 
-The comprehensive QoE for real-time communication services is based on multiple factors including the  login experience, SDK stability, end-to-end responsiveness, audio fluency, and video fluency.
+The comprehensive QoE for real-time communication services is based on multiple factors including the RTC login experience, SDK stability, end-to-end responsiveness, audio fluency, and video fluency.
 
 | Metric   | Description | Calculation method   |
 |:---------|:------------|:---------------------|
-|  login | Measures accessibility of real-time audio and video services      | Ratio of successful logins to total login attempts   |
+| RTC login | Measures accessibility of real-time audio and video services      | Ratio of successful logins to total login attempts   |
 | SDK stability | Measures stability of real-time services      | Ratio of service crashes to total services  |
 | End-to-end responsiveness | Measures responsiveness and smoothness of services       | Ratio of network delay to total audio and video duration     |
 | Audio fluency | Measures audio playback continuity    | Ratio of audio freeze duration to total audio duration       |

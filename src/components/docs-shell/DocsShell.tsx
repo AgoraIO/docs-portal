@@ -316,7 +316,7 @@ export function DocsShell({
                   variant="ghost"
                 >
                   <a
-                    href="https://github.com/Shengwang-Community/docs-portal"
+                    href="https://github.com/AgoraIO/docs-portal"
                     rel="noreferrer"
                     target="_blank"
                   >

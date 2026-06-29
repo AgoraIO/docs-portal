@@ -48,7 +48,7 @@ When a group [createGroup](https:///classio_1_1agora_1_1chat_1_1_group_manager.h
 
 - Value: 512 bytes or less
 
-- The total size of key-value pairs of a  members: 4KB or less
+- The total size of key-value pairs of a group member: 4KB or less
 
 ### Chatroom-related limitations
 
@@ -64,17 +64,17 @@ When a chatroom [createChatRoom](https://hyphenateinc.github.io/android_referenc
 
 - Chatroom description: 512 characters or less
 
-Each  can have up to 100 custom attributes, and the total size of  custom attributes of each app cannot exceed 10 GB. The custom  attributes are of a key-value pair structure. A single key cannot exceed 128 characters and a room attribute value cannot exceed 4096 characters. Attribute keys support the following character sets:
+Each chatroom can have up to 100 custom attributes, and the total size of custom attributes of each app cannot exceed 10 GB. The custom attributes are of a key-value pair structure. A single key cannot exceed 128 characters and a room attribute value cannot exceed 4096 characters. Attribute keys support the following character sets:
 - 26 lowercase English letters a-z;
 - 26 uppercase English letters A-Z;
-- 10 numbers 0 -9;
+- 10 numbers 0-9;
 - "_", "-", ".".
 
 ### Multiple messages forwarding limitations
 
-* The forwarding multiple messages​ capability is available only in client APIs and not RESTful APIs. 
-* End users can only forward up to 300 messages at a time. 
-* The content of the forwarded messages can't be searched. 
+* The forwarding multiple messages capability is available only in client APIs and not RESTful APIs.
+* End users can only forward up to 300 messages at a time.
+* The content of the forwarded messages can't be searched.
 * When forwarding multiple messages in a combined form, the title and preview of the combined message is displayed. The content of the message preview can't exceed 5KB.
 * Applications developed with Chat SDK versions prior to `1.2.x` will not support display of forwarded messages.
 
@@ -82,9 +82,9 @@ Each  can have up to 100 custom attributes, and the total size of  custom attrib
 
 This feature has the following limitations:
 
-* For a , regular group members can only edit message sent by themselves, but the group owner and admins can also edit messages sent by regular group members. The message sender remains unchanged regardless of the message edit operator.
-* Supported message types: text only.  
-* Supported use case: One-on-one . Does not support Chatroom. 
+* For a group, regular group members can only edit messages sent by themselves, but the group owner and admins can also edit messages sent by regular group members. The message sender remains unchanged regardless of the message edit operator.
+* Supported message types: text only.
+* Supported use case: One-on-one chat. Chatroom is not supported.
 * End users can recall and modify messages that were sent up to 7 days ago.
 * Agora supports editing the same message up to 10 times.
 

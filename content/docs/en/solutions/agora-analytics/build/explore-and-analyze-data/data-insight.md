@@ -7,15 +7,15 @@ description: "Provides periodic call-usage and call-quality statistics."
 
 ## Getting started
 
-1.  Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Data Insights** feature for your project.
+1. Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Data Insights** feature for your project.
 
-2.  Log in to [Agora Console](https://console.agora.io/v2) and click **Agora Analytics** on the left navigation bar.
+2. Log in to [Agora Console](https://console.agora.io/v2) and click **Agora Analytics** on the left navigation bar.
 
-3.  Select a project in the top-left corner.
+3. Select a project in the top-left corner.
 
-4.  Click **Usage Insights** to view the usage statistics or **Quality Insights** to view the quality statistics.
+4. Click **Usage Insights** to view the usage statistics or **Quality Insights** to view the quality statistics.
 
-5.  Configure the data filter:
+5. Configure the data filter:
 
 -   **Usage Insights**: Select the timezone, data granularity, and time frame in the upper-right corner.
 

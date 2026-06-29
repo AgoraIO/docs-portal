@@ -3,9 +3,9 @@ title: "Manage chat room admins"
 description: "Shows how to manage super administrators of chat rooms by calling the Agora Chat RESTful APIs."
 ---
 
-In an app integrated with Chat, only the super admin of s has the permission to create s on the client.
+In an app integrated with Chat, only the super admin of chat rooms has the permission to create chat rooms on the client.
 
-This page shows how to manage super administrators of s by calling the Chat RESTful APIs, including adding and retrieving super administrators and revoking the  creation privilege of a super administrator. Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
+This page shows how to manage super administrators of chat rooms by calling the Chat RESTful APIs, including adding and retrieving super administrators and revoking the chat room creation privilege of a super administrator. Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -19,7 +19,7 @@ The following table lists common request and response parameters of the Chat RES
 | `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
 | `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
-| `chatroom_id` | String | The  ID. The unique  identifier assigned to each  by the Chat. You can get the  ID from the response body in [Retrieve the basic information of all s](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
+| `chatroom_id` | String | The chat room ID. The unique chat room identifier assigned to each chat room by the Chat. You can get the chat room ID from the response body in [Retrieve the basic information of all chat rooms](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
 
 <Slot for="username">
 
@@ -60,9 +60,9 @@ Authorization: Bearer ${YourAppToken}
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
-## Adding a  super admin
+## Adding a chat room super admin
 
-Adds a regular  member as the super admin of the .
+Adds a regular chat room member as the super admin of the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -90,7 +90,7 @@ The request body is a JSON object, which contains the following fields:
 
 | Field | Type | Description | Required |
 | :----------- | :----- | :--------------------------------- | :------- |
-| `superadmin` | String | The username of the user to be added as the super administrator of s. | Yes |
+| `superadmin` | String | The username of the user to be added as the super administrator of chat rooms. | Yes |
 
 ### HTTP response
 
@@ -137,9 +137,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Bearer ' -d 
 }
 ```
 
-## Removing a  super admin
+## Removing a chat room super admin
 
-Removes the super admin privileges of the  super admin and that super admin becomes a regular  member.
+Removes the super admin privileges of the chat room super admin, and that super admin becomes a regular chat room member.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -205,9 +205,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
     "applicationName": "XXXX"
 }
 ```
-## Retrieving super admins of specified s with pagination
+## Retrieving super admins of specified chat rooms with pagination
 
-Retrieves the super admins of the specified s by pagination.
+Retrieves the super admins of the specified chat rooms by pagination.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -243,7 +243,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter | Type | Descriptions |
 | :--------- | :--------- | :------------------------------- |
-| `data` | JSONArray | The array of usernames of super admins of the specified s. |
+| `data` | JSONArray | The array of usernames of super admins of the specified chat rooms. |
 | `count` | Number | The number of super admins that are returned. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).

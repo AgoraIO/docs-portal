@@ -6,7 +6,7 @@ description: "Introduces how to retrieve tokens from your app server to authenti
 Agora uses digital tokens to authenticate users and their privileges before they access Agora Chat. For test purposes, you can generate temporary tokens in Agora Console.
 See [Manage users and generate tokens](../../get-started/enable#manage-users-and-generate-tokens) for details.
 
-In a development environment, you deploy your own app server to generate authentication tokens. This page introduces how to set up a token server, retrieve tokens from your server, and  authenticate your users.
+In a development environment, you deploy your own app server to generate authentication tokens. This page introduces how to set up a token server, retrieve tokens from your server, and authenticate your users.
 
 ## Understand the tech
 

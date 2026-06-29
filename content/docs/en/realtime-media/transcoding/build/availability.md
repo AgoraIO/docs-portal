@@ -48,7 +48,7 @@ To ensure high availability of REST services, Agora enables you to switch domain
     1. **Primary domain retry**: Retry using the same primary domain name.
     
     2. **Alternate domain retry**:
-        - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the  alternate domain name.
+        - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the alternate domain name.
         - If the current primary domain name is `api.agora.io`, use `api.sd-rtn.com` as the alternate domain name.
     
     3. **Adjacent domain retry**: If alternate domain retry fails, retry using the domain name adjacent to the current region.

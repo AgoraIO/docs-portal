@@ -86,7 +86,7 @@ This group of methods enables you to send text, image, voice, video, CMD, extens
 
 | Name | Method | Request | Description | Rate Limits |
 | :--------------- | :--- | :------------------------------------------ | :------------------------------------------------- |  :----- |
-| Sending a message | POST | `/{org_name}/{app_name}/messages` | App admins use this method to send messages to users, s, and s. This method supports sending text, image, voice, video, command, and file messages. | 100/second |
+| Sending a message | POST | `/{org_name}/{app_name}/messages` | App admins use this method to send messages to users, groups, and chat rooms. This method supports sending text, image, voice, video, command, and file messages. | 100/second |
 | Uploading files | POST | `/{org_name}/{app_name}/chatfiles` | Uploads voice and image files. | 100/second |
 | Downloading files | POST | `/{org_name}/{app_name}/chatfiles/{file_uuid}` | Downloads voice and image files. | 100/second |
 | Retrieving historical messages | GET | `/{org_name}/{app_name}/chatmessages/${time}` | Retrieves chat historical messages | 10/minute |
@@ -121,76 +121,76 @@ This group of methods enables you to manage the user's contact list and block li
 
 ### Chat group management
 
-This group of methods enables you to create, retrieve, modify, and delete s.
+This group of methods enables you to create, retrieve, modify, and delete chat rooms.
 
 | Name | Method | Request | Description | Rate Limits |
 | :------------------------------ | :----- | :--------------------------------------------- | :----------------------------- |  :----- |
-| Retrieving all s in the app by page | GET | `/{org_name}/{app_name}/chatgroups?limit={N}&cursor={cursor}` | Retrieves the information of all the groups in the app by page. | 100/second |
-| Retrieving all the s the user joins | GET | `/{org_name}/{app_name}/users/{username}/joined_chatgroups` | Retrieves all the groups the user joins by specifying the user name. | 100/second |
-| Retrieving  details | GET | `/{org_name}/{app_name}/chatgroups/{group_ids}` | Retrieves group details by specifying the group ID. | 100/second |
-| Creating a  | POST | `/{org_name}/{app_name}/chatgroups` | Creates a . | 100/second |
-| Banning a      | POST   | `/{org_name}/{app_name}/chatgroups/{group_id}/disable`              | Bans the specified . Groups are typically banned when too many users or messages violate community guidelines.  | 100/second |
-| Unbanning a       | POST   | `/{org_name}/{app_name}/chatgroups/{group_id}/enable`              | Lifts a ban on the specified .  | 100/second |
-| Modifying  information | PUT | `/{org_name}/{app_name}/chatgroups/{group_id}` | Modifies the group information. | 100/second |
-| Deleting a  | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}` | Deletes a . | 100/second |
+| Retrieving all groups in the app by page | GET | `/{org_name}/{app_name}/chatgroups?limit={N}&cursor={cursor}` | Retrieves the information of all the groups in the app by page. | 100/second |
+| Retrieving all the groups the user joins | GET | `/{org_name}/{app_name}/users/{username}/joined_chatgroups` | Retrieves all the groups the user joins by specifying the user name. | 100/second |
+| Retrieving group details | GET | `/{org_name}/{app_name}/chatgroups/{group_ids}` | Retrieves group details by specifying the group ID. | 100/second |
+| Creating a group | POST | `/{org_name}/{app_name}/chatgroups` | Creates a group. | 100/second |
+| Banning a group | POST   | `/{org_name}/{app_name}/chatgroups/{group_id}/disable`              | Bans the specified group. Groups are typically banned when too many users or messages violate community guidelines.  | 100/second |
+| Unbanning a group | POST   | `/{org_name}/{app_name}/chatgroups/{group_id}/enable`              | Lifts a ban on the specified group.  | 100/second |
+| Modifying group information | PUT | `/{org_name}/{app_name}/chatgroups/{group_id}` | Modifies the group information. | 100/second |
+| Deleting a group | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}` | Deletes a group. | 100/second |
 
 ### Chat group member management
 
-This group of methods enables you to manage  members, including adding and removing  members, transferring  ownership, and retrieving lists of  admins and members.
+This group of methods enables you to manage group members, including adding and removing group members, transferring group ownership, and retrieving lists of group admins and members.
 
 | Name | Method | Request | Description | Rate Limits |
 | :--------------- | :----- | :----------------------------------------------------------- | :---------------------- |  :----- |
-| Retrieving  member list (Pagination) | GET | `/{org_name}/{app_name}/chatgroups/{group_id}/users` | Retrieves the member list of the  by pagination. | 100/second |
-| Adding a  member | POST | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}` | Adds a user to the group member list. | 100/second |
+| Retrieving group member list (Pagination) | GET | `/{org_name}/{app_name}/chatgroups/{group_id}/users` | Retrieves the member list of the group by pagination. | 100/second |
+| Adding a group member | POST | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}` | Adds a user to the group member list. | 100/second |
 | Adding multiple group members | POST | `/{org_name}/{app_name}/chatgroups/{chatgroupid}/users` | Adds multiple users to the group member list. | 100/second |
-| Removing a  member | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}` | Removes the specified user from the group member list. | 100/second |
-| Removing multiple  members | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{usernames}` | Removes the specified users from the group member list. | 100/second |
-| Retrieving  admin list | GET | `/{org_name}/{app_name}/chatgroups/{group_id}/admin` | Retrieves the group admin list. | 100/second |
-| Adding a  admin | POST | `/{org_name}/{app_name}/chatgroups/{group_id}/admin` | Adds the specified user to the group admin list. | 100/second |
-| Removing a  admin | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/admin/{oldadmin}` | Removes the specified user from the group admin list. | 100/second |
-| Transferring  ownership | PUT | `/{org_name}/{app_name}/chatgroups/{groupid}` | Transfers the group owner privileges. | 100/second |
+| Removing a group member | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{username}` | Removes the specified user from the group member list. | 100/second |
+| Removing multiple group members | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/users/{usernames}` | Removes the specified users from the group member list. | 100/second |
+| Retrieving group admin list | GET | `/{org_name}/{app_name}/chatgroups/{group_id}/admin` | Retrieves the group admin list. | 100/second |
+| Adding a group admin | POST | `/{org_name}/{app_name}/chatgroups/{group_id}/admin` | Adds the specified user to the group admin list. | 100/second |
+| Removing a group admin | DELETE | `/{org_name}/{app_name}/chatgroups/{group_id}/admin/{oldadmin}` | Removes the specified user from the group admin list. | 100/second |
+| Transferring group ownership | PUT | `/{org_name}/{app_name}/chatgroups/{groupid}` | Transfers the group owner privileges. | 100/second |
 
-###  management
+### Chat room management
 
-This group of methods enables you to create, retrieve, modify, and delete s.
+This group of methods enables you to create, retrieve, modify, and delete chat rooms.
 
 | Name | Method | Request | Description | Rate Limits |
 | :---------------------- | :----- | :------------------------------------------------------- | :-------------------------- |  :----- |
-| Retrieving all s by page | GET | `/{org_name}/{app_name}/chatrooms?limit={N}&cursor={cursor}` | Retrieves the information of all the s in the app by page. | 50/second |
-| Retrieving s a user joins | GET | `/{org_name}/{app_name}/users/{username}/joined_chatrooms` | Retrieves the s that a user joins by specifying the username. | 50/second |
-| Retrieving  details | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Retrieves the details of the  by specifying the  ID. | 100/second |
-| Creating a  | POST | `/{org_name}/{app_name}/chatrooms` | Creates a new . | 50/second |
-| Modifying  information | PUT | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Modifies the  information. | 100/second |
-| Deleting a  | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Deletes a . | 100/second |
-| Setting custom attributes    | PUT    | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}` | Adds new custom  attributes or modifies existing ones set by the current user.      | 100/second |
-| Retrieving custom attributes        | POST    | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}` | Retrieves the specified custom attributes of a .       | 100/second |
+| Retrieving all chat rooms by page | GET | `/{org_name}/{app_name}/chatrooms?limit={N}&cursor={cursor}` | Retrieves the information of all the chat rooms in the app by page. | 50/second |
+| Retrieving chat rooms a user joins | GET | `/{org_name}/{app_name}/users/{username}/joined_chatrooms` | Retrieves the chat rooms that a user joins by specifying the username. | 50/second |
+| Retrieving chat room details | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Retrieves the details of the chat room by specifying the chat room ID. | 100/second |
+| Creating a chat room | POST | `/{org_name}/{app_name}/chatrooms` | Creates a new chat room. | 50/second |
+| Modifying chat room information | PUT | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Modifies the chat room information. | 100/second |
+| Deleting a chat room | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}` | Deletes a chat room. | 100/second |
+| Setting custom attributes    | PUT    | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}` | Adds new custom chat room attributes or modifies existing ones set by the current user.      | 100/second |
+| Retrieving custom attributes        | POST    | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}` | Retrieves the specified custom attributes of a chat room.       | 100/second |
 | Forcibly setting custom attributes | PUT | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}/forced` | In addition to adding new custom attributes or modifying the existing ones set by the current user, this method can also be used to overwrite the custom attributes set by others.  | 100/second |
 | Removing custom attributes | DELETE  | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}` | Removes custom attributes set by the current user. This method is only used to remove the key-value pairs set by the current user.  | 100/second |
 | Forcibly removing custom attributes | DELETE  | `/{org_name}/{app_name}/metadata/chatroom/{chatroom_id}/user/{username}/forced` | In addition to removing the custom attributes set by the current user, this method can also be used to remove custom attributes set by others. | 100/second |
 
-###  member management
+### Chat room member management
 
-This group of methods enables you to add, retrieve, modify, and delete members from the .
+This group of methods enables you to add, retrieve, modify, and delete members from the chat room.
 
 | Name | Method | Request | Description | Rate Limits |
 | :------------------- | :----- | :------------------------------------------- | :--------------------- |  :----- |
-| Retrieving  member list (Pagination) | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/users` | Retrieves the member list of the  by pagination. | 100/second |
-| Adding a  member | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` | Adds the specified user to the  member list. | 100/second |
-| Adding multiple  members | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users` | Adds multiple specified users to the  member list. | 100/second |
-| Removing a  member | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` | Removes the specified user from the  member list. | 100/second |
-| Removing multiple  members | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{usernames}` | Removes the specified users from the  member list. | 100/second |
-| Retrieving  admin list | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` | Retrieves the  admin list. | 100/second |
-| Adding a  admin | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` | Adds the specified user to the  admin list. | 100/second |
-| Removing a  admin | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin/{oldadmin}` | Removes the specified user from the  admin list. | 100/second |
+| Retrieving chat room member list (Pagination) | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/users` | Retrieves the member list of the chat room by pagination. | 100/second |
+| Adding a chat room member | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` | Adds the specified user to the chat room member list. | 100/second |
+| Adding multiple chat room members | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users` | Adds multiple specified users to the chat room member list. | 100/second |
+| Removing a chat room member | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` | Removes the specified user from the chat room member list. | 100/second |
+| Removing multiple chat room members | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{usernames}` | Removes the specified users from the chat room member list. | 100/second |
+| Retrieving chat room admin list | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` | Retrieves the chat room admin list. | 100/second |
+| Adding a chat room admin | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` | Adds the specified user to the chat room admin list. | 100/second |
+| Removing a chat room admin | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin/{oldadmin}` | Removes the specified user from the chat room admin list. | 100/second |
 
 ### Global mute
 
-This group of methods enables you to mute any user ID in s, s, or s, preventing these users from sending messages to other chat users, s, or s.
+This group of methods enables you to mute any user ID in users, groups, or chat rooms, preventing these users from sending messages to other chat users, groups, or chat rooms.
 
 | Name | Method | Request | Description | Rate Limits |
 | --- | --- | --- | --- | --- |
-| Globally mute a specified user | POST | `/{orgName}/{appName}/mutes` | Mutes a specified user in s, s, or s. | 100/second |
-| Query the detailed information of global-mute | GET | `/{orgName}/{appName}/mutes/username` | Queries the detailed information of the global-mute settings of the specified user in s, s, or chatrooms.| 100/second |
+| Globally mute a specified user | POST | `/{orgName}/{appName}/mutes` | Mutes a specified user in users, groups, or chat rooms. | 100/second |
+| Query the detailed information of global-mute | GET | `/{orgName}/{appName}/mutes/username` | Queries the detailed information of the global-mute settings of the specified user in users, groups, or chat rooms.| 100/second |
 | Retrieve all globally muted users | GET | `/{orgName}/{appName}/mutes` | Retrieves all the users that have been globally muted in the app. | 100/second |
 
 ### Presence
@@ -227,7 +227,7 @@ This group of methods enable you to create a thread, modify a thread, delete a t
 | Deleting a thread    | DELETE | `/{org_name}/{app_name}/thread/{thread_id}`                            | Deletes a thread.  | 100/second  |
 | Retrieving all the threads under the app  | GET    | `/{org_name}/{app_name}/thread?limit={limit}&cursor={cursor}&sort={sort}`        | Retrieves all the threads under the app  | 100/second |
 | Retrieving all the threads a user joins under the app | GET    | `/{org_name}/{app_name}/threads/user/{username}?limit={limit}&cursor={cursor}&sort={sort}`   | Retrieves all the threads a user joins under the app   | 100/second  |
-| Retrieving all the threads a user joins under a  | GET    | `/{org_name}/{app_name}/threads/chatgroups/{group_id}/user/{username}?limit={limit}&cursor={cursor}&sort={sort}` | Retrieves all the threads a user joins by user ID and group ID. | 100/second  |
+| Retrieving all the threads a user joins under a group | GET    | `/{org_name}/{app_name}/threads/chatgroups/{group_id}/user/{username}?limit={limit}&cursor={cursor}&sort={sort}` | Retrieves all the threads a user joins by user ID and group ID. | 100/second  |
 
 ### Thread member management
 

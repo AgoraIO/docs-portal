@@ -9,11 +9,11 @@ This page shows you how to setup DataDog integration with Agora Analytics.
 
 ## Enable and configure Datadog
 
-To enable  Agora Analytics integration with Datadog:
+To enable Agora Analytics integration with Datadog:
 
 1. In Agora Console, subscribe to the **Premium** or **Enterprise** [pricing plan](https://console.agora.io/aa/pricing).
 
-2.  In [Agora Analytics](https://analytics-lab.agora.io/), navigate to **Integration > Datadog**.
+2. In [Agora Analytics](https://analytics-lab.agora.io/), navigate to **Integration > Datadog**.
     
     ![](/images/analytics/datadog-integration-step-1.png)
 
@@ -29,7 +29,7 @@ To enable  Agora Analytics integration with Datadog:
 
     ![](/images/analytics/datadog-integration-step-2.png)
 
-5. Enter your Datadog API key and press **Save**.  An API key is required to submit metrics and events to Datadog.
+5. Enter your Datadog API key and press **Save**. An API key is required to submit metrics and events to Datadog.
     
     ![](/images/analytics/datadog-integration-step-3.png)
 

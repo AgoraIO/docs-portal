@@ -145,12 +145,12 @@ Consider whether you can accept the impact of high availability migration based 
 
 If you need a more reliable solution than fault recovery, you can use a multiple Media Push task strategy. You can choose the following two ways to implement it:
 
-1.  Start the main push task and multiple backup tasks at the same time.
+1. Start the main push task and multiple backup tasks at the same time.
     Set a different CDN address for each Media Push task. When the main
     Media Push task fails, the CDN audience can switch to the backup CDN
     address in time.
 
-2.  If the CDN vendor you use supports the feature of pushing several
+2. If the CDN vendor you use supports the feature of pushing several
     streams to the same CDN address with different priorities,
     create a Media Push task No. 1 to the CDN with priority 1
     (`<rtmp://xxx/xxx/xxx>? priority=1`). If task 1 fails, create
@@ -177,7 +177,7 @@ To ensure high availability of REST services, Agora enables you to switch domain
     1. **Primary domain retry**: Retry using the same primary domain name.
 
     2. **Alternate domain retry**:
-        - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the  alternate domain name.
+        - If the current primary domain name is `api.sd-rtn.com`, use `api.agora.io` as the alternate domain name.
         - If the current primary domain name is `api.agora.io`, use `api.sd-rtn.com` as the alternate domain name.
 
     3. **Adjacent domain retry**: If alternate domain retry fails, retry using the domain name adjacent to the current region.
@@ -226,7 +226,7 @@ When creating a converter with a `create` call, pay attention to the following:
     - Pass the region value in lowercase.
 - Agora recommends that you assign a string value to the `X-Request-ID` field in the request header. The Agora server returns an `X-Custom-request-ID` field in the response header for troubleshooting purposes.
 - Set UID or account as the user name for the converter. Do not set these two fields at the same time. Ensure that each converter has a unique user name within the channel.
-- To avoid repeated media streaming due to repeated creation of multiple converters, it is recommended to use the name field to manage converters under a specific project.    At the same time, converters with the same names cannot exist in a project. If you attempt to create a converter with the same name, you receive the `409` (Conflict) status code.
+- To avoid repeated media streaming due to repeated creation of multiple converters, it is recommended to use the name field to manage converters under a specific project. At the same time, converters with the same names cannot exist in a project. If you attempt to create a converter with the same name, you receive the `409` (Conflict) status code.
 - Agora recommends that you assign the name using a combination of the channel name and a converter property. For example, `show68_horizontal` and `show68_vertical` would represent a horizontal and a vertical layout respectively.
 - `audioOption` and `videoOptions` are set as follows for audio only or video only use-cases:
     - In a video only use-case, you do not need to set `audioOptions` and its related fields.
@@ -271,8 +271,8 @@ The Update API does not support the following configuration parameters:
 
 If you receive `404`, `429`, or `5xx` error codes, use a backoff strategy. For example, wait 5-6 seconds, 10-11 seconds, or 15-16 seconds and try again. If you get three consecutive `404` or `5xx` error codes, or if the `state` field in the response to checking the status of a Media Push task says `failed`, it means that the Media Push task has failed. To fix this problem, follow these steps:
 
-1.  Check whether the CDN address is correct.
-2.  If the CDN address is correct, destroy the current converter and create a new one.
+1. Check whether the CDN address is correct.
+2. If the CDN address is correct, destroy the current converter and create a new one.
 
 ### Troubleshooting by error code
 

@@ -30,9 +30,9 @@ During testing, verify the following:
 
 - **Conversation flow**: Test multi-turn conversations to ensure the agent maintains context and handles follow-up questions correctly.
 
-- **MCP tools**:  If you have configured MCP servers, trigger a conversation that would invoke an MCP tool and verify the agent calls it correctly and returns the expected response.
+- **MCP tools**: If you have configured MCP servers, trigger a conversation that would invoke an MCP tool and verify the agent calls it correctly and returns the expected response.
 
-- **Knowledge base**:  If you have configured a knowledge base, ask a question that requires information from your knowledge base and verify the agent retrieves and uses it accurately.
+- **Knowledge base**: If you have configured a knowledge base, ask a question that requires information from your knowledge base and verify the agent retrieves and uses it accurately.
 
 ## Troubleshooting and debugging
 
