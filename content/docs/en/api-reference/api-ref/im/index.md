@@ -185,12 +185,12 @@ This group of methods enables you to add, retrieve, modify, and delete members f
 
 ### Global mute
 
-This group of methods enables you to mute any user ID in users, groups, or chat rooms, preventing these users from sending messages to other chat users, groups, or chat rooms.
+This group of methods enables you to mute any user ID in one-to-one chats, chat groups, or chat rooms, preventing these users from sending messages to other chat users, chat groups, or chat rooms.
 
 | Name | Method | Request | Description | Rate Limits |
 | --- | --- | --- | --- | --- |
-| Globally mute a specified user | POST | `/{orgName}/{appName}/mutes` | Mutes a specified user in users, groups, or chat rooms. | 100/second |
-| Query the detailed information of global-mute | GET | `/{orgName}/{appName}/mutes/username` | Queries the detailed information of the global-mute settings of the specified user in users, groups, or chat rooms.| 100/second |
+| Globally mute a specified user | POST | `/{orgName}/{appName}/mutes` | Mutes a specified user in one-to-one chats, chat groups, or chat rooms. | 100/second |
+| Query the detailed information of global-mute | GET | `/{orgName}/{appName}/mutes/username` | Queries the detailed information of the global-mute settings of the specified user in one-to-one chats, chat groups, or chat rooms.| 100/second |
 | Retrieve all globally muted users | GET | `/{orgName}/{appName}/mutes` | Retrieves all the users that have been globally muted in the app. | 100/second |
 
 ### Presence

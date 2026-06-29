@@ -15,7 +15,7 @@ This page shows how to use the Chat SDK to implement contact management.
 
 ### Android
 
-The Chat SDK uses `ContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `ContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `addContact`: Adds a contact.
 - `acceptInvitation`: Accepts the contact invitation.
@@ -28,7 +28,7 @@ The Chat SDK uses `ContactManager` to add, remove and manage contacts. Following
 
 ### iOS
 
-The Chat SDK uses `IAgoraChatContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `IAgoraChatContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `addContact`: Adds a contact.
 - `deleteContact`: Deletes a contact.
@@ -39,7 +39,7 @@ The Chat SDK uses `IAgoraChatContactManager` to add, remove and manage contacts.
 
 ### Flutter
 
-The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `addContact`: Adds a contact.
 - `acceptInvitation`: Accepts the contact invitation.
@@ -53,7 +53,7 @@ The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. Follo
 
 ### React Native
 
-The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `addContact`: Adds a contact.
 - `acceptInvitation`: Accepts the contact invitation.
@@ -67,7 +67,7 @@ The Chat SDK uses `ChatContactManager` to add, remove and manage contacts. Follo
 
 ### Windows
 
-The Chat SDK uses `IContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `IContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `AddContact`: Adds a contact.
 - `AcceptInvitation`: Accepts the contact invitation.
@@ -80,7 +80,7 @@ The Chat SDK uses `IContactManager` to add, remove and manage contacts. Followin
 
 ### Unity
 
-The Chat SDK uses `IContactManager` to add, remove and manage contacts. Followings are the core methods:
+The Chat SDK uses `IContactManager` to add, remove and manage contacts. The following are the core methods:
 
 - `AddContact`: Adds a contact.
 - `AcceptInvitation`: Accepts the contact invitation.

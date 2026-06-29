@@ -206,7 +206,7 @@ Agora is certified to ISO/IEC 27001:2022 by DNV GL, demonstrating our informatio
 
 Download the certificate: [ISO/IEC 27001:2022](/files/Agora_ISO_27001.pdf)
 
-**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in publics clouds acting as PII processors**
+**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in public clouds acting as PII processors**
 
 Agora is certified to ISO/IEC 27018 by DNV GL. This standard is a Code of Practice for protecting personal data in the cloud environment. Agora continuously strives to protect the sensitive data with our customers.
 
@@ -214,7 +214,7 @@ Download the certificate: [ISO/IEC 27018:2019](/files/Agora_ISO_27018.pdf)
 
 **SOC 2 Report**
 
-Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accounts (AICPA) standards for security, availability and confidently and achieves the SOC 2 report.
+Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls, and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accountants (AICPA) standards for security, availability, and confidentiality, and have achieved SOC 2 reporting.
 
 **PCI DSS**
 
@@ -362,7 +362,7 @@ Agora products and services are designed and built with multiple protection meas
 
 |Protection measures |Applied by default |Recommended use-cases|
 |---|---|---|
-|Channel seperation |Yes |All real-time use-cases.|
+|Channel separation |Yes |All real-time use-cases.|
 |Token-based authentication |No |All real-time apps in a production environment should use token-based end-user authentication.|
 |Encryption |No |Real-time use-cases that require confidentiality.|
 |Network geofencing |No |Real-time use-cases where customers wish to restrict access to Agora servers to within a specified region.|
