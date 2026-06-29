@@ -23,7 +23,7 @@ To manually install the Signaling SDK for Web, do one of the following:
 
 ## Through the Agora website
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder. In the SDK folder, find the JS file in the `libs` folder, and save it to your project directory.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=web) to a local folder. In the SDK folder, find the JS file in the `libs` folder, and save it to your project directory.
 
 1. Open the HTML file in your project directory, and add the following code to refer to the JS file:
 
@@ -118,7 +118,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 To manually install the Signaling SDK for Android from a downloaded package:
 
-1. Extract [Signaling SDK](/en/api-reference/sdks) to a local directory, such as `<unzipped_package>`.
+1. Extract [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=android) to a local directory, such as `<unzipped_package>`.
 
 1. Copy the following files or folders from the `libs` folder to your Android project.
 
@@ -163,7 +163,7 @@ To manually install the Signaling SDK for iOS, do one of the following:
 
 iOS apps integrated with Signaling SDK v1.4.4 cannot be published on the App Store due to review issues. If you want to publish your app on the App Store, you must use other versions of the SDK.
 
-1. Extract the files in [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=ios) to a local folder.
 
 1. Copy `AgoraRtmKit.xcframework` from the SDK to your project.
 
@@ -234,7 +234,7 @@ To manually install the Signaling SDK for macOS, do one of the following:
 
 Apps integrated with Signaling SDK v1.4.4 cannot be published on the App Store due to review issues. If you want to publish your app on the App Store, you must use other versions of the SDK.
 
-1. Extract the files in [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=macos) to a local folder.
 
 1. Copy `AgoraRtmKit.xcframework` from the SDK to your project.
 
@@ -276,7 +276,7 @@ The steps to execute these scripts are as follows:
 <TabsContent value="linux-java">
 To manually install the Signaling SDK for Linux Java:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
 
 1. Copy the `*.so` file and the `*.jar` file to the `lib` folder.
 
@@ -339,7 +339,7 @@ To manually install the Signaling SDK for Linux Java:
 <TabsContent value="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
 
 1. Copy the `*.so` file in the SDK folder into your `lib` folder, and copy the `*.h` file in the SDK folder into your `include` folder.
 
@@ -367,7 +367,7 @@ To manually install the Signaling SDK for Linux C++:
 <TabsContent value="windows">
 To manually install the Signaling SDK for Windows:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=windows) to a local folder.
 
 1. Copy all subfolders of the SDK folder to the solution directory of your Visual Studio project.
 
@@ -405,7 +405,7 @@ To manually install the Signaling SDK for Unity, do one of the following:
 
 ## Manually add the SDK files
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=unity) to a local folder.
 
 1. Copy the `Rtm-Scripts` folder under the `libs` folder in the SDK package to the `Assets` folder of the project path.
 
