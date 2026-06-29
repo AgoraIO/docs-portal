@@ -302,6 +302,8 @@ describe('DocsShell', () => {
     });
 
     expect(brandHomeLink).toHaveAttribute('href', '/en/introduction');
+    expect(within(brandHomeLink).getByText('Docs')).toBeInTheDocument();
+    expect(brandHomeLink.querySelector('svg')).toBeInTheDocument();
 
     fireEvent.click(brandHomeLink);
 
@@ -372,9 +374,10 @@ describe('DocsShell', () => {
   it('renders a separate desktop header row and docs tabs strip', async () => {
     renderDocsShell();
 
-    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
-
-    const mainHeaderRow = screen.getByTestId('docs-main-header-row');
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
     const docsTabsRow = docsTabsStrip.firstElementChild;
     const docsBodyShell = screen.getByTestId('docs-body-shell');
@@ -405,7 +408,8 @@ describe('DocsShell', () => {
     }
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(themeControl);
-    expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
+    expect(within(brandHomeLink).getByText('Docs')).toBeInTheDocument();
+    expect(brandHomeLink.querySelector('svg')).toBeInTheDocument();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
@@ -903,7 +907,9 @@ describe('DocsShell', () => {
 
     renderWithRouter(<ShellWithTabSwitcher />);
 
-    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: 'Agora Docs' }),
+    ).toBeInTheDocument();
 
     const sidebarScroll = screen.getByTestId('docs-sidebar-scroll');
     sidebarScroll.scrollTop = 180;
@@ -1569,7 +1575,9 @@ describe('DocsShell', () => {
   it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {
     renderDocsShell();
 
-    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: 'Agora Docs' }),
+    ).toBeInTheDocument();
 
     const mobileFlow = screen.getByTestId('docs-main-mobile-flow');
     const mobileScrollViewport = mobileFlow.querySelector(
@@ -1613,7 +1621,9 @@ describe('DocsShell', () => {
       },
     });
 
-    expect(await screen.findByText('Agora Docs')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('link', { name: 'Agora Docs' }),
+    ).toBeInTheDocument();
 
     const bodyShell = screen.getByTestId('docs-body-shell');
     const sidebarRegion = screen.getByTestId('docs-sidebar');

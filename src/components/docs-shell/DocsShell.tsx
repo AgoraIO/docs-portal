@@ -29,6 +29,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { AgoraLogoMark } from './AgoraLogoMark';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -219,13 +220,18 @@ export function DocsShell({
                   <SheetHeader className="min-w-0 border-b pr-12">
                     <SheetTitle className="min-w-0">
                       <Link
-                        className="inline-flex max-w-full min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        aria-label={t('app.name')}
+                        className="inline-flex max-w-full min-w-0 items-center gap-2 rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                         onClick={() => setIsMobileSheetOpen(false)}
                         params={{}}
                         search={{}}
                         to={homeHref}
                       >
-                        <span className="truncate">{t('app.name')}</span>
+                        <AgoraLogoMark
+                          className="h-5 shrink-0 text-[#00658d] dark:text-[#00a8e8]"
+                          decorative
+                        />
+                        <span className="truncate">Docs</span>
                       </Link>
                     </SheetTitle>
                     <SheetDescription className="sr-only">
@@ -251,12 +257,17 @@ export function DocsShell({
               </Sheet>
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
-                  className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
+                  aria-label={t('app.name')}
+                  className="flex min-w-0 items-center gap-2 text-[15px] font-semibold text-[color:var(--ink-1)]"
                   params={{}}
                   search={{}}
                   to={homeHref}
                 >
-                  <span className="truncate">{t('app.name')}</span>
+                  <AgoraLogoMark
+                    className="h-5 shrink-0 text-[#00658d] dark:text-[#00a8e8]"
+                    decorative
+                  />
+                  <span className="truncate">Docs</span>
                 </Link>
               </div>
             </div>
