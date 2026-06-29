@@ -127,7 +127,7 @@ AI Noise Suppression is free for up to 10,000 minutes each month. Additional usa
 
 ### 3D Spatial Audio pricing
 
-[3D Spatial Audio](../build/control-audio-and-devices/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
+[3D Spatial Audio](../build/enhance-the-audio-experience/spatial-audio.mdx) brings theater-like effects to virtual communication, making it seem as if the sound originates from all around the user.
 
 The unit prices for this extension are as follows:
 
