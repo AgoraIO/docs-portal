@@ -121,6 +121,10 @@ export function PlatformTabsGroup({
     syncPath: shouldSyncPlatformPath,
   });
 
+  if (activePlatform === undefined) {
+    return null;
+  }
+
   const panelChildren = Children.map(children, (child) => {
     if (!isValidElement<PlatformPanelProps>(child)) {
       return child;
@@ -444,7 +448,13 @@ function usePlatformSelection({
       stored && isKnownPlatform(stored) ? stored : null;
   }
 
-  const [activePlatform, setActivePlatform] = useState<PlatformKey>(() => {
+  const [activePlatform, setActivePlatform] = useState<
+    PlatformKey | undefined
+  >(() => {
+    if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
+      return undefined;
+    }
+
     if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
       return initialPlatform;
     }
@@ -469,6 +479,12 @@ function usePlatformSelection({
 
   useEffect(() => {
     const stored = getStoredPlatformPreference();
+
+    if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
+      activePlatformRef.current = undefined;
+      setActivePlatform(undefined);
+      return;
+    }
 
     if (
       initialPlatform === undefined &&
@@ -511,8 +527,10 @@ function usePlatformSelection({
   }, [initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
-    activePlatformRef.current = activePlatform;
-    syncPlatformDataset(activePlatform);
+    if (activePlatform) {
+      activePlatformRef.current = activePlatform;
+      syncPlatformDataset(activePlatform);
+    }
   }, [activePlatform]);
 
   useEffect(() => {

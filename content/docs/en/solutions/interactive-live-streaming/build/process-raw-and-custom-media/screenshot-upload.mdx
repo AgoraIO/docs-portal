@@ -39,10 +39,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -52,10 +60,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -64,22 +72,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -87,6 +98,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -313,10 +327,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -326,10 +348,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -338,22 +360,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -361,6 +386,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -568,10 +596,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -581,10 +617,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -593,22 +629,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -616,6 +655,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -823,10 +865,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -836,10 +886,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -848,22 +898,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -871,6 +924,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -1084,10 +1140,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -1097,10 +1161,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1109,22 +1173,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1132,6 +1199,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -1345,10 +1415,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -1358,10 +1436,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1370,22 +1448,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1393,6 +1474,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
@@ -1606,10 +1690,18 @@ Before implementing the Agora local screenshot upload feature, take the followin
 :::
 
   Fill in the following information:
-  **AWS**
+
+  <Tabs defaultValue="aws" groupId="storage-provider" persist>
+  <TabsList>
+    <TabsTrigger value="aws">AWS</TabsTrigger>
+    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="aws">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official  Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
   - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
   - **Secret Key**: String type, the secret key of the third-party cloud storage.
   - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
@@ -1619,10 +1711,10 @@ Before implementing the Agora local screenshot upload feature, take the followin
     - 26 lowercase English letters a-z
     - 26 uppercase English letters A-Z
     - 10 digits 0-9
-  <p/>
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: AWS
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1631,22 +1723,25 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
   - Filename Prefix: `test`
 
-  **Alibaba Cloud**
+  </TabsContent>
+
+  <TabsContent value="alibaba-cloud">
+
   - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
   - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
- - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
- - **Secret Key**: String type, the secret key of the third-party cloud storage.
- - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
- - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
- - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+  - **Secret Key**: String type, the secret key of the third-party cloud storage.
+  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
+  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-   - 26 lowercase English letters a-z
-   - 26 uppercase English letters A-Z
-   - 10 digits 0-9
-  <p/>
+    - 26 lowercase English letters a-z
+    - 26 uppercase English letters A-Z
+    - 10 digits 0-9
+
   **Sample configuration**
 
-- Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
   - Storage: Alibaba Cloud
   - Region: `cn-north-1`
   - Access Key: `12345678`
@@ -1654,6 +1749,9 @@ Before implementing the Agora local screenshot upload feature, take the followin
   - Bucket Name: `test-artifacts`
   - Endpoint: `oss-accelerate.aliyuncs.com`
   - Filename Prefix: `test`
+
+  </TabsContent>
+  </Tabs>
 
 3. **Integrate Video SDK**
 
