@@ -1161,6 +1161,87 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('href', 'https://example.com/postman');
   });
 
+  it('scopes generated OpenAPI body headings to the shared major section typography', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/think',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents/{agentId}/think': {
+                  post: {
+                    operationId: 'agent-think',
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              text: {
+                                type: 'string',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const operation = document.querySelector('.openapi-operation');
+    expect(operation).toBeInstanceOf(HTMLElement);
+    const pathHeading = await screen.findByRole('heading', {
+      name: 'Path Parameters',
+    });
+    const requestBodyHeading = screen.getByRole('heading', {
+      name: 'Request Body',
+    });
+    const responseBodyHeading = screen.getByRole('heading', {
+      name: 'Response Body',
+    });
+
+    expect(pathHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
+    expect(responseBodyHeading).toHaveAttribute('id', 'response-body');
+    expect(operation).toHaveClass(
+      '[&_h2#request-body]:font-semibold',
+      '[&_h2#request-body]:text-2xl',
+      '[&_h2#response-body]:font-semibold',
+      '[&_h2#response-body]:text-2xl',
+    );
+  });
+
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
     const operationDescriptionMarkdown =
       'Use this endpoint to send a custom instruction.\n\n- Pause the agent.\n- Resume the agent.\n\n1. Validate the agent ID.\n2. Send the instruction.';
