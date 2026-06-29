@@ -245,6 +245,7 @@ export function DocsContent({
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
+            defaultPlatform={platformTabs.defaultPlatform}
             initialPlatform={platformTabs.initialPlatform}
             locale={currentLocale}
             platforms={platformTabs.platforms}
@@ -264,6 +265,7 @@ export function DocsContent({
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
+                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
                 value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
@@ -277,11 +279,13 @@ export function DocsContent({
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>
               <PlatformTabsPlacementProvider
+                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
                 value="header"
               >
                 <PlatformTabsGroup
                   canonicalPlatform={resolvedBody.canonicalPlatform}
+                  defaultPlatform={platformTabs?.defaultPlatform}
                   groupMode="structured"
                   initialPlatform={platformTabs?.initialPlatform}
                   locale={currentLocale}
@@ -607,6 +611,7 @@ export type DocsContentBodyPayload =
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;
+        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
@@ -621,6 +626,7 @@ export type DocsContentBodyPayload =
       }[];
       platformTabs: {
         canonicalPlatform: PlatformKey;
+        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
