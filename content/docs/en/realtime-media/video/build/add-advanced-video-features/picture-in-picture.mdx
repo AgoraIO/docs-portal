@@ -3,10 +3,6 @@ title: "Picture-in-Picture"
 description: "Keep video visible in a floating overlay when your app moves to the background or the user switches to another app."
 ---
 
-:::note
-This feature is supported only on React Native.
-:::
-
 When your application moves to the background or the user switches to another app, the Picture-in-Picture (PiP) feature in Video SDK keeps the current video visible as a floating overlay window on screen. This lets users multitask without interrupting an ongoing call or viewing session, improving the multitasking experience and user retention.
 
 PiP is useful in the following scenarios:
@@ -17,6 +13,69 @@ PiP is useful in the following scenarios:
 | Online education | Lets students watch a teacher's video explanation while reviewing study materials, taking notes, or using other apps. |
 | Interactive live streaming | Lets viewers browse products, chat, or use other apps while the stream continues in the background. Useful for e-commerce and content live streaming. |
 | Screen sharing | Keeps shared content visible when the user switches apps during remote collaboration or a presentation. Useful for remote work, technical support, and product demos. |
+
+<PlatformStructured platform="flutter">
+## Prerequisites
+
+Before implementing Picture-in-Picture, make sure you have the following:
+
+- Flutter 3.7.0 or later
+- Video SDK for Flutter [v6.6.2](../../reference/release-notes) or later integrated into your project. See [SDK quickstart](/en/realtime-media/video/get-started-sdk).
+- To use PiP, the target device must run one of the following:
+  - Android 8.0 or later
+  - iOS 15.0 or later
+
+## Set up your project
+
+Before using PiP, complete the required configuration for each target platform.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+1. In `AndroidManifest.xml`, declare that the current Activity supports PiP mode.
+2. Make `MainActivity` extend `AgoraPIPFlutterActivity` or `AgoraPIPFlutterFragmentActivity`.
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. Open your target's **Signing & Capabilities** tab.
+2. Click **+ Capability**.
+3. Select **Background Modes**.
+4. Check **Audio, AirPlay, and Picture in Picture**.
+
+</TabsContent>
+</Tabs>
+
+## Implement Picture-in-Picture
+
+```dart
+late final RtcEngine _engine;
+late final AgoraPipController _pip;
+
+_engine = createAgoraRtcEngine();
+await _engine.initialize(RtcEngineContext(appId: appId));
+
+_pip = _engine.createPipController();
+await _pip.registerPipStateChangedObserver(
+  AgoraPipStateChangedObserver(
+    onPipStateChanged: (state, error) {
+      debugPrint('[PiP] state=$state error=$error');
+    },
+  ),
+);
+```
+
+## Reference
+
+- [Flutter PiP sample](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/picture_in_picture/picture_in_picture.dart)
+
+</PlatformStructured>
 
 <PlatformStructured platform="react-native">
 ## Prerequisites

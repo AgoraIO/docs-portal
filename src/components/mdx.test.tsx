@@ -762,6 +762,30 @@ describe('common MDX registry', () => {
     ).not.toBeVisible();
   });
 
+  it('hides a body group when the URL platform is not present in that group', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <PlatformTabsPlacementProvider initialPlatform="web" value="header">
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">Android-only instructions</Panel>
+          <Panel platform="ios">iOS-only instructions</Panel>
+        </Group>
+      </PlatformTabsPlacementProvider>,
+    );
+
+    expect(
+      screen.queryByText('Android-only instructions'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('iOS-only instructions')).not.toBeInTheDocument();
+  });
+
   it('persists platform once during a complete mouse click sequence', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;

@@ -206,6 +206,217 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('keeps screenshot upload provider details grouped in tabs across screenshot upload docs', () => {
+    const screenshotUploadDocs = [
+      'realtime-media/video/build/add-advanced-video-features/screenshot-upload.mdx',
+      'realtime-media/broadcast-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
+      'solutions/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
+    ];
+
+    for (const relativePath of screenshotUploadDocs) {
+      const content = readDoc(relativePath);
+      const startMarker = 'Fill in the following information:';
+      const endMarker = '3. **Integrate Video SDK**';
+      const startIndex = content.indexOf(startMarker);
+      const endIndex = content.indexOf(endMarker, startIndex + 1);
+
+      expect(startIndex).toBeGreaterThanOrEqual(0);
+      expect(endIndex).toBeGreaterThan(startIndex);
+
+      const providerSection = content.slice(startIndex, endIndex);
+
+      expect(providerSection).toContain(
+        '<Tabs defaultValue="aws" groupId="storage-provider" persist>',
+      );
+      expect(providerSection).toContain('<TabsList>');
+      expect(providerSection).toContain(
+        '<TabsTrigger value="aws">AWS</TabsTrigger>',
+      );
+      expect(providerSection).toContain(
+        '<TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>',
+      );
+      expect(providerSection).toContain('<TabsContent value="aws">');
+      expect(providerSection).toContain(
+        '<TabsContent value="alibaba-cloud">',
+      );
+    }
+  });
+
+  it('keeps connection status management free of undefined Vg placeholders', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain('<Vg ');
+    expect(content).not.toContain('</Vg>');
+  });
+
+  it('keeps connection status management free of undefined Vpl placeholders', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain('<Vpl ');
+    expect(content).not.toContain('</Vpl>');
+  });
+
+  it('keeps the iOS reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="ios">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="macos">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const iosSection = content.slice(platformStart, platformEnd);
+
+    expect(iosSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps the macOS reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="macos">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="react-native">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const macosSection = content.slice(platformStart, platformEnd);
+
+    expect(macosSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps the Windows reconnection diagram in video connection status management', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    const platformStart = content.indexOf(
+      '<PlatformStructured platform="windows">',
+      reconnectionHeading,
+    );
+    const platformEnd = content.indexOf(
+      '<PlatformStructured platform="blueprint">',
+      platformStart + 1,
+    );
+
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+    expect(platformStart).toBeGreaterThanOrEqual(0);
+    expect(platformEnd).toBeGreaterThan(platformStart);
+
+    const windowsSection = content.slice(platformStart, platformEnd);
+
+    expect(windowsSection).toContain(
+      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+    );
+  });
+
+  it('keeps required reconnection diagrams for remaining video platforms', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    const expectations = [
+      {
+        next: '<PlatformStructured platform="electron">',
+        platform: '<PlatformStructured platform="android">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="flutter">',
+        platform: '<PlatformStructured platform="electron">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="ios">',
+        platform: '<PlatformStructured platform="flutter">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="unity">',
+        platform: '<PlatformStructured platform="react-native">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+      },
+      {
+        next: '<PlatformStructured platform="web">',
+        platform: '<PlatformStructured platform="unreal">',
+        image:
+          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      },
+    ] as const;
+
+    const reconnectionHeading = content.indexOf(
+      '##### Disconnection and reconnection',
+    );
+    expect(reconnectionHeading).toBeGreaterThanOrEqual(0);
+
+    for (const { image, next, platform } of expectations) {
+      const platformStart = content.indexOf(platform, reconnectionHeading + 1);
+      const platformEnd = content.indexOf(next, platformStart + 1);
+
+      expect(platformStart).toBeGreaterThanOrEqual(0);
+      expect(platformEnd).toBeGreaterThan(platformStart);
+
+      const section = content.slice(platformStart, platformEnd);
+
+      expect(section).toContain(image);
+    }
+  });
+
+  it('keeps web connection status management free of shared prerequisite and implementation headings', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).not.toContain(
+      '\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n',
+    );
+  });
+
+  it('separates the reconnection platform group from the implementation platform group', () => {
+    const content = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+    );
+
+    expect(content).toContain(
+      '</PlatformStructured>\n\n{/* Separate platform groups: reconnection flow vs implementation guide. */}\n\n<PlatformStructured platform="android">',
+    );
+  });
+
   it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
     const multihostDocs = [
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
@@ -991,6 +1202,138 @@ describe('docs content regressions', () => {
     expect(androidSection).toContain(
       '1. Open the unzipped file and copy the following files or subfolders to your project path.\n\n  | File or folder        | Project path    |',
     );
+  });
+
+  it('keeps realtime video get-started-sdk sections that were missing in the PDF review', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      '### Complete sample code for real-time Video Calling',
+    );
+    expect(source).toContain('### Display the local video');
+    expect(source).toContain('### Create a basic UI');
+    expect(source).toContain(
+      'Create a new project</TabsTrigger>\n  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>',
+    );
+    expect(source).toContain(
+      '4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.',
+    );
+    expect(source).toContain(
+      '1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.',
+    );
+    expect(source).toContain('### Create a level');
+  });
+
+  it('keeps the video web quickstart top-of-page sample entry link', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const webSectionStart = source.indexOf('<PlatformStructured platform="web">');
+    const unrealSectionStart = source.indexOf(
+      '<PlatformStructured platform="unreal">',
+    );
+
+    expect(webSectionStart).toBeGreaterThanOrEqual(0);
+    expect(unrealSectionStart).toBeGreaterThan(webSectionStart);
+
+    const webSection = source.slice(webSectionStart, unrealSectionStart);
+
+    expect(webSection).toContain('<Cards>');
+    expect(webSection).toContain('<Card');
+    expect(webSection).toContain('title="RTC SDK API examples"');
+    expect(webSection).toContain(
+      'href="https://github.com/AgoraIO/API-Examples-Web"',
+    );
+    expect(webSection).not.toContain(
+      'Explore sample implementations to quickly integrate Conversational AI.',
+    );
+  });
+
+  it('keeps the video unreal setup section fully populated', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const unrealSectionStart = source.indexOf(
+      '<PlatformStructured platform="unreal">',
+    );
+    const blueprintSectionStart = source.indexOf(
+      '<PlatformStructured platform="blueprint">',
+    );
+
+    expect(unrealSectionStart).toBeGreaterThanOrEqual(0);
+    expect(blueprintSectionStart).toBeGreaterThan(unrealSectionStart);
+
+    const unrealSection = source.slice(unrealSectionStart, blueprintSectionStart);
+
+    expect(unrealSection).toContain('<TabsList>');
+    expect(unrealSection).toContain(
+      '<TabsTrigger value="existing">Add to an existing project</TabsTrigger>',
+    );
+    expect(unrealSection).toContain(
+      '1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.',
+    );
+    expect(unrealSection).toContain('3. Add the Agora dependency library');
+    expect(unrealSection).toContain('1. Create a new C++ class and generate header and library files');
+    expect(unrealSection).toContain('1. Associate C++ classes and Widgets');
+    expect(unrealSection).toContain(
+      '1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.',
+    );
+  });
+
+  it('keeps the react-js video quickstart local video section before remote video', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const reactJsSectionStart = source.indexOf(
+      '<PlatformStructured platform="react-js">',
+    );
+    const unitySectionStart = source.indexOf(
+      '<PlatformStructured platform="unity">',
+    );
+
+    expect(reactJsSectionStart).toBeGreaterThanOrEqual(0);
+    expect(unitySectionStart).toBeGreaterThan(reactJsSectionStart);
+
+    const reactJsSection = source.slice(reactJsSectionStart, unitySectionStart);
+
+    expect(reactJsSection).toContain('### Display the local video');
+    expect(reactJsSection).toContain('### Display remote video');
+    expect(reactJsSection.indexOf('### Display the local video')).toBeLessThan(
+      reactJsSection.indexOf('### Display remote video'),
+    );
+    expect(reactJsSection).toContain('<LocalUser');
+    expect(reactJsSection).toContain('videoTrack={localCameraTrack}');
+  });
+
+  it('keeps the blueprint video quickstart new-project steps fully populated', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+    const blueprintSectionStart = source.indexOf(
+      '<PlatformStructured platform="blueprint">',
+    );
+
+    expect(blueprintSectionStart).toBeGreaterThanOrEqual(0);
+
+    const blueprintSection = source.slice(blueprintSectionStart);
+
+    expect(blueprintSection).toContain(
+      '2. Configure your project as follows:',
+    );
+    expect(blueprintSection).toContain(
+      '* **Language**: Select **Blueprint**.',
+    );
+    expect(blueprintSection).toContain(
+      '* **Target Platform**: Pick **Desktop**.',
+    );
+    expect(blueprintSection).toContain('Click **Create**.');
   });
 
   it('keeps voice api-examples populated with sample repositories and next steps', () => {

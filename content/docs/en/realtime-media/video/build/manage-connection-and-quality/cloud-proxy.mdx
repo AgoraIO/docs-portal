@@ -98,49 +98,6 @@ Call `setCloudProxy` outside the channel. Its settings are valid within the `Ago
 
 Call `setCloudProxy` outside the channel. Its settings are valid within the `AgoraRtcEngineKit` life cycle.
 </PlatformStructured>
-<PlatformStructured platform="javascript">
-1. Enable Cloud Proxy in [Agora Console](https://console.agora.io/):
-
-    1. Log in to the console.
-    2. Under **Projects**, locate the project that you want to edit, then click **Configure**.
-    3. Under **All Features**, select **Cloud Proxy**.
-    4. Click **Enable Cloud Proxy**.
-
-        ![Enable Cloud Proxy](/images/video-sdk/enable-cloud-proxy.png)
-
-1. Call the [`startProxyServer`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#startproxyserver) method and set the `mode` parameter before joining the channel:
-    a. Set to `3`: Cloud proxy using UDP protocol, that is, Force UDP cloud proxy mode. In this mode, the SDK always transmits data via UDP protocol.
-    b. Set to `5`: (Supported since v4.9.0) Cloud proxy using TCP (encryption) protocol, that is, Force TCP cloud proxy mode. In this mode, the SDK always transmits data over TLS 443.
-
-    ```javascript
-    const agoraEngine = useRTCClient();
-    useEffect(() => {
-        agoraEngine.startProxyServer(3);
-    }, []);
-    ```
-
-1. Test whether audio and video calls or live broadcasts can be initiated normally.
-
-1. Video SDK provides a `is-using-cloud-proxy` event, which will trigger the callback after the media stream is successfully published locally to prompt whether the current media stream is forwarded by the cloud proxy service.
-
-    ```javascript
-    useClientEvent(agoraEngine, "is-using-cloud-proxy", (isUsingProxy) => {
-        // Display the proxy server state based on the isUsingProxy Boolean variable.
-        if (isUsingProxy) {
-            console.log("Cloud proxy service activated");
-        } else {
-            console.log("Proxy service failed")
-        }
-    });
-    ```
-
-1. If you need to close the proxy, call [`stopProxyServer`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#stopproxyserver) after leaving the channel.
-
-    ```javascript
-    // Turn off the cloud proxy service
-    agoraEngine.stopProxyServer();
-    ```
-</PlatformStructured>
 <PlatformStructured platform="react-native">
 3. Call `setCloudProxy` and set `proxyType` to `UdpProxy` or `TcpProxy` to enable Cloud proxy.
 
@@ -382,14 +339,6 @@ To use Agora Cloud Proxy, your end users must first configure their firewalls to
 ### API reference
 
 - [`setCloudProxy`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setcloudproxy(_:))
-</PlatformStructured>
-<PlatformStructured platform="javascript">
-### API Reference
-
-- [`startProxyServer`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#startproxyserver)
-- [`stopProxyServer`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#stopproxyserver)
-- [`useClientEvent`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/functions/useAutoPlayVideoTrack.html)
-- [`useRTCClient`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/functions/useRTCClient.html)
 </PlatformStructured>
 <PlatformStructured platform="react-native">
 :::warning[Caution]

@@ -518,15 +518,15 @@ async function setBackgroundImage() {
 
   1. Add the following code to the script file:
 
-    ```typescript
-    import VirtualBackgroundExtension from "agora-extension-virtual-background";
-    ```
+      ```typescript
+      import VirtualBackgroundExtension from "agora-extension-virtual-background";
+      ```
 
   1. Add the following code to the html file:
 
-    ```html
-    <script src="../agora-extension-virtual-background.js"></script>
-    ```
+      ```html
+      <script src="../agora-extension-virtual-background.js"></script>
+      ```
 
 ### Create and register the extension instance
 
@@ -1149,6 +1149,111 @@ This section contains content that completes the information in this page, or po
 - [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_segmentationproperty.html)
 </PlatformStructured>
 
+<PlatformStructured platform="macos">
+## Understand the tech
+
+Virtual Background offers the following options:
+
+| Feature | Example |
+| ---- | ---- |
+| Blurred background and image background  |  ![image](/images/extensions-marketplace/blurred-background.jpg)  |
+| Video/Animated background  |  <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" height="auto">Your browser does not support the `video` element.</video>  |
+| Portrait-in-picture  | ![portrait-in-picture](/images/extensions-marketplace/portrait-in-picture.jpg) Allows the presenter to use slides as the virtual background while superimposing their video. The effect is similar to a weather news cast on television, preventing interruptions during a layout toggle.  |
+
+Want to test Virtual Background? Try the <a href="https://webdemo.agora.io/virtualBackground/index.html">online demo</a>.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement virtual background
+
+This section shows you how to add a virtual background to the local video.
+
+### Check device compatibility
+
+To avoid performance degradation or unavailable features when enabling Virtual Background on low-end devices, check whether the device supports the feature.
+
+```swift
+guard agoraEngine.isFeatureAvailable(onDevice: .videoPreprocessVirtualBackground) else {
+  // Device doesn't support virtual background
+  return
+}
+```
+
+### Set a blurred background
+
+To blur the video background, use the following code:
+
+```swift
+func blurBackground() {
+  let virtualBackgroundSource = AgoraVirtualBackgroundSource()
+  virtualBackgroundSource.backgroundSourceType = .blur
+  virtualBackgroundSource.blurDegree = .high
+
+  let segData = AgoraSegmentationProperty()
+  segData.modelType = .agoraAi
+
+  agoraEngine.enableVirtualBackground(true, backData: virtualBackgroundSource, segData: segData)
+}
+```
+
+### Set a color background
+
+To apply a solid color as the virtual background, use a hexadecimal color code.
+
+```swift
+func colorBackground() {
+  let virtualBackgroundSource = AgoraVirtualBackgroundSource()
+  virtualBackgroundSource.backgroundSourceType = .color
+  virtualBackgroundSource.color = convertColorToHex(.red)
+
+  let segData = AgoraSegmentationProperty()
+  segData.modelType = .agoraAi
+
+  agoraEngine.enableVirtualBackground(true, backData: virtualBackgroundSource, segData: segData)
+}
+```
+
+### Set an image background
+
+To set a custom image as the virtual background, include an image such as `background_ss.jpg` in your app bundle and use the following code:
+
+```swift
+func imageBackground() {
+  let virtualBackgroundSource = AgoraVirtualBackgroundSource()
+  virtualBackgroundSource.backgroundSourceType = .img
+  virtualBackgroundSource.source = Bundle.main.path(forResource: "background_ss", ofType: "jpg")
+
+  let segData = AgoraSegmentationProperty()
+  segData.modelType = .agoraAi
+
+  agoraEngine.enableVirtualBackground(true, backData: virtualBackgroundSource, segData: segData)
+}
+```
+
+### Reset the background
+
+To disable the virtual background and revert to the original video state, use the following code:
+
+```swift
+agoraEngine.enableVirtualBackground(false, backData: nil, segData: nil)
+```
+
+## Reference
+
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`isFeatureAvailable`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/isfeatureavailable(ondevice:))
+
+- [`enableVirtualBackground`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enablevirtualbackground(_:backdata:segdata:))
+
+- [`AgoraVirtualBackgroundSource`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravirtualbackgroundsource)
+
+- [`AgoraSegmentationProperty`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorasegmentationproperty)
+</PlatformStructured>
+
 <PlatformStructured platform="react-native">
 ## Understand the tech
 
@@ -1263,6 +1368,105 @@ This section contains content that completes the information in this page, or po
 - [`VirtualBackgroundSource`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_virtualbackgroundsource.html)
 
 - [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_segmentationproperty.html)
+</PlatformStructured>
+
+<PlatformStructured platform="react-js">
+## Understand the tech
+
+Virtual Background offers the following options:
+
+| Feature | Example |
+| ---- | ---- |
+| Blurred background and image background  |  ![image](/images/extensions-marketplace/blurred-background.jpg)  |
+| Video/Animated background  |  <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" height="auto">Your browser does not support the `video` element.</video>  |
+| Portrait-in-picture  | ![portrait-in-picture](/images/extensions-marketplace/portrait-in-picture.jpg) Allows the presenter to use slides as the virtual background while superimposing their video. The effect is similar to a weather news cast on television, preventing interruptions during a layout toggle.  |
+
+Want to test Virtual Background? Try the <a href="https://webdemo.agora.io/virtualBackground/index.html">online demo</a>.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement virtual background
+
+This section shows you how to add a virtual background to the local video.
+
+### Check device compatibility
+
+To avoid performance degradation or unavailable features when enabling Virtual Background on low-end devices, check whether the device supports the feature.
+
+```typescript
+const checkCompatibility = () => {
+  if (!extension.current.checkCompatibility()) {
+    console.error("Does not support virtual background!");
+    return;
+  }
+}
+```
+
+### Set a blurred background
+
+To blur the video background, use the following code:
+
+```typescript
+const blurBackground = () => {
+  processor.current?.setOptions({ type: "blur", blurDegree: 2 });
+};
+```
+
+### Set a color background
+
+To apply a solid color as the virtual background, use the following code:
+
+```typescript
+const colorBackground = () => {
+  processor.current?.setOptions({ type: "color", color: "#00ff00" });
+};
+```
+
+### Set an image background
+
+To set a custom image as the virtual background, use the following code:
+
+```typescript
+const imageBackground = () => {
+  const image = new Image();
+  image.onload = () => {
+    processor.current?.setOptions({ type: "img", source: image });
+  };
+  image.src = demoImage;
+};
+```
+
+### Reset the background
+
+To disable the virtual background and revert to the original video state, use the following code:
+
+```typescript
+function VirtualBackgroundComponent() {
+  const [isVirtualBackground, setVirtualBackground] = useState(false);
+  const connectionState = useConnectionState();
+
+  return (
+    <div>
+      {isVirtualBackground ? (
+        <div>
+          <button onClick={() => setVirtualBackground(false)}>Disable virtual background</button>
+          <AgoraExtensionComponent />
+        </div>
+      ) : (
+        <button onClick={() => setVirtualBackground(true)} disabled={connectionState !== "CONNECTED"}>
+          Enable virtual background
+        </button>
+      )}
+    </div>
+  );
+}
+```
+
+## Reference
+
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
+
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -1408,3 +1612,129 @@ This section contains content that completes the information in this page, or po
 - [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_segmentationproperty.html)
 </PlatformStructured>
 
+<PlatformStructured platform="unreal">
+## Understand the tech
+
+Virtual Background offers the following options:
+
+| Feature | Example |
+| ---- | ---- |
+| Blurred background and image background  |  ![image](/images/extensions-marketplace/blurred-background.jpg)  |
+| Video/Animated background  |  <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" height="auto">Your browser does not support the `video` element.</video>  |
+| Portrait-in-picture  | ![portrait-in-picture](/images/extensions-marketplace/portrait-in-picture.jpg) Allows the presenter to use slides as the virtual background while superimposing their video. The effect is similar to a weather news cast on television, preventing interruptions during a layout toggle.  |
+
+Want to test Virtual Background? Try the <a href="https://webdemo.agora.io/virtualBackground/index.html">online demo</a>.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement virtual background
+
+This section shows you how to add a virtual background to the local video.
+
+### Set a blurred background
+
+To blur the video background, use the following code:
+
+```cpp
+void UMyUserWidget::SetBackgroundBlur(VirtualBackgroundSource& virtualBackgroundSource)
+{
+    VirtualBackgroundSource virtualBackgroundSource;
+    SegmentationProperty segmentationProperty;
+
+    // Set background blur
+    virtualBackgroundSource.background_source_type = VirtualBackgroundSource::BACKGROUND_BLUR;
+    virtualBackgroundSource.blur_degree = VirtualBackgroundSource::BACKGROUND_BLUR_DEGREE::BLUR_DEGREE_HIGH;
+
+    // Set processing properties for background
+    segmentationProperty.modelType = SegmentationProperty::SEG_MODEL_AI;
+    segmentationProperty.greenCapacity = 0.5F;
+
+    // Disable virtual background
+    agoraEngine->enableVirtualBackground(false, virtualBackgroundSource, segmentationProperty);
+    UE_LOG(LogTemp, Log, TEXT("Color background enabled"));
+
+    UE_LOG(LogTemp, Log, TEXT("Blur background enabled"));
+}
+```
+
+### Set a color background
+
+To apply a solid color as the virtual background, use a hexadecimal color code. For example, `0x0000FF` for blue:
+
+```cpp
+void UMyUserWidget::SetBackgroundColor(VirtualBackgroundSource& virtualBackgroundSource)
+{
+    VirtualBackgroundSource virtualBackgroundSource;
+    SegmentationProperty segmentationProperty;
+
+    // Set a solid background color
+    virtualBackgroundSource.background_source_type = VirtualBackgroundSource::BACKGROUND_COLOR;
+    virtualBackgroundSource.color = 0x0000FF;
+
+    // Set processing properties for background
+    segmentationProperty.modelType = SegmentationProperty::SEG_MODEL_AI;
+    segmentationProperty.greenCapacity = 0.5F;
+
+    // Enable virtual background
+    agoraEngine->enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
+    UE_LOG(LogTemp, Log, TEXT("Color background enabled"));
+}
+```
+
+### Set an image background
+
+To set a custom image as the virtual background, specify the absolute path to the image file.
+
+```cpp
+void UMyUserWidget::SetBackgroundImage(VirtualBackgroundSource& virtualBackgroundSource)
+{
+    VirtualBackgroundSource virtualBackgroundSource;
+    SegmentationProperty segmentationProperty;
+
+    // Set a background image
+    virtualBackgroundSource.background_source_type = VirtualBackgroundSource::BACKGROUND_IMG;
+    virtualBackgroundSource.source = "<absolute path to an image file>";
+
+    // Set processing properties for background
+    segmentationProperty.modelType = SegmentationProperty::SEG_MODEL_AI;
+    segmentationProperty.greenCapacity = 0.5F;
+
+    // Enable virtual background
+    agoraEngine->enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
+    UE_LOG(LogTemp, Log, TEXT("Image background enabled"));
+}
+```
+
+### Reset the background
+
+To disable the virtual background and revert to the original video state, use the following code:
+
+```cpp
+void UMyUserWidget::ResetVirtualBackground()
+{
+    VirtualBackgroundSource virtualBackgroundSource;
+    SegmentationProperty segmentationProperty;
+
+    // Reset the background state
+    virtualBackgroundSource.background_source_type = VirtualBackgroundSource::BACKGROUND_COLOR;
+    virtualBackgroundSource.color = 0xFFFFFF;
+
+    // Set processing properties for background
+    segmentationProperty.modelType = SegmentationProperty::SEG_MODEL_AI;
+    segmentationProperty.greenCapacity = 0.5F;
+
+    // Disable virtual background
+    agoraEngine->enableVirtualBackground(false, virtualBackgroundSource, segmentationProperty);
+}
+```
+## Reference
+
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects of this product.
+
+### API reference
+
+- [`enableVirtualBackground`](https://api-ref.agora.io/en/video-sdk/unreal/4.x/API/class_irtcengine.html#api_irtcengine_enablevirtualbackground)
+- [`VirtualBackgroundSource`](https://api-ref.agora.io/en/video-sdk/unreal/4.x/API/class_virtualbackgroundsource.html)
+- [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/unreal/4.x/API/class_segmentationproperty.html)
+</PlatformStructured>

@@ -26,6 +26,12 @@ To start a Video Calling session, implement the following steps in your app:
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- [Android Studio](https://developer.android.com/studio) 4.2 or higher.
+- Android SDK API Level 21 or higher.
+- Two mobile devices running Android 5.0 or higher.
+
 ## Set up your project
 
 <Tabs defaultValue="new">
@@ -180,6 +186,8 @@ Use either of the following methods to add Video SDK to your project.
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -1276,6 +1284,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 
@@ -1312,17 +1330,10 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 * [Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?](/en/api-reference/faq/quality/android_background)
 
-### Next steps
-
-After implementing the quickstart sample, read the following documents to learn more:
-
-* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
-
 ### See also
 
 * [SDK error codes](/en/realtime-media/video/reference/error-codes)
 * [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
-* If a firewall is deployed in your network environment, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
 
 </PlatformStructured>
 
@@ -1349,397 +1360,131 @@ To start a Video Calling session, implement the following steps in your app:
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- Xcode 13.0 or higher.
+- An Apple developer account.
+- If you use CocoaPods to integrate the SDK, make sure [CocoaPods is installed](https://guides.cocoapods.org/using/getting-started.html#getting-started).
+- Two devices running iOS 14.0 or higher.
+
 ## Set up your project
 
-The following figure illustrates the essential steps:
+<Tabs defaultValue="new">
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+<TabsContent value="new">
 
 
-### Quick start sequence
+Follow these steps to create a project in Xcode:
+
+1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application**, select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
+
+    :::info[Information]
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
+
+2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your project.
+3. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
 
-![](/images/video-sdk/quick-start-sequence.svg)
+</TabsContent>
+<TabsContent value="existing">
 
 
-This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
+Follow these steps to add Video Calling to your Xcode project:
 
-### Import Agora framework
-
-Add the following import to your swift file:
-
-```swift
-import UIKit
-import AgoraRtcKit
-```
-
-### Initialize the engine
-
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+1. Open your project in Xcode.
+2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
 
-```swift
-var agoraKit: AgoraRtcEngineKit!
-let appId = "YOUR_AGORA_APP_ID"
+</TabsContent>
+</Tabs>
 
-// Initialize the Agora engine
-func initializeAgoraVideoSDK() {
-    agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-}
-```
+### Install the SDK
 
+Use one of the following methods to install the Video SDK.
 
-### Join a channel
-
-To join a channel, call `joinChannel` with the following parameters:
-
-- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
-
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
-
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
-
-- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+<Tabs defaultValue="spm">
+<TabsList>
+  <TabsTrigger value="spm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual">Manual integration</TabsTrigger>
+</TabsList>
+<TabsContent value="spm">
 
 
-For Video Calling, set the `channelProfile` to `.communication` and the `clientRoleType` to `.broadcaster`.
+1. In Xcode, go to **File** > **Add Package Dependencies**.
+2. In the search bar, paste the following URL:
 
-```swift
-let channelName = "demo"    // Replace with your actual channel name
-let token = "<Authentication token>" // Replace with your token
-
-// Join the channel with specified options
-func joinChannel() {
-    let options = AgoraRtcChannelMediaOptions()
-    // In video calling, set the channel use-case to communication
-    options.channelProfile = .communication
-    // Set the user role as broadcaster (default is audience)
-    options.clientRoleType = .broadcaster
-    // Publish audio captured by microphone
-    options.publishMicrophoneTrack = true
-    // Publish video captured by camera
-    options.publishCameraTrack = true
-    // Auto subscribe to all audio streams
-    options.autoSubscribeAudio = true
-    // Auto subscribe to all video streams
-    options.autoSubscribeVideo = true
-    // Use a temporary Token to join the channel
-    agoraKit.joinChannel(
-        byToken: token,
-        channelId: channelName,
-        uid: 0,
-        mediaOptions: options
-    )
-}
-```
-
-
-### Subscribe to Video SDK events
-
-The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
-
-:::info
-
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
-
-:::
-
-
-```swift
-// Extension for handling Agora SDK callbacks
-extension ViewController: AgoraRtcEngineDelegate {
-
-    // Triggered when the local user successfully joins a channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-        print("Successfully joined channel: \(channel) with UID: \(uid)")
-    }
-
-    // Triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-        setupRemoteVideo(uid: uid, view: remoteView)
-    }
-    // Triggered when a remote user leaves the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
-        setupRemoteVideo(uid: uid, view: nil)
-    }
-}
-```
-
-
-To learn about the other SDK events, see [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate).
-
-
-### Enable the video module
-
-Follow the steps below to set up the video module.
-
-1. To enable the video module, call `enableVideo`.
-1. To enable local video preview, call `startPreview`.
-
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
-
-
-### Display the local video
-
-Call `setupLocalVideo` to initialize the local view and set the local video display properties.
-
-```swift
-// Configures and starts displaying the local video feed
-func setupLocalVideo() {
-    let videoCanvas = AgoraRtcVideoCanvas()
-    videoCanvas.view = localView
-    videoCanvas.uid = 0  // UID 0 is assigned to the local user
-    videoCanvas.renderMode = .hidden
-    agoraKit.setupLocalVideo(videoCanvas)
-}
-```
-
-### Display remote video
-To initialize the remote user view, call `setupRemoteVideo` and set the local display properties for the remote user. Use the `didJoinedOfUid` callback to get the UID of the remote user.
-
-```swift
-func setupRemoteVideo(uid: UInt, view: UIView?) {
-    let videoCanvas = AgoraRtcVideoCanvas()
-    videoCanvas.uid = uid
-    videoCanvas.view = view // Assign view for joining, set to nil for leaving
-    videoCanvas.renderMode = .hidden
-    agoraKit.setupRemoteVideo(videoCanvas)
-}
-```
-
-### Handle permissions
-To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
-
-
-| Key | Type | Value |
-|:----|:-----|:------|
-| Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
-| Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
-
-
-:::info
-
-- If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
-- For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
-
-:::
-
-
-### Start and close the app
-
-When the user launches the app, it joins the channel and starts Video Calling. When the user closes the app, it leaves the channel and ends Video Calling.
-
-1. To start Video Calling, call the following methods:
-
-
-    ```swift
-    // Initialize the Agora engine
-    initializeAgoraVideoSDK()
-    // Start the local video preview
-    setupLocalVideo()
-    // Join an Agora channel
-    joinChannel()
+    ```text
+    https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
     ```
 
+3. Click **Add Package**, select the latest version, and click **Next**.
+4. For basic Video Calling, select **RtcBasic**.
 
-1. To leave the channel and release SDK resources when the app is closed, call the following methods:
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
+
+5. Under **Add to Target**, select your project and click **Add Package**.
+
+    For more information, see [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 
-    ```swift
-    // Stop local video preview
-    agoraKit.stopPreview()
-    // Leave the channel and release session-related resources
-    agoraKit.leaveChannel(nil)
-    // Release all resources used by the Agora SDK
-    AgoraRtcEngineKit.destroy()
+</TabsContent>
+<TabsContent value="cocoapods">
+
+
+1. Go to the project root directory in Terminal and run `pod init`. A text file named `Podfile` is generated in the project folder.
+2. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
+
+    ```ruby
+    platform :ios, '9.0'
+    target 'Your App' do
+      # Replace x.y.z with the specific SDK version number, such as 4.4.0.
+      # Integrate the Full SDK
+      pod 'AgoraRtcEngine_iOS', 'x.y.z'
+
+      # To integrate the Lite SDK, use the following line instead
+      # pod 'AgoraLite_iOS', '4.4.0'
+    end
     ```
 
+    Get the latest version number from the [release notes](/en/realtime-media/video/reference/release-notes).
 
-:::caution[caution]
-After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
+4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
+
+
+</TabsContent>
+<TabsContent value="manual">
+
+
+1. Download the latest version of the SDK from [SDKs download](/en/api-reference/sdks?platform=ios) and extract the contents.
+2. Copy the files in the `libs` folder of the SDK package to your project directory.
+3. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
+
+    :::info[Information]
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), contact `support@agora.io`. The library provided by the SDK is a FAT image that includes simulator and device builds.
+    :::
+
+
+</TabsContent>
+</Tabs>
+
+:::warning[Note]
+The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple require developers to declare approved reasons for using a set of APIs in their app's privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
-
-
-### Complete sample code
-
-A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
-
-
-### Complete sample code for real-time Video Calling
-
-
-```swift
-import UIKit
-import AgoraRtcKit
-
-class ViewController: UIViewController {
-
-    let appId = "<Your app ID>" // Replace with your actual App ID
-    let channelName = "demo"    // Replace with your actual channel name
-    let token = "<Authentication token>" // Replace with your token
-
-    // UI view for displaying the local video stream
-    var localView: UIView!
-    // UI view for displaying the remote video stream
-    var remoteView: UIView!
-    // Instance of the Agora RTC engine
-    var agoraKit: AgoraRtcEngineKit!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Initialize the Agora engine
-        initializeAgoraVideoSDK()
-        // Set up the user interface
-        setupUI()
-        // Start the local video preview
-        setupLocalVideo()
-        // Join an Agora channel
-        joinChannel()
-    }
-
-    // Clean up resources when the view controller is deallocated
-    deinit {
-        agoraKit.stopPreview()
-        agoraKit.leaveChannel(nil)
-        AgoraRtcEngineKit.destroy()
-    }
-
-    // Initializes the Video SDK instance
-    func initializeAgoraVideoSDK() {
-        // Create an instance of AgoraRtcEngineKit and set the delegate
-        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-    }
-
-    // Sets up the UI layout for local and remote video views
-    func setupUI() {
-        // Create the local video view covering the full screen
-        localView = UIView(frame: UIScreen.main.bounds)
-
-        // Create the remote video view positioned in the top-right corner
-        remoteView = UIView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 135, height: 240))
-
-        // Add video views to the main view
-        self.view.addSubview(localView)
-        self.view.addSubview(remoteView)
-    }
-
-    // Configures and starts displaying the local video feed
-    func setupLocalVideo() {
-        // Enable video functionality (audio is enabled by default)
-        agoraKit.enableVideo()
-        let videoCanvas = AgoraRtcVideoCanvas()
-        videoCanvas.view = localView
-        videoCanvas.uid = 0  // UID 0 is assigned to the local user
-        videoCanvas.renderMode = .hidden
-        agoraKit.setupLocalVideo(videoCanvas)
-        agoraKit.startPreview()
-    }
-
-    // Join the channel with specified options
-    func joinChannel() {
-        let options = AgoraRtcChannelMediaOptions()
-        // In video calling, set the channel use-case to communication
-        options.channelProfile = .communication
-        // Set the user role as broadcaster (default is audience)
-        options.clientRoleType = .broadcaster
-        // Publish audio captured by microphone
-        options.publishMicrophoneTrack = true
-        // Publish video captured by camera
-        options.publishCameraTrack = true
-        // Auto subscribe to all audio streams
-        options.autoSubscribeAudio = true
-        // Auto subscribe to all video streams
-        options.autoSubscribeVideo = true
-        // If you set uid=0, the engine generates a uid internally; on success, it triggers didJoinChannel callback
-        // Join the channel with a temporary token
-        agoraKit.joinChannel(
-            byToken: token,
-            channelId: channelName,
-            uid: 0,
-            mediaOptions: options
-        )
-    }
-
-    func setupRemoteVideo(uid: UInt, view: UIView?) {
-        let videoCanvas = AgoraRtcVideoCanvas()
-        videoCanvas.uid = uid
-        videoCanvas.view = view // Assign view for joining, set to nil for leaving
-        videoCanvas.renderMode = .hidden
-        agoraKit.setupRemoteVideo(videoCanvas)
-    }
-}
-
-// Extension for handling Agora SDK callbacks
-extension ViewController: AgoraRtcEngineDelegate {
-
-    // Triggered when the local user successfully joins a channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-        print("Successfully joined channel: \\(channel) with UID: \\(uid)")
-    }
-
-    // Triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-        setupRemoteVideo(uid: uid, view: remoteView)
-    }
-
-    // Triggered when a remote user leaves the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
-        setupRemoteVideo(uid: uid, view: nil)
-    }
-}
-```
-
-
-### Create a user interface
-
-
-To connect the sample code to your existing UI, ensure that your `ViewController.swift` file includes the `UIView`s used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
-
-Alternatively, use the following sample code to generate a basic user interface. To use this interface, replace the contents of the `ViewController.swift` file with the following code:
-
-
-### Sample code to create the user interface
-
-
-```swift
-// ViewController.swift
-
-class ViewController: UIViewController {
-
-    // UI view for displaying the local video stream
-    var localView: UIView!
-    // UI view for displaying the remote video stream
-    var remoteView: UIView!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Set up the user interface
-        setupUI()
-    }
-
-    // Sets up the UI layout for local and remote video views
-    func setupUI() {
-        // Create the local video view covering the full screen
-        localView = UIView(frame: UIScreen.main.bounds)
-
-        // Create the remote video view positioned in the top-right corner
-        remoteView = UIView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 135, height: 240))
-
-        // Add video views to the main view
-        self.view.addSubview(localView)
-        self.view.addSubview(remoteView)
-    }
-}
-```
-
 
 ## Implement Video Calling
 
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
+
 The following figure illustrates the essential steps:
 
 
@@ -1961,6 +1706,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 
 ```swift
+import UIKit
+import AgoraRtcKit
 
 class ViewController: UIViewController {
 
@@ -2123,7 +1870,6 @@ class ViewController: UIViewController {
     }
 }
 ```
-
 
 ## Test the sample code
 
@@ -2149,6 +1895,16 @@ Take the following steps to test the sample code:
 
 
 ## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
 
 ### Sample project
 
@@ -2230,17 +1986,10 @@ The Agora Video SDK for Video Calling provides the `PrivacyInfo.xcprivacy` file 
 * [How can I troubleshoot the issue of no sound?](/en/api-reference/faq/quality/audio_noaudio)
 * [How can I add a privacy manifest to my iOS app?](/en/api-reference/faq/other/ios_privacy_manifest)
 
-### Next steps
-
-After implementing the quickstart sample, read the following documents to learn more:
-
-* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
-
 ### See also
 
 * [SDK error codes](/en/realtime-media/video/reference/error-codes)
 * [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
-* If a firewall is deployed in your network environment, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
 
 </PlatformStructured>
 
@@ -2267,433 +2016,125 @@ To start a Video Calling session, implement the following steps in your app:
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- Xcode 13.0 or higher.
+- An Apple developer account.
+- If you use CocoaPods to integrate the SDK, make sure [CocoaPods is installed](https://guides.cocoapods.org/using/getting-started.html#getting-started).
+- Two devices running macOS 10.10 or higher.
+
 ## Set up your project
 
-The following figure illustrates the essential steps:
+<Tabs defaultValue="new">
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+<TabsContent value="new">
 
 
-### Quick start sequence
+Follow these steps to create a project in Xcode:
 
+1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application**, select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-![](/images/video-sdk/quick-start-sequence-macos.svg)
+    :::info[Information]
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
 
+2. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your project.
+3. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
-This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
-### Import Agora framework
+</TabsContent>
+<TabsContent value="existing">
 
-Add the following import to your swift file:
 
-```swift
-import Cocoa
-import AgoraRtcKit
-```
+Follow these steps to add Video Calling to your Xcode project:
 
-### Initialize the engine
+1. Open your project in Xcode.
+2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
 
+</TabsContent>
+</Tabs>
 
-```swift
-var agoraKit: AgoraRtcEngineKit!
-let appId = "YOUR_AGORA_APP_ID"
+### Install the SDK
 
-// Initialize the Agora engine
-func initializeAgoraVideoSDK() {
-    agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-}
-```
+Use one of the following methods to install the Video SDK.
 
+<Tabs defaultValue="spm">
+<TabsList>
+  <TabsTrigger value="spm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual">Manual integration</TabsTrigger>
+</TabsList>
+<TabsContent value="spm">
 
-### Join a channel
 
-To join a channel, call `joinChannel` with the following parameters:
+1. In Xcode, go to **File** > **Add Package Dependencies**.
+2. In the search bar, paste the following URL:
 
-- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
-
-- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/video/manage-agora-account#generate-temporary-tokens).
-
-- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
-
-- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
-
-
-For Video Calling, set the `channelProfile` to `.communication` and the `clientRoleType` to `.broadcaster`.
-
-```swift
-let channelName = "demo"    // Replace with your actual channel name
-let token = "<Authentication token>" // Replace with your token
-
-// Join the channel with specified options
-func joinChannel() {
-    let options = AgoraRtcChannelMediaOptions()
-    // In video calling, set the channel use-case to communication
-    options.channelProfile = .communication
-    // Set the user role as broadcaster (default is audience)
-    options.clientRoleType = .broadcaster
-    // Publish audio captured by microphone
-    options.publishMicrophoneTrack = true
-    // Publish video captured by camera
-    options.publishCameraTrack = true
-    // Auto subscribe to all audio streams
-    options.autoSubscribeAudio = true
-    // Auto subscribe to all video streams
-    options.autoSubscribeVideo = true
-    // Use a temporary Token to join the channel
-    agoraKit.joinChannel(
-        byToken: token,
-        channelId: channelName,
-        uid: 0,
-        mediaOptions: options
-    )
-}
-```
-
-
-### Subscribe to Video SDK events
-
-The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
-
-:::info
-
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
-
-:::
-
-
-```swift
-// Extension for handling Agora SDK callbacks
-extension ViewController: AgoraRtcEngineDelegate {
-
-    // Triggered when the local user successfully joins a channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-        print("Successfully joined channel: \(channel) with UID: \(uid)")
-    }
-
-    // Triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-        setupRemoteVideo(uid: uid, view: remoteView)
-    }
-    // Triggered when a remote user leaves the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
-        setupRemoteVideo(uid: uid, view: nil)
-    }
-}
-```
-
-
-To learn about the other SDK events, see [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate).
-
-
-### Enable the video module
-
-Follow the steps below to set up the video module.
-
-1. To enable the video module, call `enableVideo`.
-1. To enable local video preview, call `startPreview`.
-
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
-
-
-### Display the local video
-
-Call `setupLocalVideo` to initialize the local view and set the local video display properties.
-
-```swift
-// Configures and starts displaying the local video feed
-func setupLocalVideo() {
-    let videoCanvas = AgoraRtcVideoCanvas()
-    videoCanvas.view = localView
-    videoCanvas.uid = 0  // UID 0 is assigned to the local user
-    videoCanvas.renderMode = .hidden
-    agoraKit.setupLocalVideo(videoCanvas)
-}
-```
-
-### Display remote video
-To initialize the remote user view, call `setupRemoteVideo` and set the local display properties for the remote user. Use the `didJoinedOfUid` callback to get the UID of the remote user.
-
-```swift
-func setupRemoteVideo(uid: UInt, view: UIView?) {
-    let videoCanvas = AgoraRtcVideoCanvas()
-    videoCanvas.uid = uid
-    videoCanvas.view = view // Assign view for joining, set to nil for leaving
-    videoCanvas.renderMode = .hidden
-    agoraKit.setupRemoteVideo(videoCanvas)
-}
-```
-
-### Handle permissions
-To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
-
-
-| Key | Type | Value |
-|:----|:-----|:------|
-| Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
-| Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
-
-
-:::info
-
-- If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
-- For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
-
-:::
-
-
-Configure your macOS project settings by navigating to **TARGETS > Project Name > Signing & Capabilities**. Enable **App Sandbox and Hardened Runtime**, and add the necessary permissions as follows:
-
-| Capability | Category | Permission      |
-|:-----------|:---------|:----------------|
-| App Sandbox | Network | <Slot name="macos-permissions-1-app-sandbox-network" /> |
-| App Sandbox | Hardware | <Slot name="macos-permissions-1-app-sandbox-hardware" /> |
-| Hardened Runtime | Resource Access | <Slot name="macos-permissions-1-hardened-runtime-resource-access" /> |
-
-<Slot for="macos-permissions-1-app-sandbox-network">
-
-- Incoming Connections (Server)
-- Outgoing Connections (Client)
-
-</Slot>
-
-<Slot for="macos-permissions-1-app-sandbox-hardware">
-
-- Camera
-- Audio Input
-
-</Slot>
-
-<Slot for="macos-permissions-1-hardened-runtime-resource-access">
-
-- Camera
-- Audio Input
-
-</Slot>
-
-
-### Start and close the app
-
-When the user launches the app, it joins the channel and starts Video Calling. When the user closes the app, it leaves the channel and ends Video Calling.
-
-1. To start Video Calling, call the following methods:
-
-
-    ```swift
-    // Initialize the Agora engine
-    initializeAgoraVideoSDK()
-    // Start the local video preview
-    setupLocalVideo()
-    // Join an Agora channel
-    joinChannel()
+    ```text
+    https://github.com/AgoraIO/AgoraRtcEngine_macOS.git
     ```
 
+3. Click **Add Package**, select the latest version, and click **Next**.
+4. For basic Video Calling, select **RtcBasic**.
 
-1. To leave the channel and release SDK resources when the app is closed, call the following methods:
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
+
+5. Under **Add to Target**, select your project and click **Add Package**.
+
+    For more information, see [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
 
-    ```swift
-    // Stop local video preview
-    agoraKit.stopPreview()
-    // Leave the channel and release session-related resources
-    agoraKit.leaveChannel(nil)
-    // Release all resources used by the Agora SDK
-    AgoraRtcEngineKit.destroy()
+</TabsContent>
+<TabsContent value="cocoapods">
+
+
+1. Go to the project root directory in Terminal and run `pod init`. A text file named `Podfile` is generated in the project folder.
+2. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
+
+    ```ruby
+    platform :macos, '10.11'
+    target 'Your App' do
+      # Replace x.y.z with the specific SDK version number, such as 4.4.0.
+      pod 'AgoraRtcEngine_macOS', 'x.y.z'
+    end
     ```
 
+    Get the latest version number from the [release notes](/en/realtime-media/video/reference/release-notes).
 
-:::caution[caution]
-After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
+3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
+4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
+
+
+</TabsContent>
+<TabsContent value="manual">
+
+
+1. Download the latest version of the SDK from [SDKs download](/en/api-reference/sdks?platform=macos) and extract the contents.
+2. Copy the files in the `libs` folder of the SDK package to your project directory.
+3. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
+
+    :::info[Information]
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), contact `support@agora.io`. The library provided by the SDK is a FAT image that includes simulator and device builds.
+    :::
+
+
+</TabsContent>
+</Tabs>
+
+:::warning[Note]
+The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple require developers to declare approved reasons for using a set of APIs in their app's privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
 :::
-
-
-### Complete sample code
-
-A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
-
-
-### Complete sample code for Video Calling
-
-
-```swift
-// ViewController.swift
-
-import Cocoa
-import AgoraRtcKit
-
-class ViewController: NSViewController {
-
-    let appId = "<Your app ID>" // Replace with your actual App ID
-    let channelName = "demo"    // Replace with your actual channel name
-    let token = "<Authentication token>" // Replace with your token
-
-    // UI view for displaying the local video stream
-    var localView: NSView!
-    // UI view for displaying the remote video stream
-    var remoteView: NSView!
-    // Instance of the Agora RTC engine
-    var agoraKit: AgoraRtcEngineKit!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Initialize the Agora engine
-        initializeAgoraVideoSDK()
-        // Set up the user interface
-        setupUI()
-        // Start the local video preview
-        setupLocalVideo()
-        // Join an Agora channel
-        joinChannel()
-    }
-
-    // Clean up resources when the view controller is deallocated
-    deinit {
-        agoraKit.stopPreview()
-        agoraKit.leaveChannel(nil)
-        AgoraRtcEngineKit.destroy()
-    }
-
-    // Initializes the Video SDK instance
-    func initializeAgoraVideoSDK() {
-        // Create an instance of AgoraRtcEngineKit and set the delegate
-        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
-    }
-
-    func setupUI() {
-        guard let screenFrame = NSScreen.main?.frame else { return } // Ensure screen is available
-
-        // Create the local video view covering the full screen
-        localView = NSView(frame: screenFrame)
-
-        // Create the remote video view positioned in the top-right corner
-        remoteView = NSView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 250, height: 250))
-
-        // Add video views to the main view
-        self.view.addSubview(localView)
-        self.view.addSubview(remoteView)
-    }
-
-
-    // Configures and starts displaying the local video feed
-    func setupLocalVideo() {
-        // Enable video functionality (audio is enabled by default)
-        agoraKit.enableVideo()
-        let videoCanvas = AgoraRtcVideoCanvas()
-        videoCanvas.view = localView
-        videoCanvas.uid = 0  // UID 0 is assigned to the local user
-        videoCanvas.renderMode = .hidden
-        agoraKit.setupLocalVideo(videoCanvas)
-        agoraKit.startPreview()
-    }
-
-    // Join the channel with specified options
-    func joinChannel() {
-        let options = AgoraRtcChannelMediaOptions()
-        // In video calling, set the channel use-case to communication
-        options.channelProfile = .communication
-        // Set the user role as broadcaster (default is audience)
-        options.clientRoleType = .broadcaster
-        // Publish audio captured by microphone
-        options.publishMicrophoneTrack = true
-        // Publish video captured by camera
-        options.publishCameraTrack = true
-        // Auto subscribe to all audio streams
-        options.autoSubscribeAudio = true
-        // Auto subscribe to all video streams
-        options.autoSubscribeVideo = true
-        // If you set uid=0, the engine generates a uid internally; on success, it triggers didJoinChannel callback
-        // Join the channel with a temporary token
-        agoraKit.joinChannel(
-            byToken: token,
-            channelId: channelName,
-            uid: 0,
-            mediaOptions: options
-        )
-    }
-
-    func setupRemoteVideo(uid: UInt, view: NSView?) {
-        let videoCanvas = AgoraRtcVideoCanvas()
-        videoCanvas.uid = uid
-        videoCanvas.view = view // Assign view for joining, set to nil for leaving
-        videoCanvas.renderMode = .hidden
-        agoraKit.setupRemoteVideo(videoCanvas)
-    }
-}
-
-// Extension for handling Agora SDK callbacks
-extension ViewController: AgoraRtcEngineDelegate {
-
-    // Triggered when the local user successfully joins a channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
-        print("Successfully joined channel: \\(channel) with UID: \\(uid)")
-    }
-
-    // Triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-        // Assign the remote user’s video stream to the remote view
-        setupRemoteVideo(uid: uid, view: remoteView)
-    }
-
-    // Triggered when a remote user leaves the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
-        // Remove the remote video feed when the user disconnects
-        setupRemoteVideo(uid: uid, view: nil)
-    }
-}
-```
-
-
-### Create a user interface
-
-
-To connect the sample code to your existing UI, ensure that your `ViewController.swift` file includes the `UIView`s used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
-
-Alternatively, use the following sample code to generate a basic user interface. To use this interface, replace the contents of the `ViewController.swift` file with the following code:
-
-
-### Sample code to create the user interface
-
-
-```swift
-// ViewController.swift
-
-class ViewController: NSViewController {
-
-    // UI view for displaying the local video stream
-    var localView: NSView!
-    // UI view for displaying the remote video stream
-    var remoteView: NSView!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Set up the user interface
-        setupUI()
-    }
-
-    func setupUI() {
-        guard let screenFrame = NSScreen.main?.frame else { return } // Ensure screen is available
-
-        // Create the local video view covering the full screen
-        localView = NSView(frame: screenFrame)
-
-        // Create the remote video view positioned in the top-right corner
-        remoteView = NSView(frame: CGRect(x: self.view.bounds.width - 135, y: 50, width: 250, height: 250))
-
-        // Add video views to the main view
-        self.view.addSubview(localView)
-        self.view.addSubview(remoteView)
-    }
-}
-```
-
 
 ## Implement Video Calling
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -2946,6 +2387,9 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 
 ```swift
+import Cocoa
+import AgoraRtcKit
+
 // ViewController.swift
 
 class ViewController: NSViewController {
@@ -3083,6 +2527,9 @@ Alternatively, use the following sample code to generate a basic user interface.
 
 
 ```swift
+import Cocoa
+import AgoraRtcKit
+
 // ViewController.swift
 
 class ViewController: NSViewController {
@@ -3137,6 +2584,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelVideo) project for a more detailed example.
@@ -3159,23 +2616,24 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 * [How can I troubleshoot the issue of no sound?](/en/api-reference/faq/quality/audio_noaudio)
 
-### Next steps
-
-After implementing the quickstart sample, read the following documents to learn more:
-
-* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
-
 ### See also
 
 * [SDK error codes](/en/realtime-media/video/reference/error-codes)
 * [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
-* If a firewall is deployed in your network environment, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
 
 </PlatformStructured>
 
 <PlatformStructured platform="web">
 
 This page provides a step-by-step guide on how to create a basic Video Calling app using the Agora Video SDK.
+
+<Cards>
+  <Card
+    title="RTC SDK API examples"
+    href="https://github.com/AgoraIO/API-Examples-Web"
+    description="Sample projects for the Agora RTC Web SDK 4.x, covering basic and advanced examples for Vue and React."
+  />
+</Cards>
 
 ## Understand the tech
 
@@ -3195,6 +2653,12 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A [supported browser](/en/realtime-media/video/reference/supported-platforms#browsers).
+  Agora strongly recommends using the latest stable version of Google Chrome.
+- [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Set up your project
 
@@ -3260,6 +2724,8 @@ npm install agora-rtc-sdk-ng
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 ### Quick start sequence
@@ -3659,6 +3125,16 @@ Take the following steps to run and test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 - [Build a NextJS Video Call App](https://www.agora.io/en/blog/build-a-next-js-video-call-app/)
@@ -3774,6 +3250,10 @@ Use one of the following solutions to resolve the issue:
 
 * Temporarily switch to a lower version of Node.js.
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
@@ -3798,6 +3278,12 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A device running Windows 7 or higher.
+- Microsoft Visual Studio 2017 or higher with [C++ desktop development](https://devblogs.microsoft.com/cppblog/windows-desktop-development-with-c-in-visual-studio/) support and C++ 11 or above.
+- If you use C# for development, you also need the [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/install/guide-for-developers).
 
 ## Set up your project
 
@@ -3870,6 +3356,8 @@ In the Solution Explorer window, right-click the project name and click **Proper
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -4576,6 +4064,16 @@ To test your app, follow these steps:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/) for your reference.
@@ -4607,6 +4105,11 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
+
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
@@ -4631,6 +4134,10 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- [Node.js](https://nodejs.org/en/download/) 14 or higher.
 
 ## Set up your project
 
@@ -4759,6 +4266,8 @@ Compile the latest SDK from the [Electron SDK repository](https://github.com/Ago
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -5089,7 +4598,7 @@ When a user launches your app, start Video Calling. When a user closes the app, 
     ```
 
     :::caution[caution]
-After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
+    After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
     :::
 
 
@@ -5346,6 +4855,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/example/src/renderer/examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx) project for a more detailed example.
@@ -5376,6 +4895,11 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -5400,6 +4924,14 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- [Flutter](https://docs.flutter.dev/get-started/install) 2.10.5 or higher with Dart 2.14.0 or higher.
+- [Android Studio](https://developer.android.com/studio), IntelliJ, VS Code, or another IDE that supports Flutter. See [Set up an editor](https://docs.flutter.dev/get-started/editor).
+- Prepare your development and testing environment according to your [target platform](/en/realtime-media/video/reference/supported-platforms).
+
+  Run `flutter doctor` to confirm that your development environment is set up correctly for Flutter development.
 
 ## Set up your project
 
@@ -5470,6 +5002,8 @@ Install the Agora Video SDK and other dependencies.
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -5952,6 +5486,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 
@@ -5986,6 +5530,11 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -6010,6 +5559,14 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- React Native 0.60 or later. See [Get Started with React Native](https://reactnative.dev/docs/environment-setup).
+- Node.js 16 or later.
+- Depending on your target platform:
+  - Android: a machine running macOS, Windows, or Linux; [JDK 11](https://openjdk.org/projects/jdk/11/) or later; the latest version of Android Studio; and a physical or virtual Android device running Android 5.0 or later.
+  - iOS: a machine running macOS; Xcode 10 or later; CocoaPods; and a physical or virtual iOS device running iOS 9.0 or later. If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
 
 ## Set up your project
 
@@ -6063,6 +5620,8 @@ React Native 0.60.0 and later support automatic linking of native modules. Manua
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -6587,8 +6146,9 @@ Design a user interface for your project based on your application use-case. A b
 
 
 ```jsx
-
+import React, { useState } from 'react';
 // Import user interface elements
+import {
     SafeAreaView,
     ScrollView,
     StyleSheet,
@@ -6685,7 +6245,7 @@ Take the following steps to test the sample code:
 1. Run the app.
 
     :::caution[Caution]
-Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
+    Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
     :::
 
 
@@ -6723,7 +6283,7 @@ Some simulators may not support all the functions of this project. Best practice
 </Tabs>
 
     :::info[Information]
-For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+    For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
     :::
 
 
@@ -6733,6 +6293,16 @@ For detailed steps on running the app on a real Android or iOS device, please re
 
 
 ## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
 
 ### Sample project
 
@@ -6798,6 +6368,11 @@ Use the React SDK for basic real-time audio and video features. For advanced or 
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- A [supported browser](/en/realtime-media/video/reference/supported-platforms#browsers).
+- A JavaScript package manager such as [npm](https://www.npmjs.com/package/npm).
+
 ## Set up your project
 
 ### Create a project
@@ -6857,6 +6432,8 @@ To integrate React JS dependencies and the Agora SDK using CDN, add the followin
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -6944,6 +6521,19 @@ const { localCameraTrack } = useLocalCameraTrack(cameraOn);
 usePublish([localMicrophoneTrack, localCameraTrack]);
 ```
 
+### Display the local video
+
+To display the local video, use the `LocalUser` hook, which provides properties to manage local audio and video tracks. Assign the local video track to `videoTrack` and the audio track to `audioTrack`. Use the `micOn` and `cameraOn` parameters to toggle audio and video. Include the following code in the markup of your `Basics` component:
+
+```jsx
+<LocalUser
+  audioTrack={localMicrophoneTrack}
+  cameraOn={cameraOn}
+  micOn={micOn}
+  videoTrack={localCameraTrack}
+  style={{width: '50%', height: 300 }}
+>
+```
 
 ### Display remote video
 
@@ -7129,6 +6719,16 @@ If `CodeSandbox` access is slow, try adjusting your network configuration.
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 Agora provides an open source [sample project on GitHub](https://github.com/AgoraIO-Extensions/agora-rtc-react) for your reference. The project demonstrates the use of each component and hook provided by the React SDK, as well as some advanced functions.
 
@@ -7143,16 +6743,9 @@ Agora provides an open source [sample project on GitHub](https://github.com/Agor
 - [`usePublish()`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/functions/usePublish.html)
 - [`useRemoteUsers()`](https://api-ref.agora.io/en/video-sdk/reactjs/2.x/functions/useRemoteUsers.html)
 
-### Next steps
-
-After implementing the quickstart sample, read the following documents to learn more:
-
-* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
-
 ### See also
 
 * [SDK error codes](/en/realtime-media/video/reference/error-codes)
-* If a firewall is deployed in your network environment, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
 
 </PlatformStructured>
 
@@ -7178,6 +6771,18 @@ To start a Video Calling session, implement the following steps in your app:
 
 
 ## Prerequisites
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- [Unity Hub](https://unity.com/download) and [Unity Editor](https://unity.com/releases/editor/archive) 2018.4.0 or higher.
+- A suitable operating system and compiler for your development platform:
+
+  | Development platform | Operating system version | Compiler version |
+  | :------------------- | :----------------------- | :--------------- |
+  | Android | Android 4.1 or later | Android Studio 4.1 or later |
+  | iOS | iOS 10.15 or later | Xcode 9.0 or later |
+  | macOS | macOS 10.15 or later | Xcode 9.0 or later |
+  | Windows | Windows 7 or later | Microsoft Visual Studio 2017 or later |
 
 ## Set up your project
 
@@ -7226,6 +6831,8 @@ To open your existing project:
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -7817,6 +7424,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 
@@ -7848,6 +7465,11 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
+
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
@@ -7873,9 +7495,27 @@ To start a Video Calling session, implement the following steps in your app:
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- Unreal Engine 4.27 or higher.
+- Prepare your development environment according to your target platform and engine version:
+
+  | Dev environment requirements | Other requirements |
+  | :--------------------------- | :----------------- |
+  | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
+  | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
+  | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
+  | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | 32-bit Windows supports Unreal Engine 4 only. To use Unreal Engine with 32-bit Windows, uncomment the code related to `Win32` in `AgoraPluginLibrary.Build.cs`. |
+
+- Two physical devices for testing.
+
 ## Set up your project
 
 <Tabs>
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
 <TabsContent value="new">
 
 
@@ -7895,9 +7535,62 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     Click **Create**.
 
+    ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
+
+
+</TabsContent>
+
+<TabsContent value="existing">
+
+
+1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
+
+1. Select the project and click **Open**.
 
 </TabsContent>
 </Tabs>
+
+3. Add the Agora dependency library
+
+    In `Project/Source/Project/Project.Build.cs`, add the `AgoraPlugin` using `PublicDependencyModuleNames.AddRange()`.
+
+    ```cpp
+    // Add the AgoraPlugin library
+    PublicDependencyModuleNames.AddRange(new string[] 
+    { 
+        "Core", 
+        "CoreUObject", 
+        "Engine", 
+        "InputCore", 
+        "AgoraPlugin" 
+    });
+    ```
+
+1. Create a new C++ class and generate header and library files
+
+    In the Unreal Editor, select **Tools > New C++ Class**, then select **All Classes**, find **UserWidget** and name it `AgoraWidget`. Click **Create Class**. A new C++ class is added to your project and you see `AgoraWidget.h` and `AgoraWidget.cpp` files.
+
+1. Initialize custom Widget
+
+    Add the following code to your widget header file:
+
+    ```cpp
+    protected:
+    // Initialize custom Widget
+    void NativeConstruct() override;
+    ```
+
+1. Associate C++ classes and Widgets
+
+    In Unreal Editor, click **Content Drawer**, select **Class Settings > Graph**, and set the **Parent Class** under **Class Options** to **AgoraWidget**.
+
+        ![](/images/video-sdk/associate-classes-unreal.png)
+   
+1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI. A basic user interface consists of the following elements:
+
+    * Local user video window
+    * Remote user video window
+    * Join and leave channel buttons
 
 ### Install the SDK
 
@@ -7909,6 +7602,8 @@ Take the following steps to add the Video Calling Video SDK to your project:
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 The following figure illustrates the essential steps:
 
@@ -8572,6 +8267,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 
@@ -8604,6 +8309,11 @@ To learn about Agora Unreal Blueprint development, refer to the [Unreal (Bluepri
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
+### See also
+
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
+
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
@@ -8629,6 +8339,20 @@ To start a Video Calling session, implement the following steps in your app:
 
 ## Prerequisites
 
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/realtime-media/video/manage-agora-account) for details.
+- Unreal Engine 4.27 or higher.
+- Prepare your development environment according to your target platform and engine version:
+
+  | Dev environment requirements | Other requirements |
+  | :--------------------------- | :----------------- |
+  | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
+  | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
+  | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
+  | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | 32-bit Windows supports Unreal Engine 4 only. To use Unreal Engine with 32-bit Windows, uncomment the code related to `Win32` in `AgoraPluginLibrary.Build.cs`. |
+
+- Two physical devices for testing.
+
 ## Set up your project
 
 <Tabs defaultValue="new">
@@ -8642,6 +8366,17 @@ To start a Video Calling session, implement the following steps in your app:
 Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
 
 1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
+
+2. Configure your project as follows:
+
+    * **Template**: Select **Blank**.
+    * **Project Defaults**:
+        * **Language**: Select **Blueprint**.
+        * **Target Platform**: Pick **Desktop**.
+    * **Project Location**: Enter a project files storage path.
+    * **Project Name**: Type a suitable name for your project.
+
+    Click **Create**.
 
 
     ![create-project-unreal](/images/video-sdk/create-project-unreal.jpg)
@@ -8671,6 +8406,8 @@ Take the following steps to add the Video Calling Video SDK to your project:
 
 
 ## Implement Video Calling
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
 
 ### Create a level
 
@@ -8763,7 +8500,7 @@ Add variables to create an engine instance and join a channel.
     ![](/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
     :::info[Information]
-If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
+    If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
     :::
 
 
@@ -8930,6 +8667,16 @@ Take the following steps to test the sample code:
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+
 ### Sample project
 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelVideo) project for a more detailed example.
@@ -8941,1088 +8688,9 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
 
-</PlatformStructured>
+### See also
 
-<PlatformStructured platform="python">
-
-This page provides a step-by-step guide on how to create a basic Video Calling app using the Agora Video SDK.
-
-## Understand the tech
-
-To start a Video Calling session, implement the following steps in your app:
-
-- **Initialize the engine**: Before calling other APIs, create and initialize an engine instance.
-
-- **Join a channel**: Call methods to create and join a channel.
-
-
-
-
-- **Send and receive audio and video**: All users can publish streams to the channel and subscribe to audio and video streams published by other users in the channel.
-
-
-![Video calling workflow](/images/video-sdk/video-call.svg)
-
-
-## Prerequisites
-
-## Set up your project
-
-1. Install the build tools for compiling the SDK.
-
-    ```
-    sudo apt install build-essential python3-dev
-    ```
-
-1. To implement structured, asynchronous event handling in Python, install the `pyee` library.
-
-    ```
-    pip3 install pyee
-    ```
-
-1. Install the Agora server side Video Calling SDK.
-
-    ```
-    pip3 install agora-python-server-sdk
-    ```
-
-    :::info[Note]
-
-    The Python SDK is a server side SDK.
-
-    :::
-
-
-## Implement Video Calling
-
-### Import Agora classes
-
-Import the relevant Agora SDK classes and interfaces:
-
-```python
-from agora.rtc.agora_base import (
-    AudioScenarioType,
-    ChannelProfileType,
-    ClientRoleType,
-)
-from agora.rtc.agora_service import (
-    AgoraService,
-    AgoraServiceConfig,
-    RTCConnConfig,
-)
-from agora.rtc.audio_frame_observer import AudioFrame, IAudioFrameObserver
-from agora.rtc.audio_pcm_data_sender import PcmAudioFrame
-from agora.rtc.local_user import LocalUser
-from agora.rtc.local_user_observer import IRTCLocalUserObserver
-from agora.rtc.rtc_connection import RTCConnection, RTCConnInfo
-from agora.rtc.rtc_connection_observer import IRTCConnectionObserver
-```
-
-### Initialize the engine
-
-The following code defines the `RtcEngine` class, which initializes and configures the `AgoraService`. The class constructor takes an `appid` as input, configures the Agora service, and initializes it. You use the `RtcEngine` class to interact with the Agora SDK in this demo.
-
-```python
-class RtcEngine:
-    def __init__(self, appid: str, appcert: str):
-        self.appid = appid
-        self.appcert = appcert
-
-        if not appid:
-            raise Exception("App ID is required)")
-
-        config = AgoraServiceConfig()
-        config.audio_scenario = AudioScenarioType.AUDIO_SCENARIO_CHORUS
-        config.appid = appid
-        config.log_path = os.path.join(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.dirname(os.path.join(os.path.abspath(__file__)))
-                )
-            ),
-            "agorasdk.log",
-        )
-        self.agora_service = AgoraService()
-        self.agora_service.initialize(config)
-```
-
-### Join a channel
-
-To asynchronously join a channel, implement a `Channel` class. When you create an instance of the class, the initializer sets up the necessary components for joining a channel. It takes an instance of `RtcEngine`, a `channelId`, and a `uid` as parameters. During initialization, the code creates an event emitter, configures the connection for broadcasting, and registers an event observer for channel events. It also sets up the local user’s audio configuration to enable audio streaming.
-
-:::info[Note]
-
-UIDs in the Python SDK are set using a string value. Agora recommends using only numerical values for UID strings to ensure compatibility with all Agora products and extensions.
-
-:::
-
-
-```python
-class Channel:
-    def __init__(self, rtc: "RtcEngine", options: RtcOptions) -> None:
-        self.loop = asyncio.get_event_loop()
-
-        # Create the event emitter
-        self.emitter = AsyncIOEventEmitter(self.loop)
-
-        self.connection_state = 0
-        self.options = options
-        self.remote_users = dict[int, Any]()
-        self.rtc = rtc
-        self.chat = Chat(self)
-        self.channelId = options.channel_name
-        self.uid = options.uid
-        self.enable_pcm_dump = options.enable_pcm_dump
-        self.token = options.build_token(rtc.appid, rtc.appcert) if rtc.appcert else ""
-        conn_config = RTCConnConfig(
-            client_role_type=ClientRoleType.CLIENT_ROLE_BROADCASTER,
-            channel_profile=ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING,
-        )
-        self.connection = self.rtc.agora_service.create_rtc_connection(conn_config)
-
-        self.channel_event_observer = ChannelEventObserver(
-            self.emitter,
-            options=options,
-        )
-        self.connection.register_observer(self.channel_event_observer)
-
-        self.local_user = self.connection.get_local_user()
-        self.local_user.set_playback_audio_frame_before_mixing_parameters(
-            options.channels, options.sample_rate
-        )
-        self.local_user.register_local_user_observer(self.channel_event_observer)
-        self.local_user.register_audio_frame_observer(self.channel_event_observer)
-        # self.local_user.subscribe_all_audio()
-
-        self.media_node_factory = self.rtc.agora_service.create_media_node_factory()
-        self.audio_pcm_data_sender = (
-            self.media_node_factory.create_audio_pcm_data_sender()
-        )
-        self.audio_track = self.rtc.agora_service.create_custom_audio_track_pcm(
-            self.audio_pcm_data_sender
-        )
-        self.audio_track.set_enabled(1)
-        self.local_user.publish_audio(self.audio_track)
-
-        self.stream_id = self.connection.create_data_stream(False, False)
-        self.received_chunks = {}
-        self.waiting_message = None
-        self.msg_id = ""
-        self.msg_index = ""
-
-        self.on(
-            "user_joined",
-            lambda agora_rtc_conn, user_id: self.remote_users.update({user_id: True}),
-        )
-        self.on(
-            "user_left",
-            lambda agora_rtc_conn, user_id, reason: self.remote_users.pop(
-                user_id, None
-            ),
-        )
-```
-
-The following code uses the `Channel` class to join a channel. It sets up a `future` to handle the connection state and returns a `Channel` object when the connection is successfully established.
-
-```python
-async def connect(self) -> None:
-    """
-    Connects to a channel.
-
-    Parameters:
-        channelId: The channel ID.
-        uid: The user ID.
-
-    Returns:
-        Channel: The connected channel.
-    """
-    if self.connection_state == 3:
-        return
-
-    future = asyncio.Future()
-
-    def callback(agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason):
-        logger.info(f"Connection state changed: {conn_info.state}")
-        if conn_info.state == 3:  # Connection successful
-            future.set_result(None)
-        elif conn_info.state == 5:  # Connection failed
-            future.set_exception(
-                Exception(f"Connection failed with state: {conn_info.state}")
-            )
-
-    self.on("connection_state_changed", callback)
-    logger.info(f"Connecting to channel {self.channelId} with token {self.token}")
-    self.connection.connect(self.token, self.channelId, f"{self.uid}")
-
-    if self.enable_pcm_dump:
-        agora_parameter = self.connection.get_agora_parameter()
-        agora_parameter.set_parameters("{\"che.audio.frame_dump\":{\"location\":\"all\",\"action\":\"start\",\"max_size_bytes\":\"120000000\",\"uuid\":\"123456789\",\"duration\":\"1200000\"}}")
-
-    try:
-        await future
-    except Exception as e:
-        raise Exception(
-            f"Failed to connect to channel {self.channelId}: {str(e)}"
-        ) from e
-    finally:
-        self.off("connection_state_changed", callback)
-```
-
-### Handle connection and channel events
-
-To listen for channel and connection events, such as users joining or leaving the channel, and connection state changes, implement the `ChannelEventObserver` class. This class enables you to respond to SDK events.
-
-```python
-class ChannelEventObserver(
-    IRTCConnectionObserver, IRTCLocalUserObserver, IAudioFrameObserver
-):
-    def __init__(self, event_emitter: AsyncIOEventEmitter, options: RtcOptions) -> None:
-        self.loop = asyncio.get_event_loop()
-        self.emitter = event_emitter
-        self.audio_streams = dict[int, AudioStream]()
-        self.options = options
-
-    def emit_event(self, event_name: str, *args):
-        """Helper function to emit events."""
-        self.loop.call_soon_threadsafe(self.emitter.emit, event_name, *args)
-
-    def on_connected(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Connected to RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_disconnected(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Disconnected from RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_connecting(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Connecting to RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_connection_failure(self, agora_rtc_conn, conn_info, reason):
-        logger.error(f"Connection failure: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_user_joined(self, agora_rtc_conn: RTCConnection, user_id):
-        logger.info(f"User joined: {agora_rtc_conn} {user_id}")
-        self.emit_event("user_joined", agora_rtc_conn, user_id)
-
-    def on_user_left(self, agora_rtc_conn: RTCConnection, user_id, reason):
-        logger.info(f"User left: {agora_rtc_conn} {user_id} {reason}")
-        self.emit_event("user_left", agora_rtc_conn, user_id, reason)
-
-    def handle_received_chunk(self, json_chunk):
-        chunk = json.loads(json_chunk)
-        msg_id = chunk["msg_id"]
-        part_idx = chunk["part_idx"]
-        total_parts = chunk["total_parts"]
-        if msg_id not in self.received_chunks:
-            self.received_chunks[msg_id] = {"parts": {}, "total_parts": total_parts}
-        if (
-            part_idx not in self.received_chunks[msg_id]["parts"]
-            and 0 <= part_idx < total_parts
-        ):
-            self.received_chunks[msg_id]["parts"][part_idx] = chunk
-            if len(self.received_chunks[msg_id]["parts"]) == total_parts:
-                # all parts received, now recomposing original message and get rid it from dict
-                sorted_parts = sorted(
-                    self.received_chunks[msg_id]["parts"].values(),
-                    key=lambda c: c["part_idx"],
-                )
-                full_message = "".join(part["content"] for part in sorted_parts)
-                del self.received_chunks[msg_id]
-                return full_message, msg_id
-        return (None, None)
-
-    def on_stream_message(
-        self, agora_local_user: LocalUser, user_id, stream_id, data, length
-    ):
-        # logger.info(f"Stream message", agora_local_user, user_id, stream_id, length)
-        (reassembled_message, msg_id) = self.handle_received_chunk(data)
-        if reassembled_message is not None:
-            logger.info(f"Reassembled message: {msg_id} {reassembled_message}")
-
-    def on_audio_subscribe_state_changed(
-        self,
-        agora_local_user,
-        channel,
-        user_id,
-        old_state,
-        new_state,
-        elapse_since_last_state,
-    ):
-        logger.info(
-            f"Audio subscribe state changed: {user_id} {new_state} {elapse_since_last_state}"
-        )
-        self.emit_event(
-            "audio_subscribe_state_changed",
-            agora_local_user,
-            channel,
-            user_id,
-            old_state,
-            new_state,
-            elapse_since_last_state,
-        )
-
-    def on_playback_audio_frame_before_mixing(
-        self, agora_local_user: LocalUser, channelId, uid, frame: AudioFrame
-    ):
-        audio_frame = PcmAudioFrame()
-        audio_frame.samples_per_channel = frame.samples_per_channel
-        audio_frame.bytes_per_sample = frame.bytes_per_sample
-        audio_frame.number_of_channels = frame.channels
-        audio_frame.sample_rate = self.options.sample_rate
-        audio_frame.data = frame.buffer
-
-        self.loop.call_soon_threadsafe(
-            self.audio_streams[uid].queue.put_nowait, audio_frame
-        )
-        return 0
-```
-
-### Subscribe to an audio stream
-
-To asynchronously subscribe to audio streams for a specific user identified by their `uid`, refer to the following code. The method sets up a callback to monitor changes in the audio subscription state and handles the result based on whether the subscription is successfully established.
-
-```python
-async def subscribe_audio(self, uid: int) -> None:
-    """
-    Subscribes to the audio of a user.
-
-    Parameters:
-        uid: The user ID to subscribe to.
-    """
-    future = asyncio.Future()
-
-    def callback(
-        agora_local_user,
-        channel,
-        user_id,
-        old_state,
-        new_state,
-        elapse_since_last_state,
-    ):
-        if new_state == 3:  # Successfully subscribed
-            future.set_result(None)
-
-    self.on("audio_subscribe_state_changed", callback)
-    self.local_user.subscribe_audio(uid)
-
-    try:
-        await future
-    except Exception as e:
-        raise Exception(
-            f"Audio subscription failed for user {uid}: {str(e)}"
-        ) from e
-    finally:
-        self.off("audio_subscribe_state_changed", callback)
-```
-
-### Unsubscribe from an audio stream
-
-To unsubscribe from an audio stream, implement an asynchronous method similar to `subscribe_audio` and use the following code to unsubscribe:
-
-```python
-self.local_user.unsubscribe_audio(uid)
-```
-
-### Disconnect from the service
-
-To leave a channel, disconnect from Agora backend and release resources, refer to he following code.
-
-```python
-async def disconnect(self) -> None:
-    """
-    Disconnects the channel.
-    """
-    if self.connection_state == 1:
-        return
-
-    disconnected_future = asyncio.Future[None]()
-
-    def callback(agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason):
-        self.off("connection_state_changed", callback)
-        if conn_info.state == 1:
-            disconnected_future.set_result(None)
-
-    self.on("connection_state_changed", callback)
-    self.connection.disconnect()
-    await disconnected_future
-```
-
-### Complete code
-
-The `rtc.py` script integrates the code components presented in this section into reusable Python classes that you can extend for your own applications.
-
-### Complete code for `rtc.py`
-
-```python
-from typing import Any, AsyncIterator
-
-from agora.rtc.agora_base import (
-    AudioScenarioType,
-    ChannelProfileType,
-    ClientRoleType,
-)
-from agora.rtc.agora_service import (
-    AgoraService,
-    AgoraServiceConfig,
-    RTCConnConfig,
-)
-from agora.rtc.audio_frame_observer import AudioFrame, IAudioFrameObserver
-from agora.rtc.audio_pcm_data_sender import PcmAudioFrame
-from agora.rtc.local_user import LocalUser
-from agora.rtc.local_user_observer import IRTCLocalUserObserver
-from agora.rtc.rtc_connection import RTCConnection, RTCConnInfo
-from agora.rtc.rtc_connection_observer import IRTCConnectionObserver
-from pyee.asyncio import AsyncIOEventEmitter
-
-from .logger import setup_logger
-from .token_builder.realtimekit_token_builder import RealtimekitTokenBuilder
-
-# Set up the logger with color and timestamp support
-logger = setup_logger(name=__name__, log_level=logging.INFO)
-
-
-class RtcOptions:
-    def __init__(
-        self,
-        *,
-        channel_name: str = None,
-        uid: int = 0,
-        sample_rate: int = 24000,
-        channels: int = 1,
-        enable_pcm_dump: bool = False,
-    ):
-        self.channel_name = channel_name
-        self.uid = uid
-        self.sample_rate = sample_rate
-        self.channels = channels
-        self.enable_pcm_dump = enable_pcm_dump
-
-    def build_token(self, appid: str, appcert: str) -> str:
-        return RealtimekitTokenBuilder.build_token(
-            appid, appcert, self.channel_name, self.uid
-        )
-
-
-class AudioStream:
-    def __init__(self) -> None:
-        self.queue: asyncio.Queue = asyncio.Queue()
-
-    def __aiter__(self) -> AsyncIterator[PcmAudioFrame]:
-        return self
-
-    async def __anext__(self) -> PcmAudioFrame:
-        item = await self.queue.get()
-        if item is None:
-            raise StopAsyncIteration
-
-        return item
-
-
-class ChannelEventObserver(
-    IRTCConnectionObserver, IRTCLocalUserObserver, IAudioFrameObserver
-):
-    def __init__(self, event_emitter: AsyncIOEventEmitter, options: RtcOptions) -> None:
-        self.loop = asyncio.get_event_loop()
-        self.emitter = event_emitter
-        self.audio_streams = dict[int, AudioStream]()
-        self.options = options
-
-    def emit_event(self, event_name: str, *args):
-        """Helper function to emit events."""
-        self.loop.call_soon_threadsafe(self.emitter.emit, event_name, *args)
-
-    def on_connected(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Connected to RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_disconnected(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Disconnected from RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_connecting(
-        self, agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason
-    ):
-        logger.info(f"Connecting to RTC: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_connection_failure(self, agora_rtc_conn, conn_info, reason):
-        logger.error(f"Connection failure: {agora_rtc_conn} {conn_info} {reason}")
-        self.emit_event("connection_state_changed", agora_rtc_conn, conn_info, reason)
-
-    def on_user_joined(self, agora_rtc_conn: RTCConnection, user_id):
-        logger.info(f"User joined: {agora_rtc_conn} {user_id}")
-        self.emit_event("user_joined", agora_rtc_conn, user_id)
-
-    def on_user_left(self, agora_rtc_conn: RTCConnection, user_id, reason):
-        logger.info(f"User left: {agora_rtc_conn} {user_id} {reason}")
-        self.emit_event("user_left", agora_rtc_conn, user_id, reason)
-
-    def handle_received_chunk(self, json_chunk):
-        chunk = json.loads(json_chunk)
-        msg_id = chunk["msg_id"]
-        part_idx = chunk["part_idx"]
-        total_parts = chunk["total_parts"]
-        if msg_id not in self.received_chunks:
-            self.received_chunks[msg_id] = {"parts": {}, "total_parts": total_parts}
-        if (
-            part_idx not in self.received_chunks[msg_id]["parts"]
-            and 0 <= part_idx < total_parts
-        ):
-            self.received_chunks[msg_id]["parts"][part_idx] = chunk
-            if len(self.received_chunks[msg_id]["parts"]) == total_parts:
-                # all parts received, now recomposing original message and get rid it from dict
-                sorted_parts = sorted(
-                    self.received_chunks[msg_id]["parts"].values(),
-                    key=lambda c: c["part_idx"],
-                )
-                full_message = "".join(part["content"] for part in sorted_parts)
-                del self.received_chunks[msg_id]
-                return full_message, msg_id
-        return (None, None)
-
-    def on_stream_message(
-        self, agora_local_user: LocalUser, user_id, stream_id, data, length
-    ):
-        # logger.info(f"Stream message", agora_local_user, user_id, stream_id, length)
-        (reassembled_message, msg_id) = self.handle_received_chunk(data)
-        if reassembled_message is not None:
-            logger.info(f"Reassembled message: {msg_id} {reassembled_message}")
-
-    def on_audio_subscribe_state_changed(
-        self,
-        agora_local_user,
-        channel,
-        user_id,
-        old_state,
-        new_state,
-        elapse_since_last_state,
-    ):
-        logger.info(
-            f"Audio subscribe state changed: {user_id} {new_state} {elapse_since_last_state}"
-        )
-        self.emit_event(
-            "audio_subscribe_state_changed",
-            agora_local_user,
-            channel,
-            user_id,
-            old_state,
-            new_state,
-            elapse_since_last_state,
-        )
-
-    def on_playback_audio_frame_before_mixing(
-        self, agora_local_user: LocalUser, channelId, uid, frame: AudioFrame
-    ):
-        audio_frame = PcmAudioFrame()
-        audio_frame.samples_per_channel = frame.samples_per_channel
-        audio_frame.bytes_per_sample = frame.bytes_per_sample
-        audio_frame.number_of_channels = frame.channels
-        audio_frame.sample_rate = self.options.sample_rate
-        audio_frame.data = frame.buffer
-
-        # print(
-        #     "on_playback_audio_frame_before_mixing",
-        #     audio_frame.samples_per_channel,
-        #     audio_frame.bytes_per_sample,
-        #     audio_frame.number_of_channels,
-        #     audio_frame.sample_rate,
-        #     len(audio_frame.data),
-        # )
-        self.loop.call_soon_threadsafe(
-            self.audio_streams[uid].queue.put_nowait, audio_frame
-        )
-        return 0
-
-
-class Channel:
-    def __init__(self, rtc: "RtcEngine", options: RtcOptions) -> None:
-        self.loop = asyncio.get_event_loop()
-
-        # Create the event emitter
-        self.emitter = AsyncIOEventEmitter(self.loop)
-
-        self.connection_state = 0
-        self.options = options
-        self.remote_users = dict[int, Any]()
-        self.rtc = rtc
-        self.chat = Chat(self)
-        self.channelId = options.channel_name
-        self.uid = options.uid
-        self.enable_pcm_dump = options.enable_pcm_dump
-        self.token = options.build_token(rtc.appid, rtc.appcert) if rtc.appcert else ""
-        conn_config = RTCConnConfig(
-            client_role_type=ClientRoleType.CLIENT_ROLE_BROADCASTER,
-            channel_profile=ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING,
-        )
-        self.connection = self.rtc.agora_service.create_rtc_connection(conn_config)
-
-        self.channel_event_observer = ChannelEventObserver(
-            self.emitter,
-            options=options,
-        )
-        self.connection.register_observer(self.channel_event_observer)
-
-        self.local_user = self.connection.get_local_user()
-        self.local_user.set_playback_audio_frame_before_mixing_parameters(
-            options.channels, options.sample_rate
-        )
-        self.local_user.register_local_user_observer(self.channel_event_observer)
-        self.local_user.register_audio_frame_observer(self.channel_event_observer)
-        # self.local_user.subscribe_all_audio()
-
-        self.media_node_factory = self.rtc.agora_service.create_media_node_factory()
-        self.audio_pcm_data_sender = (
-            self.media_node_factory.create_audio_pcm_data_sender()
-        )
-        self.audio_track = self.rtc.agora_service.create_custom_audio_track_pcm(
-            self.audio_pcm_data_sender
-        )
-        self.audio_track.set_enabled(1)
-        self.local_user.publish_audio(self.audio_track)
-
-        self.stream_id = self.connection.create_data_stream(False, False)
-        self.received_chunks = {}
-        self.waiting_message = None
-        self.msg_id = ""
-        self.msg_index = ""
-
-        self.on(
-            "user_joined",
-            lambda agora_rtc_conn, user_id: self.remote_users.update({user_id: True}),
-        )
-        self.on(
-            "user_left",
-            lambda agora_rtc_conn, user_id, reason: self.remote_users.pop(
-                user_id, None
-            ),
-        )
-
-        def handle_audio_subscribe_state_changed(
-            agora_local_user,
-            channel,
-            user_id,
-            old_state,
-            new_state,
-            elapse_since_last_state,
-        ):
-            if new_state == 3:  # Successfully subscribed
-                self.channel_event_observer.audio_streams.update(
-                    {user_id: AudioStream()}
-                )
-            elif new_state == 0:
-                self.channel_event_observer.audio_streams.pop(user_id, None)
-
-        self.on("audio_subscribe_state_changed", handle_audio_subscribe_state_changed)
-        self.on(
-            "connection_state_changed",
-            lambda agora_rtc_conn, conn_info, reason: setattr(
-                self, "connection_state", conn_info.state
-            ),
-        )
-
-    async def connect(self) -> None:
-        """
-        Connects to a channel.
-
-        Parameters:
-            channelId: The channel ID.
-            uid: The user ID.
-
-        Returns:
-            Channel: The connected channel.
-        """
-        if self.connection_state == 3:
-            return
-
-        future = asyncio.Future()
-
-        def callback(agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason):
-            logger.info(f"Connection state changed: {conn_info.state}")
-            if conn_info.state == 3:  # Connection successful
-                future.set_result(None)
-            elif conn_info.state == 5:  # Connection failed
-                future.set_exception(
-                    Exception(f"Connection failed with state: {conn_info.state}")
-                )
-
-        self.on("connection_state_changed", callback)
-        logger.info(f"Connecting to channel {self.channelId} with token {self.token}")
-        self.connection.connect(self.token, self.channelId, f"{self.uid}")
-
-        if self.enable_pcm_dump:
-            agora_parameter = self.connection.get_agora_parameter()
-            agora_parameter.set_parameters("{\"che.audio.frame_dump\":{\"location\":\"all\",\"action\":\"start\",\"max_size_bytes\":\"120000000\",\"uuid\":\"123456789\",\"duration\":\"1200000\"}}")
-
-        try:
-            await future
-        except Exception as e:
-            raise Exception(
-                f"Failed to connect to channel {self.channelId}: {str(e)}"
-            ) from e
-        finally:
-            self.off("connection_state_changed", callback)
-
-    async def disconnect(self) -> None:
-        """
-        Disconnects the channel.
-        """
-        if self.connection_state == 1:
-            return
-
-        disconnected_future = asyncio.Future[None]()
-
-        def callback(agora_rtc_conn: RTCConnection, conn_info: RTCConnInfo, reason):
-            self.off("connection_state_changed", callback)
-            if conn_info.state == 1:
-                disconnected_future.set_result(None)
-
-        self.on("connection_state_changed", callback)
-        self.connection.disconnect()
-        await disconnected_future
-
-    def get_audio_frames(self, uid: int) -> AudioStream:
-        """
-        Returns the audio frames from the channel.
-
-        Returns:
-            AudioStream: The audio stream.
-        """
-        return self.channel_event_observer.audio_streams[uid]
-
-    async def push_audio_frame(self, frame: bytes) -> None:
-        """
-        Pushes an audio frame to the channel.
-
-        Parameters:
-            frame: The audio frame to push.
-        """
-        audio_frame = PcmAudioFrame()
-        audio_frame.data = bytearray(frame)
-        audio_frame.timestamp = 0
-        audio_frame.bytes_per_sample = 2
-        audio_frame.number_of_channels = self.options.channels
-        audio_frame.sample_rate = self.options.sample_rate
-        audio_frame.samples_per_channel = int(
-            len(frame) / audio_frame.bytes_per_sample / audio_frame.number_of_channels
-        )
-
-        ret = self.audio_pcm_data_sender.send_audio_pcm_data(audio_frame)
-        logger.info(f"Pushed audio frame: {ret}, audio frame length: {len(frame)}")
-        if ret < 0:
-            raise Exception(f"Failed to send audio frame: {ret}, audio frame length: {len(frame)}")
-
-    async def clear_sender_audio_buffer(self) -> None:
-        """
-        Clears the audio buffer which is used to send.
-        """
-        self.audio_track.clear_sender_buffer()
-
-    async def subscribe_audio(self, uid: int) -> None:
-        """
-        Subscribes to the audio of a user.
-
-        Parameters:
-            uid: The user ID to subscribe to.
-        """
-        future = asyncio.Future()
-
-        def callback(
-            agora_local_user,
-            channel,
-            user_id,
-            old_state,
-            new_state,
-            elapse_since_last_state,
-        ):
-            if new_state == 3:  # Successfully subscribed
-                future.set_result(None)
-            # elif new_state == 1:  # Subscription failed
-            #     future.set_exception(
-            #         Exception(
-            #             f"Failed to subscribe {user_id} audio: state changed from {old_state} to {new_state}"
-            #         )
-            #     )
-
-        self.on("audio_subscribe_state_changed", callback)
-        self.local_user.subscribe_audio(uid)
-
-        try:
-            await future
-        except Exception as e:
-            raise Exception(
-                f"Audio subscription failed for user {uid}: {str(e)}"
-            ) from e
-        finally:
-            self.off("audio_subscribe_state_changed", callback)
-
-    async def unsubscribe_audio(self, uid: int) -> None:
-        """
-        Unsubscribes from the audio of a user.
-
-        Parameters:
-            uid: The user ID to unsubscribe from.
-        """
-        future = asyncio.Future()
-
-        def callback(
-            agora_local_user,
-            channel,
-            user_id,
-            old_state,
-            new_state,
-            elapse_since_last_state,
-        ):
-            if new_state == 3:  # Successfully unsubscribed
-                future.set_result(None)
-            else:  # Failed to unsubscribe
-                future.set_exception(
-                    Exception(
-                        f"Failed to unsubscribe {user_id} audio: state changed from {old_state} to {new_state}"
-                    )
-                )
-
-        self.on("audio_subscribe_state_changed", callback)
-        self.local_user.unsubscribe_audio(uid)
-
-        try:
-            await future
-        except Exception as e:
-            raise Exception(
-                f"Audio unsubscription failed for user {uid}: {str(e)}"
-            ) from e
-        finally:
-            self.off("audio_subscribe_state_changed", callback)
-
-    def _split_string_into_chunks(
-        self, long_string, msg_id, chunk_size=300
-    ) -> list[dict[str:Any]]:
-        """
-        Splits a long string into chunks of a given size.
-
-        Parameters:
-            long_string: The string to split.
-            msg_id: The message ID.
-            chunk_size: The size of each chunk.
-
-        Returns:
-            list[dict[str: Any]]: The list of chunks.
-
-        """
-        total_parts = (len(long_string) + chunk_size - 1) // chunk_size
-        json_chunks = []
-        for idx in range(total_parts):
-            start = idx * chunk_size
-            end = min(start + chunk_size, len(long_string))
-            chunk = {
-                "msg_id": msg_id,
-                "part_idx": idx,
-                "total_parts": total_parts,
-                "content": long_string[start:end],
-            }
-            json_chunk = json.dumps(chunk, ensure_ascii=False)
-            json_chunks.append(json_chunk)
-        return json_chunks
-
-    async def send_stream_message(self, data: str, msg_id: str) -> None:
-        """
-        Sends a stream message to the channel.
-
-        Parameters:
-            data: The data to send.
-            msg_id: The message ID.
-        """
-
-        chunks = self._split_string_into_chunks(data, msg_id)
-        for chunk in chunks:
-            self.connection.send_stream_message(self.stream_id, chunk)
-
-    def on(self, event_name: str, callback):
-        """
-        Allows external components to subscribe to events.
-
-        Parameters:
-            event_name: The name of the event to subscribe to.
-            callback: The callback to call when the event is emitted.
-
-        """
-        self.emitter.on(event_name, callback)
-
-    def once(self, event_name: str, callback):
-        """
-        Allows external components to subscribe to events once.
-
-        Parameters:
-            event_name: The name of the event to subscribe to.
-            callback: The callback to call when the event is emitted.
-        """
-        self.emitter.once(event_name, callback)
-
-    def off(self, event_name: str, callback):
-        """
-        Allows external components to unsubscribe from events.
-
-        Parameters:
-            event_name: The name of the event to unsubscribe from.
-            callback: The callback to remove from the event.
-        """
-        self.emitter.remove_listener(event_name, callback)
-
-
-class ChatMessage:
-    def __init__(self, message: str, msg_id: str) -> None:
-        self.message = message
-        self.msg_id = msg_id
-
-
-class Chat:
-    def __init__(self, channel: Channel) -> None:
-        self.channel = channel
-        self.loop = self.channel.loop
-        self.queue = asyncio.Queue()
-
-        def log_exception(t: asyncio.Task[Any]) -> None:
-            if not t.cancelled() and t.exception():
-                logger.error(
-                    "unhandled exception",
-                    exc_info=t.exception(),
-                )
-
-        asyncio.create_task(self._process_message()).add_done_callback(log_exception)
-
-    async def send_message(self, item: ChatMessage) -> None:
-        """
-        Sends a message to the channel.
-
-        Parameters:
-            item: The message to send.
-        """
-        await self.queue.put(item)
-        # await self.queue.put_nowait(item)
-
-    async def _process_message(self) -> None:
-        """
-        Processes messages in the queue.
-        """
-
-        while True:
-            item: ChatMessage = await self.queue.get()
-            await self.channel.send_stream_message(item.message, item.msg_id)
-            self.queue.task_done()
-            # await asyncio.sleep(0)
-
-
-class RtcEngine:
-    def __init__(self, appid: str, appcert: str):
-        self.appid = appid
-        self.appcert = appcert
-
-        if not appid:
-            raise Exception("App ID is required)")
-
-        config = AgoraServiceConfig()
-        config.audio_scenario = AudioScenarioType.AUDIO_SCENARIO_CHORUS
-        config.appid = appid
-        config.log_path = os.path.join(
-            os.path.dirname(
-                os.path.dirname(
-                    os.path.dirname(os.path.join(os.path.abspath(__file__)))
-                )
-            ),
-            "agorasdk.log",
-        )
-        self.agora_service = AgoraService()
-        self.agora_service.initialize(config)
-
-    def create_channel(self, options: RtcOptions) -> Channel:
-        """
-        Creates a channel.
-
-        Parameters:
-            channelId: The channel ID.
-            uid: The user ID.
-
-        Returns:
-            Channel: The created channel.
-        """
-        return Channel(self, options)
-
-    def destroy(self) -> None:
-        """
-        Destroys the RTC engine.
-        """
-        self.agora_service.release()
-```
-
-
-## Test the sample code
-
-Follow these steps to test the demo code:
-
-1. Create a file named `rtc.py` and paste the [complete source code](#complete-code) into this file.
-
-1. Create a file named `main.py` in the same folder as `rtc.py` and copy the following code to the file:
-
-    ```python
-    import asyncio
-    from rtc import RtcEngine  # Import the RtcEngine class from rtc.py
-
-    async def main():
-        appid = "<Your app Id>"  # Replace with your Agora App ID
-        channelId = "demo"  # Replace with your desired channel ID
-        uid = "123"  # Replace with your unique user ID
-
-        rtc_engine = RtcEngine(appid)
-        channel = await rtc_engine.connect(channelId, uid)
-
-        # Keep the script running to listen for events
-        await asyncio.Event().wait()
-
-    if __name__ == "__main__":
-        asyncio.run(main())
-    ```
-
-1. To specify the audio parameters, create a folder named `realtimeapi` and add a file `util.py` containing the following code:
-
-    ```python
-    # Number of audio channels (1 for mono, 2 for stereo)
-    CHANNELS = 2
-
-    # Sample rate for audio processing (in Hz)
-    SAMPLE_RATE = 44100  # Common sample rates include 8000, 16000, 44100, 48000
-    ```
-
-1. To run the app, execute the following command in your terminal:
-
-    ```bash
-    python3 main.py
-    ```
-
-    You see output similar to the following:
-
-    ```
-    Initialization result: 0
-    LocalUserCB _on_audio_track_publish_start: 123456607304576 123456864576600
-    ```
-
-Congratulations! You have successfully connected to the Agora backend and joined a channel.
-
-
-## Reference
-
-### API reference
-
-- [`rtc.py`](https://api-ref.agora.io/en/video-sdk/python/rtc-py-api.html)
+* [SDK error codes](/en/realtime-media/video/reference/error-codes)
+* [Connection status management](/en/realtime-media/video/build/manage-connection-and-quality/connection-status-management)
 
 </PlatformStructured>
