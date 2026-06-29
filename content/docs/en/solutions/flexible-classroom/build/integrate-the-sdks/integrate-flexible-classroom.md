@@ -59,7 +59,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install agora-classroom-sdk agora-plugin-gallery
     ```
 
@@ -215,15 +215,15 @@ Make sure you have set up a development environment. See [Demo quickstart](../..
 
     1. To package the SDK code:
 
-    ```bash
-    yarn pack:classroom:sdk
-    ```
+       ```bash
+       yarn pack:classroom:sdk
+       ```
 
     1. To package the SDK plug-ins:
 
-    ```bash
-    yarn pack:classroom:plugin
-    ```
+       ```bash
+       yarn pack:classroom:plugin
+       ```
 
 :::note
 Find the output in `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/edu_widget.bundle.js` respectively.
@@ -239,7 +239,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install agora-proctor-sdk agora-plugin-gallery
     ```
 
@@ -378,15 +378,15 @@ Make sure you have set up a development environment. See [Demo quickstart](../..
 
     1. To package the SDK code:
 
-    ```bash
-    yarn pack:proctor:sdk
-    ```
+       ```bash
+       yarn pack:proctor:sdk
+       ```
 
     1. To package the SDK plug-ins:
 
-    ```bash
-    yarn pack:proctor:plugin
-    ```
+       ```bash
+       yarn pack:proctor:plugin
+       ```
 
 :::note
 Find the output in `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js` respectively.

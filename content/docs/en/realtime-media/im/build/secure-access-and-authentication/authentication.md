@@ -86,7 +86,7 @@ To execute the code, ensure you set the following values in the code:
 
 To create a new user, use the following `curl` command:
 
-```shell
+```bash
 curl -X POST -H "Authorization: Bearer " -i "https://XXXX/XXXX/XXXX/users" -d '[
     {
         "username": "user1",
@@ -98,7 +98,7 @@ curl -X POST -H "Authorization: Bearer " -i "https://XXXX/XXXX/XXXX/users" -d '[
 
 The server responds with the user details:
 
-```shell
+```bash
 {
     "action": "post",
     "application": "8be024f0-e978-11e8-b697-5d598d5f8402",

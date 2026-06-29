@@ -30,7 +30,7 @@ Pass in the following parameters in the request header:
 
 ### Request example
 
-```
+```bash
 POST /v5/rooms
 Host: api.netless.link
 token: NETLESSSDK_YWs9xxxxxxZGM2MjRi
@@ -50,7 +50,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 {
@@ -106,7 +106,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 GET /v5/rooms/a7exxxxxxa69
 Host: api.netless.link
 region: us-sv
@@ -122,7 +122,7 @@ If the status code is `200`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 200,
 "body":
 {
@@ -179,7 +179,7 @@ You can choose to pass in the following query parameters:
 
 ### Request example
 
-```
+```bash
 GET /v5/rooms/?beginUUID=0e6exxxxxx4d95&limit=2
 Host: api.netless.link
 region: us-sv
@@ -195,7 +195,7 @@ If the status code is `200`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 200,
 "body":
 [
@@ -272,7 +272,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 PATCH /v5/rooms/0e6exxxxxx4d95
 Host: api.netless.link
 region: us-sv
@@ -292,7 +292,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 {

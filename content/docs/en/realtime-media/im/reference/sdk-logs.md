@@ -35,7 +35,7 @@ To access SDK logs, take the following steps:
 
     Open the logs directory `/sdcard/Android/data/{package name}/{appkey}/core_log/` which contains the SDK logs.
 
-    ```shell
+    ```bash
     adb pull /sdcard/android/data/{package name}/{appkey}/core_log
     ```
 
@@ -53,7 +53,7 @@ For example, the SDK generates `easemob.log` to record logs at 8:00:00 a.m. on J
 
 If you want to output SDK logs on the XCode console, you can enable log output during SDK initialization.
 
-```objective-c
+```objc
 AgoraChatOptions* option = [AgoraChatOptions optionsWithAppkey:@""];
 // Output logs on the XCode console
 option.enableConsoleLog = YES;

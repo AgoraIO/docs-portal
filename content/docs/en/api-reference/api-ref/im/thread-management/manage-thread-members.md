@@ -158,7 +158,7 @@ For other fields and descriptions, see [Common parameters](#response).
 
 #### Request example
 
-```shell
+```bash
 curl -X POST http://XXXX.com/XXXX/testapp/thread/177916702949377/users -H 'Authorization: Bearer '-d '{
 "usernames": [
 "test2",

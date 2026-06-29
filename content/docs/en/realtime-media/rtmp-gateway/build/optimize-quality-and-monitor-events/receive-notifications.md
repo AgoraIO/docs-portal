@@ -43,94 +43,94 @@ To do this, take the following steps:
 1. Ensure you have Go installed on your system. If not, download and install it from the [official Go website](https://go.dev/dl/).
 2. Create a new project directory:
 
-```sh
-mkdir agora-webhook-server
-cd agora-webhook-server
-```
+   ```sh
+   mkdir agora-webhook-server
+   cd agora-webhook-server
+   ```
 
 3. In the project directory, create a new file `main.go` and add the following code:
 
-```go
-package main
+   ```go
+   package main
 
-import (
-    "encoding/json"
-    "fmt"
-    "io"
-    "log"
-    "net/http"
-)
+   import (
+       "encoding/json"
+       "fmt"
+       "io"
+       "log"
+       "net/http"
+   )
 
-type WebhookRequest struct {
-    NoticeID  string                 `json:"noticeId"`
-    ProductID int64                  `json:"productId"`
-    EventType int                    `json:"eventType"`
-    NotifyMs  int64                  `json:"notifyMs"`
-    SID       string                 `json:"sid"`
-    Payload   map[string]interface{} `json:"payload"`
-}
+   type WebhookRequest struct {
+       NoticeID  string                 `json:"noticeId"`
+       ProductID int64                  `json:"productId"`
+       EventType int                    `json:"eventType"`
+       NotifyMs  int64                  `json:"notifyMs"`
+       SID       string                 `json:"sid"`
+       Payload   map[string]interface{} `json:"payload"`
+   }
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
-    response := "Agora Notifications demo"
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte(response))
-}
+   func rootHandler(w http.ResponseWriter, r *http.Request) {
+       response := "Agora Notifications demo"
+       w.WriteHeader(http.StatusOK)
+       w.Write([]byte(response))
+   }
 
-func ncsHandler(w http.ResponseWriter, r *http.Request) {
-    agoraSignature := r.Header.Get("Agora-Signature")
-    fmt.Println("Agora-Signature:", agoraSignature)
+   func ncsHandler(w http.ResponseWriter, r *http.Request) {
+       agoraSignature := r.Header.Get("Agora-Signature")
+       fmt.Println("Agora-Signature:", agoraSignature)
 
-    body, err := io.ReadAll(r.Body)
-    if err != nil {
-        http.Error(w, "Unable to read request body", http.StatusBadRequest)
-        return
-    }
+       body, err := io.ReadAll(r.Body)
+       if err != nil {
+           http.Error(w, "Unable to read request body", http.StatusBadRequest)
+           return
+       }
 
-    var req WebhookRequest
-    if err := json.Unmarshal(body, &req); err != nil {
-        http.Error(w, "Invalid JSON", http.StatusBadRequest)
-        return
-    }
+       var req WebhookRequest
+       if err := json.Unmarshal(body, &req); err != nil {
+           http.Error(w, "Invalid JSON", http.StatusBadRequest)
+           return
+       }
 
-    fmt.Printf("\\n--- Webhook Notification Received ---\\n")
-    fmt.Printf("Notice ID: %s\\n", req.NoticeID)
-    fmt.Printf("Event Type: %d\\n", req.EventType)
-    fmt.Printf("Session ID: %s\\n", req.SID)
-    fmt.Printf("Timestamp: %d\\n", req.NotifyMs)
+       fmt.Printf("\\n--- Webhook Notification Received ---\\n")
+       fmt.Printf("Notice ID: %s\\n", req.NoticeID)
+       fmt.Printf("Event Type: %d\\n", req.EventType)
+       fmt.Printf("Session ID: %s\\n", req.SID)
+       fmt.Printf("Timestamp: %d\\n", req.NotifyMs)
 
-    prettyJSON, _ := json.MarshalIndent(req.Payload, "", "  ")
-    fmt.Printf("\\nFull Payload:\\n%s\\n", string(prettyJSON))
+       prettyJSON, _ := json.MarshalIndent(req.Payload, "", "  ")
+       fmt.Printf("\\nFull Payload:\\n%s\\n", string(prettyJSON))
 
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("Notification received successfully"))
-}
+       w.WriteHeader(http.StatusOK)
+       w.Write([]byte("Notification received successfully"))
+   }
 
-func main() {
-    http.HandleFunc("/", rootHandler)
-    http.HandleFunc("/ncsNotify", ncsHandler)
+   func main() {
+       http.HandleFunc("/", rootHandler)
+       http.HandleFunc("/ncsNotify", ncsHandler)
 
-    port := ":8080"
-    fmt.Printf("Notifications webhook server started on port %s\\n", port)
-    fmt.Println("Ready to receive Agora webhook notifications...")
+       port := ":8080"
+       fmt.Printf("Notifications webhook server started on port %s\\n", port)
+       fmt.Println("Ready to receive Agora webhook notifications...")
 
-    if err := http.ListenAndServe(port, nil); err != nil {
-        log.Fatalf("Failed to start server: %v", err)
-    }
-}
-```
+       if err := http.ListenAndServe(port, nil); err != nil {
+           log.Fatalf("Failed to start server: %v", err)
+       }
+   }
+   ```
 
 4. Run the server:
 
-```sh
-go run main.go
-```
+   ```sh
+   go run main.go
+   ```
 
 5. Create a public URL for your server. In this example you use `ngrok`:
 
-```bash
-ngrok config add-authtoken YOUR_AUTH_TOKEN
-ngrok http 127.0.0.1:8080
-```
+   ```bash
+   ngrok config add-authtoken YOUR_AUTH_TOKEN
+   ngrok http 127.0.0.1:8080
+   ```
 
 To obtain an auth token, [sign up](https://dashboard.ngrok.com/signup) with ngrok.
 

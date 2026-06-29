@@ -22,7 +22,7 @@ Add the following destination domains and the corresponding ports to your firewa
 
 #### Domains
 
-```
+```text
 .agora.io
 .edge.agora.io
 .sd-rtn.com
@@ -47,7 +47,7 @@ Add the following destination domains and the corresponding ports to your firewa
 For a message channel, you need to add the following content to the firewall whitelist:
 
 - **Domains**: 
-    ```
+    ```text
     .edge.agora.io
     .edge.sd-rtn.com
     web-1.ap.sd-rtn.com
@@ -80,7 +80,7 @@ For a stream channel, you need to add the following to your firewall whitelist:
 
 - **Domains**:
 
-    ```
+    ```text
     .agora.io
     .edge.agora.io
     .sd-rtn.com
@@ -101,7 +101,7 @@ For a stream channel, you need to add the following to your firewall whitelist:
 For a message channel, you need to add the following content to the firewall whitelist:
 
 - **Domains**: 
-    ```
+    ```text
     .agora.io
     ```
 - **Ports**: 

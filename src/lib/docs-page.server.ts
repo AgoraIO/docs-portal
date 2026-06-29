@@ -43,6 +43,7 @@ import {
 } from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
+  buildPlatformMarkdownText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
@@ -300,9 +301,11 @@ export async function loadDocsPagePayload(
     ? ''
     : (platformResolvedProcessedText ?? (await readProcessedText(page)));
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
+  const defaultStructuredPlatform = structuredPlatformTabs?.platforms[0];
+  const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
-    : await resolvePageToc(page, processedText);
+    : await resolvePageToc(page, processedText, artifactPlatform);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
@@ -341,17 +344,22 @@ export async function loadDocsPagePayload(
         panels: platformGroup.panels,
         platformTabs: {
           canonicalPlatform: platformGroup.canonicalPlatform,
+          defaultPlatform: platformGroup.canonicalPlatform,
           platforms: JSON.stringify(platformGroup.platforms),
         },
         platforms: platformGroup.platforms,
       }
     : {
         contentPath: page.path,
+        ...('hidePlatformTabs' in page.data && page.data.hidePlatformTabs
+          ? { hidePlatformTabs: true }
+          : {}),
         kind: 'mdx' as const,
         ...(structuredPlatformTabs
           ? {
               platformTabs: {
                 canonicalPlatform: structuredPlatformTabs.canonicalPlatform,
+                defaultPlatform: defaultStructuredPlatform,
                 initialPlatform: requestedPlatform,
                 platforms: JSON.stringify(structuredPlatformTabs.platforms),
               },
@@ -388,7 +396,7 @@ export async function loadDocsPagePayload(
             ],
     contentPath: page.path,
     description: page.data.description,
-    markdownUrl: getPageMarkdownUrl(page, requestedPlatform).url,
+    markdownUrl: getPageMarkdownUrl(page, artifactPlatform).url,
     layoutMode,
     hideToc: ('hideToc' in page.data ? page.data.hideToc : undefined) ?? false,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
@@ -962,19 +970,31 @@ async function readProcessedText(page: PageWithSource) {
   }
 }
 
-async function resolvePageToc(page: PageWithSource, processedText: string) {
+async function resolvePageToc(
+  page: PageWithSource,
+  processedText: string,
+  platform?: PlatformKey,
+) {
   const directToc = normalizeToc(getPageToc(page));
 
-  if (directToc.length > 0) {
+  if (directToc.length > 0 && !platform) {
     return directToc;
   }
 
   try {
-    return normalizeToc(
-      await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
-    );
+    const tocText = platform
+      ? buildPlatformMarkdownText(processedText, platform)
+      : buildCanonicalPlatformTocText(processedText);
+
+    return normalizeToc(await getTableOfContents(tocText));
   } catch {
-    return [];
+    try {
+      return normalizeToc(
+        await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+      );
+    } catch {
+      return directToc;
+    }
   }
 }
 

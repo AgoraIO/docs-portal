@@ -17,9 +17,9 @@ Take the following steps to set up and run the middleware project:
 
 1. **Clone the repository**
 
-```bash
-git clone https://github.com/AgoraIO-Community/agora-go-backend-middleware.git
-```
+   ```bash
+   git clone https://github.com/AgoraIO-Community/agora-go-backend-middleware.git
+   ```
 
 2. **Install dependencies**
 
@@ -32,16 +32,16 @@ go mod download
 
 3. **Configure environment variables**
 
-1. Copy the example `.env` file.
+   Copy the example `.env` file.
 
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-2. Update the following variables in the `.env` file:
+   Update the following variables in the `.env` file:
 
-- `APP_ID`: Your Agora App ID.
-- `APP_CERTIFICATE`: Your Agora App Certificate.
+   - `APP_ID`: Your Agora App ID.
+   - `APP_CERTIFICATE`: Your Agora App Certificate.
 
 4. **Run the middleware**
 
@@ -80,6 +80,8 @@ Replace `localhost:8080` with your server's address.
 :::
 
 ## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 ### Middleware token generation API
 

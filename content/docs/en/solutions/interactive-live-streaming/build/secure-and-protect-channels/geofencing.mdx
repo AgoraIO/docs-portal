@@ -619,6 +619,162 @@ This section contains content that completes the information on this page, or po
 - [`AreaCode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_areacode.html)
 </PlatformStructured>
 
+<PlatformStructured platform="web">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN(R) media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN(R) media zone users connect to.
+
+:::note
+This is an advanced feature suitable only for use-cases with access security restrictions.
+:::
+
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN(R) from North America and China respectively:
+
+| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |
+| --- | --- | --- | --- |
+| North America | North America | North America | Normal |
+| North America | China | North America | Quality may be affected |
+
+:::note
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+:::
+
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement restricted media zones
+
+This section shows you how to restrict access to media zones in your app.
+
+You call the `AgoraRTC.setArea` method to specify the media zone. By default, the SDK selects the nearest Agora server region to connect to. After you set the media zone, the SDK only connects to Agora servers in the specified zone.
+
+Use one of the following values for `areaCode` and `excludedArea`:
+
+* `ASIA`: Asia except Mainland China
+* `CHINA`: Mainland China
+* `EUROPE`: Europe
+* `GLOBAL`: Global (Default)
+* `INDIA`: India
+* `JAPAN`: Japan
+* `NORTH_AMERICA`: North America
+
+Refer to the following sample code:
+
+```javascript
+AgoraRTC.setArea('ASIA');
+```
+
+Use the `excludedArea` parameter to specify a smaller zone to be excluded from a larger zone. Currently, you can only set the larger zone to `GLOBAL`.
+
+```js
+// Exclude Mainland China from media zones
+AgoraRTC.setArea({
+  areaCode: 'GLOBAL',
+  excludedArea: 'CHINA',
+});
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setArea`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#setarea)
+- [`AREAS`](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/areas.html)
+</PlatformStructured>
+
+<PlatformStructured platform="react-js">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN(R) media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN(R) media zone users connect to.
+
+:::note
+This is an advanced feature suitable only for use-cases with access security restrictions.
+:::
+
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN(R) from North America and China respectively:
+
+| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |
+| --- | --- | --- | --- |
+| North America | North America | North America | Normal |
+| North America | China | North America | Quality may be affected |
+
+:::note
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+:::
+
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement restricted media zones
+
+This section shows you how to restrict access to media zones in your app.
+
+By default, the SDK connects to the nearest Agora server. You set the `areaCode` property by calling the `setArea` method to specify the media zone(s). After setting the access zone, the SDK only connects to Agora servers in the specified media zone.
+
+You can set the area to:
+
+* `ASIA`: Asia except Mainland China
+* `CHINA`: Mainland China
+* `EUROPE`: European region
+* `GLOBAL`: Global (Default)
+* `INDIA`: India
+* `JAPAN`: Japan
+* `NORTH_AMERICA`: North America
+
+:::note
+Media zones support bitwise operations.
+:::
+
+Refer to the following sample code:
+
+```javascript
+const useMediaZones = () => {
+  useEffect(() => {
+    AgoraRTC.setArea({
+      areaCode: [AREAS.NORTH_AMERICA, AREAS.ASIA],
+    });
+  }, []);
+};
+
+function EnableMediaZones() {
+  useMediaZones();
+
+  return (
+    <div>
+      <App />
+    </div>
+  );
+}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setArea`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#setarea)
+- [`AREAS`](https://api-ref.agora.io/en/video-sdk/web/4.x/enums/areas.html)
+</PlatformStructured>
+
 <PlatformStructured platform="react-native">
 When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN® media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® media zone users connect to.
 
@@ -779,3 +935,88 @@ This section contains content that completes the information on this page, or po
 - [`CreateAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_createagorartcengine)
 </PlatformStructured>
 
+<PlatformStructured platform="unreal">
+When a user joins a channel, Video SDK automatically connects them to the Agora SDRTN(R) media zone that is geographically closest to the user. However, to meet the laws and regulations of the user's country, you may need to specify, or filter out connections to a specific geographical zone. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN(R) media zone users connect to.
+
+:::note
+This is an advanced feature suitable only for use-cases with access security restrictions.
+:::
+
+## Understand the tech
+
+After you turn on the restricted media zones feature, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user. As an example, the following table shows the outcome if you specify North America as the access zone, and users connect to Agora SDRTN(R) from North America and China respectively:
+
+| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |
+| --- | --- | --- | --- |
+| North America | North America | North America | Normal |
+| North America | China | North America | Quality may be affected |
+
+:::note
+* If a server in the specified zone is not available, the SDK reports an error.
+* Due to cross-regional public internet between the designated zone and the geographical location where the app user is located, the audio and video experience may be affected.
+:::
+
+The following figure shows the workflow you implement to restrict access to media zones:
+
+**Restrict media zones**
+
+![Restrict media zones](/images/video-sdk/restrict-media-zones.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
+
+## Implement restricted media zones
+
+This section shows you how to restrict access to media zones in your app.
+
+By default, the SDK connects to the nearest Agora server. Set the `areaCode` property of `RtcEngineContext` when calling the `initialize` method to specify the media zones. After setting the media zone(s), the SDK only connects to Agora servers in the specified zone(s).
+
+You can set the `areaCode` to:
+
+* `AREA_CODE_GLOB`: Global (Default)
+* `AREA_CODE_CN`: Mainland China
+* `AREA_CODE_NA`: North America
+* `AREA_CODE_EU`: Europe
+* `AREA_CODE_AS`: Asia except Mainland China
+* `AREA_CODE_JP`: Japan
+* `AREA_CODE_IN`: India
+
+:::note
+Media zones support bitwise operations. To include a zone, use the `|` operator, to exclude a zone use `^`.
+:::
+
+Refer to the following code:
+
+```cpp
+void UMyUserWidget::setupVideoSDKEngine()
+{
+    // Create an engine instance.
+    agoraEngine = agora::rtc::ue::createAgoraRtcEngine();
+    // Specify a context for the engine.
+    RtcEngineContext context;
+    context.appId = appId.c_str();
+    context.eventHandler = this;
+    // Choose the communication profile for video calling.
+    context.channelProfile = CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+    // Only connect to Agora SDRTN® located in North America.
+    context.areaCode = AREA_CODE::AREA_CODE_NA;
+    // Initialize the engine instance with the context.
+    agoraEngine->initialize(context);
+    // Enable the local audio capture to init the local video stream.
+    agoraEngine->enableAudio();
+    // Enable the local video capture to init the local video stream.
+    agoraEngine->enableVideo();
+}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`initialize`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_initialize)
+- [`RtcEngineContext`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_rtcengineconfig.html)
+- [`AREA_CODE`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/enum_areacode.html)
+</PlatformStructured>

@@ -22,6 +22,7 @@ The MetaKit extension includes the following key functions:
 | Lighting     | Provide users with precise and efficient light and shadow effects, including 3D light (one light with customizable motion trajectory), atmosphere light (simulating multiple real light effects with fixed motion trajectory), advertising light, and other modes. Intelligent light and shadow control allows users to experience more realistic effects in a virtual environment. |
 | Atmospheric effects| Create an artistic atmosphere using lighting effects, including portrait edge flames, aurora, ripples, and other modes.                        |
 | 360 Background  | Provide users with customized panoramic virtual background effects.   |
+
 :::note
 The MetaKit extension offers an open art ecosystem, supporting one-click import of Animoji and avatar images created according to Agora art standards. This provides users with more flexible creation and integration options.
 To use this feature, contact [technical support](mailto:extensions.marketplace@agora.io).
@@ -81,9 +82,9 @@ To integrate the MetaKit extension, take the following steps:
 
 3. In the project's `/app` directory, add dependencies for all `.jar` and `.aar` files located under the `libs` path in the dependencies section of the `build.gradle` file.
 
-  ```java
-  implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-  ```
+   ```java
+   implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+   ```
 
 ### Configure MetaKit
 
@@ -1620,18 +1621,18 @@ Currently only the `girl` avatar supports dressup.
 
   1. **Set 1**
 
-    ```json
-     // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, headdress, top coat, pants, shoes]
-     "id": [10001, 10101, 10401, 10801, 12101, 14101, 15001]
-    ```
+     ```json
+      // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, headdress, top coat, pants, shoes]
+      "id": [10001, 10101, 10401, 10801, 12101, 14101, 15001]
+     ```
     <img src="https://web-cdn.agora.io/doc-cms/uploads/1708415768849-dress1.png" alt="Avatar dressup tab1" />
 
   2. **Set 2**
 
-    ```json
-     // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, coat, gloves, pants, shoes]
-     "id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]
-    ```
+     ```json
+      // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, coat, gloves, pants, shoes]
+      "id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]
+     ```
     <img src="https://web-cdn.agora.io/doc-cms/uploads/1708415915330-dress2.png" alt="Avatar dressup tab2" />
 
 #### Animoji
@@ -2393,55 +2394,55 @@ After configuring your project, follow these steps to experience the various fun
 
 1. Initialize `AgoraRtcEngineKit` by calling `sharedEngineWithConfig`. In `AgoraRtcEngineConfig`, create the event callback interface class `AgoraMediaFilterEventDelegate` for the extension and register extension event callbacks such as `onEvent`.
 
-  ```swift
-  let config = AgoraRtcEngineConfig()
-  config.appId = appID
-  config.eventDelegate = self
-  // Create and initialize AgoraRtcEngineKit
-  agoraEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
-  // Create the event callback interface class for the extension and register extension event callbacks
-  extension ViewController: AgoraMediaFilterEventDelegate {
-    func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
-    }
+   ```swift
+   let config = AgoraRtcEngineConfig()
+   config.appId = appID
+   config.eventDelegate = self
+   // Create and initialize AgoraRtcEngineKit
+   agoraEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+   // Create the event callback interface class for the extension and register extension event callbacks
+   extension ViewController: AgoraMediaFilterEventDelegate {
+     func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
+     }
 
-    func onExtensionStarted(_ provider: String?, extension: String?) {
-    }
+     func onExtensionStarted(_ provider: String?, extension: String?) {
+     }
 
-    func onExtensionStopped(_ provider: String?, extension: String?) {
-    }
+     func onExtensionStopped(_ provider: String?, extension: String?) {
+     }
 
-    func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
-    }
-  }
-  ```
+     func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
+     }
+   }
+   ```
 
 2. In the callback, specify `provider` as `agora_video_filters_metakit` and `extension` as `metakit` to filter events from the MetaKit extension. `onEvent` will pass through engine states such as `unityLoadFinish` (Unity environment loaded) and `addSceneViewResp` (scene view loaded).
 
-  ```swift
-  func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
-    guard let provider = provider, let extension = extension, provider == "agora_video_filters_metakit", extension == "metakit" else {
-      return
-    }
+   ```swift
+   func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
+     guard let provider = provider, let extension = extension, provider == "agora_video_filters_metakit", extension == "metakit" else {
+       return
+     }
 
-    guard let status = key else {
-      return
-    }
+     guard let status = key else {
+       return
+     }
 
-    switch status {
-    case "initializeFinish", "unityLoadFinish", "loadSceneResp", "addSceneViewResp", "removeSceneViewResp", "unloadSceneResp":
-      // Capture and handle events such as Unity environment loaded and scene view loaded
-      break
-    default:
-      break
-    }
-  }
+     switch status {
+     case "initializeFinish", "unityLoadFinish", "loadSceneResp", "addSceneViewResp", "removeSceneViewResp", "unloadSceneResp":
+       // Capture and handle events such as Unity environment loaded and scene view loaded
+       break
+     default:
+       break
+     }
+   }
 
-  func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
-    if provider == "agora_video_filters_metakit" && extension == "metakit" {
-      print("[MetaKit] onExtensionError, Code: \(error), Message: \(message ?? "")")
-    }
-  }
-  ```
+   func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
+     if provider == "agora_video_filters_metakit" && extension == "metakit" {
+       print("[MetaKit] onExtensionError, Code: \(error), Message: \(message ?? "")")
+     }
+   }
+   ```
 ### Enable extensions
 
 Before enabling the MetaKit extension, ensure that both the Facial Capture extension and the Virtual Background extension are enabled.
@@ -2532,74 +2533,74 @@ agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
 
 1. Use `setExtensionPropertyWithVendor` to add a scene view for a virtual human, with key set to `addSceneView` and value containing scene view configuration information. To experience the virtual human functionalities, set `avatarMode` to `0` for the scene view, indicating virtual human mode, and specify `avatar` as the desired character such as `girl` or `huamulan`.
 
-```swift
-// Get the view's address handle
-let address = unsafeBitCast(sceneView!, to: Int64.self)
+   ```swift
+   // Get the view's address handle
+   let address = unsafeBitCast(sceneView!, to: Int64.self)
 
-let extraDict = [
-  "sceneIndex": 0,    // Scene index, currently supports only 0
-  "avatar": "huamulan",  // Set avatar to "huamulan"
-  "avatarMode": 0     // Set scene mode to 0, i.e., virtual human mode
-] as [String: Any]
+   let extraDict = [
+     "sceneIndex": 0,    // Scene index, currently supports only 0
+     "avatar": "huamulan",  // Set avatar to "huamulan"
+     "avatarMode": 0     // Set scene mode to 0, i.e., virtual human mode
+   ] as [String: Any]
 
-let extraData = try? JSONSerialization.data(withJSONObject: extraDict, options: [])
-let extraStr = String(data: extraData!, encoding: .utf8) ?? ""
+   let extraData = try? JSONSerialization.data(withJSONObject: extraDict, options: [])
+   let extraStr = String(data: extraData!, encoding: .utf8) ?? ""
 
-let dict = [
-  "view": String(address),
-  "config": [
-    "width": 720,
-    "height": 1280,
-    "extraInfo": extraStr
-  ]
-] as [String: Any]
+   let dict = [
+     "view": String(address),
+     "config": [
+       "width": 720,
+       "height": 1280,
+       "extraInfo": extraStr
+     ]
+   ] as [String: Any]
 
-let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
-let dataStr = String(data: data!, encoding: .utf8)
+   let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+   let dataStr = String(data: data!, encoding: .utf8)
 
-// Add virtual human scene view based on JSON configuration
-agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
-                    extension: "metakit",
-                    key: "addSceneView",
-                    value: dataStr!)
-```
+   // Add virtual human scene view based on JSON configuration
+   agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
+                       extension: "metakit",
+                       key: "addSceneView",
+                       value: dataStr!)
+   ```
 When the `onEvent` callback captures the `addSceneViewResp` event, the scene view has been successfully added. It will display a Blendshape-driven virtual human character that mimics your facial expressions and follows head movements.
 
 2. Use `setExtensionPropertyWithVendor` to manipulate the virtual human's facial features, with key set to `updateFace` and value supporting multiple sets of resource `IDs` and corresponding adjustment amplitudes. See [Facial pinching resources](#face-pinching-resources) for details.
 
-```swift
-let parts = [
-  ["key": "C_updown_2", "value": 20],
-  ["key": "EB_thickness", "value": 40],
-  ["key": "E_width_1", "value": 60],
-  ["key": "N_width_1", "value": 80]
-]
+   ```swift
+   let parts = [
+     ["key": "C_updown_2", "value": 20],
+     ["key": "EB_thickness", "value": 40],
+     ["key": "E_width_1", "value": 60],
+     ["key": "N_width_1", "value": 80]
+   ]
 
-let dict = ["value": parts]
-let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
-let str = String(data: data!, encoding: .utf8)
+   let dict = ["value": parts]
+   let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+   let str = String(data: data!, encoding: .utf8)
 
-// Perform facial manipulation based on JSON configuration
-agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
-                    extension: "metakit",
-                    key: "updateFace",
-                    value: str!)
-```
+   // Perform facial manipulation based on JSON configuration
+   agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
+                       extension: "metakit",
+                       key: "updateFace",
+                       value: str!)
+   ```
 
 3. Use `setExtensionPropertyWithVendor` to change the virtual human's outfit, with `key` set to `updateDress` and `value` supporting an array of integers representing the resource IDs for different outfit parts. See [Dress-up resources](##dress-up-resources) for details.
 
-  ```swift
-  // Set the ID to an array of resource IDs
-  let dict = ["id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]]
-  let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
-  let str = String(data: data!, encoding: .utf8)
+   ```swift
+   // Set the ID to an array of resource IDs
+   let dict = ["id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]]
+   let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+   let str = String(data: data!, encoding: .utf8)
 
-  // Change outfit based on JSON configuration
-  agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
-                      extension: "metakit",
-                      key: "updateDress",
-                      value: str!)
-  ```
+   // Change outfit based on JSON configuration
+   agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
+                       extension: "metakit",
+                       key: "updateDress",
+                       value: str!)
+   ```
 
   Additionally, MetaKit supports switching the virtual human's appearance and perspective. For more details, refer to the [virtual human key-value description](#virtual-human).
 
@@ -2666,36 +2667,36 @@ When the `onEvent` callback captures the `materialLoaded` event, it means that t
 
 1. Use `setExtensionPropertyWithVendor` to add a scene view, with `key` set to `addSceneView` and `value` containing the scene view configuration. To experience lighting effects and 360 background features, set `backgroundEffect` to `true` when adding the scene view.
 
-  ```swift
-  // Get the view's address handle
-  let address = unsafeBitCast(sceneView!, to: Int64.self)
+   ```swift
+   // Get the view's address handle
+   let address = unsafeBitCast(sceneView!, to: Int64.self)
 
-  let extraDict = [
-    "sceneIndex": 0,      // Scene index, currently supports only 0
-    "backgroundEffect": true  // Enable lighting effects and 360 background
-  ] as [String: Any]
+   let extraDict = [
+     "sceneIndex": 0,      // Scene index, currently supports only 0
+     "backgroundEffect": true  // Enable lighting effects and 360 background
+   ] as [String: Any]
 
-  let extraData = try? JSONSerialization.data(withJSONObject: extraDict, options: [])
-  let extraStr = String(data: extraData!, encoding: .utf8) ?? ""
+   let extraData = try? JSONSerialization.data(withJSONObject: extraDict, options: [])
+   let extraStr = String(data: extraData!, encoding: .utf8) ?? ""
 
-  let dict = [
-    "view": String(address),
-    "config": [
-      "width": 720,
-      "height": 1280,
-      "extraInfo": extraStr
-    ]
-  ] as [String: Any]
+   let dict = [
+     "view": String(address),
+     "config": [
+       "width": 720,
+       "height": 1280,
+       "extraInfo": extraStr
+     ]
+   ] as [String: Any]
 
-  let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
-  let dataStr = String(data: data!, encoding: .utf8)
+   let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+   let dataStr = String(data: data!, encoding: .utf8)
 
-  // Add scene view with lighting effects and 360 background based on JSON configuration
-  agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
-                      extension: "metakit",
-                      key: "addSceneView",
-                      value: dataStr!)
-  ```
+   // Add scene view with lighting effects and 360 background based on JSON configuration
+   agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
+                       extension: "metakit",
+                       key: "addSceneView",
+                       value: dataStr!)
+   ```
 
 2. Experience lighting effects and 360 background.
 
@@ -2930,18 +2931,18 @@ Currently only the `girl` avatar supports dressup.
 
   1. **Set 1**
 
-    ```json
-     // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, headdress, top coat, pants, shoes]
-     "id": [10001, 10101, 10401, 10801, 12101, 14101, 15001]
-    ```
+     ```json
+      // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, headdress, top coat, pants, shoes]
+      "id": [10001, 10101, 10401, 10801, 12101, 14101, 15001]
+     ```
     <img src="https://web-cdn.agora.io/doc-cms/uploads/1708415768849-dress1.png" alt="Avatar dressup tab1" />
 
   2. **Set 2**
 
-    ```json
-     // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, coat, gloves, pants, shoes]
-     "id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]
-    ```
+     ```json
+      // The following resource IDs correspond to the following clothing items/body parts [hair, eyebrows, blush, coat, gloves, pants, shoes]
+      "id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]
+     ```
     <img src="https://web-cdn.agora.io/doc-cms/uploads/1708415915330-dress2.png" alt="Avatar dressup tab2" />
 
 #### Animoji

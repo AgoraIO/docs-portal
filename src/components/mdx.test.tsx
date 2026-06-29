@@ -2,9 +2,14 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
-import { getMDXComponents, MDXAccordionProvider } from './mdx';
+import {
+  getMDXComponents,
+  MDXAccordionProvider,
+  Parameter,
+  ParameterList,
+} from './mdx';
 import {
   PlatformHeaderTabs,
   PlatformTabsPlacementProvider,
@@ -25,6 +30,7 @@ type TabsChildComponent = ComponentType<{
 type PlatformGroupComponent = ComponentType<{
   canonicalPlatform: string;
   children: ReactNode;
+  defaultPlatform?: string;
   groupMode: 'inline' | 'structured';
   initialPlatform?: string;
   platforms: string;
@@ -383,6 +389,13 @@ describe('common MDX registry', () => {
     expect(components.Slot).toBeUndefined();
   });
 
+  it('exports parameter components for direct MDX imports', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+
+    expect(ParameterList).toBe(components.ParameterList);
+    expect(Parameter).toBe(components.Parameter);
+  });
+
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
@@ -517,7 +530,7 @@ describe('common MDX registry', () => {
     ).not.toBeVisible();
   });
 
-  it('keeps mobile-safe header platforms visible and moves the rest into More', async () => {
+  it('renders compact header platforms, defaults to the first platform, and moves overflow into More', async () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
@@ -526,28 +539,51 @@ describe('common MDX registry', () => {
       <>
         <PlatformHeaderTabs
           canonicalPlatform="web"
+          defaultPlatform="android"
           platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
         />
         <Group
           canonicalPlatform="web"
+          defaultPlatform="android"
           groupMode="structured"
           platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
           tabsPlacement="header"
         >
+          <Panel platform="android">Android instructions</Panel>
           <Panel platform="web">Web instructions</Panel>
           <Panel platform="flutter">Flutter instructions</Panel>
         </Group>
       </>,
     );
 
+    const tablist = screen.getByRole('tablist', { name: 'Platform' });
+    const headerGroup = tablist.closest('[data-platform-header-tabs="true"]');
+    const moreButton = screen.getByRole('button', { name: 'More platforms' });
+
+    expect(headerGroup).toHaveClass('inline-flex');
+    expect(headerGroup).toHaveClass('max-w-full');
+    expect(headerGroup).toHaveClass('gap-4');
+    expect(headerGroup).toHaveClass('overflow-visible');
+    expect(tablist).toHaveClass('flex-1');
+    expect(tablist).toHaveClass('overflow-x-auto');
+    expect(tablist).toHaveClass('overflow-y-hidden');
+    expect(tablist).toHaveClass('docs-scrollbar');
+    expect(moreButton.parentElement).toHaveClass('relative');
+    expect(moreButton.parentElement).toHaveClass('shrink-0');
+    expect(moreButton).not.toHaveClass('border-l');
+    expect(moreButton).not.toHaveClass('pl-6');
     expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
     expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
     expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+    fireEvent.click(moreButton);
 
     const flutterItem = await screen.findByRole('menuitem', {
       name: 'Flutter',
@@ -560,7 +596,7 @@ describe('common MDX registry', () => {
       screen.getByRole('menuitem', { name: 'React Native' }),
     ).toBeVisible();
     expect(
-      screen.getByText('Web instructions').closest('section'),
+      screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();
     expect(
       screen.getByText('Flutter instructions').closest('section'),
@@ -571,18 +607,81 @@ describe('common MDX registry', () => {
 
     fireEvent.click(flutterItem);
 
+    expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(
       screen.getByText('Flutter instructions').closest('section'),
     ).toBeVisible();
     expect(
-      screen.getByText('Web instructions').closest('section'),
+      screen.getByText('Android instructions').closest('section'),
     ).not.toBeVisible();
     expect(
       screen.getByRole('button', { name: 'More platforms' }),
-    ).toHaveAttribute('data-state', 'active');
-    expect(
-      screen.getByRole('button', { name: 'More platforms' }),
-    ).toHaveTextContent('Flutter');
+    ).toHaveAttribute('data-state', 'inactive');
+
+    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+
+    expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
+    expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+  });
+
+  it('uses the canonical page default before stored preference without overwriting it', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'flutter');
+
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web","flutter"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe(
+      'flutter',
+    );
+  });
+
+  it('keeps an initial overflow platform visible as a selected header tab', () => {
+    const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
+    const scrollIntoView = vi.fn();
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoView;
+
+    try {
+      render(
+        <PlatformHeaderTabs
+          canonicalPlatform="web"
+          initialPlatform="flutter"
+          platforms='["android","ios","web","flutter","unity"]'
+        />,
+      );
+    } finally {
+      if (originalScrollIntoView) {
+        window.HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
+      } else {
+        delete (window.HTMLElement.prototype as Partial<HTMLElement>)
+          .scrollIntoView;
+      }
+    }
+
+    expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      block: 'nearest',
+      inline: 'nearest',
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+
+    expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
+    expect(screen.getByRole('menuitem', { name: 'Unity' })).toBeVisible();
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {
@@ -749,6 +848,30 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Web instructions').closest('section'),
     ).not.toBeVisible();
+  });
+
+  it('hides a body group when the URL platform is not present in that group', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <PlatformTabsPlacementProvider initialPlatform="web" value="header">
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">Android-only instructions</Panel>
+          <Panel platform="ios">iOS-only instructions</Panel>
+        </Group>
+      </PlatformTabsPlacementProvider>,
+    );
+
+    expect(
+      screen.queryByText('Android-only instructions'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('iOS-only instructions')).not.toBeInTheDocument();
   });
 
   it('persists platform once during a complete mouse click sequence', () => {

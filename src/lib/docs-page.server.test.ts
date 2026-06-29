@@ -1364,9 +1364,11 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'web',
+          defaultPlatform: 'android',
           platforms: '["android","web"]',
         },
       },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
       toc: [
         {
           depth: 2,
@@ -1375,8 +1377,8 @@ Web body
         },
         {
           depth: 2,
-          title: 'Install Web SDK',
-          url: '#install-web-sdk',
+          title: 'Install Android SDK',
+          url: '#install-android-sdk',
         },
         {
           depth: 2,
@@ -1424,6 +1426,7 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'web',
+          defaultPlatform: 'android',
           initialPlatform: 'android',
           platforms: '["android","web"]',
         },
@@ -1437,8 +1440,8 @@ Web body
         },
         {
           depth: 2,
-          title: 'Web setup',
-          url: '#web-setup',
+          title: 'Android setup',
+          url: '#android-setup',
         },
       ],
     });
@@ -1481,6 +1484,7 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'javascript',
+          defaultPlatform: 'javascript',
           initialPlatform: 'javascript',
           platforms: '["javascript","web"]',
         },
@@ -1498,6 +1502,57 @@ Web body
           url: '#react-setup',
         },
       ],
+    });
+  });
+
+  it('keeps the selected platform route but marks opted-out pages to hide platform labels', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        hidePlatformTabs: true,
+      },
+    };
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'android']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        hidePlatformTabs: true,
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          initialPlatform: 'android',
+          platforms: '["android","web"]',
+        },
+      },
     });
   });
 
@@ -1542,6 +1597,7 @@ Web body
         ],
         platformTabs: {
           canonicalPlatform: 'ios',
+          defaultPlatform: 'ios',
           platforms: '["ios","android"]',
         },
         platforms: ['ios', 'android'],
@@ -2087,6 +2143,30 @@ Web body
     }
 
     expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+  });
+
+  it('propagates hidePlatformTabs into mdx body payloads for opted-out pages', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        hidePlatformTabs: true,
+      },
+    };
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? undefined : page,
+    );
+    mockedGetPages.mockReturnValue([page]);
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora']),
+    ).resolves.toMatchObject({
+      body: {
+        hidePlatformTabs: true,
+        kind: 'mdx',
+      },
+    });
   });
 
   it('keeps a plain nav scope as a linked folder group in the parent Realtime & Media sidebar', async () => {

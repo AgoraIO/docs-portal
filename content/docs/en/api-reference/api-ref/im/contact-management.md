@@ -74,7 +74,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users/{friend_username}
 ```
 
@@ -107,7 +107,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users/user2'
 ```
 
@@ -144,7 +144,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users/{friend_username}
 ```
 
@@ -176,7 +176,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users/user2'
 ```
 
@@ -213,7 +213,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/users/{owner_username}/contacts/users
 ```
 
@@ -251,7 +251,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/contacts/users'
 ```
 
@@ -279,7 +279,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/user/{username}/contacts?limit={N}&cursor={cursor}&needReturnRemark={true/false}
 ```
 
@@ -329,7 +329,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl --location 'https://{host}/{org_name}/{app_name}/user/{username}/contacts?limit=10&needReturnRemark=true' \
 -H 'Content-Type: application/json' \
@@ -366,7 +366,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users
 ```
 
@@ -408,7 +408,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{ "usernames": [ "user2" ] }' 'http://XXXX/XXXX/XXXX/users/user1/blocks/users'
 ```
 
@@ -438,7 +438,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users?pageSize={N}&cursor={cursor}
 ```
 
@@ -487,7 +487,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'https://XXXX/XXXX/XXXX/users/user1/blocks/users?pageSize=2'
 ```
 
@@ -518,7 +518,7 @@ For each App Key, the call frequency limit of this method is 50 per second.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/users/{owner_username}/blocks/users/{blocked_username}
 ```
 
@@ -550,7 +550,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/blocks/users/user2'
 ```
 

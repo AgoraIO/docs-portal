@@ -140,18 +140,18 @@ Ensure Protobuf dependencies are installed. If the dependencies are already inst
 
 
 
-```bash
-# 3.21.12 indicates the Protobuf version. You can choose the appropriate version according to your actual needs.
-         pod "Protobuf", "3.21.12"
-```
+         ```bash
+         # 3.21.12 indicates the Protobuf version. You can choose the appropriate version according to your actual needs.
+                  pod "Protobuf", "3.21.12"
+         ```
 
       2. Run the following command in the `Podfile` directory:
 
 
 
-```bash
-pod install
-```
+         ```bash
+         pod install
+         ```
 
     Open the `.xcworkspace` file generated in the project folder to proceed in Xcode.
     </details>
@@ -160,7 +160,7 @@ pod install
 
 
 
-```shell
+```bash
 #!/bin/sh
 
 # Specify the path to the protoc compiler. In the example code, the Protobuf version used is 21.12. You can replace it according to your actual needs.
@@ -190,7 +190,7 @@ Create a shell script named `generate_code.sh` with the following content:
 
 
 
-```shell
+```bash
 #!/bin/sh
 
 # Path to the protoc compiler
@@ -225,25 +225,25 @@ To generate JavaScript code, ensure that the necessary Protobuf dependencies are
 
 
 
-```json
-{
-            "dependencies": {
-              "protobufjs": "^7.2.5"
-            },
-            "devDependencies": {
-              "pbjs": "^0.0.14",
-              "protobufjs-cli": "^1.1.2"
-            }
-          }
-```
+         ```json
+         {
+                     "dependencies": {
+                       "protobufjs": "^7.2.5"
+                     },
+                     "devDependencies": {
+                       "pbjs": "^0.0.14",
+                       "protobufjs-cli": "^1.1.2"
+                     }
+                   }
+         ```
 
       2. Run the following command to install the dependencies:
 
 
 
-```shell
-npm install
-```
+         ```bash
+         npm install
+         ```
 
     </details>
 
@@ -254,16 +254,16 @@ npm install
 
 
 
-```bash
-# Add the executable file path of protobufjs-cli to the PATH environment variable
-# Replace {absolute path of protobufjs-cli in your node_modules}/bin with the absolute path of protobufjs-cli in node_modules
-export "PATH=$PATH:{absolute path of protobufjs-cli in your node_modules}/bin"
+       ```bash
+       # Add the executable file path of protobufjs-cli to the PATH environment variable
+       # Replace {absolute path of protobufjs-cli in your node_modules}/bin with the absolute path of protobufjs-cli in node_modules
+       export "PATH=$PATH:{absolute path of protobufjs-cli in your node_modules}/bin"
 
-# Generate JavaScript example code
-pbjs -t json-module -w es6 ./SttMessage.proto > ./SttMessage_es6.js
+       # Generate JavaScript example code
+       pbjs -t json-module -w es6 ./SttMessage.proto > ./SttMessage_es6.js
 
-echo "JavaScript code generation completed."
-```
+       echo "JavaScript code generation completed."
+       ```
 
         Replace `./SttMessage.proto` with the path to the file you created in the [Create a Protobuf definition file](/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data#create-a-protobuf-definition-file) section.
 

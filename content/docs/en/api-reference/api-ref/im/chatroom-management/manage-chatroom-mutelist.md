@@ -80,7 +80,7 @@ The request body is a JSON object, which contains the following fields:
 | Field | Type | Description | Required |
 | :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `mute_duration` | Number | The length of time to mute speech from the current time. The unit is milliseconds.`-1` indicates that the member is muted permanently. | Yes |
-| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs.
+| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
 
 ### HTTP response
 
@@ -158,6 +158,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/mute/{member
 | Parameter | Type | Description | Required |
 | :------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `member` | String | The username of the  member to be unmuted. You can pass in a maximum of 60 user IDs that are separated with commas (","). In the URL, use "%2C" to represent ",". | Yes |
+
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
 #### Request header
@@ -328,13 +329,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' 'http://XXXX/XXXX/XXXX/chatrooms/1265710621211/ban'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "put",
   "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",
@@ -391,13 +392,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/ban'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "put",
   "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",

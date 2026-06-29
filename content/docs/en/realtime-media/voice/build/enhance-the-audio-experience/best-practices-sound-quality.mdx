@@ -3,8 +3,6 @@ title: "Achieve high audio quality"
 description: "Best practices for optimal audio quality."
 ---
 
-**Supported platforms:** Android, iOS, macOS, Web, Windows, Electron, Flutter, React Native, and Unity.
-
 <PlatformStructured platform="android">
 Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
 
@@ -479,7 +477,7 @@ To improve the audio quality experience, consider the following:
 
 Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2) to set the audio profile to `MUSIC_HIGH_QUALITY_STEREO` (5). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
 
-```c#
+```csharp
 public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 ```
 
@@ -487,7 +485,7 @@ public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
 
 Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
 
-```c#
+```csharp
 public abstract int SetAudioScenario(AUDIO_SCENARIO_TYPE scenario);
 ```
 
@@ -509,7 +507,7 @@ SetParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
 
 Call [`SetAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
 
-```c#
+```csharp
 public abstract int SetAdvancedAudioOptions(AdvancedAudioOptions options);
 ```
 </PlatformStructured>

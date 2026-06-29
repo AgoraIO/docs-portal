@@ -43,17 +43,17 @@ The template is configured to generate styled HTML from source files written in 
    - Change `html_title` to the title of your documentation.
 
 2. In Terminal, run the following command line to install Sphinx:
-   ```
+   ```bash
 	 pip install sphinx
 	```
 
 3. In Terminal, run the following command line to install the packages for Markdown support:
-   ```
+   ```bash
 	 pip install myst-parser
 	```
 	
 4. In Terminal, run the following command line to install the HTML theme:
-   ```
+   ```bash
 	 pip install furo
 	```
 
@@ -62,7 +62,7 @@ The template is configured to generate styled HTML from source files written in 
 To generate an HTML output for local testing, take the following steps:
 
 1. In Terminal, change the directory to the `_content` folder and run the following command line:
-   ```
+   ```bash
 	 make html
 	```
    If everything goes well, you see something like this:

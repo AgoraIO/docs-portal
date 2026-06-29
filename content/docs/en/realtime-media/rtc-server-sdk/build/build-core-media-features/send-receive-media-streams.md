@@ -46,31 +46,31 @@ After initializing the SDK, connect to a Video SDK channel:
 
 1. Create an `IRtcConnection` object:
 
-```cpp
-agora::rtc::RtcConnectionConfiguration ccfg;
-ccfg.autoSubscribeAudio = false;
-ccfg.autoSubscribeVideo = false;
-ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_BROADCASTER;
-agora::agora_refptr<agora::rtc::IRtcConnection> connection =
-    service->createRtcConnection(ccfg);
-```
+   ```cpp
+   agora::rtc::RtcConnectionConfiguration ccfg;
+   ccfg.autoSubscribeAudio = false;
+   ccfg.autoSubscribeVideo = false;
+   ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_BROADCASTER;
+   agora::agora_refptr<agora::rtc::IRtcConnection> connection =
+       service->createRtcConnection(ccfg);
+   ```
 
 2. Register a connection observer:
 
-```cpp
-auto connObserver = std::make_shared<SampleConnectionObserver>();
-connection->registerObserver(connObserver.get());
-```
+   ```cpp
+   auto connObserver = std::make_shared<SampleConnectionObserver>();
+   connection->registerObserver(connObserver.get());
+   ```
 
 3. Connect to the channel:
 
-```cpp
-if (connection->connect(options.appId.c_str(), options.channelId.c_str(),
-                        options.userId.c_str())) {
-    AG_LOG(ERROR, "Failed to connect to Agora channel!");
-    return -1;
-}
-```
+   ```cpp
+   if (connection->connect(options.appId.c_str(), options.channelId.c_str(),
+                           options.userId.c_str())) {
+       AG_LOG(ERROR, "Failed to connect to Agora channel!");
+       return -1;
+   }
+   ```
 
 ## Send media streams to the client
 
@@ -87,82 +87,82 @@ Use the `IMediaNodeFactory` object to create media stream senders:
 
 1. Create an `IMediaNodeFactory` object:
 
-```cpp
-agora::agora_refptr<agora::rtc::IMediaNodeFactory> factory =
-    service->createMediaNodeFactory();
-if (!factory) {
-    AG_LOG(ERROR, "Failed to create media node factory!");
-}
-```
+   ```cpp
+   agora::agora_refptr<agora::rtc::IMediaNodeFactory> factory =
+       service->createMediaNodeFactory();
+   if (!factory) {
+       AG_LOG(ERROR, "Failed to create media node factory!");
+   }
+   ```
 
 2. Create the sender objects you need:
 
-```cpp
-auto audioPcmDataSender = factory->createAudioPcmDataSender();
-auto videoFrameSender = factory->createVideoFrameSender();
-auto audioFrameSender = factory->createAudioEncodedFrameSender();
-auto videoEncodedFrameSender = factory->createVideoEncodedImageSender();
-```
+   ```cpp
+   auto audioPcmDataSender = factory->createAudioPcmDataSender();
+   auto videoFrameSender = factory->createVideoFrameSender();
+   auto audioFrameSender = factory->createAudioEncodedFrameSender();
+   auto videoEncodedFrameSender = factory->createVideoEncodedImageSender();
+   ```
 
 3. Create local tracks for publishing:
 
-```cpp
-auto customAudioTrack = service->createCustomAudioTrack(audioPcmDataSender);
-auto customVideoTrack = service->createCustomVideoTrack(videoFrameSender);
-```
+   ```cpp
+   auto customAudioTrack = service->createCustomAudioTrack(audioPcmDataSender);
+   auto customVideoTrack = service->createCustomVideoTrack(videoFrameSender);
+   ```
 
 ### Publish and send media streams
 
 1. Publish the local tracks:
 
-```cpp
-customAudioTrack->setEnabled(true);
-connection->getLocalUser()->publishAudio(customAudioTrack);
+   ```cpp
+   customAudioTrack->setEnabled(true);
+   connection->getLocalUser()->publishAudio(customAudioTrack);
 
-customVideoTrack->setEnabled(true);
-connection->getLocalUser()->publishVideo(customVideoTrack);
-```
+   customVideoTrack->setEnabled(true);
+   connection->getLocalUser()->publishVideo(customVideoTrack);
+   ```
 
 2. Start the sending threads:
 
-```cpp
-std::thread sendAudioThread(
-    SampleSendAudioTask, options, audioFrameSender, std::ref(exitFlag));
-std::thread sendVideoThread(
-    SampleSendVideoH264Task, options, videoFrameSender, std::ref(exitFlag));
+   ```cpp
+   std::thread sendAudioThread(
+       SampleSendAudioTask, options, audioFrameSender, std::ref(exitFlag));
+   std::thread sendVideoThread(
+       SampleSendVideoH264Task, options, videoFrameSender, std::ref(exitFlag));
 
-sendAudioThread.join();
-sendVideoThread.join();
-```
+   sendAudioThread.join();
+   sendVideoThread.join();
+   ```
 
 3. Send PCM audio data:
 
-```cpp
-static void SampleSendAudioTask(
-    const SampleOptions& options,
-    agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioFrameSender,
-    bool& exitFlag) {
-  PacerInfo pacer = {0, 10, std::chrono::steady_clock::now()};
+   ```cpp
+   static void SampleSendAudioTask(
+       const SampleOptions& options,
+       agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioFrameSender,
+       bool& exitFlag) {
+     PacerInfo pacer = {0, 10, std::chrono::steady_clock::now()};
 
-  while (!exitFlag) {
-    sendOnePcmFrame(options, audioFrameSender);
-    waitBeforeNextSend(pacer);
-  }
-}
-```
+     while (!exitFlag) {
+       sendOnePcmFrame(options, audioFrameSender);
+       waitBeforeNextSend(pacer);
+     }
+   }
+   ```
 
 4. Send H.264 video data:
 
-```cpp
-static void SampleSendVideoH264Task(
-    const SampleOptions& options,
-    agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoH264FrameSender,
-    bool& exitFlag) {
-  std::unique_ptr<HelperH264FileParser> h264FileParser(
-      new HelperH264FileParser(options.videoFile.c_str()));
-  h264FileParser->initialize();
-}
-```
+   ```cpp
+   static void SampleSendVideoH264Task(
+       const SampleOptions& options,
+       agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoH264FrameSender,
+       bool& exitFlag) {
+     std::unique_ptr<HelperH264FileParser> h264FileParser(
+         new HelperH264FileParser(options.videoFile.c_str()));
+     h264FileParser->initialize();
+   }
+   ```
 
 ## Receive media streams from the client
 

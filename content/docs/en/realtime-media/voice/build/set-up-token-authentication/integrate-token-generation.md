@@ -84,14 +84,10 @@ Follow these steps to build and run a token generator locally:
       if err != nil {
         fmt.Println(err)
       } else {
-        fmt.Printf("Token with uid: %s
-  ", result)
-        fmt.Printf("uid is %d
-  ", int_uid )
-        fmt.Printf("ChannelName is %s
-  ", channelName)
-        fmt.Printf("Role is %d
-  ", role)
+          fmt.Printf("Token with uid: %s\n", result)
+          fmt.Printf("uid is %d\n", int_uid )
+          fmt.Printf("ChannelName is %s\n", channelName)
+          fmt.Printf("Role is %d\n", role)
       }
       rtc_token = result
     }
@@ -158,7 +154,7 @@ Follow these steps to build and run a token generator locally:
       // Use int type uid to generate RTC Token
       http.HandleFunc("/fetch_rtc_token", rtcTokenHandler)
       fmt.Printf("Starting server at port 8082
-  ")
+    ")
   
       if err := http.ListenAndServe(":8082", nil); err != nil {
         log.Fatal(err)
@@ -168,19 +164,19 @@ Follow these steps to build and run a token generator locally:
 
 1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
-    ```shell
+    ```bash
     go mod init sampleServer
     ```
 
 1. Run the following command to install dependencies. 
  
-    ```shell
+    ```bash
     go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
     ```
 
 1. Run the following command to start the token generator:
 
-    ```shell
+    ```bash
     go run server.go
     ```
 

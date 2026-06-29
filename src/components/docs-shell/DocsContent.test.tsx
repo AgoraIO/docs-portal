@@ -528,6 +528,32 @@ describe('DocsContent', () => {
     ).toBeTruthy();
   });
 
+  it('hides page-level platform tabs when the page opts out of platform labels', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath: 'en/realtime-media/voice/quickstart.mdx',
+          hidePlatformTabs: true,
+          kind: 'mdx',
+          platformTabs: {
+            canonicalPlatform: 'web',
+            initialPlatform: 'android',
+            platforms: '["web","android"]',
+          },
+        }}
+        description="Build a voice calling app."
+        slug="quickstart"
+        title="Quickstart"
+        toc={[]}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Quickstart' });
+    await screen.findByTestId('docs-content-body');
+
+    expect(screen.queryByTestId('platform-header-tabs')).not.toBeInTheDocument();
+  });
+
   it('shows a return path on a docs page reached from a docs body link', async () => {
     const source = renderWithRouter(
       <DocsContent
