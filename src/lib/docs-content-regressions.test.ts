@@ -1253,6 +1253,29 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps nested AI build quickstart links pointed at the in-app quickstart page', () => {
+    const customInformationSource = readDoc(
+      'ai/build/shape-the-conversation/custom-information.mdx',
+    );
+    const customLlmSource = readDoc(
+      'ai/build/custom-model-integration/custom-llm.mdx',
+    );
+
+    expect(customInformationSource).toContain(
+      '[Quickstart](../../get-started/quickstart)',
+    );
+    expect(customInformationSource).not.toContain(
+      '[Quickstart](../get-started/quickstart)',
+    );
+
+    expect(customLlmSource).toContain(
+      '[Quickstart](../../get-started/quickstart)',
+    );
+    expect(customLlmSource).not.toContain(
+      '[Quickstart](../get-started/quickstart)',
+    );
+  });
+
   it('keeps the video unreal setup section fully populated', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),

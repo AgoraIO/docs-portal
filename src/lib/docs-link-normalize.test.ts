@@ -287,6 +287,93 @@ describe('normalizeDocsHref', () => {
     });
   });
 
+  it('normalizes legacy AI routes that still point at pre-grouped build pages', () => {
+    expect(normalizeDocsHref('/en/ai/build/webhooks')).toEqual({
+      href: '/en/ai/build/handle-runtime-events/webhooks',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/build/monitor-agent-runtime')).toEqual({
+      href: '/en/ai/build/handle-runtime-events/monitor-agent-runtime',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/build/debug-agent-failures')).toEqual({
+      href: '/en/ai/build/handle-runtime-events/debug-agent-failures',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/build/retrieve-session-history')).toEqual({
+      href: '/en/ai/build/handle-runtime-events/retrieve-session-history',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/build/presets')).toEqual({
+      href: '/en/ai/build/custom-model-integration/presets',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes misplaced AI relative links that resolve under build or ai/api-reference', () => {
+    expect(
+      normalizeDocsHref('/en/ai/build/reference/event-types#103-agent-history'),
+    ).toEqual({
+      href: '/en/ai/reference/event-types#103-agent-history',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/build/get-started/quickstart')).toEqual({
+      href: '/en/ai/get-started/quickstart',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '/en/ai/api-reference/conversational-ai/rest-api/agent/join#properties-llm',
+      ),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/join#properties-llm',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref('/api-reference/conversational-ai/rest-api/agent/join'),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/join',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes moved AI docs targets and english server sdk routes', () => {
+    expect(
+      normalizeDocsHref('/en/ai/build/custom-model-integration/transcripts'),
+    ).toEqual({
+      href: '/en/ai/build/transcripts',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref('/en/ai/build/shape-the-conversation/custom-llm'),
+    ).toEqual({
+      href: '/en/ai/build/custom-model-integration/custom-llm',
+      kind: 'root',
+    });
+
+    expect(normalizeDocsHref('/en/ai/best-practices/start-stop-agent')).toEqual({
+      href: '/en/ai/build/start-stop-agent',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '/en/api-reference/api-ref/conversational-ai/server-sdk/typescript',
+      ),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/server-sdk/typescript',
+      kind: 'root',
+    });
+  });
+
   it('normalizes index-suffixed docs routes', () => {
     expect(
       normalizeDocsHref('/en/realtime-media/video/index#quickstart'),
