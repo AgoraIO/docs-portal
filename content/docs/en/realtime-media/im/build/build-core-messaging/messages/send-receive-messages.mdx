@@ -498,10 +498,10 @@ To forward and receive combined messages, refer to the following code:
     message.setChatType(ChatMessage.ChatType.Chat);
     // Send the message
     ChatClient.getInstance().chatManager().sendMessage(message);
-   ```
+    ```
 1. Download and parse combined messages:
 
-   ```java
+    ```java
    ChatClient.getInstance().chatManager().downloadAndParseCombineMessage(combinedMessage, new ValueCallBack>() {
                @Override
                public void onSuccess(List value) {

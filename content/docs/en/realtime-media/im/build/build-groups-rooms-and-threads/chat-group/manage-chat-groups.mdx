@@ -90,7 +90,7 @@ ChatClient.getInstance().groupManager().leaveGroup(groupId);
     List memberList = group.getMembers();// gets regular members.
     memberList.addAll(group.getAdminList());// gets group admins.
     memberList.add(group.getOwner());// gets the group owner.
-```
+    ```
 - When a group has more than 200 members, you can first call the `getGroupFromServer` method to get the group member list that contains the group owner and admins and then call the `fetchGroupMembers` method to obtain the list of regular group members.
 
     ```java
@@ -414,7 +414,7 @@ do {
 } while (result && result.list  * _Nullable aList, EMError * _Nullable aError) {
             // got group list
         }];
-    ```
+```
 
 - Users can call `getAllGroups` method to load the local group list. To ensure the accuracy of results, retrieve the joined chat group list from the server first.
 
