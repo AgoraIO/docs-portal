@@ -259,3 +259,48 @@ NSString *voice = @"null";
 ```
 
 </PlatformStructured>
+
+## Reference
+
+### Voicemod properties
+
+You can configure and control the Voicemod extension using the following properties.
+
+Before you can use the extension, you must provide your API key and API secret by setting the `vcmd_user_data` property.
+
+Except for `vcmd_user_data` and `vcmd_version`, the extension must be initialized before Voicemod property accessors work.
+
+| Property key | Property value | Access | Description |
+| --- | --- | --- | --- |
+| `vcmd_user_data` | Object: `{ apiKey: "project API key", apiSecret: "project API secret" }` | Set | Sets the API key and API secret. |
+| `vcmd_version` | String: `MAJOR.MINOR.PATCH` | Get | Gets the Voicemod plugin version. |
+| `vcmd_voice` | String | Get, set | Sets or gets the current voice. Use `null` for no voice. |
+| `vcmd_presets` | Array of strings, such as `magic-chords`, `baby`, `cave`, `titan`, `robot`, and `lost-soul` | Get | Gets the list of existing voices. |
+| `vcmd_background_sounds` | Boolean | Set | Toggles background sounds. |
+| `vcmd_mute` | Boolean | Get, set | Toggles mute audio samples or gets the current setting. |
+
+### FAQ
+
+**How do I add the extension to my Agora Marketplace app?**
+
+To use the extension, download the files for your operating systems from the [Voicemod Agora releases repository](https://gitlab.com/voicemod/agora/releases), and follow the instructions in the [Voicemod documentation](https://voicemod.gitlab.io/agora/releases/).
+
+**How large is the extension?**
+
+The extension currently uses 14 MB of storage space for Android and 32 MB for iOS.
+
+**What pricing plans are available?**
+
+The extension is free until December 31, 2021, and will be charged at $1 per 1000 minutes after that.
+
+**What are Voicemod's terms and conditions?**
+
+Read the [Voicemod End User License Agreement](https://voicemod.gitlab.io/agora/releases/EULA.html).
+
+**Can I get more voices?**
+
+Voicemod plans to release an extended voice pack soon.
+
+**Can I use other Voicemod features such as Soundboard?**
+
+Voicemod does not currently support Soundboard within an Agora Marketplace app, but is working on it for v2 of the extension.

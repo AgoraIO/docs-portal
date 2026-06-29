@@ -23,60 +23,60 @@ Follow the step-by-step process to implement the Marsview Speech Analytics exten
 4. Import `agoramarketplace.marsview.extension.ExtensionManager`.
 5. Add the credentials to your file:
 
-```java
-private final String API_KEY = "84e**** **** **** **** 4823470a7876";
-private final String SECRET_KEY = "GKHJ**** **** ****-8W57GXJ";
-private final String USER_ID = "yourcustomerid@agora.io";
-```
+   ```java
+   private final String API_KEY = "84e**** **** **** **** 4823470a7876";
+   private final String SECRET_KEY = "GKHJ**** **** ****-8W57GXJ";
+   private final String USER_ID = "yourcustomerid@agora.io";
+   ```
 
 6. Implement the interface `io.agora.rtc2.IMediaExtensionObserver`.
 7. Enable the extension before starting Video SDK streaming:
 
-```java
-mRtcEngine.enableExtension(
-    ExtensionManager.EXTENSION_VENDOR_NAME,
-    ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
-    true
-);
-```
+   ```java
+   mRtcEngine.enableExtension(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       true
+   );
+   ```
 
 8. Pass the API credentials to the extension for authentication:
 
-```java
-mRtcEngine.setExtensionProperty(
-    ExtensionManager.EXTENSION_VENDOR_NAME,
-    ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
-    "API_KEY",
-    API_KEY
-);
-mRtcEngine.setExtensionProperty(
-    ExtensionManager.EXTENSION_VENDOR_NAME,
-    ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
-    "SECRET_KEY",
-    SECRET_KEY
-);
-mRtcEngine.setExtensionProperty(
-    ExtensionManager.EXTENSION_VENDOR_NAME,
-    ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
-    "USER_ID",
-    USER_ID
-);
-```
+   ```java
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "API_KEY",
+       API_KEY
+   );
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "SECRET_KEY",
+       SECRET_KEY
+   );
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "USER_ID",
+       USER_ID
+   );
+   ```
 
 9. Disable the transcription service when it is no longer needed:
 
-```java
-mRtcEngine.enableExtension(
-    ExtensionManager.EXTENSION_VENDOR_NAME,
-    ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
-    false
-);
-```
+   ```java
+   mRtcEngine.enableExtension(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       false
+   );
+   ```
 
 10. Marsview currently emits two main events:
 
-- `connectionState`: describes the authentication status of the user. If the credentials do not match the values issued for the extension, the connection fails.
-- `transactionId`: used to fetch transcribed data from Marsview.
+    - `connectionState`: describes the authentication status of the user. If the credentials do not match the values issued for the extension, the connection fails.
+    - `transactionId`: used to fetch transcribed data from Marsview.
 
 ## Run the demo
 
