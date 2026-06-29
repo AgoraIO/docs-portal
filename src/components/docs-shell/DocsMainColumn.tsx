@@ -16,6 +16,7 @@ import { DocsSiteFooter } from './DocsSiteFooter';
 
 export function DocsMainColumn({
   children,
+  contentFillsWidth = false,
   layoutMode = 'docs',
   locale = DEFAULT_LOCALE,
   next,
@@ -23,6 +24,7 @@ export function DocsMainColumn({
   resetKey,
 }: {
   children: React.ReactNode;
+  contentFillsWidth?: boolean;
   layoutMode?: DocsLayoutMode;
   locale?: AppLocale | string;
   next?: { title: string; url: string };
@@ -40,6 +42,7 @@ export function DocsMainColumn({
       >
         <div className="min-w-0">{children}</div>
         <DocsPageFooter
+          contentFillsWidth={contentFillsWidth}
           includeFeedback
           layoutMode={layoutMode}
           locale={locale}
@@ -57,6 +60,7 @@ export function DocsMainColumn({
         <div className="flex flex-col px-4 py-8 sm:px-6 lg:px-10">
           <div className="min-w-0">{children}</div>
           <DocsPageFooter
+            contentFillsWidth={contentFillsWidth}
             layoutMode={layoutMode}
             locale={locale}
             next={next}
@@ -69,12 +73,14 @@ export function DocsMainColumn({
 }
 
 function DocsPageFooter({
+  contentFillsWidth = false,
   includeFeedback = false,
   layoutMode = 'docs',
   locale,
   next,
   previous,
 }: {
+  contentFillsWidth?: boolean;
   includeFeedback?: boolean;
   layoutMode?: DocsLayoutMode;
   locale: AppLocale | string;
@@ -83,31 +89,31 @@ function DocsPageFooter({
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const footerFillsWidth = contentFillsWidth || layoutMode === 'openapi';
 
   return (
     <footer
       className={cn(
         'mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6',
-        layoutMode === 'openapi' ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        footerFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
       data-testid="docs-page-footer"
     >
       {includeFeedback ? <DocsPageFeedback locale={locale} /> : null}
       {previous || next ? (
         <div
-          className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+          className={cn(
+            'grid grid-cols-1 gap-3',
+            previous && next ? 'sm:grid-cols-2' : null,
+          )}
           data-testid="docs-pager"
         >
           {previous ? (
             <FooterLink direction={t('docs.previous')} link={previous} />
-          ) : (
-            <div />
-          )}
+          ) : null}
           {next ? (
             <FooterLink align="end" direction={t('docs.next')} link={next} />
-          ) : (
-            <div />
-          )}
+          ) : null}
         </div>
       ) : null}
     </footer>
