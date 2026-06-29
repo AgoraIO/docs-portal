@@ -264,43 +264,43 @@ export const OPENAPI_LANES = [
       'acquire-cloud-recording-resource': {
         routeLeaf: 'acquire',
         title: {
-          en: 'Acquire a cloud recording resource',
-          'zh-CN': 'Acquire a cloud recording resource',
+          en: 'Acquire a resource ID',
+          'zh-CN': 'Acquire a resource ID',
         },
       },
       'start-cloud-recording': {
         routeLeaf: 'start',
         title: {
-          en: 'Start cloud recording',
-          'zh-CN': 'Start cloud recording',
+          en: 'Start a cloud recording task',
+          'zh-CN': 'Start a cloud recording task',
         },
       },
       'update-cloud-recording': {
         routeLeaf: 'update',
         title: {
-          en: 'Update cloud recording settings',
-          'zh-CN': 'Update cloud recording settings',
+          en: 'Update task settings',
+          'zh-CN': 'Update task settings',
         },
       },
       'update-cloud-recording-layout': {
         routeLeaf: 'update-layout',
         title: {
-          en: 'Update the cloud recording layout',
-          'zh-CN': 'Update the cloud recording layout',
+          en: 'Update layout',
+          'zh-CN': 'Update layout',
         },
       },
       'query-cloud-recording': {
         routeLeaf: 'query',
         title: {
-          en: 'Query cloud recording status',
-          'zh-CN': 'Query cloud recording status',
+          en: 'Query status',
+          'zh-CN': 'Query status',
         },
       },
       'stop-cloud-recording': {
         routeLeaf: 'stop',
         title: {
-          en: 'Stop cloud recording',
-          'zh-CN': 'Stop cloud recording',
+          en: 'Stop a cloud recording task',
+          'zh-CN': 'Stop a cloud recording task',
         },
       },
       'get-ncs-ip': {

@@ -121,7 +121,7 @@ Released on August 6, 2025
 
   When automatic subscription to the host’s media stream is enabled, Agora delivers the media stream and starts billing for usage as soon as the user joins the channel.
 
-:::
+  :::
 
 
 #### Improvements
@@ -232,7 +232,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
       Safari does not support VP9 SVC.
 
-:::
+      :::
 
 
 #### Bug fixes
@@ -536,7 +536,7 @@ See `setImageModeration` in the [API Reference](https://api-ref.agora.io/en/vide
 **Beta features**
 
 End-to-end media encryption and Super Clarity extension are released in beta.
-See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -687,7 +687,7 @@ You can continue using the previous approach. However, for higher flexibility an
 - `onAudioAutoplayFailed`: Deprecated, see `onAutoplayFailed` instead
 
 Scalable Video Coding, access to encoded data, and enhanced connection experience in restricted networks are released in beta.
-See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -715,11 +715,11 @@ v4.18.0 also includes the following improvements:
   - `getListeners`
   - `removeAllListeners`
 
-::::info
+:::info
 
 These methods support the following event names as parameters:- `"camera-changed"`<br />`"microphone-changed"`<br />`"playback-device-changed"`<br />`"autoplay-failed"`<br />`"security-policy-violation"`
 
-::::
+:::
 #### Issues fixed
 
 v4.18.0 fixes the following issues:
@@ -927,11 +927,11 @@ Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browse
 | Android | Chrome 68 or later<br />Wechat v8.0.6 or later<br />Other apps that use WKWebView: WebView v65.0.3325.109 or later |
 | iOS     | Safari 16 or later |
 
-::::info
+:::info
 
 ① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.
 
-::::
+:::
 To start a call using the VP9 codec, apps you connect to built using for Android, iOS, Windows, or macOS must use Video SDK v4.0.1 or greater.
 
 ##### CSP violation callback
@@ -2395,7 +2395,7 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 
 #### Improvements
@@ -2521,9 +2521,23 @@ This release has optimized the implementation of some functions, which involved 
 
    | Deleted methods and callbacks                         | Alternative methods and callbacks  |
    | ----------------------------------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`     | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-4-4-0-deleted" />     | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                            | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-4-4-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 4. **Custom video source**
 
@@ -2828,7 +2842,7 @@ v4.2.2 was released on july 27, 2023.
 
    :::info
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 2. **Preloading channels**
@@ -4084,7 +4098,7 @@ v4.3.1 was released on April 29, 2024.
 
    :::info[Note]
  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project. For more details, see [How can I add a privacy manifest to my iOS app?](/en/api-reference/faq/other/ios_privacy_manifest)
-:::
+   :::
 
 
 1. **Portrait center stage**
@@ -4126,7 +4140,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -4234,9 +4248,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks | Alternative methods and callbacks  |
    | ----------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`| `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx`| `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-ios-4-4-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-ios-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `didReceiveChannelMediaRelayEvent`| `channelMediaRelayStateDidChange`  |
+
+   <Slot for="release-channel-relay-ios-4-4-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-ios-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Custom video source**
 
@@ -4529,11 +4557,11 @@ v4.2.2 was released on July 27, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
 
-   ::::info
+   :::info
 
    All 4.x SDKs support using wildcard tokens.
 
-   ::::
+   :::
 2. **Preloading channels**
 
    This release adds `preloadChannelByToken [1/2]` and `preloadChannelByToken [2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
@@ -4548,11 +4576,11 @@ v4.2.2 was released on July 27, 2023.
 
    To allow users in selecting different types of video sources for local video preview, this release introduces `startPreview [2/2]` and `stopPreview [2/2]`. You can call `startPreview [2/2]` and specify the type of video source to be previewed by setting the `sourceType` parameter, and call `stopPreview [2/2]` to stop the video preview.
 
-   ::::info
+   :::info
 
    The video source type specified in this method must match the video source type set in the `AgoraRtcVideoCanvas` of the `setupLocalVideo` method.
 
-   ::::
+   :::
 #### Improvements
 
 1. **Improved camera capture effect**
@@ -5033,11 +5061,11 @@ v4.2.2 was released on july 27, 2023.
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
 
-   ::::info
+   :::info
 
    All 4.x SDKs support using wildcard tokens.
 
-   ::::
+   :::
 2. **Preloading channels**
 
    This release adds `preloadChannelByToken[1/2]` and `preloadChannelByToken[2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
@@ -5052,11 +5080,11 @@ v4.2.2 was released on july 27, 2023.
 
    To allow users in selecting different types of video sources for local video preview, this release introduces `startPreview[2/2]` and `stopPreview[2/2]`. You can call `startPreview[2/2]` and specify the type of video source to be previewed by setting the `sourceType` parameter, and call `stopPreview[2/2]` to stop the video preview.
 
-   ::::info
+   :::info
 
    The video source type specified in this method must match the video source type set in the `AgoraRtcVideoCanvas` of the `setupLocalVideo` method.
 
-   ::::
+   :::
 #### Improvements
 
 1. **Improved camera capture effect**
@@ -6151,7 +6179,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -6268,8 +6296,15 @@ This release has optimized the implementation of some functions, involving renam
    | Deleted methods and callbacks | Alternative methods and callbacks  |
    | ----------------------------- | ---------------------------------- |
    | `startChannelMediaRelay`<br />`updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx`| `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-macos-4-4-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `didReceiveChannelMediaRelayEvent` | `channelMediaRelayStateDidChange`  |
+
+   <Slot for="release-channel-relay-macos-4-4-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 
@@ -6526,7 +6561,7 @@ v4.2.2 was released on july 27, 2023.
 
    :::info
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 2. **Preloading channels**
@@ -6545,7 +6580,7 @@ All 4.x SDKs support using wildcard tokens.
 
    :::info
 The video source type specified in this method must match the video source type set in the `AgoraRtcVideoCanvas` of the `setupLocalVideo` method.
-:::
+   :::
 
 
 5. **Publishing video streams from different sources**
@@ -7566,8 +7601,36 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
    | ------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
    | `startScreenCaptureByDisplayId` | **displayId**                                              | Changed from `uint32_t` to `int64_t`                             |
    | `startScreenCaptureByWindowId`  | **windowId**                                               | Changed from `view_t` to `int64_t`                               |
-   | `ScreenCaptureConfiguration`    | - **displayId**<br />2. **windowId**       | - **displayId**: Changed from `uint32_t` to `int64_t`<br />2. **windowId**: Changed from `view_t` to `int64_t` |
-   | `ScreenCaptureSourceInfo`       | - **sourceDisplayId**<br />2. **sourceId** | - **sourceDisplayId**： Changed from `view_t` to `int64_t`<br />2. **sourceId**：Default value changed from `nullptr` to `0` |
+   | `ScreenCaptureConfiguration`    | <Slot name="release-cpp-screen-capture-configuration-members" /> | <Slot name="release-cpp-screen-capture-configuration-change" /> |
+   | `ScreenCaptureSourceInfo`       | <Slot name="release-cpp-screen-capture-source-info-members" /> | <Slot name="release-cpp-screen-capture-source-info-change" /> |
+
+   <Slot for="release-cpp-screen-capture-configuration-members">
+
+   - **displayId**
+   - **windowId**
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-configuration-change">
+
+   - **displayId**: Changed from `uint32_t` to `int64_t`
+   - **windowId**: Changed from `view_t` to `int64_t`
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-source-info-members">
+
+   - **sourceDisplayId**
+   - **sourceId**
+
+   </Slot>
+
+   <Slot for="release-cpp-screen-capture-source-info-change">
+
+   - **sourceDisplayId**： Changed from `view_t` to `int64_t`
+   - **sourceId**：Default value changed from `nullptr` to `0`
+
+   </Slot>
 
 1. **Changes in strong video noise suppression**
 
@@ -7765,7 +7828,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -7864,9 +7927,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                                | Alternative methods and callbacks  |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-cpp-4-3-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-cpp-4-3-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-cpp-4-3-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-cpp-4-3-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 
@@ -8157,7 +8234,7 @@ v4.2.2 was released on july 27, 2023.
 
    :::info
  All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 2. **Preloading channels**
@@ -8181,7 +8258,7 @@ v4.2.2 was released on july 27, 2023.
 
    :::info
 For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
-:::
+   :::
 
 
 #### Improvements
@@ -8881,11 +8958,11 @@ To make the audio clearer and restore more details, this release adds the `ULTRA
 
 **5. Spatial audio**
 
-::::info
+:::info
 
 This feature is in experimental status. To enable this feature, contact [support@agora.io](mailto:support@agora.io). Contact [technical support](mailto:support@agora.io) if needed.
 
-::::
+:::
 You can set the spatial audio for the remote user as following:
 
 - Local Cartesian Coordinate System Calculation: This solution uses the `ILocalSpatialAudioEngine` class to implement spatial audio by calculating the spatial coordinates of the remote user. You need to call `updateSelfPosition` and `updateRemotePosition` to update the spatial coordinates of the local and remote users, respectively, so that the local user can hear the spatial audio effect of the remote user.
@@ -8963,9 +9040,9 @@ You can call the `startLocalVideoTranscoder` method to start local video mixing 
 Video capture devices can support multiple video formats, each supporting a different combination of video frame width, video frame height, and frame rate.
 
 This release adds the `numberOfCapabilities` and `getCapability` methods for getting the number of video formats supported by the video capture device and the details of the video frames in the specified video format. When calling the `startPrimaryCameraCapture` or `startSecondaryCameraCapture` method to capture video using the camera, you can use the specified video format.
-::::info
+:::info
 The SDK automatically selects the best video format for the video capture device based on your settings in `VideoEncoderConfiguration`, so normally you should not need to use these new methods.
-::::
+:::
 #### Improvements
 
 **1. Fast channel switching**
@@ -9421,7 +9498,7 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -9820,7 +9897,7 @@ v4.2.2 was released on August 1, 2023.
 
    :::info
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 2. **Preloading channels**
@@ -10115,11 +10192,11 @@ This release introduces filtering audio streams based on volume. Once this funct
 
 Agora also supports publishers in choosing whether the audio streams being published are to be filtered based on volume. Streams that are not filtered bypass this filter mechanism and are transported directly to the receivers. In use-cases with a number of publishers, enabling this function helps reduce the bandwidth and device system pressure for the receivers.
 
-::::info
+:::info
 
 To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **4. Dual-stream mode**
 
 This release optimizes the dual-stream mode. You can call `enableDualStreamMode` and `enableDualStreamModeEx` before and after joining a channel.
@@ -10160,11 +10237,11 @@ see the [API reference](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/c
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-::::info
+:::info
 
 To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **9. Register extensions (Windows)**
 
 This release adds the `registerExtension` method for registering extensions. When using a third-party extension, you need to call the extension-related APIs in the following order:
@@ -11068,7 +11145,7 @@ v6.3.1 was released on May 9, 2024.
 
    :::info[Note]
  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-:::
+   :::
 
 
 1. **Portrait center stage (iOS, macOS)**
@@ -11117,7 +11194,7 @@ v6.3.1 was released on May 9, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -11231,9 +11308,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                         | Alternative methods and callbacks  |
    | ----------------------------------------------------- | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay`     | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-flutter-6-1-0-deleted" />     | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-flutter-6-1-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                            | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-flutter-6-1-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-flutter-6-1-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 1. **Audio route**
 
@@ -11559,7 +11650,7 @@ v6.2.2 was released on August 1, 2023.
 
    :::info
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 2. **Preloading channels**
@@ -11583,7 +11674,7 @@ All 4.x SDKs support using wildcard tokens.
 
    :::info
 For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
-:::
+   :::
 
 
 #### Improvements
@@ -11963,11 +12054,11 @@ This release introduces filtering audio streams based on volume. Once this funct
 
 Agora also supports publishers in choosing whether the audio streams being published are to be filtered based on volume. Streams that are not filtered bypass this filter mechanism and are transported directly to the receivers. In scenarios with a number of publishers, enabling this function helps reduce the bandwidth and device system pressure for the receivers.
 
-::::info
+:::info
 
 To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **5. Dual-stream mode**
 
 This release optimizes the dual-stream mode. You can call `enableDualStreamMode` and `enableDualStreamModeEx` before and after joining a channel.
@@ -12021,11 +12112,11 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-::::info
+:::info
 
 To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **12. Register extensions (Windows)**
 
 This release adds the `registerExtension` method for registering extensions. When using a third-party extension, you need to call the extension-related APIs in the following order:
@@ -12909,7 +13000,7 @@ v4.3.1 was released on May 9, 2024.
 
    :::info[Note]
  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-:::
+   :::
 
 
 1. **Portrait center stage (iOS)**
@@ -12958,7 +13049,7 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -13310,7 +13401,7 @@ v4.2.3 was released on October 20, 2023.
 
    :::info
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 4. **Preloading channels**
@@ -13656,11 +13747,11 @@ This release introduces filtering audio streams based on volume. Once this funct
 
 Agora also supports publishers in choosing whether the audio streams being published are to be filtered based on volume. Streams that are not filtered bypass this filter mechanism and are transported directly to the receivers. In use-cases with a number of publishers, enabling this function helps reduce the bandwidth and device system pressure for the receivers.
 
-::::info
+:::info
 
 To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **5. Dual-stream mode**
 
 This release optimizes the dual-stream mode. You can call `enableDualStreamMode` and `enableDualStreamModeEx` before and after joining a channel.
@@ -13696,11 +13787,11 @@ For more information about registering video observers and subscription options,
 
 As of this release, the SDK supports MPUDP protocol, which enables you to connect and use multiple paths to maximize the use of channel resources based on the UDP protocol. You can use different physical NICs on both mobile and desktop and aggregate them to effectively combat network jitter and improve transmission quality.
 
-::::info
+:::info
 
 To enable this feature, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **10. Camera capture options**
 
 This release adds the `followEncodeDimensionRatio` member in `CameraCapturerConfiguration`, which enables you to set whether to follow the video aspect ratio already set in `setVideoEncoderConfiguration` when capturing video with the camera.
@@ -14376,8 +14467,22 @@ This version includes optimizations to some features, including changes to SDK b
    | API                            | Members/Parameters                                         | Change                       |
    | ------------------------------ | ---------------------------------------------------------- | ---------------------------- |
    | `StartScreenCaptureByWindowId` | `windowId`                                               | Changed from `view_t` to `long`  |
-   | `ScreenCaptureConfiguration`   | - `displayId`<br />2. `windowId`        | Changed from `unit` to  `long`   |
-   | `ScreenCaptureSourceInfo`      | - `sourceDisplayId`<br />2. `sourceId` | Changed from `view_t` to  `long` |
+   | `ScreenCaptureConfiguration`   | <Slot name="release-unity-screen-capture-configuration-members" /> | Changed from `unit` to  `long`   |
+   | `ScreenCaptureSourceInfo`      | <Slot name="release-unity-screen-capture-source-info-members" /> | Changed from `view_t` to  `long` |
+
+   <Slot for="release-unity-screen-capture-configuration-members">
+
+   - `displayId`
+   - `windowId`
+
+   </Slot>
+
+   <Slot for="release-unity-screen-capture-source-info-members">
+
+   - `sourceDisplayId`
+   - `sourceId`
+
+   </Slot>
 
 1. **Changes in strong video noise suppression implementation**
 
@@ -14615,7 +14720,7 @@ v4.3.1 was released on May 9, 2024.
 
    :::info[Note]
  If you need to publish an app with SDK versions prior to v4.3.1 to the Apple App Store, manually add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-:::
+   :::
 
 
 1. **Portrait center stage (iOS, macOS)**
@@ -14664,7 +14769,7 @@ v4.3.1 was released on May 9, 2024.
 
 1. **Beta features**
 
-    - Speech driven avatar is released in beta. See [beta documentation](https://docs-beta.agora.io/en/video-calling/overview/release-notes) for details.
+    - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 #### Improvements
 
@@ -14787,9 +14892,23 @@ This release has optimized the implementation of some functions, involving renam
 
    | Deleted methods and callbacks                                | Alternative methods and callbacks  |
    | ------------------------------------------------------------ | ---------------------------------- |
-   | - `startChannelMediaRelay`<br />2. `updateChannelMediaRelay` | `startOrUpdateChannelMediaRelay`   |
-   | - `startChannelMediaRelayEx`<br />2. `updateChannelMediaRelayEx` | `startOrUpdateChannelMediaRelayEx` |
+   | <Slot name="release-channel-relay-unity-4-3-0-deleted" /> | `startOrUpdateChannelMediaRelay`   |
+   | <Slot name="release-channel-relay-unity-4-3-0-deleted-ex" /> | `startOrUpdateChannelMediaRelayEx` |
    | `onChannelMediaRelayEvent`                                   | `onChannelMediaRelayStateChanged`  |
+
+   <Slot for="release-channel-relay-unity-4-3-0-deleted">
+
+   - `startChannelMediaRelay`
+   - `updateChannelMediaRelay`
+
+   </Slot>
+
+   <Slot for="release-channel-relay-unity-4-3-0-deleted-ex">
+
+   - `startChannelMediaRelayEx`
+   - `updateChannelMediaRelayEx`
+
+   </Slot>
 
 3. **Reasons for local video state changes**
 
@@ -15136,11 +15255,11 @@ This release deletes `GetMaxMetadataSize` and `OnReadyToSendMetadata` in the `IM
 
    This release introduces wildcard tokens. Agora supports setting the channel name used for generating a token as a wildcard character. The token generated can be used to join any channel if you use the same user id. In use-cases involving multiple channels, such as switching between different channels, using a wildcard token can avoid repeated application of tokens every time users joining a new channel, which reduces the pressure on your token server. See [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
 
-   ::::info
+   :::info
 
    All 4.x SDKs support using wildcard tokens.
 
-   ::::
+   :::
 2. **Preloading channels**
 
    This release adds `PreloadChannel[1/2]` and `PreloadChannel[2/2]` methods, which allows a user whose role is set as audience to preload channels before joining one. Calling the method can help shortening the time of joining a channel, thus reducing the time it takes for audience members to hear and see the host.
@@ -15160,11 +15279,11 @@ This release deletes `GetMaxMetadataSize` and `OnReadyToSendMetadata` in the `IM
    - `publishThirdScreenTrack`: Publishing the video stream captured from the third screen.
    - `publishFourthScreenTrack`: Publishing the video stream captured from the fourth screen.
 
-   ::::info
+   :::info
 
    For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
 
-   ::::
+   :::
 #### Improvements
 
 1. **Improved camera capture effect** (Android, iOS)
@@ -15307,11 +15426,11 @@ The `OnCaptureVideoFrame` and `OnPreEncodeVideoFrame` callbacks are added with a
 
 As of v4.2.0, Agora supports third-party virtual sound cards. You can use a third-party virtual sound card as the audio input or output device for the SDK. You can use the `stateChanged` callback to see whether the current input or output device selected by the SDK is a virtual sound card.
 
-::::info
+:::info
 
 If you set AgoraALD or Soundflower as the default input or output device when joining a channel, you will not hear audio.
 
-::::
+:::
 **7. Default video encoding resolution**
 
 As of this release, the SDK optimizes the video encoder algorithm and upgrades the default video encoding resolution from 640 × 360 to 960 × 540 to accommodate improvements in device performance and network bandwidth, providing users with a full-link HD experience in various audio and video interaction use-cases.
@@ -15374,11 +15493,11 @@ On Android, iOS, and macOS, this release adds the local video mixing feature. Yo
 
 Additionally, the SDK provides the `UpdateLocalTranscoderConfiguration` method and the `OnLocalVideoTranscoderError` callback. After enabling local video mixing, you can use the `UpdateLocalTranscoderConfiguration` method to update the video mixing configuration. Where an error occurs in starting the local video mixing or updating the configuration, you can get the reason for the failure through the `OnLocalVideoTranscoderError` callback.
 
-::::info
+:::info
 
 Local video mixing requires more CPU resources. Therefore, Agora recommends enabling this function on devices with higher performance.
 
-::::
+:::
 **5. Cross-device synchronization**
 
 In real-time collaborative singing use-cases, network issues can cause inconsistencies in the downlinks of different client devices. To address this, this release introduces `GetNtpWallTimeInMs` for obtaining the current Network Time Protocol (NTP) time. By using this method to synchronize lyrics and music across multiple client devices, users can achieve synchronized singing and lyrics progression, resulting in a better collaborative experience.
@@ -15576,11 +15695,11 @@ This release introduces filtering audio streams based on volume. Once this funct
 
 Agora also supports publishers in choosing whether the audio streams being published are to be filtered based on volume. Streams that are not filtered bypass this filter mechanism and are transported directly to the receivers. In use-cases with a number of publishers, enabling this function helps reduce the bandwidth and device system pressure for the receivers.
 
-::::info
+:::info
 
 To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
-::::
+:::
 **5. Dual-stream mode**
 
 This release optimizes the dual-stream mode. You can call `EnableDualStreamMode` and `EnableDualStreamModeEx` before and after joining a channel.
@@ -16241,7 +16360,7 @@ v4.4.0 was released on August 29, 2024.
 
     :::info[Note]
 If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-:::
+    :::
 
 
 1. **Multi-camera capture (Android)**
@@ -16280,7 +16399,7 @@ If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App
 
    :::info[Note]
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 1. **Preloading channels**
@@ -16300,7 +16419,7 @@ All 4.x SDKs support using wildcard tokens.
 
    :::info[Note]
 For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
-:::
+   :::
 
 
 #### Improvements
@@ -16524,7 +16643,7 @@ This version simplifies the way methods are called and callbacks are implemented
 
     :::info[Note]
 If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App Store, add the `PrivacyInfo.xcprivacy` file to your Xcode project.
-:::
+    :::
 
 
 1. **Multi-camera capture (Android)**
@@ -16563,7 +16682,7 @@ If you need to publish an app with SDK versions prior to v4.4.0 to the Apple App
 
    :::info[Note]
 All 4.x SDKs support using wildcard tokens.
-:::
+   :::
 
 
 1. **Preloading channels**
@@ -16583,7 +16702,7 @@ All 4.x SDKs support using wildcard tokens.
 
    :::info[Note]
 For one `RtcConnection`, Agora supports publishing multiple audio streams and one video stream at the same time.
-:::
+   :::
 
 
 #### Improvements

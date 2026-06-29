@@ -1,0 +1,100 @@
+---
+title: Create an ASR extension
+description: Generate a TEN Agent ASR extension project and install its development dependencies
+---
+
+This guide shows how to scaffold a TEN Agent ASR extension project, install its dependencies, and review the generated files before you implement vendor-specific transcription logic.
+
+In a TEN Agent graph, an ASR extension receives real-time audio frames and emits transcribed text for downstream LLM or dialog-processing extensions.
+
+## When to use this guide
+
+Use this guide when you are starting a new Python ASR extension from the default template. For the complete extension lifecycle, see [Development workflow](../../ten-agent/develop/development-workflow). For metadata and schema concepts, see [Schema system](../../ten-agent/architecture/schema-system).
+
+## Prerequisites
+
+- Understand the development and testing process of TEN extensions. See [Development workflow](../../ten-agent/develop/development-workflow).
+- Master Python asynchronous programming (`asyncio`, `async/await`).
+- Have the `tman` command-line tool installed and be familiar with its basic usage.
+- Have an API key from an ASR vendor ready (for testing).
+
+## What an ASR extension does
+
+The ASR Extension is one of the standard building blocks of the TEN Framework, responsible for **transcribing audio streams into text** in corresponding languages in **real-time**.
+
+### Position in the Conversation Flow
+
+```
+[RTC Extension] ──audio stream──> [ASR Extension] ──text stream──> [LLM Extension]
+```
+
+## Create the project
+
+### Prepare the repository
+
+:::info
+If you haven't cloned the TEN Framework repository yet, please clone it first:
+
+```bash
+git clone https://github.com/TEN-framework/ten-framework.git
+cd ten-framework
+```
+
+This tutorial assumes you are developing in the root directory of the TEN Framework repository.
+:::
+
+### Create with the template
+
+Use the `tman` command-line tool to create a project from the ASR extension template:
+
+```bash
+cd ai_agents/agents/ten_packages/extension
+tman create extension my_asr_extension --template default_asr_python --template-data class_name_prefix=MyAsr
+```
+
+**Command Parameter Explanation**:
+- `extension my_asr_extension`: Create an extension with the directory name and plugin name `my_asr_extension`.
+- `--template default_asr_python`: Use the ASR Python extension template.
+- `--template-data class_name_prefix=MyAsr`: Set the class name prefix for the Python Extension class to `MyAsr` (the generated class name will be `MyAsrExtension`).
+
+### Install TEN package dependencies
+
+```bash
+cd my_asr_extension
+tman install --standalone
+```
+
+:::info
+This command uses the dependency calculation and download capabilities of the `tman` tool to calculate the dependency tree based on the dependencies declared in `manifest.json`. Since these are development dependencies, the `--standalone` parameter is required. Dependencies will be installed in the `.ten` directory, including Python modules for development and system packages for standalone testing.
+:::
+
+### Review the project structure
+
+```
+my_asr_extension/
+├── manifest.json       # Extension metadata
+├── property.json       # Default configuration
+├── requirements.txt    # Python dependencies
+├── extension.py        # Main implementation file
+├── addon.py            # Extension entry point
+├── __init__.py         # Python package initialization
+├── docs/               # Documentation directory
+├── .vscode/            # VS Code debug configuration
+└── tests/              # Test files
+```
+
+#### File descriptions
+
+**manifest.json and property.json** are standard metadata files for TEN Extensions:
+- `manifest.json`: Contains the extension's **name, version, description, dependencies, and schema definitions**.
+- `property.json`: Defines the extension's **default property values**.
+
+:::info
+For details about TEN Framework metadata and schemas, see [Schema system](../../ten-agent/architecture/schema-system).
+:::
+
+**requirements.txt** is unique to Python extensions and is used to declare the extension's **dependencies on third-party pip packages**.
+
+**extension.py** is the **core source code** of the extension, containing all business logic implementation.
+
+**tests/** folder is used for **standalone extension testing**, including unit tests and test configurations.

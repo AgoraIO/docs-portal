@@ -493,6 +493,97 @@ const apiReferencePageTree: Root = {
   name: 'Docs',
 };
 
+function createChatApiReferencePageTree(): Root {
+  return {
+    children: [
+      {
+        $id: 'en-root',
+        children: [
+          {
+            $id: 'api-reference-folder',
+            children: [
+              {
+                $id: 'api-reference-api-ref-folder',
+                children: [
+                  {
+                    $id: 'api-reference-api-ref-im-folder',
+                    children: [
+                      {
+                        $id: 'api-reference-api-ref-im-model-separator',
+                        icon: 'Play',
+                        name: 'Understand the server-side model',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-limitations',
+                        name: 'Limitations',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/limitations',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-messaging-separator',
+                        icon: 'MessageSquare',
+                        name: 'Manage messaging and users',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-message-management',
+                        name: 'Message management',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/message-management',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-groups-separator',
+                        icon: 'Users',
+                        name: 'Manage groups, rooms, and threads',
+                        type: 'separator',
+                      },
+                      {
+                        $id: 'api-reference-api-ref-im-chat-group-management',
+                        name: 'Chat group management',
+                        type: 'page',
+                        url: '/en/api-reference/api-ref/im/chat-group-management',
+                      },
+                    ],
+                    index: {
+                      $id: 'api-reference-api-ref-im-index',
+                      name: 'Chat',
+                      type: 'page',
+                      url: '/en/api-reference/api-ref/im',
+                    },
+                    name: 'Chat',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'api-reference-api-ref-index',
+                  name: 'API reference',
+                  type: 'page',
+                  url: '/en/api-reference/api-ref',
+                },
+                name: 'API Reference',
+                type: 'folder',
+              },
+            ],
+            index: {
+              $id: 'api-reference-index',
+              name: 'API Reference',
+              type: 'page',
+              url: '/en/api-reference',
+            },
+            name: 'API Reference',
+            root: true,
+            type: 'folder',
+          },
+        ],
+        name: 'English',
+        type: 'folder',
+      },
+    ],
+    name: 'Docs',
+  };
+}
+
 const realtimeMediaPageTree: Root = {
   children: [
     {
@@ -758,6 +849,12 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
               {
                 $id: 'realtime-media-video-folder',
                 children: [
+                  {
+                    $id: 'realtime-media-video-quickstart',
+                    name: 'Quickstart',
+                    type: 'page',
+                    url: '/en/realtime-media/video/get-started-sdk',
+                  },
                   {
                     $id: 'realtime-media-video-reference-separator',
                     name: 'Reference',
@@ -1347,6 +1444,63 @@ Web body
     });
   });
 
+  it('resolves platform alias URL segments to their canonical platform tabs', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="javascript" />
+## React setup
+React body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="javascript" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'introduction', ['about-agora', 'react-js']),
+    ).resolves.toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'javascript',
+          initialPlatform: 'javascript',
+          platforms: '["javascript","web"]',
+        },
+      },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/javascript.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'React setup',
+          url: '#react-setup',
+        },
+      ],
+    });
+  });
+
   it('builds split-file platform group body payloads and hides panel pages', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
@@ -1510,6 +1664,69 @@ Web body
       },
       previous: undefined,
     });
+  });
+
+  it('removes category icons from scoped Chat Reference sidebars', async () => {
+    const page = createPage();
+    const chatPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/im/index.mdx',
+          path: 'en/api-reference/api-ref/im/index.mdx',
+        },
+        title: 'Chat',
+      },
+      path: 'en/api-reference/api-ref/im/index.mdx',
+      slugs: ['en', 'api-reference', 'api-ref', 'im', 'index'],
+      url: '/en/api-reference/api-ref/im',
+    };
+
+    mockedGetPage.mockReturnValue(chatPage);
+    mockedGetPages.mockReturnValue([chatPage]);
+    mockedGetPageTree.mockReturnValue(createChatApiReferencePageTree());
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-api-ref-im-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Chat',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+      'im',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    const sidebarSections = flattenSidebarSections(payload.sidebar);
+    const categoryTitles = [
+      'Understand the server-side model',
+      'Manage messaging and users',
+      'Manage groups, rooms, and threads',
+    ];
+
+    for (const title of categoryTitles) {
+      const section = sidebarSections.find((node) => node.title === title);
+
+      expect(section).toBeDefined();
+      expect(section).not.toHaveProperty('icon');
+    }
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+      expect.arrayContaining([
+        '/en/api-reference/api-ref/im',
+        '/en/api-reference/api-ref/im/message-management',
+        '/en/api-reference/api-ref/im/chat-group-management',
+      ]),
+    );
   });
 
   it('keeps static pages inside OpenAPI lanes on the same wide layout as generated operations', async () => {
@@ -2037,6 +2254,14 @@ Web body
     });
   });
 
+  it('redirects the legacy video quickstart path to the get-started-sdk path', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+    });
+  });
+
   it('falls back locale links to the target tab entry when the same slug is missing', async () => {
     const page = createPage();
     const zhPageTree: Root = {
@@ -2244,7 +2469,7 @@ Web body
     );
   });
 
-  it('groups API reference products under a RESTful API heading on the overview page', async () => {
+  it('renders the catalog page without the legacy "RESTful API" grouping when the api-ref folder is hidden', async () => {
     const page = createPage();
     mockedGetPage.mockReturnValue({
       ...page,
@@ -2265,7 +2490,7 @@ Web body
       node.$id === 'api-reference-api-ref-folder'
         ? ({
             data: {
-              navScope: {},
+              sidebarHidden: true,
               sidebarIndexTitle: 'Overview',
               title: 'API Reference',
             },
@@ -2281,150 +2506,17 @@ Web body
       throw new Error('expected a docs page payload');
     }
 
-    expect(payload.sidebar).toEqual([
-      {
-        id: '/en/api-reference/api-ref',
-        title: 'Overview',
-        type: 'page',
-        url: '/en/api-reference/api-ref',
-      },
-      {
-        children: [
-          {
-            id: '/en/api-reference/api-ref/conversational-ai',
-            title: 'Conversational AI',
-            type: 'page',
-            url: '/en/api-reference/api-ref/conversational-ai',
-          },
-          {
-            id: '/en/api-reference/api-ref/rtc',
-            title: 'Voice & Video Calling',
-            type: 'page',
-            url: '/en/api-reference/api-ref/rtc',
-          },
-          {
-            id: '/en/api-reference/api-ref/broadcast-streaming',
-            title: 'Broadcast Streaming',
-            type: 'page',
-            url: '/en/api-reference/api-ref/broadcast-streaming',
-          },
-          {
-            id: '/en/api-reference/api-ref/im',
-            title: 'Chat',
-            type: 'page',
-            url: '/en/api-reference/api-ref/im',
-          },
-          {
-            id: '/en/api-reference/api-ref/signaling',
-            title: 'Signaling',
-            type: 'page',
-            url: '/en/api-reference/api-ref/signaling',
-          },
-          {
-            id: '/en/api-reference/api-ref/cloud-recording',
-            title: 'Cloud Recording',
-            type: 'page',
-            url: '/en/api-reference/api-ref/cloud-recording',
-          },
-          {
-            id: '/en/api-reference/api-ref/cloud-transcoding',
-            title: 'Cloud Transcoding',
-            type: 'page',
-            url: '/en/api-reference/api-ref/cloud-transcoding',
-          },
-          {
-            id: '/en/api-reference/api-ref/speech-to-text',
-            title: 'Speech-to-Text',
-            type: 'page',
-            url: '/en/api-reference/api-ref/speech-to-text',
-          },
-          {
-            id: '/en/api-reference/api-ref/rtmp-gateway',
-            title: 'Media Gateway',
-            type: 'page',
-            url: '/en/api-reference/api-ref/rtmp-gateway',
-          },
-          {
-            id: '/en/api-reference/api-ref/whiteboard',
-            title: 'Interactive Whiteboard REST API',
-            type: 'page',
-            url: '/en/api-reference/api-ref/whiteboard',
-          },
-          {
-            id: '/en/api-reference/api-ref/uikit-sdk',
-            title: 'Fastboard API',
-            type: 'page',
-            url: '/en/api-reference/api-ref/uikit-sdk',
-          },
-          {
-            id: '/en/api-reference/api-ref/media-pull',
-            title: 'Media Pull',
-            type: 'page',
-            url: '/en/api-reference/api-ref/media-pull',
-          },
-          {
-            id: '/en/api-reference/api-ref/media-push',
-            title: 'Media Push',
-            type: 'page',
-            url: '/en/api-reference/api-ref/media-push',
-          },
-          {
-            id: '/en/api-reference/api-ref/on-premise-recording',
-            title: 'On-Premise Recording',
-            type: 'page',
-            url: '/en/api-reference/api-ref/on-premise-recording',
-          },
-        ],
-        collapsible: false,
-        id: 'api-reference-restful-api',
-        title: 'RESTful API',
-        type: 'section',
-      },
-    ]);
-    const restfulApiSection = payload.sidebar[1];
-    if (restfulApiSection?.type !== 'section') {
-      throw new Error('expected RESTful API sidebar section');
-    }
+    // The legacy "All SDK versions"/"RESTful API" grouping is gone: nothing
+    // wraps the lanes under a synthesized "RESTful API" section anymore.
     expect(
-      restfulApiSection.children.every((node) => node.type === 'page'),
-    ).toBe(true);
-    expect(restfulApiSection.children.map((node) => node.id)).toEqual([
-      '/en/api-reference/api-ref/conversational-ai',
-      '/en/api-reference/api-ref/rtc',
-      '/en/api-reference/api-ref/broadcast-streaming',
-      '/en/api-reference/api-ref/im',
-      '/en/api-reference/api-ref/signaling',
-      '/en/api-reference/api-ref/cloud-recording',
-      '/en/api-reference/api-ref/cloud-transcoding',
-      '/en/api-reference/api-ref/speech-to-text',
-      '/en/api-reference/api-ref/rtmp-gateway',
-      '/en/api-reference/api-ref/whiteboard',
-      '/en/api-reference/api-ref/uikit-sdk',
-      '/en/api-reference/api-ref/media-pull',
-      '/en/api-reference/api-ref/media-push',
-      '/en/api-reference/api-ref/on-premise-recording',
-    ]);
+      payload.sidebar.find((node) => node.title === 'RESTful API'),
+    ).toBeUndefined();
     expect(
-      restfulApiSection.children.findIndex(
-        (node) => node.id === '/en/api-reference/api-ref/uikit-sdk',
+      payload.sidebar.find(
+        (node) =>
+          node.type === 'section' && node.id === 'api-reference-restful-api',
       ),
-    ).toBe(
-      restfulApiSection.children.findIndex(
-        (node) => node.id === '/en/api-reference/api-ref/whiteboard',
-      ) + 1,
-    );
-    expect(payload.sidebar).not.toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ title: 'Video Calling' }),
-        expect.objectContaining({ title: 'Voice Calling' }),
-      ]),
-    );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toEqual(
-      expect.arrayContaining([
-        '/en/api-reference/api-ref/video',
-        '/en/api-reference/api-ref/voice',
-      ]),
-    );
+    ).toBeUndefined();
   });
 
   it('redirects moved Realtime Media API reference pages to the API Reference tab', async () => {
@@ -2770,6 +2862,9 @@ Web body
 
     mockedGetPage.mockReturnValue(videoPage);
     mockedGetPages.mockReturnValue([videoPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
     mockedGetNodeMeta.mockImplementation((node) =>
       node.$id === 'realtime-media-video-folder'
         ? ({
@@ -2808,6 +2903,52 @@ Web body
     );
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
+    );
+  });
+
+  it('uses the get-started-sdk page as the video quickstart sidebar entry', async () => {
+    const basePage = createPage();
+    const videoPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/realtime-media/video/get-started-sdk.mdx',
+          path: 'en/realtime-media/video/get-started-sdk.mdx',
+        },
+        title: 'Quickstart',
+      },
+      path: 'en/realtime-media/video/get-started-sdk.mdx',
+      slugs: ['en', 'realtime-media', 'video', 'get-started-sdk'],
+      url: '/en/realtime-media/video/get-started-sdk',
+    };
+
+    mockedGetPage.mockReturnValue(videoPage);
+    mockedGetPages.mockReturnValue([videoPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-video-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Video Calling',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const videoPayload = unwrapPayload(
+      await loadDocsPagePayload('en', 'realtime-media', ['video']),
+    );
+
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
+      '/en/realtime-media/video/get-started-sdk',
+    );
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
+      '/en/realtime-media/video/quickstart',
     );
   });
 
@@ -2951,6 +3092,25 @@ Web body
                       url: '/en/ai/reference/event-types',
                     },
                     {
+                      $id: 'ai-reference-ten-agent',
+                      children: [
+                        {
+                          $id: 'ai-reference-ten-agent-create-asr-extension',
+                          name: 'Create an ASR extension',
+                          type: 'page',
+                          url: '/en/ai/reference/ten-agent/create-asr-extension',
+                        },
+                        {
+                          $id: 'ai-reference-ten-agent-create-tts-extension',
+                          name: 'Create a TTS extension',
+                          type: 'page',
+                          url: '/en/ai/reference/ten-agent/create-tts-extension',
+                        },
+                      ],
+                      name: 'TEN Agent',
+                      type: 'folder',
+                    },
+                    {
                       $id: 'ai-reference-release-notes',
                       name: 'Release notes',
                       type: 'page',
@@ -2965,24 +3125,6 @@ Web body
                   ],
                   name: 'Reference',
                   type: 'folder',
-                },
-                {
-                  $id: 'ai-ten-agent-separator',
-                  icon: 'Wrench',
-                  name: 'TEN Agent',
-                  type: 'separator',
-                },
-                {
-                  $id: 'ai-create-asr-extension',
-                  name: 'Create ASR extension',
-                  type: 'page',
-                  url: '/en/ai/create_asr_extension',
-                },
-                {
-                  $id: 'ai-create-tts-extension',
-                  name: 'Create TTS extension',
-                  type: 'page',
-                  url: '/en/ai/create_tts_extension',
                 },
                 {
                   $id: 'ai-device-kit-folder',
@@ -3106,10 +3248,10 @@ Web body
         '/en/ai/get-started/quickstart',
         '/en/api-reference/api-ref/server-sdk/typescript',
         '/en/ai/reference/event-types',
+        '/en/ai/reference/ten-agent/create-asr-extension',
+        '/en/ai/reference/ten-agent/create-tts-extension',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
-        '/en/ai/create_asr_extension',
-        '/en/ai/create_tts_extension',
         '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
@@ -3124,6 +3266,12 @@ Web body
         '/en/ai/choose-your-path/quickstart-coding',
         '/en/ai/choose-your-path/quickstart-device-kit',
         '/en/ai/device-kit/reference/enable-services',
+        '/en/ai/create_asr_extension',
+        '/en/ai/create_tts_extension',
+        '/en/ai/reference/ten-agent/build-dependencies',
+        '/en/ai/reference/ten-agent/package-and-runtime-architecture',
+        '/en/ai/reference/ten-agent/debug-ten-applications',
+        '/en/ai/reference/ten-agent/test-ten-extensions-and-apps',
       ]),
     );
     expect(payload.sidebar.map((node) => node.title)).toEqual([
@@ -3241,35 +3389,65 @@ Web body
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'TEN Agent',
       ),
-    ).toBe(true);
-
-    const tenAgentSection = dedicatedDevicesSection.children.find(
-      (node) => node.type === 'section' && node.title === 'TEN Agent',
-    );
-
-    if (!tenAgentSection || tenAgentSection.type !== 'section') {
-      throw new Error('expected the TEN Agent section');
-    }
-
-    expect(tenAgentSection.icon).toBe('Wrench');
-    expect(
-      tenAgentSection.children.some(
-        (node) =>
-          node.type === 'page' && node.url === '/en/ai/create_asr_extension',
-      ),
-    ).toBe(true);
-    expect(
-      tenAgentSection.children.some(
-        (node) =>
-          node.type === 'page' && node.url === '/en/ai/create_tts_extension',
-      ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       softwareReferenceSection.children.some(
         (node) =>
           node.type === 'page' && node.url === '/en/ai/reference/event-types',
       ),
     ).toBe(true);
+    const tenAgentSection = softwareReferenceSection.children.find(
+      (node) => node.type === 'section' && node.title === 'TEN Agent',
+    );
+
+    if (!tenAgentSection || tenAgentSection.type !== 'section') {
+      throw new Error('expected TEN Agent section');
+    }
+
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/create-asr-extension',
+      ),
+    ).toBe(true);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/create-tts-extension',
+      ),
+    ).toBe(true);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/build-dependencies',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url ===
+            '/en/ai/reference/ten-agent/package-and-runtime-architecture',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url === '/en/ai/reference/ten-agent/debug-ten-applications',
+      ),
+    ).toBe(false);
+    expect(
+      tenAgentSection.children.some(
+        (node) =>
+          node.type === 'page' &&
+          node.url ===
+            '/en/ai/reference/ten-agent/test-ten-extensions-and-apps',
+      ),
+    ).toBe(false);
     expect(
       softwareSection.children.some(
         (node) => node.type === 'section' && node.title === 'Models',
@@ -3365,7 +3543,7 @@ Web body
           fullPath: '/virtual/content/docs/en/api-reference/recipes/index.md',
           path: 'en/api-reference/recipes/index.md',
         },
-        full: true,
+        hideToc: true,
         title: 'Recipes',
       },
     });
@@ -3394,7 +3572,8 @@ Web body
       backLabel: 'API Reference',
       title: 'Recipes',
     });
-    expect(payload.layoutMode).toBe('full-page');
+    expect(payload.layoutMode).toBe('docs');
+    expect(payload.hideToc).toBe(true);
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
         '/en/api-reference/recipes',
@@ -3482,6 +3661,25 @@ function findSidebarPage(
   }
 
   return undefined;
+}
+
+function flattenSidebarSections(
+  nodes: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'],
+): Extract<
+  Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >['sidebar'][number],
+  { type: 'section' }
+>[] {
+  return nodes.flatMap((node) =>
+    node.type === 'section'
+      ? [node, ...flattenSidebarSections(node.children)]
+      : [],
+  );
 }
 
 function unwrapPayload(

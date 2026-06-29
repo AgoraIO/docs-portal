@@ -51,11 +51,11 @@ Once you enable the built-in encryption, all users in the same channel must use 
 
 **MP3 format in composite recording mode**
 
-v3.0.6 adds `Audio_Only_Record` and `Secondary_Recorder` in `cfgFilePath` to get a MP3 file after a composite recording. See [Record a Call](https://docs.agora.io/en/Recording/recording_cmd_cpp#composite-recording-mode) and [cfgFilePath](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/structagora_1_1recording_1_1_recording_config.html#afd78b4f136e4deeaf310061606e7bc62) for details.
+v3.0.6 adds `Audio_Only_Record` and `Secondary_Recorder` in `cfgFilePath` to get a MP3 file after a composite recording. See [Record a Call](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode) and [cfgFilePath](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/structagora_1_1recording_1_1_recording_config.html#afd78b4f136e4deeaf310061606e7bc62) for details.
 
 #### Improvements
 
-- You can set the sample rate of the raw audio data in PCM format (`getAudioFrame` is 2 or 3) through the `cfgFilePath` parameter. See [Record a Call](https://docs.agora.io/en/Recording/recording_cmd_cpp#设置录制格式) for details.
+- You can set the sample rate of the raw audio data in PCM format (`getAudioFrame` is 2 or 3) through the `cfgFilePath` parameter. See [Record a Call](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode) for details.
 
 - Optimize the sensitivity and accuracy of `onActiveSpeaker` and `onAudioVolumeIndication` callbacks.
 - You can call [mixedVideoAudio](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/structagora_1_1recording_1_1_recording_config.html#a9912a5fc16b3f0737290c618846d76a7)  to get a MP4 file after a composite recording or an individual recording without transcoding.

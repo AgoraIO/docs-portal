@@ -1,17 +1,30 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { ChevronDownIcon, Edit3Icon, ExternalLinkIcon } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  Edit3Icon,
+  ExternalLinkIcon,
+} from 'lucide-react';
+import {
+  type MouseEvent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
+  getActiveDocsScrollContainer,
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
@@ -30,8 +43,24 @@ import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsCopyMenu } from './docs-copy-menu';
 
+const DOCS_ARTICLE_RETURN_STORAGE_KEY = 'docs-portal:article-return:v1';
 const TOC_ACTIVE_OFFSET = 96;
 const TOC_VISIBLE_INTERSECTION_THRESHOLD = 4;
+const ARTICLE_RETURN_MAX_AGE_MS = 30 * 60 * 1000;
+
+type DocsArticleReturnRecord = {
+  createdAt: number;
+  source: {
+    href: string;
+    title: string;
+  };
+  targetPage: string;
+};
+
+type DocsArticleReturnLink = {
+  href: string;
+  title: string;
+};
 
 export function DocsContent({
   body,
@@ -41,6 +70,7 @@ export function DocsContent({
   locale = DEFAULT_LOCALE,
   markdownUrl,
   layoutMode = 'docs',
+  hideToc = false,
   sidebarHeader,
   slug,
   title,
@@ -52,15 +82,28 @@ export function DocsContent({
   description?: string;
   locale?: AppLocale | string;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
   title?: string;
   toc: TOCItemType[];
 }) {
-  useTranslation('common');
+  const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
+  const sourceTitle = displayTitle ?? t('app.name');
+  const currentPageKey = getCurrentDocsPageKey();
+  const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
+    sourceTitle,
+  });
+  // A single crumb that just repeats the page title (the H1 right below) adds no
+  // wayfinding — suppress it. Multi-item breadcrumbs always render.
+  const showBreadcrumb =
+    breadcrumb.length > 1 ||
+    (breadcrumb.length === 1 && breadcrumb[0].title !== displayTitle);
   const resolvedBody =
     body ??
     (contentPath
@@ -71,7 +114,9 @@ export function DocsContent({
       : undefined);
   const isOpenApiBody = resolvedBody?.kind === 'openapi';
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
-  const isWideLayout = isWideDocsLayout(effectiveLayoutMode);
+  const isOpenApiLayout = effectiveLayoutMode === 'openapi';
+  // openapi and hideToc both let the article fill the width and hide the toc.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
@@ -101,17 +146,28 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        platformTabs ? 'gap-6' : 'gap-9',
-        isWideLayout ? 'max-w-none' : 'max-w-[var(--content-max)]',
+        'gap-6',
+        contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-7',
+          platformTabs ? 'pb-0' : 'pb-5',
         )}
       >
-        {breadcrumb.length > 0 ? (
+        {articleReturnLink ? (
+          <a
+            className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            href={articleReturnLink.href}
+          >
+            <ArrowLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
+            <span className="truncate">
+              {t('docs.returnToSource', { title: articleReturnLink.title })}
+            </span>
+          </a>
+        ) : null}
+        {showBreadcrumb ? (
           <nav aria-label="Breadcrumb" className="min-w-0">
             <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
               {breadcrumb.map((item, index) => {
@@ -157,16 +213,14 @@ export function DocsContent({
         <div
           className={cn(
             'flex flex-col gap-3',
-            markdownUrl &&
-              !isOpenApiBody &&
-              'xl:flex-row xl:items-start xl:gap-6',
+            markdownUrl && 'xl:flex-row xl:items-start xl:gap-6',
           )}
         >
           <div className="min-w-0 flex-1">
             <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
               {displayTitle}
             </h1>
-            {description ? (
+            {!isOpenApiBody && description ? (
               <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
                 {description}
               </p>
@@ -174,10 +228,7 @@ export function DocsContent({
           </div>
           {markdownUrl ? (
             <DocsCopyMenu
-              className={cn(
-                'self-start',
-                !isOpenApiBody && 'xl:ml-auto xl:shrink-0 xl:translate-y-1',
-              )}
+              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
               locale={currentLocale}
               markdownUrl={markdownUrl}
               slug={slug ?? ''}
@@ -199,11 +250,14 @@ export function DocsContent({
         ) : null}
       </header>
       {isOpenApiBody ? (
-        <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+        <div onClickCapture={handleArticleBodyLinkClick}>
+          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+        </div>
       ) : (
         <div
           className="prose prose-neutral dark:prose-invert max-w-none"
           data-platform-header-tabs={platformTabs ? 'true' : undefined}
+          onClickCapture={handleArticleBodyLinkClick}
         >
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
@@ -250,7 +304,7 @@ export function DocsContent({
           ) : null}
         </div>
       )}
-      {isWideLayout ? null : (
+      {contentFillsWidth ? null : (
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}
@@ -260,6 +314,258 @@ export function DocsContent({
       )}
     </article>
   );
+}
+
+function useDocsArticleReturnLink(currentPageKey: string | null) {
+  const [returnLink, setReturnLink] = useState<DocsArticleReturnLink | null>(
+    null,
+  );
+
+  useEffect(() => {
+    setReturnLink(readDocsArticleReturnLink(currentPageKey));
+  }, [currentPageKey]);
+
+  return returnLink;
+}
+
+function useTrackDocsArticleLinkNavigation({
+  sourceTitle,
+}: {
+  sourceTitle: string;
+}) {
+  return useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.shiftKey
+      ) {
+        return;
+      }
+
+      const target = event.target;
+
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const anchor = target.closest<HTMLAnchorElement>('a[href]');
+
+      if (!anchor || !event.currentTarget.contains(anchor)) {
+        return;
+      }
+
+      trackDocsArticleLinkNavigation(anchor, sourceTitle);
+    },
+    [sourceTitle],
+  );
+}
+
+function trackDocsArticleLinkNavigation(
+  anchor: HTMLAnchorElement,
+  sourceTitle: string,
+) {
+  if (
+    anchor.hasAttribute('download') ||
+    (anchor.target && anchor.target !== '_self')
+  ) {
+    return;
+  }
+
+  const targetUrl = getSameOriginUrl(anchor.href);
+  const sourceUrl = getCurrentUrl();
+
+  if (!targetUrl || !sourceUrl) {
+    return;
+  }
+
+  const targetPage = getDocsPageKey(targetUrl);
+  const sourcePage = getDocsPageKey(sourceUrl);
+
+  if (!targetPage || !sourcePage || targetPage === sourcePage) {
+    return;
+  }
+
+  const record: DocsArticleReturnRecord = {
+    createdAt: Date.now(),
+    source: {
+      href: getPathHref(sourceUrl),
+      title: sourceTitle.trim() || getPathHref(sourceUrl),
+    },
+    targetPage,
+  };
+
+  writeArticleReturnRecord(record);
+}
+
+function readDocsArticleReturnLink(
+  currentPage: string | null,
+): DocsArticleReturnLink | null {
+  const record = readArticleReturnRecord();
+
+  if (!record || !currentPage) {
+    return null;
+  }
+
+  if (
+    Date.now() - record.createdAt > ARTICLE_RETURN_MAX_AGE_MS ||
+    record.targetPage !== currentPage
+  ) {
+    removeArticleReturnRecord();
+    return null;
+  }
+
+  const safeSourceHref = getSafeStoredDocsHref(record.source.href);
+
+  if (!safeSourceHref) {
+    removeArticleReturnRecord();
+    return null;
+  }
+
+  // Keep the matched record in sessionStorage so the duplicated mobile and
+  // desktop DocsContent renders can both read it. The record is scoped to one
+  // target page and expires, so it is cleared on stale or mismatched routes.
+  return {
+    href: safeSourceHref,
+    title: record.source.title,
+  };
+}
+
+function readArticleReturnRecord(): DocsArticleReturnRecord | null {
+  const storage = getSessionStorage();
+  const value = storage?.getItem(DOCS_ARTICLE_RETURN_STORAGE_KEY);
+
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const record = JSON.parse(value) as Partial<DocsArticleReturnRecord>;
+
+    if (
+      typeof record.createdAt !== 'number' ||
+      typeof record.targetPage !== 'string' ||
+      typeof record.source?.href !== 'string' ||
+      typeof record.source.title !== 'string'
+    ) {
+      removeArticleReturnRecord();
+      return null;
+    }
+
+    return {
+      createdAt: record.createdAt,
+      source: {
+        href: record.source.href,
+        title: record.source.title,
+      },
+      targetPage: record.targetPage,
+    };
+  } catch {
+    removeArticleReturnRecord();
+    return null;
+  }
+}
+
+function writeArticleReturnRecord(record: DocsArticleReturnRecord) {
+  try {
+    getSessionStorage()?.setItem(
+      DOCS_ARTICLE_RETURN_STORAGE_KEY,
+      JSON.stringify(record),
+    );
+  } catch {
+    // Storage can be unavailable in restricted browser contexts.
+  }
+}
+
+function removeArticleReturnRecord() {
+  try {
+    getSessionStorage()?.removeItem(DOCS_ARTICLE_RETURN_STORAGE_KEY);
+  } catch {
+    // Storage can be unavailable in restricted browser contexts.
+  }
+}
+
+function getSessionStorage() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
+
+function getCurrentUrl() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  return new URL(window.location.href);
+}
+
+function getCurrentDocsPageKey() {
+  const currentUrl = getCurrentUrl();
+
+  return currentUrl ? getDocsPageKey(currentUrl) : null;
+}
+
+function getSameOriginUrl(href: string) {
+  const currentUrl = getCurrentUrl();
+
+  if (!currentUrl) {
+    return null;
+  }
+
+  try {
+    const url = new URL(href, currentUrl);
+    return url.origin === currentUrl.origin ? url : null;
+  } catch {
+    return null;
+  }
+}
+
+function getSafeStoredDocsHref(href: string) {
+  const url = getSameOriginUrl(href);
+
+  if (!url || !getDocsPageKey(url)) {
+    return null;
+  }
+
+  return getPathHref(url);
+}
+
+function getDocsPageKey(url: URL) {
+  const pathname = normalizePathname(url.pathname);
+
+  if (!isDocsPagePath(pathname)) {
+    return null;
+  }
+
+  return `${pathname}${url.search}`;
+}
+
+function isDocsPagePath(pathname: string) {
+  const segments = pathname.split('/').filter(Boolean);
+  const locale = segments[0];
+
+  return Boolean(
+    locale && segments.length >= 2 && normalizeLocale(locale) === locale,
+  );
+}
+
+function getPathHref(url: URL) {
+  return `${normalizePathname(url.pathname)}${url.search}${url.hash}`;
+}
+
+function normalizePathname(pathname: string) {
+  const normalized = pathname.replace(/\/+$/, '');
+
+  return normalized || '/';
 }
 
 function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
@@ -474,7 +780,7 @@ export function DocsTableOfContents({
       });
     };
 
-    const scrollContainer = getDesktopDocsScrollContainer();
+    const scrollContainer = getActiveDocsScrollContainer();
     const observer = new MutationObserver(updateActiveUrl);
 
     scrollContainer?.addEventListener('scroll', updateActiveUrl, {
@@ -672,16 +978,6 @@ function isHiddenFromToc(element: HTMLElement) {
   }
 
   return false;
-}
-
-function getActiveDocsScrollContainer() {
-  return getDesktopDocsScrollContainer();
-}
-
-function getDesktopDocsScrollContainer() {
-  return document.querySelector<HTMLElement>(
-    '[data-testid="docs-main-desktop-scroll"]',
-  );
 }
 
 function getScrollViewportRect(scrollContainer: HTMLElement | null) {

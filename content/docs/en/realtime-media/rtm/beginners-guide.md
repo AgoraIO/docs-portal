@@ -26,7 +26,7 @@ Signaling is widely used by more than 3000 customers in the following fields:
 - Parallel control
 - Smart city
 
-To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io.md) the Agora Signaling team.
+To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io) the Agora Signaling team.
 
 ## Getting started
 
@@ -35,5 +35,5 @@ To create and set up a project for Signaling in Agora Console, see [Agora accoun
 * [SDK quickstart](./index.mdx)
 * [Message channels](./build/work-with-channels/message-channel.mdx)
 * [Stream channels](./build/work-with-channels/stream-channel.mdx)
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
+* [API reference](/en/api-reference/api-ref/signaling)
 * [Pricing](./reference/pricing.md)

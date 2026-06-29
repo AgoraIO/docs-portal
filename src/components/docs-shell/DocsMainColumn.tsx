@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/cn';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import {
   type AppLocale,
@@ -13,7 +13,6 @@ import {
 } from '@/lib/i18n/i18n-config';
 import { DocsPageFeedback } from './DocsPageFeedback';
 import { DocsSiteFooter } from './DocsSiteFooter';
-import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsMainColumn({
   children,
@@ -30,12 +29,9 @@ export function DocsMainColumn({
   previous?: { title: string; url: string };
   resetKey?: string;
 }) {
-  const { isScrollbarVisible, scrollContainerRef } =
-    useTransientScrollbar<HTMLDivElement>();
-
   return (
     <main
-      className="h-full min-h-0 min-w-0 flex-1 overflow-hidden bg-background"
+      className="min-w-0 flex-1 bg-background"
       data-testid="docs-main-column"
     >
       <div
@@ -53,17 +49,13 @@ export function DocsMainColumn({
         <DocsSiteFooter className="relative left-1/2 w-screen -translate-x-1/2 lg:hidden" />
       </div>
       <div
-        className={cn(
-          'docs-scrollbar hidden h-full min-h-0 overflow-y-auto lg:block',
-          isScrollbarVisible && 'docs-scrollbar-visible',
-        )}
+        className="hidden lg:block"
         data-scroll-restoration-id={DOCS_MAIN_SCROLL_RESTORATION_ID}
         data-testid="docs-main-desktop-scroll"
         data-reset-key={resetKey}
-        ref={scrollContainerRef}
       >
-        <div className="flex min-h-full flex-col px-4 py-8 sm:px-6 lg:px-10">
-          <div className="min-w-0 flex-1">{children}</div>
+        <div className="flex flex-col px-4 py-8 sm:px-6 lg:px-10">
+          <div className="min-w-0">{children}</div>
           <DocsPageFooter
             layoutMode={layoutMode}
             locale={locale}
@@ -96,9 +88,7 @@ function DocsPageFooter({
     <footer
       className={cn(
         'mt-10 flex flex-col gap-5 border-t border-[color:var(--line-soft)] pt-6',
-        isWideDocsLayout(layoutMode)
-          ? 'max-w-none'
-          : 'max-w-[var(--content-max)]',
+        layoutMode === 'openapi' ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
       data-testid="docs-page-footer"
     >

@@ -7,6 +7,7 @@ import {
   forwardRef,
   type MouseEvent,
   type ReactNode,
+  useEffect,
   useState,
 } from 'react';
 import {
@@ -31,25 +32,25 @@ type RenderableSidebarSectionNode = SidebarSectionNode & {
 };
 
 const sidebarToggleClassName =
-  'min-h-[30px] h-auto items-start justify-between rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
+  'min-h-[28px] h-auto items-center justify-between rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]';
 
 const sidebarSectionTitleClassName =
   'block min-w-0 flex-1 break-words leading-5 whitespace-normal';
 
 const sidebarSubButtonClassName =
-  'relative min-h-[28px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[12.75px] text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const sidebarPageButtonClassName =
-  'relative min-h-[30px] h-auto items-start overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
+  'relative min-h-[28px] h-auto items-center overflow-visible rounded-[7px] px-3 py-1 text-[13px] font-medium text-[color:var(--ink-3)] before:absolute before:left-1 before:top-1/2 before:h-3.5 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] data-[active=true]:bg-[color:var(--accent-brand-soft)] data-[active=true]:font-semibold data-[active=true]:text-[color:var(--accent-brand)] data-[active=true]:shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] data-[active=true]:before:bg-[color:var(--accent-brand)] [&>span:last-child]:overflow-visible [&>span:last-child]:break-words [&>span:last-child]:whitespace-normal';
 
 const openApiSidebarButtonClassName =
-  'h-auto min-h-[28px] items-start overflow-visible py-1';
+  'h-auto min-h-[28px] items-center overflow-visible py-1';
 
 const expandedSidebarChildrenClassName =
   'border-l border-[color:var(--line-strong)] pl-3';
 
 const nestedExpandedSidebarChildrenClassName =
-  'mt-1 flex flex-col gap-1 border-l border-[color:var(--line-strong)] pl-3';
+  'mt-0.5 flex flex-col gap-0.5 border-l border-[color:var(--line-strong)] pl-3';
 
 const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
 
@@ -128,11 +129,20 @@ function SidebarSection({
   node: RenderableSidebarSectionNode;
   onSelectPath: () => void;
 }) {
+  const hasActiveChild = node.children.some((child) =>
+    isNodeActive(child, activePath),
+  );
+  const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
+  const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible ||
-    node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
         0,
@@ -150,6 +160,7 @@ function SidebarSection({
       <SidebarLinkedSection
         activePath={activePath}
         collapsible={node.collapsible}
+        defaultOpen={node.defaultOpen}
         icon={node.icon}
         items={node.children}
         onSelectPath={onSelectPath}
@@ -162,7 +173,7 @@ function SidebarSection({
   if (!node.collapsible) {
     return (
       <div>
-        <SidebarGroupLabel className="mt-3.5 mb-1.5 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+        <SidebarGroupLabel className="mt-3 mb-1 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
           <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
@@ -273,6 +284,7 @@ function SidebarSection({
 function SidebarLinkedSection({
   activePath,
   collapsible,
+  defaultOpen: defaultOpenProp,
   icon,
   items,
   onSelectPath,
@@ -281,17 +293,23 @@ function SidebarLinkedSection({
 }: {
   activePath: string;
   collapsible?: boolean;
+  defaultOpen?: boolean;
   icon?: string;
   items: DocsSidebarNode[];
   onSelectPath: () => void;
   title: string;
   url: string;
 }) {
-  const defaultOpen =
-    !collapsible ||
-    items.some((child) => isNodeActive(child, activePath)) ||
-    url === activePath;
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const hasActiveChild = items.some((child) => isNodeActive(child, activePath));
+  const canAutoOpen = defaultOpenProp !== false;
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || url === activePath);
+  const defaultOpen = !collapsible || shouldRevealActivePath;
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
 
   if (items.length === 0) {
     return (
@@ -315,39 +333,23 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <div className="flex items-stretch gap-1">
-        <SidebarMenuButton
-          asChild
+      <SidebarMenuButton
+        aria-expanded={isOpen}
+        className={cn(sidebarToggleClassName, 'overflow-visible')}
+        onClick={() => setIsOpen((value) => !value)}
+        type="button"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <SidebarConfiguredIcon icon={icon} />
+          <span className={sidebarSectionTitleClassName}>{title}</span>
+        </span>
+        <ChevronDownIcon
           className={cn(
-            sidebarToggleClassName,
-            'min-w-0 flex-1 justify-start overflow-visible',
+            'size-4 shrink-0 transition-transform',
+            isOpen ? 'rotate-0' : '-rotate-90',
           )}
-          isActive={url === activePath}
-        >
-          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
-            <span className="flex min-w-0 items-center gap-2">
-              <SidebarConfiguredIcon icon={icon} />
-              <span className={sidebarSectionTitleClassName}>{title}</span>
-            </span>
-          </Link>
-        </SidebarMenuButton>
-        <SidebarMenuButton
-          aria-expanded={isOpen}
-          className={cn(
-            sidebarToggleClassName,
-            'w-10 shrink-0 justify-center px-0',
-          )}
-          onClick={() => setIsOpen((value) => !value)}
-          type="button"
-        >
-          <ChevronDownIcon
-            className={cn(
-              'size-4 shrink-0 transition-transform',
-              isOpen ? 'rotate-0' : '-rotate-90',
-            )}
-          />
-        </SidebarMenuButton>
-      </div>
+        />
+      </SidebarMenuButton>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
@@ -408,8 +410,14 @@ function SidebarQuickstartGroup({
   pages: SidebarPageNode[];
   title: string;
 }) {
-  const defaultOpen = pages.some((child) => child.url === activePath);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const shouldRevealActivePath = pages.some(
+    (child) => child.url === activePath,
+  );
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    shouldRevealActivePath,
+    shouldRevealActivePath,
+    activePath,
+  );
 
   return (
     <SidebarMenuItem>
@@ -469,11 +477,20 @@ function SidebarNestedSection({
   node: SidebarSectionNode;
   onSelectPath: () => void;
 }) {
+  const hasActiveChild = node.children.some((child) =>
+    isNodeActive(child, activePath),
+  );
+  const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
+  const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible ||
-    node.children.some((child) => isNodeActive(child, activePath)) ||
-    shouldDefaultOpenSection(node.title, activePath);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
   return (
     <div className="w-full">
       <button
@@ -540,6 +557,23 @@ function isNodeActive(node: DocsSidebarNode, activePath: string): boolean {
   }
 
   return node.children.some((child) => isNodeActive(child, activePath));
+}
+
+function useActivePathDisclosure(
+  defaultOpen: boolean,
+  shouldRevealActivePath: boolean,
+  activePath: string,
+) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const activeRevealKey = shouldRevealActivePath ? activePath : undefined;
+
+  useEffect(() => {
+    if (activeRevealKey !== undefined) {
+      setIsOpen(true);
+    }
+  }, [activeRevealKey]);
+
+  return [isOpen, setIsOpen] as const;
 }
 
 function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {
@@ -649,8 +683,10 @@ function mergeBestPracticesIntoBuild(
 function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
+  // Linked sections (those with a url) manage their own collapsible state, so
+  // don't force them always-open here — only plain root sections are flattened.
   return nodes.map((node) =>
-    node.type === 'section'
+    node.type === 'section' && !node.url
       ? {
           ...node,
           collapsible: false,

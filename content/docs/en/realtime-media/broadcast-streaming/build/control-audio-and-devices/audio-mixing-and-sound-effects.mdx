@@ -286,7 +286,7 @@ This section contains content that completes the information on this page, or po
 
 ### FAQs
 
-* [Why can't I play the audio file using `startAudioMixing` or `playEffect` on Android 9?](https://docs-md.agora.io/en/help/integration-issues/android_startaudiomixing_permission)
+* [Why can't I play the audio file using `startAudioMixing` or `playEffect` on Android 9?](/en/api-reference/faq/integration/android_startaudiomixing_permission)
 
 ### Sample project
 
@@ -705,7 +705,7 @@ To implement audio mixing in your project, take the following steps:
     * When the `publish` method is called, the audio data is transmitted to Agora SDRTN® and eventually heard by the remote user.
     The microphone audio track continues to acquire audio data until the `close` method is invoked, at which point the audio track becomes unavailable.
 
-  1. **BufferSourceAudioTrack**
+  2. **BufferSourceAudioTrack**
 
     For audio files, the Video SDK does not collect audio data; instead, it achieves a similar effect by reading files, shown in the following figure.
 
@@ -720,7 +720,7 @@ To implement audio mixing in your project, take the following steps:
     1. **Initiating file reading:**
        * After creating an audio track from an audio file, the SDK does not automatically read the file. You need to use `BufferSourceAudioTrack`'s `startProcessAudioBuffer` method to initiate the reading and audio data processing. You then call the `play` and `publish` methods to make the audio file audible locally and remotely.
 
-1. **Enable audio mixing**
+2. **Enable audio mixing**
 
   Video SDK supports publishing multiple audio tracks. You can mix audio by publishing `BufferSourceAudioTrack` together with the audio tracks created through the microphone. To enable audio mixing, refer to the following code:
 
@@ -741,7 +741,7 @@ To implement audio mixing in your project, take the following steps:
   await client.unpublish([audioFileTrack]);
   ```
 
-1. **Manage audio mixing**
+3. **Manage audio mixing**
 
   To handle audio mixing, refer to the following code:
 

@@ -73,13 +73,18 @@ type HeadingComponent = ComponentType<{
 }>;
 type ParameterListComponent = ComponentType<{
   children: ReactNode;
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
   title?: ReactNode;
 }>;
 type ParameterComponent = ComponentType<{
   children: ReactNode;
+  defaultValue?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
+  possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
 }>;
@@ -325,13 +330,22 @@ describe('common MDX registry', () => {
     const Parameter = components.Parameter as ParameterComponent;
 
     render(
-      <ParameterList title="params">
+      <ParameterList title="params" required>
         <Parameter name="language" required type="string">
           Recognition language.
         </Parameter>
-        <Parameter name="metadata" optional type="object">
+        <Parameter name="model" required={false} type="string">
+          Recognition model.
+        </Parameter>
+        <Parameter
+          defaultValue="{}"
+          name="metadata"
+          optional
+          possibleValues="provider-specific object"
+          type="object"
+        >
           <p>Provider-specific metadata.</p>
-          <ParameterList>
+          <ParameterList nullable>
             <Parameter name="metadata.request_id" nullable type="string">
               Optional request identifier.
             </Parameter>
@@ -342,18 +356,24 @@ describe('common MDX registry', () => {
 
     expect(screen.getByText('params')).toBeVisible();
     expect(screen.getByText('language')).toBeVisible();
-    expect(screen.getAllByText('string')).toHaveLength(2);
-    expect(screen.getByText('required')).toBeVisible();
+    expect(screen.getAllByText('string')).toHaveLength(3);
+    expect(screen.getAllByText('required')).toHaveLength(2);
+    expect(screen.getByText('model')).toBeVisible();
     expect(screen.getByText('metadata')).toBeVisible();
-    expect(screen.getByText('optional')).toBeVisible();
+    expect(screen.getAllByText('optional')).toHaveLength(2);
+    expect(screen.getByText('Default value')).toBeVisible();
+    expect(screen.getByText('{}')).toBeVisible();
+    expect(screen.getByText('Possible values')).toBeVisible();
+    expect(screen.getByText('provider-specific object')).toBeVisible();
     expect(screen.getByText('metadata.request_id')).toBeVisible();
-    expect(screen.getByText('nullable')).toBeVisible();
+    expect(screen.getAllByText('nullable')).toHaveLength(2);
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 
   it('registers platform sentinels and internal platform renderers', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
+    expect(components.RTCMinutesCalculator).toBeDefined();
     expect(components.PlatformInline).toBeDefined();
     expect(components.PlatformStructured).toBeDefined();
     expect(components.ParameterList).toBeDefined();
@@ -1068,6 +1088,219 @@ describe('common MDX registry', () => {
     ).toBeVisible();
   });
 
+  it('preserves explicit generated code tab group syncing without the MDX page provider', () => {
+    sessionStorage.clear();
+
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <>
+        <CodeBlockTabs defaultValue="python" groupId="explicit-sdk" persist>
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="ts">TypeScript</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="python">
+            <Pre>
+              <code>first python sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="ts">
+            <Pre>
+              <code>first typescript sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="python" groupId="explicit-sdk" persist>
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="ts">TypeScript</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="python">
+            <Pre>
+              <code>second python sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="ts">
+            <Pre>
+              <code>second typescript sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'TypeScript' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'TypeScript' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'TypeScript' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(sessionStorage.getItem('explicit-sdk')).toBe('ts');
+    expect(
+      screen.getByText('second typescript sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+  });
+
+  it('syncs generated code tabs with the same values inside the MDX page provider', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>first java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>first kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>second java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>second kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </MDXAccordionProvider>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByText('first kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second java sample').closest('[role=tabpanel]'),
+    ).not.toBeVisible();
+  });
+
+  it('keeps generated code tabs local without the MDX page provider', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>first local java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>first local kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>second local java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>second local kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'Java' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByText('first local kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second local java sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+  });
+
   it('keeps inactive generated code tab content mounted', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
@@ -1165,6 +1398,125 @@ describe('common MDX registry', () => {
       'data-state',
       'inactive',
     );
+  });
+
+  it('renders nested parameters in a dedicated child region outside the parent description', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="mllm" required>
+        <Parameter name="messages" required={false} type="array[object]">
+          <p>Conversation history items passed to the model.</p>
+          <Parameter name="role" required type="string">
+            The role of the message author.
+          </Parameter>
+          <Parameter name="content" required type="string">
+            The message text.
+          </Parameter>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const parent = screen
+      .getByText('messages')
+      .closest('[data-parameter-item]');
+
+    expect(parent).toBeInTheDocument();
+
+    const description = parent?.querySelector('[data-parameter-description]');
+    const nestedParameters = parent?.querySelector('[data-parameter-children]');
+
+    expect(description).toHaveTextContent(
+      'Conversation history items passed to the model.',
+    );
+    expect(description).not.toHaveTextContent('role');
+    expect(description).not.toHaveTextContent('content');
+    expect(nestedParameters).toHaveTextContent('role');
+    expect(nestedParameters).toHaveTextContent('content');
+  });
+
+  it('renders nested ParameterList blocks in the same dedicated child region', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="llm" required>
+        <Parameter name="config" required={false} type="object">
+          Additional parameters passed to the vendor.
+          <ParameterList title="params">
+            <Parameter name="model" required type="string">
+              The model to use.
+            </Parameter>
+          </ParameterList>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const parent = screen.getByText('config').closest('[data-parameter-item]');
+
+    expect(parent).toBeInTheDocument();
+
+    const description = parent?.querySelector('[data-parameter-description]');
+    const nestedParameters = parent?.querySelector('[data-parameter-children]');
+
+    expect(description).toHaveTextContent(
+      'Additional parameters passed to the vendor.',
+    );
+    expect(description).not.toHaveTextContent('model');
+    expect(nestedParameters).toHaveTextContent('params');
+    expect(nestedParameters).toHaveTextContent('model');
+  });
+
+  it('renders comma-separated possible values as scannable chips', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="turn_detection">
+        <Parameter
+          name="mode"
+          possibleValues="agora_vad, server_vad"
+          type="string"
+        >
+          Turn detection mode.
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const possibleValues = screen.getByLabelText('Possible values for mode');
+
+    expect(possibleValues).toHaveAttribute('data-parameter-possible-values');
+    expect(within(possibleValues).getByText('agora_vad')).toBeInTheDocument();
+    expect(within(possibleValues).getByText('server_vad')).toBeInTheDocument();
+    expect(possibleValues).not.toHaveTextContent('agora_vad, server_vad');
+  });
+
+  it('keeps bracketed numeric ranges as a single possible value chip', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+
+    render(
+      <ParameterList title="params">
+        <Parameter name="pitch" possibleValues="[-0.75,0.75]" type="number">
+          Pitch adjustment.
+        </Parameter>
+      </ParameterList>,
+    );
+
+    const possibleValues = screen.getByLabelText('Possible values for pitch');
+
+    expect(
+      within(possibleValues).getByText('[-0.75,0.75]'),
+    ).toBeInTheDocument();
+    expect(
+      within(possibleValues).queryByText('[-0.75'),
+    ).not.toBeInTheDocument();
+    expect(within(possibleValues).queryByText('0.75]')).not.toBeInTheDocument();
   });
 
   it('does not expose overview-only widgets from the common registry by default', () => {

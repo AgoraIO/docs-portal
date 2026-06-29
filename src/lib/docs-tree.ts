@@ -42,6 +42,10 @@ export type DocsSidebarPageNode = {
 export type DocsSidebarSectionNode = {
   children: DocsSidebarNode[];
   collapsible?: boolean;
+  // When explicitly `false`, the section starts collapsed even when it (or one of
+  // its children) is the active page — used for hub folders like FAQ whose landing
+  // page already lists its children, so auto-expanding the sidebar is redundant.
+  defaultOpen?: boolean;
   icon?: string;
   id: string;
   title: string;
@@ -312,6 +316,14 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     return [];
   }
 
+  // A folder whose index shares the folder's title keeps a `url` on its section
+  // (so it stays a collapsible toggle at the root) while still showing the index
+  // as an "Overview" child so the landing page remains reachable.
+  const indexLinksHeader = Boolean(
+    node.index &&
+      normalizeLabel(node.index.name, '') === normalizeLabel(node.name, ''),
+  );
+
   const children: DocsSidebarNode[] = [];
   let pendingIndexNode: DocsSidebarPageNode | null =
     node.index &&
@@ -322,7 +334,38 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
 
-  for (const child of node.children) {
+  // A folder's own index can also appear in its `children` (e.g. when meta lists
+  // `pages: ["index"]`). Skip that duplicate so the index is only represented once
+  // (as the section's "Overview" child or, for index-only folders, as a leaf).
+  const indexUrl = node.index?.url;
+  const visibleChildren = node.children.filter(
+    (child) => !(child.type === 'page' && child.url === indexUrl),
+  );
+
+  // An index-only folder whose index is exposed as its single page child (Fumadocs
+  // does this for `pages: ["index"]`) collapses to one leaf link carrying the
+  // folder's title — e.g. an FAQ category folder becomes a flat "Integration" link.
+  // The child is the folder's own index (not a deeper sub-page) only when its last
+  // URL segment matches the folder slug, so a folder holding a single unrelated
+  // sub-page is left as a section.
+  const nonSeparatorChildren = visibleChildren.filter(
+    (child) => child.type !== 'separator',
+  );
+  const onlyChild = nonSeparatorChildren[0];
+  if (
+    !node.index &&
+    nonSeparatorChildren.length === 1 &&
+    onlyChild.type === 'page' &&
+    lastUrlSegment(onlyChild.url) === folderSlug(node.name)
+  ) {
+    return [
+      pageTreeItemToSidebarPageNode(onlyChild, undefined, {
+        title: normalizeLabel(node.name, onlyChild.url),
+      }),
+    ];
+  }
+
+  for (const child of visibleChildren) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
@@ -362,6 +405,18 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     }
   }
 
+  // Rule: an index-only folder collapses to a single leaf link.
+  // Fires before flushing the pending index so that children.length reflects
+  // only real built children (not the index itself).
+  const hasRealChildren = visibleChildren.some((c) => c.type !== 'separator');
+  if (!hasRealChildren && node.index) {
+    return [
+      pageTreeItemToSidebarPageNode(node.index, undefined, {
+        title: normalizeLabel(node.name, node.index.url),
+      }),
+    ];
+  }
+
   if (pendingIndexNode) {
     if (currentSection) {
       currentSection.children.push(pendingIndexNode);
@@ -376,7 +431,12 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     {
       children,
       collapsible: true,
+      // Honor an explicit `defaultOpen: false` from the folder's meta so hub
+      // folders (e.g. FAQ) stay collapsed even when active.
+      ...(node.defaultOpen === false ? { defaultOpen: false } : {}),
       ...(icon ? { icon } : {}),
+      // Rule: a folder whose index matches its title links the header to it.
+      ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
       title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',
@@ -656,6 +716,15 @@ function findSidebarBreadcrumb(
     ];
   }
 
+  if (node.url === activePath) {
+    return [
+      {
+        title: node.title,
+        url: node.url,
+      },
+    ];
+  }
+
   for (const child of node.children) {
     const childBreadcrumb = findSidebarBreadcrumb(child, activePath);
 
@@ -710,6 +779,14 @@ function normalizeLabel(value: ReactNode, fallback: string) {
   }
 
   return fallback;
+}
+
+function lastUrlSegment(url: string): string {
+  return url.split('/').filter(Boolean).at(-1)?.toLowerCase() ?? '';
+}
+
+function folderSlug(name: ReactNode): string {
+  return normalizeLabel(name, '').toLowerCase().replace(/\s+/g, '-');
 }
 
 export function getConfiguredIconName(node: Node, fallback?: Item) {

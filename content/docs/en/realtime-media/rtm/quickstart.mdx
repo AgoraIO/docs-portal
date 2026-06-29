@@ -116,7 +116,7 @@ Use either of the following methods to integrate Signaling SDK into your project
     Replace `x.y.z` with the specific SDK version number, such as `2.2.8`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
 **Using CDN**
-1. [Download](/sdks?platform=android) the latest version of Signaling SDK.
+1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK for Android.
 1. Copy all files in the `sdk` folder of the package to the `/app/libs` folder of the project.
 1. To add the SDK reference, open the project file `/Gradle Scripts/build.gradle(Module: <projectname>.app)` and add the following code:
 
@@ -158,7 +158,7 @@ Use either of the following methods to integrate Signaling SDK into your project
         ```
 
 :::note
-To integrate Signaling SDK version `2.2.0` or later alongside Video SDK version `4.3.0` or later, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+To integrate Signaling SDK version `2.2.0` or later alongside Video SDK version `4.3.0` or later, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 :::
 
 ### Create a user interface
@@ -937,7 +937,7 @@ private fun login(token: String) {
 To confirm that login is successful, use the `login` return value, or listen to the `onLinkStateEvent` event notification which provides the error code and reason for the login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning
@@ -1218,7 +1218,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 
 ### Sample projects
@@ -1238,8 +1238,8 @@ Download the projects or view the source code for more detailed examples.
 
 ### API reference
 
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -1290,7 +1290,7 @@ In Xcode, create a Single View app under the iOS platform. Configure the project
 Use either of the following methods to integrate Signaling SDK into your project.
 
 **Using CDN**
-1. [Download](/sdks) the latest version of Signaling SDK.
+1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK.
 
 1. Copy the files in the SDK package folder `/libs/AgoraRtmKit.xcframework` to the project path.
 
@@ -1325,12 +1325,12 @@ Use either of the following methods to integrate Signaling SDK into your project
 **Using Swift Package Manager**
 Use the following link to integrate the SDK using Swift Package Manager (SPM):
 
-```
+```text
 {`https://github.com/AgoraIO/AgoraRtm_Apple.git`}
 ```
 
 :::note
-To integrate Signaling SDK version 2.2.0 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+To integrate Signaling SDK version 2.2.0 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 :::
 
 ### Create a user interface
@@ -2129,13 +2129,13 @@ func login() {
 Use the `login` return value, or listen to the `didReceiveLinkStateEvent` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `connecting`. After a successful login, the state is updated to `Connected`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `AgoraRtmLinkState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `AgoraRtmLinkState` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 Use the `loginByToken` return value, or listen to the `connectionChangedToState` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `AgoraRtmClientConnectionStateConnecting`. After a successful login, the state is updated to `AgoraRtmClientConnectionStateConnected`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `connectionChangedToState` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `connectionChangedToState` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning
@@ -2374,7 +2374,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 
 ### Sample projects
@@ -2387,12 +2387,12 @@ Agora provides the following open source sample projects on GitHub for your refe
 ### API reference
 
 **Swift**
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 
 **Objective-C**
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -2445,7 +2445,7 @@ touch index.html
 Use either of the following methods to integrate Signaling SDK into your project.
 
 **Using CDN**
-1. [Download](/sdks?platform=web) the latest version of Signaling SDK.
+1. [Download](https://www.agora.io/en/download/) the latest version of Signaling SDK for Web.
 
 1. Add the following code to your project to reference the SDK:
 
@@ -2674,7 +2674,7 @@ try {
 Use the `login` return value, or listen to the `status` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `status` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `status` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning
@@ -2778,7 +2778,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -2786,8 +2786,8 @@ Explore and experiment with the [Signaling Online demo](https://digitallysavvy.g
 
 ### API reference
 
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -2852,7 +2852,7 @@ To create a new Flutter project, follow these steps:
     ```
 
     :::note
-    To integrate Signaling SDK version 2.2.1 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    To integrate Signaling SDK version 2.2.1 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     :::
 
 1. To install the dependencies, open the terminal and execute the following command in the project path:
@@ -3010,7 +3010,7 @@ void main() async {
 
 Follow the implementation steps to understand the core API calls in the sample code or to build the demo step-by-step.
 
-### Initialize the Signaling engine​
+### Initialize the Signaling engine
 
 Before calling any other Signaling SDK API, initialize an `RtmClient` object instance. Add the following code to the `lib/main.dart` file. 
 
@@ -3046,7 +3046,7 @@ void main() async {
 }
 ```
 
-### Add an event listener​
+### Add an event listener
 
 The event listener enables you to implement the processing logic in response to Signaling events. Use the following code to handle event notifications or display received messages:
 
@@ -3065,7 +3065,7 @@ rtmClient.addListener(
   });
 ```
 
-### Log in to Signaling​
+### Log in to Signaling
 
 To connect to Signaling and access Signaling network resources, such as sending messages, and subscribing to channels, call `login`.
 
@@ -3086,7 +3086,7 @@ try {
 }
 ```
 
-### Send a message​
+### Send a message
 
 To distribute a message to all subscribers of a message channel, call `publish`. The following code sends a string type message every second for 100 seconds.
 
@@ -3113,7 +3113,7 @@ for (var i = 0; i < 100; i++) {
 }
 ```
 
-### Subscribe and unsubscribe​
+### Subscribe and unsubscribe
 
 To receive messages sent to a channel, call `subscribe` to subscribe to channel messages:
 
@@ -3151,14 +3151,14 @@ try {
 
 For more information about subscribing and sending messages, see [Message channels](/en/realtime-media/rtm/build/work-with-channels/message-channel) and [Stream channels](/en/realtime-media/rtm/build/work-with-channels/stream-channel).
 
-### Log out of Signaling​
+### Log out of Signaling
 
 When a user no longer needs to use Signaling, call `logout`. Logging out means closing the connection between the client and Signaling. The user is automatically logged out or unsubscribed from all message and stream channels. Other users in the channel receive an `onPresenceEvent` notification of the user leaving the channel.
 
 ```dart
-// Paste the following code snippet below the "Log out of Signaling​" comment
+// Paste the following code snippet below the "Log out of Signaling" comment
 try {
-  // Log out of Signaling​
+  // Log out of Signaling
   var (status,response) = await rtmClient.logout();
   if (status.error == true) {
       print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
@@ -3218,7 +3218,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -3226,8 +3226,8 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 
 ### API reference
 
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="linux-cpp">
@@ -3279,10 +3279,10 @@ RTMProject/
 
 To integrate the Linux C++ Signaling SDK into your project:
 
-1. [Download](https://docs.agora.io/en/sdks?platform=linux) the latest version of the SDK and unzip it. 
+1. [Download](/en/api-reference/sdks?platform=linux) the latest version of the SDK and unzip it.
 
     :::note
-    To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/help/integration-issues/rtm2_rtc_integration_issue).
+    To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     :::
 
 1. Copy the files in the SDK package to the project folder as follows:
@@ -3645,7 +3645,7 @@ After you call this method, the SDK triggers the `onLoginResult` callback and re
 Use the `login` return value, or listen to the `onConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_CONNECTION_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_CONNECTION_STATE_CONNECTED`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning
@@ -3750,7 +3750,7 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### Sample project
 
@@ -3758,8 +3758,8 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 
 ### API reference
 
-* [API reference](https://docs.agora.io/en/signaling/reference/api)
-* [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -3813,7 +3813,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 ### Integrate the SDK
 
-1. [Download](https://docs.agora.io/en/sdks?platform=unity) the latest version of the Agora Signaling SDK, and unzip the contents to a local folder.
+1. [Download](/en/api-reference/sdks?platform=unity) the latest version of the Agora Signaling SDK, and unzip the contents to a local folder.
 
 1. In Unity, click **Assets > Import Package > Custom Package**.
 
@@ -4476,7 +4476,7 @@ else
 Use the `LoginAsync` return value, or listen to the `OnConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `OnConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event Listeners](/signaling/reference/api).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `OnConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning
@@ -4607,10 +4607,10 @@ This section contains content that completes the information on this page, or po
 
 ### Token authentication
 
-In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow.md). 
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
 
 ### API reference
 
-- [API reference](https://docs.agora.io/en/signaling/reference/api)
-- [Event listeners](./build/send-and-receive-messages/add-event-listener.mdx)
+- [API reference](/en/api-reference/api-ref/signaling)
+- [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>

@@ -53,7 +53,7 @@ On the sixth day of each month, Agora automatically deducts the fee for the prev
 - Your monthly usage does not exceed the free quota.
 - You do not use any other charged Agora services or products.
 
-If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](reference/pricing.md) at your earliest convenience and avoid account suspension.
+If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](./pricing) at your earliest convenience and avoid account suspension.
 
 #### Account suspension
 
@@ -80,7 +80,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](reference/subscription-packages.md) or [top-up package](reference/subscription-packages.md). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](./subscription-packages) or [top-up package](./subscription-packages). This option is highly recommended.
 
 ## Account settlement
 
@@ -137,7 +137,7 @@ This section outlines the stages that an Agora product or service moves through,
 
 ### Default introduction period
 
-Agora guarantees a minimum introduction period of 12 months from the release of a product on the [Agora Developer Center](https://docs.agora.io/en/). During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
+Agora guarantees a minimum introduction period of 12 months from the release of a product on the Agora Developer Center. During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
 
 ### SDK lifecycle
 

@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
 
-const AGORA_DOCS_BASE_URL = 'https://docs.agora.io';
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
 const AGORA_DOCS_MCP_NAME = 'agora-docs';
 const AGORA_MCP_DOC_ROUTE = '/$locale/$tab/$';
@@ -40,11 +39,21 @@ export type DocsCopyPageAction = {
 };
 
 function buildCanonicalPageUrl(locale: string, slug: string) {
-  return `${AGORA_DOCS_BASE_URL}/${locale}/${slug}`;
+  return buildDocsPageUrl(`/${locale}/${slug}`);
 }
 
 function buildMarkdownPageUrl(markdownUrl: string) {
-  return `${AGORA_DOCS_BASE_URL}${markdownUrl}`;
+  return buildDocsPageUrl(markdownUrl);
+}
+
+function buildDocsPageUrl(path: string) {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const origin =
+    typeof window === 'undefined' || !window.location.origin
+      ? ''
+      : window.location.origin;
+
+  return `${origin}${normalizedPath}`;
 }
 
 function buildAiPrompt(input: {
@@ -253,6 +262,8 @@ export {
   buildCanonicalPageUrl,
   buildChatGptUrl,
   buildClaudeUrl,
+  buildDocsPageUrl,
+  buildMarkdownPageUrl,
   getCursorMcpConfig,
   getVsCodeMcpCommand,
 };

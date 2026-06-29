@@ -54,6 +54,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
   contentPath?: string;
@@ -86,18 +87,24 @@ type AccordionsRootProps = Omit<
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
   defaultValue?: string;
+  groupId?: string;
   onValueChange?: (value: string) => void;
   value?: string;
 };
 type PreProps = CodeBlockProps;
 type ParameterListProps = ComponentProps<'div'> & {
+  nullable?: boolean;
+  optional?: boolean;
+  required?: boolean;
   title?: ReactNode;
 };
 type ParameterProps = ComponentProps<'div'> & {
   children?: ReactNode;
+  defaultValue?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
+  possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
 };
@@ -117,7 +124,9 @@ type ActiveAccordion = {
 
 type AccordionPageState = {
   activeAccordion?: ActiveAccordion;
+  codeBlockTabValues: Record<string, string>;
   setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
+  setCodeBlockTabValues: Dispatch<SetStateAction<Record<string, string>>>;
 };
 
 const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
@@ -126,9 +135,17 @@ const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
+  const [codeBlockTabValues, setCodeBlockTabValues] = useState<
+    Record<string, string>
+  >({});
   const value = useMemo(
-    () => ({ activeAccordion, setActiveAccordion }),
-    [activeAccordion],
+    () => ({
+      activeAccordion,
+      codeBlockTabValues,
+      setActiveAccordion,
+      setCodeBlockTabValues,
+    }),
+    [activeAccordion, codeBlockTabValues],
   );
 
   return (
@@ -161,26 +178,33 @@ function collectTabValues(children: ReactNode, values: string[] = []) {
   return values;
 }
 
-function useSafeTabValue({
+function useTabValues({
   children,
-  defaultValue,
   items,
-  onValueChange,
-  value,
 }: {
   children?: ReactNode;
-  defaultValue?: string;
   items?: string[];
-  onValueChange?: (value: string) => void;
-  value?: string;
 }) {
-  const values = useMemo(() => {
+  return useMemo(() => {
     if (items?.length) {
       return items.map(escapeTabValue);
     }
 
     return collectTabValues(children);
   }, [children, items]);
+}
+
+function useSafeTabValue({
+  defaultValue,
+  onValueChange,
+  value,
+  values,
+}: {
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  value?: string;
+  values: string[];
+}) {
   const validValues = useMemo(() => new Set(values), [values]);
   const fallbackValue = defaultValue ?? values.at(0);
   const initialValue =
@@ -234,12 +258,12 @@ function Tabs({
   value,
   ...props
 }: TabsRootProps) {
+  const values = useTabValues({ children, items });
   const { safeValue, setSafeValue } = useSafeTabValue({
-    children,
     defaultValue,
-    items,
     onValueChange,
     value,
+    values,
   });
 
   return (
@@ -254,6 +278,24 @@ function Tabs({
       {children}
     </ControlledFumadocsTabs>
   );
+}
+
+function getCodeBlockTabsStateKey({
+  groupId,
+  values,
+}: {
+  groupId?: string;
+  values: string[];
+}) {
+  if (groupId) {
+    return `group:${groupId}`;
+  }
+
+  if (values.length === 0) {
+    return undefined;
+  }
+
+  return `values:${[...values].sort().join('\u001f')}`;
 }
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
@@ -400,22 +442,70 @@ function CodeBlockTabs({
   children,
   className,
   defaultValue,
+  groupId,
   onValueChange,
   value,
   ...props
 }: CodeBlockTabsRootProps) {
+  const pageState = useContext(AccordionPageStateContext);
+  const values = useTabValues({ children });
+  const stateKey = useMemo(
+    () => getCodeBlockTabsStateKey({ groupId, values }),
+    [groupId, values],
+  );
+  const sharedValue =
+    value === undefined && stateKey
+      ? pageState?.codeBlockTabValues[stateKey]
+      : undefined;
+  const handleValueChange = useCallback(
+    (nextValue: string) => {
+      if (value === undefined && stateKey) {
+        pageState?.setCodeBlockTabValues((current) => {
+          if (current[stateKey] === nextValue) {
+            return current;
+          }
+
+          return {
+            ...current,
+            [stateKey]: nextValue,
+          };
+        });
+      }
+
+      onValueChange?.(nextValue);
+    },
+    [onValueChange, pageState, stateKey, value],
+  );
   const { safeValue, setSafeValue } = useSafeTabValue({
-    children,
     defaultValue,
-    onValueChange,
-    value,
+    onValueChange: handleValueChange,
+    value: value ?? sharedValue,
+    values,
   });
+
+  useEffect(() => {
+    if (!(pageState && stateKey && value === undefined && safeValue)) {
+      return;
+    }
+
+    pageState.setCodeBlockTabValues((current) => {
+      if (current[stateKey] !== undefined) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [stateKey]: safeValue,
+      };
+    });
+  }, [pageState, safeValue, stateKey, value]);
 
   return (
     <FumadocsCodeBlockTabs
       {...props}
       className={cn('bg-fd-card', className)}
       defaultValue={defaultValue}
+      groupId={groupId}
       onValueChange={setSafeValue}
       value={safeValue}
     >
@@ -533,9 +623,14 @@ function CommandBlock({
 function ParameterList({
   children,
   className,
+  nullable,
+  optional,
+  required,
   title,
   ...props
 }: ParameterListProps) {
+  const requiredState = getRequiredState({ optional, required });
+
   return (
     <section
       className={cn(
@@ -545,9 +640,10 @@ function ParameterList({
       data-parameter-list=""
       {...props}
     >
-      {title ? (
-        <div className="border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
-          {title}
+      {title || requiredState || nullable ? (
+        <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+          {title ? <span>{title}</span> : null}
+          <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
       ) : null}
       <div className="divide-y divide-fd-border">{children}</div>
@@ -555,21 +651,70 @@ function ParameterList({
   );
 }
 
+function ParameterBadges({
+  nullable,
+  requiredState,
+}: {
+  nullable?: boolean;
+  requiredState: 'required' | 'optional' | null;
+}) {
+  if (!requiredState && !nullable) {
+    return null;
+  }
+
+  return (
+    <span className="flex flex-wrap gap-1.5">
+      {requiredState ? (
+        <span
+          className={cn(
+            'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
+            requiredState === 'required'
+              ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+              : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
+          )}
+        >
+          {requiredState}
+        </span>
+      ) : null}
+      {nullable ? (
+        <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
+          nullable
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 function Parameter({
   children,
   className,
+  defaultValue,
   name,
   nullable,
   optional,
+  possibleValues,
   required,
   type,
   ...props
 }: ParameterProps) {
-  const requiredState = required ? 'required' : optional ? 'optional' : null;
+  const requiredState = getRequiredState({ optional, required });
+  const childNodes = Children.toArray(children);
+  const descriptionChildren = childNodes.filter(
+    (child) => !isNestedParameterBlock(child) && !isBlankTextNode(child),
+  );
+  const nestedParameters = childNodes.filter(isNestedParameterBlock);
+  const parameterLabel = getPlainTextLabel(name);
 
   return (
-    <div className={cn('group/parameter', className)} {...props}>
-      <div className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]">
+    <div
+      className={cn('group/parameter', className)}
+      data-parameter-item=""
+      {...props}
+    >
+      <div
+        className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]"
+        data-parameter-main=""
+      >
         <div className="min-w-0 space-y-2">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             {name ? (
@@ -583,32 +728,156 @@ function Parameter({
               </span>
             ) : null}
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {requiredState ? (
-              <span
-                className={cn(
-                  'rounded border px-1.5 py-0.5 text-[0.68rem] font-medium',
-                  required
-                    ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-                    : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-                )}
-              >
-                {requiredState}
-              </span>
-            ) : null}
-            {nullable ? (
-              <span className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 text-[0.68rem] font-medium text-fd-muted-foreground">
-                nullable
-              </span>
-            ) : null}
-          </div>
+          <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
-        <div className="min-w-0 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_[data-parameter-list]]:mt-4">
-          {children}
+        <div
+          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0"
+          data-parameter-description=""
+        >
+          {defaultValue || possibleValues ? (
+            <dl className="space-y-2 text-xs">
+              {defaultValue ? (
+                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
+                  <dt className="font-medium text-fd-foreground">
+                    Default value
+                  </dt>
+                  <dd className="min-w-0 break-words font-mono">
+                    {defaultValue}
+                  </dd>
+                </div>
+              ) : null}
+              {possibleValues ? (
+                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
+                  <dt className="font-medium text-fd-foreground">
+                    Possible values
+                  </dt>
+                  <dd className="min-w-0">
+                    {renderPossibleValues(possibleValues, parameterLabel)}
+                  </dd>
+                </div>
+              ) : null}
+            </dl>
+          ) : null}
+          {descriptionChildren}
         </div>
       </div>
+      {nestedParameters.length > 0 ? (
+        <section
+          aria-label={
+            parameterLabel
+              ? `Nested parameters for ${parameterLabel}`
+              : 'Nested parameters'
+          }
+          className="border-fd-border/70 border-t bg-fd-muted/20 px-4 pb-4 pt-3"
+          data-parameter-children=""
+        >
+          <div className="border-fd-border/80 border-l pl-3 sm:ml-4 sm:pl-4">
+            <div className="overflow-hidden rounded-md border border-fd-border bg-fd-background/80 shadow-sm">
+              <div className="divide-y divide-fd-border">
+                {nestedParameters}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
     </div>
   );
+}
+
+function renderPossibleValues(
+  possibleValues: ReactNode,
+  parameterLabel?: string,
+) {
+  const ariaLabel = parameterLabel
+    ? `Possible values for ${parameterLabel}`
+    : 'Possible values';
+
+  if (typeof possibleValues === 'string') {
+    const values = getPossibleValueItems(possibleValues);
+
+    if (values.length > 0) {
+      return (
+        <ul
+          aria-label={ariaLabel}
+          className="m-0 flex min-w-0 list-none flex-wrap gap-1.5 p-0"
+          data-parameter-possible-values=""
+        >
+          {values.map((value) => (
+            <li key={value}>
+              <code className="rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 font-mono text-[0.72rem] text-fd-foreground">
+                {value}
+              </code>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+  }
+
+  return (
+    <span className="break-words font-mono" data-parameter-possible-values="">
+      {possibleValues}
+    </span>
+  );
+}
+
+function getPossibleValueItems(possibleValues: string) {
+  const trimmed = possibleValues.trim();
+
+  if (isBracketedPossibleValue(trimmed)) {
+    return [trimmed];
+  }
+
+  return trimmed
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function isBracketedPossibleValue(value: string) {
+  return (
+    (value.startsWith('[') && value.endsWith(']')) ||
+    (value.startsWith('(') && value.endsWith(')'))
+  );
+}
+
+function isNestedParameterBlock(
+  child: ReactNode,
+): child is ReactElement<ParameterProps | ParameterListProps> {
+  return (
+    isValidElement(child) &&
+    (child.type === Parameter || child.type === ParameterList)
+  );
+}
+
+function isBlankTextNode(child: ReactNode) {
+  return typeof child === 'string' && child.trim().length === 0;
+}
+
+function getPlainTextLabel(value: ReactNode) {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value);
+  }
+
+  return undefined;
+}
+
+function getRequiredState({
+  optional,
+  required,
+}: {
+  optional?: boolean;
+  required?: boolean;
+}) {
+  if (required) {
+    return 'required';
+  }
+
+  if (optional || required === false) {
+    return 'optional';
+  }
+
+  return null;
 }
 
 function createDocsAnchor(contentPath?: string) {
@@ -723,6 +992,7 @@ export function getMDXComponents(
     Folder,
     Step,
     Steps,
+    RTCMinutesCalculator,
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,

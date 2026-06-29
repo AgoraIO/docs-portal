@@ -18,21 +18,15 @@ Before configuring network access, ensure the following:
 
 ## Connect your device to Wi-Fi
 
-<div class="flex flex-col gap-4 md:flex-row md:items-start">
-  <div class="md:w-1/2">
-    1. Grant the required permissions when prompted by the app.
-    2. Verify your current Wi-Fi network information.
-    3. Enter your Wi-Fi password.
-    4. Scan for and select your target Bluetooth device.
-    5. Click **Connect** to establish a connection with the device.
-    6. After the connection succeeds, click **Configure Network** to send the Wi-Fi credentials to the device.
-    7. After the network configuration completes, click **Disconnect** to end the Bluetooth connection.
-  </div>
+1. Grant the required permissions when prompted by the app.
+2. Verify your current Wi-Fi network information.
+3. Enter your Wi-Fi password.
+4. Scan for and select your target Bluetooth device.
+5. Click **Connect** to establish a connection with the device.
+6. After the connection succeeds, click **Configure Network** to send the Wi-Fi credentials to the device.
+7. After the network configuration completes, click **Disconnect** to end the Bluetooth connection.
 
-  <div class="md:w-1/2">
-    ![Android app](/images/convo-ai-device-kit/convo-ai-device-app.jpg)
-  </div>
-</div>
+![Android app](/images/convo-ai-device-kit/convo-ai-device-app.jpg)
 
 ## Set up network access
 

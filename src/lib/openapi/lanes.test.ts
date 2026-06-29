@@ -5,6 +5,7 @@ import {
   getOpenApiOperationIds,
   getOpenApiPrerenderPaths,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRoute,
 } from './lanes';
 
 describe('openapi lanes', () => {
@@ -187,6 +188,35 @@ describe('openapi lanes', () => {
     });
   });
 
+  it('keeps Cloud Recording endpoint titles aligned with the legacy REST pages', () => {
+    const route = resolveOpenApiEndpointRoute('en', 'api-reference', [
+      'api-ref',
+      'cloud-recording',
+      'acquire',
+    ]);
+
+    expect(route?.lane.operations).toMatchObject({
+      'acquire-cloud-recording-resource': {
+        title: { en: 'Acquire a resource ID' },
+      },
+      'start-cloud-recording': {
+        title: { en: 'Start a cloud recording task' },
+      },
+      'update-cloud-recording': {
+        title: { en: 'Update task settings' },
+      },
+      'update-cloud-recording-layout': {
+        title: { en: 'Update layout' },
+      },
+      'query-cloud-recording': {
+        title: { en: 'Query status' },
+      },
+      'stop-cloud-recording': {
+        title: { en: 'Stop a cloud recording task' },
+      },
+    });
+  });
+
   it('resolves Cloud Transcoding REST endpoint routes in the api-reference tab', () => {
     expect(
       resolveOpenApiEndpointRoute('en', 'api-reference', [
@@ -215,5 +245,11 @@ describe('openapi lanes', () => {
       routeLeaf: 'create-streaming-key',
       url: '/en/api-reference/api-ref/rtmp-gateway/create-streaming-key',
     });
+  });
+
+  it('does not match the api-reference catalog routes to any lane', () => {
+    for (const slug of [['recipes'], ['sdks'], ['faq'], ['api-ref']]) {
+      expect(resolveOpenApiLaneRoute('en', 'api-reference', slug)).toBeNull();
+    }
   });
 });

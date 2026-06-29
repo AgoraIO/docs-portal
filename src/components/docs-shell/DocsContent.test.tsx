@@ -15,7 +15,7 @@ import {
 } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
@@ -26,9 +26,29 @@ import { DocsCopyMenu } from './docs-copy-menu';
 const clipboardWriteText = vi.fn();
 
 vi.mock('./DocsContentBody', () => ({
-  DocsContentBody: ({ contentPath }: { contentPath: string }) => (
-    <div data-testid="docs-content-body">{contentPath}</div>
-  ),
+  DocsContentBody: ({ contentPath }: { contentPath: string }) => {
+    const articleLink =
+      contentPath === 'en/introduction/source-with-docs-link.mdx'
+        ? {
+            href: '/en/api-reference/recipes',
+            label: 'Open recipes from article',
+          }
+        : contentPath === 'en/introduction/source-with-openapi-link.mdx'
+          ? {
+              href: '/en/api-reference/rtc',
+              label: 'Open RTC API from article',
+            }
+          : undefined;
+
+    return (
+      <div data-testid="docs-content-body">
+        {contentPath}
+        {articleLink ? (
+          <a href={articleLink.href}>{articleLink.label}</a>
+        ) : null}
+      </div>
+    );
+  },
 }));
 
 vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
@@ -66,19 +86,30 @@ vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   ),
 }));
 
-function renderWithRouter(children: ReactNode) {
+function renderWithRouter(
+  children: ReactNode,
+  initialEntry = `${window.location.pathname}${window.location.search}${window.location.hash}`,
+) {
+  window.history.replaceState(null, '', initialEntry);
+
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
+  const component = () => <AppProviders>{children}</AppProviders>;
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/$locale/$tab/$slug',
-    component: () => <AppProviders>{children}</AppProviders>,
+    component,
+  });
+  const docsIndexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab',
+    component,
   });
   const router = createRouter({
-    routeTree: rootRoute.addChildren([docsRoute]),
+    routeTree: rootRoute.addChildren([docsRoute, docsIndexRoute]),
     history: createMemoryHistory({
-      initialEntries: ['/en/introduction/about-agora'],
+      initialEntries: [initialEntry],
     }),
   });
 
@@ -91,6 +122,40 @@ describe('DocsContent', () => {
     value: {
       writeText: clipboardWriteText,
     },
+  });
+
+  beforeEach(() => {
+    window.sessionStorage.clear();
+    window.history.replaceState(null, '', '/en/introduction/about-agora');
+  });
+
+  it('hides a single-item breadcrumb that just repeats the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[{ title: 'SDKs', url: '/en/api-reference/sdks' }]}
+        contentPath="en/api-reference/sdks/index.mdx"
+        slug="sdks"
+        title="SDKs"
+        toc={[]}
+      />,
+    );
+
+    await screen.findByRole('heading', { level: 1, name: 'SDKs' });
+    expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
+  });
+
+  it('keeps a single-item breadcrumb that differs from the page title', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[{ title: 'API Reference', url: '/en/api-reference' }]}
+        contentPath="en/api-reference/sdks/index.mdx"
+        slug="sdks"
+        title="SDKs"
+        toc={[]}
+      />,
+    );
+
+    expect(await screen.findByLabelText('Breadcrumb')).toBeInTheDocument();
   });
 
   it('renders page breadcrumb, LLM markdown link, title, and description', async () => {
@@ -192,6 +257,84 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
+  it('does not render the generic header description for OpenAPI bodies', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          kind: 'openapi',
+          pageProps: {
+            operations: [
+              {
+                method: 'post',
+                path: '/v2/projects/{appid}/agents/{agentId}/instructions',
+              },
+            ],
+            payload: {
+              bundled: {
+                info: {
+                  title: 'Conversational AI Agent API Overview',
+                },
+                openapi: '3.2.0',
+                paths: {},
+              },
+            },
+          },
+        }}
+        description="Use this endpoint for the following scenarios: - **Implicit instruction injection**"
+        slug="send-instruction"
+        title="Send a custom instruction"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Send a custom instruction' }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByTestId('fumadocs-openapi-content'),
+    ).toHaveTextContent('/v2/projects/{appid}/agents/{agentId}/instructions');
+    expect(
+      screen.queryByText(/Implicit instruction injection/),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders the generic header description for MDX-authored pages', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        description="Learn the platform basics."
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'About Agora' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
+  });
+
+  it('uses a tight header-to-body gap on non-platform-tabs pages', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/about-agora.md"
+        description="Learn the platform basics."
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+    expect(article).toHaveClass('gap-6');
+    expect(article).not.toHaveClass('gap-9');
+
+    const header = article.querySelector('header');
+    expect(header).toHaveClass('pb-5');
+    expect(header).not.toHaveClass('pb-7');
+  });
+
   it('renders split-file platform group pages with tabbed panels', async () => {
     renderWithRouter(
       <DocsContent
@@ -232,11 +375,30 @@ describe('DocsContent', () => {
     expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
   });
 
-  it('renders full-page MDX content without the article max-width or mobile TOC', async () => {
+  it('renders openapi-layout content without the article max-width or mobile TOC', async () => {
     renderWithRouter(
       <DocsContent
         contentPath="en/api-reference/recipes/index.mdx"
-        layoutMode="full-page"
+        layoutMode="openapi"
+        slug="recipes"
+        title="Recipes"
+        toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
+      />,
+    );
+
+    const article = await screen.findByRole('article');
+
+    expect(article).toHaveClass('max-w-none');
+    expect(article).not.toHaveClass('max-w-[var(--content-max)]');
+    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
+  });
+
+  it('drops the article max-width and mobile TOC when hideToc is set in docs layout', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        hideToc
+        layoutMode="docs"
         slug="recipes"
         title="Recipes"
         toc={[{ depth: 2, title: 'Browse all recipes', url: '#browse' }]}
@@ -365,6 +527,177 @@ describe('DocsContent', () => {
       tabs.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
   });
+
+  it('shows a return path on a docs page reached from a docs body link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/source-with-docs-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('link', {
+        name: 'Open recipes from article',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    const returnLink = await screen.findByRole('link', {
+      name: 'Back to About Agora',
+    });
+
+    expect(returnLink).toHaveAttribute('href', '/en/introduction/about-agora');
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+  });
+
+  it('shows a return path on an OpenAPI page reached from a docs body link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        contentPath="en/introduction/source-with-openapi-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('link', {
+        name: 'Open RTC API from article',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        body={{
+          kind: 'openapi',
+          pageProps: {
+            operations: [
+              {
+                method: 'post',
+                path: '/v1/rtc/channel',
+              },
+            ],
+            payload: {
+              bundled: {
+                info: {
+                  title: 'RTC REST API',
+                },
+                openapi: '3.2.0',
+                paths: {},
+              },
+            },
+          },
+        }}
+        slug="rtc"
+        title="RTC REST API"
+        toc={[]}
+      />,
+      '/en/api-reference/rtc',
+    );
+
+    expect(
+      await screen.findByTestId('fumadocs-openapi-content'),
+    ).toHaveTextContent('/v1/rtc/channel');
+    expect(
+      await screen.findByRole('link', { name: 'Back to About Agora' }),
+    ).toHaveAttribute('href', '/en/introduction/about-agora');
+  });
+
+  it('does not render a stored return path when the source href is not an internal docs path', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: 'javascript:alert(1)',
+          title: 'Unsafe source',
+        },
+        targetPage: '/en/api-reference/recipes',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Back to Unsafe source' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not show a return path after clicking a header breadcrumb link', async () => {
+    const source = renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API Reference',
+            url: '/en/api-reference/recipes',
+          },
+          {
+            title: 'About Agora',
+            url: '/en/introduction/about-agora',
+          },
+        ]}
+        contentPath="en/introduction/source-with-docs-link.mdx"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/en/introduction/about-agora',
+    );
+
+    fireEvent.click(
+      within(await screen.findByLabelText('Breadcrumb')).getByRole('link', {
+        name: 'API Reference',
+      }),
+    );
+    source.unmount();
+
+    renderWithRouter(
+      <DocsContent
+        contentPath="en/api-reference/recipes/index.mdx"
+        slug="recipes"
+        title="Recipes"
+        toc={[]}
+      />,
+      '/en/api-reference/recipes',
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Recipes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'Back to About Agora' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
     renderWithRouter(
       <DocsCopyMenu
@@ -469,7 +802,7 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenCalledWith(
-        'https://docs.agora.io/llms.mdx/docs/en/introduction/about-agora.md',
+        `${window.location.origin}/llms.mdx/docs/en/introduction/about-agora.md`,
       );
     });
   });
@@ -1009,6 +1342,27 @@ describe('DocsTableOfContents', () => {
 });
 
 describe('DocsMainColumn', () => {
+  it('keeps desktop content in normal page flow instead of a nested scroll viewport', async () => {
+    renderWithRouter(
+      <DocsMainColumn>
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mainColumn = await screen.findByTestId('docs-main-column');
+    const desktopContent = screen.getByTestId('docs-main-desktop-scroll');
+
+    expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
+    expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
+    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass(
+      'docs-scrollbar',
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
+    );
+  });
+
   it('renders reference-style pager cards in the footer', async () => {
     renderWithRouter(
       <DocsMainColumn
@@ -1032,9 +1386,9 @@ describe('DocsMainColumn', () => {
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
 
-  it('widens footer content in full-page layout', async () => {
+  it('widens footer content in openapi layout', async () => {
     renderWithRouter(
-      <DocsMainColumn layoutMode="full-page">
+      <DocsMainColumn layoutMode="openapi">
         <article>Body</article>
       </DocsMainColumn>,
     );

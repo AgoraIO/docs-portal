@@ -14,7 +14,7 @@ Agora has updated IP whitelist configuration to enhance security and simplify ma
 * All IP addresses and network ranges have been technically verified.
 * Update your firewall rules according to the specified timeline.
 * Continue using your current configuration if you must configure before the new delivery dates.
-* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+* Test your configuration thoroughly using the validation steps in [Firewall requirements](./firewall).
 
 ## Summary of changes
 Following are the key changes:
@@ -39,7 +39,7 @@ Use these tables to identify the configurations applicable to your regions.
 
 :::info
 When adding IP addresses:
-- If you use cloud proxy with [Restricted media zones](https://docs.agora.io/en/signaling/advanced-features/geofencing), add only the IP addresses dedicated to your specified region.
+- If you use cloud proxy with [Restricted media zones](/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing), add only the IP addresses dedicated to your specified region.
 - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 
 :::
@@ -245,4 +245,4 @@ After implementing the changes, verify your new configuration and check the conn
 
 ### Get support
 
-For implementation assistance, contact [support@agora.io](mailto:support@agora.io.md) with your specific SDK version and region requirements.
+For implementation assistance, contact [support@agora.io](mailto:support@agora.io) with your specific SDK version and region requirements.

@@ -347,13 +347,21 @@ The request body of notification callbacks contains the following fields:
 | Field name | Type|  Description |
 |:--------|:-----|:------------|
 | `noticeId` | String | The notification ID, identifying the notification callback when the event occurs. |
-| `productId` | Number | The product ID: - `1`: Realtime Communication (RTC) service
-- `3`: Cloud Recording
-- `4`: Media Pull
-- `5`: Media Push |
+| `productId` | Number | <Slot name="cloud-recording-notification-product-id" /> |
 | `eventType` | Number | The type of event being notified. For details, see [event types](#event-types). |
 | `notifyMs` | Number | The Unix timestamp (ms) when Notifications sends a callback to your server. This value is updated when Notifications resends the notification callback. |
 | `payload` | JSON Object | The content of the event being notified. The payload varies with event type. |
+
+<Slot for="cloud-recording-notification-product-id">
+
+The product ID:
+
+- `1`: Realtime Communication (RTC) service
+- `3`: Cloud Recording
+- `4`: Media Pull
+- `5`: Media Push
+
+</Slot>
 
 #### Example
 ```json

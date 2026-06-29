@@ -1,0 +1,485 @@
+---
+title: "Channel basics"
+description: "Basic concepts of message and stream channels."
+---
+
+<PlatformStructured platform="web">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `USER` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `message` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `RTMStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `USER` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `onMessageEvent` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `StreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `user` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `didReceiveMessageEvent` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `AgoraRtmStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `user` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `didReceiveMessageEvent` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `AgoraRtmStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `RtmChannelType.user` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `message` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `StreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `RTM_CHANNEL_TYPE_USER` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `onMessageEvent` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `IStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  A message channel uses a communication method similar to the MQTT protocol. It follows the pub/sub (publish-subscriber) model to deliver messages. In message channels, instead of creating a channel in advance, you simply publish messages to a specified channel or subscribe to receive messages from a channel. Due to the flexibility of the model, you can easily implement different topologies such as one-to-one channels, group channels, broadcast channels, and unicast channels. Since the number of subscribers can be larger, this channel type does not guarantee sending delivery receipts from all subscribers after receipt of a message. See [Message channels](message-channel) for implementation details.
+
+- **User channel**
+
+  Use this channel type to implement a one-to-one topology. User channels enable you to send peer-to-peer messages to a specified `userId`. To send a message to a user channel, set the `channelType` parameter in the `publish` method to `RTM_CHANNEL_TYPE_USER` and the `channelName` to the `userId` of the recipient. To receive messages sent to your `userId`, you don't need to subscribe; you implement the `onMessageEvent` event listener. User channels support delivery receipts. When a publisher sends a message, the API returns `success` if the receiver is online and receives the message successfully. If the receiver is not online or the reception fails, the method returns `failure` or `timeout`. Although you can use the return value to determine if the recipient is online, best practice is to use the `Presence` functionality for this purpose.
+
+- **Stream channel**
+
+  This is a special type of channel based on the room concept that is similar to the observer pattern. In stream channels, users cannot send messages directly to a channel. You call the `joinTopic` method to register as a publisher of a topic before sending messages. To receive messages, users subscribe to the specified message publisher, identified by the `userId`, in the specified topic. In stream channels, client-side messages support delivery at higher QPS. This channel type is often recommended for use-cases such as Metaverse, parallel driving, and cloud gaming. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `channelType`. Apart from differences in the message sending and receiving mechanism, the features and use of message channels and stream channels for other features and events such as `Presence`, `Storage`, and `Locks`, is the same. User channels do not support these features as they are simple message pass-through channels.
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `createStreamChannel` method to create an instance of a `IStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+In Signaling, a channel is an efficient data transfer management mechanism for communicating data from one device to another. A user who subscribes to or joins a channel receives messages or events transmitted in that channel within 100 milliseconds. Agora enables a client to subscribe to or join multiple channels at the same time. Most Signaling SDK APIs, such as those for sending and receiving messages, and encryption, use channels as parameters.
+
+## Channel types
+
+Conceptually, a channel is a conduit that controls the flow of messages. Signaling provides the following channel types:
+
+- **Message channel**
+
+  In a message channel, a publisher simply delivers a message to a specific channel, and any device or user subscribed to that channel receives that message or event notification. See [Message channels](message-channel) for implementation details.
+
+- **Stream channel**
+
+  In a stream channel, users call the `JoinTopicAsync` method to register as a publisher of a topic before they can send messages. To receive messages from a publisher in a given topic, a user subscribes to a specific message publisher, identified by their user ID. See [Stream channels](stream-channel) for implementation details.
+
+The channel types are distinguished in the API by `RTM_CHANNEL_TYPE`. Apart from the message sending and receiving mechanism, the features and use of message channels and stream channels for notification of other events such as `Presence`, `Storage`, and `Locks`, is the same. The following table summarizes the main characteristics and applicable use-cases for the channel types:
+
+| Channel type | Main characteristics | Applicable use-cases |
+| --- | --- | --- |
+| Message | Message channels use the industry-standard pub/sub (publish/subscribe) model to deliver messages and events. These channels do not need to be created in advance and are available on demand. There is no limit on the number of publishers and subscribers in a channel, but there is a limit on the upstream queries per second (QPS) for a single channel. | Common applications include use-cases based on the pub/sub model and multi-device applications, such as multi-device management and command sending/receiving in location tracking, the IoT industry, smart devices, and large communities. |
+| Stream | Stream channels are based on the room concept, which is similar to the observer pattern in the industry. Users join a channel to send messages and receive event notifications. Messages are managed and delivered using topics within a channel. A single channel allows up to 1000 users to join at the same time. Message channels support co-channel and synchronous transmission of audio and video data. In addition, they support client-side message delivery with higher QPS. | High-frequency and high-concurrency data transmission use-cases, as well as use-cases where audio and video data are synchronously transmitted in the same channel. Examples include Metaverse applications, parallel driving, and cloud gaming. |
+
+## Create a channel
+
+For message channels, you do not need to define or create a channel before using it. When you send a message or subscribe to a message channel for the first time, Signaling automatically creates the channel for you.
+
+When using stream channels, although a channel is essentially ready-to-use, you must explicitly call the `CreateStreamChannel` method to create an instance of a `IStreamChannel` object before joining the channel.
+
+## Channel usage restrictions
+
+Signaling puts no limits on the number of message and stream channels that may exist at the same time. However, different types of channels have different restrictions on the number of channels a single client may subscribe to or join concurrently, and the QPS for sending and receiving messages. For details, see [API usage restrictions](../../reference/limitations).
+
+## Channel naming
+
+A channel name cannot be empty. It must be a string of up to 64 bytes in length, consisting of letters or numbers from the ASCII character set. Signaling uses the app ID as the namespace for the channel. Each channel under the app ID is jointly identified by the channel name and the channel type. If two channels have different channel types or different channel names, Signaling treats them as two separate channels. If two channels have the same channel type and channel name, Signaling treats them as the same channel.
+
+### Legal characters
+
+The supported legal characters are:
+
+- 26 lowercase English letters a-z
+- 26 uppercase English letters A-Z
+- 10 numbers 0~9
+- Space
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `,`, `-`, `:`, `;`, `<`, `=`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `|`, `}`, `~`, `` ` ``
+
+:::warning[Important]
+Channel names cannot begin with an underscore.
+:::
+
+### Illegal characters
+
+The use of `.`, `*`, `/`, `\`, `\0` and non-printable ASCII characters in channel names is not allowed.
+
+### Naming convention
+
+Although not mandated by the SDK, best practice when naming your channels is to use meaningful prefix characters to indicate the purpose of the channel or the type of messages in the channel so that you present your business logic more clearly. For details, see [Channel naming recommendations](../../reference/channel-naming).
+
+</PlatformStructured>

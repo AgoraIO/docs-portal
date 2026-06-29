@@ -59,8 +59,14 @@ Agora deducts Standard minutes from the balance in your subscribed package. If y
 | **Overuse policy**   | Service suspension | Overage post-payment\*\* | Overage post-payment\*\* | Overage post-payment\*\* | Overage post-payment\*\* | Overage post-payment\*\* | - |
 | **Media encryption**       |  ✔  |  ✔  |  ✔  |  ✔  |  ✔  |  ✔  | - |
 | **Analytics starter plan** |  ✔  |  ✔  |  ✔  |  ✔  |  ✔  |  ✔  | - |
-| **Advanced audio processing**
-(AGC, AEC and ANS) | ✔ | ✔ | ✔ | ✔ | ✔ |  ✔  | - |
+| <Slot name="advanced-audio-processing-label" /> | ✔ | ✔ | ✔ | ✔ | ✔ |  ✔  | - |
+
+<Slot for="advanced-audio-processing-label">
+
+**Advanced audio processing**
+(AGC, AEC and ANS)
+
+</Slot>
 
 \* The percentage is calculated based on the Standard minute (audio) rate ($0.99 per 1,000 minutes) and is already reflected in the package price.
 \*\* Allows overage post-payment within the validity period of the package.
@@ -211,6 +217,8 @@ This example is for illustrative purposes only. The actual billed duration is ba
 The Standard minutes calculator helps you estimate usage of Standard minutes based on the number of hosts, the resolution of their published streams, and the number of audience members subscribing to those streams. Standard minutes are consumed based on user subscriptions. Use this tool to understand the pricing policy and estimate your monthly usage.
 
 #### Standard Minutes Calculator
+
+<RTCMinutesCalculator/>
 
 :::warning[Disclaimer]
 The Standard minutes estimated by this calculator are indicative and may not match actual usage billing. Accuracy in all cases is not guaranteed, and the calculations should be used as estimates only. Actual billing is based on Agora's official pricing policy and conversion ratios, which may vary. Please refer to Agora's [Pricing](/en/realtime-media/video/reference/pricing) policy for complete and up-to-date information on Standard minutes conversion and billing.

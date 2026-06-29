@@ -1,6 +1,6 @@
 ---
 title: "Firewall requirements"
-description: "use Agora products in environments with restricted network access"
+description: "Use Agora products in environments with restricted network access."
 ---
 
 To allow you to use Agora products in environments with restricted network access, Agora provides the following solutions: the firewall whitelist and the Agora cloud proxy.
@@ -11,16 +11,16 @@ The following table lists the support of Agora products for the two solutions:
 |---|:---:|:---:|
 |Video SDK (Native, third-party frameworks) |✘ |✔|
 |Video SDK (Web) |✔ |✔|
-|Signalling SDK (Native) | ✔ | ✘ |
-|Signalling SDK (Web) | ✔ | ✔ |
+|Signaling SDK (Native) | ✔ | ✘ |
+|Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
 |Interactive Gaming SDK | ✘ |✘|
 
-###  Video SDK (Web)
+## Video SDK (Web)
 
 Add the following destination domains and the corresponding ports to your firewall whitelist.
 
-#### Domains
+### Domains
 
 ```
 .agora.io
@@ -32,16 +32,16 @@ Add the following destination domains and the corresponding ports to your firewa
 .webrtc-cloud-proxy.sd-rtn.com
 ```
 
-#### Ports
+### Ports
 
 | Destination ports | Port type | Operation|
 |---|---|---|
 | 80; 443; 3433; 3478; 4700 - 5000; 5668; 5669; 6080; 6443; 8667; 9667; 30011 - 30013 (for RTMP converter)| TCP|  Allow|
 | 3478; 4700 - 5000 (2.9.0 or later); 10000 - 65535 (before 2.9.0)   |  UDP  | Allow|
 
-### Signaling SDK (Web)
+## Signaling SDK (Web)
 
-#### Message channel
+### Message channel
 
 For a message channel, you need to add the following content to the firewall whitelist:
 
@@ -73,7 +73,7 @@ For a message channel, you need to add the following content to the firewall whi
 
 :::
 
-#### Stream channel
+### Stream channel
 
 For a stream channel, you need to add the following to your firewall whitelist:
 
@@ -93,9 +93,9 @@ For a stream channel, you need to add the following to your firewall whitelist:
     | 80; 3433; 4700 - 5000; 5668; 5669; 6080; 6443; 8667; 9667 | TCP      | Allow   |
     | 3478; 4700 - 5000           | UDP      | Allow   |
 
-### Signaling SDK (Native)
+## Signaling SDK (Native)
 
-#### Message channel
+### Message channel
 
 For a message channel, you need to add the following content to the firewall whitelist:
 
@@ -109,7 +109,7 @@ For a message channel, you need to add the following content to the firewall whi
     | 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140; 9141 | TCP      | Allow   |
     | 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP      | Allow   |
 
-#### Stream channel
+### Stream channel
 
 For a stream channel, you need to add the following to your firewall whitelist:
 
@@ -120,6 +120,6 @@ For a stream channel, you need to add the following to your firewall whitelist:
     | 4001 - 4150      | UDP      | Allow   |
 
 :::info
-The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io.md).
+The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
 
 :::

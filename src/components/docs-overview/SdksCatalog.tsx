@@ -1,411 +1,320 @@
-import {
-  ArrowUpRightIcon,
-  BoxesIcon,
-  ChevronDownIcon,
-  DownloadIcon,
-  MessageSquareIcon,
-  MicIcon,
-  MonitorPlayIcon,
-  RadioTowerIcon,
-  ServerCogIcon,
-  SmartphoneIcon,
-  VideoIcon,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/cn';
+import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
-  type SdkDownloadPlatform,
   type SdkDownloadProduct,
   type SdkDownloadVersion,
   sdkDownloadPlatforms,
 } from './sdk-downloads-data';
+import {
+  deriveInstallCommand,
+  type InstallCommand,
+} from './sdk-install-command';
 
 const platformGroups = [
+  { label: 'Server', platformIds: ['python', 'typescript', 'go'] },
   {
     label: 'Mobile',
     platformIds: ['android', 'ios', 'react-native', 'flutter'],
   },
-  {
-    label: 'Web',
-    platformIds: ['web', 'react-js', 'electron'],
-  },
-  {
-    label: 'Desktop',
-    platformIds: ['windows', 'macos', 'linux'],
-  },
-  {
-    label: 'Game engines',
-    platformIds: ['unity', 'unreal-engine'],
-  },
+  { label: 'Web', platformIds: ['web', 'react-js', 'electron'] },
+  { label: 'Desktop', platformIds: ['windows', 'macos', 'linux'] },
+  { label: 'Game engines', platformIds: ['unity', 'unreal-engine'] },
 ] as const;
 
+const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+
+function platformRank(platformId: string) {
+  const index = (PLATFORM_ORDER as readonly string[]).indexOf(platformId);
+  return index === -1 ? PLATFORM_ORDER.length : index;
+}
+
+type ProductPlatformEntry = {
+  platformId: string;
+  platformLabel: string;
+  product: SdkDownloadProduct;
+};
+
+type ProductGroup = {
+  label: string;
+  defaultProduct: SdkDownloadProduct;
+  platforms: ProductPlatformEntry[];
+};
+
+function buildProductGroups(): ProductGroup[] {
+  const order: string[] = [];
+  const entriesByLabel = new Map<string, ProductPlatformEntry[]>();
+
+  for (const platform of sdkDownloadPlatforms) {
+    for (const kind of ['core', 'addOns'] as const) {
+      for (const product of platform[kind] ?? []) {
+        let entries = entriesByLabel.get(product.label);
+        if (!entries) {
+          entries = [];
+          entriesByLabel.set(product.label, entries);
+          order.push(product.label);
+        }
+        entries.push({
+          platformId: platform.id,
+          platformLabel: platform.label,
+          product,
+        });
+      }
+    }
+  }
+
+  return order.map((label) => {
+    const platforms = (entriesByLabel.get(label) ?? [])
+      .slice()
+      .sort((a, b) => platformRank(a.platformId) - platformRank(b.platformId));
+
+    return {
+      label,
+      defaultProduct: platforms[0].product,
+      platforms,
+    };
+  });
+}
+
 export function SdksCatalog() {
-  const initialPlatformId = useMemo(getInitialPlatformId, []);
-  const [activePlatformId, setActivePlatformId] = useState(initialPlatformId);
-  const activePlatform =
-    sdkDownloadPlatforms.find((platform) => platform.id === activePlatformId) ??
-    sdkDownloadPlatforms[0];
+  const productGroups = useMemo(buildProductGroups, []);
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-8">
-      <PlatformMatrix
-        activePlatform={activePlatform}
-        onPlatformChange={(platformId) => {
-          setActivePlatformId(platformId);
-          syncPlatformQuery(platformId);
-        }}
-      />
+    <section className="not-prose my-8 flex flex-col gap-3">
+      {productGroups.map((group) => (
+        <ProductCard group={group} key={group.label} />
+      ))}
+    </section>
+  );
+}
 
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h2 className="m-0 text-2xl font-semibold text-foreground">
-            {activePlatform.label} SDKs
-          </h2>
-          <p className="m-0 text-sm leading-6 text-muted-foreground">
-            Latest versions are selected by default.
+function ProductCard({ group }: { group: ProductGroup }) {
+  const [platformId, setPlatformId] = useState(group.platforms[0].platformId);
+  const [versionIndex, setVersionIndex] = useState('0');
+
+  const activePlatform =
+    group.platforms.find((entry) => entry.platformId === platformId) ??
+    group.platforms[0];
+  const versions = activePlatform.product.versions;
+  const activeVersion = versions[Number(versionIndex)] ?? versions[0];
+  const command = activeVersion ? deriveInstallCommand(activeVersion) : null;
+
+  const titleId = `sdk-${group.defaultProduct.id}-title`;
+  const versionId = `sdk-${group.defaultProduct.id}-version`;
+
+  return (
+    <article
+      aria-labelledby={titleId}
+      className="rounded-xl border border-border p-5"
+    >
+      <div className="flex items-start gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
+          <SolutionCardIcon kind={productIconKind(group.label)} />
+        </span>
+        <div className="min-w-0">
+          <h3
+            className="m-0 text-base font-semibold text-foreground"
+            id={titleId}
+          >
+            {group.label}
+          </h3>
+          <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
+            {group.defaultProduct.info}
           </p>
         </div>
-
-        <SdkProductSection
-          products={activePlatform.core}
-          platform={activePlatform}
-          title="Core Products"
-        />
-        {activePlatform.addOns?.length ? (
-          <SdkProductSection
-            products={activePlatform.addOns}
-            platform={activePlatform}
-            title="Product Add-ons"
-          />
-        ) : null}
-      </div>
-    </section>
-  );
-}
-
-function PlatformMatrix({
-  activePlatform,
-  onPlatformChange,
-}: {
-  activePlatform: SdkDownloadPlatform;
-  onPlatformChange: (platformId: string) => void;
-}) {
-  const groupedPlatformIds = new Set<string>(
-    platformGroups.flatMap((group) => group.platformIds),
-  );
-  const resolvedGroups = platformGroups
-    .map((group) => ({
-      ...group,
-      platforms: group.platformIds
-        .map((platformId) =>
-          sdkDownloadPlatforms.find((platform) => platform.id === platformId),
-        )
-        .filter((platform): platform is SdkDownloadPlatform =>
-          Boolean(platform),
-        ),
-    }))
-    .filter((group) => group.platforms.length > 0);
-  const ungroupedPlatforms = sdkDownloadPlatforms.filter(
-    (platform) => !groupedPlatformIds.has(platform.id),
-  );
-  const allGroups = ungroupedPlatforms.length
-    ? [
-        ...resolvedGroups,
-        {
-          label: 'Other',
-          platformIds: ungroupedPlatforms.map((platform) => platform.id),
-          platforms: ungroupedPlatforms,
-        },
-      ]
-    : resolvedGroups;
-
-  return (
-    <section
-      aria-labelledby="sdk-platforms-heading"
-      className="rounded-lg border border-border bg-card/80 p-4 shadow-sm sm:p-5"
-    >
-      <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h2
-          className="m-0 text-sm font-semibold text-foreground"
-          id="sdk-platforms-heading"
-        >
-          Platforms
-        </h2>
-        <Badge variant="outline">{activePlatform.label}</Badge>
       </div>
 
-      <div className="grid gap-3">
-        {allGroups.map((group) => (
-          <fieldset className="m-0 min-w-0 border-0 p-0" key={group.label}>
-            <legend className="sr-only">{`${group.label} platforms`}</legend>
-            <div className="grid gap-2 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:items-start">
-              <div
-                aria-hidden="true"
-                className="pt-1 text-xs font-semibold uppercase text-muted-foreground"
-              >
-                {group.label}
-              </div>
-              <div className="flex min-w-0 flex-wrap gap-2">
-                {group.platforms.map((platform) => {
-                  const isActive = platform.id === activePlatform.id;
+      <div
+        aria-label={`${group.label} platform`}
+        className="mt-4 flex flex-wrap gap-1 border-border border-b"
+        role="tablist"
+      >
+        {group.platforms.map((entry) => {
+          const isActive = entry.platformId === platformId;
 
-                  return (
-                    <button
-                      aria-pressed={isActive}
-                      className={cn(
-                        'inline-flex h-8 items-center rounded-md border px-3 text-sm font-medium transition-colors',
-                        isActive
-                          ? 'border-primary bg-primary text-primary-foreground shadow-xs'
-                          : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:bg-accent hover:text-accent-foreground',
-                      )}
-                      key={platform.id}
-                      onClick={() => onPlatformChange(platform.id)}
-                      type="button"
-                    >
-                      {platform.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </fieldset>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function SdkProductSection({
-  platform,
-  products,
-  title,
-}: {
-  platform: SdkDownloadPlatform;
-  products: readonly SdkDownloadProduct[];
-  title: string;
-}) {
-  return (
-    <section className="flex flex-col gap-4">
-      <h2 className="m-0 text-xl font-semibold text-foreground">{title}</h2>
-      <div className="grid gap-4">
-        {products.map((product) => (
-          <SdkProductCard
-            key={`${platform.id}-${product.id}`}
-            platformId={platform.id}
-            product={product}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function SdkProductCard({
-  platformId,
-  product,
-}: {
-  platformId: string;
-  product: SdkDownloadProduct;
-}) {
-  const [activeVersionIndex, setActiveVersionIndex] = useState('0');
-  const activeVersion =
-    product.versions[Number(activeVersionIndex)] ?? product.versions[0];
-  const selectedVersionIndex = Number(activeVersionIndex);
-  const activeVersionMeta = getVersionMeta(activeVersion, selectedVersionIndex);
-  const productTitleId = `${platformId}-${product.id}-title`;
-  const productVersionId = `${platformId}-${product.id}-version`;
-
-  return (
-    <Card
-      aria-labelledby={productTitleId}
-      className="flex min-h-[18rem] flex-col rounded-lg shadow-sm"
-      role="article"
-    >
-      <CardHeader className="p-5 sm:p-6">
-        <div className="flex items-start gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground sm:size-14">
-            <SdkProductIcon
-              productId={product.id}
-              productLabel={product.label}
-            />
-          </span>
-          <div className="min-w-0">
-            <h3
-              className="m-0 text-lg font-semibold text-foreground"
-              id={productTitleId}
+          return (
+            <button
+              aria-selected={isActive}
+              className={cn(
+                '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                isActive
+                  ? 'border-primary font-semibold text-foreground'
+                  : 'border-transparent text-muted-foreground hover:text-foreground',
+              )}
+              key={entry.platformId}
+              onClick={() => {
+                setPlatformId(entry.platformId);
+                setVersionIndex('0');
+              }}
+              role="tab"
+              type="button"
             >
-              {product.label}
-            </h3>
-            <p className="m-0 mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              {product.info}
-            </p>
-          </div>
-        </div>
-      </CardHeader>
+              {entry.platformLabel}
+            </button>
+          );
+        })}
+      </div>
 
-      <CardContent className="flex flex-1 flex-col gap-5 px-5 pb-5 sm:px-6 sm:pb-6">
-        <div className="grid gap-3 md:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] md:items-end">
-          <div className="flex min-w-0 flex-col gap-2">
-            <label
-              className="text-xs font-semibold uppercase text-muted-foreground"
-              htmlFor={productVersionId}
-            >
-              Selected version
-            </label>
-            <span className="relative">
-              <select
-                aria-label={`${product.label} version`}
-                className="h-11 w-full appearance-none rounded-md border border-border bg-background px-3 pr-10 text-sm font-medium text-foreground shadow-xs outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                id={productVersionId}
-                onChange={(event) => setActiveVersionIndex(event.target.value)}
-                value={activeVersionIndex}
+      <div className="mt-4 flex items-center justify-between gap-3">
+        <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+          {command ? command.tool : ' '}
+        </span>
+        <span className="relative shrink-0">
+          <label className="sr-only" htmlFor={versionId}>
+            {`${group.label} version`}
+          </label>
+          <select
+            className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+            id={versionId}
+            onChange={(event) => setVersionIndex(event.target.value)}
+            value={versionIndex}
+          >
+            {versions.map((version, index) => (
+              <option
+                key={`${activePlatform.platformId}-${version.id}`}
+                value={String(index)}
               >
-                {product.versions.map((version, index) => {
-                  const versionMeta = getVersionMeta(version, index);
-
-                  return (
-                    <option
-                      key={`${platformId}-${product.id}-${version.id}-${version.downloadLink ?? version.packageManager ?? version.label}`}
-                      value={String(index)}
-                    >
-                      {versionMeta.optionLabel}
-                    </option>
-                  );
-                })}
-              </select>
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {activeVersionMeta.states.map((state) => (
-              <Badge key={state} variant={getVersionStateVariant(state)}>
-                {state}
-              </Badge>
+                {getVersionMeta(version, index).optionLabel}
+              </option>
             ))}
-          </div>
-        </div>
+          </select>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+        </span>
+      </div>
 
-        {activeVersion ? <SdkDownloadActions version={activeVersion} /> : null}
-      </CardContent>
-    </Card>
+      {activeVersion ? (
+        <InstallArea command={command} version={activeVersion} />
+      ) : null}
+    </article>
   );
 }
 
-function SdkDownloadActions({ version }: { version: SdkDownloadVersion }) {
-  return (
-    <div className="mt-auto border-border border-t pt-4">
-      <p className="m-0 text-xs font-semibold uppercase text-muted-foreground">
-        Download options
-      </p>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {version.downloadLink ? (
-          <Button asChild size="sm">
+function InstallArea({
+  command,
+  version,
+}: {
+  command: InstallCommand | null;
+  version: SdkDownloadVersion;
+}) {
+  if (command) {
+    return (
+      <div className="mt-3 flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
+          <code className="min-w-0 truncate font-mono text-[0.82rem] text-foreground">
+            {command.command}
+          </code>
+          <CopyButton value={command.command} />
+        </div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          {version.downloadLink ? (
             <a
+              className="underline underline-offset-2 hover:text-foreground"
               href={version.downloadLink}
               rel="noreferrer noopener"
               target="_blank"
             >
-              <DownloadIcon data-icon="inline-start" />
-              <span>Download SDK</span>
+              Direct download (.zip)
             </a>
-          </Button>
-        ) : null}
-        {version.packageManager ? (
-          <Button asChild size="sm" variant="outline">
+          ) : null}
+          {version.packageManager ? (
             <a
+              className="underline underline-offset-2 hover:text-foreground"
               href={version.packageManager}
               rel="noreferrer noopener"
               target="_blank"
             >
-              <span>Package Manager</span>
-              <ArrowUpRightIcon data-icon="inline-end" />
+              Package manager ↗
             </a>
-          </Button>
-        ) : null}
+          ) : null}
+        </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+      {version.downloadLink ? (
+        <a
+          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          href={version.downloadLink}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          <DownloadIcon className="size-4" />
+          <span>Download SDK</span>
+        </a>
+      ) : null}
+      {version.packageManager ? (
+        <a
+          className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          href={version.packageManager}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          Package manager ↗
+        </a>
+      ) : null}
     </div>
   );
 }
 
-function SdkProductIcon({
-  productId,
-  productLabel,
-}: {
-  productId: string;
-  productLabel: string;
-}) {
-  const normalized = `${productId} ${productLabel}`.toLowerCase();
-  const iconClassName = 'size-7';
-  let icon: ReactNode;
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
 
-  if (normalized.includes('voice')) {
-    icon = <MicIcon className={iconClassName} />;
-  } else if (normalized.includes('video')) {
-    icon = <VideoIcon className={iconClassName} />;
-  } else if (normalized.includes('chat')) {
-    icon = <MessageSquareIcon className={iconClassName} />;
-  } else if (normalized.includes('signaling') || normalized.includes('rtm')) {
-    icon = <RadioTowerIcon className={iconClassName} />;
-  } else if (normalized.includes('iot')) {
-    icon = <SmartphoneIcon className={iconClassName} />;
-  } else if (
-    normalized.includes('recording') ||
-    normalized.includes('gateway')
-  ) {
-    icon = <ServerCogIcon className={iconClassName} />;
-  } else if (normalized.includes('media')) {
-    icon = <MonitorPlayIcon className={iconClassName} />;
-  } else {
-    icon = <BoxesIcon className={iconClassName} />;
-  }
-
-  return icon;
-}
-
-function getInitialPlatformId() {
-  if (typeof window === 'undefined') {
-    return sdkDownloadPlatforms[0]?.id ?? 'android';
-  }
-
-  const queryValue = new URLSearchParams(window.location.search).get(
-    'platform',
+  return (
+    <button
+      aria-label={copied ? 'Copied' : 'Copy install command'}
+      className="shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+      onClick={async () => {
+        await navigator.clipboard.writeText(value);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1500);
+      }}
+      type="button"
+    >
+      {copied ? 'Copied' : 'Copy'}
+    </button>
   );
-
-  if (!queryValue) {
-    return sdkDownloadPlatforms[0]?.id ?? 'android';
-  }
-
-  const normalizedQueryValue = normalizePlatformId(queryValue);
-  const matchingPlatform = sdkDownloadPlatforms.find((platform) => {
-    return (
-      platform.id === normalizedQueryValue ||
-      normalizePlatformId(platform.label) === normalizedQueryValue
-    );
-  });
-
-  return matchingPlatform?.id ?? sdkDownloadPlatforms[0]?.id ?? 'android';
 }
 
-function syncPlatformQuery(platformId: string) {
-  if (typeof window === 'undefined') {
-    return;
+// Map an SDK product to the same canonical icon the api-reference overview uses
+// (the SolutionCard registry), so product icons stay consistent across pages.
+function productIconKind(productLabel: string): SolutionCardIconKind {
+  const normalized = productLabel.toLowerCase();
+
+  if (normalized.includes('agent')) {
+    return 'ai';
   }
-
-  const url = new URL(window.location.href);
-  url.searchParams.set('platform', platformId);
-  window.history.replaceState(window.history.state, '', url);
-}
-
-function normalizePlatformId(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, '-');
+  if (normalized.includes('voice')) {
+    return 'voice-calling';
+  }
+  if (normalized.includes('video')) {
+    return 'video-calling';
+  }
+  if (normalized.includes('signaling')) {
+    return 'signaling';
+  }
+  if (normalized.includes('chat')) {
+    return 'chat';
+  }
+  if (normalized.includes('iot')) {
+    return 'iot';
+  }
+  if (normalized.includes('whiteboard') || normalized.includes('fastboard')) {
+    return 'whiteboard';
+  }
+  if (normalized.includes('gateway')) {
+    return 'server-sdk';
+  }
+  if (normalized.includes('recording')) {
+    return 'on-premise-recording';
+  }
+  // Media Player Kit and anything else fall back to the overview's "tools" icon.
+  return 'tools';
 }
 
 function getVersionMeta(version: SdkDownloadVersion, index: number) {
@@ -418,32 +327,15 @@ function getVersionMeta(version: SdkDownloadVersion, index: number) {
     isLite ? 'Lite' : null,
     isLegacy ? 'Legacy' : null,
     !isLatest && !isLegacy && index > 0 ? 'Previous' : null,
-  ].filter((state): state is VersionState => Boolean(state));
+  ].filter((state): state is string => Boolean(state));
   const displayLabel = compactLabel
     .replace(/^version\s+/i, 'v')
-    .replace(/^vVersion\s+/i, 'v')
     .replace(/\s*\(Latest\)/gi, '')
     .trim();
 
   return {
-    displayLabel,
     optionLabel: states.length
       ? `${displayLabel} - ${states.join(', ')}`
       : displayLabel,
-    states: states.length ? states : (['Previous'] satisfies VersionState[]),
   };
-}
-
-type VersionState = 'Latest' | 'Lite' | 'Legacy' | 'Previous';
-
-function getVersionStateVariant(state: VersionState) {
-  if (state === 'Latest') {
-    return 'default';
-  }
-
-  if (state === 'Previous') {
-    return 'outline';
-  }
-
-  return 'secondary';
 }

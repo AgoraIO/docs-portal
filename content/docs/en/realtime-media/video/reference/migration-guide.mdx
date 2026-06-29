@@ -15,15 +15,15 @@ This section introduces the main steps to upgrade the SDK from v2.x or v3.7.x to
 
 1. Integrate the SDK
 
-  See [Get started](../../../index) for more information about integrating the v4.x SDK into your project.
+  See [Get started](/en/realtime-media/video/get-started-sdk) for more information about integrating the v4.x SDK into your project.
 
 2. Rename imported classes
 
   After successfully integrating the SDK, you need to update the codes of imported classes from the `io.agora.rtc` prefix to the `io.agora.rtc2` prefix in the `/app/java/com.example.<projectname>/MainActivity` file of your project.
   
-:::info
-:::
-  > The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::note
+  The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also changed from `/models` to the root directory.
+  :::
 
 3. Update the Agora code in your app
 
@@ -252,30 +252,25 @@ This section introduces functions that were supported in v3.7.x but are no longe
 
 The following table shows the differences in the behavior of APIs related to the audio route between v3.7.x and 4.x:
 
-<thead>
-  <tr>
-    <th>API</th>
-    <th>v3.x</th>
-    <th>v4.x</th>
-  </tr>
-  </thead>
-  <tr class="odd">
-    <td><p>`setDefaultAudioRouteToSpeakerphone`</p></td>
-    <td><ul>
-      <li><p>You can only set the audio route before joining a channel.</p></li>
-      <li><p>This method only controls the initial state of the audio route and does not change the default audio route of the system. For example, regardless of whether you set the parameter of `setDefaultAudioRouteToSpeakerphone` to `true` or `false`, calling `setEnableSpeakerphone(false)` changes the audio route to the earpiece.</p></li>
-    </ul></td>
-    <td><ul>
-      <li><p>You can set the audio route either before or after joining a channel.</p></li>
-      <li><p>This method is a steady API and can change the default audio route of the system. For example, after calling `setDefaultAudioRouteToSpeakerphone(true)` to set the initial audio route to the speakerphone, calling `setEnableSpeakerphone(false)` cannot change the audio route to the earpiece.</p></li>
-    </ul></td>
-  </tr>
-  <tr class="even">
-    <td><p>`setEnableSpeakerphone`</p></td>
-    <td><p>After connecting external playback devices such as Bluetooth and wired headphones, calling `setEnableSpeakerphone` cannot switch the audio route to the speakerphone or earpiece.</p></td>
-    <td><p>Not recommended.</p></td>
-  </tr>
-  Also, when an external playback device is removed, for example, by disconnecting the Bluetooth headset, the audio route change is different between v3.5.0 and 4.x:
+| API | v3.x | v4.x |
+| --- | --- | --- |
+| `setDefaultAudioRouteToSpeakerphone` | <Slot name="audio-route-v3-default-route" /> | <Slot name="audio-route-v4-default-route" /> |
+| `setEnableSpeakerphone` | After connecting external playback devices such as Bluetooth and wired headphones, calling `setEnableSpeakerphone` cannot switch the audio route to the speakerphone or earpiece. | Not recommended. |
+
+<Slot for="audio-route-v3-default-route">
+
+- You can only set the audio route before joining a channel.
+- This method only controls the initial state of the audio route and does not change the default audio route of the system. For example, regardless of whether you set the parameter of `setDefaultAudioRouteToSpeakerphone` to `true` or `false`, calling `setEnableSpeakerphone(false)` changes the audio route to the earpiece.
+
+</Slot>
+<Slot for="audio-route-v4-default-route">
+
+- You can set the audio route either before or after joining a channel.
+- This method is a steady API and can change the default audio route of the system. For example, after calling `setDefaultAudioRouteToSpeakerphone(true)` to set the initial audio route to the speakerphone, calling `setEnableSpeakerphone(false)` cannot change the audio route to the earpiece.
+
+</Slot>
+
+Also, when an external playback device is removed, for example, by disconnecting the Bluetooth headset, the audio route change is different between v3.5.0 and 4.x:
 
 -  In v3.7.x, the audio route changes as follows (in terms of priority): The external device connected next to last (if any) &gt; … &gt; The external device connected first &gt; `setEnableSpeakerphone` &gt; `setDefaultAudioRoutetoSpeakerphone` &gt; The default audio route.
 
@@ -289,7 +284,7 @@ In 4.x, the video bitrate in the `CHANNEL_PROFILE_COMMUNICATION` profile is the 
 
 #### Virtual background
 
-See [Virtual Background](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background_android) to update the code in your app.
+See [Virtual Background](/en/realtime-media/video/build/apply-video-effects/virtual-background) to update the code in your app.
 
 #### Image enhancement
 
@@ -428,7 +423,7 @@ This section introduces the main steps to upgrade the SDK from v2.x or 3.7.x to 
 
 1. Integrate the SDK
 
-  See [Get started](../../../index) for more information about integrating the v4.x SDK into your project.
+  See [Get started](/en/realtime-media/video/get-started-sdk) for more information about integrating the v4.x SDK into your project.
 
 2. Update the Agora code in your app
 
@@ -438,9 +433,9 @@ This section introduces the main steps to upgrade the SDK from v2.x or 3.7.x to 
 
 This section introduces the main changes of v4.x compared to v3.7.x in the following categories. You need to update the code of your app according to your business use-case.
   
-:::info
-:::
-  > If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](https://docs-md.agora.io/en/3.x/video-calling/introduction/release-notes_ios) to obtain the changes between this version and v3.7.0.
+  :::note
+  If the version before upgrading is a version before v3.7.0, please check the [v3.x release notes](/en/realtime-media/video/reference/release-notes) to obtain the changes between this version and v3.7.0.
+  :::
 
 -  [Breaking changes](#breaking-changes): Introduces API compatibility changes that have a big impact. You need to spend significant time modifying the related implementation.
 
@@ -690,29 +685,24 @@ v4.x reconstructs the audio application scenarios, which can replace most of the
 
 The following table shows the differences in the behavior of APIs related to the audio route between v3.7.x and v4.x:
 
-<thead>
-<tr>
-<th>API</th>
-<th>v3.x</th>
-<th>v4.x</th>
-</tr>
-</thead>
-<tr class="odd">
-<td><p>`setDefaultAudioRouteToSpeakerphone`</p></td>
-<td><ul>
-<li><p>You can only set the audio route before joining a channel.</p></li>
-<li><p>This method only controls the initial state of the audio route and does not change the default audio route of the system. For example, regardless of whether you set the parameter of `setDefaultAudioRouteToSpeakerphone` to `YES` or `NO`, calling `setEnableSpeakerphone(NO)` changes the audio route to the earpiece.</p></li>
-</ul></td>
-<td><ul>
-<li><p>You can set the audio route either before or after joining a channel.</p></li>
-<li><p>This method is a steady API and can change the default audio route of the system. For example, after calling `setDefaultAudioRouteToSpeakerphone(YES)` to set the initial audio route to the speakerphone, calling `setEnableSpeakerphone(NO)` cannot change the audio route to the earpiece.</p></li>
-</ul></td>
-</tr>
-<tr class="even">
-<td><p>`setEnableSpeakerphone`</p></td>
-<td><p>After connecting external playback devices such as Bluetooth and wired headphones, calling `setEnableSpeakerphone` cannot switch the audio route to the speakerphone or earpiece.</p></td>
-<td><p>Not recommended.</p></td>
-</tr>
+| API | v3.x | v4.x |
+| --- | --- | --- |
+| `setDefaultAudioRouteToSpeakerphone` | <Slot name="audio-route-objc-v3-default-route" /> | <Slot name="audio-route-objc-v4-default-route" /> |
+| `setEnableSpeakerphone` | After connecting external playback devices such as Bluetooth and wired headphones, calling `setEnableSpeakerphone` cannot switch the audio route to the speakerphone or earpiece. | Not recommended. |
+
+<Slot for="audio-route-objc-v3-default-route">
+
+- You can only set the audio route before joining a channel.
+- This method only controls the initial state of the audio route and does not change the default audio route of the system. For example, regardless of whether you set the parameter of `setDefaultAudioRouteToSpeakerphone` to `YES` or `NO`, calling `setEnableSpeakerphone(NO)` changes the audio route to the earpiece.
+
+</Slot>
+<Slot for="audio-route-objc-v4-default-route">
+
+- You can set the audio route either before or after joining a channel.
+- This method is a steady API and can change the default audio route of the system. For example, after calling `setDefaultAudioRouteToSpeakerphone(YES)` to set the initial audio route to the speakerphone, calling `setEnableSpeakerphone(NO)` cannot change the audio route to the earpiece.
+
+</Slot>
+
 Also, when an external playback device is removed, for example, by disconnecting the Bluetooth headset, the audio route change is different between v3.5.0 and v4.x:
 
 -  In v3.7.x, the audio route changes as follows (in terms of priority): The external device connected next to last (if any) &gt; … &gt; The external device connected first &gt; `setEnableSpeakerphone` &gt; `setDefaultAudioRoutetoSpeakerphone` &gt; The default audio route.
@@ -727,7 +717,7 @@ In v4.x, the video bitrate in the `AgoraChannelProfileCommunication` profile is 
 
 #### Virtual background
 
-See [Virtual Background](https://docs-md.agora.io/en/video-calling/advanced-features/virtual-background_android) to update the code in your app.
+See [Virtual Background](/en/realtime-media/video/build/apply-video-effects/virtual-background) to update the code in your app.
 
 #### Image enhancement
 
@@ -960,11 +950,11 @@ Web SDK v4.x represents a complete overhaul of Web SDK v3.x, featuring optimized
 - Clear and comprehensive error code system to facilitate troubleshooting.
 
 This version provides a clearer and more concise overview of the improvements in Web SDK v4.x while maintaining focus on the key advantages for users.
-:::info
-:::
-  > - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
-  >   - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
-  >   - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::note
+  - Agora has ceased support for Web SDK v3.x. To upgrade to version v4.x, refer to the provided documentation and migration guides.
+    - Note that Web SDK v4.x introduces major changes in API and product behavior, and is not backward compatible with version 3.x.
+    - In Web SDK v4.x, user role switching in live broadcast use-cases is decoupled from track release. Calling `publish` and `unpublish` will no longer automatically switch user roles. Refer to the [Migration steps](#migration-steps) for detailed instructions.
+  :::
 
 This page tells you about:
 

@@ -76,7 +76,7 @@ The request header contains the following fields:
 If the status code is 2XX, the request succeeds.
 
 :::info
-- You must set the cloud player's username, which can be a Number or String. Otherwise, the cloud player cannot be created, and Agora's server returns the `400 (Bad Request)` status code. Ensure that you have read [How can I use a username in string type?](https://docs.agora.io/en/help/integration-issues/string) when using a username in String type.
+- You must set the cloud player's username, which can be a Number or String. Otherwise, the cloud player cannot be created, and Agora's server returns the `400 (Bad Request)` status code. Ensure that you have read [How can I use a username in string type?](/en/api-reference/faq/integration/string_uid) when using a username in String type.
 - To avoid failed requests, do not pass `null` or `""` in the required fields.
 :::
 
@@ -98,8 +98,8 @@ The response body is a JSON Object called `player`, containing the following fie
  - `widthHeightAdaption`: Bool. Whether to enable horizontal and vertical screen adaptive mode:
    - `true`: Enable portrait and landscape adaptive mode. After you enable the adaptive mode, if the source media stream is in landscape mode, the output video width and height are 1280 × 720; if the source media stream is in portrait mode, the output video width and height are 720 × 1280.
    - `false`: (Default) Do not enable portrait and landscape adaptive mode.
- - `frameRate`: The frameRate (fps) of the output video. The value range is [1,30]. The default value is 15. For details, see [Video profile table](https://docs.agora.io/en/cloud-recording/develop/recording-video-profile#video-profile-table).
- - `bitrate`: Number. The bitrate (Kbps) of the output video. The value range is [1,10000]. For details, see [Video profile table](https://docs.agora.io/en/cloud-recording/develop/recording-video-profile#video-profile-table).
+ - `frameRate`: The frameRate (fps) of the output video. The value range is [1,30]. The default value is 15. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
+ - `bitrate`: Number. The bitrate (Kbps) of the output video. The value range is [1,10000]. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
  - `codec`: String type. The encoding format of the output video. The following settings are supported:
    - VP9: Standard VP9.
    - H.264: (Default) Standard H.264.
@@ -145,7 +145,7 @@ Ensure that the value is different from User Accounts of other users and players
 
 - `token`: (Optional) String. The authentication token used by the cloud player in the channel. If you do not enable the App Certificate in Agora Console, ignore this field. If you enable the App Certificate in Agora Console, you must pass a value in this field:
   - For low-security requirements: Use the temporary token generated in Agora Console. For details, see [Generate a Video SDK temporary token](/en/realtime-media/media-pull/build/manage-agora-account#generate-a-temporary-tokens).
-  - For high-security requirements: Use the token generated at your server. For details, see [Secure authentication with tokens](https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server).
+  - For high-security requirements: Use the token generated at your server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
 
 
 
@@ -186,7 +186,7 @@ To avoid creating multiple cloud players that inject the same online media strea
 If you do not set an encryption key or set it to null, built-in encryption is disabled.
 :::
 
-- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](https://docs.agora.io/en/interactive-live-streaming/advanced-features/media-stream-encryption).
+- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](/en/solutions/interactive-live-streaming/build/secure-and-protect-channels/media-stream-encryption).
 
 
 :::info

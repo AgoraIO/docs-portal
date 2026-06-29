@@ -119,6 +119,10 @@ describe('docs content regressions', () => {
     return readFileSync(resolve(voiceDocsRoot, relativePath), 'utf8');
   }
 
+  function readDoc(relativePath: string) {
+    return readFileSync(resolve(docsRoot, relativePath), 'utf8');
+  }
+
   function aiModelsDocSlugs(file: string) {
     const relativePath = relative(docsRoot, file).replace(/\\/g, '/');
     const withoutExtension = relativePath.replace(/\.mdx?$/, '');
@@ -180,6 +184,245 @@ describe('docs content regressions', () => {
     }
 
     expect(offenders).toEqual([]);
+  });
+
+  it('keeps docs free of four-colon directive fences', () => {
+    const offenders: string[] = [];
+
+    for (const file of listMarkdownFiles(allDocsRoot)) {
+      const lines = readFileSync(file, 'utf8').split('\n');
+
+      lines.forEach((line, index) => {
+        const match = line.match(/^\s*(:+)($|[^:])/);
+
+        if (match?.[1].length === 4) {
+          offenders.push(
+            `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
+          );
+        }
+      });
+    }
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps PR 285 code and table recovery pages from regressing to placeholders', () => {
+    const multihostDocs = [
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+    ];
+
+    for (const relativePath of multihostDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).not.toContain('not available yet');
+      expect(content).toContain(
+        '<Tabs defaultValue="android" groupId="platform">',
+      );
+      expect(content).not.toContain('<PlatformStructured platform=');
+      expect(content.match(/<TabsContent value=/g) ?? []).toHaveLength(3);
+      expect(content).toContain('```java');
+      expect(content).toContain('```swift');
+      expect(content).toContain('```dart');
+      expect(content).toContain('onTranscodedStreamLayoutInfo');
+      expect(content).toContain(
+        'didTranscodedStreamLayoutInfoUpdatedWithUserId',
+      );
+    }
+
+    const cloudRecording = readDoc(
+      'realtime-media/cloud-recording/reference/restful-api.mdx',
+    );
+
+    expect(cloudRecording).toContain(
+      '`POST /v1/apps/{appid}/cloud_recording/acquire`',
+    );
+    expect(cloudRecording).toContain(
+      '`GET /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query`',
+    );
+    expect(cloudRecording).toContain('`GET /v1/ncs/ip`');
+
+    const cloudRecordingApiOverview = readDoc(
+      'api-reference/api-ref/cloud-recording/index.mdx',
+    );
+
+    expect(cloudRecordingApiOverview).not.toMatch(
+      /\]\((?:authentication|acquire|start|update|update-layout|query|stop|get-ncs-ip)\)/,
+    );
+    expect(cloudRecordingApiOverview).toContain(
+      '[Acquire a cloud recording resource](/en/api-reference/api-ref/cloud-recording/acquire)',
+    );
+    expect(cloudRecordingApiOverview).toContain(
+      '[Query message notification server IP addresses](/en/api-reference/api-ref/cloud-recording/get-ncs-ip)',
+    );
+
+    const whiteboard = readDoc(
+      'realtime-media/whiteboard/overview/core-concepts.md',
+    );
+
+    expect(whiteboard).toContain(
+      '| Permission | `admin` | `writer` | `reader` |',
+    );
+    expect(whiteboard.match(/^\|:-----------\|/gm) ?? []).toHaveLength(3);
+    expect(whiteboard).toContain(
+      '| Query the progress of a specific file-conversion task | Yes | Yes | Yes |',
+    );
+
+    const whiteboardStatus = readDoc(
+      'realtime-media/whiteboard/reference/status-page.md',
+    );
+
+    expect(whiteboardStatus).toContain(
+      '| Metric   | Description | Calculation method   |',
+    );
+    expect(whiteboardStatus).toContain(
+      '| Video fluency | Measures video playback smoothness',
+    );
+    expect(whiteboardStatus).toContain(
+      'Interactive Whiteboard reliability and user experience status',
+    );
+
+    const srtStreaming = readDoc(
+      'realtime-media/rtmp-gateway/reference/srt-streaming.md',
+    );
+
+    expect(srtStreaming).toContain('`srtlive-rtcpush-prod-{region}.agoramdn.com`');
+    expect(srtStreaming).toContain('- `na`: North America');
+    expect(srtStreaming).toContain(
+      '[Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key)',
+    );
+
+    const simulcasting = readDoc(
+      'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+    );
+
+    expect(simulcasting).toContain(
+      '| Feature | Simulcasting | Dual-stream video |',
+    );
+    expect(simulcasting).toContain(
+      '| Small stream automatically adapts video attributes | No | Yes |',
+    );
+
+    const htAvatar = readDoc(
+      'realtime-media/marketplace/build/add-video-and-ar-effects/ht-3d-avatar.mdx',
+    );
+
+    expect(htAvatar).toContain('| Key | Description |');
+    expect(htAvatar).toContain(
+      '| [`htARRenderEnable`](#htarrenderenable) | Turns AR special effects on or off. |',
+    );
+    expect(htAvatar).toContain(
+      '| `maxFaces` | Integer. The maximum number of supported faces. The value range is `[1, 5]`. |',
+    );
+
+    const geofencingDocs = [
+      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
+      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+    ];
+
+    for (const relativePath of geofencingDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toContain(
+        "| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |",
+      );
+      expect(content).not.toContain('<thead>');
+      expect(content).not.toContain('<td rowspan="2">');
+    }
+
+    const securityDocs = [
+      'realtime-media/cloud-recording/reference/security.mdx',
+      'realtime-media/video/reference/security.mdx',
+      'realtime-media/marketplace/reference/security.mdx',
+      'realtime-media/rtmp-gateway/reference/security.md',
+    ];
+
+    for (const relativePath of securityDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content).toMatch(/\|\s*Customer Account Data\s*\|/);
+      expect(content).toMatch(/\|\s*Information Security Sub-Committee\s*\|/);
+      expect(content).not.toMatch(/<\/?(details|summary)>/);
+    }
+
+    const activeFence = readDoc(
+      'realtime-media/marketplace/build/add-moderation-and-intelligence/activefence.mdx',
+    );
+
+    expect(activeFence).toContain('| Title and key | Type | Meaning |');
+    expect(activeFence).toContain('| `requestId` | Text | Request ID of the screenshot |');
+
+    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
+
+    const rtmDownloadPlatforms = [
+      'web',
+      'android',
+      'ios',
+      'macos',
+      'linux-java',
+      'linux-cpp',
+      'windows',
+      'unity',
+      'flutter',
+    ];
+
+    expect(rtmDownloads).toContain(
+      '<Tabs defaultValue="web" groupId="platform">',
+    );
+    expect(rtmDownloads).not.toContain('<PlatformStructured platform=');
+    expect(rtmDownloads.match(/<TabsContent value=/g) ?? []).toHaveLength(
+      rtmDownloadPlatforms.length,
+    );
+    for (const platform of rtmDownloadPlatforms) {
+      expect(rtmDownloads).toContain(`<TabsContent value="${platform}">`);
+    }
+    expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
+    expect(rtmDownloads).toContain("pod 'AgoraRtm_iOS'");
+    expect(rtmDownloads).toContain("pod 'AgoraRtm_macOS'");
+    expect(rtmDownloads).toContain('<artifactId>agora-rtm-sdk</artifactId>');
+    expect(rtmDownloads).toContain(
+      'target_link_libraries($' + '{TARGET_NAME} agora_rtm_sdk pthread)',
+    );
+    expect(rtmDownloads).toContain('`agora_rtm_sdk.lib`');
+    expect(rtmDownloads).toContain(
+      '| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |',
+    );
+    expect(rtmDownloads).toContain('agora_rtm: ^2.2.1');
+    expect(rtmDownloads).not.toMatch(/<\/?(details|summary|PlatformWrapper)>/);
+
+    const rtmpCoreConcepts = readDoc(
+      'realtime-media/rtmp-gateway/reference/core-concepts.md',
+    );
+
+    expect(rtmpCoreConcepts).toContain('| Channel profile | Description |');
+    expect(rtmpCoreConcepts).toContain('| `LIVE_BROADCASTING` |');
+
+    const rtmpNotifications = readDoc(
+      'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+    );
+
+    expect(rtmpNotifications).toContain('| `eventType` | Event name | Description |');
+    expect(rtmpNotifications).toContain('| `3` | `live_stream_aborted` |');
+
+    const whiteboardReleaseNotes = readDoc(
+      'realtime-media/whiteboard/overview/release-notes.mdx',
+    );
+
+    expect(whiteboardReleaseNotes).toContain(
+      '|Domain                      |Covered region       |',
+    );
+    expect(whiteboardReleaseNotes).toContain(
+      "implementation 'com.github.netless-io:whiteboard-android:<version>'",
+    );
+    expect(whiteboardReleaseNotes).toContain("pod 'Whiteboard/Whiteboard-YYKit'");
+    expect(whiteboardReleaseNotes).not.toContain('<Admonition');
+    expect(whiteboardReleaseNotes).not.toContain('<Link to="{{Global.');
+    expect(whiteboardReleaseNotes).not.toContain(
+      '/interactive-whiteboard/get-started/get-started-sdk',
+    );
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
@@ -518,6 +761,204 @@ describe('docs content regressions', () => {
     expect(processed).toMatch(
       /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
     );
+  });
+
+  it('keeps shared geofencing pages wrapped in full html tables when using rowspan', () => {
+    const pages = [
+      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
+      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).toContain('<thead>');
+      expect(source).toContain('<td rowspan="2">North America</td>');
+      expect(source).toContain('<table>');
+      expect(source).toContain('</table>');
+    }
+  });
+
+  it('does not leave multi-host optimization pages as placeholder stubs', () => {
+    const pages = [
+      'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).not.toContain('**This feature guide is not available yet.**');
+      expect(source).toContain('client-customized composite layout');
+      expect(source).toContain('Cloud Transcoding');
+    }
+  });
+
+  it('keeps shared security tables free of broken extra cells in the Log row', () => {
+    const pages = [
+      'realtime-media/video/reference/security.mdx',
+      'realtime-media/voice/reference/security.md',
+      'realtime-media/cloud-recording/reference/security.mdx',
+      'realtime-media/marketplace/reference/security.mdx',
+      'solutions/interactive-live-streaming/reference/security.md',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).not.toContain(
+        '|Log |Media server logs generated by the Agora servers when accessing the Agora SDRTN®.| Media server logs do not contain text messages or personal information.|',
+      );
+    }
+  });
+
+  it('keeps optimize-frame-rendering iOS and macOS links on video-sdk docs instead of voice-sdk docs', () => {
+    const pages = [
+      'realtime-media/video/build/capture-and-render-video/optimize-frame-rendering.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
+      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).not.toContain('https://api-ref.agora.io/en/voice-sdk/ios/4.x/');
+      expect(source).toContain('https://api-ref.agora.io/en/video-sdk/ios/4.x/');
+    }
+  });
+
+  it('keeps video and voice API examples pages present with sample repository content', () => {
+    const pages = [
+      'realtime-media/video/reference/api-examples.mdx',
+      'realtime-media/voice/reference/api-examples.mdx',
+    ];
+
+    for (const relativePath of pages) {
+      const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
+
+      expect(source).toContain('Sample project repositories');
+      expect(source).toContain('AgoraIO/API-Examples');
+    }
+  });
+
+  it('keeps video reference api-examples populated with repository links', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/reference/api-examples.mdx'),
+      'utf8',
+    );
+
+    expect(source.trim().length).toBeGreaterThan(0);
+    expect(source).toContain('## Sample project repositories');
+    expect(source).toContain('[AgoraIO/API-Examples-Web]');
+  });
+
+  it('keeps the simulcasting comparison table headers in place', () => {
+    const source = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(source).toContain(
+      '| Item | Simulcasting | Dual-stream video |',
+    );
+    expect(source).toContain(
+      '| Number of published stream layers | Up to four simultaneous layers from one video source |',
+    );
+  });
+
+  it('keeps video quickstart free of the broken gradle code fence structure', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain("- Groovy `build.gradle`\n\n          ```groovy");
+    expect(source).toContain(
+      "- Kotlin `build.gradle.kts`\n\n          ```kotlin",
+    );
+    expect(source).not.toContain("```json\nimplementation 'io.agora.rtc:full-sdk:x.y.z'");
+  });
+
+  it('keeps voice quickstart free of isolated directive closers in setup steps', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/voice/quickstart.mdx'),
+      'utf8',
+    );
+    const androidSection = source.slice(
+      0,
+      source.indexOf('<PlatformStructured platform="ios">'),
+    );
+
+    expect(androidSection).toContain(
+      '2. Add a layout file for your activity.\n\n    Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.\n\n### Install the SDK',
+    );
+    expect(androidSection).toContain(
+      '1. Open the unzipped file and copy the following files or subfolders to your project path.\n\n  | File or folder        | Project path    |',
+    );
+  });
+
+  it('keeps voice api-examples populated with sample repositories and next steps', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/voice/reference/api-examples.mdx'),
+      'utf8',
+    );
+
+    expect(source.trim().length).toBeGreaterThan(0);
+    expect(source).toContain('## Sample project repositories');
+    expect(source).toContain('AgoraIO/API-Examples');
+    expect(source).toContain('## Next steps');
+  });
+
+  it('keeps voice error codes page in the condensed reference format', () => {
+    const source = readFileSync(
+      resolve(docsRoot, 'realtime-media/voice/reference/error-codes.mdx'),
+      'utf8',
+    );
+
+    expect(source).toContain('## Common error codes');
+    expect(source).toContain('## Audio-related error codes');
+    expect(source).toContain('## Data stream-related error codes');
+    expect(source).toContain('| `109` | The current token has expired and is no longer valid. Generate a new token on the server and call `renewToken`. |');
+    expect(source).toContain('| `1501` | There is no permission to use the microphone or related capture device. Check device permissions. |');
+    expect(source).not.toContain('<PlatformStructured platform="android">');
+    expect(source).not.toContain('<PlatformStructured platform="web">');
+  });
+
+  it('keeps media gateway pages aligned with the actual migrated entry points', () => {
+    const abr = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md',
+      ),
+      'utf8',
+    );
+    const notifications = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+      ),
+      'utf8',
+    );
+    const features = readFileSync(
+      resolve(
+        docsRoot,
+        'realtime-media/rtmp-gateway/reference/media-gateway-features.md',
+      ),
+      'utf8',
+    );
+
+    expect(abr).toContain('### API endpoint');
+    expect(abr).toContain('https://api.agora.io/{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}');
+    expect(notifications).toContain('### Media Gateway event types');
+    expect(notifications).toContain('### `live_stream_aborted` error codes');
+    expect(features).toContain('## Related APIs and implementation entry points');
+    expect(features).toContain('REST API overview');
   });
 
   it('keeps parameter table lists and callouts in the media push type definition page', async () => {

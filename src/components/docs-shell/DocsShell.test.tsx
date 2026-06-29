@@ -62,6 +62,53 @@ const sidebar: DocsSidebarNode[] = [
   },
 ];
 
+const realtimeMediaSidebar: DocsSidebarNode[] = [
+  {
+    children: [
+      {
+        children: [
+          {
+            id: '/en/realtime-media/video/overview',
+            title: 'Voice overview',
+            type: 'page',
+            url: '/en/realtime-media/video/overview',
+          },
+        ],
+        collapsible: true,
+        id: 'voice-video',
+        title: 'Voice & Video',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            id: '/en/realtime-media/rtm/build/presence',
+            title: 'Presence',
+            type: 'page',
+            url: '/en/realtime-media/rtm/build/presence',
+          },
+        ],
+        collapsible: true,
+        id: 'signaling',
+        title: 'Signaling',
+        type: 'section',
+      },
+    ],
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    type: 'section',
+  },
+];
+
+const realtimeMediaTabs: TabSummary[] = [
+  {
+    icon: 'Radio',
+    id: 'realtime-media',
+    title: 'Realtime Media',
+    url: '/en/realtime-media',
+  },
+];
+
 type DocsShellProps = ComponentProps<typeof DocsShell>;
 
 const loadSearchPages = async () => [
@@ -70,6 +117,14 @@ const loadSearchPages = async () => [
     url: '/en/introduction/quick-start',
   },
 ];
+
+function expectNoZhCnLinks(container: ParentNode) {
+  const zhCnHrefs = Array.from(
+    container.querySelectorAll<HTMLAnchorElement>('a[href^="/zh-CN"]'),
+  ).map((link) => link.getAttribute('href'));
+
+  expect(zhCnHrefs).toEqual([]);
+}
 
 function renderDocsShell(
   overrides: Partial<DocsShellProps> = {},
@@ -110,23 +165,32 @@ function renderDocsShell(
   const rootRoute = createRootRoute({
     component: () => <Outlet />,
   });
+  const shellComponent = () => (
+    <AppProviders>
+      <DocsShell {...props} />
+    </AppProviders>
+  );
   const docsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/$locale/$tab/$slug',
-    component: () => (
-      <AppProviders>
-        <DocsShell {...props} />
-      </AppProviders>
-    ),
+    component: shellComponent,
+  });
+  const docsIndexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab',
+    component: shellComponent,
   });
   const router = createRouter({
-    routeTree: rootRoute.addChildren([docsRoute]),
+    routeTree: rootRoute.addChildren([docsRoute, docsIndexRoute]),
     history: createMemoryHistory({
       initialEntries: [initialEntry],
     }),
   });
 
-  return render(<RouterProvider router={router} />);
+  return {
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
 }
 
 function renderWithRouter(
@@ -151,12 +215,158 @@ function renderWithRouter(
   return render(<RouterProvider router={router} />);
 }
 
+function renderRealtimeMediaDocsShell(
+  initialEntry = '/en/realtime-media/video/overview',
+) {
+  const videoPath = '/en/realtime-media/video/overview';
+  const signalingPath = '/en/realtime-media/rtm/build/presence';
+  const history = createMemoryHistory({
+    initialEntries: [initialEntry],
+  });
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$',
+    component: () => {
+      const params = docsRoute.useParams();
+      const activePath = `/${params.locale}/${params.tab}/${params._splat}`;
+
+      return (
+        <AppProviders>
+          <DocsShell
+            activePath={activePath}
+            activeTab="realtime-media"
+            localeLinks={[
+              {
+                href: activePath,
+                isActive: true,
+                locale: 'en',
+              },
+            ]}
+            locale="en"
+            loadPages={loadSearchPages}
+            next={
+              activePath === videoPath
+                ? {
+                    title: 'Presence',
+                    url: signalingPath,
+                  }
+                : undefined
+            }
+            previous={
+              activePath === signalingPath
+                ? {
+                    title: 'Voice overview',
+                    url: videoPath,
+                  }
+                : undefined
+            }
+            sidebar={realtimeMediaSidebar}
+            tabs={realtimeMediaTabs}
+            toc={[]}
+          >
+            <article>{activePath}</article>
+          </DocsShell>
+        </AppProviders>
+      );
+    },
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history,
+  });
+
+  return {
+    history,
+    router,
+    ...render(<RouterProvider router={router} />),
+  };
+}
+
 describe('DocsShell', () => {
   afterEach(async () => {
     vi.useRealTimers();
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
     await i18n.changeLanguage('en');
     vi.restoreAllMocks();
+  });
+
+  it('links the desktop brand to the current-locale docs home', async () => {
+    const { router } = renderDocsShell();
+
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(brandHomeLink).toHaveAttribute('href', '/en/introduction');
+
+    fireEvent.click(brandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/en/introduction');
+    });
+  });
+
+  it('uses the route locale when building the desktop brand home link', async () => {
+    const { router } = renderDocsShell(
+      {
+        activePath: '/zh-CN/introduction/about-agora',
+        locale: 'zh-CN',
+        localeLinks: [
+          {
+            href: '/en/introduction/about-agora',
+            isActive: false,
+            locale: 'en',
+          },
+          {
+            href: '/zh-CN/introduction/about-agora',
+            isActive: true,
+            locale: 'zh-CN',
+          },
+        ],
+      },
+      '/zh-CN/introduction/about-agora',
+    );
+
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(brandHomeLink).toHaveAttribute('href', '/zh-CN/introduction');
+
+    fireEvent.click(brandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/zh-CN/introduction');
+    });
+  });
+
+  it('links the mobile sheet brand to the docs home and closes the sheet', async () => {
+    const { router } = renderDocsShell();
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileDialog = await screen.findByRole('dialog');
+    const mobileBrandHomeLink = within(mobileDialog).getByRole('link', {
+      name: 'Agora Docs',
+    });
+
+    expect(mobileBrandHomeLink).toHaveAttribute('href', '/en/introduction');
+
+    fireEvent.click(mobileBrandHomeLink);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/en/introduction');
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
   });
 
   it('renders a separate desktop header row and docs tabs strip', async () => {
@@ -176,11 +386,6 @@ describe('DocsShell', () => {
       .find((button) =>
         button.textContent?.includes('Search docs, APIs, guides...'),
       );
-    const siteControl = within(mainHeaderRow)
-      .getAllByRole('button', {
-        name: 'Site',
-      })
-      .find((button) => button.textContent?.includes('International site'));
     const themeControl = within(mainHeaderRow).getByRole('button', {
       name: 'Theme: Light',
     });
@@ -198,12 +403,7 @@ describe('DocsShell', () => {
     if (!desktopSearch) {
       throw new Error('expected desktop search trigger in main header row');
     }
-    expect(siteControl).toBeDefined();
-    if (!siteControl) {
-      throw new Error('expected desktop site trigger in main header row');
-    }
     expect(mainHeaderRow).toContainElement(desktopSearch);
-    expect(mainHeaderRow).toContainElement(siteControl);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
@@ -249,14 +449,6 @@ describe('DocsShell', () => {
     expect(githubControl.className).toContain(
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
-    expect(siteControl).toHaveAttribute('data-variant', 'ghost');
-    expect(siteControl.className).not.toContain(
-      'border-[color:var(--line-strong)]',
-    );
-    expect(siteControl.className).not.toContain('bg-card');
-    expect(siteControl.className).toContain('hover:bg-accent');
-    expect(siteControl.className).toContain('data-[state=open]:bg-accent');
-    expect(siteControl).toHaveTextContent('International site');
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
     expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
@@ -266,6 +458,43 @@ describe('DocsShell', () => {
       screen.getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
+  });
+
+  it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
+    renderDocsShell();
+
+    const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
+    const introTab = within(docsTabsStrip).getByRole('tab', {
+      name: 'Introduction',
+    });
+
+    // Weight no longer toggles on the Link itself (that would shift siblings);
+    // the Link exposes its active state as a named group instead.
+    expect(introTab.className).not.toContain(
+      'data-[state=active]:font-semibold',
+    );
+    expect(introTab.className).toContain('group/tab');
+
+    // The title is rendered twice: an aria-hidden semibold ghost that reserves
+    // width, and a visible copy whose weight follows the group's active state.
+    const titles = within(introTab).getAllByText('Introduction');
+    expect(titles).toHaveLength(2);
+
+    const ghost = titles.find(
+      (el) => el.getAttribute('aria-hidden') === 'true',
+    );
+    const visible = titles.find(
+      (el) => el.getAttribute('aria-hidden') !== 'true',
+    );
+
+    expect(ghost).toBeDefined();
+    expect(ghost?.className).toContain('invisible');
+    expect(ghost?.className).toContain('font-semibold');
+
+    expect(visible).toBeDefined();
+    expect(visible?.className).toContain(
+      'group-data-[state=active]/tab:font-semibold',
+    );
   });
 
   it('renders scoped version selectors in desktop and mobile sidebars for non-tab scopes', async () => {
@@ -354,6 +583,9 @@ describe('DocsShell', () => {
     expect(
       screen.queryByRole('button', { name: 'Open navigation' }),
     ).toBeNull();
+    expect(
+      screen.queryByRole('navigation', { name: 'Alternate languages' }),
+    ).toBeNull();
   });
 
   it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
@@ -420,6 +652,14 @@ describe('DocsShell', () => {
     expect(docsBodyShell).not.toContainElement(siteFooter);
     expect(mainColumn).not.toContainElement(siteFooter);
     expect(pageFooter).not.toContainElement(siteFooter);
+    expect(
+      docsBodyShell.compareDocumentPosition(siteFooter) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      pageFooter.compareDocumentPosition(siteFooter) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(siteFooter.parentElement).toHaveClass('flex', 'min-h-screen');
     expect(siteFooter).toHaveClass(
       'w-full',
@@ -471,7 +711,7 @@ describe('DocsShell', () => {
     ).toHaveAttribute('href', 'https://investor.agora.io/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Documentation' }),
-    ).toHaveAttribute('href', 'https://docs.agora.io/en/');
+    ).toHaveAttribute('href', '/en/');
     expect(
       within(siteFooter).getByRole('link', { name: 'Privacy Policy' }),
     ).toHaveAttribute('href', 'https://www.agora.io/en/privacy-policy/');
@@ -522,19 +762,20 @@ describe('DocsShell', () => {
     const mainHeaderRow = screen.getByTestId('docs-main-header-row');
     const docsTabsStrip = screen.getByTestId('docs-tabs-strip');
 
-    expect(mainHeaderRow).toHaveClass('max-w-[min(100%,1600px)]');
-    expect(docsTabsStrip.firstElementChild).toHaveClass(
-      'max-w-[min(100%,1600px)]',
+    expect(mainHeaderRow).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
-    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
+    expect(docsTabsStrip.firstElementChild).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
     expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('docs-toc-rail-placeholder'),
-    ).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-page-actions')).not.toBeInTheDocument();
     expect(screen.queryByTestId('docs-side-rail')).not.toBeInTheDocument();
     for (const footer of screen.getAllByTestId('docs-page-footer')) {
@@ -544,42 +785,26 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
-  it('keeps the full-page layout on the stable docs shell without the generic toc rail', async () => {
-    renderDocsShell({
-      layoutMode: 'full-page',
-    });
-
-    const docsBodyShell = await screen.findByTestId('docs-body-shell');
-
-    expect(docsBodyShell).toHaveClass('max-w-[min(100%,1600px)]');
-    expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
-    );
-    expect(docsBodyShell).not.toHaveClass(
-      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
-    );
-    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
-    expect(screen.getByTestId('docs-toc-rail-placeholder')).toBeInTheDocument();
-    for (const footer of screen.getAllByTestId('docs-page-footer')) {
-      expect(footer).toHaveClass('max-w-none');
-      expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
-    }
-    expect(screen.queryByText('On this page')).not.toBeInTheDocument();
-  });
-
-  it('keeps desktop sidebar, content, and toc as independent scroll regions', async () => {
+  it('keeps desktop content in normal page flow while sidebar and toc own their scroll regions', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },
       previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
     });
 
-    expect(await screen.findByTestId('docs-body-shell')).toHaveClass(
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-column');
+    const desktopContent = screen.getByTestId('docs-main-desktop-scroll');
+
+    expect(docsBodyShell).toHaveClass('lg:items-start');
+    expect(docsBodyShell).not.toHaveClass(
+      'lg:h-[var(--docs-shell-body-height)]',
       'lg:min-h-0',
       'lg:overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar')).toHaveClass(
-      'h-full',
-      'min-h-0',
+      'lg:sticky',
+      'lg:top-[var(--docs-shell-header-offset)]',
+      'lg:h-[var(--docs-shell-body-height)]',
       'overflow-hidden',
     );
     expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
@@ -588,12 +813,10 @@ describe('DocsShell', () => {
       'min-h-0',
       'overflow-y-auto',
     );
-    expect(screen.getByTestId('docs-main-column')).toHaveClass(
-      'h-full',
-      'min-h-0',
-      'overflow-hidden',
-    );
-    expect(screen.getByTestId('docs-main-desktop-scroll')).toHaveClass(
+    expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
+    expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
+    expect(desktopContent).toHaveClass('hidden', 'lg:block');
+    expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
       'min-h-0',
@@ -601,31 +824,32 @@ describe('DocsShell', () => {
     );
     expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
       'docs-scrollbar',
-      'h-full',
-      'min-h-0',
+      'xl:sticky',
+      'xl:top-[var(--docs-shell-header-offset)]',
+      'xl:h-[var(--docs-shell-body-height)]',
       'overflow-y-auto',
     );
   });
 
-  it('shows docs scrollbars transiently while a region is scrolling', async () => {
+  it('shows docs scrollbars transiently while a sidebar region is scrolling', async () => {
     renderDocsShell();
 
-    const mainScrollRegion = await screen.findByTestId(
-      'docs-main-desktop-scroll',
+    const sidebarScrollRegion = await screen.findByTestId(
+      'docs-sidebar-scroll',
     );
     vi.useFakeTimers();
 
-    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).not.toHaveClass('docs-scrollbar-visible');
 
-    fireEvent.scroll(mainScrollRegion);
+    fireEvent.scroll(sidebarScrollRegion);
 
-    expect(mainScrollRegion).toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).toHaveClass('docs-scrollbar-visible');
 
     await act(async () => {
       vi.advanceTimersByTime(900);
     });
 
-    expect(mainScrollRegion).not.toHaveClass('docs-scrollbar-visible');
+    expect(sidebarScrollRegion).not.toHaveClass('docs-scrollbar-visible');
   });
 
   it('resets desktop sidebar scroll position when the active tab changes', async () => {
@@ -846,79 +1070,109 @@ describe('DocsShell', () => {
     });
   });
 
-  it('switches locale while preserving the current tab and slug path', async () => {
-    const rootRoute = createRootRoute({
-      component: () => <Outlet />,
+  it('reveals active nested sidebar sections after footer and history navigation', async () => {
+    const { history, router } = renderRealtimeMediaDocsShell();
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const voiceToggle = within(sidebarRegion).getByRole('button', {
+      name: /Voice & Video/i,
     });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$',
-      component: () => (
-        <AppProviders>
-          <DocsShell
-            activePath="/en/ai/get-started/quickstart"
-            activeTab="ai"
-            localeLinks={[
-              {
-                href: '/en/ai/get-started/quickstart',
-                isActive: true,
-                locale: 'en',
-              },
-              {
-                href: '/zh-CN/ai/get-started/quickstart',
-                isActive: false,
-                locale: 'zh-CN',
-              },
-            ]}
-            locale="en"
-            loadPages={async () => []}
-            sidebar={[]}
-            tabs={tabs}
-            toc={[]}
-          >
-            <article>Body</article>
-          </DocsShell>
-        </AppProviders>
-      ),
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
     });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/en/ai/get-started/quickstart'],
-      }),
-    });
-    const navigateSpy = vi.spyOn(router, 'navigate');
 
-    render(<RouterProvider router={router} />);
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(sidebarRegion).queryByRole('link', { name: 'Presence' }),
+    ).not.toBeInTheDocument();
 
-    const siteButton = (
-      await screen.findAllByRole('button', {
-        name: 'Site',
-      })
-    ).find((button) => button.textContent?.includes('International site'));
-
-    if (!siteButton) {
-      throw new Error('expected desktop site button');
-    }
-
-    fireEvent.pointerDown(siteButton, { button: 0 });
     fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'China site' }),
+      within(mainColumn).getByRole('link', { name: /Next Presence/i }),
     );
 
     await waitFor(() => {
-      expect(navigateSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: '/zh-CN/ai/get-started/quickstart',
-        }),
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
       );
     });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(
+      within(mainColumn).getByRole('link', {
+        name: /Previous Voice overview/i,
+      }),
+    );
+
     await waitFor(() => {
-      expect(window.localStorage.getItem(LOCALE_STORAGE_KEY)).toBe('zh-CN');
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
     });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(signalingToggle);
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.back();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+
+    fireEvent.click(voiceToggle);
+
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'false');
+
+    await act(async () => {
+      history.forward();
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/video/overview',
+      );
+    });
+    expect(voiceToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Voice overview' }),
+    ).toHaveAttribute('data-active', 'true');
   });
 
-  it('renders locale options as crawlable links for static discovery', async () => {
+  it('expands the active nested sidebar section on direct deep links', async () => {
+    renderRealtimeMediaDocsShell('/en/realtime-media/rtm/build/presence');
+
+    const sidebarRegion = await screen.findByTestId('docs-sidebar');
+    const signalingToggle = within(sidebarRegion).getByRole('button', {
+      name: /Signaling/i,
+    });
+
+    expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(sidebarRegion).getByRole('link', { name: 'Presence' }),
+    ).toHaveAttribute('data-active', 'true');
+  });
+
+  it('does not expose China site or alternate zh-CN navigation in desktop chrome', async () => {
     renderDocsShell({
       activePath: '/en/ai/get-started/quickstart',
       activeTab: 'ai',
@@ -936,34 +1190,54 @@ describe('DocsShell', () => {
       ],
     });
 
-    fireEvent.pointerDown(
-      (
-        await screen.findAllByRole('button', {
-          name: 'Site',
-        })
-      ).find((button) => button.textContent?.includes('International site')) ??
-        (() => {
-          throw new Error('expected desktop site button');
-        })(),
-      { button: 0 },
+    const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
+    const desktopHeaderActions = within(mainHeaderRow).getByTestId(
+      'docs-desktop-header-actions',
     );
 
-    const siteOptions = await screen.findByRole('menu', {
-      name: 'Site',
-    });
-
-    expect(siteOptions).toHaveAttribute('data-slot', 'dropdown-menu-content');
     expect(
-      within(siteOptions).getByRole('menuitem', { name: 'China site' }),
-    ).toHaveAttribute('href', '/zh-CN/ai/get-started/quickstart');
+      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
     expect(
-      within(siteOptions).getByText(
-        'Product coverage differs between the two sites.',
-      ),
-    ).toBeInTheDocument();
+      within(desktopHeaderActions).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('navigation', {
+        name: 'Alternate languages',
+      }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole('link', { name: 'zh-CN' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', {
+        name: 'China site',
+      }),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mainHeaderRow);
   });
 
-  it('keeps compact mobile header controls and exposes locale and theme in the sheet', async () => {
+  it('does not render alternate-language chrome when only one UI locale is enabled', async () => {
+    renderDocsShell({
+      activePath: '/en/ai/get-started/quickstart',
+      activeTab: 'ai',
+      localeLinks: [
+        {
+          href: '/en/ai/get-started/quickstart',
+          isActive: true,
+          locale: 'en',
+        },
+      ],
+    });
+
+    expect(
+      screen.queryByRole('navigation', {
+        name: 'Alternate languages',
+      }),
+    ).toBeNull();
+  });
+
+  it('keeps compact mobile header controls and exposes theme in the sheet', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -1038,6 +1312,13 @@ describe('DocsShell', () => {
       within(mobileHeaderActions).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
     expect(
+      within(desktopHeaderActions).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
+    expect(
+      within(mainHeaderRow).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mainHeaderRow);
+    expect(
       within(mobileHeaderActions).queryByRole('button', {
         name: 'Theme: Light',
       }),
@@ -1057,8 +1338,15 @@ describe('DocsShell', () => {
       within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(
-      within(mobileSheet).getByRole('button', { name: 'Site' }),
-    ).toBeInTheDocument();
+      within(mobileSheet).queryByRole('button', { name: 'Site' }),
+    ).toBeNull();
+    expect(
+      within(mobileSheet).queryByText('China site'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(mobileSheet).queryByRole('link', { name: 'zh-CN' }),
+    ).not.toBeInTheDocument();
+    expectNoZhCnLinks(mobileSheet);
     expect(
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
     ).toBeInTheDocument();
@@ -1136,6 +1424,10 @@ describe('DocsShell', () => {
     );
 
     const mobileSheet = await screen.findByRole('dialog');
+    const mobileSheetContent = screen.getByTestId('docs-mobile-sidebar-sheet');
+    const mobileScroll = within(mobileSheet).getByTestId(
+      'docs-mobile-sidebar-scroll',
+    );
     const tabList = within(mobileSheet).getByRole('tablist');
     const referenceTab = within(mobileSheet).getByRole('tab', {
       name: 'Reference',
@@ -1145,10 +1437,30 @@ describe('DocsShell', () => {
     });
     const pagesLabel = within(mobileSheet).getByText('Pages');
 
+    expect(mobileSheetContent).toBe(mobileSheet);
+    expect(mobileSheetContent).toHaveClass(
+      'w-[min(92vw,24rem)]',
+      'max-w-[calc(100vw-1rem)]',
+      'overflow-hidden',
+    );
+    expect(mobileScroll).toHaveClass(
+      'min-w-0',
+      'overflow-hidden',
+      'px-3',
+      'sm:px-4',
+    );
     expect(tabList).toHaveAttribute('aria-orientation', 'vertical');
     expect(tabList).toHaveClass('h-auto', 'gap-1.5');
     expect(referenceTab).toHaveAttribute('aria-selected', 'true');
-    expect(referenceTab).toHaveClass('min-w-0', 'w-full', 'whitespace-normal');
+    expect(referenceTab).toHaveClass(
+      'h-auto',
+      'min-w-0',
+      'w-full',
+      'overflow-hidden',
+      'whitespace-normal',
+      '[overflow-wrap:anywhere]',
+      'after:hidden',
+    );
     expect(referenceTab.className).toContain(
       'data-[state=active]:bg-[color:var(--accent-brand-soft)]',
     );
@@ -1159,7 +1471,8 @@ describe('DocsShell', () => {
     expect(
       within(mobileSheet).getByRole('link', { name: 'API Reference' }),
     ).toBeInTheDocument();
-    expect(currentPageLink).toHaveClass('min-w-0');
+    expect(currentPageLink).toHaveClass('w-full', 'min-w-0', 'overflow-hidden');
+    expect(currentPageLink).toHaveAttribute('aria-current', 'page');
     expect(currentPageLink.className).toContain(
       'bg-[color:var(--accent-brand-soft)]',
     );
@@ -1167,6 +1480,90 @@ describe('DocsShell', () => {
       'before:bg-[color:var(--accent-brand)]',
     );
     expect(currentPageLink.className).toContain('focus-visible:ring-[3px]');
+  });
+
+  it('wraps long mobile sidebar labels and limits nested indentation', async () => {
+    const longTabTitle =
+      'RealtimeMediaWithAnExtremelyLongUnbrokenMobileNavigationTitle';
+    const longSectionTitle =
+      'CloudRecordingEndpointsWithVeryLongUnbrokenSectionTitle';
+    const longPageTitle =
+      'AcquireCloudRecordingResourceWithExtremelyLongUnbrokenIdentifierForMobileDrawer';
+
+    renderDocsShell(
+      {
+        activePath: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+        activeTab: 'api-reference',
+        sidebar: [
+          {
+            children: [
+              {
+                id: 'long-endpoint',
+                method: 'POST',
+                title: longPageTitle,
+                type: 'page',
+                url: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
+              },
+            ],
+            id: 'long-section',
+            title: longSectionTitle,
+            type: 'section',
+          },
+        ],
+        tabs: [
+          {
+            id: 'long-realtime-media',
+            title: longTabTitle,
+            url: '/en/realtime-media',
+          },
+          {
+            id: 'api-reference',
+            title: 'Reference',
+            url: '/en/api-reference',
+          },
+        ],
+      },
+      '/en/api-reference/long-endpoint',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const longTab = within(mobileSheet).getByRole('tab', {
+      name: longTabTitle,
+    });
+    const sectionLabel = within(mobileSheet)
+      .getByText(longSectionTitle)
+      .closest('p');
+    const pageLink = within(mobileSheet).getByRole('link', {
+      name: `${longPageTitle} POST`,
+    });
+    const pageTitle = within(pageLink).getByText(longPageTitle);
+    const nestedList = sectionLabel?.nextElementSibling;
+
+    expect(longTab).toHaveClass(
+      'max-w-full',
+      'overflow-hidden',
+      '[overflow-wrap:anywhere]',
+      'after:hidden',
+    );
+    expect(sectionLabel).toBeInstanceOf(HTMLElement);
+    expect(sectionLabel).toHaveAttribute('data-active', 'true');
+    expect(sectionLabel).toHaveClass('max-w-full', '[overflow-wrap:anywhere]');
+    expect(nestedList).toBeInstanceOf(HTMLElement);
+    expect(nestedList).toHaveClass('max-w-full', 'border-l', 'pl-2', 'ml-2');
+    expect(pageLink).toHaveClass(
+      'max-w-full',
+      'overflow-hidden',
+      '[&>span:first-child]:[overflow-wrap:anywhere]',
+    );
+    expect(pageTitle).toHaveClass('min-w-0', 'flex-1');
+    expect(within(pageLink).getByText('POST')).toHaveClass(
+      'shrink-0',
+      'font-mono',
+    );
   });
 
   it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {
@@ -1181,6 +1578,22 @@ describe('DocsShell', () => {
 
     expect(mobileScrollViewport).toBeNull();
     expect(within(mobileFlow).getByText('Body')).toBeInTheDocument();
+  });
+
+  it('hides the toc rail and fills the grid when hideToc is set, keeping the docs footprint', async () => {
+    renderDocsShell({ layoutMode: 'docs', hideToc: true });
+
+    const docsBodyShell = await screen.findByTestId('docs-body-shell');
+
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
+    expect(docsBodyShell).not.toHaveClass(
+      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+    );
+    expect(docsBodyShell).toHaveClass(
+      'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
+    );
+    expect(docsBodyShell).not.toHaveClass('max-w-[min(100%,1600px)]');
   });
 
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {

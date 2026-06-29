@@ -10,6 +10,7 @@ import {
   BlocksIcon,
   BotIcon,
   CaptionsIcon,
+  ChevronDownIcon,
   CloudIcon,
   Code2Icon,
   CpuIcon,
@@ -24,6 +25,7 @@ import {
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
+  SearchIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
   TerminalSquareIcon,
@@ -48,9 +50,15 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
-const FaqCatalog = lazy(() =>
-  import('../faq/FaqCatalog').then((module) => ({
-    default: module.FaqCatalog,
+const FaqLanding = lazy(() =>
+  import('../faq/FaqLanding').then((module) => ({
+    default: module.FaqLanding,
+  })),
+);
+
+const FaqCategory = lazy(() =>
+  import('../faq/FaqCategory').then((module) => ({
+    default: module.FaqCategory,
   })),
 );
 
@@ -58,7 +66,8 @@ export function getOverviewMDXComponents(): MDXComponents {
   return {
     CardGrid,
     FeatureCard,
-    FaqCatalog,
+    FaqLanding,
+    FaqCategory,
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
@@ -70,6 +79,7 @@ export function getOverviewMDXComponents(): MDXComponents {
     OverviewSpotlightGrid,
     OverviewToolkits,
     RecipesCatalog,
+    RecipesGallery,
     SdksCatalog,
     SolutionCard,
     SolutionCardGrid,
@@ -567,7 +577,7 @@ function SolutionCardGrid({
   );
 }
 
-type SolutionCardIconKind =
+export type SolutionCardIconKind =
   | 'ai'
   | 'analytics'
   | 'broadcast'
@@ -1045,6 +1055,336 @@ function RecipesCatalogFilterGroup({
   );
 }
 
+const RECIPE_LEVELS = ['Beginner', 'Intermediate', 'Advanced'] as const;
+
+function getRecipeLevel(item: RecipeCatalogItem) {
+  return item.tags?.find((tag) =>
+    (RECIPE_LEVELS as readonly string[]).includes(tag),
+  );
+}
+
+function recipeKey(item: RecipeCatalogItem) {
+  return item.href ?? `${item.product}-${item.stack ?? item.title}`;
+}
+
+function recipeTags(item: RecipeCatalogItem) {
+  return [item.stack, getRecipeLevel(item)].filter(Boolean) as string[];
+}
+
+function RecipeGallerySelect({
+  allLabel,
+  label,
+  onChange,
+  options,
+  value,
+}: {
+  allLabel: string;
+  label: string;
+  onChange: (value: string) => void;
+  options: string[];
+  value: string;
+}) {
+  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
+  return (
+    <span className="relative shrink-0">
+      <label className="sr-only" htmlFor={id}>
+        {label}
+      </label>
+      <select
+        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+        id={id}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option === allLabel ? `${label}: All` : option}
+          </option>
+        ))}
+      </select>
+      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
+    </span>
+  );
+}
+
+export function RecipesGallery({
+  allCategoriesLabel,
+  allProductsLabel,
+  allStacksLabel,
+  categoryFilterLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  productFilterLabel,
+  searchPlaceholder,
+  stackFilterLabel,
+  stackQueryParam,
+}: {
+  allCategoriesLabel: string;
+  allProductsLabel: string;
+  allStacksLabel: string;
+  categoryFilterLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: RecipeCatalogItem[];
+  productFilterLabel: string;
+  searchPlaceholder: string;
+  stackFilterLabel: string;
+  stackQueryParam?: string;
+}) {
+  const allLevelsLabel = 'All levels';
+  const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activeStack, setActiveStack] = useState(() =>
+    getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
+  );
+  const [activeLevel, setActiveLevel] = useState(allLevelsLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const categories = useMemo(
+    () => [
+      allCategoriesLabel,
+      ...getUniqueValues(items.map((item) => item.category)),
+    ],
+    [allCategoriesLabel, items],
+  );
+  const products = useMemo(
+    () => [
+      allProductsLabel,
+      ...getUniqueValues(items.map((item) => item.product)),
+    ],
+    [allProductsLabel, items],
+  );
+  const stacks = useMemo(
+    () => [
+      allStacksLabel,
+      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
+    ],
+    [allStacksLabel, items],
+  );
+  const levels = useMemo(
+    () => [allLevelsLabel, ...getUniqueValues(items.map(getRecipeLevel))],
+    [items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (
+        activeCategory !== allCategoriesLabel &&
+        item.category !== activeCategory
+      ) {
+        return false;
+      }
+      if (
+        activeProduct !== allProductsLabel &&
+        item.product !== activeProduct
+      ) {
+        return false;
+      }
+      if (
+        activeStack !== allStacksLabel &&
+        (item.stack ?? '') !== activeStack
+      ) {
+        return false;
+      }
+      if (
+        activeLevel !== allLevelsLabel &&
+        getRecipeLevel(item) !== activeLevel
+      ) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      const haystack = normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.product,
+          item.category,
+          item.stack,
+          ...(item.tags ?? []),
+        ]
+          .filter(Boolean)
+          .join(' '),
+      );
+      return haystack.includes(normalizedQuery);
+    });
+  }, [
+    activeCategory,
+    activeLevel,
+    activeProduct,
+    activeStack,
+    allCategoriesLabel,
+    allProductsLabel,
+    allStacksLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeCategory !== allCategoriesLabel ||
+    activeProduct !== allProductsLabel ||
+    activeStack !== allStacksLabel ||
+    activeLevel !== allLevelsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveCategory(allCategoriesLabel);
+    setActiveProduct(allProductsLabel);
+    setActiveStack(allStacksLabel);
+    setActiveLevel(allLevelsLabel);
+  };
+
+  const groupedByCategory = useMemo(
+    () =>
+      categories
+        .filter((value) => value !== allCategoriesLabel)
+        .map((category) => ({
+          category,
+          items: filteredItems.filter((item) => item.category === category),
+        }))
+        .filter((group) => group.items.length > 0),
+    [allCategoriesLabel, categories, filteredItems],
+  );
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-6">
+      <label className="relative block">
+        <span className="sr-only">{searchPlaceholder}</span>
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
+        <input
+          className="h-11 w-full rounded-lg border border-input bg-background px-9 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={searchPlaceholder}
+          type="search"
+          value={query}
+        />
+      </label>
+
+      <div className="flex flex-col gap-4">
+        <div
+          aria-label={categoryFilterLabel}
+          className="flex flex-wrap gap-1 border-border border-b"
+          role="tablist"
+        >
+          {categories.map((category) => {
+            const active = category === activeCategory;
+            return (
+              <button
+                aria-selected={active}
+                className={cn(
+                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                  active
+                    ? 'border-primary font-semibold text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground',
+                )}
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                role="tab"
+                type="button"
+              >
+                {category === allCategoriesLabel ? 'All' : category}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {products.length > 2 ? (
+            <RecipeGallerySelect
+              allLabel={allProductsLabel}
+              label={productFilterLabel}
+              onChange={setActiveProduct}
+              options={products}
+              value={activeProduct}
+            />
+          ) : null}
+          <RecipeGallerySelect
+            allLabel={allStacksLabel}
+            label={stackFilterLabel}
+            onChange={setActiveStack}
+            options={stacks}
+            value={activeStack}
+          />
+          {levels.length > 1 ? (
+            <RecipeGallerySelect
+              allLabel={allLevelsLabel}
+              label="Level"
+              onChange={setActiveLevel}
+              options={levels}
+              value={activeLevel}
+            />
+          ) : null}
+          {hasActiveFilters ? (
+            <button
+              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={resetFilters}
+              type="button"
+            >
+              {clearFiltersLabel}
+            </button>
+          ) : null}
+          <span className="ml-auto text-sm text-muted-foreground">
+            {filteredItems.length} recipes
+          </span>
+        </div>
+      </div>
+
+      {filteredItems.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border bg-muted/35 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      ) : activeCategory === allCategoriesLabel ? (
+        <div className="flex flex-col gap-8">
+          {groupedByCategory.map((group) => (
+            <section className="flex flex-col gap-3" key={group.category}>
+              <div className="flex items-baseline gap-2">
+                <h3 className="m-0 text-base font-semibold text-foreground">
+                  {group.category}
+                </h3>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {group.items.length}
+                </span>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {group.items.map((item) => (
+                  <SolutionCard
+                    description={item.description}
+                    href={item.href}
+                    key={recipeKey(item)}
+                    size="small"
+                    tags={recipeTags(item)}
+                    title={item.title}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {filteredItems.map((item) => (
+            <SolutionCard
+              description={item.description}
+              href={item.href}
+              key={recipeKey(item)}
+              size="small"
+              tags={recipeTags(item)}
+              title={item.title}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function getUniqueValues(values: Array<string | undefined>) {
   return [
     ...new Set(values.filter((value): value is string => Boolean(value))),
@@ -1096,7 +1436,7 @@ function getSolutionToneClasses(_tone: SolutionCardTone) {
   return 'bg-muted text-foreground';
 }
 
-function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
+export function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
   const iconMap: Record<SolutionCardIconKind, ReactNode> = {
     ai: <BotIcon className="size-5" />,
     analytics: <BarChart3Icon className="size-5" />,

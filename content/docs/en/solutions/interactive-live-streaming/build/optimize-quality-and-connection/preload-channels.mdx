@@ -53,7 +53,26 @@ Implement pre-joining for different mouse interactions:
 
     | Before | After |
     |--------|-------|
-    |1. The user joins the channel.<br />2. The channel sends the host/media information.<br />2. The user subscribes to the media stream in the channel.<br />2. The Agora backend starts sending the media stream in the channel.<br />2. The user waits for the Agora backend to send the media stream, receives it, and renders it locally.|1. The user joins the channel.<br />2. The Agora backend immediately sends the media stream in the channel.<br />2. The channel sends the host/media information.<br />2. After the user subscribes to the media stream, they can immediately receive and render the media stream locally.|
+    | <Slot name="preload-before-steps" /> | <Slot name="preload-after-steps" /> |
+
+    <Slot for="preload-before-steps">
+
+    1. The user joins the channel.
+    2. The channel sends the host/media information.
+    3. The user subscribes to the media stream in the channel.
+    4. The Agora backend starts sending the media stream in the channel.
+    5. The user waits for the Agora backend to send the media stream, receives it, and renders it locally.
+
+    </Slot>
+
+    <Slot for="preload-after-steps">
+
+    1. The user joins the channel.
+    2. The Agora backend immediately sends the media stream in the channel.
+    3. The channel sends the host/media information.
+    4. After the user subscribes to the media stream, they can immediately receive and render the media stream locally.
+
+    </Slot>
 
     ![first-frame-rendring](/images/video-sdk/first-frame-rendering.png)
 

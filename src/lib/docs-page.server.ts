@@ -303,10 +303,8 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText);
-  const layoutMode = resolveDocsLayoutMode(
-    page,
-    isOpenApiPage || openApiLaneRoute !== null,
-  );
+  const layoutMode: DocsLayoutMode =
+    isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,
@@ -392,6 +390,7 @@ export async function loadDocsPagePayload(
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, requestedPlatform).url,
     layoutMode,
+    hideToc: ('hideToc' in page.data ? page.data.hideToc : undefined) ?? false,
     localeLinks: SUPPORTED_LOCALES.map((targetLocale) => {
       const targetPage = source.getPage(page.slugs.slice(1), targetLocale);
       const targetTabEntry = getFirstTabPageUrl(
@@ -730,6 +729,10 @@ function resolveAiDocsRedirect(
     'build/event-types': `/${locale}/ai/reference/event-types`,
     'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
     'reference/architecture': `/${locale}/ai/build/architecture`,
+    create_asr_extension: `/${locale}/ai/reference/ten-agent/create-asr-extension`,
+    create_tts_extension: `/${locale}/ai/reference/ten-agent/create-tts-extension`,
+    'ten-agent/develop/create-asr-extension-project': `/${locale}/ai/reference/ten-agent/create-asr-extension`,
+    'ten-agent/architecture/tts-implementation-modes': `/${locale}/ai/reference/ten-agent/create-tts-extension`,
     'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 
@@ -787,6 +790,7 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
+    'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
   };
 
   return redirects[normalizedPath] ?? null;
@@ -908,7 +912,7 @@ function resolveSolutionsApiReferenceRedirect(
     'interactive-live-streaming/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'interactive-live-streaming/reference/api-sunset':
-      '/en/api-reference/api-ref/solutions-api-sunset',
+      '/en/api-reference/api-ref/rtc/api-sunset',
     'iot/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'iot/reference/channel-management-rest-api':
@@ -945,17 +949,6 @@ export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
   null | { redirectUrl: string }
 >;
-
-function resolveDocsLayoutMode(
-  page: PageWithSource,
-  isOpenApiPage: boolean,
-): DocsLayoutMode {
-  if (isOpenApiPage) {
-    return 'openapi';
-  }
-
-  return 'full' in page.data && page.data.full ? 'full-page' : 'docs';
-}
 
 async function readProcessedText(page: PageWithSource) {
   try {
@@ -1110,9 +1103,17 @@ async function getDocsSidebarNodes({
         root: pageTree,
         tab,
       });
+  const scopedReferenceProductSidebar =
+    Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebar)
+    : sidebar;
 
   const sidebarWithRealtimeMediaApiReference =
-    addRealtimeMediaApiReferenceSidebarItem(sidebar, activePath);
+    addRealtimeMediaApiReferenceSidebarItem(
+      sidebarWithoutReferenceProductIcons,
+      activePath,
+    );
 
   if (!isOpenApiTab(tab) || !locale) {
     return sidebarWithRealtimeMediaApiReference;
@@ -1128,15 +1129,7 @@ async function getDocsSidebarNodes({
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
-  if (isApiReferenceOverviewPath(activePath)) {
-    return groupApiReferenceOverviewSidebar(openApiSidebar);
-  }
-
   return openApiSidebar;
-}
-
-function isApiReferenceOverviewPath(path?: string) {
-  return path === '/en/api-reference/api-ref';
 }
 
 const REALTIME_MEDIA_API_REFERENCE_LINKS = [
@@ -1312,107 +1305,38 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
   }
 }
 
-function groupApiReferenceOverviewSidebar(
-  nodes: DocsSidebarNode[],
-): DocsSidebarNode[] {
-  if (nodes.length <= 1) {
-    return nodes;
-  }
-
-  const [indexNode, ...apiReferenceNodes] = nodes;
-  const groupedApiReferenceNodes =
-    createApiReferenceOverviewPageNodes(apiReferenceNodes);
-
-  return [
-    indexNode,
-    {
-      children: groupedApiReferenceNodes,
-      collapsible: false,
-      id: 'api-reference-restful-api',
-      title: 'RESTful API',
-      type: 'section',
-    },
-  ];
-}
-
-function createApiReferenceOverviewPageNodes(
-  nodes: DocsSidebarNode[],
-): DocsSidebarPageNode[] {
-  return nodes.flatMap((node) => {
-    const nodeUrl = getApiReferenceOverviewNodeUrl(node);
-    if (
-      !nodeUrl ||
-      nodeUrl === '/en/api-reference/api-ref/video' ||
-      nodeUrl === '/en/api-reference/api-ref/voice'
-    ) {
-      return [];
-    }
-
-    const title =
-      nodeUrl === '/en/api-reference/api-ref/rtc'
-        ? 'Voice & Video Calling'
-        : node.title;
-
-    return [
-      {
-        id: nodeUrl,
-        title,
-        type: 'page',
-        url: nodeUrl,
-      },
-    ];
-  });
-}
-
-function getApiReferenceOverviewNodeUrl(node: DocsSidebarNode) {
-  if (node.type === 'page') {
-    return node.url;
-  }
-
-  if (node.url) {
-    return node.url;
-  }
-
-  const firstChildPageUrl = findFirstSidebarPageUrl(node.children);
-  return firstChildPageUrl
-    ? getApiReferenceProductRootUrl(firstChildPageUrl)
-    : undefined;
-}
-
-function findFirstSidebarPageUrl(nodes: DocsSidebarNode[]): string | undefined {
-  for (const node of nodes) {
-    if (node.type === 'page') {
-      return node.url;
-    }
-
-    const childUrl = findFirstSidebarPageUrl(node.children);
-    if (childUrl) {
-      return childUrl;
-    }
-  }
-
-  return undefined;
-}
-
-function getApiReferenceProductRootUrl(url: string) {
-  const segments = url.split('/').filter(Boolean);
-  if (
-    segments[0] !== 'en' ||
-    segments[1] !== 'api-reference' ||
-    segments[2] !== 'api-ref' ||
-    !segments[3]
-  ) {
-    return url;
-  }
-
-  return `/${segments.slice(0, 4).join('/')}`;
-}
 function isRecipesApiReferencePath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
     path?.startsWith('/zh-CN/api-reference/recipes') ||
     false
   );
+}
+
+function isReferenceProductSidebarPath(path?: string) {
+  const [, locale, tab, scopeRoot] = path?.split('/') ?? [];
+
+  return (
+    SUPPORTED_LOCALES.includes(locale as AppLocale) &&
+    tab === OPENAPI_TAB &&
+    Boolean(scopeRoot) &&
+    !['faq', 'recipes', 'sdks'].includes(scopeRoot)
+  );
+}
+
+function stripSidebarSectionIcons(nodes: DocsSidebarNode[]): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return node;
+    }
+
+    const { icon: _icon, ...section } = node;
+
+    return {
+      ...section,
+      children: stripSidebarSectionIcons(node.children),
+    };
+  });
 }
 
 function restoreRecipesSidebarSections(
@@ -1496,44 +1420,9 @@ function buildAiProductSidebar(
     'Reference',
     '参考',
   ]);
-  const tenAgentSection = findTopLevelSidebarSection(nodes, ['TEN Agent']);
-  const deviceKitSection =
-    findTopLevelSidebarSection(nodes, ['Convo AI Device Kit']) ??
-    (tenAgentSection
-      ? findNestedSidebarSectionByTitles(tenAgentSection, [
-          'Convo AI Device Kit',
-        ])
-      : null);
-  const tenAgentPages = tenAgentSection
-    ? stripSidebarSectionMetaFromNodes(
-        tenAgentSection.children.filter(
-          (child) =>
-            !(
-              child.type === 'section' && child.title === 'Convo AI Device Kit'
-            ),
-        ),
-      )
-    : [];
-  const mergedTenAgentSection =
-    tenAgentPages.length > 0
-      ? ({
-          ...(tenAgentSection
-            ? {
-                collapsible: tenAgentSection.collapsible,
-                ...(tenAgentSection.icon ? { icon: tenAgentSection.icon } : {}),
-                id: tenAgentSection.id,
-                title: tenAgentSection.title,
-                type: tenAgentSection.type,
-              }
-            : {
-                collapsible: false,
-                id: 'ai-ten-agent',
-                title: 'TEN Agent',
-                type: 'section' as const,
-              }),
-          children: tenAgentPages,
-        } satisfies DocsSidebarSectionNode)
-      : null;
+  const deviceKitSection = findTopLevelSidebarSection(nodes, [
+    'Convo AI Device Kit',
+  ]);
   const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
@@ -1667,7 +1556,6 @@ function buildAiProductSidebar(
         ...stripSidebarSectionMetaFromNodes(
           flattenDeviceKitSidebarChildren(deviceKitSection.children),
         ),
-        ...(mergedTenAgentSection ? [mergedTenAgentSection] : []),
       ],
       icon: 'Cpu',
       id: 'ai-product-dedicated-devices',
@@ -1792,28 +1680,6 @@ function findNestedSidebarSectionByExactUrl(
 
   for (const child of node.children) {
     const match = findNestedSidebarSectionByExactUrl(child, url);
-    if (match) {
-      return match;
-    }
-  }
-
-  return null;
-}
-
-function findNestedSidebarSectionByTitles(
-  node: DocsSidebarNode,
-  titles: string[],
-): DocsSidebarSectionNode | null {
-  if (node.type === 'page') {
-    return null;
-  }
-
-  if (titles.includes(node.title)) {
-    return node;
-  }
-
-  for (const child of node.children) {
-    const match = findNestedSidebarSectionByTitles(child, titles);
     if (match) {
       return match;
     }
@@ -2138,10 +2004,13 @@ async function appendEndpointPagesToOpenApiParent(
     (item) =>
       item.tab === tab &&
       getOpenApiLaneLocales(item).includes(locale) &&
-      children.some(
-        (child) =>
-          child.type === 'page' && child.url === item.parentUrl[locale],
-      ),
+      // Only a section that genuinely REPRESENTS the lane gets its endpoint
+      // pages appended. A linked-header section (rule 2 from docs-tree) carries
+      // the lane's parent URL on node.url. We deliberately do NOT match a
+      // section that merely *links* to the lane via a child page (e.g. a
+      // product group whose "REST API" cross-link points at the lane landing),
+      // otherwise that group would absorb the whole lane's endpoints inline.
+      node.url === item.parentUrl[locale],
   );
 
   if (lane) {

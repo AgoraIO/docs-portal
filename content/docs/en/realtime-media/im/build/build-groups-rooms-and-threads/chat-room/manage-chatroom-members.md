@@ -3,7 +3,7 @@ title: "Manage chat room members"
 description: "Shows how to use the Agora Chat SDK to manage the members of a chat room in your app."
 ---
 
-s enable real-time messaging among multiple users.
+Chat rooms enable real-time messaging among multiple users.
 
 This page shows how to use the Chat SDK to manage the members of a chat room in your app.
 

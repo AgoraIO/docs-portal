@@ -15,7 +15,7 @@ Due to its real-time and interactive nature, this feature enriches live broadcas
 
 <PlatformStructured platform="android">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -45,11 +45,11 @@ To implement cross-channel media stream relay in your app, take the following st
   engine.startOrUpdateChannelMediaRelay(mediaRelayConfiguration);
   ```
 
-:::info
-:::
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -89,9 +89,9 @@ The updated configuration completely **replaces** the previous configuration.
   mediaRelaying = false;
   ```
 
-:::info
-:::
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -160,7 +160,7 @@ Agora provides an open-source [HostAcrossChannels](https://github.com/AgoraIO/AP
 
 <PlatformStructured platform="ios">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -190,11 +190,11 @@ To implement cross-channel media stream relay in your app, take the following st
   agoraKit.startOrUpdateChannelMediaRelay(config)
   ```
 
-:::info
-:::
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -305,7 +305,7 @@ Agora provides an open-source [MediaChannelRelay](https://github.com/AgoraIO/API
 
 <PlatformStructured platform="macos">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -335,11 +335,11 @@ To implement cross-channel media stream relay in your app, take the following st
   agoraKit.startOrUpdateChannelMediaRelay(config)
   ```
 
-:::info
-:::
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -450,7 +450,7 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO/API
 
 <PlatformStructured platform="web">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -482,7 +482,7 @@ To implement cross-channel media stream relay in your app, take the following st
   });
   ```
 
-1. Start cross-channel media stream relay
+2. Start cross-channel media stream relay
 
   To start cross-channel media stream relay, call `startChannelMediaRelay` after calling `AgoraRTCClient.publish`.
 
@@ -496,11 +496,11 @@ To implement cross-channel media stream relay in your app, take the following st
 
   `client` refers to the local client object you create using `AgoraRTC.createClient`.
 
-1. Listen for cross-channel media stream status changes
+3. Listen for cross-channel media stream status changes
 
   During cross-channel media stream relay, the SDK reports the status of media stream relay through `AgoraRTCClient.on("channel-media-relay-state")` callback with state codes and error codes. Listen to the `AgoraRTCClient.on("channel-media-relay-event")` callback for relay events.
 
-1. Update media stream relay channels
+4. Update media stream relay channels
 
   To add or remove target channels after successfully calling `startChannelMediaRelay`, call `updateChannelMediaRelay`.
 
@@ -515,7 +515,7 @@ To implement cross-channel media stream relay in your app, take the following st
   });
   ```
 
-1. Stop cross-channel media stream relay
+5. Stop cross-channel media stream relay
 
   To stop cross-channel media stream relay, call `stopChannelMediaRelay`.
 
@@ -550,7 +550,7 @@ This section contains content that completes the information on this page, or po
 
 <PlatformStructured platform="windows">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -600,11 +600,11 @@ To implement cross-channel media stream relay in your app, take the following st
 	ret = m_rtcEngine->startOrUpdateChannelMediaRelay(cmrc);
 	```
 
-:::info
-:::
-	> * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-	>   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-	>   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all uids in the target channel.
+	:::note
+	* Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+	  * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+	  * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all uids in the target channel.
+	:::
 	
 2. Update media stream relay channels
 
@@ -699,7 +699,7 @@ Agora provides an open-source [CrossChannel](https://github.com/AgoraIO/API-Exam
 
 <PlatformStructured platform="electron">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -774,9 +774,9 @@ The updated configuration completely **replaces** the previous configuration.
   rtcEngine.stopChannelMediaRelay();
   ```
 
-:::info
-:::
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -831,7 +831,7 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO-Ext
 
 <PlatformStructured platform="flutter">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -874,11 +874,11 @@ To implement cross-channel media stream relay in your app, take the following st
   await engine.startOrUpdateChannelMediaRelay(mediaRelayConfiguration);
   ```
 
-:::info
-:::
-  > * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
-  >   * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
-  >   * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::note
+  * Best practice is to set the UID of the source channel to `0`, allowing the SDK to assign a random UID.
+    * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
+    * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all UIDs in the target channel.
+  :::
 
 2. Update media stream relay channels
 
@@ -913,9 +913,9 @@ The updated configuration completely **replaces** the previous configuration.
   mediaRelaying = false;
   ```
 
-:::info
-:::
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -978,7 +978,7 @@ The following table shows the main forwarding states and their corresponding cod
 
 <PlatformStructured platform="react-native">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -1053,9 +1053,9 @@ The updated configuration completely **replaces** the previous configuration.
   rtcEngine.stopChannelMediaRelay();
   ```
 
-:::info
-:::
-  > If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `leaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 
@@ -1110,7 +1110,7 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO-Ext
 
 <PlatformStructured platform="unity">
 :::note
-Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](https://docs-md.agora.io/en/help/account-and-billing/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
+Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
 - Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
@@ -1199,9 +1199,9 @@ The updated configuration completely **replaces** the previous configuration.
   }
   ```
 
-:::info
-:::
-  > If this method fails, call `LeaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::note
+  If this method fails, call `LeaveChannel` to leave the channel and stop cross-channel media stream relay.
+  :::
 
 5. Monitor cross-channel media stream status
 

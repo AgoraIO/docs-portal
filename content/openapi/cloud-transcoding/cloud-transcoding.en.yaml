@@ -3,11 +3,10 @@ info:
   version: ""
   title: Cloud Transcoding RESTful API
   description: >-
-    Agora Cloud Transcoding transcodes media streams on Agora servers and
-    outputs the result to an RTC channel. Send HTTPS requests from your business
-    server to acquire builder tokens, create, query, update, and destroy cloud
-    transcoding tasks, manage transcoding templates, and query message
-    notification server IP addresses.
+    Agora Cloud Transcoding transcodes media streams on Agora servers and outputs the result to an
+    RTC channel. Send HTTPS requests from your business server to acquire builder tokens, create,
+    query, update, and destroy cloud transcoding tasks, manage transcoding templates, and query
+    message notification server IP addresses.
 
 
     ## Base URL
@@ -19,8 +18,8 @@ info:
     ## Data format
 
 
-    Use `Content-Type: application/json` for requests with bodies. Request and
-    response bodies are JSON.
+    Use `Content-Type: application/json` for requests with bodies. Request and response bodies are
+    JSON.
 servers:
   - url: https://api.sd-rtn.com
     description: Cloud Transcoding REST API host.
@@ -30,51 +29,353 @@ paths:
   /v1/projects/{appId}/rtsc/cloud-transcoder/builderTokens:
     post:
       summary: Acquire a builder token
-      description: >-
-        Before you create a Cloud Transcoding task, call the `builderTokens`
-        endpoint to retrieve a builder token. An `instanceId` can generate
-        multiple builder tokens, but only one token can be used to initiate a
-        request in a task.
-
-
-        ## Reference
-
-
-        Note the following guidelines when using a `builderToken`:
-
-
-        - After calling this endpoint successfully, you receive a `builderToken`
-        in the response body. You can use a `builderToken` for a single Cloud
-        Transcoding task.
-
-        - The validity period of a `builderToken` for creating Cloud
-        Transcoding is 5 minutes. To ensure successful Cloud Transcoding, best
-        practice is to initiate the corresponding `Create` request within 2
-        seconds after each `Acquire` response is received.
-
-        - Making batch `Create` requests after batch `builderToken` requests may
-        cause the request to fail.
-
-
-        **Output destination constraints**
-
-
-        - A single transcoding task cannot push to both a CDN address and an RTC
-        channel simultaneously. To push to both destinations, create two
-        separate tasks.
-
-        - If the audio or video configurations differ between the two
-        destinations, create two separate tasks.
-
-        - To push to multiple CDN addresses, include all destination addresses
-        within a single `outputs` object.
-
-        - Each transcoding task can push to only one RTC channel. To push to two
-        different RTC channels, create two separate tasks.
+      description: Acquires a builder token for creating a Cloud Transcoding task.
       operationId: acquire-cloud-transcoding-builder-token
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                    --url https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/builderTokens \
+                    --header 'Authorization: Basic <credentials>' \
+                    --header 'Content-Type: <string>' \
+                    --data '
+                  {
+                    "instanceId": "abc13328",
+                    "services": {
+                      "cloudTranscoder": {
+                        "serviceType": "cloudTranscoderV2",
+                        "config": {
+                          "transcoder": {
+                            "idleTimeout": 300,
+                            "audioInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "<your_rtc_token>"
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "<your_rtc_token>"
+                                }
+                              }
+                            ],
+                            "canvas": {
+                              "width": 960,
+                              "height": 480,
+                              "color": 0,
+                              "backgroundImage": "https://web-cdn.agora.io/website-files/images/new-home-2-banne-online-karaoke-bg.jpg",
+                              "fillMode": "FIT"
+                            },
+                            "waterMarks": [
+                              {
+                                "imageUrl": "https://web-cdn.agora.io/website-files/images/advantage-interactive-live-streaming.png",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 100,
+                                  "height": 100,
+                                  "zOrder": 50
+                                }
+                              }
+                            ],
+                            "videoInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "<your_rtc_token>"
+                                },
+                                "placeholderImageUrl": "https://web-cdn.agora.io/website-files/images/new-home-2-banner-realtime-bg.jpg",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 360,
+                                  "zOrder": 2
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "<your_rtc_token>"
+                                },
+                                "region": {
+                                  "x": 320,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 320,
+                                  "zOrder": 2
+                                }
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test02",
+                                  "rtcUid": 1000,
+                                  "rtcToken": "<your_rtc_token>"
+                                },
+                                "audioOption": {
+                                  "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                },
+                                "videoOption": {
+                                  "fps": 30,
+                                  "codec": "H264",
+                                  "bitrate": 800,
+                                  "width": 960,
+                                  "height": 48
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+                import json
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/builderTokens"
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                data = {
+                    "instanceId": "abc13328",
+                    "services": {
+                        "cloudTranscoder": {
+                            "serviceType": "cloudTranscoderV2",
+                            "config": {
+                                "transcoder": {
+                                    "idleTimeout": 300,
+                                    "audioInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "<your_rtc_token>"
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "<your_rtc_token>"
+                                            }
+                                        }
+                                    ],
+                                    "canvas": {
+                                        "width": 960,
+                                        "height": 480,
+                                        "color": 0,
+                                        "backgroundImage": "https://web-cdn.agora.io/website-files/images/new-home-2-banne-online-karaoke-bg.jpg",
+                                        "fillMode": "FIT"
+                                    },
+                                    "waterMarks": [
+                                        {
+                                            "imageUrl": "https://web-cdn.agora.io/website-files/images/advantage-interactive-live-streaming.png",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 100,
+                                                "height": 100,
+                                                "zOrder": 50
+                                            }
+                                        }
+                                    ],
+                                    "videoInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "<your_rtc_token>"
+                                            },
+                                            "placeholderImageUrl": "https://web-cdn.agora.io/website-files/images/new-home-2-banner-realtime-bg.jpg",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 360,
+                                                "zOrder": 2
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "<your_rtc_token>"
+                                            },
+                                            "region": {
+                                                "x": 320,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 320,
+                                                "zOrder": 2
+                                            }
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test02",
+                                                "rtcUid": 1000,
+                                                "rtcToken": "<your_rtc_token>"
+                                            },
+                                            "audioOption": {
+                                                "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                            },
+                                            "videoOption": {
+                                                "fps": 30,
+                                                "codec": "H264",
+                                                "bitrate": 800,
+                                                "width": 960,
+                                                "height": 480
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+
+                print(response.status_code)
+                print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+                const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/builderTokens';
+                const headers = {
+                  'Authorization': 'Basic <credentials>',
+                  'Content-Type': '<string>'
+                };
+
+                const data = {
+                  instanceId: "abc13328",
+                  services: {
+                    cloudTranscoder: {
+                      serviceType: "cloudTranscoderV2",
+                      config: {
+                        transcoder: {
+                          idleTimeout: 300,
+                          audioInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "<your_rtc_token>"
+                              }
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "<your_rtc_token>"
+                              }
+                            }
+                          ],
+                          canvas: {
+                            width: 960,
+                            height: 480,
+                            color: 0,
+                            backgroundImage: "https://web-cdn.agora.io/website-files/images/new-home-2-banne-online-karaoke-bg.jpg",
+                            fillMode: "FIT"
+                          },
+                          waterMarks: [
+                            {
+                              imageUrl: "https://web-cdn.agora.io/website-files/images/advantage-interactive-live-streaming.png",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 100,
+                                height: 100,
+                                zOrder: 50
+                              }
+                            }
+                          ],
+                          videoInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "<your_rtc_token>"
+                              },
+                              placeholderImageUrl: "https://web-cdn.agora.io/website-files/images/new-home-2-banner-realtime-bg.jpg",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 320,
+                                height: 360,
+                                zOrder: 2
+                              }
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "<your_rtc_token>"
+                              },
+                              region: {
+                                x: 320,
+                                y: 0,
+                                width: 320,
+                                height: 320,
+                                zOrder: 2
+                              }
+                            }
+                          ],
+                          outputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test02",
+                                rtcUid: 1000,
+                                rtcToken: "<your_rtc_token>"
+                              },
+                              audioOption: {
+                                profileType: "AUDIO_PROFILE_MUSIC_STANDARD"
+                              },
+                              videoOption: {
+                                fps: 30,
+                                codec: "H264",
+                                bitrate: 800,
+                                width: 960,
+                                height: 480
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                };
+
+                axios.post(url, data, { headers })
+                  .then(response => {
+                    console.log('Status:', response.status);
+                    console.log('Data:', response.data);
+                  })
+                  .catch(error => {
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                  });
       parameters:
         - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/X-Request-ID"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of your project from Agora Console.
       requestBody:
         required: true
         content:
@@ -105,7 +406,7 @@ paths:
                             rtcToken: <your_rtc_token>
                           region:
                             x: 0
-                            y: 0
+                            "y": 0
                             width: 320
                             height: 360
                             zOrder: 2
@@ -138,53 +439,403 @@ paths:
                 tokenName: xUwUbQf9ZxxxxxtLslGnDg0lk8RYaUE0***
         default:
           $ref: "#/components/responses/not-200"
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Before you create a Cloud Transcoding task, call the `builderTokens` endpoint to
+            retrieve a builder token.
+        - title: Reference
+          position: after-response-body
+          markdown: >
+            Note the following guidelines when using a `builderToken`:
+
+
+            - After calling this endpoint successfully, you receive a `builderToken` in the response
+            body. You can use a `builderToken` for a single Cloud Transcoding task.
+
+            - The validity period of a `builderToken` for creating Cloud Transcoding is 5 minutes.
+            To ensure successful Cloud Transcoding, best practice is to initiate the corresponding
+            `Create` request within 2 seconds after each `Acquire` response is received.
+
+            - Making batch `Create` requests after batch `builderToken` requests may cause the
+            request to fail.
+
+
+            **Output destination constraints**
+
+
+            - A single transcoding task cannot push to both a CDN address and an RTC channel
+            simultaneously. To push to both destinations, create two separate tasks.
+
+            - If the audio or video configurations differ between the two destinations, create two
+            separate tasks.
+
+            - To push to multiple CDN addresses, include all destination addresses within a single
+            `outputs` object.
+
+            - Each transcoding task can push to only one RTC channel. To push to two different RTC
+            channels, create two separate tasks.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed.
   /v1/projects/{appId}/rtsc/cloud-transcoder/tasks:
     post:
       summary: Create a cloud transcoding task
-      description: >-
-        Creates a Cloud Transcoding task. When the task starts, Agora
-        transcodes the specified input streams and outputs the result to the
-        specified Agora RTC channel.
-
-
-        ## Reference
-
-
-        Note the following guidelines when using a `builderToken`:
-
-
-        - After calling the `Acquire a builder token` endpoint successfully, you
-        receive a `builderToken` in the response body. You can use a
-        `builderToken` for a single Cloud Transcoding task.
-
-        - The validity period of a `builderToken` for creating Cloud
-        Transcoding is 5 minutes. To ensure successful Cloud Transcoding, best
-        practice is to initiate the corresponding `Create` request within 2
-        seconds after each `Acquire` response is received.
-
-        - Making batch `Create` requests after batch `builderToken` requests may
-        cause the request to fail.
-
-
-        **Output destination constraints**
-
-
-        - A single transcoding task cannot push to both a CDN address and an RTC
-        channel simultaneously. To push to both destinations, create two
-        separate tasks.
-
-        - If the audio or video configurations differ between the two
-        destinations, create two separate tasks.
-
-        - To push to multiple CDN addresses, include all destination addresses
-        within a single `outputs` object.
-
-        - Each transcoding task can push to only one RTC channel. To push to two
-        different RTC channels, create two separate tasks.
+      description: Creates a Cloud Transcoding task for specified input streams.
       operationId: create-cloud-transcoding-task
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                    --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=<actual_token_value>' \
+                    --header 'Authorization: Basic <credentials>' \
+                    --header 'Content-Type: <string>' \
+                    --data '
+                  {
+                    "services": {
+                      "cloudTranscoder": {
+                        "serviceType": "cloudTranscoderV2",
+                        "config": {
+                          "transcoder": {
+                            "idleTimeout": 300,
+                            "audioInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                }
+                              }
+                            ],
+                            "canvas": {
+                              "width": 960,
+                              "height": 480,
+                              "color": 0,
+                              "backgroundImage": "https://example.jpg",
+                              "fillMode": "FIT"
+                            },
+                            "waterMarks": [
+                              {
+                                "imageUrl": "https://example.png",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 120,
+                                  "height": 120,
+                                  "zOrder": 50
+                                }
+                              }
+                            ],
+                            "videoInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "placeholderImageUrl": "https://example.jpg",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 360,
+                                  "zOrder": 2
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "placeholderImageUrl": "https://example.jpg",
+                                "region": {
+                                  "x": 320,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 320,
+                                  "zOrder": 2
+                                }
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test",
+                                  "rtcUid": 1000,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "audioOption": {
+                                  "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                },
+                                "videoOption": {
+                                  "fps": 30,
+                                  "codec": "H264",
+                                  "bitrate": 800,
+                                  "width": 960,
+                                  "height": 480
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+                import json
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=<actual_token_value>"
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                data = {
+                    "services": {
+                        "cloudTranscoder": {
+                            "serviceType": "cloudTranscoderV2",
+                            "config": {
+                                "transcoder": {
+                                    "idleTimeout": 300,
+                                    "audioInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            }
+                                        }
+                                    ],
+                                    "canvas": {
+                                        "width": 960,
+                                        "height": 480,
+                                        "color": 0,
+                                        "backgroundImage": "https://example.jpg",
+                                        "fillMode": "FIT"
+                                    },
+                                    "waterMarks": [
+                                        {
+                                            "imageUrl": "https://example.png",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 120,
+                                                "height": 120,
+                                                "zOrder": 50
+                                            }
+                                        }
+                                    ],
+                                    "videoInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "placeholderImageUrl": "https://example.jpg",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 360,
+                                                "zOrder": 2
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "placeholderImageUrl": "https://example.jpg",
+                                            "region": {
+                                                "x": 320,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 320,
+                                                "zOrder": 2
+                                            }
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test",
+                                                "rtcUid": 1000,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "audioOption": {
+                                                "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                            },
+                                            "videoOption": {
+                                                "fps": 30,
+                                                "codec": "H264",
+                                                "bitrate": 800,
+                                                "width": 960,
+                                                "height": 480
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+
+                print(response.status_code)
+                print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require("axios");
+
+                const url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=<actual_token_value>";
+
+                const headers = {
+                  Authorization: "Basic <credentials>",
+                  "Content-Type": "<string>",
+                };
+
+                const data = {
+                  services: {
+                    cloudTranscoder: {
+                      serviceType: "cloudTranscoderV2",
+                      config: {
+                        transcoder: {
+                          idleTimeout: 300,
+                          audioInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                            },
+                          ],
+                          canvas: {
+                            width: 960,
+                            height: 480,
+                            color: 0,
+                            backgroundImage: "https://example.jpg",
+                            fillMode: "FIT",
+                          },
+                          waterMarks: [
+                            {
+                              imageUrl: "https://example.png",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 120,
+                                height: 120,
+                                zOrder: 50,
+                              },
+                            },
+                          ],
+                          videoInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              placeholderImageUrl: "https://example.jpg",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 320,
+                                height: 360,
+                                zOrder: 2,
+                              },
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              placeholderImageUrl: "https://example.jpg",
+                              region: {
+                                x: 320,
+                                y: 0,
+                                width: 320,
+                                height: 320,
+                                zOrder: 2,
+                              },
+                            },
+                          ],
+                          outputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test",
+                                rtcUid: 1000,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              audioOption: {
+                                profileType: "AUDIO_PROFILE_MUSIC_STANDARD",
+                              },
+                              videoOption: {
+                                fps: 30,
+                                codec: "H264",
+                                bitrate: 800,
+                                width: 960,
+                                height: 480
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                };
+
+                axios
+                  .post(url, data, { headers })
+                  .then((response) => {
+                    console.log(response.status);
+                    console.log(response.data);
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error.response ? error.response.data : error.message);
+                  });
       parameters:
         - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/X-Request-ID"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of your project from Agora Console.
         - $ref: "#/components/parameters/builderToken"
       requestBody:
         required: true
@@ -218,7 +869,7 @@ paths:
                           placeholderImageUrl: https://example.jpg
                           region:
                             x: 0
-                            y: 0
+                            "y": 0
                             width: 320
                             height: 360
                             zOrder: 2
@@ -266,25 +917,101 @@ paths:
                 workflows: {}
         default:
           $ref: "#/components/responses/not-200"
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Use this endpoint to create a Cloud Transcoding task. When the task starts, the Agora
+            server transcodes multiple input streams you specified and outputs them to the specified
+            Agora RTC channel.
+        - title: Reference
+          position: after-response-body
+          markdown: >
+            Note the following guidelines when using a `builderToken`:
+
+
+            - After calling the `Acquire a builder token` endpoint successfully, you receive a
+            `builderToken` in the response body. You can use a `builderToken` for a single Cloud
+            Transcoding task.
+
+            - The validity period of a `builderToken` for creating Cloud Transcoding is 5 minutes.
+            To ensure successful Cloud Transcoding, best practice is to initiate the corresponding
+            `Create` request within 2 seconds after each `Acquire` response is received.
+
+            - Making batch `Create` requests after batch `builderToken` requests may cause the
+            request to fail.
+
+
+            **Output destination constraints**
+
+
+            - A single transcoding task cannot push to both a CDN address and an RTC channel
+            simultaneously. To push to both destinations, create two separate tasks.
+
+            - If the audio or video configurations differ between the two destinations, create two
+            separate tasks.
+
+            - To push to multiple CDN addresses, include all destination addresses within a single
+            `outputs` object.
+
+            - Each transcoding task can push to only one RTC channel. To push to two different RTC
+            channels, create two separate tasks.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed.
   /v1/projects/{appId}/rtsc/cloud-transcoder/tasks/{taskId}:
     get:
       summary: Query the status of a task
-      description: >-
-        Queries the status of a Cloud Transcoding task.
-
-
-        ## Reference
-
-
-        To understand the difference between query methods and message
-        notification service, see [What's the difference between query methods
-        and message notification
-        service?](/help/general-product-inquiry/query_vs_notifications).
+      description: Queries the status of a Cloud Transcoding task.
       operationId: query-cloud-transcoding-task
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request get \
+                  --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>' \
+                  --header 'Authorization: Basic <credentials>' \
+                  --header 'Content-Type: <string>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>"
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                response = requests.request("get", url, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>';
+                const options = {
+                  method: 'get',
+                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
         - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/X-Request-ID"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of your project from Agora Console.
         - $ref: "#/components/parameters/taskId"
+          description: The transcoding task UUID used to identify the cloud transcoder for this request.
         - $ref: "#/components/parameters/builderToken"
       responses:
         "200":
@@ -316,33 +1043,382 @@ paths:
                 workflows: {}
         default:
           $ref: "#/components/responses/not-200"
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            After creating a Cloud Transcoding task, use the `Query` request to query the task
+            status.
+        - title: Reference
+          position: after-response-body
+          markdown: >
+            To understand the difference between query methods and message notification service, see
+            [What's the difference between query methods and message notification
+            service?](/help/general-product-inquiry/query_vs_notifications).
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed.
     patch:
       summary: Update a cloud transcoding task
-      description: >-
-        Updates an existing Cloud Transcoding task. The request body must
-        contain all fields from the `Create` request body. For fields that you
-        do not need to update, use the original values.
-
-
-        ## Reference
-
-
-        The `Update` request supports modifying the following fields only:
-
-
-        - Add or delete `rtc` members in `audioInputs[]` and `videoInputs[]` to
-        subscribe or unsubscribe from the host's audio and video streams.
-
-        - Modify the `region` field in `videoInputs[]` to update the host's
-        combined picture layout.
-
-        - Modify the `audioOption` and `videoOption` fields in `outputs[]` to
-        update the transcoding output audio and video configurations.
+      description: Updates an existing Cloud Transcoding task.
       operationId: update-cloud-transcoding-task
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                    --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=' \
+                    --header 'Authorization: Basic <credentials>' \
+                    --header 'Content-Type: <string>' \
+                    --data '
+                  {
+                    "services": {
+                      "cloudTranscoder": {
+                        "serviceType": "cloudTranscoderV2",
+                        "config": {
+                          "transcoder": {
+                            "idleTimeout": 300,
+                            "audioInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                }
+                              }
+                            ],
+                            "canvas": {
+                              "width": 960,
+                              "height": 480,
+                              "color": 0,
+                              "backgroundImage": "https://example.jpg",
+                              "fillMode": "FIT"
+                            },
+                            "waterMarks": [
+                              {
+                                "imageUrl": "https://example.png",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 120,
+                                  "height": 120,
+                                  "zOrder": 50
+                                }
+                              }
+                            ],
+                            "videoInputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 123,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "placeholderImageUrl": "https://example.jpg",
+                                "region": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 360,
+                                  "zOrder": 2
+                                }
+                              },
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test01",
+                                  "rtcUid": 456,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "placeholderImageUrl": "https://example.jpg",
+                                "region": {
+                                  "x": 320,
+                                  "y": 0,
+                                  "width": 320,
+                                  "height": 320,
+                                  "zOrder": 2
+                                }
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "rtc": {
+                                  "rtcChannel": "test",
+                                  "rtcUid": 1000,
+                                  "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                },
+                                "audioOption": {
+                                  "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                },
+                                "videoOption": {
+                                  "fps": 30,
+                                  "codec": "H264",
+                                  "bitrate": 800,
+                                  "width": 960,
+                                  "height": 480,
+                                  "lowBitrateHighQuality": false
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+                import json
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken="
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                data = {
+                    "services": {
+                        "cloudTranscoder": {
+                            "serviceType": "cloudTranscoderV2",
+                            "config": {
+                                "transcoder": {
+                                    "idleTimeout": 300,
+                                    "audioInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            }
+                                        }
+                                    ],
+                                    "canvas": {
+                                        "width": 960,
+                                        "height": 480,
+                                        "color": 0,
+                                        "backgroundImage": "https://example.jpg",
+                                        "fillMode": "FIT"
+                                    },
+                                    "waterMarks": [
+                                        {
+                                            "imageUrl": "https://example.png",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 120,
+                                                "height": 120,
+                                                "zOrder": 50
+                                            }
+                                        }
+                                    ],
+                                    "videoInputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 123,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "placeholderImageUrl": "https://example.jpg",
+                                            "region": {
+                                                "x": 0,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 360,
+                                                "zOrder": 2
+                                            }
+                                        },
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test01",
+                                                "rtcUid": 456,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "placeholderImageUrl": "https://example.jpg",
+                                            "region": {
+                                                "x": 320,
+                                                "y": 0,
+                                                "width": 320,
+                                                "height": 320,
+                                                "zOrder": 2
+                                            }
+                                        }
+                                    ],
+                                    "outputs": [
+                                        {
+                                            "rtc": {
+                                                "rtcChannel": "test",
+                                                "rtcUid": 1000,
+                                                "rtcToken": "aab8b8f5a8cd4469a63042fcfafe7***"
+                                            },
+                                            "audioOption": {
+                                                "profileType": "AUDIO_PROFILE_MUSIC_STANDARD"
+                                            },
+                                            "videoOption": {
+                                                "fps": 30,
+                                                "codec": "H264",
+                                                "bitrate": 800,
+                                                "width": 960,
+                                                "height": 480,
+                                                "lowBitrateHighQuality": False
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+
+                print(response.status_code)
+                print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require("axios");
+
+                const url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=";
+
+                const headers = {
+                  Authorization: "Basic <credentials>",
+                  "Content-Type": "<string>",
+                };
+
+                const data = {
+                  services: {
+                    cloudTranscoder: {
+                      serviceType: "cloudTranscoderV2",
+                      config: {
+                        transcoder: {
+                          idleTimeout: 300,
+                          audioInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                            },
+                          ],
+                          canvas: {
+                            width: 960,
+                            height: 480,
+                            color: 0,
+                            backgroundImage: "https://example.jpg",
+                            fillMode: "FIT",
+                          },
+                          waterMarks: [
+                            {
+                              imageUrl: "https://example.png",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 120,
+                                height: 120,
+                                zOrder: 50,
+                              },
+                            },
+                          ],
+                          videoInputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 123,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              placeholderImageUrl: "https://example.jpg",
+                              region: {
+                                x: 0,
+                                y: 0,
+                                width: 320,
+                                height: 360,
+                                zOrder: 2,
+                              },
+                            },
+                            {
+                              rtc: {
+                                rtcChannel: "test01",
+                                rtcUid: 456,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              placeholderImageUrl: "https://example.jpg",
+                              region: {
+                                x: 320,
+                                y: 0,
+                                width: 320,
+                                height: 320,
+                                zOrder: 2,
+                              },
+                            },
+                          ],
+                          outputs: [
+                            {
+                              rtc: {
+                                rtcChannel: "test",
+                                rtcUid: 1000,
+                                rtcToken: "aab8b8f5a8cd4469a63042fcfafe7***",
+                              },
+                              audioOption: {
+                                profileType: "AUDIO_PROFILE_MUSIC_STANDARD",
+                              },
+                              videoOption: {
+                                fps: 30,
+                                codec: "H264",
+                                bitrate: 800,
+                                width: 960,
+                                height: 480,
+                                lowBitrateHighQuality: false,
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                };
+
+                axios
+                  .post(url, data, { headers })
+                  .then((response) => {
+                    console.log(response.status);
+                    console.log(response.data);
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error.response ? error.response.data : error.message);
+                  });
       parameters:
         - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/X-Request-ID"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of your project from Agora Console.
         - $ref: "#/components/parameters/taskId"
+          description: The transcoding task UUID used to identify the cloud transcoder for this request.
         - $ref: "#/components/parameters/builderToken"
         - name: sequenceId
           in: query
@@ -350,8 +1426,8 @@ paths:
           schema:
             type: string
           description: >-
-            The sequence number of the `Update` request. Each subsequent
-            `Update` request must use a value greater than the previous one.
+            The sequence number of the `Update` request. Each subsequent `Update` request must use a
+            value greater than the previous one.
         - name: updateMask
           in: query
           required: true
@@ -360,7 +1436,7 @@ paths:
             enum:
               - services.cloudTranscoder.config
           description: >-
-            Specifies the configuration item to update. Set it to
+            Specifies the configuration item to be updated. Set it to
             `services.cloudTranscoder.config` to indicate a full update.
       requestBody:
         required: true
@@ -394,7 +1470,7 @@ paths:
                           placeholderImageUrl: https://example.jpg
                           region:
                             x: 0
-                            y: 0
+                            "y": 0
                             width: 320
                             height: 360
                             zOrder: 2
@@ -420,14 +1496,107 @@ paths:
               $ref: "#/components/headers/X-Request-ID"
         default:
           $ref: "#/components/responses/not-200"
+      x-docs-sections:
+        - position: after-description
+          markdown: Use this endpoint to `Update` a Cloud Transcoding task.
+        - title: Reference
+          position: after-response-body
+          markdown: >
+            The `Update` request supports modifying the following fields only:
+
+
+            - Add or delete `rtc` members in `audioInputs[]` and `videoInputs[]` to subscribe or
+            unsubscribe from the host's audio and video streams.
+
+            - Modify the `region` field in `videoInputs[]` to update the host's combined picture
+            layout.
+
+            - Modify the `audioOption` and `videoOption` fields in `outputs[]` to update the
+            transcoding output audio and video configurations.
+        - title: Request
+          position: after-parameters
+          markdown: >-
+            - When updating a cloud transcoder, the request body must contain all the fields from
+            the `Create` request in the request body. For fields that you do not need to update, use
+            the original values. See [Updatable fields](#updatable-fields) for the Cloud
+            Transcoding parameters you can modify.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `2XX`, the request was successful. The response body is
+            empty.
+
+
+            - If the returned status code is not `200`, the request failed.
+
+
+            - If the request fails, use the `X-Request-ID` value in the log to troubleshoot the
+            problem. If the response status code is not `2XX`, then the response header may not
+            contain this field.
+        - markdown: See Updatable fields for the Cloud Transcoding parameters you can modify.
+          position: after-response-body
+          title: Response
     delete:
       summary: Destroy a cloud transcoding task
       description: Destroys a Cloud Transcoding task.
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            When you no longer need to use cloud transcoding, initiate a `Delete` request to destroy
+            it.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed.
       operationId: destroy-cloud-transcoding-task
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request delete \
+                  --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=' \
+                  --header 'Authorization: Basic <credentials>' \
+                  --header 'Content-Type: <string>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken="
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                response = requests.request("delete", url, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=';
+                const options = {
+                  method: 'delete',
+                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
         - $ref: "#/components/parameters/Content-Type"
+        - $ref: "#/components/parameters/X-Request-ID"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of your project from Agora Console.
         - $ref: "#/components/parameters/taskId"
+          description: The transcoding task UUID used to identify the cloud transcoder for this request.
         - $ref: "#/components/parameters/builderToken"
       responses:
         "200":
@@ -464,10 +1633,69 @@ paths:
     post:
       summary: Create or update a transcoding template
       description: Creates or updates a transcoding template.
+      x-docs-sections:
+        - position: after-description
+          markdown: Create or update a transcoding template under the specified App ID.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](../rest-api/reference#response-status-codes) to understand the possible reasons
+            for failure.
+        - markdown: |-
+            ```json
+            {
+                  "status": "Status of this request:\n- `success`: Request was successful.\n- `error`: Request failed.\n"
+                }
+            ```
+          position: after-response-example
+          title: Response example
       operationId: create-or-update-transcoding-template
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                  --url https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId \
+                  --header 'Authorization: Basic <credentials>' \
+                  --header 'Content-Type: <string>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId"
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                response = requests.request("post", url, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId';
+                const options = {
+                  method: 'post',
+                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of the project
         - name: codecId
           in: path
           required: true
@@ -494,19 +1722,90 @@ paths:
               schema:
                 $ref: "#/components/schemas/template-status-response"
               example:
-                status: "success"
+                status: success
         default:
           $ref: "#/components/responses/template-not-200"
   /v1/projects/{appId}/rtls/abr/config/codecs:
     get:
       summary: Query transcoding templates
-      description: >-
-        Queries all transcoding template configurations under the specified App
-        ID.
+      description: Queries transcoding template configurations under a specified App ID.
+      x-docs-sections:
+        - position: after-description
+          markdown: Query all transcoding template configurations under the specified App ID
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](../rest-api/reference#response-status-codes) to understand the possible reasons
+            for failure.
+        - markdown: |-
+            ```json
+            {
+                  "status": "The status of this request:\n- `success`: The request succeeded.\n- `error`: The request failed.\n",
+                  "data": {
+                    "enabled": true,
+                    "codecs": [
+                      {
+                        "id": "The ID of the transcoding template.",
+                        "enabled": true,
+                        "video": {
+                          "width": 0,
+                          "height": 0,
+                          "fps": 0
+                        }
+                      }
+                    ]
+                  }
+                }
+            ```
+          position: after-response-example
+          title: Response example
       operationId: query-transcoding-templates
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request get \
+                  --url https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs \
+                  --header 'Authorization: Basic <credentials>' \
+                  --header 'Content-Type: <string>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs"
+
+                headers = {
+                    "Authorization": "Basic <credentials>",
+                    "Content-Type": "<string>"
+                }
+
+                response = requests.request("get", url, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs';
+                const options = {
+                  method: 'get',
+                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appId"
+          description: The App ID of the project
       responses:
         "200":
           description: The request succeeded and returned template data.
@@ -530,12 +1829,74 @@ paths:
   /v1/ncs/ip:
     get:
       summary: Query message notification server IP
-      description: >-
-        Gets the message notification server IP address list. Add the IP
-        addresses to your firewall whitelist. Agora dynamically adjusts message
-        notification server IP addresses in a 24-hour cycle and recommends that
-        you query at least once every 24 hours.
+      description: Retrieves message notification server IP addresses.
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            The Agora message notification service notifies your server of Cloud Transcoding events
+            through HTTPS requests. Agora dynamically adjusts the IP addresses of the message
+            notification server. Call this endpoint regularly and update your firewall configuration
+            whenever the addresses change.
+        - title: Request
+          position: after-parameters
+          markdown: "- This endpoint has no path parameters or request body."
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. Only the `primaryIP`
+            field in the response body is relevant; the response header and all other fields can be
+            ignored.
+
+
+            - If the returned status code is not `200`, the request failed. See [Response status
+            codes](../reference/common-errors#status-codes) for troubleshooting.
       operationId: query-cloud-transcoding-ncs-ip
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+                --url https://api.sd-rtn.com/v1/ncs/ip \
+                --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+              url = "https://api.sd-rtn.com/v1/ncs/ip"
+              headers = {
+                  "Authorization": "Basic <credentials>"
+              }
+
+              response = requests.get(url, headers=headers)
+
+              print(response.status_code)
+              print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require('axios');
+
+              const url = 'https://api.sd-rtn.com/v1/ncs/ip';
+              const headers = {
+                'Authorization': 'Basic <credentials>'
+              };
+
+              axios.get(url, { headers })
+                .then(response => {
+                  console.log('Status:', response.status);
+                  console.log('Data:', response.data);
+                })
+                .catch(error => {
+                  console.error('Error:', error.response ? error.response.data : error.message);
+                });
+      x-docs-callouts:
+        - markdown: >-
+            Query the IP addresses at least once every 24 hours and update your firewall whitelist
+            automatically to avoid interruptions in notification delivery.
+          position: after-description
+          title: Note
+          type: info
       responses:
         "200":
           description: The request succeeded and returned message notification server IP addresses.
@@ -558,8 +1919,8 @@ components:
   headers:
     X-Request-ID:
       description: >-
-        The unique request ID. If the request fails, use this value in the log
-        to troubleshoot the problem.
+        The unique request ID. If the request fails, use this value in the log to troubleshoot the
+        problem.
       schema:
         type: string
   parameters:
@@ -572,6 +1933,19 @@ components:
         enum:
           - application/json
       description: The request content type. Use `application/json`.
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        type: string
+      description: >-
+        UUID (Universally Unique Identifier), used to identify this request.
+
+
+        If the request fails, print out the value in the log to troubleshoot the problem. If the
+        response status code of the request is not 2XX, then the response header may not contain
+        this field.
     appId:
       name: appId
       in: path
@@ -585,7 +1959,7 @@ components:
       required: true
       schema:
         type: string
-      description: The transcoding task UUID used to identify the cloud transcoder.
+      description: A UUID used to identify the cloud transcoder for this request operation.
     builderToken:
       name: builderToken
       in: query
@@ -593,8 +1967,8 @@ components:
       schema:
         type: string
       description: >-
-        The `tokenName` you obtained in the response body of the `Acquire a
-        builder token` API.
+        The `tokenName` you obtained in the response body of the `Acquire` method. See Acquire a
+        builder token.
   responses:
     not-200:
       description: The request failed.
@@ -623,11 +1997,8 @@ components:
         instanceId:
           type: string
           maxLength: 64
-          pattern: "^[A-Za-z0-9_-]+$"
-          description: >-
-            User-specified instance ID. The length must be within 64 characters.
-            Supported characters are lowercase letters, uppercase letters,
-            numbers, hyphens, and underscores.
+          pattern: ^[A-Za-z0-9_-]+$
+          description: The `instanceId` you specified in the request.
         services:
           $ref: "#/components/schemas/cloud-transcoder-services"
     acquire-builder-token-response:
@@ -635,13 +2006,15 @@ components:
       properties:
         createTs:
           type: number
-          description: The Unix timestamp when the token was created.
+          description: Unix timestamp (seconds) when the `builderToken` was generated
         instanceId:
           type: string
           description: The user-specified instance ID.
         tokenName:
           type: string
-          description: The builder token used to initiate a task request.
+          description: >-
+            The value of the `builderToken`. Use this value when calling other methods for this
+            instance.
     cloud-transcoder-request:
       type: object
       required:
@@ -664,7 +2037,10 @@ components:
               type: string
               enum:
                 - cloudTranscoderV2
-              description: The service type. Use `cloudTranscoderV2`.
+              description: |-
+                Should be `"cloudTranscoderV2"`.
+
+                The service type. Use "cloudTranscoderV2".
             config:
               type: object
               required:
@@ -672,11 +2048,12 @@ components:
               properties:
                 transcoder:
                   $ref: "#/components/schemas/transcoder-config"
+              description: Same as the fields you set in the `Create` request body.
     transcoder-config:
       type: object
       required:
         - canvas
-        - waterMarks
+        - watermarks
         - outputs
       properties:
         idleTimeout:
@@ -685,9 +2062,8 @@ components:
           minimum: 1
           maximum: 86400
           description: >-
-            The maximum period, in seconds, that Cloud Transcoder can be idle.
-            If the idle state exceeds this value, Cloud Transcoder is
-            automatically destroyed.
+            The maximum period, in seconds, that Cloud Transcoder can be idle. If the idle state
+            exceeds this value, Cloud Transcoder is automatically destroyed.
         streamProcessMode:
           type: string
           default: mix
@@ -696,34 +2072,61 @@ components:
             - heterogeneous-single
             - single
           description: >-
-            The working mode of Cloud Transcoder. If this parameter is omitted,
-            Cloud Transcoder works in merge mode.
+            If this parameter is not specified, the working mode of Cloud transcoder is the merge
+            mode. You can specify the following modes:
+
+            - `heterogeneous-single`: Heterogeneous single stream mode. The types of input stream
+            and output stream can be different or the same. The currently supported stream types are
+            RTC and CDN.
+
+            - `single`: RTC stream relay mode. Relays the host's audio and video data and signaling
+            in the source channel to the destination channel.
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: >
+                - If you set `streamProcessMode` to `heterogeneous-single` or `single`, then the
+                `audioInputs` or `videoInputs` list may contain at most one item.
+
+
+                - If you need to mix audio, combine images, or mix audio and combine images, no
+                `streamProcessMode` settings are required.
         audioInputs:
           type: array
           description: >-
-            Audio input source list. Supports RTC audio streams and CDN audio
-            streams. If you specify multiple input audio sources, the streams
-            are mixed.
+            Audio input source list, supports two types: RTC audio stream and CDN audio stream. If
+            you specify multiple input audio sources, the streams are mixed.
           items:
             $ref: "#/components/schemas/audio-input"
+          x-docs-callouts:
+            - type: info
+              title: Note
+              markdown: |
+                Either `rtc` or `streamUrl` must be filled in.
         videoInputs:
           type: array
           description: >-
-            Video input source list. Supports RTC video streams and CDN video
-            streams. If you specify multiple input video sources, the streams
-            are merged.
+            Video input source list, supports RTC video stream and CDN video stream. If you specify
+            multiple input video sources, the streams are merged.
           items:
             $ref: "#/components/schemas/video-input"
         canvas:
           $ref: "#/components/schemas/canvas"
-        waterMarks:
+        watermarks:
           type: array
           description: Watermark list.
           items:
             $ref: "#/components/schemas/watermark"
         outputs:
           type: array
-          description: Output stream list.
+          description: |-
+            Configure output settings to publish to an RTC channel or CDN address.
+
+             You must specify either `streamUrl` or `rtc`.
+
+            Configure output settings to publish to a single RTC channel or CDN address.
+
+             You must specify either streamUrl or rtc.
           items:
             $ref: "#/components/schemas/transcoder-output"
     audio-input:
@@ -737,16 +2140,18 @@ components:
           default: 100
           minimum: 0
           maximum: 200
-          description: The volume of the CDN audio source stream.
+          description: >-
+            The volume of the audio source stream. This parameter only takes effect when the audio
+            input source is CDN.
         repeat:
           type: number
           default: 1
           description: >-
-            The number of times to play the media stream. `1` means play once,
-            `-1` means loop, and any positive integer specifies a playback
-            count.
+            The number of times to play the media stream. `1` means play once, `-1` means loop, and
+            any positive integer specifies a playback count.
         rtc:
           $ref: "#/components/schemas/rtc-source"
+          description: When the audio input source is RTC, this object is required.
     video-input:
       type: object
       required:
@@ -759,16 +2164,16 @@ components:
           type: number
           default: 1
           description: >-
-            The number of times to play the media stream. `1` means play once,
-            `-1` means loop, and any positive integer specifies a playback
-            count.
+            The number of times to play the media stream. `1` means play once, `-1` means loop, and
+            any positive integer specifies a playback count.
         rtc:
           $ref: "#/components/schemas/rtc-source"
+          description: This object is required when the video input source is RTC.
         placeholderImageUrl:
           type: string
           description: >-
-            The URL of the placeholder image displayed when the user is offline.
-            It must be a valid image URL and contain the `jpg` or `png` suffix.
+            The URL of the placeholder image displayed when the user is offline. It must be a valid
+            image URL and contain the `jpg` or `png` suffix.
         region:
           $ref: "#/components/schemas/region"
     rtc-source:
@@ -780,15 +2185,56 @@ components:
       properties:
         rtcChannel:
           type: string
-          description: The RTC channel name.
+          description: >-
+            The RTC channel name for the transcoded audio and video.
+
+
+            The RTC channel name for the audio input source. Currently, only audio and video sources
+            that subscribe to a single channel are supported. The audio source and video source must
+            belong to the same channel.
+
+
+            The RTC channel name for the video input source. Currently, only audio and video sources
+            that subscribe to a single channel are supported. The audio source and video source must
+            belong to the same channel.
+
+
+            The RTC channel name for the audio input source. Currently, you can only subscribe to
+            audio and video sources from a single channel; the audio and video sources must belong
+            to the same channel.
+
+
+            The RTC channel name for the video input source. Currently, you can only subscribe to
+            audio and video sources from a single channel; the audio and video sources must belong
+            to the same channel.
         rtcUid:
           type: number
-          description: The UID corresponding to the source or output stream.
+          description: >-
+            The UID of the RTC channel for the transcoded audio and video streams. Make sure this
+            value is different from the UID of other users in the channel.
+
+
+            The UID corresponding to the audio input source. The same UID must not exist in the RTC
+            channel.
+
+
+            The UID corresponding to the video input source. The same UID must not exist in the RTC
+            channel.
         rtcToken:
           type: string
           description: >-
-            The token that Cloud Transcoder uses to join the RTC channel for
-            transcoding.
+            The token that the Cloud Transcoder uses to join the output RTC channel. Using a token
+            ensures channel security and prevents malicious users from disrupting other users in the
+            channel. See Token authentication for details.
+
+             When generating this token, use `outputs.rtc.rtcUid` to generate the token.
+
+            The token that the Cloud Transcoder uses to join the RTC channel for transcoding. Using
+            a token ensures channel security and prevents malicious users from disrupting other
+            users in the channel. See Token authentication for details.
+
+             The UID of Cloud Transcoder in the RTC channel is randomly assigned by Agora. Therefore, when generating a token, set the uid to 0.
+      description: Required for publishing to an RTC channel.
     canvas:
       type: object
       required:
@@ -800,12 +2246,12 @@ components:
           type: number
           minimum: 120
           maximum: 3840
-          description: The width of the canvas in pixels.
+          description: The width of the canvas (px).
         height:
           type: number
           minimum: 120
           maximum: 3840
-          description: The height of the canvas in pixels.
+          description: The height of the canvas (px).
         color:
           type: number
           minimum: 0
@@ -813,7 +2259,9 @@ components:
           description: The background color of the canvas as a decimal RGB value.
         backgroundImage:
           type: string
-          description: Canvas background image URL.
+          description: >-
+            Canvas background image. Must be a valid image URL with a `jpg` or `png` suffix. If
+            omitted, there is no canvas background image.
         fillMode:
           type: string
           default: FILL
@@ -838,12 +2286,18 @@ components:
           enum:
             - FILL
             - FIT
-          description: Fill mode for the watermark image.
+          description: >-
+            Watermark fill mode:
+
+            - `"FILL"`: Scale the image and crop it in the center while maintaining the aspect
+            ratio.
+
+            - `"FIT"`: Scale the image to fill the display while maintaining the aspect ratio.
     region:
       type: object
       required:
         - x
-        - y
+        - "y"
         - width
         - height
         - zOrder
@@ -852,27 +2306,53 @@ components:
           type: number
           minimum: 0
           maximum: 3840
-          description: The x coordinate of the image on the canvas in pixels.
-        y:
+          description: >-
+            The x coordinate of the watermark on the canvas (px). The x coordinate is the horizontal
+            displacement of the upper left corner of the image relative to the origin.
+
+
+            The x coordinate of the image on the canvas (px). The x coordinate is the horizontal
+            displacement of the upper left corner of the image relative to the origin, where the
+            upper left corner of the canvas is the origin.
+        "y":
           type: number
           minimum: 0
           maximum: 3840
-          description: The y coordinate of the image on the canvas in pixels.
+          description: >-
+            The y coordinate of the watermark on the canvas (px). The y coordinate is the vertical
+            displacement of the upper left corner of the image relative to the origin.
+
+
+            The y coordinate of the image on the canvas (px). The y coordinate is the vertical
+            displacement of the upper left corner of the image relative to the origin, where the
+            upper left corner of the canvas is the origin.
         width:
           type: number
           minimum: 120
           maximum: 3840
-          description: The width of the image in pixels.
+          description: |-
+            The width of the watermark (px).
+
+            The width of the screen (px).
         height:
           type: number
           minimum: 120
           maximum: 3840
-          description: The height of the image in pixels.
+          description: |-
+            The height of the watermark (px).
+
+            The height of the screen (px).
         zOrder:
           type: number
           minimum: 2
           maximum: 100
-          description: The layer order of the host screen.
+          description: >-
+            The layer order of the watermark. `0` represents the bottom layer. `100` represents the
+            top layer.
+
+
+            The layer order of the host screen. 2 represents the layer above the placeholder layer.
+            100 represents the top layer.
     watermark-region:
       allOf:
         - $ref: "#/components/schemas/region"
@@ -890,7 +2370,7 @@ components:
       properties:
         streamUrl:
           type: string
-          description: The CDN output stream URL.
+          description: CDN streaming address.
         rtc:
           $ref: "#/components/schemas/rtc-source"
         audioOption:
@@ -910,7 +2390,26 @@ components:
             - AUDIO_PROFILE_MUSIC_STANDARD_STEREO
             - AUDIO_PROFILE_MUSIC_HIGH_QUALITY
             - AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO
-          description: The audio profile of the output stream.
+          description: >-
+            Audio properties of the transcoded output:
+
+            - `"AUDIO_PROFILE_DEFAULT"`: 48 kHz sampling rate, music encoding, mono channel, maximum
+            encoding bitrate is 64 Kbps.
+
+            - `"AUDIO_PROFILE_SPEECH_STANDARD"`: 32 kHz sampling rate, speech encoding, mono
+            channel, maximum encoding bitrate is 18 Kbps.
+
+            - `"AUDIO_PROFILE_MUSIC_STANDARD"`: 48 KHz sampling rate, music encoding, mono channel,
+            maximum encoding bitrate is 64 Kbps.
+
+            - `"AUDIO_PROFILE_MUSIC_STANDARD_STEREO"`: 48 KHz sampling rate, music encoding, stereo
+            channel, maximum encoding bitrate is 80 Kbps.
+
+            - `"AUDIO_PROFILE_MUSIC_HIGH_QUALITY"`: 48 KHz sampling rate, music encoding, mono
+            channel, maximum encoding bitrate is 96 Kbps.
+
+            - `"AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO"`: 48 kHz sampling rate, music encoding,
+            dual channels, and a maximum encoding bitrate of 128 Kbps.
     video-option:
       type: object
       required:
@@ -923,32 +2422,42 @@ components:
           type: number
           minimum: 120
           maximum: 3840
-          description: The width of the output video in pixels.
+          description: The width of the transcoded output video (px).
         height:
           type: number
           minimum: 120
           maximum: 3840
-          description: The height of the output video in pixels.
+          description: The height of the transcoded output video (px).
         bitrate:
           type: number
           minimum: 1
           maximum: 10000
-          description: The output video bitrate.
+          description: The bitrate of the transcoded output video.
         codec:
           type: string
           enum:
             - H264
             - H265
-          description: The output video codec.
+          description: |-
+            The codec used to transcode the output video.
+
+             **Possible values**:
+            - `"H264"`: Standard H.264 encoding.
+            - `"VP8"`: Standard VP8 encoding.
         fps:
           type: number
           default: 15
           minimum: 1
           maximum: 30
-          description: The output video frame rate.
+          description: The frame rate (fps) of the transcoded output video.
         mode:
           type: string
-          description: The output video mode.
+          description: >-
+            Can be set to `RAW`, which means the output video is not transcoded. The encoding format
+            of the input video remains unchanged.
+
+             If the output video is transcoded, do not set this field.
+             In `RAW` mode, the number of inputs set in `videoInputs` can only be 1.
         lowBitrateHighQuality:
           type: boolean
           description: Whether to enable low-bitrate high-quality mode.
@@ -957,13 +2466,24 @@ components:
       properties:
         taskId:
           type: string
-          description: The task ID.
+          description: A UUID used to identify the cloud transcoder for this request operation.
         createTs:
           type: number
-          description: The Unix timestamp when the task was created.
+          description: Unix timestamp (seconds) when the transcoding task was created.
         status:
           type: string
-          description: The task status.
+          description: |-
+            The running status of the transcoding task:
+            - `"IDLE"`: Task not started.
+            - `"PREPARED"`: The task has received a start request.
+            - `"STARTING"`: The task is starting.
+            - `"CREATED"`: Task initialization completed.
+            - `"STARTED"`: The task has started.
+            - `"IN_PROGRESS"`: Task in progress.
+            - `"STOPPING"`: The task is stopping.
+            - `"STOPPED"`: The task has stopped.
+            - `"EXIT"`: The task exited normally.
+            - `"FAILURE_STOP"`: The task exited abnormally.
         sequenceId:
           type: string
           description: The sequence ID.
@@ -976,17 +2496,46 @@ components:
                 config:
                   type: object
                   additionalProperties: true
+                  description: Same as the fields you set in the `Create` request body.
                 createTs:
                   type: number
+                  description: Unix timestamp (in seconds) when the service was created.
                 details:
                   type: object
                   additionalProperties: true
+                  description: Reserved field.
                 message:
                   type: string
+                  description: Reserved field.
                 serviceType:
                   type: string
+                  description: Should be `"cloudTranscoderV2"`.
                 status:
                   type: string
+                  description: >-
+                    The running status of the transcoding service in the transcoding task:
+
+                    - `"serviceIdle"`: The service has not started.
+
+                    - `"serviceReady"`: The service is ready to start.
+
+                    - `"serviceStarted"`: The service has started.
+
+                    - `"serviceInProgress"`: The service is currently running.
+
+                    - `"serviceCompleted"`: The service has stopped, and all tasks have been
+                    completed.
+
+                    - `"servicePartialCompleted"`: The service has stopped, but the task was only
+                    partially completed.
+
+                    - `"serviceValidationFailed"`: The service failed due to invalid parameters.
+
+                    - `"serviceAbnormal"`: The service exited unexpectedly.
+
+                    - `"serviceUnknown"`: The service status is unknown.
+
+                     This field is meant for the Agora technical team to investigate any issues. You do not need to focus on it.
         eventHandlers:
           type: object
           additionalProperties: true
@@ -1010,7 +2559,10 @@ components:
       properties:
         enabled:
           type: boolean
-          description: Whether to enable the transcoding template.
+          description: |-
+            Whether to enable this transcoding template:
+            - `true`: Enable the template
+            - `false`: Do not enable the template
         video:
           type: object
           required:
@@ -1020,13 +2572,22 @@ components:
           properties:
             width:
               type: number
-              description: The width of the transcoded output video in pixels.
+              description: |-
+                **Maximum value**: `1920`
+
+                 The width of the transcoded output video (px).
             height:
               type: number
-              description: The height of the transcoded output video in pixels.
+              description: |-
+                **Maximum value**: `1920`
+
+                 The height of the transcoded output video (px).
             fps:
               type: number
-              description: The frame rate of the transcoded output video.
+              description: |-
+                **Maximum value**: `60`
+
+                 The frame rate (fps) of the transcoded output video.
     template-status-response:
       type: object
       properties:
@@ -1035,7 +2596,13 @@ components:
           enum:
             - success
             - error
-          description: The status of the request.
+          description: |-
+            The status of the request.
+
+            Status of this request:
+
+             - success: The request was successful.
+             - error: The request failed.
     query-templates-response:
       type: object
       properties:
@@ -1044,7 +2611,13 @@ components:
           enum:
             - success
             - error
-          description: The status of the request.
+          description: |-
+            The status of the request.
+
+            Status of the request.
+
+             - success: The request was successful.
+             - error: The request failed
         data:
           type: object
           properties:
@@ -1062,18 +2635,27 @@ components:
                   enabled:
                     type: boolean
                     description: Whether to enable this transcoding template.
-                  video:
+                  Video:
                     type: object
                     properties:
                       width:
                         type: number
-                        description: The width of the transcoded output video in pixels.
+                        description: |-
+                          The width of the transcoded output video in pixels.
+
+                          The width of the transcoded output video (px).
                       height:
                         type: number
-                        description: The height of the transcoded output video in pixels.
+                        description: |-
+                          The height of the transcoded output video in pixels.
+
+                          The height of the transcoded output video (px).
                       fps:
                         type: number
-                        description: The frame rate of the transcoded output video.
+                        description: |-
+                          The frame rate of the transcoded output video.
+
+                          The frame rate (fps) of the transcoded output video.
     ncs-ip-response:
       type: object
       properties:
@@ -1104,4 +2686,4 @@ components:
           properties:
             message:
               type: string
-              description: Description of the reason for the request failure.
+              description: Describes why the request failed.

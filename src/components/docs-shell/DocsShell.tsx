@@ -1,26 +1,12 @@
 'use client';
 
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  LanguagesIcon,
-  MenuIcon,
-  MoonIcon,
-  SunIcon,
-} from 'lucide-react';
+import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Sheet,
@@ -33,18 +19,16 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
-import { type DocsLayoutMode, isWideDocsLayout } from '@/lib/docs-layout';
+import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import { replaceDocLocale } from '@/lib/docs-routing';
+import { buildDocPath } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
-  SUPPORTED_LOCALES,
 } from '@/lib/i18n/i18n-config';
-import { useLocale } from '@/lib/i18n/use-locale';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -55,22 +39,26 @@ import { DocsTocRail } from './DocsTocRail';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-const DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME = 'max-w-[min(100%,1600px)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
-const DOCS_WIDE_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
-const DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)]';
+const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
+const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobileTabLinkClassName =
-  'min-h-9 w-full min-w-0 justify-start overflow-visible rounded-md border border-transparent px-3 py-2 text-sm whitespace-normal text-muted-foreground hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)] data-[state=active]:after:bg-[color:var(--accent-brand)]';
+  'h-auto min-h-10 w-full min-w-0 max-w-full items-start justify-start overflow-hidden rounded-md border border-transparent px-3 py-2.5 text-left text-sm leading-5 whitespace-normal text-muted-foreground [overflow-wrap:anywhere] after:hidden hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)]';
 const mobilePageLinkClassName =
-  'relative min-h-9 min-w-0 overflow-visible rounded-md px-3 py-2 text-sm transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span]:break-words [&>span]:whitespace-normal';
+  'relative flex min-h-10 w-full min-w-0 max-w-full items-start gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm leading-5 transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:break-words [&>span:first-child]:whitespace-normal [&>span:first-child]:[overflow-wrap:anywhere]';
 const mobileActivePageLinkClassName =
   'bg-[color:var(--accent-brand-soft)] font-semibold text-[color:var(--accent-brand)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] before:bg-[color:var(--accent-brand)]';
 const mobileInactivePageLinkClassName = 'text-muted-foreground';
+const mobileSectionLabelClassName =
+  'mt-4 flex min-w-0 max-w-full rounded-md px-2 py-1 text-xs font-semibold uppercase leading-4 tracking-[0.08em] text-muted-foreground [overflow-wrap:anywhere] data-[active=true]:text-[color:var(--ink-2)] [&>span]:min-w-0 [&>span]:break-words [&>span]:whitespace-normal [&>span]:[overflow-wrap:anywhere]';
+const mobileSidebarNestedListClassNames = [
+  'ml-2 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-1 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+  'ml-0 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
+] as const;
 
 type LocaleLink = {
   href: string;
@@ -108,12 +96,14 @@ export function DocsShell({
   tabs,
   toc,
   layoutMode = 'docs',
+  hideToc = false,
 }: {
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
   loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
+  hideToc?: boolean;
   localeLinks: LocaleLink[];
   locale: string;
   next?: { title: string; url: string };
@@ -127,8 +117,6 @@ export function DocsShell({
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
-  const navigate = useNavigate();
-  const { setLocale } = useLocale();
   const isDarkTheme = resolvedTheme === 'dark';
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
@@ -137,6 +125,7 @@ export function DocsShell({
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
+  const homeHref = buildDocPath(currentLocale, 'introduction');
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -167,16 +156,18 @@ export function DocsShell({
     '--docs-shell-header-offset': `${headerOffset}px`,
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
-  const isWideLayout = isWideDocsLayout(layoutMode);
-  const shellWidthClassName = isWideLayout
-    ? DOCS_WIDE_SHELL_MAX_WIDTH_CLASS_NAME
-    : DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
-  const desktopGridClassName =
-    layoutMode === 'openapi'
-      ? DOCS_OPENAPI_DESKTOP_GRID_CLASS_NAME
-      : isWideLayout
-        ? DOCS_WIDE_DESKTOP_GRID_CLASS_NAME
-        : DOCS_DESKTOP_GRID_CLASS_NAME;
+  const isOpenApiLayout = layoutMode === 'openapi';
+  // openapi and hideToc drop the toc rail and let content fill the grid; every
+  // layout shares the same outer shell footprint so the sidebar/nav/content
+  // align across page types.
+  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
+  const desktopGridClassName = contentFillsWidth
+    ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
+    : DOCS_DESKTOP_GRID_CLASS_NAME;
+  const docsChromeLocaleLinks = localeLinks.filter((item) =>
+    ENABLED_DOCS_CHROME_LOCALES.has(item.locale),
+  );
 
   return (
     <SidebarProvider
@@ -188,18 +179,20 @@ export function DocsShell({
           className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
           ref={headerRef}
         >
-          <nav aria-label="Alternate languages" className="sr-only">
-            {localeLinks.map((item) => (
-              <a
-                aria-current={item.isActive ? 'page' : undefined}
-                href={item.href}
-                hrefLang={item.locale}
-                key={item.locale}
-              >
-                {item.locale}
-              </a>
-            ))}
-          </nav>
+          {docsChromeLocaleLinks.length > 1 ? (
+            <nav aria-label="Alternate languages" className="sr-only">
+              {docsChromeLocaleLinks.map((item) => (
+                <a
+                  aria-current={item.isActive ? 'page' : undefined}
+                  href={item.href}
+                  hrefLang={item.locale}
+                  key={item.locale}
+                >
+                  {item.locale}
+                </a>
+              ))}
+            </nav>
+          ) : null}
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
@@ -219,11 +212,22 @@ export function DocsShell({
                   </Button>
                 </SheetTrigger>
                 <SheetContent
-                  className="w-[88vw] max-w-sm gap-0 overflow-hidden p-0"
+                  className="w-[min(92vw,24rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden p-0 sm:max-w-sm"
+                  data-testid="docs-mobile-sidebar-sheet"
                   side="left"
                 >
-                  <SheetHeader className="border-b">
-                    <SheetTitle>{t('app.name')}</SheetTitle>
+                  <SheetHeader className="min-w-0 border-b pr-12">
+                    <SheetTitle className="min-w-0">
+                      <Link
+                        className="inline-flex max-w-full min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        onClick={() => setIsMobileSheetOpen(false)}
+                        params={{}}
+                        search={{}}
+                        to={homeHref}
+                      >
+                        <span className="truncate">{t('app.name')}</span>
+                      </Link>
+                    </SheetTitle>
                     <SheetDescription className="sr-only">
                       {t('docs.openMenu')}
                     </SheetDescription>
@@ -233,16 +237,6 @@ export function DocsShell({
                     activeTab={activeTab}
                     currentLocale={currentLocale}
                     isDarkTheme={isDarkTheme}
-                    localeLinks={localeLinks}
-                    onSelectLocale={async (nextLocale) => {
-                      await setLocale(nextLocale);
-                      setIsMobileSheetOpen(false);
-                      await navigate({
-                        to:
-                          localeLinks.find((item) => item.locale === nextLocale)
-                            ?.href ?? replaceDocLocale(activePath, nextLocale),
-                      });
-                    }}
                     onSelectPath={() => setIsMobileSheetOpen(false)}
                     sidebar={sidebar}
                     sidebarHeader={sidebarHeader}
@@ -258,7 +252,9 @@ export function DocsShell({
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
                   className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
-                  to="/"
+                  params={{}}
+                  search={{}}
+                  to={homeHref}
                 >
                   <span className="truncate">{t('app.name')}</span>
                 </Link>
@@ -289,19 +285,6 @@ export function DocsShell({
                     tabs={tabs}
                   />
                 </div>
-                <LocaleSwitcher
-                  currentLocale={currentLocale}
-                  localeLinks={localeLinks}
-                  onSelect={async (nextLocale) => {
-                    await setLocale(nextLocale);
-                    await navigate({
-                      to:
-                        localeLinks.find((item) => item.locale === nextLocale)
-                          ?.href ?? replaceDocLocale(activePath, nextLocale),
-                    });
-                  }}
-                  variant="desktop"
-                />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -349,7 +332,7 @@ export function DocsShell({
                   {tabs.map((tab) => (
                     <TabsTrigger asChild key={tab.id} value={tab.id}>
                       <Link
-                        className="h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px] data-[state=active]:font-semibold"
+                        className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
                         params={{}}
                         search={{}}
                         to={tab.url}
@@ -362,7 +345,17 @@ export function DocsShell({
                             />
                           </span>
                         ) : null}
-                        {tab.title}
+                        <span className="grid">
+                          <span
+                            aria-hidden
+                            className="invisible col-start-1 row-start-1 font-semibold"
+                          >
+                            {tab.title}
+                          </span>
+                          <span className="col-start-1 row-start-1 group-data-[state=active]/tab:font-semibold">
+                            {tab.title}
+                          </span>
+                        </span>
                       </Link>
                     </TabsTrigger>
                   ))}
@@ -373,7 +366,7 @@ export function DocsShell({
         </header>
         <div
           className={cn(
-            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:h-[var(--docs-shell-body-height)] lg:min-h-0 lg:grid-cols-[256px_minmax(0,1fr)] lg:overflow-hidden',
+            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
             shellWidthClassName,
             desktopGridClassName,
           )}
@@ -395,13 +388,7 @@ export function DocsShell({
           >
             {children}
           </DocsMainColumn>
-          {layoutMode === 'openapi' ? null : isWideLayout ? (
-            <div
-              aria-hidden="true"
-              className="hidden h-full min-h-0 w-[220px] shrink-0 xl:block"
-              data-testid="docs-toc-rail-placeholder"
-            />
-          ) : (
+          {contentFillsWidth ? null : (
             <DocsTocRail locale={currentLocale} toc={toc} />
           )}
         </div>
@@ -430,148 +417,11 @@ function GithubMarkIcon() {
   );
 }
 
-function LocaleSwitcher({
-  currentLocale,
-  localeLinks,
-  onSelect,
-  variant = 'all',
-}: {
-  currentLocale: AppLocale;
-  localeLinks: LocaleLink[];
-  onSelect: (locale: AppLocale) => Promise<void>;
-  variant?: 'all' | 'desktop' | 'mobile';
-}) {
-  const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(currentLocale, 'common');
-  const currentSiteLabel =
-    currentLocale === 'zh-CN'
-      ? t('controls.site.china')
-      : t('controls.site.global');
-
-  return (
-    <>
-      {variant !== 'mobile' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label={t('controls.site.label')}
-              className="h-8 gap-1.5 rounded-md border border-transparent px-2.5 text-[13px] text-muted-foreground hover:border-border hover:bg-accent hover:text-accent-foreground data-[state=open]:border-border data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-              size="sm"
-              variant="ghost"
-            >
-              <LanguagesIcon data-icon="inline-start" />
-              <span>{currentSiteLabel}</span>
-              <ChevronDownIcon aria-hidden="true" className="opacity-60" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            aria-label={t('controls.site.label')}
-            className="w-56 rounded-lg p-1"
-          >
-            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
-              {t('controls.site.description')}
-            </div>
-            <LocaleOptions
-              currentLocale={currentLocale}
-              localeLinks={localeLinks}
-              onSelect={onSelect}
-              scopeKey="desktop"
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : null}
-      {variant !== 'desktop' ? (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label={t('controls.site.label')}
-              className="data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
-              size="icon"
-              variant="ghost"
-            >
-              <LanguagesIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="start"
-            aria-label={t('controls.site.label')}
-            className="w-56 rounded-lg p-1"
-          >
-            <div className="px-2.5 py-2 text-xs leading-5 text-muted-foreground">
-              {t('controls.site.description')}
-            </div>
-            <LocaleOptions
-              currentLocale={currentLocale}
-              localeLinks={localeLinks}
-              onSelect={onSelect}
-              scopeKey="mobile"
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ) : null}
-    </>
-  );
-}
-
-function LocaleOptions({
-  currentLocale,
-  localeLinks,
-  onSelect,
-  scopeKey,
-}: {
-  currentLocale: AppLocale;
-  localeLinks: LocaleLink[];
-  onSelect: (locale: AppLocale) => Promise<void>;
-  scopeKey: string;
-}) {
-  const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(currentLocale, 'common');
-
-  return (
-    <DropdownMenuGroup>
-      {SUPPORTED_LOCALES.map((locale) => {
-        const isActive = currentLocale === locale;
-        const href =
-          localeLinks.find((item) => item.locale === locale)?.href ??
-          replaceDocLocale('/', locale);
-        const label =
-          locale === 'zh-CN'
-            ? t('controls.site.china')
-            : t('controls.site.global');
-
-        return (
-          <DropdownMenuItem
-            asChild
-            className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
-            key={`${scopeKey}-${locale}`}
-          >
-            <a
-              aria-current={isActive ? 'page' : undefined}
-              href={href}
-              hrefLang={locale}
-              onClick={(event) => {
-                event.preventDefault();
-                void onSelect(locale);
-              }}
-            >
-              <span className="min-w-0 truncate">{label}</span>
-              {isActive ? <CheckIcon className="opacity-80" /> : null}
-            </a>
-          </DropdownMenuItem>
-        );
-      })}
-    </DropdownMenuGroup>
-  );
-}
-
 function MobileSidebar({
   activePath,
   activeTab,
   currentLocale,
   isDarkTheme,
-  localeLinks,
-  onSelectLocale,
   onSelectPath,
   sidebar,
   sidebarHeader,
@@ -583,8 +433,6 @@ function MobileSidebar({
   activeTab: string;
   currentLocale: AppLocale;
   isDarkTheme: boolean;
-  localeLinks: LocaleLink[];
-  onSelectLocale: (locale: AppLocale) => Promise<void>;
   onSelectPath: () => void;
   sidebar: DocsSidebarNode[];
   sidebarHeader?: DocsSidebarHeader;
@@ -597,8 +445,11 @@ function MobileSidebar({
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-      <ScrollArea className="min-h-0 min-w-0 flex-1 overflow-x-hidden px-4 py-4">
-        <div className="flex min-w-0 flex-col gap-7 pb-6">
+      <ScrollArea
+        className="min-h-0 min-w-0 flex-1 overflow-hidden px-3 py-4 sm:px-4"
+        data-testid="docs-mobile-sidebar-scroll"
+      >
+        <div className="flex min-w-0 max-w-full flex-col gap-6 overflow-x-hidden pb-6">
           <div className="flex min-w-0 flex-col gap-2.5">
             <p className={mobileSidebarGroupLabelClassName}>
               {t('docs.tabsLabel')}
@@ -639,6 +490,7 @@ function MobileSidebar({
               {sidebar.map((node) => (
                 <MobileSidebarNode
                   activePath={activePath}
+                  depth={0}
                   key={node.id}
                   node={node}
                   onSelectPath={onSelectPath}
@@ -648,12 +500,6 @@ function MobileSidebar({
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
-              <LocaleSwitcher
-                currentLocale={currentLocale}
-                localeLinks={localeLinks}
-                onSelect={onSelectLocale}
-                variant="desktop"
-              />
               <Button
                 aria-label={themeLabel}
                 aria-pressed={isDarkTheme}
@@ -674,43 +520,82 @@ function MobileSidebar({
 
 function MobileSidebarNode({
   activePath,
+  depth,
   node,
   onSelectPath,
 }: {
   activePath: string;
+  depth: number;
   node: DocsSidebarNode;
   onSelectPath: () => void;
 }) {
   if (node.type === 'page') {
     const isActive = node.url === activePath;
+    const content = (
+      <>
+        <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
+          {node.title}
+        </span>
+        {node.method ? (
+          <span className="mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+            {node.method}
+          </span>
+        ) : null}
+      </>
+    );
+    const className = cn(
+      mobilePageLinkClassName,
+      isActive
+        ? mobileActivePageLinkClassName
+        : mobileInactivePageLinkClassName,
+    );
+
+    if (node.external) {
+      return (
+        <a
+          aria-current={isActive ? 'page' : undefined}
+          className={className}
+          href={node.href ?? node.url}
+          onClick={onSelectPath}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          {content}
+        </a>
+      );
+    }
 
     return (
       <Link
-        className={cn(
-          mobilePageLinkClassName,
-          isActive
-            ? mobileActivePageLinkClassName
-            : mobileInactivePageLinkClassName,
-        )}
+        aria-current={isActive ? 'page' : undefined}
+        className={className}
         onClick={onSelectPath}
         params={{}}
         search={{}}
         to={node.url}
       >
-        <span className="block min-w-0">{node.title}</span>
+        {content}
       </Link>
     );
   }
 
+  const hasActiveChild = node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
+  );
+
   return (
-    <div className="flex min-w-0 flex-col gap-1">
-      <p className="mt-3 min-w-0 px-3 text-xs font-medium uppercase leading-4 tracking-[0.12em] text-muted-foreground">
-        {node.title.replaceAll('-', ' ')}
+    <div className="flex min-w-0 max-w-full flex-col gap-1">
+      <p
+        className={mobileSectionLabelClassName}
+        data-active={hasActiveChild ? 'true' : undefined}
+      >
+        <span>{node.title.replaceAll('-', ' ')}</span>
       </p>
-      <div className="flex min-w-0 flex-col gap-1 pl-2">
+      <div className={getMobileSidebarNestedListClassName(depth)}>
         {node.children.map((child) => (
           <MobileSidebarNode
             activePath={activePath}
+            depth={depth + 1}
             key={child.id}
             node={child}
             onSelectPath={onSelectPath}
@@ -718,5 +603,24 @@ function MobileSidebarNode({
         ))}
       </div>
     </div>
+  );
+}
+
+function getMobileSidebarNestedListClassName(depth: number) {
+  return mobileSidebarNestedListClassNames[
+    Math.min(depth, mobileSidebarNestedListClassNames.length - 1)
+  ];
+}
+
+function isMobileSidebarNodeActive(
+  node: DocsSidebarNode,
+  activePath: string,
+): boolean {
+  if (node.type === 'page') {
+    return node.url === activePath;
+  }
+
+  return node.children.some((child) =>
+    isMobileSidebarNodeActive(child, activePath),
   );
 }

@@ -4,10 +4,10 @@ description: "Easily update the look and feel of your classrooms."
 ---
 This page explains the way UI components work in Classroom and Proctor SDK.
 
-    ## Introduction to UI components
+## Introduction to UI components
 
 :::note
-The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](https://docs.agora.io/en/flexible-classroom/develop/integrate/customize-ui/customize-ui/customize-ui-scene-sdk).
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk).
 :::
 
 The UI components in Flexible Classroom can be divided into three types: function components, business components, and scenario components.
@@ -192,40 +192,17 @@ To change the color of the placeholder text in the input component, edit the `pa
 **Before**
 
 ```css
-.fcr-input-wrapper input::-webkit-input-placeholder 
-      <AgoraDemo/>
-      <FixedAspectRatioRootBox trackMargin={{ top: shareUIStore.navHeight }}>
-        <SceneSwitch>
-          <Layout className={layoutCls} direction="col">
-            <NavigationBar />
-            <Layout
-              className="flex-grow items-stretch relative justify-center fcr-room-bg"
-              direction="col">
-              <RoomMidStreamsContainer />
-              <Whiteboard />
-              <ScreenShareContainer />
-              <RemoteControlContainer />
-              <StreamWindowsContainer />
-            </Layout>
-            <RemoteControlToolbar />
-            <WhiteboardToolbar />
-            <ScenesController />
-            <Float bottom={15} right={10} align="flex-end" gap={2}>
-              <HandsUpContainer />
-              <Chat />
-            </Float>
-            <DialogContainer />
-            <LoadingContainer />
-          </Layout>
-          <WidgetContainer />
-          <ToastContainer />
-          <Award />
-          <Watermark />
-        </SceneSwitch>
-      </FixedAspectRatioRootBox>
-    </Room>
-  );
-};
+.fcr-input-wrapper input::-webkit-input-placeholder {
+  color: #999;
+}
+```
+
+**After**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+  color: #ff6600;
+}
 ```
 
 The effect of this business component in Flexible Classroom is as follows:

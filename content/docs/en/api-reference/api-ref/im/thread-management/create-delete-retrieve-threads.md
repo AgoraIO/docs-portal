@@ -1,6 +1,6 @@
 ---
 title: "Create, delete, and retrieve threads"
-description: "Shows how to call the Agora Chat RESTful APIs to create and manage contacts."
+description: "Agora Chat RESTful APIs for creating, deleting, and retrieving threads."
 ---
 
 This page shows how to create, modify, delete, and retrieve a thread by calling Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).

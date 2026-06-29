@@ -307,8 +307,19 @@ If you are using [Okta](https://www.okta.com/) as the identity provider for your
 
    1. On the **Configure SAML** tab, fill in the following SAML configurations generated in Agora Console:
 
-      - In the **Single sign on URL** field, enter `https://sso2.agora.io/api/v0/saml/idp/callback`.
-      - In the **Audience URI (SP Entity ID)** field, enter `https://sso2.agora.io/{companyId}/saml/SSO` where `{companyId}` is your company ID.
+      - In the **Single sign on URL** field, enter:
+
+        ```text
+        https://sso2.agora.io/api/v0/saml/idp/callback
+        ```
+
+      - In the **Audience URI (SP Entity ID)** field, enter:
+
+        ```text
+        https://sso2.agora.io/{companyId}/saml/SSO
+        ```
+
+        where `{companyId}` is your company ID.
       - In the **Attribute Statements (optional)** section, add the following attribute:
 
         |Name             |Value                |
@@ -438,8 +449,6 @@ To ask Agora support a question, follow these steps:
 
 1.  Type in your question or keywords to see if the question has been answered. If you cannot find your answer, select a category and submit a ticket to Agora’s customer support.
 
-    ![](https://web-cdn.agora.io/docs-files/1658716858508)
-
 You can track the status of your ticket under **Tickets**.
 
 ## Delete your Agora account
@@ -489,5 +498,5 @@ Follow these steps to delete your Agora account:
 <!-- BEGIN Signaling-specific tail — product-specific; split out when globalizing this page across products -->
 ## Reference
 
-For information on using Agora REST authentication, see [RESTful authentication](https://docs.agora.io/en/signaling/reference/restful-authentication).
+For information on using Agora REST authentication, see [RESTful authentication](/en/api-reference/api-ref/signaling/authentication).
 <!-- END Signaling-specific tail -->

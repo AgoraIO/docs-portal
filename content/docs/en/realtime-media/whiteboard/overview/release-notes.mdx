@@ -10,7 +10,51 @@ This page tracks Android release notes for the Whiteboard SDK.
 
 ## Reference
 
-## v2.16.95
+:::info[Note]
+To ensure a consistent user experience across different platforms while enabling native access on each platform, the Whiteboard SDK for Android is implemented by creating a wrapper for the Whiteboard SDK for Web, rather than being a completely native SDK. Therefore, each Android SDK version by default includes the updates of the Web SDK version that it is built upon. The corresponding Web SDK version is provided in each Android release note, so that you can refer to the relevant Web SDK release note for updates.
+:::
+
+## v2.16.100
+
+Released on July 28, 2025.
+
+#### New features
+
+**High-performance whiteboard drawing tools**
+
+This release adds the `appliance-plugin`, a plugin that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it using the `WhiteSdkConfiguration.enableAppliancePlugin` option. For more details, see the [`appliance-plugin` documentation](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md).
+
+:::info
+- `@netless/appliance-plugin` is an external dependency and must be installed separately.
+- To ensure correct rendering of strokes, enable the plugin on all platforms (Web, Android, and iOS). If a platform does not enable it, strokes drawn on other platforms will not be visible.
+- After enabling the plugin, historical content remains visible but cannot be modified or upgraded. To avoid affecting the user experience, use the plugin on a new whiteboard. Disabling the plugin removes the content drawn with it.
+:::
+
+Once enabled, you can:
+
+- Use the `LASER_PENCIL` laser pencil tool. [Learn more](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E6%96%B0%E5%8A%9F%E8%83%BD)
+- Use `MemberState.strokeOpacity` to set line transparency.
+- Use `MemberState.fillOpacity` to set fill transparency.
+- Use `MemberState.fillColor` to set fill color.
+
+**PPT rendering error handling**
+
+This release adds the `SlideListener.onSlideError` method to listen for PPT rendering errors. If an error occurs, call `WhiteSdk.recoverSlide` to recover rendering.
+
+#### API changes
+
+**Added**
+
+- `WhiteSdkConfiguration`:
+  - `enableAppliancePlugin`
+- `MemberState`:
+  - `strokeOpacity`
+  - `fillOpacity`
+  - `fillColor`
+- `onSlideError`
+- `recoverSlide`
+
+## v2.16.86
 
 Released on July 28, 2025.
 
@@ -22,22 +66,767 @@ The wrapped Web SDK has been upgraded to v2.16.51.
 
 **Domain preselection**
 
-This version adds the `WhiteSDK.prepareWhiteConnectionForAppId` method to preselect an optimal access domain, which can improve the connection speed when users join a whiteboard room for the first time.
-
-**Whiteboard window style override**
-
-This version adds the `WhiteWindowParams.overwriteStyles` method to override whiteboard window styles using CSS, allowing for customization of UI details.
-
-#### Fixed issues
-
-- `drawOnlyPencil` does not work on Android 17 and above.
+This version adds the `prepareWhiteConnection` method to preselect an optimal access domain, which can improve the connection speed when users join a whiteboard room for the first time.
 
 #### API changes
 
 **Added**
 
-- `prepareWhiteConnectionForAppId`
-- `overwriteStyles`
+- `prepareWhiteConnection`
+- `ConnectionPrepareParam`
+
+## v2.16.81
+
+Released on July 28, 2025.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.48.
+:::
+
+#### New features
+
+**Window apps management**
+
+In the multi-window mode, the SDK supports inserting the PPT or whiteboard plugin as a window. These are collectively referred to as window apps. Starting from this version, the `Room` object has the following new methods for managing window apps in the multi-window mode:
+
+- `addApp`: Inserts a window app and returns the app ID.
+- `closeApp`: Closes the window of the specified window app.
+- `focusApp`: Switches the focused window to the window of the specified window app.
+- `queryApp`: Queries the information of the specified window app.
+- `queryAllApps`: Queries the information of all current window apps.
+
+**Custom whiteboard tools**
+
+The `MemberState` has the following new properties for customizing whiteboard tools:
+
+- `textColor`: The color of the text in the text tool.
+- `pencilEraserSize`: The size of the pencil eraser tool.
+
+**New PPT rendering configurations**
+
+The `WhiteSdkConfiguration.SlideAppOptions` has the following new properties for PPT rendering configurations:
+
+- `minFPS`: Sets the minimum frame rate for PPT animations.
+- `maxFPS`: Sets the maximum frame rate for PPT animations.
+- `resolution`: Sets the rendering resolution multiplier for PPT.
+- `maxResolutionLevel`: Sets the maximum resolution for PPT.
+- `bgColor`: Sets the background color for PPT animations.
+- `forceCanvas`: Specifies whether to force 2D rendering. It is disabled by default.
+- `enableGlobalClick`: Specifies whether to enable executing the next step function by clicking on the PPT screen. It is enabled by default.
+
+**Whiteboard drawing performance optimization strategy**
+
+The `RoomParams` has a new property `optimizeOptions` for setting the performance optimization strategy for whiteboard drawing. The performance optimization includes the following three methods:
+- Adjusting the refresh interval of whiteboard drawing: A lower refresh interval provides smoother stroke display but has a higher performance consumption, while a higher refresh interval makes the stroke appear more laggy but has a lower performance consumption.
+- Using single canvas drawing: By default, the whiteboard uses two canvases alternately to avoid flickering on some devices during drawing. Using a single canvas drawing can prevent the need for redrawing and reduce performance consumption.
+- Using floating canvas: In the writing scenario, after enabling single canvas drawing, a floating canvas of approximately 256 x 256px is generated based on the drawing position. When subsequent drawing does not exceed the range of this floating canvas, the synchronous drawing of strokes will be limited to this floating canvas instead of the entire canvas, reducing performance consumption.
+
+**Other additions**
+
+This version also includes the following features:
+
+- Adds the `updateText` method for updating the text inserted using `insertText`.
+- Adds the `setSyncMode` method for immediately processing whiteboard events and drawing strokes.
+- Adds the `setDisableInitialStateCallback` method for disabling the callback of the full state after joining the room.
+
+#### Fixed issues
+
+This version fixes the following issues:
+
+- When `WhiteWindowParams.fullscreen` was enabled, the app did not display in full screen on the second opening.
+- When `WindowParams.fullscreen` was enabled, the status bar occasionally flickered.
+- Path animation could not return to the original position after page switching.
+- Diamond fill filled the entire shape.
+- The built-in cursor disappeared after reconnection.
+- Occasional flickering when using fade-in and fade-out animations.
+- The built-in cursor disappeared after modifying `isWritable`.
+
+#### API changes
+
+**Added**
+
+- `addApp`
+- `closeApp`
+- `focusApp`
+- `queryApp`
+- `queryAllApps`
+- `WindowAppSyncAttrs`
+- The following in `MemberState`:
+    - `textColor`
+    - `pencilEraserSize`
+- The following in `SlideAppOptions`:
+    - `minFPS`
+    - `maxFPS`
+    - `resolution`
+    - `maxResolutionLevel`
+    - `bgColor`
+    - `forceCanvas`
+    - `enableGlobalClick`
+- `setSyncMode`
+- `updateText`
+- `setDisableInitialStateCallback`
+
+**Modified**
+
+- `insertText`
+
+## v2.16.59
+
+v2.16.59 was released on January 19, 2024.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.42.
+:::
+
+#### Compatibility changes
+
+This version deprecates the existing London data center (`Region.gb-lon`) in the Whiteboard Data Center and introduces a new data center in Frankfurt, Europe (`Region.eu`), whose service covers Europe. If you have set `Region.gb-lon` in the previous version, please switch to` Region.eu` after upgrading to this version and enable this data center in Agora Console.
+
+#### New features
+
+**PPT Volume Control**
+
+This version adds the `getSlideVolume` and `updateSlideVolume `methods to retrieve and update the volume of audio in PPT slides.
+
+**PPT URL Intercept and Replacement**
+
+`WhiteSdkConfiguration` adds a new configuration option, `enableSlideInterrupterAPI`, to enable intercepting and replacing URLs of PPT resources. This feature can be used to encrypt PPT resources uploaded by users and protect their privacy.
+Once enabled, the PPT file URL intercept and replacement feature can be implemented by calling `WhiteSdk.setSlideListener(SlideListener)`.
+
+**PPT Rendering Notification**
+
+`WhiteSdkConfiguration` adds the `whiteSlideAppParams` configuration option for displaying configurations related to [@netless/app-slide](https://github.com/netless-io/netless-app/tree/master/packages/app-slide) rendering. Currently, it supports configuring `WhiteSlideAppParams.showRenderError` to show or hide rendering error notifications.
+
+**Custom API Server Domain**
+
+`WhiteSdkConfiguration` adds the `apiHosts` configuration option to configure a list of API server domains for the whiteboard, which can be used for server proxy implementation.
+
+**Custom Module Source**
+
+`RoomParams` adds the `modulesOrigin` configuration option to configure the address for requesting whiteboard module data.
+
+**Document Operation Events**
+
+This release adds the `dispatchDocsEvent` method to send events to the inserted PDF/PPTX documents in the whiteboard, allowing control over document page flipping, page navigation, and slide animation playback.
+
+#### Improvements
+
+**Optimized Document Insertion**
+
+This version optimizes the process of converting and inserting PPT files into the whiteboard using the new document conversion service. You can use the new `createSlideApp` method to construct a `WindowAppParam` object, which includes `ProjectorAttributes` and `ProjectorOptions`, corresponding to the parameters passed when opening the document, see `addApp`.
+
+**Window Fullscreen**
+
+A new property, `WindowParams.fullscreen`, is added to control whether the window is displayed in fullscreen mode.
+
+#### Issues fixed
+
+This version fixed the issue of layout preview not working in the latest version of Android Studio.
+
+#### API Changes
+
+Added
+
+- `getSlideVolumeWithCompletionHandler`
+- `updateSlideVolume`
+- `WhiteSdkConfiguration`
+
+  - `enableSlideInterrupterAPI`
+  - `whiteSlideAppParams`
+  - `apiHosts`
+
+- `setSlideDelegate`
+- `modulesOrigin `in` RoomParams`
+- `dispatchDocsEvent`
+- `WindowDocsEvent`
+- `createSlideApp`
+
+  - `ProjectorAttributes`
+  - `ProjectorOptions`
+  - `WindowAppParam`
+
+- `WindowParams.fullscreen`
+
+## v2.16.42
+
+v2.16.42 was released on December 2, 2022.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.37.
+:::
+
+#### New features
+
+**1. Whiteboard tool updates**
+
+This release adds new features for the following whiteboard tools:
+
+- Pencil: Adds support for drawing dotted lines by adding `dottedLine: true` in `room.memberState`.
+- Text: Adds support for directly selecting and editing whiteboard text by adding `textCanSelectText: true` in `room.memberState`.
+
+In addition, this release adds a pencil eraser tool to erase any part of a pencil stroke.
+
+**2. Floatbar**
+
+This release adds the floatbar feature. The floatbar pops up when selecting any whiteboard item, which enables users to
+easily edit these whiteboard items. For example, when selecting a stroke, the floatbar enables the user to remove it or
+change its color. When selecting text, the floatbar enables the user to adjust its style or change its typeface.
+
+Call the `setUsingFloatBar` method to enable the floatbar.
+
+**3. Remove whiteboard pages**
+
+This release adds the `removePage` method to delete a specified whiteboard page.
+
+**4. Request slide log**
+
+This release adds the `requestSlideLog` method in the `WhiteSdk` class to request the slide log on the client.
+This facilitates debugging slide-related issues.
+
+**5. Player callbacks**
+
+To facilitate listening to the state changes of `Player`, this release adds `addPlayerListener` and `removePlayerListener`
+methods to add and remove player callbacks.
+
+#### Improvements
+
+This release optimizes the audio playback control in PPT files. You can now pause or resume audio mixing or playback in
+dynamic PPT files with the `pauseAudioMixing` and `resumeAudioMixing` methods.
+
+#### Fixed issues
+
+This release fixes the following issues:
+
+- Under multi-window mode, no callback was received when the `sceneState` changed.
+- The creation of the whiteboard app sometimes failed after reconnection.
+- When creating the whiteboard app, synchronizing the initial height and width sometimes failed.
+- Switching the readable/writable state sometimes caused the configuration to be lost in the `disableCameraTransform` of `mainView`.
+
+#### API changes
+
+**Added**
+
+- New properties in the `MemberState` class: `dottedLine` and `textCanSelectText`
+- New property in the `Appliance` class: `PENCIL_ERASER`
+- `removePage`
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+- `addPlayerListener`
+- `removePlayerListener`
+- `setUsingFloatBar`
+- `requestSlideLog`
+
+## v2.16.21
+
+v2.16.21 was released on September 13, 2022.
+
+#### Compatibility changes
+
+**SDK integration changes**
+
+As of v2.16.0, Agora only updates the `netless-io:whiteboard-android` GitHub repository; Agora no longer maintains the `duty-os:white-sdk-android` GitHub repository. When integrating the SDK v2.16.0 or later with JitPack, you need to modify the `implementation` field under `dependencies` in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file as follows:
+
+```
+dependencies {
+    implementation 'com.github.netless-io:whiteboard-android:<version>'
+}
+```
+
+For details, see [Get the SDK](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#get-the-whiteboard-sdk).
+
+#### New features
+
+**1. Inserting text**
+
+This release adds the `insertText` method for inserting text at a specified position.
+
+**2. Disabling the stroke effect**
+
+This release adds the `setDisableNewPencilStroke` method to `WhiteSdkConfiguration` to enable or disable the stroke effect of the pencil. The default value of the `disableNewPencilStroke` parameter in this method is `true`, and the SDK enables the stroke effect immediately when you call `setDisableNewPencil(false)` to enable the new pencil. To disable the stroke effect after setting `setDisableNewPencil(false)`, you can call `setDisableNewPencilStroke(true)`.
+
+This release also adds the `isDisableNewPencilStroke` method to `WhiteSdkConfiguration` to get whether the stroke effect of the new pencil is disabled.
+
+**3. Getting the scene information**
+
+adds the `getScene` method to the `Displayer` class, which supports using the scene path to get the information about a specified scene.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Adds tween animation for the new pencil. This allows the SDK to automatically insert frames between keyframes when a user draws or writes with the new pencil, so that remote users see a smoother drawing process. To experience this improvement, ensure that you have called `setDisableNewPencil(false)` to enable the new pencil.
+- Optimizes the writing performance on Android browsers.
+- Optimizes the reconnecting mechanism in weak network environment to reduce unnecessary reconnections.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Occasionally, the contents on the whiteboard appeared shifted and overshadowed after users zoomed or moved their view.
+- Occasionally, users could not switch the pages of a dynamic PPT slide after an SDK reconnection.
+- The contents on the whiteboard occasionally were not fully displayed when users joined a whiteboard room that already had.
+- A memory leak sometimes occurred after an SDK reconnection.
+- An error sometimes occurred when calling `setWritable` repeatedly.
+- When a user switched to read-only mode, then switched back to read-write mode and wrote, remote users saw that user's cursor as fixed.
+
+#### API changes
+
+**Added**
+
+- `insertText`
+- `setDisableNewPencilStroke`
+- `isDisableNewPencilStroke`
+- `getScene`
+
+## v2.15.24
+
+v2.15.24 was released on January 21, 2022.
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.15.16.
+- Optimizes `getSceneSnapshotImage` and `getScenePreviewImage` to ensure the images inserted in the scene are displayed correctly in the screenshot.
+
+## v2.15.0
+
+v2.15.0 was released on November 16, 2021.
+
+#### Compatibility changes
+
+To help you manage users in a room, this release adds the `uid` parameter in `RoomParams`, for setting the unique identifier of a user.
+
+If you upgrade the SDK to v2.15.0 or later, to avoid affecting your service, ensure that you pass in a string `uid` in `RoomParams` when calling `joinRoom`. The `uid` of each user cannot be longer than 1024 bytes and must be unique in the same room. For more information, see [Join a Whiteboard Room](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#join-the-interactive-whiteboard-room-from-your-app-client).
+
+#### New features
+
+This release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Action buttons
+- Slide masters added with animation effects.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.15.1.
+- Further optimizes the writing experience.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - The images were displaced occasionally.
+  - Failure to read certain styles caused the screen to go blank.
+  - The rotation angle and color were incorrect for some text..
+  - Occasionally, elements with an animation effect were not displayed
+  - The animation of some text was displayed incorrectly.
+
+#### API changes
+
+**Modified**
+
+- `RoomParams` [1/3]
+- `RoomParams` [2/3]
+- `RoomParams` [3/3]
+
+## v2.14.3
+
+v2.14.3 was released on November 11, 2021.
+
+#### Compatibility changes
+
+As of this release, the minimum platform version supported by the Agora Interactive Whiteboard Android SDK changes as follows:
+
+- Android 5.0, instead of Android 4.4
+- Android SDK API level 21, instead of Android SDK API level 19
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.14.5.
+- Further optimizes the writing performance.
+- Optimizes the shape of handwriting.
+- Improves the accuracy of the `onPhaseChanged` callback.
+- Hides elements that should not be displayed in a slide master using the file-conversion function.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- After switching to the hand tool, users could not switch back to the cursor.
+- Occasionally, the handwriting disappeared suddenly during writing.
+- Occasionally, the handwriting had unnatural teardrop-like strokes during writing.
+- When the user edited text after manually scaling the text box, the text box and text reverted to the original size.
+- The view became incorrect after the window size changed on some browsers and devices.
+- When the eraser was moved quickly, the eraser icon was not enlarged and the fast deleting function did not work.
+- Occasionally, multiple audio files in dynamic PPT slides played simultaneously.
+- Animations were displayed incorrectly after a dynamic PPT slide returned to the previous page.
+- Occasionally, a text box with an animation effect was flipped in mirror mode.
+
+## v2.13.22
+
+v2.13.22 was released on August 20, 2021.
+
+#### New features
+
+This release has the following new features:
+
+- Adds the `onLogger` callback in the `CommonCallback` interface, with which you can get the local debug log output by the SDK.
+- Adds support for converting and displaying the following PowerPoint (PPT) features:
+  - Add animations to text per paragraph.
+  - Animate text by word or by letter.
+  - All preset table styles.
+  - Fonts smaller than 12 px.
+
+#### Improvements
+
+This release updates `white-web-sdk` to 2.13.17.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- The `onLogger` and `onMessage` callbacks did not take effect.
+- Occasionally, the room was stuck in the connecting state when the user joined a room.
+- The cursor disappeared for some users after the SDK reconnected.
+- The status of some plugins was incorrect after the SDK reconnected.
+- The hand tool was not restricted by the set `CameraBound` .
+- On some high-resolution devices, when the user was in the `Follower` view mode, the center point of the view was slightly shifted.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Paragraph spacing was displayed incorrectly.
+  - Failed to split text into columns.
+  - The slide background fill of shapes was displayed incorrectly.
+  - Hanging indentation was displayed incorrectly.
+  - The slide was displayed incorrectly when the user called `pptPreviousStep` to roll back a slide.
+  - The numbering of text displayed incorrectly.
+  - Some equations were displayed incompletely after conversion.
+  - Some lines broke incorrectly.
+  - Text written from right to left (such as Arabic) was displayed incorrectly.
+
+## v2.13.17
+
+v2.13.17 was released on July 23 2021.
+
+#### New features
+
+To improve the dynamic file conversion function, this release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Animation effect > Reverse Path Direction
+- Vertical Text Box
+- Microsoft Equation Editor 3.0
+- Hide background graphic in a slide master
+- Change the color of pictures
+- The following picture effects are now supported:
+  - Metal Frame
+  - Soft Edge Rectangle
+  - Double Frame, Black
+  - Thick Matte, Black
+  - Simple Frame, Black
+  - Moderate Frame, Black
+  - Center Shadow Rectangle
+  - Soft Edge Oval
+  - Metal Rounded Rectangle
+  - Metal Oval
+
+#### Improvements
+
+This release has the following improvements:
+
+- Updates `white-web-sdk` to 2.13.11.
+- Updates `@netless/video-js-plugin` to 0.3.3.
+- Reduces CPU usage during the playback of animations in dynamic PPT files.
+- Improves the smoothness of writing and drawing on the whiteboard
+- To improve the accuracy of time synchronization, changes the data type of the `delaySec` parameter in `setTimeDelay` from Integer to Double.
+- Supports printing logs on scene changes.
+- Adds the `preview` parameter in `PptPage`, which supports displaying dynamic PPT previews in the whiteboard. See `API reference`.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- The contents on the whiteboard occasionally became unclear when the user adjusted the view.
+- Users of the Android SDK occasionally failed to draw the first line after joining the room.
+- The method call of `refreshViewSize` did not take effect occasionally.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Animations did not play in the set order.
+  - Animations did not disappear when playback finished.
+  - Table height was displayed incorrectly.
+  - Pictures inserted in content placeholders failed to display.
+  - Some shapes were rendered incorrectly.
+  - The text was incorrectly indented.
+  - Animation triggers did not work.
+  - Picture transparency was incorrect.
+
+## v2.13.4
+
+v2.13.4 was released on June 15, 2021.
+
+This release updates `white-web-sdk` to 2.13.4.
+
+## v2.13.2
+
+v2.13.2 was released on June 11, 2021.
+
+This release updates `white-web-sdk` to 2.13.3.
+
+## v2.13.1
+
+v2.13.1 was released on June 11, 2021.
+
+**Improvement**
+
+This release updates `white-web-sdk` to 2.13.2.
+
+**Issue fixed**
+
+This release fixed the issue that when `disableDeviceInputs` is set as `true`, the user might still be able to operate the iframe plugin.
+
+## v2.12.36
+
+v2.12.36 was released on June 8, 2021.
+
+This release fixed the following issue: If the user in host mode zooms in or out on the HTML5 file while using the clicker tool, users in follower mode saw incomplete display of file content.
+
+## v2.12.35
+
+v2.12.35 was released on June 7, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.1.0 and `@netless/iframe-bridge` to 2.1.2.
+
+## v2.12.34
+
+v2.12.34 was released on June 4, 2021.
+
+This release updates `white-web-sdk` to 2.12.21.
+
+## v2.12.33
+
+v2.12.33 was released on June 3, 2021.
+
+This release updates [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) to 0.1.5.
+
+## v2.12.32
+
+v2.12.32 was released on June 2, 2021.
+
+This release fixed the video display issues of `@netless/video-js-plugin`.
+
+## v2.12.31
+
+v2.12.31 was released on June 1, 2021.
+
+This release updates [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) to 0.1.3 to fix the incompatibility issue between the `video-js-plugin` and earlier versions of Andrid WebView .
+
+## v2.12.30
+
+v2.12.30  was released on May 25, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.0.9.
+
+## v2.12.29
+
+v2.12.29  was released on May 24, 2021.
+
+#### New features
+This release integrates [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin), which is used by an Android client to watch video played on the whiteboard on a Web client. Supported file formats include M3U8 and others.
+
+#### Improvement
+
+This release updates `white-web-sdk`  to 2.12.20.
+
+## v2.12.28
+
+v2.12.28  was released on May 20, 2021.
+
+This release updates `white-web-sdk`  to 2.12.19.
+
+## v2.12.27
+
+v2.12.27  was released on May 17, 2021.
+
+This release has the following improvements:
+- Updates `white-web-sdk `to 2.12.18.
+- Enables server-side typesetting (`useServerWrap`) by default. When server-side typesetting is enabled, the size of font files are automatically reduced for faster rendering.
+
+## v2.12.26
+
+v2.12.26  was released on May 13, 2021.
+
+This release adds the following features:
+
+- Adds `Clicker` to `Appliance` for interacting with HTML5 files.
+- Adds `ShapeType` to `MemberState` for setting the Shape tool. Supported shape types include triangle, rhombus, pentagram, and speech balloon.
+- Adds the `syncBlockTimestamp` method to the `Room` class. You can use this method to set the delay time for sending the whiteboard content, so that the whiteboard content and the audio and video are sent at the same time.
+- Updates `white-web-sdk` to 2.12.17.
+
+## v2.12.25
+
+v2.12.25 was released on April 28, 2021.
+
+This release updates [`@Netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) and [`@Netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin) to fix some display issues.
+
+## v2.12.24
+
+v2.12.24 was released on April 27, 2021.
+
+#### New features
+
+This release integrates [`@Netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) and [`@Netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin), which are used by an Android client to listen to audio and watch video played on the whiteboard on a Web client.
+
+#### Fixed issues
+
+This release fixed the issue that the asynchronous `getRoomState` method had no callbacks.
+
+## v2.12.22
+
+v2.12.22 was released on April 22, 2021.
+
+This release updates `white-web-sdk` to 2.12.14.
+
+## v2.12.21
+
+v2.12.21 was released on April 22, 2021.
+
+This release has the following improvements:
+
+- Changes `RoomListener` and `PlayerListener` to main thread callbacks.
+- Updates `white-web-sdk` to 2.12.13.
+- Updates `@Netless/iframe-bridge` to 2.12.17.
+
+## v2.12.20
+
+v2.12.20 was released on April 17, 2021.
+
+This release updates `white-web-sdk` to 2.12.12.
+
+## v2.12.19
+
+v2.12.19 was released on April 14, 2021.
+
+This release has the following improvements:
+
+- Adds a new constructor of `PptParams` that does not contain the `scheme` parameter.
+- Updates `@Netless/iframe-bridge` to 2.0.14 to improve the iframe plugin.
+
+## v2.12.18
+
+v2.12.18 was released on April 12, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.13 to improve message notifications.
+
+## v2.12.17
+
+v2.12.17 was released on April 12, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.11 and improves the display on Android devices.
+
+## v2.12.16
+
+v2.12.16 was released on April 9, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.10 and improves the display on Android devices.
+
+## v2.12.15
+
+v2.12.15 was released on April 10, 2021.
+
+This release updates `white-web-sdk` to 2.12.9.
+
+## v2.12.14
+
+v2.12.14 was released on April 9, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.9 to fix the display of HTML5 files.
+
+## v2.12.13
+
+v2.12.13 was released on April 9, 2021.
+
+This release restores the `scaleIframeToFit` method of the `Displayer` class.
+
+## v2.12.12
+
+v2.12.12 was released on April 9, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.8 to fix the display of HTML5 files.
+
+## v2.12.11
+
+v2.12.11 was released on April 6, 2021.
+
+This release updates `white-web-sdk` to 2.12.8 to fix the problem that setting Follower mode did not take effect immediately.
+
+## v2.12.10
+
+v2.12.10 was released on April 2, 2021.
+
+This release updates `white-web-sdk` to 2.12.7 to improve the display of dynamic PPT files.
+
+## v2.12.9
+
+v2.12.9 was released on March 30, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.7.
+
+## v2.12.8
+
+v2.12.8 was released on March 30, 2021.
+
+This release updates `white-web-sdk` to 2.12.6.
+
+## v2.12.7
+
+v2.12.7 was released on March 25, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.5.
+
+## v2.12.6
+
+v2.12.6 was released on March 25, 2021.
+
+This release adds the `scaleIframeToFit` method to the `Displayer` class to enable zooming in and out so that HTML5 files can be displayed completely on screen.
+
+## v2.12.5
+
+v2.12.5 was released on March 25, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.0.7.
+
+## v2.12.3
+
+v2.12.3 was released on March 20, 2021.
+
+This release changes the default value of `disableNewPencil` in the `setDisableNewPencil` method from `false` to `true` so that the stroke effect is disabled by default. This addresses the issue that the stroke effect is not supported by SDKs earlier than v2.2.12.
+
+To enable the stroke effect properly, ensure that every user in the room is using one of the following SDKs:
+
+- Android SDK v2.12.3 or later
+- iOS SDK v2.12.3 or later
+- Web SDK v2.12.5 or later
+
+## v2.12.2
+
+v2.12.2 was released on March 16, 2021.
+
+#### New features
+
+This release adds the stroke effect to better display handwriting. Call `setDisableNewPencil` to enable or disable the stroke effect, and call `isDisableNewPencil` to see whether the stroke effect is enabled.
+
+To enable the stroke effect properly, ensure that every user in the room is using one of the following SDKs:
+
+- Android SDK v2.12.2 or later
+- iOS SDK v2.12.3 or later
+- Web SDK v2.12.5 or later
+
+#### Improvements
+
+This release updates `white-web-sdk` to v2.12.4 to improve the display logic of PPT files.
+
+#### Issues fixed
+
+Fixed the crash problem caused by abnormal callbacks in live rooms in `debug` mode.
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -59,7 +848,20 @@ Released on July 28, 2025.
 
 **High-performance whiteboard drawing tools**
 
-This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option.
+This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteSdkConfiguration.enableAppliancePlugin` configuration option. For details, see the [`appliance-plugin` documentation](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md).
+
+:::info
+- `@netless/appliance-plugin` is an external dependency and must be installed separately.
+- To ensure consistent rendering of strokes, enable the plugin on all platforms (Web, Android, and iOS). Strokes drawn with the plugin will not appear on platforms where it is not enabled.
+- After enabling the plugin, historical whiteboard content is still visible but cannot be edited or upgraded. To avoid affecting the user experience, we recommend enabling the plugin on a new whiteboard. Disabling the plugin will remove content drawn with it.
+:::
+
+Once the plugin is enabled, you can:
+
+- Use the new laser pencil tool `LASER_PENCIL`. [Learn more](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E6%96%B0%E5%8A%9F%E8%83%BD).
+- Use the `WhiteMemberState.strokeOpacity` property to set line transparency.
+- Use the `WhiteMemberState.fillOpacity` property to set fill transparency.
+- Use the `WhiteMemberState.fillColor` property to set fill color.
 
 **PPT rendering error handling**
 
@@ -67,19 +869,775 @@ This version adds the `SlideListener.onSlideError` method for listening to PPT r
 
 **Auto focus behavior**
 
-This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, which controls whether WKWebView is allowed to automatically gain input focus.
+This release adds the `WhiteSdkConfiguration.useWebKeyboardInjection` property, which controls whether WKWebView is allowed to automatically gain input focus. This is useful for managing keyboard input and handling focus conflicts in complex app interfaces.
 
 #### API changes
 
 **Added**
 
-- `WhiteSdkConfiguration.enableAppliancePlugin`
-- `WhiteSdkConfiguration.useWebKeyboardInjection`
-- `WhiteMemberState.strokeOpacity`
-- `WhiteMemberState.fillOpacity`
-- `WhiteMemberState.fillColor`
+- `WhiteSdkConfiguration`:
+  - `enableAppliancePlugin`
+  - `useWebKeyboardInjection`
+- `WhiteMemberState`:
+  - `strokeOpacity`
+  - `fillOpacity`
+  - `fillColor`
 - `onSlideError`
 - `recoverSlide`
+
+## v2.16.95
+
+Released on July 28, 2025.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.51.
+:::
+
+#### New features
+
+**Domain preselection**
+
+This version adds the `WhiteSDK.prepareWhiteConnectionForAppId` method to preselect an optimal access domain, which can improve the connection speed when users join a whiteboard room for the first time.
+
+**Whiteboard window style override**
+
+This version adds the `WhiteWindowParams.overwriteStyles` method to override whiteboard window styles using CSS, allowing for customization of UI details.
+
+#### Fixed issues
+
+This version fixes the following issue:
+
+- `drawOnlyPencil` does not work on iOS 17 and above.
+
+#### API changes
+
+**Added**
+
+- `prepareWhiteConnectionForAppId`
+- `overwriteStyles`
+
+## v2.16.88
+
+Released on July 28, 2025.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.48.
+:::
+
+#### New features
+
+**Window apps management**
+
+In the multi-window mode, the SDK supports inserting the PPT or whiteboard plugin as a window app. These are collectively referred to as window apps. Starting from this version, the `WhiteRoom` class introduces the following methods to manage window apps in the multi-window mode:
+
+- `addApp`: Inserts a window app and returns the app ID.
+- `closeApp`: Closes the window of the specified window app.
+- `focusApp`: Switches the focused window to the window of the specified window app.
+- `queryApp`: Queries the information of the specified window app.
+- `queryAllApps`: Queries the information of all current window apps.
+
+**Whiteboard tools customization**
+
+The `WhiteMemberState` and `WhiteReadonlyMemberState` classes introduce the following properties for customizing whiteboard tools:
+
+- `textColor`: Modifies the text color in the text tool.
+- `pencilEraserSize`: Modifies the size of the pencil eraser tool.
+
+**New PPT rendering configurations**
+
+The `WhiteSlideAppParams` class introduces the following properties for PPT rendering configurations:
+
+- `minFPS`: Sets the minimum frame rate for PPT animations.
+- `maxFPS`: Sets the maximum frame rate for PPT animations.
+- `resolution`: Sets the rendering resolution multiplier for PPT.
+- `maxResolutionLevel`: Sets the maximum resolution for PPT.
+- `bgColor`: Sets the background color for PPT animations.
+- `forceCanvas`: Specifies whether to force 2D rendering. It is disabled by default.
+- `enableGlobalClick`: Specifies whether to enable executing the next step function by clicking on the PPT screen. It is enabled by default.
+
+**Text update**
+
+The `updateText` method is added to update the text inserted using the `insertText` method.
+
+#### Fixed issues
+
+This version fixes the following issues:
+
+- `WKWebView` could cause failure to open `indexDB` under certain exceptional circumstances.
+- After configuring `WhiteWindowParams.fullscreen`, the app occasionally could not be displayed in full screen on the second launch.
+- After configuring `WhiteWindowParams.fullscreen`, there could be a brief flicker.
+- Occasional flickering when using fade-in and fade-out animations.
+
+#### API changes
+
+**Added**
+
+- `addApp`
+- `closeApp`
+- `focusApp`
+- `queryApp`
+- `queryAllAppsWithCompletionHandler`
+- `WhiteAppParam`
+- `WhiteAppSyncAttributes`
+- The following in `WhiteMemberState` and `WhiteReadonlyMemberState`:
+    - `textColor`
+    - `pencilEraserSize`
+- `updateText`
+- The following in `WhiteSlideAppParams`:
+    - `minFPS`
+    - `maxFPS`
+    - `resolution`
+    - `maxResolutionLevel`
+    - `bgColor`
+    - `forceCanvas`
+    - `enableGlobalClick`
+
+## v2.16.62
+
+v2.16.62 was released on January 19, 2024.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.42.
+:::
+
+#### Compatibility changes
+
+This version deprecates the existing London data center (`gb-lon`) in the Whiteboard Data Center and introduces a new data center in Frankfurt, Europe (`eu`), whose service covers Europe. If you have set `gb-lon` in the previous version, please switch to` eu` after upgrading to this version and enable this data center in Agora Console.
+
+#### New features
+
+**PPT Volume Control**
+
+This version adds the `getSlideVolumeWithCompletionHandler` and `updateSlideVolume `methods to retrieve and update the volume of audio in PPT slides.
+
+**PPT URL Intercept and Replacement**
+
+`WhiteSdkConfiguration` adds a new configuration option, `enableSlideInterrupterAPI`, to enable intercepting and replacing URLs of PPT resources. This feature can be used to encrypt PPT resources uploaded by users and protect their privacy. Once enabled, you can set a callback object by calling `WhiteSDK.setSlideDelegate` and add the logic for replacing PPT URLs in the `slideUrlInterrupter: url: completionHandler` callback. This achieves the functionality of intercepting and replacing PPT URLs.
+
+**PPT Rendering Notification**
+
+`WhiteSdkConfiguration` adds the `whiteSlideAppParams` configuration option for displaying configurations related to [@netless/app-slide](https://github.com/netless-io/netless-app/tree/master/packages/app-slide) rendering. Currently, it supports configuring `WhiteSlideAppParams.showRenderError` to show or hide rendering error notifications.
+
+**Custom API Server Domain**
+
+`WhiteSdkConfiguration` adds the `apiHosts` configuration option to configure a list of API server domains for the whiteboard, which can be used for server proxy implementation.
+
+**Custom Module Source**
+
+`RoomParams` adds the `modulesOrigin` configuration option to configure the address for requesting whiteboard module data.
+
+**Document Operation Events**
+
+This release adds the `dispatchDocsEvent` method to send events to the inserted PDF/PPTX documents in the whiteboard, allowing control over document page flipping, page navigation, and slide animation playback.
+
+**Window Fullscreen**
+
+A new property, `WindowParams.fullscreen`, is added to control whether the window is displayed in fullscreen mode.
+
+#### API changes
+
+**Added**
+
+- `getSlideVolumeWithCompletionHandler`
+- `updateSlideVolume`
+- `WhiteSdkConfiguration`
+  - `enableSlideInterrupterAPI`
+  - `whiteSlideAppParams`
+  - `apiHosts`
+- `setSlideDelegate`
+  - `WhiteSlideDelegate`
+  - `slideUrlInterrupter: url: completionHandler`
+- `dispatchDocsEvent`
+  - `WhiteWindowDocsEventOptions`
+  - `WhiteWindowDocsEventKey`
+- `modulesOrigin `in` RoomParams`
+- `modulesOrigin `in` PlayerConfiguration`
+- `fullscreen `in` WhiteWindowParams`
+
+**Deprecated**
+
+- `WhiteRegionGB in `WhiteRegionKey`, use `WhiteRegionEU` instead
+- `WhitePptParams`, use `WhiteSlideAppParams` instead
+
+## v2.16.46
+
+v2.16.46 was released on December 2, 2022.
+
+:::info[Note]
+The wrapped Web SDK has been upgraded to v2.16.35.
+:::
+
+#### New features
+
+**1. Whiteboard tool updates**
+
+This release adds new features for the following whiteboard tools:
+
+- Pencil: Adds support for drawing dotted lines by setting `room.memberState.dottedLine` as `true`.
+- Text: Adds support for directly selecting and editing whiteboard text by setting `room.memberState.textCanSelectText` as `true`.
+
+In addition, this release adds a pencil eraser tool to erase any part of a pencil stroke.
+
+**2. Floatbar**
+
+This release adds the floatbar feature. The floatbar pops up when selecting any whiteboard item, which enables users to
+easily edit these whiteboard items. For example, when selecting a stroke, the floatbar enables the user to remove it or change its color.
+When selecting some text, the floatbar enables the user to adjust its style or change its typeface.
+
+Modify the `floatBar` parameter in the `WhiteRoomConfig` interface to enable floatbar.
+
+**3. Take screenshots**
+
+This release adds `getLocalSnapShotWithCompletion` in the `WhiteDisplayer` class to take a screenshot of the current whiteboard page.
+
+**4. Request slide log**
+
+This release adds the `requestSlideLogToFilePath` method in the `WhiteSDK` class to write the slide log into a specified file.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- The SDK now automatically tries to recover after the whiteboard crashes due to insufficient web memory. If you have previously
+configured `navigationDelegate`, you need to undo that to apply this optimization. In addition, this release adds the
+`startRecoveringFromMemoryIssues` and `endRecoveringFromMemoryIssues` callbacks to report when the SDK starts to recover and
+finishes its recovery, respectively.
+- You can now pause or resume audio mixing or playback in dynamic PPT files with the `pauseAudioMixing` and `resumeAudioMixing` methods.
+
+#### Fixed issues
+
+This release fixes the following issues:
+
+- The creation of the whiteboard app sometimes failed after reconnection.
+- When creating the whiteboard app, synchronizing the initial height and width sometimes failed.
+- The `WhiteBroadcastState` sometimes failed to initialize when joining the room.
+- When using a non-ApplePencil stylus on the iPad, calling `drawOnlyPencil` sometimes caused the whiteboard to crash.
+- Calling `drawOnlyPencil` sometimes reported an error when the user did not have write permissions.
+- Switching the readable/writable state sometimes caused the configuration to be lost in the `disableCameraTransform` of `mainView`.
+
+#### API changes
+
+**Added**
+
+- New properties in the `MemberState` class: `dottedLine` and `textCanSelectText`
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+- New parameter in the `WhiteRoomConfig` interface: `floatBar`
+- New type in `WhiteApplianceNameKey`: `AppliancePencilEraser`
+- `requestSlideLogToFilePath`
+- `startRecoveringFromMemoryIssues`
+- `endRecoveringFromMemoryIssues`
+- `getLocalSnapShotWithCompletion`
+
+## v2.16.24
+
+v2.16.24 was released on September 13, 2022.
+
+#### New features
+
+**1. Inserting text**
+
+This release adds the `insertText` method to `WhiteRoom` for inserting text at a specified position.
+
+**2. Disabling the stroke effect**
+
+This release adds the `disableNewPencilStroke` property to `WhiteSdkConfiguration` to enable or disable the stroke effect of the pencil. The default value of `disableNewPencilStroke` is `YES`, and the SDK enables the stroke effect immediately when you call `disableNewPencil(NO)` to enable the new pencil. To disable the stroke effect after setting `disableNewPencil(NO)`, you can call `disableNewPencilStroke(YES)`.
+
+**3. Getting the scene information**
+
+This release adds the `getSceneFromScenePath` method to the `WhiteDisplayer` class, which supports using the scene path to get the information about a specified scene.
+
+**4. Setting whether to only allow drawing and writing using the Apple Pencil**
+
+This release supports setting whether to only allow users to draw and write on the whiteboard using the Apple Pencil on iPad. Before joining a whiteboard room, you can set this by using the `drawOnlyApplePencil` property in `WhiteRoomConfig`; after joining a whiteboard room, you can call the `setDrawOnlyApplePencil` method in `WhiteRoom` to change the setting.
+
+**5. Support for YYKit**
+
+The Agora Whiteboard SDK for iOS uses [YYModel](https://github.com/ibireme/YYModel) for data type conversion by default. As of this release, the SDK adds support for YYKit. To use [YYKit](https://github.com/ibireme/YYKit), you need to add the following line to the `Podfile` file to add the dependency:
+
+```
+pod 'Whiteboard/Whiteboard-YYKit'
+```
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Adds tween animation for the new pencil. This allows the SDK to automatically insert frames between keyframes when a user draws or writes with the new pencil, so that remote users see a smoother drawing process. To experience this improvement, ensure that you have called `setDisableNewPencil(false)` to enable the new pencil.
+- Optimizes the reconnecting mechanism in weak network environment to reduce unnecessary reconnections.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Occasionally, the contents on the whiteboard appeared shifted and overshadowed after users zoomed or moved their view.
+- Occasionally, users could not switch the pages of a dynamic PPT slide after an SDK reconnection.
+- The contents on the whiteboard occasionally were not fully displayed when users joined a whiteboard room that already had.
+- A memory leak sometimes occurred after an SDK reconnection.
+- An error sometimes occurred when calling `setWritable` repeatedly.
+- The virtual keyboard did not pop up when clicking `text` on iOS browsers.
+- When a user switched to read-only mode, then switched back to read-write mode and wrote, remote users saw that user's cursor as fixed.
+
+#### API changes
+
+**Added**
+
+- `insertText`
+- `getSceneFromScenePath`
+- `setDrawOnlyApplePencil`
+- `drawOnlyApplePencil`
+- `disableNewPencilStroke`
+
+## v2.15.23
+
+v2.15.23 was released on January 21, 2022.
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.15.16.
+- Optimizes `getSceneSnapshotImage` and `getScenePreviewImage` to ensure the images inserted in the scene are displayed correctly in the screenshot.
+
+## v2.15.0
+
+v2.15.0 was released on November 16, 2021.
+
+#### Compatibility changes
+
+To simplify APIs, this release deletes the `joinRoomWithUuid` and `joinRoomWithRoomUuid` methods, and keeps only the `joinRoomWithConfig` method.
+
+At the same time, to help you manage users in a room, this release adds the `uid` parameter in `initWithUuid` of the `WhiteRoomConfig` class, for setting the unique identifier of a user.
+
+If you upgrade the SDK to v2.15.0 or later, to join a room, you must call `joinRoomWithConfig`, and ensure that you pass in a string `uid` in `initWithUuid` when initializing the `WhiteRoomConfig` object. The `uid` of each user cannot be longer than 1024 bytes and must be unique in the same room. For more information, see [Join a Whiteboard Room](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#join-the-interactive-whiteboard-room-from-your-app-client).
+
+#### New features
+
+This release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Action buttons
+- Slide masters added with animation effects.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.15.1.
+- Further optimizes the writing experience.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - The images were displaced occasionally.
+  - Failure to read certain styles caused the screen to go blank.
+  - The rotation angle and color were incorrect for some text..
+  - Occasionally, elements with an animation effect were not displayed
+  - The animation of some text was displayed incorrectly.
+
+#### API changes
+
+**Modified**
+
+- `initWithUuid:roomToken`
+- `initWithUuid:roomToken:userPayload`
+
+**Deleted**
+
+- `initWithUuid:roomToken:memberInfo`
+- `joinRoomWithUuid`
+- `joinRoomWithRoomUuid`
+
+## v2.14.1
+
+v2.14.1 was released on November 11, 2021.
+
+#### Compatibility changes
+
+As of this release, the minimum platform version supported by the Agora Interactive Whiteboard iOS SDK changes from iOS 9 to iOS 10.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Updates `white-web-sdk` to v2.14.4.
+- Further optimizes the writing performance.
+- Optimizes the shape of handwriting.
+- Improves the accuracy of the `firePhaseChanged` callback.
+- Hides elements that should not be displayed in a slide master using the file-conversion function.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- After switching to the hand tool, users could not switch back to the cursor.
+- Occasionally, the handwriting disappeared suddenly during writing.
+- Occasionally, the handwriting had unnatural teardrop-like strokes during writing.
+- When the user edited text after manually scaling the text box, the text box and text reverted to the original size.
+- The view became incorrect after the window size changed on some browsers and devices.
+- When the eraser was moved quickly, the eraser icon was not enlarged and the fast deleting function did not work.
+- Occasionally, multiple audio files in dynamic PPT slides played simultaneously.
+- Animations were displayed incorrectly after a dynamic PPT slide returned to the previous page.
+- Occasionally, a text box with an animation effect was flipped in mirror mode.
+
+## v2.13.19
+
+v2.13.19 was released on August 20, 2021.
+
+#### New features
+
+This release has the following new features:
+
+- Adds the `logger` callback in `WhiteCommonCallbackDelegate`, with which you can get the local debug logs output by the SDK.
+
+- Adds support for converting and displaying the following PowerPoint (PPT) features:
+  - Add animations to text per paragraph.
+  - Animate text by word or by letter.
+  - All preset table styles.
+  - Fonts smaller than 9 pt (12 px).
+
+#### Improvements
+
+This release has the following improvements:
+- Updates `white-web-sdk` to 2.13.17.
+- To improve security, disables the `allowUniversalAccessFromFileURLs` function inside the whiteboard. After turning off this function, when you call `getSceneSnapshotImage`, cross-origin images might not be displayed in the generated screenshots.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Occasionally, the room was stuck in the connecting state when the user joined a room.
+- The cursor disappeared for some users after the SDK reconnected.
+- The status of some plugins was incorrect after the SDK reconnected.
+- The hand tool was not restricted by the set `WhiteCameraBound`.
+- On some high-resolution devices, when the user was in the `Follower` of `setViewMode` view mode, the center point of the view was slightly shifted.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Paragraph spacing was displayed incorrectly.
+  - Failed to split text into columns.
+  - The slide background fill of shapes was displayed incorrectly.
+  - Hanging indentation was displayed incorrectly.
+  - The slide was displayed incorrectly when the user called `pptPreviousStep` to roll back a slide.
+  - The numbering of text displayed incorrectly.
+  - Some equations were displayed incompletely after conversion.
+  - Some lines broke incorrectly.
+  - Text written from right to left (such as Arabic) was displayed incorrectly.
+
+## v2.13.15
+
+v2.13.15 was released on July 23 2021.
+
+#### New features
+
+To improve the dynamic file conversion function, this release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Animation effect > Reverse Path Direction
+- Vertical Text Box
+- Microsoft Equation Editor 3.0
+- Hide background graphic in a slide master
+- Change the color of pictures
+- The following picture effects are now supported:
+  - Metal Frame
+  - Soft Edge Rectangle
+  - Double Frame, Black
+  - Thick Matte, Black
+  - Simple Frame, Black
+  - Moderate Frame, Black
+  - Center Shadow Rectangle
+  - Soft Edge Oval
+  - Metal Rounded Rectangle
+  - Metal Oval
+
+#### Improvements
+
+This release has the following improvements:
+
+- Updates `white-web-sdk` to 2.13.11.
+- Updates `@netless/video-js-plugin` to 0.3.3.
+- Reduces CPU usage during the playback of animations in dynamic PPT files.
+- Improves the smoothness of writing and drawing on the whiteboard.
+- Optimizes the timestamp synchronization algorithm to reduce time differences.
+- Supports printing logs on scene changes.
+- Adds the `previewURL` parameter in `WhitePptPage`, which supports displaying dynamic PPT previews in the whiteboard. See `API reference`.
+- Deprecates the `backgroundColor` property in the `WhiteDisplayer` class. Instead, this release optimizes the implementation of the `WhiteboardView` class, which allows you to use the `backgroundColor` property of the `UIView` class to modify the background color of the whiteboard. See [backgroundcolor](https://developer.apple.com/documentation/uikit/uiview/1622591-backgroundcolor).
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- The contents on the whiteboard occasionally became unclear when the user adjusted the view.
+- Users of the Android SDK occasionally failed to draw the first line after joining the room.
+- The method call of `refreshViewSize` did not take effect occasionally.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Animations did not play in the set order.
+  - Animations did not disappear when playback finished.
+  - Table height was displayed incorrectly.
+  - Pictures inserted in content placeholders failed to display.
+  - Some shapes were rendered incorrectly.
+  - The text was incorrectly indented.
+  - Animation triggers did not work.
+  - Picture transparency was incorrect.
+
+## v2.13.4
+
+v2.13.4 was released on June 15, 2021.
+
+This release updates `white-web-sdk` to 2.13.4.
+
+## v2.13.2
+
+v2.13.2 was released on June 11, 2021.
+
+This release updates `white-web-sdk` to 2.13.3.
+
+## v2.13.1
+
+v2.13.1 was released on June 11, 2021.
+
+**Improvement**
+
+This release updates `white-web-sdk` to 2.13.2.
+
+**Issue fixed**
+
+This release fixed the issue that when `disableDeviceInputs` is set as `true`, the user might still be able to operate the iframe plugin.
+
+## v2.12.33
+
+v2.12.33 was released on June 8, 2021.
+
+This release fixed the following issue: If the user in host mode zooms in or out on the HTML5 file while using the clicker tool, users in follower mode saw incomplete display of file content.
+
+## v2.12.32
+
+v2.12.32 was released on June 7, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.1.0 and `@netless/iframe-bridge` to 2.1.2.
+
+## v2.12.31
+
+v2.12.31 was released on June 4, 2021.
+
+This release updates  `white-web-sdk` to 2.12.21 and [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) to 0.1.5.
+
+## v2.12.30
+
+v2.12.30 was released on June 2, 2021.
+
+This release fixed the video display issue of `@netless/video-js-plugin`.
+
+## v2.12.29
+
+v2.12.29 was released on June 1, 2021.
+
+This release updates [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) to 0.1.3 to fix the incompatibility issue between the `video-js-plugin` and earlier versions of iOS WebView.
+
+## v2.12.28
+
+v2.12.28 was released on May 25, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.0.9.
+
+## v2.12.27
+
+v2.12.27 was released on May 24, 2021.
+
+#### New features
+This release integrates [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin), which is used by an iOS client to watch video played on the whiteboard on a Web client. Supported file formats include M3U8 and others.
+
+#### Improvement
+
+This release updates `white-web-sdk`  to 2.12.20.
+
+## v2.12.26
+
+v2.12.26 was released on May 20, 2021.
+
+This release has the following improvements:
+
+- Adds `ApplianceClicker` to `WhiteApplianceNameKey` for interacting with HTML5 files.
+- Updates `white-web-sdk` to 2.12.19.
+
+## v2.12.25
+
+v2.12.25 was released on May 17, 2021.
+
+This release has the following improvements:
+
+- Enables server-side typesetting (`useServerWrap`) by default. When server-side typesetting is enabled, the size of font files are automatically reduced for faster rendering.
+- Updates `white-web-sdk` to 2.12.18.
+
+## v2.12.24
+
+v2.12.24 was released on May 13, 2021.
+
+This release adds the following features:
+
+- Adds `ApplianceShape` to `WhiteApplianceNameKey` for setting the shape tool. Supported shape types include triangle, rhombus, pentagram, and speech balloon.
+- Adds the `syncBlockTimestamp` method to the `Room` class. You can use this method to set the delay time for sending the whiteboard content, so that the whiteboard content and the audio and video are sent at the same time.
+- Updates `white-web-sdk` to 2.12.17.
+
+## v2.12.23
+
+v2.12.23 was released on May 11, 2021.
+
+This release add the `RegionKey` enumeration for  setting the data center.
+
+## v2.12.23
+
+v2.12.23 was released on May 11, 2021.
+
+This release adds the `RegionKey` enumeration, which is used to set the data center.
+
+## v2.12.22
+
+v2.12.22 was released on April 28, 2021.
+
+This release updates `@Netless/white-audio-plugin2` and `@Netless/white-video-plugin2` to fix some display issues.
+
+## v2.12.21
+
+v2.12.21 was released on April 28, 2021.
+
+#### New features
+
+This release integrates [`@Netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) and [`@Netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin), which are used by an iOS client to listen to audio and watch video played on the whiteboard on a Web client.
+
+#### Fixed issues
+
+This release updates `@Netless/white-audio-plugin` to 1.2.23.
+
+## v2.12.20
+
+v2.12.20 was released on April 22, 2021.
+
+This release updates `white-web-sdk` to 2.12.14.
+
+## v2.12.19
+
+v2.12.19 was released on April 22, 2021.
+
+This release has the following improvements:
+
+- Updates `white-web-sdk` to 2.12.13 to improve the display of dynamic PPT files.
+- Updates `@Netless/iframe-bridge` to 2.0.17.
+
+## v2.12.18
+
+v2.12.18 was released on April 20, 2021.
+
+This release updates `@Netless/iframe-bridge` to 2.0.16.
+
+## v2.12.17
+
+v2.12.17 was released on April 17, 2021.
+
+This release updates `white-web-sdk` to 2.12.12.
+
+## v2.12.16
+
+v2.12.16 was released on April 14, 2021.
+
+This release updates `@Netless/iframe-bridge` to 2.0.14 to improve the iframe plugin.
+
+## v2.12.15
+
+v2.12.15 was released on April 13, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.13 to improve the logic of sending messages for HTML5 files.
+
+## v2.12.14
+
+v2.12.14 was released on April 13, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.11 to fix the display of HTML5 files.
+
+## v2.12.13
+
+v2.12.13 was released on April 10, 2021.
+
+This release updates `white-web-sdk` to 2.12.9.
+
+## v2.12.12
+
+v2.12.12 was released on April 9, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.9 to fix the display of HTML5 files.
+
+## v2.12.11
+
+v2.12.11 was released on April 9, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.8 to fix the display of HTML5 files.
+
+## v2.12.10
+
+v2.12.10 was released on April 6, 2021.
+
+This release updates `white-web-sdk` to 2.12.8 to fix the problem that setting Follower mode did not take effect immediately.
+
+## v2.12.9
+
+v2.12.9 was released on April 2, 2021.
+
+This release updates `white-web-sdk` to 2.12.7 to improve the display of dynamic PPT files.
+## v2.12.8
+
+v2.12.8 was released on March 30, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.7.
+
+## v2.12.7
+
+v2.12.7 was released on March 30, 2021.
+
+This release updates `white-web-sdk` to 2.12.6.
+
+## v2.12.6
+
+v2.12.6 was released on March 25, 2021.
+
+This release updates `@netless/iframe-bridge` to 2.0.5.
+
+## v2.12.5
+
+v2.12.5 was released on March 25, 2021.
+
+This release adds the `scaleIframeToFit` method to the `Displayer` class to enable zooming in and out so that HTML5 files can be completely displayed on screen.
+
+## v2.12.4
+
+v2.12.4 was released on March 24, 2021.
+
+This release updates [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) to 0.0.7.
+
+## v2.12.3
+
+v2.12.3 was released on March 20, 2021.
+
+This release changes the default value of `disableNewPencil` in the `WhiteRoomConfig` interface to `YES` so that the stroke effect is disabled by default. This addresses the issue that the stroke effect is not supported by SDKs earlier than v2.2.12.
+
+To enable the stroke effect properly, ensure that every user in the room is using one of the following SDKs:
+
+- Android SDK v2.12.3 or later
+- iOS SDK v2.12.3 or later
+- Web SDK v2.12.5 or later
+
+## v2.12.2
+
+v2.12.2 was released on March 16, 2021.
+
+#### New features
+
+This release adds the stroke effect to better display handwriting. Call `disableNewPencil` in the `WhiteRoomConfig` interface to enable or disable the stroke effect.
+
+To enable the stroke effect properly, ensure that every user in the room is using one of the following SDKs:
+
+- Android SDK v2.12.2 or later
+- iOS SDK v2.12.2 or later
+- Web SDK v2.12.5 or later
+
+#### Improvements
+
+This release updates `white-web-sdk` to v2.12.4 and improves the display logic of PPT files.
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -89,29 +1647,832 @@ This page tracks Web release notes for the Whiteboard SDK.
 
 ## Reference
 
-## v2.16.112
+## v2.16.53
+
+Released May 10, 2025
+
+#### Improvements
+
+This release includes the following changes:
+
+- For security and compliance, the `regions` parameter used when joining a whiteboard room now distinguishes between domestic and international data centers.
+- To prevent memory overflows caused by image uploads in formats such as `base64`, the `src` path for inserted images must now be a URL that starts with `http` or `https`.
+
+## v2.16.51
 
 Released on July 28, 2025.
 
 #### New features
 
-**High-performance whiteboard drawing tools**
+**Alternative API domains**
 
-This release introduces the `appliance-plugin` that provides a set of high-performance whiteboard drawing tools. To use it, install `@netless/appliance-plugin` and enable it with the `WhiteWebSdkConfiguration.enableAppliancePlugin` configuration option.
+To ensure the connectivity of API calls, this version adds the following alternative API domains, which will be automatically selected during SDK initialization:
 
-**PPT rendering error handling**
+|Domain                      |Covered region       |
+|----------------------------|---------------------|
+|`api.whiteboard.sd-rtn.com` |CN, India, Singapore |
+|`api.baiban.shengwang.cn`   |CN                   |
+|`api.whiteboard.rtelink.com`|US,  EU              |
+|`api.netless.link`          |CN, India, Singapore |
+|`api.whiteboard.agora.io`   |US,  EU              |
 
-This version adds slide rendering error callbacks and recovery support for dynamic document rendering.
+#### Improvements
 
-**Main-view tooling updates**
+This version includes the following improvements:
 
-This release improves whiteboard tool interactions in multi-window and presentation scenarios.
+**Optimized WebSocket transmission experience**
+
+To address the issue of slow whiteboard room joining, this version includes the following improvements:
+
+- Optimized WebSocket reconnection algorithm to improve reconnection speed.
+- Added `onConnection` event to report that WebSocket is connected and is downloading the whiteboard snapshot data of the current room to restore the room state. You can use this callback event to prompt users that the whiteboard room is loading.
+
+**Other improvements**
+
+This version also includes the following improvements:
+
+- Improved the algorithm for determining whether the cursor hits a graphic when the graphic has a fill color, optimizing the graphic selection experience.
+- Added a `timeout` parameter to the `screenshotToCanvasAsync` method to set the image loading timeout. If the image loading exceeds this time, the SDK will directly proceed to the next drawing operation without waiting for the image to load completely.
+- Added a `commandWheelToZoom` property to `ConstructRoomParams` to implement zooming the whiteboard by holding down the `command` key and scrolling the mouse wheel on macOS devices.
+- Optimized the button style of the "Transparent" fill color in the floating bar.
+
+#### Fixed issues
+
+This version fixes the following issue:
+
+- The error message `AkkoSocket can't emit when phase is connecting` that appears in the console when connecting to WebSocket for more than 2 seconds.
 
 #### API changes
 
 **Added**
 
-- `enableAppliancePlugin`
-- Slide rendering error callbacks
-- Recovery support for failed slide rendering
+- `onConnection`
+- The `timeout` parameter in the `screenshotToCanvasAsync`
+- The `commandWheelToZoom` parameter in `ConstructRoomParams`
+
+## v2.16.49
+
+Released on July 28, 2025.
+
+#### New features
+
+**Fill closed shape elements**
+
+`MemberState` adds the `fillColor` property, which is used to set the fill color of closed shape elements such as circles and rectangles.
+
+**Automatic switch to select tool**
+
+`MemberState` adds the following properties to automatically switch to the select tool after using the corresponding whiteboard tool:
+
+- `textCompleteToSelector`: Automatically switch to the select tool after typing with the text tool.
+- `rectangleCompleteToSelector`: Automatically switch to the select tool after drawing a rectangle.
+- `ellipseCompleteToSelector`: Automatically switch to the select tool after drawing a circle.
+- `straightCompleteToSelector`: Automatically switch to the select tool after drawing a straight line.
+- `arrowCompleteToSelector`: Automatically switch to the select tool after drawing an arrow.
+- `shapeCompleteToSelector`: Automatically switch to the select tool after drawing a triangle, bubble, or other shapes.
+
+**Whiteboard drawing performance optimization strategy**
+
+The `joinRoom` method adds the `optimizeOptions` parameter to set the performance optimization strategy for whiteboard drawing. The performance optimization options include:
+
+- Adjusting the refresh interval of whiteboard drawing: A lower refresh interval provides smoother stroke display but has a higher resource consumption, while a higher refresh interval may result in laggy strokes but has a lower resource consumption.
+- Using single canvas drawing: By default, the whiteboard uses two canvases alternately to avoid flickering on some devices during drawing. Using a single canvas drawing can eliminate redraws and reduce performance consumption.
+- Using floating canvas: When writing on the whiteboard, after enabling single canvas drawing, a floating canvas of approximately 256 x 256px is generated based on the drawing position. When subsequent drawings are within the range of this floating canvas, the synchronization of strokes is limited to this floating canvas, reducing performance consumption.
+
+#### Improvements
+
+This version includes the following improvements:
+
+- `MemberState` adds the `textSizeOverride` property, which is used to set the default font size of the text tool. If not set, the default font size used will be the same as the last created text element.
+- The `room.useNativeClipboard` property is added to set whether to use the native clipboard. When enabled, the whiteboard shortcuts for copy and paste in `HotKeys` will be disabled and replaced with the native `copy` and `paste` events.
+- `DisplayerCallbacks` adds the `onBackgroundError` callback to report background image loading failure.
+- `RoomCallbacks` adds the `onObjectsLimit` callback to report when the number of elements in the whiteboard exceeds the limit. When the limit is reached, the frontend will throw warnings and events.
+- `ImageInformation` adds the `crossOrigin` property to set whether to load images in a cross-origin manner. It is enabled by default.
+- The `room` class adds the `syncMode` property. When set to `true`, synchronization will be more frequent but may slightly affect animation smoothness.
+- A floating toolbar is displayed when selecting graphic elements, such as rectangles and circles, drawn on the whiteboard.
+- The `clearUndoHistory` method is added to clear the undo history.
+- Setting `cursorAdapter: false` can hide the built-in cursors, such as the laser pen, eraser, and so on.
+- Text elements now have a fixed line height to avoid display differences across platforms.
+
+#### Fixed issues
+
+This version fixes the following issues:
+
+- Memory leaks caused by not destroying certain listeners when exiting the room.
+- Exception errors when read-only users pressed the Esc key.
+- Occasional display errors when drawing dashed lines.
+- An issue where erasing text with the eraser tool on touch devices did not work properly.
+- Occasional white screen when entering the room without any error messages.
+- Copied and pasted text elements could not be selected.
+- The persistent highlight of the text box content after deselecting the text box.
+
+#### API changes
+
+**Added**
+
+- `MemberState` adds the following properties:
+    - `fillColor`
+    - `textSizeOverride`
+    - `textCompleteToSelector`
+    - `rectangleCompleteToSelector`
+    - `ellipseCompleteToSelector`
+    - `straightCompleteToSelector`
+    - `arrowCompleteToSelector`
+    - `shapeCompleteToSelector`
+- `DisplayerCallbacks` adds `onBackgroundError`
+- `screenshotToCanvasAsync`
+- `Room` adds the `useNativeClipboard` property
+- `RoomCallbacks` adds `onObjectsLimit`
+- `clearUndoHistory`
+- `joinRoom` adds the `optimizeOptions` parameter
+- `OptimizeOptions`
+- `LowTaskAnimationInterval`
+- `OriginCoordType`
+- `ImageInformation` adds the `crossOrigin` property
+- `room` adds the `syncMode` property
+
+## v2.16.43
+
+v2.16.43 was released on January 19, 2024.
+
+#### Compatibility changes
+
+This version deprecates the existing London data center (`gb-lon`) in the Whiteboard Data Center and introduces a new data center in Frankfurt, Europe (`eu`), whose service covers Europe. If you have set `gb-lon` in the previous version, please switch to` eu` after upgrading to this version and enable this data center in Agora Console.
+
+#### Fixed issues
+
+This version fixed the issue on the Windows platform when using the Whiteboard Web App where the `shift` key was incorrectly detected, causing the pencil tool to switch to drawing straight lines and unable to revert back.
+
+## v2.16.37
+
+v2.16.37 was released on December 2, 2022.
+
+#### New features
+
+**1. Whiteboard tool updates**
+
+This release adds new features for the following whiteboard tools:
+
+- Ellipse: Press the `Alt` or `option` button to draw a circle with the cursor as the center.
+- Pencil:
+  - Draw straight lines: The user can press `shift` to draw a straight line.
+  - Draw dotted lines: Add `dottedLine: true` in `room.memberState` to enable this feature.
+  - Writing performance: Adds support for adjusting the balance between the performance and the quality of the pencil
+  tool by modifying the `NewPencilWritingQuality` enum.
+- Text: Adds support for directly selecting and editing whiteboard text by adding `textCanSelectText: true` in `room.memberState`.
+
+In addition, this release adds a pencil eraser tool to erase any part of a pencil stroke.
+
+**2. Screenshot to canvas**
+
+This release adds the `screenshotToCanvas` method to take a screenshot and write it to canvas.
+
+#### Fixed issues
+
+This release fixes the following issues:
+
+- The recall and redo function sometimes got reset after the user switched pages or reconnected.
+- Some fields in `room.setMemberState()` could not be saved locally.
+- The `floatBar` did not work properly on some touch devices.
+
+#### API changes
+
+**Added**
+
+- New properties in the `MemberState` class: `dottedLine` and `textCanSelectText`
+- `NewPencilWritingQuality`
+- `screenshotToCanvas`
+- New value in the `ApplianceNames` enum: `pencilEraser`
+
+## v2.16.24
+
+v2.16.24 was released on September 13, 2022.
+
+#### New features
+
+**1. Text editing**
+
+To support custom text editing options, this release adds the following APIs.
+
+- `insertText`: Inserts text at a specified position.
+- `updateText`: Modifies the specified text.
+- `updateSelectedText`: Modifies the font style of the currently selected text, including font size, color, bold style, and italic style.
+
+You can use these APIs to customize the text input box and editing toolbar.
+
+This release also adds the `textColor`, `bold`, `italic`, `underline`, and `lineThrough` properties to `MemberState` to provide richer text editing options. When you use the `text` tool provided by the Whiteboard SDK but want to customize the text editing toolbar, you can set the `floatBar` property in `JoinRoomParams` as `false` and edit the text using the new properties in `MemberState`.
+
+:::info
+This release deletes the `updateTextFontSize` method. Instead, you can use `updateSelectedText` or `textSize` in `MemberState`.
+:::
+
+**2. Image rotation**
+
+This release adds the `disableRotation` property to `WhiteWebSdkConfiguration` to enable or disable image rotation. The SDK enables image rotation by default, which allows users to rotate the selected image by any angle. If you want to disable the rotation, you can set `disableRotation(true)`.
+
+**3. Tween animation**
+
+This release adds the tween animation feature for the `pencil` tool. When a user draws or writes with the pencil, the SDK automatically inserts frames between keyframes so that to remote users see a smoother drawing process, but this feature increases latency.
+
+This release also adds the `disableCurveAnimes` property to `WhiteWebSdkConfiguration` for enabling or disabling the the tween animation feature. The tween animation feature is enabled in the SDK by default. To disable it, you can set `disableCurveAnimes(true)`.
+
+:::info
+Tween animations take effect only when `disableNewPencil` is set as `false`.
+:::
+
+**4. Disabling the stroke effect**
+
+This release adds the `disableNewPencilStroke` property to `WhiteWebSdkConfiguration` to enable or disable the stroke effect of the pencil. The default value of `disableNewPencilStroke` is `true`, and the SDK enables the stroke effect immediately when you set `disableNewPencil(false)` to enable the new pencil. To disable the stroke effect after setting `disableNewPencil(false)`, you can call `disableNewPencilStroke(true)`.
+
+:::info
+The stroke effect takes effect only when `disableNewPencil` is set as `false`.
+:::
+
+**5. Getting the scene information**
+
+This release adds the `getScene` method to the `Displayer` class, which supports using the scene path to get the information about a specified scene.
+
+**6. Scene callbacks**
+
+This release adds the `createScenesCallback` method for creating a listener object for a scene directory. After the listener object is successfully created, when the scenes and subdirectories in the specified scene directory change, the SDK triggers the callbacks you have registered in `ScenesCallbacks` to report the scene events.
+
+**7. Reporting exceptions that occur when playing the media file in a dynamic PPT slide**
+
+This release adds the `onPPTMediaPlayError` callback to report exceptions that occur during the playing of the media file in a dynamic PPT slide.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Optimizes the writing performance on Android browsers.
+- Optimizes the reconnecting mechanism in weak network environment to reduce unnecessary reconnections.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Occasionally, the contents on the whiteboard appeared shifted and overshadowed after users zoomed or moved their view.
+- Occasionally, users could not switch the pages of a dynamic PPT slide after an SDK reconnection.
+- The contents on the whiteboard occasionally were not fully displayed when users joined a whiteboard room that already had.
+- A memory leak sometimes occurred after an SDK reconnection.
+- An error sometimes occurred when calling `setWritable` repeatedly.
+- Rendering exceptions and errors occurred when using the SDK on an early version of React.
+- The virtual keyboard did not pop up when clicking `text` on iOS browsers.
+- When a user switched to read-only mode, then switched back to read-write mode and wrote, remote users saw that user's cursor as fixed.
+
+#### API changes
+
+**Added**
+
+- `insertText`
+- `updateText`
+- `updateSelectedText`
+- `getScene`
+- `createScenesCallback`
+- `onPPTMediaPlayError`
+- The following properties in `MemberState`:
+  - `textColor`
+  - `bold`
+  - `italic`
+  - `underline`
+  - `lineThrough `
+- The following properties in `WhiteWebSdkConfiguration`:
+  - `disableRotation`
+  - `disableCurveAnimes`
+  - `disableNewPencilStroke`
+
+**Deleted**
+
+- `updateTextFontSize`
+- `CustomInput`
+
+## v2.15.16
+
+v2.15.16 was released on January 21, 2022.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Optimizes the logic of `disconnect` and `setWritable` to ensure that the SDK returns a `Promise` object only when all requests sent before the `disconnect()` or `setWritable(false)` method call are executed.
+- Optimizes the UI of the text editing floating bar (`floatBar`), and saves the text format set by users on the floating bar.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- The error code returned when joining a room failed was inaccurate.
+- After rejoining a room, `room.state.memberState` returned the initial state of the room, rather than the current state.
+- The console reported an error after a successful reconnection.
+- `room.state.memberState` occasionally returned `undefined`.
+- The button on the text editing floating bar (`floatBar`) sometimes did not work or disappeared.
+- The whiteboard room went blank and tried a reconnection.
+- The user received the event notification multiple times after calling `dispatchMagixEvent` to send an event.
+- File conversion failed because the background fill property was not set in the source PPT file.
+- The `canvas` rendering engine occasionally crashed.
+- The CPU usage of the `canvas` rendering was occasionally high.
+- On some iOS or Android devices, grids occasionally appeared on the whiteboard.
+
+## v2.15.1
+
+v2.15.1 was released on November 16, 2021, which fixed the following issues with displaying dynamic PPT files in the whiteboard:
+
+- When there are bugs with the animation effects in a slide master, slides based on that slide master could not be switched.
+- Some clickable elements did not take effect when clicked.
+
+## v2.15.2
+
+v2.15.2 was released on November 19, 2021.
+
+#### New features
+
+**1. Disables/Enables the frequency limit for writing synchronization**
+
+This release adds the `disablePencilWrittingLimitFrequency` property in `JoinRoomParams`, for disabling or enabling the frequency limit for synchronizing the writing input while using the `pencil` tool.
+
+**2.** **Options for setting a custom event listener**
+
+This release adds the `options` parameter in `addMagixEventListener` as well as the `MagixEventListenerOptions` type, for setting the following options for a custom event listener:
+
+- `fireInterval`: The interval (ms) of the SDK triggering custom event callbacks.
+- `fireSelfEventAfterCommit`: Whether to send event callbacks after the Agora server acknowledges the `dispatchMagixEvent` method call is successful.
+
+#### Fixed issues
+
+This release fixed the rendering crashes after initializing the room or adjusting the order of components in the scene under certain circumstances.
+
+#### API changes
+
+**Added**
+
+- The `disablePencilWrittingLimitFrequency` property in `JoinRoomParams`
+- The `options` parameter in `addMagixEventListener`
+- `MagixEventListenerOptions`
+
+## v2.15.0
+
+v2.15.0 was released on November 16, 2021.
+
+#### Compatibility changes
+
+To help you manage users in a room, this release adds the `uid` property in `JoinRoomParams`, for setting the unique identifier of a user.
+
+If you upgrade the SDK to v2.15.0 or later, to avoid affecting your service, ensure that you pass in a string `uid` in `JoinRoomParams` when calling `joinRoom`. The `uid` of each user cannot be longer than 1024 bytes and must be unique in the same room. For more information, see [Join a Whiteboard Room](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk#join-the-interactive-whiteboard-room-from-your-app-client).
+
+#### New features
+
+**1. Disables/Enables the frequency limit for sending custom events**
+
+This release adds the `disableMagixEventDispatchLimit` property in `JoinRoomParams`, for disabling or enabling the frequency limit for sending custom events.
+
+**2. File conversion optimizations**
+
+This release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Action buttons
+- Slide masters added with animation effects.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- The writing experience is optimized further.
+- To improve the user experience, the SDK sets `uniformScale` in `ImageInformation` as `true` by default when the `insertImage` method is called. This ensures the image is scaled based on its original aspect ratio when a user adjusts its size. If you do not want the image to be scaled proportionately, you can set `uniformScale` as `false`.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- The room state became incorrect when you called `setWritable(false)` at the time of joining the room.
+- Multiple copies could appear when you pasted copied content.
+- Each property sometimes appeared twice when you read `room.state.roomMembers`.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - The images were occasionally displaced.
+  - Failure to read certain styles caused the screen to go blank.
+  - The rotation angle and color were incorrect for some text.
+  - Occasionally, elements with an animation effect were not displayed
+  - The animation of some text was displayed incorrectly.
+
+#### API changes
+
+**Added**
+
+- The following properties in `JoinRoomParams`:
+
+  - `uid`
+  - `disableMagixEventDispatchLimit`
+
+**Modified**
+
+- `seekToProgressTime`
+
+**Deleted**
+
+- The `pencilOptions` property in `MemberState`
+- The `broadcasterInformation` property in `BroadcastState`
+- The `zoomScale` property in `RoomState`
+- The `scheduleTime` property in `Player`
+- The `seekToScheduleTime` method in `Player`
+
+## v2.14.5
+
+v2.14.5 was released on November 10, 2021.
+
+#### Compatibility changes
+
+As of this release, `white-web-sdk` no longer supports the following versions of mobile browsers:
+
+- Browsers for Android 4.4 and earlier.
+- Browsers for iOS 9 and earlier.
+
+#### New features
+
+**1. Importing and exporting scenes**
+
+This release adds the following methods for importing and exporting scenes:
+
+- `exportScene`: Exports all the contents of a specified scene, including the image or web page displayed on the scene, and saves them as a binary file (Blob object).
+- `importScene`: Imports the contents of a scene exported by using `exportScene` into a specified scene directory.
+
+**2. Scene path type**
+
+This release adds the `conflict` enumerator in `ScenePathType`, which indicates that a path cannot exist because it contains the path of an existing scene.
+
+**3. Locking images**
+
+To support locking or unlocking selected images, this release adds the `lockImages` method. When an image is locked, the user cannot move, zoom, or delete the image.
+
+**4. Adjusting font size**
+
+This release adds the `updateTextFontSize` method for adjusting the size of the text entered with the `text` tool.
+
+**5. Adjusting component layers**
+
+To support adjusting the layers of components, this release adds the following methods:
+
+- `moveSelectedComponentsToTop`: Moves the selected components to the top layer.
+- `moveSelectedComponentsToBottom`: Moves the selected components to the bottom layer.
+
+#### Improvements
+
+This release provides the following improvements:
+
+- Adds support for sending and receiving custom events with the `ArrayBuffer` payload between users with the Web SDK.
+- Further optimizes the writing performance.
+- Optimizes the shape of handwriting.
+- Improves the accuracy of the `onPhaseChanged` callback.
+- On the PC side, enables the eraser to delete only the topmost of multiple selected components.
+- Hides elements that should not be displayed in a slide master using the file-conversion function.
+
+#### Fixed issues
+
+This release has fixed the following issues:
+
+- The `customInput` method call did not take effect.
+- After switching to the hand tool, users could not switch back to the cursor.
+- Occasionally, the handwriting disappeared suddenly during writing.
+- Occasionally, the handwriting had unnatural teardrop-like strokes during writing.
+- When the user edited text after manually scaling the text box, the text box and text reverted to the original size.
+- When modifying `InvisiblePlugin`, the new `attributes` could not be the same as the original `attributes`.
+- The view became incorrect after the window size changed on some browsers and devices.
+- When the eraser was moved quickly, the eraser icon was not enlarged and the fast deleting function did not work.
+- Occasionally, multiple audio files in dynamic PPT slides played simultaneously.
+- Animations were displayed incorrectly after a dynamic PPT slide returned to the previous page.
+- Occasionally, a text box with an animation effect was flipped in mirror mode.
+
+#### API changes
+
+**Added**
+
+- `exportScene`
+- `importScene`
+- `conflict` in  `ScenePathType`
+- `lockImages`
+- `updateTextFontSize`
+- `moveSelectedComponentsToTop`
+- `moveSelectedComponentsToBottom`
+
+## v2.13.17
+
+v2.13.17 was released on August 20, 2021.
+
+#### New features
+
+To improve the dynamic file conversion function, this release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Add animations to text per paragraph.
+- Animate text by word or by letter.
+- All preset table styles.
+- Fonts smaller than 9 pt (12 px).
+
+#### Improvements
+
+This release has the following improvements:
+
+- Disables the delete button on the floating bar when the user is editing text on the whiteboard.
+- Disables the floating bar from moving when the user clicks the button on it.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Occasionally, the room was stuck in the connecting state when the user joined a room.
+- The cursor disappeared for some users after the SDK reconnected.
+- The status of some plugins was incorrect after the SDK reconnected.
+- The hand tool was not restricted by the set `CameraBound`.
+- On some high-resolution devices, when the user was in the `follower` view mode, the center point of the view was slightly shifted.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Paragraph spacing was displayed incorrectly.
+  - Failed to split text into columns.
+  - The slide background fill of shapes was displayed incorrectly.
+  - Hanging indentation was displayed incorrectly.
+  - The slide was displayed incorrectly when the user called `pptPreviousStep` to roll back a slide.
+  - The numbering of text displayed incorrectly.
+  - Some equations were displayed incompletely after conversion.
+  - Some lines broke incorrectly.
+  - Text written from right to left (such as Arabic) was displayed incorrectly.
+
+## v2.13.11
+
+v2.13.11 was released on July 23 2021.
+
+#### New features
+
+To improve the dynamic file conversion function, this release adds support for converting and displaying the following PowerPoint (PPT) features:
+
+- Animation effect > Reverse Path Direction
+- Vertical Text Box
+- Microsoft Equation Editor 3.0
+- Hide background graphic in a slide master
+- Change the color of pictures
+- The following picture effects are now supported:
+  - Metal Frame
+  - Soft Edge Rectangle
+  - Double Frame, Black
+  - Thick Matte, Black
+  - Simple Frame, Black
+  - Moderate Frame, Black
+  - Center Shadow Rectangle
+  - Soft Edge Oval
+  - Metal Rounded Rectangle
+  - Metal Oval
+
+#### Improvements
+
+This release has the following improvements:
+
+- Reduces CPU usage during the playback of animations in dynamic PPT files.
+- Improves the smoothness of writing and drawing on the whiteboard.
+- Optimizes the timestamp synchronization algorithm to reduce time differences.
+- Supports printing logs on scene changes.
+- Adds the `previewURL` parameter in `PptDescription`, which supports displaying dynamic PPT previews in the whiteboard.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- The contents on the whiteboard occasionally became unclear when the user adjusted the view.
+- Problems occurred with the SDK code after it was mangled by using uglify-js.
+- Users of the Android or iOS SDK occasionally failed to draw the first line after joining the room.
+- The following issues with displaying dynamic PPT files in the whiteboard were fixed:
+  - Animations did not play in the set order.
+  - Animations did not disappear when playback finished.
+  - Table height was displayed incorrectly.
+  - Pictures inserted in content placeholders failed to display.
+  - Some shapes were rendered incorrectly.
+  - The text was incorrectly indented.
+  - Animation triggers did not work.
+  - Picture transparency was incorrect.
+
+## v2.13.4
+v2.13.4  was released on June 15, 2021.
+
+This release fixed the issue that calling the `moveCamera` method did not take effect.
+
+## v2.13.2
+
+v2.13.2  was released on June 10, 2021.
+
+This release fixed the following issues:
+
+- Occasional abnormal behaviors of the `redo` and `undo` methods.
+- Occasional abnormality with the text box.
+
+## v2.12.21
+
+v2.12.21  was released on June 4, 2021.
+
+This release fixed the following issues:
+
+- Error messages printed in the browser console.
+- Arrowheads were displayed disproportionately large in dynamic PPT files.
+- Frequently switching slides in a dynamic PPT file might cause fonts to display abnormally.
+- Dynamic PPT files that do not contain a `tablestyle.xml` file could not be parsed.
+
+## v2.12.20
+
+v2.12.20 was released on May 24, 2021.
+
+This release optimizes the log levels for dynamic PPT files.
+
+## v2.12.19
+
+v2.12.19 was released on May 20, 2021.
+
+This release fixed the issue that in certain circumstances, the SDK failed to connect to the server and returned the error message `magix connect failed`.
+
+## v2.12.18
+
+v2.12.18 was released on May 17, 2021.
+
+This release enables server-side typesetting (`useServerWrap`) by default and supports reducing the size of font files for fasterer rendering.
+
+## v2.12.17
+
+v2.12.17 was released on May 13, 2021.
+
+This release fixed the issue that inaccurate system time on the user's device caused an abnormal delay in a live Interactive Whiteboard room.
+
+## v2.12.16
+
+v2.12.16 was released on May 11, 2021.
+
+#### New features
+
+This release adds the following features:
+
+- Setting transparency for images in dynamic PPT files.
+- Displaying SmartArt as images in dynamic PPT files (SmartArt animation is not supported).
+- Displaying charts and tables in dynamic PPT files.
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- The `selectable` field did not take effect when calling `room.insertPlugin`.
+- The rendering process might fail if certain elements on dynamic PPT slides have no content.
+- The Drawing tool might fail to work on dynamic PPT slides.
+
+## v2.12.15
+
+v2.12.15 was released on April 28, 2021.
+
+#### New features
+
+This release adds `changeToClick` and `changeToText`, which set the shortcut to quickly switch to the clicker tool (`clicker`) and text tool (`text`), respectively.
+
+#### Improvements
+
+This release improves the loading speed of dynamic PPT files.
+
+## v2.12.14
+
+v2.12.14 was released on April 22, 2021.
+
+#### New features
+
+This release adds audio and video trimming.
+
+#### Improvements
+
+This release improves the logic of preloading dynamic PPT files.
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- The audio or video progress bar on the PPT slide was not displayed in the preview.
+- `room.state.cameraState` was not updated in a timely manner in some cases.
+
+## v2.12.13
+
+v2.12.13 was released on April 21, 2021.
+
+#### Issues fixed
+
+This release fixed the issue that a delay might occur when the text box entered or exited editing mode in some cases.
+
+## v2.12.12
+
+v2.12.12 was released on April 16, 2021.
+
+#### Improvements
+
+This release has the following improvements:
+
+- Improves the compatibility of colors in dynamic PPT files.
+- Improves justified alignment and left-and-right alignment in dynamic PPT files.
+- Improves the display of indentation in dynamic PPT files.
+
+## v2.12.11
+
+v2.12.11 was released on April 15, 2021.
+
+#### New features
+
+This release adds the following features:
+
+- Adds the `syncBlockTimstamp` method to set the delay time for sending the whiteboard contents. This method is used to ensure that the whiteboard content and the audio and video are sent to the remote users at the same time.
+- Adds the `customInput` interface for setting custom inputs.
+
+#### Improvements
+
+This release improves the display performance of `canvas` mode.
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- `InvisiblePlugin` had abnormal behavior in some cases.
+- The text could be misaligned after scaling the view up or down.
+
+## v2.12.9
+
+v2.12.9 was released on April 9, 2021.
+
+This release fixed the following issues:
+
+- A cursor that had disappeared from the whiteboard appeared again in some cases.
+- The `canvas` rendering engine rendered images inaccurately in certain older versions of browsers.
+
+## v2.12.8
+
+v2.12.8 was released on March 30, 2021.
+
+#### Improvements
+
+This version improves the logic of reporting logs.
+
+#### Issues fixed
+
+This release fixed the problem that setting follower mode did not take effect immediately.
+## v2.12.6
+
+v2.12.6 was released on March 29, 2021. This release fixed the issue that some components could disappear unexpectedly.
+
+## v2.12.5
+
+v2.12.5 was released on March 20, 2021.
+
+#### New features
+
+This release adds the stroke effect to better display handwriting. When constructing `joinRoomParams`, you can set `disableNewPencil` to `false`/`true` to enable/disable the stroke effect.
+
+To enable the stroke effect properly, ensure that every user in the room is using one of the following SDKs:
+
+- Android SDK v2.12.3 or later
+- iOS SDK v2.12.3 or later
+- Web SDK v2.12.5 or later
+
+#### Improvements
+This release improves the Text tool.
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- When presenting dynamic PPT files in certain situations, the screen turned completely white.
+- `Symbol` objects displayed abnormal actions when using the whiteboard on browsers that support ES6.
+- Pen tool marks displayed abnormally.
+
+## v2.12.2
+
+v2.12.2 was released on March 4, 2021. This release improves network connection.
+
+## v2.12.1
+
+v2.12.1 was released on March 4, 2021. This release fixed the issue that `onPPTLoadProgress` reported inaccurate progress of file-conversion tasks.
+
+## v2.12.0
+
+v2.12.0 was released on February 26, 2021.
+
+#### New features
+
+This release adds the following features:
+
+- To provide more drawing options, `ShapeType` adds the following enumeration values:
+   - `triangle`: Inserts a triangle
+   - `rhombus`: Inserts a diamond shape
+   - `pentagram`: Inserts a pentagram
+   - `speechBalloon`: Inserts a speech balloon
+
+- The floating bar adds a **Layer** button to send an image to the front or back of the layer stack.
+- The floating bar adds a **Replicate** button.
+- `disableOthersSelectingBox` is added to `Displayer` and `JoinRoomParams` to set whether to hide or show other users' selection fields.
+- `uniformScale` is added to `ImageInformation` to resize images proportionately.
+- The server-side engine can be used for typesetting.
+
+#### Improvements
+- Improves the loading speed of icons on the floating bar.
+- Addresses the issue that after using the Text tool to enter text, it automatically switches to the Selection tool.
+
+#### Issues fixed
+This release fixed the following issues:
+
+- Occasionally, the generated dynamic web pages could not be previewed.
+- The rendering sequence was incorrect for some highlight selectors.
+- The selectable area around an object could be displayed inaccurately.
+- When rendering a rectangle, the four corners sometimes switched between being rounded and right-angled.
+- PPT files could not be displayed because of rendering errors in internal components.
 </PlatformStructured>

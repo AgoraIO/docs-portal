@@ -53,7 +53,26 @@ Implement pre-joining for different mouse interactions:
 
     | Before | After |
     |--------|-------|
-    |1. The user joins the channel.<br />2. The channel sends the host/media information.<br />2. The user subscribes to the media stream in the channel.<br />2. The Agora backend starts sending the media stream in the channel.<br />2. The user waits for the Agora backend to send the media stream, receives it, and renders it locally.|1. The user joins the channel.<br />2. The Agora backend immediately sends the media stream in the channel.<br />2. The channel sends the host/media information.<br />2. After the user subscribes to the media stream, they can immediately receive and render the media stream locally.|
+    | <Slot name="preload-before-steps" /> | <Slot name="preload-after-steps" /> |
+
+    <Slot for="preload-before-steps">
+
+    1. The user joins the channel.
+    2. The channel sends the host/media information.
+    3. The user subscribes to the media stream in the channel.
+    4. The Agora backend starts sending the media stream in the channel.
+    5. The user waits for the Agora backend to send the media stream, receives it, and renders it locally.
+
+    </Slot>
+
+    <Slot for="preload-after-steps">
+
+    1. The user joins the channel.
+    2. The Agora backend immediately sends the media stream in the channel.
+    3. The channel sends the host/media information.
+    4. After the user subscribes to the media stream, they can immediately receive and render the media stream locally.
+
+    </Slot>
 
     ![first-frame-rendring](/images/video-sdk/first-frame-rendering.png)
 
@@ -132,7 +151,7 @@ Take the following steps before using the fast joining and fast switching featur
 
     Using wildcard tokens carries security risks, such as room bombing. Evaluate whether wildcard tokens are appropriate for your use case before implementation.
 
-:::
+    :::
 
 
 ### Fast channel joining
@@ -454,7 +473,7 @@ Agora provides an open source [`VideoLoaderAPI`](https://github.com/AgoraIO-Comm
 
     To facilitate subsequent code upgrades, do not modify the names and paths of the files you add.
 
-:::
+    :::
 
 
 1. In the terminal, go to the directory where the `*.xcodeproj` file is located and run the `pod init` command. A **Podfile** text file is generated in the project folder.
@@ -538,7 +557,7 @@ Take the following steps before using the fast joining and fast switching featur
 
     Using wildcard tokens carries security risks, such as room bombing. Evaluate whether wildcard tokens are appropriate for your use case before implementation.
 
-:::
+    :::
 
 
 ### Fast channel joining
@@ -776,7 +795,7 @@ Agora provides an open source [`VideoLoaderAPI`](https://github.com/AgoraIO-Comm
 
     To facilitate subsequent code upgrades, do not modify the names and paths of the files you add.
 
-:::
+    :::
 
 
 1. In the terminal, go to the directory where the `*.xcodeproj` file is located and run the `pod init` command. A **Podfile** text file is generated in the project folder.
@@ -860,7 +879,7 @@ Take the following steps before using the fast joining and fast switching featur
 
     Using wildcard tokens carries security risks, such as room bombing. Evaluate whether wildcard tokens are appropriate for your use case before implementation.
 
-:::
+    :::
 
 
 ### Fast channel joining

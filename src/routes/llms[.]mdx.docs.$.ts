@@ -8,7 +8,11 @@ import {
   buildPlatformLLMText,
   extractStructuredPlatformTabs,
 } from '@/lib/platforms/processed-text';
-import { isKnownPlatform } from '@/lib/platforms/registry';
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from '@/lib/platforms/registry';
 
 export const Route = createFileRoute('/llms.mdx/docs/$')({
   server: {
@@ -89,11 +93,13 @@ async function resolveMarkdownPlatformRoute(
     return null;
   }
 
-  const platform = fileName.replace(/\.md$/, '');
+  const platformCandidate = fileName.replace(/\.md$/, '');
 
-  if (!isKnownPlatform(platform)) {
+  if (!isKnownPlatform(platformCandidate)) {
     return null;
   }
+
+  const platform = normalizePlatformKey(platformCandidate) as PlatformKey;
 
   const slugSegments = rest.slice(0, -1);
   const page = source.getPage(

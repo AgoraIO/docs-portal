@@ -351,7 +351,7 @@ A wildcard token is valid for 24 hours. If the token is about to expire, regener
 #### Co-host token authentication
 In addition to basic authentication, Agora also provides fine-grained control over the permissions of users in a channel to publish different types of streams. Co-host token authentication helps you ensure that only the streaming users in a channel are authorized to publish streams, thus preventing hackers from stealing tokens or exploiting vulnerabilities to blow up a live broadcast channel.
 :::note
-- Before using advanced authentication features, ensure that you have enabled [Co-host token authentication](https://docs-md.agora.io/en/help/integration-issues/token_cohost) in Agora Console.
+- Before using advanced authentication features, ensure that you have enabled [Co-host token authentication](/en/api-reference/faq/integration/token_cohost) in Agora Console.
 - To send a stream to a channel, ensure that the client role is set to **Broadcaster** either at the time of joining the channel, or after joining a channel by calling `setClientRole`.
 :::
 Agora provides `BuildTokenWithUidAndPrivilege` methods to set the expiration time of the following privileges:
@@ -706,7 +706,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   npm install agora-token
   ```
 
-1. Add your App ID and App certificate
+2. Add your App ID and App certificate
 
   Open the file `node_modules/agora-token/server/DemoServer.js` and update the following variables:
 
@@ -716,7 +716,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   var appCertificate = "<YOUR APP CERTIFICATE>";
   ```
 
-1. Install the dependencies and run the server
+3. Install the dependencies and run the server
 
   Navigate to the `server` directory and run the following commands:
 
@@ -725,7 +725,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   node DemoServer.js
   ```
 
-1. Test your server
+4. Test your server
 
   Use a `curl` request to generate a sample token:
 
@@ -747,13 +747,13 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 1. Install [Docker](https://www.docker.com/).
 
-1. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
+2. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
   ```shell
   docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
   ```
 
-1. Run the following command to request a token from the token generator you just deployed:
+3. Run the following command to request a token from the token generator you just deployed:
 
   ```shell
   curl --location 'http://localhost:8080/token/generate' \
@@ -904,19 +904,19 @@ Refer to the following steps to build and run a token generator:
     }
   ```
 
-1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
+2. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
   ```go
   go mod init sampleServer
   ```
 
-1. Run the following command to install dependencies. 
+3. Run the following command to install dependencies.
  
   ```go
   go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
   ```
 
-1. Run the following command to start the token generator:
+4. Run the following command to start the token generator:
 
   ```go
   go run server.go
@@ -1001,5 +1001,5 @@ SDKs using `AccessToken2` can interoperate with SDKs using `AccessToken`. The SD
 :::
 ### Frequently asked questions
 
-* [How do I use co-host token authentication?](https://docs-md.agora.io/en/help/integration-issues/token_cohost)
-* [How to deal with token-related error codes?](https://docs-md.agora.io/en/help/integration-issues/token_related_issues)
+* [How do I use co-host token authentication?](/en/api-reference/faq/integration/token_cohost)
+* [How to deal with token-related error codes?](/en/api-reference/faq/integration/token_related_issues)

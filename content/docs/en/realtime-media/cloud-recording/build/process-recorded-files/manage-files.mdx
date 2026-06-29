@@ -138,11 +138,19 @@ To merge the original M3U8 file and the new M3U8 file generated after enabling t
     | Parameter      | Description | Required |
     |:---------------|:------------|:----------------|
     | `-concatM3u8`  | Merge the original M3U8 file and the new M3U8 file generated after enabling the high availability mechanism into one MP4 file. If this parameter is not set, the original M3U8 file and the new M3U8 file will be converted into MP4 files respectively. | no |
-    | `-concatStrategy`  | Merge strategy, this parameter must be consistent with `-concatM3u8`. Can be set to: - 0: (Default) If there is an overlap between two M3U8 files, the overlapping part of the original M3U8 file will be cut off; if there is a time interval between the two M3U8 files, the black frame of the corresponding time interval will be added.
-- 1: Merge two M3U8 files regardless of the overlap or time interval. | no |
+    | `-concatStrategy`  | <Slot name="concat-strategy-values" /> | no |
     | `-ignoreNotExist` | Missing TS files are ignored and black frames are used instead. If this parameter is not set, the absence of any TS file will cause the conversion to fail. | no |
     | `-inputPath`  | Input path, used to specify the absolute storage path of the files to be merged. | yes |
     | `-outputPath` | Output path, used to specify the absolute storage path of the merged files. Defaults to the same as the input path. | no |
+
+    <Slot for="concat-strategy-values">
+
+    Merge strategy, this parameter must be consistent with `-concatM3u8`. Can be set to:
+
+    - 0: (Default) If there is an overlap between two M3U8 files, the overlapping part of the original M3U8 file will be cut off; if there is a time interval between the two M3U8 files, the black frame of the corresponding time interval will be added.
+    - 1: Merge two M3U8 files regardless of the overlap or time interval.
+
+    </Slot>
 
 ## File size
 In an individual recording, the size of a recorded file depends on the audio and video bitrates of the media source and the duration of the recording. For example, if the audio bitrate is 48 Kbps, the video bitrate is 500 Kbps, and the recording lasts for 30 minutes (1800 seconds), the size of the recorded file is approximately (48 Kbps + 500 Kbps) * 1800 s = 986.4 Mbit, or 123.3 MB.

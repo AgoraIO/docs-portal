@@ -17,7 +17,7 @@ When a user joins an empty channel, a call starts; when all users leave the chan
 
 ### User
 
-Each user in a call has a unique [user ID](https://docs.agora.io/en/agora-analytics/reference/reference/glossary) (either `uid` or `userId`).
+Each user in a call has a unique [user ID](/en/solutions/agora-analytics/reference/glossary) (either `uid` or `userId`).
 
 ### Sender/Host
 
@@ -34,7 +34,7 @@ Audio freezing occurs if audio rendering pauses for over 200 ms. The actual leng
 Audio freeze rate = (Sum of audio freezing duration per unit time / Total audio duration per unit time) × 100%.
 
 A user’s audio freeze rate is different from a call’s audio freeze rate:
-- For a user, the total audio duration is the sum of the duration of all subscribed audio streams, that is, audio duration [calculated by stream](https://docs.agora.io/en/agora-analytics/reference/reference/billing-policies).
+- For a user, the total audio duration is the sum of the duration of all subscribed audio streams, that is, audio duration [calculated by stream](/en/solutions/agora-analytics/reference/billing-policies).
 - For a call, the total audio duration is the sum of each user’s total audio duration.
 
 ### Video freeze rate
@@ -48,7 +48,7 @@ The actual length of such a pause is called video freezing duration.
 Video freeze rate = (Sum of video freezing duration per unit time / Total video duration per unit time) × 100%.
 
 A user’s video freeze rate is different from a call’s video freeze rate:
-- For a user, the total video duration is the sum of the duration of all subscribed video streams, that is, video duration [calculated by stream](https://docs.agora.io/en/agora-analytics/reference/reference/billing-policies).
+- For a user, the total video duration is the sum of the duration of all subscribed video streams, that is, video duration [calculated by stream](/en/solutions/agora-analytics/reference/billing-policies).
 - For a call, the total video duration is the sum of each user’s total video duration.
 
 ## Call-specific metrics

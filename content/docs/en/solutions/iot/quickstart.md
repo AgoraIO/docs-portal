@@ -52,7 +52,7 @@ To integrate IoT SDK into your app, do the following:
 
 2.  Add the IoT SDK to your Android project. To do this:
 
-    1. [Download](https://docs.agora.io/en/sdks?platform=android) the IoT SDK and extract the archive to a temporary folder `<unzipped_package>`.
+    1. [Download](/en/api-reference/sdks?platform=android) the IoT SDK and extract the archive to a temporary folder `<unzipped_package>`.
 
     2.  Copy the following files and folders from `<unzipped_package>/agora_rtc_example_android/app/libs` to your project:
 

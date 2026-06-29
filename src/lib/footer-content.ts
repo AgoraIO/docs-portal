@@ -117,7 +117,7 @@ export const docsFooterContent = {
           label: 'Get Started',
         },
         {
-          href: 'https://docs.agora.io/en/',
+          href: '/en/',
           label: 'Documentation',
         },
         {

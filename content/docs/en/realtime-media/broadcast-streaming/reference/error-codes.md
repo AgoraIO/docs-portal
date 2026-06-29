@@ -47,6 +47,11 @@ During the operation of Agora SDK, error codes may be returned in the following 
 | `110` | <Slot name="110" /> |
 | `111` | The network connection is interrupted. After the SDK established a connection with the server, the network connection was lost for more than 4 seconds. |
 | `112` | Network connection lost. The network connection was interrupted and the SDK could not connect to the server within 10 seconds. |
+| `119` | User failed to switch roles, please try to join the channel again. |
+| `120` | Decryption failed. It is possible that the user used the wrong password when joining the channel. Please check the password the user entered when joining the channel, or direct the user to try to rejoin the channel. |
+| `121` | The user ID is invalid. |
+| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
+| `134` | Invalid user account, possibly because invalid parameters are set. |
 
 <Slot for="3">
 
@@ -121,11 +126,6 @@ This error code is deprecated. The SDK returns `CONNECTION_CHANGED_INVALID_TOKEN
 :::
 
 </Slot>
-| `119` | User failed to switch roles, please try to join the channel again. |
-| `120` | Decryption failed. It is possible that the user used the wrong password when joining the channel. Please check the password the user entered when joining the channel, or direct the user to try to rejoin the channel. |
-| `121` | The user ID is invalid. |
-| `123` | This user has been banned by the server. This error is reported when the user is kicked out by the server. |
-| `134` | Invalid user account, possibly because invalid parameters are set. |
 
 ## Audio-related error codes
 

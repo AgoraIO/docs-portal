@@ -54,15 +54,16 @@ paths:
   /dev/v1/channel/{appid}:
     get:
       summary: Query the channel list
-      description: >-
-        Use this endpoint to get the list of all channels under a specified
-        project. The channel list is returned by page; specify the page number
-        and page size in the request URL.
-
-
-        > If the number of users in a channel changes frequently, the query
-        results may be inaccurate. A channel may appear repeatedly on different
-        pages, or may not appear on any page.
+      description: Retrieves channels under a specified project.
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            The channel list is returned by page; specify the page number and page size
+            in the request URL. If the number of users in a channel changes frequently,
+            the query results may be inaccurate. A channel may appear repeatedly on
+            different pages, or may not appear on any page.
       operationId: cma-query-channel-list
       parameters:
         - $ref: "#/components/parameters/appidPath"
@@ -83,6 +84,8 @@ paths:
           schema:
             type: number
             default: 100
+            minimum: 1
+            maximum: 500
           description: >-
             The number of channels per page. The value range is [1,500].
       responses:
@@ -140,18 +143,16 @@ paths:
   /dev/v1/channel/user/{appid}/{channelName}:
     get:
       summary: Query the user list
-      description: >-
-        Use this endpoint to get the list of all users in a specified channel.
-        All users in the channel must use the same channel profile; otherwise,
-        the query results may be inaccurate.
-
-
-        The returned list differs based on the channel profile:
-
-        - `COMMUNICATION` profile: Returns the list of all users in the channel.
-
-        - `LIVE_BROADCASTING` profile: Returns the list of all hosts and
-          audience members in the channel.
+      description: Retrieves users in a specified channel.
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            All users in the channel must use the same channel profile; otherwise, the
+            query results may be inaccurate. For the `COMMUNICATION` profile, the
+            response returns all users in the channel. For the `LIVE_BROADCASTING`
+            profile, the response returns hosts and audience members.
       operationId: cma-query-user-list
       parameters:
         - $ref: "#/components/parameters/appidPath"
@@ -250,11 +251,15 @@ paths:
   /dev/v1/channel/user/{appid}/{channelName}/hosts_only:
     get:
       summary: Query the host list
-      description: >-
-        Use this endpoint to get the list of hosts in a specified channel. This
-        endpoint is only available in the `LIVE_BROADCASTING` profile (`mode =
-        2`); all users in the channel must use the same profile, otherwise query
-        results may be inaccurate.
+      description: Retrieves hosts in a specified channel.
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            This endpoint is only available in the `LIVE_BROADCASTING` profile (`mode =
+            2`). All users in the channel must use the same profile; otherwise, query
+            results may be inaccurate.
       operationId: cma-query-host-list
       parameters:
         - $ref: "#/components/parameters/appidPath"
@@ -316,10 +321,14 @@ paths:
   /dev/v1/channel/user/property/{appid}/{uid}/{channelName}:
     get:
       summary: Query user status
-      description: >-
-        Use this endpoint to get the status of a specified user. It checks
-        whether the user is in the specified channel and, if present, returns
-        the user's role and the time they joined.
+      description: Retrieves the status of a specified user in a channel.
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            This endpoint checks whether the user is in the specified channel and, if
+            present, returns the user's role and the time they joined.
       operationId: cma-query-user-status
       parameters:
         - $ref: "#/components/parameters/appidPath"

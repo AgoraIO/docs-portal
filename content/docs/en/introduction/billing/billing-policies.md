@@ -176,7 +176,7 @@ This section outlines the stages that an Agora product or service moves through,
 
 ### Default introduction period
 
-Agora guarantees a minimum introduction period of 12 months from the release of a product on the [Agora Developer Center](https://docs.agora.io/en/). During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
+Agora guarantees a minimum introduction period of 12 months from the release of a product on the Agora Developer Center. During this period, Agora does not initiate any end-of-support or end-of-life actions. After the 12-month period, Agora may transition a product into the Maintenance phase, which marks the beginning of the end-of-support phase.
 
 ### SDK lifecycle
 

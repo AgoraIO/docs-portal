@@ -48,15 +48,39 @@ The maximum number of supported streams is as follows:
 
 | Service type    | Mainland China        | Europe               | America               | Asia (excluding mainland China) |
 |:----------------|:----------------------|:---------------------|:----------------------|:--------------------------------|
-| Cloud recording | - SD 100
+| Cloud recording | <Slot name="cloud-recording-streams-mainland-china" /> | <Slot name="cloud-recording-streams-europe" /> | <Slot name="cloud-recording-streams-america" /> | <Slot name="cloud-recording-streams-asia" /> |
+
+<Slot for="cloud-recording-streams-mainland-china">
+
+- SD 100
 - HD 50
-- FHD 30 | - SD 50
+- FHD 30
+
+</Slot>
+
+<Slot for="cloud-recording-streams-europe">
+
+- SD 50
 - HD 30
-- FHD 10 | - SD 50
+- FHD 10
+
+</Slot>
+
+<Slot for="cloud-recording-streams-america">
+
+- SD 50
 - HD 50
-- FHD 30 | - SD 50
+- FHD 30
+
+</Slot>
+
+<Slot for="cloud-recording-streams-asia">
+
+- SD 50
 - HD 50
-- FHD 30           |
+- FHD 30
+
+</Slot>
 
 :::warning[Note]
 If you need to record multiple streams of different resolutions at the same time, make sure you meet the following requirements:- The number of streams per resolution cannot exceed the corresponding limit for that resolution.
@@ -202,23 +226,61 @@ To ensure reliability of the cloud recording service, refer to the following che
 | Serial | Importance | Item | Description |
 |--|----------|----------|----------|
 | 1 | required | Subscribe to a service | Make sure you have activated the cloud recording service. |
-| 2 | required | request method | - To query, use the `POST` request method; to query the recording status use `GET`.
-- Request URLs and request body content are case-sensitive. |
-| 3 | required | Get recording resources | - The passed in `uid` cannot duplicate any UID within the current channel.
+| 2 | required | request method | <Slot name="cloud-recording-checklist-request-method" /> |
+| 3 | required | Get recording resources | <Slot name="cloud-recording-checklist-recording-resources" /> |
+| 4 | required | channel scene | Make sure that the channel scene (`channelType`) is consistent with the settings of the Video SDK. |
+| 5 | required | recording parameters | <Slot name="cloud-recording-checklist-recording-parameters" /> |
+| 6 | required | Confirm that the recording service has started successfully | <Slot name="cloud-recording-checklist-start-success" /> |
+| 7 | required | PCW & QPS limits | <Slot name="cloud-recording-checklist-pcw-qps" /> |
+| 8 | optional | NCS Service Activation | <Slot name="cloud-recording-checklist-ncs-activation" /> |
+| 9 | optional | Use dual domain names | If the request fails with the primary domain name `api.agora.io`, try again with the primary domain name. If it fails again, switch to the secondary domain name `api.sd-rtn.com` and send the request again. |
+| 10 | optional | timeout logic | Make sure that the `maxIdleTime` setting is reasonable. The recommended value is 300 seconds. |
+
+<Slot for="cloud-recording-checklist-request-method">
+
+- To query, use the `POST` request method; to query the recording status use `GET`.
+- Request URLs and request body content are case-sensitive.
+
+</Slot>
+
+<Slot for="cloud-recording-checklist-recording-resources">
+
+- The passed in `uid` cannot duplicate any UID within the current channel.
 - For page recording, make sure an `appid + cname + uid` corresponds to a resource ID.
 - Make sure that a resource ID is only used for one cloud recording service.
-- Make sure to call the `start` method. |
-| 4 | required | channel scene | Make sure that the channel scene (`channelType`) is consistent with the settings of the Video SDK. |
-| 5 | required | recording parameters | - Make sure that the type, case, and value range of all the parameters passed in when starting the recording are correct, and the required parameters are filled; otherwise, error code 2 is returned.
-- Set the layout and video bit rate of the combined recording by referring to the combined layout document and the recording bit rate comparison table. |
-| 6 | required | Confirm that the recording service has started successfully | - Make sure that the start request is successful, that is, the `sid` (recording ID) is successfully obtained.
-- Call the query method 5 seconds after getting the `sid` using the backoff strategy. If the returned status is still not `4` or `5`, after 90 seconds, it can be considered that the recording has not started or exited after a timeout. |
-| 7 | required | PCW & QPS limits | - Make sure that each App ID does not exceed 10 requests per second (QPS).
-- To increase the QPS and PCW limits, please contact technical support. |
-| 8 | optional | NCS Service Activation | Activate the cloud recording callback service and subscribe to the following events as an auxiliary means of monitoring the recording service status: - `40 recorder_started`: The recording service has started.
+- Make sure to call the `start` method.
+
+</Slot>
+
+<Slot for="cloud-recording-checklist-recording-parameters">
+
+- Make sure that the type, case, and value range of all the parameters passed in when starting the recording are correct, and the required parameters are filled; otherwise, error code 2 is returned.
+- Set the layout and video bit rate of the combined recording by referring to the combined layout document and the recording bit rate comparison table.
+
+</Slot>
+
+<Slot for="cloud-recording-checklist-start-success">
+
+- Make sure that the start request is successful, that is, the `sid` (recording ID) is successfully obtained.
+- Call the query method 5 seconds after getting the `sid` using the backoff strategy. If the returned status is still not `4` or `5`, after 90 seconds, it can be considered that the recording has not started or exited after a timeout.
+
+</Slot>
+
+<Slot for="cloud-recording-checklist-pcw-qps">
+
+- Make sure that each App ID does not exceed 10 requests per second (QPS).
+- To increase the QPS and PCW limits, please contact technical support.
+
+</Slot>
+
+<Slot for="cloud-recording-checklist-ncs-activation">
+
+Activate the cloud recording callback service and subscribe to the following events as an auxiliary means of monitoring the recording service status:
+
+- `40 recorder_started`: The recording service has started.
 - `11 session_exit`: The recording service ended the task and exited.
 - `1 cloud_recording_error`: An error occurred in the recording service.
 - `12 session_failover`: Enable high availability mechanism for recording.
-- `31 uploaded`: All recorded files have been uploaded to the specified third-party cloud storage. |
-| 9 | optional | Use dual domain names | If the request fails with the primary domain name `api.agora.io`, try again with the primary domain name. If it fails again, switch to the secondary domain name `api.sd-rtn.com` and send the request again. |
-| 10 | optional | timeout logic | Make sure that the `maxIdleTime` setting is reasonable. The recommended value is 300 seconds. |
+- `31 uploaded`: All recorded files have been uploaded to the specified third-party cloud storage.
+
+</Slot>

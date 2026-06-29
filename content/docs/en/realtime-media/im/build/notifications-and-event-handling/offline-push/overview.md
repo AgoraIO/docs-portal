@@ -5,26 +5,6 @@ description: "Introduces offline push notification services."
 
 <a id="custom-displays"></a>
 
-### All except Android
-
-### All except iOS
-
-### All except Web
-
-### All except Flutter
-
-### All except React Native
-
-**This feature is not supported for this platform.**
-
-### All except Windows
-
-### All except Unity
-
-### All except iOS
-
-### All except Web
-
 Chat supports integration of Google Firebase Cloud Messaging (FCM), which enables developers to use an offline push notification service. The service features low latency, high delivery, high concurrency, and no violation of the users' personal data.
 
 ### iOS
@@ -34,10 +14,6 @@ Chat supports integration of Apple Push Notification service (APNs), which enabl
 ### Web
 
 Chat supports integration of offline push services that feature low latency, high delivery, high concurrency, and no violation of the users' personal data. The Web SDK itself does not support offline push; instead it supports offline push configuration on mobile platforms.
-
-### All except iOS
-
-### All except Web
 
 When a user goes offline because of client disconnection or the app process closing, Chat will push notifications to the offline user's device through the FCM message push service.
 
@@ -50,8 +26,6 @@ When a user goes offline because of client disconnection or the app process clos
 When a user goes offline because of client disconnection or the app process closing, Chat will push notifications to the offline user's device.
 
 When the user is online again, the server will send the messages received while they were offline.
-
-### All except Web
 
 For example, when you are offline and another user sends you a message, a notification will pop up on your phone. When you open the app and log in successfully, Chat will actively pull the messages sent when you were offline.
 
@@ -99,15 +73,9 @@ WebIM.conn.uploadPushToken(params);
 
 ## Understand the tech
 
-### All except Web
-
 The following figure shows the basic workflow of offline push:
 
 ![1655713515869](https://web-cdn.agora.io/docs-files/1655713515869)
-
-### All except iOS
-
-### All except Web
 
 1. User B initializes the FCM push SDK and checks whether FCM push is configured.
 1. User B obtains the device token from the FCM push server according to the configured FCM push SDK.

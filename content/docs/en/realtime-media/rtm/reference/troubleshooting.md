@@ -40,7 +40,7 @@ When calling the RTM Java API, if an error occurs, the SDK will execute the `onF
 | `reason`    | String | The reason for the error. |
 | `operation` | String | The type of operation. |
 
-The `errorCode` and `reason` properties report the error code and description, respectively. Refer to the [error codes table](https://docs.agora.io/en/signaling/reference/error-codes) to get more information about the error.
+The `errorCode` and `reason` properties report the error code and description, respectively. Refer to the [error codes table](/en/realtime-media/rtm/reference/error-codes) to get more information about the error.
 
 ## Contact Us
 

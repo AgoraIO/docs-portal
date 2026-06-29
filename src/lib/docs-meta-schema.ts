@@ -20,7 +20,9 @@ const docsMetaExternalPageLinkSchema = z.object({
 const docsMetaPageGroupSchema = z.object({
   collapsible: z.boolean().optional(),
   icon: z.string().min(1).optional(),
-  pages: z.array(z.string().min(1)).min(1),
+  pages: z
+    .array(z.union([z.string().min(1), docsMetaExternalPageLinkSchema]))
+    .min(1),
   title: z.string().min(1),
   type: z.literal('group'),
 });
@@ -39,7 +41,13 @@ const docsMetaPageEntrySchema = z.union([
           ? '{dropdown}'
           : '{flat}';
 
-    return [`---${iconPrefix}${entry.title}${flags}---`, ...entry.pages];
+    const resolvedPages = entry.pages.map((page) =>
+      typeof page === 'string'
+        ? page
+        : `external:[${page.title}](${page.href})`,
+    );
+
+    return [`---${iconPrefix}${entry.title}${flags}---`, ...resolvedPages];
   }),
 ]);
 
@@ -63,6 +71,7 @@ export const docsMetaSchema = metaSchema.extend({
     .array(docsMetaPageEntrySchema)
     .transform((entries) => entries.flat())
     .optional(),
+  sidebarHidden: z.boolean().optional(),
   sidebarIndexTitle: z.string().min(1).optional(),
 });
 

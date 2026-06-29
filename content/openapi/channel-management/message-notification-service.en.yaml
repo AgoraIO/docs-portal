@@ -33,16 +33,16 @@ paths:
   /v2/ncs/ip:
     get:
       summary: Query the IP address
-      description: >-
-        Use this endpoint to retrieve the IP addresses of the Agora
-        Notifications service (NCS) server. If your server is behind a firewall,
-        add these IP addresses to your allowlist to receive channel event
-        notifications.
-
-
-        > Agora occasionally adjusts the NCS IP addresses. Call this endpoint at
-        least every 24 hours and automatically update your firewall
-        configuration with the latest addresses.
+      description: Retrieves Agora Notifications service server IP addresses.
+      x-docs-callouts:
+        - type: info
+          title: Note
+          position: after-description
+          markdown: >
+            If your server is behind a firewall, add the returned IP addresses to your
+            allowlist to receive channel event notifications. Agora occasionally adjusts
+            the NCS IP addresses. Call this endpoint at least every 24 hours and
+            automatically update your firewall configuration with the latest addresses.
       operationId: cma-query-ip-address
       responses:
         "200":

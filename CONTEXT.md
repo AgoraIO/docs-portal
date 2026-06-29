@@ -138,6 +138,30 @@ _Avoid_: source asset, committed public copy
 The full verification boundary for OpenAPI endpoint pages across build output, public YAML, rendered docs, llms exports, search, and browser layout.
 _Avoid_: types-only verification, unit-test-only completion
 
+### Reference navigation
+
+**Reference overview**:
+The global landing page for the Reference tab (`/api-reference`) — a hub that links to every Reference area (SDKs, API References, Recipes, FAQ). It is not a catalog of API-reference products; that depth lives on the **API reference** page and in the sidebar.
+_Avoid_: API reference index, product catalog landing, SDK/REST grid page
+
+### FAQ
+
+**FAQ hub**:
+The single FAQ landing page at `/faq` that offers category entry points and a search across all FAQ entries.
+_Avoid_: FAQ catalog, FAQ overview page
+
+**FAQ category page**:
+A per-category FAQ view that lists the FAQ entries in one category with category-scoped search and product/platform filtering.
+_Avoid_: catalog tab, category rail, FAQ catalog
+
+**FAQ category**:
+One of the five top-level FAQ groupings — Integration, Quality, Product, Account & billing, Other.
+_Avoid_: FAQ section, FAQ tag
+
+**FAQ entry**:
+A single question shown with a one-line summary that links out to its own troubleshooting article; FAQ answers are never inlined.
+_Avoid_: FAQ card, inline FAQ answer, FAQ accordion item
+
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
@@ -152,6 +176,7 @@ _Avoid_: types-only verification, unit-test-only completion
 - Apple-shared legacy content such as `platform="ios, macos"` may render under both iOS and macOS page-level tabs without being split into separately rewritten prose sources.
 - Shared legacy content must be expanded into the migrated target page rather than preserved as a runtime dependency on the source repo, while retaining original paragraphs, headings, code samples, and tab structure unless the target runtime has been proven unable to carry them.
 - **Platform-run normalization** must preserve platform-local semantics and group boundaries rather than collapsing all platform content into one global page-level switcher.
+- A **Platform group** reached through a one-level shared `<include>` renders as **Page-level platform tabs** and is a supported shape, not an **Unsupported migration case**; shared-content expansion depth beyond one level remains a migration blocker (`spec.md:485`).
 - A **Shared-bundle container page** must undergo **Product-scope extraction** before page-fatal evaluation or final promotion.
 - After **Product-scope extraction**, the default unit of a **High-fidelity migration** remains the full source prose page rather than a reduced subset.
 - **Reference narrowing** is an exception path and must not be triggered only because a shared prose page is broad, cross-product, or larger than a preferred product-local reference page.
@@ -175,6 +200,10 @@ _Avoid_: types-only verification, unit-test-only completion
 - A **Static API reference** renders nested fields as a **Schema tree**, expanded by default only for shallow levels.
 - A **Published OpenAPI asset** is generated from an **OpenAPI source** during build and is not committed as a second source.
 - The **OpenAPI lane acceptance gate** must pass before OpenAPI rendering work is considered complete.
+- An **FAQ hub** links to **FAQ category pages**, one per **FAQ category**; the hub and the category pages are **MDX-authored pages**.
+- A **FAQ category page** lists **FAQ entries**; each **FAQ entry** links to its own troubleshooting **MDX-authored page** and is never expanded inline.
+- **FAQ entries** are trimmed out of the docs sidebar tree but remain routable; the sidebar shows only the **FAQ hub** and its **FAQ category pages**.
+- The **Reference overview** links to each Reference area (SDKs, **API reference**, recipes, **FAQ hub**) and does not duplicate their contents; the per-product SDK and REST references live on the **API reference** page and the sidebar.
 
 ## Example dialogue
 
@@ -236,3 +265,4 @@ _Avoid_: types-only verification, unit-test-only completion
 - "schema table" sounded like a shallow or horizontally wide table; resolved: render nested contracts as a **Schema tree** with guarded recursion.
 - "public YAML" sounded like another maintained file; resolved: `/openapi/**` is a **Published OpenAPI asset** derived at build time.
 - "done" was too narrow when it meant only typecheck or unit tests; resolved: use the **OpenAPI lane acceptance gate** for completion.
+- "Server SDK" was used as a generic label for the in-portal `api-ref/server-sdk` references; resolved: this is **Voice Agents** — the named Conversational AI server SDK (TypeScript/Python/Go) for integrating Agora's Conversational AI server-side, a distinct DevX product. (Earlier called "Agora Agents"; renamed to "Voice Agents".) Avoid the generic "Server SDK" name for it.

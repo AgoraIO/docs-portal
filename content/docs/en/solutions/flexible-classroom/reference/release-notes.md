@@ -65,7 +65,7 @@ This version adds the following new scenarios:
 - Online classroom scenarios and the introduction of a new UI style and interactive experience that are closer to the usage habits of educational users. See the following documentation:
 
   - [FcrUIScene SDK](../build/customize-the-ui-and-plugins/customize-ui-scene-sdk.md)
-  - [API Reference](https://docs.agora.io/en/flexible-classroom/client-api/ui-scene)
+  - [API Reference](/en/api-reference/api-ref/flexible-classroom/ui-scene)
 
 One-to-one private chat function. This function does not currently support retrieving historical messages from servers on demand.
 
@@ -124,7 +124,7 @@ Flexible Classroom features:
 
 **Online proctoring scenario**
 
-v2.8.0 provides the Agora Proctor SDK for online exam proctoring scenarios. For details, see the [Agora Proctor SDK API reference](https://docs.agora.io/en/flexible-classroom/client-api/proctor-sdk).
+v2.8.0 provides the Agora Proctor SDK for online exam proctoring scenarios. For details, see the [Agora Proctor SDK API reference](/en/api-reference/api-ref/flexible-classroom/proctor-sdk).
 
 **Beauty options, virtual background, noise suppression**
 
@@ -241,7 +241,7 @@ v2.4.x adds the ability to turn the whiteboard on or off in one-on-one classroom
 
 This release includes the following improvements:
 
-- Optimizes widgets: v2.4.x optimizes the internal technical architecture of the three widgets: Pop-up Quiz, Poll, and Countdown Timer for the higher stability and better end-user experience. In addition, v2.4.x enables developers to get the data of pop-up quizzes and polls through RESTful APIs. For details, see the [RESTful API reference](https://docs.agora.io/en/flexible-classroom/restful-api/classroom-api).
+- Optimizes widgets: v2.4.x optimizes the internal technical architecture of the three widgets: Pop-up Quiz, Poll, and Countdown Timer for the higher stability and better end-user experience. In addition, v2.4.x enables developers to get the data of pop-up quizzes and polls through RESTful APIs. For details, see the [RESTful API reference](/en/api-reference/api-ref/flexible-classroom/classroom-rest-api).
 - Improves the compatibility of the Web client: The Web client is now supported on the desktop version of Firefox.
 - Optimizes the cloud storage: v2.4.x optimizes the business logic and UI of the cloud storage feature in Flexible Classroom.
 - Optimizes the whiteboard: v2.4.x adds laser pointer, undo, redo, and one-click screen-clearing features on the whiteboard in Flexible Classroom.
@@ -360,7 +360,7 @@ v1.1.5 was released on October 20, 2021.
 
 **Making open-source libraries into closed-source ones**
 
-As of v1.1.5, the `agora-edu-core` and `agora-rte-sdk` libraries in Flexible Classroom are closed-source. Agora moves the implementation of `AgoraEduCore.launch` into `agora-edu-core`, so developers can no longer make changes to it. For the parameters in `launchOption`, see the [API reference](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk).
+As of v1.1.5, the `agora-edu-core` and `agora-rte-sdk` libraries in Flexible Classroom are closed-source. Agora moves the implementation of `AgoraEduCore.launch` into `agora-edu-core`, so developers can no longer make changes to it. For the parameters in `launchOption`, see the [API reference](/en/api-reference/api-ref/flexible-classroom/classroom-sdk).
 
 #### New features
 
@@ -419,7 +419,7 @@ v1.1.0.1 was released on July 7, 2021.
 
 **Media encryption**
 
-To ensure the security during real-time audio and video transmission, v1.1.0.1 adds the `mediaOptions` parameter in [`LaunchOption`](https://docs.agora.io/en/flexible-classroom/client-api/classroom-sdk) for supporting media stream encryption. By default, Flexible Classroom does not encrypt the media stream. To enable media encryption, use the `mediaOptions` parameter to choose an encryption mode and set the encryption key. Flexible Classroom supports the following encryption modes:
+To ensure the security during real-time audio and video transmission, v1.1.0.1 adds the `mediaOptions` parameter in [`LaunchOption`](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) for supporting media stream encryption. By default, Flexible Classroom does not encrypt the media stream. To enable media encryption, use the `mediaOptions` parameter to choose an encryption mode and set the encryption key. Flexible Classroom supports the following encryption modes:
 
 - `AES_128_XTS`: 128-bit AES encryption, XTS mode.
 - `AES_128_ECB`: 128-bit AES encryption, ECB mode.

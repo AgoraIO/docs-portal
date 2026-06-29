@@ -1,6 +1,6 @@
 ---
 title: "User system registration"
-description: "Shows how to call Agora Chat RESTful APIs to create and manage the user system."
+description: "Agora Chat RESTful APIs for user system registration and management."
 ---
 
 This page shows how to call Chat RESTful APIs to create and manage the user system, including how to register, modify, delete, ban, and unban a user, get user information, and force a user to log out.

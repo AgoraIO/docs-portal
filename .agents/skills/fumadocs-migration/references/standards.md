@@ -1,5 +1,11 @@
 # Fumadocs Content Standards
 
+For low-level authoring syntax, follow
+`docs/agents/markdown-authoring-standard.md`. This reference defines migration
+priorities and portal contracts; the authoring standard is the canonical
+checklist for directive indentation, code tabs, platform blocks, list
+continuations, images, and tables.
+
 ## Priority
 
 Use target formats in this order:

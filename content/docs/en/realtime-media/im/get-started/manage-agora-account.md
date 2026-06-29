@@ -90,6 +90,6 @@ details of your project in Agora Console.
 
 1. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](https://docs.agora.io/en/video-calling/reference/console-overview).
+For more information on managing other aspects of your Agora account, see [Agora console overview](/en/realtime-media/video/reference/console-overview).
 
 For more information on managing other aspects of your Agora account, see [Agora console overview](/en/realtime-media/rtc/reference/console-overview).

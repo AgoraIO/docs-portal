@@ -39,15 +39,39 @@ The maximum number of supported streams is as follows:
 
 | Service type       | Mainland China        | Europe               | America               | Asia (excluding mainland China)                          |
 |:-------------------|:----------------------|:---------------------|:----------------------|:---------------------------------------------------------|
-| Web page recording | - SD 100
+| Web page recording | <Slot name="webpage-recording-streams-mainland-china" /> | <Slot name="webpage-recording-streams-europe" /> | <Slot name="webpage-recording-streams-america" /> | <Slot name="webpage-recording-streams-asia" /> |
+
+<Slot for="webpage-recording-streams-mainland-china">
+
+- SD 100
 - HD 50
-- FHD 30 | - SD 50
+- FHD 30
+
+</Slot>
+
+<Slot for="webpage-recording-streams-europe">
+
+- SD 50
 - HD 30
-- FHD 10 | - SD 100
+- FHD 10
+
+</Slot>
+
+<Slot for="webpage-recording-streams-america">
+
+- SD 100
 - HD 50
-- FHD 30 | - SD 100
+- FHD 30
+
+</Slot>
+
+<Slot for="webpage-recording-streams-asia">
+
+- SD 100
 - HD 100
-- FHD 30 |
+- FHD 30
+
+</Slot>
 
 :::warning[Note]
 If you need to record multiple streams of different resolutions at the same time, make sure you meet the following requirements:- The number of streams per resolution cannot exceed the corresponding limit for that resolution.

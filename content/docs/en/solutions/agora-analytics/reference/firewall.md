@@ -11,8 +11,8 @@ The following table lists the support of Agora products for the two solutions:
 |---|:---:|:---:|
 |Video SDK (Native, third-party frameworks) |✘ |✔|
 |Video SDK (Web) |✔ |✔|
-|Signalling SDK (Native) | ✔ | ✘ |
-|Signalling SDK (Web) | ✔ | ✔ |
+|Signaling SDK (Native) | ✔ | ✘ |
+|Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
 |Interactive Gaming SDK | ✘ |✘|
 
@@ -69,7 +69,8 @@ For a message channel, you need to add the following content to the firewall whi
     | 443; 9591; 9593; 27387 | TCP      | Allow   |
 
     :::info
-    > If you are using Signaling 1.x, also add port 9601.
+    If you are using Signaling 1.x, also add port 9601.
+    :::
 
 #### Stream channel
 
@@ -118,4 +119,5 @@ For a stream channel, you need to add the following to your firewall whitelist:
     | 4001 - 4150      | UDP      | Allow   |
 
 :::info
-> The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+:::

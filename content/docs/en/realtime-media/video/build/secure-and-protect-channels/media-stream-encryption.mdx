@@ -16,7 +16,7 @@ The following figure illustrates the process of data transfer with media stream 
 ![EncryptMediaStream](/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
 
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
 
 ## Implement media stream encryption
 
@@ -67,10 +67,10 @@ To add built-in media stream encryption to your app, refer to the following step
 
      * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
 
-:::info
-:::
-  > - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-  >   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
+  :::note
+  - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
+  :::
 
   To implement this logic, refer to the following code:
 

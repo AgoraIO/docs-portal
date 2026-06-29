@@ -65,6 +65,190 @@ describe('app prose CSS regressions', () => {
     expect(secondLevel.sourceStart).toBeLessThan(thirdLevel.sourceStart);
   });
 
+  it('keeps wrapped prose tables intrinsic while raw tables retain scroll fallback', () => {
+    const table = getRuleBody(
+      '.prose :where(table):not(:where(.not-prose, .not-prose *))',
+    );
+    const wrappedTable = getRuleBody(
+      `.prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
+    );
+    const cells = getRuleBody(
+      '.prose :where(th, td):not(:where(.not-prose, .not-prose *))',
+    );
+    const headers = getRuleBody(
+      '.prose :where(th):not(:where(.not-prose, .not-prose *))',
+    );
+    const firstColumn = getRuleBody(
+      `.prose
+        :where(th:first-child, td:first-child):not(
+          :where(.not-prose, .not-prose *)
+        )`,
+    );
+
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'block',
+      }),
+    );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: '100%',
+      }),
+    );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '100%',
+      }),
+    );
+    const tableOverflowOverride = getRuleBody(
+      ':where(html) .prose :where(table):not(:where(.not-prose, .not-prose *))',
+    );
+    const wrappedTableOverflowOverride = getRuleBody(
+      `:where(html)
+        .prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
+    );
+
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-x',
+        value: 'auto',
+      }),
+    );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-y',
+        value: 'hidden',
+      }),
+    );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: '100%',
+      }),
+    );
+    expect(table.rule.nodes).not.toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow',
+        value: 'hidden',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'table',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: 'auto',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '0',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow',
+        value: 'visible',
+      }),
+    );
+    expect(tableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-x',
+        value: 'auto',
+      }),
+    );
+    expect(tableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-y',
+        value: 'hidden',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'table',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: 'auto',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '0',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow',
+        value: 'visible',
+      }),
+    );
+    expect(table.sourceStart).toBeLessThan(wrappedTable.sourceStart);
+    expect(tableOverflowOverride.sourceStart).toBeLessThan(
+      wrappedTableOverflowOverride.sourceStart,
+    );
+    expect(cells.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '7.5rem',
+      }),
+    );
+    expect(cells.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'break-word',
+      }),
+    );
+    expect(cells.rule.nodes).not.toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
+      }),
+    );
+    expect(headers.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'white-space',
+        value: 'nowrap',
+      }),
+    );
+    expect(firstColumn.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '9.5rem',
+      }),
+    );
+  });
+
   it('keeps table image cells wide enough for readable thumbnails', () => {
     const imageCell = getRuleBody(
       '.prose :where(td:has(> img)):not(:where(.not-prose, .not-prose *))',

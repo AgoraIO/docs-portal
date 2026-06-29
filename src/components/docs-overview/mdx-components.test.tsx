@@ -209,20 +209,24 @@ describe('overview MDX components', () => {
         ]}
         knowledgeBase={[
           {
-            href: 'https://docs.agora.io/en/help/integration-issues/restful_authentication',
+            href: '/en/introduction/support',
             label: 'How to implement basic HTTP authentication?',
           },
         ]}
         topics={[
           {
-            href: 'https://docs.agora.io/en/help/integration-issues',
+            href: '/en/introduction/support',
             label: 'Integration issues',
           },
         ]}
       />,
     );
 
-    expect(screen.getByText('How can we help?')).toBeVisible();
+    expect(
+      screen.getByText(
+        'Choose the fastest path for product questions, service health, and community support.',
+      ),
+    ).toBeVisible();
     expect(
       screen.getByRole('link', { name: /Support tickets/i }),
     ).toHaveAttribute('href', 'https://agoraio.zendesk.com/hc/en-us');
@@ -233,13 +237,13 @@ describe('overview MDX components', () => {
       }),
     ).toHaveAttribute(
       'href',
-      'https://docs.agora.io/en/help/integration-issues/restful_authentication',
+      '/en/introduction/support',
     );
     expect(
       screen.getByRole('link', { name: /Integration issues/i }),
     ).toHaveAttribute(
       'href',
-      'https://docs.agora.io/en/help/integration-issues',
+      '/en/introduction/support',
     );
   });
 

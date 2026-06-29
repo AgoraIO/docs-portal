@@ -21,6 +21,61 @@ export type SdkDownloadPlatform = {
 
 export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
   {
+    id: 'typescript',
+    label: 'TypeScript',
+    core: [
+      {
+        id: 'agents-sdk-typescript',
+        label: 'Agora Agents SDK',
+        info: 'SDK for: Conversational AI — build and run server-side voice agents',
+        versions: [
+          {
+            id: '2.3.1-agents-sdk-typescript',
+            label: 'Version 2.3.1 (Latest)',
+            packageManager: 'https://www.npmjs.com/package/agora-agents/v/2.3.1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'python',
+    label: 'Python',
+    core: [
+      {
+        id: 'agents-sdk-python',
+        label: 'Agora Agents SDK',
+        info: 'SDK for: Conversational AI — build and run server-side voice agents',
+        versions: [
+          {
+            id: '2.3.0-agents-sdk-python',
+            label: 'Version 2.3.0 (Latest)',
+            packageManager: 'https://pypi.org/project/agora-agents/',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'go',
+    label: 'Go',
+    core: [
+      {
+        id: 'agents-sdk-go',
+        label: 'Agora Agents SDK',
+        info: 'SDK for: Conversational AI — build and run server-side voice agents',
+        versions: [
+          {
+            id: '2.3.1-agents-sdk-go',
+            label: 'Version 2.3.1 (Latest)',
+            packageManager:
+              'https://pkg.go.dev/github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'android',
     label: 'Android',
     core: [

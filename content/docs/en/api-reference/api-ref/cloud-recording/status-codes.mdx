@@ -29,7 +29,7 @@ When you call the Cloud Recording RESTful API, each response includes an HTTP st
 | Status code | `message` | Description | Resolution |
 | --- | --- | --- | --- |
 | `400 Bad Request` | `"appid is invalid"` | Invalid App ID. | Enable the cloud recording service for this App ID before calling the API. |
-| `401 Unauthorized` | `"Unauthorized"` | Authorization header is missing. | Ensure you are using [HTTP Basic Auth](authentication) and that the `Authorization` field is included in the request header. |
+| `401 Unauthorized` | `"Unauthorized"` | Authorization header is missing. | Ensure you are using [HTTP Basic Auth](/en/api-reference/api-ref/cloud-recording/authentication) and that the `Authorization` field is included in the request header. |
 | `401 Unauthorized` | `"Invalid authentication credentials"` | Invalid Authorization. | Check that your Customer ID and Customer Secret are correct, that the Authorization is generated correctly, and that the Customer ID and Customer Secret match the App ID. |
 | `404 Not Found` | `"no Route matched with those values"` | Incorrect request route. | Check that the HTTP method and URL are correct. |
 | `429 Too Many Requests` | `"API rate limit exceeded"` | Request rate limit exceeded. | Reduce the frequency of API calls. To request a higher quota, contact [support@agora.io](mailto:support@agora.io). |

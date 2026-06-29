@@ -340,6 +340,9 @@ function navScopeParentNodeToSidebarNodes(
   }
 
   const meta = getNodeMeta(node);
+  if (meta?.sidebarHidden) {
+    return [];
+  }
   if (meta?.navScope) {
     return [getFolderLinkedSectionNode(node, meta)];
   }
@@ -506,6 +509,9 @@ function navScopeNodeToSidebarNodes(
   }
 
   const meta = getNodeMeta(node);
+  if (meta?.sidebarHidden) {
+    return [];
+  }
   if (meta?.navScope) {
     return shouldUseScopedFolderEntryInParent(node, meta, getNodeMeta)
       ? [getFolderPageNode(node, meta)]

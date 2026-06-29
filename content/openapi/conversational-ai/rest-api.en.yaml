@@ -46,10 +46,1274 @@ paths:
   /v2/projects/{appid}/join:
     post:
       summary: Start a conversational AI agent
-      description: Use this endpoint to create and start a Conversational AI agent instance.
+      description: Creates and starts a Conversational AI agent instance.
+      x-docs-sections:
+        - position: after-description
+          markdown: Use this endpoint to create and start a Conversational AI agent instance.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](/conversational-ai/rest-api/reference) to understand the possible reasons for
+            failure.
+
+
+            - The following turn detection configuration is deprecated. To create more natural
+            conversations and reduce unintended interruptions, Agora recommends using the latest
+            version of `turn_detection` above.
       operationId: start-agent
+      x-docs-code-sample-groups:
+        - samples:
+            - lang: bash
+              label: curl
+              source: |-
+                curl --request post \
+                --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+                --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+                --data '
+                {
+                    "name": "unique_name",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "1001",
+                        "remote_rtc_uids": [
+                            "1002"
+                        ],
+                        "idle_timeout": 120,
+                        "llm": {
+                            "url": "https://api.openai.com/v1/chat/completions",
+                            "api_key": "<your_llm_key>",
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful chatbot."
+                                }
+                            ],
+                            "max_history": 32,
+                            "greeting_message": "Hello, how can I assist you today?",
+                            "failure_message": "Please hold on a second.",
+                            "params": {
+                                "model": "gpt-4o-mini"
+                            }
+                        },
+                        "tts": {
+                            "vendor": "microsoft",
+                            "params": {
+                                "key": "<your_tts_api_key>",
+                                "region": "eastus",
+                                "voice_name": "en-US-AndrewMultilingualNeural"
+                            }
+                        },
+                        "asr": {
+                            "language": "en-US"
+                        }
+                    }
+                }'
+            - lang: python
+              label: Python
+              source: |-
+                import requests
+                import json
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join"
+
+                headers = {"Authorization": "Basic <your_base64_encoded_credentials>"}
+
+                data = {
+                    "name": "unique_name",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "1001",
+                        "remote_rtc_uids": ["1002"],
+                        "idle_timeout": 120,
+                        "llm": {
+                            "url": "https://api.openai.com/v1/chat/completions",
+                            "api_key": "<your_llm_key>",
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful chatbot."
+                                }
+                            ],
+                            "max_history": 32,
+                            "greeting_message": "Hello, how can I assist you today?",
+                            "failure_message": "Please hold on a second.",
+                            "params": {
+                                "model": "gpt-4o-mini"
+                            }
+                        },
+                        "tts": {
+                            "vendor": "microsoft",
+                            "params": {
+                                "key": "<your_tts_api_key>",
+                                "region": "eastus",
+                                "voice_name": "en-US-AndrewMultilingualNeural"
+                            }
+                        },
+                        "asr": {
+                            "language": "en-US"
+                        }
+                    }
+                }
+
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+
+                print(response.status_code)
+                print(response.json())
+            - lang: js
+              label: Node.js
+              source: >-
+                const axios = require("axios");
+
+
+                const url =
+                "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join";
+
+
+                const headers = {
+                    "Authorization": "Basic <your_base64_encoded_credentials>"
+                };
+
+
+                const data = {
+                    name: "unique_name",
+                    properties: {
+                    channel: "channel_name",
+                    token: "token",
+                    agent_rtc_uid: "1001",
+                    remote_rtc_uids: ["1002"],
+                    idle_timeout: 120,
+                    llm: {
+                        url: "https://api.openai.com/v1/chat/completions",
+                        api_key: "<your_llm_key>",
+                        system_messages: [
+                        {
+                            role: "system",
+                            content: "You are a helpful chatbot."
+                        }
+                        ],
+                        max_history: 32,
+                        greeting_message: "Hello, how can I assist you today?",
+                        failure_message: "Please hold on a second.",
+                        params: {
+                        model: "gpt-4o-mini"
+                        }
+                    },
+                    tts: {
+                        vendor: "microsoft",
+                        params: {
+                        key: "<your_tts_api_key>",
+                        region: "eastus",
+                        voice_name: "en-US-AndrewMultilingualNeural"
+                        }
+                    },
+                    asr: {
+                        language: "en-US"
+                    }
+                    }
+                };
+
+
+                axios
+                    .post(url, data, { headers })
+                    .then(response => {
+                    console.log("Status:", response.status);
+                    console.log("Response:", response.data);
+                    })
+                    .catch(error => {
+                    console.error("Error:", error.response ? error.response.data : error.message);
+                    });
+          title: Basic configuration
+        - samples:
+            - lang: bash
+              label: curl
+              source: >-
+                curl -X POST
+                'https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join' \
+                  -H 'Content-Type: application/json' \
+                  -H 'Authorization: agora token=<your_token>' \
+                  -d '{
+                    "name": "<unique_agent_name>",
+                    "pipeline_id": "<your_pipeline_id>",
+                    "properties": {
+                      "channel": "<your_channel_name>",
+                      "token": "<your_rtc_token>",
+                      "agent_rtc_uid": "1001",
+                      "agent_rtm_uid": "<agent_rtm_uid>",
+                      "remote_rtc_uids": ["1002"],
+                      "enable_string_uid": false
+                    }
+                  }'
+            - lang: python
+              label: Python
+              source: >-
+                import requests
+
+                import json
+
+
+                url =
+                "https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join"
+
+
+                headers = {
+                    "Content-Type": "application/json",
+                    "Authorization": "agora token=<your_token>"
+                }
+
+
+                data = {
+                    "name": "<unique_agent_name>",
+                    "pipeline_id": "<your_pipeline_id>",
+                    "properties": {
+                        "channel": "<your_channel_name>",
+                        "token": "<your_rtc_token>",
+                        "agent_rtc_uid": "1001",
+                        "agent_rtm_uid": "<agent_rtm_uid>",
+                        "remote_rtc_uids": ["1002"],
+                        "enable_string_uid": False
+                    }
+                }
+
+
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+
+                print(response.json())
+            - lang: js
+              label: Node.js
+              source: >-
+                const url =
+                "https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join";
+
+
+                const headers = {
+                  "Content-Type": "application/json",
+                  "Authorization": "agora token=<your_token>"
+                };
+
+
+                const data = {
+                  name: "<unique_agent_name>",
+                  pipeline_id: "<your_pipeline_id>",
+                  properties: {
+                    channel: "<your_channel_name>",
+                    token: "<your_rtc_token>",
+                    agent_rtc_uid: "1001",
+                    agent_rtm_uid: "<agent_rtm_uid>",
+                    remote_rtc_uids: ["1002"],
+                    enable_string_uid: false
+                  }
+                };
+
+
+                fetch(url, {
+                  method: "POST",
+                  headers: headers,
+                  body: JSON.stringify(data)
+                })
+                  .then(response => response.json())
+                  .then(json => console.log(json))
+                  .catch(error => console.error("Error:", error));
+          title: Saved agent configuration
+        - samples:
+            - lang: bash
+              label: curl
+              source: |-
+                curl --request POST \
+                  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+                  --header 'Authorization: Basic <credentials>' \
+                  --data '
+                {
+                  "name": "full_config_agent",
+                  "properties": {
+                    "channel": "full_channel_name",
+                    "token": "full_token_value",
+                    "agent_rtc_uid": "12345",
+                    "remote_rtc_uids": [
+                      "67890"
+                    ],
+                    "enable_string_uid": false,
+                    "idle_timeout": 180,
+                    "advanced_features": {
+                      "enable_rtm": true,
+                      "enable_sal": true
+                    },
+                    "asr": {
+                      "language": "en-US",
+                      "vendor": "microsoft",
+                      "params": {
+                        "key": "your_microsoft_key",
+                        "region": "eastus",
+                        "language": "en-US",
+                        "phrase_list": [
+                          "agora",
+                          "fengming"
+                        ]
+                      }
+                    },
+                    "tts": {
+                      "vendor": "microsoft",
+                      "skip_patterns": [
+                        1,
+                        2
+                      ],
+                      "params": {
+                        "key": "your_microsoft_key",
+                        "region": "eastus",
+                        "voice_name": "en-US-AndrewMultilingualNeural",
+                        "speed": 1,
+                        "volume": 70,
+                        "sample_rate": 24000
+                      }
+                    },
+                    "llm": {
+                      "url": "https://api.openai.com/v1/chat/completions",
+                      "api_key": "your_openai_api_key",
+                      "system_messages": [
+                        {
+                          "role": "system",
+                          "content": "You are a professional AI assistant. User name is {{user_name}}."
+                        }
+                      ],
+                      "greeting_message": "Hello {{user_name}}, I am your smart assistant. How can I help you?",
+                      "greeting_configs": {
+                        "mode": "single_every"
+                      },
+                      "failure_message": "Sorry, there was a system problem. Please try again later.",
+                      "max_history": 64,
+                      "input_modalities": [
+                        "text",
+                        "image"
+                      ],
+                      "output_modalities": [
+                        "text"
+                      ],
+                      "params": {
+                        "model": "gpt-4o",
+                        "temperature": 0.8,
+                        "max_tokens": 2048,
+                        "stream": true
+                      },
+                      "template_variables": {
+                        "user_name": "John",
+                        "company_name": "Agora"
+                      }
+                    },
+                    "avatar": {
+                      "vendor": "heygen",
+                      "enable": true,
+                      "params": {
+                        "api_key": "<heygen_key>",
+                        "quality": "medium",
+                        "agora_uid": "<avatar_rtc_uid>",
+                        "agora_token": "<avatar_rtc_token>",
+                        "avatar_id": "",
+                        "disable_idle_timeout": false,
+                        "activity_idle_timeout": 60
+                      }
+                    },
+                    "turn_detection": {
+                      "mode": "default",
+                      "config": {
+                        "speech_threshold": 0.5,
+                        "start_of_speech": {
+                          "mode": "vad",
+                          "vad_config": {
+                            "interrupt_duration_ms": 160,
+                            "speaking_interrupt_duration_ms": 320,
+                            "prefix_padding_ms": 800
+                          }
+                        },
+                        "end_of_speech": {
+                          "mode": "semantic",
+                          "semantic_config": {
+                            "silence_duration_ms": 320,
+                            "max_wait_ms": 3000
+                          }
+                        }
+                      }
+                    },
+                    "sal": {
+                      "sal_mode": "locking",
+                      "sample_urls": {
+                        "speaker1": "https://example.com/voiceprint1.pcm"
+                      }
+                    },
+                    "labels": {
+                      "campaign_id": "spring_2025",
+                      "customer_group": "vip",
+                      "region": "eastus"
+                    },
+                    "rtc": {
+                      "encryption_key": "your_32_byte_encryption_key_here",
+                      "encryption_salt": "TsP4fLLyxxxxxxxxxroLA9oE=",
+                      "encryption_mode": 8
+                    },
+                    "filler_words": {
+                      "enable": true,
+                      "trigger": {
+                        "mode": "fixed_time",
+                        "config": {
+                          "response_wait_ms": 1500
+                        }
+                      },
+                      "content": {
+                        "mode": "static",
+                        "config": {
+                          "phrases": [
+                            "Please wait a moment.",
+                            "OK",
+                            "Uh-huh."
+                          ],
+                          "selection_rule": "shuffle"
+                        }
+                      }
+                    },
+                    "parameters": {
+                      "silence_config": {
+                        "timeout_ms": 15000,
+                        "action": "think",
+                        "content": "User has not responded for an extended period. Please inquire whether continued service is needed."
+                      },
+                      "farewell_config": {
+                        "graceful_enabled": true,
+                        "graceful_timeout_seconds": 60
+                      },
+                      "data_channel": "rtm",
+                      "enable_metrics": true,
+                      "enable_error_message": true,
+                      "opt_out": false
+                    }
+                  }
+                }'
+            - lang: python
+              label: Python
+              source: |-
+                import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join"
+
+                payload = {
+                    "name": "full_config_agent",
+                    "properties": {
+                        "channel": "full_channel_name",
+                        "token": "full_token_value",
+                        "agent_rtc_uid": "12345",
+                        "remote_rtc_uids": ["67890"],
+                        "enable_string_uid": False,
+                        "idle_timeout": 180,
+                        "advanced_features": {
+                            "enable_rtm": True,
+                            "enable_sal": True
+                        },
+                        "asr": {
+                            "language": "en-US",
+                            "vendor": "microsoft",
+                            "params": {
+                                "key": "your_microsoft_key",
+                                "region": "eastus",
+                                "language": "en-US",
+                                "phrase_list": ["agora", "fengming"]
+                            }
+                        },
+                        "tts": {
+                            "vendor": "microsoft",
+                            "skip_patterns": [1, 2],
+                            "params": {
+                                "key": "your_microsoft_key",
+                                "region": "eastus",
+                                "voice_name": "en-US-AndrewMultilingualNeural",
+                                "speed": 1,
+                                "volume": 70,
+                                "sample_rate": 24000
+                            }
+                        },
+                        "llm": {
+                            "url": "https://api.openai.com/v1/chat/completions",
+                            "api_key": "your_openai_api_key",
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a professional AI assistant. User name is {{user_name}}."
+                                }
+                            ],
+                            "greeting_message": "Hello {{user_name}}, I am your smart assistant. How can I help you?",
+                            "greeting_configs": { "mode": "single_every" },
+                            "failure_message": "Sorry, there was a system problem. Please try again later.",
+                            "max_history": 64,
+                            "input_modalities": ["text", "image"],
+                            "output_modalities": ["text"],
+                            "params": {
+                                "model": "gpt-4o",
+                                "temperature": 0.8,
+                                "max_tokens": 2048,
+                                "stream": True
+                            },
+                            "template_variables": {
+                                "user_name": "John",
+                                "company_name": "Agora"
+                            }
+                        },
+                        "avatar": {
+                            "vendor": "heygen",
+                            "enable": True,
+                            "params": {
+                                "api_key": "<heygen_key>",
+                                "quality": "medium",
+                                "agora_uid": "<avatar_rtc_uid>",
+                                "agora_token": "<avatar_rtc_token>",
+                                "avatar_id": "",
+                                "disable_idle_timeout": False,
+                                "activity_idle_timeout": 60
+                            }
+                        },
+                        "turn_detection": {
+                            "mode": "default",
+                            "config": {
+                                "speech_threshold": 0.5,
+                                "start_of_speech": {
+                                    "mode": "vad",
+                                    "vad_config": {
+                                        "interrupt_duration_ms": 160,
+                                        "speaking_interrupt_duration_ms": 320,
+                                        "prefix_padding_ms": 800
+                                    }
+                                },
+                                "end_of_speech": {
+                                    "mode": "semantic",
+                                    "semantic_config": {
+                                        "silence_duration_ms": 320,
+                                        "max_wait_ms": 3000
+                                    }
+                                }
+                            }
+                        },
+                        "sal": {
+                            "sal_mode": "locking",
+                            "sample_urls": { "speaker1": "https://example.com/voiceprint1.pcm" }
+                        },
+                        "labels": {
+                            "campaign_id": "spring_2025",
+                            "customer_group": "vip",
+                            "region": "eastus"
+                        },
+                        "rtc": {
+                            "encryption_key": "your_32_byte_encryption_key_here",
+                            "encryption_salt": "TsP4fLLyxxxxxxxxxroLA9oE=",
+                            "encryption_mode": 8
+                        },
+                        "filler_words": {
+                            "enable": True,
+                            "trigger": {
+                                "mode": "fixed_time",
+                                "config": { "response_wait_ms": 1500 }
+                            },
+                            "content": {
+                                "mode": "static",
+                                "config": {
+                                    "phrases": ["Please wait a moment.", "OK", "Uh-huh."],
+                                    "selection_rule": "shuffle"
+                                }
+                            }
+                        },
+                        "parameters": {
+                            "silence_config": {
+                                "timeout_ms": 15000,
+                                "action": "think",
+                                "content": "User has not responded for an extended period. Please inquire whether continued service is needed."
+                            },
+                            "farewell_config": {
+                                "graceful_enabled": True,
+                                "graceful_timeout_seconds": 60
+                            },
+                            "data_channel": "rtm",
+                            "enable_metrics": True,
+                            "enable_error_message": True
+                        }
+                    }
+                }
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.post(url, json=payload, headers=headers)
+
+                print(response.text)
+            - lang: js
+              label: Node.js
+              source: >-
+                const url =
+                'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join';
+
+                const options = {
+                  method: 'POST',
+                  headers: {Authorization: 'Basic <credentials>'},
+                  body: JSON.stringify({
+                    name: 'full_config_agent',
+                    properties: {
+                      channel: 'full_channel_name',
+                      token: 'full_token_value',
+                      agent_rtc_uid: '12345',
+                      remote_rtc_uids: ['67890'],
+                      enable_string_uid: false,
+                      idle_timeout: 180,
+                      advanced_features: {enable_rtm: true, enable_sal: true},
+                      asr: {
+                        language: 'en-US',
+                        vendor: 'microsoft',
+                        params: {
+                          key: 'your_microsoft_key',
+                          region: 'eastus',
+                          language: 'en-US',
+                          phrase_list: ['agora', 'fengming']
+                        }
+                      },
+                      tts: {
+                        vendor: 'microsoft',
+                        skip_patterns: [1, 2],
+                        params: {
+                          key: 'your_microsoft_key',
+                          region: 'eastus',
+                          voice_name: 'en-US-AndrewMultilingualNeural',
+                          speed: 1,
+                          volume: 70,
+                          sample_rate: 24000
+                        }
+                      },
+                      llm: {
+                        url: 'https://api.openai.com/v1/chat/completions',
+                        api_key: 'your_openai_api_key',
+                        system_messages: [
+                          {
+                            role: 'system',
+                            content: 'You are a professional AI assistant. User name is {{user_name}}.'
+                          }
+                        ],
+                        greeting_message: 'Hello {{user_name}}, I am your smart assistant. How can I help you?',
+                        greeting_configs: {mode: 'single_every'},
+                        failure_message: 'Sorry, there was a system problem. Please try again later.',
+                        max_history: 64,
+                        input_modalities: ['text', 'image'],
+                        output_modalities: ['text'],
+                        vendor: 'custom',
+                        params: {model: 'gpt-4o', temperature: 0.8, max_tokens: 2048, stream: true},
+                        template_variables: {user_name: 'John', company_name: 'Agora'}
+                      },
+                      avatar: {
+                        vendor: 'heygen',
+                        enable: true,
+                        params: {
+                          api_key: '<heygen_key>',
+                          quality: 'medium',
+                          agora_uid: '<avatar_rtc_uid>',
+                          agora_token: '<avatar_rtc_token>',
+                          avatar_id: '',
+                          disable_idle_timeout: false,
+                          activity_idle_timeout: 60
+                        }
+                      },
+                      turn_detection: {
+                        mode: 'default',
+                        config: {
+                          speech_threshold: 0.5,
+                          start_of_speech: {
+                            mode: 'vad',
+                            vad_config: {
+                              interrupt_duration_ms: 160,
+                              speaking_interrupt_duration_ms: 320,
+                              prefix_padding_ms: 800
+                            }
+                          },
+                          end_of_speech: {
+                            mode: 'semantic',
+                            semantic_config: {silence_duration_ms: 320, max_wait_ms: 3000}
+                          }
+                        }
+                      },
+                      sal: {
+                        sal_mode: 'locking',
+                        sample_urls: {speaker1: 'https://example.com/voiceprint1.pcm'}
+                      },
+                      labels: {campaign_id: 'spring_2025', customer_group: 'vip', region: 'eastus'},
+                      rtc: {
+                        encryption_key: 'your_32_byte_encryption_key_here',
+                        encryption_salt: 'TsP4fLLyxxxxxxxxxroLA9oE=',
+                        encryption_mode: 8
+                      },
+                      filler_words: {
+                        enable: true,
+                        trigger: {mode: 'fixed_time', config: {response_wait_ms: 1500}},
+                        content: {
+                          mode: 'static',
+                          config: {phrases: ['Please wait a moment.', 'OK', 'Uh-huh.'], selection_rule: 'shuffle'}
+                        }
+                      },
+                      parameters: {
+                        silence_config: {timeout_ms: 15000, action: 'think', content: 'User has not responded for an extended period. Please inquire whether continued service is needed.'},
+                        farewell_config: {graceful_enabled: true, graceful_timeout_seconds: 60},
+                        data_channel: 'rtm',
+                        enable_metrics: true,
+                        enable_error_message: true
+                      }
+                    }
+                  })
+                };
+
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
+          title: Advanced configuration
+        - samples:
+            - lang: bash
+              label: curl
+              source: |-
+                curl --request POST \
+                  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+                  --header 'Authorization: Basic <credentials>' \
+                  --data '
+                {
+                  "name": "unique_name",
+                  "properties": {
+                    "channel": "channel_name",
+                    "token": "token",
+                    "agent_rtc_uid": "friday",
+                    "remote_rtc_uids": [
+                      "1002"
+                    ],
+                    "enable_string_uid": true,
+                    "idle_timeout": 120,
+                    "llm": {
+                      "url": "https://api.openai.com/v1/chat/completions",
+                      "api_key": "<your_llm_key>",
+                      "system_messages": [
+                        {
+                          "role": "system",
+                          "content": "You are a helpful chatbot."
+                        }
+                      ],
+                      "greeting_message": "Hello, how can I help you?",
+                      "failure_message": "I'm sorry, I can't answer that question.",
+                      "max_history": 32,
+                      "params": {
+                        "model": "gpt-4o-mini"
+                      }
+                    },
+                    "asr": {
+                      "language": "en-US"
+                    },
+                    "tts": {
+                      "vendor": "microsoft",
+                      "params": {
+                        "key": "<your_tts_api_key>",
+                        "region": "eastus",
+                        "voice_name": "en-US-AndrewMultilingualNeural"
+                      }
+                    }
+                  }
+                }'
+            - lang: python
+              label: Python
+              source: |-
+                import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join"
+
+                payload = {
+                    "name": "unique_name",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "friday",
+                        "remote_rtc_uids": ["1002"],
+                        "enable_string_uid": True,
+                        "idle_timeout": 120,
+                        "llm": {
+                            "url": "https://api.openai.com/v1/chat/completions",
+                            "api_key": "<your_llm_key>",
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful chatbot."
+                                }
+                            ],
+                            "greeting_message": "Hello, how can I help you?",
+                            "failure_message": "I'm sorry, I can't answer that question.",
+                            "max_history": 32,
+                            "params": {
+                                "model": "gpt-4o-mini"
+                            }
+                        },
+                        "asr": {
+                            "language": "en-US"
+                        },
+                        "tts": {
+                            "vendor": "microsoft",
+                            "params": {
+                                "key": "<your_tts_api_key>",
+                                "region": "eastus",
+                                "voice_name": "en-US-AndrewMultilingualNeural"
+                            }
+                        }
+                    }
+                }
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.post(url, json=payload, headers=headers)
+
+                print(response.text)
+            - lang: js
+              label: Node.js
+              source: >-
+                const url =
+                'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join';
+
+                const options = {
+                  method: 'POST',
+                  headers: {Authorization: 'Basic <credentials>'},
+                  body: JSON.stringify({
+                    name: 'unique_name',
+                    properties: {
+                      channel: 'channel_name',
+                      token: 'token',
+                      agent_rtc_uid: 'friday',
+                      remote_rtc_uids: ['1002'],
+                      enable_string_uid: true,
+                      idle_timeout: 120,
+                      llm: {
+                        url: 'https://api.openai.com/v1/chat/completions',
+                        api_key: '<your_llm_key>',
+                        system_messages: [{role: 'system', content: 'You are a helpful chatbot.'}],
+                        greeting_message: 'Hello, how can I help you?',
+                        failure_message: 'I'm sorry, I can't answer that question.',
+                        max_history: 32,
+                        params: {model: 'gpt-4o-mini'}
+                      },
+                      asr: {language: 'en-US'},
+                      tts: {
+                        vendor: 'microsoft',
+                        params: {
+                          key: '<your_tts_api_key>',
+                          region: 'eastus',
+                          voice_name: 'en-US-AndrewMultilingualNeural'
+                        }
+                      }
+                    }
+                  })
+                };
+
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
+          title: String UID
+        - samples:
+            - lang: bash
+              label: curl
+              source: |-
+                curl --request POST \
+                  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+                  --header 'Authorization: Basic <credentials>' \
+                  --data '
+                {
+                  "name": "unique_name",
+                  "properties": {
+                    "channel": "channel_name",
+                    "token": "token",
+                    "agent_rtc_uid": "1001",
+                    "remote_rtc_uids": [
+                      "1002"
+                    ],
+                    "idle_timeout": 120,
+                    "llm": {
+                      "url": "https://api.openai.com/v1/chat/completions",
+                      "api_key": "<your_llm_key>",
+                      "system_messages": [
+                        {
+                          "role": "system",
+                          "content": "You are a helpful assistant. User name is {{user_name}}, and their account ID is {{account_id}}."
+                        }
+                      ],
+                      "greeting_message": "Hello {{user_name}}, how can I help you?",
+                      "failure_message": "Sorry, {{user_name}}, I cannot answer this question. Please try again later.",
+                      "max_history": 32,
+                      "params": {
+                        "model": "gpt-4o-mini"
+                      },
+                      "template_variables": {
+                        "user_name": "John",
+                        "account_id": "ACC123456",
+                        "silent_prompt": "If the user does not respond for an extended period, please inquire whether you require continued service."
+                      },
+                      "mcp_servers": [
+                          {
+                              "name": "mcpserver",
+                              "transport": "streamable_http",
+                              "endpoint": "https://registry.run.mcp.com.ai/mcp",
+                              "allowed_tools": [
+                                  "getV01Servers"
+                              ],
+                          }
+                      ]
+                    },
+                    "asr": {
+                      "language": "en-US"
+                    },
+                    "tts": {
+                      "vendor": "minimax",
+                      "skip_patterns": [
+                        1
+                      ],
+                      "params": {
+                        "group_id": "xxxx",
+                        "key": "xxxx",
+                        "model": "speech-01-turbo",
+                        "voice_setting": {
+                          "voice_id": "English_captivating_female1",
+                          "speed": 1,
+                          "vol": 1,
+                          "pitch": 0,
+                          "emotion": "happy"
+                        },
+                        "audio_setting": {
+                          "sample_rate": 16000
+                        }
+                      }
+                    },
+                    "parameters": {
+                      "silence_config": {
+                        "timeout_ms": 10000,
+                        "action": "think",
+                        "content": "{{silent_prompt}}"
+                      },
+                      "opt_out": false
+                    }
+                  }
+                }'
+            - lang: python
+              label: Python
+              source: |-
+                import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join"
+
+                payload = {
+                    "name": "unique_name",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "1001",
+                        "remote_rtc_uids": ["1002"],
+                        "idle_timeout": 120,
+                        "llm": {
+                            "url": "https://api.openai.com/v1/chat/completions",
+                            "api_key": "<your_llm_key>",
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful assistant. User name is {{user_name}}, and their account ID is {{account_id}}."
+                                }
+                            ],
+                            "greeting_message": "Hello {{user_name}}, how can I help you?",
+                            "failure_message": "Sorry, {{user_name}}, I cannot answer this question. Please try again later.",
+                            "max_history": 32,
+                            "params": {
+                                "model": "gpt-4o-mini"
+                            },
+                            "template_variables": {
+                                "user_name": "John",
+                                "account_id": "ACC123456",
+                                "silent_prompt": "If the user does not respond for an extended period, please inquire whether you require continued service."
+                            },
+                            "mcp_servers": [
+                                {
+                                    "name": "mcpserver",
+                                    "transport": "streamable_http",
+                                    "endpoint": "https://registry.run.mcp.com.ai/mcp",
+                                    "allowed_tools": ["getV01Servers"]
+                                }
+                            ]
+                        },
+                        "asr": {
+                            "language": "en-US"
+                        },
+                        "tts": {
+                            "vendor": "minimax",
+                            "skip_patterns": [1],
+                            "params": {
+                                "group_id": "xxxx",
+                                "key": "xxxx",
+                                "model": "speech-01-turbo",
+                                "voice_setting": {
+                                    "voice_id": "English_captivating_female1",
+                                    "speed": 1,
+                                    "vol": 1,
+                                    "pitch": 0,
+                                    "emotion": "happy"
+                                },
+                                "audio_setting": { "sample_rate": 16000 }
+                            }
+                        },
+                        "parameters": { "silence_config": {
+                                "timeout_ms": 10000,
+                                "action": "think",
+                                "content": "{{silent_prompt}}"
+                            } }
+                    }
+                }
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.post(url, json=payload, headers=headers)
+
+                print(response.text)
+            - lang: js
+              label: Node.js
+              source: >-
+                const url =
+                'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join';
+
+                const options = {
+                  method: 'POST',
+                  headers: {Authorization: 'Basic <credentials>'},
+                  body: JSON.stringify({
+                    name: 'unique_name',
+                    properties: {
+                      channel: 'channel_name',
+                      token: 'token',
+                      agent_rtc_uid: '1001',
+                      remote_rtc_uids: ['1002'],
+                      idle_timeout: 120,
+                      llm: {
+                        url: 'https://api.openai.com/v1/chat/completions',
+                        api_key: '<your_llm_key>',
+                        system_messages: [
+                          {
+                            role: 'system',
+                            content: 'You are a helpful assistant. User name is {{user_name}}, and their account ID is {{account_id}}.'
+                          }
+                        ],
+                        greeting_message: 'Hello {{user_name}}, how can I help you?',
+                        failure_message: 'Sorry, {{user_name}}, I cannot answer this question. Please try again later.',
+                        max_history: 32,
+                        params: {model: 'gpt-4o-mini'},
+                        template_variables: {
+                          user_name: 'John',
+                          account_id: 'ACC123456',
+                          silent_prompt: 'If the user does not respond for an extended period, please inquire whether you require continued service.'
+                        },
+                        mcp_servers: [
+                          {
+                            name: 'mcpserver',
+                            transport: 'streamable_http',
+                            endpoint: 'https://registry.run.mcp.com.ai/mcp',
+                            allowed_tools: ['getV01Servers']
+                          }
+                        ]
+                      },
+                      asr: {language: 'en-US'},
+                      tts: {
+                        vendor: 'minimax',
+                        skip_patterns: [1],
+                        params: {
+                          group_id: 'xxxx',
+                          key: 'xxxx',
+                          model: 'speech-01-turbo',
+                          voice_setting: {voice_id: 'English_captivating_female1', speed: 1, vol: 1, pitch: 0, emotion: 'happy'},
+                          audio_setting: {sample_rate: 16000}
+                        }
+                      },
+                      parameters: {
+                        silence_config: {timeout_ms: 10000, action: 'think', content: '{{silent_prompt}}'}
+                      }
+                    }
+                  })
+                };
+
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
+          title: MCP server integration
+        - samples:
+            - lang: bash
+              label: curl
+              source: |-
+                curl --request POST \
+                --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+                --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+                --data '
+                {
+                    "name": "unique_name",
+                    "preset": "deepgram_nova_3,openai_gpt_5_mini,minimax_speech_2_6_turbo",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "1001",
+                        "remote_rtc_uids": [
+                            "1002"
+                        ],
+                        "idle_timeout": 120,
+                        "llm": {
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful chatbot."
+                                }
+                            ],
+                            "max_history": 32,
+                            "greeting_message": "Hello, how can I assist you today?",
+                            "failure_message": "Please hold on a second."
+                        },
+                        "tts": {
+                            "vendor": "minimax",
+                            "params": {
+                                "voice_setting": {
+                                    "voice_id": "English_captivating_female1"
+                                }
+                            }
+                        },
+                        "asr": {
+                            "vendor": "deepgram",
+                            "params": {
+                                "language": "en",
+                                "keyterm": "agora"
+                            }
+                        }
+                    }
+                }'
+            - lang: python
+              label: Python
+              source: |-
+                import requests
+                import base64
+
+                app_id = "<your_app_id>"
+                credentials = "<your_base64_encoded_credentials>"
+
+                url = f"https://api.agora.io/api/conversational-ai-agent/v2/projects/{app_id}/join"
+
+                headers = {
+                    "Authorization": f"Basic {credentials}",
+                    "Content-Type": "application/json"
+                }
+
+                payload = {
+                    "name": "unique_name",
+                    "preset": "deepgram_nova_3,openai_gpt_5_mini,minimax_speech_2_6_turbo",
+                    "properties": {
+                        "channel": "channel_name",
+                        "token": "token",
+                        "agent_rtc_uid": "1001",
+                        "remote_rtc_uids": ["1002"],
+                        "idle_timeout": 120,
+                        "llm": {
+                            "system_messages": [
+                                {
+                                    "role": "system",
+                                    "content": "You are a helpful chatbot."
+                                }
+                            ],
+                            "max_history": 32,
+                            "greeting_message": "Hello, how can I assist you today?",
+                            "failure_message": "Please hold on a second."
+                        },
+                        "tts": {
+                            "vendor": "minimax",
+                            "params": {
+                                "voice_setting": {
+                                    "voice_id": "English_captivating_female1"
+                                }
+                            }
+                        },
+                        "asr": {
+                            "vendor": "deepgram",
+                            "params": {
+                                "language": "en",
+                                "keyterm": "agora"
+                            }
+                        }
+                    }
+                }
+
+                response = requests.post(url, headers=headers, json=payload)
+                print(response.status_code)
+                print(response.json())
+            - lang: js
+              label: Node.js
+              source: >-
+                const appId = "<your_app_id>";
+
+                const credentials = "<your_base64_encoded_credentials>";
+
+
+                const url =
+                `https://api.agora.io/api/conversational-ai-agent/v2/projects/${appId}/join`;
+
+
+                const payload = {
+                  name: "unique_name",
+                  preset: "deepgram_nova_3,openai_gpt_5_mini,minimax_speech_2_6_turbo",
+                  properties: {
+                    channel: "channel_name",
+                    token: "token",
+                    agent_rtc_uid: "1001",
+                    remote_rtc_uids: ["1002"],
+                    idle_timeout: 120,
+                    llm: {
+                      system_messages: [
+                        {
+                          role: "system",
+                          content: "You are a helpful chatbot."
+                        }
+                      ],
+                      max_history: 32,
+                      greeting_message: "Hello, how can I assist you today?",
+                      failure_message: "Please hold on a second."
+                    },
+                    tts: {
+                      vendor: "minimax",
+                      params: {
+                        voice_setting: {
+                          voice_id: "English_captivating_female1"
+                        }
+                      }
+                    },
+                    asr: {
+                      vendor: "deepgram",
+                      params: {
+                        language: "en",
+                        keyterm: "agora"
+                      }
+                    }
+                  }
+                };
+
+
+                const response = await fetch(url, {
+                  method: "POST",
+                  headers: {
+                    "Authorization": `Basic ${credentials}`,
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(payload)
+                });
+
+
+                const data = await response.json();
+
+                console.log(response.status);
+
+                console.log(data);
+          title: Preset models
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -131,6 +1395,12 @@ paths:
                     configuration is used as the base configuration. Any fields specified in
                     `properties` override the corresponding agent settings. When you specify a
                     `pipeline_id`, the `asr`, `tts`, and `llm` fields in `properties` are optional.
+
+
+                    The unique ID of a published agent in STUDIO. When provided, the saved agent
+                    configuration is used as the base configuration. Any fields specified in
+                    properties override the corresponding agent settings. When you specify a
+                    pipeline_id, the asr, tts, and llm fields in properties are optional.
                 properties:
                   type: object
                   additionalProperties: true
@@ -156,12 +1426,12 @@ paths:
                       description: >-
                         A list of user IDs that the agent subscribes to in the channel. Only
                         subscribed users can interact with the agent.
-
-
-                        Note:
-
-
-                        Currently, only one user ID is supported.
+                      x-docs-callouts:
+                        - type: info
+                          title: Note
+                          position: after-description
+                          markdown: |
+                            Currently, only one user ID is supported.
                     enable_string_uid:
                       type: boolean
                       default: false
@@ -174,25 +1444,26 @@ paths:
                     idle_timeout:
                       type: integer
                       default: 30
+                      minimum: 0
+                      maximum: 259200
                       description: >-
                         The maximum idle time in seconds after all users specified in
                         `remote_rtc_uids` are detected to have left the channel. When the idle time
                         exceeds this value, the agent automatically stops and exits the channel. The
                         valid range is `0` to `259200` (72 hours).
 
-
                         - When set to `0`, the agent does not exit due to channel idle timeout.
 
                         - Regardless of the `idle_timeout` value, the maximum running time for a
                         single session is 72 hours. The agent automatically exits after 72 hours.
-
-
-                        **Agent lifecycle best practice**
-
-
-                        For precise and reliable control over the agent's lifecycle, use the
-                        [`leave`](/api-reference/api-ref/conversational-ai/leave) API to terminate the
-                        agent as soon as its task is complete.
+                      x-docs-callouts:
+                        - type: idea
+                          title: Agent lifecycle best practice
+                          position: after-description
+                          markdown: >
+                            For precise and reliable control over the agent's lifecycle, use the
+                            [`leave`](/api-reference/api-ref/conversational-ai/leave) API to
+                            terminate the agent as soon as its task is complete.
                     geofence:
                       type: object
                       description: >-
@@ -246,16 +1517,22 @@ paths:
                             can combine the capabilities provided by Signaling to implement advanced
                             functions, such as delivering [custom
                             information](/conversational-ai/develop/custom-information).
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                Before enabling the Signaling service, make sure the token includes
+                                both
 
+                                RTC and RTM privileges. When an agent joins an RTM channel, it
+                                reuses
 
-                            Note:
+                                the token specified in the `token` field. For more information, see
 
+                                ["How can I generate a token with both RTC and Signaling
 
-                            Before enabling the Signaling service, make sure the token includes both
-                            RTC and RTM privileges. When an agent joins an RTM channel, it reuses
-                            the token specified in the `token` field. For more information, see
-                            ["How can I generate a token with both RTC and Signaling
-                            privileges?"](/help/integration-issues/rtc_rtm_token).
+                                privileges?"](/help/integration-issues/rtc_rtm_token).
                         enable_sal:
                           type: boolean
                           default: false
@@ -396,7 +1673,6 @@ paths:
                             prompts, creating a more natural and immersive listening experience.
                             Enable this feature by specifying one or more values:
 
-
                             - `1`: Skip content in Chinese parentheses `（）`
 
                             - `2`: Skip content in Chinese square brackets `【】`
@@ -406,23 +1682,37 @@ paths:
                             - `4`: Skip content in square brackets `[ ]`
 
                             - `5`: Skip content in curly braces `{ }`
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                - **Nested brackets**: When input text contains nested brackets and
+
+                                multiple bracket types are configured to be skipped, the system
+
+                                processes only the outermost brackets. The system matches from the
+
+                                beginning of the text and skips the first outermost bracket pair
+                                that
+
+                                meets the skip rule, including all nested content.
 
 
-                            Note:
+                                - **Agent memory**: The agent's short-term memory always contains
+                                the
+
+                                complete, unfiltered LLM text, regardless of live captioning
+                                settings.
 
 
-                            - **Nested brackets**: When input text contains nested brackets and
-                            multiple bracket types are configured to be skipped, the system
-                            processes only the outermost brackets. The system matches from the
-                            beginning of the text and skips the first outermost bracket pair that
-                            meets the skip rule, including all nested content.
+                                - **Real-time transcript**: When enabled, transcript excludes
+                                filtered
 
-                            - **Agent memory**: The agent's short-term memory always contains the
-                            complete, unfiltered LLM text, regardless of live captioning settings.
+                                content during TTS playback but restores the complete text after
+                                each
 
-                            - **Real-time transcript**: When enabled, transcript excludes filtered
-                            content during TTS playback but restores the complete text after each
-                            sentence finishes.
+                                sentence finishes.
                       required:
                         - vendor
                         - params
@@ -598,18 +1888,21 @@ paths:
                             processes such as automatic hang-up, voicemail recognition, automatic
                             message leaving, and call transfer.
 
-
                             To insert defined variables in the prompt text, use the syntax
                             `{{variable_name}}`. The system automatically replaces each variable
                             with the corresponding value defined in `template_variables`.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                Variable values cannot reference other variables. For example, if
+                                you
 
+                                define `"farewell": "Looking forward to seeing you again,
+                                {{name}}"`,
 
-                            Note:
-
-
-                            Variable values cannot reference other variables. For example, if you
-                            define `"farewell": "Looking forward to seeing you again, {{name}}"`,
-                            the `{{name}}` variable will not be resolved.
+                                the `{{name}}` variable will not be resolved.
                         mcp_servers:
                           type: array
                           items:
@@ -677,18 +1970,26 @@ paths:
                             Custom headers to include in requests to the LLM. Use this field to pass
                             business-specific information such as custom fields or tenant
                             identifiers.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                - These headers are merged with the headers generated by the
+
+                                Conversational AI Engine. If a key conflict occurs, the
+                                engine-generated
+
+                                header takes precedence. For example, authentication-related
+                                headers.
 
 
-                            Note:
+                                - Header keys are merged using exact string matching and are
 
+                                case-sensitive. Agora recommends using standard capitalization to
+                                avoid
 
-                            - These headers are merged with the headers generated by the
-                            Conversational AI Engine. If a key conflict occurs, the engine-generated
-                            header takes precedence. For example, authentication-related headers.
-
-                            - Header keys are merged using exact string matching and are
-                            case-sensitive. Agora recommends using standard capitalization to avoid
-                            ambiguity from duplicate keys with different casing.
+                                ambiguity from duplicate keys with different casing.
                       required:
                         - url
                     mllm:
@@ -782,15 +2083,16 @@ paths:
                         turn_detection:
                           type: object
                           additionalProperties: true
-                          description: >-
-                            Turn detection configuration for the MLLM module.
+                          description: Turn detection configuration for the MLLM module.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                When `mllm.turn_detection` is defined, the top-level
+                                `turn_detection`
 
-
-                            Note:
-
-
-                            When `mllm.turn_detection` is defined, the top-level `turn_detection`
-                            object has no effect.
+                                object has no effect.
                           properties:
                             mode:
                               type: string
@@ -933,30 +2235,37 @@ paths:
                         `turn_detection` is deprecated. Refer to [Deprecated
                         parameters](#deprecated-parameters) for details. Agora recommends switching
                         to the latest parameters.
+                      x-docs-callouts:
+                        - type: info
+                          title: Note
+                          position: after-description
+                          markdown: |
+                            This object has no effect when `mllm.enable` is true. Use
+                            [mllm.turn_detection](#properties-mllm-turn-detection) instead.
+                        - type: info
+                          title: Note
+                          position: after-description
+                          markdown: >
+                            Starting with v2.6, `turn_detection` only handles Start of Speech (SoS)
+                            and
+
+                            End of Speech (EoS) detection. Interruption handling strategies,
+                            including
+
+                            keyword-based interruption and disabling interruption, have moved to the
+
+                            top-level [`interruption`](#properties-interruption) field.
 
 
-                        Note:
+                            This configuration supports multiple combinations of detection modes:
 
 
-                        This object has no effect when `mllm.enable` is true. Use
-                        [mllm.turn_detection](#properties-mllm-turn-detection) instead.
+                            - **Start of Speech (SoS)**: Supports three modes: VAD, Keyword, and
+
+                            Disable.
 
 
-                        Note:
-
-
-                        Starting with v2.6, `turn_detection` only handles Start of Speech (SoS) and
-                        End of Speech (EoS) detection. Interruption handling strategies, including
-                        keyword-based interruption and disabling interruption, have moved to the
-                        top-level [`interruption`](#properties-interruption) field.
-
-
-                        This configuration supports multiple combinations of detection modes:
-
-                        - **Start of Speech (SoS)**: Supports three modes: VAD, Keyword, and
-                        Disable.
-
-                        - **End of Speech (EoS)**: Supports VAD and Semantic modes.
+                            - **End of Speech (EoS)**: Supports VAD and Semantic modes.
                       properties:
                         mode:
                           type: string
@@ -976,6 +2285,8 @@ paths:
                             Deprecated turn detection mechanism. `agora_vad` uses Agora VAD,
                             `server_vad` lets the model detect speech start and end based on audio
                             volume, and `semantic_vad` uses semantic estimation with VAD.
+
+                            Compatible with both cascade (ASR/LLM/TTS) and MLLM modes.
                         interrupt_mode:
                           type: string
                           default: interrupt
@@ -989,6 +2300,14 @@ paths:
                           description: >-
                             Deprecated interruption behavior when human voice interrupts the agent
                             while it is speaking or thinking.
+
+                            Sets the agent's behavior when human voice interrupts the agent while it
+                            is interacting (speaking or thinking).
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              markdown: |
+                                Only the `interrupt` mode is supported when you integrate an `mllm`.
                         interrupt_duration_ms:
                           type: number
                           default: 160
@@ -1002,14 +2321,24 @@ paths:
                           description: >-
                             Keywords that trigger an interruption when
                             `turn_detection.interrupt_mode` is set to `keyword`.
+
+                            Specifies the list of keywords that trigger an interruption when the
+                            `turn_detection.interrupt_mode` is set to `"keyword"`.
                           items:
                             type: string
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              markdown: >
+                                - Keyword recognition capabilities, such as support for multiple
+                                languages or dialects, depend on the ASR provider you choose.
+
+                                - You can configure up to 128 keywords.
                         prefix_padding_ms:
                           type: integer
                           default: 800
                           deprecated: true
-                          description: >-
-                            The extra forward padding time in milliseconds before processing starts.
+                          description: The extra forward padding time in milliseconds before processing starts.
                         silence_duration_ms:
                           type: integer
                           default: 640
@@ -1020,9 +2349,14 @@ paths:
                         threshold:
                           type: number
                           default: 0.5
+                          exclusiveMinimum: 0
+                          exclusiveMaximum: 1
                           deprecated: true
                           description: >-
                             Voice activity detection sensitivity. The valid range is `(0.0, 1.0)`.
+
+                            Identification sensitivity determines the level of sound in the audio
+                            signal that is considered voice activity.
                         eagerness:
                           type: string
                           default: auto
@@ -1041,6 +2375,8 @@ paths:
                             speech_threshold:
                               type: number
                               default: 0.5
+                              exclusiveMinimum: 0
+                              exclusiveMaximum: 1
                               description: >-
                                 Voice activity detection sensitivity. Determines the sound level in
                                 the audio signal that is considered voice activity. Lower values
@@ -1080,22 +2416,9 @@ paths:
                                     structure and supported fields vary depending on the detection
                                     mode.
 
-
-                                    Note:
-
-
-                                    - The configuration type must match `mode`. For example, when
-                                    `mode` is `vad`, you must provide `vad_config`.
-
-                                    - You cannot provide multiple mode configurations
-                                    simultaneously.
-
-
                                     **Configuration examples:**
 
-
                                     - `vad_config`
-
 
                                     ```json
 
@@ -1111,9 +2434,7 @@ paths:
 
                                     ```
 
-
                                     - `keywords_config`
-
 
                                     ```json
 
@@ -1129,9 +2450,7 @@ paths:
 
                                     ```
 
-
                                     - `disabled_config`
-
 
                                     ```json
 
@@ -1142,6 +2461,20 @@ paths:
                                     }
 
                                     ```
+                                  x-docs-callouts:
+                                    - type: info
+                                      title: Note
+                                      position: after-description
+                                      markdown: >
+                                        - The configuration type must match `mode`. For example,
+                                        when
+
+                                        `mode` is `vad`, you must provide `vad_config`.
+
+
+                                        - You cannot provide multiple mode configurations
+
+                                        simultaneously.
                                   properties:
                                     interrupt_duration_ms:
                                       type: integer
@@ -1211,14 +2544,18 @@ paths:
 
                                     - `semantic`: Based on semantic triggering. Uses semantic
                                     understanding to determine when conversation ends.
+                                  x-docs-callouts:
+                                    - type: info
+                                      title: Note
+                                      position: after-description
+                                      markdown: >
+                                        When `mode` is `semantic`, EOS detection supports English
+                                        and
 
+                                        Chinese only. For unsupported languages, the engine falls
+                                        back
 
-                                    Note:
-
-
-                                    When `mode` is `semantic`, EOS detection supports English and
-                                    Chinese only. For unsupported languages, the engine falls back
-                                    to VAD.
+                                        to VAD.
                                 "{mode}_config":
                                   type: object
                                   additionalProperties: true
@@ -1226,22 +2563,9 @@ paths:
                                     End of speech detection configuration parameters. The structure
                                     and supported fields vary depending on the detection mode.
 
-
-                                    Note:
-
-
-                                    - The configuration type must match `mode`. For example, when
-                                    `mode` is `vad`, you must provide `vad_config`.
-
-                                    - You cannot provide multiple mode configurations
-                                    simultaneously.
-
-
                                     **Configuration examples:**
 
-
                                     - `vad_config`
-
 
                                     ```json
 
@@ -1253,9 +2577,7 @@ paths:
 
                                     ```
 
-
                                     - `semantic_config`
-
 
                                     ```json
 
@@ -1270,6 +2592,20 @@ paths:
                                     }
 
                                     ```
+                                  x-docs-callouts:
+                                    - type: info
+                                      title: Note
+                                      position: after-description
+                                      markdown: >
+                                        - The configuration type must match `mode`. For example,
+                                        when
+
+                                        `mode` is `vad`, you must provide `vad_config`.
+
+
+                                        - You cannot provide multiple mode configurations
+
+                                        simultaneously.
                                   properties:
                                     silence_duration_ms:
                                       type: integer
@@ -1418,7 +2754,6 @@ paths:
 
                             Example:
 
-
                             ```json
 
                             {
@@ -1428,23 +2763,32 @@ paths:
                             }
 
                             ```
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                - Do not set the incoming voiceprint name to "unknown"; this is a
+
+                                reserved keyword used to identify unknown speakers.
 
 
-                            Note:
+                                - For a registered voiceprint, ensure that:
 
 
-                            - Do not set the incoming voiceprint name to "unknown"; this is a
-                            reserved keyword used to identify unknown speakers.
+                                - Size: The voiceprint file does not exceed 2 MB.
 
-                            - For a registered voiceprint, ensure that:
 
-                            - Size: The voiceprint file does not exceed 2 MB.
+                                - Duration: Contains 10 to 15 seconds of audio, with at least 8
+                                seconds
 
-                            - Duration: Contains 10 to 15 seconds of audio, with at least 8 seconds
-                            of effective audio excluding silent segments.
+                                of effective audio excluding silent segments.
 
-                            - Format: 16kHz sampling rate, 16-bit depth, mono PCM audio file. The
-                            file name extension must be ".pcm".
+
+                                - Format: 16kHz sampling rate, 16-bit depth, mono PCM audio file.
+                                The
+
+                                file name extension must be ".pcm".
                     labels:
                       type: object
                       additionalProperties: true
@@ -1557,18 +2901,7 @@ paths:
                                 Filler word trigger configuration parameters. The parameter name and
                                 structure vary depending on the trigger mode.
 
-
-                                Note:
-
-
-                                - The configuration type must match `mode`. For example, when `mode`
-                                is `fixed_time`, you must provide `fixed_time_config`.
-
-                                - You cannot provide multiple mode configurations simultaneously.
-
-
                                 **Configuration example:**
-
 
                                 ```json
 
@@ -1579,6 +2912,19 @@ paths:
                                 }
 
                                 ```
+                              x-docs-callouts:
+                                - type: info
+                                  title: Note
+                                  position: after-description
+                                  markdown: >
+                                    - The configuration type must match `mode`. For example, when
+                                    `mode`
+
+                                    is `fixed_time`, you must provide `fixed_time_config`.
+
+
+                                    - You cannot provide multiple mode configurations
+                                    simultaneously.
                               properties:
                                 response_wait_ms:
                                   type: integer
@@ -1608,39 +2954,52 @@ paths:
                               description: >-
                                 Filler word content configuration parameters. The parameter name and
                                 structure vary depending on the content mode.
+                              x-docs-callouts:
+                                - type: info
+                                  title: Note
+                                  position: after-description
+                                  markdown: >
+                                    - The configuration type must match `mode`. For example, when
+                                    `mode`
+
+                                    is `static`, you must provide `static_config`.
 
 
-                                Note:
+                                    - You cannot provide multiple mode configurations
+                                    simultaneously.
 
 
-                                - The configuration type must match `mode`. For example, when `mode`
-                                is `static`, you must provide `static_config`.
-
-                                - You cannot provide multiple mode configurations simultaneously.
+                                    **Static filler word configuration example:**
 
 
-                                **Static filler word configuration example:**
+                                    ```json
 
 
-                                ```json
+                                    "static_config": {
 
-                                "static_config": {
 
-                                "phrases": [
+                                    "phrases": [
 
-                                "Please wait.",
 
-                                "Okay.",
+                                    "Please wait.",
 
-                                "Uh-huh."
 
-                                ],
+                                    "Okay.",
 
-                                "selection_rule": "shuffle"
 
-                                }
+                                    "Uh-huh."
 
-                                ```
+
+                                    ],
+
+
+                                    "selection_rule": "shuffle"
+
+
+                                    }
+
+
+                                    ```
                               properties:
                                 phrases:
                                   type: array
@@ -1678,12 +3037,13 @@ paths:
                         silence_config:
                           type: object
                           additionalProperties: true
-                          description: |-
-                            Settings related to agent silence behavior.
-
-                            Note:
-
-                            `silence_config` does not apply when you integrate a `mllm`.
+                          description: Settings related to agent silence behavior.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: |
+                                `silence_config` does not apply when you integrate a `mllm`.
                           properties:
                             timeout_ms:
                               type: integer
@@ -1809,23 +3169,27 @@ paths:
                           description: >-
                             Whether to disable data retention for the current session.
 
-
                             - `false`: (Default) Data retention is enabled.
 
                             - `true`: Data retention is disabled. When disabled, session interaction
                             text and audio are not retained, which means troubleshooting,
                             performance review, and agent optimization based on session history will
                             not be available.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                To support service operation, agent optimization, and
+                                troubleshooting,
 
+                                session interaction text and audio are temporarily retained for the
 
-                            Note:
+                                minimum necessary period by default. If your business has strict
 
+                                security or compliance requirements, enable this setting to prevent
 
-                            To support service operation, agent optimization, and troubleshooting,
-                            session interaction text and audio are temporarily retained for the
-                            minimum necessary period by default. If your business has strict
-                            security or compliance requirements, enable this setting to prevent
-                            session data from being stored.
+                                session data from being stored.
                   required:
                     - channel
                     - token
@@ -1839,10 +3203,23 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/leave:
     post:
       summary: Stop a conversational AI agent
-      description: Use this endpoint to stop the specified Conversational AI agent instance.
+      description: Stops a specified Conversational AI agent instance.
+      x-docs-sections:
+        - position: after-description
+          markdown: Use this endpoint to stop the specified Conversational AI agent instance.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body is
+            empty.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the error code and description. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: stop-agent
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -1875,22 +3252,29 @@ paths:
               --header 'Authorization: Basic <your_base64_encoded_credentials>'
         - lang: python
           label: Python
-          source: |-
+          source: >-
             import requests
 
-            url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave"
+
+            url =
+            "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave"
+
 
             headers = {
                 "Authorization": "Basic <your_base64_encoded_credentials>",
                 "Content-Type": "application/json"
             }
 
+
             response = requests.post(url, headers=headers)
+
             print(response.text)
         - lang: javascript
           label: Node.js
-          source: |-
-            const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave';
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave';
+
 
             const options = {
               method: 'POST',
@@ -1900,6 +3284,7 @@ paths:
               }
             };
 
+
             fetch(url, options)
               .then(res => res.json())
               .then(json => console.log(json))
@@ -1907,10 +3292,131 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/update:
     post:
       summary: Update agent configuration
-      description: Use this endpoint to adjust Conversational AI agent instance parameters at runtime.
+      description: Updates runtime parameters of a Conversational AI agent instance.
+      x-docs-sections:
+        - position: after-description
+          markdown: Use this endpoint to adjust Conversational AI agent instance parameters at runtime.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: agent-update
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                    --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/update \
+                    --header 'Authorization: Basic <credentials>' \
+                    --data '
+                  {
+                    "properties": {
+                      "token": "007eJxTYxxxxxxxxxxIaHMLAAAA0ex66",
+                      "llm": {
+                        "system_messages": [
+                          {
+                            "role": "system",
+                            "content": "You are a helpful assistant. xxx"
+                          },
+                          {
+                            "role": "system",
+                            "content": "Previously, user has talked about their favorite hobbies with some key topics: xxx"
+                          }
+                        ],
+                        "params": {
+                          "model": "abab6.5s-chat",
+                          "max_token": 1024
+                        }
+                      }
+                    }
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+                import json
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/{appid}/agents/{agentId}/update"
+                headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+                }
+
+                data = {
+                  "properties": {
+                      "token": "007eJxTYxxxxxxxxxxIaHMLAAAA0ex66",
+                      "llm": {
+                          "system_messages": [
+                              {
+                                  "role": "system",
+                                  "content": "You are a helpful assistant. xxx"
+                              },
+                              {
+                                  "role": "system",
+                                  "content": "Previously, user has talked about their favorite hobbies with some key topics: xxx"
+                              }
+                          ],
+                          "params": {
+                              "model": "abab6.5s-chat",
+                              "max_token": 1024
+                          }
+                      }
+                  }
+                }
+
+                response = requests.post(url, headers=headers, json=data)
+                print(response.status_code)
+                print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const fetch = require('node-fetch');
+
+                const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/update';
+
+                const headers = {
+                  'Authorization': 'Basic <credentials>',
+                  'Content-Type': 'application/json'
+                };
+
+                const data = {
+                  properties: {
+                      token: "007eJxTYxxxxxxxxxxIaHMLAAAA0ex66",
+                      llm: {
+                          system_messages: [
+                              {
+                                  role: "system",
+                                  content: "You are a helpful assistant. xxx"
+                              },
+                              {
+                                  role: "system",
+                                  content: "Previously, user has talked about their favorite hobbies with some key topics: xxx"
+                              }
+                          ],
+                          params: {
+                              model: "abab6.5s-chat",
+                              max_token: 1024
+                          }
+                      }
+                  }
+                };
+
+                fetch(url, {
+                  method: 'POST',
+                  headers: headers,
+                  body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2014,13 +3520,16 @@ paths:
                             model used, the maximum number of tokens, and more. Supported
                             configurations vary by LLM provider. Refer to the provider’s
                             documentation for details.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                Updating this field overwrites the configuration set when the agent
+                                was
 
-
-                            Note:
-
-
-                            Updating this field overwrites the configuration set when the agent was
-                            created. When updating, make sure to pass the complete `params` field.
+                                created. When updating, make sure to pass the complete `params`
+                                field.
                     mllm:
                       type: object
                       additionalProperties: true
@@ -2039,12 +3548,53 @@ paths:
   /v2/projects/{appid}/agents/{agentId}:
     get:
       summary: Query agent status
-      description: >-
-        Use this endpoint to get the current status of the specified Conversational AI agent
-        instance.
+      description: Retrieves the current status of a specified Conversational AI agent instance.
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Use this endpoint to get the current status of the specified Conversational AI agent
+            instance.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: query-agent-status
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request get \
+                  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId \
+                  --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId"
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.get(url, headers=headers)
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: |-
+            const axios = require("axios");
+
+                const url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId";
+                const headers = { Authorization: "Basic <credentials>" };
+
+                axios.get(url, { headers })
+                  .then(response => console.log(response.data))
+                  .catch(error => console.error(error.response ? error.response.data : error.message));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2080,7 +3630,8 @@ paths:
                     type: string
                     description: >-
                       The agent name provided when calling [Start a conversational AI
-                      agent](/api-reference/api-ref/conversational-ai/join). Unique within a channel.
+                      agent](/api-reference/api-ref/conversational-ai/join). Unique within a
+                      channel.
                   status:
                     type: string
                     enum:
@@ -2117,10 +3668,65 @@ paths:
   /v2/projects/{appid}/agents:
     get:
       summary: Retrieve a list of agents
-      description: Get a list of Conversational AI agents that meet the specified conditions.
+      description: Retrieves Conversational AI agents that match specified conditions.
+      x-docs-sections:
+        - position: after-description
+          markdown: Get a list of Conversational AI agents that meet the specified conditions.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: get-agent-list
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request get \
+                    --url 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents?state=0,1,2&limit=20' \
+                    --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents'
+                params = {
+                    'state': '0,1,2',
+                    'limit': '20'
+                }
+                headers = {
+                    'Authorization': 'Basic <credentials>'
+                }
+
+                response = requests.get(url, headers=headers, params=params)
+
+                print(response.status_code)
+                print(response.json())
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents?state=0,1,2&limit=20';
+
+                const options = {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': 'Basic <your_base64_encoded_credentials>'
+                  }
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2138,15 +3744,13 @@ paths:
           required: false
           schema:
             type: number
-          description: >-
-            The start timestamp (in seconds) for the query. Defaults to `2 hours ago`.
+          description: The start timestamp (in seconds) for the query. Defaults to `2 hours ago`.
         - name: to_time
           in: query
           required: false
           schema:
             type: number
-          description: >-
-            The end timestamp (in seconds) for the query. Defaults to the current time.
+          description: The end timestamp (in seconds) for the query. Defaults to the current time.
         - name: state
           in: query
           required: false
@@ -2263,23 +3867,84 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/speak:
     post:
       summary: Broadcast a message using TTS
-      description: >-
-        Use this endpoint to broadcast a custom message using the TTS module.
+      description: Broadcasts a custom message through the TTS module.
+      x-docs-callouts:
+        - markdown: The speak API is not supported when using `mllm` configuration.
+          position: after-description
+          title: Note
+          type: info
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Use this endpoint to broadcast a custom message using the TTS module.
 
 
-        During a conversation with a Conversational AI agent, call this endpoint to immediately
-        broadcast a custom message using the TTS module. Upon receiving the request, Conversational
-        AI interrupts the agent’s speech and thought process to deliver the message. This broadcast
-        can be interrupted by human voice.
+            During a conversation with a Conversational AI agent, call this endpoint to immediately
+            broadcast a custom message using the TTS module. Upon receiving the request,
+            Conversational AI interrupts the agent’s speech and thought process to deliver the
+            message. This broadcast can be interrupted by human voice.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body is
+            empty, and the agent starts to broadcast the specified message.
 
 
-        Note:
-
-
-        The speak API is not supported when using `mllm` configuration.
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the error code and description. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: agent-speak
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request post \
+                    --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak \
+                    --header 'Authorization: Basic <credentials>' \
+                    --data '
+                  {
+                    "text": "Sorry, the conversation content is not compliant.",
+                    "priority": "INTERRUPT",
+                    "interruptable": false
+                  }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak"
+
+                payload = {
+                    "text": "Sorry, the conversation content is not compliant.",
+                    "priority": "INTERRUPT",
+                    "interruptable": False
+                }
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.request("post", url, json=payload, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/speak';
+                const options = {
+                  method: 'post',
+                  headers: { Authorization: 'Basic <credentials>' },
+                  body: JSON.stringify({
+                    text: 'Sorry, the conversation content is not compliant.',
+                    priority: 'INTERRUPT',
+                    interruptable: false
+                  })
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2363,10 +4028,25 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/interrupt:
     post:
       summary: Interrupt the agent
-      description: Use this endpoint to interrupt the specified agent while speaking or thinking.
+      description: Interrupts a specified agent while it is speaking or thinking.
       operationId: agent-interrupt
+      x-docs-sections:
+        - position: after-description
+          markdown: Use this endpoint to interrupt the specified agent while speaking or thinking.
+        - title: Request body
+          position: after-parameters
+          markdown: The request body is empty.
+        - title: Response
+          position: before-response-body
+          markdown: >
+            - If the returned status code is `200`, the request was successful. The response body
+            contains agent information and the agent stops talking and thinking immediately.
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the error code and description. Refer to [status
+            codes](/api-reference/api-ref/conversational-ai/response-status-codes) to understand the
+            possible reasons for failure.
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2383,7 +4063,9 @@ paths:
             conversational AI agent](/api-reference/api-ref/conversational-ai/join).
       responses:
         "200":
-          description: The request was successful. The response body contains the result of the request.
+          description: >-
+            The request was successful. The response body contains agent information and the agent
+            stops talking and thinking immediately.
         default:
           description: The request failed. The response body includes the error details.
           content:
@@ -2400,26 +4082,35 @@ paths:
               --data '{}'
         - lang: python
           label: Python
-          source: |-
+          source: >-
             import requests
 
-            url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt"
+
+            url =
+            "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt"
+
 
             payload = {}
+
             headers = {"Authorization": "Basic <credentials>"}
 
+
             response = requests.request("POST", url, json=payload, headers=headers)
+
 
             print(response.text)
         - lang: javascript
           label: Node.js
-          source: |-
-            const url = 'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt';
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt';
+
             const options = {
               method: 'POST',
               headers: {Authorization: 'Basic <credentials>'},
               body: JSON.stringify({})
             };
+
 
             fetch(url, options)
               .then(res => res.json())
@@ -2428,26 +4119,113 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/think:
     post:
       summary: Send a custom instruction
-      description: >-
-        Use this endpoint to send a custom text instruction to the specified Conversational AI agent
-        instance. The instruction is injected into the current conversation pipeline as user input,
-        and the agent processes and responds to it following the standard user input logic.
+      description: Sends a custom text instruction to a specified Conversational AI agent instance.
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Use this endpoint to send a custom text instruction to the specified Conversational AI
+            agent instance. The instruction is injected into the current conversation pipeline as
+            user input, and the agent processes and responds to it following the standard user input
+            logic.
 
 
-        Use this endpoint for the following scenarios:
+            Use this endpoint for the following scenarios:
 
 
-        - **Implicit instruction injection**: Inject hidden context or directives into the
-        conversation.
+            - **Implicit instruction injection**: Inject hidden context or directives into the
+            conversation.
 
-        - **Client-side event triggering**: Notify the agent of client-side events, such as a user
-        clicking a button.
+            - **Client-side event triggering**: Notify the agent of client-side events, such as a
+            user clicking a button.
 
-        - **Voice and text collaboration**: Combine text instructions with voice input for richer
-        interaction.
+            - **Voice and text collaboration**: Combine text instructions with voice input for
+            richer interaction.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the `detail` and `reason` for failure. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: agent-think
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request POST \
+                --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think \
+                --header 'Authorization: Basic <credentials>' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                  "text": "The user just clicked the purchase button.",
+                  "on_listening_action": "interrupt",
+                  "on_thinking_action": "interrupt",
+                  "on_speaking_action": "ignore",
+                  "interruptable": true,
+                  "metadata": {
+                    "publisher": "user123",
+                    "model": "deepseek-r1"
+                  }
+                }'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+              url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think"
+              headers = {
+                  "Authorization": "Basic <credentials>",
+                  "Content-Type": "application/json"
+              }
+              payload = {
+                  "text": "The user just clicked the purchase button.",
+                  "on_listening_action": "interrupt",
+                  "on_thinking_action": "interrupt",
+                  "on_speaking_action": "ignore",
+                  "interruptable": True,
+                  "metadata": {
+                      "publisher": "user123",
+                      "model": "deepseek-r1"
+                  }
+              }
+
+              response = requests.post(url, json=payload, headers=headers)
+              print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const axios = require("axios");
+
+
+            const url =
+            "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/think";
+
+            const headers = {
+                Authorization: "Basic <credentials>",
+                "Content-Type": "application/json"
+            };
+
+            const payload = {
+                text: "The user just clicked the purchase button.",
+                on_listening_action: "interrupt",
+                on_thinking_action: "interrupt",
+                on_speaking_action: "ignore",
+                interruptable: true,
+                metadata: {
+                    publisher: "user123",
+                    model: "deepseek-r1"
+                }
+            };
+
+
+            axios.post(url, payload, { headers })
+              .then(response => console.log(response.data))
+              .catch(error => console.error(error.response ? error.response.data : error.message));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2556,12 +4334,55 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/history:
     get:
       summary: Retrieve agent history
-      description: >-
-        Call this endpoint while the agent is running to retrieve the conversation history between
-        the user and the Conversational AI agent.
+      description: Retrieves conversation history for a running Conversational AI agent.
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            Call this endpoint while the agent is running to retrieve the conversation history
+            between the user and the Conversational AI agent.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the result of the request.
+
+
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the error code and description. Refer to [status
+            codes](/conversational-ai/rest-api/reference) to understand the possible reasons for
+            failure.
       operationId: get-history
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request get \
+                    --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history \
+                    --header 'Authorization: Basic <credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history"
+
+                headers = {"Authorization": "Basic <credentials>"}
+
+                response = requests.request("get", url, headers=headers)
+
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/history';
+                const options = {method: 'get', headers: {Authorization: 'Basic <credentials>'}};
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true
@@ -2657,19 +4478,69 @@ paths:
   /v2/projects/{appid}/agents/{agentId}/turns:
     get:
       summary: Query conversation turn information
-      description: >-
-        After a conversation with the agent ends, use this endpoint to query the conversation turn
-        information, including the start information, end information, and performance metrics of
-        each conversation turn.
+      description: Retrieves conversation turn information and performance metrics.
+      x-docs-callouts:
+        - markdown: You can query sessions within the last 7 days.
+          position: after-description
+          title: Note
+          type: info
+      x-docs-sections:
+        - position: after-description
+          markdown: >-
+            After a conversation with the agent ends, use this endpoint to query the conversation
+            turn information, including the start information, end information, and performance
+            metrics of each conversation turn.
+        - title: Response
+          position: before-response-body
+          markdown: >-
+            - If the returned status code is `200`, the request was successful.
 
 
-        Note:
-
-
-        You can query sessions within the last 7 days.
+            - If the returned status code is not `200`, the request failed. The response body
+            includes the error code and description. Refer to [status
+            codes](/conversational-ai/rest-api/reference#response-status-codes) to understand the
+            possible reasons for failure.
       operationId: get-turns
+      x-codeSamples:
+        - lang: bash
+          label: curl
+          source: |-
+            curl --request GET \
+                    --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/turns \
+                    --header 'Authorization: Basic <your_base64_encoded_credentials>'
+        - lang: python
+          label: Python
+          source: |-
+            import requests
+
+                url = "https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/turns"
+
+                headers = {
+                    "Authorization": "Basic <your_base64_encoded_credentials>",
+                    "Content-Type": "application/json"
+                }
+
+                response = requests.get(url, headers=headers)
+                print(response.text)
+        - lang: javascript
+          label: Node.js
+          source: >-
+            const url =
+            'https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/turns';
+
+                const options = {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': 'Basic <your_base64_encoded_credentials>',
+                    'Content-Type': 'application/json'
+                  }
+                };
+
+                fetch(url, options)
+                  .then(res => res.json())
+                  .then(json => console.log(json))
+                  .catch(err => console.error(err));
       parameters:
-        - $ref: "#/components/parameters/Authorization"
         - name: appid
           in: path
           required: true

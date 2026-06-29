@@ -1,0 +1,576 @@
+---
+title: "Data encryption"
+description: "Add Agora built-in encryption method to your app."
+---
+
+<PlatformStructured platform="web">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```javascript
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = {
+    // Set the encryption mode to `AES_256_GCM`, `AES_128_GCM`, or `NONE`
+    // The default value is `NONE`, which means encryption is not enabled
+    encryptionMode: "AES_256_GCM",
+    cipherKey: "your_cipherKey",
+    // Set a 32-byte salt
+    salt: new Uint8Array()
+}
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RTMConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```java tab="Java"
+RtmEncryptionConfig config = new RtmEncryptionConfig();
+// Set the encryption mode, which can be `AES_256_GCM`, `AES_128_GCM`, or `NONE`.
+// The default value is `NONE`, which means encryption is not enabled.
+config.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
+config.encryptionKey = "your_encryptionKey";
+byte[] salt = your_salt;
+config.encryptionSalt = salt;
+
+RtmConfig rtmConfig = new RtmConfig();
+rtmConfig.encryptionConfig = config;
+// Replace your_appId with your App ID
+rtmConfig.appId = "your_appId";
+// Replace your_userId with your User ID
+rtmConfig.userId = "your_userId";
+mRtmClient = RtmClient.create(rtmConfig);
+```
+
+```kotlin tab="Kotlin"
+val config = RtmEncryptionConfig().apply {
+    encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM
+    encryptionKey = "your_encryptionKey"
+    encryptionSalt = your_salt
+}
+
+val rtmConfig = RtmConfig().apply {
+    encryptionConfig = config
+    appId = "your_appId" // Replace with your App ID
+    userId = "your_userId" // Replace with your User ID
+}
+
+val mRtmClient = RtmClient.create(rtmConfig)
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```swift tab="Swift"
+do {
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let encryptionConfig = AgoraRtmEncryptionConfig()
+encryptionConfig.encryptionKey = "your_encryptionKey"
+encryptionConfig.encryptionMode = .aes256Gcm
+
+let saltValues: [UInt8] = [ /* your salt values */ ]
+let saltData = Data(bytes: saltValues, count: saltValues.count)
+
+encryptionConfig.encryptionSalt = saltData
+
+rtmConfig.encryptionConfig = encryptionConfig
+
+let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \\(error)")
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmEncryptionConfig* encryption_config = [[AgoraRtmEncryptionConfig alloc] init];
+encryption_config.encryptionKey = @"your_encryptionKey";
+encryption_config.encryptionMode = AgoraRtmEncryptionAES256GCM;
+unsigned char bytes[32] = { /*your salt values*/ };
+encryption_config.encryptionSalt = [NSData dataWithBytes:bytes length:32];
+rtm_cfg.encryptionConfig = encryption_config;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```swift tab="Swift"
+do {
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let encryptionConfig = AgoraRtmEncryptionConfig()
+encryptionConfig.encryptionKey = "your_encryptionKey"
+encryptionConfig.encryptionMode = .aes256Gcm
+
+let saltValues: [UInt8] = [ /* your salt values */ ]
+let saltData = Data(bytes: saltValues, count: saltValues.count)
+
+encryptionConfig.encryptionSalt = saltData
+
+rtmConfig.encryptionConfig = encryptionConfig
+
+let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \\(error)")
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmEncryptionConfig* encryption_config = [[AgoraRtmEncryptionConfig alloc] init];
+encryption_config.encryptionKey = @"your_encryptionKey";
+encryption_config.encryptionMode = AgoraRtmEncryptionAES256GCM;
+unsigned char bytes[32] = { /*your salt values*/ };
+encryption_config.encryptionSalt = [NSData dataWithBytes:bytes length:32];
+rtm_cfg.encryptionConfig = encryption_config;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```dart
+final userId = 'your_userId';
+final appId = 'your_appId';
+late RtmClient rtmClient;
+var encryptionConfig = RtmEncryptionConfig(
+    // Set the encryption mode
+    encryptionMode: RtmEncryptionMode.aes256Gcm,
+    encryptionKey: 'your_encryptionKey',
+    encryptionSalt: [your_encryptionSalt]);
+
+var rtmConfig = RtmConfig( encryptionConfig:encryptionConfig );
+
+try {
+    var (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+uint8_t salt[32] = {1,2,3,4,5};
+cfg.encryptionConfig.encryptionKey = "your_key";
+cfg.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
+memcpy(cfg.encryptionConfig.encryptionSalt, salt, 32);
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+uint8_t salt[32] = {1,2,3,4,5};
+cfg.encryptionConfig.encryptionKey = "your_key";
+cfg.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
+memcpy(cfg.encryptionConfig.encryptionSalt, salt, 32);
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```csharp
+var cipherConfig = new RtmEncryptionConfig();
+cipherConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
+cipherConfig.encryptionKey = "your_encryptionKey";
+cipherConfig.encryptionKdfSalt = "your_salt";
+
+RtmConfig config = new RtmConfig();
+config.encryptionConfig = cipherConfig;
+config.appId = "your_appId";
+config.userId = "your_userId";
+
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM client initialized successfully");
+}
+catch (RTMException e)
+{
+    Debug.LogError($"RTM client initialization failed: {e.Message}");
+}
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>

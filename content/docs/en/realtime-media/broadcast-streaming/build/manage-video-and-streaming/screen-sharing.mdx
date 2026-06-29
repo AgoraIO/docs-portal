@@ -94,15 +94,15 @@ dependencies {
 **Manual integration**
 1. Copy the `AgoraScreenShareExtension.aar` file from the downloaded SDK to the `/app/libs/` directory.
 
-1. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
+2. Add the following line to the `dependencies` node of the `/app/build.gradle` file to support importing `aar` files:
 
   ```java
   implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
   ```
 
-1. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
+3. Ensure that the file `libagora_screen_capture_extension.so` exists in the `jniLibs` folder of your project. If it does not, copy it manually from the downloaded SDK folder.
 
-1. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
+4. Add the following code to the `/Gradle Scripts/build.gradle(Module: <projectname>.app` file to specify the location of the JNI library:
 
   ```java
   android {
@@ -400,14 +400,14 @@ Since Apple does not support capturing the screen in the main process of the app
 Take the following steps to set up your screen sharing project:
 
 1. Go to your project folder and open the `.xcodeproj` file with Xcode.
-1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+2. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
     ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
-1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+3. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
+4. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
 
-1. Modify project settings to implement the screen sharing code logic, and choose one of the following three methods according to your business needs:
+5. Modify project settings to implement the screen sharing code logic, and choose one of the following three methods according to your business needs:
 
    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
 
@@ -554,7 +554,7 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
    agoraKit.startScreenCapture(screenParams)
    ```
 
-1. Combine this with a manual action by the user to make the app turn on screen sharing. There are two ways to do this:
+2. Combine this with a manual action by the user to make the app turn on screen sharing. There are two ways to do this:
 
   1. Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
 
@@ -571,9 +571,9 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
     ```
 
-:::warning
-:::
-    > `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::note
+    `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+    :::
 
 ### Publish a screen sharing video stream in a channel
 
@@ -1098,13 +1098,13 @@ To customize the selection interface, refer to the following steps:
   })
   ```
 
-1. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
+2. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
 
     ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
 
-1. Get the `sourceId` selected by the user.
+3. Get the `sourceId` selected by the user.
 
-1. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
+4. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
 
   ``` javascript
   AgoraRTC.createScreenVideoTrack({
@@ -2845,11 +2845,11 @@ Refer to the following steps to join a channel and publish a screen sharing stre
 
     ![Bind UI Start](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
 
-1. Create and implement the `OnStartScreenShareClicked` callback. When a button click triggers this callback, execute the following flow:
+2. Create and implement the `OnStartScreenShareClicked` callback. When a button click triggers this callback, execute the following flow:
 
   1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
-  1. Call **Start Screen Capture** method to start screen capture, and check **Capture Audio** and **Capture Video** in **Make ScreenCaptureParameters2** to capture system audio and screen video.
-  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the screen-captured video stream to the channel:
+  2. Call **Start Screen Capture** method to start screen capture, and check **Capture Audio** and **Capture Video** in **Make ScreenCaptureParameters2** to capture system audio and screen video.
+  3. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the screen-captured video stream to the channel:
      - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing the video stream collected by the camera.
      - Set **Publish Screen Capture Video** to `AGORA TRUE VALUE` to publish the screen-captured video stream.
      - Set **Publish Screen Capture Audio** to `AGORA TRUE VALUE` to publish the screen-captured audio stream.
@@ -2868,7 +2868,7 @@ Follow the steps below to stop screen capture:
 
     ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
 
-1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown in the following image:
+2. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown in the following image:
 
     ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
 
@@ -2882,7 +2882,7 @@ Refer to the following steps to create a UMG:
 
 1. Create a **ComboBoxString** (drop-down list box) control named `CBS_DisplayID` for the user to select the screen or window to share from a drop-down list.
 
-1. Create two **Button** controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`, for the user to start or stop screen sharing.
+2. Create two **Button** controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`, for the user to start or stop screen sharing.
 
     ![Windows macOS UMG](/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
 
@@ -2909,15 +2909,15 @@ Follow the steps below to obtain and add available screens and windows:
 
       ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
 
-  1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
+  2. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
 
       ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
 
-1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
+2. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
 
     ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
 
-1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
+3. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
 
     ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
 
@@ -2939,14 +2939,14 @@ Save this configuration for subsequent use when starting screen capture. Refer t
 
     ![Bind Event to On Clicked](/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
 
-1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
+2. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
   1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
-  1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
+  2. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
 
       ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
 
-  1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
-  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
+  3. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
+  4. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
      - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing camera-captured video streams.
      - Set **Publish Screen Track** to `AGORA TRUE VALUE` to publish screen-captured video streams.
      - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
@@ -2962,7 +2962,7 @@ Save this configuration for subsequent use when starting screen capture. Refer t
 
     ![Bind UI Event of Stop Button Click](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
 
-1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown below:
+2. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown below:
 
     ![OnStopScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
 

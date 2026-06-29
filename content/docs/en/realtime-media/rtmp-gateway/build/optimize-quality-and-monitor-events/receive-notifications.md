@@ -200,6 +200,26 @@ if !verify(string(body), agoraSignature) {
 
 The callback payload contains common fields such as `noticeId`, `productId`, `eventType`, `notifyMs`, `sid`, and `payload`.
 
+### Common callback fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `noticeId` | String | Unique ID of the notification callback. |
+| `productId` | Number | Product identifier. When this value is `10`, the callback belongs to Media Gateway. |
+| `eventType` | Number | Event type code for the current callback. |
+| `notifyMs` | Number | Callback timestamp in milliseconds. |
+| `sid` | String | Streaming session ID. Each initiated streaming task generates a unique SID. |
+| `payload` | Object | Event-specific data. The fields in this object depend on `eventType`. |
+
+### Media Gateway event types
+
+| Event type | Description | Payload highlights |
+| --- | --- | --- |
+| `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. | `rtcInfo`, `transcoding`, `beginAt` |
+| `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. | `rtcInfo`, `streamStats`, `beginAt`, `endAt` |
+| `live_stream_aborted` | The gateway received a stream but terminated it because of an error. | `rtcInfo`, `beginAt`, `errorCode`, `reason` |
+| `live_profile_updated` | Stream properties have been updated, for example after the first audio or video frame is received. | `rtcInfo`, `videoProfile`, `audioProfile`, `beginAt` |
+
 For Media Gateway events, payload objects commonly include:
 
 - `rtcInfo`: RTC information such as `channel` and `uid`
@@ -208,7 +228,47 @@ For Media Gateway events, payload objects commonly include:
 - `videoProfile`: Video properties such as codec, width, height, and GOP
 - `audioProfile`: Audio properties such as sample rate and channel count
 
+### Media Gateway payload objects
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `rtcInfo` | Object | RTC information for the stream, including `channel` and `uid`. When `channel` or `uid` is empty or `0` in the streaming key, Media Gateway uses generated values and reports them here. |
+| `transcoding` | Object | Transcoding configuration used for the stream, including `audio` and `video` settings. |
+| `streamStats` | Object | Stream statistics including `inputAudioBytes`, `inputVideoBytes`, `outputAudioBytes`, and `outputVideoBytes`. |
+| `videoProfile` | Object | Video properties such as `codec`, `width`, `height`, and `gop`. Not applicable for audio-only streams. |
+| `audioProfile` | Object | Audio properties such as `sampleRate` and `channels`. |
+| `beginAt` | String | Streaming start time in RFC 3339 format. |
+| `endAt` | String | Streaming end time in RFC 3339 format. Returned in disconnect callbacks. |
+| `errorCode` | Number | Error code returned when the stream is aborted. |
+| `reason` | String | Error message corresponding to `errorCode`. |
+
+### `live_stream_aborted` error codes
+
+| `errorCode` | Description | Recommended action |
+| --- | --- | --- |
+| `1` | Illegal `streamKey`, for example an empty `channelName` or unsupported characters. | Check the `streamKey` format, especially for locally generated keys. |
+| `2` | Invalid `streamKey`, such as an expired or deleted key. | Create a new `streamKey` and try again. |
+| `3` | No permission to use this `streamKey`, for example when the custom domain and app ID do not match. | Check whether the `streamKey` matches the domain name used for the push. |
+| `4` | Number of concurrent streams exceeds the limit. | Wait and retry. |
+| `5` | Conflict detected, for example pushing to the same channel at the same time. | If the streams are not being pushed at the same time, try again after 5 to 10 seconds. |
+| `6` | Stream attribute exceeds the limit. Currently, this applies to bitrate only. | Check the streaming software configuration and lower the target bitrate. |
+| `7` | Streaming without audio or video data for more than 10 seconds. | Check whether the last push exited abnormally, and then try again. |
+| `8` | Failed to join the channel. | Check the `reason` field for the specific RTC failure reason. |
+| `9` | Disconnected from the main network. | Retry several times. If the problem persists, contact technical support to confirm whether the app certificate provided during activation is valid. |
+| `10` | Unknown internal service error. | Retry several times. If the problem persists, contact technical support. |
+
 The detailed REST and webhook field reference remains outside this prose migration scope.
+
+### Media Gateway event types
+
+Notifications can notify your server of the following Media Gateway events:
+
+| `eventType` | Event name | Description |
+| --- | --- | --- |
+| `1` | `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. |
+| `2` | `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. |
+| `3` | `live_stream_aborted` | The gateway has received an RTMP or SRT stream but terminated it for some reason. |
+| `4` | `live_profile_updated` | Stream properties have been updated, such as the first audio or video frame, or an audio or video profile change. |
 
 ## IP address query API
 

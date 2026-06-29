@@ -3,13 +3,15 @@ title: "Store channel metadata"
 description: "Use metadata to enhance channel features in Signaling clients."
 ---
 
-The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic. 
+<PlatformStructured platform="web">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
 
 ## Understand the tech
 
-Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations.md). Each metadata item has `key`, `value`, and `revision` properties.
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
 
-Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing.md) for details.
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
 
 The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
 
@@ -18,8 +20,8 @@ The storage service is available for both message channels and stream channels. 
 Ensure that you have:
 
 - Integrated the Signaling SDK in your project.
-- Implemented the framework functionality from the [SDK quickstart](../../../index.mdx) page.
-- Enabled storage in [Storage configuration](../../../manage-agora-account.md).
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
 
 ## Implement channel metadata storage
 
@@ -27,19 +29,332 @@ The section shows you how to implement channel metadata storage in your Signalin
 
 ### Set channel metadata
 
-To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists. 
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
 
 The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+```js
+const properties = {
+    key : "Quantity",
+    value : "20"
+};
 
-<CodeBlockTab value="java">
+const announcement = {
+    key : "Announcement",
+    value : "Welcome to our shop!"
+};
 
-```java
+const price = {
+    key : "T-shirt",
+    value : "100"
+};
+
+const data = [properties, announcement, price];
+const options = { addTimeStamp : true, addUserId : true };
+
+try {
+    const result = await rtm.storage.setChannelMetadata("channel1", "MESSAGE", data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+The sample code relies on the `await/async` programming model. Enclose it within an asynchronous function for proper execution. When the call is successful, the SDK returns the following data structure:
+
+```json
+{
+    "timestamp": "",               // Timestamp of successful operation
+    "channelName": "channel1",     // Channel name
+    "channelType": "MESSAGE",      // Channel type
+    "totalCount": 3                // Number of Metadata Items
+}
+```
+
+Additionally, Signaling triggers a `storage` event notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```js
+try {
+    const result = await rtm.storage.getChannelMetadata("channel1","MESSAGE");
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+Signaling SDK returns the following data structure:
+
+```json
+{
+    totalCount: 3,
+    majorRevision: 734874892,
+    metadata:{
+        "Quantity":{
+            value:"20",
+            revision:734874888,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Announcement":{
+            value:"Welcome to our Shop!",
+            revision:734874333,
+            updated:1688978391800,
+            authorUid:"Tomas"
+        },
+        "T-shirt":{
+            value:"100",
+            revision:734874222,
+            updated:168897839100,
+            authorUid:"Adam"
+        }
+    },
+    channelName: "channel1",
+    channelType: "MESSAGE"
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+```js
+const price = {
+    key : "T-shirt",
+    value : "299"
+};
+
+const data = [price];
+const options = { addTimeStamp : true, addUserId : true };
+
+try {
+    const result = await rtm.storage.updateChannelMetadata("channel1", "MESSAGE", data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+When the call is successful, the SDK returns the following data structure:
+
+```json
+{
+    "timestamp": "",               // Timestamp of successful operation
+    "channelName": "channel1",     // Channel name
+    "channelType": "MESSAGE",      // Channel type
+    "totalCount": 3                // Number of Metadata Items
+}
+```
+
+Additionally, Signaling triggers a `storage` event notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+```js
+const announcement = {
+    key : "Announcement",
+};
+
+const data = [announcement];
+
+const options = {
+    data : data,
+};
+
+try {
+    const result = await rtm.storage.removeChannelMetadata("channel1", "MESSAGE", options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+Additionally, Signaling triggers a `storage` event notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```js
+const options = {};
+
+try {
+    const result = await rtm.storage.removeChannelMetadata("channel1", "MESSAGE", options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` property in `MetadataOptions` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` property of a `MetadataItem[]`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```js
+const properties = {
+    key : "Quantity",
+    value : "30",
+    revision : 734874888
+};
+
+const announcement = {
+    key : "Announcement",
+    value : "Welcome to our shop!"
+};
+
+const price = {
+    key : "T-shirt",
+    value : "101",
+    revision : 734874222
+};
+
+const data = [properties, announcement, price];
+const options = { addTimeStamp : true, addUserId : true, majorRevision : 734874892 };
+
+try {
+    const result = await rtm.storage.updateChannelMetadata("channel1", "MESSAGE", data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `storage` event notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In the bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In the red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```js
+const properties = {
+    key : "Quantity",
+    value : "40"
+};
+
+const announcement = {
+    key : "Announcement",
+    value : "Welcome to our Shop!"
+};
+
+const price = {
+    key : "T-shirt",
+    value : "300"
+};
+
+const data = [properties, announcement, price];
+const options = { addTimeStamp : ture, addUserId : ture, lockName : "manage" };
+
+try {
+    const result = await rtm.storage.updateChannelMetadata("channel1", "MESSAGE", data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
+
+- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+```java tab="Java"
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "20"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
@@ -50,18 +365,15 @@ mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, m
     public void onSuccess(Void responseInfo) {
         log(CALLBACK, "set channel metadata success");
     }
-    
+
     @Override
     public void onFailure(ErrorInfo errorInfo) {
         log(ERROR, errorInfo.toString());
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 metadata.items.add(MetadataItem("Quantity", "20"))
 metadata.items.add(MetadataItem("Announcement", "Welcome to our shop!"))
@@ -77,25 +389,14 @@ mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, m
     }
 })
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
-
-The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members. 
+The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
 
 ### Get channel metadata
 
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, new ResultCallback<Metadata>() {
     @Override
     public void onSuccess(Metadata data) {
@@ -112,11 +413,8 @@ mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, n
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, object : ResultCallback<Metadata> {
     override fun onSuccess(data: Metadata) {
         log(CALLBACK, "get channel metadata success")
@@ -131,9 +429,6 @@ mRtmClient.getStorage().getChannelMetadata("channel1", RtmChannelType.MESSAGE, o
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 Signaling SDK returns the following data structure:
 
@@ -174,15 +469,7 @@ To modify existing metadata items for a specified channel, call `updateChannelMe
 
 The following example updates the value of a metadata item:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("T-shirt", "299"));
 MetadataOptions options = new MetadataOptions();
@@ -201,11 +488,8 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 metadata.items.add(MetadataItem("T-shirt", "299"))
 val options = MetadataOptions()
@@ -222,25 +506,14 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
-
-The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members. 
+The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
 
 ### Delete channel metadata
 
 To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 Metadata metadata = new Metadata();
 MetadataItem announcement = new MetadataItem();
 announcement.setKey("Announcement");
@@ -258,11 +531,8 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 val announcement = MetadataItem()
 announcement.setKey("Announcement")
@@ -278,25 +548,14 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 Setting the `value` for a metadata item that is being deleted has no effect.
 
-The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members. 
+The `onSuccess` callback notifies you of the successful completion of the storage operation. Additionally, Signaling triggers an `onStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
 
 To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 Metadata metadata = new Metadata();
 mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), "", new ResultCallback<Void>() {
     @Override
@@ -310,11 +569,8 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, MetadataOptions(true, true), "", object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void) {
@@ -326,20 +582,16 @@ mRtmClient.getStorage().removeChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 :::info
 Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
-
 :::
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](https://docs.agora.io/en/signaling/reference/api) data structure, which includes the [RtmStorageEventType](https://docs.agora.io/en/signaling/reference/api) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](https://docs.agora.io/en/signaling/reference/api) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel. 
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -371,21 +623,13 @@ The CAS version control feature provides two independent version control paramet
 
 When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
 
-- To disable CAS verification, use the default value of `-1` for the `revision` parameter. 
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter.
 
 - To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. The SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error.
 
 The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 Metadata metadata = new Metadata();
 metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
@@ -407,11 +651,8 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 metadata.setMajorRevision(734874892)
 metadata.items.add(MetadataItem("Quantity", "30", 734874888))
@@ -431,15 +672,12 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
-</CodeBlockTab>
-
-</CodeBlockTabs>
 
 In this example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
 
 :::info
-When using version control, monitor `onStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
 
+When using version control, monitor `onStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
 :::
 
 ### Locks
@@ -448,17 +686,9 @@ Locks enable users to gain exclusive access to critical resources, resolving con
 
 Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
 
-The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed. 
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="java">
-
-```java
+```java tab="Java"
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
@@ -480,11 +710,8 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 });
 ```
-</CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-
-```kotlin
+```kotlin tab="Kotlin"
 val metadata = Metadata()
 metadata.items.add(MetadataItem("Quantity", "40"))
 metadata.items.add(MetadataItem("Announcement", "Welcome to our Shop!"))
@@ -504,11 +731,8 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
     }
 })
 ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
-
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](https://docs.agora.io/en/signaling/reference/api).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
 
 ## Reference
 
@@ -516,11 +740,2554 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](https://docs.agora.io/en/signaling/reference/api)
-- [`getChannelMetadata​`](https://docs.agora.io/en/signaling/reference/api)
-- [`removeChannelMetadata​`](https://docs.agora.io/en/signaling/reference/api)
-- [`updateChannelMetadata​`](https://docs.agora.io/en/signaling/reference/api)
-- [Event listeners](https://docs.agora.io/en/signaling/reference/api)
-- [Lock](https://docs.agora.io/en/signaling/reference/api)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
 
-- [Metadata](https://docs.agora.io/en/signaling/reference/api)
+- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+// Retrieve metadata
+let metadata = AgoraRtmMetadata()!
+
+// Set metadata items
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "20"
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "100"
+
+// Create an array of metadata items
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.setChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("setChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("setChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+// Initialize a new AgoraRtmMetadata object
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+// Set metadata items
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"20";
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"100";
+
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] setChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setChannelMetadata success!!");
+    } else {
+        NSLog(@"setChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```swift tab="Swift"
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+    if errorInfo == nil {
+        print("getChannelMetadata success!!")
+        if let data = response?.data {
+        }
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("getChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+[[rtm getStorage] getChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getChannelMetadata success!!");
+        AgoraRtmMetadata* data = response.data; //get storage data;
+    } else {
+        NSLog(@"getChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+Signaling SDK returns the following data structure:
+
+```js
+{
+    majorRevision: 734874892,
+    metadata:{
+        "Quantity":{
+            value:"20",
+            revision:734874888,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Announcement":{
+            value:"Welcome to our Shop!",
+            revision:734874333,
+            updated:1688978391800,
+            authorUid:"Tomas"
+        },
+        "T-shirt":{
+            value:"100",
+            revision:734874222,
+            updated:168897839100,
+            authorUid:"Adam"
+        }
+    }
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+// Retrieve metadata
+let metadata = AgoraRtmMetadata()!
+
+// Set a metadata item
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "299"
+
+// Create an array of metadata items
+let itemArray = [price]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+// Update channel metadata
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+// Initialize a new AgoraRtmMetadata object
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+// Set metadata items
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"299";
+
+NSArray *item_array = [NSArray arrayWithObjects:price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+
+let itemArray = [announcement]
+metadata.items = itemArray
+
+rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: nil, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+NSArray *item_array = [NSArray arrayWithObjects:announcement];
+metadata.items = item_array;
+
+[[rtm getStorage] removeChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:nil lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeChannelMetadata success!!");
+    } else {
+        NSLog(@"removeChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+Setting a `value` for a metadata item that is being deleted has no effect.
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()!
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+
+let itemArray = [announcement]
+metadata.items = itemArray
+
+rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: nil, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];;
+
+[[rtm getStorage] removeChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:nil lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeChannelMetadata success!!");
+    } else {
+        NSLog(@"removeChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. To implement data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` parameter of a `AgoraRtmMetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()
+
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "30"
+properties.revision = 734874888
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "101"
+price.revision = 734874222
+
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+metadata.majorRevision = 734874892
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.records = true
+
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"30";
+properties.revision = 734874888;
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"101";
+price.revision = 734874222;
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+metadata.majorRevision = 734874892; // set marjor revision
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error. If the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `didReceiveStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In a bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In a red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()
+
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "30"
+properties.revision = 734874888
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "101"
+price.revision = 734874222
+
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+metadata.majorRevision = 734874892
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: "manage") { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"40";
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"300";
+
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"manage" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+// Retrieve metadata
+let metadata = AgoraRtmMetadata()!
+
+// Set metadata items
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "20"
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "100"
+
+// Create an array of metadata items
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.setChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("setChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("setChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+// Initialize a new AgoraRtmMetadata object
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+// Set metadata items
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"20";
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"100";
+
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] setChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setChannelMetadata success!!");
+    } else {
+        NSLog(@"setChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```swift tab="Swift"
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+    if errorInfo == nil {
+        print("getChannelMetadata success!!")
+        if let data = response?.data {
+        }
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("getChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+[[rtm getStorage] getChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getChannelMetadata success!!");
+        AgoraRtmMetadata* data = response.data; //get storage data;
+    } else {
+        NSLog(@"getChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+Signaling SDK returns the following data structure:
+
+```js
+{
+    majorRevision: 734874892,
+    metadata:{
+        "Quantity":{
+            value:"20",
+            revision:734874888,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Announcement":{
+            value:"Welcome to our Shop!",
+            revision:734874333,
+            updated:1688978391800,
+            authorUid:"Tomas"
+        },
+        "T-shirt":{
+            value:"100",
+            revision:734874222,
+            updated:168897839100,
+            authorUid:"Adam"
+        }
+    }
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+// Retrieve metadata
+let metadata = AgoraRtmMetadata()!
+
+// Set a metadata item
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "299"
+
+// Create an array of metadata items
+let itemArray = [price]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+// Update channel metadata
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+// Initialize a new AgoraRtmMetadata object
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+// Set metadata items
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"299";
+
+NSArray *item_array = [NSArray arrayWithObjects:price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+
+let itemArray = [announcement]
+metadata.items = itemArray
+
+rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: nil, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `update` within 100 ms to inform other channel members.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+NSArray *item_array = [NSArray arrayWithObjects:announcement];
+metadata.items = item_array;
+
+[[rtm getStorage] removeChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:nil lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeChannelMetadata success!!");
+    } else {
+        NSLog(@"removeChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+Setting a `value` for a metadata item that is being deleted has no effect.
+
+When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data structure. Additionally, Signaling triggers an `didReceiveStorageEvent` notification of event type `AgoraRtmStorageEventTypeUpdate` within 100 ms to inform other channel members.
+
+</TabsContent>
+</Tabs>
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()!
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+
+let itemArray = [announcement]
+metadata.items = itemArray
+
+rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: nil, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];;
+
+[[rtm getStorage] removeChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:nil lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeChannelMetadata success!!");
+    } else {
+        NSLog(@"removeChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. To implement data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` parameter of a `AgoraRtmMetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()
+
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "30"
+properties.revision = 734874888
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "101"
+price.revision = 734874222
+
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+metadata.majorRevision = 734874892
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.records = true
+
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"30";
+properties.revision = 734874888;
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"101";
+price.revision = 734874222;
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+metadata.majorRevision = 734874892; // set marjor revision
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error. If the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `didReceiveStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In a bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In a red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```swift tab="Swift"
+let metadata = AgoraRtmMetadata()
+
+let properties = AgoraRtmMetadataItem()
+properties.key = "Quantity"
+properties.value = "30"
+properties.revision = 734874888
+
+let announcement = AgoraRtmMetadataItem()
+announcement.key = "Announcement"
+announcement.value = "Welcome to our shop!"
+
+let price = AgoraRtmMetadataItem()
+price.key = "T-shirt"
+price.value = "101"
+price.revision = 734874222
+
+let itemArray = [properties, announcement, price]
+metadata.items = itemArray
+
+metadata.majorRevision = 734874892
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: "manage") { response, errorInfo in
+    if errorInfo == nil {
+        print("updateChannelMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+        }
+    }
+}
+```
+
+```objc tab="Objective-C"
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+
+AgoraRtmMetadataItem* properties = [[AgoraRtmMetadataItem alloc] init];
+properties.key = @"Quantity";
+properties.value = @"40";
+AgoraRtmMetadataItem* announcement = [[AgoraRtmMetadataItem alloc] init];
+announcement.key = @"Announcement";
+announcement.value = @"Welcome to our shop!";
+AgoraRtmMetadataItem* price = [[AgoraRtmMetadataItem alloc] init];
+price.key = @"T-shirt";
+price.value = @"300";
+
+NSArray *item_array = [NSArray arrayWithObjects:properties, announcement, price];
+metadata.items = item_array;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] updateChannelMetadata:@"channel1" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"manage" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateChannelMetadata success!!");
+    } else {
+        NSLog(@"updateChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock)
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock)
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+```dart
+var properties = MetadataItem(
+  key: 'Quantity',
+  value: '20');
+
+var announcement = MetadataItem(
+  key: 'Announcement',
+  value: 'Welcome to our shop!');
+
+var price = MetadataItem(
+  key: 'T-shirt',
+  value: '200');
+
+var metadata = [properties,announcement,price];
+
+try{
+    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+        'channel1',
+        RtmChannelType.message,
+        metadata,
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+If the operation is successful, Signaling returns the following data structure:
+
+```js
+{
+    channelName : 'channel1',
+    channelType : RtmChannelType.message,
+}
+```
+
+Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details see See [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.getChannelMetadata(
+        'channel1',
+        RtmChannelType.message);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+Signaling SDK returns the following data structure:
+
+```js
+{
+    data:{
+        majorRevision: 734874892,
+        itemCount: 3,
+        items: [
+            {
+                key: 'Quantity',
+                value:'20',
+                authorUid: 'Tony',
+                revision: 734874888,
+                updateTs: 1688978391900
+            },{
+                key:'Announcement',
+                value:'Welcome to our Shop!',
+                authorUid:'Tony',
+                revision: 734874333,
+                updateTs: 1688978391800
+            },{
+                key: 'T-shirt',
+                value: '100',
+                authorUid: 'Tony',
+                revision: 734874222,
+                updateTs: 168897839100
+            }]
+    },
+    channelName: 'channel1',
+    channelType: RtmChannelType.message
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control to create new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+```dart
+var price = MetadataItem(
+  key: 'T-shirt',
+  value: '299');
+
+var metadata = [price];
+
+try{
+    var (status,response) = await rtmClient.getStorage.updateChannelMetadata(
+        'channel1',
+        RtmChannelType.message,
+        metadata,
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+If the update operation is successful, Signaling returns the following data structure:
+
+```js
+{
+    channelName : 'channel1',
+    channelType : RtmChannelType.message,
+}
+```
+
+Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details see See [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+```dart
+var announcement = MetadataItem(key: 'Announcement');
+var metadata = [announcement];
+
+try{
+    var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+        'channel1',
+        RtmChannelType.message,
+        metadata: metadata);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+Signaling triggers a `storage` event notification of event type `update` within 100 ms to inform other users in the channel.
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+        'channel1',
+        RtmChannelType.message);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement a `storage` event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+Signaling integrates compare-and-set (CAS) version control to manage metadata updates. CAS is a concurrency control mechanism to ensure that updates to a shared resource occur only if the resource is in an expected state. The mechanism works as follows:
+
+1. The client reads the current version of a data item.
+2. Before making an update, the client compares the current version with the last read version number.
+3. If the versions match, the client proceeds with the update and increments the version number. If they do not match, the update is aborted.
+
+The following are some sample use-cases where CAS version control is useful:
+
+- In a bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds while others receive an error. Users obtain the latest price information to update their bids.
+
+- In a red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+The CAS version control feature provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. The SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```dart
+var properties = MetadataItem(
+  key: 'Quantity',
+  value: '20'
+  revision:734874888);
+
+var announcement = MetadataItem(
+  key: 'Announcement',
+  value: 'Welcome to our shop!');
+
+var price = MetadataItem(
+  key: 'T-shirt',
+  value: '200'
+  revision:734874222);
+
+var metadata = [properties,announcement,price];
+
+try{
+    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+        'channel1',
+        RtmChannelType.message,
+        metadata,
+        majorRevision: 734874892,
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+In this example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `storage` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```dart
+var properties = MetadataItem(
+  key: 'Quantity',
+  value: '20');
+
+var announcement = MetadataItem(
+  key: 'Announcement',
+  value: 'Welcome to our shop!');
+
+var price = MetadataItem(
+  key: 'T-shirt',
+  value: '200');
+
+var metadata = [properties,announcement,price];
+
+try{
+    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+        'channel1',
+        RtmChannelType.message,
+        metadata,
+        lockName:'manage',
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
+
+- [MetadataItem](/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a stream channel. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+MetadataItem item0("Quantity", "20");
+MetadataItem item1("Announcement", "Welcome to our shop!");
+MetadataItem item2("T-shirt", "100");
+items.emplace_back(item0);
+items.emplace_back(item1);
+items.emplace_back(item2);
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->setChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+After you call this method, the SDK triggers the `onSetChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onSetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // set channel metadata failed
+        } else {
+            // set channel metadata success
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```cpp
+uint64_t requestId;
+rtmClient->getStorage()->getChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, requestId);
+```
+
+After you call this method, the SDK triggers the `onGetChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("GetChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("GetChannelMetadata success %d channel: %s, channel type: %d\n");
+            for (int i = 0 ; i < data.itemCount; i++) {
+                printf("key: %s value: %s revision: %lld\n", data.items[i].key, data.items[i].value, data.items[i].revision);
+            }
+        }
+    }
+};
+```
+
+Signaling SDK returns the following data structure:
+
+```js
+{
+    majorRevision: 734874892,
+    metadata: {
+        "Quantity": {
+            value: "20",
+            revision: 734874888,
+            updated: 1688978391900,
+            authorUid: "Tony"
+        },
+        "Announcement": {
+            value: "Welcome to our Shop!",
+            revision: 734874333,
+            updated: 1688978391800,
+            authorUid: "Tomas"
+        },
+        "T-shirt": {
+            value: "100",
+            revision: 734874222,
+            updated: 168897839100,
+            authorUid: "Adam"
+        }
+    }
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+items.push_back(MetadataItem("T-shirt", "299"));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+After you call this method, the SDK triggers the `onUpdateChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onUpdateChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UpdateChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UpdateChannelMetadata success\n");
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+MetadataItem item;
+item.key = "Announcement";
+items.push_back(item);
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->removeChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+After you call this method, the SDK triggers the `onRemoveChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onRemoveChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("RemoveChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("RemoveChannelMetadata success\n");
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```cpp
+Metadata metadata;
+
+uint64_t requestId;
+rtmClient->getStorage()->removeChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, MetadataOptions(), "lockName", requestId);
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```cpp
+Metadata metadata;
+metadata.majorRevision = 734874892;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Quantity", "30", 734874888));
+items.emplace_back(MetadataItem("Announcement", "Welcome to our shop!"));
+items.emplace_back(MetadataItem("T-shirt", "101", 734874222));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `onStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In the bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In the red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```cpp
+Metadata metadata;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Quantity", "40"));
+items.emplace_back(MetadataItem("Announcement", "Welcome to our shop!"));
+items.emplace_back(MetadataItem("T-shirt", "300"));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+std::string lockName = "manage";
+rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
+
+- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `setChannelMetadata`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a stream channel. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+MetadataItem item0("Quantity", "20");
+MetadataItem item1("Announcement", "Welcome to our shop!");
+MetadataItem item2("T-shirt", "100");
+items.emplace_back(item0);
+items.emplace_back(item1);
+items.emplace_back(item2);
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->setChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+After you call this method, the SDK triggers the `onSetChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onSetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // set channel metadata failed
+        } else {
+            // set channel metadata success
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
+
+```cpp
+uint64_t requestId;
+rtmClient->getStorage()->getChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, requestId);
+```
+
+After you call this method, the SDK triggers the `onGetChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("GetChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("GetChannelMetadata success %d channel: %s, channel type: %d\n");
+            for (int i = 0 ; i < data.itemCount; i++) {
+                printf("key: %s value: %s revision: %lld\n", data.items[i].key, data.items[i].value, data.items[i].revision);
+            }
+        }
+    }
+};
+```
+
+Signaling SDK returns the following data structure:
+
+```js
+{
+    majorRevision: 734874892,
+    metadata: {
+        "Quantity": {
+            value: "20",
+            revision: 734874888,
+            updated: 1688978391900,
+            authorUid: "Tony"
+        },
+        "Announcement": {
+            value: "Welcome to our Shop!",
+            revision: 734874333,
+            updated: 1688978391800,
+            authorUid: "Tomas"
+        },
+        "T-shirt": {
+            value: "100",
+            revision: 734874222,
+            updated: 168897839100,
+            authorUid: "Adam"
+        }
+    }
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `updateChannelMetadata`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+items.push_back(MetadataItem("T-shirt", "299"));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+After you call this method, the SDK triggers the `onUpdateChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onUpdateChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UpdateChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UpdateChannelMetadata success\n");
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `removeChannelMetadata`. Refer to the following sample code:
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+MetadataItem item;
+item.key = "Announcement";
+items.push_back(item);
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->removeChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+After you call this method, the SDK triggers the `onRemoveChannelMetadataResult` callback to return the call result.
+
+```cpp
+// Asynchronous callback
+class RtmEventHandler : public IRtmEventHandler {
+    void onRemoveChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("RemoveChannelMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("RemoveChannelMetadata success\n");
+        }
+    }
+};
+```
+
+Additionally, Signaling triggers an `onStorageEvent` notification of event type `RTM_STORAGE_EVENT_TYPE_UPDATE` within 100 ms to inform other channel members.
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
+
+```cpp
+Metadata metadata;
+
+uint64_t requestId;
+rtmClient->getStorage()->removeChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, MetadataOptions(), "lockName", requestId);
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+
+- `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```cpp
+Metadata metadata;
+metadata.majorRevision = 734874892;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Quantity", "30", 734874888));
+items.emplace_back(MetadataItem("Announcement", "Welcome to our shop!"));
+items.emplace_back(MetadataItem("T-shirt", "101", 734874222));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, "lockName", requestId);
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `onStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In the bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In the red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `setChannelMetadata`, `updateChannelMetadata`, and `removeChannelMetadata` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
+
+```cpp
+Metadata metadata;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Quantity", "40"));
+items.emplace_back(MetadataItem("Announcement", "Welcome to our shop!"));
+items.emplace_back(MetadataItem("T-shirt", "300"));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+std::string lockName = "manage";
+rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
+
+- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+The Signaling storage service enables you to store and share contextual channel data in your app, such as props, announcements, member lists, and relationship chains. When channel metadata is set, updated, or deleted, the SDK triggers a storage event notification. Other users in the channel receive this notification within 100ms and use the information according to your business logic.
+
+## Understand the tech
+
+Use channel metadata to store and share channel level information such as room attributes, group announcements, and auction item price updates. A set of channel metadata for a specific channel facilitates business-level data storage and real-time notifications. Each channel has only one set of channel metadata, but each set may contain multiple metadata items. For relevant restrictions, refer to the [API usage restrictions](../../../reference/limitations). Each metadata item has `key`, `value`, and `revision` properties.
+
+Channel metadata is stored permanently in the Signaling database. The data persists even after a channel is destroyed. You must explicitly delete it to remove it from the database. This feature impacts your storage billing. Refer to [Pricing](../../../reference/pricing) for details.
+
+The storage service is available for both message channels and stream channels. Use the `channelType` parameter in the storage event to determine the channel type.
+
+## Prerequisites
+
+Ensure that you have:
+
+- Integrated the Signaling SDK in your project.
+- Implemented the framework functionality from the [SDK quickstart](../../../quickstart) page.
+- Enabled storage in [Storage configuration](../../../manage-agora-account#storage-configuration).
+
+## Implement channel metadata storage
+
+The section shows you how to implement channel metadata storage in your Signaling app.
+
+### Set channel metadata
+
+To create a new metadata item for the channel, or to update the `value` of an existing item, call `SetChannelMetadataAsync`. This method creates a new item in the channel metadata if the specified `key` does not exist, or overwrites the associated `value` if a metadata item with the specified `key` already exists.
+
+The following example saves a set of metadata items for a message channel named `channel1`. Signaling adds `timestamp` and `authorUid` information to each metadata item it stores.
+
+```csharp
+var metadata = new RtmMetadata();
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "100",
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "200",
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var metadataOptions = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+var lockName = "";
+
+var (status,response) = await rtmClient.GetStorage().SetChannelMetadataAsync("channel1", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+Signaling triggers an `OnStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+### Get channel metadata
+
+To retrieve all metadata items associated with a specific channel, call `GetChannelMetadataAsync` by specifying the channel name and the channel type. Refer to the following example:
+
+```csharp
+var (status,respones) = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    var data =  response.data;
+    if (data.metadataItemsSize != 0)
+    {
+        Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
+        for ( int i =0; i < data.metadataItemsSize; i++)
+        {
+            Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
+        }
+    }
+}
+```
+
+Signaling SDK returns the following data structure:
+
+```json
+{
+    majorRevision: 734874892,
+    metadata:{
+        {   key:"Quantity",
+            value:"20",
+            revision:734874888,
+            updateTs:1688978391900,
+            authorUid:"Tony"
+        },
+        {
+            key:"Announcement",
+            value:"Welcome to our Shop!",
+            revision:734874333,
+            updated:1688978391800,
+            authorUid:"Tomas"
+        },
+        {
+            key:"T-shirt",
+            value:"100",
+            revision:734874222,
+            updated:168897839100,
+            authorUid:"Adam"
+        }
+    }
+}
+```
+
+### Update channel metadata
+
+To modify existing metadata items for a specified channel, call `UpdateChannelMetadataAsync`. If the metadata item does not exist, an error is returned. This method is useful for business use-cases that require permission control on creating new metadata items. For example, consider the following use-cases:
+
+- In an e-commerce auction, only administrators or product owners are authorized to list new products and set new attributes, while bidders may only modify price attributes.
+- In a gaming environment, only the administrator may define permissions as room properties.
+
+The following example updates the value of a metadata item:
+
+```csharp
+var metadata = new RtmMetadata();
+var apple = new MetadataItem()
+{
+    key = "Apple",
+    value = "120",
+};
+var banana = new MetadataItem()
+{
+    key = "Banana",
+    value = "220",
+};
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+
+var options = new MetadataOptions()
+{
+    recordUserId = true,
+    recordTs = true
+};
+
+var lockName = "";
+
+var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
+    "channel_name",
+    RTM_CHANNEL_TYPE.MESSAGE,
+    metadata,
+    options,
+    lockName
+);
+
+if (status.Error)
+{
+    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+Signaling triggers an `OnStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+### Delete channel metadata
+
+To delete metadata items that are no longer required, call `RemoveChannelMetadataAsync`. Refer to the following sample code:
+
+```csharp
+var metadata = new RtmMetadata();
+var metadataItem = new MetadataItem()
+            {
+                key = "Apple",
+            };
+metadata.metadataItems = new MetadataItem[] { metadataItem };
+metadata.metadataItemsSize = 1;
+var options = new MetadataOptions() { };
+
+var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options, "");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+Setting the `value` for a metadata item that is being deleted has no effect.
+
+Signaling triggers an `OnStorageEvent` notification of event type `UPDATE` within 100 ms to inform other channel members.
+
+To delete the entire set of metadata for a channel, do not specify any metadata items when calling `RemoveChannelMetadataAsync`. Refer to the following sample code:
+
+```csharp
+var metadata = new RtmMetadata();
+var options = new MetadataOptions() { };
+
+var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options,"");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+:::info
+Once channel metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
+:::
+
+## Receive storage event notifications
+
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+
+#### Event notification mode
+
+Currently, Signaling only supports the full data update mode. This means that when user or channel metadata is updated, the `data` field in the event notification contains all the attribute data of the user or the channel.
+
+## Additional storage features
+
+To help resolve issues arising from concurrent updates to storage, Signaling offers version control and locking features.
+
+### Version control
+
+The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
+
+- `majorRevision` property in the `RtmMetadata` class: Enable version number verification of the entire set of channel metadata.
+
+- `revision` property of a `MetadataItem`: Enable version number verification of a single metadata item.
+
+When setting channel metadata, or a single channel metadata item, use the revision attribute to enable or disable version control as follows:
+
+- To disable CAS verification, use the default value of `-1` for the `revision` parameter. If the channel metadata or channel metadata item already exists, the value is overwritten. If it does not exist, the SDK creates a metadata item and updates the value.
+
+- To enable CAS verification, set the `majorRevision` or the `revision` parameter to a positive integer. If the channel metadata or channel metadata item already exists, the SDK updates the corresponding value after successfully verifying the revision number. If the specified revision number does not match the latest revision number in the database, the SDK returns an error code.
+
+The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270 ;
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "120",
+                revision = 174298200,
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "220",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var lockName = "lockName";
+
+var (status,response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, data, options, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+In the above example, CAS verification for channel metadata and metadata items is enabled by setting `majorRevision` and `revision` parameters to positive integers. Upon receiving the update call request, Signaling first verifies the provided major revision number against the latest value in the database. If there's a mismatch, it returns an error; if the values match, Signaling verifies the `revision` number for each metadata item using a similar logic.
+
+:::info
+
+When using version control, monitor `OnStorageEvent` notifications to retrieve updated values for `majorRevision` and `revision` to ensure that the latest revision values are used for subsequent operations.
+:::
+
+Following are some sample use-cases where version control is useful:
+
+- In the bidding use-case, if multiple users bid on a product at the same time, the first bidder succeeds, while others receive an error. Users obtain the latest price information to update their bids.
+
+- In the red envelope grabbing use-case, the red envelope may only be grabbed once. The first user succeeds, while the rest receive an error.
+
+### Locks
+
+Locks enable users to gain exclusive access to critical resources, resolving contention issues with shared resources. For instance, consider a use-case where only one administrator is allowed in a channel at a time, and only the administrator can manage channel metadata by setting, deleting, and modifying it.
+
+Compared to CAS, which controls the version of channel metadata, locks offer a higher level of control. They determine whether a user has the authority to call the `SetChannelMetadataAsync`, `UpdateChannelMetadataAsync`, and `RemoveChannelMetadataAsync` interfaces. Without acquiring the lock, a user cannot perform operations on channel metadata.
+
+The following code demonstrates using a lock to update channel metadata. The user calling `UpdateChannelMetadataAsync` must acquire the lock first for the call to succeed.
+
+```csharp
+var metadata = new RtmMetadata();
+var apple = new MetadataItem()
+{
+    key = "Apple",
+    value = "120",
+};
+var banana = new MetadataItem()
+{
+    key = "Banana",
+    value = "220",
+};
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+
+var options = new MetadataOptions()
+{
+    recordUserId = true,
+    recordTs = true
+};
+
+var lockName = "lockName";
+
+var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
+    "channel_name",
+    RTM_CHANNEL_TYPE.MESSAGE,
+    metadata,
+    options,
+    lockName
+);
+
+if (status.Error)
+{
+    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`SetChannelMetaDataAsync`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
+- [`GetChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
+- [`RemoveChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
+- [`UpdateChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling#lock)
+
+- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+
+</PlatformStructured>
