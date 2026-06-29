@@ -307,6 +307,41 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('lets long prose inline code break without changing pre code styling', () => {
+    const inlineCode = getRuleBody(
+      '.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))',
+    );
+    const preCode = getRuleBody(
+      '.prose :where(pre code):not(:where(.not-prose, .not-prose *))',
+    );
+
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: '100%',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'word-break',
+        value: 'break-word',
+      }),
+    );
+    expect(inlineCode.sourceStart).toBeLessThan(preCode.sourceStart);
+    expect(preCode.rule.nodes).not.toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
+      }),
+    );
+  });
+
   it('adds a mobile scroll affordance to wide OpenAPI code examples', () => {
     const codeFigure = getRuleBody(
       '.openapi-operation figure.shiki:has(> .fd-scroll-container)::after',
