@@ -769,7 +769,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 :::note
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.md).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.mdx).
 :::
 **2. Cross-device synchronization**
 
@@ -870,7 +870,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **2. MPUDP (MultiPath UDP) (Beta)**
 
@@ -973,7 +973,7 @@ This release fixed the following issues:
 
 #### Known issues
 
--  The package manager download is listed as 4.1.0-1. This is the correct download for Voice SDK for Android v4.1.0.
+-  The package manager download is listed as 4.1.0-1. This the correct download for Voice SDK for Android v4.1.0.
 
 ### v4.0.1
 
@@ -1005,8 +1005,8 @@ To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### Issues fixed
@@ -1901,7 +1901,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 :::note
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.md).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](pricing.mdx).
 :::
 **2. Cross-device synchronization**
 
@@ -1989,7 +1989,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
 
 **2. MPUDP (MultiPath UDP) (Beta)**
 
@@ -2111,8 +2111,8 @@ To enable this function, contact support@agora.io.
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### API changes
@@ -3038,7 +3038,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
 
 **2. MPUDP (MultiPath UDP) (Beta)**
 
@@ -3163,8 +3163,8 @@ To enable this function, contact support@agora.io.
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### API changes
@@ -3312,7 +3312,7 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 
 
 
-  - Starting from Chrome 117, the `getStats()` method is no longer supported in the SDK v4.9.3 and earlier versions. Calling this method will return all values as `0`. This is caused by the fact that the old version of the `getStats()` WebRTC API will be removed from Chrome 117, as stated in the [Chrome official documentation](https://developer.chrome.com/blog/getstats-migration).
+  - Starting from Chrome 117, the `getStats()` method is no longer supported in the SDK v4.9.3 and earlier versions. Calling this method will return all values as `0`. This caused by the fact that the old version of the `getStats()` WebRTC API will be removed from Chrome 117, as stated in the [Chrome official documentation](https://developer.chrome.com/blog/getstats-migration).
   **Solution:** Upgrade to a higher version of the SDK.
   - On all AMD-based and some Intel-based devices with the Windows operating system, if Chrome uses the H.264 codec, the video transmission bitrate may be lower than the set value.
     **Solution:** To resolve this issue, you can set the browser to use the VP9 codec or try to disable hardware acceleration.
@@ -3897,7 +3897,7 @@ To further reduce the package size, this version splits the Channel Media Relay 
 
 **Optimize channel preload**
 
-When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](/en/realtime-media/video/build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](pricing.md).
+When using the channel preload feature, Agora recommends sending the host's media stream immediately when calling the method to join the channel. This reduces the first frame rendering time. For details, see [Preload channels](/en/realtime-media/video/build/join-and-manage-channels/preload-channels). With this setting, users will start pulling streams as soon as they join the channel, which will generate charges. For details on how Agora charges for the services, see [Pricing](pricing.mdx).
 
 **Support for AV1 encoding (Beta)**
 
@@ -4890,7 +4890,7 @@ As of v4.6.0, the Voice Calling supports Interactive Live Streaming Standard. Th
 
 -  Interactive Live Streaming Standard: Low latency (1500 ms to 2000 ms) from the host’s client to an audience member’s client.
 
-The charges for Standard and Premium are different. For details, see the [product overview](../product-overview.md) and [pricing](pricing.md) of Interactive Live Streaming Standard.
+The charges for Standard and Premium are different. For details, see the [product overview](../product-overview.md) and [pricing](pricing.mdx) of Interactive Live Streaming Standard.
 
 You can set the latency level of the audience role in the following two ways:
 
@@ -5481,14 +5481,14 @@ This version includes the following improvements:
 
 ### v1.0.1
 
-Released on November 10, 2024, this is the first version of `agora-extension-super-clarity`. For detailed integration steps, refer to Super Clarity.
+Released on November 10, 2024, this the first version of `agora-extension-super-clarity`. For detailed integration steps, refer to Super Clarity.
 
 ## Watermark extension
 
 ### v1.0.0
 Released on November 18, 2025.
 
-This is the first version of `agora-extension-video-watermark`. For detailed integration steps, refer to Video Watermark.
+This the first version of `agora-extension-video-watermark`. For detailed integration steps, refer to Video Watermark.
 
 ## Video Compositor extension
 
@@ -5498,7 +5498,7 @@ This extension enables local users to seamlessly merge multiple video streams an
 
 Released on October 25, 2022.
 
-This is the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](/en/realtime-media/video/build/apply-video-effects/video-compositor).
+This the first version of `agora-extension-videp-compositor`. For detailed integration steps, refer to [Video Compositor](/en/realtime-media/video/build/apply-video-effects/video-compositor).
 
 ## Beauty Effect extension
 
@@ -5507,7 +5507,7 @@ This extension enables your users to apply beauty effects to their videos. They 
 ### v1.0.2-beta
 Released on November 26, 2022.
 
-This is the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](/en/realtime-media/video/build/apply-video-effects/beauty-effect).
+This the first version of `agora-extension-beauty-effect`. For detailed integration steps, refer to [Beauty Effect](/en/realtime-media/video/build/apply-video-effects/beauty-effect).
 
 ## Notifications
 
@@ -6431,7 +6431,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **2. MPUDP (MultiPath UDP) (Beta)**
 
@@ -6588,8 +6588,8 @@ The SDK uses the playback device as the loopback device by default. Since v4.0.1
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive scenarios.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### API changes
@@ -7496,7 +7496,7 @@ This release adds the following features applicable to spatial audio effect use-
 
 **6. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **7. MPUDP (MultiPath UDP) (Beta)**
 
@@ -8753,7 +8753,7 @@ This release adds the following features applicable to spatial audio effect use-
 
 **7. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **8. MPUDP (MultiPath UDP) (Beta)**
 
@@ -10651,7 +10651,7 @@ This release has optimized the implementation of some functions, involving renam
 
 1. **Audio route**
 
-    Starting with this release, `routeBluetooth` in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/enum_audioroute.html) is renamed to `ROUTE_BLUETOOTH_DEVICE_HFP`, representing a Bluetooth device using the HFP protocol. `ROUTE_BLUETOOTH_DEVICE_A2DP`(10) is added to represent a Bluetooth device using the A2DP protocol
+    Starting with this release, `routeBluetooth` in [AudioRoute](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/enum_audioroute.html) is renamed to `ROUTE_BLUETOOTH_DEVICE_HFP`, representing a Bluetooth device using the HFP protocol. `ROUTE_BLUETOOTH_DEVICE_A2DP`(10) is added to represent a Bluetooth device using the A2DP protocol.
 
 1. **Audio loopback capturing (Windows, macOS)**
 
@@ -11145,7 +11145,7 @@ This release adds the following features applicable to spatial audio effect use-
 
 **7. Headphone equalization effect**
 
-This release adds the `SetHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `SetHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `SetHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `SetHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **8. MPUDP (MultiPath UDP) (Beta)**
 
@@ -11747,7 +11747,7 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 
 v4.2.1 was released on November 16, 2023.
 
-This is the first GA release of the SDK. It provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
+This the first GA release of the SDK. It provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
 
 **C++**
 
@@ -12041,7 +12041,7 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 
 This version was released on November 16, 2023.
 
-This is the first release of Video SDK for Unreal Blueprint.
+This the first release of Video SDK for Unreal Blueprint.
 
 #### New features
 

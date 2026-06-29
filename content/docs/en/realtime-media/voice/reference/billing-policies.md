@@ -52,7 +52,7 @@ On the sixth day of each month, Agora automatically deducts the fee for the prev
 - Your monthly usage does not exceed the free quota.
 - You do not use any other charged Agora services or products.
 
-If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](pricing.md) at your earliest convenience and avoid account suspension.
+If your account balance is negative after the deduction, Agora sends you an email, reminding you to [top up your account](pricing.mdx) at your earliest convenience and avoid account suspension.
 
 #### Account suspension
 
@@ -166,7 +166,7 @@ The difference between the two approaches increases as more users join the chann
 
 ### Agora's calculation method
 
-Agora calculates service minutes **by the number of users**. Service minutes are also calculated based on aggregate video resolution. For details, see [Calculate aggregate video resolution](pricing.md).
+Agora calculates service minutes **by the number of users**. Service minutes are also calculated based on aggregate video resolution. For details, see [Calculate aggregate video resolution](pricing.mdx).
 
 ## Account settlement
 

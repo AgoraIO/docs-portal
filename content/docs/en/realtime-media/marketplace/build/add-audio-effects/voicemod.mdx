@@ -1,0 +1,306 @@
+---
+title: 'Voicemod Voice Changer'
+description: 'Install and enable the Voicemod voice changer extension.'
+---
+
+This guide is provided by Voicemod. Agora is planning a documentation upgrade program for all extensions on the marketplace. Please stay tuned.
+
+<PlatformStructured platform="android">
+
+## Integrate Voicemod extension
+
+### Download and link the extension
+
+You download the libraries and example code from the Agora dashboard.
+
+Place the `aar` file into the `libs` folder of your project and link to the file in `build.gradle`:
+
+```gradle
+dependencies {
+    implementation(name: 'voicemod-audio-filter-extension', ext: 'aar')
+}
+```
+
+### Enable the extension
+
+:::warning
+There is currently no callback that notifies the app when the extension has been enabled, and enabling the extension can take up to a few seconds.
+:::
+
+```java
+public void initializeAgoraEngine() {
+    RtcEngineConfig config = new RtcEngineConfig();
+    config.addExtension("VoicemodExtension");
+    mRtcEngine = RtcEngine.create(config);
+    mRtcEngine.enableExtension("Voicemod", "VoicemodExtension", true);
+}
+```
+
+### Disable the extension
+
+:::warning
+Disable the extension when your app closes. You will eventually be charged for usage, so it is important to shut it down before exit.
+:::
+
+```java
+mRtcEngine.enableExtension("Voicemod", "VoicemodExtension", false);
+```
+
+### Initialize Voicemod
+
+To start the extension, set your project’s API key and API secret.
+
+:::warning
+A request to initialize the Voicemod extension fails unless the extension has already been enabled successfully.
+:::
+
+```java
+public void initVoicemodSession(String userId) {
+    String userData = "{"
+        + "\"apiKey\": \"<your API key>\","
+        + "\"apiSecret\": \"<your API secret>\""
+        + "}";
+    mRtcEngine.setExtensionProperty(
+        "Voicemod",
+        "VoicemodExtension",
+        "vcmd_user_data",
+        userData
+    );
+}
+```
+
+### Enable a voice
+
+:::warning
+A request to set the voice fails unless the Voicemod extension has been initialized successfully.
+:::
+
+```java
+String voice = "\"titan\"";
+mRtcEngine.setExtensionProperty("Voicemod", "VoicemodExtension", "vcmd_voice", voice);
+```
+
+### Disable voices
+
+```java
+String voice = "null";
+mRtcEngine.setExtensionProperty("Voicemod", "VoicemodExtension", "vcmd_voice", voice);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## Integrate Voicemod extension
+
+### Download and link the extension
+
+You download the libraries and example code from the Agora dashboard.
+
+Place the framework package into your `Frameworks` folder and add the package to your project.
+
+### Enable the extension
+
+:::warning
+There is currently no callback that notifies the app when the extension has been enabled, and enabling the extension can take up to a few seconds.
+:::
+
+Swift:
+
+```swift
+func initializeAgoraEngine() {
+    self.agoraKit.enableExtension(
+        withVendor: "Voicemod",
+        extension: "VoicemodExtension",
+        enabled: true
+    )
+}
+```
+
+Objective-C:
+
+```objective-c
+- (void)initializeAgoraEngine {
+    [self.agoraKit enableExtensionWithVendor:@"Voicemod"
+                                   extension:@"VoicemodExtension"
+                                     enabled:YES];
+}
+```
+
+### Disable the extension
+
+:::warning
+Disable the extension when your app closes. You will eventually be charged for usage, so it is important to shut it down before exit.
+:::
+
+Swift:
+
+```swift
+self.agoraKit.enableExtension(
+    withVendor: "Voicemod",
+    extension: "VoicemodExtension",
+    enabled: false
+)
+```
+
+Objective-C:
+
+```objective-c
+[self.agoraKit enableExtensionWithVendor:@"Voicemod"
+                               extension:@"VoicemodExtension"
+                                 enabled:NO];
+```
+
+### Initialize Voicemod
+
+To start the extension, set your project’s API key and API secret.
+
+:::warning
+A request to initialize the Voicemod extension fails unless the extension has already been enabled successfully.
+:::
+
+Swift:
+
+```swift
+func initVoicemodSession() {
+    let userData = [
+        "apiKey": "<your API key>",
+        "apiSecret": "<your API secret>",
+    ]
+
+    do {
+        let jsonData = try JSONSerialization.data(
+            withJSONObject: userData,
+            options: [.prettyPrinted]
+        )
+        let jsonString = String(data: jsonData, encoding: .utf8)!
+        self.agoraKit.setExtensionPropertyWithVendor(
+            "Voicemod",
+            extension: "VoicemodExtension",
+            key: "vcmd_user_data",
+            value: jsonString
+        )
+    } catch {
+        print("JSON serialization failed")
+    }
+}
+```
+
+Objective-C:
+
+```objective-c
+- (void)initVoicemodSession:(NSString *)userId {
+    NSDictionary *userData =
+        @{@"apiKey" : @"<your API key>", @"apiSecret" : @"<your API secret>"};
+    NSError *error;
+    NSData *jsonData =
+        [NSJSONSerialization dataWithJSONObject:userData
+                                        options:NSJSONWritingPrettyPrinted
+                                          error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData
+                                                 encoding:NSUTF8StringEncoding];
+    [self.agoraKit setExtensionPropertyWithVendor:@"Voicemod"
+                                        extension:@"VoicemodExtension"
+                                              key:@"vcmd_user_data"
+                                            value:jsonString];
+}
+```
+
+### Enable a voice
+
+:::warning
+A request to set the voice fails unless the Voicemod extension has been initialized successfully.
+:::
+
+Swift:
+
+```swift
+let voiceJson = "\"titan\""
+self.agoraKit.setExtensionPropertyWithVendor(
+    "Voicemod",
+    extension: "VoicemodExtension",
+    key: "vcmd_voice",
+    value: voiceJson
+)
+```
+
+Objective-C:
+
+```objective-c
+NSString *voice = [NSString stringWithFormat:@"\"%@\"", @"titan"];
+[self.agoraKit setExtensionPropertyWithVendor:@"Voicemod"
+                                    extension:@"VoicemodExtension"
+                                          key:@"vcmd_voice"
+                                        value:voice];
+```
+
+### Disable voices
+
+Swift:
+
+```swift
+let voiceJson = "null"
+self.agoraKit.setExtensionPropertyWithVendor(
+    "Voicemod",
+    extension: "VoicemodExtension",
+    key: "vcmd_voice",
+    value: voiceJson
+)
+```
+
+Objective-C:
+
+```objective-c
+NSString *voice = @"null";
+[self.agoraKit setExtensionPropertyWithVendor:@"Voicemod"
+                                    extension:@"VoicemodExtension"
+                                          key:@"vcmd_voice"
+                                        value:voice];
+```
+
+</PlatformStructured>
+
+## Reference
+
+### Voicemod properties
+
+You can configure and control the Voicemod extension using the following properties.
+
+Before you can use the extension, you must provide your API key and API secret by setting the `vcmd_user_data` property.
+
+Except for `vcmd_user_data` and `vcmd_version`, the extension must be initialized before Voicemod property accessors work.
+
+| Property key | Property value | Access | Description |
+| --- | --- | --- | --- |
+| `vcmd_user_data` | Object: `{ apiKey: "project API key", apiSecret: "project API secret" }` | Set | Sets the API key and API secret. |
+| `vcmd_version` | String: `MAJOR.MINOR.PATCH` | Get | Gets the Voicemod plugin version. |
+| `vcmd_voice` | String | Get, set | Sets or gets the current voice. Use `null` for no voice. |
+| `vcmd_presets` | Array of strings, such as `magic-chords`, `baby`, `cave`, `titan`, `robot`, and `lost-soul` | Get | Gets the list of existing voices. |
+| `vcmd_background_sounds` | Boolean | Set | Toggles background sounds. |
+| `vcmd_mute` | Boolean | Get, set | Toggles mute audio samples or gets the current setting. |
+
+### FAQ
+
+**How do I add the extension to my Agora Marketplace app?**
+
+To use the extension, download the files for your operating systems from the [Voicemod Agora releases repository](https://gitlab.com/voicemod/agora/releases), and follow the instructions in the [Voicemod documentation](https://voicemod.gitlab.io/agora/releases/).
+
+**How large is the extension?**
+
+The extension currently uses 14 MB of storage space for Android and 32 MB for iOS.
+
+**What pricing plans are available?**
+
+The extension is free until December 31, 2021, and will be charged at $1 per 1000 minutes after that.
+
+**What are Voicemod's terms and conditions?**
+
+Read the [Voicemod End User License Agreement](https://voicemod.gitlab.io/agora/releases/EULA.html).
+
+**Can I get more voices?**
+
+Voicemod plans to release an extended voice pack soon.
+
+**Can I use other Voicemod features such as Soundboard?**
+
+Voicemod does not currently support Soundboard within an Agora Marketplace app, but is working on it for v2 of the extension.

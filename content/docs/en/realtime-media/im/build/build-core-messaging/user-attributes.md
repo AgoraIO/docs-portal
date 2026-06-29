@@ -789,7 +789,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 
 1. Set the messsage type as `custom`.
 2. Set the `customEvent` of the custom message as `userCard`.
-3. Retrieve the values of `nickname`, `mail`, and `avatarurl` from the user attributes, and then set them as the the extension of the custom message using `customExts`.
+3. Retrieve the values of `nickname`, `mail`, and `avatarurl` from the user attributes, and then set them as the extension of the custom message using `customExts`.
 
 Followings are the sample code for creating and sending a namecard message:
 

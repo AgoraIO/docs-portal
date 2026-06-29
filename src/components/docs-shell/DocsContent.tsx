@@ -121,16 +121,10 @@ export function DocsContent({
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
       : undefined;
+  const hidePlatformTabs =
+    resolvedBody?.kind === 'mdx' ? resolvedBody.hidePlatformTabs === true : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const platformTabsStateKey = platformTabs
-    ? [
-        isMdxBody ? resolvedBody.contentPath : '',
-        platformTabs.defaultPlatform ?? '',
-        platformTabs.initialPlatform ?? '',
-        platformTabs.platforms,
-      ].join('|')
-    : undefined;
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -228,7 +222,7 @@ export function DocsContent({
             <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
               {displayTitle}
             </h1>
-            {!isOpenApiBody && description ? (
+            {description ? (
               <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
                 {description}
               </p>
@@ -247,13 +241,12 @@ export function DocsContent({
         {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
-        {platformTabs ? (
+        {platformTabs && !hidePlatformTabs ? (
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
             defaultPlatform={platformTabs.defaultPlatform}
             initialPlatform={platformTabs.initialPlatform}
-            key={platformTabsStateKey}
             locale={currentLocale}
             platforms={platformTabs.platforms}
           />
@@ -274,8 +267,7 @@ export function DocsContent({
               <PlatformTabsPlacementProvider
                 defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
-                key={platformTabsStateKey}
-                value={platformTabs ? 'header' : 'inline'}
+                value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </PlatformTabsPlacementProvider>
@@ -289,7 +281,6 @@ export function DocsContent({
               <PlatformTabsPlacementProvider
                 defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
-                key={platformTabsStateKey}
                 value="header"
               >
                 <PlatformTabsGroup
@@ -616,6 +607,7 @@ function DocsHeaderScopeTabs({ header }: { header: DocsSidebarHeader }) {
 export type DocsContentBodyPayload =
   | {
       contentPath: string;
+      hidePlatformTabs?: boolean;
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;

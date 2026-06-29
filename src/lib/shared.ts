@@ -5,6 +5,13 @@ export const docsRoute = '/en/introduction';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';
 
+export const legacyDocsBannerConfig = {
+  hrefs: {
+    en: 'https://docs.agora.io/en/',
+    'zh-CN': 'https://doc.shengwang.cn/',
+  },
+};
+
 export const contentGitConfig = {
   user: 'Shengwang-Community',
   repo: 'docs-portal',

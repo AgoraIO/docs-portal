@@ -3,8 +3,6 @@ title: "Custom video source"
 description: "Integrate a custom video or audio capture into your client"
 ---
 
-**Supported platforms:** Android, iOS, macOS, Web, Windows, and Unreal Engine.
-
 Custom video capture refers to the collection of a video stream from a custom source. Unlike the default video capture method, custom video capture enables you to control the capture source, and precisely adjust video attributes. You can dynamically adjust parameters such as video quality, resolution, and frame rate to adapt to various application use-cases. For example, you can capture video from high-definition cameras, and drone cameras.
 
 Agora recommends default video capture for its stability, reliability, and ease of integration. Custom video capture offers flexibility and customization for specific video capture use-cases where default video capture does not fulfill your requirements.
@@ -59,7 +57,7 @@ Take the following steps to implement this workflow:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Join a channel and publish the custom video track
+2. Join a channel and publish the custom video track
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -106,11 +104,11 @@ Take the following steps to implement this workflow:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Implement your self-capture module
+3. Implement your self-capture module
 
   Agora provides the [VideoFileReader](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/VideoFileReader.java) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK
+4. Push video data to the SDK
 
   Before sending captured video frames to Video SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from Video SDK and pass it as the timestamp parameter in the `VideoFrame`.
 
@@ -493,7 +491,7 @@ Take the following steps to implement this workflow:
   customCamera?.trackId = agoraKit.createCustomVideoTrack()
   ```
 
-1. Join a channel and publish the custom video track
+2. Join a channel and publish the custom video track
 
    ```swift
    // Create an AgoraRtcChannelMediaOptions instance
@@ -518,12 +516,12 @@ Take the following steps to implement this workflow:
    })
    ```
 
-1. Implement your self-capture module
+3. Implement your self-capture module
 
   Agora provides the [
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK
+4. Push video data to the SDK
 
   Use `pushExternalVideoFrame` to send the captured video frame to the SDK through the video track. Ensure that the `videoTrackId` matches the video track ID specified when joining the channel. In `AgoraVideoFrame`, you can set the pixel format, data type, timestamp, and other parameters of the video frame.
 
@@ -545,7 +543,7 @@ To ensure audio and video synchronization, Agora recommends setting the `time` (
 If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
-1. Destroy custom video track
+5. Destroy custom video track
 
   To stop publishing the custom video track, call `destroyCustomVideoTrack`.
 
@@ -666,7 +664,7 @@ Take the following steps to implement this workflow:
   customCamera?.trackId = agoraKit.createCustomVideoTrack()
   ```
 
-1. Join a channel and publish the custom video track
+2. Join a channel and publish the custom video track
 
    ```swift
    // Create an AgoraRtcChannelMediaOptions instance
@@ -691,12 +689,12 @@ Take the following steps to implement this workflow:
    })
    ```
 
-1. Implement your self-capture module
+3. Implement your self-capture module
 
   Agora provides the [
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK
+4. Push video data to the SDK
 
   Use `pushExternalVideoFrame` to send the captured video frame to the SDK through the video track. Ensure that the `videoTrackId` matches the video track ID specified when joining the channel. In `AgoraVideoFrame`, you can set the pixel format, data type, timestamp, and other parameters of the video frame.
 
@@ -718,7 +716,7 @@ To ensure audio and video synchronization, Agora recommends setting the `time` (
 If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
-1. Destroy custom video track
+5. Destroy custom video track
 
   To stop publishing the custom video track, call `destroyCustomVideoTrack`.
 
@@ -1366,4 +1364,3 @@ Agora provides a open-source sample project for your reference. Download [Custom
 - [`setExternalVideoSource`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_setexternalvideosource)
 - [`pushVideoFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_imediaengine.html#api_imediaengine_pushvideoframe)
 </PlatformStructured>
-

@@ -58,13 +58,16 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
   return {
     ...actual,
     PlatformHeaderTabs: ({
+      defaultPlatform,
       initialPlatform,
       platforms,
     }: {
+      defaultPlatform?: string;
       initialPlatform?: string;
       platforms?: string;
     }) => (
       <div
+        data-default-platform={defaultPlatform}
         data-initial-platform={initialPlatform}
         data-testid="platform-header-tabs"
       >
@@ -257,7 +260,7 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
-  it('does not render the generic header description for OpenAPI bodies', async () => {
+  it('renders the generic header description for OpenAPI bodies', async () => {
     renderWithRouter(
       <DocsContent
         body={{
@@ -294,8 +297,10 @@ describe('DocsContent', () => {
       await screen.findByTestId('fumadocs-openapi-content'),
     ).toHaveTextContent('/v2/projects/{appid}/agents/{agentId}/instructions');
     expect(
-      screen.queryByText(/Implicit instruction injection/),
-    ).not.toBeInTheDocument();
+      screen.getByText(
+        'Use this endpoint for the following scenarios: - **Implicit instruction injection**',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders the generic header description for MDX-authored pages', async () => {
@@ -503,6 +508,7 @@ describe('DocsContent', () => {
           kind: 'mdx',
           platformTabs: {
             canonicalPlatform: 'web',
+            defaultPlatform: 'android',
             initialPlatform: 'android',
             platforms: '["web","android"]',
           },
@@ -519,6 +525,7 @@ describe('DocsContent', () => {
     const body = await screen.findByTestId('docs-content-body');
 
     expect(tabs).toHaveTextContent('["web","android"]');
+    expect(tabs).toHaveAttribute('data-default-platform', 'android');
     expect(tabs).toHaveAttribute('data-initial-platform', 'android');
     expect(
       title.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING,
@@ -526,6 +533,32 @@ describe('DocsContent', () => {
     expect(
       tabs.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+  });
+
+  it('hides page-level platform tabs when the page opts out of platform labels', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath: 'en/realtime-media/voice/quickstart.mdx',
+          hidePlatformTabs: true,
+          kind: 'mdx',
+          platformTabs: {
+            canonicalPlatform: 'web',
+            initialPlatform: 'android',
+            platforms: '["web","android"]',
+          },
+        }}
+        description="Build a voice calling app."
+        slug="quickstart"
+        title="Quickstart"
+        toc={[]}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Quickstart' });
+    await screen.findByTestId('docs-content-body');
+
+    expect(screen.queryByTestId('platform-header-tabs')).not.toBeInTheDocument();
   });
 
   it('shows a return path on a docs page reached from a docs body link', async () => {
@@ -1386,9 +1419,47 @@ describe('DocsMainColumn', () => {
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
 
+  it('does not reserve an empty pager column when only one page link exists', async () => {
+    renderWithRouter(
+      <DocsMainColumn
+        next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
+      >
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+    const pager = within(footer).getByTestId('docs-pager');
+
+    expect(
+      within(pager).getByRole('link', { name: /Next Next Page/i }),
+    ).toHaveAttribute('href', '/en/introduction/next-page');
+    expect(
+      within(pager).queryByRole('link', { name: /Previous/i }),
+    ).not.toBeInTheDocument();
+    expect(pager).toHaveClass('grid-cols-1');
+    expect(pager).not.toHaveClass('sm:grid-cols-2');
+    expect(pager.children).toHaveLength(1);
+  });
+
   it('widens footer content in openapi layout', async () => {
     renderWithRouter(
       <DocsMainColumn layoutMode="openapi">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+
+    expect(footer).toHaveClass('max-w-none');
+    expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
+  });
+
+  it('widens footer content when the main content fills the shell width', async () => {
+    renderWithRouter(
+      <DocsMainColumn contentFillsWidth>
         <article>Body</article>
       </DocsMainColumn>,
     );

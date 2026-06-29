@@ -5,7 +5,7 @@ description: "This page documents Agora's previous pricing model based on monthl
 
 This page documents Agora's previous pricing model based on monthly billing. It remains available for reference during the transition to the new prepaid packages.
 :::note
-You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](pricing.md).
+You're viewing information about Agora's previous monthly billing model. For the latest prepaid packages, see [Pricing](pricing.mdx).
 :::
 If you have already signed a contract with Agora, the billing terms and conditions within that contract take precedence.
 

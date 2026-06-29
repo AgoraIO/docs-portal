@@ -3,8 +3,6 @@ title: "Stream media to a channel"
 description: "Play local or online media files locally or to remote users in an Agora channel."
 ---
 
-**Supported platforms:** Android, iOS, macOS, Windows, Electron, React Native, and Unity.
-
 <PlatformStructured platform="android">
 Playing media files during online business presentations, educational sessions, or casual meetups heightens user engagement. Video SDK enables you to add media playing functionality to your app.
 
@@ -56,7 +54,7 @@ To implement a media player in your app, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Implement the callbacks for the media player observer. Observe the player's state through the `onPlayerStateChanged` callback, get the current media file's playback progress through `onPositionChanged`, and handle player events through the `onPlayerEvent` callback.
+2. Implement the callbacks for the media player observer. Observe the player's state through the `onPlayerStateChanged` callback, get the current media file's playback progress through `onPositionChanged`, and handle player events through the `onPlayerEvent` callback.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -137,7 +135,7 @@ To implement a media player in your app, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Call `setupLocalVideo` to render the local media player view.
+3. Call `setupLocalVideo` to render the local media player view.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -169,7 +167,7 @@ To implement a media player in your app, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. When joining a channel, use `ChannelMediaOptions` to set the media player ID, publish media player audio and video, and share media resources with remote users in the channel.
+4. When joining a channel, use `ChannelMediaOptions` to set the media player ID, publish media player audio and video, and share media resources with remote users in the channel.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -206,7 +204,7 @@ To implement a media player in your app, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Use the `open` method to open a local or online media file.
+5. Use the `open` method to open a local or online media file.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -227,7 +225,7 @@ To implement a media player in your app, follow these steps:
 </CodeBlockTab>
 
 </CodeBlockTabs>
-1. Call the `play` method to play the media file.
+6. Call the `play` method to play the media file.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -253,7 +251,7 @@ To implement a media player in your app, follow these steps:
 Call the `play` method to play the media file only after receiving the `onPlayerStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
 
 :::
-1. When a user leaves the channel, call `stop` to stop playback, `destroy` to destroy the media player, `unRegisterPlayerObserver` to unregister the player observer, and release allocated resources.
+7. When a user leaves the channel, call `stop` to stop playback, `destroy` to destroy the media player, `unRegisterPlayerObserver` to unregister the player observer, and release allocated resources.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -349,7 +347,7 @@ To implement a media player in your app, follow these steps:
    mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
    ```
 
-1. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
+2. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
 
    ```swift
    extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
@@ -397,7 +395,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. Call the `setupLocalVideo` method to render the local media player view.
+3. Call the `setupLocalVideo` method to render the local media player view.
 
    ```swift
    mediaPlayerKit.setView(localVideo.videoView)
@@ -409,24 +407,24 @@ To implement a media player in your app, follow these steps:
    agoraKit.setupLocalVideo(videoCanvas)
    ```
 
-1. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
+4. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
 
    ```swift
    let option1 = AgoraRtcChannelMediaOptions()
 
-   // ...
+  // ...
 
-   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
-   ```
+  ```
 
-1. Use the `open` method to open a local or online media file.
+5. Use the `open` method to open a local or online media file.
 
    ```swift
    mediaPlayerKit.open(url, startPos: 0)
    ```
 
-1. Call the `play` method to play the media file.
+6. Call the `play` method to play the media file.
 
    ```swift
    mediaPlayerKit.play()
@@ -437,7 +435,7 @@ To implement a media player in your app, follow these steps:
 Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
 
 :::
-1. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
+7. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```swift
    mediaPlayerKit.stop()
@@ -511,7 +509,7 @@ To implement a media player in your app, follow these steps:
    mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
    ```
 
-1. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
+2. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
 
    ```swift
    extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
@@ -559,7 +557,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. Call the `setupLocalVideo` method to render the local media player view.
+3. Call the `setupLocalVideo` method to render the local media player view.
 
    ```swift
    mediaPlayerKit.setView(localVideo.videoView)
@@ -571,24 +569,24 @@ To implement a media player in your app, follow these steps:
    agoraKit.setupLocalVideo(videoCanvas)
    ```
 
-1. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
+4. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
 
    ```swift
    let option1 = AgoraRtcChannelMediaOptions()
 
-   // ...
+  // ...
 
-   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
-   ```
+  ```
 
-1. Use the `open` method to open a local or online media file.
+5. Use the `open` method to open a local or online media file.
 
    ```swift
    mediaPlayerKit.open(url, startPos: 0)
    ```
 
-1. Call the `play` method to play the media file.
+6. Call the `play` method to play the media file.
 
    ```swift
    mediaPlayerKit.play()
@@ -599,7 +597,7 @@ To implement a media player in your app, follow these steps:
 Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
 
 :::
-1. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
+7. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```swift
    mediaPlayerKit.stop()
@@ -684,7 +682,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. To register the playback observer, call `registerPlayerSourceObserverthe` before you join the channel. To unregister the playback observer, call `unregisterPlayerSourceObserver` before you leave the channel.
+2. To register the playback observer, call `registerPlayerSourceObserverthe` before you join the channel. To unregister the playback observer, call `unregisterPlayerSourceObserver` before you leave the channel.
 
    ```cpp
    void CAgoraMediaPlayer::OnBnClickedButtonJoinchannel() {
@@ -715,7 +713,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. Implement callbacks for the observer.
+3. Implement callbacks for the observer.
 
    ```cpp
    // Observe player state changes
@@ -757,7 +755,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. When joining a channel use `ChannelMediaOptions` to set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel.
+4. When joining a channel use `ChannelMediaOptions` to set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel.
 
    ```cpp
    void CAgoraMediaPlayer::OnBnClickedButtonPublishVideo() {
@@ -789,7 +787,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. Use the `open` method to open a local or online media file.
+5. Use the `open` method to open a local or online media file.
 
    ```swift
    void CAgoraMediaPlayer::OnBnClickedButtonOpen() {
@@ -814,7 +812,7 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-1. Call the `play` method to play the media file.
+6. Call the `play` method to play the media file.
 
    ```cpp
    void CAgoraMediaPlayer::OnBnClickedButtonPlay() {
@@ -846,7 +844,7 @@ To implement a media player in your app, follow these steps:
 Call the `play` method to play the media file only after receiving the `onPlayerSourceStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
 
 :::
-1. When a user stops playback or leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
+7. When a user stops playback or leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```cpp
    void CAgoraMediaPlayer::OnBnClickedButtonStop() {
@@ -939,14 +937,14 @@ To implement a media player in your app, follow these steps:
    let mediaPlayer = rtcEngine.createMediaPlayer();
    ```
 
-1. Register the playback observer using `registerPlayerSourceObserver`.
+2. Register the playback observer using `registerPlayerSourceObserver`.
 
    ```javascript
    // Register playback observer
    mediaPlayer.registerPlayerSourceObserver(this);
    ```
 
-1. Register media player observer callbacks based on your needs:
+3. Register media player observer callbacks based on your needs:
 
    - `onPlayerSourceStateChanged`: Reports player state changes.
    - `onPositionChanged`: Reports playback progress.
@@ -976,7 +974,7 @@ To implement a media player in your app, follow these steps:
    rtcEngine.registerEventHandler(EventHandles);
    ```
 
-1. Open a media file:
+4. Open a media file:
 
    ```javascript
    open = () => {
@@ -991,7 +989,7 @@ To implement a media player in your app, follow these steps:
    };
    ```
 
-1. Play and control media playback:
+5. Play and control media playback:
 
    ```javascript
    // Play the media file
@@ -1015,7 +1013,7 @@ To implement a media player in your app, follow these steps:
    };
    ```
 
-1. Stop playback and release resources:
+6. Stop playback and release resources:
 
    ```javascript
    // Stop playing
@@ -1079,14 +1077,14 @@ To implement a media player in your app, follow these steps:
    let mediaPlayer = rtcEngine.createMediaPlayer();
    ```
 
-1. Register the playback observer using `registerPlayerSourceObserver`.
+2. Register the playback observer using `registerPlayerSourceObserver`.
 
    ```typescript
    // Register playback observer
    mediaPlayer.registerPlayerSourceObserver(this);
    ```
 
-1. Register media player observer callbacks based on your needs:
+3. Register media player observer callbacks based on your needs:
 
    - `onPlayerSourceStateChanged`: Reports player state changes.
    - `onPositionChanged`: Reports playback progress.
@@ -1116,7 +1114,7 @@ To implement a media player in your app, follow these steps:
    rtcEngine.registerEventHandler(EventHandles);
    ```
 
-1. Open a media file:
+4. Open a media file:
 
    ```typescript
    open = () => {
@@ -1131,7 +1129,7 @@ To implement a media player in your app, follow these steps:
    };
    ```
 
-1. Play and control media playback:
+5. Play and control media playback:
 
    ```typescript
    // Play the media file
@@ -1155,7 +1153,7 @@ To implement a media player in your app, follow these steps:
    };
    ```
 
-1. Stop playback and release resources:
+6. Stop playback and release resources:
 
    ```typescript
    // Stop playing
@@ -1395,6 +1393,38 @@ var ret = RtcEngine.JoinChannel(_token, _channelName, 0, options);
 this.Log.UpdateLog($"JoinChannel returns: {ret}");
 ```
 
+### Preload media resources
+
+To play multiple media resources continuously, preload the media resources to ensure optimal audience experience when switching resources.
+
+1. Call `PreloadSrc` to preload media resources. To load multiple resources, call this method multiple times. Listen to the `OnPreloadEvent` callbacks to receive preload related events.
+
+   ```csharp
+   public void OnPreloadSrcButtonClick()
+   {
+
+     var nRet = MediaPlayer.PreloadSrc(PRELOAD_URL, 0);
+     this.Log.UpdateLog("PreloadSrc: " + nRet);
+   }
+   ```
+
+1. Call `PlayPreloadedSrc` to play the preloaded media resource. After you call this method successfully, you receive a `OnPlayerStateChanged` callback reporting status `PLAYER_STATE_PLAYING`.
+
+   ```csharp
+   public void OnPlayPreloadButtonClick()
+   {
+     var nRet = MediaPlayer.PlayPreloadedSrc(PRELOAD_URL);
+     this.Log.UpdateLog("PlayPreloadedSrc: " + nRet);
+   }
+   ```
+
+1. When you no longer need the loaded media resources, call `UnloadSrc` to release the preloaded resources.
+
+   ```csharp
+   var nRet = MediaPlayer.UnloadSrc(PRELOAD_URL);
+   this.Log.UpdateLog("UnloadSrc: " + nRet);
+   ```
+
 ### Playback control
 
 1. Call `Play` to start playing a local or online media resource.
@@ -1406,11 +1436,11 @@ this.Log.UpdateLog($"JoinChannel returns: {ret}");
      Debug.Log($"Play return: {ret}");
    }
    ```
-:::warning
+    :::warning
 
-If you use `Open` to load a media resource, wait for the `OnPlayerSourceStateChanged` callback to report the state as `PLAYER_STATE_OPEN_COMPLETED` before calling `Play`. If you use `OpenWithMediaSource` with `autoPlay` enabled, playback starts automatically.
+    If you use `Open` to load a media resource, wait for the `OnPlayerSourceStateChanged` callback to report the state as `PLAYER_STATE_OPEN_COMPLETED` before calling `Play`. If you use `OpenWithMediaSource` with `autoPlay` enabled, playback starts automatically.
 
-:::
+    :::
 1. To loop playback, call `SetLoopCount`. Set the value to `-1` for infinite looping. The default value of `0` means no loop playback.
 
    ```csharp
@@ -1445,32 +1475,32 @@ To control playback, use the following methods:
 
 - `Pause`: Pauses playback.
 
-  ```csharp
-  public void OnPauseButtonPress()
-  {
-    var ret = MediaPlayer.Pause();
-    this.Log.UpdateLog($"Pause return: {ret}");
-  }
-  ```
+    ```csharp
+    public void OnPauseButtonPress()
+    {
+      var ret = MediaPlayer.Pause();
+      this.Log.UpdateLog($"Pause return: {ret}");
+    }
+    ```
 - `Resume`: Resumes playback after pausing.
 
-  ```csharp
-  public void OnResumeButtonPress()
-  {
-    var ret = MediaPlayer.Resume();
-    this.Log.UpdateLog($"Resume returns: {ret}");
-  }
-  ```
+    ```csharp
+    public void OnResumeButtonPress()
+    {
+      var ret = MediaPlayer.Resume();
+      this.Log.UpdateLog($"Resume returns: {ret}");
+    }
+    ```
 
 - `Stop`: Stops playback. Reopen the media resource to play again.
 
-  ```csharp
-  public void OnStopButtonPress()
-  {
-    var ret = MediaPlayer.Stop();
-    this.Log.UpdateLog($"Stop return: {ret}");
-  }
-  ```
+    ```csharp
+    public void OnStopButtonPress()
+    {
+      var ret = MediaPlayer.Stop();
+      this.Log.UpdateLog($"Stop return: {ret}");
+    }
+    ```
 
 ### Adjust the volume
 
@@ -1483,38 +1513,6 @@ this.Log.UpdateLog($"AdjustPlayoutVolume return: {ret}");
 ret = MediaPlayer.AdjustPublishSignalVolume(50);
 this.Log.UpdateLog($"AdjustPublishSignalVolume return: {ret}");
 ```
-
-### Preload media resources
-
-To play multiple media resources continuously, preload the media resources to ensure optimal audience experience when switching resources.
-
-1. Call `PreloadSrc` to preload media resources. To load multiple resources, call this method multiple times. Listen to the `OnPreloadEvent` callbacks to receive preload related events.
-
-   ```csharp
-   public void OnPreloadSrcButtonClick()
-   {
-
-     var nRet = MediaPlayer.PreloadSrc(PRELOAD_URL, 0);
-     this.Log.UpdateLog("PreloadSrc: " + nRet);
-   }
-   ```
-
-1. Call `PlayPreloadedSrc` to play the preloaded media resource. After you call this method successfully, you receive a `OnPlayerStateChanged` callback reporting status `PLAYER_STATE_PLAYING`.
-
-   ```csharp
-   public void OnPlayPreloadButtonClick()
-   {
-     var nRet = MediaPlayer.PlayPreloadedSrc(PRELOAD_URL);
-     this.Log.UpdateLog("PlayPreloadedSrc: " + nRet);
-   }
-   ```
-
-1. When you no longer need the loaded media resources, call `UnloadSrc` to release the preloaded resources.
-
-   ```csharp
-   var nRet = MediaPlayer.UnloadSrc(PRELOAD_URL);
-   this.Log.UpdateLog("UnloadSrc: " + nRet);
-   ```
 
 ### Leave channel
 
@@ -1581,4 +1579,3 @@ Agora provides an open source sample project [MediaPlayer](https://github.com/Ag
 - [`Pause`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_imediaplayer.html#api_imediaplayer_pause)
 - [`Stop`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_imediaplayer.html#api_imediaplayer_stop)
 </PlatformStructured>
-

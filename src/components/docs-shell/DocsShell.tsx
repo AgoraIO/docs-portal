@@ -29,6 +29,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -126,6 +127,7 @@ export function DocsShell({
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
   const homeHref = buildDocPath(currentLocale, 'introduction');
+  const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -193,6 +195,16 @@ export function DocsShell({
               ))}
             </nav>
           ) : null}
+          <a
+            className="block w-full whitespace-normal break-words border-b border-[color:color-mix(in_srgb,var(--accent-brand)_22%,transparent)] bg-[color:var(--accent-brand-soft)] px-4 py-2 text-center text-sm font-medium leading-5 text-[color:var(--accent-brand)] underline-offset-4 [overflow-wrap:anywhere] hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:px-6"
+            data-testid="legacy-docs-banner"
+            href={legacyDocsHref}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {t('docs.legacyDocsBanner')}
+            <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
+          </a>
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
@@ -380,6 +392,7 @@ export function DocsShell({
             resetKey={sidebarResetKey}
           />
           <DocsMainColumn
+            contentFillsWidth={contentFillsWidth}
             layoutMode={layoutMode}
             locale={currentLocale}
             next={next}

@@ -4,7 +4,7 @@ title: "What should I do if the class recording fails?"
 
 If recording fails, take the following steps to troubleshoot the problem:
 
-1. Refer to [Configure classroom storage and recording](/en/flexible-classroom/get-started/enable-flexible-classroom#configure-classroom-storage-and-recording) to check whether the recording-related configuration is correct, including:
+1. Refer to [Configure classroom storage and recording](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/enable-flexible-classroom#configure-classroom-storage-and-recording) to check whether the recording-related configuration is correct, including:
 
     - If `recordingConfig` is not set, the default configuration is used.
     - If `storageConfig` is configured correctly, especially the vendor, region, and endpoint fields are correct and match. For example, if the third-party cloud storage service you use is located in Shanghai, then the application server where you initiate the request must also be located in Shanghai.
@@ -23,6 +23,6 @@ If recording fails, take the following steps to troubleshoot the problem:
 
         ![recordUrl](/images/faq/record_url.png)
 
-    1. Call the [RESTful API for querying the recording list](/en/flexible-classroom/restful-api/classroom-api#get-the-recording-list) and obtain URL2 from the  `webRecordUrlQuery` response parameter.
+    1. Call the [RESTful API for querying the recording list](/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#get-the-recording-list) and obtain URL2 from the  `webRecordUrlQuery` response parameter.
 
     1. Concatenate URL1 and URL2, to get a complete URL of the page recording. You can access it locally with a browser for debugging. If you can opened the URL, then the recording has started successfully; if not, find the reason based on the error report.

@@ -1,0 +1,107 @@
+---
+title: 'Marsview'
+description: 'Accurately transcribe a conversation and discover insights.'
+---
+
+This guide is provided by Marsview. Agora is planning a documentation upgrade program for all extensions on the marketplace. Please stay tuned.
+
+Marsview Speech Analytics is a cloud-hosted or containerized API service that helps you accurately transcribe a conversation and discover insights. It is packed with models for automatic speech recognition (ASR), intent recognition, tone analysis, and natural language classifiers to uncover topics, keywords, entities, and sentiments.
+
+This extension is provided for Android only.
+
+## Prerequisites
+
+Android
+
+## Integrate Marsview Speech Analytics
+
+Follow the step-by-step process to implement the Marsview Speech Analytics extension in your application. The sample code below is written in Java.
+
+1. Unzip the delivery package and keep the `.aar` file in your native project.
+2. Use the extension package `agoramarketplace.marsview.extension`.
+3. You receive an API key and secret when you create a project with Marsview through Agora.
+4. Import `agoramarketplace.marsview.extension.ExtensionManager`.
+5. Add the credentials to your file:
+
+   ```java
+   private final String API_KEY = "84e**** **** **** **** 4823470a7876";
+   private final String SECRET_KEY = "GKHJ**** **** ****-8W57GXJ";
+   private final String USER_ID = "yourcustomerid@agora.io";
+   ```
+
+6. Implement the interface `io.agora.rtc2.IMediaExtensionObserver`.
+7. Enable the extension before starting Video SDK streaming:
+
+   ```java
+   mRtcEngine.enableExtension(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       true
+   );
+   ```
+
+8. Pass the API credentials to the extension for authentication:
+
+   ```java
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "API_KEY",
+       API_KEY
+   );
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "SECRET_KEY",
+       SECRET_KEY
+   );
+   mRtcEngine.setExtensionProperty(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       "USER_ID",
+       USER_ID
+   );
+   ```
+
+9. Disable the transcription service when it is no longer needed:
+
+   ```java
+   mRtcEngine.enableExtension(
+       ExtensionManager.EXTENSION_VENDOR_NAME,
+       ExtensionManager.EXTENSION_AUDIO_FILTER_NAME,
+       false
+   );
+   ```
+
+10. Marsview currently emits two main events:
+
+    - `connectionState`: describes the authentication status of the user. If the credentials do not match the values issued for the extension, the connection fails.
+    - `transactionId`: used to fetch transcribed data from Marsview.
+
+## Run the demo
+
+```java
+@Override
+public void onEvent(String vendor, String extension, String key, String value) {
+    Log.d(TAG, "\nVendor: " + vendor + "\nExtension:" + extension + "\nKey:" + key + "\nValue:" + value);
+    if (vendor == "Marsview" && extension == "TranscriptProvider") {
+        if (key == "transactionId") {
+            // Save transaction id for future purposes
+        } else if (key == "connectionState") {
+            try {
+                JSONObject reader = new JSONObject(value);
+                String connectionState = reader.getString("connection-state");
+                if (connectionState != "true") {
+                    // provide proper api key, secret key, and user ID
+                }
+            } catch (Exception e) {}
+        }
+    }
+}
+```
+
+## Reference
+
+Refer to [Marsview Speech Analytics metadata docs](https://docs.marsview.ai/speech-analytics-api/getting-metadata).
+
+Support URL: [https://docs.marsview.ai/contact-support](https://docs.marsview.ai/contact-support).

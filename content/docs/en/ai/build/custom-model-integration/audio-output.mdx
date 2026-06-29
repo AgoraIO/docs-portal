@@ -58,17 +58,9 @@ The `audio` response includes three types of content. You can send each type to 
 
 | Audio type | Description | Source | Agent processing |
 |:-----------|:------------|:-------|:-----------------|
-| Audio data<br/>`data` | Base64-encoded PCM byte stream array | <Slot name="audio-data-data" /> | Plays the audio directly |
+| Audio data<br/>`data` | Base64-encoded PCM byte stream array | LLM generation with audio processing capabilities, or a custom audio processing service | Plays the audio directly |
 | Transcription content<br/>`transcript` | The complete text content corresponding to the audio | LLM generation | Stores the text in short-term memory (context) |
 | Verbatim subtitles<br/>`words` | Subtitle content with word-by-word timestamps | Supports LLM generation with verbatim output | Processes into verbatim real-time subtitles |
-
-<Slot for="audio-data-data">
-
-- LLM generation with audio processing capabilities
-
-- Custom audio processing service generation
-
-</Slot>
 
 The specific data structure of a streaming response is as follows:
 
@@ -128,27 +120,29 @@ The conversational AI agent summarizes different types of responses in the follo
 
 The `audio` object contains the following fields:
 
-  
+<ParameterList title="audio">
+  <Parameter name="data" type="string">
     Audio data as a Base64-encoded PCM byte stream.
-  
-  
+  </Parameter>
+  <Parameter name="transcript" type="string">
     Subtitle content corresponding to the audio.
-  
-  
+  </Parameter>
+  <Parameter name="words" type="array">
     An array of word-level subtitle objects. The LLM must support word-level output.
-    
+    <Parameter name="text" type="string">
       The spoken word.
-    
-    
+    </Parameter>
+    <Parameter name="start_ts" type="number">
       Start time in milliseconds relative to the beginning of the PCM audio data.
-    
-    
+    </Parameter>
+    <Parameter name="end_ts" type="number">
       End time in milliseconds relative to the beginning of the PCM audio data.
-    
-    
+    </Parameter>
+    <Parameter name="duration" type="number">
       Duration in milliseconds that the word is played.
-    
-  
+    </Parameter>
+  </Parameter>
+</ParameterList>
 
 Depending on your application use-case, configure your custom large model to selectively process and return the relevant fields:
 

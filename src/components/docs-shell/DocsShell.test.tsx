@@ -21,6 +21,7 @@ import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
+import { legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsShell } from './DocsShell';
 
 const tabs: TabSummary[] = [
@@ -458,6 +459,48 @@ describe('DocsShell', () => {
       screen.getByRole('link', { name: 'Quick Start' }),
     ).toBeInTheDocument();
     expect(screen.getByText('On this page')).toBeInTheDocument();
+  });
+
+  it('renders a configurable legacy docs banner in the sticky docs header', async () => {
+    renderDocsShell();
+
+    const banner = await screen.findByTestId('legacy-docs-banner');
+
+    expect(banner).toHaveTextContent(
+      'Looking for the previous docs site? Visit the legacy docs homepage.',
+    );
+    expect(banner).toHaveAttribute('href', legacyDocsBannerConfig.hrefs.en);
+    expect(banner).toHaveAttribute('target', '_blank');
+    expect(banner).toHaveAttribute('rel', 'noreferrer');
+    expect(banner).toHaveClass('block');
+    expect(screen.getByRole('banner')).toContainElement(banner);
+  });
+
+  it('localizes the legacy docs banner copy for Chinese docs chrome', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/introduction/about-agora',
+        locale: 'zh-CN',
+        localeLinks: [
+          {
+            href: '/zh-CN/introduction/about-agora',
+            isActive: true,
+            locale: 'zh-CN',
+          },
+        ],
+      },
+      '/zh-CN/introduction/about-agora',
+    );
+
+    const banner = await screen.findByTestId('legacy-docs-banner');
+
+    expect(banner).toHaveTextContent(
+      '需要访问旧版文档站？前往旧版文档官网首页。',
+    );
+    expect(banner).toHaveAttribute(
+      'href',
+      legacyDocsBannerConfig.hrefs['zh-CN'],
+    );
   });
 
   it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
@@ -1584,6 +1627,8 @@ describe('DocsShell', () => {
     renderDocsShell({ layoutMode: 'docs', hideToc: true });
 
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
+    const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
 
     expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
     expect(docsBodyShell).toHaveClass('xl:grid-cols-[256px_minmax(0,1fr)]');
@@ -1594,6 +1639,8 @@ describe('DocsShell', () => {
       'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
     expect(docsBodyShell).not.toHaveClass('max-w-[min(100%,1600px)]');
+    expect(pageFooter).toHaveClass('max-w-none');
+    expect(pageFooter).not.toHaveClass('max-w-[var(--content-max)]');
   });
 
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {

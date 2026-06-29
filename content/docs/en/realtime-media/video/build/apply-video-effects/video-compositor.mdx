@@ -120,7 +120,7 @@ Follow these steps to inject images into the local video stream:
    });
    ```
 
-1. Create the input layers of the image and video tracks in order, from bottom to top. The layers created later overlay the earlier ones. In the following code, the screen-sharing image layer is at the bottom, and the image of the source video track 2 is at the top layer:
+2. Create the input layers of the image and video tracks in order, from bottom to top. The layers created later overlay the earlier ones. In the following code, the screen-sharing image layer is at the bottom, and the image of the source video track 2 is at the top layer:
 
    ```typescript
    // Create the input layer for the screen sharing video track
@@ -181,7 +181,7 @@ Follow these steps to inject images into the local video stream:
     .pipe(sourceVideoTrack2.processorDestination);
    ```
 
-1. Merge all input layers and inject the output into the local video track:
+3. Merge all input layers and inject the output into the local video track:
 
    ```javascript
    const canvas = document.createElement("canvas");
@@ -201,7 +201,7 @@ Follow these steps to inject images into the local video stream:
     .pipe(localTracks.videoTrack.processorDestination);
    ```
 
-1. Play and publish the local video track:
+4. Play and publish the local video track:
 
    ```javascript
    // Play the local video track
@@ -380,18 +380,18 @@ async function leave() {
 
 This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
-- For a working example, check out the [Video Compositor extension](https://webdemo.agora.io/example/plugin/videoCompositor/index.html?_gl=1*1437x8t*_gcl_au*MTM4NzU5ODkyNy4xNzE5NTgxMTUy*_ga*MjA2MzYxMjY4Mi4xNzAzMDczMjA1*_ga_BFVGG7E02W*MTcxOTY1MDQ3NS4zNTQuMC4xNzE5NjUwNDc1LjAuMC4w) extension.
+- For a working example, check out the [Video Compositor extension](https://webdemo.agora.io/example/plugin/videoCompositor/index.html?_gl=1*1437x8t*_gcl_au*MTM4NzU5ODkyNy4xNzE5NTgxMTUy*_ga*MjA2MzYxMjY4Mi4xNzAzMDczMjA1*_ga_BFVGG7E02W*MTcxOTY1MDQ3NS4zNTQuMC4xNzE5NjUwNDc1LjAuMC4w).
 
 ### Considerations
 
 - **Browser support**:
- - The Video Compositor extension supports Chrome 91 and above, Edge 91 and above, and the latest version of Firefox. For the best experience, use Chrome or Edge 94 and above.
- - Due to a [bug](https://bugs.webkit.org/show_bug.cgi?id=181663&from_wecom=1) in certain versions of Safari, only iOS Safari 15.4 and above and macOS Safari 13 and above are supported.
+  - The Video Compositor extension supports Chrome 91 and above, Edge 91 and above, and the latest version of Firefox. For the best experience, use Chrome or Edge 94 and above.
+  - Due to a [bug](https://bugs.webkit.org/show_bug.cgi?id=181663&from_wecom=1) in certain versions of Safari, only iOS Safari 15.4 and above and macOS Safari 13 and above are supported.
 
 - **Performance considerations**:
 
- - The Video Compositor extension can combine up to two video streams (from cameras or local video files), one screen sharing stream, and two images. Combining more image sources can affect performance and user experience.
- - If you need to use multiple media processing extensions simultaneously, Agora recommends using an Intel Core i5 4-core or higher processor. When multiple extensions are enabled, other programs running with high resource usage may cause your app to experience audio and video freezes.
+  - The Video Compositor extension can combine up to two video streams (from cameras or local video files), one screen sharing stream, and two images. Combining more image sources can affect performance and user experience.
+  - If you need to use multiple media processing extensions simultaneously, Agora recommends using an Intel Core i5 4-core or higher processor. When multiple extensions are enabled, other programs running with high resource usage may cause your app to experience audio and video freezes.
 
 ### API reference
 

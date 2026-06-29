@@ -566,7 +566,7 @@ v1.0.7 was released on September 7, 2022.
 
 #### Improvements
 
-- Changed the `chatManager/contactManager/groupManager/threadManager/roomManager/pushManager` attribute in `AgoraChatClient` from `_Nonnull` to `_Nullable`. The value of this attribute is `Nil` prior to the the SDK initialization.
+- Changed the `chatManager/contactManager/groupManager/threadManager/roomManager/pushManager` attribute in `AgoraChatClient` from `_Nonnull` to `_Nullable`. The value of this attribute is `Nil` prior to the SDK initialization.
 - Optimized the login process for quicker login.
 - Upgraded the message encryption algorithm from CBC to GCM.
 

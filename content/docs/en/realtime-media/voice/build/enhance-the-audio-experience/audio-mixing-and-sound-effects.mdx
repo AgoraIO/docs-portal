@@ -3,8 +3,6 @@ title: "Audio mixing and sound effects"
 description: "Play audio files and add sound effects to enhance the audio experience."
 ---
 
-**Supported platforms:** Android, iOS, macOS, Web, Windows, Electron, React Native, and Unity.
-
 Voice SDK makes it simple for you to publish audio captured through the microphone to subscribers in a channel. In some real-time audio and video use-cases, such as games or karaoke, you need to play sound effects or mix in music files to enhance the atmosphere and add interest. Voice SDK enables you to add sound effects and mix in pre-recorded audio.
 
 <PlatformStructured platform="android">
@@ -696,22 +694,22 @@ To implement audio mixing in your project, take the following steps:
 
     1. **MicrophoneAudioTrack**
 
-    For microphone audio tracks, the SDK continuously collects the latest audio data (`AudioBuffer`) from the target microphone device.
+        For microphone audio tracks, the SDK continuously collects the latest audio data (`AudioBuffer`) from the target microphone device.
 
-    ![MicrophoneAudioTrack](/images/video-sdk/microphone-audio-track-web.svg)
+        ![MicrophoneAudioTrack](/images/video-sdk/microphone-audio-track-web.svg)
 
-    * After you call the `play` method, the audio data is sent to the `LocalPlayback` component, allowing the local user to hear it.
+        * After you call the `play` method, the audio data is sent to the `LocalPlayback` component, allowing the local user to hear it.
 
-    * When the `publish` method is called, the audio data is transmitted to Agora SDRTN® and eventually heard by the remote user.
-    The microphone audio track continues to acquire audio data until the `close` method is invoked, at which point the audio track becomes unavailable.
+        * When the `publish` method is called, the audio data is transmitted to Agora SDRTN® and eventually heard by the remote user.
+        The microphone audio track continues to acquire audio data until the `close` method is invoked, at which point the audio track becomes unavailable.
 
     1. **BufferSourceAudioTrack**
 
-    For audio files, the Video SDK does not collect audio data; instead, it achieves a similar effect by reading files, shown in the following figure.
+        For audio files, the Video SDK does not collect audio data; instead, it achieves a similar effect by reading files, shown in the following figure.
 
-    ![BufferSourceAudioTrack](/images/video-sdk/buffer-source-audio-track-web.svg)
+        ![BufferSourceAudioTrack](/images/video-sdk/buffer-source-audio-track-web.svg)
 
-    The key distinctions between collecting audio data and reading files are as follows:
+        The key distinctions between collecting audio data and reading files are as follows:
 
     1. **Continuous vs. controlled reading:**
        * Collection of audio data is continuous and cannot be paused, focusing on capturing the latest audio data.

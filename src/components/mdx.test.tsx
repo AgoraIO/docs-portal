@@ -1,10 +1,22 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
-import { getMDXComponents, MDXAccordionProvider } from './mdx';
+import {
+  getMDXComponents,
+  MDXAccordionProvider,
+  Parameter,
+  ParameterList,
+} from './mdx';
 import {
   PlatformHeaderTabs,
   PlatformTabsPlacementProvider,
@@ -178,9 +190,14 @@ describe('common MDX registry', () => {
 
     expect(dialog).toHaveTextContent('Product Architecture');
     expect(dialog).toHaveTextContent('Enlarged documentation image preview.');
-    expect(
-      within(dialog).getByRole('img', { name: 'Product Architecture' }),
-    ).toHaveAttribute('src', '/images/product.png');
+    const previewImage = within(dialog).getByRole('img', {
+      name: 'Product Architecture',
+    });
+
+    expect(previewImage).toHaveAttribute('src', '/images/product.png');
+    expect(dialog).toHaveClass('w-fit');
+    expect(dialog).not.toHaveClass('w-full');
+    expect(dialog).toHaveClass('justify-items-center');
   });
 
   it('keeps relative docs links normalized', () => {
@@ -382,6 +399,13 @@ describe('common MDX registry', () => {
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();
+  });
+
+  it('exports parameter components for direct MDX imports', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+
+    expect(ParameterList).toBe(components.ParameterList);
+    expect(Parameter).toBe(components.Parameter);
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
@@ -635,6 +659,36 @@ describe('common MDX registry', () => {
     );
   });
 
+  it('updates canonical page defaults when the rendered payload changes', async () => {
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web","flutter"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="web"
+        platforms='["android","ios","web","flutter"]'
+      />,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: 'Web' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      );
+    });
+  });
+
   it('keeps an initial overflow platform visible as a selected header tab', () => {
     const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
     const scrollIntoView = vi.fn();
@@ -836,6 +890,30 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Web instructions').closest('section'),
     ).not.toBeVisible();
+  });
+
+  it('hides a body group when the URL platform is not present in that group', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+
+    render(
+      <PlatformTabsPlacementProvider initialPlatform="web" value="header">
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">Android-only instructions</Panel>
+          <Panel platform="ios">iOS-only instructions</Panel>
+        </Group>
+      </PlatformTabsPlacementProvider>,
+    );
+
+    expect(
+      screen.queryByText('Android-only instructions'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('iOS-only instructions')).not.toBeInTheDocument();
   });
 
   it('persists platform once during a complete mouse click sequence', () => {

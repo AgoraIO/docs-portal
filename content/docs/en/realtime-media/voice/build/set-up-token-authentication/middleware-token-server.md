@@ -39,8 +39,8 @@ Take the following steps to set up and run the middleware project:
 
     1. Update the following variables in the `.env` file:
 
-     - `APP_ID`: Your Agora App ID.
-     - `APP_CERTIFICATE`: Your Agora App Certificate.
+        - `APP_ID`: Your Agora App ID.
+        - `APP_CERTIFICATE`: Your Agora App Certificate.
 
 4. **Run the middleware:**
 
