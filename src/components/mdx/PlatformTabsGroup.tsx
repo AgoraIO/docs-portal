@@ -42,7 +42,6 @@ type PlatformPanelProps = {
 
 const ControlledTabs = Tabs as React.ComponentType<ControlledTabsProps>;
 const PlatformTabsPlacementContext = createContext<{
-  defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   placement: 'header' | 'inline';
 }>({
@@ -62,19 +61,15 @@ const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
 
 export function PlatformTabsPlacementProvider({
   children,
-  defaultPlatform,
   initialPlatform,
   value,
 }: {
   children?: ReactNode;
-  defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   value: 'header' | 'inline';
 }) {
   return (
-    <PlatformTabsPlacementContext
-      value={{ defaultPlatform, initialPlatform, placement: value }}
-    >
+    <PlatformTabsPlacementContext value={{ initialPlatform, placement: value }}>
       {children}
     </PlatformTabsPlacementContext>
   );
@@ -83,7 +78,6 @@ export function PlatformTabsPlacementProvider({
 export function PlatformTabsGroup({
   canonicalPlatform,
   children,
-  defaultPlatform,
   groupMode,
   initialPlatform,
   locale = DEFAULT_LOCALE,
@@ -93,7 +87,6 @@ export function PlatformTabsGroup({
 }: {
   canonicalPlatform: PlatformKey;
   children?: ReactNode;
-  defaultPlatform?: PlatformKey;
   groupMode: 'inline' | 'structured';
   initialPlatform?: PlatformKey;
   locale?: AppLocale;
@@ -105,8 +98,6 @@ export function PlatformTabsGroup({
   const platformContext = useContext(PlatformTabsPlacementContext);
   const resolvedInitialPlatform =
     initialPlatform ?? platformContext.initialPlatform;
-  const resolvedDefaultPlatform =
-    defaultPlatform ?? platformContext.defaultPlatform;
   const resolvedTabsPlacement = tabsPlacement ?? platformContext.placement;
   const shouldShowTabs = showTabs !== 'false' && parsedPlatforms.length > 1;
   const shouldRenderInlineTabs =
@@ -115,7 +106,6 @@ export function PlatformTabsGroup({
     groupMode === 'structured' && resolvedTabsPlacement === 'header';
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
     canonicalPlatform,
-    defaultPlatform: resolvedDefaultPlatform,
     initialPlatform: resolvedInitialPlatform,
     parsedPlatforms,
     syncPath: shouldSyncPlatformPath,
@@ -163,14 +153,12 @@ export function PlatformTabsGroup({
 export function PlatformHeaderTabs({
   canonicalPlatform,
   className,
-  defaultPlatform,
   initialPlatform,
   locale = DEFAULT_LOCALE,
   platforms,
 }: {
   canonicalPlatform: PlatformKey;
   className?: string;
-  defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   locale?: AppLocale;
   platforms: string;
@@ -178,7 +166,6 @@ export function PlatformHeaderTabs({
   const parsedPlatforms = usePlatformList(platforms);
   const { activePlatform, handlePlatformChange } = usePlatformSelection({
     canonicalPlatform,
-    defaultPlatform,
     initialPlatform,
     parsedPlatforms,
     syncPath: true,
@@ -211,29 +198,22 @@ function PlatformHeaderTabsList({
   onValueChange: (value: string) => void;
   platforms: PlatformKey[];
 }) {
-  const { overflowPlatforms, primaryPlatforms } = getHeaderPlatformBuckets(
-    platforms,
-    activePlatform,
+  const primaryPlatforms = HEADER_PRIMARY_PLATFORMS.filter((platform) =>
+    platforms.includes(platform),
+  );
+  const unorderedOverflowPlatforms = platforms.filter(
+    (platform) => !primaryPlatforms.includes(platform),
+  );
+  const overflowPlatforms = sortHeaderOverflowPlatforms(
+    unorderedOverflowPlatforms,
   );
   const moreActive = overflowPlatforms.includes(activePlatform);
   const moreLabel = moreActive
     ? getPlatformLabel(activePlatform, locale)
     : 'More';
   const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const activeTabRef = useRef<HTMLButtonElement | null>(null);
   const menuId = useId();
   const overflowMenuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (activeTabRef.current?.dataset.platformTab !== activePlatform) {
-      return;
-    }
-
-    activeTabRef.current.scrollIntoView?.({
-      block: 'nearest',
-      inline: 'nearest',
-    });
-  }, [activePlatform]);
 
   useEffect(() => {
     if (!isMoreOpen) {
@@ -268,12 +248,12 @@ function PlatformHeaderTabsList({
 
   return (
     <div
-      className="inline-flex max-w-full min-w-0 items-stretch gap-4 overflow-visible"
+      className="flex min-w-0 items-stretch"
       data-platform-header-tabs="true"
     >
       <div
         aria-label="Platform"
-        className="docs-scrollbar flex min-w-0 flex-1 items-stretch gap-6 overflow-x-auto overflow-y-hidden pr-1"
+        className="flex min-w-0 flex-1 items-stretch gap-6 overflow-hidden"
         role="tablist"
       >
         {primaryPlatforms.map((platform) => (
@@ -285,10 +265,8 @@ function PlatformHeaderTabsList({
               activePlatform === platform &&
                 'text-[color:var(--ink-1)] after:opacity-100',
             )}
-            data-platform-tab={platform}
             key={platform}
             onClick={() => onValueChange(platform)}
-            ref={activePlatform === platform ? activeTabRef : undefined}
             role="tab"
             type="button"
           >
@@ -297,15 +275,15 @@ function PlatformHeaderTabsList({
         ))}
       </div>
       {overflowPlatforms.length > 0 ? (
-        <div className="relative shrink-0" ref={overflowMenuRef}>
+        <div className="relative ml-6 shrink-0" ref={overflowMenuRef}>
           <button
             aria-controls={isMoreOpen ? menuId : undefined}
             aria-expanded={isMoreOpen}
             aria-haspopup="menu"
             aria-label="More platforms"
             className={cn(
-              'relative flex h-12 items-center gap-1.5 px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
-              'after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
+              'relative flex h-12 items-center gap-2 border-l border-[color:var(--line-soft)] pl-6 pr-1 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
+              'after:absolute after:right-1 after:bottom-[-1px] after:left-6 after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
               moreActive && 'text-[color:var(--ink-1)] after:opacity-100',
             )}
             data-state={moreActive ? 'active' : 'inactive'}
@@ -351,32 +329,6 @@ function PlatformHeaderTabsList({
       ) : null}
     </div>
   );
-}
-
-function getHeaderPlatformBuckets(
-  platforms: PlatformKey[],
-  activePlatform: PlatformKey,
-) {
-  const defaultPrimaryPlatforms = HEADER_PRIMARY_PLATFORMS.filter((platform) =>
-    platforms.includes(platform),
-  );
-  const primaryPlatforms = [...defaultPrimaryPlatforms];
-
-  if (
-    platforms.includes(activePlatform) &&
-    !primaryPlatforms.includes(activePlatform)
-  ) {
-    primaryPlatforms.push(activePlatform);
-  }
-
-  const overflowPlatforms = sortHeaderOverflowPlatforms(
-    platforms.filter((platform) => !primaryPlatforms.includes(platform)),
-  );
-
-  return {
-    overflowPlatforms,
-    primaryPlatforms,
-  };
 }
 
 function sortHeaderOverflowPlatforms(platforms: PlatformKey[]) {
@@ -427,13 +379,11 @@ function usePlatformList(platforms: string) {
 
 function usePlatformSelection({
   canonicalPlatform,
-  defaultPlatform,
   initialPlatform,
   parsedPlatforms,
   syncPath,
 }: {
   canonicalPlatform: PlatformKey;
-  defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   parsedPlatforms: PlatformKey[];
   syncPath: boolean;
@@ -459,21 +409,15 @@ function usePlatformSelection({
       return initialPlatform;
     }
 
-    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-      return defaultPlatform;
-    }
-
     const stored = storedPlatformPreferenceRef.current;
 
     if (stored && parsedPlatforms.includes(stored)) {
       return stored;
     }
 
-    return getDefaultPlatform(
-      parsedPlatforms,
-      canonicalPlatform,
-      defaultPlatform,
-    );
+    return parsedPlatforms.includes(canonicalPlatform)
+      ? canonicalPlatform
+      : (parsedPlatforms[0] ?? canonicalPlatform);
   });
   const activePlatformRef = useRef(activePlatform);
 
@@ -488,7 +432,6 @@ function usePlatformSelection({
 
     if (
       initialPlatform === undefined &&
-      defaultPlatform === undefined &&
       stored &&
       isKnownPlatform(stored) &&
       parsedPlatforms.includes(stored) &&
@@ -499,23 +442,11 @@ function usePlatformSelection({
       return;
     }
 
-    if (!parsedPlatforms.includes(activePlatform)) {
-      const fallbackPlatform = getDefaultPlatform(
-        parsedPlatforms,
-        canonicalPlatform,
-        defaultPlatform,
-      );
-
-      activePlatformRef.current = fallbackPlatform;
-      setActivePlatform(fallbackPlatform);
+    if (activePlatform && !parsedPlatforms.includes(activePlatform)) {
+      activePlatformRef.current = canonicalPlatform;
+      setActivePlatform(canonicalPlatform);
     }
-  }, [
-    activePlatform,
-    canonicalPlatform,
-    defaultPlatform,
-    initialPlatform,
-    parsedPlatforms,
-  ]);
+  }, [activePlatform, canonicalPlatform, initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
     if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
@@ -604,20 +535,6 @@ function usePlatformSelection({
     activePlatform,
     handlePlatformChange,
   };
-}
-
-function getDefaultPlatform(
-  parsedPlatforms: PlatformKey[],
-  canonicalPlatform: PlatformKey,
-  defaultPlatform?: PlatformKey,
-) {
-  if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-    return defaultPlatform;
-  }
-
-  return parsedPlatforms.includes(canonicalPlatform)
-    ? canonicalPlatform
-    : (parsedPlatforms[0] ?? canonicalPlatform);
 }
 
 function syncPlatformPath(platform: PlatformKey) {

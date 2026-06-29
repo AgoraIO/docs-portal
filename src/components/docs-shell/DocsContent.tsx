@@ -125,14 +125,6 @@ export function DocsContent({
     resolvedBody?.kind === 'mdx' ? resolvedBody.hidePlatformTabs === true : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const platformTabsStateKey = platformTabs
-    ? [
-        isMdxBody ? resolvedBody.contentPath : '',
-        platformTabs.defaultPlatform ?? '',
-        platformTabs.initialPlatform ?? '',
-        platformTabs.platforms,
-      ].join('|')
-    : undefined;
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -253,9 +245,7 @@ export function DocsContent({
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
-            defaultPlatform={platformTabs.defaultPlatform}
             initialPlatform={platformTabs.initialPlatform}
-            key={platformTabsStateKey}
             locale={currentLocale}
             platforms={platformTabs.platforms}
           />
@@ -274,9 +264,7 @@ export function DocsContent({
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
-                key={platformTabsStateKey}
                 value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
@@ -289,14 +277,11 @@ export function DocsContent({
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>
               <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
-                key={platformTabsStateKey}
                 value="header"
               >
                 <PlatformTabsGroup
                   canonicalPlatform={resolvedBody.canonicalPlatform}
-                  defaultPlatform={platformTabs?.defaultPlatform}
                   groupMode="structured"
                   initialPlatform={platformTabs?.initialPlatform}
                   locale={currentLocale}
@@ -622,7 +607,6 @@ export type DocsContentBodyPayload =
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;
-        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
@@ -637,7 +621,6 @@ export type DocsContentBodyPayload =
       }[];
       platformTabs: {
         canonicalPlatform: PlatformKey;
-        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
