@@ -373,6 +373,7 @@ describe('common MDX registry', () => {
   it('registers platform sentinels and internal platform renderers', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
+    expect(components.RTCMinutesCalculator).toBeDefined();
     expect(components.PlatformInline).toBeDefined();
     expect(components.PlatformStructured).toBeDefined();
     expect(components.ParameterList).toBeDefined();
