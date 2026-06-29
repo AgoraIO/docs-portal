@@ -534,7 +534,7 @@ on(event: "dump", listener: AIDenoiserProcessorDumpCallback): void;
 on(event: "dumpend", listener: AIDenoiserProcessorDumpEndCallback): void;
 ```
 
-_Since v2.0.0**, the AI Denoiser extension listens for the following events using `on_
+Since v2.0.0, the AI Denoiser extension listens for the following events using the `on` method:
 - `pipeerror`: Wasm dependency file loading failure event. Replaces the `onloaderror` callback.
 - `overload`: Denoising processing takes too long event. Replaces the `onoverload` callback.
 - `dump`: Audio data dump event. Replaces the `ondump` callback.

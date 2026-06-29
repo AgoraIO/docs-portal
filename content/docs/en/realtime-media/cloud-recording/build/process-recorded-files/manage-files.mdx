@@ -92,9 +92,7 @@ Since the filename does not support special characters, any special characters i
 
 ### Upload to cloud storage failed
 
-If Agora Cloud Recording fails to upload the recorded files to the third-party cloud storage, it transfers the files to the third-party cloud storage from the Agora Cloud Backup. In order not to overwrite the latest files, the transferred M3U8 file is appended with `_<tick>_<index>.m3u8`,
-
-where:
+If Agora Cloud Recording fails to upload the recorded files to the third-party cloud storage, it transfers the files to the third-party cloud storage from the Agora Cloud Backup. In order not to overwrite the latest files, the transferred M3U8 file is appended with `_<tick>_<index>.m3u8`, where:
 
 - `<tick>` is related to the time when the index file is generated.
 - `<index>` is the index of the M3U8 file. The first version to be transferred has an index of `0`. The higher the index, the newer the version of the file.
