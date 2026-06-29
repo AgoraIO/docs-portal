@@ -2505,6 +2505,36 @@ Web body
     });
   });
 
+  it('redirects legacy docs.agora.io sitemap products to new docs portal entries', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'video-calling', [
+        'get-started',
+        'get-started-sdk',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/video',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'agora-chat', [
+        'client-api',
+        'messages',
+        'send-receive-messages',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/im',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'convo-ai-device-kit', [
+        'overview',
+        'product-overview',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/ai/device-kit/start-here/quickstart',
+    });
+  });
+
   it('redirects the Deploy to IoT devices path entry to the Device Kit product space', async () => {
     await expect(
       loadDocsPagePayload('en', 'ai', [
