@@ -1,6 +1,6 @@
 ---
 title: Build a backend and client from scratch
-description: Set up a token server, start and stop agents using the Agent Server SDK, and stream live transcripts to a browser client.
+description: Set up a token server, start and stop agents using the Agora Agent SDK, and stream live transcripts to a browser client.
 ---
 This guide walks through building the full Conversational AI stack from scratch: a server that issues tokens and manages agent sessions, and a browser client that captures microphone audio and streams live transcripts. You end up with the same structure as the official [Next.js](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs) and [Python](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python) starter repos, but with every step explained.
 
@@ -16,7 +16,7 @@ A complete client-server app:
 
 - **Backend**: Three HTTP endpoints:
   - `POST /api/token`: Issues RTC and RTM tokens for a given channel and UID
-  - `POST /api/invite-agent`: Starts the agent using the Agent Server SDK
+  - `POST /api/invite-agent`: Starts the agent using the Agora Agent SDK
   - `POST /api/stop-conversation`: Stops the agent by ID
 - **Frontend**: A Next.js page that:
   - Requests microphone permission
@@ -237,7 +237,7 @@ export async function POST(req: NextRequest) {
 
 Endpoint: `POST /api/invite-agent`
 
-This endpoint uses the Agent Server SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
+This endpoint uses the Agora Agent SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
 
 ```ts
 // app/api/invite-agent/route.ts
@@ -401,7 +401,7 @@ def token(body: TokenRequest):
 
 Endpoint: `POST /api/invite-agent`
 
-This endpoint uses the Agent Server SDK to configure an agent and start a session in the caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `api_key`.
+This endpoint uses the Agora Agent SDK to configure an agent and start a session in the caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `api_key`.
 
 Add the following to `main.py`:
 
