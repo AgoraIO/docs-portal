@@ -1120,11 +1120,7 @@ function OpenApiSchemaRowItem({
         >
           {row.name}
         </code>
-        {row.required ? (
-          <span className="font-medium text-red-500">*</span>
-        ) : (
-          <span className="text-fd-muted-foreground">?</span>
-        )}
+        <OpenApiSchemaRequiredBadge required={row.required} />
         <span className="font-mono text-fd-muted-foreground text-xs">
           {row.type}
           {row.nullable ? ' | null' : ''}
@@ -1143,6 +1139,21 @@ function OpenApiSchemaRowItem({
       <OpenApiInlineCallouts callouts={row.docsCallouts} />
       <OpenApiSchemaMeta row={row} />
     </div>
+  );
+}
+
+function OpenApiSchemaRequiredBadge({ required }: { required: boolean }) {
+  return (
+    <span
+      className={cn(
+        'rounded border px-1.5 py-0.5 font-medium text-[0.68rem]',
+        required
+          ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+          : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
+      )}
+    >
+      {required ? 'required' : 'optional'}
+    </span>
   );
 }
 

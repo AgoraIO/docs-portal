@@ -635,6 +635,17 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  .prose
+    :where(.prose-no-margin.overflow-auto > table):not(
+      :where(.not-prose, .not-prose *)
+    ) {
+    display: table;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    overflow: visible;
+  }
+
   .prose :where(thead):not(:where(.not-prose, .not-prose *)) {
     background: color-mix(in srgb, var(--bg-sunken) 70%, var(--bg-card));
   }
@@ -1115,11 +1126,26 @@
 }
 
 /* Fumadocs ships unlayered prose table styles with `overflow: hidden`.
-   Keep this unlayered override after the base layer so wide parameter
-   tables can scroll horizontally instead of squeezing narrow columns. */
+   Keep this unlayered override after the base layer so unwrapped/raw tables
+   retain their own horizontal scrolling fallback. */
 :where(html) .prose :where(table):not(:where(.not-prose, .not-prose *)) {
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+/* Fumadocs wraps Markdown tables in a `.prose-no-margin` overflow container.
+   Let those wrapped table borders follow intrinsic columns while the wrapper
+   handles horizontal scrolling. */
+:where(html)
+  .prose
+  :where(.prose-no-margin.overflow-auto > table):not(
+    :where(.not-prose, .not-prose *)
+  ) {
+  display: table;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  overflow: visible;
 }
 
 :root {

@@ -7,6 +7,7 @@ import {
   forwardRef,
   type MouseEvent,
   type ReactNode,
+  useEffect,
   useState,
 } from 'react';
 import {
@@ -128,12 +129,20 @@ function SidebarSection({
   node: RenderableSidebarSectionNode;
   onSelectPath: () => void;
 }) {
+  const hasActiveChild = node.children.some((child) =>
+    isNodeActive(child, activePath),
+  );
+  const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
+  const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible ||
-    (node.defaultOpen !== false &&
-      (node.children.some((child) => isNodeActive(child, activePath)) ||
-        shouldDefaultOpenSection(node.title, activePath)));
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
   const splitIndex = node.nestedQuickstartGroup
     ? Math.max(
         0,
@@ -291,12 +300,16 @@ function SidebarLinkedSection({
   title: string;
   url: string;
 }) {
-  const defaultOpen =
-    !collapsible ||
-    (defaultOpenProp !== false &&
-      (items.some((child) => isNodeActive(child, activePath)) ||
-        url === activePath));
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const hasActiveChild = items.some((child) => isNodeActive(child, activePath));
+  const canAutoOpen = defaultOpenProp !== false;
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || url === activePath);
+  const defaultOpen = !collapsible || shouldRevealActivePath;
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
 
   if (items.length === 0) {
     return (
@@ -397,8 +410,14 @@ function SidebarQuickstartGroup({
   pages: SidebarPageNode[];
   title: string;
 }) {
-  const defaultOpen = pages.some((child) => child.url === activePath);
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const shouldRevealActivePath = pages.some(
+    (child) => child.url === activePath,
+  );
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    shouldRevealActivePath,
+    shouldRevealActivePath,
+    activePath,
+  );
 
   return (
     <SidebarMenuItem>
@@ -458,12 +477,20 @@ function SidebarNestedSection({
   node: SidebarSectionNode;
   onSelectPath: () => void;
 }) {
+  const hasActiveChild = node.children.some((child) =>
+    isNodeActive(child, activePath),
+  );
+  const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
+  const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible ||
-    (node.defaultOpen !== false &&
-      (node.children.some((child) => isNodeActive(child, activePath)) ||
-        shouldDefaultOpenSection(node.title, activePath)));
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
+  const [isOpen, setIsOpen] = useActivePathDisclosure(
+    defaultOpen,
+    shouldRevealActivePath,
+    activePath,
+  );
   return (
     <div className="w-full">
       <button
@@ -530,6 +557,23 @@ function isNodeActive(node: DocsSidebarNode, activePath: string): boolean {
   }
 
   return node.children.some((child) => isNodeActive(child, activePath));
+}
+
+function useActivePathDisclosure(
+  defaultOpen: boolean,
+  shouldRevealActivePath: boolean,
+  activePath: string,
+) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const activeRevealKey = shouldRevealActivePath ? activePath : undefined;
+
+  useEffect(() => {
+    if (activeRevealKey !== undefined) {
+      setIsOpen(true);
+    }
+  }, [activeRevealKey]);
+
+  return [isOpen, setIsOpen] as const;
 }
 
 function mergeSdkQuickstartSection(nodes: DocsSidebarNode[]) {

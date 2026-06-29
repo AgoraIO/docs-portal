@@ -607,6 +607,10 @@ describe('FumadocsOpenApiContent', () => {
                                 description: 'Unique agent name.',
                                 type: 'string',
                               },
+                              displayName: {
+                                description: 'Optional display name.',
+                                type: 'string',
+                              },
                               properties: {
                                 description: 'Detailed configuration.',
                                 properties: {
@@ -676,10 +680,17 @@ describe('FumadocsOpenApiContent', () => {
 
     const schemaTreeElement = document.querySelector('.openapi-schema-tree');
     expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
+    const schemaTree = within(schemaTreeElement as HTMLElement);
+    const optionalFieldRow = schemaTree
+      .getByText('displayName')
+      .closest('div[style]');
+    expect(optionalFieldRow).toBeInstanceOf(HTMLElement);
     expect(
-      within(schemaTreeElement as HTMLElement).getByText(
-        /production callback URLs/,
-      ),
+      within(optionalFieldRow as HTMLElement).getByText('optional'),
+    ).toBeInTheDocument();
+    expect(schemaTree.queryByText('?')).not.toBeInTheDocument();
+    expect(
+      schemaTree.getByText(/production callback URLs/),
     ).toBeInTheDocument();
 
     const requestBodyHeading = screen.getByRole('heading', {
@@ -693,9 +704,7 @@ describe('FumadocsOpenApiContent', () => {
 
     expect(operationTopText).not.toContain('production callback URLs');
     expect(
-      within(schemaTreeElement as HTMLElement).queryByPlaceholderText(
-        'Filter Properties',
-      ),
+      schemaTree.queryByPlaceholderText('Filter Properties'),
     ).not.toBeInTheDocument();
   });
 

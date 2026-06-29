@@ -65,9 +65,15 @@ describe('app prose CSS regressions', () => {
     expect(secondLevel.sourceStart).toBeLessThan(thirdLevel.sourceStart);
   });
 
-  it('keeps parameter table columns readable instead of vertically wrapping narrow headers', () => {
+  it('keeps wrapped prose tables intrinsic while raw tables retain scroll fallback', () => {
     const table = getRuleBody(
       '.prose :where(table):not(:where(.not-prose, .not-prose *))',
+    );
+    const wrappedTable = getRuleBody(
+      `.prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
     );
     const cells = getRuleBody(
       '.prose :where(th, td):not(:where(.not-prose, .not-prose *))',
@@ -88,8 +94,27 @@ describe('app prose CSS regressions', () => {
         value: 'block',
       }),
     );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: '100%',
+      }),
+    );
+    expect(table.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '100%',
+      }),
+    );
     const tableOverflowOverride = getRuleBody(
       ':where(html) .prose :where(table):not(:where(.not-prose, .not-prose *))',
+    );
+    const wrappedTableOverflowOverride = getRuleBody(
+      `:where(html)
+        .prose
+        :where(.prose-no-margin.overflow-auto > table):not(
+          :where(.not-prose, .not-prose *)
+        )`,
     );
 
     expect(table.rule.nodes).toContainEqual(
@@ -98,10 +123,10 @@ describe('app prose CSS regressions', () => {
         value: 'auto',
       }),
     );
-    expect(tableOverflowOverride.rule.nodes).toContainEqual(
+    expect(table.rule.nodes).toContainEqual(
       expect.objectContaining({
-        prop: 'overflow-x',
-        value: 'auto',
+        prop: 'overflow-y',
+        value: 'hidden',
       }),
     );
     expect(table.rule.nodes).toContainEqual(
@@ -115,6 +140,82 @@ describe('app prose CSS regressions', () => {
         prop: 'overflow',
         value: 'hidden',
       }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'table',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: 'auto',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '0',
+      }),
+    );
+    expect(wrappedTable.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow',
+        value: 'visible',
+      }),
+    );
+    expect(tableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-x',
+        value: 'auto',
+      }),
+    );
+    expect(tableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-y',
+        value: 'hidden',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'display',
+        value: 'table',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'width',
+        value: 'auto',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'max-width',
+        value: 'none',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'min-width',
+        value: '0',
+      }),
+    );
+    expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow',
+        value: 'visible',
+      }),
+    );
+    expect(table.sourceStart).toBeLessThan(wrappedTable.sourceStart);
+    expect(tableOverflowOverride.sourceStart).toBeLessThan(
+      wrappedTableOverflowOverride.sourceStart,
     );
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({

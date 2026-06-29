@@ -49,6 +49,7 @@ describe('preloadDocsPageContent', () => {
           ],
           platformTabs: {
             canonicalPlatform: 'ios',
+            defaultPlatform: 'ios',
             platforms: '["ios","android"]',
           },
           platforms: ['ios', 'android'],
