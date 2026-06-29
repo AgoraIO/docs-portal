@@ -29,6 +29,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { AgoraLogoMark } from './AgoraLogoMark';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -251,11 +252,15 @@ export function DocsShell({
               </Sheet>
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
-                  className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
+                  className="flex min-w-0 items-center gap-2.5 text-[15px] font-semibold text-[color:var(--ink-1)]"
                   params={{}}
                   search={{}}
                   to={homeHref}
                 >
+                  <AgoraLogoMark
+                    className="h-[22px] w-auto shrink-0 text-[color:var(--ink-1)]"
+                    decorative
+                  />
                   <span className="truncate">{t('app.name')}</span>
                 </Link>
               </div>

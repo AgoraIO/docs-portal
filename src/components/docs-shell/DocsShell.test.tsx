@@ -405,7 +405,11 @@ describe('DocsShell', () => {
     }
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(themeControl);
-    expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
+    expect(
+      within(mainHeaderRow)
+        .getByRole('link', { name: 'Agora Docs' })
+        .querySelector('svg'),
+    ).toBeInTheDocument();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
