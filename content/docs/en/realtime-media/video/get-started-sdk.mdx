@@ -1608,12 +1608,12 @@ Follow the steps below to set up the video module.
 1. To enable the video module, call `enableVideo`.
 1. To enable local video preview, call `startPreview`.
 
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
+   ```swift
+   // Enable video functionality (audio is enabled by default)
+   agoraKit.enableVideo()
+   // Enable local video preview
+   agoraKit.startPreview()
+   ```
 
 
 ### Display the local video
@@ -2259,12 +2259,12 @@ Follow the steps below to set up the video module.
 1. To enable the video module, call `enableVideo`.
 1. To enable local video preview, call `startPreview`.
 
-```swift
-// Enable video functionality (audio is enabled by default)
-agoraKit.enableVideo()
-// Enable local video preview
-agoraKit.startPreview()
-```
+   ```swift
+   // Enable video functionality (audio is enabled by default)
+   agoraKit.enableVideo()
+   // Enable local video preview
+   agoraKit.startPreview()
+   ```
 
 
 ### Display the local video
@@ -2705,9 +2705,9 @@ To add Video Calling to your existing project, take the following steps:
  1. Include the JavaScript file in your HTML file.
 
 
-```html
-<script type="module" src="/src/main.js"></script>
-```
+    ```html
+    <script type="module" src="/src/main.js"></script>
+    ```
 
 
 </TabsContent>
@@ -3557,21 +3557,21 @@ Follow these steps to set up and start the local video preview:
 1. Call the `setupLocalVideo` method to apply the `VideoCanvas` configuration.
 1. Call the `startPreview` method to start the local video preview.
 
-```cpp
-void CAgoraQuickStartDlg::setupLocalVideo() {
-    // Set local video display properties
-    VideoCanvas canvas;
-    // Set video to be scaled proportionally
-    canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
-    // User ID
-    canvas.uid = 0;
-    // Video display window
-    canvas.view = m_staLocal.GetSafeHwnd();
-    m_rtcEngine->setupLocalVideo(canvas);
-    // Preview the local video
-    m_rtcEngine->startPreview();
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::setupLocalVideo() {
+       // Set local video display properties
+       VideoCanvas canvas;
+       // Set video to be scaled proportionally
+       canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
+       // User ID
+       canvas.uid = 0;
+       // Video display window
+       canvas.view = m_staLocal.GetSafeHwnd();
+       m_rtcEngine->setupLocalVideo(canvas);
+       // Preview the local video
+       m_rtcEngine->startPreview();
+   }
+   ```
 
 ### Display remote video
 
@@ -3580,21 +3580,21 @@ To display the remote user's video:
 1. Define the video display properties using `VideoCanvas`.
 1. Call `setupRemoteVideo` to render the video.
 
-```cpp
-void CAgoraQuickStartDlg::setupRemoteVideo(uid_t remoteUid) {
-    // Set remote video display properties
-    VideoCanvas canvas;
-    // Set video size to be proportionally scaled
-    canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
-    // Remote user ID
-    canvas.uid = remoteUid;
-    // You can only choose to set either view or surfaceTexture. If both are set, only the settings in view take effect.
-    canvas.view = m_staRemote.GetSafeHwnd();
-    m_rtcEngine->setupRemoteVideo(canvas);
-    m_remoteRender = true;
-    return 0;
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::setupRemoteVideo(uid_t remoteUid) {
+       // Set remote video display properties
+       VideoCanvas canvas;
+       // Set video size to be proportionally scaled
+       canvas.renderMode = RENDER_MODE_TYPE::RENDER_MODE_HIDDEN;
+       // Remote user ID
+       canvas.uid = remoteUid;
+       // You can only choose to set either view or surfaceTexture. If both are set, only the settings in view take effect.
+       canvas.view = m_staRemote.GetSafeHwnd();
+       m_rtcEngine->setupRemoteVideo(canvas);
+       m_remoteRender = true;
+       return 0;
+   }
+   ```
 
 
 ### Leave the channel
@@ -3608,21 +3608,21 @@ To stop the local video preview and clear the view:
 1. Call `setupLocalVideo`, passing an empty `VideoCanvas` to reset the view.
 
 
-```cpp
-void CAgoraQuickStartDlg::LeaveChannel() {
-    if (m_rtcEngine) {
-        // Stop local video preview
-        m_rtcEngine->stopPreview();
-        // Leave the channel
-        m_rtcEngine->leaveChannel();
-        // Clear local view
-        VideoCanvas canvas;
-        canvas.uid = 0;
-        m_rtcEngine->setupLocalVideo(canvas);
-        m_remoteRender = false;
-    }
-}
-```
+   ```cpp
+   void CAgoraQuickStartDlg::LeaveChannel() {
+       if (m_rtcEngine) {
+           // Stop local video preview
+           m_rtcEngine->stopPreview();
+           // Leave the channel
+           m_rtcEngine->leaveChannel();
+           // Clear local view
+           VideoCanvas canvas;
+           canvas.uid = 0;
+           m_rtcEngine->setupLocalVideo(canvas);
+           m_remoteRender = false;
+       }
+   }
+   ```
 
 
 ### Release resources
@@ -7556,13 +7556,13 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     ```cpp
     // Add the AgoraPlugin library
-    PublicDependencyModuleNames.AddRange(new string[] 
-    { 
-        "Core", 
-        "CoreUObject", 
-        "Engine", 
-        "InputCore", 
-        "AgoraPlugin" 
+    PublicDependencyModuleNames.AddRange(new string[]
+    {
+        "Core",
+        "CoreUObject",
+        "Engine",
+        "InputCore",
+        "AgoraPlugin"
     });
     ```
 
@@ -7585,7 +7585,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
     In Unreal Editor, click **Content Drawer**, select **Class Settings > Graph**, and set the **Parent Class** under **Class Options** to **AgoraWidget**.
 
         ![](/images/video-sdk/associate-classes-unreal.png)
-   
+
 1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI. A basic user interface consists of the following elements:
 
     * Local user video window
@@ -7825,22 +7825,22 @@ Add the `AndroidPermission` library to obtain device and network permissions:
 1. Add the following code to your header file:
 
 
-```cpp
-#if PLATFORM_ANDROID
-   #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
-   #endif
-```
+   ```cpp
+   #if PLATFORM_ANDROID
+      #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+      #endif
+   ```
 
 
 1. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
 
 
-```cpp
-if (Target.Platform == UnrealTargetPlatform.Android)
-   {
-       PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
-   }
-```
+   ```cpp
+   if (Target.Platform == UnrealTargetPlatform.Android)
+      {
+          PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+      }
+   ```
 
 
 1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
@@ -7902,22 +7902,22 @@ void UAgoraWidget::CheckAndroidPermission()
 1. In `Project/Source/Project.Target.cs`, add the following code:
 
 
-```cpp
-public class unrealstartTarget : TargetRules
-   {
-       public unrealstartTarget( TargetInfo Target) : base(Target)
-       {
-           Type = TargetType.Game;
-           DefaultBuildSettings = BuildSettingsVersion.V2;
-           if (Target.Platform == UnrealTargetPlatform.IOS)
-           {
-               bOverrideBuildEnvironment = true;
-               GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
-           }
-           ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
-       }
-   }
-```
+   ```cpp
+   public class unrealstartTarget : TargetRules
+      {
+          public unrealstartTarget( TargetInfo Target) : base(Target)
+          {
+              Type = TargetType.Game;
+              DefaultBuildSettings = BuildSettingsVersion.V2;
+              if (Target.Platform == UnrealTargetPlatform.IOS)
+              {
+                  bOverrideBuildEnvironment = true;
+                  GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
+              }
+              ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
+          }
+      }
+   ```
 
 
 </TabsContent>
