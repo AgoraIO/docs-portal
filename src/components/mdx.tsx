@@ -54,6 +54,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
   contentPath?: string;
@@ -991,6 +992,7 @@ export function getMDXComponents(
     Folder,
     Step,
     Steps,
+    RTCMinutesCalculator,
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,
