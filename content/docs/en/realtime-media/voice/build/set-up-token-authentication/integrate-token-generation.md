@@ -168,19 +168,19 @@ Follow these steps to build and run a token generator locally:
 
 1. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
-    ```shell
+    ```bash
     go mod init sampleServer
     ```
 
 1. Run the following command to install dependencies. 
  
-    ```shell
+    ```bash
     go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
     ```
 
 1. Run the following command to start the token generator:
 
-    ```shell
+    ```bash
     go run server.go
     ```
 

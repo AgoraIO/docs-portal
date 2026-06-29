@@ -219,7 +219,6 @@ function OpenApiOperationLayout({
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
-        {slots.description}
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
         <OpenApiParameters operation={method} />

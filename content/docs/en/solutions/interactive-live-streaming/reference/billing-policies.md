@@ -252,6 +252,7 @@ During the Retirement phase, products entering the EOS/EOL phase will continue t
 | Months 1–6 after EOL announcement | Agora provides bug fixes and security updates. New feature requests are not accepted. |
 | Months 7–12 after EOL announcement | Agora provides security updates only. |
 | After 12 months | Agora no longer supports the product or service, unless a support extension was arranged before the end of the 12-month period. |
+
 :::note
 Using an SDK beyond its maintenance support cycle is not recommended and is entirely at the developer's discretion and risk.
 :::

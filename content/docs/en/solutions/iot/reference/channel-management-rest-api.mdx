@@ -183,7 +183,7 @@ Before calling the API, make sure you have the following:
 
 Following is a sample request URL:
 
-```
+```text
 https://api.agora.io/dev/v1/kicking-rule
 ```
 
@@ -199,7 +199,7 @@ A request consists of two parts: The request header and the request body.
 
 The following example shows how to create a privilege banning rule by sending a `POST` request containing the app ID, channel name, user ID, user IP, ban duration, and the privilege list to the specified API address:
 
-```shell
+```bash
 curl --location --request POST 'https://api.agora.io/dev/v1/kicking-rule' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
@@ -1309,7 +1309,7 @@ For example, when a request fails, you might receive the following response:
 The following table summarizes all response status codes, their meanings, and recommended actions:
 
 | Response status code | Description | Recommended actions |
-| :------------------- | :------------ ------------------- |
+| :------------------- | :------------ | :------------------- |
 | 200        | The operation is successful.   | No troubleshooting required. |
 | 400        | Bad request.         | Troubleshoot based on the `message` field in the response body. |
 | 401        | Unauthorized.        | Check and confirm that your authentication information is correct. Possible reasons include: App ID does not exist.<br />Non-matching customer ID and secret. |

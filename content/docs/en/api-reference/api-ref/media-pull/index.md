@@ -30,7 +30,7 @@ This API creates a cloud player in the project.
 
 ### HTTP request
 
-```shellscript
+```bash
 POST https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/players
 ```
 
@@ -56,7 +56,7 @@ Please ensure that the region you set is the same region as where your media str
 
 A sample request URL when using query parameters:
 
-```shellscript
+```bash
 https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/players?streamIp={streamIp}
 ```
 
@@ -319,7 +319,7 @@ This API destroys the cloud player in the project.
 
 ### HTTP request
 
-```shellscript
+```bash
 DELETE https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/players/{id}
 ```
 
@@ -367,7 +367,7 @@ This API queries and lists all the cloud players in the project.
 
 ### HTTP request
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{appId}/cloud-player/players
 ```
 
@@ -379,7 +379,7 @@ GET https://api.agora.io/v1/projects/{appId}/cloud-player/players
 
 A sample request URL when using query parameters:
 
-```shellscript
+```bash
 https://api.agora.io/v1/projects/{appId}/cloud-player/players?filter={filter}&pageSize={pageSize}&pageToken={pageToken}
 ```
 
@@ -495,7 +495,7 @@ Update the cloud player you specified in the project.
 
 ### HTTP request
 
-```
+```bash
 PATCH https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/players/{id}
 ```
 
@@ -513,7 +513,7 @@ PATCH https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/players/{id
 Best practice is to fill `sequence` with `0` when calling `Update` for the first time. When calling `Update` for the second time, fill `sequence` with `1`. When calling `Update` for the third time, fill `sequence` with `2`. And so on. The Agora server updates cloud player according to the latest `Update` request (that is, the highest serial number).
 :::
 
-```
+```bash
 PATCH https://api.agora.io/{region}/v1/projects/{appId}/cloud-player/{playerid}?sequence={sequence}
 ```
 

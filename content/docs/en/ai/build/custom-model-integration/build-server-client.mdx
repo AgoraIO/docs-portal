@@ -89,26 +89,26 @@ For TypeScript, the backend and frontend live in the same Next.js app.
 
 1. Scaffold a Next.js app with TypeScript, the App Router, Tailwind CSS, and ESLint, then install the required Agora packages:
 
-```bash
-pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
-cd conv-ai-tutorial
-pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
-```
+   ```bash
+   pnpm dlx create-next-app@latest conv-ai-tutorial --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
+   cd conv-ai-tutorial
+   pnpm add agora-agents agora-rtc-sdk-ng agora-rtm-sdk agora-token
+   ```
 
-- `agora-agents`: Starts and stops agent sessions from the backend
-- `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
-- `agora-rtm-sdk`: Receives live transcript messages from the agent
-- `agora-token`: Generates RTC and RTM tokens
+   - `agora-agents`: Starts and stops agent sessions from the backend
+   - `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
+   - `agora-rtm-sdk`: Receives live transcript messages from the agent
+   - `agora-token`: Generates RTC and RTM tokens
 
 2. Write your Agora credentials to `.env.local`:
 
-```bash
-eval "$(agora project env --shell)"
-cat > .env.local <<EOF
-NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
-NEXT_AGORA_APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
-EOF
-```
+   ```bash
+   eval "$(agora project env --shell)"
+   cat > .env.local <<EOF
+   NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
+   NEXT_AGORA_APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
+   EOF
+   ```
 
 The `NEXT_PUBLIC_` prefix makes `AGORA_APP_ID` available in the browser, which is required to join the RTC channel. Never apply this prefix to `APP_CERTIFICATE`; it must remain server-side only.
 
@@ -120,47 +120,47 @@ For Python, the backend and frontend are separate apps in a single monorepo.
 
 1. Scaffold the monorepo, create a Python virtual environment, and install the required packages:
 
-```bash
-mkdir conv-ai-tutorial && cd conv-ai-tutorial
-git init
+   ```bash
+   mkdir conv-ai-tutorial && cd conv-ai-tutorial
+   git init
 
-# Backend
-mkdir server-python && cd server-python
-python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install fastapi 'uvicorn[standard]' agora-agents agora-token-builder python-dotenv
-cd ..
+   # Backend
+   mkdir server-python && cd server-python
+   python -m venv .venv
+   source .venv/bin/activate      # Windows: .venv\Scripts\activate
+   pip install fastapi 'uvicorn[standard]' agora-agents agora-token-builder python-dotenv
+   cd ..
 
-# Frontend
-pnpm dlx create-next-app@latest web-client --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
-cd web-client
-pnpm add agora-rtc-sdk-ng agora-rtm-sdk
-cd ..
-```
+   # Frontend
+   pnpm dlx create-next-app@latest web-client --typescript --app --tailwind --eslint --src-dir=false --import-alias='@/*'
+   cd web-client
+   pnpm add agora-rtc-sdk-ng agora-rtm-sdk
+   cd ..
+   ```
 
-- `agora-agents`: Starts and stops agent sessions from the backend
-- `agora-token-builder`: Generates RTC and RTM tokens
-- `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
-- `agora-rtm-sdk`: Receives live transcript messages from the agent
+   - `agora-agents`: Starts and stops agent sessions from the backend
+   - `agora-token-builder`: Generates RTC and RTM tokens
+   - `agora-rtc-sdk-ng`: Handles mic capture and RTC channel joining in the browser
+   - `agora-rtm-sdk`: Receives live transcript messages from the agent
 
 2. Write your Agora credentials to the backend and frontend environment files:
 
-```bash
-eval "$(agora project env --shell)"
+   ```bash
+   eval "$(agora project env --shell)"
 
-# Backend environment
-cat > server-python/.env <<EOF
-APP_ID=$AGORA_APP_ID
-APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
-PORT=8000
-EOF
+   # Backend environment
+   cat > server-python/.env <<EOF
+   APP_ID=$AGORA_APP_ID
+   APP_CERTIFICATE=$AGORA_APP_CERTIFICATE
+   PORT=8000
+   EOF
 
-# Frontend environment
-cat > web-client/.env.local <<EOF
-NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-EOF
-```
+   # Frontend environment
+   cat > web-client/.env.local <<EOF
+   NEXT_PUBLIC_AGORA_APP_ID=$AGORA_APP_ID
+   NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+   EOF
+   ```
 
 The backend reads `APP_ID` and `APP_CERTIFICATE` directly. The frontend only receives `APP_ID` through `NEXT_PUBLIC_AGORA_APP_ID`. The certificate never leaves `server-python/`.
 

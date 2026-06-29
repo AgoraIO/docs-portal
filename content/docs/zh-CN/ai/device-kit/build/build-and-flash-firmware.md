@@ -9,25 +9,25 @@ description: 构建 R1 固件、指向你的服务端，并烧录到设备上。
 
 1. 克隆 `bk_aidk` 项目：
 
-```shell
-git clone --recurse-submodules https://github.com/bekencorp/bk_aidk.git -b ai_release/v2.0.1
-cd bk_aidk
-git checkout ai_release/v2.0.1.8
-git submodule update --recursive
-```
+   ```shell
+   git clone --recurse-submodules https://github.com/bekencorp/bk_aidk.git -b ai_release/v2.0.1
+   cd bk_aidk
+   git checkout ai_release/v2.0.1.8
+   git submodule update --recursive
+   ```
 
 2. 用示例目录替换 `projects`：
 
-```shell
-rm -rf <bk_aidk_path>/projects/
-cp -r ./projects <bk_aidk_path>/projects
-```
+   ```shell
+   rm -rf <bk_aidk_path>/projects/
+   cp -r ./projects <bk_aidk_path>/projects
+   ```
 
 3. 修改 `projects/common_components/network_transfer/agora_rtc/agora_config.h` 中的服务端地址：
 
-```c
-#define CONFIG_AGENT_SERVER_URL "http://192.168.1.100:5001"
-```
+   ```c
+   #define CONFIG_AGENT_SERVER_URL "http://192.168.1.100:5001"
+   ```
 
 把它替换成你部署的服务端地址。
 

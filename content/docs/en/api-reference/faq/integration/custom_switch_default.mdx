@@ -12,19 +12,19 @@ If you want to switch from custom video capture by Media IO to SDK capture, you 
 
 You can switch custom video capture to SDK capture directly in the channel:
 
-```
+```text
 // Java
 ENGINE.setVideoSource(new AgoraDefaultSource());
 ```
-```
+```text
 // Swift
 agoraKit?.setVideoSource(AgoraRtcDefaultCamera());
 ```
-```
+```text
 // Objective-C
 [self.agoraKit setVideoSource:[[AgoraRtcDefaultCamera alloc] initWithPosition:AgoraRtcDefaultCameraPositionFront]];
 ```
-```
+```text
 // C++
 m_rtcEngine->setVideoSource();
 m_rtcEngine->startPreview;

@@ -80,7 +80,7 @@ You can use extension fields to implement customized push settings. This page us
 
 When creating a push message, you can add custom fields to the message to meet personalized business needs:
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
     NSString* currentUsername = AgoraChatClient.sharedClient.currentUsername;
     NSString* conversationId = @"remoteId";
@@ -108,7 +108,7 @@ The data structure of the custom field is as follows:
 
 When creating a push message, you can customize the notification tone when the recipient receives the message. Add the audio file to the app and configure its name used in the push. For details, see [Apple documentation](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification?language=objc).
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
     message.ext = @{@"em_apns_ext":@{@"em_push_sound":@"custom.caf"}};
@@ -137,7 +137,7 @@ The data structure of the custom ringtone field is as follows:
 
 The user can set force push to ignore the recipient's DND setting when sending messages:
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
 // Set whether to force push. This extension field is a built-in field with the following values: ` YES ` : force push; (default) ` NO ` : non-force push.
@@ -152,7 +152,7 @@ Sending silent messages means that the sender sets the message not to be pushed 
 
 Both silent message sending and do not disturb mode pause push messages. The difference is that silent message sending is set by the sender when sending the message, while the DND mode is set by the receiver.
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
 // Set whether to send silent messages. This field is a built-in extension field with the following values: `YES`: send silent messages; (default) `NO`: push the message.
@@ -165,7 +165,7 @@ message.chatType = AgoraChatTypeChat;
 
 If your target platform is iOS 10.0 or above, you can refer to the following code to implement the rich text push function of [`UNNotificationServiceExtension`](https://developer.apple.com/documentation/usernotifications/unnotificationserviceextension?language=objc).
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
 // em_apns_ext: message extension field
@@ -185,7 +185,7 @@ message.chatType = AgoraChatTypeChat;
 
 When the receiver gets a rich text push, the `didReceiveNotificationRequest:withContentHandler:` callback is triggered. The sample code is as follows:
 
-```objective-c
+```objc
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
     // Push extension fields
     NSDictionary *userInfo = request.content.userInfo;

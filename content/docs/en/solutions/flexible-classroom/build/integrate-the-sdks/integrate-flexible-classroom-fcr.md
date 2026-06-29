@@ -49,7 +49,7 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install fcr-ui-scene agora-plugin-gallery
     ```
 
@@ -257,15 +257,15 @@ Make sure you have set up a development environment. See [Configure Flexible Cla
 
     1. To package the SDK code:
 
-    ```bash
-    yarn pack:scene:sdk
-    ```
+       ```bash
+       yarn pack:scene:sdk
+       ```
 
     1. To package the SDK plugins:
 
-    ```bash
-    yarn pack:scene:plugin
-    ```
+       ```bash
+       yarn pack:scene:plugin
+       ```
 
 :::note
 Find the output in `packages/fcr-ui-scene/lib/fcr-ui-scene_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/scene_widget.bundle.js` respectively.

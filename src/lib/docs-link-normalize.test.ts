@@ -10,6 +10,26 @@ describe('normalizeDocsHref', () => {
     ).toEqual({ href: '/en/ai/get-started/quickstart', kind: 'internal-doc' });
   });
 
+  it('resolves extensionless relative doc links from the source content path', () => {
+    expect(
+      normalizeDocsHref('transcripts#api-reference', {
+        contentPath: 'en/ai/reference/event-types.mdx',
+      }),
+    ).toEqual({
+      href: '/en/ai/reference/transcripts#api-reference',
+      kind: 'internal-doc',
+    });
+
+    expect(
+      normalizeDocsHref('transcripts?view=full#api-reference', {
+        contentPath: 'en/ai/reference/event-types.mdx',
+      }),
+    ).toEqual({
+      href: '/en/ai/reference/transcripts?view=full#api-reference',
+      kind: 'internal-doc',
+    });
+  });
+
   it('collapses index.md targets to their directory route', () => {
     expect(
       normalizeDocsHref('studio/index.md', {
@@ -136,6 +156,15 @@ describe('normalizeDocsHref', () => {
 
     expect(
       normalizeDocsHref('../operations/start-agent.md#llm-max_history', {
+        contentPath: 'en/api-reference/ncs-events.mdx',
+      }),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/join#llm-max_history',
+      kind: 'internal-doc',
+    });
+
+    expect(
+      normalizeDocsHref('../operations/start-agent#llm-max_history', {
         contentPath: 'en/api-reference/ncs-events.mdx',
       }),
     ).toEqual({

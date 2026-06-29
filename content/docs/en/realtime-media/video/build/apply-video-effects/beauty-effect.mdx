@@ -38,9 +38,9 @@ To integrate the extension, take the following steps:
 
 1. Run the following command to install the extension:
 
-  ```typescript
-  npm install agora-extension-beauty-effect
-  ```
+   ```typescript
+   npm install agora-extension-beauty-effect
+   ```
 
 1. Use either of the following methods to integrate the extension.
 
@@ -75,21 +75,21 @@ To enable the extension, follow these steps:
 
 1. Call `extension.createProcessor` to create a `BeautyProcessor` instance.
 
-  ```typescript
-  const processor = extension.createProcessor();
-  ```
+   ```typescript
+   const processor = extension.createProcessor();
+   ```
 
 1. After creating the local camera video track, use the `pipe()` method to pass the video track through the beauty pre-processor. Then, direct the processed video track to `videoTrack.processorDestination`, integrating it back into the SDK's media processing pipeline.
 
-  ```typescript
-  localTracks.videoTrack.pipe(processor).pipe(localTracks.videoTrack.processorDestination);
-  ```
+   ```typescript
+   localTracks.videoTrack.pipe(processor).pipe(localTracks.videoTrack.processorDestination);
+   ```
 
 1. Call `processor.enable()` to activate the beauty effects.
 
-  ```typescript
-  await processor.enable();
-  ```
+   ```typescript
+   await processor.enable();
+   ```
 
 
 

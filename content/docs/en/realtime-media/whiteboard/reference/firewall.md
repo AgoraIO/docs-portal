@@ -12,7 +12,7 @@ Before proceeding with firewall configuration, ensure that the latest version of
 
 To enable seamless access to the Interactive Whiteboard service, add the following domains to your firewall whitelist. Additionally, ensure that port 443 is open for all listed domains to guarantee proper communication with the service.
 
-```
+```text
 *.whiteboard.sd-rtn.com
 *.whiteboard.rtelink.com
 *.netless.link

@@ -5,7 +5,7 @@ description: "Configure individual audio non-transcoding recording with the Clou
 When recording audio only (`streamTypes` is `0`) in [individual recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode), you can choose whether to use transcoding recording or non-transcoding recording through simple parameter settings. The differences between the two are as follows:
 
 |     | Individual audio recording  | Individual audio non-transcoding recording  |
-| :-- | :-------------------------- | :------------------------------------------ |
+| :--- | :-------------------------- | :------------------------------------------ |
 | Whether to transcode when encoding audio | Yes.     | No.|
 | Audio profile     | The sample rate, number of audio channels, and bitrate are fixed at 48 kHz, mono, and 48 Kbps, respectively. | The sample rate, number of audio channels, and bitrate are determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration of the streaming sender. |
 | Audio codec | LC-AAC.  | Determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration set by the streaming sender. |

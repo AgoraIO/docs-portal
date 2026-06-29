@@ -22,7 +22,7 @@ After a user adds an extension in their Agora projects, Agora sends this request
 ### HTTP request
 
 **URL**
-```
+```bash
 GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&signature={signature}
 ```
 
@@ -81,7 +81,7 @@ Return the usage data only when `projectId` is not empty and `amount` is not zer
 
 **Request header**
 
-```
+```bash
 GET https://api.agora.io/usage?fromTs=1619913600&toTs=1619917200&pageNum=1&apiKey=pz*************gd&signature=SF*************3D HTTP/1.1
 ```
 
@@ -112,7 +112,7 @@ After a user adds an extension in their Agora projects, Agora sends this request
 
 ### HTTP request
 **URL**
-```
+```bash
 GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&signature={signature}
 ```
 
@@ -168,7 +168,7 @@ Return the billing data only when `projectId` is not empty and `amount` is not z
 
 **Request header**
 
-```
+```bash
 GET https://api.agora.io/usage?fromTs=1619913600&toTs=1619917200&pageNum=1&apiKey=pz*************gd&signature=SF*************3D HTTP/1.1
 ```
 
@@ -202,7 +202,7 @@ Agora calls this API to retrieve the license information of a specified user, in
 ### HTTP request
 
 **URL**
-```
+```bash
 GET https://{host}/customers/{customerId}/license?apiKey={apiKey}&signature={signature}
 ```
 
@@ -242,7 +242,7 @@ The status of the request:
 
 **Request header**
 
-```
+```bash
 GET https://api.agora.io/customers/1234567/license?apiKey=pz*************gd&signature=SF*************3D HTTP/1.1
 ```
 

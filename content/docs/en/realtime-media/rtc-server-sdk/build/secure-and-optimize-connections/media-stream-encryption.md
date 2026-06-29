@@ -21,7 +21,7 @@ To generate and set the encryption `key`, refer to the following steps.
 
 1. To randomly generate a 32-byte encryption key in string format using OpenSSL on your server:
 
-    ```shell
+    ```bash
     # Randomly generate a 32-byte key in the string format, and pass the string key in the encryptionKey parameter of enableEncryption.
     openssl rand -hex 32
     dba643c8ba6b6dc738df43d9fd624293b4b12d87a60f518253bd10ba98c48453
@@ -35,7 +35,7 @@ To generate the `salt`:
 
 1. Randomly generate a Base64-encoded, 32-byte salt through OpenSSL on the server. Refer to the [C++ sample code](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/sample/RtcChannelEncryptionSaltSample.cpp) provided by Agora on GitHub to randomly generate a salt in the byte array format and convert it to `Base64` on the server.
 
-    ```shell
+    ```bash
     # Randomly generate a 32-byte salt in the Base64 format. Convert the salt from Base64 to uint8_t, and pass the uint8_t salt in the encryptionKdfSalt parameter of enableEncryption.
     openssl rand -base64 32
     X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=

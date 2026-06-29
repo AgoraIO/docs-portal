@@ -24,7 +24,7 @@ The extension provides a sample project on GitHub:
 
 1. Clone the repository:
 
-   ```shell
+   ```bash
    git clone https://github.com/highras/rtvt-agora-marketplace.git
    ```
 
@@ -44,7 +44,7 @@ Visit Extensions Marketplace and purchase the extension. Save the `appKey` and `
 2. Save all `.aar` files to `/app/libs`.
 3. Add the Gradle dependency:
 
-   ```groovy
+   ```text
    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
    ```
 
@@ -113,13 +113,13 @@ The extension is an encapsulation of a cloud real-time speech recognition and tr
 
 1. Clone the sample repository:
 
-   ```shell
+   ```bash
    git clone https://github.com/highras/rtvt-agora-marketplace.git
    ```
 
 2. Enter `iOS/SW_Test` and run:
 
-   ```shell
+   ```bash
    pod install
    ```
 
@@ -141,7 +141,7 @@ The extension is an encapsulation of a cloud real-time speech recognition and tr
 
 ### Enable the extension
 
-```objective-c
+```objc
 AgoraRtcEngineConfig *config = [AgoraRtcEngineConfig new];
 config.eventDelegate = self;
 self.agoraKit = [AgoraRtcEngineKit sharedEngineWithConfig:config delegate:self];

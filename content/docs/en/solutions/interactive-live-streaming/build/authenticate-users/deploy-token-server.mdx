@@ -21,12 +21,12 @@ Your app retrieves a token from the token server when a user attempts to connect
 
 Agora enables you to implement permissions with the following strategies. Select the one that best suits your use-case:
 
-- **Uniform permissions** 
-  
+- **Uniform permissions**
+
   Uniformly set permissions for joining channels and concurrent streams. This is applicable to most use-cases. For details, see [Basic authentication](#basic-authentication).
 
 - **Finely control permissions for publishing different streams**
-  
+
   Manage permissions to publish different types of streams, such as audio, video, and data. If you have higher requirements for business security, use these permissions to finely control the validity period of permissions to publish different streams. For details, see [Co-host token authentication](#co-host-token-authentication).
 :::note
 The information on this page only applies to `AccessToken2`. If you are still using `AccessToken`, refer to the [AccessToken upgrade guide](integrate-token-generation.md) to upgrade from `AccessToken` to `AccessToken2`.
@@ -316,7 +316,7 @@ This section presents advanced functions related to token authentication.
 - [Co-host token authentication](#co-host-token-authentication): Enable fine-grained control to ensure only authorized users can publish streams.
 
 #### Generate wildcard token​s
-In use-cases where users need to join multiple channels, or frequently switch between channels, they need to request a new token from the token server, each time they join a channel. To solve the problem of frequently requesting tokens when switching channels, Agora enables you to generate wildcard tokens that set the user ID or channel name as a wildcard. Users reuse the same wildcard token to join different channels, which speeds up the process of switching and joining channels. It also helps reduce the pressure on your token server. 
+In use-cases where users need to join multiple channels, or frequently switch between channels, they need to request a new token from the token server, each time they join a channel. To solve the problem of frequently requesting tokens when switching channels, Agora enables you to generate wildcard tokens that set the user ID or channel name as a wildcard. Users reuse the same wildcard token to join different channels, which speeds up the process of switching and joining channels. It also helps reduce the pressure on your token server.
 :::note
 To generate wildcard tokens, deploy an `AccessToken2` server. If you are still using `AccessToken`, see the [AccessToken upgrade guide](integrate-token-generation.md) to upgrade to `AccessToken2`.
 :::
@@ -337,7 +337,7 @@ The `AccessToken2` code provides two `BuildTokenWithUid` methods. Choose the met
 
 * In order to prevent unauthorized users from disrupting the order of the channel if the token is leaked, best practice is that users who use wildcard tokens set their client role as audience, and their token privilege `role` to `kRoleSubscriber`.
 
-If viewers using wildcard tokens need to publish streams, Agora recommends the following steps to update the token. 
+If viewers using wildcard tokens need to publish streams, Agora recommends the following steps to update the token.
 The following API uses C++ as an example:
 
 1. Call `setClientRole` to set the user role as **Broadcaster**.
@@ -702,9 +702,9 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
 
 1. Install the NPM package
 
-  ```bash
-  npm install agora-token
-  ```
+   ```bash
+   npm install agora-token
+   ```
 
 2. Add your App ID and App certificate
 
@@ -720,7 +720,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
 
   Navigate to the `server` directory and run the following commands:
 
-  ```shell
+  ```bash
   npm i
   node DemoServer.js
   ```
@@ -749,26 +749,26 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 2. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
-  ```shell
-  docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
-  ```
+   ```bash
+   docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
+   ```
 
 3. Run the following command to request a token from the token generator you just deployed:
 
-  ```shell
-  curl --location 'http://localhost:8080/token/generate' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "channelName": "channel_name_test",
-    "uid": "12345678",
-    "tokenExpireTs": 3600,
-    "privilegeExpireTs": 3600,
-    "serviceRtc": {
-      "enable": true,
-      "role": 1
-    }
-  }'
-  ```
+   ```bash
+   curl --location 'http://localhost:8080/token/generate' \
+   --header 'Content-Type: application/json' \
+   --data '{
+     "channelName": "channel_name_test",
+     "uid": "12345678",
+     "tokenExpireTs": 3600,
+     "privilegeExpireTs": 3600,
+     "serviceRtc": {
+       "enable": true,
+       "role": 1
+     }
+   }'
+   ```
 
   After the request is successful, your terminal displays the generated token.
 
@@ -784,7 +784,7 @@ Refer to the following steps to build and run a token generator:
 
 ```go
   package main
-  
+
     import (
       rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
       "fmt"
@@ -794,20 +794,20 @@ Refer to the following steps to build and run a token generator:
       "errors"
       "strconv"
     )
-  
+
     type rtc_int_token_struct struct{
       Uid_rtc_int uint32 `json:"uid"`
       Channel_name string `json:"ChannelName"`
       Role uint32 `json:"role"`
     }
-  
+
     var rtc_token string
     var int_uid uint32
     var channel_name string
-  
+
     var role_num uint32
     var role rtctokenbuilder.Role
-  
+
     // Use RtcTokenBuilder to generate RTC Token
     func generateRtcToken(int_uid uint32, channelName string, role rtctokenbuilder.Role){
       appID := "<Your App ID>"
@@ -817,7 +817,7 @@ Refer to the following steps to build and run a token generator:
       // The token-privilege-will-expire callback is triggered 30 seconds before the permission expires.
       // For demonstration purposes, set the expiration time to 40 seconds. You can see the process of the client automatically updating the Token
       privilegeExpireTimeInSeconds := uint32(40)
-  
+
       result, err := rtctokenbuilder.BuildTokenWithUid(appID, appCertificate, channelName, int_uid, role, tokenExpireTimeInSeconds, privilegeExpireTimeInSeconds)
       if err != nil {
         fmt.Println(err)
@@ -833,29 +833,29 @@ Refer to the following steps to build and run a token generator:
       }
       rtc_token = result
     }
-  
+
     func rtcTokenHandler(w http.ResponseWriter, r *http.Request){
       w.Header().Set("Content-Type", "application/json; charset=UTF-8")
       w.Header().Set("Access-Control-Allow-Origin", "*")
       w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS");
       w.Header().Set("Access-Control-Allow-Headers", "*");
-  
+
       if r.Method == "OPTIONS" {
         w.WriteHeader(http.StatusOK)
         return
       }
-  
+
       if r.Method != "POST" && r.Method != "OPTIONS" {
         http.Error(w, "Unsupported method. Please check.", http.StatusNotFound)
         return
       }
-  
+
       var t_int rtc_int_token_struct
       var unmarshalErr *json.UnmarshalTypeError
       int_decoder := json.NewDecoder(r.Body)
       int_err := int_decoder.Decode(&t_int)
       if (int_err == nil) {
-  
+
             int_uid = t_int.Uid_rtc_int
             channel_name = t_int.Channel_name
             role_num = t_int.Role
@@ -867,7 +867,7 @@ Refer to the following steps to build and run a token generator:
             }
       }
       if (int_err != nil) {
-  
+
         if errors.As(int_err, &unmarshalErr){
             errorResponse(w, "Bad request. Wrong type provided for field " + unmarshalErr.Value + unmarshalErr.Field + unmarshalErr.Struct, http.StatusBadRequest)
             } else {
@@ -875,12 +875,12 @@ Refer to the following steps to build and run a token generator:
           }
         return
       }
-  
+
       generateRtcToken(int_uid, channel_name, role)
       errorResponse(w, rtc_token, http.StatusOK)
       log.Println(w, r)
     }
-  
+
     func errorResponse(w http.ResponseWriter, message string, httpStatusCode int){
       w.Header().Set("Content-Type", "application/json")
       w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -891,13 +891,13 @@ Refer to the following steps to build and run a token generator:
       jsonResp, _ := json.Marshal(resp)
       w.Write(jsonResp)
     }
-  
+
     func main(){
       // Use int type uid to generate RTC Token
       http.HandleFunc("/fetch_rtc_token", rtcTokenHandler)
       fmt.Printf("Starting server at port 8082
   ")
-  
+
       if err := http.ListenAndServe(":8082", nil); err != nil {
         log.Fatal(err)
       }
@@ -906,21 +906,21 @@ Refer to the following steps to build and run a token generator:
 
 2. Open the terminal, go to the `token-server` folder path, and run the following command line to create a `go.mod` file for your token generator. This file defines the import path and dependencies:
 
-  ```go
-  go mod init sampleServer
-  ```
+   ```go
+   go mod init sampleServer
+   ```
 
 3. Run the following command to install dependencies.
- 
-  ```go
-  go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
-  ```
+
+   ```go
+   go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
+   ```
 
 4. Run the following command to start the token generator:
 
-  ```go
-  go run server.go
-  ```
+   ```go
+   go run server.go
+   ```
 
 After the token generator is deployed successfully, your terminal returns the token generated based on the App ID and App certificate you filled in.
 
@@ -940,7 +940,7 @@ Generate a token, set the expiration time, and define all permissions.
 func BuildTokenWithUid(
   appId string, appCertificate string,
   channelName string, uid uint32,
-  role Role, 
+  role Role,
   tokenExpire uint32, privilegeExpire uint32,
 )
 ```
@@ -965,9 +965,9 @@ Generate a token with fine control over streaming permissions. Set the validity 
 
 ```go
 func BuildTokenWithUidAndPrivilege(
-  appId string, appCertificate string, 
+  appId string, appCertificate string,
   channelName string, uid uint32,
-  tokenExpire uint32, joinChannelPrivilegeExpire uint32, 
+  tokenExpire uint32, joinChannelPrivilegeExpire uint32,
   pubAudioPrivilegeExpire uint32, pubVideoPrivilegeExpire uint32, pubDataStreamPrivilegeExpire uint32
 )
 ```
@@ -992,10 +992,10 @@ func BuildTokenWithUidAndPrivilege(
 
 `AccessToken2` is supported on the following versions of Agora SDK (excluding client side bypass push function):
 
-For RTC 4.x SDK: 
-* Android, iOS, macOS, Windows, Electron, Unity, React Native, or Unreal SDK version must be greater than or equal to v4.0.0 
-* Flutter SDK version must be greater than or equal to v6.0.0 
-* Web SDK version must be greater than or equal to v4.8.0 
+For RTC 4.x SDK:
+* Android, iOS, macOS, Windows, Electron, Unity, React Native, or Unreal SDK version must be greater than or equal to v4.0.0
+* Flutter SDK version must be greater than or equal to v6.0.0
+* Web SDK version must be greater than or equal to v4.8.0
 :::note
 SDKs using `AccessToken2` can interoperate with SDKs using `AccessToken`. The SDK versions that supports `AccessToken2` also supports `AccessToken`.
 :::

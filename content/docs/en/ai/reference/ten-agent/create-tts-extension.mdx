@@ -23,7 +23,7 @@ The TTS Extension is mainly responsible for:
 
 As a standard building block, the TTS Extension plays the key role of converting text into audio inside a TEN Agent conversation flow:
 
-```
+```json
 [Upstream Extension]  ──text stream──>  [TTS Extension]  ──audio stream──>  [Downstream Extension]
 ```
 
@@ -59,7 +59,7 @@ Two base classes are available today for developers: `AsyncTTS2BaseExtension` an
 
 **Path 1: Inherit directly from `AsyncTTS2BaseExtension` (WebSocket mode)**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    AsyncTTS2BaseExtension                  │
 │  [Generic base class] Provides TTS Extension infrastructure│
@@ -83,7 +83,7 @@ Two base classes are available today for developers: `AsyncTTS2BaseExtension` an
 
 **Path 2: Inherit from `AsyncTTS2HttpExtension` (HTTP mode)**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    AsyncTTS2BaseExtension                  │
 │  [Generic base class] Provides TTS Extension infrastructure│

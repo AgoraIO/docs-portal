@@ -326,7 +326,7 @@ v2.16.21 was released on September 13, 2022.
 
 As of v2.16.0, Agora only updates the `netless-io:whiteboard-android` GitHub repository; Agora no longer maintains the `duty-os:white-sdk-android` GitHub repository. When integrating the SDK v2.16.0 or later with JitPack, you need to modify the `implementation` field under `dependencies` in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file as follows:
 
-```
+```text
 dependencies {
     implementation 'com.github.netless-io:whiteboard-android:<version>'
 }
@@ -1155,7 +1155,7 @@ This release supports setting whether to only allow users to draw and write on t
 
 The Agora Whiteboard SDK for iOS uses [YYModel](https://github.com/ibireme/YYModel) for data type conversion by default. As of this release, the SDK adds support for YYKit. To use [YYKit](https://github.com/ibireme/YYKit), you need to add the following line to the `Podfile` file to add the dependency:
 
-```
+```bash
 pod 'Whiteboard/Whiteboard-YYKit'
 ```
 

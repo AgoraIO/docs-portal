@@ -23,7 +23,7 @@ During the operation of Agora SDK, error codes may be returned in the following 
 ## Common error codes
 
 | Error code | Description |
-| :--: | :------------------------------ |
+| :---: | :------------------------------ |
 | `1` | General error (no clearly categorized cause of error). Please call the method again. |
 | `2` | An invalid parameter was set in the method. For example, the specified channel name contains illegal characters. Please reset the parameters. |
 | `3` | <Slot name="3" /> |
@@ -130,7 +130,7 @@ This error code is deprecated. The SDK returns `CONNECTION_CHANGED_INVALID_TOKEN
 ## Audio-related error codes
 
 | Error code | Description |
-|:--:|:------------------------------|
+| :---: | :------------------------------ |
 | `1005` | An unspecified error occurred in the audio device. Check if the audio device is occupied by another application or try to re-enter the channel. |
 | `1008` | An error occurred while initializing the playback device. Check if the playback device is occupied by another application or try to re-enter the channel. |
 | `1009` | Error starting the playback device. Please check if the playback device is working properly. |
@@ -142,7 +142,7 @@ This error code is deprecated. The SDK returns `CONNECTION_CHANGED_INVALID_TOKEN
 ## Data stream-related error codes
 
 | Error code | Description |
-|:--:|:------------------------------|
+| :---: | :------------------------------ |
 | `113` | The user was not in the channel when the `sendStreamMessage` method was called. |
 | `114` | When `sendStreamMessage` was called, the length of the data sent was greater than 1024 bytes. |
 | `115` | The frequency of sending data exceeded the limit (6 KB/s) when calling `sendStreamMessage`. |
@@ -152,7 +152,7 @@ This error code is deprecated. The SDK returns `CONNECTION_CHANGED_INVALID_TOKEN
 ## Other error codes
 
 | Error code | Description |
-|:--:|:------------------------------|
+| :---: | :------------------------------ |
 | `130` | The SDK does not support pushing encrypted streams to a CDN. |
 | `1001` | Failed to load the media engine. |
 | `1501` | There is no permission to use the camera. Please check if camera permission has been turned on. |
