@@ -257,7 +257,7 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
-  it('does not render the generic header description for OpenAPI bodies', async () => {
+  it('renders the generic header description for OpenAPI bodies', async () => {
     renderWithRouter(
       <DocsContent
         body={{
@@ -294,8 +294,10 @@ describe('DocsContent', () => {
       await screen.findByTestId('fumadocs-openapi-content'),
     ).toHaveTextContent('/v2/projects/{appid}/agents/{agentId}/instructions');
     expect(
-      screen.queryByText(/Implicit instruction injection/),
-    ).not.toBeInTheDocument();
+      screen.getByText(
+        'Use this endpoint for the following scenarios: - **Implicit instruction injection**',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders the generic header description for MDX-authored pages', async () => {

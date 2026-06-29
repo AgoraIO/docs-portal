@@ -219,7 +219,6 @@ function OpenApiOperationLayout({
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
-        {slots.description}
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
         <OpenApiParameters operation={method} />
@@ -810,7 +809,10 @@ function OpenApiCodeSampleTabs({
       </CodeBlockTabsList>
       {sampleEntries.map(({ sample, value }) => (
         <CodeBlockTab key={value} value={value}>
-          {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+          {renderCodeBlock({
+            code: sample.source,
+            lang: getCodeSampleLanguage(sample.lang),
+          })}
         </CodeBlockTab>
       ))}
     </CodeBlockTabs>
@@ -878,7 +880,10 @@ function OpenApiCodeSampleGroupSelector({
         </CodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTab key={value} value={value}>
-            {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+            {renderCodeBlock({
+              code: sample.source,
+              lang: getCodeSampleLanguage(sample.lang),
+            })}
           </CodeBlockTab>
         ))}
       </CodeBlockTabs>
