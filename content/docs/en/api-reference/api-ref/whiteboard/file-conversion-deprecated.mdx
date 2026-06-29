@@ -3,7 +3,7 @@ title: "Legacy file conversion API"
 description: "Reference the previous Interactive Whiteboard file-conversion REST API."
 ---
 
-Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability.  The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](file-conversion.md).
+Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability. The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](file-conversion.md).
 
 The file-conversion feature provided by Interactive Whiteboard can convert PPT, PPTX, DOC, DOCX, and PDF files into static images or dynamic HTML web pages. The generated images and web pages can be presented on the whiteboard. See [Old File Conversion Overview](../file-conversion-overview-deprecated.mdx).
 
@@ -29,7 +29,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description                                                  |
 | :-------- | :-------- | :---------------- | :----------------------------------------------------------- |
-| `token`   | string    | Required          | A SDK token with the `writer` or `admin` role. <br />To get a SDK Token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK Token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br /> |
+| `token`   | string    | Required          | An SDK token with the `writer` or `admin` role. <br />To get an SDK Token, you can:- Get a test-purpose SDK token from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK Token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br /> |
 | `region`  | string    | Required          | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br /> |
 
 ### Request Body
@@ -85,7 +85,7 @@ The format of the generated image:
 - `jpg` or `jpeg`
 - `webp`
 
-The default value is `png.`
+The default value is `png`.
 
 :::info
 This parameter only takes effect when `type` is set to `static`.

@@ -4,7 +4,7 @@ description: "Rapidly develop and easily enhance IoT solutions with audio commun
 ---
 The Internet of things (IoT) connects physical objects with sensors, processors, and software to enable data exchange with other devices. In related applications, such as apps for smart door bells and remote monitoring, IoT devices send or receive audio and video streams to perform their function. Agora IoT SDK gives you the ability to enable live voice and video streams on IoT devices on a variety of platforms and for many use cases, while also offering a compact SDK size, low memory usage, and low power consumption. Some typical application use-cases for IoT SDK include:
 
-* **Real-time monitoring**:  Integration into smart cameras and smart doorbells enables mobile device users to receive video feed from one or more cameras.
+* **Real-time monitoring**: Integration into smart cameras and smart doorbells enables mobile device users to receive video feed from one or more cameras.
 
 * **Two-way audio communication between mobile devices**: With IoT SDK integrated into smart watches, users perform two-way audio communication between mobile devices.
 
@@ -46,11 +46,11 @@ To test the code used in this page you need to have:
 
 To integrate IoT SDK into your app, do the following:
 
-1.  In Android Studio, create a new **Phone and Tablet**, **Java** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**.
+1. In Android Studio, create a new **Phone and Tablet**, **Java** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**.
 
     After creating the project, Android Studio automatically starts gradle sync. Ensure that the sync succeeds before you continue.
 
-2.  Add the IoT SDK to your Android project. To do this:
+2. Add the IoT SDK to your Android project. To do this:
 
     1. [Download](/en/api-reference/sdks?product=iot&platform=android) the IoT SDK and extract the archive to a temporary folder `<unzipped_package>`.
 
@@ -68,7 +68,7 @@ To integrate IoT SDK into your app, do the following:
 
     3.  In Android Studio, right-click the `/app/libs/agora-rtc-sdk.jar` file on the navigation bar and then select **Add as a library**.
 
-3.  Add permissions for network and device access.
+3. Add permissions for network and device access.
 
         In `/app/Manifests/AndroidManifest.xml`, add the following permissions after `</application>`:
 

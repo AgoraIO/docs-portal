@@ -3,7 +3,7 @@ title: "Manage group members"
 description: "Shows how to manage group members by calling the Agora Chat RESTful APIs."
 ---
 
-Group member management involves operations such as member creation and deletion.  Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.
+Group member management involves operations such as member creation and deletion. Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.
 
 This page shows how to manage group members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
@@ -152,7 +152,7 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
 
 ## Adding a user to the chat group
 
-Adds the specified user to the chat group.  If the user is already a member of the chat group, an error is returned.
+Adds the specified user to the chat group. If the user is already a member of the chat group, an error is returned.
 
 ### HTTP request
 

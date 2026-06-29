@@ -398,9 +398,8 @@ curl -X GET http://XXXX.com/XXXX/testapp/threads/user/test4 -H 'Authorization: B
 }
 ```
 
-## Retrieving all the threads a user joins under a 
-
-Retrieves all the threads a user joins under a .
+## Retrieving all the threads a user joins under a group
+Retrieves all the threads a user joins under a group.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -414,7 +413,7 @@ GET https://{host}/{org_name}/{app_name}/threads/chatgroups/{group_id}/user/{use
 
 | Parameter | Type | Description | Required |
 |:---------|:-------|:-----|:--------------------------|
-| `group_id`   | String | The ID of the .  | Yes |
+| `group_id`   | String | The ID of the group.  | Yes |
 | `username` | String | The unique login account of the user. | Yes |
 
 For the descriptions of the other path parameters, see [Common Parameters](#request).

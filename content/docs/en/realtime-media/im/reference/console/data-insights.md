@@ -12,7 +12,7 @@ description: "Introduces Agora Analytics for Agora Chat."
 Agora Analytics offers the following features for Chat:
 
 - Automatic collection, processing, and storage of usage and quality metrics data. This data has a delay of one minute.
-- Display of current and historical data at the user, , and  levels, as well as historical trends in message count and message type.
+- Display of current and historical data at the user, , and levels, as well as historical trends in message count and message type.
 - Display of the number of request attempts, request success rate, and request delay of API calls at the client side and server side.
 
 ### Enable Chat-related features
@@ -107,7 +107,7 @@ The Server API Data section shows the number of request attempts, request succes
  [Server API metrics](./data-metrics).
 
 :::info
-Server API data includes the RESTful API calls made by client SDKs. For example,  operations on the client SDK is implemented by calling the RESTful API, so it is counted in the Server API data.
+Server API data includes the RESTful API calls made by client SDKs. For example, operations on the client SDK is implemented by calling the RESTful API, so it is counted in the Server API data.
 :::
 
 To present the data more intuitively, different metrics use different charts:

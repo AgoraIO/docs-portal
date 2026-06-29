@@ -133,21 +133,21 @@ For details on how to troubleshoot common call-quality issues, see [Troubleshoot
 
 To view the Call Details homepage, follow these steps:
 
-1.  [Use Call Search](#use-call-search) to find the call, then click **Call Details** in the **Action** column.
+1. [Use Call Search](#use-call-search) to find the call, then click **Call Details** in the **Action** column.
 
     -   If the [ACU](../../reference/call-search-terms.md) is greater than or equal to 50, first enter the Call Overview page. Click the **Call Details** tab on the top to switch.
 
     -   If the ACU is less than 50, you enter the Call Details homepage.
 
-2.  Add users through one of the following ways:
+2. Add users through one of the following ways:
 
     -   Add one by one: Enter the user ID, and click **Add User**.
 
     -   Add in a batch: Click **Advanced search**, add one or more filters as needed, and then click **Search**. In the returned list, select the users you want to add, and click **Save**.
 
-3.  Display or hide the [audio and video quality metrics](#audio-and-video-quality-metrics) for the added users: Click the switch in the **View metrics** column. You can turn on the switch for a maximum of 20 users simultaneously.
+3. Display or hide the [audio and video quality metrics](#audio-and-video-quality-metrics) for the added users: Click the switch in the **View metrics** column. You can turn on the switch for a maximum of 20 users simultaneously.
 
-4.  Select the time range you want to inspect. If the time range changes, the audio and video quality metrics data is updated.
+4. Select the time range you want to inspect. If the time range changes, the audio and video quality metrics data is updated.
 
     ![1650430027822](https://web-cdn.agora.io/docs-files/1650430027822)
 

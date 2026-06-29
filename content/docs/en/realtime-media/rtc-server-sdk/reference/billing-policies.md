@@ -113,7 +113,7 @@ Agora provides each account with 10,000 free minutes per month and deducts them 
 -   Web page recording Full HD* video minutes
 -   Cloud Proxy Full HD* video minutes
 -   Broadcast Streaming 2K video minutes
--   Voice call, video call, and Interactive Live Streaming  2K video minutes
+-   Voice call, video call, and Interactive Live Streaming 2K video minutes
 -   On-premise recording 2K video minutes
 -   Cloud recording 2K video minutes
 -    Broadcast Streaming 2K+ video minutes
@@ -236,7 +236,7 @@ Agora guarantees a minimum introduction period of 12 months from the release of 
 | Phase | Description |
 |-------|-------------|
 |Beta | During this phase, SDKs are intended solely for early access and feedback purposes. They are not recommended for use in production environments. Beta products fall outside of the EOL policy and are intended for evaluation purposes only. For more information, see the Beta Service Agreement.|
-|General Availability (GA)|SDKs in this phase are fully supported by Agora. Agora provides support for new services, API updates, feature enhancements, bug fixes, and security patches. Agora guarantees a minimum of 12 months of support for GA SDKs. For details on client SDK support periods, see [Client SDK support periods​](#client-sdk-support-periods).|
+|General Availability (GA)|SDKs in this phase are fully supported by Agora. Agora provides support for new services, API updates, feature enhancements, bug fixes, and security patches. Agora guarantees a minimum of 12 months of support for GA SDKs. For details on client SDK support periods, see [Client SDK support periods](#client-sdk-support-periods).|
 |Retirement (EOL) SDKs: (Maintenance)| When an SDK enters the Retirement phase, Agora announces its retirement with a minimum notice period of 60 days, which is approximately 2 months. This announcement will include crucial timelines and guidelines to assist developers in migrating to the latest recommended SDK version. Agora communicates retirement announcements through email, the Agora Console notifications center, and SDK documentation, and may also post announcements on social media or the [Agora blog](https://www.agora.io/en/blog/). When a product or service reaches the end-of-support or end-of-life stage, Agora stops providing security updates, non-security updates, and assisted support.
 
 ### Client SDK support periods

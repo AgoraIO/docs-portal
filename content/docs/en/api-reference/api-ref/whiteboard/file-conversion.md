@@ -389,7 +389,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Category | Required/Optional | Description  |
 | :-------- | :------- | :---------------- |:-------------|
-| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods::- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
+| `token` | string | Required | A `writer` or `admin` SDK token. You can obtain a token using one of the following methods:<br />- Get an SDK token for testing purposes from Agora Console. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).<br />- Call the RESTful API. See [Generate an SDK token](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest.md#generate-an-sdk-token-post).<br />- Write code on your app server. See Generate a [token from your app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server.mdx).<br /> |
 | `region` | string | Required | Specifies a data center to process the request: - `us-sv`: Silicon Valley, US, which provides services to North America and South America.<br />- `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.<br />- `in-mum`: Mumbai, India, which provides services to India.<br />- `eu`: Frankfurt, Europe, which provides services to Europe.<br />- `cn-hz`: Hangzhou, China, which provides services to the areas not covered by other data centers.<br />              |
 
 ### Request Body
@@ -489,7 +489,7 @@ If the status code is `200`, the request is successful. The response returns the
 
 | Parameter          | Category | Description|
 |:-------------------| :------- | :-------------- |
-| `code`             | number   | The error code. When the task succeeds, the value is `0`.  For the details of all the possible error codes, see [error code](#error-code). |
+| `code`             | number   | The error code. When the task succeeds, the value is `0`. For the details of all the possible error codes, see [error code](#error-code). |
 | `message`          | string   | The error message corresponding to the error code, describing the cause of the error. |
 | `taskId`           | string   | The task UUID, which is the unique identifier of the file-conversion task. |
 | `taskType`         | string   | The type of the conversion task. Currently, only `dynamic_conversion` is available. |

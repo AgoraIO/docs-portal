@@ -31,7 +31,7 @@ v1.3.1 was released on December 20, 2024.
 
 #### Improvements
 
-- Added  support for pinning messages in one-to-one conversations. Users can call `ChatManager#asyncPinMessage` or `ChatManager#asyncUnPinMessage` to pin or unpin a one-to-one chat message.
+- Added support for pinning messages in one-to-one conversations. Users can call `ChatManager#asyncPinMessage` or `ChatManager#asyncUnPinMessage` to pin or unpin a one-to-one chat message.
 - Adapted to the 16 KB page size of Android 15.
 
 #### Issues fixed
@@ -187,7 +187,7 @@ v1.1.0 was released on April 28, 2023.
 - Adds the function of managing custom chat room attributes to implement functions like seat control and synchronization in voice chat rooms. See [Manage chat room attributes](/en/api-reference/api-ref/im/chatroom-management/manage-chatroom-attributes).
 - Adds the `ChatMessage#setPriority(ChatRoomMessagePriority)` method to implement the chat room message priority function to ensure that high-priority messages are dealt with first. See [Set message priority](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#set-message-priority).
 - Adds the pagination parameters `pageNum` and `pageSize` to the `ChatManager#asyncFetchConversationsFromServer` method to allow users to get the conversation list from the server with pagination. See [Retrieve a list of conversations from the server](/en/realtime-media/im/build/build-core-messaging/messages/retrieve-messages#retrieve-a-list-of-conversations-from-the-server).
-- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by  labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
+- Adds the support for push notifications on the server side to allow you to send push notifications to all users, individual users specified by IDs, or groups of users by labels. For how to configure and send push notifications, see [Push notification management](/en/api-reference/api-ref/im/push-notification-management).
 - Adds an additional option to delete messages on the server side. See [Delete conversations and historical messages](/en/realtime-media/im/build/build-core-messaging/messages/manage-messages#delete-conversations-and-historical-messages).
 
 #### Improvements
@@ -1697,7 +1697,7 @@ v1.3.0 was released on December 11, 2024.
   - `Conversation#Marks`: Gets all marks of a local conversation.
   - `MultiDevicesOperation#CONVERSATION_MARK`: Occurs on other devices when a conversation is marked or unmarked on one device.
 - Added the `Message#Broadcast` property to indicate whether the message is a broadcast message sent via a RESTful API to all chat rooms under an app.
-- Added the `Message#DeliverOnlineOnly` field to set whether the message is delivered only when the recipient(s) is/are online.  If this field is set to `true`,  the message is discarded when the recipient is offline.
+- Added the `Message#DeliverOnlineOnly` field to set whether the message is delivered only when the recipient(s) is/are online. If this field is set to `true`, the message is discarded when the recipient is offline.
 - Added the `GroupManager#FetchMyGroupsCount` method to allow the current user to retrieve the total number of joined groups.
 - Added the error code 706 `CHATROOM_OWNER_NOT_ALLOW_LEAVE` that occurs when chat room owner leaves the chat room. If `Options#IsRoomOwnerLeaveAllowed` is set to `false` during SDK initialization, the chat room is not allowed to leave the chat room. In this case, error 706 is reported if the chat room owner calls the `LeaveRoom` method to leave the chat room.
 - Added the support for retrieval of historical messages of chat rooms from the server.

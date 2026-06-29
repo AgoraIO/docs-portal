@@ -8,7 +8,7 @@ Agora IoT SDK multi-streaming allows you to join multiple channels at the same t
 
 ## Understand the tech
 
-Agora  IoT SDK provides the following approaches to implementing multi-streaming:
+Agora IoT SDK provides the following approaches to implementing multi-streaming:
 
 * **Push multiple streams to a single channel**
 
@@ -68,7 +68,7 @@ To implement either of the two multi-streaming methods, [update the UI](#impleme
 
     You see errors in your IDE. This is because this layout refers to methods that you create later.
 
-1.  To access and modify the buttons from your code, add the following to the list of `import` statements in `MainActivity.java`:
+1. To access and modify the buttons from your code, add the following to the list of `import` statements in `MainActivity.java`:
 
     ```java
     import android.widget.Button;
@@ -370,13 +370,13 @@ To ensure that you have implemented multi-streaming into your app, follow the re
 
 2. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
 
-3.  In Android Studio, in `app/java/com.example.<projectname>/MainActivity`, update `appId`, `channelName` and `token` with the values for your temporary token.
+3. In Android Studio, in `app/java/com.example.<projectname>/MainActivity`, update `appId`, `channelName` and `token` with the values for your temporary token.
 
 4. Update `uid` and `uid2` with distinct positive-integer values.
 
-5.  Connect a physical Android device to your development device.
+5. Connect a physical Android device to your development device.
 
-6.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
+6. In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
     You see notifications confirming creation of two connections.
 
@@ -398,7 +398,7 @@ To ensure that you have implemented multi-streaming into your app, follow the re
 
 11. Click **Leave** to stop the two streams and exit the channel.
 
-### Test streaming to multiple channels​
+### Test streaming to multiple channels
 
 1. Generate two [temporary tokens](../manage-agora-account.md) in Agora Console.
 
@@ -411,11 +411,11 @@ To ensure that you have implemented multi-streaming into your app, follow the re
 
 2. In another browser tab, join the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) using `appId`, `channelName2` and `token2`.
 
-3.  In Android Studio, open `app/java/com.example.<projectname>/MainActivity`, and update `appId`, `channelName`, `channelName2`, `token` and `token2` with the values for your temporary tokens.
+3. In Android Studio, open `app/java/com.example.<projectname>/MainActivity`, and update `appId`, `channelName`, `channelName2`, `token` and `token2` with the values for your temporary tokens.
 
-4.  Connect a physical Android device to your development device.
+4. Connect a physical Android device to your development device.
 
-5.  In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
+5. In Android Studio, click **Run app**. A moment later you see the project installed on your device. If this is the first time you run the project, you need to grant microphone and camera access to your app.
 
     You see notifications confirming creation of two connections.
 

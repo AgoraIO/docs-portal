@@ -70,7 +70,7 @@ To manually install Chat SDK use either:
 
 1. In the SDK folder, save `libs/Agora-chat.js` to your project directory.
 
-1. Open the HTML file in your project directory and add the following code to import Chat SDK :
+1. Open the HTML file in your project directory and add the following code to import Chat SDK:
 
     ```javascript
     

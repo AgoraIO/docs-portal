@@ -96,7 +96,7 @@ Before proceeding, ensure that you meet the following requirements:
 
 ## Implementation
 
-This section describes how to call the APIs provided by the Chat SDK to implement  features.
+This section describes how to call the APIs provided by the Chat SDK to implement features.
 
 ### Android
 
@@ -542,7 +542,7 @@ try {
 
 ### Retrieve the chat group list
 
-- Users can call `fetchJoinedGroupsFromServer` to retrieve the  groups they have joined and created from the server.
+- Users can call `fetchJoinedGroupsFromServer` to retrieve the groups they have joined and created from the server.
 
     ```dart
     try {

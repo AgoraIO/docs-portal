@@ -510,7 +510,7 @@ Continue to return a list of information for two users:
 
 ## Deleting a user
 
-This method deletes the specified user. If the deleted user is the admin of a  or , the group or  they manage is also deleted.
+This method deletes the specified user. If the deleted user is the admin of a group or chat room, the group or chat room they manage is also deleted.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -578,7 +578,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppT
 
 This method deletes multiple users in the app in the chronological order of their creation. For the first request, the API deletes users, starting from the first created one. A maximum of 100 users can be deleted each time. It should be noted that this method specifies the number of users to delete, instead of which users to delete.
 
-If the deleted users include group or  admins, the groups and s managed by those users are also deleted.
+If the deleted users include group or chat room admins, the groups and chat rooms managed by those users are also deleted.
 
 For each App Key, the call frequency limit of this method is 30 per second.
 

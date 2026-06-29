@@ -32,17 +32,17 @@ This page lists the details of the pricing plans for Chat.
 | Number of group members              | 100  |   250   | 1,000  |  Customizable (5,000 by default)    |
 | Number of groups that users can join | 100  |  1,000  | 2,000  |  Customizable (10,000 by default)   |
 
-## 
+## Chatroom
 
 | Description                                                  | Free | Starter |  Pro   |      Enterprise       |
 | :----------------------------------------------------------- | :---: | :-----: | :----: | :-------------------: |
-| Number of s                                          | 100  | 10,000 | 50,000  | Customizable (100,000 by default)  |
-| Number of  members                                   | 100  |  2,000  | 10,000 | Customizable (20,000 by default)   |
-| Number of s that users can join                      | 100  |  1,000  | 2,000  | Customizable (10,000 by default)   |
-| Real-time interactive  broadcast messages            |  ✓   |    ✓    |   ✓    |           ✓           |
-| Global muting in real-time interactive s             |  ✓   |    ✓    |   ✓    |           ✓           |
-| Real-time interactive  user allowed list                |  ✓   |    ✓    |   ✓    |           ✓           |
-| Real-time interactive  history message storage       |  ✓   |    ✓    |   ✓    |           ✓           |
+| Number of chatrooms                                  | 100  | 10,000 | 50,000  | Customizable (100,000 by default)  |
+| Number of chatroom members                           | 100  |  2,000  | 10,000 | Customizable (20,000 by default)   |
+| Number of chatrooms that users can join              | 100  |  1,000  | 2,000  | Customizable (10,000 by default)   |
+| Real-time interactive chatroom broadcast messages    |  ✓   |    ✓    |   ✓    |           ✓           |
+| Global muting in real-time interactive chatrooms     |  ✓   |    ✓    |   ✓    |           ✓           |
+| Real-time interactive chatroom user allowed list     |  ✓   |    ✓    |   ✓    |           ✓           |
+| Real-time interactive chatroom history message storage |  ✓   |    ✓    |   ✓    |           ✓           |
 
 ## Features
 
@@ -52,13 +52,13 @@ This page lists the details of the pricing plans for Chat.
 | User status callback (synchronizes the user's offline status through callback) |  X   |    X    |  ✓   |     ✓      |
 | Callback before sending (used to connect to third-party message review services) |  X   |    X    |  ✓   |     ✓      |
 | Multi-terminal and multi-device online (supporting different devices online at the same time, simultaneous message reception) |  ✓   |    ✓    |  ✓   |     ✓      |
-| Message read receipts (supports single chat receipts.  receipts are only supported above the Pro version) |  ✓   |    ✓    |  ✓   |     ✓      |
+| Message read receipts (supports single chat receipts. Receipts are only supported above the Pro version) |  ✓   |    ✓    |  ✓   |     ✓      |
 | Message withdrawal (supports client/REST message withdrawal)  |  ✓   |    ✓    |  ✓   |     ✓      |
 | Message Do Not Disturb (no push messages will be received during the set Do Not Disturb time) |  ✓   |    ✓    |  ✓   |     ✓      |
 | Server session list (WEB side pulls historical sessions)     |  ✓   |    ✓    |  ✓   |     ✓      |
 | IM UI Samples (provides IM UI components)                         |  ✓   |    ✓    |  ✓   |     ✓      |
 | Full platform offline push (support Apple(MVP), Google(MVP), Huawei, Xiaomi, OPPO, VIVO, Meizu, custom ringtones and extensions) |  ✓   |    ✓    |  ✓   |     ✓      |
-|  file sharing                                      |  ✓   |    ✓    |  ✓   |     ✓      |
+| File sharing                                      |  ✓   |    ✓    |  ✓   |     ✓      |
 | Generating thumbnails for image messages                     |  ✓   |    ✓    |  ✓   |     ✓      |
 | Retrieving offline messages                                 |  ✓   |    ✓    |  ✓   |     ✓      |
 |  and  notifications                       |  ✓   |    ✓    |  ✓   |     ✓      |
@@ -75,7 +75,7 @@ This page lists the details of the pricing plans for Chat.
 | Banning users          |   ✓   |    ✓    |  ✓   |     ✓      |
 | Muting users            |   ✓   |    ✓    |  ✓   |     ✓      |
 | Real-time moderation    |   X   |    X    |  ✓   |     ✓      |
-| Global mute in s and s  |   ✓   |    ✓    |  ✓   |     ✓      |
+| Global mute in groups and chatrooms  |   ✓   |    ✓    |  ✓   |     ✓      |
 | User ID filter          |   X   |    X    |  ✓   |     ✓      |
 | Text message moderation |   X   |    X    |  ✓   |     ✓      |
 | Image message moderation |   X   |    X    |  ✓   |     ✓      |
@@ -227,17 +227,17 @@ Submit a support ticket if you want to lift the limits and pay for overage charg
 | Chatroom Management | Update chatroom announcement | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement` |
 | Chatroom Member Management | List chatroom members | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/users` |
 | Chatroom Member Management | Add member to chatroom | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` |
-| Chatroom Member Management | Add member to chatoom in bulk | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users` |
+| Chatroom Member Management | Add member to chatroom in bulk | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users` |
 | Chatroom Member Management | Delete member from chatroom | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username}` |
 | Chatroom Member Management | Delete member from chatroom in bulk | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{usernames}` |
 | Chatroom Member Management | List chatroom administrators | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` |
 | Chatroom Member Management | Add chatroom administrator | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin` |
 | Chatroom Member Management | Delete chatroom administrator | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin/{oldadmin}` |
 | Chatroom Member Management | List chatroom members blocked | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users` |
-| Chatroom Member Management | Add chatroom member in to block list | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users/{username}` |
-| Chatroom Member Management | Remove user from chartoom block list | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users/{username}` |
+| Chatroom Member Management | Add chatroom member to block list | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users/{username}` |
+| Chatroom Member Management | Remove user from chatroom block list | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users/{username}` |
 | Chatroom Member Management | List chatroom members in allowed list | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users` |
-| Chatroom Member Management | Add user in to chatroom allowed list | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users/{username}` |
+| Chatroom Member Management | Add user to chatroom allowed list | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users/{username}` |
 | Chatroom Member Management | Remove chatroom member from allowed list | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users/{username}` |
 | Chatroom Member Management | List blocked users in chatroom block list | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/mute` |
 | Chatroom Member Management | Mute chatroom member | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/mute` |
@@ -247,12 +247,12 @@ Submit a support ticket if you want to lift the limits and pay for overage charg
 | Chatroom Member Management | List super administrators in chatroom | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/super_admin` |
 | Chatroom Member Management | Add super administrator in chatroom | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/super_admin` |
 | Chatroom Member Management | Remove super administrator in chatroom | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/super_admin/{superAdmin}` |
-| Chatroom Member Management | Get  roles | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroomId}/roles` |
-| Chatroom Member Management | Join  | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroomId}/apply` |
-| Chatroom Member Management | Exit the  | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomId}/quit` |
-| Chatroom Member Management | Add chatroom member in to block list in bulk | 100 | N | / | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users` |
+| Chatroom Member Management | Get chatroom roles | 100 | Y | $50/month/additional 50 QPS | GET | `/{org_name}/{app_name}/chatrooms/{chatroomId}/roles` |
+| Chatroom Member Management | Join chatroom | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatrooms/{chatroomId}/apply` |
+| Chatroom Member Management | Exit the chatroom | 100 | Y | $50/month/additional 50 QPS | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroomId}/quit` |
+| Chatroom Member Management | Add chatroom member to block list in bulk | 100 | N | / | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users` |
 | Chatroom Member Management | Remove user from chatroom block list in bulk | 100 | N | / | DELETE | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/blocks/users/{usernames}` |
-| Chatroom Member Management | Add user in to chatroom allowed list in bulk | 100 | N | / | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users` |
+| Chatroom Member Management | Add user to chatroom allowed list in bulk | 100 | N | / | POST | `/{org_name}/{app_name}/chatrooms/{chatroom_id}/white/users` |
 
 ## SDK support
 

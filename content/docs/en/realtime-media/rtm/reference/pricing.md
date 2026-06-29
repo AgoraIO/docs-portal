@@ -229,7 +229,7 @@ Normalization is the process of standardizing billing calculations to 30-day mon
 
 Storage Cost = 3.93 GB × $15.00 per GB = $58.95
 
-If you still have questions, refer to the [FAQ on the recently announced package changes​](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io).
+If you still have questions, refer to the [FAQ on the recently announced package changes](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io).
 
 ### Package feature comparison
 

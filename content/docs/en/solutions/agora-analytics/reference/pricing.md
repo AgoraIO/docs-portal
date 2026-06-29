@@ -96,15 +96,15 @@ This section tells you how to subscribe and unsubscribe to an Agora Analytics pr
 
 To subscribe to an Agora Analytics pricing plan, do the following:
 
-1.  Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io/v2).
 
-2.  On the left navigation bar, click **Agora Analytics** &gt; **Pricing Plan** .
+2. On the left navigation bar, click **Agora Analytics** &gt; **Pricing Plan** .
 
-3.  Choose the plan you want to use, and click **Subscribe**.
+3. Choose the plan you want to use, and click **Subscribe**.
 
     **For the Enterprise pricing plan, contact support@agora.io to discuss your subscription**
 
-4.  Follow the on-screen instructions to complete your payment.
+4. Follow the on-screen instructions to complete your payment.
 
 Subscription takes effect immediately. After subscribing to a plan, you can click **My Package Subscription** on the upper right corner to view your subscription details.
 
@@ -116,20 +116,20 @@ Agora Analytics charges are billed to your account on the first of every month u
 
 To unsubscribe from an Agora Analytics pricing plan, do the following:
 
-1.  In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar .
+1. In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar .
 
-2.  On the upper right corner, click **My Package Subscription**.
+2. On the upper right corner, click **My Package Subscription**.
 
-3.  Find the plan you want to unsubscribe, and click **Cancel** in the **Action** column.
+3. Find the plan you want to unsubscribe, and click **Cancel** in the **Action** column.
 
 To switch to another plan, do the following:
 
-1.  In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar.
+1. In Agora Console, click **Agora Analytics** &gt; **Pricing Plan** on the left navigation bar.
 
-2.  Choose the plan you want to switch to, and click **Subscribe**.
+2. Choose the plan you want to switch to, and click **Subscribe**.
 For the Enterprise pricing plan, contact support@agora.io to subscribe.
 
-3.  Read the pop-up window carefully, and click **Confirm to switch**.
+3. Read the pop-up window carefully, and click **Confirm to switch**.
 
 Unsubscribing from a plan or switching to another plan takes effect on the first of the next month. For the current month, you still have access to the features and APIs provided by the plan. The subscription fee you paid for this month is not refunded, and any excess usage that occurs in this month is charged.
 

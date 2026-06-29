@@ -885,7 +885,7 @@ To ensure the accuracy of these media track statistics on Chrome, please upgrade
 
 This version of the SDK also includes the following improvements:
 
-- The cause of the  [`HTMLMediaElement` error event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/error_event)
+- The cause of the [`HTMLMediaElement` error event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/error_event)
 is now recorded in the log.
 - The size of the SDK package is reduced.
 
@@ -1072,7 +1072,7 @@ v4.12.0 was released on June 15, 2022.
 
 Media processing extensions have the following changes:
 
-- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by  [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](/en/solutions/interactive-live-streaming/build/apply-video-effects/beauty-effect).
+- The [Image Enhancement Extension (Beta)](https://www.npmjs.com/package/agora-extension-beauty-effect) is released. This extension incorporates and upgrades the built-in image enhancement feature (enabled by [setBeautyEffect](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setbeautyeffect))) of the Agora Web SDK 4.x. You can adjust parameters including the contrast, brightness, and smoothness levels, in order to touch up the image for effects such as skin lightening and skin smoothing. For details, see [Use the Image Enhancement Extension](/en/solutions/interactive-live-streaming/build/apply-video-effects/beauty-effect).
 
 - The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](/en/solutions/interactive-live-streaming/build/apply-video-effects/virtual-background).
 
@@ -4026,7 +4026,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
    - Lite SDK supports manual integration or third-party repository integration.
    - For information on dynamic libraries included in the Lite SDK, see [App size optimization](/en/solutions/interactive-live-streaming/build/optimize-and-operate/app-size-optimization).
    - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit).
-   - For the limitations and precautions when using the Lite SDK  to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
+   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
 
 1. **Alpha transparency effects**
 
@@ -4104,7 +4104,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Portrait center stage**
 
-   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the  [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>) method to activate the Portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
+   To enhance the presentation effect in online meetings, shows, and online education use-cases, this version introduces the [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>) method to activate the Portrait center stage. This ensures that presenters, regardless of movement, always remain centered in the video frame, achieving better presentation effects.
 
    Before enabling portrait center stage, it is recommended to verify whether your current device supports this feature by calling [isCameraCenterStageSupported](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/iscameracenterstagesupported()>). A list of supported devices can be found in the API documentation at [enableCameraCenterStage](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/enablecameracenterstage(_:)>).
 
@@ -4114,7 +4114,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Wide and ultra-wide cameras**
 
-   To allow users to capture a broader field of view and more complete scene content, this release introduces support for wide and ultra-wide cameras. You can first call [queryCameraFocalLengthCapability](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability()>) to check the device's focal length capabilities, and then call  [setCameraCapturerConfiguration](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcameracapturerconfiguration(_:)>) and set `cameraFocalLengthType` to the supported focal length types, including wide and ultra-wide.
+   To allow users to capture a broader field of view and more complete scene content, this release introduces support for wide and ultra-wide cameras. You can first call [queryCameraFocalLengthCapability](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/querycamerafocallengthcapability()>) to check the device's focal length capabilities, and then call [setCameraCapturerConfiguration](<https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setcameracapturerconfiguration(_:)>) and set `cameraFocalLengthType` to the supported focal length types, including wide and ultra-wide.
 
 1. **Data stream encryption**
 
@@ -4128,7 +4128,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Adaptive configuration for low-quality video streams**
 
-   This version introduces adaptive configuration for low-quality video streams. When you activate the dual-stream mode and set up low-quality video streams on the sending side using  [setDualStreamMode [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setdualstreammode(_:streamconfig:)), the SDK defaults to the following behaviors:
+   This version introduces adaptive configuration for low-quality video streams. When you activate the dual-stream mode and set up low-quality video streams on the sending side using [setDualStreamMode [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/setdualstreammode(_:streamconfig:)), the SDK defaults to the following behaviors:
 
    - The default encoding resolution for low-quality video streams is set to 50% of the original video encoding resolution.
    - The bitrate for the small streams is automatically matched based on the video resolution and frame rate, eliminating the need for manual specification.
@@ -4155,7 +4155,7 @@ v4.3.1 was released on April 29, 2024.
 
 1. **Custom audio capture optimization**
 
-   To enhance the flexibility of custom audio capture, this release deprecates [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:)) and introduces  [pushExternalAudioFrameSampleBuffer [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:samplerate:channels:trackid:)). Compared to the deprecated method, the new method adds parameters such as `sampleRate`, `channels`, and `trackId`. These support pushing external CMSampleBuffer audio data to the channel via custom audio tracks, and allow for the setting of sample rates and channel counts for external audio sources.
+   To enhance the flexibility of custom audio capture, this release deprecates [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:)) and introduces [pushExternalAudioFrameSampleBuffer [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:samplerate:channels:trackid:)). Compared to the deprecated method, the new method adds parameters such as `sampleRate`, `channels`, and `trackId`. These support pushing external CMSampleBuffer audio data to the channel via custom audio tracks, and allow for the setting of sample rates and channel counts for external audio sources.
 
 1. **CPU consumption reduction of in-ear monitoring**
 
@@ -7096,7 +7096,7 @@ This release optimizes the trigger logic of `videoSizeChangedOfUid`, which can a
 
 This release fixed the following issues.
 
-- When capturing video through the camera, if the video aspect ratio set in `AgoraCameraCapturerConfiguration` wass inconsistent with that set in `setVideoEncoderConfiguration`, the aspect ratio of the local video preview was not rendered according to the latter setting.
+- When capturing video through the camera, if the video aspect ratio set in `AgoraCameraCapturerConfiguration` was inconsistent with that set in `setVideoEncoderConfiguration`, the aspect ratio of the local video preview was not rendered according to the latter setting.
 
 - When calling `setVideoEncoderConfigurationEx` in the channel to increase the resolution of the video, it occasionally failed.
 - When using the Agora media player to play videos, after you play and pause the video, and then call the seek method to specify a new position for playback, the video image might remain unchanged; if you call the resume method to resume playback, the video might be played in a speed faster than the original one.
@@ -8802,7 +8802,7 @@ This release fixed the following issues.
 1. When `stopPreview` was called to disable the local video preview, the virtual background that has been set up was occasionally invalidated.
 2. Occasional crash when exiting a channel and joining it multiple times with virtual background enabled and set to blur effect.
 3. If the local client used a 1920 x 1080 camera as the video capture source, the resolution of the remote video was occasionally inconsistent with the local client.
-4. When capturing video through the camera, if the video aspect ratio set in `CameraCapturerConfiguration` wass inconsistent with that set in `setVideoEncoderConfiguration`, the aspect ratio of the local video preview was not rendered according to the latter setting.
+4. When capturing video through the camera, if the video aspect ratio set in `CameraCapturerConfiguration` was inconsistent with that set in `setVideoEncoderConfiguration`, the aspect ratio of the local video preview was not rendered according to the latter setting.
 5. When calling `setVideoEncoderConfigurationEx` in the channel to increase the resolution of the video, it occasionally failed.
 6. When using the Agora media player to play videos, after you play and pause the video, and then call the seek method to specify a new position for playback, the video image might remain unchanged; if you call the resume method to resume playback, the video might be played in a speed faster than the original one.
 
@@ -9490,7 +9490,7 @@ This version fixed the following issues:
 - Fixed an issue where SEI data output did not synchronize with video rendering when playing media streams containing SEI data using the media player.
 - In screen sharing use-cases, when the app enabled sound card capture with [enableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording) to capture audio from the shared screen, the transmission of the sound card captured audio failed after a local user manually disabled the local audio capture device, preventing remote users from hearing the shared screen's audio (Windows).
 - In audio-video interactions, if a user inserted headphones into the device and manually switched the system audio output to speakers, and later the app called [setPlaybackDevice](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_iaudiodevicemanager.html#api_iaudiodevicemanager_setplaybackdevice) to specify the headphone as the audio playback device, audio output did not switch back to speakers as expected after the headphones were removed (macOS).
-- During interactions, when a local user set the system default playback device to speakers, there was no sound from the remote end  (Windows).
+- During interactions, when a local user set the system default playback device to speakers, there was no sound from the remote end (Windows).
 - When sharing an Excel document window, remote users occasionally saw a green screen (Windows).
 - On devices using Intel graphics cards, there was an occasional performance regression when publishing a low-quality video stream (Windows).
 - When the network conditions of the sender deteriorated (for example, in poor network environments), the receiver occasionally experienced a decrease in video smoothness and an increase in lag.
@@ -10528,7 +10528,7 @@ To make it easier to change audio scenarios, this release adds the `SetAudioScen
 
 **10. Replace video feeds with images**
 
-This release supports replacing video feeds with images when publishing video streams. You can call the `enableVideoImageSource` method to enable this function and choose your own images through the `options` parameter.  If you disable this function, the remote users see the video feeds that you publish.
+This release supports replacing video feeds with images when publishing video streams. You can call the `enableVideoImageSource` method to enable this function and choose your own images through the `options` parameter. If you disable this function, the remote users see the video feeds that you publish.
 
 **11. Local video mixing**
 
@@ -11189,7 +11189,7 @@ v6.3.1 was released on May 9, 2024.
 This version fixed the following issues:
 
 - Fixed an issue where SEI data output did not synchronize with video rendering when playing media streams containing SEI data using the media player.
-- In screen sharing use-cases, when the app enabled sound card capture with [enableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording) to capture audio from the shared screen, the transmission of the sound card captured audio failed after a local user manually disabled the local audio capture device, preventing remote users from  hearing the shared screen's audio (Windows).
+- In screen sharing use-cases, when the app enabled sound card capture with [enableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording) to capture audio from the shared screen, the transmission of the sound card captured audio failed after a local user manually disabled the local audio capture device, preventing remote users from hearing the shared screen's audio (Windows).
 - Hosts using certain models of devices in the speaker mode experienced occasional local audio capture failure when switching the app process to the background and then back to the foreground, preventing remote users from hearing the host's audio (Android).
 - On devices with Android 8.0, enabling screen sharing occasionally caused the app to crash (Android).
 - When sharing an Excel document window, remote users occasionally saw a green screen (Windows).
@@ -11876,7 +11876,7 @@ This release fixed the following issues:
 - Occasional failure when enabling in-ear monitoring (Android).
 - Occasional loss of the `onFirstRemoteVideoFrame` callback during channel media relay (iOS).
 - The receiver actively subscribed to the high-quality stream but unexpectedly received a low-quality stream (iOS).
-- The receiver was receiving the low-quality stream originally and automatically switched to the high-quality stream after a few seconds  (macOS).
+- The receiver was receiving the low-quality stream originally and automatically switched to the high-quality stream after a few seconds (macOS).
 - Occasional echo (Android).
 - Occasional screen jitter during screen sharing (macOS).
 - Abnormal client status caused by an exception in the `onRemoteAudioStateChanged` callback (Android, iOS).
@@ -14005,7 +14005,7 @@ To make it easier to change audio scenarios, this release adds the `SetAudioScen
 
 **10. Replace video feeds with images**
 
-This release supports replacing video feeds with images when publishing video streams. You can call the `enableVideoImageSource` method to enable this function and choose your own images through the `options` parameter.  If you disable this function, the remote users see the video feeds that you publish.
+This release supports replacing video feeds with images when publishing video streams. You can call the `enableVideoImageSource` method to enable this function and choose your own images through the `options` parameter. If you disable this function, the remote users see the video feeds that you publish.
 
 **11. Spatial audio**
 
@@ -14686,7 +14686,7 @@ v4.3.1 was released on May 9, 2024.
 
    1. Support for specifying cameras by camera ID:
 
-      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/) with the specific `cameraId`.
+      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [StartCameraCapture](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/api_irtcengine_startcameracapture.html) with the specific `cameraId`.
 
 1. **Data stream encryption**
 
@@ -14750,13 +14750,13 @@ v4.3.1 was released on May 9, 2024.
 This version fixed the following issues:
 
 - Fixed an issue where SEI data output did not synchronize with video rendering when playing media streams containing SEI data using the media player.
-- In screen sharing use-cases, when the app enabled sound card capture with  [EnableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording) to capture audio from the shared screen, the transmission of sound card captured audio failed after a local user manually disabled the local audio capture device, causing remote users to not hear the shared screen's audio (Windows).
+- In screen sharing use-cases, when the app enabled sound card capture with [EnableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording) to capture audio from the shared screen, the transmission of sound card captured audio failed after a local user manually disabled the local audio capture device, causing remote users to not hear the shared screen's audio (Windows).
 - Hosts using certain models of devices in the speaker mode experienced occasional local audio capture failures when switching the app process to the background and then back to the foreground, preventing remote users from hearing the host's audio (Android).
 - An occasional echo was observed when playing the audio stream of a specified user before mixing (macOS, Windows).
-- During interactions, when a local user set the system default playback device to speakers, there was no sound from the remote end  (Windows).
+- During interactions, when a local user set the system default playback device to speakers, there was no sound from the remote end (Windows).
 - On devices with Android 8.0, enabling screen sharing occasionally caused the app to crash (Android).
 - When sharing an Excel document window, remote users occasionally saw a green screen (Windows).
-- In use-cases using camera capture for local video, when the app was moved to the background and  [DisableVideo](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo) or [StopPreview](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stoppreview) was called to stop video capture, camera capture was unexpectedly activated when the app was brought back to the foreground (Android).
+- In use-cases using camera capture for local video, when the app was moved to the background and [DisableVideo](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo) or [StopPreview](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_stoppreview) was called to stop video capture, camera capture was unexpectedly activated when the app was brought back to the foreground (Android).
 - When the network conditions of the sender deteriorated (for example, in poor network environments), the receiver occasionally experienced a decrease in video smoothness and an increase in lag.
 
 #### API changes
@@ -15531,8 +15531,8 @@ This release fixed the following issues:
 
 - `StartCameraCapture`
 - `StopCameraCapture`
-- `StartScreenCapture`[2/2]  (Windows, macOS)
-- `StopScreenCapture`[2/2]  (Windows, macOS)
+- `StartScreenCapture`[2/2] (Windows, macOS)
+- `StopScreenCapture`[2/2] (Windows, macOS)
 - `StartOrUpdateChannelMediaRelay`
 - `StartOrUpdateChannelMediaRelayEx`
 - `GetNtpWallTimeInMs`
@@ -15967,7 +15967,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 
 **4. Agora media player**
 
-To make it easier for users to integrate the Agora SDK and reduce the SDK's package size, this release introduces the Agora media player.  You can then call the methods in the `IMediaPlayer` class to experience a series of functions:
+To make it easier for users to integrate the Agora SDK and reduce the SDK's package size, this release introduces the Agora media player. You can then call the methods in the `IMediaPlayer` class to experience a series of functions:
 
 - Plays local and online media files.
 - Preloads media files.

@@ -5,20 +5,20 @@ description: "Upgrade to the latest version of Interactive Live Streaming."
 
 <PlatformStructured platform="android">
 
--  [Migration steps](#migration-steps) to upgrade your  app to Interactive Live Streaming v4.x.
+-  [Migration steps](#migration-steps) to upgrade your app to Interactive Live Streaming v4.x.
 
-- [What's changed](#what-has-changed) between  Interactive Live Streaming v2.x and v4.x.
+- [What's changed](#what-has-changed) between Interactive Live Streaming v2.x and v4.x.
 
 
 ## Migration steps
 
 This section introduces the main steps to upgrade the SDK from v2.x or v3.7.0 to v4.x.
 
-1.  Integrate the SDK
+1. Integrate the SDK
 
     See [Quickstart](/en/solutions/interactive-live-streaming/quickstart) for more information about integrating the v4.x SDK into your project.
 
-2.  Rename imported classes
+2. Rename imported classes
 
     After successfully integrating the SDK, you need to update the codes of imported classes from the `io.agora.rtc` prefix to the `io.agora.rtc2` prefix in the `/app/java/com.example.<projectname>/MainActivity` file of your project.
 
@@ -28,7 +28,7 @@ The location of `AgoraRtcChannelMediaOptions.java` in the 4.x SDK is also change
 :::
 
 
-3.  Update the Agora code in your app
+3. Update the Agora code in your app
 
     The 4.x SDK has optimized or modified the implementation of some functions, resulting in incompatibility with the v3.7.0 SDK. In order to retain Agora functionality in your app, update the code in your app according to [What has changed](#what-has-changed).
 
@@ -280,11 +280,11 @@ See [Virtual Background](/en/solutions/interactive-live-streaming/build/apply-ef
 
 4.x modifies the calling logic of `setBeautyEffectOptions`. Before calling `setBeautyEffectOptions`, you need to do the following:
 
-1.  Call `addExtension(agora_video_process)` during `RtcEngine` initialization to specify the extension’s library path.
+1. Call `addExtension(agora_video_process)` during `RtcEngine` initialization to specify the extension’s library path.
 
-2.  Call `enableExtension (agora, beauty, true)` to enable the extension.
+2. Call `enableExtension (agora, beauty, true)` to enable the extension.
 
-3.  Call `enableVideo` to enable the video module.
+3. Call `enableVideo` to enable the video module.
 
 See the [VideoProcessExtensionVideoProcessExtension](https://github.com/AgoraIO/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/VideoProcessExtension.java) sample project to update the code in your app.
 
@@ -364,8 +364,8 @@ The 4.x removes deprecated or unrecommended APIs. Alternatives to the removed AP
 
 -   `enableDeepLearningDenoise`: The SDK will add deep-learning noise reduction as one of its capability in a future release instead of implementing through an API.
 
--   `setDefaultMuteAllRemoteVideoStreams`:  Use `autoSubscribeVideo` in `ChannelMediaOptions`.
--   `setDefaultMuteAllRemoteAudioStreams`:  Use `autoSubscribeAudio` in `ChannelMediaOptions`.
+-   `setDefaultMuteAllRemoteVideoStreams`: Use `autoSubscribeVideo` in `ChannelMediaOptions`.
+-   `setDefaultMuteAllRemoteAudioStreams`: Use `autoSubscribeAudio` in `ChannelMediaOptions`.
 -   The `replace` parameter in `startAudioMixing`: Use `publishMicrophoneTrack` in the `ChannelMediaOptions` instead.
 
 ### Naming and data type changes
@@ -403,19 +403,19 @@ The main API data type changes are as follows:
 
 <PlatformStructured platform="ios">
 
--  [Migration steps](#migration-steps) to upgrade your  app to Interactive Live Streaming v4.x.
+-  [Migration steps](#migration-steps) to upgrade your app to Interactive Live Streaming v4.x.
 
-- [What's changed](#what-has-changed) between  Interactive Live Streaming v2.x and v4.x.
+- [What's changed](#what-has-changed) between Interactive Live Streaming v2.x and v4.x.
 
 ## Migration steps
 
 This section introduces the main steps to upgrade the SDK from v2.x or 3.7.0 to v4.x.
 
-1.  Integrate the SDK
+1. Integrate the SDK
 
     See [Quickstart](/en/solutions/interactive-live-streaming/quickstart) for more information about integrating the v4.x SDK into your project.
 
-2.  Update the Agora code in your app
+2. Update the Agora code in your app
 
     The v4.x SDK has optimized or modified the implementation of some functions, resulting in incompatibility with the v3.7.0 SDK. In order to retain Agora functionality in your app, update the code in your app according to the **What has changed** section below.
 
@@ -714,11 +714,11 @@ See [Virtual Background](/en/solutions/interactive-live-streaming/build/apply-ef
 
 v4.x modifies the calling logic of `setBeautyEffectOptions`. Before calling `setBeautyEffectOptions`, you need to do the following:
 
-1.  Integrate the `AgoraVideoProcessExtension.xcframework` dynamic library in the project.
+1. Integrate the `AgoraVideoProcessExtension.xcframework` dynamic library in the project.
 
-2.  Call `enableExtension ("agora", "beauty", "YES")` before joining a channel to enable the image enhancement extension.
+2. Call `enableExtension ("agora", "beauty", "YES")` before joining a channel to enable the image enhancement extension.
 
-3.  Call `enableVideo` to enable the video module.
+3. Call `enableVideo` to enable the video module.
 
 See the [VideoProcess](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/Examples/Advanced/VideoProcess) sample project to update the code in your app.
 
@@ -884,9 +884,9 @@ The v4.x removes deprecated or unrecommended APIs. Alternatives to the removed A
 
 -   The `channel` parameter in `takeSnapshot` and `snapshotTaken` has been removed: This change was made as the `channel` parameter was found to be redundant and was not essential for the functionality of these APIs.
 
--   `setDefaultMuteAllRemoteVideoStreams`:  Use `autoSubscribeVideo` in `AgoraRtcChannelMediaOptions`.
+-   `setDefaultMuteAllRemoteVideoStreams`: Use `autoSubscribeVideo` in `AgoraRtcChannelMediaOptions`.
 
--   `setDefaultMuteAllRemoteAudioStreams`:  Use `autoSubscribeAudio` in `AgoraRtcChannelMediaOptions`.
+-   `setDefaultMuteAllRemoteAudioStreams`: Use `autoSubscribeAudio` in `AgoraRtcChannelMediaOptions`.
 
 -   The `replace` parameter in `startAudioMixing`: Use `publishMicrophoneTrack` in the `AgoraRtcChannelMediaOptions` instead.
 
@@ -1229,11 +1229,11 @@ This version provides a clearer and more concise overview of the improvements in
 
 This page tells you about:
 
-- [Migration steps](#migration-steps) to upgrade your  app to Interactive Live Streaming v4.x.
+- [Migration steps](#migration-steps) to upgrade your app to Interactive Live Streaming v4.x.
 
-- [What's changed](#whats-changed) between  Interactive Live Streaming v3.x and v4.x.
+- [What's changed](#whats-changed) between Interactive Live Streaming v3.x and v4.x.
 
-- [Core API change list](#core-api-change-list) between  Interactive Live Streaming v3.x and v4.x.
+- [Core API change list](#core-api-change-list) between Interactive Live Streaming v3.x and v4.x.
 
 ## Migration steps
 
@@ -1879,7 +1879,7 @@ This page introduces the main steps to upgrade the SDK from v3.7.0 to v4.x, as w
 
 ## Migration steps
 
-This section introduces the main steps to upgrade the SDK from v3.7.0  to v4.x.
+This section introduces the main steps to upgrade the SDK from v3.7.0 to v4.x.
 
 1. **Integrate the SDK**
 
@@ -1891,7 +1891,7 @@ This section introduces the main steps to upgrade the SDK from v3.7.0  to v4.x.
 
 ## What has changed
 
-This section is based on v3.7.0  and introduces the main changes of v4.x compared to v3.7.0 in the following categories. You need to update the code of your app according to your business use-case.
+This section is based on v3.7.0 and introduces the main changes of v4.x compared to v3.7.0 in the following categories. You need to update the code of your app according to your business use-case.
 
     * _Breaking changes_: Introduces API compatibility changes. You need to spend significant time modifying the related implementation.
     * _Behavior changes_: Introduces changes caused by reasonable optimization of the SDK default behavior and API behavior. Less time is required to modify the related implementation, if any.
@@ -2161,7 +2161,7 @@ The main API and parameter name changes are as follows:
 
 This page introduces the main steps to upgrade the SDK from 5.x to 6.x, as well as the related changes.
 
--  [Migration steps](#migration-steps) to upgrade your  app to Interactive Live Streaming 6.x.
+-  [Migration steps](#migration-steps) to upgrade your app to Interactive Live Streaming 6.x.
 
 - [What's changed](#what-has-changed) between Interactive Live Streaming 5.x and 6.x.
 

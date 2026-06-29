@@ -202,7 +202,7 @@ Users can add any other chat user to their block list, regardless of whether thi
 
 Call `addUserToBlackList` to add the specified user to the block list.
 
-You can add any other users to the block list, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the block list. After adding users to the block list,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the block list, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the block list. After adding users to the block list, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 ```java
 // The effect of true and false is the same.
@@ -389,7 +389,7 @@ NSArray *userlist = [[AgoraChatClient sharedClient].contactManager getContacts];
 
 ### Manage the blocklist
 
-You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 #### Add a user to the blocklist
 
@@ -581,7 +581,7 @@ try {
 
 Call `addUserToBlockList` to add the specified user to the blocklist.
 
-You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 ```dart
 // The user ID
@@ -738,7 +738,7 @@ ChatClient.getInstance()
 
 Call `addUserToBlockList` to add the specified user to the blocklist.
 
-You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 ```typescript
 // Specify the user ID to be added to the blocklist.
@@ -915,7 +915,7 @@ Listlist = SDKClient.Instance.ContactManager.GetAllContactsFromDB();
 
 ### Manage the blocklist
 
-You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the blocklist, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the blocklist. After adding users to the blocklist, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 #### Add a user to the blocklist
 
@@ -1079,7 +1079,7 @@ Listlist = SDKClient.Instance.ContactManager.GetAllContactsFromDB();
 
 ### Manage the block list
 
-You can add any other users to the block list, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the block list. After adding users to the block list,  you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
+You can add any other users to the block list, regardless of whether they are on the contact list or not. Contacts are still displayed on the contact list even if they are added to the block list. After adding users to the block list, you can still send messages to them, but will not receive messages from them as they cannot send messages or friend requests to you.
 
 #### Add a user to the block list
 

@@ -14,7 +14,7 @@ Groups can be divided into public groups and private groups according to the pub
 | Public group   | Any users can apply to join a group or be invited by the group owner or an admin to join. Whether the join requests need to be approved by the group owner or admins depends on the group setting, for example, `GroupStyle` for Android.  | The specifications of a group and the list of public groups are accessible to the public. The group announcement, the list of group shared files, and the group member list are only accessible to users that have joined the group.|
 | Private group   | Users can only be invited to join a group. Whether regular group members, besides the group owner and admins, can invite a user to join the group depends on the group setting, for example, `GroupStyle` for Android.| The group specifications, group announcement, the list of group shared files, and the group member list are only accessible to users that have joined the group.  |
 
-The offline push function is not available to group with more than 3000 members. To enable the offline push function for such a large group, contact [support@agoro.io](mailto:support@agoro.io) before creating it. Note that it is impossible to enable the offline push function for a large group that is created. The maximum number of members that a group can contain varies with your price plans. For details, see [Pricing Plan Details](../../../reference/pricing-plan-details).
+The offline push function is not available to group with more than 3000 members. To enable the offline push function for such a large group, contact [support@agora.io](mailto:support@agora.io) before creating it. Note that it is impossible to enable the offline push function for a large group that is created. The maximum number of members that a group can contain varies with your price plans. For details, see [Pricing Plan Details](../../../reference/pricing-plan-details).
 
 ## Chat group roles and privileges
 
@@ -47,7 +47,7 @@ You can implement the following features with the chat group APIs.
 
 ###  Create a chat group
 
-Any chat user can create a chat group. A user that creates a chat group becomes its owner. The maximum number of chat groups and group members supported varies accroding to the pricing plan. For details, see [Chat group total member limits](../../limitations).
+Any chat user can create a chat group. A user that creates a chat group becomes its owner. The maximum number of chat groups and group members supported varies according to the pricing plan. For details, see [Chat group total member limits](../../limitations).
 
 ### Join a chat group
 
@@ -55,7 +55,7 @@ Users can search for public chat groups and request to join them by the group ID
 
 ### Leave a chat group
 
-Chat group members and admins can quit a chat group. Once they do, they no longer receive the group messages. Group owners cannot quit the chat group; instead, they must transfer ownship or disband the chat group. When a chat group is disbanded, all of its members are forced to leave the group.
+Chat group members and admins can quit a chat group. Once they do, they no longer receive the group messages. Group owners cannot quit the chat group; instead, they must transfer ownership or disband the chat group. When a chat group is disbanded, all of its members are forced to leave the group.
 
 ### Add a chat group member
 

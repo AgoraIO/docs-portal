@@ -5,7 +5,7 @@ description: "Introduces the global-mute feature."
 
 With increasingly strict rules and regulations on app compliance, content supervision has become a crucial part of the app lifecycle. To meet this need, Chat provides the global-mute feature, which enables you to mute any user ID in one-to-one chats, s, or s, preventing these users from sending messages to other chat users, s, or s. When global-mute expires, the chat server automatically unmutes the user ID, and this user resumes the privilege of sending messages.
 
-This feature can be widely applied in apps that power real-time engagements. For example, if a user frequently sends illegitimate advertisements to multiple s, you can use global-mute to prevent this user from sending  messages for 15 days; if a user makes improper statements concerning politics, global-mute can permanently prevent this user from sending any messages in one-to-one chats, s, or s.
+This feature can be widely applied in apps that power real-time engagements. For example, if a user frequently sends illegitimate advertisements to multiple s, you can use global-mute to prevent this user from sending messages for 15 days; if a user makes improper statements concerning politics, global-mute can permanently prevent this user from sending any messages in one-to-one chats, s, or s.
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 
