@@ -25,6 +25,7 @@ const zhCnCommon = {
     searchEmpty: '没有找到匹配页面。',
     searchUnavailable: '搜索索引不可用。',
     searchLoading: '正在搜索...',
+    searchAllPlatforms: '全部平台',
     tabsLabel: 'Tabs',
     sectionPickerLabel: '分区',
     pagesLabel: 'Pages',

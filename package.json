@@ -7,7 +7,7 @@
     "dev:full": "vite dev",
     "dev:scope": "bun run dev",
     "build": "bun run build:static",
-    "build:static": "bun run openapi:sync && bun run docs:static-payload && bun run build:app:static",
+    "build:static": "bun run openapi:sync && bun run docs:static-payload && bun run build:app:static && bun run search:sync",
     "build:app:static": "TSS_SPA_STATIC_EXPERIMENT=true VITE_TSS_SPA_STATIC_EXPERIMENT=true vite build",
     "docs:static-payload": "TSS_SPA_STATIC_EXPERIMENT=true VITE_TSS_SPA_STATIC_EXPERIMENT=true node scripts/generate-static-docs-payload.mjs",
     "start": "vite preview",

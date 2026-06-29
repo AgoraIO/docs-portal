@@ -1,22 +1,30 @@
 import { algoliasearch } from 'algoliasearch';
+import { sync } from 'fumadocs-core/search/algolia';
 import { getAlgoliaDocsRecords } from '../src/lib/search/algolia-records.server.ts';
 
-const appId = process.env.ALGOLIA_APP_ID;
+const appId = process.env.VITE_ALGOLIA_APP_ID;
 const adminApiKey = process.env.ALGOLIA_ADMIN_API_KEY;
-const indexName =
-  process.env.ALGOLIA_INDEX_NAME ??
-  process.env.VITE_ALGOLIA_INDEX_NAME ??
-  'docs_platform_aware_markdown';
+const indexName = process.env.ALGOLIA_INDEX_NAME ?? 'docs_portal_en';
+
+if (process.env.ALGOLIA_SYNC_DISABLED === 'true') {
+  console.log('Skipping Algolia search sync: ALGOLIA_SYNC_DISABLED=true.');
+  process.exit(0);
+}
 
 if (!appId || !adminApiKey) {
-  console.error(
-    'Missing ALGOLIA_APP_ID or ALGOLIA_ADMIN_API_KEY. Refusing to sync search records.',
+  console.log(
+    'Skipping Algolia search sync: VITE_ALGOLIA_APP_ID or ALGOLIA_ADMIN_API_KEY is not configured.',
   );
-  process.exit(1);
+  process.exit(0);
 }
 
 const client = algoliasearch(appId, adminApiKey);
 const records = await getAlgoliaDocsRecords();
+
+await sync(client, {
+  indexName,
+  documents: records,
+});
 
 await client.setSettings({
   indexName,
@@ -36,6 +44,7 @@ await client.setSettings({
       'section',
       'content',
       'url',
+      'section_id',
       'breadcrumbs',
       'locale',
       'product',
@@ -52,11 +61,6 @@ await client.setSettings({
       'unordered(platform)',
     ],
   },
-});
-
-await client.replaceAllObjects({
-  indexName,
-  objects: records,
 });
 
 console.log(`Synced ${records.length} records to Algolia index ${indexName}.`);

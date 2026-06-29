@@ -25,6 +25,7 @@ const enCommon = {
     searchEmpty: 'No matching pages found.',
     searchUnavailable: 'Search index unavailable.',
     searchLoading: 'Searching...',
+    searchAllPlatforms: 'All platforms',
     tabsLabel: 'Tabs',
     sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',

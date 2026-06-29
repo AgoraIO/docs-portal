@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { BaseIndex } from 'fumadocs-core/search/algolia';
+import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import { buildDocPath } from '../docs-routing';
 import type { AppLocale } from '../i18n/i18n-config';
@@ -13,13 +13,16 @@ import {
 import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 
-export type AlgoliaDocsRecord = BaseIndex & {
-  description?: string;
+type AlgoliaExtraData = {
   locale: AppLocale;
   objectType: 'docs' | 'openapi';
   platform?: string[];
   product?: string;
   tab: string;
+};
+
+export type AlgoliaDocsRecord = DocumentRecord & {
+  extra_data: AlgoliaExtraData;
 };
 
 const MAX_CHUNK_LENGTH = 4500;
@@ -37,61 +40,57 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
 async function getContentDocsRecords() {
   const pages = await getContentDocsPages();
 
-  return (
-    await Promise.all(
-      pages.map(async (page) => {
-        const route = parseDocsUrl(page.url);
+  return pages.flatMap((page): AlgoliaDocsRecord[] => {
+    const route = parseDocsUrl(page.url);
 
-        if (!route) {
-          return [];
-        }
+    if (!route) {
+      return [];
+    }
 
-        const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
-        const description = page.description;
-        const processed = page.content;
-        const sections = splitMarkdownSections(processed);
-        const chunks =
-          sections.length > 0
-            ? sections.flatMap((section) =>
-                chunkText(section.content, MAX_CHUNK_LENGTH).map((content) => ({
-                  content,
-                  section: section.title,
-                  sectionId: section.id,
-                })),
-              )
-            : description
+    const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
+    const sections = splitMarkdownSections(page.content);
+    const contents = sections.flatMap((section) =>
+      chunkText(section.content, MAX_CHUNK_LENGTH).map((content) => ({
+        content,
+        heading: section.id,
+      })),
+    );
+
+    if (contents.length === 0 && page.description) {
+      contents.push({ content: page.description, heading: undefined });
+    }
+
+    return [
+      {
+        _id: `docs:${page.url}`,
+        breadcrumbs: route.slugSegments,
+        description: page.description,
+        extra_data: {
+          locale: route.locale,
+          objectType: 'docs',
+          platform: inferPlatforms(page.url, page.content),
+          product: inferProduct(route),
+          tab: route.tab,
+        },
+        structured: {
+          contents,
+          headings: sections.flatMap((section) =>
+            section.id && section.title
               ? [
                   {
-                    content: description,
-                    section: undefined,
-                    sectionId: undefined,
+                    content: section.title,
+                    depth: section.depth,
+                    id: section.id,
                   },
                 ]
-              : [];
-
-        return chunks.map((chunk, index): AlgoliaDocsRecord => {
-          const sectionHash = chunk.sectionId ? `#${chunk.sectionId}` : '';
-
-          return {
-            objectID: `docs:${page.url}:${index}`,
-            breadcrumbs: route.slugSegments,
-            content: chunk.content,
-            description,
-            locale: route.locale,
-            objectType: 'docs',
-            page_id: `docs:${page.url}`,
-            platform: inferPlatforms(page.url, processed),
-            product: inferProduct(route),
-            section: chunk.section,
-            section_id: chunk.sectionId,
-            tab: route.tab,
-            title,
-            url: `${page.url}${sectionHash}`,
-          };
-        });
-      }),
-    )
-  ).flat();
+              : [],
+          ),
+        },
+        title,
+        url: page.url,
+      },
+    ];
+  });
 }
 
 async function getContentDocsPages() {
@@ -206,34 +205,59 @@ async function getOpenApiRecords() {
         ...schemaFieldPaths(
           operation.requestBody?.content['application/json']?.schema,
         ),
-        ...Object.keys(operation.responses),
+        ...Object.entries(operation.responses).flatMap(([status, response]) => [
+          status,
+          response.description,
+          ...schemaFieldPaths(response.content?.['application/json']?.schema),
+        ]),
       ]
         .filter(Boolean)
         .join('\n');
 
-      return chunkText(content, MAX_CHUNK_LENGTH).map(
-        (chunk, index): AlgoliaDocsRecord => ({
-          objectID: `openapi:${url}:${index}`,
+      return [
+        {
+          _id: `openapi:${url}`,
           breadcrumbs: [locale === 'zh-CN' ? 'API 参考' : 'API Reference'],
-          content: chunk,
-          locale,
-          objectType: 'openapi',
-          page_id: `openapi:${url}`,
-          platform: inferPlatforms(url, content),
-          product: lane.id,
-          section: `${operation.method.toUpperCase()} ${operation.path}`,
-          tab: lane.tab,
+          extra_data: {
+            locale,
+            objectType: 'openapi',
+            platform: inferPlatforms(url, content),
+            product: lane.id,
+            tab: lane.tab,
+          },
+          structured: {
+            contents: chunkText(content, MAX_CHUNK_LENGTH).map((chunk) => ({
+              content: chunk,
+              heading: operation.operationId,
+            })),
+            headings: [
+              {
+                content: `${operation.method.toUpperCase()} ${operation.path}`,
+                id: operation.operationId,
+              },
+            ],
+          },
           title,
           url,
-        }),
-      );
+        } satisfies AlgoliaDocsRecord,
+      ];
     }),
   );
 }
 
 function splitMarkdownSections(markdown: string) {
-  const sections: { content: string; id?: string; title?: string }[] = [];
-  let current: { content: string[]; id?: string; title?: string } | null = null;
+  const sections: {
+    content: string;
+    depth: number;
+    id?: string;
+    title?: string;
+  }[] = [];
+  let current: {
+    content: string[];
+    depth: number;
+    id?: string;
+    title?: string;
+  } | null = null;
 
   for (const line of markdown.split('\n')) {
     const heading = /^(#{2,4})\s+(.+)$/.exec(line);
@@ -242,6 +266,7 @@ function splitMarkdownSections(markdown: string) {
       if (current?.content.join('\n').trim()) {
         sections.push({
           content: current.content.join('\n').trim(),
+          depth: current.depth,
           id: current.id,
           title: current.title,
         });
@@ -250,6 +275,7 @@ function splitMarkdownSections(markdown: string) {
       const title = stripMarkdown(heading[2]);
       current = {
         content: [title],
+        depth: heading[1].length,
         id: slugifyHeading(title),
         title,
       };
@@ -257,7 +283,7 @@ function splitMarkdownSections(markdown: string) {
     }
 
     if (!current) {
-      current = { content: [] };
+      current = { content: [], depth: 2 };
     }
 
     current.content.push(line);
@@ -266,6 +292,7 @@ function splitMarkdownSections(markdown: string) {
   if (current?.content.join('\n').trim()) {
     sections.push({
       content: current.content.join('\n').trim(),
+      depth: current.depth,
       id: current.id,
       title: current.title,
     });
@@ -347,9 +374,26 @@ function schemaFieldPaths(schema: unknown) {
 
 function flattenSchemaNode(node: {
   children: (typeof node)[];
+  description?: string;
+  enumValues?: unknown[];
+  defaultValue?: unknown;
+  example?: unknown;
+  format?: string;
   path: string;
+  type: string;
 }): string[] {
-  return [node.path, ...node.children.flatMap(flattenSchemaNode)];
+  return [
+    node.path,
+    node.type,
+    node.format,
+    node.description,
+    ...(node.enumValues ?? []).map(String),
+    node.defaultValue === undefined ? undefined : String(node.defaultValue),
+    node.example === undefined ? undefined : String(node.example),
+    ...node.children.flatMap(flattenSchemaNode),
+  ].filter(
+    (value): value is string => typeof value === 'string' && Boolean(value),
+  );
 }
 
 function slugifyHeading(value: string) {
