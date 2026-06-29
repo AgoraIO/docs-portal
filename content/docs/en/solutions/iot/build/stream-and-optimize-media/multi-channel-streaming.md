@@ -28,7 +28,7 @@ To follow this procedure you must have implemented the [SDK quickstart](../../in
 
 ## Project setup
 
-In order to create the environment necessary to implement Agora multi-streaming feature into your app, open the IoT SDK [SDK quickstart](../../index.md) project you created previously.
+In order to create the environment necessary to implement Agora multi-streaming feature into your app, open the IoT SDK [quickstart](../../index.md) project you created previously.
 
 ## Implement multi-streaming
 

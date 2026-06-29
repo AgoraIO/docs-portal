@@ -1161,6 +1161,87 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('href', 'https://example.com/postman');
   });
 
+  it('scopes generated OpenAPI body headings to the shared major section typography', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/think',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents/{agentId}/think': {
+                  post: {
+                    operationId: 'agent-think',
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              text: {
+                                type: 'string',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const operation = document.querySelector('.openapi-operation');
+    expect(operation).toBeInstanceOf(HTMLElement);
+    const pathHeading = await screen.findByRole('heading', {
+      name: 'Path Parameters',
+    });
+    const requestBodyHeading = screen.getByRole('heading', {
+      name: 'Request Body',
+    });
+    const responseBodyHeading = screen.getByRole('heading', {
+      name: 'Response Body',
+    });
+
+    expect(pathHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
+    expect(responseBodyHeading).toHaveAttribute('id', 'response-body');
+    expect(operation).toHaveClass(
+      '[&_h2#request-body]:font-semibold',
+      '[&_h2#request-body]:text-2xl',
+      '[&_h2#response-body]:font-semibold',
+      '[&_h2#response-body]:text-2xl',
+    );
+  });
+
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
     const operationDescriptionMarkdown =
       'Use this endpoint to send a custom instruction.\n\n- Pause the agent.\n- Resume the agent.\n\n1. Validate the agent ID.\n2. Send the instruction.';
@@ -1441,6 +1522,70 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders custom request code samples for list endpoints without crashing', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v2/projects/{appid}/agents',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents': {
+                  get: {
+                    description:
+                      'Retrieves Conversational AI agents that match specified conditions.',
+                    operationId: 'get-agent-list',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Retrieve a list of agents',
+                    'x-codeSamples': [
+                      {
+                        lang: 'bash',
+                        label: 'curl',
+                        source:
+                          'curl --request GET https://example.com/v2/projects/:appid/agents',
+                      },
+                      {
+                        lang: 'javascript',
+                        label: 'Node.js',
+                        source:
+                          'fetch(\"https://example.com/v2/projects/:appid/agents\")',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findByRole('tab', { name: 'curl' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Node.js' })).toBeInTheDocument();
+    const requestExamples = screen
+      .getByRole('tab', { name: 'curl' })
+      .closest('.openapi-request-examples');
+    expect(requestExamples).not.toBeNull();
+    expect(
+      within(requestExamples as HTMLElement).getByRole('tabpanel'),
+    ).toHaveTextContent(
+      'curl --request GET https://example.com/v2/projects/:appid/agents',
+    );
+  });
+
   it('renders operation prose sections without repeating the page summary', async () => {
     render(
       <FumadocsOpenApiContent
@@ -1509,6 +1654,62 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.getByText(/Implicit instruction injection/)).toBeInTheDocument();
     expect(screen.getByText(/Client-side event triggering/)).toBeInTheDocument();
     expect(screen.getByText(/Voice and text collaboration/)).toBeInTheDocument();
+  });
+
+  it('does not render the operation description block before OpenAPI prose sections', () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    description:
+                      'Creates and starts a Conversational AI agent instance.',
+                    operationId: 'start-agent',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Start a conversational AI agent',
+                    'x-docs-sections': [
+                      {
+                        markdown:
+                          'Use this endpoint to create and start a Conversational AI agent instance.',
+                        position: 'after-description',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      screen.queryByText(
+        'Creates and starts a Conversational AI agent instance.',
+      ),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Use this endpoint to create and start a Conversational AI agent instance.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders response body schema field descriptions', async () => {

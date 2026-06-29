@@ -558,6 +558,35 @@
     outline-offset: 2px;
   }
 
+  .prose :where([data-parameter-description] a) {
+    border-radius: 0.2rem;
+    color: var(--accent-brand);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--accent-brand) 38%,
+      transparent
+    );
+    text-underline-offset: 0.2em;
+    transition:
+      color 160ms ease,
+      text-decoration-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .prose :where([data-parameter-description] a):hover {
+    background: var(--accent-brand-soft);
+    color: var(--accent-brand);
+    text-decoration-color: var(--accent-brand);
+  }
+
+  .prose :where([data-parameter-description] a):focus-visible {
+    outline: 2px solid var(--accent-brand-ring);
+    outline-offset: 2px;
+  }
+
   .prose :where(strong):not(:where(.not-prose, .not-prose *)) {
     color: var(--docs-text-primary);
     font-weight: 600;
@@ -577,6 +606,25 @@
     max-width: 100%;
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+
+  .prose
+    :where([data-parameter-description] :not(pre) > code):not(
+      :where(
+          [data-parameter-possible-values],
+          [data-parameter-possible-values] *
+        )
+    ) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    border: 1px solid var(--line);
+    border-radius: 0.3125rem;
+    background: var(--bg-sunken);
+    padding: 0.0625rem 0.375rem;
+    color: var(--ink-1);
+    font-size: 0.88em;
+    font-weight: 500;
   }
 
   .prose :where(pre):not(:where(.not-prose, .not-prose *)) {

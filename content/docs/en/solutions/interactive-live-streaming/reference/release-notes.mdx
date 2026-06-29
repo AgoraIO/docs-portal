@@ -3015,7 +3015,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **5. Multi-camera capture**
 
-This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
+This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
 
 **6. Channel media relay**
 
@@ -3162,7 +3162,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **2. Encoded video frame observer**
 
@@ -3212,8 +3212,8 @@ The SDK supports a new version of Noise Suppression (in comparison to the basic 
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### Improvements
@@ -3241,7 +3241,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -4738,7 +4738,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **4. Multi-camera capture**
 
-This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
+This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
 
 **5. Channel media relay**
 
@@ -4896,7 +4896,7 @@ To stop using multi-camera capture, you need to call `stopSecondaryCameraCapture
 
 **2. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
 
 **3. Encoded video frame observer**
 
@@ -4955,7 +4955,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -5248,7 +5248,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **4. Multi-camera capture**
 
-This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
+This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
 
 **5. Channel media relay**
 
@@ -5404,7 +5404,7 @@ To stop using multi-camera capture, you need to call `stopSecondaryCameraCapture
 
 **2. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **3. Encoded video frame observer**
 
@@ -5452,8 +5452,8 @@ The SDK supports a new version of AI noise reduction (in comparison to the basic
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### Improvements
@@ -5473,7 +5473,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -6740,7 +6740,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **3. Multi-camera capture and multi-screen capture**
 
-This release introduces `startCameraCapture` and `startScreenCapture`[2/2]. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
+This release introduces `startCameraCapture` and `startScreenCapture`[2/2]. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
 
 **4. Channel media relay**
 
@@ -6886,7 +6886,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
 
 **2. Encoded video frame observer**
 
@@ -6936,8 +6936,8 @@ The SDK supports a new version of AI noise reduction (in comparison to the basic
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 
@@ -6965,7 +6965,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -7090,7 +7090,7 @@ If you want to modify the default behavior above, you can call `setDualStreamMod
 
 **1. Video information change callback**
 
-This release optimizes the trigger logic of `videoSizeChangedOfUid`, which can also be triggered and report the local video size change when `startPreview` is called separately
+This release optimizes the trigger logic of `videoSizeChangedOfUid`, which can also be triggered and report the local video size change when `startPreview` is called separately.
 
 #### Issues fixed
 
@@ -8374,7 +8374,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **4. Multi-camera capture and multi-screen capture**
 
-This release introduces `startCameraCapture` and `startScreenCapture`[2/2]. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
+This release introduces `startCameraCapture` and `startScreenCapture`[2/2]. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
 
 **5. Channel media relay**
 
@@ -8519,7 +8519,7 @@ v4.1.0 was released on December 15, 2022.
 
 **1. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **2. Encoded video frame observer**
 
@@ -8589,8 +8589,8 @@ To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense of presence experience in virtual interactive use-cases.
 
-- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listner experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation paramter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user, respectively, by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation`, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 #### Improvements
@@ -8622,7 +8622,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-* The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+* The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 * The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 * More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 * A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -10026,7 +10026,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **4. Multi-camera capture and multi-screen capture**
 
-This release introduces `startCameraCapture` and `startScreenCaptureBySourceType`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
+This release introduces `startCameraCapture` and `startScreenCaptureBySourceType`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
 
 **5. Channel media relay**
 
@@ -10291,7 +10291,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -11847,7 +11847,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **6. Multi-camera capture and multi-screen capture**
 
-This release introduces `startScreenCaptureBySourceType` (PC only) and `startCameraCapture`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
+This release introduces `startScreenCaptureBySourceType` (PC only) and `startCameraCapture`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
 
 **7. Channel media relay**
 
@@ -12040,7 +12040,7 @@ To stop using multi-camera capture, you need to call `stopSecondaryCameraCapture
 
 **9. Headphone equalization effect**
 
-This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
+This release adds the `setHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 
 **10. Encoded video frame observer**
@@ -12160,7 +12160,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -13577,7 +13577,7 @@ For custom video and audio capture use-cases, this release introduces `getCurren
 
 **5. Multi-camera capture**
 
-This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
+This release introduces `startCameraCapture`. By calling this method multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras need to be connected.
 
 **6. Channel media relay**
 
@@ -13713,7 +13713,7 @@ If you want to modify this default behavior, you can call `setDualStreamMode` an
 This release adds the following features applicable to spatial audio effect use-cases, which can effectively enhance the user's sense-of-presence experience in virtual interactive use-cases.
 
 - Sound insulation area: You can set a sound insulation area and sound attenuation parameter by calling `setZones`. When the sound source (which can be a user or the media player) and the listener belong to the inside and outside of the sound insulation area, the listener experiences an attenuation effect similar to that of the sound in the real environment when it encounters a building partition. You can also set the sound attenuation parameter for the media player and the user by calling `setPlayerAttenuation` and `setRemoteAudioAttenuation` respectively, and specify whether to use that setting to force an override of the sound attenuation parameter in `setZones`.
-- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`. The receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source source and receiver (such as in a racing game use-case).
+- Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`. The receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the audio experience for users with headphones. If you cannot achieve the expected headphone EQ effect after calling `setHeadphoneEQPreset`, you can call `setHeadphoneEQParameters` to adjust the EQ.
 
 **7. Multiple cameras for video capture (iOS)**
@@ -13796,7 +13796,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -14845,7 +14845,7 @@ This release has optimized the implementation of some functions, involving renam
 
 4. **Audio route**
 
-   Starting with this release, `routeBluetooth` in [AudioRoute](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/enum_audioroute.html) is renamed to `ROUTE_BLUETOOTH_DEVICE_HFP`, representing a Bluetooth device using the HFP protocol. `ROUTE_BLUETOOTH_DEVICE_A2DP`(10) is added to represent a Bluetooth device using the A2DP protocol
+   Starting with this release, `routeBluetooth` in [AudioRoute](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/enum_audioroute.html) is renamed to `ROUTE_BLUETOOTH_DEVICE_HFP`, representing a Bluetooth device using the HFP protocol. `ROUTE_BLUETOOTH_DEVICE_A2DP`(10) is added to represent a Bluetooth device using the A2DP protocol.
 
 5. **Audio loopback capturing (Windows, macOS)**
 
@@ -15463,7 +15463,7 @@ For custom video and audio capture use-cases, this release introduces `GetCurren
 
 **6. Multi-camera capture and multi-screen capture**
 
-This release introduces `StartScreenCapture` [2/2] (PC only) and `StartCameraCapture`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This is particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
+This release introduces `StartScreenCapture` [2/2] (PC only) and `StartCameraCapture`. By calling these methods multiple times and specifying the `sourceType` parameter, developers can start capturing video streams from multiple cameras and screens for local video mixing or multi-channel publishing. This particularly useful for use-cases such as remote medical care and online education, where multiple cameras and displays need to be connected.
 
 **7. Channel media relay**
 
@@ -15660,7 +15660,7 @@ To stop using multi-camera capture, you need to call `StopSecondaryCameraCapture
 
 **9. Headphone equalization effect**
 
-This release adds the `SetHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This is mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `SetHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
+This release adds the `SetHeadphoneEQParameters` method, which is used to adjust the low- and high-frequency parameters of the headphone EQ. This mainly useful in spatial audio use-cases. If you cannot achieve the expected headphone EQ effect after calling `SetHeadphoneEQPreset`, you can call setHeadphoneEQParameters to adjust the EQ.
 
 **10. Encoded video frame observer**
 
@@ -15766,7 +15766,7 @@ This release reconstructs the AEC algorithm based on the AI method. Compared wit
 
 This release optimizes the virtual background algorithm. Improvements include the following:
 
-- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is is now extremely thin.
+- The boundaries of virtual backgrounds are handled in a more nuanced way and image matting is now extremely thin.
 - The stability of the virtual background is improved whether the portrait is still or moving, effectively eliminating the problem of background flickering and exceeding the range of the picture.
 - More application use-cases are now supported, and a user obtains a good virtual background effect day or night, indoors or out.
 - A larger variety of postures are now recognized, when half the body is motionless, the body is shaking, the hands are swinging, or there is fine finger movement. This helps to achieve a good virtual background effect in conjunction with many different gestures.
@@ -16376,7 +16376,7 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 
 v4.2.1 was released on November 16, 2023.
 
-This is the first GA release of the SDK. It provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
+This the first GA release of the SDK. It provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
 
 **Unreal Engine**
 
@@ -16664,7 +16664,7 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 
 This version was released on November 16, 2023.
 
-This is the first release of Video SDK for Unreal Blueprint.
+This the first release of Video SDK for Unreal Blueprint.
 
 #### New features
 

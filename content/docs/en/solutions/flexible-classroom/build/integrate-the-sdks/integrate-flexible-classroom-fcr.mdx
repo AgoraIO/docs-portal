@@ -2,13 +2,28 @@
 title: "FcrUIScene SDK"
 description: "Integrate FcrUIScene into your app with the default UI or by customizing the scene UI."
 ---
+
+<PlatformStructured platform="android">
+
+Currently not supported for this platform.
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Currently not supported for this platform.
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
 This page introduces how to add Flexible Classroom into your app.
 
 ## Understand the tech
 
 The following figure shows the overall technical architecture of Flexible Classroom:
 
-![](https://web-cdn.agora.io/docs-files/1653557375318)
+![Flexible Classroom technical architecture](https://web-cdn.agora.io/docs-files/1653557375318)
 
 The source code of Flexible Classroom contains the following packages:
 
@@ -204,7 +219,7 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
 </html>
 ```
 
-The sample code requires passing in `rtmToken`. You can refer to [Secure authentication with tokens](../set-up-your-account-and-authentication/authentication-workflow.md) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
+The sample code requires passing in `rtmToken`. You can refer to [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
 
 :::note
 Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
@@ -215,7 +230,7 @@ Calling `launch` returns `unmount`. When your App routing changes cause the unlo
 If you want to customize the classroom UI based on the default UI of Cloud Classroom, you need to integrate  by downloading the source code on GitHub. Refer to the following steps:
 
 :::note
-Make sure you have set up a development environment. See [Configure Flexible Classroom](../set-up-your-account-and-authentication/enable-flexible-classroom.md).
+Make sure you have [set up a development environment](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/enable-flexible-classroom).
 :::
 
 1. Clone the Flexible-Classroom-Desktop repository:
@@ -235,7 +250,7 @@ Make sure you have set up a development environment. See [Configure Flexible Cla
         git checkout release/2.9.0
         ```
 
-1. Modify the code according to your needs. See [FcrUIScene SDK customization guide](../customize-the-ui-and-plugins/customize-ui-scene-sdk.md) for details.
+1. Modify the code according to your needs. See [FcrUIScene SDK customization guide](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk) for details.
 
 1. Debug your code.
 
@@ -268,5 +283,13 @@ Make sure you have set up a development environment. See [Configure Flexible Cla
        ```
 
 :::note
-Find the output in `packages/fcr-ui-scene/lib/fcr-ui-scene_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/scene_widget.bundle.js` respectively.
+Find the output in the `packages/fcr-ui-scene/lib/fcr-ui-scene_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/scene_widget.bundle.js` respectively.
 :::
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+Currently not supported for this platform.
+
+</PlatformStructured>

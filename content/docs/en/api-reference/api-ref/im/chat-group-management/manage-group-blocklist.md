@@ -169,7 +169,7 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 
 | Parameter | Type | Description |
 | :------ | :------ | :------------------------------------------------ |
-| `result` | Boolean | Whether the users are sucessfully added to the group blocklist.`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the users are successfully added to the group blocklist.`true`: Yes.`false`: No. |
 | `groupid` | String | The group ID. |
 | `action` | String | The request method. |
 | `user` | String | The usernames added to the group blocklist. |
@@ -251,7 +251,7 @@ If the returned HTTP status code is 200, the request succeeds, and the data fiel
 
 | Parameter | Type | Description |
 | :------ | :------ | :------------------------------------------------ |
-| `result` | Boolean | Whether the users are sucessfully added to the group blocklist.`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the users are successfully added to the group blocklist.`true`: Yes.`false`: No. |
 | `reason` | String | The reason why the users fail to be added to the group blocklist. |
 | `groupid` | String | The group ID. |
 | `action` | String | The request method. |

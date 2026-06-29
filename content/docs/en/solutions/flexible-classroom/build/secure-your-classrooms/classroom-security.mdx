@@ -15,7 +15,7 @@ Agora Flexible Classroom is designed and built with multiple protection measures
 
 ## Classroom separation
 
-Agora creates independent and isolated classrooms for audio, video, or messaging data transmission with the room ID specified by the app developer. All classrooms are logically separated and only authenticated users from the same Agora [App ID](../../reference/glossary.md) can join the same classroom.
+Agora creates independent and isolated classrooms for audio, video, or messaging data transmission with the room ID specified by the app developer. All classrooms are logically separated and only authenticated users from the same Agora [App ID](../../reference/glossary.mdx) can join the same classroom.
 
 ## Token authentication
 
@@ -23,16 +23,16 @@ Agora Flexible Classroom uses the Signaling token for end user authentication. T
 
 The app developer can enable token authentication (App Certificate) in [Agora Console](https://console.agora.io/v2). When enabled, all user’s request to join a classroom must be done with a valid Signaling token.
 
-- For more information on how to enable Signaling token authentication, see [Secure authentication with tokens](../set-up-your-account-and-authentication/authentication-workflow.md).
-- For how to generate a Signaling token on the app backend, see [Secure authentication with tokens](../set-up-your-account-and-authentication/authentication-workflow.md).
+- For more information on how to enable Signaling token authentication, see [Secure authentication with tokens](../set-up-your-account-and-authentication/authentication-workflow.mdx).
+- For how to generate a Signaling token on the app backend, see [Secure authentication with tokens](../set-up-your-account-and-authentication/authentication-workflow.mdx).
 
 ## Data encryption and storage
 
 To guarantee data confidentiality during transmission, Agora Flexible Classroom uses the TLS (Transport Layer Security) and Secure Sockets Layer (SSL) encryption protocols.
 
-Agora Flexible Classroom does not store any of your business data or user data except for caching them for transmission purpose. The cached data will be released an hour after the classroom ends. Agora Flexible Classroom supports uploading files and real-time recording in a classroom. The uploaded class files and recorded files are stored in the third-party cloud storage designated by the app developer. These features are disabled by default. Only after the app developer enables these features and specifies a third-party cloud storage in Agora Console, can authenticated users access the services and the stored resources. 
+Agora Flexible Classroom does not store any of your business data or user data except for caching them for transmission purpose. The cached data will be released an hour after the classroom ends. Agora Flexible Classroom supports uploading files and real-time recording in a classroom. The uploaded class files and recorded files are stored in the third-party cloud storage designated by the app developer. These features are disabled by default. Only after the app developer enables these features and specifies a third-party cloud storage in Agora Console, can authenticated users access the services and the stored resources.
 
-## Network geofencing 
+## Network geofencing
 
 To conform to the laws and regulations of different countries and regions, Agora Flexible Classroom supports network geofencing, which limits the transmission of data to within a specified region.
 
@@ -56,7 +56,7 @@ Use this list to quickly check what measures you have or have not taken to best 
 1. Enable token authentication in [Agora Console](https://console.agora.io/v2).
 2. Disable **No certificate** in your project management page. Once it is done your app authenticates users with tokens only.
     ![img](https://web-cdn.agora.io/docs-files/1614134532547)
-3. [Deploy a Signaling token server](../set-up-your-account-and-authentication/authentication-workflow.md) in your backend services.
+3. [Deploy a Signaling token server](../set-up-your-account-and-authentication/authentication-workflow.mdx) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
 5. For additional security, you can also do the following:
    - Set the classroom ID to a one-time random string managed by your app.

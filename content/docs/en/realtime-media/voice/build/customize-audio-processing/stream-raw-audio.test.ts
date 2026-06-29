@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
@@ -7,8 +8,10 @@ import { remarkPlatformContent } from '@/lib/platforms/remark-platform-content';
 
 describe('voice stream-raw-audio platforms', () => {
   it('includes web in the structured platform tabs', async () => {
-    const file =
-      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/voice/build/customize-audio-processing/stream-raw-audio.mdx';
+    const file = resolve(
+      process.cwd(),
+      'content/docs/en/realtime-media/voice/build/customize-audio-processing/stream-raw-audio.mdx',
+    );
     const content = readFileSync(file, 'utf8');
 
     expect(content).toContain('<PlatformStructured platform="web">');

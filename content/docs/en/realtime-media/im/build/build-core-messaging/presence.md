@@ -321,7 +321,7 @@ chatClient.subscribePresence(options).then((res) => {
 
 ### Publish a custom presence status
 
-You can call `publishPresence` to to publish a custom status. Whenever your presence status updates, the users who subscribe to you receive the `onPresenceStatusChange` callback.
+You can call `publishPresence` to publish a custom status. Whenever your presence status updates, the users who subscribe to you receive the `onPresenceStatusChange` callback.
 
 The following code sample shows how to publish a custom status:
 
@@ -420,7 +420,7 @@ You can subscribe to a maximum of 100 users at each call. The total subscription
 
 ### Publish a custom presence status
 
-You can call `publishPresence` to to publish a custom status. Whenever your presence status updates, the users who subscribe to you receive the `ChatPresenceEventHandler#onPresenceStatusChanged` callback.
+You can call `publishPresence` to publish a custom status. Whenever your presence status updates, the users who subscribe to you receive the `ChatPresenceEventHandler#onPresenceStatusChanged` callback.
 
 The following code sample shows how to publish a custom status:
 
