@@ -86,6 +86,7 @@ type AccordionsRootProps = Omit<
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
   defaultValue?: string;
+  groupId?: string;
   onValueChange?: (value: string) => void;
   value?: string;
 };
@@ -122,7 +123,9 @@ type ActiveAccordion = {
 
 type AccordionPageState = {
   activeAccordion?: ActiveAccordion;
+  codeBlockTabValues: Record<string, string>;
   setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
+  setCodeBlockTabValues: Dispatch<SetStateAction<Record<string, string>>>;
 };
 
 const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
@@ -131,9 +134,17 @@ const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
+  const [codeBlockTabValues, setCodeBlockTabValues] = useState<
+    Record<string, string>
+  >({});
   const value = useMemo(
-    () => ({ activeAccordion, setActiveAccordion }),
-    [activeAccordion],
+    () => ({
+      activeAccordion,
+      codeBlockTabValues,
+      setActiveAccordion,
+      setCodeBlockTabValues,
+    }),
+    [activeAccordion, codeBlockTabValues],
   );
 
   return (
@@ -166,26 +177,33 @@ function collectTabValues(children: ReactNode, values: string[] = []) {
   return values;
 }
 
-function useSafeTabValue({
+function useTabValues({
   children,
-  defaultValue,
   items,
-  onValueChange,
-  value,
 }: {
   children?: ReactNode;
-  defaultValue?: string;
   items?: string[];
-  onValueChange?: (value: string) => void;
-  value?: string;
 }) {
-  const values = useMemo(() => {
+  return useMemo(() => {
     if (items?.length) {
       return items.map(escapeTabValue);
     }
 
     return collectTabValues(children);
   }, [children, items]);
+}
+
+function useSafeTabValue({
+  defaultValue,
+  onValueChange,
+  value,
+  values,
+}: {
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  value?: string;
+  values: string[];
+}) {
   const validValues = useMemo(() => new Set(values), [values]);
   const fallbackValue = defaultValue ?? values.at(0);
   const initialValue =
@@ -239,12 +257,12 @@ function Tabs({
   value,
   ...props
 }: TabsRootProps) {
+  const values = useTabValues({ children, items });
   const { safeValue, setSafeValue } = useSafeTabValue({
-    children,
     defaultValue,
-    items,
     onValueChange,
     value,
+    values,
   });
 
   return (
@@ -259,6 +277,24 @@ function Tabs({
       {children}
     </ControlledFumadocsTabs>
   );
+}
+
+function getCodeBlockTabsStateKey({
+  groupId,
+  values,
+}: {
+  groupId?: string;
+  values: string[];
+}) {
+  if (groupId) {
+    return `group:${groupId}`;
+  }
+
+  if (values.length === 0) {
+    return undefined;
+  }
+
+  return `values:${[...values].sort().join('\u001f')}`;
 }
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
@@ -405,22 +441,70 @@ function CodeBlockTabs({
   children,
   className,
   defaultValue,
+  groupId,
   onValueChange,
   value,
   ...props
 }: CodeBlockTabsRootProps) {
+  const pageState = useContext(AccordionPageStateContext);
+  const values = useTabValues({ children });
+  const stateKey = useMemo(
+    () => getCodeBlockTabsStateKey({ groupId, values }),
+    [groupId, values],
+  );
+  const sharedValue =
+    value === undefined && stateKey
+      ? pageState?.codeBlockTabValues[stateKey]
+      : undefined;
+  const handleValueChange = useCallback(
+    (nextValue: string) => {
+      if (value === undefined && stateKey) {
+        pageState?.setCodeBlockTabValues((current) => {
+          if (current[stateKey] === nextValue) {
+            return current;
+          }
+
+          return {
+            ...current,
+            [stateKey]: nextValue,
+          };
+        });
+      }
+
+      onValueChange?.(nextValue);
+    },
+    [onValueChange, pageState, stateKey, value],
+  );
   const { safeValue, setSafeValue } = useSafeTabValue({
-    children,
     defaultValue,
-    onValueChange,
-    value,
+    onValueChange: handleValueChange,
+    value: value ?? sharedValue,
+    values,
   });
+
+  useEffect(() => {
+    if (!(pageState && stateKey && value === undefined && safeValue)) {
+      return;
+    }
+
+    pageState.setCodeBlockTabValues((current) => {
+      if (current[stateKey] !== undefined) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [stateKey]: safeValue,
+      };
+    });
+  }, [pageState, safeValue, stateKey, value]);
 
   return (
     <FumadocsCodeBlockTabs
       {...props}
       className={cn('bg-fd-card', className)}
       defaultValue={defaultValue}
+      groupId={groupId}
       onValueChange={setSafeValue}
       value={safeValue}
     >

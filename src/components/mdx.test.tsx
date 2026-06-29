@@ -1087,6 +1087,219 @@ describe('common MDX registry', () => {
     ).toBeVisible();
   });
 
+  it('preserves explicit generated code tab group syncing without the MDX page provider', () => {
+    sessionStorage.clear();
+
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <>
+        <CodeBlockTabs defaultValue="python" groupId="explicit-sdk" persist>
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="ts">TypeScript</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="python">
+            <Pre>
+              <code>first python sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="ts">
+            <Pre>
+              <code>first typescript sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="python" groupId="explicit-sdk" persist>
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="python">Python</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="ts">TypeScript</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="python">
+            <Pre>
+              <code>second python sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="ts">
+            <Pre>
+              <code>second typescript sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'TypeScript' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'TypeScript' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'TypeScript' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(sessionStorage.getItem('explicit-sdk')).toBe('ts');
+    expect(
+      screen.getByText('second typescript sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+  });
+
+  it('syncs generated code tabs with the same values inside the MDX page provider', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>first java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>first kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>second java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>second kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </MDXAccordionProvider>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByText('first kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second java sample').closest('[role=tabpanel]'),
+    ).not.toBeVisible();
+  });
+
+  it('keeps generated code tabs local without the MDX page provider', () => {
+    const components = getMDXComponents();
+    const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
+    const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
+    const CodeBlockTabsTrigger =
+      components.CodeBlockTabsTrigger as TabsChildComponent;
+    const CodeBlockTab = components.CodeBlockTab as TabsChildComponent;
+    const Pre = components.pre as CodeBlockPreComponent;
+
+    render(
+      <>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>first local java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>first local kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+        <CodeBlockTabs defaultValue="java">
+          <CodeBlockTabsList>
+            <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+            <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+          </CodeBlockTabsList>
+          <CodeBlockTab value="java">
+            <Pre>
+              <code>second local java sample</code>
+            </Pre>
+          </CodeBlockTab>
+          <CodeBlockTab value="kotlin">
+            <Pre>
+              <code>second local kotlin sample</code>
+            </Pre>
+          </CodeBlockTab>
+        </CodeBlockTabs>
+      </>,
+    );
+
+    const [firstTabs, secondTabs] = screen.getAllByRole('tablist');
+
+    fireEvent.mouseDown(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+
+    expect(
+      within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      within(secondTabs).getByRole('tab', { name: 'Java' }),
+    ).toHaveAttribute('data-state', 'active');
+    expect(
+      screen.getByText('first local kotlin sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('second local java sample').closest('[role=tabpanel]'),
+    ).toBeVisible();
+  });
+
   it('keeps inactive generated code tab content mounted', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
