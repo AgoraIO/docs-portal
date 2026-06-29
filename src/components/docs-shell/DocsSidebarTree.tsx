@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
-import { DocsConfiguredIcon, hasConfiguredIcon } from './DocsConfiguredIcon';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -161,7 +160,6 @@ function SidebarSection({
         activePath={activePath}
         collapsible={node.collapsible}
         defaultOpen={node.defaultOpen}
-        icon={node.icon}
         items={node.children}
         onSelectPath={onSelectPath}
         title={node.title}
@@ -174,7 +172,6 @@ function SidebarSection({
     return (
       <div>
         <SidebarGroupLabel className="mt-3 mb-1 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
-          <SidebarConfiguredIcon icon={node.icon} />
           <span
             className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
             title={node.title}
@@ -197,7 +194,6 @@ function SidebarSection({
             pages={node.nestedQuickstartGroup.children.filter(
               (child): child is SidebarPageNode => child.type === 'page',
             )}
-            icon={node.nestedQuickstartGroup.icon}
             title={node.nestedQuickstartGroup.title}
           />
         ) : null}
@@ -231,7 +227,6 @@ function SidebarSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarConfiguredIcon icon={node.icon} />
           <span className={sidebarSectionTitleClassName}>{node.title}</span>
         </span>
         <ChevronDownIcon
@@ -285,7 +280,6 @@ function SidebarLinkedSection({
   activePath,
   collapsible,
   defaultOpen: defaultOpenProp,
-  icon,
   items,
   onSelectPath,
   title,
@@ -294,7 +288,6 @@ function SidebarLinkedSection({
   activePath: string;
   collapsible?: boolean;
   defaultOpen?: boolean;
-  icon?: string;
   items: DocsSidebarNode[];
   onSelectPath: () => void;
   title: string;
@@ -321,7 +314,6 @@ function SidebarLinkedSection({
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
             <span className="flex min-w-0 items-center gap-2">
-              <SidebarConfiguredIcon icon={icon} />
               <span className={sidebarSectionTitleClassName}>{title}</span>
             </span>
             <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
@@ -340,7 +332,6 @@ function SidebarLinkedSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarConfiguredIcon icon={icon} />
           <span className={sidebarSectionTitleClassName}>{title}</span>
         </span>
         <ChevronDownIcon
@@ -399,13 +390,11 @@ function shouldDefaultOpenSection(title: string, activePath: string) {
 
 function SidebarQuickstartGroup({
   activePath,
-  icon,
   onSelectPath,
   pages,
   title,
 }: {
   activePath: string;
-  icon?: string;
   onSelectPath: () => void;
   pages: SidebarPageNode[];
   title: string;
@@ -428,7 +417,6 @@ function SidebarQuickstartGroup({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarConfiguredIcon icon={icon} />
           <span className={sidebarSectionTitleClassName}>{title}</span>
         </span>
         <ChevronDownIcon
@@ -503,7 +491,6 @@ function SidebarNestedSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <SidebarConfiguredIcon icon={node.icon} />
           <span className={sidebarSectionTitleClassName}>{node.title}</span>
         </span>
         <ChevronDownIcon
@@ -835,18 +822,6 @@ function SidebarPageLabel({
         <ChevronDownIcon className="ml-auto size-4 shrink-0 -rotate-90 text-[color:var(--ink-4)]" />
       ) : null}
     </>
-  );
-}
-
-function SidebarConfiguredIcon({ icon }: { icon?: string }) {
-  if (!hasConfiguredIcon(icon)) {
-    return null;
-  }
-
-  return (
-    <span aria-hidden="true" className="docs-side-icon">
-      <DocsConfiguredIcon className="size-3.5" icon={icon} />
-    </span>
   );
 }
 
