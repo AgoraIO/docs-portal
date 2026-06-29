@@ -2,39 +2,35 @@
 title: "Set video layout"
 description: "Learn how to set the video layout for composite recording with the Agora Recording SDK."
 ---
+
+<PlatformStructured platform="linux-cpp">
+
 This guide shows you how to configure the video layout during composite recording using the On-Premise Recording SDK.
 
 ## Understand the tech
 
 In composite recording mode, the SDK renders the final video on a canvas that includes multiple user video streams. Each stream is placed in a defined region of the canvas. The canvas acts as the background, and you specify the dimensions and position of each user’s video.
 
-![](/images/on-premise-recording/user-region-canvas-diagram.png)
+![Composite recording canvas with user video regions](/images/on-premise-recording/user-region-canvas-diagram.png)
 
-:::info[info]
+:::info
 The aspect ratio of a user's video must match that of the assigned region. If the aspect ratios differ, the SDK crops the video, which can result in image loss.
 :::
 
 ## Prerequisites
 
-Before using layouts, complete the steps in the [Quickstart](/en/realtime-media/on-premise-recording/index) guide to integrate the SDK and set up basic recording.
+Before using layouts, complete the steps in the [Quickstart](/en/realtime-media/on-premise-recording/quickstart) guide to integrate the SDK and set up basic recording.
 
 ## Implementation
-
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
-
-<TabsContent value="cpp">
 
 To configure the layout, call the `setVideoMixingLayout` method and pass a `VideoMixingLayout` object that defines:
 
 - Canvas dimensions and frame rate
 - Background color or image
-- Layouts for each user’s video
+- Layouts for each user's video
+
 ```cpp
-struct VideoMixingLayout  recorderLayout;
+struct VideoMixingLayout recorderLayout;
 recorderLayout.canvasWidth = 1280;
 recorderLayout.canvasHeight = 720;
 recorderLayout.canvasFps = 25;
@@ -58,16 +54,42 @@ recorder->setVideoMixingLayout(recorderLayout);
 ```
 
 The sample code creates the following composite layout:
-![](/images/on-premise-recording/composite-layout.svg)
-</TabsContent>
 
-<TabsContent value="java">
+![Composite layout](/images/on-premise-recording/composite-layout.svg)
+
+## API reference
+
+- [`setVideoMixingLayout`](/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout)
+- [`VideoMixingLayout`](/en/api-reference/api-ref/on-premise-recording#videomixinglayout)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+This guide shows you how to configure the video layout during composite recording using the On-Premise Recording SDK.
+
+## Understand the tech
+
+In composite recording mode, the SDK renders the final video on a canvas that includes multiple user video streams. Each stream is placed in a defined region of the canvas. The canvas acts as the background, and you specify the dimensions and position of each user’s video.
+
+![Composite recording canvas with user video regions](/images/on-premise-recording/user-region-canvas-diagram.png)
+
+:::info
+The aspect ratio of a user's video must match that of the assigned region. If the aspect ratios differ, the SDK crops the video, which can result in image loss.
+:::
+
+## Prerequisites
+
+Before using layouts, complete the steps in the [Quickstart](/en/realtime-media/on-premise-recording/quickstart) guide to integrate the SDK and set up basic recording.
+
+## Implementation
 
 To configure the layout, call the `setVideoMixingLayout` method and pass a `VideoMixingLayout` object that defines:
 
 - Canvas dimensions and frame rate
 - Background color or image
-- Layouts for each user’s video
+- Layouts for each user's video
+
 ```java
 VideoMixingLayout recorderLayout = new VideoMixingLayout();
 recorderLayout.setCanvasWidth(1280);
@@ -103,11 +125,12 @@ agoraMediaRtcRecorder.setVideoMixingLayout(recorderLayout);
 ```
 
 The sample code creates the following composite layout:
-![](/images/on-premise-recording/composite-layout.svg)
-</TabsContent>
-</Tabs>
+
+![Composite layout](/images/on-premise-recording/composite-layout.svg)
 
 ## API reference
 
-- [`setVideoMixingLayout`](/on-premise-recording/reference/api-reference#setvideomixinglayout)
-- [`VideoMixingLayout`](/on-premise-recording/reference/api-reference#videomixinglayout)
+- [`setVideoMixingLayout`](/en/api-reference/api-ref/on-premise-recording#setvideomixinglayout)
+- [`VideoMixingLayout`](/en/api-reference/api-ref/on-premise-recording#videomixinglayout)
+
+</PlatformStructured>
