@@ -1,5 +1,5 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
 import {
   Route as DocPageRoute,
@@ -9,9 +9,20 @@ import {
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
+import { Route as LlmsMarkdownRoute } from './llms[.]mdx.docs.$';
 
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;
+}
+
+function getGetHandler(route: { options: { server?: unknown } }) {
+  return (
+    route.options.server as {
+      handlers: {
+        GET: (context: never) => Promise<unknown> | unknown;
+      };
+    }
+  ).handlers.GET;
 }
 
 function createPlatformPayload(platforms: string): DocsPagePayload {
@@ -167,5 +178,48 @@ describe('docs route locale guards', () => {
         'android',
       ),
     ).toBe(false);
+  });
+
+  it(
+    'serves direct .md docs page URLs as markdown',
+    async () => {
+      const response = (await getGetHandler(DocPageRoute)({
+        context: {},
+        next: vi.fn(() => {
+          throw new Error('expected .md request to be handled directly');
+        }),
+        params: {
+          _splat: 'build/shape-the-conversation/filler-words.md',
+          locale: 'en',
+          tab: 'ai',
+        },
+        pathname: '/en/ai/build/shape-the-conversation/filler-words.md',
+        request: new Request(
+          'https://docs.example.com/en/ai/build/shape-the-conversation/filler-words.md',
+        ),
+      } as never)) as Response;
+
+      await expect(response.text()).resolves.toContain(
+        '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
+      );
+      expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    },
+    15_000,
+  );
+
+  it('keeps existing llms platform markdown routes working', async () => {
+    const response = (await getGetHandler(LlmsMarkdownRoute)({
+      params: {
+        _splat: 'en/ai/get-started/test-mdx-comps/android.md',
+      },
+    } as never)) as Response;
+    const markdown = await response.text();
+
+    expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    expect(markdown).toContain(
+      '# MDX component fixture (/en/ai/get-started/test-mdx-comps/android)',
+    );
+    expect(markdown).toContain('### Install on Android');
+    expect(markdown).not.toContain('### Install with JavaScript');
   });
 });
