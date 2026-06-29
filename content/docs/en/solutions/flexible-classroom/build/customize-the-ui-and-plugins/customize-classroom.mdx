@@ -707,6 +707,131 @@ To change the color of the placeholder text in the input component, edit the `pa
 }
 ```
 
+## Customize business components
+
+### Add a business component
+
+To add a new business component and use it in Flexible Classroom, create a folder in `packages/agora-classroom-sdk/src/infra/capabilities/containers`. The folder should contain the following files:
+
+- `index.tsx`: Combines functional components and implements the business logic.
+- `index.css`: Implements the style of the business component.
+
+After adding the business component, you can directly import this business component and run the project to see how it looks in Flexible Classroom.
+
+The following example shows how to add a business component that displays the class and network status:
+
+```tsx
+// index.css
+.agora-demo {
+  width: 50%;
+  height: 50%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999999;
+}
+.agora-demo-title {
+  color: red;
+}
+
+// index.tsx
+import React from 'react';
+import { observer } from 'mobx-react';
+import { useStore } from '@classroom/infra/hooks/ui-store';
+import './index.css';
+
+export default observer(function AgoraDemo() {
+  const { navigationBarUIStore } = useStore();
+  const { classStatusText, networkQualityLabel, delay, packetLoss } = navigationBarUIStore;
+  return (
+    <div className="agora-demo">
+      <h1 className="agora-demo-title">This is our new business component.</h1>
+      <h2>This component is used to display the network status and class status.</h2>
+      <div>
+        Network Status: {networkQualityLabel} Network Delay: {delay} Packet Loss Rate: {packetLoss}
+      </div>
+      <div>Class Status: {classStatusText}</div>
+    </div>
+  );
+});
+
+// packages/agora-classroom-sdk/src/infra/capabilities/scenarios/mid-class/index.tsx
+// Introduce this component in the small class scene
+import classnames from 'classnames';
+import { Layout } from '@classroom/ui-kit/components/layout';
+import { DialogContainer } from '@classroom/infra/capabilities/containers/dialog';
+import { HandsUpContainer } from '@classroom/infra/capabilities/containers/hand-up';
+import { LoadingContainer } from '@classroom/infra/capabilities/containers/loading';
+import { NavigationBar } from '@classroom/infra/capabilities/containers/nav';
+import { FixedAspectRatioRootBox } from '@classroom/infra/capabilities/containers/root-box';
+import { SceneSwitch } from '@classroom/infra/capabilities/containers/scene-switch';
+import { RoomMidStreamsContainer } from '@classroom/infra/capabilities/containers/stream/room-mid-player';
+import { ToastContainer } from '@classroom/infra/capabilities/containers/toast';
+import { Award } from '@classroom/infra/capabilities/containers/award';
+import Room from '../room';
+import { useStore } from '@classroom/infra/hooks/ui-store';
+import { Float } from '@classroom/ui-kit';
+import { RemoteControlContainer } from '@classroom/infra/capabilities/containers/remote-control';
+import { ScenesController } from '@classroom/infra/capabilities/containers/scenes-controller';
+import { ScreenShareContainer } from '@classroom/infra/capabilities/containers/screen-share';
+import { WhiteboardToolbar } from '@classroom/infra/capabilities/containers/toolbar';
+import { WidgetContainer } from '@classroom/infra/capabilities/containers/widget';
+import { Chat, Watermark, Whiteboard } from '@classroom/infra/capabilities/containers/widget/slots';
+import { StreamWindowsContainer } from '@classroom/infra/capabilities/containers/stream-windows-container';
+import { RemoteControlToolbar } from '@classroom/infra/capabilities/containers/remote-control/toolbar';
+import AgoraDemo from '@classroom/infra/capabilities/containers/agora-demo';
+
+export const MidClassScenario = () => {
+  // Scene layout
+  const layoutCls = classnames('edu-room', 'mid-class-room');
+  const { shareUIStore } = useStore();
+
+  return (
+    <Room>
+      {/* Here is the new business component */}
+      <AgoraDemo />
+      <FixedAspectRatioRootBox trackMargin={{ top: shareUIStore.navHeight }}>
+        <SceneSwitch>
+          <Layout className={layoutCls} direction="col">
+            <NavigationBar />
+            <Layout
+              className="flex-grow items-stretch relative justify-center fcr-room-bg"
+              direction="col">
+              <RoomMidStreamsContainer />
+              <Whiteboard />
+              <ScreenShareContainer />
+              <RemoteControlContainer />
+              <StreamWindowsContainer />
+            </Layout>
+            <RemoteControlToolbar />
+            <WhiteboardToolbar />
+            <ScenesController />
+            <Float bottom={15} right={10} align="flex-end" gap={2}>
+              <HandsUpContainer />
+              <Chat />
+            </Float>
+            <DialogContainer />
+            <LoadingContainer />
+          </Layout>
+          <WidgetContainer />
+          <ToastContainer />
+          <Award />
+          <Watermark />
+        </SceneSwitch>
+      </FixedAspectRatioRootBox>
+    </Room>
+  );
+};
+```
+
 The effect of this business component in Flexible Classroom is as follows:
 
 ![](https://web-cdn.agora.io/docs-files/1652870671265)
@@ -1437,6 +1562,131 @@ To change the color of the placeholder text in the input component, edit the `pa
 .fcr-input-wrapper input::-webkit-input-placeholder {
   color: #ff6600;
 }
+```
+
+## Customize business components
+
+### Add a business component
+
+To add a new business component and use it in Flexible Classroom, create a folder in `packages/agora-classroom-sdk/src/infra/capabilities/containers`. The folder should contain the following files:
+
+- `index.tsx`: Combines functional components and implements the business logic.
+- `index.css`: Implements the style of the business component.
+
+After adding the business component, you can directly import this business component and run the project to see how it looks in Flexible Classroom.
+
+The following example shows how to add a business component that displays the class and network status:
+
+```tsx
+// index.css
+.agora-demo {
+  width: 50%;
+  height: 50%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999999;
+}
+.agora-demo-title {
+  color: red;
+}
+
+// index.tsx
+import React from 'react';
+import { observer } from 'mobx-react';
+import { useStore } from '@classroom/infra/hooks/ui-store';
+import './index.css';
+
+export default observer(function AgoraDemo() {
+  const { navigationBarUIStore } = useStore();
+  const { classStatusText, networkQualityLabel, delay, packetLoss } = navigationBarUIStore;
+  return (
+    <div className="agora-demo">
+      <h1 className="agora-demo-title">This is our new business component.</h1>
+      <h2>This component is used to display the network status and class status.</h2>
+      <div>
+        Network Status: {networkQualityLabel} Network Delay: {delay} Packet Loss Rate: {packetLoss}
+      </div>
+      <div>Class Status: {classStatusText}</div>
+    </div>
+  );
+});
+
+// packages/agora-classroom-sdk/src/infra/capabilities/scenarios/mid-class/index.tsx
+// Introduce this component in the small class scene
+import classnames from 'classnames';
+import { Layout } from '@classroom/ui-kit/components/layout';
+import { DialogContainer } from '@classroom/infra/capabilities/containers/dialog';
+import { HandsUpContainer } from '@classroom/infra/capabilities/containers/hand-up';
+import { LoadingContainer } from '@classroom/infra/capabilities/containers/loading';
+import { NavigationBar } from '@classroom/infra/capabilities/containers/nav';
+import { FixedAspectRatioRootBox } from '@classroom/infra/capabilities/containers/root-box';
+import { SceneSwitch } from '@classroom/infra/capabilities/containers/scene-switch';
+import { RoomMidStreamsContainer } from '@classroom/infra/capabilities/containers/stream/room-mid-player';
+import { ToastContainer } from '@classroom/infra/capabilities/containers/toast';
+import { Award } from '@classroom/infra/capabilities/containers/award';
+import Room from '../room';
+import { useStore } from '@classroom/infra/hooks/ui-store';
+import { Float } from '@classroom/ui-kit';
+import { RemoteControlContainer } from '@classroom/infra/capabilities/containers/remote-control';
+import { ScenesController } from '@classroom/infra/capabilities/containers/scenes-controller';
+import { ScreenShareContainer } from '@classroom/infra/capabilities/containers/screen-share';
+import { WhiteboardToolbar } from '@classroom/infra/capabilities/containers/toolbar';
+import { WidgetContainer } from '@classroom/infra/capabilities/containers/widget';
+import { Chat, Watermark, Whiteboard } from '@classroom/infra/capabilities/containers/widget/slots';
+import { StreamWindowsContainer } from '@classroom/infra/capabilities/containers/stream-windows-container';
+import { RemoteControlToolbar } from '@classroom/infra/capabilities/containers/remote-control/toolbar';
+import AgoraDemo from '@classroom/infra/capabilities/containers/agora-demo';
+
+export const MidClassScenario = () => {
+  // Scene layout
+  const layoutCls = classnames('edu-room', 'mid-class-room');
+  const { shareUIStore } = useStore();
+
+  return (
+    <Room>
+      {/* Here is the new business component */}
+      <AgoraDemo />
+      <FixedAspectRatioRootBox trackMargin={{ top: shareUIStore.navHeight }}>
+        <SceneSwitch>
+          <Layout className={layoutCls} direction="col">
+            <NavigationBar />
+            <Layout
+              className="flex-grow items-stretch relative justify-center fcr-room-bg"
+              direction="col">
+              <RoomMidStreamsContainer />
+              <Whiteboard />
+              <ScreenShareContainer />
+              <RemoteControlContainer />
+              <StreamWindowsContainer />
+            </Layout>
+            <RemoteControlToolbar />
+            <WhiteboardToolbar />
+            <ScenesController />
+            <Float bottom={15} right={10} align="flex-end" gap={2}>
+              <HandsUpContainer />
+              <Chat />
+            </Float>
+            <DialogContainer />
+            <LoadingContainer />
+          </Layout>
+          <WidgetContainer />
+          <ToastContainer />
+          <Award />
+          <Watermark />
+        </SceneSwitch>
+      </FixedAspectRatioRootBox>
+    </Room>
+  );
+};
 ```
 
 The effect of this business component in Flexible Classroom is as follows:
