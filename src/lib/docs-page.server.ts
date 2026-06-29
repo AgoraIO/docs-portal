@@ -435,13 +435,13 @@ export async function loadDocsSearchIndex(locale: string) {
   }
 
   const { source } = await import('./source.server');
-  const pages = getCanonicalSourcePages(source.getPages(locale)).map(
-    (item) => ({
+  const pages = getCanonicalSourcePages(source.getPages(locale))
+    .filter((item) => !isHiddenAiTenPage(item.url))
+    .map((item) => ({
       description: item.data.description,
       title: item.data.title ?? item.slugs.at(-1) ?? item.url,
       url: item.url,
-    }),
-  );
+    }));
 
   return getDocsPages({
     locale: supportedLocale,
@@ -725,14 +725,9 @@ function resolveAiDocsRedirect(
   const redirects: Record<string, string> = {
     'conversational-ai': `/${locale}/ai/get-started/quickstart`,
     [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
-    'build/code-first-architecture': `/${locale}/ai/build/architecture`,
     'build/event-types': `/${locale}/ai/reference/event-types`,
-    'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
-    'reference/architecture': `/${locale}/ai/build/architecture`,
     create_asr_extension: `/${locale}/ai/reference/ten-agent/create-asr-extension`,
     create_tts_extension: `/${locale}/ai/reference/ten-agent/create-tts-extension`,
-    'ten-agent/develop/create-asr-extension-project': `/${locale}/ai/reference/ten-agent/create-asr-extension`,
-    'ten-agent/architecture/tts-implementation-modes': `/${locale}/ai/reference/ten-agent/create-tts-extension`,
     'best-practices/filler-words': `/${locale}/ai/build/filler-words`,
   };
 
@@ -1759,6 +1754,16 @@ function getDocsPages({
     .filter((page) => !existingUrls.has(page.url));
 
   return [...pages, ...endpointPages];
+}
+
+function isHiddenAiTenPage(url: string) {
+  return (
+    url === '/en/ai/build/architecture' ||
+    url === '/en/ai/create_asr_extension' ||
+    url === '/en/ai/create_tts_extension' ||
+    url === '/en/ai/get-started/_shared-mdx-fixture' ||
+    url.startsWith('/en/ai/ten-agent/')
+  );
 }
 
 function resolveDocsSidebarHeader({

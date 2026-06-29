@@ -1266,6 +1266,49 @@ describe('loadDocsSearchIndex', () => {
       '/en/ai/get-started/platform-split/android',
     );
   });
+
+  it('excludes hidden TEN pages from search entries while keeping the reference pages', async () => {
+    mockedGetPages.mockReturnValue([
+      createPage(),
+      {
+        ...createPage(),
+        data: {
+          ...createPage().data,
+          title: 'Architecture',
+        },
+        path: 'en/ai/build/architecture.mdx',
+        slugs: ['en', 'ai', 'build', 'architecture'],
+        url: '/en/ai/build/architecture',
+      },
+      {
+        ...createPage(),
+        data: {
+          ...createPage().data,
+          title: 'TEN Framework overview',
+        },
+        path: 'en/ai/ten-agent/framework-overview.mdx',
+        slugs: ['en', 'ai', 'ten-agent', 'framework-overview'],
+        url: '/en/ai/ten-agent/framework-overview',
+      },
+      {
+        ...createPage(),
+        data: {
+          ...createPage().data,
+          title: 'Create an ASR extension',
+        },
+        path: 'en/ai/reference/ten-agent/create-asr-extension.mdx',
+        slugs: ['en', 'ai', 'reference', 'ten-agent', 'create-asr-extension'],
+        url: '/en/ai/reference/ten-agent/create-asr-extension',
+      },
+    ]);
+
+    const pages = await loadDocsSearchIndex('en');
+    const urls = pages.map((page) => page.url);
+
+    expect(urls).not.toContain('/en/ai/build/architecture');
+    expect(urls).not.toContain('/en/ai/ten-agent/framework-overview');
+    expect(urls).toContain('/en/ai/reference/ten-agent/create-asr-extension');
+  });
 });
 
 describe('loadDocsPagePayload', () => {
@@ -2966,24 +3009,6 @@ Web body
 
   it('redirects moved AI docs pages to their new product paths', async () => {
     await expect(
-      loadDocsPagePayload('en', 'ai', ['build', 'code-first-architecture']),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/build/architecture',
-    });
-
-    await expect(
-      loadDocsPagePayload('en', 'ai', ['reference', 'code-first-architecture']),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/build/architecture',
-    });
-
-    await expect(
-      loadDocsPagePayload('en', 'ai', ['reference', 'architecture']),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/build/architecture',
-    });
-
-    await expect(
       loadDocsPagePayload('en', 'ai', ['build', 'event-types']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/reference/event-types',
@@ -3034,12 +3059,6 @@ Web body
                 {
                   $id: 'ai-build-folder',
                   children: [
-                    {
-                      $id: 'ai-build-architecture',
-                      name: 'Voice agent app architecture',
-                      type: 'page',
-                      url: '/en/ai/build/architecture',
-                    },
                     {
                       $id: 'ai-build-start-stop',
                       name: 'Start and stop an agent',

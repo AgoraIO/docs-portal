@@ -996,10 +996,10 @@ describe('DocsSidebarTree', () => {
           {
             children: [
               {
-                id: '/en/ai/build/architecture',
-                title: 'Voice agent app architecture',
+                id: '/en/ai/build/start-stop-agent',
+                title: 'Start and stop an agent',
                 type: 'page',
-                url: '/en/ai/build/architecture',
+                url: '/en/ai/build/start-stop-agent',
               },
               {
                 id: '/en/ai/build/filler-words',
@@ -1044,11 +1044,11 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/en/ai/build/architecture');
+    renderSidebarTree(tree, '/en/ai/build/start-stop-agent');
 
     expect(
       await screen.findByRole('link', {
-        name: 'Voice agent app architecture',
+        name: 'Start and stop an agent',
       }),
     ).toBeInTheDocument();
     expect(
