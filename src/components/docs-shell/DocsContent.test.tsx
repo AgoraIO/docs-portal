@@ -1412,9 +1412,47 @@ describe('DocsMainColumn', () => {
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
 
+  it('does not reserve an empty pager column when only one page link exists', async () => {
+    renderWithRouter(
+      <DocsMainColumn
+        next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
+      >
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+    const pager = within(footer).getByTestId('docs-pager');
+
+    expect(
+      within(pager).getByRole('link', { name: /Next Next Page/i }),
+    ).toHaveAttribute('href', '/en/introduction/next-page');
+    expect(
+      within(pager).queryByRole('link', { name: /Previous/i }),
+    ).not.toBeInTheDocument();
+    expect(pager).toHaveClass('grid-cols-1');
+    expect(pager).not.toHaveClass('sm:grid-cols-2');
+    expect(pager.children).toHaveLength(1);
+  });
+
   it('widens footer content in openapi layout', async () => {
     renderWithRouter(
       <DocsMainColumn layoutMode="openapi">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+
+    expect(footer).toHaveClass('max-w-none');
+    expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
+  });
+
+  it('widens footer content when the main content fills the shell width', async () => {
+    renderWithRouter(
+      <DocsMainColumn contentFillsWidth>
         <article>Body</article>
       </DocsMainColumn>,
     );

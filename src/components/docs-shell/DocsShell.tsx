@@ -380,6 +380,7 @@ export function DocsShell({
             resetKey={sidebarResetKey}
           />
           <DocsMainColumn
+            contentFillsWidth={contentFillsWidth}
             layoutMode={layoutMode}
             locale={currentLocale}
             next={next}
