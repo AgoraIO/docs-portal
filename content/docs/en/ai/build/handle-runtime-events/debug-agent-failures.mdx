@@ -1,24 +1,25 @@
 ---
 title: Debug agent failures
-description: Use toolkit callbacks, webhook events, and turn-level data to explain why an agent failed or behaved unexpectedly.
+description: Use toolkit callbacks, webhook events, and turn-level data to understand why an agent failed or behaved unexpectedly.
 ---
-When an agent session fails, "what happened" usually spans more than one signal. A useful debugging flow combines:
 
-- client callbacks for live reproduction
-- webhook events for durable backend records
-- turn-level data for post-session analysis
+When an agent session fails, the explanation may span more than one event. This page shows which events to check first and how to correlate them.
 
-This page shows which signals to check first and how to correlate them.
+A useful debugging flow combines:
 
-## Start with the right signal
+- Client callbacks for live reproduction
+- Webhook events for durable backend records
+- Turn-level data for post-session analysis
+
+## Start with the right event
 
 | Symptom | Check first | Then check |
 | --- | --- | --- |
 | The agent stopped unexpectedly | [`102 agent left`](/en/ai/reference/event-types#102-agent-left) | [`110 agent error`](/en/ai/reference/event-types#110-agent-error), [`101 agent joined`](/en/ai/reference/event-types#101-agent-joined) |
 | The agent reported a module failure during a live session | `onAgentError` | [`110 agent error`](/en/ai/reference/event-types#110-agent-error), `onDebugLog` or `DEBUG_LOG` |
-| The response was slow or degraded before failure | [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics) | [`Query conversation turn information`](../../api-reference/conversational-ai/rest-api/agent/turns) |
-| A specific turn failed | `turn_id` from `onAgentError` or `110` | [`Query conversation turn information`](../../api-reference/conversational-ai/rest-api/agent/turns) |
-| The UI looked wrong but the session did not fail | `onAgentStateChanged` and fine-grained state callbacks | `onDebugLog` or `DEBUG_LOG` |
+| The response was slow or degraded before failure | [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics) | [`Query conversation turn information`](/en/api-reference/conversational-ai/rest-api/agent/turns) |
+| A specific turn failed | `turn_id` from `onAgentError` or `110` | [`Query conversation turn information`](/en/api-reference/conversational-ai/rest-api/agent/turns) |
+| The UI displayed incorrect state but the session did not fail | `onAgentStateChanged` and fine-grained state callbacks | `onDebugLog` or `DEBUG_LOG` |
 
 ## Choose a debugging path
 
@@ -30,28 +31,27 @@ This page shows which signals to check first and how to correlate them.
 
 <TabsContent value="client-debug">
 
-Use the client path when you are reproducing the issue live:
+Use the client path when you are reproducing the issue live and the app must react immediately:
 
-- start with `onAgentError`
-- capture `onDebugLog` or `DEBUG_LOG`
-- inspect state changes such as `onAgentStateChanged`
-- use this path when the app needs to explain or react to the failure immediately
+- Start with `onAgentError`
+- Capture `onDebugLog` or `DEBUG_LOG`
+- Inspect state changes such as `onAgentStateChanged`
 
 </TabsContent>
 
 <TabsContent value="server-debug">
 
-Use the server path when the issue must be visible after the session:
+Use the server path when you need to investigate the issue after the session ends:
 
-- start with [`102 agent left`](/en/ai/reference/event-types#102-agent-left)
-- inspect [`110 agent error`](/en/ai/reference/event-types#110-agent-error)
-- review [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics)
-- query [`turns`](../../api-reference/conversational-ai/rest-api/agent/turns) when you need turn-level timing and completion data
+- Start with [`102 agent left`](/en/ai/reference/event-types#102-agent-left)
+- Inspect [`110 agent error`](/en/ai/reference/event-types#110-agent-error)
+- Review [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics)
+- Query [`turns`](/en/api-reference/conversational-ai/rest-api/agent/turns) when you need turn-level timing and completion data
 
 </TabsContent>
 </Tabs>
 
-## Enable the signals before you debug
+## Enable events before you debug
 
 For client-side runtime debugging, start the agent with RTM and the relevant event outputs enabled:
 
@@ -68,7 +68,7 @@ For client-side runtime debugging, start the agent with RTM and the relevant eve
 }
 ```
 
-For backend debugging, configure [webhooks](webhooks) and subscribe to these event types:
+For backend debugging, configure [webhooks](webhooks) and subscribe to the following events:
 
 - `101 agent joined`
 - `102 agent left`
@@ -77,29 +77,29 @@ For backend debugging, configure [webhooks](webhooks) and subscribe to these eve
 
 ## Build a failure timeline
 
-For production debugging, this order usually gives the fastest explanation:
+In production, checking the events in the following order usually surfaces the cause fastest:
 
 1. Confirm the session existed with [`101 agent joined`](/en/ai/reference/event-types#101-agent-joined).
 2. Check how it ended with [`102 agent left`](/en/ai/reference/event-types#102-agent-left).
 3. Look for module failures in [`110 agent error`](/en/ai/reference/event-types#110-agent-error).
 4. Inspect latency and degradation in [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics).
-5. If the problem happened on a specific turn, query [`turns`](../../api-reference/conversational-ai/rest-api/agent/turns).
+5. If the problem happened on a specific turn, query [`turns`](/en/api-reference/conversational-ai/rest-api/agent/turns).
 
-This sequence helps separate "the agent ended badly" from "the agent was slow first and then failed".
+This sequence helps you separate a session that ended badly from one that slowed down first and then failed.
 
 ## Interpret the most important fields
 
 ### `102 agent left`
 
-Use this event to answer how the session ended:
+This event tells you how the session ended:
 
 - `status` tells you whether the session stopped normally or failed.
-- `message` explains why the session left, for example idle timeout or connection failure.
+- `message` explains why the session left, for example, idle timeout or connection failure.
 - `stop_ts` gives you the session end time for correlation.
 
 ### `110 agent error`
 
-Use this event to answer which module failed:
+This event tells you which module failed:
 
 - `errors[].module` tells you where the problem occurred, such as `llm`, `tts`, or `sip`.
 - `errors[].code` is the vendor-specific error code.
@@ -108,13 +108,13 @@ Use this event to answer which module failed:
 
 ### `111 agent metrics`
 
-Use this event to answer whether the session degraded before failure:
+This event tells you whether the session degraded before failure:
 
-- track latency trends for LLM and TTS
-- compare healthy and failed sessions by `labels`
-- isolate whether the problem is model-side, telephony-side, or client-perceived only
+- Track latency trends for LLM and TTS
+- Compare healthy and failed sessions by `labels`
+- Isolate whether the problem is model-side, telephony-side, or client-perceived only
 
-For performance-focused analysis, also see [Optimize conversation latency](../best-practices/optimize-latency).
+For performance-focused analysis, also see [Optimize conversation latency](/en/ai/best-practices/optimize-latency).
 
 ## Correlate client and server records
 
@@ -124,16 +124,14 @@ When you combine local reproduction with backend evidence, match records by:
 - `name`
 - `channel`
 - `turn_id`
-- `labels`
-
-`labels` are useful when debugging by tenant, environment, campaign, or experiment.
+- `labels` (useful when debugging by tenant, environment, campaign, or experiment)
 
 ## Recommended debugging workflow
 
 1. Reproduce the issue with toolkit callbacks enabled in the client.
 2. Capture `onAgentError`, `onDebugLog`, or `DEBUG_LOG` during the live session.
 3. Confirm the same session in webhook data with `101`, `102`, `110`, and `111`.
-4. If needed, query [`turns`](../../api-reference/conversational-ai/rest-api/agent/turns) for per-turn timing and completion data.
+4. If needed, query [`turns`](/en/api-reference/conversational-ai/rest-api/agent/turns) for per-turn timing and completion data.
 5. Group repeated failures by `labels` to decide whether the issue is session-specific or systemic.
 
 ## Related resources
@@ -143,4 +141,4 @@ When you combine local reproduction with backend evidence, match records by:
 - [Listen to agent runtime events on client apps](event-notifications)
 - [Receive agent runtime events on your server](webhooks)
 - [Notification event types](/en/ai/reference/event-types)
-- [Query conversation turn information](../../api-reference/conversational-ai/rest-api/agent/turns)
+- [Query conversation turn information](/en/api-reference/conversational-ai/rest-api/agent/turns)
