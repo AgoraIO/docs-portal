@@ -1,11 +1,20 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+const docsFile = (relativePath: string) => resolve(process.cwd(), relativePath);
+const cloudProxyFile = docsFile(
+  'content/docs/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy.mdx',
+);
 const files = [
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/authenticate-users/authentication-workflow.mdx',
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute.mdx',
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy.mdx',
+  docsFile(
+    'content/docs/en/realtime-media/video/build/authenticate-users/authentication-workflow.mdx',
+  ),
+  docsFile(
+    'content/docs/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute.mdx',
+  ),
+  cloudProxyFile,
 ];
 
 describe('video complex build pages', () => {
@@ -22,8 +31,7 @@ describe('video complex build pages', () => {
   }
 
   it('cloud-proxy avoids CodeBlockTabs inside the web platform section', () => {
-    const file =
-      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy.mdx';
+    const file = cloudProxyFile;
     const content = readFileSync(file, 'utf8');
 
     expect(content).not.toContain(

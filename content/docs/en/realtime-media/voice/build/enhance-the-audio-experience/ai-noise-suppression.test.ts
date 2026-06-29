@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
@@ -7,8 +8,10 @@ import { remarkPlatformContent } from '@/lib/platforms/remark-platform-content';
 
 describe('voice ai-noise-suppression platforms', () => {
   it('includes the migrated voice platforms from legacy docs', async () => {
-    const file =
-      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/voice/build/enhance-the-audio-experience/ai-noise-suppression.mdx';
+    const file = resolve(
+      process.cwd(),
+      'content/docs/en/realtime-media/voice/build/enhance-the-audio-experience/ai-noise-suppression.mdx',
+    );
     const content = readFileSync(file, 'utf8');
 
     const compiled = String(
