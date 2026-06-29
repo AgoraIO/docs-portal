@@ -2776,7 +2776,7 @@ function startBasicLiveStreaming() {
 startBasicLiveStreaming();
 ```
 
-### Create a user interface​
+### Create a user interface
 
 Open `index.html` in the project's root folder and replace the contents with the following code to implement a basic client user interface:
 
@@ -4563,8 +4563,8 @@ The following figure illustrates the essential steps:
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
-### Import package​s
-Import the following package​s in your dart file.
+### Import packages
+Import the following packages in your dart file.
 
 ```dart
 import 'dart:async';
@@ -4710,7 +4710,7 @@ Widget _remoteVideo() {
 }
 ```
 
-### Handle permissions​
+### Handle permissions
 
 Request microphone and camera permissions for Interactive Live Streaming.
 
@@ -6025,7 +6025,7 @@ To manage and display the list of remote users connected to a channel, use the `
   ))}
   ```
 
-### Leave the channel​
+### Leave the channel
 
 To leave a channel, destroy the component, close the browser window, or refresh the browser tab. The `useJoin` hook automatically handles the destruction of the React component.
 
@@ -6302,7 +6302,7 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
 
   In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
 
-### Import Agora classes​
+### Import Agora classes
 
 Import the `Agora.Rtc` namespace, which contains various classes and interfaces required to implement real-time audio and video functions.
 
@@ -7164,7 +7164,7 @@ The Video SDK provides an interface for subscribing to channel events. To use it
   }
   ```
 
- ### Handle permissions​
+ ### Handle permissions
 
 To access the camera and microphone, follow the steps for your target platform:
 
@@ -7771,7 +7771,7 @@ This section guides you through the implementation of basic real-time audio and 
 
     ![image](/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
-### Implement basic processes​
+### Implement basic processes
 In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Interactive Live Streaming logic:
 
 ![image](/images/video-sdk/quickstart-implementation-blueprint-2.png)
@@ -7811,7 +7811,7 @@ Set up the user interface:
 \* Native nodes are nodes that come with the blueprint and can be added and called directly.<br/>
 \** Custom nodes are not included in the blueprint. You create a custom function before you can add the corresponding node.
 
-### Add channel-related variables​
+### Add channel-related variables
 Add variables to create an engine instance and join a channel.
 
 1. Create three variables:
@@ -7822,7 +7822,7 @@ Add variables to create an engine instance and join a channel.
 
     ![image](/images/video-sdk/quickstart-implementation-blueprint-4.png)
 
-### Initialize RTC engine​
+### Initialize RTC engine
 
 1. If your target platform is Android, check whether system permissions have been granted before initializing the RTC engine. Refer to the following figure to create nodes for adding permissions to access the microphone and camera in the **CheckPermission** function.
 
@@ -7891,7 +7891,7 @@ Add variables to create an engine instance and join a channel.
 
     2. Connect to the **RtcEngineContext** configuration `IRtcEngine` instance and select **Channel Profile** as `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
-### Bind UI events​
+### Bind UI events
 
 To bind UI events:
 
@@ -7919,7 +7919,7 @@ To bind UI events:
 :::note
 You can also bind UI events in Unreal Motion Graphics (UMG). This document only shows binding using the **Bind UIEvent Function**.
 :::
-### Set up local and remote views​
+### Set up local and remote views
 
 1. Create and implement the **MakeVideoView** function to load the view when local or remote users join the channel:
 
@@ -7937,7 +7937,7 @@ You can also bind UI events in Unreal Motion Graphics (UMG). This document only 
   1. Release the local view.
   1. Release the remote view.
 
-### Implement callback function​
+### Implement callback function
 
 Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback functions as follows:
 
@@ -7957,7 +7957,7 @@ Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUs
 
     ![Remote User Leave Channel Callback](/images/video-sdk/quickstart-implementation-blueprint-16.png)
 
-### Leave the channel and release resources​
+### Leave the channel and release resources
 
 To leave the channel, implement the following steps:
 

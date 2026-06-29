@@ -61,7 +61,7 @@ To simulate a client receiving data in a browser, use the Agora Web demo.
 
 ## Receive media streams from the client
 
-This section  uses the `sample_receive_h264_pcm` project to demonstrate receiving media streams from the client.
+This section uses the `sample_receive_h264_pcm` project to demonstrate receiving media streams from the client.
 
 ### Run the sample
 

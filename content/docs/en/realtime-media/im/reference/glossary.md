@@ -5,9 +5,9 @@ description: "A list of terms used in Agora documentation."
 
 ## A
 
-### 
+### Agora Analytics
 
- is a site for developers to track and analyze the usage and quality of calls.
+Agora Analytics is a site for developers to track and analyze the usage and quality of calls.
 
 ### Agora Cloud Backup
 
@@ -49,15 +49,15 @@ The audio route is the pathway audio data takes through audio hardware component
 
 ### Callee
 
-A callee is a  user who receives a [call invitation](#call-invitation).
+A callee is a Signaling user who receives a [call invitation](#call-invitation).
 
 ### Caller
 
-A caller is an  user who sends a [call invitation](#call-invitation).
+A caller is a Signaling user who sends a [call invitation](#call-invitation).
 
-###  Call invitation
+### Call invitation
 
-Call invitation is a communication protocol based on the peer-to-peer messaging functionality of the Agora  SDK. Call invitation supports starting, ending, accepting, and refusing calls.
+Call invitation is a communication protocol based on the peer-to-peer messaging functionality of the Agora Signaling SDK. Call invitation supports starting, ending, accepting, and refusing calls.
 
 ### Channel
 
@@ -65,23 +65,23 @@ In Agora's platform, a channel is a way of grouping users together and is identi
 
 ### Channel attribute
 
-Channel attributes are tags added to  channels, including the property name, property value, the ID of the last  user who updated the attribute, and the time of the last update.
+Channel attributes are tags added to Signaling channels, including the property name, property value, the ID of the last Signaling user who updated the attribute, and the time of the last update.
 
 ### Channel message
 
-A channel message is a message that a  user sends to all  users in a channel.
+A channel message is a message that a Signaling user sends to all Signaling users in a channel.
 
 ### Channel profile
 
 The channel profile is a configuration that Agora uses to apply optimized algorithms for different real-time use-cases.
 
-### 
+### Cloud proxy
 
- is a proxy service that enables users to connect to Agora services through a firewall by using fixed IP addresses.
+Cloud proxy is a proxy service that enables users to connect to Agora services through a firewall by using fixed IP addresses.
 
-### 
+### Cloud Recording
 
- is a component provided by Agora for recording and saving voice and video calls and interactive streaming on a third-party cloud storage through RESTful APIs.
+Cloud Recording is a component provided by Agora for recording and saving voice and video calls and interactive streaming on a third-party cloud storage through RESTful APIs.
 
 ### Co-hosting
 
@@ -105,9 +105,9 @@ Custom source is the process where an app captures raw data by itself.
 
 In real-time audio and video communication, delay refers to the time elapsed from when the data is sent to when it is received.
 
-###  Dual-stream mode
+### Dual-stream mode
 
-In the dual-stream mode, the  simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low bitrate video stream.
+In the dual-stream mode, the Video SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low bitrate video stream.
 
 ## F
 
@@ -137,11 +137,11 @@ Individual recording mode records audio and video of each UID as separate files.
 
 ### Inject online media stream
 
-Inject online media stream refers to injecting an online media stream in an Interactive Live Streaming channel to share the stream with all users in the channel. The Agora  provides a method for developers to inject an online mixed audio and video stream or an audio only stream to a channel.
+Inject online media stream refers to injecting an online media stream in an Interactive Live Streaming channel to share the stream with all users in the channel. The Agora Video SDK provides a method for developers to inject an online mixed audio and video stream or an audio only stream to a channel.
 
 ### Interactive Live Streaming
 
-Enabled by either Agora’s  or , Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
+Enabled by either Agora’s Video SDK or Voice SDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
 
 ## J
 
@@ -167,15 +167,15 @@ In dual-stream mode, the SDK transmits two video streams of differing quality at
 
 ### MediaPlayer kit
 
-The mediaplayer kit is a plug-in of the  to play local and online media resources and publish the media streams to other users in an Interactive Live Streaming channel.
+The mediaplayer kit is a plug-in of the Video SDK to play local and online media resources and publish the media streams to other users in an Interactive Live Streaming channel.
 
 ### Media stream
 
 A media stream is an object that contains media data.
 
-### 
+### Media Push
 
- enables you to upload audio and video streams from Agora channels and upload them to a Content Delivery Network (CDN) to reach a larger audience.
+Media Push enables you to upload audio and video streams from Agora channels and upload them to a Content Delivery Network (CDN) to reach a larger audience.
 
 ### Mirror
 
@@ -185,19 +185,19 @@ Mirroring is an effect that a video image renders.
 
 ### Offline
 
-Offline describes the status of an  user who has successfully logged out of .
+Offline describes the status of a Signaling user who has successfully logged out of Signaling.
 
 ### Offline message
 
-An offline message is a peer-to-peer message that an online  user sends to an offline  user.
+An offline message is a peer-to-peer message that an online Signaling user sends to an offline Signaling user.
 
 ### Online
 
-Online describes the status of a user who has successfully logged in to the Agora  system or stays disconnected from the Agora  system for more than 30 seconds.
+Online describes the status of a user who has successfully logged in to the Agora Signaling system or stays disconnected from the Agora Signaling system for more than 30 seconds.
 
-### 
+### On-Premise Recording
 
- is a component provided by Agora for recording and saving voice and video calls and interactive streaming on a Linux server.
+On-Premise Recording is a component provided by Agora for recording and saving voice and video calls and interactive streaming on a Linux server.
 
 ## P
 
@@ -207,11 +207,11 @@ Packet loss refers to the data packets transmitted on the network failing to arr
 
 ### Peer-to-peer message
 
-A peer-to-peer message is a message that an online  user sends to an online or offline user.
+A peer-to-peer message is a message that an online Signaling user sends to an online or offline user.
 
 ### Publish
 
-Publishing is the action of sending the user's audio and/or video data to the channel. 
+Publishing is the action of sending the user's audio and/or video data to the channel.
 
 ## R
 
@@ -221,21 +221,21 @@ Raw data, including raw audio data and raw video data, is the unprocessed data w
 
 ### Render the first video frame
 
-Rendering the first video frame is the action of rendering the first video frame on the local device. 
+Rendering the first video frame is the action of rendering the first video frame on the local device.
 
 ## S
 
 ### Agora SDRTN®
 
- is a real-time transmission network built by Agora and is the only network infrastructure specifically designed for real-time communications in the world.
+Agora SDRTN is a real-time transmission network built by Agora and is the only network infrastructure specifically designed for real-time communications in the world.
 
-###  SDK
+### Chat SDK
 
-You use the  SDK to implement real-time messaging use-cases that require low latency and high concurrency for a global audience.
+You use the Chat SDK to implement real-time messaging use-cases that require low latency and high concurrency for a global audience.
 
 ### Slice
 
-Slicing means cutting recorded audio or video into separate files according to specific rules. During an Agora , the recording service cuts the streams and generates multiple slice files (TS or WebM files) and M3U8 files that serve as a playlist of the slice files.
+Slicing means cutting recorded audio or video into separate files according to specific rules. During Agora Cloud Recording, the recording service cuts the streams and generates multiple slice files (TS or WebM files) and M3U8 files that serve as a playlist of the slice files.
 
 ### Sound localization
 
@@ -251,7 +251,7 @@ Stream mixing means combining multiple media streams into one. It may include th
 
 ### Subscribe
 
-In the Agora , subscribing is the action of receiving media streams published to the channel. In the Agora  SDK, subscribing is the action of monitoring the online status of one or multiple  users.
+In the Agora Video SDK, subscribing is the action of receiving media streams published to the channel. In the Agora Signaling SDK, subscribing is the action of monitoring the online status of one or multiple Signaling users.
 
 ## T
 
@@ -261,7 +261,7 @@ TCP (Transmission Control Protocol) is a connection-oriented and reliable transp
 
 ### Token
 
-A token, also known as a dynamic key, is used for authentication when an app user joins an channel or logs onto the Agora .
+A token, also known as a dynamic key, is used for authentication when an app user joins a channel or logs in to Agora Signaling.
 
 ### Transcoding
 
@@ -275,15 +275,15 @@ UDP (User Datagram Protocol) is a connectionless-oriented and unreliable transpo
 
 ### User attribute
 
-User attributes are tags added to  users, including property names and property values.
+User attributes are tags added to Signaling users, including property names and property values.
 
 ### User ID (uid)
 
-In the Agora , a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback. 
+In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback.
 
-In the Agora  SDK, a user ID identifiers a user in . 
+In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
-The user ID in the Agora  and the Agora  SDK are independent of each other.
+The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
 
 ### User role
 
@@ -293,7 +293,7 @@ The type of user role determines whether the user in the channel has streaming p
 
 ### Video layout
 
-Video layout arranges the display of users when multiple users are mixed into one stream, such as in Media Push or a composite recording. 
+Video layout arranges the display of users when multiple users are mixed into one stream, such as in Media Push or a composite recording.
 
 ### Video mixing
 
@@ -301,15 +301,15 @@ Video mixing means combining multiple video streams into one.
 
 ### Video profile
 
-The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate. 
+The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate.
 
-### 
+### Video SDK
 
-An SDK developed by Agora to enable developers to add real-time audio interaction to their projects.
+An SDK developed by Agora to enable developers to add real-time audio and video interaction to their projects.
 
-### 
+### Voice SDK
 
-Agora provides the  to enable real-time audio communication.
+Agora provides the Voice SDK to enable real-time audio communication.
 
 ## W
 

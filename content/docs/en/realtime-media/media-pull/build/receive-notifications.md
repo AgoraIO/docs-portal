@@ -40,7 +40,7 @@ In order to handle notifications for the events you subscribe to, you need to:
 
 Once Notifications is enabled, Agora SDRTN<sup>®</sup> sends notification callbacks as `HTTPS POST` requests to your webhook when events that you are subscribed to occur. The data format of the requests is JSON, the character encoding is `UTF-8`, and the signature algorithm is `HMAC/SHA1` or `HMAC/SHA256`.
 
-For Notifications, a webhook is an endpoint on an `HTTPS` server that handles these requests. In a production environment you write this in your web infrastructure, for development purposes best practice is to create a simple local server and use a service such as [ngrok](https://ngrok.com/download) to supply a public URL that you register with  Agora SDRTN<sup>®</sup> when you enable Notifications.
+For Notifications, a webhook is an endpoint on an `HTTPS` server that handles these requests. In a production environment you write this in your web infrastructure, for development purposes best practice is to create a simple local server and use a service such as [ngrok](https://ngrok.com/download) to supply a public URL that you register with Agora SDRTN<sup>®</sup> when you enable Notifications.
 
 To do this, take the following steps:
 
@@ -268,10 +268,10 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
 ### Add signature verification
 
-To communicate securely between Notifications and your webhook,  Agora SDRTN<sup>®</sup>  uses signatures for identity verification as follows:
+To communicate securely between Notifications and your webhook, Agora SDRTN<sup>®</sup>  uses signatures for identity verification as follows:
 
-1. When you configure Notifications in Agora Console,  Agora SDRTN<sup>®</sup>  generates a secret you use for verification.
-2. When sending a notification,  Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
+1. When you configure Notifications in Agora Console, Agora SDRTN<sup>®</sup>  generates a secret you use for verification.
+2. When sending a notification, Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
 3. When your server receives a callback, you can verify `Agora-Signature` or `Agora-Signature-V2`:
 
     * To verify `Agora-Signature`, use the secret, the raw request body, and the `crypto/sha1` algorithm.

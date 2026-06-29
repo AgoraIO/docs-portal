@@ -235,7 +235,7 @@ In the diagram:
 
 - **T6**: The SDK triggers `AgoraRTCClient.on("connection-state-change")` callback to report "RECONNECTING" during automatic reconnection.
 
-- **T7**:  If the Agora server does not receive the audio/video packet from `UID 1` for 10 consecutive seconds, the server determines that `UID 1` no longer publishes audio/video, and `UID 2` will receive `AgoraRTCClient.on("user-unpublished")` callback.
+- **T7**: If the Agora server does not receive the audio/video packet from `UID 1` for 10 consecutive seconds, the server determines that `UID 1` no longer publishes audio/video, and `UID 2` will receive `AgoraRTCClient.on("user-unpublished")` callback.
 
 - **T8**: If the Agora server does not receive a heartbeat packet from `UID 1` for 20 consecutive seconds, the server determines that `UID 1` is offline, and `UID 2` will receive the `AgoraRTCClient.on("user-left")` callback.
 

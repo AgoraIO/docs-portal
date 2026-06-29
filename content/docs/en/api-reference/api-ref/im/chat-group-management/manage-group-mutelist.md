@@ -58,9 +58,9 @@ Authorization: Bearer ${YourAppToken}
 
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
-## Muting a  member
+## Muting a group member
 
-Adds a  member to the group mute list. Once muted, members cannot send messages in the  or in any threads within the .
+Adds a group member to the group mute list. Once muted, members cannot send messages in the group or in any threads within the group.
 
 ### HTTP request
 
@@ -89,7 +89,7 @@ For other parameters and detailed descriptions, see [Common parameters](#param).
 | Parameter | Type | Description | Required |
 | :------------ | :---- | :------------------------ | :------- |
 | `mute_duration` | Long | The duration in which the specified member is muted, in milliseconds. | Yes |
-| `usernames` | Array | The user IDs to be added to the  mute list. You can pass in a maximum of 60 user IDs. | Yes |
+| `usernames` | Array | The user IDs to be added to the group mute list. You can pass in a maximum of 60 user IDs. | Yes |
 
 ### HTTP response
 
@@ -99,9 +99,9 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :------ | :------------------------------------------ |
-| `result` | Boolean | Whether the  member is successfully added to the mute list.`true`: Success`false`: Failure |
+| `result` | Boolean | Whether the group member is successfully added to the mute list.`true`: Success`false`: Failure |
 | `expire` | Long | The Unix timestamp when the mute state expires, in milliseconds. |
-| `user` | String | The user ID of the muted  member.|
+| `user` | String | The user ID of the muted group member.|
 
 For other fields and descriptions, see [Common parameter](#param).
 
@@ -135,9 +135,9 @@ curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Unmuting a  member
+## Unmuting a group member
 
-Removes the specified user from the  mute list. Once removed from the mute list, a member can once again send messages in the  and in the threads within the .
+Removes the specified user from the group mute list. Once removed from the mute list, a member can once again send messages in the group and in the threads within the group.
 
 ### HTTP request
 
@@ -150,7 +150,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute/{member_i
 | Parameter | Type | Description | Required |
 | :-------- | :----- | :----------------------------------------------------------- | :------- |
 | `group_id` | String | The group ID. | Yes |
-| `member_id` | String | The user ID of a group member to be removed from the  mute list. You can pass in a maximum of 60 user IDs that are separated by comma (,). For example, `{member1}, {member2}`. | Yes |
+| `member_id` | String | The user ID of a group member to be removed from the group mute list. You can pass in a maximum of 60 user IDs that are separated by comma (,). For example, `{member1}, {member2}`. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -205,7 +205,7 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 
 ## Retrieving the mute list
 
-Retrieves the mute list of the .
+Retrieves the mute list of the group.
 
 ### HTTP request
 
@@ -270,9 +270,9 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
 }
 ```
 
-## Muting all  members
+## Muting all group members
 
-This method mutes all the  members. If this method call succeeds, none of the  members can send messages in the  or in any threads within the , except those in the group [allow list](./manage-group-allowlist). As the mute does not expire in a certain period, you need to call the API of unmuting all  members to stop muting them.
+This method mutes all the group members. If this method call succeeds, none of the group members can send messages in the group or in any threads within the group, except those in the group [allow list](./manage-group-allowlist). As the mute does not expire in a certain period, you need to call the API of unmuting all group members to stop muting them.
 
 ### HTTP request
 
@@ -284,7 +284,7 @@ POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -303,7 +303,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :----- | :---------------------------- |
-| `data.mute`| Boolean | Whether all the  members are muted.`true`: Yes.`false`: No. |
+| `data.mute`| Boolean | Whether all the group members are muted.`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameter](#param).
 
@@ -335,9 +335,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Unmuting all  members
+## Unmuting all group members
 
-This method unmutes all the  members. Once unmuted, the  members can once again send messages in the  and in the threads within the .
+This method unmutes all the group members. Once unmuted, the group members can once again send messages in the group and in the threads within the group.
 
 ### HTTP request
 
@@ -349,7 +349,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -368,7 +368,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :----- | :---------------------------- |
-| `result`| Boolean | Whether all the  members are unmuted.`true`: Yes.`false`: No. |
+| `result`| Boolean | Whether all the group members are unmuted.`true`: Yes.`false`: No. |
 
 For other fields and descriptions, see [Common parameter](#param).
 

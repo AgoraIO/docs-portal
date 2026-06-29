@@ -36,7 +36,7 @@ The information on this page only applies to `AccessToken2`. If you are still us
 
 ## Token generation code
 
-Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages ​​to generate tokens on your own server using the `HMAC-SHA256` algorithm:
+Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages to generate tokens on your own server using the `HMAC-SHA256` algorithm:
 
 | Language | Core Method         | Sample Code          |
 |:---------|:--------------------|:---------------------|
@@ -295,11 +295,11 @@ The code samples presented on this page use an integer user ID to generate a tok
 ### Advanced authentication features
 This section presents advanced functions related to token authentication.
 
-- [Wildcard token​s](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
+- [Wildcard tokens](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
 
 - [Co-host token authentication](#co-host-token-authentication): Enable fine-grained control to ensure only authorized users can publish streams.
 
-#### Generate wildcard token​s
+#### Generate wildcard tokens
 In use-cases where users need to join multiple channels, or frequently switch between channels, they need to request a new token from the token server, each time they join a channel. To solve the problem of frequently requesting tokens when switching channels, Agora enables you to generate wildcard tokens that set the user ID or channel name as a wildcard. Users reuse the same wildcard token to join different channels, which speeds up the process of switching and joining channels. It also helps reduce the pressure on your token server.
 
 :::info[Information]
@@ -354,7 +354,7 @@ See the [API reference](#api-reference) for detailed parameter descriptions.
 
 #### Generate a token with advanced permissions
 
-Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) ​​to generate tokens with advanced permissions:
+Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) to generate tokens with advanced permissions:
 
 | Language | Core Method         | Sample Code          |
 |:---------|:--------------------|:---------------------|
@@ -721,7 +721,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
     }
     ```
 
-### Deploy with Docker​
+### Deploy with Docker
 
 Refer to the following steps to deploy a Docker-based token generator locally:
 

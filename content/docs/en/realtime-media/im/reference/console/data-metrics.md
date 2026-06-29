@@ -17,7 +17,7 @@ The number of newly registered users under this project today (00:00 – current
 
 ### Daily active users (DAU)
 
-The number of users who log in or send or receive messages today (00:00 – current time).  A user connected through multiple devices is regarded as one active user.
+The number of users who log in or send or receive messages today (00:00 – current time). A user connected through multiple devices is regarded as one active user.
 
 ### Monthly Max. DAU
 

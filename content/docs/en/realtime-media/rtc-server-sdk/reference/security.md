@@ -377,7 +377,7 @@ Use this list to quickly check what measures you have or have not taken to best 
 3. [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
 5. Set the token expiration date to a reasonable time. See [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
-6. If needed, contact  support@agora.io to enable token privilege and set token per role.
+6. If needed, contact support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.
 9. Pass the channel encryption key (secret) securely outside of Agora engine to authenticated endpoints that are allowed to join the channel.

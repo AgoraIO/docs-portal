@@ -115,7 +115,7 @@ For a project listed on the **Projects** page, you can do the following:
 
 -  View basic information, such as the last updated and created dates, name, and security status.
 
--  Copy the  App ID of the project.
+-  Copy the App ID of the project.
 
 -  Click the pencil icon to open the project details page, where you can configure **Project Name**, copy **App Certificate** and **App ID**, and generate a **Temporary Token**.
 

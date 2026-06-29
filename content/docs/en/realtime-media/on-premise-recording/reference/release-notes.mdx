@@ -58,7 +58,7 @@ v3.0.6 adds `Audio_Only_Record` and `Secondary_Recorder` in `cfgFilePath` to get
 - You can set the sample rate of the raw audio data in PCM format (`getAudioFrame` is 2 or 3) through the `cfgFilePath` parameter. See [Record a Call](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode) for details.
 
 - Optimize the sensitivity and accuracy of `onActiveSpeaker` and `onAudioVolumeIndication` callbacks.
-- You can call [mixedVideoAudio](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/structagora_1_1recording_1_1_recording_config.html#a9912a5fc16b3f0737290c618846d76a7)  to get a MP4 file after a composite recording or an individual recording without transcoding.
+- You can call [mixedVideoAudio](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/structagora_1_1recording_1_1_recording_config.html#a9912a5fc16b3f0737290c618846d76a7) to get a MP4 file after a composite recording or an individual recording without transcoding.
 
   | Earlier than v3.0.6                                          | v3.0.6 or later                                              |
   | :----------------------------------------------------------- | :----------------------------------------------------------- |
@@ -181,19 +181,19 @@ Supports the cloud proxy service. See [Use Cloud Proxy](/en/realtime-media/on-pr
 
 ##### Channel events
 
-- [onRejoinChannelSuccess](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a210d1e225415eba95c8fa606ae0996ea)   Occurs when the recording server rejoins a channel.
-- [onConnectionStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a08d04dd3d5f82ca0ab9cdadff20367b0)   Occurs when the network connection state changes.
+- [onRejoinChannelSuccess](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a210d1e225415eba95c8fa606ae0996ea) Occurs when the recording server rejoins a channel.
+- [onConnectionStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a08d04dd3d5f82ca0ab9cdadff20367b0) Occurs when the network connection state changes.
 
 ##### Statistics events
 
-- [onRemoteVideoStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a427c17ccc456444159c977aeec04a895)   Reports the statistics of the video stream from each remote user/host.
-- [onRemoteAudioStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a151091f21f514baf78b005031b382f8b)   Reports the statistics of the audio stream from each remote user/host.
-- [onRecordingStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a870ab8a3d043f6c3910aa89121e83f33)   Reports the statistics of the recording session.
+- [onRemoteVideoStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a427c17ccc456444159c977aeec04a895) Reports the statistics of the video stream from each remote user/host.
+- [onRemoteAudioStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a151091f21f514baf78b005031b382f8b) Reports the statistics of the audio stream from each remote user/host.
+- [onRecordingStats](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a870ab8a3d043f6c3910aa89121e83f33) Reports the statistics of the recording session.
 
 ##### Media events
 
-- [onRemoteAudioStreamStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a6ba41d8f2ba7ccb06695ed6ef6037159)   Occurs when the state of a remote audio stream changes.
-- [onRemoteVideoStreamStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a98fe264a24974fb7b6ae46d2ddce3661)   Occurs when the state of a remote video stream changes.
+- [onRemoteAudioStreamStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a6ba41d8f2ba7ccb06695ed6ef6037159) Occurs when the state of a remote audio stream changes.
+- [onRemoteVideoStreamStateChanged](https://api-ref.agora.io/en/on-premise-recording-sdk/linux-cpp/3.x/classagora_1_1recording_1_1_i_recording_engine_event_handler.html#a98fe264a24974fb7b6ae46d2ddce3661) Occurs when the state of a remote video stream changes.
 
 #### Improvement
 

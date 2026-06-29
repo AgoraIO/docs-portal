@@ -789,7 +789,7 @@ chatClient.getSelfIdsOnOtherPlatform().then((res) => {
 
 Call `addEventHandler` to register listener events and listen to operations on other devices. After the server synchronizes information, the SDK will call back these events, and both the web end and other ends will receive notifications of friend and group-related operations.
 
-For these operations, multi-device events have the same name as the single-device events. The only difference is the `from` field in the event: It is the current user ID in multi-end multi-device events, and the operator ID in single-device events. See [Listen for chat group events​](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events) and [Listen for contact events](/en/realtime-media/im/build/build-core-messaging/contacts#listen-for-contact-events) for details.
+For these operations, multi-device events have the same name as the single-device events. The only difference is the `from` field in the event: It is the current user ID in multi-end multi-device events, and the operator ID in single-device events. See [Listen for chat group events](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups#listen-for-chat-group-events) and [Listen for contact events](/en/realtime-media/im/build/build-core-messaging/contacts#listen-for-contact-events) for details.
 
 In addition to friend and group events, the following events will trigger the `onMultiDeviceEvent` event:
 
@@ -1343,7 +1343,7 @@ ChatClient.getInstance()
 
 ### Force the specified account to log out from all devices
 
-Call `kickAllDevices` and pass in the user ID and user token to force the specified account to log out from all logged-in devices.  The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
+Call `kickAllDevices` and pass in the user ID and user token to force the specified account to log out from all logged-in devices. The logged-out device will receive the `ChatConnectEventListener#onUserDidLoginFromOtherDevice` event.
 
 :::info
 You can also use this interface without logging in.

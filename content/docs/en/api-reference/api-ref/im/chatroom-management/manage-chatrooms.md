@@ -3,7 +3,7 @@ title: "Manage chat rooms"
 description: "Shows how to manage chat rooms by calling Agora Chat RESTful APIs."
 ---
 
-This page shows how to manage s by calling Chat RESTful APIs, including adding, deleting, modifying, and retrieving s.  
+This page shows how to manage chat rooms by calling Chat RESTful APIs, including adding, deleting, modifying, and retrieving chat rooms.
 
 Before calling the following methods, ensure that you understand the frequency limit of calling Chat RESTful API calls described in [Limitations](../limitations#call-limit-of-server-sides).
 
@@ -59,9 +59,8 @@ Authorization: Bearer ${YourAppToken}
 In order to improve the security of the project, Agora uses a token (dynamic key) to authenticate users before they log in to the chat system. Chat RESTful APIs only support authenticating users using app tokens. For details, see [Authentication using App Token](/en/realtime-media/im/build/secure-access-and-authentication/authentication).
 
 <a id="creating-a-chat-room"></a>
-## Creating a 
-
-Creates a .
+## Creating a chat room
+Creates a chat room.
 
 ### HTTP request
 
@@ -87,11 +86,11 @@ The request body is a JSON object, which contains the following fields:
 
 | Field | Type | Description | Required |
 | :------------ | :--------- | :--------------------------------------- | :------- |
-| `name` | String | The  name which can contain a maximum of 128 characters. | Yes |
-| `description` | String | The  description which can contain a maximum of 512 characters. | Yes |
-| `maxusers` | Int | The maximum number of members (including the  owner) that can join a . The value range is [1,10,000], with `1000` as the default. To increase the upper limit, contact [support@agora.io](mailto:support@agora.io).  | No |
-| `owner` | String | The username of the  creator. | Yes |
-| `members` | JSONArray | The array of user IDs of regular  members and administrators, excluding the  owner. If you specify this parameter, remember to pass in at least one user ID. The number of user IDs in the array cannot exceed the value of `maxusers`.| No |
+| `name` | String | The chat room name which can contain a maximum of 128 characters. | Yes |
+| `description` | String | The chat room description which can contain a maximum of 512 characters. | Yes |
+| `maxusers` | Int | The maximum number of members (including the chat room owner) that can join a chat room. The value range is [1,10,000], with `1000` as the default. To increase the upper limit, contact [support@agora.io](mailto:support@agora.io).  | No |
+| `owner` | String | The username of the chat room creator. | Yes |
+| `members` | JSONArray | The array of user IDs of regular chat room members and administrators, excluding the chat room owner. If you specify this parameter, remember to pass in at least one user ID. The number of user IDs in the array cannot exceed the value of `maxusers`.| No |
 
 ### HTTP response
 
@@ -101,7 +100,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :--- | :----- | :-------------------------------------------------------------- |
-| `id` | String | The  ID. This is the unique identifier assigned to each  by the Chat service. |
+| `id` | String | The chat room ID. This is the unique identifier assigned to each chat room by the Chat service. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -134,9 +133,8 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Retrieving basic information of all s 
-
-Retrieves the basic information of all s under the app by page.
+## Retrieving basic information of all chat rooms
+Retrieves the basic information of all chat rooms under the app by page.
 
 ### HTTP request
 
@@ -152,11 +150,11 @@ For the parameters and detailed descriptions, see [Common parameters ](#param).
 
 | parameter| type   | describe             | Is it required?|
 | :------- | :----- | :------------------------ | :------- |
-| `limit`  | Number | The number of s expected to be fetched each time. The value range is [1,100], the default is `10`, This parameter is only required when fetching pages.  | No  |
-| `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns s of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all s in the app are retrieved. | No  |
+| `limit`  | Number | The number of chat rooms expected to be fetched each time. The value range is [1,100], the default is `10`, This parameter is only required when fetching pages.  | No  |
+| `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns chat rooms of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all chat rooms in the app are retrieved. | No  |
 
 :::info
- If neither is set in the request `limit` and `cursor`, before the server returns the first page of the  list 10 .
+If neither `limit` nor `cursor` is set, the server returns the first page of the chat room list with 10 chat rooms.
 :::
 
 #### Request header
@@ -174,10 +172,10 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------- |
-| `id` | String | The  ID. This is the unique identifier assigned to the  by the Chat. |
-| `name` | String | The  name. |
-| `owner` | String | The username of the  creator. |
-| `affiliations_count` | Number | The number of members (including the  creator) in the . |
+| `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat. |
+| `name` | String | The chat room name. |
+| `owner` | String | The username of the chat room creator. |
+| `affiliations_count` | Number | The number of members (including the chat room creator) in the chat room. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -211,11 +209,11 @@ For the parameters and detailed descriptions, see [Common parameters ](#param).
 
 | Parameter | Type | Description | Required |
 | :-------------- | :----- | :--------------------- | :------- |
-| `pagenum` | Number | The page number on which s are to be retrieved. | No |
-| `pagesize` | Number | The number of s to be retrieved each time. The value range is [1,1000], with `1000` as the default.| No |
+| `pagenum` | Number | The page number on which chat rooms are to be retrieved. | No |
+| `pagesize` | Number | The number of chat rooms to be retrieved each time. The value range is [1,1000], with `1000` as the default.| No |
 
 :::info
-If neither query parameter is specified, the server returns the 500 s that the user joined most recently.
+If neither query parameter is specified, the server returns the 500 chat rooms that the user joined most recently.
 :::
 
 #### Request header
@@ -233,8 +231,8 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Descriptions |
 | :----- | :----- | :---------------------------------------------------------------- |
-| `id` | String | The ID of the  that the user joins. This is the unique identifier assigned to each  by the Chat. |
-| `name` | String | The name of the  that the user joins.  |
+| `id` | String | The ID of the chat room that the user joins. This is the unique identifier assigned to each chat room by the Chat. |
+| `name` | String | The name of the chat room that the user joins.  |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -260,9 +258,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Retrieving detailed information of the specified s
+## Retrieving detailed information of the specified chat rooms
 
-Retrieves the detailed information of one or more specified s.
+Retrieves the detailed information of one or more specified chat rooms.
 
 ### HTTP request
 
@@ -274,7 +272,7 @@ GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
 
 | Parameter | Type | Description | Required |
 | :------------ | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `chatroom_id` | String | The  ID. The unique identifier assigned to each  by the Chat service. You can get the  ID from the response body of [Retrieve basic information of all s](#getall).When retrieving multiple s, type multiple chatroom IDs (`chatroom_id`) separated with the comma (,). A maximum of 100 s can be retrieved at one go.In the URL, "," needs to be escaped as "%2C". | Yes |
+| `chatroom_id` | String | The chat room ID. The unique identifier assigned to each chat room by the Chat service. You can get the chat room ID from the response body of [Retrieve basic information of all chat rooms](#getall).When retrieving multiple chat rooms, type multiple chatroom IDs (`chatroom_id`) separated with the comma (,). A maximum of 100 chat rooms can be retrieved at one go.In the URL, "," needs to be escaped as "%2C". | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -293,17 +291,17 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------------------- | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id` | String | The  ID. |
-| `name` | String | The  name. |
-| `description` | String | The  description. |
-| `membersonly` | Bool | Whether a user requesting to join the  requires approval from the  administrator.`true`: Yes`false`: No |
-| `allowinvites` | Bool | Whether to allow a  member to invite others to join the .`true`: A  member can invite others to join the .`false`: Only the  administrator can invite others to join the . |
-| `maxusers` | Int | The maximum number of members that can join the . |
-| `owner` | String | The username of the  creator. |
-| `created` | Number | The Unix timestamp (ms) when the  is created. |
-| `custom` | String | Custom information added during creation of the . |
-| `affiliations_count` | Number  | The number of members (including the  creator) in the . |
-| `affiliations` | JSONArray | The  member array, which contains the following fields:`owner`: The username of the  creator.`member`: The username of each  member. |
+| `id` | String | The chat room ID. |
+| `name` | String | The chat room name. |
+| `description` | String | The chat room description. |
+| `membersonly` | Bool | Whether a user requesting to join the chat room requires approval from the chat room administrator.`true`: Yes`false`: No |
+| `allowinvites` | Bool | Whether to allow a chat room member to invite others to join the chat room.`true`: A chat room member can invite others to join the chat room.`false`: Only the chat room administrator can invite others to join the chat room. |
+| `maxusers` | Int | The maximum number of members that can join the chat room. |
+| `owner` | String | The username of the chat room creator. |
+| `created` | Number | The Unix timestamp (ms) when the chat room is created. |
+| `custom` | String | Custom information added during creation of the chat room. |
+| `affiliations_count` | Number  | The number of members (including the chat room creator) in the chat room. |
+| `affiliations` | JSONArray | The chat room member array, which contains the following fields:`owner`: The username of the chat room creator.`member`: The username of each chat room member. |
 | `public` | Bool | It is a reserved parameter. You can safely ignore this parameter. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -376,9 +374,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Modifying  information
+## Modifying chat room information
 
-Modifies the information of the specified . You can only modify the `name`, `description`, and `maxusers` of a .
+Modifies the information of the specified chat room. You can only modify the `name`, `description`, and `maxusers` of a chat room.
 
 ### HTTP request
 
@@ -390,7 +388,7 @@ PUT https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
 
 | Parameter | Type | Description | Required |
 | :------------ | :----- | :------------------------------------------------------------------------------------------------------------ | :------- |
-| `chatroom_id` | String | The  ID. The unique identifier assigned to each  by the Chat service. You can get the  ID from the response body of [Retrieve basic information of all s](#getall). | Yes |
+| `chatroom_id` | String | The chat room ID. The unique identifier assigned to each chat room by the Chat service. You can get the chat room ID from the response body of [Retrieve basic information of all chat rooms](#getall). | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -408,9 +406,9 @@ The request body is a JSON object which only contains the following fields:
 
 | Field | Type | Description | Required |
 | :------------ | :----- | :------------------------------------------------- | :------- |
-| `name` | String | The  name. | No |
-| `description` | String | The  description. | No |
-| `maxusers` | Number | The maximum number of  members (including the  creator). | No |
+| `name` | String | The chat room name. | No |
+| `description` | String | The chat room description. | No |
+| `maxusers` | Number | The maximum number of chat room members (including the chat room creator). | No |
 
 ### HTTP response
 
@@ -420,9 +418,9 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :------------ | :--- | :---------------------------------------------------------------------------------------------- |
-| `groupname` | Bool | Whether the  name is successfully changed.`true`: Success`false`: Failure |
-| `description` | Bool | Whether the  description is successfully modified.`true`: Success`false`: Failure |
-| `maxusers` | Bool | Whether the maximum number of members that can join the  is successfully changed.`true`: Success`false`: Failure |
+| `groupname` | Bool | Whether the chat room name is successfully changed.`true`: Success`false`: Failure |
+| `description` | Bool | Whether the chat room description is successfully modified.`true`: Success`false`: Failure |
+| `maxusers` | Bool | Whether the maximum number of members that can join the chat room is successfully changed.`true`: Success`false`: Failure |
 
 If the returned HTTP status code is not `200`, the request failed. You can refer to [Status codes](#code) for possible reasons.
 
@@ -452,9 +450,8 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 }
 ```
 
-## Deleting the specified 
-
-Deletes the specified .  If the specified  does not exist, an error returns.
+## Deleting the specified chat room
+Deletes the specified chat room. If the specified chat room does not exist, an error returns.
 
 ### HTTP request
 
@@ -466,7 +463,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}
 
 | Parameter | Type | Description | Required |
 | :------------ | :----- | :----------------------------------------------------------------------------------------------------------- | :------- |
-| `chatroom_id` | String | The  ID. The unique identifier assigned to each  by the Chat service. You can get the  ID from the response body of [Retrieve basic information of all s](#getall). | Yes |
+| `chatroom_id` | String | The chat room ID. The unique identifier assigned to each chat room by the Chat service. You can get the chat room ID from the response body of [Retrieve basic information of all chat rooms](#getall). | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -485,8 +482,8 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :-------- | :----- | :---------------------------------------------------------------- |
-| `success` | Bool | Whether the  is successfully deleted.`true`: Success`false`: Failure |
-| `id` | String | The ID of the  that is deleted. |
+| `success` | Bool | Whether the chat room is successfully deleted.`true`: Success`false`: Failure |
+| `id` | String | The ID of the chat room that is deleted. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -521,9 +518,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 ```
 	
 
-## Retrieving a  announcement
+## Retrieving a chat room announcement
 
-Retrieves the announcement text for the specified .
+Retrieves the announcement text for the specified chat room.
 
 ### HTTP request
 
@@ -535,7 +532,7 @@ GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 
 | Parameter         | Type   | Required | Description                                                       |
 | :------------ | :----- | :------- | :--------------------------------------------------------- |
-| `chatroom_id` | String | Yes | The  ID. The unique identifier assigned to each  by the Chat service. You can get the  ID from the response body of [Retrieve basic information of all s](#getall). |
+| `chatroom_id` | String | Yes | The chat room ID. The unique identifier assigned to each chat room by the Chat service. You can get the chat room ID from the response body of [Retrieve basic information of all chat rooms](#getall). |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -552,7 +549,7 @@ The response body contains the following fields:
 
 | Parameter      | Type    | Description                                                       |
 | :-------- | :------ | :--------------------------------------------------------- |
-| data.announcement | String | The announcement text of the specified . |
+| data.announcement | String | The announcement text of the specified chat room. |
 
 ### Example
 
@@ -580,9 +577,8 @@ curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 }
 ```
 
-## Modifying the announce of a 
-
-Modifies the announcement text of the specified . The length cannot exceed 512 characters.
+## Modifying the announcement of a chat room
+Modifies the announcement text of the specified chat room. The length cannot exceed 512 characters.
 
 ### HTTP request
 
@@ -594,7 +590,7 @@ POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 
 | Parameter | Type | Description | Required |
 | :------------ | :----- | :----------------------------------------------------------------------------------------------------------- | :------- |
-| `chatroom_id` | String | The  ID. The unique identifier assigned to each  by the Chat service. You can get the  ID from the response body of [Retrieve basic information of all s](#getall). | Yes |
+| `chatroom_id` | String | The chat room ID. The unique identifier assigned to each chat room by the Chat service. You can get the chat room ID from the response body of [Retrieve basic information of all chat rooms](#getall). | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -619,8 +615,8 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Parameter      | Type    | Description                                                       |
 | :-------- | :------ | :--------------------------------------------------------- |
-| data.id | String | The  ID. |
-| data.result | Boolean | Whether the  announcement is successfully modified:  - `true`: Success - `false`: Failure |
+| data.id | String | The chat room ID. |
+| data.result | Boolean | Whether the chat room announcement is successfully modified:  - `true`: Success - `false`: Failure |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

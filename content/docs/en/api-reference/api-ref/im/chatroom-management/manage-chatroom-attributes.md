@@ -60,7 +60,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Set custom attributes
 
-Adds new custom  attributes or modifies existing ones set by the current user.
+Adds new custom attributes or modifies existing ones set by the current user.
 
 :::info
 This method is only used to modify the existing key-value pairs set by the current user. To perform the overwrite operation, see [Forcibly set custom attributes](overwrite).
@@ -88,8 +88,8 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Type   | Required | Description                          |
 | :------------ | :----- | :------- | :------ |
-| `metaData`  | JSON | Yes  | The custom attributes that are stored as a collection of key-value pairs in the format `Map`. Keys in a map are unique attribute names that map to the corresponding attribute values. Note the following limitations: Each  can have a maximum of 100 custom attributes.The size of all custom attributes in an app can be a maximum of 10 GB.Each map can contain a maximum of 10 key-value pairs.Each key can contain a maximum of 128 characters.Each value can contain a maximum of 4,096 characters. The following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"_", "-", "." |
-| `autoDelete` | String | No  | Whether to automatically delete the custom attributes set by a  member when this member leaves the :(Default) `DELETE`: Delete the custom attributes. `NO_DELETE`: Do not delete the custom attributes. |
+| `metaData`  | JSON | Yes  | The custom attributes that are stored as a collection of key-value pairs in the format `Map`. Keys in a map are unique attribute names that map to the corresponding attribute values. Note the following limitations: Each chat room can have a maximum of 100 custom attributes.The size of all custom attributes in an app can be a maximum of 10 GB.Each map can contain a maximum of 10 key-value pairs.Each key can contain a maximum of 128 characters.Each value can contain a maximum of 4,096 characters. The following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"_", "-", "." |
+| `autoDelete` | String | No  | Whether to automatically delete the custom attributes set by a chat room member when this member leaves the chat room:(Default) `DELETE`: Delete the custom attributes. `NO_DELETE`: Do not delete the custom attributes. |
 
 ### HTTP response
 
@@ -134,7 +134,7 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H
 
 ## Retrieve custom attributes
 
-Retrieves the specified custom attributes of a .
+Retrieves the specified custom attributes of a chat room.
 
 ### HTTP request
 
@@ -158,7 +158,7 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Type   | Required | Description                          |
 | :------------ | :----- | :------- | :------ |
-| `keys`        | Array | No    | The keys of the custom attributes to retrieve. If you pass an empty array to this parameter, all custom attributes of the specified  are returned.  |
+| `keys`        | Array | No    | The keys of the custom attributes to retrieve. If you pass an empty array to this parameter, all custom attributes of the specified chat room are returned.  |
 
 ### HTTP response
 
@@ -294,8 +294,8 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Type   | Required | Description                          |
 | :------------ | :----- | :------- | :------ |
-| `metaData`  | JSON | Yes  | The custom attributes that are stored as a collection of key-value pairs in the format `Map`. Keys in a map are unique attribute names that map to the corresponding attribute values. Note the following limitations: Each  can have a maximum of 100 custom attributes.The size of all custom attributes in an app can be a maximum of 10 GB.Each map can contain a maximum of 10 key-value pairs.Each key can contain a maximum of 128 characters.Each value can contain a maximum of 4,096 characters. The following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"_", "-", "." |
-| `autoDelete` | String | No  | Whether to automatically delete the custom attributes set by a  member when this member leaves the :(Default) `DELETE`: Delete the custom attributes. `NO_DELETE`: Do not delete the custom attributes. |
+| `metaData`  | JSON | Yes  | The custom attributes that are stored as a collection of key-value pairs in the format `Map`. Keys in a map are unique attribute names that map to the corresponding attribute values. Note the following limitations: Each chat room can have a maximum of 100 custom attributes.The size of all custom attributes in an app can be a maximum of 10 GB.Each map can contain a maximum of 10 key-value pairs.Each key can contain a maximum of 128 characters.Each value can contain a maximum of 4,096 characters. The following character sets are supported:26 lowercase English letters (a-z)26 uppercase English letters (A-Z)10 numbers (0-9)"_", "-", "." |
+| `autoDelete` | String | No  | Whether to automatically delete the custom attributes set by a chat room member when this member leaves the chat room:(Default) `DELETE`: Delete the custom attributes. `NO_DELETE`: Do not delete the custom attributes. |
 
 ### HTTP response
 

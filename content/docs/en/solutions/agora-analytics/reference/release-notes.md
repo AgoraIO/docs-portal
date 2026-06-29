@@ -57,7 +57,7 @@ This release improves the calculation of the video freeze rate. By optimizing da
 
 **Improvement**
 
-To improve the balance between timeliness and accuracy, this release adds a data recalculation mechanism to Data Insights. The data latency of Data Insights can be as low as six hours, but  internal resource scheduling or poor user network conditions can cause unexpected data reporting delays. With the data recalculation mechanism, the data for each day is recalculated two days later. For example, the data for July 6, 2022, is recalculated in the early hours of July 8, 2022.
+To improve the balance between timeliness and accuracy, this release adds a data recalculation mechanism to Data Insights. The data latency of Data Insights can be as low as six hours, but internal resource scheduling or poor user network conditions can cause unexpected data reporting delays. With the data recalculation mechanism, the data for each day is recalculated two days later. For example, the data for July 6, 2022, is recalculated in the early hours of July 8, 2022.
 
 ## 2022.05
 

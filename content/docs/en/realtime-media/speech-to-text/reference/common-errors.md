@@ -56,7 +56,7 @@ When a request fails, you may receive the following response:
 #### Message
 
 - `"the product name does not match with builderToken"`: The acquired `buildToken` has an issue. Call `acquire` again.
-- `"resourceId reaches out the limited time interval!"`:  The `buildToken` expired after the 5-minute validity period. Make sure to use `tokenName` to start the service within 5 minutes after calling `acquire`. When the task has been created successfully, save the `tokenName`, since it will be used to call `query`, `update`, and `stop`.
+- `"resourceId reaches out the limited time interval!"`: The `buildToken` expired after the 5-minute validity period. Make sure to use `tokenName` to start the service within 5 minutes after calling `acquire`. When the task has been created successfully, save the `tokenName`, since it will be used to call `query`, `update`, and `stop`.
 - `"invalid_appid!"`: The Real-Time STT service is not enabled for your app. Enable it in the Console or send a request to [Agora technical support](mailto:support@agora.io).
 - `"body schema check fail, ..."`: The `start` or `update` body is wrong. `"..."` describes the reason of failure. Always caused by parameter mismatch or exceeding the range. Recheck the request body.
 - `"The taskId does not match with builderToken."`: Check why `taskId` and `tokenName` do not match.

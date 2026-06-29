@@ -41,7 +41,7 @@ This section shows how to implement retrieving conversations and messages.
 
 Call `asyncFetchConversationsFromServer` to retrieve conversations from the server with pagination. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation). In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `getAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `ChatOptions#isLoadEmptyConversations` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `ChatOptions#isLoadEmptyConversations` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```java
 String cursor = "";
@@ -83,7 +83,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -490,7 +490,7 @@ This section shows how to implement retrieving conversations and messages.
 
 Call `getConversationsFromServerWithCursor:pageSize:completion` to retrieve conversations from the server with pagination. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation). In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `getAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `EMOptions#loadEmptyConversations` to `YES` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `EMOptions#loadEmptyConversations` to `YES` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```objc
 //pageSize: The number of conversations that you expect to get on each page. The value range is [1,50].
@@ -507,7 +507,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -528,7 +528,7 @@ AgoraChatFetchServerMessagesOption* option = [[AgoraChatFetchServerMessagesOptio
 
 ### Pin a conversation
 
-To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations.  The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
+To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations. The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
 
 Refer to the following code example to pin a conversation:
 
@@ -590,7 +590,7 @@ AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager 
     }];
 ```
 
-### Delete conversations and related messages  from the server unidirectionally
+### Delete conversations and related messages from the server unidirectionally
 
 Call `deleteServerConversation` to delete conversations and their historical messages unidirectionally from the server. After the conversations and messages are deleted from the server, you can no longer get them from the server. The deleted conversations still exist on the local device, but the messages are automatically removed from the device. Other chat users can still get the conversations and their historical messages from the server.
 
@@ -661,7 +661,7 @@ This section shows how to implement retrieving conversations and messages.
 
 Call `getServerConversations` to retrieve conversations from the server with pagination. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation). In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included. However, if there are empty conversations on the server, they will occupy the conversation list quota. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included. However, if there are empty conversations on the server, they will occupy the conversation list quota. To change this, contact support@agora.io.
 
 :::info
 Do not use mixed upper-case.
@@ -997,7 +997,7 @@ This section shows how to implement retrieving conversations and messages.
 
 Call `fetchConversationsByOptions` to retrieve conversations from the server with pagination. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation). In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `loadAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `EMOptions#enableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `EMOptions#enableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```dart
 ChatClient.getInstance.chatManager.fetchConversationsByOptions(
@@ -1013,7 +1013,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1051,7 +1051,7 @@ ChatCursorResult result =
 
 ### Pin a conversation
 
-To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations.  The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
+To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations. The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
 
 Refer to the following code example to pin a conversation:
 
@@ -1327,7 +1327,7 @@ This section shows how to implement retrieving conversations and messages.
 
 Call `fetchConversationsFromServerWithCursor` to retrieve conversations from the server with pagination. The SDK returns the conversation list in the reverse chronological order of when conversations are active (the timestamp of the last message in the conversation). In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `getAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `ChatOptions#enableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `ChatOptions#enableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```java
 // pageSize: The number of conversations that you expect to get on each page. The value range is [1,50].
@@ -1352,7 +1352,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1383,7 +1383,7 @@ ChatClient.getInstance()
 
 ### Pin a conversation
 
-To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations.  The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
+To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations. The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
 
 Refer to the following code example to pin a conversation:
 
@@ -1551,7 +1551,7 @@ Call `GetConversationsFromServerWithCursor` to retrieve conversations from the s
 
 In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `LoadAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `Options#EnableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `Options#EnableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```csharp
 // limit: The number of conversations that you expect to get on each page. The value range is [1,50].
@@ -1584,7 +1584,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1623,7 +1623,7 @@ SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServerBy(conversationId, 
 
 ### Pin a conversation
 
-To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations.  The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
+To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations. The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
 
 Refer to the following code example to pin a conversation:
 
@@ -1844,7 +1844,7 @@ Call `GetConversationsFromServerWithCursor` to retrieve conversations from the s
 
 In the conversation list, each conversation object contains the conversation ID, conversation type, whether the conversation is pinned, the pinned time (the value is 0 for an unpinned conversation), and the last message in the conversation. After the conversation list is retrieved from the server, the local conversation list will be updated accordingly. We recommend calling this method when the app is first installed, or when there is no conversation on the local device. Otherwise, you can call `LoadAllConversations` to retrieve conversations on the local device.
 
-For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `Options#EnableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agoro.io.
+For each end user, the server stores 100 conversations by default. When this limit is exceeded, new conversations will start overwriting the old ones. If the entire message history in a conversation expires, the conversation becomes empty. When pulling the conversation list from the server, these empty conversations are not included by default. To include them, set `Options#EnableEmptyConversation` to `true` when initializing the SDK. In this case, empty conversations will occupy the conversations pull quota, regardless of whether they are needed when pulling. To change this, contact support@agora.io.
 
 ```csharp
 // limit: The number of conversations that you expect to get on each page. The value range is [1,50].
@@ -1877,7 +1877,7 @@ You can set the search direction to retrieve messages in the chronological or re
 
 If you have integrated Chat SDK after June 8, 2023, you can retrieve historical messages even before joining the Chat Group. For earlier implementations, contact [support@agora.io](mailto:support@agora.io) to enable this.
 
-The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers  automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
+The Agora Chat server stores the full message history for a certain period of time depending on your subscribed [Chat plan](./message-overview#limitations-of-message-storage-duration). After an end user logs back into Agora Chat, the servers automatically send offline messages to them, that is, messages transmitted when that end user was offline. Offline messages are a subset of the full message history stored on Agora Chat server. Sending only a subset of messages prevents distributing too many messages to a single device, which can overwhelm it and slow down the end user login. Agora Chat server stores and manages these offline messages for every end user in the following way:
 
 - 1:1 private chat: Store 500 offline messages by default;
 - Chat Group: Store 200 offline messages by default;
@@ -1918,7 +1918,7 @@ SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServerBy(conversationId, 
 
 ### Pin a conversation
 
-To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations.  The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
+To keep track of an important conversation, you can pin it to the top of your conversation list. You can pin up to 50 conversations. The pinned state is stored on the server. In a multi-device login use-case, if you pin or unpin a conversation, other login devices will receive the `CONVERSATION_PINNED` or `CONVERSATION_UNPINNED` events.
 
 Refer to the following code example to pin a conversation:
 
