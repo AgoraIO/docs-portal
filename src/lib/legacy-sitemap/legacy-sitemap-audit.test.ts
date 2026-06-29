@@ -28,18 +28,17 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('has no duplicate or conflicting redirect rules', () => {
-    const ids = new Set<string>();
-    const matchKeys = new Map<string, string>();
+    const legacyUrls = new Set<string>();
+    const pathTargets = new Map<string, string>();
 
     for (const rule of legacySitemapRedirectConfig.rules) {
-      expect(ids.has(rule.id)).toBe(false);
-      ids.add(rule.id);
+      expect(legacyUrls.has(rule.legacyUrl)).toBe(false);
+      legacyUrls.add(rule.legacyUrl);
 
-      const matchKey = JSON.stringify(rule.match);
-      const existingTarget = matchKeys.get(matchKey);
+      const existingTarget = pathTargets.get(rule.legacyPath);
 
       expect(existingTarget && existingTarget !== rule.target).toBeFalsy();
-      matchKeys.set(matchKey, rule.target);
+      pathTargets.set(rule.legacyPath, rule.target);
     }
   });
 
@@ -65,26 +64,37 @@ describe('legacy sitemap compatibility audit', () => {
 
     expect(nativeUrls).toHaveLength(reviewReport.summary.native);
     expect(redirectedUrls).toHaveLength(
-      reviewReport.summary.exactPage +
+      reviewReport.summary.exactPath +
+        reviewReport.summary.exactSlug +
+        reviewReport.summary.renamedPage +
         reviewReport.summary.semanticPageMatch +
-        reviewReport.summary.productFallback,
+        reviewReport.summary.productFallback +
+        reviewReport.summary.unavailable,
     );
     expect(
       redirectedUrls.every((url) => resolveLegacySitemapRedirectPath(url.path)),
     ).toBe(true);
   });
 
-  it('uses every executable redirect rule from redirects.json', () => {
-    const usedRuleIds = new Set(
-      sitemapUrls
-        .map((url) => resolveLegacySitemapRedirectPath(url.path)?.id)
-        .filter(Boolean),
+  it('has a redirect record for every non-native sitemap URL', () => {
+    const docsPaths = getDocsContentUrls();
+    const redirectLegacyUrls = new Set(
+      legacySitemapRedirectConfig.rules.map((rule) => rule.legacyUrl),
     );
-    const unusedRuleIds = legacySitemapRedirectConfig.rules
-      .map((rule) => rule.id)
-      .filter((id) => !usedRuleIds.has(id));
+    const missingRedirects = sitemapUrls
+      .filter((url) => !docsPaths.has(url.path))
+      .filter((url) => !redirectLegacyUrls.has(url.href));
 
-    expect(unusedRuleIds).toEqual([]);
+    expect(missingRedirects).toEqual([]);
+  });
+
+  it('does not keep stale redirect records outside the sitemap snapshot', () => {
+    const sitemapHrefs = new Set(sitemapUrls.map((url) => url.href));
+    const staleRules = legacySitemapRedirectConfig.rules.filter(
+      (rule) => !sitemapHrefs.has(rule.legacyUrl),
+    );
+
+    expect(staleRules).toEqual([]);
   });
 
   it('targets existing new docs portal pages', () => {
@@ -111,20 +121,37 @@ describe('legacy sitemap compatibility audit', () => {
   it('keeps the human review report aligned with the audit summary', () => {
     expect(reviewReport.summary).toEqual({
       broken: 0,
-      exactPage: 0,
+      exactPath: 490,
+      exactSlug: 2122,
       native: 0,
-      productFallback: sitemapUrls.length,
-      semanticPageMatch: 0,
+      productFallback: 458,
+      renamedPage: 41,
+      semanticPageMatch: 5,
       totalLegacyUrls: sitemapUrls.length,
+      unavailable: 0,
     });
-    expect(reviewReport.items).toHaveLength(sitemapUrls.length);
+    expect(reviewReport.items).toHaveLength(
+      reviewReport.summary.productFallback +
+        reviewReport.summary.semanticPageMatch +
+        reviewReport.summary.unavailable,
+    );
 
     const reportUrls = new Set(
       reviewReport.items.map((item) => item.legacyUrl),
     );
+    const fallbackOrUnavailableUrls = legacySitemapRedirectConfig.rules
+      .filter(
+        (rule) =>
+          rule.type === 'product-fallback' ||
+          rule.type === 'unavailable' ||
+          rule.confidence !== 'high',
+      )
+      .map((rule) => rule.legacyUrl);
 
-    expect(reportUrls.size).toBe(sitemapUrls.length);
-    expect(sitemapUrls.every((url) => reportUrls.has(url.href))).toBe(true);
+    expect(reportUrls.size).toBe(fallbackOrUnavailableUrls.length);
+    expect(
+      fallbackOrUnavailableUrls.every((legacyUrl) => reportUrls.has(legacyUrl)),
+    ).toBe(true);
   });
 });
 

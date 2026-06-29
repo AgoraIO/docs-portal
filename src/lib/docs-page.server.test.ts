@@ -2505,14 +2505,14 @@ Web body
     });
   });
 
-  it('redirects legacy docs.agora.io sitemap products to new docs portal entries', async () => {
+  it('redirects legacy docs.agora.io sitemap URLs to article-level targets when available', async () => {
     await expect(
       loadDocsPagePayload('en', 'video-calling', [
         'get-started',
         'get-started-sdk',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/realtime-media/video',
+      redirectUrl: '/en/realtime-media/video/get-started-sdk',
     });
 
     await expect(
@@ -2522,7 +2522,8 @@ Web body
         'send-receive-messages',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/realtime-media/im',
+      redirectUrl:
+        '/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages',
     });
 
     await expect(
