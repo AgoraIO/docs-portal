@@ -6,7 +6,7 @@ To protect your business, it is best practice to authenticate every client that 
 
 ## Understand the tech
 
-When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request. 
+When a user attempts to connect to an Agora channel, your app retrieves a token from the token server in your security infrastructure. Your app then sends this token to Agora SDRTN® for authentication. Agora SDRTN® reads the information stored in the token to validate the request.
 
 The following figure shows the call flow you implement to create step-up-authentication with Agora IoT SDK:
 
@@ -27,7 +27,7 @@ Before starting, ensure that you have:
 
 ## Implement basic authentication
 
-This section shows you how to implement basic authentication by acquiring a token and using it to join a channel. 
+This section shows you how to implement basic authentication by acquiring a token and using it to join a channel.
 
 ### Use a token to join a channel
 
@@ -78,7 +78,7 @@ engine.joinChannel(token, channelId, 0, option)
 
 </CodeBlockTabs>
 
-### Token expiration 
+### Token expiration
 
 After you join a channel using a token, the SDK triggers an `onTokenPrivilegeWillExpire` callback, 30 seconds before the token is set to expire.
 
@@ -144,7 +144,7 @@ class RtcEngineEventHandlerImpl : IRtcEngineEventHandler() {
 </CodeBlockTabs>
 
 ### Complete sample code
-This section presents sample code to implement token authentication in your client. 
+This section presents sample code to implement token authentication in your client.
 
 1. In `/Gradle Scripts/build.gradle(Module: <projectname>.app)`, add the following dependencies for making HTTP requests to the token server:
 
@@ -173,7 +173,7 @@ This section presents sample code to implement token authentication in your clie
        import android.os.Bundle;
        import androidx.core.app.ActivityCompat;
        import androidx.core.content.ContextCompat;
-    
+
        import android.Manifest;
        import android.content.pm.PackageManager;
        import android.view.SurfaceView;
@@ -184,7 +184,7 @@ This section presents sample code to implement token authentication in your clie
        import io.agora.rtc2.RtcEngine;
        import io.agora.rtc2.video.VideoCanvas;
        import io.agora.rtc2.ChannelMediaOptions;
-    
+
        import okhttp3.MediaType;
        import okhttp3.OkHttpClient;
        import okhttp3.Request;
@@ -192,15 +192,15 @@ This section presents sample code to implement token authentication in your clie
        import okhttp3.Response;
        import okhttp3.Call;
        import okhttp3.Callback;
-    
+
        import com.google.gson.Gson;
        import java.util.Map;
        import org.json.JSONException;
        import org.json.JSONObject;
        import java.io.IOException;
-    
+
        public class MainActivity extends AppCompatActivity {
-    
+
           // Fill in the App ID from Agora console
           private String appId = "Your App ID";
           // Fill in the channel name
@@ -208,13 +208,13 @@ This section presents sample code to implement token authentication in your clie
           private String token = "";
           private RtcEngine mRtcEngine;
           private int joined = 1;
-    
+
           private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
              @Override
              public void onUserJoined(int uid, int elapsed) {
                    runOnUiThread(() -> setupRemoteVideo(uid));
              }
-    
+
              @Override
              public void onTokenPrivilegeWillExpire(String token) {
                    fetchToken(1234, channelName, 1);
@@ -224,7 +224,7 @@ This section presents sample code to implement token authentication in your clie
                    });
                    super.onTokenPrivilegeWillExpire(token);
              }
-    
+
              @Override
              public void onRequestToken() {
                    joined = 1;
@@ -232,14 +232,14 @@ This section presents sample code to implement token authentication in your clie
                    super.onRequestToken();
              }
           };
-    
+
           private static final int PERMISSION_REQ_ID = 22;
-    
+
           private static final String[] REQUESTED_PERMISSIONS = {
                    Manifest.permission.RECORD_AUDIO,
                    Manifest.permission.CAMERA
           };
-    
+
           private boolean checkSelfPermission(String permission, int requestCode) {
              if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                    ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, requestCode);
@@ -247,7 +247,7 @@ This section presents sample code to implement token authentication in your clie
              }
              return true;
           }
-    
+
           // Get RTC Token
           private void fetchToken(int uid, String channelName, int tokenRole) {
              OkHttpClient client = new OkHttpClient();
@@ -260,7 +260,7 @@ This section presents sample code to implement token authentication in your clie
              } catch (JSONException e) {
                    e.printStackTrace();
              }
-    
+
              RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
              Request request = new Request.Builder()
                       .url("http://<Your Host URL and port>/fetch_rtc_token")
@@ -272,7 +272,7 @@ This section presents sample code to implement token authentication in your clie
                    @Override
                    public void onFailure(Call call, IOException e) {
                    }
-    
+
                    @Override
                    public void onResponse(Call call, Response response) throws IOException {
                       if (response.isSuccessful()) {
@@ -292,36 +292,36 @@ This section presents sample code to implement token authentication in your clie
                    }
              });
           }
-    
+
           @Override
           protected void onCreate(Bundle savedInstanceState) {
              super.onCreate(savedInstanceState);
              setContentView(R.layout.activity_main);
-    
+
              if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                       checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
                    initializeAndJoinChannel();
              }
           }
-    
+
           @Override
           protected void onDestroy() {
              super.onDestroy();
              mRtcEngine.leaveChannel();
              mRtcEngine.destroy();
           }
-    
+
           private void initializeAndJoinChannel() {
              try {
                    mRtcEngine = RtcEngine.create(getBaseContext(), appId, mRtcEventHandler);
              } catch (Exception e) {
                    throw new RuntimeException("Check the error.");
              }
-    
+
              mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
              mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER);
              mRtcEngine.enableVideo();
-    
+
              FrameLayout container = findViewById(R.id.local_video_view_container);
              SurfaceView surfaceView = new SurfaceView(getBaseContext());
              container.addView(surfaceView);
@@ -329,7 +329,7 @@ This section presents sample code to implement token authentication in your clie
              mRtcEngine.startPreview();
              fetchToken(1234, channelName, 1);
           }
-    
+
           private void setupRemoteVideo(int uid) {
              FrameLayout container = findViewById(R.id.remote_video_view_container);
              SurfaceView surfaceView = new SurfaceView(getBaseContext());
@@ -346,30 +346,30 @@ This section presents sample code to implement token authentication in your clie
 
     ```kotlin
     package com.example.rtcquickstart
-       
+
        import android.Manifest;
        import android.content.pm.PackageManager;
        import android.os.Bundle;
        import android.view.SurfaceView;
        import android.widget.FrameLayout;
        import android.widget.Toast;
-    
+
        import androidx.appcompat.app.AppCompatActivity;
        import androidx.core.app.ActivityCompat;
        import androidx.core.content.ContextCompat;
-    
+
        import io.agora.rtc2.*;
        import io.agora.rtc2.video.VideoCanvas;
-    
+
        import com.google.gson.Gson;
        import okhttp3.*;
        import org.json.JSONException;
        import org.json.JSONObject;
        import java.io.IOException;
        import java.util.*;
-       
+
        class MainActivity : AppCompatActivity() {
-       
+
           // Fill in the App ID from Agora console
           private val appId = "Your App ID"
           // Fill in the channel name
@@ -377,7 +377,7 @@ This section presents sample code to implement token authentication in your clie
           private var token = ""
           private var mRtcEngine: RtcEngine? = null
           private var joined = 1
-       
+
           private val mRtcEventHandler = object : IRtcEngineEventHandler() {
              override fun onUserJoined(uid: Int, elapsed: Int) {
                    runOnUiThread {
@@ -385,7 +385,7 @@ This section presents sample code to implement token authentication in your clie
                       setupRemoteVideo(uid)
                    }
              }
-       
+
              override fun onTokenPrivilegeWillExpire(token: String) {
                    fetchToken(1234, channelName, 1)
                    runOnUiThread {
@@ -394,14 +394,14 @@ This section presents sample code to implement token authentication in your clie
                    }
                    super.onTokenPrivilegeWillExpire(token)
              }
-       
+
              override fun onRequestToken() {
                    joined = 1
                    fetchToken(1234, channelName, 1)
                    super.onRequestToken()
              }
           }
-       
+
           companion object {
              private const val PERMISSION_REQ_ID = 22
              private val REQUESTED_PERMISSIONS = arrayOf(
@@ -409,7 +409,7 @@ This section presents sample code to implement token authentication in your clie
                    Manifest.permission.CAMERA
              )
           }
-       
+
           private fun checkSelfPermission(permission: String, requestCode: Int): Boolean {
              return if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                    ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, requestCode)
@@ -418,7 +418,7 @@ This section presents sample code to implement token authentication in your clie
                    true
              }
           }
-       
+
           // Get RTC Token
           private fun fetchToken(uid: Int, channelName: String, tokenRole: Int) {
              val client = OkHttpClient()
@@ -431,19 +431,19 @@ This section presents sample code to implement token authentication in your clie
              } catch (e: JSONException) {
                    e.printStackTrace()
              }
-       
+
              val requestBody = RequestBody.create(JSON, json.toString())
              val request = Request.Builder()
                    .url("http://<Your Host URL and port>/fetch_rtc_token")
                    .header("Content-Type", "application/json; charset=UTF-8")
                    .post(requestBody)
                    .build()
-       
+
              client.newCall(request).enqueue(object : Callback {
                    override fun onFailure(call: Call, e: IOException) {
                       // Handle failure
                    }
-       
+
                    override fun onResponse(call: Call, response: Response) {
                       if (response.isSuccessful) {
                          val gson = Gson()
@@ -463,39 +463,39 @@ This section presents sample code to implement token authentication in your clie
                    }
              })
           }
-       
+
           override fun onCreate(savedInstanceState: Bundle?) {
              super.onCreate(savedInstanceState)
              setContentView(R.layout.activity_main)
-       
+
              // If all permissions are granted, initialize the RtcEngine object and join the channel
              if (checkSelfPermission(REQUESTED_PERMISSIONS[0], PERMISSION_REQ_ID) &&
                    checkSelfPermission(REQUESTED_PERMISSIONS[1], PERMISSION_REQ_ID)) {
                    initializeAndJoinChannel()
              }
           }
-       
+
           override fun onDestroy() {
              super.onDestroy()
              mRtcEngine?.leaveChannel()
              mRtcEngine?.destroy()
           }
-       
+
           private fun initializeAndJoinChannel() {
              try {
                    mRtcEngine = RtcEngine.create(baseContext, appId, mRtcEventHandler)
              } catch (e: Exception) {
                    throw RuntimeException("Check the error.")
              }
-       
+
              // In interactive live broadcast, set the channel scene to BROADCASTING
              mRtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
              // Depending on the actual situation, set the user role to BROADCASTER or AUDIENCE
              mRtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
-       
+
              // SDK turns off video by default. Call enableVideo to enable video
              mRtcEngine?.enableVideo()
-       
+
              val container: FrameLayout = findViewById(R.id.local_video_view_container)
              // Call CreateRendererView to create a SurfaceView object and add it as a child to the FrameLayout
              val surfaceView = SurfaceView(baseContext)
@@ -507,7 +507,7 @@ This section presents sample code to implement token authentication in your clie
              // Get a token from the token server
              fetchToken(1234, channelName, 1)
           }
-       
+
           private fun setupRemoteVideo(uid: Int) {
              val container: FrameLayout = findViewById(R.id.remote_video_view_container)
              val surfaceView = SurfaceView(baseContext)
