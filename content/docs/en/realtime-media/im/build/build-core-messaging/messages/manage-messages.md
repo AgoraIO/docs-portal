@@ -19,7 +19,7 @@ This feature supports Chrome, Firefox, Safari, and other browsers that use
 
 ### Android
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. The following are the core methods:
 
 - `getAllConversationsBySort`: Loads the conversation list on the local device.
 - `Conversation.getUnreadMsgCount`: Retrieves the count of unread messages in the specified conversation.
@@ -35,7 +35,7 @@ SQLCipher is used to encrypt the database that stores local messages. The Chat S
 
 ### iOS
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` to manage local messages. The following are the core methods:
 
 - `getAllConversations`: Loads the conversation list on the local device.
 - `loadMessagesStartFromId`: Loads messages of a conversation.
@@ -63,7 +63,7 @@ The Chat SDK allows you to implement the following functions in your project by 
 
 ### Flutter
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. The following are the core methods:
 
 - `ChatManager.loadAllConversations`: Loads the conversation list on the local device.
 - `ChatManager.deleteAllMessageAndConversation`: Clears the current user's chat history, including messages and conversations in individual chats, group chats, and chat rooms. You can also choose whether to clear the chat history on the server in one direction.
@@ -83,7 +83,7 @@ SQLCipher is used to encrypt the database that stores local messages. The Chat S
 
 ### React Native
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `ChatManager` and `ChatConversation` to manage local messages. The following are the core methods:
 
 - `ChatManager.getAllConversations`: Loads the conversation list on the local device.
 - `ChatManager.deleteConversation`: Deletes the specified conversation.
@@ -96,7 +96,7 @@ SQLCipher is used to encrypt the database that stores local messages. The Chat S
 
 ### Windows
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. The following are the core methods:
 
 - `IChatManager.LoadAllConversations`: Loads the conversation list on the local device.
 - `IChatManage.DeleteConversation`: Deletes the specified conversation.
@@ -112,7 +112,7 @@ SQLCipher is used to encrypt the database that stores local messages. The Chat S
 
 ### Unity
 
-SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. Followings are the core methods:
+SQLCipher is used to encrypt the database that stores local messages. The Chat SDK uses `IChatManager` and `IConversationManager` to manage local messages. The following are the core methods:
 
 - `IChatManager.LoadAllConversations`: Loads the conversation list on the local device.
 - `IChatManage.DeleteConversation`: Deletes the specified conversation.

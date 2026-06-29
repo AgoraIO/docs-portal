@@ -12,7 +12,7 @@ The Chat SDK provides the message read receipt feature that allows the user, aft
 
 ### Android
 
-The Chat SDK uses `ChatManager` to provide message receipt. Followings are the core methods:
+The Chat SDK uses `ChatManager` to provide message receipt. The following are the core methods:
 
 - `ChatOptions.setRequireAck`: Enables message read receipt.
 - `ChatOptions.setRequireDeliveryAck`: Enables message delivery receipt.
@@ -36,7 +36,7 @@ The logic for implementing these receipts are as follows:
 
 ### iOS
 
-The Chat SDK uses `IAgoraChatManager` to provide message receipt. Followings are the core methods:
+The Chat SDK uses `IAgoraChatManager` to provide message receipt. The following are the core methods:
 
 - `AgoraChatOptions.enableRequireReadAck`: Enables message read receipt.
 - `AgoraChatOptions.enableDeliveryAck`: Enables message delivery receipt.
@@ -84,7 +84,7 @@ The message delivery receipts and read receipts are implemented as follows:
 
 ### Flutter
 
-The Chat SDK uses `ChatManager` to provide message receipt, which includes delivery receipts and read receipts. Followings are the core methods:
+The Chat SDK uses `ChatManager` to provide message receipt, which includes delivery receipts and read receipts. The following are the core methods:
 
 - `ChatOptions.requireDeliveryAck`: Enable message delivery receipts.
 - `ChatOptions.requireAck`: Enable conversation and message read receipts.
@@ -108,7 +108,7 @@ The logic for implementing these receipts are as follows:
 
 ### React Native
 
-The Chat SDK uses `IChatManager` to provide message receipt, which includes delivery receipts and read receipts. Followings are the core methods:
+The Chat SDK uses `IChatManager` to provide message receipt, which includes delivery receipts and read receipts. The following are the core methods:
 
 - `ChatOptions.requireDeliveryAck`: Enable message delivery receipts.
 - `ChatOptions.requireAck`: Enable conversation and message read receipts.
@@ -132,7 +132,7 @@ The logic for implementing these receipts are as follows:
 
 ### Windows
 
-The Chat SDK uses `IChatManager` to provide message receipt. Followings are the core methods:
+The Chat SDK uses `IChatManager` to provide message receipt. The following are the core methods:
 
 - `Options.RequireDeliveryAck`: Enable message delivery receipt.
 - `IChatManager.SendConversationReadAck`: Send a conversation read receipt.
@@ -141,7 +141,7 @@ The Chat SDK uses `IChatManager` to provide message receipt. Followings are the 
 
 ### Unity
 
-The Chat SDK uses `IChatManager` to provide message receipt. Followings are the core methods:
+The Chat SDK uses `IChatManager` to provide message receipt. The following are the core methods:
 
 - `Options.RequireDeliveryAck`: Enable message delivery receipt.
 - `IChatManager.SendConversationReadAck`: Send a conversation read receipt.

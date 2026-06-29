@@ -42,7 +42,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `data`  | JSON | The response details.  |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
 | `username` | String | The user ID. |
-| `groupname` | String | The  name. |
+| `groupname` | String | The chat group name. |
 
 ## Authorization
 
@@ -56,7 +56,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Create/Add a reaction
 
-This method creates or adds a reaction to a specified message in s or s. A maximum of 20 reactions can be added for one message. For one message, if many users add the same reaction, these reactions are counted as one reaction. A message can have a maximum of 20 reactions. To raise the limit, contact [support@agora.io](mailto:support@agora.io).
+This method creates or adds a reaction to a specified message in one-to-one chats or chat groups. A maximum of 20 reactions can be added for one message. For one message, if many users add the same reaction, these reactions are counted as one reaction. A message can have a maximum of 20 reactions. To raise the limit, contact [support@agora.io](mailto:support@agora.io).
 
 ### HTTP request
 

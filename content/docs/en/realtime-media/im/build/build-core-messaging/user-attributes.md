@@ -15,7 +15,7 @@ User attributes are stored on the Chat server. If you have security concerns, Ag
 
 ### Android
 
-The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `updateOwnInfo`: Set or update user attributes.
 - `updateOwnInfoByAttributes`: Set or update the specified user attribute.
 - `fetchUserInfoByUserId`: Retrieve the user attributes of the specified user.
@@ -23,39 +23,39 @@ The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes
 
 ### iOS
 
-The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `updateOwnUserInfo`: Set or update user attributes.
 - `fetchUserInfoById`: Retrieve the user attributes of the specified user.
 
 ### Flutter
 
-The Chat SDK uses `ChatUserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `ChatUserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `updateOwnInfo`: Set and update user attributes.
 - `fetchUserInfoById`: Retrieve the user attributes of the specified user.
 - `fetchOwnInfo`: Retrieve the user's own user attributes.
 
 ### React Native
 
-The Chat SDK uses `ChatUserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `ChatUserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `updateOwnInfo`: Set and update user attributes.
 - `fetchUserInfoById`: Retrieve the user attributes of the specified user.
 - `fetchOwnInfo`: Retrieve the user's own user attributes.
 
 ### Windows
 
-The Chat SDK uses `IUserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `IUserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `UpdateOwnInfo`: Set and update user attributes.
 - `FetchUserInfoByUserId`: Retrieve the user attributes of the specified user.
 
 ### Unity
 
-The Chat SDK uses `IUserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `IUserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 - `UpdateOwnInfo`: Set and update user attributes.
 - `FetchUserInfoByUserId`: Retrieve the user attributes of the specified user.
 
 ### Web
 
-The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. Followings are the core methods:
+The Chat SDK uses `UserInfoManager` to retrieve, set, and modify user attributes. The following are the core methods:
 
 - `updateUserInfo`: Set or update user attributes.
 - `fetchUserInfoById`: Retrieve the user attributes of the specified user.
@@ -577,7 +577,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 1. Create a custom message and set the `event` of the custom message as `USER_CARD_EVENT`.
 2. Add `userId`, `getNickname`, and `getAvatarUrl` as fileds in `params`. Send the custom message.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```java
 // Creates a cutom message
@@ -613,7 +613,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 1. Create a custom message and set the `event` of the custom message as `userCard`.
 2. Add `userId`, `nickname`, and `avatar` as fileds in `ext`. Send the custom message.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```objc
 AgoraChatCustomMessageBody *body = [[AgoraChatCustomMessageBody alloc] init];
@@ -664,7 +664,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 1. Create a custom message and set the `event` of the custom message as `userCard`.
 2. Add `userId`, `nickname`, and `avatarUrl` as fileds in `ext`. Send the custom message.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```typescript
 // Customize the message.
@@ -704,7 +704,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 1. Create a custom message and set the `event` of the custom message as `userCard`.
 2. Add `userID`, `nickname`, and `avatarUrl` as fileds in `ext`. Send the custom message.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```csharp
 string event = "userCard";
@@ -747,7 +747,7 @@ Namecard messages are custom messages that include the user ID, nickname, avatar
 1. Create a custom message and set the `event` of the custom message as `userCard`.
 2. Add `userID`, `nickname`, and `avatarUrl` as fileds in `ext`. Send the custom message.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```csharp
 string event = "userCard";
@@ -787,11 +787,11 @@ To implement user avatar management in your app, take the following steps:
 
 Namecard messages are custom messages that include the user ID, nickname, avatar, email address, and phone number of the specified user. To create and send a namecard, take the following steps:
 
-1. Set the messsage type as `custom`.
+1. Set the message type as `custom`.
 2. Set the `customEvent` of the custom message as `userCard`.
 3. Retrieve the values of `nickname`, `mail`, and `avatarurl` from the user attributes, and then set them as the extension of the custom message using `customExts`.
 
-Followings are the sample code for creating and sending a namecard message:
+The following is sample code for creating and sending a namecard message:
 
 ```javascript
 // Set custom event type as userCard
