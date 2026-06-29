@@ -183,9 +183,14 @@ describe('common MDX registry', () => {
 
     expect(dialog).toHaveTextContent('Product Architecture');
     expect(dialog).toHaveTextContent('Enlarged documentation image preview.');
-    expect(
-      within(dialog).getByRole('img', { name: 'Product Architecture' }),
-    ).toHaveAttribute('src', '/images/product.png');
+    const previewImage = within(dialog).getByRole('img', {
+      name: 'Product Architecture',
+    });
+
+    expect(previewImage).toHaveAttribute('src', '/images/product.png');
+    expect(dialog).toHaveClass('w-fit');
+    expect(dialog).not.toHaveClass('w-full');
+    expect(dialog).toHaveClass('justify-items-center');
   });
 
   it('keeps relative docs links normalized', () => {
