@@ -58,13 +58,16 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
   return {
     ...actual,
     PlatformHeaderTabs: ({
+      defaultPlatform,
       initialPlatform,
       platforms,
     }: {
+      defaultPlatform?: string;
       initialPlatform?: string;
       platforms?: string;
     }) => (
       <div
+        data-default-platform={defaultPlatform}
         data-initial-platform={initialPlatform}
         data-testid="platform-header-tabs"
       >
@@ -505,6 +508,7 @@ describe('DocsContent', () => {
           kind: 'mdx',
           platformTabs: {
             canonicalPlatform: 'web',
+            defaultPlatform: 'android',
             initialPlatform: 'android',
             platforms: '["web","android"]',
           },
@@ -521,6 +525,7 @@ describe('DocsContent', () => {
     const body = await screen.findByTestId('docs-content-body');
 
     expect(tabs).toHaveTextContent('["web","android"]');
+    expect(tabs).toHaveAttribute('data-default-platform', 'android');
     expect(tabs).toHaveAttribute('data-initial-platform', 'android');
     expect(
       title.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING,

@@ -65,6 +65,9 @@ const enCommon = {
     feedbackCancel: 'Cancel',
     feedbackSubmit: 'Open issue',
     openMenu: 'Open navigation',
+    legacyDocsBanner:
+      'Looking for the previous docs site? Visit the legacy docs homepage.',
+    opensInNewTab: 'opens in a new tab',
   },
   home: {
     eyebrow: 'Agora developer documentation',

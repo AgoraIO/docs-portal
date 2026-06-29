@@ -342,6 +342,62 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('restores prose link and inline code styling inside parameter descriptions', () => {
+    const link = getRuleBody('.prose :where([data-parameter-description] a)');
+    const linkHover = getRuleBody(
+      '.prose :where([data-parameter-description] a):hover',
+    );
+    const linkFocus = getRuleBody(
+      '.prose :where([data-parameter-description] a):focus-visible',
+    );
+    const inlineCode = getRuleBody(
+      `.prose
+        :where([data-parameter-description] :not(pre) > code):not(
+          :where(
+            [data-parameter-possible-values],
+            [data-parameter-possible-values] *
+          )
+        )`,
+    );
+
+    expect(link.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'color',
+        value: 'var(--accent-brand)',
+      }),
+    );
+    expect(link.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'text-decoration-line',
+        value: 'underline',
+      }),
+    );
+    expect(linkHover.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--accent-brand-soft)',
+      }),
+    );
+    expect(linkFocus.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'outline',
+        value: '2px solid var(--accent-brand-ring)',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'var(--bg-sunken)',
+      }),
+    );
+    expect(inlineCode.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'overflow-wrap',
+        value: 'anywhere',
+      }),
+    );
+  });
+
   it('adds a mobile scroll affordance to wide OpenAPI code examples', () => {
     const codeFigure = getRuleBody(
       '.openapi-operation figure.shiki:has(> .fd-scroll-container)::after',

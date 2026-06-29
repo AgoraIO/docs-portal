@@ -1,9 +1,12 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const file =
-  '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx';
+const file = resolve(
+  process.cwd(),
+  'content/docs/en/realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx',
+);
 
 describe('prevent-stream-bombing doc links', () => {
   it('links the RESTful API reference to the shared rtc query-user-list page', () => {
