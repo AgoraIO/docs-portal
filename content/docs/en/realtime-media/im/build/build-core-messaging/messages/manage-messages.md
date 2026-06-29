@@ -143,7 +143,7 @@ Before proceeding, take the following steps:
 
   1. Install the SDK using npm, yarn, or another package management tool
 
-     ```shell
+     ```bash
      # npm
      npm install agora-chat
 

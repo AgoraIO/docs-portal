@@ -710,7 +710,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
 
     Navigate to the `server` directory and run the following commands:
 
-    ```shell
+    ```bash
     npm i
     node DemoServer.js
     ```
@@ -739,13 +739,13 @@ Refer to the following steps to deploy a Docker-based token generator locally:
 
 1. Open a terminal and run the following command to start the token generator. Replace `[YOUR_APP_ID]` and `[YOUR_APP_CERTIFICATE]` with the App ID and App certificate you obtained from Agora Console.
 
-    ```shell
+    ```bash
     docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
     ```
 
 1. Run the following command to request a token from the token generator you just deployed:
 
-    ```shell
+    ```bash
     curl --location 'http://localhost:8080/token/generate' \
     --header 'Content-Type: application/json' \
     --data '{

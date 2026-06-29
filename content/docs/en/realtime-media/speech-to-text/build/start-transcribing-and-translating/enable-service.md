@@ -41,7 +41,7 @@ You will need to use AccessToken2. For example, `"007eJxTYLj64d/9y/N6FnXGZ4nWvZ9
 
 - curl
 
-    ```shell
+    ```bash
     curl --location --request POST 'https://api.agora.io/api/speech-to-text/v1/projects/{appId}/join' \
     --header 'Content-Type: Application/json' \
     --header 'Authorization: agora token="007eJxTYLj64d/9y/N6FnXGZ4nWvZ9TcL7O2u7XrrCdnPe4p1QIbZ2pwGCaZGppkmxsZGaWZmRibmlkmWRiZmBikGpsZGBkaJyY9KCqIFWAj4FBI/gaMyMDEwMjEIL4PAwlqcUl8aXFqUXxxxxxxxxxxx=="' \

@@ -107,7 +107,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '
     {
@@ -191,7 +191,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 Registering 2 users:
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '[
     {
@@ -241,7 +241,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourA
 
 If the request body contains a user3 that has previously been registered, the registration of user3 fails while those of user1 and user2 succeed. The failure is reported in the `data` array of the response body.
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Content-Type: application/json' -H 'Authorization:Bearer {YourAppToken}' -i "https://XXXX/XXXX/XXXX/users" -d '[
     {
@@ -336,7 +336,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/XXXX'
 ```
@@ -416,7 +416,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 Querying the information list of two users in ascending order of their registration time:
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users?limit=2'
 ```
@@ -464,7 +464,7 @@ Return the information list of the 2 users:
 
 Use the `cursor` in response example 1 to query the user list on the next page in ascending order of their registration time. The number of users on this page is two:
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users?limit=2&cursor=LTgzNDAxMjM3OToxTEFnNE9sNEVlaVQ0UEdhdmJNR2tB'
 ```
@@ -543,7 +543,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1'
 ```
@@ -618,7 +618,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https://XXXX/XXXX/XXXX/users?limit=2'
 ```
@@ -708,7 +708,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token you generated on the server, and {YourPassword} with the new password you set
 curl -X PUT -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' -d '{ "newpassword": "{YourPassword}" }' ' http://XXXX/XXXX/XXXX/users/user1/password'
 ```
@@ -761,7 +761,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/deactivate'
 ```
@@ -826,7 +826,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/activate'
 ```
@@ -885,7 +885,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/XXXX/disconnect'
 ```
@@ -948,7 +948,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/status'
 ```
@@ -1013,7 +1013,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST http://XXXX/XXXX/XXXX/users/batch/status -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' -d '{"usernames":["user1","user2"]}'
 ```
@@ -1081,7 +1081,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/offline_msg_count'
 ```
@@ -1146,7 +1146,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/users/user1/offline_msg_status/123'
 ```

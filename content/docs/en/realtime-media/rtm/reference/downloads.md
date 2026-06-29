@@ -97,7 +97,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 1. Add the JitPack repository in the `build.gradle` file under the root directory of your project:
 
-    ```groovy
+    ```text
     allprojects {
         repositories {
             ...
@@ -108,7 +108,7 @@ To manually install the Signaling SDK for Android, do one of the following:
 
 1. Add the `com.github.agorabuilder:rtm-sdk` dependency in the `/app/build.gradle` file under your project. For `X.Y.Z`, use the current SDK version number. You can visit JitPack.io to see the latest version number.
 
-    ```groovy
+    ```text
     dependencies {
         implementation 'com.github.agorabuilder:rtm-sdk:X.Y.Z'
     }
@@ -345,7 +345,7 @@ To manually install the Signaling SDK for Linux C++:
 
 1. Create a file named `CMakeLists.txt` under the `RTM_quickstart` directory to use CMake to build the project. The text file should contain the following content:
 
-    ```cmake
+    ```text
     cmake_minimum_required(VERSION 2.8)
     project(rtmQuickstart)
 

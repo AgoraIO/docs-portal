@@ -186,16 +186,19 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```json
+```bash
 # Replace  with the app token you generated on the server
 curl --location --request GET 'http://XXXX/XXXX/XXXX/chatrooms?limit=10' \
---header 'Authorization: Bearer s that a user joins
+--header 'Authorization: Bearer '
+```
 
-Retrieves all the s that a user joins.
+## Retrieving chat rooms that a user joins
+
+Retrieves all the chat rooms that a user joins.
 
 ### HTTP request
 
-```html
+```bash
 GET https://{host}/{org_name}/{app_name}/users/{username}/joined_chatrooms?pagenum={N}&pagesize={N}
 ```
 
@@ -523,7 +526,7 @@ Retrieves the announcement text for the specified .
 
 ### HTTP request
 
-```
+```bash
 GET https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 ```
 
@@ -554,13 +557,13 @@ The response body contains the following fields:
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/announcement'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "get",
   "application": "52XXXXf0",
@@ -582,7 +585,7 @@ Modifies the announcement text of the specified . The length cannot exceed 512 c
 
 ### HTTP request
 
-```
+```bash
 POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/announcement
 ```
 
@@ -626,13 +629,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer  ' 'http://XXXX/XXXX/XXXX/chatrooms/12XXXX11/announcement' -d '{"announcement" : "chat room announcement"}'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "52XXXXf0",

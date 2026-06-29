@@ -91,13 +91,13 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     - Groovy
     
-        ```groovy
+        ```text
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
         ```
 
         To resolve integration issues when co-integrating with the RTC SDK use: 
 
-        ```groovy
+        ```text
         implementation 'io.agora.rtm:rtm-sdk-lite:x.y.z'
         ```
 
@@ -122,7 +122,7 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     1. Add a `ndk` node under the default `Config` node, to specify the supported architectures:
 
-        ```groovy
+        ```text
         Config {
                     // ...
                     ndk{
@@ -137,7 +137,7 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     1. Add a `sourceSets` node under the `android` node to include the jni libraries copied to the `libs` folder:
 
-        ```groovy
+        ```text
         android {
                     // ...
                     sourceSets {
@@ -150,7 +150,7 @@ Use either of the following methods to integrate Signaling SDK into your project
 
     1. To include all `jar` files in the `libs` folder as dependencies, add the following under the `dependencies` node:
 
-        ```groovy
+        ```text
         dependencies {
                     implementation fileTree(dir: 'libs', include: ['*.jar'])
                     // ...
@@ -2434,7 +2434,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 To create a folder for your project, and an `index.html` file for your app, execute the following commands in the terminal:
 
-```shell
+```bash
 mkdir HelloWorld
 cd HelloWorld
 touch index.html
@@ -3194,7 +3194,7 @@ Take the following steps to test the sample code:
 
     You see the following output in the terminal:
 
-    ```
+    ```text
     flutter: publish success! message number:0
     flutter: publish success! message number:1
     flutter: publish success! message number:2
@@ -3205,7 +3205,7 @@ Take the following steps to test the sample code:
 
     You see the following notifications for messages sent from the first app instance:
 
-    ```
+    ```text
     flutter: received a message from channel: getting-started, channel type : RtmChannelType.message
     flutter: message content: message number : 0, custom type: PlainText
     flutter: received a message from channel: getting-started, channel type : RtmChannelType.message
@@ -3269,7 +3269,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 Create the following folder structure for your project:
 
-```shell
+```bash
 RTMProject/
 ├── include/
 └── lib/
@@ -3294,7 +3294,7 @@ To integrate the Linux C++ Signaling SDK into your project:
 
     * `CMakeLists.txt`
 
-        ```shell
+        ```bash
         # CMakeLists.txt
         cmake_minimum_required (VERSION 2.8)
         project(RTMProject)
@@ -3311,7 +3311,7 @@ To integrate the Linux C++ Signaling SDK into your project:
 
     * `clean_build.sh`
 
-        ```shell
+        ```bash
         # clean_build.sh
         rm -fr build
         mkdir -p build
@@ -3723,13 +3723,13 @@ Take the following steps to test the sample code:
 
 3. In the terminal, run the following command to compile the project:
 
-    ```shell
+    ```bash
     sh +x clean_build.sh
     ```
 
 4. Use the following commands to navigate to the `build` folder and run the app:
 
-    ```shell
+    ```bash
     cd build
     ./RTMQuickStart
     ```
@@ -3825,7 +3825,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
 To create a simple UI for verifying the basic features of Signaling, add the following elements to your interface:
 
-```c
+```text
 SampleScene
 
 - Main Camera
@@ -3861,7 +3861,7 @@ A complete code sample that implements the basic features of Signaling is presen
 
 **Complete sample code for Signaling**
 
-```cs
+```csharp
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

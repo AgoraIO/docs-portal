@@ -125,7 +125,7 @@ The user attributes used in this example are named `ext`, `nickname`, and `avata
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X PUT -H 'Content-Type: application/x-www-form-urlencoded' -H 'Authorization: Bearer {YourAppToken}' -d 'avatarurl=http://www.agorachat.com/avatar.png&ext=ext&nickname=nickname' 'http://XXXX/XXXX/XXXX/metadata/user/XXXX'
 ```
@@ -185,7 +185,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X GET -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type:  application/json''http://XXXX/XXXX/XXXX/metadata/user/XXXX'
 ```
@@ -254,7 +254,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type:  application/json' -d '{
   "properties": [
@@ -336,7 +336,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Authorization: Bearer {YourAppToken}''http://XXXX/XXXX/XXXX/metadata/user/capacity'
 ```
 
@@ -390,7 +390,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Authorization: Bearer {YourAppToken}' 'http://XXXX/XXXX/XXXX/metadata/user/XXXX'
 ```
 

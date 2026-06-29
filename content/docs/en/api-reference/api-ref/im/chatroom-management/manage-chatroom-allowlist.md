@@ -96,13 +96,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' 'http://XXXX/XXXX/XXXX/chatrooms/XXXX/white/users'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "get",
   "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",
@@ -165,13 +165,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X POST -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' 'http://XXXX/XXXX/XXXX/chatrooms/{XXXX}/white/users/{username}' 
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "5cf28979-13e7-4c87-b969-60141fb9c75d",
@@ -239,13 +239,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' -d '{"usernames" : ["user1"]}' 'http://XXXX/XXXX/XXXX/chatrooms/{XXXX}/white/users'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "post",
   "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",
@@ -314,13 +314,13 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer YWMt4LqJIul7EeizhBO5TSO_UgAAAAAAAAAAAAAAAAAAAAGL4CTw6XgR6LaXXVmNX4QCAgMAAAFnG7GyAQBPGgDv4ENRUku7fg05Kev0a_aVC8NyA6O6PgpxIRjajSVN3g' 'http://XXXX/XXXX/XXXX/chatrooms/{XXXX}/white/users/{username}'
 ```
 
 #### Response example
 
-```
+```json
 {
   "action": "delete",
   "application": "5cf28979-XXXX-XXXX-b969-60141fb9c75d",

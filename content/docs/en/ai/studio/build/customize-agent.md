@@ -119,7 +119,7 @@ When enabled, the agent uses natural filler phrases while processing a response,
 ![](/images/conversational-ai/studio/filler-words.png)
 
 - **Filler words / phrases**: Enter up to 100 filler phrases, one per line. For example:
-    ```
+    ```text
       sure let me look that up for you
       uh huh
       please wait

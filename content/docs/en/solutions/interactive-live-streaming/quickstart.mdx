@@ -68,7 +68,7 @@ Use either of the following methods to add Video SDK to your project.
 **Maven Central**
 1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
-    ```groovy
+    ```text
     repositories {
       mavenCentral()
     }
@@ -1223,7 +1223,7 @@ Use one of the following methods to install Video SDK.
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 2. In the search bar, past the following URL:
 
-    ```
+    ```json
     {`https://github.com/AgoraIO/AgoraRtcEngine_iOS.git`}
     ```
 
@@ -1845,7 +1845,7 @@ Use one of the following methods to install Video SDK.
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 2. In the search bar, past the following URL:
 
-    ```
+    ```json
     {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
     ```
 
@@ -2388,7 +2388,7 @@ To initialize a new Vite project, take the following steps:
 
 1. Open a terminal and run the following command:
 
-  ```
+  ```bash
   npm create vite@latest agora_web_quickstart -- --template vanilla
   ```
 
@@ -2396,7 +2396,7 @@ To initialize a new Vite project, take the following steps:
 
 1. Navigate to the newly created folder. Download and set up dependencies for your project:
 
-  ```
+  ```bash
   cd agora_web_quickstart
   npm install
   ```
@@ -2810,7 +2810,7 @@ Take the following steps to run and test the sample code:
 
 2. To start the development server, use the following command:
 
-  ```shell
+  ```bash
   npm run dev
   ```
 
@@ -2939,7 +2939,7 @@ Use one of the following solutions to resolve the issue:
 
 * Run the following command to set a temporary environment variable (Recommended):
 
-  ```shell
+  ```bash
   export NODE_OPTIONS=--openssl-legacy-provider
   ```
 
@@ -5629,7 +5629,7 @@ Design a user interface for your project based on your application use-case. A b
 
 **Sample code to create the user interface**
 
-```jsx
+```tsx
 import React, { useState } from 'react';
 
 // Import user interface elements
@@ -5904,7 +5904,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 To use Video SDK in your component, include the following imports:
 
-```jsx
+```tsx
 import {
  LocalUser, // Plays the microphone audio track and the camera video track
  RemoteUser, // Plays the remote user audio and video tracks
@@ -5925,7 +5925,7 @@ Use the `createClient` method provided by the SDK to create a client object for 
 
 For Interactive Live Streaming, set the `mode` property of `ClientConfig` to `"live"` and the `role` to `"host"` or `"audience"`.
 
-```jsx
+```tsx
 export InteractiveLiveStreaming = () => {
  const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
  return(
@@ -5950,7 +5950,7 @@ To join a channel, use the `useJoin` hook. You can specify the following `joinOp
 
 Add the following to `Basics`:
 
-```jsx
+```tsx
 const [appId, setAppId] = useState("<-- Insert App ID -->");
 const [channel, setChannel] = useState("<-- Insert Channel Name -->");
 const [token, setToken] = useState("<-- Insert Token -->");
@@ -5963,7 +5963,7 @@ useJoin({appid: appId, channel: channel, token: token ? token : null}, calling);
 
 To create local audio and video tracks, use the `useLocalMicrophoneTrack` and `useLocalCameraTrack` hooks. Add the following to `Basics`
 
-```jsx
+```tsx
 const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
 const { localCameraTrack } = useLocalCameraTrack(cameraOn);
 ```
@@ -5972,7 +5972,7 @@ const { localCameraTrack } = useLocalCameraTrack(cameraOn);
 
 After joining a channel, publish the local audio and video tracks using the `usePublish` hook. Add the following to `Basics`:
 
-```jsx
+```tsx
 const [micOn, setMic] = useState(true);
 const [cameraOn, setCamera] = useState(true);
 const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
@@ -5985,7 +5985,7 @@ usePublish([localMicrophoneTrack, localCameraTrack]);
 
 To display the local video, use the `LocalUser` hook, which provides properties to manage local audio and video tracks. Assign the local video track to `videoTrack` and the audio track to `audioTrack`. Use the `micOn` and `cameraOn` parameters to toggle audio and video. Include the following code in the markup of your `Basics` component:
 
-```jsx
+```tsx
 <LocalUser
  audioTrack={localMicrophoneTrack}
  cameraOn={cameraOn}
@@ -6003,7 +6003,7 @@ To manage and display the list of remote users connected to a channel, use the `
 
   Use the `useRemoteUsers` hook to get the current list of remote users:
 
-  ```jsx
+  ```tsx
   const remoteUsers = useRemoteUsers();
   ```
 
@@ -6011,7 +6011,7 @@ To manage and display the list of remote users connected to a channel, use the `
 
   Loop through the `remoteUsers` list and nest the `RemoteUser` component where you want to display each user's video. Include the following code in the markup of your `Basics` component:
 
-  ```jsx
+  ```tsx
   {remoteUsers.map((user) => (
    <div key={user.uid}>
     <RemoteUser user={user} style={{ width: '50%', height: 300 }}>
@@ -6031,7 +6031,7 @@ A complete code sample demonstrating the basic process of real-time interaction 
 
 **Complete sample code for real-time Interactive Live Streaming**
 
-```jsx
+```tsx
 import {
  LocalUser,
  RemoteUser,
@@ -6290,7 +6290,7 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
 
   3. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
 
-    ```c#
+    ```csharp
     using UnityEngine;
     using UnityEngine.UI;
     ```
@@ -6302,7 +6302,7 @@ Before proceeding, create and set up a script to implement Interactive Live Stre
 
 Import the `Agora.Rtc` namespace, which contains various classes and interfaces required to implement real-time audio and video functions.
 
-```c#
+```csharp
 using Agora.Rtc;
 ```
 
@@ -6310,7 +6310,7 @@ using Agora.Rtc;
 
 For real-time communication, create an `IRtcEngine` instance using `RtcEngine.CreateAgoraRtcEngine()`. Then, configure it using `Initialize(context)` with an `RtcEngineContext`, specifying the application context, App ID, and channel profile. In your `JoinChannel.cs` file, add the following code:
 
-```c#
+```csharp
 internal IRtcEngine RtcEngine;
 // Fill in your app ID
 private string _appID= "";
@@ -6342,7 +6342,7 @@ To join a channel, call `JoinChannel` with the following parameters:
 
 For Interactive Live Streaming, set the `channelProfile` to `CHANNEL_PROFILE_LIVE_BROADCASTING`, the `clientRoleType` to `CLIENT_ROLE_BROADCASTER` (host) or `CLIENT_ROLE_AUDIENCE`, and the `audienceLatencyLevel` to `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY`.
 
-```c#
+```csharp
 // Fill in your channel name
 private string _channelName = "";
 // Fill in a temporary token
@@ -6372,7 +6372,7 @@ public void Join() {
 
 Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case.
 
-```c#
+```csharp
 // Implement your own callback class by inheriting from the IRtcEngineEventHandler interface
 internal class UserEventHandler : IRtcEngineEventHandler
 {
@@ -6441,7 +6441,7 @@ private void PreviewSelf()
 ### Display remote video
 When a remote user joins the channel, the `OnUserJoined` callback is triggered. Call `SetForUser` to set the remote video display and call `SetEnable(true)` to render the video.
 
-```c#
+```csharp
 internal VideoSurface RemoteView;
 // When the SDK receives the first frame of a remote video stream and successfully decodes it, the OnUserJoined callback is triggered.
 public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed) {
@@ -6457,7 +6457,7 @@ public override void OnUserJoined(RtcConnection connection, uint uid, int elapse
 
 Call `LeaveChannel` to leave the current channel.
 
-  ```c#
+  ```csharp
   public void Leave() {
     Debug.Log("Leaving " + _channelName);
     // Leave the channel
@@ -6480,7 +6480,7 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 
 1. Include the `UnityEngine.Android` namespace, which contains Android-specific classes for interacting with Android devices from Unity:
 
-  ```c#
+  ```csharp
   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
   using UnityEngine.Android;
   #endif
@@ -6488,7 +6488,7 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 
 2. Create a list of permissions to be obtained.
 
-  ```c#
+  ```csharp
   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
   private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
   #endif
@@ -6496,7 +6496,7 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 
 3. Check if the required permissions have been granted. If not, prompt the user to grant the necessary permissions.
 
-  ```c#
+  ```csharp
   private void CheckPermissions() {
     #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
     foreach (string permission in permissionList) {
@@ -6515,7 +6515,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 1. When the game starts, ensure that device permissions have been granted.
 
-  ```c#
+  ```csharp
   void Update() {
     CheckPermissions();
   }
@@ -6523,7 +6523,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 2. To start Interactive Live Streaming, initialize the engine and set up the event handler.
 
-  ```c#
+  ```csharp
   void Start()
   {
     SetupVideoSDKEngine();
@@ -6534,7 +6534,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 3. To clean up all session-related resources when a user exits the game, call the `Dispose` method of the `IRtcEngine`.
 
-  ```c#
+  ```csharp
   void OnApplicationQuit() {
     if (RtcEngine != null) {
       Leave();
@@ -8036,19 +8036,19 @@ This section shows you how to set up your Python project and install the Agora V
 
 1. Install the build tools for compiling the SDK.
 
-  ```
+  ```text
   sudo apt install build-essential python3-dev
   ```
 
 2. To implement structured, asynchronous event handling in Python, install the `pyee` library.
 
-  ```
+  ```bash
   pip3 install pyee
   ```
 
 3. Install the Agora server side Python SDK.
 
-  ```
+  ```bash
   pip3 install agora-python-server-sdk
   ```
 
@@ -9069,7 +9069,7 @@ Follow these steps to test the demo code:
 
   You see output similar to the following:
 
-  ```
+  ```text
   Initialization result: 0
   LocalUserCB _on_audio_track_publish_start: 123456607304576 123456864576600
   ```

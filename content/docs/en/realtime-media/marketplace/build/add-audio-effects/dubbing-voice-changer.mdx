@@ -177,7 +177,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
         After creating and initializing `RtcEngine`, call `enableExtensionWithVendor` to enable the plug-in, before you call other APIs such as `enableVideo`, and `joinChannelByToken`
 
-        ```objective-c
+        ```objc
         AgoraRtcEngineConfig *cfg = [[AgoraRtcEngineConfig alloc] init];
         cfg.appId = appId;
         cfg.eventDelegate = self;
@@ -193,7 +193,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     When you download and integrate the plug-in, the license, sound, and model files are saved to the specified directory. In this step, you specify the path where these resource files are located.
 
-        ```objective-c
+        ```objc
         NSString *sourcePath = [[NSBundle mainBundle] resourcePath];
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"setResourcesFilePath" value:sourcePath];
         ```
@@ -202,7 +202,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     After receiving the `onExtensionStarted` callback from Agora SDK, call `getExtensionPropertyWithVendor` passing in the `getSpeakersInfo` key to get the timbre list:
 
-        ```objective-c
+        ```objc
         NSString *voices = [self.agoraKit getExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"getSpeakersInfo"];
         // Convert JSON to array
         NSData *nsData = [voices dataUsingEncoding:NSUTF8StringEncoding];
@@ -215,7 +215,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     Call `setExtensionPropertyWithVendor` and pass in the corresponding `key` and `value`:
 
-        ```objective-c
+        ```objc
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"startRealTimeTranscribe" value:@"startRealTimeTranscribe"];
         ```
 
@@ -223,7 +223,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     Pass in the timbre ID from the obtained timbre list to set the corresponding timbre:
 
-        ```objective-c
+        ```objc
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"changeSpeaker" value:@“”];
         ```
 
@@ -231,7 +231,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     Call the API to stop the voice changer:
 
-        ```objective-c
+        ```objc
         [self.agoraKit setExtensionPropertyWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" key:@"stopRealTimeTranscribe" value:@"stopRealTimeTranscribe"];
         ```
 
@@ -239,7 +239,7 @@ This section shows you how to integrate the Dubbing AI Voice Changer extension, 
 
     Close the plug-in and release the resources used by the plug-in:
 
-        ```objective-c
+        ```objc
         [self.agoraKit enableExtensionWithVendor:[EngineFilterManager vendorName] extension:@"RealTimeTranscribe" enabled:NO];
         ```
 

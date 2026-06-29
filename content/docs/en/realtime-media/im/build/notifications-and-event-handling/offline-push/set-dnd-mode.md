@@ -179,7 +179,7 @@ Alternatively, suppose a conversation is assigned a DND time period. The app doe
 
 Call `setSilentModeForAll` to set app-level push notifications. Configure push notifications and the DND mode by specifying the `AgoraChatSilentModeParam` field, as shown in the following code example:
 
-```objective-c
+```objc
 // Set the push notification method to `MentionOnly`.
 AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc]initWithParamType:AgoraChatSilentModeParamTypeRemindType];
     param.remindType = AgoraChatPushRemindTypeMentionOnly;
@@ -202,7 +202,7 @@ AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc]initWithParam
 
 Call `getSilentModeForAllWithCompletion` to get the app-level push notification settings, as shown in the following code example:
 
-```objective-c
+```objc
 [[AgoraChatClient sharedClient].pushManager getSilentModeForAllWithCompletion:^(AgoraChatSilentModeResult *aResult, AgoraChatError *aError) {
             if (!aError) {
                 // Get the push notification method settings of the app.
@@ -223,7 +223,7 @@ Call `getSilentModeForAllWithCompletion` to get the app-level push notification 
 
 Call `setSilentModeForConversation` to set push notifications for a specified conversation. Configure push notifications and the DND mode by specifying the `SilentModeParam` field, as shown in the following example:
 
-```objective-c
+```objc
 // Set the push notification method to `MentionOnly`.
 AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc]initWithParamType:AgoraChatSilentModeParamTypeRemindType];
     param.remindType = AgoraChatPushRemindTypeMentionOnly;
@@ -241,7 +241,7 @@ AgoraChatConversationType conversationType = AgoraChatConversationTypeGroupChat;
 ```
 ## Get push notification settings for a single conversation
 You can call getSilentModeForConversation to get the push notification settings for a specific conversation, as shown in the following code example:
-```objective-c
+```objc
 [[AgoraChatClient sharedClient].pushManager getSilentModeForConversation:@"conversationId" conversationType:AgoraChatConversationTypeChat completion:^(AgoraChatSilentModeResult * _Nullable aResult, AgoraChatError * _Nullable aError) {
     }];
 ```
@@ -250,7 +250,7 @@ You can call getSilentModeForConversation to get the push notification settings 
 
 You can get push notification settings for up to 20 conversations in each call. If a conversation uses app settings or its push notification settings have expired, the returned dictionary does not contain that conversation. Call  `getSilentModeForConversations` to get the push notification settings for multiple conversations, as shown in the following  example:
 
-```objective-c
+```objc
 AgoraChatConversation* conv1 = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversationId1"];
 NSArray *conversations = @[conv1];
     [[AgoraChatClient sharedClient].pushManager getSilentModeForConversations:conversations completion:^(NSDictionary*aResult, AgoraChatError *aError) {
@@ -264,7 +264,7 @@ NSArray *conversations = @[conv1];
 
 Call `clearRemindTypeForConversation` to clear the push notification settings for a specified conversation. After clearing, this conversation will use the app's settings by default:
 
-```objective-c
+```objc
     [[AgoraChatClient sharedClient].pushManager clearRemindTypeForConversation:@"" conversationType:conversationType completion:^(AgoraChatSilentModeResult *aResult, AgoraChatError *aError) {
             if (aError) {
                 NSLog(@"clearRemindTypeForConversation error---%@",aError.errorDescription);

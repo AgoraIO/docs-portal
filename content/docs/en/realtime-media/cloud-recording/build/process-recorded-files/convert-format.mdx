@@ -11,7 +11,7 @@ Since April 29, 2021, you can get MP4 files from a composite recording by settin
 :::
 
 You can use FFmpeg to convert an M3U8 file to MP4. Install [FFmpeg](https://ffmpeg.org/download.html) and run the following command:
-```
+```bash
 ffmpeg -i input.m3u8 -vcodec copy -acodec copy -absf aac_adtstoasc output.mp4
 ```
 
@@ -43,7 +43,7 @@ Download the [Agora Format Converter Script](https://download.agora.io/acrsdk/re
 #### 2. Execute the Format Converter script
 
 Use the following command:
-```
+```bash
 python format_convert.py <directory> <source_format> <destination_format>
 ```
 
@@ -66,6 +66,6 @@ When you run the command, the script will search for all files in the specified 
 ### Example
 
 To convert all the MP4 files under `/home/testname/testfolder` to TS format, use the following command:
-```
+```bash
 python format_convert.py /home/testname/testfolder/ mp4 ts
 ```

@@ -111,7 +111,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"usernames":["user1"], "mute_duration":86400000}' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute'
 ```
 
@@ -141,7 +141,7 @@ Removes the specified user from the  mute list. Once removed from the mute list,
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute/{member_id}
 ```
 
@@ -180,7 +180,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute/user1'
 ```
 
@@ -209,7 +209,7 @@ Retrieves the mute list of the .
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/mute
 ```
 
@@ -247,7 +247,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/10130212061185/mute' -H 'Authorization: Bearer '
 ```
 
@@ -276,7 +276,7 @@ This method mutes all the  members. If this method call succeeds, none of the  m
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
 ```
 
@@ -313,7 +313,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/{The group ID}/ban'
 ```
 
@@ -341,7 +341,7 @@ This method unmutes all the  members. Once unmuted, the  members can once again 
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/ban
 ```
 
@@ -378,7 +378,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {Your app token}' 'http://XXXX/XXXX/XXXX/chatgroups/1208XXXX5169153/ban'
 ```
 

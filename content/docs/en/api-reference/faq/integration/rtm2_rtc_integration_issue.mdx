@@ -51,7 +51,7 @@ You can find the `aosl` library version for the SDKs in the [Video SDK](/en/real
 
 - If the Signaling `aosl` version is lower, integrate the `lite` SDK:
 
-    ```groovy
+    ```text
     dependencies {
         // If you are using RTM SDK version 2.2.8 or later
         // Replace x.y.z with the specific SDK version number, such as 2.2.8
@@ -73,7 +73,7 @@ You can find the `aosl` library version for the SDKs in the [Video SDK](/en/real
 
 * **Android Gradle Plugin < 7.x**
 
-        ```groovy
+        ```text
         android {
             packagingOptions {
                 pickFirst 'lib/**/libaosl.so'
@@ -89,7 +89,7 @@ You can find the `aosl` library version for the SDKs in the [Video SDK](/en/real
 
     * **Android Gradle Plugin 7.x or later (Recommended)**
 
-        ```groovy
+        ```text
         android {
             packaging {
                 jniLibs {
@@ -211,7 +211,7 @@ If the version of the `aosl` library included in the Video/Voice SDK package is 
 If the version of the `aosl` library in the Signaling SDK package is lower, integrate the lite SDK, then clean and rebuild your project to resolve the library conflict.
 
 
-```groovy tab="Android" tabGroup="platform"
+```text tab="Android" tabGroup="platform"
 // ...
 dependencies {
     // If you are using RTM SDK version 2.2.2 to 2.2.6
@@ -272,7 +272,7 @@ If you are using a Signaling SDK version prior to 2.2.2, refer to the following 
 
 * **Android Gradle Plugin < 7.x**
 
-          ```groovy
+          ```text
           android {
               packagingOptions {
                   pickFirst 'lib/x86/libaosl.so'
@@ -285,7 +285,7 @@ If you are using a Signaling SDK version prior to 2.2.2, refer to the following 
 
       * **Android Gradle Plugin 7.x or later (Recommended)**
 
-          ```groovy
+          ```text
           android {
               packaging {
                   jniLibs {
@@ -386,7 +386,7 @@ Select the solution based on your target platform:
 
     1. Add the dependency to the `build.gradle` file in the project root directory:
 
-        ```groovy
+        ```text
         dependencies {
             api 'io.agora.infra:aosl:1.2.13'
             // ...
@@ -406,7 +406,7 @@ Select the solution based on your target platform:
 
 * **Android Gradle Plugin < 7.x**
 
-            ```groovy
+            ```text
             android {
                 packagingOptions {
                     pickFirst 'lib/x86/libaosl.so'
@@ -419,7 +419,7 @@ Select the solution based on your target platform:
 
         * **Android Gradle Plugin 7.x or later (Recommended)**
 
-            ```groovy
+            ```text
             android {
                 packaging {
                     jniLibs {

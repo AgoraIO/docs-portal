@@ -65,7 +65,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/announcement
 ```
 
@@ -103,7 +103,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement'
 ```
 
@@ -133,7 +133,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/announcement
 ```
 
@@ -178,7 +178,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' -d '{"announcement" : "group announcement…"}' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/announcement'
 ```
 
@@ -211,7 +211,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files
 
 // Gets a group's shared files with pagination.
@@ -256,7 +256,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files?pagenum=1&pagesize=10'
 ```
 
@@ -307,7 +307,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files
 ```
 
@@ -350,7 +350,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X POST 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files' -H 'Accept: application/json' -H 'Authorization: Bearer ' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' -F file=@/Users/test/image/IMG_3.JPG
 ```
 
@@ -385,7 +385,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files/{file_id}
 ```
 
@@ -417,7 +417,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
 ```
 
@@ -433,7 +433,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/share_files/{file_id}
 ```
 
@@ -473,7 +473,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 #### Request example
 
-```shell
+```bash
 curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XXXX/XXXX/XXXX/chatgroups/66021836783617/share_files/b30e0be0-XXXX-XXXX-8732-172a3f85134f'
 ```
 

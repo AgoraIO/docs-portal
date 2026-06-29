@@ -179,19 +179,19 @@ This sample server is for demonstration purposes only. Do not use it in a produc
 
 2.  A `go.mod` file defines this module’s import path and dependency requirements. To create the `go.mod` for your token server, run the following command:
 
-    ```shell
+    ```bash
        $ go mod init sampleServer
     ```
 
 3.  Get dependencies by running the following command:
 
-    ```shell
+    ```bash
        $ go get
     ```
 
 4.  Start the server by running the following command:
 
-    ```shell
+    ```bash
        $ go run server.go
     ```
 

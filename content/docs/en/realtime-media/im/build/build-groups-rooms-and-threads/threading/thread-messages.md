@@ -741,7 +741,7 @@ You can check `Conversation#IsThread()` to determine whether the current convers
 
 You can call `ChatManager#FetchHistoryMessagesFromServer` to retrieve messages of a thread from the server. The only difference between retrieving messages of a thread from the server and retrieving group messages is that a thread ID needs to be passed in for the former and a group ID is required for the latter.
 
-```c#
+```csharp
 SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServer(threadId, ConversationType.Group, startMsgId, pageSize, MessageSearchDirection.DOWN, new ValueCallBack>(
           onSuccess: (result) =>
           {
@@ -863,7 +863,7 @@ You can check `Conversation#IsThread()` to determine whether the current convers
 
 You can call `ChatManager#FetchHistoryMessagesFromServer` to retrieve messages of a thread from the server. The only difference between retrieving messages of a thread from the server and retrieving group messages is that a thread ID needs to be passed in for the former and a group ID is required for the latter.
 
-```c#
+```csharp
 SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServer(threadId, ConversationType.Group, startMsgId, pageSize, MessageSearchDirection.DOWN, new ValueCallBack>(
           onSuccess: (result) =>
           {

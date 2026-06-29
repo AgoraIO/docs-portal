@@ -39,7 +39,7 @@ You can choose to pass in the following query parameters:
 
 ### Request example
 
-```
+```bash
 GET /v5/rooms/faexxxxx47c/scenes?sceneDir=/test
 Host: api.netless.link
 region: us-sv
@@ -55,7 +55,7 @@ If the status code is `200`, the request is successful. The response returns the
 
 **Response example**
 
-```
+```json
 "status": 200,
 "body":
 [
@@ -103,7 +103,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 POST /v5/rooms/a7e0xxxxxa69/scenes
 Host: api.netless.link
 region: us-sv
@@ -141,7 +141,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 {}
@@ -185,7 +185,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 PATCH /v5/rooms/faexxxxx1947c/scene-state
 Host: api.netless.link
 region: us-sv
@@ -205,7 +205,7 @@ If the status code is `201`, the request is successful. The response returns the
 
 **The following is a response example for a successful request:**
 
-```
+```json
 "status": 201,
 "body":
 {

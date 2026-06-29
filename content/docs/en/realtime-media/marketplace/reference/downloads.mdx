@@ -3393,7 +3393,7 @@ If your target platform is Android, use Gradle's `packagingOptions.exclude` prop
 
 In the `build.gradle` file in the project root directory, find the `android` configuration block. Under the module `packagingOptions`, use the `exclude` attribute to specify the extension dynamic libraries you want to exclude. Refer to the following example to exclude specific extensions:
 
-```groovy
+```text
 android {
   // ...
   packagingOptions {
@@ -3447,7 +3447,7 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-    ```shell
+    ```bash
     $stderr.puts "Removing Unnecessary Frameworks"
     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
@@ -4048,7 +4048,7 @@ If your target platform is Android, use Gradle's `packagingOptions.exclude` prop
 
 In the `build.gradle` file in the project root directory, find the `android` configuration block. Under the module `packagingOptions`, use the `exclude` attribute to specify the extension dynamic libraries you want to exclude. Refer to the following example to exclude specific extensions:
 
-```groovy
+```text
 android {
   // ...
   packagingOptions {
@@ -4102,7 +4102,7 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
   2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
   3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-    ```shell
+    ```bash
     $stderr.puts "Removing Unnecessary Frameworks"
     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]

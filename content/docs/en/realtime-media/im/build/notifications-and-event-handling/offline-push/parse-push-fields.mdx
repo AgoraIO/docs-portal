@@ -91,7 +91,7 @@ When the device receives a push notification and a user clicks it, the system wi
 
 - If `SceneDelegate` is used in the app, the app startup process is managed by the scene system. When you click the offline push message to open the app, the app will start the scene and then call the corresponding method in `SceneDelegate` to handle the connection and configuration of the scene. Check the `connectionOptions` parameter in the `scene ( _ : willConnectTo:options:)` method of `SceneDelegate` to get the push content. The sample code is as follows:
 
-    ```objective-c
+    ```objc
     - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
         // Get the startup options
         NSDictionary *launchOptions = connectionOptions.notificationResponse.notification.request.content.userInfo;
@@ -102,7 +102,7 @@ When the device receives a push notification and a user clicks it, the system wi
 
 - If `SceneDelegate` is not used in the app, the system will pass the user-defined information in the push to the app through `launchOptions` in the `application:didFinishLaunchingWithOptions:` method. Check the `launchOptions` parameter to get the push content.
 
-    ```objective-c
+    ```objc
     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
           NSDictionary *userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
       }

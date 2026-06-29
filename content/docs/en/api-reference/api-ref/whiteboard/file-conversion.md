@@ -324,7 +324,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 DELETE /v5/projector/tasks/2fxxxxxx367e
 Host: api.netless.link
 region: us-sv
@@ -392,7 +392,7 @@ The following parameters are required in the URL:
 
 ### Request example
 
-```
+```bash
 PUT /v5/projector/tasks/2fxxxxxx367e
 Host: api.netless.link
 region: us-sv
