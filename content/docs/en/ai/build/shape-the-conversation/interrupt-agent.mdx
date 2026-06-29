@@ -195,7 +195,7 @@ Conversational AI Engine supports actively triggering an interruption by calling
 
 ### Server-side interruption
 
-Use the [Interrupt agent](../../api-reference/conversational-ai/rest-api/agent/interrupt) API to manually initiate an interruption request.
+Use the [Interrupt agent](/en/api-reference/api-ref/conversational-ai/interrupt) API to manually initiate an interruption request.
 
 <Tabs>
 <TabsList>
@@ -264,7 +264,7 @@ Agora provides a set of flexible, scalable and standardized client components fo
 
 Before you begin, make sure you:
 
-- Integrate VSDK v4.5.1 or later and follow the [Quickstart](../../introduction/realtime-audio-video) guide to implement basic real-time audio and video features.
+- Integrate VSDK v4.5.1 or later and follow the [Quickstart](../../../realtime-media/video/quickstart) guide to implement basic real-time audio and video features.
 - Enable the SIG service for your project in the Agora Console and follow the [SIG Quickstart](/en/realtime-media/rtm/quickstart) to implement real-time messaging.
 - Implement the basic logic to communicate with a conversational AI agent.
 - Ensure that the RTC engine instance is initialized and SIG is logged in. The toolkit does not handle initialization, lifecycle management, authentication, or login for VSDK or SIG.
@@ -296,7 +296,7 @@ Before you begin, make sure you:
    val api = ConversationalAIAPIImpl(config)
    ```
 
-3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
    - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
@@ -337,7 +337,7 @@ Before you begin, make sure you:
    convoAIAPI = ConversationalAIAPIImpl(config: config)
    ```
 
-3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
    - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
@@ -383,7 +383,7 @@ Before you begin, make sure you:
    const conversationalAIAPI = ConversationalAIAPI.getInstance()
    ```
 
-3. Call [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) using the following parameter settings:
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
    - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
@@ -462,8 +462,8 @@ subRender/
 
 #### RESTful API
 
-- [Start a conversational AI Agent](../../api-reference/conversational-ai/rest-api/agent/join)
-- [Interrupt the Agent](../../api-reference/conversational-ai/rest-api/agent/interrupt)
+- [Start a conversational AI Agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Interrupt the Agent](/en/api-reference/api-ref/conversational-ai/interrupt)
 
 #### Toolkit
 
