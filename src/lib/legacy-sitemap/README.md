@@ -52,10 +52,10 @@ generated mapping classifies them as:
 - `exact-path`: 490
 - `exact-slug`: 1944
 - `renamed-page`: 39
-- `semantic-page-match`: 530
-- `product-fallback`: 113
+- `semantic-page-match`: 630
+- `product-fallback`: 13
 - `unavailable`: 0
 
-`review-report.json` contains the 113 remaining product-level fallback cases.
+`review-report.json` contains the 13 remaining product-level fallback cases.
 Each fallback records inspected article-level candidates and keeps the legacy
 query string, including `platform`, for the redirect.

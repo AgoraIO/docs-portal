@@ -160,6 +160,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/configure-push-notifications',
     'restful-api/restful-overview':
       '/en/realtime-media/im/reference/error-codes',
+    'restful-api/global-mute':
+      '/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism',
     'restful-api/thread-management/create-delete-retrieve-threads':
       '/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management',
     'restful-api/thread-management/manage-thread-members':
@@ -177,9 +179,85 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/marketplace/build/add-video-and-ar-effects/ht-3d-avatar',
     'overview/product-overview': '/en/realtime-media/marketplace',
   },
+  'cloud-recording': {
+    'rest-api/acquire': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/ncs-ip':
+      '/en/realtime-media/cloud-recording/build/handle-events/receive-notifications',
+    'rest-api/overview': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/query': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/start': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/status-codes':
+      '/en/api-reference/api-ref/cloud-recording/status-codes',
+    'rest-api/stop': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/update': '/en/api-reference/api-ref/cloud-recording',
+    'rest-api/update-layout':
+      '/en/realtime-media/cloud-recording/build/customize-the-recording/layout',
+  },
+  'cloud-transcoding': {
+    'get-started/quickstart': '/en/realtime-media/transcoding/rest-quickstart',
+    'rest-api/acquire': '/en/api-reference/api-ref/cloud-transcoding',
+    'rest-api/create': '/en/api-reference/api-ref/cloud-transcoding',
+    'rest-api/destroy': '/en/api-reference/api-ref/cloud-transcoding',
+    'rest-api/ncs-query-ip':
+      '/en/realtime-media/transcoding/build/receive-ncs-events',
+    'rest-api/query': '/en/api-reference/api-ref/cloud-transcoding',
+    'rest-api/restful-authentication':
+      '/en/api-reference/api-ref/cloud-transcoding/authentication',
+    'rest-api/template-create':
+      '/en/realtime-media/transcoding/reference/rest-api',
+    'rest-api/template-query':
+      '/en/realtime-media/transcoding/reference/rest-api',
+    'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
+  },
+  'conversational-ai': {
+    'best-practices/cloud-recording':
+      '/en/ai/best-practices/record-agent-conversation',
+    'models/asr/overview': '/en/ai/models/asr/deepgram',
+    'models/avatar/overview': '/en/ai/models/avatar/generic',
+    'models/llm/overview': '/en/ai/models/llm/openai',
+    'models/mllm/overview': '/en/ai/models/mllm/openai',
+    'models/tts/overview': '/en/ai/models/tts/openai',
+    'reference/sdk/go':
+      '/en/ai/build/custom-model-integration/build-server-client',
+    'reference/sdk/python':
+      '/en/ai/build/custom-model-integration/build-server-client',
+    'reference/sdk/typescript':
+      '/en/ai/build/custom-model-integration/build-server-client',
+    'reference/toolkot/android':
+      '/en/api-reference/api-ref/conversational-ai/client-toolkit/android',
+    'reference/toolkot/ios':
+      '/en/api-reference/api-ref/conversational-ai/client-toolkit/ios',
+    'reference/toolkot/web':
+      '/en/api-reference/api-ref/conversational-ai/client-toolkit/web',
+    'rest-api/agent/history':
+      '/en/ai/build/handle-runtime-events/retrieve-session-history',
+    'rest-api/agent/interrupt':
+      '/en/ai/build/shape-the-conversation/interrupt-agent',
+    'rest-api/agent/join': '/en/ai/build/start-stop-agent',
+    'rest-api/agent/leave': '/en/ai/build/start-stop-agent',
+    'rest-api/agent/list':
+      '/en/ai/build/handle-runtime-events/monitor-agent-runtime',
+    'rest-api/agent/query':
+      '/en/ai/build/handle-runtime-events/monitor-agent-runtime',
+    'rest-api/agent/speak': '/en/api-reference/api-ref/conversational-ai',
+    'rest-api/agent/think': '/en/api-reference/api-ref/conversational-ai',
+    'rest-api/agent/turns':
+      '/en/ai/build/handle-runtime-events/retrieve-session-history',
+    'rest-api/agent/update': '/en/api-reference/api-ref/conversational-ai',
+    'rest-api/reference': '/en/api-reference/api-ref/conversational-ai',
+    'rest-api/restful-authentication':
+      '/en/api-reference/api-ref/conversational-ai/authentication',
+    'studio/overview': '/en/ai/studio',
+  },
+  'broadcast-streaming': {
+    'channel-management-api/webhook/channel-event-type':
+      '/en/realtime-media/broadcast-streaming/build/connect-across-channels/receive-notifications',
+  },
   'flexible-classroom': {
     'client-api/classroom-sdk':
       '/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom',
+    'client-api/edu-context-sdk':
+      '/en/api-reference/api-ref/flexible-classroom/edu-context-sdk',
     'client-api/proctor-sdk':
       '/en/solutions/flexible-classroom/build/enable-teaching-features/proctor-exams-online',
     'client-api/ui-scene':
@@ -188,12 +266,16 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/solutions/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom',
     'get-started/demo-quickstart':
       '/en/solutions/flexible-classroom/quickstart',
+    'get-started/mcp': '/en/solutions/flexible-classroom/product-overview',
+    'get-started/skills': '/en/solutions/flexible-classroom/product-overview',
     'reference/restful-authentication':
       '/en/solutions/flexible-classroom/reference/classroom-rest-api',
     'restful-api/classroom-api':
       '/en/solutions/flexible-classroom/reference/classroom-rest-api',
   },
   iot: {
+    'get-started/mcp': '/en/solutions/iot/product-overview',
+    'get-started/skills': '/en/solutions/iot/product-overview',
     'reference/communicate_with_rtc_sdk':
       '/en/solutions/iot/reference/communicate-with-rtc-sdk',
     'reference/restful-authentication':
@@ -244,6 +326,14 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'reference/restful-authentication':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
   },
+  'interactive-live-streaming': {
+    'channel-management-api/webhook/channel-event-type':
+      '/en/solutions/interactive-live-streaming/build/connect-across-channels/receive-notifications',
+    'get-started/mcp':
+      '/en/solutions/interactive-live-streaming/product-overview',
+    'get-started/skills':
+      '/en/solutions/interactive-live-streaming/product-overview',
+  },
   'media-pull': {
     'overview/product-overview': '/en/realtime-media/media-pull',
     'reference/restful-api': '/en/realtime-media/media-pull/reference/rest-api',
@@ -258,15 +348,36 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'reference/restful-type-definition':
       '/en/realtime-media/media-push/build/receive-notifications',
   },
+  'interactive-whiteboard': {
+    'reference/uikit-sdk':
+      '/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit',
+    'reference/whiteboard-api/file-conversion-deprecated':
+      '/en/api-reference/api-ref/whiteboard/file-conversion-deprecated',
+  },
+  'on-premise-recording': {
+    'reference/api-reference':
+      '/en/realtime-media/on-premise-recording/reference/sunset',
+  },
   'open-ai-integration': {
+    'get-started/manage-agora-account':
+      '/en/ai/reference/openai-realtime-integration',
+    'get-started/mcp': '/en/ai/get-started/mcp-integrate',
     'get-started/quickstart': '/en/ai/reference/openai-realtime-integration',
+    'get-started/skills': '/en/ai/get-started/skills-integrate',
     'overview/core-concepts': '/en/ai/reference/openai-realtime-integration',
     'overview/product-overview': '/en/ai/reference/openai-realtime-integration',
+    'reference/error-codes': '/en/ai/reference/openai-realtime-integration',
+    'reference/firewall': '/en/ai/reference/openai-realtime-integration',
+    'reference/glossary': '/en/ai/reference/openai-realtime-integration',
     'reference/security': '/en/ai/reference/openai-realtime-integration',
   },
   'real-time-stt': {
     'develop/api-callback-service':
       '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service',
+    'get-started/mcp': '/en/realtime-media/speech-to-text',
+    'get-started/skills': '/en/realtime-media/speech-to-text',
+    'rest-api/v5.x/acquire':
+      '/en/api-reference/api-ref/speech-to-text/rest-api-v5/acquire',
     'rest-api/restful-authentication':
       '/en/realtime-media/speech-to-text/get-started/quickstart',
     'rest-api/v5.x/query':
@@ -285,20 +396,32 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/speech-to-text/get-started/quickstart',
     'rest-api/v6.x/update':
       '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
+    'rest-api/v6.x/acquire':
+      '/en/api-reference/api-ref/speech-to-text/rest-api-v6/acquire',
     'rest-api/v7.x/query':
       '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v7.x/join':
+      '/en/realtime-media/speech-to-text/reference/rest-api',
+    'rest-api/v7.x/leave':
+      '/en/realtime-media/speech-to-text/reference/rest-api',
+    'rest-api/v7.x/list':
+      '/en/realtime-media/speech-to-text/reference/rest-api',
     'rest-api/v7.x/update':
       '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
   },
   'server-gateway': {
     'get-started/integrate-sdk': '/en/realtime-media/rtc-server-sdk/quickstart',
+    'get-started/mcp': '/en/realtime-media/rtc-server-sdk',
+    'get-started/skills': '/en/realtime-media/rtc-server-sdk',
     'overview/product-overview': '/en/realtime-media/rtc-server-sdk',
     'reference/api': '/en/realtime-media/rtc-server-sdk/reference/downloads',
     'reference/download':
       '/en/realtime-media/rtc-server-sdk/reference/downloads',
   },
   signaling: {
+    'get-started/mcp': '/en/realtime-media/rtm',
     'get-started/sdk-quickstart': '/en/realtime-media/rtm/quickstart',
+    'get-started/skills': '/en/realtime-media/rtm',
     'reference/api': '/en/realtime-media/rtm/reference/downloads',
     'reference/cloud-proxy-allowed-ips':
       '/en/realtime-media/rtm/reference/cloud-proxy-migration-guide',
@@ -320,6 +443,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/ai/ten-agent/architecture/build-dependencies',
     'architecture/sub-graphs': '/en/ai/ten-agent/architecture/subgraphs',
     'develop/architecture': '/en/ai/ten-agent/architecture/graphs',
+    'develop/binding': '/en/ai/ten-agent/framework-overview',
     'develop/build': '/en/ai/ten-agent/develop/build-ten-applications',
     'develop/debug': '/en/ai/ten-agent/develop/debug-ten-applications',
     'develop/profile': '/en/ai/ten-agent/develop/profile-performance',
@@ -327,14 +451,38 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'develop/workflow': '/en/ai/ten-agent/develop/development-workflow',
     'get-started/ten-designer': '/en/ai/ten-agent/get-started/use-ten-designer',
     'get-started/ten-manager': '/en/ai/ten-agent/get-started/use-ten-manager',
+    'get-started/preparation':
+      '/en/ai/ten-agent/get-started/set-up-environment',
     'overview/core-cooncepts': '/en/ai/ten-agent/core-concepts',
+    'overview/product-overview': '/en/ai/ten-agent/framework-overview',
+    'reference/log': '/en/ai/ten-agent/reference/logging',
     'reference/required': '/en/ai/ten-agent/reference/required-fields',
+    'reference/version_system': '/en/ai/ten-agent/reference/versioning',
   },
   'ten-agent': {
+    'config/change-language': '/en/ai/ten-agent/project-overview',
+    'config/modules': '/en/ai/ten-agent/project-overview',
     'config/properties': '/en/ai/ten-agent/architecture/metadata-system',
+    'develop/create-extension': '/en/ai/ten-agent/develop/develop-with-go',
+    'develop/deploy-agent-service': '/en/ai/ten-agent/project-overview',
+    'develop/interrupt-handling':
+      '/en/ai/ten-agent/architecture/message-system',
+    'develop/llm-extension': '/en/ai/ten-agent/develop/develop-with-go',
+    'develop/local-llm': '/en/ai/ten-agent/develop/develop-with-go',
+    'get-started/codespace-quickstart':
+      '/en/ai/ten-agent/get-started/set-up-environment',
+    'get-started/demo': '/en/ai/ten-agent/project-overview',
     'get-started/docker-setup':
       '/en/ai/ten-agent/get-started/set-up-environment',
+    'get-started/quickstart': '/en/ai/ten-agent/get-started/set-up-environment',
     'overview/architecture': '/en/ai/ten-agent/architecture/graphs',
+    'overview/product-overview': '/en/ai/ten-agent/project-overview',
+    'reference/troubleshooting':
+      '/en/ai/ten-agent/develop/debug-ten-applications',
+  },
+  'voice-calling': {
+    'reference/agora-console-rest-api':
+      '/en/realtime-media/voice/reference/console-overview',
   },
 };
 
