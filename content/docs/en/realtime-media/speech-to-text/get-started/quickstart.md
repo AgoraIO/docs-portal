@@ -67,7 +67,7 @@ When the request is successful you receive an `agent_id` in the HTTP response bo
 
 Following is a simple request example to start a Real-Time STT agent. Refer to [Encrypt captions](../build/process-transcription-data/encrypt-captions), [Record captions](../build/process-transcription-data/record-captions), and [Transcribe specified hosts](../build/start-transcribing-and-translating/transcribe-individual-host) for more feature configurations.
 
-```shell
+```bash
 curl --request post \
   --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/join \
   --header 'Authorization: Basic <credentials>' \
@@ -161,7 +161,7 @@ Call `query` to get the status of an agent during a transcription session. When 
 
 **Request example**
 
-```shell
+```bash
 curl --request get \
   --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId \
   --header 'Authorization: Basic <credentials>'
@@ -201,7 +201,7 @@ Call `stop` to stop transcribing. When the request is successful, you receive th
 
 **Request example**
 
-```shell
+```bash
 curl --request post \
   --url https://api.agora.io/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave \
   --header 'Authorization: Basic <credentials>'

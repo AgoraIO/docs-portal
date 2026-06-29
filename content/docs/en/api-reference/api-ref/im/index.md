@@ -245,7 +245,7 @@ This group of methods enable you to join a thread and remove members from the th
 
 The Chat RESTful APIs require Bearer HTTP authentication. Every time an HTTP request is sent, the following `Authorization` field must be filled in the request header:
 
-```
+```text
 Authorization: Bearer ${token}
 ```
 

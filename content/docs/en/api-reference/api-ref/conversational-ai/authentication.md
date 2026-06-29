@@ -13,7 +13,7 @@ Implement authentication on the server to mitigate the risk of data leakage.
 
 Token authentication uses an RTC token generated on your server using your App ID and App Certificate. To authenticate with a token, include the `Authorization` header in each request:
 
-```http
+```text
 Authorization: agora token=<your_token>
 ```
 
@@ -173,7 +173,7 @@ https.request(options).end();
 
 Basic HTTP authentication uses your Agora customer ID and customer secret. Generate a Base64-encoded credential from the `customer_id:customer_secret` string, then include it in the `Authorization` header:
 
-```http
+```text
 Authorization: Basic <base64_credentials>
 ```
 

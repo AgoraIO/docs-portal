@@ -49,7 +49,7 @@ If you are satisfied with the default UI of Cloud Classroom and do not want to c
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install fcr-ui-scene agora-plugin-gallery
     ```
 

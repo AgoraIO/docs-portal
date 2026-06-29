@@ -9,7 +9,7 @@ Bans a live stream, which rejects incoming streams from the live stream until it
 
 ### HTTP request
 
-```shellscript
+```bash
 PATCH https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/banned_streams/{stream_name}
 ```
 
@@ -38,7 +38,7 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 PATCH https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/banned_streams/{your_stream_name} HTTP/1.1
 ```
 
@@ -52,7 +52,7 @@ PATCH https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -62,7 +62,7 @@ Unbans a live stream so that incoming streams from the live stream can be accept
 
 ### HTTP request
 
-```shellscript
+```bash
 DELETE https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/banned_streams/{stream_name}
 ```
 
@@ -84,13 +84,13 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 DELETE https://api.agora.io/v1/projects/{your_appid}/fls/entry_points/live/admin/banned_streams/{your_stream_name} HTTP/1.1
 ```
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 
@@ -100,7 +100,7 @@ Lists all of the banned live streams under the specified entry point.
 
 ### HTTP request
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{appid}/fls/entry_points/{entry_point}/admin/banned_streams
 ```
 
@@ -128,13 +128,13 @@ If the returned HTTP status code is not 200, the request fails. You can refer to
 
 **Request line**
 
-```shellscript
+```bash
 GET https://api.agora.io/v1/projects/{appid}/fls/entry_points/live/admin/banned_streams HTTP/1.1
 ```
 
 **Response line**
 
-```shellscript
+```bash
 HTTP/1.1 200 OK
 ```
 

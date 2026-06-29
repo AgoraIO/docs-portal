@@ -80,7 +80,7 @@ The layout information of the host. It corresponds to the `transcodingUsers` mem
 
 The SEI information is as follows:
 
-```
+```text
 0000  0664bd7b 22617070 5f646174 61223a22  .d.{"app_data":"
 0010  222c2263 616e7661 73223a7b 2262676e  ","canvas":{"bgn
 0020  64223a22 23666666 66666622 2c226822  d":"#ffffff","h"

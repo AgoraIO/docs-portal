@@ -196,7 +196,7 @@ Call `updatePushDisplayName` and `updatePushDisplayStyle` methods to set the nic
 
 This nickname indicates the nickname of the message sender that is displayed in the push notification bar of the recipient's client when a message from the user is pushed. The nickname can be different from the nickname in user attributes. However, Agora recommends that you use the same nickname for both. Therefore, if either nickname is updated, the other should be changed at the same time. To update the nickname in user attributes, see [Set user attributes](..//en/realtime-media/im/build/build-core-messaging/user-attributes#set-user-attributes).
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager updatePushDisplayName:@"displayName" completion:^(NSString * aDisplayName, AgoraChatError * aError) {
     if (aError)
     {
@@ -205,7 +205,7 @@ This nickname indicates the nickname of the message sender that is displayed in 
 }];
 ```
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager updatePushDisplayStyle:AgoraChatPushDisplayStyleSimpleBanner completion:^(AgoraChatError * aError)
 {
     if(aError)
@@ -217,7 +217,7 @@ This nickname indicates the nickname of the message sender that is displayed in 
 
 Call `getPushNotificationOptionsFromServerWithCompletion` to get the display attributes for a push notification, as shown in the following code example:
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager getPushNotificationOptionsFromServerWithCompletion:^(AgoraChatPushOptions *aOptions, AgoraChatError *aError) {
         if (!aError) {
             // Get the nickname displayed in the push notification.
@@ -267,7 +267,7 @@ Follow the steps below to create a default push template in [Agora Console](http
 When creating a push message, you can set the message extension fields to customize the push content to be displayed.
 For the display attributes of push notifications, that is, the display attributes and display style of push notifications, in addition to calling specific methods to set them, you can also set them through custom fields. If you use both methods at the same time, the custom fields have a higher priority.
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"test"];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:conversationId from:AgoraChatClient.sharedClient.currentUsername to:conversationId body:body ext:nil];
     message.ext = @{@"em_apns_ext":@{@"em_push_content":@"custom push content",@"em_push_title":@"custom push title"}};
@@ -300,7 +300,7 @@ The steps to use a custom push template are as follows:
 
 1. When creating a message, pass in the template name, push title, and push content by using the extension fields. The push title and content in the notification bar use the formats in the template, respectively.
 
-    ```objective-c
+    ```objc
     // The following takes text messages as an example. The setting methods for other types of messages are the same.
     AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc]initWithText:@"test"];
     AgoraChatMessage *message = [[AgoraChatMessage alloc]initWithConversationID:@"conversationId" from:@"currentUsername" to:@"conversationId" body:body ext:nil];
@@ -336,7 +336,7 @@ The message receiver can call `setPushTemplate` to pass in the push template nam
 
 If the sender uses a push template when sending a message, the content displayed in the push notification bar is based on the sender's push template.
 
-```objective-c
+```objc
 [AgoraChatClient.sharedClient.pushManager setPushTemplate:@"templateName" completion:^(AgoraChatError * _Nullable aError) {
 
 }];

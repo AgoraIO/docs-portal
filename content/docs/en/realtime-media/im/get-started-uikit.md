@@ -183,14 +183,14 @@ In order to create the environment necessary to integrate Chat UI Samples into y
 
       In the Terminal, navigate to the root directory of your Xcode project and run the following command:
 
-      ```shell
+      ```bash
       pod init
       ```
    2. Add dependencies to the UI Samples in the Podfile.
 
       Open Podfile and replace the content with the following:
 
-      ```shell
+      ```bash
       platform :ios, '11.0'
       target 'EaseChatKitExample' do
 
@@ -205,7 +205,7 @@ In order to create the environment necessary to integrate Chat UI Samples into y
 
       In the Terminal, navigate to the root directory of your Xcode project and run the following command:
 
-       ```shell
+       ```bash
        pod install
        ```
 
@@ -217,7 +217,7 @@ This sections introduces how to create an app and add the Chat UI Samples to the
 
 1. In your terminal, run the following command to create an app:
 
-   ```shell
+   ```bash
    # Install CLI
    npm install create-react-app
    # Create an app named my-app
@@ -227,7 +227,7 @@ This sections introduces how to create an app and add the Chat UI Samples to the
 
    Once you successfully create the app, the project structure is as follows:
 
-   ```shell
+   ```bash
    my-app
     ├── package.json
     ├── public                  # The static directory for Webpack
@@ -249,13 +249,13 @@ This sections introduces how to create an app and add the Chat UI Samples to the
 
    To add the UI Samples using npm:
 
-   ```shell
+   ```bash
    npm install agora-chat-uikit --save
    ```
 
    To add the UI Samples using yarn
 
-   ```shell
+   ```bash
    yarn add agora-chat-uikit
    ```
 
@@ -1248,7 +1248,7 @@ To test the app, take the following steps:
 
 In your terminal, run the following command to launch the app:
 
-```shell
+```bash
 npm run start
 ```
 

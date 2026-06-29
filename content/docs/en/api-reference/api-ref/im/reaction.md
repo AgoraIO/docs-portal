@@ -111,7 +111,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X POST 'http://XXXX/XXXX/XXXX/reaction/user/e1' -H 'Authorization: Bearer {YourAppToken}' -H 'Content-Type: application/json' --data-raw '{
     "msgId":"997625372793113144",
     "message":"emoji_40"
@@ -144,7 +144,7 @@ For each method call, you can retrieve reactions in either s or s, but not in bo
 
 ### HTTP request
 
-```shell
+```bash
 GET https://{host}/{org_name}/{app_name}/reaction/user/{userId}?msgIdList={N,M}&msgType={msgType}&groupId={groupId}
 ```
 
@@ -193,7 +193,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/{{userId}}?msgIdList=msgId1&msgType=chat' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
@@ -244,7 +244,7 @@ This method deletes a reaction.
 
 ### HTTP request
 
-```shell
+```bash
 DELETE https://{host}/{org_name}/{app_name}/reaction/user/{userId}
 ```
 
@@ -289,7 +289,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 curl -g -X DELETE 'http://XXXX/XXXX/XXXX/reaction/user/wz?msgId=997625372793113144&message=emoji_40' -H 'Authorization: Bearer {YourAppToken}'
 ```
 
@@ -308,7 +308,7 @@ This method retrieves the detailed information of the reaction by specifying the
 
 ### HTTP request
 
-```shell
+```bash
 https://{host}/{org_name}/{app_name}/reaction/user/{userId}/detail?msgId={msgId}&message={message}&limit={limit}&cursor={cursor}
 ```
 
@@ -364,7 +364,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 // Starts querying from the first page
 curl -g -X GET 'http://XXXX/XXXX/XXXX/reaction/user/wz/detail?msgId=997627787730750008&message=emoji_40&limit=50' -H 'Authorization: Bearer {YourAppToken}'
 

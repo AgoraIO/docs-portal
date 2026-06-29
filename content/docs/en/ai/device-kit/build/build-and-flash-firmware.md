@@ -8,7 +8,7 @@ Follow these steps to set up the R1 device firmware with the example project.
 
 1. Clone the `bk_aidk` project from GitHub:
 
-   ```shell
+   ```bash
    git clone --recurse-submodules https://github.com/bekencorp/bk_aidk.git -b ai_release/v2.0.1
    cd bk_aidk
    git checkout ai_release/v2.0.1.8
@@ -17,7 +17,7 @@ Follow these steps to set up the R1 device firmware with the example project.
 
 2. Replace the `projects` directory with the example demo directory. Replace `<bk_aidk_path>` with your actual path:
 
-   ```shell
+   ```bash
    rm -rf <bk_aidk_path>/projects/
    cp -r ./projects <bk_aidk_path>/projects
    ```
@@ -28,7 +28,7 @@ Follow these steps to set up the R1 device firmware with the example project.
 
 3. Update the server URL in `projects/common_components/network_transfer/agora_rtc/agora_config.h` to point to your deployed server:
 
-   ```c
+   ```cpp
    #define CONFIG_AGENT_SERVER_URL "http://192.168.1.100:5001"
    ```
 
@@ -38,7 +38,7 @@ Follow these steps to set up the R1 device firmware with the example project.
 
 Build the sample project firmware from the `bk_aidk` directory:
 
-```shell
+```bash
 cd <bk_aidk_path>
 make bk7258 PROJECT=beken_genie
 ```

@@ -8,7 +8,7 @@ This server-side example is provided solely for demonstration and testing purpos
 
 Install the required Python packages:
 
-```shell
+```bash
 pip install requests flask pyjwt
 ```
 
@@ -60,7 +60,7 @@ For detailed parameter descriptions, see [Start a conversational AI agent](../..
 
 Run the server from the `/server/aiot_server_demo_example` directory:
 
-```shell
+```bash
 cd server/aiot_server_demo_example
 python3 main.py
 ```

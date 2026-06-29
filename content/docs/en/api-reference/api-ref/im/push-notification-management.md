@@ -99,7 +99,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 #### Request example
 
-```shell
+```bash
 # Replace {YourAppToken} with the app token generated in your server.
 curl -X POST 'http://XXXX/XXXX/XXXX/push/sync/test1' \
 -H 'Authorization: Bearer ' \
@@ -220,7 +220,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -X POST "http://XXXX/XXXX/XXXX/push/single" -H "Authorization: Bearer " -H "Content-Type: application/json" --data-raw "{
     "targets": [
         "test2"
@@ -315,7 +315,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/list/label' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -404,7 +404,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -X POST "http://XXXX/XXXX/XXXX/push/task" -H "Content-Type: application/json" --data-raw "{
     "pushMessage": {
         "title": "Hello1234",
@@ -711,7 +711,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -781,7 +781,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/90' \
 -H 'Authorization: Bearer '
 ```
@@ -850,7 +850,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'localhost/hx/hxdemo/push/label' \
 -H 'Authorization: Bearer YWMt5lyAUJnNEeyHUS2MdMYkPAAAAAAAAAAAAAAAAAAAAAEHMpqy501HZr2ms92z-Hz9AQMAAAF_SGRs1QBPGgBOIAaoCYWXntKF-h0vuvlyUCNB-IXTM4eEpSVqIdei9A'
 ```
@@ -920,7 +920,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s' \
 -H 'Authorization: Bearer '
 ```
@@ -988,7 +988,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X POST 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \
@@ -1058,7 +1058,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user/hx1' \
 -H 'Authorization: Bearer '
 ```
@@ -1126,7 +1126,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X GET 'http://XXXX/XXXX/XXXX/push/label/post-90s/user?limit=1' \
 -H 'Authorization: Bearer '
 ```
@@ -1198,7 +1198,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
 ##### Request example
 
-```shell
+```bash
 curl -L -X DELETE 'http://XXXX/XXXX/XXXX/push/label/post-90s/user' \
 -H 'Authorization: Bearer ' \
 -H 'Content-Type: application/json' \

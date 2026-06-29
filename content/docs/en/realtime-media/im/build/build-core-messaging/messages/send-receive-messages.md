@@ -638,7 +638,7 @@ For further details see [Sent message modification limitations](../../limitation
 
 Use the `AgoraChatTextMessageBody` class to create a text message, and then send the message.
 
-```objective-c
+```objc
 // Call initWithText to create a text message. Set `content` to the text content.
     AgoraChatTextMessageBody *textMessageBody = [[AgoraChatTextMessageBody alloc] initWithText:content];
     // Set `conversationId` to the user ID of the peer user in one-to-one chat, group ID in group chat, and chat room ID in room chat.
@@ -669,7 +669,7 @@ All types of messages in one-to-one chats and chat groups support this function.
 
 To deliver messages only to online users, set `ChatMessage#deliverOnlineOnly` to `true` when sending the message. The following is an example of sending a text message to only online users:
 
-```objective-c
+```objc
 // Call initWithText to create a text message. `content` is the content of the text message.
 AgoraTextMessageBody *textMessageBody = [[AgoraTextMessageBody alloc] initWithText:content];
 // Message receiver: Single chat is the ID of the peer user, group chat is the group ID.
@@ -697,7 +697,7 @@ Even high-priorities messages can be dropped when the server load goes too high.
 
 You can set the priority for all types of messages in the chat room.
 
-```objective-c
+```objc
 AgoraChatTextMessageBody* textBody = [[AgoraChatTextMessageBody alloc] initWithText:@"Hi"];
     AgoraChatMessage* message = [[AgoraChatMessage alloc] initWithConversationID:@"roomId" body:textBody ext:nil];
     message.chatType = AgoraChatTypeChatRoom;
@@ -712,7 +712,7 @@ You can use `AgoraChatManagerDelegate` to listen for message events. You can add
 
 When a message arrives, the recipient receives an `messagesDidReceive` callback. Each callback contains one or more messages. You can traverse the message list, and parse and render these messages in this callback and render these messages.
 
-```objective-c
+```objc
 // Adds the delegate.
 [[AgoraChatClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
 // Occurs when the message is received.
@@ -742,7 +742,7 @@ The default time limit for recalling a message is two minutes. You can extend th
 1. Except CMD messages, you can recall all types of message. 2. If an attachment message, like an image, voice, video, or file message, is recalled, the attachment of the message is also deleted.
 :::
 
-```objective-c
+```objc
 [[AgoraChatClient sharedClient].chatManager recallMessageWithMessageId:@"messageId" completion:^(AgoraChatError *aError) {
         if (!aError) {
                NSLog(@"Recalling message succeeds");
@@ -754,7 +754,7 @@ The default time limit for recalling a message is two minutes. You can extend th
 
 You can also use `messagesDidRecall` to listen for the message recall state:
 
-```objective-c
+```objc
 /**
  * Occurs when a received message is recalled.
  */
@@ -771,7 +771,7 @@ Before sending a voice message, you should implement audio recording on the app 
 
 Refer to the following code example to create and send a voice message:
 
-```objective-c
+```objc
 // Set localPath as the local path of the voice file and displayName the display name of the attachment.
 AgoraChatVoiceMessageBody *body = [[AgoraChatVoiceMessageBody alloc] initWithLocalPath:localPath
                           							     displayName:displayName];
@@ -791,7 +791,7 @@ message.chatType = AgoraChatTypeChat;
 
 When the recipient receives the message, refer to the following code example to get the audio file:
 
-```objective-c
+```objc
 AgoraChatVoiceMessageBody *voiceBody = (AgoraChatVoiceMessageBody *)message.body;
 // Retrieves the path of the audio file on the server.
 NSString *voiceRemotePath = voiceBody.remotePath;
@@ -805,7 +805,7 @@ By default, the SDK compresses the image file before sending it. To send the ori
 
 Refer to the following code example to create and send an image message:
 
-```objective-c
+```objc
 // Set imageData as the path of the image file on the local device, and displayName as the display name of the file.
 AgoraChatImageMessageBody *body = [[AgoraChatImageMessageBody alloc] initWithData:imageData
                           							            displayName:displayName];
@@ -825,7 +825,7 @@ message.chatType = AgoraChatTypeChat;
 
 When the recipient receives the message, refer to the following code example to get the thumbnail and attachment file of the image message:
 
-```objective-c
+```objc
 AgoraChatImageMessageBody *body = (AgoraChatImageMessageBody *)message.body;
 // Retrieves the path of the image file on the server.
 NSString *remotePath = body.remotePath;
@@ -847,7 +847,7 @@ Before sending a video message, you should implement video capturing on the app 
 
 Refer to the following code example to create and send a video message:
 
-```objective-c
+```objc
 // Set localPath as the path of the video file on the local device and displayName the display name of the video file.
 AgoraChatVideoMessageBody *body = [[AgoraChatVideoMessageBody alloc] initWithLocalPath:localPath displayName:@"displayName"];
 // The duration of the video file
@@ -872,7 +872,7 @@ If you do not want the SDK to automatically download the video thumbnail, set `[
 
 To download the actual video file, call `[[AgoraChatClient sharedClient].chatManager downloadMessageAttachment:progress:completion:]`, and get the path of the video file from the `getLocalUri` member in `messageBody`.
 
-```objective-c
+```objc
 AgoraChatVideoMessageBody *body = (AgoraChatVideoMessageBody *)message.body;
 // Retrieves the path of the video file from the server.
 NSString *remotePath = body.remotePath;
@@ -888,7 +888,7 @@ NSString *thumbnailLocalPath = body.thumbnailLocalPath;
 
 Refer to the following code example to create, send, and receive a file message:
 
-```objective-c
+```objc
 // Set fileData as the path of the file on the local device, and fileName the display name of the attachment file.
 AgoraChatFileMessageBody *body = [AgoraChatFileMessageBody  initWithData:fileData
                            							            displayName:fileName];
@@ -908,7 +908,7 @@ message.chatType = AgoraChatTypeChat;
 
 While sending a file message, refer to the following sample code to get the progress for uploading the attachment file:
 
-```objective-c
+```objc
 [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:^(int progress) {
 		//progress indicates the progress of uploading the attachment
 } completion:^(AgoraChatMessage *message, AgoraChatError *error) {
@@ -918,7 +918,7 @@ While sending a file message, refer to the following sample code to get the prog
 
 When the recipient receives the message, refer to the following code example to get the attachment file:
 
-```objective-c
+```objc
 AgoraChatFileMessageBody *body = (AgoraChatFileMessageBody *)message.body;
 // Retrieves the path of the attachment file from the server.
 NSString *remotePath = body.remotePath;
@@ -929,7 +929,7 @@ NSString *localPath = body.localPath;
 
 To send and receive a location message, you need to integrate a third-party map service provider. When sending a location message, you get the longitude and latitude information of the location from the map service provider; when receiving a location message, you extract the received longitude and latitude information and displays the location on the third-party map.
 
-```objective-c
+```objc
 // Sets the latitude and longitude information of the location.
 AgoraChatLocationMessageBody *body = [[AgoraChatLocationMessageBody alloc] initWithLatitude:latitude longitude:longitude address:aAddress];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
@@ -952,7 +952,7 @@ CMD messages are command messages that instruct a specified user to take a certa
 CMD messages are not stored in the local database.Actions beginning with `em_` and `easemob::` are internal fields. Do not use them.
 :::
 
-```objective-c
+```objc
 // Use action to customize the CMD message
 AgoraChatCmdMessageBody *body = [[AgoraChatCmdMessageBody alloc] initWithAction:action];
 AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toChatUsername
@@ -971,7 +971,7 @@ message.chatType = AgoraChatTypeChat;
 
 To notify the recipient that a CMD message is received, use a separate delegate so that users can deal with the message differently.
 
-```objective-c
+```objc
 // Occurs when the CMD message is received.
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages{
   for (AgoraChatMessage *message in aCmdMessages) {
@@ -984,7 +984,7 @@ To notify the recipient that a CMD message is received, use a separate delegate 
 
 The following code example shows how to create and send a customized message:
 
-```objective-c
+```objc
 // Set event as the custom message event, for example "userCard".
 // Set ext as the extension field of the event, for example as uid, nickname, and avatar.
 AgoraChatCustomMessageBody* body = [[AgoraChatCustomMessageBody alloc] initWithEvent:@"userCard" ext:@{@"uid":aUid ,@"nickname":aNickName,@"avatar":aUrl}];
@@ -1006,7 +1006,7 @@ message.chatType = AgoraChatTypeChat;
 
 If the message types listed above do not meet your requirements, you can use message extensions to add attributes to the message. This can be applied in more complicated messaging use-cases.
 
-```objective-c
+```objc
 AgoraChatTextMessageBody *textMessageBody = [[AgoraChatTextMessageBody alloc] initWithText:content];
 // Adds the message extension.
 NSDictionary *messageExt = @{@"attribute":@"value"};
@@ -1100,14 +1100,14 @@ For the edited message, except the message body, other information included in t
 
 To modify a sent message, refer to the following code:
 1. Call `modifyMessage` with the message ID and the new message body:
-    ```objective-c
+    ```objc
     AgoraChatTextMessageBody* newBody = [[AgoraChatTextMessageBody alloc] initWithText:@"new content"];
         [AgoraChatClient.sharedClient.chatManager modifyMessage:msgId body:newBody completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
 
         }];
     ```
 1. Receive notification of messages modified by other users:
-    ```objective-c
+    ```objc
     - (void)onMessageContentChanged:(AgoraChatMessage *)message operatorId:(NSString *)operatorId operationTime:(NSUInteger)operationTime {
 
     }

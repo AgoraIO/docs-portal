@@ -649,7 +649,7 @@ For each App Key, the call frequency limit of this method is 100 per second.
 
 ### HTTP request
 
-```
+```bash
 GET https://{host}/{org}/{app}/notification/template/{name}
 ```
 

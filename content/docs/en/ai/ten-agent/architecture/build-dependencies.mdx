@@ -56,7 +56,7 @@ A small build system focused on speed.
 
 ### `libwebsockets` patch
 
-```diff
+```text
 --- /home/wei/MyData/Temp/libwebsockets-4.3.2/CMakeLists.txt
 +++ libwebsockets/CMakeLists.txt
 @@ -851,6 +851,7 @@
@@ -71,7 +71,7 @@ A small build system focused on speed.
 
 Apply the following patch.
 
-```diff
+```text
 diff --git a/third_party/libwebsockets/cmake/lws_config.h.in b/third_party/libwebsockets/cmake/lws_config.h.in
 index f3f4a9d79..e8d36c3ae 100644
 --- a/third_party/libwebsockets/cmake/lws_config.h.in
@@ -106,7 +106,7 @@ index e8a0cb2d4..84a164e90 100755
      mbedtls_ssl_conf_rng(&ssl_pm->conf, mbedtls_ctr_drbg_random, &ssl_pm->ctr_drbg);
 ```
 
-```diff
+```text
 diff --git a/third_party/libwebsockets/CMakeLists.txt b/third_party/libwebsockets/CMakeLists.txt
 index 92638143a..746f9b6a6 100644
 --- a/third_party/libwebsockets/CMakeLists.txt
@@ -130,7 +130,7 @@ index 92638143a..746f9b6a6 100644
 
 Apply the following patch if your CMake version is higher than 3.24, as `find_package` supports the `GLOBAL` keyword since 3.24.
 
-```diff
+```text
 diff --git a/third_party/libwebsockets/lib/tls/mbedtls/CMakeLists.txt b/third_party/libwebsockets/lib/tls/mbedtls/CMakeLists.txt
 index e34151724..79b15089d 100644
 --- a/third_party/libwebsockets/lib/tls/mbedtls/CMakeLists.txt
@@ -158,7 +158,7 @@ index e34151724..79b15089d 100644
 +        set(LWS_MBEDTLS_LIBRARIES MbedTLS::mbedcrypto MbedTLS::mbedx509 MbedTLS::mbedtls)
 ```
 
-```diff
+```text
 diff --git a/third_party/libwebsockets/BUILD.gn b/third_party/libwebsockets/BUILD.gn
 index 4c89c2e2e..e6d641b9c 100644
 --- a/third_party/libwebsockets/BUILD.gn
@@ -194,7 +194,7 @@ endif()
 
 Export `Curl_ws_done` in `lib/ws.h`. This function is called to prevent memory leaks.
 
-```c
+```cpp
 CURL_EXTERN void Curl_ws_done(struct Curl_easy *data);
 // ^^^^^^^^
 ```

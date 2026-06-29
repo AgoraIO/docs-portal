@@ -59,7 +59,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install agora-classroom-sdk agora-plugin-gallery
     ```
 
@@ -239,7 +239,7 @@ If you are satisfied with the default UI of Flexible Classroom and do not want t
 
 1. To install the SDK, run the following command:
 
-    ```shell
+    ```bash
     npm install agora-proctor-sdk agora-plugin-gallery
     ```
 

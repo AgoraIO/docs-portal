@@ -24,7 +24,7 @@ This MCP works with all LLMs that support MCP, but performs best when the assist
 
 System prompt for LLMs
 
-```
+```markdown
 # Agora MCP Markdown - System Prompt
 
 You have access to Agora's documentation search via three tools:
