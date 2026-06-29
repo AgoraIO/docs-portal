@@ -877,7 +877,10 @@ function OpenApiCodeSampleGroupSelector({
         </CodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTab key={value} value={value}>
-            {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+            {renderCodeBlock(
+              getCodeSampleLanguage(sample.lang),
+              sample.source,
+            )}
           </CodeBlockTab>
         ))}
       </CodeBlockTabs>
