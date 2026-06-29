@@ -3,7 +3,7 @@ import path from 'node:path';
 import type { BaseIndex } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import { buildDocPath } from '../docs-routing';
-import { type AppLocale, SUPPORTED_LOCALES } from '../i18n/i18n-config';
+import type { AppLocale } from '../i18n/i18n-config';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -23,6 +23,7 @@ export type AlgoliaDocsRecord = BaseIndex & {
 };
 
 const MAX_CHUNK_LENGTH = 4500;
+const INDEXED_LOCALES: readonly AppLocale[] = ['en'];
 
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [docsRecords, openApiRecords] = await Promise.all([
@@ -97,7 +98,7 @@ async function getContentDocsPages() {
   const docsRoot = path.join(process.cwd(), 'content/docs');
   const files = (
     await Promise.all(
-      SUPPORTED_LOCALES.map((locale) =>
+      INDEXED_LOCALES.map((locale) =>
         scanDocsFiles(path.join(docsRoot, locale)).then((items) =>
           items.map((filePath) => ({ filePath, locale })),
         ),
@@ -168,11 +169,13 @@ function parseFrontmatter(raw: string) {
 async function getOpenApiRecords() {
   const lanePages = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
-      getOpenApiLaneLocales(lane).map(async (locale) => ({
-        lane,
-        locale,
-        operations: await getOpenApiOperations(lane, locale),
-      })),
+      getOpenApiLaneLocales(lane)
+        .filter((locale) => INDEXED_LOCALES.includes(locale))
+        .map(async (locale) => ({
+          lane,
+          locale,
+          operations: await getOpenApiOperations(lane, locale),
+        })),
     ),
   );
 
@@ -305,7 +308,7 @@ function chunkText(text: string, maxLength: number) {
 function parseDocsUrl(url: string) {
   const [locale, tab, ...slugSegments] = url.split('/').filter(Boolean);
 
-  if (!SUPPORTED_LOCALES.includes(locale as AppLocale) || !tab) {
+  if (!INDEXED_LOCALES.includes(locale as AppLocale) || !tab) {
     return null;
   }
 

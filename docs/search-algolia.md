@@ -28,9 +28,10 @@ ALGOLIA_INDEX_NAME=docs_platform_aware_markdown
 bun run search:sync
 ```
 
-The sync script indexes regular docs and generated OpenAPI operation pages.
-Records include `locale`, `product`, `platform`, `tab`, and `objectType`
-facets so Algolia Public MCP can expose platform-aware documentation search.
+The sync script indexes English regular docs and generated English OpenAPI
+operation pages for the first release. Records include `locale`, `product`,
+`platform`, `tab`, and `objectType` facets so Algolia Public MCP can expose
+platform-aware documentation search.
 
 ## MCP
 
