@@ -8,7 +8,7 @@ Agora provides a runnable sample project with the Server Gateway SDK. This page 
 
 ## Get the sample project
 
-[Download](/en/api-reference/sdks) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
+[Download](/en/api-reference/sdks?product=server-gateway&platform=linux) the latest x86-64 SDK package and decompress the file. If you need the SDK build for other architectures, [submit a ticket](https://agora-ticket.agora.io/) to technical support.
 
 ## Compile the sample project
 

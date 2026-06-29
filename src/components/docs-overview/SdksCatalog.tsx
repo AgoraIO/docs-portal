@@ -1,5 +1,5 @@
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
@@ -24,6 +24,82 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+const SDKS_CATALOG_PATH = '/en/api-reference/sdks';
+const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
+
+let historyPatchDepth = 0;
+let restoreHistoryMethods: (() => void) | null = null;
+
+const productFilters = {
+  agents: {
+    label: 'Agora Agents SDK',
+    aliases: ['agents', 'agora-agents', 'ai-agents'],
+    productIds: ['agents'],
+  },
+  chat: {
+    label: 'Chat SDK',
+    aliases: ['chat', 'im'],
+    productIds: ['chat'],
+  },
+  fastboard: {
+    label: 'Interactive Whiteboard Fastboard',
+    aliases: ['fastboard'],
+    productIds: ['fastboard'],
+  },
+  iot: {
+    label: 'IoT SDK',
+    aliases: ['iot'],
+    productIds: ['iot'],
+  },
+  'on-premise-recording': {
+    label: 'Agora On-Premise Recording SDK',
+    aliases: ['on-premise-recording', 'onpremise-recording', 'recording'],
+    productIds: ['on-premise-recording'],
+  },
+  'server-gateway': {
+    label: 'Server Gateway SDK',
+    aliases: ['server-gateway', 'rtc-server-sdk'],
+    productIds: ['server-gateway'],
+  },
+  signaling: {
+    label: 'Signaling SDK',
+    aliases: ['signaling', 'rtm'],
+    productIds: ['signaling'],
+  },
+  video: {
+    label: 'Video SDK',
+    aliases: [
+      'video',
+      'video-calling',
+      'rtc-video',
+      'interactive-live-streaming',
+      'broadcast-streaming',
+      'ils',
+    ],
+    productIds: ['video'],
+  },
+  voice: {
+    label: 'Voice SDK',
+    aliases: ['voice', 'voice-calling', 'rtc-voice'],
+    productIds: ['voice'],
+  },
+  whiteboard: {
+    label: 'Whiteboard SDKs',
+    aliases: ['whiteboard', 'interactive-whiteboard'],
+    productIds: ['fastboard', 'whiteboard'],
+  },
+} as const;
+
+type ProductFilterId = keyof typeof productFilters;
+
+const productAliasToFilter = new Map<string, ProductFilterId>(
+  Object.entries(productFilters).flatMap(([filterId, filter]) =>
+    filter.aliases.map((alias) => [alias, filterId as ProductFilterId]),
+  ),
+);
+const platformIds = new Set(
+  sdkDownloadPlatforms.map((platform) => platform.id),
+);
 
 function platformRank(platformId: string) {
   const index = (PLATFORM_ORDER as readonly string[]).indexOf(platformId);
@@ -38,22 +114,26 @@ type ProductPlatformEntry = {
 
 type ProductGroup = {
   label: string;
+  productId: string;
   defaultProduct: SdkDownloadProduct;
   platforms: ProductPlatformEntry[];
 };
 
 function buildProductGroups(): ProductGroup[] {
   const order: string[] = [];
-  const entriesByLabel = new Map<string, ProductPlatformEntry[]>();
+  const entriesByProductId = new Map<string, ProductPlatformEntry[]>();
+  const labelsByProductId = new Map<string, string>();
 
   for (const platform of sdkDownloadPlatforms) {
     for (const kind of ['core', 'addOns'] as const) {
       for (const product of platform[kind] ?? []) {
-        let entries = entriesByLabel.get(product.label);
+        const productId = getProductCatalogId(product);
+        let entries = entriesByProductId.get(productId);
         if (!entries) {
           entries = [];
-          entriesByLabel.set(product.label, entries);
-          order.push(product.label);
+          entriesByProductId.set(productId, entries);
+          labelsByProductId.set(productId, product.label);
+          order.push(productId);
         }
         entries.push({
           platformId: platform.id,
@@ -64,13 +144,14 @@ function buildProductGroups(): ProductGroup[] {
     }
   }
 
-  return order.map((label) => {
-    const platforms = (entriesByLabel.get(label) ?? [])
+  return order.map((productId) => {
+    const platforms = (entriesByProductId.get(productId) ?? [])
       .slice()
       .sort((a, b) => platformRank(a.platformId) - platformRank(b.platformId));
 
     return {
-      label,
+      label: labelsByProductId.get(productId) ?? platforms[0].product.label,
+      productId,
       defaultProduct: platforms[0].product,
       platforms,
     };
@@ -79,18 +160,70 @@ function buildProductGroups(): ProductGroup[] {
 
 export function SdksCatalog() {
   const productGroups = useMemo(buildProductGroups, []);
+  const queryFilters = useSdkCatalogQueryFilters();
+  const productFilter = queryFilters.productId
+    ? productFilters[queryFilters.productId]
+    : null;
+  const productFilterProductIds = productFilter
+    ? new Set<string>(productFilter.productIds)
+    : null;
+  const visibleProductGroups = productFilter
+    ? productGroups.filter((group) =>
+        productFilterProductIds?.has(group.productId),
+      )
+    : queryFilters.platformId
+      ? productGroups.filter((group) =>
+          group.platforms.some(
+            (entry) => entry.platformId === queryFilters.platformId,
+          ),
+        )
+      : productGroups;
+  const platformLabel = queryFilters.platformId
+    ? sdkDownloadPlatforms.find(
+        (platform) => platform.id === queryFilters.platformId,
+      )?.label
+    : null;
+  const summaryLabel = productFilter?.label ?? platformLabel;
 
   return (
     <section className="not-prose my-8 flex flex-col gap-3">
-      {productGroups.map((group) => (
-        <ProductCard group={group} key={group.label} />
+      {summaryLabel ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
+          <p className="m-0 text-sm font-medium text-foreground">
+            {`Showing SDKs for ${summaryLabel}`}
+          </p>
+          <a
+            className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+            href={SDKS_CATALOG_PATH}
+          >
+            Show all SDKs
+          </a>
+        </div>
+      ) : null}
+      {visibleProductGroups.map((group) => (
+        <ProductCard
+          group={group}
+          initialPlatformId={queryFilters.platformId}
+          key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+        />
       ))}
     </section>
   );
 }
 
-function ProductCard({ group }: { group: ProductGroup }) {
-  const [platformId, setPlatformId] = useState(group.platforms[0].platformId);
+function ProductCard({
+  group,
+  initialPlatformId,
+}: {
+  group: ProductGroup;
+  initialPlatformId: string | null;
+}) {
+  const defaultPlatformId =
+    initialPlatformId &&
+    group.platforms.some((entry) => entry.platformId === initialPlatformId)
+      ? initialPlatformId
+      : group.platforms[0].platformId;
+  const [platformId, setPlatformId] = useState(defaultPlatformId);
   const [versionIndex, setVersionIndex] = useState('0');
 
   const activePlatform =
@@ -172,7 +305,7 @@ function ProductCard({ group }: { group: ProductGroup }) {
           >
             {versions.map((version, index) => (
               <option
-                key={`${activePlatform.platformId}-${version.id}`}
+                key={getVersionKey(activePlatform.platformId, version)}
                 value={String(index)}
               >
                 {getVersionMeta(version, index).optionLabel}
@@ -191,6 +324,152 @@ function ProductCard({ group }: { group: ProductGroup }) {
       ) : null}
     </article>
   );
+}
+
+function useSdkCatalogQueryFilters() {
+  const search = useSyncExternalStore(
+    subscribeToLocationSearch,
+    getLocationSearch,
+    getServerLocationSearch,
+  );
+
+  return useMemo(() => readQueryFilters(search), [search]);
+}
+
+function subscribeToLocationSearch(onChange: () => void) {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  const restoreHistoryPatch = patchHistoryForLocationChanges();
+  window.addEventListener('popstate', onChange);
+  window.addEventListener(LOCATION_CHANGE_EVENT, onChange);
+
+  return () => {
+    window.removeEventListener('popstate', onChange);
+    window.removeEventListener(LOCATION_CHANGE_EVENT, onChange);
+    restoreHistoryPatch();
+  };
+}
+
+function patchHistoryForLocationChanges() {
+  if (typeof window === 'undefined') {
+    return () => {};
+  }
+
+  historyPatchDepth += 1;
+
+  if (!restoreHistoryMethods) {
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+
+    window.history.pushState = function pushState(
+      this: History,
+      data: unknown,
+      unused: string,
+      url?: string | URL | null,
+    ) {
+      const result = originalPushState.call(this, data, unused, url);
+      window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
+      return result;
+    } as History['pushState'];
+
+    window.history.replaceState = function replaceState(
+      this: History,
+      data: unknown,
+      unused: string,
+      url?: string | URL | null,
+    ) {
+      const result = originalReplaceState.call(this, data, unused, url);
+      window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
+      return result;
+    } as History['replaceState'];
+
+    restoreHistoryMethods = () => {
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
+    };
+  }
+
+  return () => {
+    historyPatchDepth -= 1;
+
+    if (historyPatchDepth === 0 && restoreHistoryMethods) {
+      restoreHistoryMethods();
+      restoreHistoryMethods = null;
+    }
+  };
+}
+
+function getLocationSearch() {
+  return typeof window === 'undefined' ? '' : window.location.search;
+}
+
+function getServerLocationSearch() {
+  return '';
+}
+
+function readQueryFilters(search: string) {
+  const params = new URLSearchParams(search);
+  const product = params.get('product')?.trim().toLowerCase() ?? '';
+  const platform = params.get('platform')?.trim().toLowerCase() ?? '';
+  const productId = productAliasToFilter.get(product) ?? null;
+  const platformId = platformIds.has(platform) ? platform : null;
+
+  return { platformId, productId };
+}
+
+function getProductCatalogId(product: SdkDownloadProduct) {
+  const normalizedId = product.id.toLowerCase();
+
+  if (normalizedId.includes('agents-sdk')) {
+    return 'agents';
+  }
+  if (normalizedId.includes('voice-sdk')) {
+    return 'voice';
+  }
+  if (normalizedId.includes('video-sdk')) {
+    return 'video';
+  }
+  if (
+    normalizedId.includes('signaling-sdk') ||
+    normalizedId.includes('rtm-sdk')
+  ) {
+    return 'signaling';
+  }
+  if (normalizedId.includes('chat-sdk')) {
+    return 'chat';
+  }
+  if (normalizedId.includes('iot-sdk')) {
+    return 'iot';
+  }
+  if (
+    normalizedId.includes('fastboard') ||
+    normalizedId.includes('interactive-whiteboard-fastboard')
+  ) {
+    return 'fastboard';
+  }
+  if (normalizedId.includes('interactive-whiteboard')) {
+    return 'whiteboard';
+  }
+  if (normalizedId.includes('server-gateway')) {
+    return 'server-gateway';
+  }
+  if (normalizedId.includes('on-premise-recording')) {
+    return 'on-premise-recording';
+  }
+
+  return normalizedId.replace(/-(android|ios|web|macos|windows|linux)$/, '');
+}
+
+function getVersionKey(platformId: string, version: SdkDownloadVersion) {
+  return [
+    platformId,
+    version.id,
+    version.label,
+    version.downloadLink ?? '',
+    version.packageManager ?? '',
+  ].join('|');
 }
 
 function InstallArea({
