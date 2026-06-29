@@ -129,7 +129,7 @@ To implement individual recording mode, configure the recorder and use the appro
 
 1. Initialize the recorder with [`enableMix`](/en/api-reference/api-ref/on-premise-recording#initialize) set to `false`.
 2. Subscribe to the audio and video streams of the users you want to record.
-3. Join the channel and listen for the [`onUserJoined`](/en/api-reference/api-ref/on-premise-recording-eventhandler#onuserjoined) callback to get the `userId` of each remote user.
+3. Join the channel and listen for the [`onUserJoined`](/en/api-reference/api-ref/on-premise-recording#onuserjoined) callback to get the `userId` of each remote user.
 4. Configure individual recording for each user:
    - Use [`setRecorderConfigByUid`](/en/api-reference/api-ref/on-premise-recording#setrecorderconfigbyuid) to define recording options.
    - Optionally, call [`enableAndUpdateVideoWatermarksByUid`](/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarksbyuid) to apply watermarks.
