@@ -63,6 +63,8 @@ const zhCnCommon = {
     feedbackCancel: '取消',
     feedbackSubmit: '打开 issue',
     openMenu: '打开导航',
+    legacyDocsBanner: '需要访问旧版文档站？前往旧版文档官网首页。',
+    opensInNewTab: '在新标签页打开',
   },
   home: {
     eyebrow: 'Agora 开发者文档',
