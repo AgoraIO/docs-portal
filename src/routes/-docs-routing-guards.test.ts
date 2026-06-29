@@ -1,14 +1,14 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it } from 'vitest';
+import type { DocsPagePayload } from '@/lib/docs-page.server';
 import {
+  Route as DocPageRoute,
   getKnownPlatformSearchParam,
   payloadSupportsPlatform,
 } from './$locale/$tab/$';
-import { Route as DocPageRoute } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
 
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;
@@ -23,6 +23,7 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
       kind: 'mdx',
       platformTabs: {
         canonicalPlatform: 'web',
+        defaultPlatform: 'web',
         initialPlatform: undefined,
         platforms,
       },

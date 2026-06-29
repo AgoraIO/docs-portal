@@ -1364,9 +1364,11 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'web',
+          defaultPlatform: 'android',
           platforms: '["android","web"]',
         },
       },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
       toc: [
         {
           depth: 2,
@@ -1375,8 +1377,8 @@ Web body
         },
         {
           depth: 2,
-          title: 'Install Web SDK',
-          url: '#install-web-sdk',
+          title: 'Install Android SDK',
+          url: '#install-android-sdk',
         },
         {
           depth: 2,
@@ -1424,6 +1426,7 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'web',
+          defaultPlatform: 'android',
           initialPlatform: 'android',
           platforms: '["android","web"]',
         },
@@ -1437,8 +1440,8 @@ Web body
         },
         {
           depth: 2,
-          title: 'Web setup',
-          url: '#web-setup',
+          title: 'Android setup',
+          url: '#android-setup',
         },
       ],
     });
@@ -1481,6 +1484,7 @@ Web body
         kind: 'mdx',
         platformTabs: {
           canonicalPlatform: 'javascript',
+          defaultPlatform: 'javascript',
           initialPlatform: 'javascript',
           platforms: '["javascript","web"]',
         },
@@ -1542,6 +1546,7 @@ Web body
         ],
         platformTabs: {
           canonicalPlatform: 'ios',
+          defaultPlatform: 'ios',
           platforms: '["ios","android"]',
         },
         platforms: ['ios', 'android'],

@@ -134,6 +134,59 @@ describe('docs-static-manifest', () => {
     );
   });
 
+  it('replaces default-platform static fields and clears stale TOC for platform fallbacks', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            body: {
+              kind: 'mdx',
+              platformTabs: {
+                canonicalPlatform: 'web',
+                defaultPlatform: 'android',
+                platforms: '["android","web"]',
+              },
+            },
+            markdownUrl:
+              '/llms.mdx/docs/en/introduction/about-agora/android.md',
+            toc: [
+              {
+                depth: 2,
+                title: 'Install Android SDK',
+                url: '#install-android-sdk',
+              },
+            ],
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'en',
+        slugSegments: ['about-agora', 'web'],
+        tab: 'introduction',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
+          initialPlatform: 'web',
+        },
+      },
+      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/web.md',
+      toc: [],
+    });
+  });
+
   it('does not render canonical static payloads for unsupported platform paths', async () => {
     vi.stubGlobal(
       'fetch',
