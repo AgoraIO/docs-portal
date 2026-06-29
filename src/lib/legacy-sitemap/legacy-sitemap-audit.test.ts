@@ -122,20 +122,14 @@ describe('legacy sitemap compatibility audit', () => {
     expect(reviewReport.summary).toEqual({
       broken: 0,
       exactPath: 490,
-      exactSlug: 2122,
+      exactSlug: 1944,
       native: 0,
-      productFallback: 458,
-      renamedPage: 41,
-      semanticPageMatch: 5,
+      productFallback: 113,
+      renamedPage: 39,
+      semanticPageMatch: 530,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });
-    expect(reviewReport.items).toHaveLength(
-      reviewReport.summary.productFallback +
-        reviewReport.summary.semanticPageMatch +
-        reviewReport.summary.unavailable,
-    );
-
     const reportUrls = new Set(
       reviewReport.items.map((item) => item.legacyUrl),
     );
@@ -148,9 +142,15 @@ describe('legacy sitemap compatibility audit', () => {
       )
       .map((rule) => rule.legacyUrl);
 
+    expect(reviewReport.items).toHaveLength(fallbackOrUnavailableUrls.length);
     expect(reportUrls.size).toBe(fallbackOrUnavailableUrls.length);
     expect(
       fallbackOrUnavailableUrls.every((legacyUrl) => reportUrls.has(legacyUrl)),
+    ).toBe(true);
+    expect(
+      reviewReport.items.every(
+        (item) => item.appliedRuleType === 'product-fallback',
+      ),
     ).toBe(true);
   });
 });

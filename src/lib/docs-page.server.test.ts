@@ -2532,7 +2532,7 @@ Web body
         'product-overview',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/en/ai/device-kit/start-here/quickstart',
+      redirectUrl: '/en/ai/device-kit',
     });
   });
 

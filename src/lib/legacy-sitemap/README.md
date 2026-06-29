@@ -43,3 +43,19 @@ The compatibility pass must not wait for human decisions. If a precise mapping
 cannot be established with high confidence, apply the safest product-level
 fallback and record the case in `review-report.json`. Human quality review
 happens after the PR is opened.
+
+## Current audit
+
+The current snapshot contains 3116 legacy URLs and 0 broken URLs. The latest
+generated mapping classifies them as:
+
+- `exact-path`: 490
+- `exact-slug`: 1944
+- `renamed-page`: 39
+- `semantic-page-match`: 530
+- `product-fallback`: 113
+- `unavailable`: 0
+
+`review-report.json` contains the 113 remaining product-level fallback cases.
+Each fallback records inspected article-level candidates and keeps the legacy
+query string, including `platform`, for the redirect.
