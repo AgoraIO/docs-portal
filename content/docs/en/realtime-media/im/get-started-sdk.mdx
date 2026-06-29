@@ -17,9 +17,9 @@ Chat SDK workflow
 1. Clients retrieve an authentication token from your app server.
 1. Users log in to Chat using the app key, their user ID, and token.
 1. Clients send and receive messages through Chat as follows:
-	1. Client A sends a message to Client B. The message is sent to  Chat.
-	1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
-	1. Client B listens for the event to read and display the message.
+  1. Client A sends a message to Client B. The message is sent to  Chat.
+  1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
+  1. Client B listens for the event to read and display the message.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ In order to follow the procedure on this page, you must have:
 - The [App Key](./enable#get-chat-project-information) for the project.
 - Internet access.
 
-	Ensure that no firewall is blocking your network communication.
+  Ensure that no firewall is blocking your network communication.
 
 <PlatformStructured platform="android">
 
@@ -50,7 +50,7 @@ In order to follow the procedure on this page, you must have:
 <PlatformStructured platform="web">
 
 - A Windows or macOS computer that meets the following requirements:
-  - A browser supported by the Agora Chat SDK: 
+  - A browser supported by the Agora Chat SDK:
     - Internet Explorer 9 or later
     - FireFox 10 or later
     - Chrome 54 or later
@@ -130,14 +130,14 @@ To integrate Chat into your app, do the following:
 
 1. Method 1: Use `mavenCentral` to automatically integrate:
 
-    1. In Android Studio, create a new **Phone and Tablet** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**. Choose **Java** as the project language, and ensure that the **Minimum SDK** version is set to `21` or higher. 
+    1. In Android Studio, create a new **Phone and Tablet** [Android project](https://developer.android.com/studio/projects/create-project) with an **Empty Activity**. Choose **Java** as the project language, and ensure that the **Minimum SDK** version is set to `21` or higher.
 
         Android Studio automatically starts gradle sync. Wait for the sync to succeed before you continue.
 
-    1. Add Chat SDK to your project dependencies. 
+    1. Add Chat SDK to your project dependencies.
 
         To add the SDK to your project:
-        
+
         1. In `/Gradle Scripts/build.gradle (Module: .app)`, add the following line under `dependencies`:
 
             ```text
@@ -154,7 +154,7 @@ To integrate Chat into your app, do the following:
     1. Add permissions for network and device access.
 
         To add the necessary permissions, in `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
-            
+
         ```xml
         <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -182,15 +182,15 @@ To integrate Chat into your app, do the following:
     1. When calling `ChatClient#init`, set the app private directory where the `.so` file is located as a parameter into the `ChatOptions#setNativeLibBasePath` method.
     1. The SDK will automatically load `.so` files from the specified path upon initialization.
 
-    ```java
-    // Assume that you have put two .so libraries, `libcipherdb.so` and `libagora-chat-sdk.so` in the /data/data/packagename/files directory of the app.
-    String filesPath = mContext.getFilesDir().getAbsolutePath();
+       ```java
+       // Assume that you have put two .so libraries, `libcipherdb.so` and `libagora-chat-sdk.so` in the /data/data/packagename/files directory of the app.
+       String filesPath = mContext.getFilesDir().getAbsolutePath();
 
-    ChatOptions options = new ChatOptions();
-    options.setNativeLibBasePath(filesPath);
+       ChatOptions options = new ChatOptions();
+       options.setNativeLibBasePath(filesPath);
 
-    ChatClient.getInstance().init(mContext, options);
-    ```
+       ChatClient.getInstance().init(mContext, options);
+       ```
     :::tip
 This method is applicable when you integrate the SDK manually but not when you integrate the SDK with Maven Central.You can specify the path of `.so` files with the path parameter in the `ChatOptions#setNativeLibBasePath` method. The path must be a valid and private directory of the app.If you set this parameter, the SDK will use `System.load` to load the `.so` library from the directory you specify, so that the app dynamically loads the required `.so` files when it runs, thereby reducing the package size.If you do not set this parameter or set it to `null`, the SDK will use `system.load` to load the `.so` library from the default path, when compiling the app, thus increasing the package size compared to the previous method.Since March 6, 2024, using this method to reduce the app size no longer meets the requirements of Google Play. For details, refer to the [Developer Program Policies](https://support.google.com/googleplay/android-developer/answer/14906471?hl=en&visit_id=638555962315571301-1274648059&rd=1) issued by Google. If your app needs to be listed on Google Play, please try other ways to reduce the app size. For details, see [App size optimization](/en/realtime-media/rtc/best-practices/app-size-optimization#dynamically-load-so-files).
 :::
@@ -250,7 +250,7 @@ To create the environment necessary to add peer-to-peer messaging into your app,
   └─ package.json
   ```
 
-2. Integrate the Agora Chat SDK into your project through npm. 
+2. Integrate the Agora Chat SDK into your project through npm.
    Add 'agora-chat' and 'vite' to the 'package.json' file.
 
    ```json
@@ -295,7 +295,7 @@ To integrate Chat into your app, do the following:
     You can also create a new project from the terminal using the following command:
 
     ```bash
-    flutter create 
+    flutter create
     ```
 
 1. **Add Chat SDK to your project**
@@ -401,7 +401,7 @@ You can use npm or other tools.
     1. In Unity Hub, select **Projects**, then click **New Project**.
 
     1. In **All templates**, select **3D**. Set the **Project name** and **Location**, then click **Create Project**.
-        
+
         Your project opens in Unity Editor.
 
 2. **Integrate  Chat SDK  into your project**:
@@ -572,52 +572,52 @@ function App() {
 
   return (
     <>
-      
+
         Agora Chat Examples
         {!isLoggedIn ? (
           <>
-            
-              UserID: 
+
+              UserID:
                setUserId(e.target.value)}
                 placeholder="Enter the user ID"
               />
-            
-            
-              Token: 
+
+
+              Token:
                setToken(e.target.value)}
                 placeholder="Enter the token"
               />
-            
+
             Login
-          
+
         ) : (
           <>
             Welcome, {userId}
             Logout
-            
-              Peer userID: 
+
+              Peer userID:
                setPeerId(e.target.value)}
                 placeholder="Enter the peer user ID"
               />
-            
-            
-              Peer message: 
+
+
+              Peer message:
                setMessage(e.target.value)}
                 placeholder="Input message"
               />
               Send
-            
-          
+
+
         )}
 
         Operation log
-        
+
           {logs.map((log, index) => (
             {log}
           ))}
-        
-      
-    
+
+
+
   );
 }
 
@@ -681,8 +681,8 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
 1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
 
-1. Type a message in the **Message** box of either device and press **`>>`**. 
-    
+1. Type a message in the **Message** box of either device and press **`>>`**.
+
     The message is sent and appears on the other device.
 
 1. Press **Leave** to log out of  Chat.
@@ -746,7 +746,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
    Fill in the user ID of the receiver (`Roy`) in the **single chat id** box and type in the message ("Hi, how are you doing?") to send in the **message content** box, and click **Send** to send the message.
 
-	![Send a message](/images/im/send-message-web.png)
+  ![Send a message](/images/im/send-message-web.png)
 
 1. Log out
 
@@ -784,8 +784,8 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
 1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
 
-1. Type a message in the **Message** box of either device and press **`>>`**. 
-    
+1. Type a message in the **Message** box of either device and press **`>>`**.
+
     The message is sent and appears on the other device.
 
 1. Press **Leave** to log out of  Chat.
@@ -800,19 +800,19 @@ You can log in to the app by either modifying the fields in the `App.js` file as
 
 To validate the peer-to-peer messaging you have just integrated into your app using Agora Chat, perform the following operations:
 
-1. Log in  
-a. In the [`App.js`](#sign-in) file, replace the placeholders of `appKey`, `username`, and `chatToken` with the App Key, user ID, and Agora token of the sender.  
-b. Run and [build](#build) your app.  
+1. Log in
+a. In the [`App.js`](#sign-in) file, replace the placeholders of `appKey`, `username`, and `chatToken` with the App Key, user ID, and Agora token of the sender.
+b. Run and [build](#build) your app.
 c. On your simulator or physical device, click **SIGN IN** to log in with the sender account.
 
-2. Send a message  
+2. Send a message
 Fill in the user ID of the receiver in the **Enter the username you want to send** box, type in te message to send in the **Enter content** box, and click **SEND TEXT** to send the message.
 
-3. Log out  
+3. Log out
 Click **SIGN OUT** to log out of the sender account.
 
-4. Receive the message  
-a. After signing out, change the values of `appKey`, `username`, and `chatToken` to the user ID, Agora token, and App Key of the receiver in the [`App.js`](#sign-in) file.  
+4. Receive the message
+a. After signing out, change the values of `appKey`, `username`, and `chatToken` to the user ID, Agora token, and App Key of the receiver in the [`App.js`](#sign-in) file.
 b. Run the app on another device or simulator with the receiver account and receive the message sent in step 2.
 
 You can also read from the logs on the UI to see whether you have successfully signed in, signed out, and sent and received a text message.
@@ -831,10 +831,10 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. Type the recipient user name in the **Recepient Name** field.
 
-1. Type a message in the **Message** field and press **`>>`**. 
-    
+1. Type a message in the **Message** field and press **`>>`**.
+
     The message is sent and a confirmation message is displayed in the debug console.
-    
+
 1. [Register the recipient user](./enable#register-a-user) in Agora Console and [Generate a user token](./enable#generate-a-user-token).
 
 1. In the `NewBehaviourScript` class, update `userId` and `token` with values you generated for recipient. Make sure you use the same `appKey` as for both users.
@@ -842,7 +842,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 1. Save your changes and click **Play** to run the app.
 
 1. Click **Join** to log in to the Chat.
-    
+
     You see a message in the scroll view that you sent earlier.
 
 </PlatformStructured>
@@ -856,8 +856,8 @@ You can also read from the logs on the UI to see whether you have successfully s
     1. In the `MainWindow` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
 
     1. Click the **Start** button. You see the following interface:
-    
-        ![image](/images/im/chat-windows-interface.png)   
+
+        ![image](/images/im/chat-windows-interface.png)
 
 1. Create an app instance for the second user:
 
@@ -865,14 +865,14 @@ You can also read from the logs on the UI to see whether you have successfully s
 
     1. Build a second instance of your app after updating `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
 
-    1. Click the **Start** button to launch the second instance. 
+    1. Click the **Start** button to launch the second instance.
 
-1. On each instance, click **Join** to log in to Agora Chat. 
+1. On each instance, click **Join** to log in to Agora Chat.
 
 1. Edit the recipient name in each app instance to show the user ID of the user logged in to the other instance.
 
-1. Type a message in the **Message** box of either instance and press **`>>`**. The message is sent and appears on the other app. 
-    
+1. Type a message in the **Message** box of either instance and press **`>>`**. The message is sent and appears on the other app.
+
     ![image](/images/im/chat-windows-communication.png)
 
 1. Press **Leave** to log out from Agora Chat.
@@ -930,7 +930,7 @@ _No platform-specific content._
 
 <PlatformStructured platform="windows">
 
-* Avoid blocked callbacks  
+* Avoid blocked callbacks
   Each callback of a Chat client instance is triggered from internal threads. To avoid blocking internal threads, Agora recommends that you execute your operations in other threads when callbacks are triggered.
 
 </PlatformStructured>

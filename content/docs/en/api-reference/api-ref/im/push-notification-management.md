@@ -118,57 +118,57 @@ curl -X POST 'http://XXXX/XXXX/XXXX/push/sync/test1' \
 
 1. The push succeeds:
 
-```json
-{
-    "timestamp": 1689154498019,
-    "data": [
-       {
-"pushStatus": "SUCCESS",
-"data": {
-    "code": 200,
-    "data": {
-        "expireTokens": [],
-        "sendResult": true,
-        "requestId": "104410638-fd96648b6bb4344bc4f5e29b158fdb07",
-        "failTokens": [],
-        "msgCode": 200
-   },
-    "message": "Success"
-           }
-       }
-   ],
-    "duration": 2
-}
-```
+   ```json
+   {
+       "timestamp": 1689154498019,
+       "data": [
+          {
+   "pushStatus": "SUCCESS",
+   "data": {
+       "code": 200,
+       "data": {
+           "expireTokens": [],
+           "sendResult": true,
+           "requestId": "104410638-fd96648b6bb4344bc4f5e29b158fdb07",
+           "failTokens": [],
+           "msgCode": 200
+      },
+       "message": "Success"
+              }
+          }
+      ],
+       "duration": 2
+   }
+   ```
 
 2. When a third-party push service is used, the push fails because the push-related information (like the push token or certificate) is not bound with the device:
 
-```json
-{
-    "timestamp": 1689154624797,
-    "data": [
-       {
-"pushStatus": "FAIL",
-"desc": "no push binding"
-       }
-   ],
-    "duration": 0
-}
-```
+   ```json
+   {
+       "timestamp": 1689154624797,
+       "data": [
+          {
+   "pushStatus": "FAIL",
+   "desc": "no push binding"
+          }
+      ],
+       "duration": 0
+   }
+   ```
 
 3. When a third-party push service is used, the push fails because the user ID of the push notification recipient does not exist:
-```json
-{
-    "timestamp": 1689154534352,
-    "data": [
-       {
-"pushStatus": "FAIL",
-"desc": "appUser not exists"
-       }
-   ],
-    "duration": 0
-}
-```
+   ```json
+   {
+       "timestamp": 1689154534352,
+       "data": [
+          {
+   "pushStatus": "FAIL",
+   "desc": "appUser not exists"
+          }
+      ],
+       "duration": 0
+   }
+   ```
 
 ## Send a push notification to users in an asynchronous way
 

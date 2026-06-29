@@ -10,7 +10,7 @@ The Watermark extension works with Web SDK v4.24.0 or later to add image waterma
 <PlatformStructured platform="web">
 ## Understand the tech
 
-The Watermark extension integrates into the Web SDK's video processing pipeline to overlay images onto video streams in real-time. When enabled, the extension processes each video frame by compositing the watermark image at the specified position with the configured transparency level. 
+The Watermark extension integrates into the Web SDK's video processing pipeline to overlay images onto video streams in real-time. When enabled, the extension processes each video frame by compositing the watermark image at the specified position with the configured transparency level.
 
 ## Prerequisites
 
@@ -29,17 +29,17 @@ Use npm to integrate the [agora-extension-video-watermark](https://www.npmjs.com
 
 1. Install the Watermark extension:
 
-  ```bash
-  npm install agora-extension-video-watermark
-  ```
+   ```bash
+   npm install agora-extension-video-watermark
+   ```
 
 2. Import the watermark module in your `.js` file:
 
-  ```typescript
-  import AgoraRTC from "agora-rtc-sdk-ng";
-  import { VideoWatermarkExtension, AgoraWatermarkImage } from "agora-extension-video-watermark";
-  import type { IVWProcessor } from "agora-extension-video-watermark";
-  ```
+   ```typescript
+   import AgoraRTC from "agora-rtc-sdk-ng";
+   import { VideoWatermarkExtension, AgoraWatermarkImage } from "agora-extension-video-watermark";
+   import type { IVWProcessor } from "agora-extension-video-watermark";
+   ```
 
 ### Register the extension
 
@@ -66,25 +66,25 @@ Follow these steps to enable the Watermark extension:
 
 1. Call `createProcessor` to create an `IVWProcessor` instance:
 
-  ```typescript
-  // Create IVWProcessor instance
-  const processor = extension.createProcessor();
-  ```
+   ```typescript
+   // Create IVWProcessor instance
+   const processor = extension.createProcessor();
+   ```
 
 2. Call the SDK's `pipe` method and specify the `processorDestination` property to inject the extension into the video processing pipeline:
 
-  ```typescript
-  // Create a video track (local or remote)
-  const videoTrack = await AgoraRTC.createCameraVideoTrack();
-  // Inject the extension into the video processing pipeline
-  videoTrack.pipe(processor).pipe(videoTrack.processorDestination);
-  ```
+   ```typescript
+   // Create a video track (local or remote)
+   const videoTrack = await AgoraRTC.createCameraVideoTrack();
+   // Inject the extension into the video processing pipeline
+   videoTrack.pipe(processor).pipe(videoTrack.processorDestination);
+   ```
 
 ### Add watermarks
 
 The Watermark extension supports two methods for creating watermark images:
 
-- **Use an existing HTMLImageElement** 
+- **Use an existing HTMLImageElement**
 
   If you already have an image element in the  DOM (for example, from an `<img>` tag), you can use it directly:
 
@@ -175,10 +175,10 @@ const release = async () => {
  // Unpipe connections
  processor.unpipe();
  videoTrack.unpipe();
- 
+
  // Reconnect to original destination
  videoTrack.pipe(videoTrack.processorDestination);
- 
+
  // Release processor resources
  await processor.release();
 };
@@ -208,10 +208,10 @@ async function setupWatermark() {
  try {
   // Create video track
   const videoTrack = await AgoraRTC.createCameraVideoTrack();
-  
+
   // Inject extension into video processing pipeline
   videoTrack.pipe(processor).pipe(videoTrack.processorDestination);
-  
+
   // Create watermark (using URL method)
   const watermark = new AgoraWatermarkImage(
    'https://example.com/logo.png',
@@ -221,21 +221,21 @@ async function setupWatermark() {
    60,  // height
    0.7  // opacity
   );
-  
+
   // Wait for watermark image to load
   await watermark.ready;
-  
+
   // Add watermark to processor
   processor.addVideoWatermark(watermark);
-  
+
   // Enable processor
   await processor.enable();
-  
+
   console.log("Watermark extension successfully enabled");
-  
+
   // Play video track
   videoTrack.play("video-container");
-  
+
  } catch (error) {
   console.error("Error setting up watermark:", error);
  }

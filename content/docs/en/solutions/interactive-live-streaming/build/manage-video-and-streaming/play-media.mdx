@@ -342,95 +342,95 @@ To implement a media player in your app, follow these steps:
 
 1. After initializing an instance of `AgoraRtcEngineKit`, create a `mediaPlayerKit` object.
 
-  ```swift
-  // Initialize AgoraRtcEngineKit and create a mediaPlayerKit object.
-  agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
-  // Create mediaPlayerKit object
-  mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
-  ```
+   ```swift
+   // Initialize AgoraRtcEngineKit and create a mediaPlayerKit object.
+   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+   // Create mediaPlayerKit object
+   mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
+   ```
 
 2. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
 
-  ```swift
-  extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
-    // Observe the state of the player
-    func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedTo state: AgoraMediaPlayerState, error: AgoraMediaPlayerError) {
-      LogUtils.log(message: "Player RTC channel publish helper state changed to: \(state.rawValue), error: \(error.rawValue)", level: .info)
-      DispatchQueue.main.async { [weak self] in
-        guard let weakself = self else { return }
-        switch state {
-        case .failed:
-          weakself.showAlert(message: "Media player error: \(error.rawValue)")
-          break
-        case .openCompleted:
-          let duration = weakself.mediaPlayerKit.getDuration()
-          weakself.playerControlStack.isHidden = false
-          weakself.playerDurationLabel.text = "\(String(format: "%02d", duration / 60)) : \(String(format: "%02d", duration % 60))"
-          weakself.playerProgressSlider.setValue(0, animated: true)
-          break
-        case .stopped:
-          weakself.playerControlStack.isHidden = true
-          weakself.playerProgressSlider.setValue(0, animated: true)
-          weakself.playerDurationLabel.text = "00 : 00"
-          break
-        default: break
-        }
-      }
-    }
-    // Observe the current playback progress
-    func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedToPosition position: Int) {
-      let duration = Float(mediaPlayerKit.getDuration() * 1000)
-      var progress: Float = 0
-      var left: Int = 0
-      if duration > 0 {
-        progress = Float(mediaPlayerKit.getPosition()) / duration
-        left = Int((mediaPlayerKit.getDuration() * 1000 - mediaPlayerKit.getPosition()) / 1000)
-      }
-      DispatchQueue.main.async { [weak self] in
-        guard let weakself = self else { return }
-        weakself.playerDurationLabel.text = "\(String(format: "%02d", left / 60)) : \(String(format: "%02d", left % 60))"
-        if !weakself.playerProgressSlider.isTouchInside {
-          weakself.playerProgressSlider.setValue(progress, animated: true)
-        }
-      }
-    }
-  }
-  ```
+   ```swift
+   extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
+     // Observe the state of the player
+     func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedTo state: AgoraMediaPlayerState, error: AgoraMediaPlayerError) {
+       LogUtils.log(message: "Player RTC channel publish helper state changed to: \(state.rawValue), error: \(error.rawValue)", level: .info)
+       DispatchQueue.main.async { [weak self] in
+         guard let weakself = self else { return }
+         switch state {
+         case .failed:
+           weakself.showAlert(message: "Media player error: \(error.rawValue)")
+           break
+         case .openCompleted:
+           let duration = weakself.mediaPlayerKit.getDuration()
+           weakself.playerControlStack.isHidden = false
+           weakself.playerDurationLabel.text = "\(String(format: "%02d", duration / 60)) : \(String(format: "%02d", duration % 60))"
+           weakself.playerProgressSlider.setValue(0, animated: true)
+           break
+         case .stopped:
+           weakself.playerControlStack.isHidden = true
+           weakself.playerProgressSlider.setValue(0, animated: true)
+           weakself.playerDurationLabel.text = "00 : 00"
+           break
+         default: break
+         }
+       }
+     }
+     // Observe the current playback progress
+     func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedToPosition position: Int) {
+       let duration = Float(mediaPlayerKit.getDuration() * 1000)
+       var progress: Float = 0
+       var left: Int = 0
+       if duration > 0 {
+         progress = Float(mediaPlayerKit.getPosition()) / duration
+         left = Int((mediaPlayerKit.getDuration() * 1000 - mediaPlayerKit.getPosition()) / 1000)
+       }
+       DispatchQueue.main.async { [weak self] in
+         guard let weakself = self else { return }
+         weakself.playerDurationLabel.text = "\(String(format: "%02d", left / 60)) : \(String(format: "%02d", left % 60))"
+         if !weakself.playerProgressSlider.isTouchInside {
+           weakself.playerProgressSlider.setValue(progress, animated: true)
+         }
+       }
+     }
+   }
+   ```
 
 3. Call the `setupLocalVideo` method to render the local media player view.
 
-  ```swift
-  mediaPlayerKit.setView(localVideo.videoView)
-  let videoCanvas = AgoraRtcVideoCanvas()
-  videoCanvas.view = localVideo.videoView
-  videoCanvas.renderMode = .hidden
-  videoCanvas.sourceType = .mediaPlayer
-  videoCanvas.sourceId = mediaPlayerKit.getMediaPlayerId()
-  agoraKit.setupLocalVideo(videoCanvas)
-  ```
+   ```swift
+   mediaPlayerKit.setView(localVideo.videoView)
+   let videoCanvas = AgoraRtcVideoCanvas()
+   videoCanvas.view = localVideo.videoView
+   videoCanvas.renderMode = .hidden
+   videoCanvas.sourceType = .mediaPlayer
+   videoCanvas.sourceId = mediaPlayerKit.getMediaPlayerId()
+   agoraKit.setupLocalVideo(videoCanvas)
+   ```
 
 4. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
 
-  ```swift
-  let option1 = AgoraRtcChannelMediaOptions()
+   ```swift
+   let option1 = AgoraRtcChannelMediaOptions()
 
-  // ...
+   // ...
 
-  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
-  ```
+   ```
 
 5. Use the `open` method to open a local or online media file.
 
-  ```swift
-  mediaPlayerKit.open(url, startPos: 0)
-  ```
+   ```swift
+   mediaPlayerKit.open(url, startPos: 0)
+   ```
 
 6. Call the `play` method to play the media file.
 
-  ```swift
-  mediaPlayerKit.play()
-  ```
+   ```swift
+   mediaPlayerKit.play()
+   ```
 
   :::warning
 
@@ -504,95 +504,95 @@ To implement a media player in your app, follow these steps:
 
 1. After initializing an instance of `AgoraRtcEngineKit`, create a `mediaPlayerKit` object.
 
-  ```swift
-  // Initialize AgoraRtcEngineKit and create a mediaPlayerKit object.
-  agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
-  // Create mediaPlayerKit object
-  mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
-  ```
+   ```swift
+   // Initialize AgoraRtcEngineKit and create a mediaPlayerKit object.
+   agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+   // Create mediaPlayerKit object
+   mediaPlayerKit = agoraKit.createMediaPlayer(with: self)
+   ```
 
 2. Implement media player callbacks. Observe the status of the player through callbacks and obtain the playback progress of the current media file.
 
-  ```swift
-  extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
-    // Observe the state of the player
-    func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedTo state: AgoraMediaPlayerState, error: AgoraMediaPlayerError) {
-      LogUtils.log(message: "Player RTC channel publish helper state changed to: \(state.rawValue), error: \(error.rawValue)", level: .info)
-      DispatchQueue.main.async { [weak self] in
-        guard let weakself = self else { return }
-        switch state {
-        case .failed:
-          weakself.showAlert(message: "Media player error: \(error.rawValue)")
-          break
-        case .openCompleted:
-          let duration = weakself.mediaPlayerKit.getDuration()
-          weakself.playerControlStack.isHidden = false
-          weakself.playerDurationLabel.text = "\(String(format: "%02d", duration / 60)) : \(String(format: "%02d", duration % 60))"
-          weakself.playerProgressSlider.setValue(0, animated: true)
-          break
-        case .stopped:
-          weakself.playerControlStack.isHidden = true
-          weakself.playerProgressSlider.setValue(0, animated: true)
-          weakself.playerDurationLabel.text = "00 : 00"
-          break
-        default: break
-        }
-      }
-    }
-    // Observe the current playback progress
-    func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedToPosition position: Int) {
-      let duration = Float(mediaPlayerKit.getDuration() * 1000)
-      var progress: Float = 0
-      var left: Int = 0
-      if duration > 0 {
-        progress = Float(mediaPlayerKit.getPosition()) / duration
-        left = Int((mediaPlayerKit.getDuration() * 1000 - mediaPlayerKit.getPosition()) / 1000)
-      }
-      DispatchQueue.main.async { [weak self] in
-        guard let weakself = self else { return }
-        weakself.playerDurationLabel.text = "\(String(format: "%02d", left / 60)) : \(String(format: "%02d", left % 60))"
-        if !weakself.playerProgressSlider.isTouchInside {
-          weakself.playerProgressSlider.setValue(progress, animated: true)
-        }
-      }
-    }
-  }
-  ```
+   ```swift
+   extension MediaPlayerMain: AgoraRtcMediaPlayerDelegate {
+     // Observe the state of the player
+     func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedTo state: AgoraMediaPlayerState, error: AgoraMediaPlayerError) {
+       LogUtils.log(message: "Player RTC channel publish helper state changed to: \(state.rawValue), error: \(error.rawValue)", level: .info)
+       DispatchQueue.main.async { [weak self] in
+         guard let weakself = self else { return }
+         switch state {
+         case .failed:
+           weakself.showAlert(message: "Media player error: \(error.rawValue)")
+           break
+         case .openCompleted:
+           let duration = weakself.mediaPlayerKit.getDuration()
+           weakself.playerControlStack.isHidden = false
+           weakself.playerDurationLabel.text = "\(String(format: "%02d", duration / 60)) : \(String(format: "%02d", duration % 60))"
+           weakself.playerProgressSlider.setValue(0, animated: true)
+           break
+         case .stopped:
+           weakself.playerControlStack.isHidden = true
+           weakself.playerProgressSlider.setValue(0, animated: true)
+           weakself.playerDurationLabel.text = "00 : 00"
+           break
+         default: break
+         }
+       }
+     }
+     // Observe the current playback progress
+     func agoraRtcMediaPlayer(_ playerKit: AgoraRtcMediaPlayerProtocol, didChangedToPosition position: Int) {
+       let duration = Float(mediaPlayerKit.getDuration() * 1000)
+       var progress: Float = 0
+       var left: Int = 0
+       if duration > 0 {
+         progress = Float(mediaPlayerKit.getPosition()) / duration
+         left = Int((mediaPlayerKit.getDuration() * 1000 - mediaPlayerKit.getPosition()) / 1000)
+       }
+       DispatchQueue.main.async { [weak self] in
+         guard let weakself = self else { return }
+         weakself.playerDurationLabel.text = "\(String(format: "%02d", left / 60)) : \(String(format: "%02d", left % 60))"
+         if !weakself.playerProgressSlider.isTouchInside {
+           weakself.playerProgressSlider.setValue(progress, animated: true)
+         }
+       }
+     }
+   }
+   ```
 
 3. Call the `setupLocalVideo` method to render the local media player view.
 
-  ```swift
-  mediaPlayerKit.setView(localVideo.videoView)
-  let videoCanvas = AgoraRtcVideoCanvas()
-  videoCanvas.view = localVideo.videoView
-  videoCanvas.renderMode = .hidden
-  videoCanvas.sourceType = .mediaPlayer
-  videoCanvas.sourceId = mediaPlayerKit.getMediaPlayerId()
-  agoraKit.setupLocalVideo(videoCanvas)
-  ```
+   ```swift
+   mediaPlayerKit.setView(localVideo.videoView)
+   let videoCanvas = AgoraRtcVideoCanvas()
+   videoCanvas.view = localVideo.videoView
+   videoCanvas.renderMode = .hidden
+   videoCanvas.sourceType = .mediaPlayer
+   videoCanvas.sourceId = mediaPlayerKit.getMediaPlayerId()
+   agoraKit.setupLocalVideo(videoCanvas)
+   ```
 
 4. When joining a channel using `joinChannelByToken`, set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel through the `mediaOptions` parameter.
 
-  ```swift
-  let option1 = AgoraRtcChannelMediaOptions()
+   ```swift
+   let option1 = AgoraRtcChannelMediaOptions()
 
-  // ...
+   // ...
 
-  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
 
-  ```
+   ```
 
 5. Use the `open` method to open a local or online media file.
 
-  ```swift
-  mediaPlayerKit.open(url, startPos: 0)
-  ```
+   ```swift
+   mediaPlayerKit.open(url, startPos: 0)
+   ```
 
 6. Call the `play` method to play the media file.
 
-  ```swift
-  mediaPlayerKit.play()
-  ```
+   ```swift
+   mediaPlayerKit.play()
+   ```
 
   :::warning
 
@@ -666,180 +666,180 @@ To implement a media player in your app, follow these steps:
 
 1. After initializing an instance of `IRtcEngine`, create an `IMediaPlayer` object.
 
-  ```cpp
-  void CAgoraMediaPlayer::InitMediaPlayerKit() {
-    // Create Agora media player
-    m_mediaPlayer = m_rtcEngine->createMediaPlayer().get();
-    m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("createAgoraMediaPlayer"));
-    m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("Media player initialization"));
+   ```cpp
+   void CAgoraMediaPlayer::InitMediaPlayerKit() {
+     // Create Agora media player
+     m_mediaPlayer = m_rtcEngine->createMediaPlayer().get();
+     m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("createAgoraMediaPlayer"));
+     m_lstInfo.InsertString(m_lstInfo.GetCount(), _T("Media player initialization"));
 
-    // Set the player rendering view
-    RECT rc = {0};
-    m_localVideoWnd.GetWindowRect(&rc);
-    int ret = m_mediaPlayer->setView(
-      (agora::media::base::view_t)m_localVideoWnd.GetSafeHwnd());
+     // Set the player rendering view
+     RECT rc = {0};
+     m_localVideoWnd.GetWindowRect(&rc);
+     int ret = m_mediaPlayer->setView(
+       (agora::media::base::view_t)m_localVideoWnd.GetSafeHwnd());
 
-    // Set the window to receive player events
-    m_mediaPlayerEvent.SetMsgReceiver(m_hWnd);
-  }
-  ```
+     // Set the window to receive player events
+     m_mediaPlayerEvent.SetMsgReceiver(m_hWnd);
+   }
+   ```
 
 2. To register the playback observer, call `registerPlayerSourceObserverthe` before you join the channel. To unregister the playback observer, call `unregisterPlayerSourceObserver` before you leave the channel.
 
-  ```cpp
-  void CAgoraMediaPlayer::OnBnClickedButtonJoinchannel() {
-	  // ...
-	  // Register the player observer
-	  ret = m_mediaPlayer->registerPlayerSourceObserver(&m_mediaPlayerEvent);
-	  m_lstInfo.InsertString(m_lstInfo.GetCount(),
-              _T("registerPlayerSourceObserver"));
+   ```cpp
+   void CAgoraMediaPlayer::OnBnClickedButtonJoinchannel() {
+     // ...
+     // Register the player observer
+     ret = m_mediaPlayer->registerPlayerSourceObserver(&m_mediaPlayerEvent);
+     m_lstInfo.InsertString(m_lstInfo.GetCount(),
+               _T("registerPlayerSourceObserver"));
 
-	  if (0 ==
-      m_rtcEngine->joinChannel(APP_TOKEN, szChannelId.c_str(), 0, options)) {
-		  strInfo.Format(_T("Join channel %s, use ChannelMediaOptions"),
-            getCurrentTime());
-	  }
-	  else {
-		  // Unregister the player observer
-		  ret = m_mediaPlayer->unregisterPlayerSourceObserver(&m_mediaPlayerEvent);
-		  m_lstInfo.InsertString(m_lstInfo.GetCount(),
-                _T("unregisterPlayerSourceObserver"));
+     if (0 ==
+       m_rtcEngine->joinChannel(APP_TOKEN, szChannelId.c_str(), 0, options)) {
+       strInfo.Format(_T("Join channel %s, use ChannelMediaOptions"),
+             getCurrentTime());
+     }
+     else {
+       // Unregister the player observer
+       ret = m_mediaPlayer->unregisterPlayerSourceObserver(&m_mediaPlayerEvent);
+       m_lstInfo.InsertString(m_lstInfo.GetCount(),
+                 _T("unregisterPlayerSourceObserver"));
 
-		  // Leave the channel in the engine.
-		  if (0 == m_rtcEngine->leaveChannel()) {
-			  strInfo.Format(_T("Leave channel %s"), getCurrentTime());
-		  }
-	  }
+       // Leave the channel in the engine.
+       if (0 == m_rtcEngine->leaveChannel()) {
+         strInfo.Format(_T("Leave channel %s"), getCurrentTime());
+       }
+     }
 
-	  m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
-  }
-  ```
+     m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+   }
+   ```
 
 3. Implement callbacks for the observer.
 
-  ```cpp
-  // Observe player state changes
-  LRESULT CAgoraMediaPlayer::OnmediaPlayerStateChanged(WPARAM wParam,
-                             LPARAM lParam) {
-	  CString strState;
-	  CString strError;
-	  switch ((agora::media::base::MEDIA_PLAYER_STATE)wParam) {
-	    case agora::media::base::PLAYER_STATE_OPEN_COMPLETED:
-		    strState = _T("PLAYER_STATE_OPEN_COMPLETED");
-		    m_mediaPlayerState = mediaPLAYER_OPEN;
-		    int64_t duration;
-		    m_mediaPlayer->getDuration(duration);
-		    m_sldVideo.SetRangeMax((int)duration);
-
-		    break;
-	    // Additional cases for other player states...
-    }
-
-	  switch ((agora::media::base::MEDIA_PLAYER_ERROR)lParam) {
-	    case agora::media::base::PLAYER_ERROR_URL_NOT_FOUND:
-		    strError = _T("PLAYER_ERROR_URL_NOT_FOUND");
-	      // Additional cases for other player errors...
-		    break;
-	  }
-	  CString strInfo;
-	  strInfo.Format(_T("State:%s,\nError:%s"), strState, strError);
-	  m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
-	  return TRUE;
-  }
-
-  // Observe current playback progress
-  LRESULT CAgoraMediaPlayer::OnmediaPlayerPositionChanged(WPARAM wParam,
+   ```cpp
+   // Observe player state changes
+   LRESULT CAgoraMediaPlayer::OnmediaPlayerStateChanged(WPARAM wParam,
                               LPARAM lParam) {
-	  int64_t *p = (int64_t *)wParam;
-	  m_sldVideo.SetPos((int)*p);
-	  delete p;
-	  return TRUE;
-  }
-  ```
+     CString strState;
+     CString strError;
+     switch ((agora::media::base::MEDIA_PLAYER_STATE)wParam) {
+       case agora::media::base::PLAYER_STATE_OPEN_COMPLETED:
+         strState = _T("PLAYER_STATE_OPEN_COMPLETED");
+         m_mediaPlayerState = mediaPLAYER_OPEN;
+         int64_t duration;
+         m_mediaPlayer->getDuration(duration);
+         m_sldVideo.SetRangeMax((int)duration);
+
+         break;
+       // Additional cases for other player states...
+     }
+
+     switch ((agora::media::base::MEDIA_PLAYER_ERROR)lParam) {
+       case agora::media::base::PLAYER_ERROR_URL_NOT_FOUND:
+         strError = _T("PLAYER_ERROR_URL_NOT_FOUND");
+         // Additional cases for other player errors...
+         break;
+     }
+     CString strInfo;
+     strInfo.Format(_T("State:%s,\nError:%s"), strState, strError);
+     m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+     return TRUE;
+   }
+
+   // Observe current playback progress
+   LRESULT CAgoraMediaPlayer::OnmediaPlayerPositionChanged(WPARAM wParam,
+                               LPARAM lParam) {
+     int64_t *p = (int64_t *)wParam;
+     m_sldVideo.SetPos((int)*p);
+     delete p;
+     return TRUE;
+   }
+   ```
 
 4. When joining a channel use `ChannelMediaOptions` to set the media player ID, publish media player's audio and video, and share media resources with remote users in the channel.
 
-  ```cpp
-  void CAgoraMediaPlayer::OnBnClickedButtonPublishVideo() {
-	  if (m_publishMeidaplayer) {
-		  ChannelMediaOptions op;
-		  op.clientRoleType = CLIENT_ROLE_BROADCASTER;
-		  op.publishMediaPlayerVideoTrack = false;
-		  op.publishMediaPlayerAudioTrack = false;
-		  op.publishMediaPlayerId = m_mediaPlayer->getMediaPlayerId();
-		  int ret = m_rtcEngine->updateChannelMediaOptions(op);
-		  ChannelMediaOptions op2;
-		  op2.clientRoleType = CLIENT_ROLE_BROADCASTER;
-		  op2.publishCameraTrack = true;
-		  ret = m_rtcEngine->updateChannelMediaOptions(op2);
-		  m_publishMeidaplayer = false;
-	  } else {
-		  ChannelMediaOptions options;
-		  options.clientRoleType = CLIENT_ROLE_BROADCASTER;
-		  options.publishMediaPlayerVideoTrack = true;
-		  options.publishMediaPlayerAudioTrack = true;
-		  options.publishMediaPlayerId = m_mediaPlayer->getMediaPlayerId();
-		  options.publishCameraTrack = false;
-		  options.publishAudioTrack = false;
-		  options.autoSubscribeAudio = false;
-		  options.autoSubscribeVideo = false;
-		  m_rtcEngine->updateChannelMediaOptions(options);
-		  m_publishMeidaplayer = true;
-	  }
-  }
-  ```
+   ```cpp
+   void CAgoraMediaPlayer::OnBnClickedButtonPublishVideo() {
+     if (m_publishMeidaplayer) {
+       ChannelMediaOptions op;
+       op.clientRoleType = CLIENT_ROLE_BROADCASTER;
+       op.publishMediaPlayerVideoTrack = false;
+       op.publishMediaPlayerAudioTrack = false;
+       op.publishMediaPlayerId = m_mediaPlayer->getMediaPlayerId();
+       int ret = m_rtcEngine->updateChannelMediaOptions(op);
+       ChannelMediaOptions op2;
+       op2.clientRoleType = CLIENT_ROLE_BROADCASTER;
+       op2.publishCameraTrack = true;
+       ret = m_rtcEngine->updateChannelMediaOptions(op2);
+       m_publishMeidaplayer = false;
+     } else {
+       ChannelMediaOptions options;
+       options.clientRoleType = CLIENT_ROLE_BROADCASTER;
+       options.publishMediaPlayerVideoTrack = true;
+       options.publishMediaPlayerAudioTrack = true;
+       options.publishMediaPlayerId = m_mediaPlayer->getMediaPlayerId();
+       options.publishCameraTrack = false;
+       options.publishAudioTrack = false;
+       options.autoSubscribeAudio = false;
+       options.autoSubscribeVideo = false;
+       m_rtcEngine->updateChannelMediaOptions(options);
+       m_publishMeidaplayer = true;
+     }
+   }
+   ```
 
 5. Use the `open` method to open a local or online media file.
 
-  ```swift
-  void CAgoraMediaPlayer::OnBnClickedButtonOpen() {
-	  CString strUrl;
-	  CString strInfo;
-	  m_edtVideoSource.GetWindowText(strUrl);
-	  std::string tmp = cs2utf8(strUrl);
-	  switch (m_mediaPlayerState) {
-	    case mediaPLAYER_READY:
-	    case mediaPLAYER_STOP:
-        if (tmp.empty()) {
-          AfxMessageBox(_T("you can fill video source."));
-          return;
-        }
-        m_mediaPlayer->open(tmp.c_str(), 0);
-        break;
-      default:
-        m_lstInfo.InsertString(m_lstInfo.GetCount(),
-                  _T("can not open player."));
-		    break;
-    }
-  }
-  ```
+   ```swift
+   void CAgoraMediaPlayer::OnBnClickedButtonOpen() {
+     CString strUrl;
+     CString strInfo;
+     m_edtVideoSource.GetWindowText(strUrl);
+     std::string tmp = cs2utf8(strUrl);
+     switch (m_mediaPlayerState) {
+       case mediaPLAYER_READY:
+       case mediaPLAYER_STOP:
+         if (tmp.empty()) {
+           AfxMessageBox(_T("you can fill video source."));
+           return;
+         }
+         m_mediaPlayer->open(tmp.c_str(), 0);
+         break;
+       default:
+         m_lstInfo.InsertString(m_lstInfo.GetCount(),
+                   _T("can not open player."));
+         break;
+     }
+   }
+   ```
 
 6. Call the `play` method to play the media file.
 
-  ```cpp
-  void CAgoraMediaPlayer::OnBnClickedButtonPlay() {
-    int ret;
-    switch (m_mediaPlayerState) {
-      case mediaPLAYER_PAUSE:
-      case mediaPLAYER_OPEN:
-        // Play media file
-        ret = m_mediaPlayer->play();
-        if (ret == 0) {
-          m_mediaPlayerState = mediaPLAYER_PLAYING;
-        }
-        break;
-      case mediaPLAYER_PLAYING:
-        // Pause playback
-        ret = m_mediaPlayer->pause();
-        if (ret == 0) {
-          m_mediaPlayerState = mediaPLAYER_PAUSE;
-        }
-        break;
-      default:
-        break;
-    }
-  }
-  ```
+   ```cpp
+   void CAgoraMediaPlayer::OnBnClickedButtonPlay() {
+     int ret;
+     switch (m_mediaPlayerState) {
+       case mediaPLAYER_PAUSE:
+       case mediaPLAYER_OPEN:
+         // Play media file
+         ret = m_mediaPlayer->play();
+         if (ret == 0) {
+           m_mediaPlayerState = mediaPLAYER_PLAYING;
+         }
+         break;
+       case mediaPLAYER_PLAYING:
+         // Pause playback
+         ret = m_mediaPlayer->pause();
+         if (ret == 0) {
+           m_mediaPlayerState = mediaPLAYER_PAUSE;
+         }
+         break;
+       default:
+         break;
+     }
+   }
+   ```
 
   :::warning
 
@@ -929,22 +929,22 @@ To implement a media player in your app, follow these steps:
 
 1. Initialize `IRtcEngine` and create an `IMediaPlayer` object:
 
-  ```javascript
-  // Create and initialize the engine
-  let rtcEngine = createAgoraRtcEngine();
-  rtcEngine.initialize({
-   appId,
-  });
-  // Create a media player object
-  let mediaPlayer = rtcEngine.createMediaPlayer();
-  ```
+   ```javascript
+   // Create and initialize the engine
+   let rtcEngine = createAgoraRtcEngine();
+   rtcEngine.initialize({
+    appId,
+   });
+   // Create a media player object
+   let mediaPlayer = rtcEngine.createMediaPlayer();
+   ```
 
 2. Register the playback observer using `registerPlayerSourceObserver`.
 
-  ```javascript
-  // Register playback observer
-  mediaPlayer.registerPlayerSourceObserver(this);
-  ```
+   ```javascript
+   // Register playback observer
+   mediaPlayer.registerPlayerSourceObserver(this);
+   ```
 
 3. Register media player observer callbacks based on your needs:
 
@@ -978,53 +978,53 @@ To implement a media player in your app, follow these steps:
 
 4. Open a media file:
 
-  ```javascript
-  open = () => {
-    const url = 'https://example/video.mov';
+   ```javascript
+   open = () => {
+     const url = 'https://example/video.mov';
 
-    if (!url) {
-      this.error("url is invalid");
-      return;
-    }
+     if (!url) {
+       this.error("url is invalid");
+       return;
+     }
 
-    mediaPlayer.open(url, 0);
-  };
-  ```
+     mediaPlayer.open(url, 0);
+   };
+   ```
 
 5. Play and control media playback:
 
-  ```javascript
-  // Play the media file
-  play = () => {
-    const { position, duration } = this.state;
-    if (position === duration && duration !== 0) {
-      mediaPlayer.seek(0); // If playback is at the end, seek to the start
-    } else {
-      mediaPlayer.play(); // Otherwise, play the media
-    }
-  };
+   ```javascript
+   // Play the media file
+   play = () => {
+     const { position, duration } = this.state;
+     if (position === duration && duration !== 0) {
+       mediaPlayer.seek(0); // If playback is at the end, seek to the start
+     } else {
+       mediaPlayer.play(); // Otherwise, play the media
+     }
+   };
 
-  // Pause the media file
-  pause = () => {
-    mediaPlayer.pause(); // Pause playback
-  };
+   // Pause the media file
+   pause = () => {
+     mediaPlayer.pause(); // Pause playback
+   };
 
-  // Resume the media file
-  resume = () => {
-    mediaPlayer.resume(); // Resume playback
-  };
-  ```
+   // Resume the media file
+   resume = () => {
+     mediaPlayer.resume(); // Resume playback
+   };
+   ```
 
 6. Stop playback and release resources:
 
-  ```javascript
-  // Stop playing
-  mediaPlayer.stop();
-  // Destroy the media player
-  rtcEngine.destroyMediaPlayer(this.player);
-  // Unregister the playback observer
-  rtcEngine.unregisterEventHandler(this);
-  ```
+   ```javascript
+   // Stop playing
+   mediaPlayer.stop();
+   // Destroy the media player
+   rtcEngine.destroyMediaPlayer(this.player);
+   // Unregister the playback observer
+   rtcEngine.unregisterEventHandler(this);
+   ```
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -1069,22 +1069,22 @@ To implement a media player in your app, follow these steps:
 
 1. Initialize `IRtcEngine` and create an `IMediaPlayer` object:
 
-  ```typescript
-  // Create and initialize the engine
-  let rtcEngine = createAgoraRtcEngine();
-  rtcEngine.initialize({
-   appId,
-  });
-  // Create a media player object
-  let mediaPlayer = rtcEngine.createMediaPlayer();
-  ```
+   ```typescript
+   // Create and initialize the engine
+   let rtcEngine = createAgoraRtcEngine();
+   rtcEngine.initialize({
+    appId,
+   });
+   // Create a media player object
+   let mediaPlayer = rtcEngine.createMediaPlayer();
+   ```
 
 2. Register the playback observer using `registerPlayerSourceObserver`.
 
-  ```typescript
-  // Register playback observer
-  mediaPlayer.registerPlayerSourceObserver(this);
-  ```
+   ```typescript
+   // Register playback observer
+   mediaPlayer.registerPlayerSourceObserver(this);
+   ```
 
 3. Register media player observer callbacks based on your needs:
 
@@ -1118,53 +1118,53 @@ To implement a media player in your app, follow these steps:
 
 4. Open a media file:
 
-  ```typescript
-  open = () => {
-    const url = 'https://example/video.mov';
+   ```typescript
+   open = () => {
+     const url = 'https://example/video.mov';
 
-    if (!url) {
-      this.error("url is invalid");
-      return;
-    }
+     if (!url) {
+       this.error("url is invalid");
+       return;
+     }
 
-    mediaPlayer.open(url, 0);
-  };
-  ```
+     mediaPlayer.open(url, 0);
+   };
+   ```
 
 5. Play and control media playback:
 
-  ```typescript
-  // Play the media file
-  play = () => {
-    const { position, duration } = this.state;
-    if (position === duration && duration !== 0) {
-      mediaPlayer.seek(0); // If playback is at the end, seek to the start
-    } else {
-      mediaPlayer.play(); // Otherwise, play the media
-    }
-  };
+   ```typescript
+   // Play the media file
+   play = () => {
+     const { position, duration } = this.state;
+     if (position === duration && duration !== 0) {
+       mediaPlayer.seek(0); // If playback is at the end, seek to the start
+     } else {
+       mediaPlayer.play(); // Otherwise, play the media
+     }
+   };
 
-  // Pause the media file
-  pause = () => {
-    mediaPlayer.pause(); // Pause playback
-  };
+   // Pause the media file
+   pause = () => {
+     mediaPlayer.pause(); // Pause playback
+   };
 
-  // Resume the media file
-  resume = () => {
-    mediaPlayer.resume(); // Resume playback
-  };
-  ```
+   // Resume the media file
+   resume = () => {
+     mediaPlayer.resume(); // Resume playback
+   };
+   ```
 
 6. Stop playback and release resources:
 
-  ```typescript
-  // Stop playing
-  mediaPlayer.stop();
-  // Destroy the media player
-  rtcEngine.destroyMediaPlayer(this.player);
-  // Unregister the playback observer
-  rtcEngine.unregisterEventHandler(this);
-  ```
+   ```typescript
+   // Stop playing
+   mediaPlayer.stop();
+   // Destroy the media player
+   rtcEngine.destroyMediaPlayer(this.player);
+   // Unregister the playback observer
+   rtcEngine.unregisterEventHandler(this);
+   ```
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -1399,13 +1399,13 @@ this.Log.UpdateLog($"JoinChannel returns: {ret}");
 
 1. Call `Play` to start playing a local or online media resource.
 
-  ```csharp
-  public void OnPlayButtonPress()
-  {
-    var ret = MediaPlayer.Play();
-    Debug.Log($"Play return: {ret}");
-  }
-  ```
+   ```csharp
+   public void OnPlayButtonPress()
+   {
+     var ret = MediaPlayer.Play();
+     Debug.Log($"Play return: {ret}");
+   }
+   ```
   :::warning
 
   If you use `Open` to load a media resource, wait for the `OnPlayerSourceStateChanged` callback to report the state as `PLAYER_STATE_OPEN_COMPLETED` before calling `Play`. If you use `OpenWithMediaSource` with `autoPlay` enabled, playback starts automatically.
@@ -1490,31 +1490,31 @@ To play multiple media resources continuously, preload the media resources to en
 
 1. Call `PreloadSrc` to preload media resources. To load multiple resources, call this method multiple times. Listen to the `OnPreloadEvent` callbacks to receive preload related events.
 
-  ```csharp
-  public void OnPreloadSrcButtonClick()
-  {
+   ```csharp
+   public void OnPreloadSrcButtonClick()
+   {
 
-    var nRet = MediaPlayer.PreloadSrc(PRELOAD_URL, 0);
-    this.Log.UpdateLog("PreloadSrc: " + nRet);
-  }
-  ```
+     var nRet = MediaPlayer.PreloadSrc(PRELOAD_URL, 0);
+     this.Log.UpdateLog("PreloadSrc: " + nRet);
+   }
+   ```
 
 2. Call `PlayPreloadedSrc` to play the preloaded media resource. After you call this method successfully, you receive a `OnPlayerStateChanged` callback reporting status `PLAYER_STATE_PLAYING`.
 
-  ```csharp
-  public void OnPlayPreloadButtonClick()
-  {
-    var nRet = MediaPlayer.PlayPreloadedSrc(PRELOAD_URL);
-    this.Log.UpdateLog("PlayPreloadedSrc: " + nRet);
-  }
-  ```
+   ```csharp
+   public void OnPlayPreloadButtonClick()
+   {
+     var nRet = MediaPlayer.PlayPreloadedSrc(PRELOAD_URL);
+     this.Log.UpdateLog("PlayPreloadedSrc: " + nRet);
+   }
+   ```
 
 3. When you no longer need the loaded media resources, call `UnloadSrc` to release the preloaded resources.
 
-  ```csharp
-  var nRet = MediaPlayer.UnloadSrc(PRELOAD_URL);
-  this.Log.UpdateLog("UnloadSrc: " + nRet);
-  ```
+   ```csharp
+   var nRet = MediaPlayer.UnloadSrc(PRELOAD_URL);
+   this.Log.UpdateLog("UnloadSrc: " + nRet);
+   ```
 
 ### Leave channel
 
@@ -1525,22 +1525,22 @@ Follow these steps to leave a channel:
 1. Call `LeaveChannel` to leave the channel.
 1. Call `Dispose` to destroy `IRtcEngine` object and releases resources used by the SDK.
 
-```csharp
-public void OnLeaveChannelButtonPress()
-{
-  if (RtcEngine == null) return;
-  // Destroy the media player object
-  if (MediaPlayer != null) RtcEngine.DestroyMediaPlayer(MediaPlayer);
-  // Unregister the media player event handler
-  RtcEngine.InitEventHandler(null);
-  // Leave the channel
-  RtcEngine.LeaveChannel();
-  // Destroy the engine and release resources
-  RtcEngine.Dispose();
-  RtcEngine = null;
-  MediaPlayer = null;
-}
-```
+   ```csharp
+   public void OnLeaveChannelButtonPress()
+   {
+     if (RtcEngine == null) return;
+     // Destroy the media player object
+     if (MediaPlayer != null) RtcEngine.DestroyMediaPlayer(MediaPlayer);
+     // Unregister the media player event handler
+     RtcEngine.InitEventHandler(null);
+     // Leave the channel
+     RtcEngine.LeaveChannel();
+     // Destroy the engine and release resources
+     RtcEngine.Dispose();
+     RtcEngine = null;
+     MediaPlayer = null;
+   }
+   ```
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

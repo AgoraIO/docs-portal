@@ -138,14 +138,14 @@ This page refers to the video sample project. If you want to run the audio sampl
 :::
 1. Open the `samples/APIExample/APIExample/Common/KeyCenter.swift` file and fill in the App ID and App certificate you obtained from the Agora Console.
 
-  ```swift
-  class KeyCenter: NSObject {
-    // Replace <#Your App ID#> with your App ID
-    static let AppId: String = "<#Your App ID#>"
-    // Replace #Your certificate# with your App certificate. Leave this field blank if the project allows joining with the App ID only.
-    static let Certificate: String? = "<#Your certificate#>"
-  }
-  ```
+   ```swift
+   class KeyCenter: NSObject {
+     // Replace <#Your App ID#> with your App ID
+     static let AppId: String = "<#Your App ID#>"
+     // Replace #Your certificate# with your App certificate. Leave this field blank if the project allows joining with the App ID only.
+     static let Certificate: String? = "<#Your certificate#>"
+   }
+   ```
 
 2. Open terminal and run `pod install` in the `samples/API-Example` folder to install the SDK and related dependencies. After the installation is complete, the terminal displays 'Pod installation complete!'.
 
@@ -300,9 +300,9 @@ The `API-Examples-Web` repository provides the following examples:
 
 2. To launch the project, run the following command in the project root folder:
 
-  ```bash
-  npm run dev
-  ```
+   ```bash
+   npm run dev
+   ```
 
   After execution is complete, the terminal displays the URL to launch the demo.
 
@@ -348,9 +348,9 @@ This page shows how to compile, configure, and run the Video SDK Windows sample 
 
 1. Run the following command to clone the repository locally:
 
-  ```bash
-  git clone git@github.com:AgoraIO/API-Examples.git
-  ```
+   ```bash
+   git clone git@github.com:AgoraIO/API-Examples.git
+   ```
 
   This repository contains sample projects for all native platforms of Agora Video SDK. The API usage examples for Windows are located under `/windows`.
 
@@ -434,9 +434,9 @@ This repository contains sample projects for Agora Electron Video SDK:
 
 1. To run the sample project, execute the following command in the `/example` directory:
 
-  ```bash
-  yarn start
-  ```
+   ```bash
+   yarn start
+   ```
 
 2. After the operation is complete, you see the following application on your screen:
 
@@ -521,9 +521,9 @@ This repository contains the following sample projects for Agora Flutter Video S
 
 3. Execute the following command to launch the sample project on available devices:
 
-  ```bash
-  flutter run
-  ```
+   ```bash
+   flutter run
+   ```
 
 4. After compilation is complete, you see the following application on your device:
 
@@ -712,9 +712,9 @@ Navigate to `/react/api-examples` and run the following command to install the d
 
 1. Use the following command to run the sample project.
 
-  ```bash
-  npm run dev
-  ```
+   ```bash
+   npm run dev
+   ```
 
 2. On the demo page, enter your [App ID](../manage-agora-account), [token](../manage-agora-account), and channel name and join the channel.
 
@@ -815,9 +815,9 @@ This page shows how to compile, configure, and run the Video SDK Unreal Engine s
 
 1. Run the following command to clone the repository locally:
 
-  ```bash
-  git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
-  ```
+   ```bash
+   git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
+   ```
 
 2. The C++ API usage examples are located in `/Agora-Unreal-SDK-CPP-Example`. These include:
 
@@ -900,9 +900,9 @@ This page shows how to compile, configure, and run the Video SDK Unreal (Bluepri
 
 1. Run the following command to clone the repository locally:
 
-  ```bash
-  git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
-  ```
+   ```bash
+   git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
+   ```
 
 2. The Blueprint usage examples are located in `/Agora-Unreal-SDK-Blueprint-Example`. These include:
 
@@ -990,21 +990,21 @@ The Python SDK is a server-side SDK. The sample project runs on Linux or macOS a
 
 1. Install the build tools required to compile the Python SDK:
 
-  ```bash
-  sudo apt install build-essential python3-dev
-  ```
+   ```bash
+   sudo apt install build-essential python3-dev
+   ```
 
 1. Install the Python package used by the sample project:
 
-  ```bash
-  pip3 install agora-python-server-sdk
-  ```
+   ```bash
+   pip3 install agora-python-server-sdk
+   ```
 
 1. On Linux, add the Agora native library directory from the installed Python package to `LD_LIBRARY_PATH`. Replace `<site-packages>` with the site-packages path for your Python environment:
 
-  ```bash
-  export LD_LIBRARY_PATH=<site-packages>/agora/agora_sdk:$LD_LIBRARY_PATH
-  ```
+   ```bash
+   export LD_LIBRARY_PATH=<site-packages>/agora/agora_sdk:$LD_LIBRARY_PATH
+   ```
 
   To find the site-packages path, run:
 
@@ -1016,10 +1016,10 @@ The Python SDK is a server-side SDK. The sample project runs on Linux or macOS a
 
 1. Download the test audio data and unzip it into the `Agora-Python-Server-SDK` directory:
 
-  ```bash
-  curl -L -o test_data.zip https://download.agora.io/demo/test/test_data_202408221437.zip
-  unzip test_data.zip
-  ```
+   ```bash
+   curl -L -o test_data.zip https://download.agora.io/demo/test/test_data_202408221437.zip
+   unzip test_data.zip
+   ```
 
 1. Prepare the App ID, channel name, user ID, and temporary token for your Agora project. If your project uses tokens, generate the token with the same channel name and user ID that you pass to the sample command.
 

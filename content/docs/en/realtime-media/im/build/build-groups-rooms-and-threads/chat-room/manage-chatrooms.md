@@ -123,7 +123,7 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
 public interface ChatRoomChangeListener {
     /**
      * Occurs when the chat room instance is destroyed.
-     * 
+     *
      * @param roomId        The chat room ID
      * @param roomName      The chat room name
      */
@@ -131,7 +131,7 @@ public interface ChatRoomChangeListener {
 
     /**
      * Occurs when a new member joins the chat room.
-     * 
+     *
      * @param roomId        The chat room ID
      * @param participant   The username of the new chat room member
      */
@@ -139,7 +139,7 @@ public interface ChatRoomChangeListener {
 
     /**
      * Occurs when a member leaves the chat room.
-     * 
+     *
      * @param roomId        The chat room ID
      * @param roomName      The chat room name
      * @param participant   The username of the member that leaves the chat room
@@ -251,22 +251,22 @@ If many members join or leave a chat room in a very short time, you can update t
 
 1. After the event is received, you can call the `getChatRoom` method to get local details of the chat room and call the `ChatRoom#getMemberCount` method to get the current number of members in the chat room.
 
-```java
-ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(new ChatRoomChangeListener() {
+   ```java
+   ChatClient.getInstance().chatroomManager().addChatRoomChangeListener(new ChatRoomChangeListener() {
 
-        @Override
-        public void onMemberJoined(String roomId, String participant) {
-            //Get the current number of members in the chat room.
-            ChatClient.getInstance().chatroomManager().getChatRoom(roomId).getMemberCount();
-        }
+           @Override
+           public void onMemberJoined(String roomId, String participant) {
+               //Get the current number of members in the chat room.
+               ChatClient.getInstance().chatroomManager().getChatRoom(roomId).getMemberCount();
+           }
 
-        @Override
-        public void onMemberExited(String roomId, String roomName, String participant) {
-            //ChatClient.getInstance().chatroomManager().getChatRoom(roomId).getMemberCount();
-        }
+           @Override
+           public void onMemberExited(String roomId, String roomName, String participant) {
+               //ChatClient.getInstance().chatroomManager().getChatRoom(roomId).getMemberCount();
+           }
 
-    });
-```
+       });
+   ```
 
 ### iOS
 
@@ -298,7 +298,7 @@ All chat room members can call `leaveChatroom` to leave the specified chat room.
 ```objc
 // All chat users can call joinChatroom to join the specified chat room.
 AgoraChatError *error = nil;
-[[AgoraChatClient sharedClient].roomManager joinChatroom:@"aChatroomId" error:&error]; 
+[[AgoraChatClient sharedClient].roomManager joinChatroom:@"aChatroomId" error:&error];
 
 // All chat room members can call leaveChatroom to leave the specified chat room.
 AgoraChatError *error = nil;
@@ -313,7 +313,7 @@ All chat users can get the chat room list from the server and retrieve the basic
 // Chat room members can call getChatroomsFromServerWithPage to retrieve the specified number of chat rooms from the server by page. The maximum value of pageSize is 1,000.
 AgoraChatError *error = nil;
 [[AgoraChatClient sharedClient].roomManager getChatroomsFromServerWithPage:1 pageSize:50 error:&error];
-														
+
 // Chat room members can call chatroomWithId to get the basic information of the specified chat room by passing the chat room ID.
 AgoraChatroom *chatRoom = [AgoraChatroom chatroomWithId:@"chatroomId"];
 ```
@@ -357,7 +357,7 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
  */
 - (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom
                         reason:(AgoraChatroomBeKickedReason)aReason {
-                        
+
   }
 
 /**
@@ -379,9 +379,9 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
  */
 - (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
               removedMutedMembers:(NSArray *)aMutes {
-                        
+
   }
-  
+
 /**
  *  Occurs when a member is added to the chat room admin list.
  *  @param aChatroom    The chat room ID
@@ -389,7 +389,7 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
  */
 - (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                         addedAdmin:(NSString *)aAdmin {
-                        
+
   }
 
 /**
@@ -399,7 +399,7 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
  */
 - (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                       removedAdmin:(NSString *)aAdmin {
-                        
+
   }
 
 /**
@@ -411,7 +411,7 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
 - (void)chatroomOwnerDidUpdate:(AgoraChatroom *)aChatroom
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner {
-                      
+
 }
 
 // Occurs when basic information of the chat room is changed.
@@ -425,8 +425,8 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
 * @param attributeMap The newly set or changed custom attributes.
 */
 
-- (void)chatroomAttributesDidUpdated:(NSString *_Nonnull)roomId 
-                        attributeMap:(NSDictionary *_Nullable)attributeMap 
+- (void)chatroomAttributesDidUpdated:(NSString *_Nonnull)roomId
+                        attributeMap:(NSDictionary *_Nullable)attributeMap
                                 from:(NSString *_Nonnull)fromId;
     }
 
@@ -436,15 +436,15 @@ To monitor the chat room events, you can listen for the callbacks in the `ChatRo
 * @param attributes The removed custom attributes.
 */
 
-- (void)chatroomAttributesDidRemoved:(NSString *Nonnull)roomId 
-                          attributes:(NSArray *_Nullable)attributes 
+- (void)chatroomAttributesDidRemoved:(NSString *Nonnull)roomId
+                          attributes:(NSArray *_Nullable)attributes
                                 from:(NSString *_Nonnull)fromId;
-  
+
 // Occurs when basic information of the chat room is changed.
 - (void)chatroomSpecificationDidUpdate:(EMChatroom *)aChatroom {
-  
-  } 
-  
+
+  }
+
 /**
  *  When custom chat room attributes are set or changed, all room members receives this callback.
  *  @param roomId          The chat room ID.
@@ -472,18 +472,18 @@ If many members join or leave a chat room in a very short time, you can update t
 
 2. After the event is received, you can call the `occupantsCount` method to get the current number of members in the chat room.
 
-```objc
-extension ViewController: AgoraChatroomManagerDelegate {
-  func userDidJoin(_ aChatroom: AgoraChatroom, user aUsername: String) {
-    let memberCount = aChatroom.occupantsCount
-  }
-  func userDidLeave(_ aChatroom: AgoraChatroom, user aUsername: String) {
-    let memberCount = aChatroom.occupantsCount
-  }
-}
+   ```objc
+   extension ViewController: AgoraChatroomManagerDelegate {
+     func userDidJoin(_ aChatroom: AgoraChatroom, user aUsername: String) {
+       let memberCount = aChatroom.occupantsCount
+     }
+     func userDidLeave(_ aChatroom: AgoraChatroom, user aUsername: String) {
+       let memberCount = aChatroom.occupantsCount
+     }
+   }
 
-AgoraChatClient.shared().roomManager?.add(self, delegateQueue: nil)
-```
+   AgoraChatClient.shared().roomManager?.add(self, delegateQueue: nil)
+   ```
 
 ### Flutter
 
@@ -695,23 +695,23 @@ If many members join or leave a chat room in a very short time, you can update t
 
 1. After the event is received, you can call the `getChatRoomWithId` method to get local details of the chat room, including the current number of members in the chat room.
 
-```dart
-ChatClient.getInstance.chatRoomManager.addEventHandler(
-    'UNIQUE_HANDLER_ID',
-    ChatRoomEventHandler(
-      onMemberJoinedFromChatRoom: (roomId, participant) async {
-        ChatRoom? room = await ChatClient.getInstance.chatRoomManager.getChatRoomWithId(roomId);
-        debugPrint("current room member count ${room?.memberCount}");
-      },
-      onMemberExitedFromChatRoom: (roomId, roomName, participant) async {
-        ChatRoom? room = await ChatClient.getInstance.chatRoomManager.getChatRoomWithId(roomId);
-        debugPrint("current room member count ${room?.memberCount}");
-      },
-    ));
+   ```dart
+   ChatClient.getInstance.chatRoomManager.addEventHandler(
+       'UNIQUE_HANDLER_ID',
+       ChatRoomEventHandler(
+         onMemberJoinedFromChatRoom: (roomId, participant) async {
+           ChatRoom? room = await ChatClient.getInstance.chatRoomManager.getChatRoomWithId(roomId);
+           debugPrint("current room member count ${room?.memberCount}");
+         },
+         onMemberExitedFromChatRoom: (roomId, roomName, participant) async {
+           ChatRoom? room = await ChatClient.getInstance.chatRoomManager.getChatRoomWithId(roomId);
+           debugPrint("current room member count ${room?.memberCount}");
+         },
+       ));
 
-// ...
-ChatClient.getInstance.chatRoomManager.removeEventHandler('UNIQUE_HANDLER_ID');
-```
+   // ...
+   ChatClient.getInstance.chatRoomManager.removeEventHandler('UNIQUE_HANDLER_ID');
+   ```
 
 ### React Native
 
@@ -1007,19 +1007,19 @@ If many members join or leave a chat room in a very short time, you can update t
 
 1. After the event is received, you can call the `fetchChatRoomInfoFromServer` method to get local details of the chat room, including the current number of members in the chat room.
 
-```typescript
-ChatClient.getInstance()
-  .chatManager.fetchChatRoomInfoFromServer(
-    roomId // Room ID
-  )
-  .then((res) => {
-    // Operation successful, room information obtained
-  })
-  .catch((error) => {
-    // An error occurred
-  });
+   ```typescript
+   ChatClient.getInstance()
+     .chatManager.fetchChatRoomInfoFromServer(
+       roomId // Room ID
+     )
+     .then((res) => {
+       // Operation successful, room information obtained
+     })
+     .catch((error) => {
+       // An error occurred
+     });
 
-```
+   ```
 
 ### Windows
 
@@ -1120,24 +1120,24 @@ If many members join or leave a chat room within a short period, you can update 
 
 2. After receiving an event, call `RoomManager#GetChatRoom` to retrieve local chat room details, and refer to `RoomManager#MemberCount` for the current number of members.
 
-```csharp
-class RoomManagerDelegate : IRoomManagerDelegate
-{
-    public void OnMemberJoinedFromRoom(string roomId, string participant, string ext)
-    {
-        int memberCount = SDKClient.Instance.RoomManager.GetChatRoom(roomId).MemberCount;
-    }
+   ```csharp
+   class RoomManagerDelegate : IRoomManagerDelegate
+   {
+       public void OnMemberJoinedFromRoom(string roomId, string participant, string ext)
+       {
+           int memberCount = SDKClient.Instance.RoomManager.GetChatRoom(roomId).MemberCount;
+       }
 
-    public void OnMemberExitedFromRoom(string roomId, string roomName, string participant)
-    {
-    }
-    // Implement other functions of IRoomManagerDelegate
-}
+       public void OnMemberExitedFromRoom(string roomId, string roomName, string participant)
+       {
+       }
+       // Implement other functions of IRoomManagerDelegate
+   }
 
-// Register the delegate
-RoomManagerDelegate roomManagerDelegate = new RoomManagerDelegate();
-SDKClient.Instance.RoomManager.AddRoomManagerDelegate(roomManagerDelegate);
-```
+   // Register the delegate
+   RoomManagerDelegate roomManagerDelegate = new RoomManagerDelegate();
+   SDKClient.Instance.RoomManager.AddRoomManagerDelegate(roomManagerDelegate);
+   ```
 
 ### Retrieve the chat room attributes
 
@@ -1199,7 +1199,7 @@ public interface IRoomManagerDelegate
     {
         /**
         * Occurs when a chat room instance is destroyed.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param roomName      The chat room name
         *
@@ -1207,7 +1207,7 @@ public interface IRoomManagerDelegate
         void OnDestroyedFromRoom(string roomId, string roomName);
         /**
         * Occurs when a user joins a chat room.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param participant   The user ID of the new chat room member
         *
@@ -1215,7 +1215,7 @@ public interface IRoomManagerDelegate
         void OnMemberJoinedFromRoom(string roomId, string participant);
         /**
         * Occurs when a member leaves a chat room.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param roomName      The chat room name
         * @param participant   The user ID of the member who leaves the chat room
@@ -1426,24 +1426,24 @@ If many members join or leave a chat room within a short period, you can update 
 
 2. After receiving an event, call `RoomManager#GetChatRoom` to retrieve local chat room details, and refer to `RoomManager#MemberCount` for the current number of members.
 
-```csharp
-class RoomManagerDelegate : IRoomManagerDelegate
-{
-    public void OnMemberJoinedFromRoom(string roomId, string participant, string ext)
-    {
-        int memberCount = SDKClient.Instance.RoomManager.GetChatRoom(roomId).MemberCount;
-    }
+   ```csharp
+   class RoomManagerDelegate : IRoomManagerDelegate
+   {
+       public void OnMemberJoinedFromRoom(string roomId, string participant, string ext)
+       {
+           int memberCount = SDKClient.Instance.RoomManager.GetChatRoom(roomId).MemberCount;
+       }
 
-    public void OnMemberExitedFromRoom(string roomId, string roomName, string participant)
-    {
-    }
-    // Implement other functions of IRoomManagerDelegate
-}
+       public void OnMemberExitedFromRoom(string roomId, string roomName, string participant)
+       {
+       }
+       // Implement other functions of IRoomManagerDelegate
+   }
 
-// Register the delegate
-RoomManagerDelegate roomManagerDelegate = new RoomManagerDelegate();
-SDKClient.Instance.RoomManager.AddRoomManagerDelegate(roomManagerDelegate);
-```
+   // Register the delegate
+   RoomManagerDelegate roomManagerDelegate = new RoomManagerDelegate();
+   SDKClient.Instance.RoomManager.AddRoomManagerDelegate(roomManagerDelegate);
+   ```
 
 ### Retrieve the chat room attributes
 
@@ -1505,7 +1505,7 @@ public interface IRoomManagerDelegate
     {
         /**
         * Occurs when a chat room instance is destroyed.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param roomName      The chat room name
         *
@@ -1513,7 +1513,7 @@ public interface IRoomManagerDelegate
         void OnDestroyedFromRoom(string roomId, string roomName);
         /**
         * Occurs when a user joins a chat room.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param participant   The user ID of the new chat room member
         *
@@ -1521,7 +1521,7 @@ public interface IRoomManagerDelegate
         void OnMemberJoinedFromRoom(string roomId, string participant);
         /**
         * Occurs when a member leaves a chat room.
-        * 
+        *
         * @param roomId        The chat room ID
         * @param roomName      The chat room name
         * @param participant   The user ID of the member who leaves the chat room
@@ -1771,21 +1771,21 @@ If many members join or leave a chat room in a very short time, you can update t
 
 1. After the event is received, you can get the current member count of the chat room by checking the value of the `memberCount` parameter in the event.
 
-```javascript
-chatClient.addEventHandler("handlerId", {
-  onChatroomEvent: (e) => {
-    switch (e.operation) {
-      case "memberPresence":
-        // The current number of members in the chat room.
-        console.log(e?.memberCount);
-        break;
-      case "memberAbsence":
-        // The current number of members in the chat room.
-        console.log(e?.memberCount);
-        break;
-      default:
-        break;
-    }
-  },
-});
-```
+   ```javascript
+   chatClient.addEventHandler("handlerId", {
+     onChatroomEvent: (e) => {
+       switch (e.operation) {
+         case "memberPresence":
+           // The current number of members in the chat room.
+           console.log(e?.memberCount);
+           break;
+         case "memberAbsence":
+           // The current number of members in the chat room.
+           console.log(e?.memberCount);
+           break;
+         default:
+           break;
+       }
+     },
+   });
+   ```

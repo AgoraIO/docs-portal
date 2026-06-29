@@ -21,9 +21,9 @@ Set up SRT streaming in OBS Studio by configuring the server and stream key sett
 
 1. In the **Server** field, enter your streaming domain name in the following format:
 
-```text
-srt://{streaming_domain_name}:6001
-```
+   ```text
+   srt://{streaming_domain_name}:6001
+   ```
 
 ![Server settings](/images/media-gateway/srt-server-setting.png)
 

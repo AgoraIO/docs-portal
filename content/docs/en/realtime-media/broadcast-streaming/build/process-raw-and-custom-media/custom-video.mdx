@@ -99,7 +99,7 @@ Take the following steps to implement this workflow:
      // Set custom video track ID
      customVideoTrackId = videoTrackId
    }
-  
+
    // Join a channel with the specified options
    val res = engine.joinChannel(accessToken, channelId, 0, option)
   ```
@@ -121,7 +121,7 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
   Call `pushExternalVideoFrameById` [2/2] to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
   The following code samples demonstrate pushing `I420`, `NV21`, `NV12`, and `Texture` format video data:
-  
+
   **I420**
 
 <CodeBlockTabs defaultValue="java">
@@ -142,12 +142,12 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
      long currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs();
      // Create a VideoFrame object, passing the I420 video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      VideoFrame videoFrame = new VideoFrame(i420Buffer, 0, currentMonotonicTimeInMs * 1000000);
-  
+
      // Push the video frame to the SDK through the video track
      int ret = engine.pushExternalVideoFrameById(videoFrame, trackId);
      // Release the memory resources occupied by the i420Buffer object
      i420Buffer.release();
-  
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error");
      }
@@ -163,19 +163,19 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
      i420Buffer.getDataY().put(yuv, 0, i420Buffer.getDataY().limit())
      i420Buffer.getDataU().put(yuv, i420Buffer.getDataY().limit(), i420Buffer.getDataU().limit())
      i420Buffer.getDataV().put(yuv, i420Buffer.getDataY().limit() + i420Buffer.getDataU().limit(), i420Buffer.getDataV().limit())
-         
+
      // Get the current monotonic time from the SDK
      val currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs()
-        
+
      // Create a VideoFrame object, passing the I420 video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      val videoFrame = VideoFrame(i420Buffer, 0, currentMonotonicTimeInMs * 1_000_000)
-        
+
      // Push the video frame to the SDK through the video track
      val ret = engine.pushExternalVideoFrameById(videoFrame, trackId)
-        
+
      // Release the memory resources occupied by the i420Buffer object
      i420Buffer.release()
-        
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error")
      }
@@ -197,15 +197,15 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
   private void pushVideoFrameByNV21(int trackId, byte[] nv21, int width, height) {
      // Create a frameBuffer object and store the original YUV data in the NV21 format buffer
      VideoFrame.Buffer frameBuffer = new NV21Buffer(nv21, width, height, null);
-  
+
      // Get the current monotonic time from the SDK
      long currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs();
      // Create a VideoFrame object, pass the NV21 video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      VideoFrame videoFrame = new VideoFrame(frameBuffer, 0, currentMonotonicTimeInMs * 1000000);
-  
+
      // Push the video frame to the SDK through the video track
      int ret = engine.pushExternalVideoFrameById(videoFrame, trackId);
-  
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error");
      }
@@ -218,16 +218,16 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
   private fun pushVideoFrameByNV21(trackId: Int, nv21: ByteArray, width: Int, height: Int) {
      // Create a frameBuffer object and store the original YUV data in the NV21 format buffer
      val frameBuffer: VideoFrame.Buffer = NV21Buffer(nv21, width, height, null)
-   
+
      // Get the current monotonic time from the SDK
      val currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs()
-   
+
      // Create a VideoFrame object, pass the NV21 video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      val videoFrame = VideoFrame(frameBuffer, 0, currentMonotonicTimeInMs * 1_000_000)
-   
+
      // Push the video frame to the SDK through the video track
      val ret = engine.pushExternalVideoFrameById(videoFrame, trackId)
-        
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error")
      }
@@ -253,7 +253,7 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
      long currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs();
      // Create a VideoFrame object, pass the NV12 video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      VideoFrame videoFrame = new VideoFrame(frameBuffer, 0, currentMonotonicTimeInMs * 1000000);
-     
+
      // Push the video frame to the SDK through the video track
      int ret = engine.pushExternalVideoFrameById(videoFrame, trackId);
      if (ret != Constants.ERR_OK) {
@@ -274,7 +274,7 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
      val videoFrame = VideoFrame(frameBuffer, 0, currentMonotonicTimeInMs * 1_000_000)
      // Push the video frame to the SDK through the video track
      val ret = engine.pushExternalVideoFrameById(videoFrame, trackId)
-      
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error")
      }
@@ -340,14 +340,14 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
       null,
       null
      )
-  
+
      // Get the current monotonic time from the SDK
      val currentMonotonicTimeInMs = engine.getCurrentMonotonicTimeInMs()
      // Create a VideoFrame object, passing the texture video frame to be pushed and the monotonic time of the video frame (in nanoseconds)
      val videoFrame = VideoFrame(frameBuffer, 0, currentMonotonicTimeInMs * 1_000_000)
      // Push the video frame to the SDK through the video track
      val ret = engine.pushExternalVideoFrameById(videoFrame, trackId)
-  
+
      if (ret != Constants.ERR_OK) {
       Log.w(TAG, "pushExternalVideoFrame error")
      }
@@ -362,7 +362,7 @@ If the captured custom video format is Texture and remote users experience flick
 :::
 5. Destroy custom video tracks
 
-  To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`. 
+  To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`.
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -494,40 +494,40 @@ Take the following steps to implement this workflow:
   ```
 
 2. Join a channel and publish the custom video track
-  
-  ```swift
-  // Create an AgoraRtcChannelMediaOptions instance
-  let option = AgoraRtcChannelMediaOptions()
-  // Set the client role to broadcaster
-  option.clientRoleType = .broadcaster
-  // Enable auto subscription for audio and video
-  option.autoSubscribeAudio = true
-  option.autoSubscribeVideo = true
-  // Publish the self-collected video stream
-  option.publishCustomVideoTrack = true
-  // Set the custom video track ID
-  option.customVideoTrackId = Int(customCamera?.trackId ?? 0)
-  // Generate a token for the channel
-  NetworkManager.shared.generateToken(channelName: channel, success: { token in
-    // Join a channel with the specified options
-    let result = self.agoraKit.joinChannel(byToken: token, channelId: channel, uid: 0, mediaOptions: option)
-    if result != 0 {
-      self.isProcessing = false
-      self.showAlert(title: "Error", message: "joinChannel call failed: \(result), please check your params")
-    }
-  })
-  ```
+
+   ```swift
+   // Create an AgoraRtcChannelMediaOptions instance
+   let option = AgoraRtcChannelMediaOptions()
+   // Set the client role to broadcaster
+   option.clientRoleType = .broadcaster
+   // Enable auto subscription for audio and video
+   option.autoSubscribeAudio = true
+   option.autoSubscribeVideo = true
+   // Publish the self-collected video stream
+   option.publishCustomVideoTrack = true
+   // Set the custom video track ID
+   option.customVideoTrackId = Int(customCamera?.trackId ?? 0)
+   // Generate a token for the channel
+   NetworkManager.shared.generateToken(channelName: channel, success: { token in
+     // Join a channel with the specified options
+     let result = self.agoraKit.joinChannel(byToken: token, channelId: channel, uid: 0, mediaOptions: option)
+     if result != 0 {
+       self.isProcessing = false
+       self.showAlert(title: "Error", message: "joinChannel call failed: \(result), please check your params")
+     }
+   })
+   ```
 
 3. Implement your self-capture module
 
-  Agora provides the [ 
+  Agora provides the [
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK 
+1. Push video data to the SDK
 
   Use `pushExternalVideoFrame` to send the captured video frame to the SDK through the video track. Ensure that the `videoTrackId` matches the video track ID specified when joining the channel. In `AgoraVideoFrame`, you can set the pixel format, data type, timestamp, and other parameters of the video frame.
 
-  The following code demonstrates how to push video data in the `CVPixelBufferRef` format. For other supported video frame formats, refer to the `format` field in [AgoraVideoFrame](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframe). 
+  The following code demonstrates how to push video data in the `CVPixelBufferRef` format. For other supported video frame formats, refer to the `format` field in [AgoraVideoFrame](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoframe).
 
   ```swift
   let videoFrame = AgoraVideoFrame()
@@ -547,7 +547,7 @@ If the captured custom video format is Texture and remote users experience flick
 :::
 1. Destroy custom video track
 
-  To stop publishing the custom video track, call `destroyCustomVideoTrack`. 
+  To stop publishing the custom video track, call `destroyCustomVideoTrack`.
 
   ```swift
   // Destroy the custom video track
@@ -667,40 +667,40 @@ Take the following steps to implement this workflow:
   ```
 
 2. Join a channel and publish the custom video track
-  
-  ```swift
-  // Create an AgoraRtcChannelMediaOptions instance
-  let option = AgoraRtcChannelMediaOptions()
-  // Set the client role to broadcaster
-  option.clientRoleType = .broadcaster
-  // Enable auto subscription for audio and video
-  option.autoSubscribeAudio = true
-  option.autoSubscribeVideo = true
-  // Publish the self-collected video stream
-  option.publishCustomVideoTrack = true
-  // Set the custom video track ID
-  option.customVideoTrackId = Int(customCamera?.trackId ?? 0)
-  // Generate a token for the channel
-  NetworkManager.shared.generateToken(channelName: channel, success: { token in
-    // Join a channel with the specified options
-    let result = self.agoraKit.joinChannel(byToken: token, channelId: channel, uid: 0, mediaOptions: option)
-    if result != 0 {
-      self.isProcessing = false
-      self.showAlert(title: "Error", message: "joinChannel call failed: \(result), please check your params")
-    }
-  })
-  ```
+
+   ```swift
+   // Create an AgoraRtcChannelMediaOptions instance
+   let option = AgoraRtcChannelMediaOptions()
+   // Set the client role to broadcaster
+   option.clientRoleType = .broadcaster
+   // Enable auto subscription for audio and video
+   option.autoSubscribeAudio = true
+   option.autoSubscribeVideo = true
+   // Publish the self-collected video stream
+   option.publishCustomVideoTrack = true
+   // Set the custom video track ID
+   option.customVideoTrackId = Int(customCamera?.trackId ?? 0)
+   // Generate a token for the channel
+   NetworkManager.shared.generateToken(channelName: channel, success: { token in
+     // Join a channel with the specified options
+     let result = self.agoraKit.joinChannel(byToken: token, channelId: channel, uid: 0, mediaOptions: option)
+     if result != 0 {
+       self.isProcessing = false
+       self.showAlert(title: "Error", message: "joinChannel call failed: \(result), please check your params")
+     }
+   })
+   ```
 
 3. Implement your self-capture module
 
-  Agora provides the [ 
+  Agora provides the [
 CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
 
-1. Push video data to the SDK 
+1. Push video data to the SDK
 
   Use `pushExternalVideoFrame` to send the captured video frame to the SDK through the video track. Ensure that the `videoTrackId` matches the video track ID specified when joining the channel. In `AgoraVideoFrame`, you can set the pixel format, data type, timestamp, and other parameters of the video frame.
 
-  The following code demonstrates how to push video data in the `CVPixelBufferRef` format. For other supported video frame formats, refer to the `format` field in [AgoraVideoFrame](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframe). 
+  The following code demonstrates how to push video data in the `CVPixelBufferRef` format. For other supported video frame formats, refer to the `format` field in [AgoraVideoFrame](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoframe).
 
   ```swift
   let videoFrame = AgoraVideoFrame()
@@ -720,7 +720,7 @@ If the captured custom video format is Texture and remote users experience flick
 :::
 1. Destroy custom video track
 
-  To stop publishing the custom video track, call `destroyCustomVideoTrack`. 
+  To stop publishing the custom video track, call `destroyCustomVideoTrack`.
 
   ```swift
   // Destroy the custom video track
@@ -900,14 +900,14 @@ function createAndDrawCanvas() {
   // Continuously draw on the canvas
   function drawCanvas() {
     // Clear previous drawings
-    context.clearRect(0, 0, canvas.width, canvas.height); 
+    context.clearRect(0, 0, canvas.width, canvas.height);
     context.fillStyle = "blue";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // Add your code to draw on the canvas
-      
+
     // Keep refreshing the canvas
-    requestAnimationFrame(drawCanvas); 
+    requestAnimationFrame(drawCanvas);
   }
   drawCanvas();
 
@@ -966,21 +966,21 @@ Take the following steps to implement this workflow:
 
 2. Join a channel and publish the custom video track
 
-  ```cpp
-  // Create a ChannelMediaOptions instance
-  ChannelMediaOptions mediaOptions;
-  // Set the client role to broadcaster
-  mediaOptions.clientRoleType = CLIENT_ROLE_BROADCASTER;
-  // Publish the self-captured video stream
-  mediaOptions.publishCustomVideoTrack = true;
-  // Disable auto subscription for video and audio
-  mediaOptions.autoSubscribeVideo = false;
-  mediaOptions.autoSubscribeAudio = false;
-  // Set the custom video track ID
-  mediaOptions.customVideoTrackId = videoTrackId;
-  // Join the channel with the specified options
-  int ret = m_rtcEngine->joinChannel(APP_TOKEN, szChannelId.data(), 0, mediaOptions);
-  ```
+   ```cpp
+   // Create a ChannelMediaOptions instance
+   ChannelMediaOptions mediaOptions;
+   // Set the client role to broadcaster
+   mediaOptions.clientRoleType = CLIENT_ROLE_BROADCASTER;
+   // Publish the self-captured video stream
+   mediaOptions.publishCustomVideoTrack = true;
+   // Disable auto subscription for video and audio
+   mediaOptions.autoSubscribeVideo = false;
+   mediaOptions.autoSubscribeAudio = false;
+   // Set the custom video track ID
+   mediaOptions.customVideoTrackId = videoTrackId;
+   // Join the channel with the specified options
+   int ret = m_rtcEngine->joinChannel(APP_TOKEN, szChannelId.data(), 0, mediaOptions);
+   ```
 
 3. Implement self-capture module
 
@@ -991,9 +991,9 @@ Take the following steps to implement this workflow:
   m_yuvReaderHandlers[trackIndex].Setup(m_rtcEngine, m_mediaEngine.get(), videoTrackId);
   m_yuvReaders[trackIndex].start(std::bind(&MultiVideoSourceTracksYUVReaderHander::OnYUVRead, m_yuvReaderHandlers[trackIndex], std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
   ```
-  
-4. Push video data to the SDK 
-    
+
+4. Push video data to the SDK
+
   Call `pushVideoFrame` to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
 :::note
@@ -1001,13 +1001,13 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
 
 :::
   ```cpp
-  void MultiVideoSourceTracksYUVReaderHander::OnYUVRead(int width, int height, 
-                             unsigned char* buffer, 
+  void MultiVideoSourceTracksYUVReaderHander::OnYUVRead(int width, int height,
+                             unsigned char* buffer,
                              int size) {
     if (m_mediaEngine == nullptr || m_rtcEngine == nullptr) {
       return;
     }
-  
+
     // Set the video pixel format to I420
     m_videoFrame.format = agora::media::base::VIDEO_PIXEL_I420;
     // Set the video data type to raw data
@@ -1032,7 +1032,7 @@ If the captured custom video format is Texture and remote users experience flick
 
 :::
 5. Destroy custom video tracks
-    
+
   To stop custom video capture and destroy the video track, call `destroyCustomVideoTrack`. To destroy multiple video tracks, call the method for each track.
 
   ```cpp
@@ -1145,10 +1145,10 @@ void InitAgoraEngine(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
   RtcEngineContext.appId = StdStrAppId.c_str();
   RtcEngineContext.eventHandler = UserRtcEventHandler.Get();
   RtcEngineContext.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
-  
+
   // Initialize the RtcEngine
   int ret = AgoraUERtcEngine::Get()->initialize(RtcEngineContext);
-  
+
   // Query for the MediaEngine interface
   int ret = AgoraUERtcEngine::Get()->queryInterface(INTERFACE_ID_TYPE::AGORA_IID_MEDIA_ENGINE, (void**)&MediaEngineManager);
 }
@@ -1205,7 +1205,7 @@ Take the following steps to implement this workflow:
   void InitAgoraWidget(FString APP_ID, FString TOKEN, FString CHANNEL_NAME)
   {
     // ... other initialization code ...
-    
+
     // Register for back buffer ready callback
     if (FSlateApplication::IsInitialized())
     {
@@ -1232,12 +1232,12 @@ Take the following steps to implement this workflow:
     TArray<FColor> Data;
 
     RHICmdList.ReadSurfaceData(BackBuffer, Rect, Data, FReadSurfaceDataFlags());
-    
+
     if (UserExternalVideoFrame == nullptr)
     {
       UserExternalVideoFrame = new agora::media::base::ExternalVideoFrame();
     }
-    
+
     // Configure the video frame
     UserExternalVideoFrame->type = agora::media::base::ExternalVideoFrame::VIDEO_BUFFER_TYPE::VIDEO_BUFFER_RAW_DATA;
     UserExternalVideoFrame->format = agora::media::base::VIDEO_PIXEL_FORMAT::VIDEO_PIXEL_BGRA;
@@ -1249,12 +1249,12 @@ Take the following steps to implement this workflow:
     UserExternalVideoFrame->cropBottom = 10;
     UserExternalVideoFrame->rotation = 0;
     UserExternalVideoFrame->timestamp = getTimeStamp();
-    
+
     if (UserExternalVideoFrame->buffer == nullptr)
     {
       UserExternalVideoFrame->buffer = (uint8*)FMemory::Malloc(BackBuffer->GetSizeX() * BackBuffer->GetSizeY() * 4);
     }
-    
+
     if (Data.Num() > 4)
     {
       FMemory::Memcpy(UserExternalVideoFrame->buffer, Data.GetData(), BackBuffer->GetSizeX() * BackBuffer->GetSizeY() * 4);
@@ -1268,7 +1268,7 @@ Take the following steps to implement this workflow:
 
   std::time_t getTimeStamp()
   {
-    std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> tp = 
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> tp =
       std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
     std::time_t timestamp = tp.time_since_epoch().count();
     return timestamp;
@@ -1287,10 +1287,10 @@ The sample code demonstrates converting Unreal's BGRA format to raw video data. 
   void NativeDestruct()
   {
     Super::NativeDestruct();
-    
+
     // Remove the back buffer callback
     FSlateApplication::Get().GetRenderer()->OnBackBufferReadyToPresent().Remove(eventId);
-    
+
     UnInitAgoraEngine();
   }
 
@@ -1359,7 +1359,7 @@ Custom video capture helps applications better adapt to the requirements of vari
 
 ### Sample projects
 
-Agora provides a open-source sample project for your reference. Download [CustomCaptureVideo](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/CustomCaptureVideo) or view the source code for a more detailed example. 
+Agora provides a open-source sample project for your reference. Download [CustomCaptureVideo](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Advanced/CustomCaptureVideo) or view the source code for a more detailed example.
 
 ### API reference
 
