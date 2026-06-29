@@ -99,7 +99,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :------ | :------------------------------------------ |
-| `result` | Boolean | Whether the group member is successfully added to the mute list.`true`: Success`false`: Failure |
+| `result` | Boolean | Whether the group member is successfully added to the mute list. `true`: Success. `false`: Failure. |
 | `expire` | Long | The Unix timestamp when the mute state expires, in milliseconds. |
 | `user` | String | The user ID of the muted group member.|
 
@@ -169,7 +169,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :------ | :-------------------------------------- |
-| `result` | Boolean | Whether the user is successfully removed from the mute list.`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the user is successfully removed from the mute list. `true`: Yes. `false`: No. |
 | `user` | String | The usernames removed from the mute list. |
 
 For other fields and descriptions, see [Common parameter](#param).
@@ -303,7 +303,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :----- | :---------------------------- |
-| `data.mute`| Boolean | Whether all the group members are muted.`true`: Yes.`false`: No. |
+| `data.mute`| Boolean | Whether all the group members are muted. `true`: Yes. `false`: No. |
 
 For other fields and descriptions, see [Common parameter](#param).
 
@@ -368,7 +368,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :----- | :----- | :---------------------------- |
-| `result`| Boolean | Whether all the group members are unmuted.`true`: Yes.`false`: No. |
+| `result`| Boolean | Whether all the group members are unmuted. `true`: Yes. `false`: No. |
 
 For other fields and descriptions, see [Common parameter](#param).
 

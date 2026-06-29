@@ -140,9 +140,9 @@ When a user sends a message in a one-to-one chat, chat group, or chat room of th
 | Field | Data Type | Description |
 | --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
-| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as end users are offline. |
+| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices. `chat_offline`: Offline messages. The messages that are not sent by the Chat server as end users are offline. |
 | `timestamp` | Long | The Unix timestamp when the Chat server receives the callback event, in milliseconds. |
-| `chat_type` | String | The type of chat. `chat`: One-to-one chats.`groupchat`: Chat groups and chat rooms. |
+| `chat_type` | String | The type of chat. `chat`: One-to-one chats. `groupchat`: Chat groups and chat rooms. |
 | `group_id` | String | The ID of the chat group or chat room where the message is sent. This field only exists if `chat_type` is set to `groupchat`. |
 | `from` | String | The sender of the message. |
 | `to`  | String | The recipient of the message. |
@@ -208,7 +208,7 @@ When a user sends an image message in a one-to-one chat, chat group, or chat roo
 | :------------ | :------- | :---------------------------------------- |
 | `filename`   | String    | The filename of the image. |
 | `secret`     | String    | The secret returned after uploading the image file. |
-| `size`       | Json      | The dimension of the image in pixels. `height`: The height of the image.`width`: The width of the image.   |
+| `size`       | Json      | The dimension of the image in pixels. `height`: The height of the image. `width`: The width of the image.   |
 | `file_length` | Int      | The size of the image in bytes. |
 | `url`   | String  | The URL of the image, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, where `file_uuid` is the ID of the image file. You can fetch `file_uuid` from the response body after the file is uploaded. |
 | `type`       | String   | The type of the message. `img` indicates an image message. |
@@ -279,7 +279,7 @@ When a user sends a video message in a one-to-one chat, chat group, or chat room
 | --- | --- | --- |
 | `thumb_secret` | String | The secret returned after uploading the video thumbnail. |
 | `filename` | String | The filename of the video. |
-| `size` | Json | The dimension of the video thumbnail.`height`: The height of the thumbnail.`width`: The width of the thumbnail. |
+| `size` | Json | The dimension of the video thumbnail. `height`: The height of the thumbnail. `width`: The width of the thumbnail. |
 | `thumb`   | String  | The URL of the thumbnail, in the format of `https://{host}/{org_name}/{app_name}/chatfiles/{file_uuid}`, where `file_uuid` is the ID of the video thumbnail. You can fetch `file_uuid` from the response body after the video thumbnail is uploaded. |
 | `secret` | String | The secret returned after uploading the video file. |
 | `file_length` | Long | The size of the video file in bytes. |
@@ -394,15 +394,15 @@ When a user recalls a message in a one-to-one chat, chat group, or chat room of 
 | Field | Data Type | Description |
 | --- | --- | --- |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
-| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
+| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices. `chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
 | `timestamp` | Long | The Unix timestamp when the Chat server receives the callback event, in milliseconds. |
-| `chat_type` | String | The type of chat. `chat`: One-to-one chats.`groupchat`: Chat groups and chat rooms. |
+| `chat_type` | String | The type of chat. `chat`: One-to-one chats. `groupchat`: Chat groups and chat rooms. |
 | `group_id` | String | The ID of the chat group or chat room where the message resides. This field only exists if `chat_type` is set to `groupchat`. |
 | `from` | String | The sender of the message. |
 | `to`  | String | The recipient of the message. |
 | `recall_id` | String | The ID of the message to recall. |
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when the end user sends the message. |
-| `payload` | Object | The structure of the callback event that contains the following fields:`ext`: The message extension. This field is empty when recalling a message.`ack_message_id`: The ID of the message to recall. This ID is the same as `recall_id`. `bodies`: The body of the message callback. This filed is empty when recalling a message. |
+| `payload` | Object | The structure of the callback event that contains the following fields: `ext`: The message extension. This field is empty when recalling a message. `ack_message_id`: The ID of the message to recall. This ID is the same as `recall_id`. `bodies`: The body of the message callback. This field is empty when recalling a message. |
 | `securityVersion` | String | This parameter is reserved for future use.  |
 | `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
@@ -435,13 +435,13 @@ When a user performs operations on a chat group or chat room in the Chat app, th
 | --- | --- | --- |
 | `chat_type` | String | The type of the event. `muc` indicates a chat group or a chat room. |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{file_uuid}`, where the value of `file_uuid` is randomly generated. |
-| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
+| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices. `chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
 | `timestamp` | Long | The Unix timestamp when the Chat server receives the callback event, in milliseconds. |
 | `group_id` | String | The ID of the chat group or chat room where the message resides. This field only exists if `chat_type` is set to `groupchat`. |
 | `from` | String | The sender of the message. |
 | `to`  | String | The recipient of the message. |
 | `msg_id` | String | The message ID of the callback event. This ID is the same as the `msg_id` when sending the message. |
-| `payload` | Object | The content structure of the callback event that contains the following fields: `muc_id`: The unique identifier of the chat group or chat room in the Chat server, in the format of `{appkey}_{group_ID}@conference.easemob.com`. `reason`: Optional. The detailed information about the current operation. See payload example below for details.`is_chatroom`: Whether this event occurs in a chat room.`true`: Yes.`false`: No, this event occurs in a chat group.`operation`: The current operation. See payload example below for details.`status`: The status of the current operation.`description`: The status description.`error_code`: The status code.|
+| `payload` | Object | The content structure of the callback event that contains the following fields: `muc_id`: The unique identifier of the chat group or chat room in the Chat server, in the format of `{appkey}_{group_ID}@conference.easemob.com`. `reason`: Optional. The detailed information about the current operation. See payload example below for details. `is_chatroom`: Whether this event occurs in a chat room. `true`: Yes. `false`: No, this event occurs in a chat group. `operation`: The current operation. See payload example below for details. `status`: The status of the current operation. `description`: The status description. `error_code`: The status code.|
 | `securityVersion` | String | This parameter is reserved for future use.  |
 | `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
@@ -1054,7 +1054,7 @@ When a user performs operations on the contacts in the Chat app, the Chat server
 | --- | --- | --- |
 | `chat_type` | String | The type of the event. `roster` indicates an event occurred in user contacts. |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
-| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
+| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices. `chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
 | `timestamp` | Long | The Unix timestamp when the Chat server receives the callback event, in milliseconds. |
 | `from` | String | The user who operates the contact. |
 | `to`  | String | The contact who is operated by the user. |
@@ -1199,15 +1199,15 @@ When a user sends an receipt, the Chat server sends a callback to your app serve
 
 | Field | Data Type | Description |
 | :---------- | :------- | :----------------------------------------------------------- |
-| `chat_type` | String   | The type of the event. `read_ack`: Read receipts.`delivery_ack`: Delivery receipts.                                        |
+| `chat_type` | String   | The type of the event. `read_ack`: Read receipts. `delivery_ack`: Delivery receipts.                                        |
 | `callId` | String | The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated. |
 | `security` | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of `secret` can be found on [Agora Console](https://console.agora.io/v2).|
-| `payload`   | Object   | The structure of the callback event that contains the following fields:`ext`: The message extension field. `ack_message_id`: The message ID of the receipt callback.`bodies`: The message body. |
+| `payload`   | Object   | The structure of the callback event that contains the following fields: `ext`: The message extension field. `ack_message_id`: The message ID of the receipt callback. `bodies`: The message body. |
 | `host` | String | The domain name assigned by the Chat service to access RESTful APIs. |
 | `appkey` | String | The key of the app. The unique identifier assigned to each app by the Chat service. |
 | `from`      | String   | The ID of the user who sends the receipt.                                     |
 | `to`        | String   | The ID of the user who receives the receipt.                                     |
-| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices.`chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
+| `eventType` | String | The message type of the callback. `chat`: Uplink messages. The messages that are about to be sent by the Chat server to end devices. `chat_offline`: Offline messages. The messages that are not sent by the Chat server as the end user is offline. |
 | `timestamp` | long     | The Unix timestamp when the Chat server receives the callback event, in milliseconds.               |
 | `msg_id`    | String   | The message ID of the receipt.                                    |
 
@@ -1242,12 +1242,12 @@ The sample code is as follows:
 | Parameter         | Type   | Description                                            |
 | :------------ | :----- | :----------------------------------------------- |
 | `callId` | String| The ID of the callback. The unique identifier assigned to each callback, in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated.|
-| `moderationResult`  | String  | The message handling result:  - `PASS`:Send the message.  - `REJECT`: Reject sending the message.  - `EXCHANGE`: Replace the sensitive content in the message. - `RECALL`: Recall the voice or video that is sent. |
-| `providerResult` | String | The message moderation result： - `PASS`: The message does not contain inappropriate content.  - `REVIEWED`：The message is suspected of containing inappropriate content.  - `REJECT`：The message contains inappropriate content. |
+| `moderationResult`  | String  | The message handling result:  - `PASS`: Send the message.  - `REJECT`: Reject sending the message.  - `EXCHANGE`: Replace the sensitive content in the message. - `RECALL`: Recall the voice or video that is sent. |
+| `providerResult` | String | The message moderation result: - `PASS`: The message does not contain inappropriate content.  - `REVIEWED`: The message is suspected of containing inappropriate content.  - `REJECT`: The message contains inappropriate content. |
 | `security`       | String | The signature in the callback request used to confirm whether this callback is sent from the Chat server. The signature is the MD5 hash of the `{callId} + {secret} + {timestamp}` string, where the value of secret can be found on [Agora Console](https://console.agora.io/v2). |
-| `messageType`       | String | The message text： - `txt`: Text message. - `img`: Image message. - `audio`: Voice message. - `video`: Video message. - `custom`: Custom message.   |
+| `messageType`       | String | The message text: - `txt`: Text message. - `img`: Image message. - `audio`: Voice message. - `video`: Video message. - `custom`: Custom message.   |
 | `messageId`       | String  | Message ID.   |
-| `targetType`       | String | Conversation type:  - `chat: One-to-one chat. - `groupchat`: Group chat. - `chatroom`: Chat room.  |
+| `targetType`       | String | Conversation type: - `chat`: One-to-one chat. - `groupchat`: Group chat. - `chatroom`: Chat room.  |
 | `appkey`       | String | The key of the app. The unique identifier assigned to each app by the Chat service.   |
 | `eventType`       | String | The event type, which is `moderation` for the moderation service. |
 | `from`      | String | The user ID of the message sender.   |

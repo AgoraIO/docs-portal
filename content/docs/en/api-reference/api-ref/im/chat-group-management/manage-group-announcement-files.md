@@ -168,7 +168,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 | Parameter | Type | Description |
 | :----- | :------ | :---------------------------------------------------- |
 | `id` | String | The group ID. |
-| `result` | Boolean | Whether the group announcement is successfully modified.`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group announcement is successfully modified. `true`: Yes. `false`: No. |
 
 For other fields and descriptions, see [Common parameter](#param).
 

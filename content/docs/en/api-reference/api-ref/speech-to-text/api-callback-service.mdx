@@ -311,18 +311,18 @@ The `payload` JSON object, which is the main body of a notification, includes th
 
 `eventType 32` indicates that all the `.vtt` files are uploaded, but at least one of them is uploaded to Agora Cloud Backup. Agora Cloud Backup automatically uploads the files to the specified third-party cloud storage. `details` includes the following fields:
 
-- `msgName: String. The message name, backuped.
-- `status: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
-- `fileList: JSONArray. An array that contains detailed information of each recorded file.
-- `fileName: String. The name of the M3U8 file or MP4 file.
-- `trackType: String. The type of the recorded file.
+- `msgName`: String. The message name, `backuped`.
+- `status`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
+- `fileList`: JSONArray. An array that contains detailed information of each recorded file.
+- `fileName`: String. The name of the M3U8 file or MP4 file.
+- `trackType`: String. The type of the recorded file.
     - `"audio"`: Audio file.
     - `"video"`: Video file (no audio).
     - `"text"`: Caption/Transcription file.
-- `mode: Number.
+- `mode`: Number.
     - `1`: Service for channel,
     - `2`: Service for specific uid.
-- `sliceStartTime: Number. The Unix time (ms) when the recording starts.
+- `sliceStartTime`: Number. The Unix time (ms) when the recording starts.
 
 **Example**:
 

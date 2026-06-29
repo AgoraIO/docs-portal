@@ -707,7 +707,7 @@ For other parameters and detailed descriptions, see [Common parameters](#common-
 
 #### Response body
 
-If the returned HTTP status code is 200, the request succeeds， and the `data` field in the response body contain the information of the chat group admins. For other fields and descriptions, see [Common parameters](#common-parameters).
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the information of the chat group admins. For other fields and descriptions, see [Common parameters](#common-parameters).
 
 If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
 
@@ -844,7 +844,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :------- | :------ | :---------------------------------------------- |
-| `result` | Boolean | Whether the group admin is successfully demoted to a regular group member:`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group admin is successfully demoted to a regular group member: `true`: Yes. `false`: No. |
 | `oldadmin` | String | The ID of the group admin demoted to a regular group member. |
 
 For other fields and descriptions, see [Common parameters](#common-parameters).

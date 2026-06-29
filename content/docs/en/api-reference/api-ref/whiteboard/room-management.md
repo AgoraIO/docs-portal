@@ -227,12 +227,12 @@ If the status code is `200`, the request is successful. The response returns the
 | `uuid` | string | The room UUID, which is the unique identifier of a room. |
 | `teamUUID` | string | The unique identifier of the Agora Console account that creates the whiteboard project. |
 | `appUUID` | string | The unique identifier of the whiteboard project. |
-| `isRecord` | boolean | Whether recording is enabled for the room:- `true`: Enabled.<br /> - `false`: Not enabled.<br /> |
-| `isBan` | boolean | Whether the room is disabled:- `true`: Disabled.<br />- `false`: Not disabled.<br /> |
+| `isRecord` | boolean | Whether recording is enabled for the room: - `true`: Enabled.<br /> - `false`: Not enabled.<br /> |
+| `isBan` | boolean | Whether the room is disabled: - `true`: Disabled.<br />- `false`: Not disabled.<br /> |
 | `createdAt` | string | The UTC time when the room was created. |
-| `limit` | integer | The maximum number of users with a `writer` or `admin` token who can be in the room at the same time.. If you set it to 0, there is no maximum.`` |
+| `limit` | integer | The maximum number of users with a `writer` or `admin` token who can be in the room at the same time. If you set it to 0, there is no maximum. |
 
-If the status code is not 200, the request fails. The response body includes a message field that describes the reason for the failure.``
+If the status code is not 200, the request fails. The response body includes a message field that describes the reason for the failure.
 
 ## Disable a room (PATCH)
 

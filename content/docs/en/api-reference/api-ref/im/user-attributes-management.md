@@ -100,7 +100,7 @@ Keys listed in the following table are used by default when user attributes are 
 | `avatarurl` | String | The user avatar URL, which can contain at most 256 characters.     |
 | `phone`     | String | The user's phone number, which can contain at most 32 characters.  |
 | `mail`      | String | The user's email address, which can contain at most 64 characters. |
-| `gender`    | Number | The user gender: `1`：Male; `2`：Female;`0`: Unknown. |
+| `gender`    | Number | The user gender: `1`: Male; `2`: Female; `0`: Unknown. |
 | `sign`      | String | The user's signature, which can contain at most 256 characters.  |
 | `birth`     | String | The user's birthday, which can contain at most 64 characters.  |
 | `ext`       | String | The extension fields.                                                   |

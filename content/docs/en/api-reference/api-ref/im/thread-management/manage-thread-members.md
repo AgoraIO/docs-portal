@@ -221,8 +221,8 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 | Parameter      | Type           | Description |
 | :------- |:-------------|:-------------|
-| `result` | Boolean | Whether the specified thread member is removed from the thread:`true`: Yes.`false`: No.| 
-| `user` | String | The username of the removed member in the thread. | 
+| `result` | Boolean | Whether the specified thread member is removed from the thread: `true`: Yes. `false`: No. |
+| `user` | String | The username of the removed member in the thread. |
 
 For other fields and descriptions, see [Common parameters](#response).
 

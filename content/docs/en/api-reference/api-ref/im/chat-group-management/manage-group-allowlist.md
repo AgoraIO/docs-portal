@@ -156,7 +156,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to add the member to the allow list. |
 | `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |
@@ -230,7 +230,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to add the member to the allow list. |
 | `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |
@@ -309,7 +309,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the group member is successfully removed from the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully removed from the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to remove the member from the allow list. |
 | `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |

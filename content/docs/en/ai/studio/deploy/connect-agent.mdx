@@ -24,7 +24,7 @@ Use this as the starting point for integrating the agent into your backend servi
 
 ## Sample code
 
-The following examples show how to start an agent call using your embed credentials. Replace `` with your Base64-encoded Agora Customer ID and Customer secret.
+The following examples show how to start an agent call using your embed credentials. Replace `<base64Credentials>` with your Base64-encoded Agora Customer ID and Customer secret.
 
 <Tabs>
 <TabsList>
@@ -38,7 +38,7 @@ The following examples show how to start an agent call using your embed credenti
 ```bash
 curl --request POST \
   --url https://api.agora.io/api/conversational-ai-agent/v2/projects/<appid>/join \
-  --header 'Authorization: Basic ' \
+  --header 'Authorization: Basic <base64Credentials>' \
   --header 'Content-Type: application/json' \
   --data '{
     "name": "<agent_name>",
@@ -73,7 +73,7 @@ payload = {
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Basic "
+    "Authorization": "Basic <base64Credentials>"
 }
 
 response = requests.post(url, json=payload, headers=headers)
@@ -89,7 +89,7 @@ const options = {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic '
+        'Authorization': 'Basic <base64Credentials>'
     },
     body: JSON.stringify({
         name: '<agent_name>',

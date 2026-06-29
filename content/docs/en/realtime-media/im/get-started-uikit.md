@@ -1276,9 +1276,9 @@ This section includes more advanced features you can implement in your project.
 | `username`   |String| Yes  | The user ID.                                                     |
 | `agoraToken` |String| Yes  | The Agora token.      |
 | `to`         |String| Yes  | In one-to-one messaging, it is the user ID of the recipient; in group chat, it is the group ID.|
-| `showByselfAvatar`|Boolean| No  | Whether to display the avatar of the current user.`true`: Yes(Default) `false`: No     |
-| `easeInputMenu`|String| No | The mode of the input menu.(Default) `all`: The complete mode.`noAudio`: No audio.`noEmoji`: No emoji.`noAudioAndEmoji`: No audio or emoji.`onlyText`: Only text.
-|`menuList`|Array| No  |The extensions of the input box on the right panel.(Default) `menuList`: `[ {name:'Send a pic', value:'img'},{name:'Send a file', value:'file'}]`  |
+| `showByselfAvatar`|Boolean| No  | Whether to display the avatar of the current user. `true`: Yes (Default). `false`: No.     |
+| `easeInputMenu`|String| No | The mode of the input menu. (Default) `all`: The complete mode. `noAudio`: No audio. `noEmoji`: No emoji. `noAudioAndEmoji`: No audio or emoji. `onlyText`: Only text. |
+|`menuList`|Array| No  | The extensions of the input box on the right panel. (Default) `menuList`: `[ {name:'Send a pic', value:'img'},{name:'Send a file', value:'file'}]`  |
 |`handleMenuItem`|`function({item, key}`) | No | The callback event triggered by clicking on the right panel of the input box.|
 |`successLoginCallback`|function(res) | No | The callback event for a successful login. |
 |`failCallback`| function(err)| No | The callback event for a failed method call.  |

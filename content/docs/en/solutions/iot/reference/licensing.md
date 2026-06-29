@@ -82,8 +82,9 @@ The activation request requires the following query parameters:
 
 **Request example**
 
-`https://api.agora.io/global/dabiz/license/v2/active?
-pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=111&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e`
+```text
+https://api.agora.io/global/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=111&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e
+```
 
 **Response parameters**
 If the status code is `200`, the request is successful, and the response body contains the following parameters:

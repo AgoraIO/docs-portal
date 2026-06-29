@@ -46,7 +46,7 @@ POST https://{host}/{org_name}/{app_name}/users/{uid}/presence/{resource}/{statu
 |:---------------| :------ | :------- |:------------------|
 | `uid` | String | The user ID of user whose presence status is to be set. | Required |
 | `resource` | String | The ID of the user's device for which the presence status is set. This device ID is the unique identifier assigned to each device resource in the format `{Device Platform}_{Resource ID}`, where the device platform can be `android`, `ios`, or `webim`, followed by an underscore plus a resource ID assigned by the SDK. For example, `android_34f0bbf7-8eab-46db-b572-b56b02405690`.| Yes |
-| `status` | String | The presence status defined by the user:`0`: Offline.`1`: OnlineOther numeric strings: Custom status. | Yes |
+| `status` | String | The presence status defined by the user: `0`: Offline. `1`: Online. Other numeric strings: Custom status. | Yes |
 
 For the descriptions of the other path parameters, see [Common Parameters](#param).
 
@@ -139,7 +139,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 | `last_time` | Number     | The Unix timestamp when the user was last online, in seconds. |                    
 | `expiry`    | Number     | The Unix timestamp when the subscription expires, in seconds.  |         
 | `ext`       | String     | The extension information of the presence status.                |
-| `status`    | JSON | The presence statuses on multiple devices of the user.`0`: Offline.`1`: Online.Other strings: User-defined custom presence status. |
+| `status`    | JSON | The presence statuses on multiple devices of the user. `0`: Offline. `1`: Online.Other strings: User-defined custom presence status. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
@@ -209,7 +209,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 | `uid`       | String     | The unique login account of the user.                |
 | `last_time` | Number     | The Unix timestamp when the user was last online, in seconds.                                           |
 | `ext`       | String     | The extension information of the presence status.                |
-| `status`    | JSON | The presence statuses on multiple devices of the user.`0`: Offline.`1`: Online.Other strings: User-defined custom presence status. |
+| `status`    | JSON | The presence statuses on multiple devices of the user. `0`: Offline. `1`: Online.Other strings: User-defined custom presence status. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 

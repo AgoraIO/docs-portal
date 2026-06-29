@@ -960,7 +960,7 @@ If the status code is 2XX, the request is successful.
 `cursor`: (Optional) String. Cursor for paging query Converters. The value must be greater than or equal to 0.
 
 > - You do not need to set the cursor when you initiate a `List` request for the first time. After the request is successful, the list of Converters on the first page return.
-> - Each request returns information about a maximum of 500 Converters.. If the number of Converters under the project exceeds 500, get the `cursor` from the response body, and pass the `cursor` in the URL of the next request. Until the value of the `cursor` field in the response body is `0`, it means that all Converters under the project or the specified channel have been queried.
+> - Each request returns information about a maximum of 500 Converters. If the number of Converters under the project exceeds 500, get the `cursor` from the response body, and pass the `cursor` in the URL of the next request. Until the value of the `cursor` field in the response body is `0`, it means that all Converters under the project or the specified channel have been queried.
 
 The HTTPS URL using Query Parameters is as follows:
 

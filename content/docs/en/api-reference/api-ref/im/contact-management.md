@@ -52,7 +52,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `entities.created` | Number | The Unix timestamp (ms) when the user is registered. |
 | `entities.modified` | Number | The Unix timestamp (ms) when the user information is last modified. |
 | `entities.username` | String | The username. The unique account the user is logged in with. |
-| `entities.activated` | Bool | Whether the user is active:`true`: The user is active.`false`: The user is in banned. |
+| `entities.activated` | Bool | Whether the user is active: `true`: The user is active. `false`: The user is banned. |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
 | `duration` | Number | The duration (ms) from when the HTTP request is sent to the time the response is received. |
 

@@ -123,7 +123,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
 | `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
 | `username`  | String | The ID of the user. |
-| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
+| `activated`  | Bool | Whether the user account is active: `true`: The user account is active. `false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
 |  `nickname`  | String | The nickname displayed in push notifications.  |
 
 For other fields and detailed descriptions, see [Common parameters](#response).
@@ -190,7 +190,7 @@ For the descriptions of path parameters, see [Common Parameters](#request).
 
 | Parameter | Type | Description | Required |
 | :----- | :----- | :------- | -------- |
-| `notification_display_style` | Int | The display style of push notifications:(Default) `0`: The push title is "You have a new message", and the push content is "Click to check".`1`: The push title is "You have a new message", and the push content contains the nickname of the sender and the content of the offline message.  | Yes  |
+| `notification_display_style` | Int | The display style of push notifications: (Default) `0`: The push title is "You have a new message", and the push content is "Click to check". `1`: The push title is "You have a new message", and the push content contains the nickname of the sender and the content of the offline message.  | Yes  |
 
 ### HTTP response
 
@@ -205,7 +205,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `created`  | Number | The Unix timestamp (ms) when the user account is registered.  |
 | `modified`  | Number | The Unix timestamp (ms) when the user information is last modified.  |
 | `username`  | String | The ID of the user. |
-| `activated`  | Bool | Whether the user account is active:`true`: The user account is active.`false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
+| `activated`  | Bool | Whether the user account is active: `true`: The user account is active. `false`: The user account is deactivated. To unban a deactivated user account, refer to [Unbanning a user](../user-system-registration#unban). |
 | `notification_display_style`  |  Int  | The display style of push notifications. This parameter is returned only if you specify it when sending the request. |
 | `nickname`  | String | The nickname displayed in push notifications. |
 | `notifier_name` | String  | The name of the push certificate. |
@@ -265,8 +265,8 @@ PUT https://{host}/{org}/{app}/users/{username}/notification/{chattype}/{key}
 
 | Parameter | Type | Description | Required |
 | :----- | :----- | :------- | -------- |
-| `chattype` | String | The type of the chat:`user`: One-to-one chats.`chatgroup`: Group chats.  | Yes |
-| `key` | String | The identifier of the chat:If `type` is set to `user`, `key` indicates the user ID of the peer user.If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
+| `chattype` | String | The type of the chat: `user`: One-to-one chats. `chatgroup`: Group chats.  | Yes |
+| `key` | String | The identifier of the chat: If `type` is set to `user`, `key` indicates the user ID of the peer user. If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
 
 :::info
 To set up push notifications at the app level, you can set `type` to `user` and `key` to the user ID of the current user.
@@ -284,8 +284,8 @@ For the descriptions of other path parameters, see [Common Parameters](#request)
 
 | Parameter | Type | Description | Required |
 | :----- | :----- | :------- | -------- |
-| `type` | String | The push notification mode:`DEFAULT`: A specific conversation uses the setting at the app level. This parameter is valid only for one-to-one and group chat conversations, but not for the app level. `ALL`: Receives push notifications for all offline messages.`AT`: Only receives push notifications for mentioned messages.`NONE`: Do not receive push notifications for offline messages.   | No |
-| `ignoreInterval` | String | The interval during which the DND mode is scheduled everyday. The value is in the format of `{HH:MM-HH:MM}`, for example, 08:30-10:00, where HH ranges from `00` to `23` in hour and MM from `00` to `59` in minute. This parameter works only when `chattype` is set to `user` and `key` to the current user ID in the request header, meaning that the DND interval is valid only for the entire app rather than specific one-to-one or group chat conversations.The DND mode is enabled everyday in the specified interval. For example, if you set this parameter to 08:00-10:00, the app stays in DND mode during 8:00-10:00; if you set the same period at 9:00, the DND mode works during 9:00-10:00 on the current day and 8:00-10:00 in later days.If the start time is set to the same time spot as the end time, like 00:00-00:00, the app enters the permanent DND mode.If the start time is later than the end time, the app remains in DND mode from the start time on the current day until the end time next day. For example, if you set 10:00-08:00, the DND mode lasts from 10:00 until 08:00 the next day. Currently, only one DND interval is allowed, with the new setting overwriting the old.If this parameter is not specified, pass in an empty string. If both `ignoreInterval` and `ignoreDuration` are set, the DND mode works in both periods. For example, at 8:00, you set `ignoreInterval` to 8:00-10:00 and `ignoreDuration` to 14400000 (4 hours) for the app, the app stays in DND mode during 8:00-12:00 on the current day and 8:00-10:00 in the later days.  | No |
+| `type` | String | The push notification mode: `DEFAULT`: A specific conversation uses the setting at the app level. This parameter is valid only for one-to-one and group chat conversations, but not for the app level. `ALL`: Receives push notifications for all offline messages. `AT`: Only receives push notifications for mentioned messages. `NONE`: Do not receive push notifications for offline messages.   | No |
+| `ignoreInterval` | String | The interval during which the DND mode is scheduled everyday. The value is in the format of `{HH:MM-HH:MM}`, for example, 08:30-10:00, where HH ranges from `00` to `23` in hour and MM from `00` to `59` in minute. This parameter works only when `chattype` is set to `user` and `key` to the current user ID in the request header, meaning that the DND interval is valid only for the entire app rather than specific one-to-one or group chat conversations. The DND mode is enabled everyday in the specified interval. For example, if you set this parameter to 08:00-10:00, the app stays in DND mode during 8:00-10:00; if you set the same period at 9:00, the DND mode works during 9:00-10:00 on the current day and 8:00-10:00 in later days. If the start time is set to the same time spot as the end time, like 00:00-00:00, the app enters the permanent DND mode. If the start time is later than the end time, the app remains in DND mode from the start time on the current day until the end time next day. For example, if you set 10:00-08:00, the DND mode lasts from 10:00 until 08:00 the next day. Currently, only one DND interval is allowed, with the new setting overwriting the old. If this parameter is not specified, pass in an empty string. If both `ignoreInterval` and `ignoreDuration` are set, the DND mode works in both periods. For example, at 8:00, you set `ignoreInterval` to 8:00-10:00 and `ignoreDuration` to 14400000 (4 hours) for the app, the app stays in DND mode during 8:00-12:00 on the current day and 8:00-10:00 in the later days.  | No |
 | `ignoreDuration` | Number   | The DND duration in milliseconds. The value range is [0,604800000], where `0` indicates that this parameter is invalid and `604800000` indicates that the DND mode lasts for 7 days. This parameter works for both the app and one-to-one and group chat conversations in it. Unlike `ignoreInterval` set as a daily period, this parameter specifies that the DND mode works only for the given duration starting from the current time. For example, if this parameter is set to 14400000 (4 hours) for the app at 8:00, the DND mode lasts only during 8:00-12:00 on the current day. If both `ignoreInterval` and `ignoreDuration` are set, the DND mode remains in both periods. For example, at 8:00, you set `ignoreInterval` to 8:00-10:00 and `ignoreDuration` to 14400000 (4 hours) for the app, the app stays in DND mode during 8:00-12:00 on the current day and 8:00-10:00 in the later days. | No  |
 
 :::info
@@ -359,8 +359,8 @@ GET https://{host}/{org_name}/{app_name}/users/{username}/notification/{chattype
 
 | Parameter | Type | Description | Required |
 | :----- | :----- | :------- | -------- |
-| `chattype` | String | The type of the chat:`user`: One-to-one chats.`chatgroup`: Group chats.  | Yes |
-| `key` | String | The identifier of the chat:If `type` is set to `user`, `key` indicates the user ID of the peer user.If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
+| `chattype` | String | The type of the chat: `user`: One-to-one chats. `chatgroup`: Group chats.  | Yes |
+| `key` | String | The identifier of the chat: If `type` is set to `user`, `key` indicates the user ID of the peer user. If `type` is set to `chatgroup`, `key` indicates the ID of the chat group. | Yes |
 
 For the descriptions of other path parameters, see [Common Parameters](#request).
 
