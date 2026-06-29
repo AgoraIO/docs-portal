@@ -13,7 +13,7 @@ export const legacyDocsBannerConfig = {
 };
 
 export const contentGitConfig = {
-  user: 'Shengwang-Community',
+  user: 'AgoraIO',
   repo: 'docs-portal',
   branch: 'main',
 };
