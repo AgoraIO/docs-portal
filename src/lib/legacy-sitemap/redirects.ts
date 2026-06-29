@@ -1,18 +1,20 @@
 import legacySitemapRedirects from './redirects.json';
 
 export type LegacySitemapRuleType =
-  | 'exact-page'
+  | 'exact-path'
+  | 'exact-slug'
+  | 'renamed-page'
   | 'semantic-page-match'
-  | 'product-fallback';
+  | 'product-fallback'
+  | 'unavailable';
 
 export type LegacySitemapRedirectRule = {
-  id: string;
-  match: {
-    legacyPath?: string;
-    legacyPrefix?: string;
-  };
+  confidence: 'high' | 'medium' | 'low';
+  evidence: string[];
+  legacyPath: string;
+  legacySearch?: string;
+  legacyUrl: string;
   preserveSearch: boolean;
-  reason: string;
   target: string;
   type: LegacySitemapRuleType;
 };
@@ -28,28 +30,12 @@ export function resolveLegacySitemapRedirectPath(legacyPath: string) {
   const normalizedPath = normalizeLegacyPath(legacyPath);
 
   return (
-    legacySitemapRedirectConfig.rules.find((rule) => {
-      if (rule.match.legacyPath) {
-        return normalizeLegacyPath(rule.match.legacyPath) === normalizedPath;
-      }
-
-      if (rule.match.legacyPrefix) {
-        return normalizedPath.startsWith(
-          normalizeLegacyPrefix(rule.match.legacyPrefix),
-        );
-      }
-
-      return false;
-    }) ?? null
+    legacySitemapRedirectConfig.rules.find(
+      (rule) => normalizeLegacyPath(rule.legacyPath) === normalizedPath,
+    ) ?? null
   );
 }
 
 function normalizeLegacyPath(path: string) {
   return path.startsWith('/') ? path : `/${path}`;
-}
-
-function normalizeLegacyPrefix(prefix: string) {
-  const normalized = normalizeLegacyPath(prefix);
-
-  return normalized.endsWith('/') ? normalized : `${normalized}/`;
 }
