@@ -18,7 +18,7 @@ title: "What should I do if a class recording fails?"
 1. If the recording configuration is correct and the public read permission is granted, but the recording still fails, debug the specific cause of the error in the local browser by splicing the URL:
 
    1. Obtain the URL1 value of the passed in recording page URL from the `recordUrl` parameter of `LaunchOption`.
-   1. Call the [RESTful API](/en/flexible-classroom/restful-api/classroom-api#get-the-recording-list) to get the recording list and get URL2 from `webRecordUrlQuery`.
+   1. Call the [RESTful API](/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#get-the-recording-list) to get the recording list and get URL2 from `webRecordUrlQuery`.
    1. Splice URL1 and URL2 to get the complete URL of the recording page, which can be accessed locally through a browser for debugging.
 
 If the recording page opens, the recording is enabled successfully. If the page does not open, you can find the reason in the error report.

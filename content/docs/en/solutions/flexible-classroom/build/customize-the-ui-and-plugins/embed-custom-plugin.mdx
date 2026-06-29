@@ -1,0 +1,2068 @@
+---
+title: "Embed a custom plugin"
+description: "Develop a custom plugin, such as a countdown plugin or a dice, and embed the plugin in the flexible classroom."
+---
+
+In online classroom applications, some customization is often necessary to meet the needs of a particular use case. Agora provides Widgets to help users develop plugins according to their specific needs and embed them into Flexible Classroom.
+
+<PlatformStructured platform="android">
+
+## Android
+
+## Implement a custom plugin
+
+This section uses the cloud disk plug-in as an example to introduce the basic steps of implementing a custom plug-in through Widget, and embedding the plug-in in Flexible Classroom. The complete code can be viewed in the [CloudClass-Android repository](https://github.com/AgoraIO-Community/CloudClass-Android/tree/release/2.7.1/AgoraEduUIKit/src/main/java/com/agora/edu/component/teachaids/networkdisk/FCRCloudDiskWidget.kt).
+
+1. Define the class
+
+    ```java
+    class FCRCloudDiskWidget : AgoraBaseWidget() {
+        override val tag = "AgoraEduNetworkDiskWidget"
+
+        private var cloudDiskContent: AgoraEduCloudDiskWidgetContent? = null
+
+        // Initialize Widget
+        // Add your custom UI layout to the container here
+        override fun init(container: ViewGroup) {
+            super.init(container)
+            container.post {
+                widgetInfo?.let {
+                    // Instantiate content and add CloudDisk view to container
+                    cloudDiskContent = AgoraEduCloudDiskWidgetContent(container, it)
+                }
+            }
+        }
+
+        // Release used resources
+        override fun release() {
+            cloudDiskContent?.dispose()
+            super.release()
+        }
+
+        // The content class is only for encapsulation of the code.
+        // Functional details are placed in the content.
+        private inner class AgoraEduCloudDiskWidgetContent(val container: ViewGroup, val widgetInfo: AgoraWidgetInfo) {
+            ......
+        }
+    }
+    ```
+
+    The complete code can be viewed in the [CloudClass-Android repository](https://github.com/AgoraIO-Community/CloudClass-Android/tree/release/2.7.1/AgoraEduUIKit/src/main/java/com/agora/edu/component/teachaids/networkdisk/FCRCloudDiskWidget.kt).
+
+1. Configure the plugin in to register it with the Agora Classroom SDK
+
+    ```java
+    private fun configPublicCourseware(launchConfig: AgoraEduLaunchConfig) {
+        val courseware0 = CoursewareUtil.transfer(DefaultPublicCoursewareJson.data0)
+        val courseware1 = CoursewareUtil.transfer(DefaultPublicCoursewareJson.data1)
+        val publicCoursewares = ArrayList<AgoraEduCourseware>(2)
+        publicCoursewares.add(courseware0)
+        publicCoursewares.add(courseware1)
+
+        // custom data for map structure
+        val cloudDiskExtra = mutableMapOf<String, Any>()
+        cloudDiskExtra[publicResourceKey] = publicCoursewares
+        cloudDiskExtra[configKey] = Pair(launchConfig.appId, launchConfig.userUuid)
+        val widgetConfigs = mutableListOf<AgoraWidgetConfig>()
+        widgetConfigs.add(
+            // Instantiate widgetConfig and add it to widgetConfig collection
+            AgoraWidgetConfig(widgetClass = FCRCloudDiskWidget::class.java, widgetId = AgoraWidgetDefaultId.AgoraCloudDisk.id,
+                extraInfo = cloudDiskExtra)
+        )
+        // Copy widgetConfigs into the SDK's startup parameters.
+        // After calling launch, Smart Class will pass widgetConfigs to internal to complete the registration.
+        launchConfig.widgetConfigs = widgetConfigs
+    }
+    ```
+
+1. Instantiate and initialize the widget
+
+    ```java
+    // Add an AgoraWidgetActiveObserver through widgetContext.addWidgetActiveObserver
+    // to monitor the activation and deregistration of the Widget
+    private val widgetActiveObserver = object : AgoraWidgetActiveObserver {
+        override fun onWidgetActive(widgetId: String) {
+            createWidget(widgetId)
+        }
+
+        override fun onWidgetInActive(widgetId: String) {
+            destroyWidget(widgetId)
+        }
+    }
+
+    private fun createWidget(widgetId: String) {
+        if (teachAidWidgets.contains(widgetId)) {
+            AgoraLog?.w("$tag->'$widgetId' is already created, can not repeat create!")
+            return
+        }
+        AgoraLog?.w("$tag->create teachAid that of '$widgetId'")
+        // Here, the previously registered widgetConfigs are searched by widgetId
+        val widgetConfig = eduContext?.widgetContext()?.getWidgetConfig(widgetId)
+        widgetConfig?.let { config ->
+
+            // Take widgetClass from widgetConfig and instantiate a Widget object instance through reflection
+            val widget = eduContext?.widgetContext()?.create(config)
+            widget?.let {
+                AgoraLog?.w("$tag->successfully created '$widgetId'")
+                when (widgetId) {
+                    CountDown.id -> {
+                        (it as? AgoraCountDownWidget)?.getWidgetMsgObserver()?.let { observer ->
+                            eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                        }
+                    }
+                    Selector.id -> {
+                        (it as? AgoraIClickerWidget)?.getWidgetMsgObserver()?.let { observer ->
+                            eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                        }
+                    }
+                    Polling.id -> {
+                        (it as? AgoraVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                            eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                        }
+                    }
+                }
+                // record widget
+                teachAidWidgets[widgetId] = widget
+                // Create widgetContainer and bind to root Container
+                val widgetContainer = managerWidgetsContainer(allWidgetsContainer = binding.root, widgetId = widgetId)
+                AgoraLog?.i("$tag->successfully created '$widgetId' container")
+                widgetContainer?.let { group ->
+                    AgoraLog?.w("$tag->initialize '$widgetId'")
+                    // Initialize the Widget
+                    widget.init(group)
+                }
+            }
+        }
+    }
+
+    private fun destroyWidget(widgetId: String) {
+        // remove from map
+        val widget = teachAidWidgets.remove(widgetId)
+        // remove UIDataProviderListener
+        when (widgetId) {
+            CountDown.id -> {
+                (widget as? AgoraTeachAidCountDownWidget)?.getWidgetMsgObserver()?.let { observer ->
+                    eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+                }
+            }
+            Selector.id -> {
+                (widget as? AgoraTeachAidIClickerWidget)?.getWidgetMsgObserver()?.let { observer ->
+                    eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+                }
+            }
+            Polling.id -> {
+                (widget as? AgoraTeachAidVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                    eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+                }
+            }
+            AgoraCloudDisk.id -> {
+                (widget as? AgoraTeachAidVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                    eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+                }
+            }
+        }
+        widget?.let {
+            handler.post { it.release() }
+            it.container?.let { group ->
+                managerWidgetsContainer(binding.root, widgetId, group)
+            }
+        }
+    }
+    ```
+
+## API Reference
+
+### `AgoraBaseWidget` class
+
+    ```java
+    // Widget base class
+    abstract class AgoraBaseWidget {
+        // The parent layout of the current Widget
+        var container: ViewGroup? = null
+
+        // Information about the current widget
+        var widgetInfo: AgoraWidgetInfo? = null
+
+        // Initialize the current widget
+        // @param container The parent layout of the current Widget
+        open fun init(container: ViewGroup) {
+            this.container = container
+        }
+
+        // position and size ratio information of the current Widget to the remote
+        // @param frame The position and size ratio information of the current Widget
+        // @param contextCallback callback listener for synchronous operations
+        protected fun updateSyncFrame(frame: AgoraWidgetFrame, contextCallback: EduContextCallback<Unit>? = null) {
+            ......
+        }
+
+        // @param properties Map of custom room properties in the Widget to be updated.
+        // Need to pass the full path: "a.b.c.d": value
+        // @param cause custom update reason
+        // @param contextCallback callback listener for update operations
+
+        protected fun updateRoomProperties(
+                properties: MutableMap<String, Any>,
+                cause: MutableMap<String, Any>,
+                contextCallback: EduContextCallback<Unit>? = null
+        ) {
+            ......
+        }
+
+        // @param keys The set of key values ​​for custom user properties in the widget that needs to be deleted.
+        // Need to pass the full path: a.b.c.d
+        // @param cause custom delete reason
+        // @param contextCallback callback listener for delete operation
+        protected fun deleteRoomProperties(
+                keys: MutableList<String>,
+                cause: MutableMap<String, Any>,
+                contextCallback: EduContextCallback<Unit>? = null
+        ) {
+            ......
+        }
+
+        // @param properties Map of custom user properties within the Widget to be updated. Need to pass the full path: "a.b.c.d": value
+        // @param cause custom update reason
+        // @param contextCallback callback listener for update operations
+        protected fun updateUserProperties(
+            properties: MutableMap<String, Any>,
+            cause: MutableMap<String, Any>,
+            contextCallback: EduContextCallback<Unit>? = null
+        ) {
+            ......
+        }
+
+        // @param keys The set of key values ​​for custom user properties in the widget that needs to be deleted. Need to pass the full path: a.b.c.d
+        // @param cause custom delete reason
+        // @param contextCallback callback listener for delete operation
+        protected fun deleteUserProperties(
+            keys: MutableList<String>,
+            cause: MutableMap<String, Any>,
+            contextCallback: EduContextCallback<Unit>? = null
+        ) {
+            ......
+        }
+
+        // Send messages from inside the Widget to the outside
+        protected fun sendMessage(message: String) {
+            ......
+        }
+
+        // Widget's position and size changed
+        // @params frame Widget position and size scale information
+        open fun onSyncFrameUpdated(frame: AgoraWidgetFrame) {
+        }
+
+        // Receive messages from outside the widget. The message comes from sendMessageToWidget in widgetContext
+        open fun onMessageReceived(message: String) {
+        }
+
+        // Callback for the update of local user information
+        open fun onLocalUserInfoUpdated(info: AgoraWidgetUserInfo) {
+            widgetInfo?.let {
+                ......
+            }
+        }
+
+        // Callback when room information is updated
+        open fun onRoomInfoUpdated(info: AgoraWidgetRoomInfo) {
+            widgetInfo?.let {
+                ......
+            }
+        }
+
+        // Callback for when the custom room property in the widget is updated
+        open fun onWidgetRoomPropertiesUpdated(properties: MutableMap<String, Any>, cause: MutableMap<String, Any>?, keys: MutableList<String>) {
+            ......
+        }
+
+        // Callback when custom room property in Widget is deleted
+        open fun onWidgetRoomPropertiesDeleted(properties: MutableMap<String, Any>, cause: MutableMap<String, Any>?, keys: MutableList<String>) {
+            ......
+        }
+
+        // Callback for when custom local user properties in Widget are updated
+        open fun onWidgetUserPropertiesUpdated(properties: MutableMap<String, Any>,
+            cause: MutableMap<String, Any>?,
+            keys: MutableList<String>) {
+            ......
+        }
+
+        // The callback for the deletion of the custom local user attribute in the Widget
+        open fun onWidgetUserPropertiesDeleted(properties: MutableMap<String, Any>,
+            cause: MutableMap<String, Any>?,
+            keys: MutableList<String>) {
+            ......
+        }
+
+        // Release resources
+        open fun release() {
+            ......
+        }
+    }
+    ```
+
+### `AgoraWidgetContext` interface
+
+```java
+// WidgetContext capability interface
+interface AgoraWidgetContext {
+    // Create a Widget object instance
+    // @param config The configuration information of this Widget object
+    // @return Widget instance, if it is empty, it means the creation failed
+    fun create(config: AgoraWidgetConfig): AgoraBaseWidget?
+
+    // Get the current position and size ratio information of the Widget
+    // @param widgetId Widget's unique identifier
+    // @return widget's current position and scale information. The benchmark of the ratio needs to be unified by the developers themselves.
+    fun getWidgetSyncFrame(widgetId: String): AgoraWidgetFrame?
+
+    // Get the configuration information of all registered widgets
+    fun getWidgetConfigs(): MutableList<AgoraWidgetConfig>
+
+    // Get the configuration information of a registered widget
+    // @param widgetId Widget's unique identifier
+    fun getWidgetConfig(widgetId: String): AgoraWidgetConfig?
+
+    // Activate a widget.
+    // After the operation is successful, you will receive a callback from AgoraWidgetActiveObserver.onWidgetActive
+    // @param widgetId Widget's unique identifier
+    // @param ownerUserUuid The userUuid of the user who owns the currently activated Widget
+    // @param roomProperties initialized room properties
+    // @param callback The callback listener for the activation operation
+    fun setWidgetActive(widgetId: String, ownerUserUuid: String? = null,
+                        roomProperties: Map<String, Any>? = null,
+                        callback: EduContextCallback<Unit>? = null)
+
+    // Log out the specified Widget
+    // @param widgetId Widget's unique identifier
+    // @param isRemove Whether to completely delete all the information of this Widget in the current classroom:
+    // - true: delete completely. All information under roomProperties.widgets.'widgetId' and userProperties.widgets.'widgetId' will be deleted
+    // - false: Only set roomProperties.widgets.'widgetId'.state to '0', that is, set the current Widget to inactive state.
+    // No matter what value is passed, you will receive the AgoraWidgetActiveObserver.onWidgetInActive callback.
+    // @param callback callback listener for logout operation
+    fun setWidgetInActive(widgetId: String, isRemove: Boolean = false, callback: EduContextCallback<Unit>? = null)
+
+    // Get the activation state of a widget
+    // @param widgetId Widget's unique identifier
+    fun getWidgetActive(widgetId: String): Boolean
+
+    // Get the activation status of all registered widgets
+    // @param widgetId Widget's unique identifier
+    fun getAllWidgetActive(): Map<String, Boolean>
+
+    // Add an AgoraWidgetActiveObserver listener to monitor whether the Widget is active
+    fun addWidgetActiveObserver(observer: AgoraWidgetActiveObserver, widgetId: String)
+
+    // Remove an AgoraWidgetActiveObserver listener
+    fun removeWidgetActiveObserver(observer: AgoraWidgetActiveObserver, widgetId: String)
+
+    // Add an AgoraWidgetMessageObserver listener to listen for all messages sent by this Widget
+    fun addWidgetMessageObserver(observer: AgoraWidgetMessageObserver, widgetId: String)
+
+    // Remove an AgoraWidgetMessageObserver listener
+    fun removeWidgetMessageObserver(observer: AgoraWidgetMessageObserver, widgetId: String)
+
+    // Send a message to a widget
+    fun sendMessageToWidget(msg: String, widgetId: String)
+}
+```
+
+### Type definition
+
+```java
+// Widget configuration class
+data class AgoraWidgetConfig(
+    // The custom Widget class corresponding to this WidgetId
+    var widgetClass: Class<out AgoraBaseWidget>,
+    // Unique identifier for the current Widget
+    var widgetId: String,
+    // The icon in the unselected (default or inactive) state
+    val image: Int? = null,
+    // The icon in the selected or activated state
+    val selectedImage: Int? = null,
+    // Custom data, which is passed to AgoraWidgetInfo.extraInfo after Widget is instantiated
+    var extraInfo: Any? = null
+)
+
+// Widget information class
+data class AgoraWidgetInfo(
+    var roomInfo: AgoraWidgetRoomInfo,
+    var localUserInfo: AgoraWidgetUserInfo,
+    // Unique identifier for the current Widget
+    val widgetId: String,
+    // Custom data passed in externally
+    val extraInfo: Any?,
+    // custom room properties in the current widget
+    var roomProperties: MutableMap<String, Any>?,
+    // Custom local user properties in the current Widget
+    var localUserProperties: MutableMap<String, Any>?
+)
+
+// Widget's position and size ratio information class
+data class AgoraWidgetFrame(
+    val x: Float? = null,
+    val y: Float? = null,
+    val width: Float? = null,
+    val height: Float? = null
+)
+
+// User information class in Widget
+data class AgoraWidgetUserInfo(
+        val userUuid: String,
+        val userName: String,
+        val userRole: Int
+)
+
+// Room information class in Widget
+data class AgoraWidgetRoomInfo(
+        val roomUuid: String,
+        val roomName: String,
+        val roomType: Int
+)
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## iOS
+
+## Implement a custom plugin
+
+This section uses the countdown plugin as an example to introduce the basic steps of implementing a custom plugin through a widget and embedding the plugin in Flexible Classroom.
+
+### Implement the widget
+
+Refer to the following steps to implement a custom widget:
+
+1. Import the `AgoraWidget` library:
+
+    ```swift
+    import AgoraWidget
+    ```
+
+1. Initialize the widget's interface and data in the `onWidgetDidLoad` method:
+
+    ```swift
+    public override func onWidgetDidLoad() {
+        super.onWidgetDidLoad()
+        initViews()
+        initConstraints()
+        updateRoomData()
+        updateViewData()
+        updateViewFrame()
+
+        log(
+          content: info.roomProperties?.jsonString() ?? "nil",
+          extra: nil,
+          type: .info)
+    }
+    ```
+
+1. Monitor `onWidgetRoomPropertiesUpdated` and `onMessageReceived` methods to update data:
+
+    ```swift
+    public override func onWidgetRoomPropertiesUpdated(
+                        _ properties: [String : Any],
+                        cause: [String : Any]?,
+                        keyPaths: [String]) {
+        super.onWidgetRoomPropertiesUpdated(
+          properties,
+          cause: cause,
+          keyPaths: keyPaths)
+        updateRoomData()
+        updateViewData()
+        shouldStartTime()
+
+        log(
+          content: properties.jsonString() ?? "nil",
+          extra: cause?.jsonString(),
+          type: .info)
+    }
+
+    public override func onMessageReceived(_ message: String) {
+        super.onMessageReceived(message)
+
+        if let timestamp = message.toSyncTimestamp() {
+            objectCreateTimestamp = timestamp
+            initCurrentTimestamp()
+            shouldStartTime()
+        }
+
+        log(content: message, type: .info)
+    }
+    ```
+
+1. If you need to change the size of the widget, send a message using `sendMessage`; then the parent container that listens to the message updates the size of the widget:
+
+    ```swift
+    func updateViewFrame() {
+        let size = ["width": countdownView.neededSize.width, "height": countdownView.neededSize.height]
+
+        guard let message = ["size": size].jsonString() else {
+            return
+        }
+
+        sendMessage(message)
+    }
+    ```
+
+### Register Widget in Agora Classroom SDK
+
+Add a countdown widget to `AgoraEduLaunchConfig.widgets` using `AgoraWidgetConfig`, and register the implemented plugin to the Agora Classroom SDK during `launch`:
+
+    ```swift
+    let launchConfig = AgoraEduLaunchConfig(
+      userName: userName,
+      userUuid: userUuid,
+      userRole: userRole,
+      roomName: roomName,
+      roomUuid: roomUuid,
+      roomType: roomType,
+      appId: appId,
+      token: token,
+      startTime: nil,
+      duration: nil,
+      region: region,
+      mediaOptions: mediaOptions,
+      userProperties: nil)
+
+    let widgetId = "countdownTimer"
+
+    launchConfig.widgets[widgetId] = AgoraWidgetConfig(with: AgoraCountdownTimerWidget.self, widgetId: widgetId)
+
+    AgoraClassroomSDK.launch(
+      launchConfig,
+      success: successBlock,
+      failure: failureBlock)
+    ```
+
+### Using Widgets in the Classroom
+
+Refer to the following steps to integrate the countdown plugin in the classroom:
+
+1. Add an observer of the widget activity through `AgoraEduContext.widget`. Use the `addWidgetActivityObserver` method to listen for the callback of the activity using `AgoraClassToolsViewController`:
+
+    ```swift
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        contextPool.room.registerRoomEventHandler(self)
+        contextPool.widget.add(self)
+    }
+    ```
+
+1. Listen to the activity's callback and create or destroy the widget:
+
+    ```swift
+    extension AgoraClassToolsViewController: AgoraWidgetActivityObserver {
+        // Create a widget when an `onWidgetActive` callback is received
+        func onWidgetActive(_ widgetId: String) {
+            createWidget(widgetId)
+        }
+
+        // When the `onWidgetInactive` callback is received, destroy the widget
+        func onWidgetInactive(_ widgetId: String) {
+            releaseWidget(widgetId)
+        }
+    }
+    ```
+
+1. Create the Widget object of `AgoraCountdownTimer` and implement the communication between the widget and the local client:
+
+    ```swift
+    // Call the createWidget method to create the Widget object of AgoraCountdownTimer
+    func createWidget(_ widgetId: String) {
+        let widgetController = contextPool.widget
+
+        guard widgetIdList.contains(widgetId),
+            // Call getWidgetConfig to get AgoraWidgetConfig of AgoraCountdownTimer
+            let config = widgetController.getWidgetConfig(widgetId) else {
+                return
+        }
+
+        if let _ = getWidget(widgetId) {
+            return
+        }
+
+        // Add AgoraClassToolsViewController as the observer of widget syncFrame through addObserverForWidgetSyncFrame of AgoraWidgetContext, and monitor the callback of syncFrame
+        widgetController.addObserver(forWidgetSyncFrame: self, widgetId: widgetId)
+
+        // Add AgoraClassToolsViewController as an observer of widget message through addWidgetMessageObserver of AgoraWidgetContext, and monitor the callback of message
+        widgetController.add(self, widgetId: widgetId)
+
+        let widget = widgetController.create(config)
+
+        view.addSubview(widget.view)
+
+        switch widgetId {
+        case PollWidgetId:
+          pollWidget = widget
+        case CountdownTimerWidgetId:
+          countdownTimerWidget = widget
+        case PopupQuizWidgetId:
+          popupQuizWidget = widget
+        default:
+          return
+        }
+
+        sendWidgetCurrentTimestamp(widgetId)
+    }
+
+    func sendWidgetCurrentTimestamp(_ widgetId: String) {
+        let syncTimestamp = contextPool.monitor.getSyncTimestamp()
+        let tsDic = ["syncTimestamp": syncTimestamp]
+
+        if let string = tsDic.jsonString() {
+            // Call the sendMessage method to send the current timestamp to the widget
+            contextPool.widget.sendMessage(toWidget: widgetId, message: string)
+        }
+    }
+    ```
+
+1. Implement the `syncFrame` callback
+
+    ```swift
+    extension AgoraClassToolsViewController: AgoraWidgetSyncFrameObserver {
+        // When syncFrame is updated, update the position and size of the widget
+        func onWidgetSyncFrameUpdated(
+            _ syncFrame: CGRect,
+            widgetId: String,
+            operatorUser: AgoraWidgetUserInfo?) {
+                let size = getWidgetSize(widgetId)
+                updateWidgetFrame(widgetId, size: size)
+        }
+    }
+    ```
+
+1. Implement a callback method for listening to messages.
+
+    ```swift
+    extension AgoraClassToolsViewController: AgoraWidgetMessageObserver {
+        // When the message callback is received, AgoraClassToolsViewController acts as the parent container to update the size of the widget
+        func onMessageReceived(_ message: String, widgetId: String) {
+            if let size = parseSizeMessage(widgetId: widgetId, message: message) {
+                updateWidgetFrame(widgetId, size: size)
+            }
+        }
+    }
+    ```
+
+## API reference
+
+### AgoraBaseWidget
+
+`AgoraBaseWidget` is the base class of a Widget. Widgets that implement specific functions need to inherit from this class.
+
+#### Members
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `info` | `AgoraWidgetInfo` | The basic information required by the widget is assigned by the widget controller.|
+| `view` | `View` | Widget's container view. |
+
+#### updateWidgetRoomProperties
+
+Update the widget's room properties. The updated room properties pass to the Controller through the `onWidgetRoomPropertiesUpdated` callback.
+
+```swift
+void updateWidgetRoomProperties(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Callback<Void> success,
+    Callback<Error> failure)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Properties to update, supports keyPath. |
+| `cause` | `Map<String: Any>` | The reason for the update, can be empty. |
+| `success` | `Callback<Void>` | Request succeeded. |
+| `failure` | `Callback<Error>` | The request failed, returning an error. |
+
+#### deleteWidgetRoomProperties
+
+Delete the widget's room property. The deleted room property passes to the Controller through the `onWidgetRoomPropertiesDeleted` callback.
+
+```swift
+void deleteWidgetRoomProperties(
+    Array<String> keyPaths,
+    Map<String: Any> cause,
+    Callback<Void> success,
+    Callback<Error> failure)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `keyPaths` | `Array<String>` | The key array of properties to delete, supports keyPath. |
+| `cause` | `Map<String: Any>` | The reason for the deletion, can be empty. |
+| `success` | `Callback<Void>` | Request succeeded. |
+| `failure` | `Callback<Error>` | The request failed, returning an error. |
+
+#### updateWidgetUserProperties
+
+Update the widget's user properties. The updated room properties pass to the Controller through the `onWidgetUserPropertiesUpdated` callback.
+
+```swift
+void updateWidgetUserProperties(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Callback<Void> success,
+    Callback<Error> failure)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Properties to update, supports keyPath. Only need to pass in the value to update. |
+| `cause` | `Map<String: Any>` | The reason for the update, can be empty. |
+| `success` | `Callback<Void>` | Request succeeded. |
+| `failure` | `Callback<Error>` | The request failed, returning an error. |
+
+#### deleteWidgetUserProperties
+
+Delete the user properties of the widget. The deleted room property passes to the Controller through the `onWidgetUserPropertiesDeleted` callback.
+
+```swift
+void deleteWidgetUserProperties(
+    Array<String> keyPaths,
+    Map<String: Any> cause,
+    Callback<Void> success,
+    Callback<Error> failure)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `keyPaths` | `Array<String>` | The key array of properties to delete, supports keyPath. |
+| `cause` | `Map<String: Any>` | The reason for the update, can be empty. |
+| `success` | `Callback<Void>` | Request succeeded. |
+| `failure` | `Callback<Error>` | The request failed, returning an error. |
+
+#### sendMessage
+
+Send a message to the observer.
+
+```swift
+void sendMessage(String message)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `message` | `String` | Message content. |
+
+#### onLoad
+
+The widget loading is complete; it is loaded inside the Controller.
+
+```swift
+void onLoad()
+```
+
+#### onMessageReceived
+
+The Controller notifies the widget of received messages.
+
+The `sendMessageToWidget` callback is fired after calling in the `WidgetContext` protocol.
+
+```swift
+void onMessageReceived(String message)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `message` | `String` | Message content. |
+
+#### onLocalUserInfoUpdated
+
+The Controller notifies the widget of local user information updates.
+
+```swift
+void onLocalUserInfoUpdated(AgoraWidgetUserInfo localUserInfo)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `localUserInfo` | `AgoraWidgetUserInfo` | Local user information. |
+
+#### onRoomInfoUpdated
+
+The Controller notifies the widget of room information updates.
+
+```swift
+void onRoomInfoUpdated(AgoraWidgetRoomInfo roomInfo)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `roomInfo` | `AgoraWidgetRoomInfo` | Room information. |
+
+#### onWidgetRoomPropertiesUpdated
+
+The Controller notifies the widget of room property updates.
+
+```swift
+void onWidgetRoomPropertiesUpdated(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Array<String> keyPaths,
+    AgoraWidgetUserInfo operatorUser)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Final complete properties. |
+| `cause` | `Map<String: Any>`| Reason, can be empty. |
+| `keyPaths` | `Array<String>` | Array of keys for properties that changed. |
+| `operatorUser` | `AgoraWidgetUserInfo`| Operator, can be empty. |
+
+#### onWidgetRoomPropertiesDeleted
+
+Controller notifies the widget of room attribute deletion.
+
+```swift
+void onWidgetRoomPropertiesDeleted(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Array<String> keyPaths,
+    AgoraWidgetUserInfo operatorUser)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Final complete properties. |
+| `cause` | `Map<String: Any>`| Reason, can be empty. |
+| `keyPaths` | `Array<String>` | Array of keys for properties to be deleted. |
+| `operatorUser` | `AgoraWidgetUserInfo`| Operator, can be empty. |
+
+#### onWidgetUserPropertiesUpdated
+
+The Controller notifies the widget of user attribute updates.
+
+```swift
+void onWidgetUserPropertiesUpdated(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Array<String> keyPaths,
+    AgoraWidgetUserInfo operatorUser)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Final complete properties. |
+| `cause` | `Map<String: Any>`| Reason, can be empty. |
+| `keyPaths` | `Array<String>` | Array of keys for properties that changed. |
+| `operatorUser` | `AgoraWidgetUserInfo`| Operator, can be empty. |
+
+#### onWidgetUserPropertiesDeleted
+
+The Controller notifies the widget of user attribute deletions.
+
+```swift
+void onWidgetUserPropertiesDeleted(
+    Map<String: Any> properties,
+    Map<String: Any> cause,
+    Array<String> keys)
+```
+
+**Parameters**
+
+| Parameter | Type | Description |
+| :------ | :----- | :--------------------- |
+| `properties` | `Map<String: Any>` | Final complete properties. |
+| `cause` | `Map<String: Any>`| Reason, can be empty. |
+| `keys` | `Array<String>` | Array of keys for properties to delete. |
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+## Web
+
+In online classroom applications, some customization is often necessary to meet the needs of a particular use-case. Agora provides Widgets to help users develop plug-ins according to their specific needs and embed them into Flexible Classroom.
+
+Widgets are stand-alone plugins that contain interface and functionality. Developers can implement a widget based on customization of the base class, and then register the widget in the Agora Classroom SDK. Agora Classroom SDK supports registering multiple widgets. Widgets can communicate with other widgets, as well as with other plugins in the UI layer.
+
+:::note
+This document applies to Flexible Classroom version `2.8.0` or later.
+:::
+
+## Understand the tech
+
+Flexible Classroom provides a plugin mechanism to help developers expand classroom capabilities under various use-cases. This mechanism also reduces the degree of code coupling between the custom application and the classroom, thereby reducing the difficulty of subsequent upgrading of the integrated source code. See [Plugin technology principles](../../reference/plugin-technology-principles.mdx).
+
+## Built-in plugins
+
+This section introduces the built-in plugins of Flexible Classroom. They extend classroom capabilities and fall into two main categories:
+
+* Common class plugins, for example:
+    * Interactive whiteboard
+    * Agora Chat
+    * Embedded browser
+    * Video sync player (currently supports Youtube videos only)
+
+* Teaching-aid plugins, for example:
+    * Clicker
+    * Voter
+    * Timer
+
+The [source codes of the built-in plugins](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/70b0e20d6824533ed36882351629e46da7798ba4/src/gallery) is located in the **apaas-widgets-web** repository.
+
+| Plugin name | Source code folder |
+| :------ | :----- |
+| Interactive Whiteboard (adapted to AgoraEduSDK) | `classroom/whiteboard`|
+| IM module (adapted to AgoraEduSDK)| `classroom/im`|
+| Embedded browser (adapted to AgoraEduSDK)	| `classroom/webview`|
+| Video synchronization player (adapted to AgoraEduSDK)	| `classroom/stream-media`|
+| Clicker (adapted to AgoraEduSDK)	| `classroom/answer`|
+| Voting device (adapted to AgoraEduSDK)	| `classroom/vote`|
+| Timer (Adapted to AgoraEduSDK)	| `classroom/counter`|
+| Watermark plug-in (adapted to AgoraEduSDK)	| `classroom/watermark`|
+| Embedded browser (adapted to AgoraProctorSDK)	| `proctor/webview`|
+| Chat room (adapted to FcrUIScene)	| `scene/chatroom`|
+| Timer (adapted to FcrUIScene)	| `scene/countdown`|
+| Voter (adapted to FcrUIScene)	| `scene/polling`|
+| Clicker (adapted to FcrUIScene)	| `scene/quiz`|
+| Video sync player (adapted to FcrUIScene)	| `scene/stream-media`|
+| Embedded browser (adapted to FcrUIScene)	| `scene/webview`|
+| Interactive whiteboard (adapted to FcrUIScene)	| `scene/whiteboard`|
+
+## Custom plugins
+
+If you need to add a custom plugin or a widget, you can inherit the class provided by Flexible Classroom `AgoraWidgetBase` and implement its abstract methods.
+
+### The `AgoraWidgetBase` class
+
+The `AgoraWidgetBase` class provides the widget-related operation API. It is defined as follows:
+
+```javascript
+export declare abstract class AgoraWidgetBase implements AgoraWidgetRenderable, AgoraMultiInstanceWidget, AgoraWidgetLifecycle {
+  constructor(_widgetController: AgoraWidgetController, _classroomStore: EduClassroomStore);
+
+  onInstall(controller: AgoraWidgetController): void {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  onUninstall(controller: AgoraWidgetController): void {}
+
+  locate(): HTMLElement | undefined | null;
+  render(dom: HTMLElement): void;
+  unload(): void;
+
+  setInstanceId(instId: string): void;
+  get instanceId(): string;
+
+  // Widget Name
+  abstract get widgetName(): string;
+
+  // Unique widget ID
+  get widgetId(): string;
+
+  // Container level
+  get zContainer(): 0 | 10;
+
+  // Track synchronization controller
+  get trackController(): AgoraWidgetTrackController | undefined;
+
+  // Widget Controller
+  get widgetController(): AgoraWidgetController;
+
+  // Classroom Store
+  get classroomStore(): EduClassroomStore;
+
+  // Share UIStore
+  get shareUIStore(): EduShareUIStore;
+
+  // Classroom configuration
+  get classroomConfig(): import("agora-edu-core").EduClassroomConfig;
+
+  // UI configuration
+  get uiConfig(): FcrUIConfig;
+
+  // Theme
+  get theme(): FcrTheme;
+
+  // Broadcast message
+  broadcast(messageType: string, message: unknown): void;
+
+  // Add a broadcast listener
+  addBroadcastListener(listener: Omit<AgoraWidgetMessageListener, 'widgetId'>): void;
+
+  // Remove broadcast listener
+  removeBroadcastListener(listener: Omit<AgoraWidgetMessageListener, 'widgetId'>): void;
+
+  // Update widget properties
+  updateWidgetProperties(properties: any): Promise<{
+    data: any;
+  }>;
+
+  // Update widget User Properties
+  updateWidgetUserProperties(userProperties: any): void;
+
+  // Delete the widget
+  deleteWidget(): Promise<{
+    data: any;
+  }>;
+
+  // Delete widget User Properties
+  removeWidgetUserProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+
+  // Remove widget Extended Properties
+  removeWidgetExtraProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+
+  // Set widget as active
+  setActive(props?: any): void;
+
+  // Set the widget to the inactive state
+  setInactive(props?: any): void;
+
+  // Get the latest component Z-index level
+  get latestZIndex(): number;
+}
+```
+
+### Using the `AgoraWidgetBase` class
+
+The following code shows the definition of an `ExampleWidget` to implement a basic widget:
+
+```javascript
+import { AgoraWidgetBase } from "agora-common-libs";
+
+export class ExampleWidget extends AgoraWidgetBase {
+  private _dom?: HTMLElement
+  // Globally unique widget name
+  get widgetName(): string {
+    return 'example'
+
+  // Mount point
+  // Rewrite the locate method to return a node, the widget will be rendered inside this node
+  // ExampleWidget is mounted to the whiteboard area
+  locate(): HTMLElement | null | undefined {
+    return document.querySelector(".widget-slot-board") as HTMLElement;
+
+  // Widget node is mounted
+  // At this point, custom rendering can be performed on the DOM node
+  render(dom: HTMLElement): void {
+    dom.innerHTML = 'This is a custom widget';
+    dom.style.height = '100%';
+    dom.style.display = "flex";
+    dom.style.alignItems = "center";
+    dom.style.justifyContent = "center";
+    this._dom = dom;
+
+  // Uninstall components
+  // Relevant resources can be released here
+  unload(): void {
+    this._dom = undefined;
+  }
+}
+```
+
+### Pass in the custom widget in `launch`
+
+Use the following code to pass in your custom widget through the `widgets` parameter in `launch`:
+
+```javascript
+const widgets = {
+  // Need to import the ExampleWidget class defined above
+  'example': ExampleWidget
+};
+
+AgoraEduSDK.launch(dom, {
+  ...
+  widgets: widgets
+  ...
+});
+```
+
+### Create the custom widget on install
+
+Since `ExampleWidget` is a custom widget, you need to manually call the `createWidget` method to create a widget:
+
+```javascript
+// Modify the WidgetUIStore code file path packages/agora-classroom-sdk/src/infra/stores/common/widget/index.ts to add code
+onInstall() {
+  ...
+  // Add this code at the end of the onInstall method to open the specified widget after the room is successfully added
+  this._disposers.push(
+    reaction(
+      () => this.classroomStore.widgetStore.widgetController,
+      () => {
+        // Open our new widget, pass in widgetName here
+        this.createWidget('example');
+      },
+    ),
+  );
+}
+```
+### Test your implementation
+
+Start the classroom, the effect after the plug-in is mounted is as follows:
+
+![Custom widget mounted in Flexible Classroom](https://web-cdn.agora.io/docs-files/1664451212904)
+
+## Create a teaching-aid plugin
+
+Flexible Classroom provides developers with an abstract class called `AgoraEduToolWidget`. The class implements the encapsulation of the general capabilities of teaching-aid plugins. Inheriting this class gives the plugin track synchronization, hierarchical control capabilities, and control logic for the display of UI windows.
+
+With the `ControlledModal` component, you can also quickly implement the outer window of the built-in teaching-aid plugin, reducing a lot of general logic code development. For specific implementation, please refer to the `answer`, `vote` and `counter` folders in the [Github repository](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/70b0e20d6824533ed36882351629e46da7798ba4/src/gallery), which provide the source code of the built-in teaching-aid plugins in Flexible Classroom.
+
+The following code shows the `AgoraEduToolWidget` class definition:
+
+```javascript
+// Use the AgoraEduToolWidget abstract class as the base class to implement draggable and track-synchronized widgets
+
+export abstract class AgoraEduToolWidget
+  extends AgoraWidgetBase
+  implements AgoraWidgetLifecycle, AgoraTrackSyncedWidget
+{
+  private _controlStateCallbacks: CallableFunction[] = [];
+  onUninstall(controller: AgoraWidgetController) {}
+  onInstall(controller: AgoraWidgetController) {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  get track(): Track {
+    return this.trackController?.track!;
+  }
+  get zIndex(): number {
+    return this.trackController?.zIndex || 0;
+  }
+  @bound
+  updateZIndexToRemote(zIndex: number) {
+    this.trackController?.updateRemoteZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  @bound
+  updateZIndexToLocal(zIndex: number) {
+    this.trackController?.updateLocalZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  get draggable(): boolean {
+    return true;
+  }
+  get resizable(): boolean {
+    return false;
+  }
+  get dragHandleClassName(): string {
+    return 'modal-title';
+  }
+  get dragCancelClassName(): string {
+    return 'modal-title-close';
+  }
+  get boundaryClassName(): string {
+    return 'widget-slot-board';
+  }
+  get minWidth(): number {
+    return 0;
+  }
+  get minHeight(): number {
+    return 0;
+  }
+  get trackMode(): AgoraWidgetTrackMode {
+    return AgoraWidgetTrackMode.TrackPositionOnly;
+  }
+
+  @bound
+  updateToRemote(
+    end: boolean,
+    pos: Point,
+    dimensions?: Dimensions | undefined,
+    options?: TrackOptions | undefined,
+  ): void {
+    this.trackController?.updateRemoteTrack(end, pos, dimensions, options);
+  }
+
+  @bound
+  updateToLocal(trackProps: AgoraWidgetTrack): void {
+    this.trackController?.updateLocalTrack(trackProps);
+  }
+
+  @bound
+  handleResize({ width, height }: { width: number; height: number }) {
+    this.track.setRealDimensions({ width, height });
+    this.track.reposition(false);
+  }
+
+  @bound
+  handleClose() {
+    this.widgetController.broadcast(AgoraExtensionWidgetEvent.WidgetBecomeInactive, this.widgetId);
+
+    this.deleteWidget();
+  }
+
+  @bound
+  setVisibility(visible: boolean) {
+    this.track.setVisibility(visible);
+  }
+
+  get controlled() {
+    return this.hasPrivilege;
+  }
+
+  addControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks.push(cb);
+  }
+
+  removeControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks = this._controlStateCallbacks.filter((c) => c !== cb);
+  }
+
+  fireControlStateChanged() {
+    const controled = this.controlled;
+    this._controlStateCallbacks.forEach((cb) => {
+      cb(controled);
+    });
+  }
+}
+```
+
+### Using AgoraEduToolWidget
+
+The following code shows how to create a teaching-aid plugin for pre-class roll calls based on the existing widget capabilities of Flexible Classroom. See the full source code in [rollbook-widget](https://github.com/AgoraIO-Community/flexible-classroom-desktop/).
+
+```javascript
+// Create the RollbookWidget class based on the AgoraEduToolWidget class
+// packages/agora-plugin-gallery/src/gallery/rollbook/index.tsx
+import { render, unmountComponentAtNode } from 'react-dom';
+import { App } from './app';
+import { AgoraEduToolWidget } from '../../common/edu-tool-widget';
+import { observable, action, computed } from 'mobx';
+import type { AgoraWidgetController } from 'agora-edu-core';
+import { bound } from 'agora-common-libs';
+import { AgoraExtensionWidgetEvent } from '../../events';
+import { SvgIconEnum } from '../../components/svg-img';
+
+// Roll call:
+// Teachers can use this plugin to know the participation of students in the classroom
+export class RollbookWidget extends AgoraEduToolWidget {
+  private _dom?: HTMLElement;
+  @observable
+  started = false;
+  @observable
+  checkInList: string[] = [];
+  // Have you checked in?
+  @computed
+  get isCheckedIn() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    return this.checkInList.includes(userUuid);
+  }
+  // Check-in username list
+  @computed
+  get checkInUserNames() {
+    return this.checkInList.map((userUuid) => {
+      // Get the username corresponding to the user ID from the UserStore (this method does not apply to large classes)
+      const user = this.classroomStore.userStore.studentList.get(userUuid);
+      return user?.userName || 'Unknown';
+    });
+  }
+  // Initial window width
+  get minWidth(): number {
+    return 400;
+  }
+  // Initial window height
+  get minHeight(): number {
+    return 200;
+  }
+  // Globally unique widget name
+  get widgetName(): string {
+     return 'rollbook';
+  }
+  // Control whether the Widget is controllable
+  get hasPrivilege(): boolean {
+     return [1, 3].includes(this.classroomConfig.sessionInfo.role);
+  }
+  get checkInPropKey() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    const key = `checkIn-${userUuid}`;
+    return key;
+  }
+
+   // The widget node has been mounted, and you can now perform custom rendering on the DOM node.
+   render(dom: HTMLElement): void {
+     this._dom = dom;
+     dom.style.width = '100%';
+     dom.style.height = '100%';
+     // Rendering UI components using React
+     render(<App widget={this} />, dom);
+   }
+
+   // Uninstall the component and release related resources at this time
+   unload(): void {
+     if (this._dom) {
+       // Uninstall React components
+       unmountComponentAtNode(this._dom);
+     }
+     this._dom = undefined;
+   }
+
+  onCreate(properties: any, userProperties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onPropertiesUpdate(properties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onInstall(controller: AgoraWidgetController) {
+    // Register the plug-in entry to the toolbox
+    controller.broadcast(AgoraExtensionWidgetEvent.RegisterCabinetTool, {
+      id: this.widgetName,
+      name: 'Rollbook',
+      iconType: SvgIconEnum.ANSWER,
+    });
+  }
+
+  onUninstall(controller: AgoraWidgetController) {
+    // Remove the plugin entry from the toolbox
+    controller.broadcast(AgoraExtensionWidgetEvent.UnregisterCabinetTool, this.widgetName);
+  }
+
+ @action
+  private _handlePropertiesChange(properties: any) {
+    const list: string[] = [];
+    Object.keys(properties.extra || {}).forEach((k) => {
+      if (k.startsWith('checkIn-')) {
+        const userUuid = k.replace('checkIn-', '');
+        list.push(userUuid);
+      }
+    });
+    this.checkInList = list;
+    this.started = !!properties.extra?.started;
+  }
+
+  // Students click to sign in to update the sign-in list
+  @bound
+  checkIn() {
+    this.updateWidgetProperties({
+      extra: {
+        // Widgets can be updated incrementally using the Key-Value method
+        [this.checkInPropKey]: true,
+      },
+    });
+  }
+
+  // The teacher clicks to start signing in and updates the Widget status
+  @bound
+  startCheckIn() {
+    this.setActive({ extra: { started: 1 } });
+  }
+}
+```
+
+### Add rendering components
+
+Add an `App` component for rendering in the plugin window:
+
+```javascript
+// packages/agora-plugin-gallery/src/gallery/rollbook/app.tsx
+import React, { FC } from 'react';
+import { observer } from 'mobx-react';
+import { ControlledModal } from '../../common/edu-tool-modal';
+import { EduRoleTypeEnum } from 'agora-edu-core';
+import { RollbookWidget } from '.';
+import { Button } from '../../components/button';
+
+// Roll roster component
+
+  const view = () =>
+    [EduRoleTypeEnum.teacher, EduRoleTypeEnum.assistant].includes(
+      widget.classroomConfig.sessionInfo.role,
+    ) ? (
+      <TeacherView widget={widget} />
+    ) : (
+      <StudentView widget={widget} />
+    );
+  return (
+    <ControlledModal
+      onFullScreen={() => {}}
+      canRefresh={false}
+      widget={widget}
+      title="Rollbook"
+      onCancel={widget.handleClose}>
+      {view()}
+    </ControlledModal>
+  );
+};
+
+// The teacher interface shows the actual check-in list
+
+  const started = widget.started;
+  return (
+    <div>
+      {started ? (
+        <React.Fragment>
+          <div>Check-In List:</div>
+          <ul>
+            {widget.checkInUserNames.map((item, i) => (
+              <li key={i.toString()}>{item}</li>
+            ))}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <Button onClick={widget.startCheckIn}>Start Check-In</Button>
+      )}
+    </div>
+  );
+});
+
+// StudentView showing check in button
+
+  const isCheckedIn = widget.isCheckedIn;
+   return (
+     <div>
+       <Button onClick={widget.checkIn} disabled={isCheckedIn}>
+         {isCheckedIn ? 'Checked-In' : 'Check-In'}
+       </Button>
+     </div>
+   );
+});
+```
+
+### Pass in the custom widget in `launch`
+Use the following code to pass in your custom widget through the `widgets` parameter in `launch`:
+
+```javascript
+const widgets = {
+    // Need to import the RollbookWidget class defined above
+    'rollbook': RollbookWidget
+};
+
+AgoraEduSDK.launch(dom, {
+...
+widgets: widgets
+...
+});
+```
+
+### Test your implementation
+
+Start the classroom, you see this plugin in the toolbox as shown in the figure:
+
+![Teaching-aid plugin shown in the toolbox](https://web-cdn.agora.io/docs-files/1664451141797)
+
+The teacher clicks and opens the interface effect of the plugin:
+
+![Teacher view after opening the teaching-aid plugin](https://web-cdn.agora.io/docs-files/1664451162107)
+
+After the teacher clicks Start Check-In, the effect of the plugin is displayed on the student side:
+
+![Student view after the teacher starts check-in](https://web-cdn.agora.io/docs-files/1664451174839)
+
+After the student clicks Check-In, the teacher's check-in list displays the student's effect:
+
+![Teacher check-in list after a student checks in](https://web-cdn.agora.io/docs-files/1664451187164)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+## Electron
+
+In online classroom applications, some customization is often necessary to meet the needs of a particular use-case. Agora provides Widgets to help users develop plug-ins according to their specific needs and embed them into Flexible Classroom.
+
+Widgets are stand-alone plugins that contain interface and functionality. Developers can implement a widget based on customization of the base class, and then register the widget in the Agora Classroom SDK. Agora Classroom SDK supports registering multiple widgets. Widgets can communicate with other widgets, as well as with other plugins in the UI layer.
+
+:::note
+This document applies to Flexible Classroom version `2.8.0` or later.
+:::
+
+## Understand the tech
+
+Flexible Classroom provides a plugin mechanism to help developers expand classroom capabilities under various use-cases. This mechanism also reduces the degree of code coupling between the custom application and the classroom, thereby reducing the difficulty of subsequent upgrading of the integrated source code. See [Plugin technology principles](../../reference/plugin-technology-principles.mdx).
+
+## Built-in plugins
+
+This section introduces the built-in plugins of Flexible Classroom. They extend classroom capabilities and fall into two main categories:
+
+* Common class plugins, for example:
+    * Interactive whiteboard
+    * Agora Chat
+    * Embedded browser
+    * Video sync player (currently supports Youtube videos only)
+
+* Teaching-aid plugins, for example:
+    * Clicker
+    * Voter
+    * Timer
+
+The [source codes of the built-in plugins](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/70b0e20d6824533ed36882351629e46da7798ba4/src/gallery) is located in the **apaas-widgets-web** repository.
+
+| Plugin name | Source code folder |
+| :------ | :----- |
+| Interactive Whiteboard (adapted to AgoraEduSDK) | `classroom/whiteboard`|
+| IM module (adapted to AgoraEduSDK)| `classroom/im`|
+| Embedded browser (adapted to AgoraEduSDK)	| `classroom/webview`|
+| Video synchronization player (adapted to AgoraEduSDK)	| `classroom/stream-media`|
+| Clicker (adapted to AgoraEduSDK)	| `classroom/answer`|
+| Voting device (adapted to AgoraEduSDK)	| `classroom/vote`|
+| Timer (Adapted to AgoraEduSDK)	| `classroom/counter`|
+| Watermark plug-in (adapted to AgoraEduSDK)	| `classroom/watermark`|
+| Embedded browser (adapted to AgoraProctorSDK)	| `proctor/webview`|
+| Chat room (adapted to FcrUIScene)	| `scene/chatroom`|
+| Timer (adapted to FcrUIScene)	| `scene/countdown`|
+| Voter (adapted to FcrUIScene)	| `scene/polling`|
+| Clicker (adapted to FcrUIScene)	| `scene/quiz`|
+| Video sync player (adapted to FcrUIScene)	| `scene/stream-media`|
+| Embedded browser (adapted to FcrUIScene)	| `scene/webview`|
+| Interactive whiteboard (adapted to FcrUIScene)	| `scene/whiteboard`|
+
+## Custom plugins
+
+If you need to add a custom plugin or a widget, you can inherit the class provided by Flexible Classroom `AgoraWidgetBase` and implement its abstract methods.
+
+### The `AgoraWidgetBase` class
+
+The `AgoraWidgetBase` class provides the widget-related operation API. It is defined as follows:
+
+```javascript
+export declare abstract class AgoraWidgetBase implements AgoraWidgetRenderable, AgoraMultiInstanceWidget, AgoraWidgetLifecycle {
+  constructor(_widgetController: AgoraWidgetController, _classroomStore: EduClassroomStore);
+
+  onInstall(controller: AgoraWidgetController): void {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  onUninstall(controller: AgoraWidgetController): void {}
+
+  locate(): HTMLElement | undefined | null;
+  render(dom: HTMLElement): void;
+  unload(): void;
+
+  setInstanceId(instId: string): void;
+  get instanceId(): string;
+
+  // Widget Name
+  abstract get widgetName(): string;
+
+  // Unique widget ID
+  get widgetId(): string;
+
+  // Container level
+  get zContainer(): 0 | 10;
+
+  // Track synchronization controller
+  get trackController(): AgoraWidgetTrackController | undefined;
+
+  // Widget Controller
+  get widgetController(): AgoraWidgetController;
+
+  // Classroom Store
+  get classroomStore(): EduClassroomStore;
+
+  // Share UIStore
+  get shareUIStore(): EduShareUIStore;
+
+  // Classroom configuration
+  get classroomConfig(): import("agora-edu-core").EduClassroomConfig;
+
+  // UI configuration
+  get uiConfig(): FcrUIConfig;
+
+  // Theme
+  get theme(): FcrTheme;
+
+  // Broadcast message
+  broadcast(messageType: string, message: unknown): void;
+
+  // Add a broadcast listener
+  addBroadcastListener(listener: Omit<AgoraWidgetMessageListener, 'widgetId'>): void;
+
+  // Remove broadcast listener
+  removeBroadcastListener(listener: Omit<AgoraWidgetMessageListener, 'widgetId'>): void;
+
+  // Update widget properties
+  updateWidgetProperties(properties: any): Promise<{
+    data: any;
+  }>;
+
+  // Update widget User Properties
+  updateWidgetUserProperties(userProperties: any): void;
+
+  // Delete the widget
+  deleteWidget(): Promise<{
+    data: any;
+  }>;
+
+  // Delete widget User Properties
+  removeWidgetUserProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+
+  // Remove widget Extended Properties
+  removeWidgetExtraProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+
+  // Set widget as active
+  setActive(props?: any): void;
+
+  // Set the widget to the inactive state
+  setInactive(props?: any): void;
+
+  // Get the latest component Z-index level
+  get latestZIndex(): number;
+}
+```
+
+### Using the `AgoraWidgetBase` class
+
+The following code shows the definition of an `ExampleWidget` to implement a basic widget:
+
+```javascript
+import { AgoraWidgetBase } from "agora-common-libs";
+
+export class ExampleWidget extends AgoraWidgetBase {
+  private _dom?: HTMLElement
+  // Globally unique widget name
+  get widgetName(): string {
+    return 'example'
+
+  // Mount point
+  // Rewrite the locate method to return a node, the widget will be rendered inside this node
+  // ExampleWidget is mounted to the whiteboard area
+  locate(): HTMLElement | null | undefined {
+    return document.querySelector(".widget-slot-board") as HTMLElement;
+
+  // Widget node is mounted
+  // At this point, custom rendering can be performed on the DOM node
+  render(dom: HTMLElement): void {
+    dom.innerHTML = 'This is a custom widget';
+    dom.style.height = '100%';
+    dom.style.display = "flex";
+    dom.style.alignItems = "center";
+    dom.style.justifyContent = "center";
+    this._dom = dom;
+
+  // Uninstall components
+  // Relevant resources can be released here
+  unload(): void {
+    this._dom = undefined;
+  }
+}
+```
+
+### Pass in the custom widget in `launch`
+
+Use the following code to pass in your custom widget through the `widgets` parameter in `launch`:
+
+```javascript
+const widgets = {
+  // Need to import the ExampleWidget class defined above
+  'example': ExampleWidget
+};
+
+AgoraEduSDK.launch(dom, {
+  ...
+  widgets: widgets
+  ...
+});
+```
+
+### Create the custom widget on install
+
+Since `ExampleWidget` is a custom widget, you need to manually call the `createWidget` method to create a widget:
+
+```javascript
+// Modify the WidgetUIStore code file path packages/agora-classroom-sdk/src/infra/stores/common/widget/index.ts to add code
+onInstall() {
+  ...
+  // Add this code at the end of the onInstall method to open the specified widget after the room is successfully added
+  this._disposers.push(
+    reaction(
+      () => this.classroomStore.widgetStore.widgetController,
+      () => {
+        // Open our new widget, pass in widgetName here
+        this.createWidget('example');
+      },
+    ),
+  );
+}
+```
+### Test your implementation
+
+Start the classroom, the effect after the plug-in is mounted is as follows:
+
+![Custom widget mounted in Flexible Classroom](https://web-cdn.agora.io/docs-files/1664451212904)
+
+## Create a teaching-aid plugin
+
+Flexible Classroom provides developers with an abstract class called `AgoraEduToolWidget`. The class implements the encapsulation of the general capabilities of teaching-aid plugins. Inheriting this class gives the plugin track synchronization, hierarchical control capabilities, and control logic for the display of UI windows.
+
+With the `ControlledModal` component, you can also quickly implement the outer window of the built-in teaching-aid plugin, reducing a lot of general logic code development. For specific implementation, please refer to the `answer`, `vote` and `counter` folders in the [Github repository](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/70b0e20d6824533ed36882351629e46da7798ba4/src/gallery), which provide the source code of the built-in teaching-aid plugins in Flexible Classroom.
+
+The following code shows the `AgoraEduToolWidget` class definition:
+
+```javascript
+// Use the AgoraEduToolWidget abstract class as the base class to implement draggable and track-synchronized widgets
+
+export abstract class AgoraEduToolWidget
+  extends AgoraWidgetBase
+  implements AgoraWidgetLifecycle, AgoraTrackSyncedWidget
+{
+  private _controlStateCallbacks: CallableFunction[] = [];
+  onUninstall(controller: AgoraWidgetController) {}
+  onInstall(controller: AgoraWidgetController) {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  get track(): Track {
+    return this.trackController?.track!;
+  }
+  get zIndex(): number {
+    return this.trackController?.zIndex || 0;
+  }
+  @bound
+  updateZIndexToRemote(zIndex: number) {
+    this.trackController?.updateRemoteZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  @bound
+  updateZIndexToLocal(zIndex: number) {
+    this.trackController?.updateLocalZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  get draggable(): boolean {
+    return true;
+  }
+  get resizable(): boolean {
+    return false;
+  }
+  get dragHandleClassName(): string {
+    return 'modal-title';
+  }
+  get dragCancelClassName(): string {
+    return 'modal-title-close';
+  }
+  get boundaryClassName(): string {
+    return 'widget-slot-board';
+  }
+  get minWidth(): number {
+    return 0;
+  }
+  get minHeight(): number {
+    return 0;
+  }
+  get trackMode(): AgoraWidgetTrackMode {
+    return AgoraWidgetTrackMode.TrackPositionOnly;
+  }
+
+  @bound
+  updateToRemote(
+    end: boolean,
+    pos: Point,
+    dimensions?: Dimensions | undefined,
+    options?: TrackOptions | undefined,
+  ): void {
+    this.trackController?.updateRemoteTrack(end, pos, dimensions, options);
+  }
+
+  @bound
+  updateToLocal(trackProps: AgoraWidgetTrack): void {
+    this.trackController?.updateLocalTrack(trackProps);
+  }
+
+  @bound
+  handleResize({ width, height }: { width: number; height: number }) {
+    this.track.setRealDimensions({ width, height });
+    this.track.reposition(false);
+  }
+
+  @bound
+  handleClose() {
+    this.widgetController.broadcast(AgoraExtensionWidgetEvent.WidgetBecomeInactive, this.widgetId);
+
+    this.deleteWidget();
+  }
+
+  @bound
+  setVisibility(visible: boolean) {
+    this.track.setVisibility(visible);
+  }
+
+  get controlled() {
+    return this.hasPrivilege;
+  }
+
+  addControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks.push(cb);
+  }
+
+  removeControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks = this._controlStateCallbacks.filter((c) => c !== cb);
+  }
+
+  fireControlStateChanged() {
+    const controled = this.controlled;
+    this._controlStateCallbacks.forEach((cb) => {
+      cb(controled);
+    });
+  }
+}
+```
+
+### Using AgoraEduToolWidget
+
+The following code shows how to create a teaching-aid plugin for pre-class roll calls based on the existing widget capabilities of Flexible Classroom. See the full source code in [rollbook-widget](https://github.com/AgoraIO-Community/flexible-classroom-desktop/).
+
+```javascript
+// Create the RollbookWidget class based on the AgoraEduToolWidget class
+// packages/agora-plugin-gallery/src/gallery/rollbook/index.tsx
+import { render, unmountComponentAtNode } from 'react-dom';
+import { App } from './app';
+import { AgoraEduToolWidget } from '../../common/edu-tool-widget';
+import { observable, action, computed } from 'mobx';
+import type { AgoraWidgetController } from 'agora-edu-core';
+import { bound } from 'agora-common-libs';
+import { AgoraExtensionWidgetEvent } from '../../events';
+import { SvgIconEnum } from '../../components/svg-img';
+
+// Roll call:
+// Teachers can use this plugin to know the participation of students in the classroom
+export class RollbookWidget extends AgoraEduToolWidget {
+  private _dom?: HTMLElement;
+  @observable
+  started = false;
+  @observable
+  checkInList: string[] = [];
+  // Have you checked in?
+  @computed
+  get isCheckedIn() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    return this.checkInList.includes(userUuid);
+  }
+  // Check-in username list
+  @computed
+  get checkInUserNames() {
+    return this.checkInList.map((userUuid) => {
+      // Get the username corresponding to the user ID from the UserStore (this method does not apply to large classes)
+      const user = this.classroomStore.userStore.studentList.get(userUuid);
+      return user?.userName || 'Unknown';
+    });
+  }
+  // Initial window width
+  get minWidth(): number {
+    return 400;
+  }
+  // Initial window height
+  get minHeight(): number {
+    return 200;
+  }
+  // Globally unique widget name
+  get widgetName(): string {
+     return 'rollbook';
+  }
+  // Control whether the Widget is controllable
+  get hasPrivilege(): boolean {
+     return [1, 3].includes(this.classroomConfig.sessionInfo.role);
+  }
+  get checkInPropKey() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    const key = `checkIn-${userUuid}`;
+    return key;
+  }
+
+   // The widget node has been mounted, and you can now perform custom rendering on the DOM node.
+   render(dom: HTMLElement): void {
+     this._dom = dom;
+     dom.style.width = '100%';
+     dom.style.height = '100%';
+     // Rendering UI components using React
+     render(<App widget={this} />, dom);
+   }
+
+   // Uninstall the component and release related resources at this time
+   unload(): void {
+     if (this._dom) {
+       // Uninstall React components
+       unmountComponentAtNode(this._dom);
+     }
+     this._dom = undefined;
+   }
+
+  onCreate(properties: any, userProperties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onPropertiesUpdate(properties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onInstall(controller: AgoraWidgetController) {
+    // Register the plug-in entry to the toolbox
+    controller.broadcast(AgoraExtensionWidgetEvent.RegisterCabinetTool, {
+      id: this.widgetName,
+      name: 'Rollbook',
+      iconType: SvgIconEnum.ANSWER,
+    });
+  }
+
+  onUninstall(controller: AgoraWidgetController) {
+    // Remove the plugin entry from the toolbox
+    controller.broadcast(AgoraExtensionWidgetEvent.UnregisterCabinetTool, this.widgetName);
+  }
+
+ @action
+  private _handlePropertiesChange(properties: any) {
+    const list: string[] = [];
+    Object.keys(properties.extra || {}).forEach((k) => {
+      if (k.startsWith('checkIn-')) {
+        const userUuid = k.replace('checkIn-', '');
+        list.push(userUuid);
+      }
+    });
+    this.checkInList = list;
+    this.started = !!properties.extra?.started;
+  }
+
+  // Students click to sign in to update the sign-in list
+  @bound
+  checkIn() {
+    this.updateWidgetProperties({
+      extra: {
+        // Widgets can be updated incrementally using the Key-Value method
+        [this.checkInPropKey]: true,
+      },
+    });
+  }
+
+  // The teacher clicks to start signing in and updates the Widget status
+  @bound
+  startCheckIn() {
+    this.setActive({ extra: { started: 1 } });
+  }
+}
+```
+
+### Add rendering components
+
+Add an `App` component for rendering in the plugin window:
+
+```javascript
+// packages/agora-plugin-gallery/src/gallery/rollbook/app.tsx
+import React, { FC } from 'react';
+import { observer } from 'mobx-react';
+import { ControlledModal } from '../../common/edu-tool-modal';
+import { EduRoleTypeEnum } from 'agora-edu-core';
+import { RollbookWidget } from '.';
+import { Button } from '../../components/button';
+
+// Roll roster component
+
+  const view = () =>
+    [EduRoleTypeEnum.teacher, EduRoleTypeEnum.assistant].includes(
+      widget.classroomConfig.sessionInfo.role,
+    ) ? (
+      <TeacherView widget={widget} />
+    ) : (
+      <StudentView widget={widget} />
+    );
+  return (
+    <ControlledModal
+      onFullScreen={() => {}}
+      canRefresh={false}
+      widget={widget}
+      title="Rollbook"
+      onCancel={widget.handleClose}>
+      {view()}
+    </ControlledModal>
+  );
+};
+
+// The teacher interface shows the actual check-in list
+
+  const started = widget.started;
+  return (
+    <div>
+      {started ? (
+        <React.Fragment>
+          <div>Check-In List:</div>
+          <ul>
+            {widget.checkInUserNames.map((item, i) => (
+              <li key={i.toString()}>{item}</li>
+            ))}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <Button onClick={widget.startCheckIn}>Start Check-In</Button>
+      )}
+    </div>
+  );
+});
+
+// StudentView showing check in button
+
+  const isCheckedIn = widget.isCheckedIn;
+   return (
+     <div>
+       <Button onClick={widget.checkIn} disabled={isCheckedIn}>
+         {isCheckedIn ? 'Checked-In' : 'Check-In'}
+       </Button>
+     </div>
+   );
+});
+```
+
+### Pass in the custom widget in `launch`
+Use the following code to pass in your custom widget through the `widgets` parameter in `launch`:
+
+```javascript
+const widgets = {
+    // Need to import the RollbookWidget class defined above
+    'rollbook': RollbookWidget
+};
+
+AgoraEduSDK.launch(dom, {
+...
+widgets: widgets
+...
+});
+```
+
+### Test your implementation
+
+Start the classroom, you see this plugin in the toolbox as shown in the figure:
+
+![Teaching-aid plugin shown in the toolbox](https://web-cdn.agora.io/docs-files/1664451141797)
+
+The teacher clicks and opens the interface effect of the plugin:
+
+![Teacher view after opening the teaching-aid plugin](https://web-cdn.agora.io/docs-files/1664451162107)
+
+After the teacher clicks Start Check-In, the effect of the plugin is displayed on the student side:
+
+![Student view after the teacher starts check-in](https://web-cdn.agora.io/docs-files/1664451174839)
+
+After the student clicks Check-In, the teacher's check-in list displays the student's effect:
+
+![Teacher check-in list after a student checks in](https://web-cdn.agora.io/docs-files/1664451187164)
+
+</PlatformStructured>
