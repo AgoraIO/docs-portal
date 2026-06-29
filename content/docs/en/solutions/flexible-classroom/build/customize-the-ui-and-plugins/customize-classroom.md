@@ -107,8 +107,8 @@ A scenario components is composed of multiple business components. Flexible clas
 | Folder          | Scenario components                           |
 | :-------------- | :-------------------------------------------- |
 | `/1v1`          | One-to-one interactive teaching scene |
-| `/big-class`    | Interactive live broadcast of large class class scene      |
-| `/big-class-mobile` | Interactive live broadcast, large class class scene for web and mobile terminals          |
+| `/big-class`    | Interactive live broadcast of large class scene      |
+| `/big-class-mobile` | Interactive live broadcast, large class scene for web and mobile terminals          |
 | `/mid-class`    | Online interactive small class scene            |
 
 **Proctor Scene**

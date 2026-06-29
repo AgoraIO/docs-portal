@@ -25,7 +25,7 @@ Pass in the following parameters in the request header:
 
 | Parameter | Data type | Required/Optional | Description                                                                                                                                                                            |
 | :--------- | :------ | :------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `isRecord` | boolean |  Optional      | This function is not supported yet. This parameter is `false` by defaut for `us-sv`, `sg`, `in-mum`, `eu` region.                                                                      |
+| `isRecord` | boolean |  Optional      | This function is not supported yet. This parameter is `false` by default for `us-sv`, `sg`, `in-mum`, `eu` region.                                                                      |
 | `limit` | integer | Optional | The maximum number of users with a `writer` or `admin` token who can be in the room at the same time. If you set this to `0`, there is no maximum. Agora recommends setting it to `0`. |
 
 ### Request example

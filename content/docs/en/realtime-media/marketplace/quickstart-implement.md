@@ -46,7 +46,7 @@ The steps to develop, test and publish an extension to Extensions Marketplace:
 
 3. **Help developers easily integrate your extension into their app**.
 
-    Write the [Implementation guide](build/publish-and-document/implementation-guide.md) for your extension
+    Write the [Implementation guide](build/publish-and-document/implementation-guide.md) for your extension.
 
 4. **Share provisioning, usage, and billing information with Agora**
 
