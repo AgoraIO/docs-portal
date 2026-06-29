@@ -15,6 +15,22 @@ import {
 } from '@/lib/platforms/registry';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
+  server: {
+    handlers: {
+      GET: async ({ next, params }) => {
+        const { getPublicDocsMarkdownResponse } = await import(
+          '@/lib/docs-markdown.server'
+        );
+        const response = await getPublicDocsMarkdownResponse({
+          locale: params.locale,
+          slugSegments: (params._splat ?? '').split('/').filter(Boolean),
+          tab: params.tab,
+        });
+
+        return response ?? next();
+      },
+    },
+  },
   loader: async ({ location, params }) => {
     if (!isSupportedDocLocale(params.locale)) {
       throw notFound();
@@ -48,7 +64,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       !slugAlreadyTargetsPlatform(slugSegments) &&
       payloadSupportsPlatform(payload, queryPlatform)
     ) {
-      const platformPayload = await loadPayload([...slugSegments, queryPlatform]);
+      const platformPayload = await loadPayload([
+        ...slugSegments,
+        queryPlatform,
+      ]);
 
       if (platformPayload && !('redirectUrl' in platformPayload)) {
         payload = platformPayload;

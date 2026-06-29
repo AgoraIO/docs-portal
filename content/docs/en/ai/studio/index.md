@@ -45,7 +45,7 @@ For outbound use cases, create campaigns with contact lists and scheduling. See 
 
 ## Who should use Studio
 
-Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Studio exposes, such as advanced API parameters or custom orchestration logic, you can use the [Conversational AI REST API](../../api-reference/conversational-ai/rest-api/index) for full programmatic control.
+Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Studio exposes, such as advanced API parameters or custom orchestration logic, you can use the [Conversational AI REST API](/en/api-reference/api-ref/conversational-ai) for full programmatic control.
 
 ## Get started
 

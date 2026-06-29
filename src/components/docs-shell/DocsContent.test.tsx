@@ -176,7 +176,7 @@ describe('DocsContent', () => {
         ]}
         contentPath="en/introduction/about-agora.md"
         description="Learn the platform basics."
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="about-agora"
         title="About Agora"
         toc={[]}
@@ -558,7 +558,9 @@ describe('DocsContent', () => {
     await screen.findByRole('heading', { name: 'Quickstart' });
     await screen.findByTestId('docs-content-body');
 
-    expect(screen.queryByTestId('platform-header-tabs')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('platform-header-tabs'),
+    ).not.toBeInTheDocument();
   });
 
   it('shows a return path on a docs page reached from a docs body link', async () => {
@@ -735,7 +737,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -767,7 +769,7 @@ describe('DocsContent', () => {
     ).toHaveAttribute('href', '/en/introduction/agora-mcp');
     expect(
       screen.getByRole('menuitem', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
   });
 
   it('copies MCP config and command from the copy page menu', async () => {
@@ -777,7 +779,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -825,7 +827,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -835,7 +837,7 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenCalledWith(
-        `${window.location.origin}/llms.mdx/docs/en/introduction/about-agora.md`,
+        `${window.location.origin}/en/introduction/about-agora.md`,
       );
     });
   });
@@ -847,7 +849,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,

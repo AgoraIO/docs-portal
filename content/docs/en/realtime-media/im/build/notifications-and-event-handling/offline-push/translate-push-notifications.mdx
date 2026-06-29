@@ -3,26 +3,13 @@ title: "Translate push notifications"
 description: "Translate push translations"
 ---
 
-### All except Windows
-
-### All except Unity
+<PlatformStructured platform="android">
 
 Push notifications work in conjunction with the translation feature. If a user enables the auto-translate feature and sends a message, the SDK will send both the original message and the translated message.
 
 A recipient can set the preferred language for push notifications. If the language of the translated message matches their setting, the translated message is displayed in the push notification bar; otherwise, the original message is displayed.
 
 The following sample code shows how to set and get the preferred language for push notifications:
-
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="flutter">Flutter</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="react-native">React Native</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
-
-<CodeBlockTab value="android">
 
 ```java
 // Set the preferred language for offline push.
@@ -32,9 +19,15 @@ ChatClient.getInstance().pushManager().setPreferredNotificationLanguage("en", ne
 ChatClient.getInstance().pushManager().getPreferredNotificationLanguage(new ValueCallBack(){});
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="ios">
+<PlatformStructured platform="ios">
+
+Push notifications work in conjunction with the translation feature. If a user enables the auto-translate feature and sends a message, the SDK will send both the original message and the translated message.
+
+A recipient can set the preferred language for push notifications. If the language of the translated message matches their setting, the translated message is displayed in the push notification bar; otherwise, the original message is displayed.
+
+The following sample code shows how to set and get the preferred language for push notifications:
 
 ```objc
 // Set the preferred language for offline push.
@@ -51,9 +44,15 @@ ChatClient.getInstance().pushManager().getPreferredNotificationLanguage(new Valu
 }];
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="web">
+<PlatformStructured platform="web">
+
+Push notifications work in conjunction with the translation feature. If a user enables the auto-translate feature and sends a message, the SDK will send both the original message and the translated message.
+
+A recipient can set the preferred language for push notifications. If the language of the translated message matches their setting, the translated message is displayed in the push notification bar; otherwise, the original message is displayed.
+
+The following sample code shows how to set and get the preferred language for push notifications:
 
 Push notifications work with the translation feature. If a user enables the automatic translation feature and sends a message, the SDK will send both the original message and the translated message.
 
@@ -72,9 +71,15 @@ chatClient.setPushPerformLanguage(params);
 chatClient.getPushPerformLanguage();
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="flutter">
+<PlatformStructured platform="flutter">
+
+Push notifications work in conjunction with the translation feature. If a user enables the auto-translate feature and sends a message, the SDK will send both the original message and the translated message.
+
+A recipient can set the preferred language for push notifications. If the language of the translated message matches their setting, the translated message is displayed in the push notification bar; otherwise, the original message is displayed.
+
+The following sample code shows how to set and get the preferred language for push notifications:
 
 ```dart
 // Set the preferred language for offline push.
@@ -87,9 +92,15 @@ try {
 } on ChatError catch (e) {}
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-<CodeBlockTab value="react-native">
+<PlatformStructured platform="react-native">
+
+Push notifications work in conjunction with the translation feature. If a user enables the auto-translate feature and sends a message, the SDK will send both the original message and the translated message.
+
+A recipient can set the preferred language for push notifications. If the language of the translated message matches their setting, the translated message is displayed in the push notification bar; otherwise, the original message is displayed.
+
+The following sample code shows how to set and get the preferred language for push notifications:
 
 ```typescript
 ChatClient.getInstance()
@@ -102,10 +113,16 @@ ChatClient.getInstance()
   });
 ```
 
-</CodeBlockTab>
+</PlatformStructured>
 
-</CodeBlockTabs>
-
-### Windows, Unity
+<PlatformStructured platform="windows">
 
 **This feature is not supported for this platform.**
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+**This feature is not supported for this platform.**
+
+</PlatformStructured>

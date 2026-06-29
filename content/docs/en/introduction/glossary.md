@@ -140,7 +140,7 @@ Inject online media stream refers to injecting an online media stream in an Inte
 
 ### Interactive Live Streaming
 
-Enabled by either Agora’s Video SDK or ASDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
+Enabled by either Agora’s Video SDK or Voice SDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
 
 ## J
 
@@ -306,9 +306,9 @@ The video profile refers to a set of video attributes, such as resolution, bitra
 
 An SDK developed by Agora to enable developers to add real-time audio interaction to their projects.
 
-### ASDK
+### Voice SDK
 
-Agora provides the ASDK to enable real-time audio communication.
+Agora provides the Voice SDK to enable real-time audio communication.
 
 ## W
 

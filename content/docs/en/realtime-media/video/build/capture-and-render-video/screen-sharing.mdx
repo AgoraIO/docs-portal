@@ -2849,28 +2849,6 @@ Create two button controls named `Btn_StartScreenCapture` and `Btn_StopScreenCap
 
 ![Create UMG](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-umg.png)
 
-#### Get available screens and windows
-
-Follow the steps below to obtain and add available screens and windows:
-
-1. In **Get Screen Display Id**, refer to the following steps to get the currently available screen and window resources and add them to the options in the drop-down list:
-
-    1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
-
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
-
-    1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
-
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
-
-1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
-
-    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
-
-1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
-
-    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
-
 #### Join a channel and publish the screen sharing stream
 
 Refer to the following steps to join a channel and publish a screen sharing stream:
@@ -2932,6 +2910,28 @@ The main nodes are as follows:
 |:---|:---------------|
 | Get Screen Display Id | After initializing the Agora Engine, get information about the shareable screens and windows. Use this information to set the options and indexes in the drop-down lists. |
 | Init Default Screen Capture Config | Prepare the parameter configuration for screen sharing and save the configuration for later use. |
+
+#### Get available screens and windows
+
+Follow the steps below to obtain and add available screens and windows:
+
+1. In **Get Screen Display Id**, refer to the following steps to get the currently available screen and window resources and add them to the options in the drop-down list:
+
+    1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
+
+        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
+
+    1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
+
+        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
+
+1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
+
+    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
+
+1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
+
+    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
 
 
 #### Configure screen sharing parameters

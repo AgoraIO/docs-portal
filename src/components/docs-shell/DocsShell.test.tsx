@@ -1373,13 +1373,23 @@ describe('DocsShell', () => {
     fireEvent.click(menuButton);
 
     const mobileSheet = await screen.findByRole('dialog');
+    const sectionPicker = within(mobileSheet).getByTestId(
+      'docs-mobile-section-picker',
+    );
+    const quickStartLink = within(mobileSheet).getByRole('link', {
+      name: 'Quick Start',
+    });
 
+    expect(sectionPicker).toHaveTextContent('Introduction');
+    expect(within(mobileSheet).queryByRole('tablist')).toBeNull();
     expect(
-      within(mobileSheet).getByRole('tab', { name: 'Introduction' }),
-    ).toBeInTheDocument();
+      within(mobileSheet).queryByRole('tab', { name: 'Introduction' }),
+    ).toBeNull();
+    expect(quickStartLink).toBeInTheDocument();
     expect(
-      within(mobileSheet).getByRole('link', { name: 'Quick Start' }),
-    ).toBeInTheDocument();
+      sectionPicker.compareDocumentPosition(quickStartLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(
       within(mobileSheet).queryByRole('button', { name: 'Site' }),
     ).toBeNull();
@@ -1397,9 +1407,24 @@ describe('DocsShell', () => {
       within(mobileSheet).getByRole('button', { name: 'Theme: Light' }),
     ).toHaveAttribute('data-variant', 'ghost');
 
-    fireEvent.click(
-      within(mobileSheet).getByRole('tab', { name: 'Introduction' }),
-    );
+    sectionPicker.focus();
+    fireEvent.keyDown(sectionPicker, { code: 'Enter', key: 'Enter' });
+
+    const sectionMenu = await screen.findByRole('menu');
+    const currentSectionItem = within(sectionMenu).getByRole('menuitem', {
+      name: 'Introduction',
+    });
+
+    const aiSectionItem = within(sectionMenu).getByRole('menuitem', {
+      name: 'AI',
+    });
+
+    expect(aiSectionItem).toBeInTheDocument();
+    expect(currentSectionItem).toHaveAttribute('aria-current');
+    expect(currentSectionItem).toHaveClass('font-semibold');
+    expect(currentSectionItem.querySelector('svg')).toBeInTheDocument();
+
+    fireEvent.click(aiSectionItem);
 
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).toBeNull();
@@ -1471,10 +1496,9 @@ describe('DocsShell', () => {
     const mobileScroll = within(mobileSheet).getByTestId(
       'docs-mobile-sidebar-scroll',
     );
-    const tabList = within(mobileSheet).getByRole('tablist');
-    const referenceTab = within(mobileSheet).getByRole('tab', {
-      name: 'Reference',
-    });
+    const sectionPicker = within(mobileSheet).getByTestId(
+      'docs-mobile-section-picker',
+    );
     const currentPageLink = within(mobileSheet).getByRole('link', {
       name: 'Acquire a cloud recording resource',
     });
@@ -1492,28 +1516,22 @@ describe('DocsShell', () => {
       'px-3',
       'sm:px-4',
     );
-    expect(tabList).toHaveAttribute('aria-orientation', 'vertical');
-    expect(tabList).toHaveClass('h-auto', 'gap-1.5');
-    expect(referenceTab).toHaveAttribute('aria-selected', 'true');
-    expect(referenceTab).toHaveClass(
-      'h-auto',
-      'min-w-0',
+    expect(sectionPicker).toHaveTextContent('Reference');
+    expect(sectionPicker).toHaveClass(
+      'h-10',
       'w-full',
-      'overflow-hidden',
-      'whitespace-normal',
-      '[overflow-wrap:anywhere]',
-      'after:hidden',
+      'justify-between',
+      'text-left',
     );
-    expect(referenceTab.className).toContain(
-      'data-[state=active]:bg-[color:var(--accent-brand-soft)]',
-    );
-    expect(referenceTab.className).toContain(
-      'data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)]',
-    );
+    expect(within(mobileSheet).queryByRole('tablist')).toBeNull();
     expect(pagesLabel).toHaveClass('pb-0.5', 'leading-4');
     expect(
       within(mobileSheet).getByRole('link', { name: 'API Reference' }),
     ).toBeInTheDocument();
+    expect(
+      sectionPicker.compareDocumentPosition(currentPageLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(currentPageLink).toHaveClass('w-full', 'min-w-0', 'overflow-hidden');
     expect(currentPageLink).toHaveAttribute('aria-current', 'page');
     expect(currentPageLink.className).toContain(
@@ -1523,6 +1541,30 @@ describe('DocsShell', () => {
       'before:bg-[color:var(--accent-brand)]',
     );
     expect(currentPageLink.className).toContain('focus-visible:ring-[3px]');
+
+    sectionPicker.focus();
+    fireEvent.keyDown(sectionPicker, { code: 'Enter', key: 'Enter' });
+
+    const sectionMenu = await screen.findByRole('menu');
+    const currentSectionItem = within(sectionMenu).getByRole('menuitem', {
+      name: 'Reference',
+    });
+
+    expect(
+      within(sectionMenu).getByRole('menuitem', { name: 'Voice Agent' }),
+    ).toBeInTheDocument();
+    expect(
+      within(sectionMenu).getByRole('menuitem', { name: 'Realtime Media' }),
+    ).toBeInTheDocument();
+    expect(
+      within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),
+    ).toBeInTheDocument();
+    expect(currentSectionItem).toHaveAttribute('aria-current');
+    expect(currentSectionItem).toHaveClass(
+      'font-semibold',
+      'text-[color:var(--accent-brand)]',
+    );
+    expect(currentSectionItem.querySelector('svg')).toBeInTheDocument();
   });
 
   it('wraps long mobile sidebar labels and limits nested indentation', async () => {
@@ -1536,7 +1578,7 @@ describe('DocsShell', () => {
     renderDocsShell(
       {
         activePath: '/en/api-reference/api-ref/cloud-recording/long-endpoint',
-        activeTab: 'api-reference',
+        activeTab: 'long-realtime-media',
         sidebar: [
           {
             children: [
@@ -1574,9 +1616,10 @@ describe('DocsShell', () => {
     );
 
     const mobileSheet = await screen.findByRole('dialog');
-    const longTab = within(mobileSheet).getByRole('tab', {
-      name: longTabTitle,
-    });
+    const sectionPicker = within(mobileSheet).getByTestId(
+      'docs-mobile-section-picker',
+    );
+    const pickerLabel = within(sectionPicker).getByText(longTabTitle);
     const sectionLabel = within(mobileSheet)
       .getByText(longSectionTitle)
       .closest('p');
@@ -1586,12 +1629,9 @@ describe('DocsShell', () => {
     const pageTitle = within(pageLink).getByText(longPageTitle);
     const nestedList = sectionLabel?.nextElementSibling;
 
-    expect(longTab).toHaveClass(
-      'max-w-full',
-      'overflow-hidden',
-      '[overflow-wrap:anywhere]',
-      'after:hidden',
-    );
+    expect(sectionPicker).toHaveClass('w-full', 'min-w-0', 'justify-between');
+    expect(pickerLabel).toHaveClass('min-w-0', 'truncate');
+    expect(within(mobileSheet).queryByRole('tablist')).toBeNull();
     expect(sectionLabel).toBeInstanceOf(HTMLElement);
     expect(sectionLabel).toHaveAttribute('data-active', 'true');
     expect(sectionLabel).toHaveClass('max-w-full', '[overflow-wrap:anywhere]');
