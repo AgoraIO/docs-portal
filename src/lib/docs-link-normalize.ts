@@ -41,8 +41,11 @@ export function normalizeDocsHref(
   }
 
   const parsed = splitHref(href);
+  const isMarkdownDocPath = /\.mdx?$/i.test(parsed.path);
+  const isExtensionlessDocPath =
+    Boolean(context.contentPath) && isExtensionlessRelativeDocPath(parsed.path);
 
-  if (!/\.mdx?$/i.test(parsed.path)) {
+  if (!isMarkdownDocPath && !isExtensionlessDocPath) {
     return { href, kind: 'relative-asset' };
   }
 
@@ -50,9 +53,10 @@ export function normalizeDocsHref(
     return { href, kind: 'unknown' };
   }
 
+  const targetHrefPath = isMarkdownDocPath ? parsed.path : `${parsed.path}.md`;
   const targetContentPath = resolveRelativePath(
     dirname(context.contentPath),
-    parsed.path,
+    targetHrefPath,
   );
   const [locale] = targetContentPath.split('/').filter(Boolean);
   const sourceSlugs = getSourceSlugsFromContentPath(targetContentPath);
@@ -143,6 +147,16 @@ function normalizeIndexDocsHref(href: string) {
   const path = parsed.path.slice(0, -'/index'.length) || '/';
 
   return `${path}${parsed.search}${parsed.hash}`;
+}
+
+function isExtensionlessRelativeDocPath(path: string) {
+  if (!path || path.endsWith('/')) {
+    return false;
+  }
+
+  const leaf = path.split('/').filter(Boolean).at(-1);
+
+  return Boolean(leaf && !leaf.includes('.'));
 }
 
 function getLegacyConversationalAiRestPath(segments: string[]) {
