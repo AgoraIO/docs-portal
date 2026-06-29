@@ -114,6 +114,12 @@ function normalizeLegacyRootDocsHref(href: string) {
   const segments = parsed.path.split('/').filter(Boolean);
   const [locale, group, leaf] = segments;
 
+  const mappedAiPath = getLegacyAiPath(segments);
+
+  if (mappedAiPath) {
+    return `${mappedAiPath}${parsed.search}${parsed.hash}`;
+  }
+
   const mappedConversationalAiPath =
     getLegacyConversationalAiRestPath(segments);
   if (mappedConversationalAiPath) {
@@ -218,6 +224,81 @@ function getLegacyLocalePath(locale: string, group: string, leaf: string) {
   return null;
 }
 
+function getLegacyAiPath(segments: string[]) {
+  const [locale, tab, group, ...rest] = segments;
+
+  if ((locale !== 'en' && locale !== 'zh-CN') || tab !== 'ai') {
+    return null;
+  }
+
+  const [leaf, subleaf] = rest;
+
+  if (group === 'build' && leaf) {
+    const groupedBuildLeaf = LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES[leaf];
+
+    if (groupedBuildLeaf && rest.length === 1) {
+      return `/${locale}/ai/build/${groupedBuildLeaf}`;
+    }
+
+    if (leaf === 'reference') {
+      const referenceLeaf = rest.at(1);
+
+      return referenceLeaf ? `/${locale}/ai/reference/${referenceLeaf}` : null;
+    }
+
+    if (leaf === 'get-started') {
+      return subleaf ? `/${locale}/ai/get-started/${subleaf}` : null;
+    }
+
+    if (leaf === 'best-practices') {
+      return subleaf ? `/${locale}/ai/best-practices/${subleaf}` : null;
+    }
+
+    if (leaf === 'custom-model-integration') {
+      const movedLeaf = LEGACY_AI_BUILD_CUSTOM_MODEL_ROUTE_LEAVES[subleaf];
+
+      if (movedLeaf) {
+        return `/${locale}/ai/build/${movedLeaf}`;
+      }
+    }
+
+    if (leaf === 'shape-the-conversation') {
+      const movedLeaf = LEGACY_AI_BUILD_SHAPE_ROUTE_LEAVES[subleaf];
+
+      if (movedLeaf) {
+        return `/${locale}/ai/build/${movedLeaf}`;
+      }
+    }
+
+    if (leaf === 'handle-runtime-events') {
+      const movedLeaf =
+        LEGACY_AI_BUILD_RUNTIME_EVENTS_ROUTE_LEAVES[subleaf];
+
+      if (movedLeaf) {
+        return `/${locale}/ai/build/${movedLeaf}`;
+      }
+    }
+  }
+
+  if (group === 'api-reference') {
+    const conversationalAiPath = getLegacyConversationalAiRestPath([
+      locale,
+      'api-reference',
+      ...rest,
+    ]);
+
+    if (conversationalAiPath) {
+      return conversationalAiPath;
+    }
+  }
+
+  if (group === 'introduction' && leaf === 'realtime-audio-video') {
+    return `/${locale}/introduction/realtime-audio-video`;
+  }
+
+  return null;
+}
+
 const LEGACY_OPERATION_ROUTE_LEAVES: Record<string, string> = {
   'agent-interrupt': 'interrupt',
   'agent-speak': 'speak',
@@ -257,7 +338,57 @@ const LEGACY_GET_STARTED_PATHS: Record<string, (locale: string) => string> = {
       : '/en/ai/reference/enable-conversational-ai',
 };
 
+const LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES: Record<string, string> = {
+  'debug-agent-failures': 'handle-runtime-events/debug-agent-failures',
+  'event-notifications': 'handle-runtime-events/event-notifications',
+  'get-runtime-events': 'handle-runtime-events/get-runtime-events',
+  'monitor-agent-runtime': 'handle-runtime-events/monitor-agent-runtime',
+  presets: 'custom-model-integration/presets',
+  'retrieve-session-history': 'handle-runtime-events/retrieve-session-history',
+  webhooks: 'handle-runtime-events/webhooks',
+};
+
+const LEGACY_AI_BUILD_CUSTOM_MODEL_ROUTE_LEAVES: Record<string, string> = {
+  transcripts: 'transcripts',
+};
+
+const LEGACY_AI_BUILD_SHAPE_ROUTE_LEAVES: Record<string, string> = {
+  'custom-llm': 'custom-model-integration/custom-llm',
+};
+
+const LEGACY_AI_BUILD_RUNTIME_EVENTS_ROUTE_LEAVES: Record<string, string> = {
+  'interrupt-agent': 'shape-the-conversation/interrupt-agent',
+  'short-term-memory': 'shape-the-conversation/short-term-memory',
+  transcripts: 'transcripts',
+};
+
 const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
+  '/api-reference/conversational-ai/rest-api':
+    '/en/api-reference/api-ref/conversational-ai',
+  '/api-reference/conversational-ai/rest-api/agent/history':
+    '/en/api-reference/api-ref/conversational-ai/history',
+  '/api-reference/conversational-ai/rest-api/agent/interrupt':
+    '/en/api-reference/api-ref/conversational-ai/interrupt',
+  '/api-reference/conversational-ai/rest-api/agent/join':
+    '/en/api-reference/api-ref/conversational-ai/join',
+  '/api-reference/conversational-ai/rest-api/agent/leave':
+    '/en/api-reference/api-ref/conversational-ai/leave',
+  '/api-reference/conversational-ai/rest-api/agent/list':
+    '/en/api-reference/api-ref/conversational-ai/list',
+  '/api-reference/conversational-ai/rest-api/agent/query':
+    '/en/api-reference/api-ref/conversational-ai/query',
+  '/api-reference/conversational-ai/rest-api/agent/speak':
+    '/en/api-reference/api-ref/conversational-ai/speak',
+  '/api-reference/conversational-ai/rest-api/agent/think':
+    '/en/api-reference/api-ref/conversational-ai/think',
+  '/api-reference/conversational-ai/rest-api/agent/turns':
+    '/en/api-reference/api-ref/conversational-ai/turns',
+  '/api-reference/conversational-ai/rest-api/agent/update':
+    '/en/api-reference/api-ref/conversational-ai/update',
+  '/api-reference/conversational-ai/rest-api/authentication':
+    '/en/api-reference/api-ref/conversational-ai/authentication',
+  '/api-reference/conversational-ai/rest-api/status-codes':
+    '/en/api-reference/api-ref/conversational-ai/status-codes',
   '/doc/convoai/restful/webhook/ncs-events': '/zh-CN/api-reference/ncs-events',
   '/en/sdks': '/en/api-reference/sdks',
   '/api-reference': '/en/api-reference',
@@ -284,6 +415,12 @@ const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
   '/en/realtime-media/voice/product-overview': '/en/realtime-media/voice',
   '/en/realtime-media/video/build/add-advanced-video-features/app-size-optimization':
     '/en/realtime-media/video/build/optimize-and-operate/app-size-optimization',
+  '/en/realtime-media/voice/build/enhance-the-audio-experience/ai-noise-suppression/web':
+    '/en/realtime-media/voice/build/enhance-the-audio-experience/ai-noise-suppression',
+  '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization/android':
+    '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization',
+  '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization/ios':
+    '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization',
   '/en/realtime-media/video/build/core-concepts':
     '/en/realtime-media/video/core-concepts',
   '/en/realtime-media/video/build/manage-agora-account':
@@ -296,6 +433,16 @@ const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
     '/en/realtime-media/video/reference/release-notes',
   '/media-push/product-overview': '/en/api-reference/api-ref/rtc',
   '/sdks': '/en/api-reference/sdks',
+  '/en/ai/best-practices/start-stop-agent': '/en/ai/build/start-stop-agent',
+  '/en/ai/models/mllm/overview': '/en/ai/models/mllm/gemini',
+  '/en/best-practices/geofencing':
+    '/en/realtime-media/voice/build/manage-connection-and-quality/geofencing',
+  '/en/api-reference/api-ref/conversational-ai/server-sdk/go':
+    '/en/api-reference/api-ref/server-sdk/go',
+  '/en/api-reference/api-ref/conversational-ai/server-sdk/python':
+    '/en/api-reference/api-ref/server-sdk/python',
+  '/en/api-reference/api-ref/conversational-ai/server-sdk/typescript':
+    '/en/api-reference/api-ref/server-sdk/typescript',
   '/video-calling/get-started/get-started-sdk':
     '/en/realtime-media/video/quickstart',
   '/video-calling/token-authentication/authentication-workflow':
