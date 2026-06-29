@@ -255,7 +255,7 @@ If the request is successful, the API returns a 200 status code and the followin
 
 ### Call the client toolkit API
 
-Agora provides a set of flexible, scalable and standardized client components for its conversational AI engine. These components support iOS, Android, and Web platforms and encapsulate scenario-based APIs. You can use them to integrate Agora Real-Time Communication (RTC) and Real-Time Messaging SIG capabilities, enabling the following features:
+Agora provides a set of flexible, scalable and standardized client components for its conversational AI engine. These components support iOS, Android, and Web platforms and encapsulate scenario-based APIs. You can use them to integrate Agora Real-Time Communication (RTC) and Signaling capabilities, enabling the following features:
 
 - Interrupt the agent
 - Display real-time transcript
@@ -264,10 +264,10 @@ Agora provides a set of flexible, scalable and standardized client components fo
 
 Before you begin, make sure you:
 
-- Integrate VSDK v4.5.1 or later and follow the [Quickstart](../../../realtime-media/video/quickstart) guide to implement basic real-time audio and video features.
-- Enable the SIG service for your project in the Agora Console and follow the [SIG Quickstart](/en/realtime-media/rtm/quickstart) to implement real-time messaging.
+- Integrate Video SDK v4.5.1 or later and follow the [Quickstart](../../../realtime-media/video/quickstart) guide to implement basic real-time audio and video features.
+- Enable Signaling for your project in the Agora Console and follow the [Signaling Quickstart](/en/realtime-media/rtm/quickstart) to implement real-time messaging.
 - Implement the basic logic to communicate with a conversational AI agent.
-- Ensure that the RTC engine instance is initialized and SIG is logged in. The toolkit does not handle initialization, lifecycle management, authentication, or login for VSDK or SIG.
+- Ensure that the RTC engine instance is initialized and the app is logged in to Signaling. The toolkit does not handle initialization, lifecycle management, authentication, or login for Video SDK or Signaling.
 
 #### Integrate the toolkit
 
@@ -282,7 +282,7 @@ Before you begin, make sure you:
 
 1. Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
 
-2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```kotlin
    // Create a configuration object for the RTC and RTM instances
@@ -298,7 +298,7 @@ Before you begin, make sure you:
 
 3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
-   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
    - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
    - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
@@ -323,7 +323,7 @@ Before you begin, make sure you:
 
 1. Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
 
-2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```swift
    // Create a configuration object for the RTC and RTM instances
@@ -339,7 +339,7 @@ Before you begin, make sure you:
 
 3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
-   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
    - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
    - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
@@ -370,7 +370,7 @@ Before you begin, make sure you:
 
 1. Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
 
-2. Create a configuration object for the RTC engine and SIG client instances, then use it to initialize the component instance.
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```ts
    // Create a configuration object for the RTC and RTM instances
@@ -385,7 +385,7 @@ Before you begin, make sure you:
 
 3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
 
-   - `advanced_features.enable_rtm: true`: Start the SIG service (Required)
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
    - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
    - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
    - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
