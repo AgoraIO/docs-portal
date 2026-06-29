@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
+import { extractStructuredPlatformTabs } from '@/lib/platforms/processed-text';
 import { remarkPlatformContent } from '@/lib/platforms/remark-platform-content';
 
 const files = [
@@ -48,5 +49,41 @@ describe('next video complex pages', () => {
     expect(content).not.toContain(
       '- The following, depending on your target platform:\n    <CodeBlockTabs',
     );
+  });
+
+  it('authentication-workflow excludes linux-c and keeps macos implementation content', async () => {
+    const file =
+      '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/video/build/authenticate-users/authentication-workflow.mdx';
+    const content = readFileSync(file, 'utf8');
+
+    expect(content).toContain('<PlatformStructured platform="macos">');
+    expect(content).not.toContain(
+      '<PlatformStructured platform="macos">\n\n</PlatformStructured>',
+    );
+
+    const compiled = String(
+      await compile(content, {
+        jsx: true,
+        remarkPlugins: [remarkPlatformContent],
+      }),
+    );
+
+    expect(extractStructuredPlatformTabs(compiled)).toEqual({
+      canonicalPlatform: 'web',
+      platforms: [
+        'android',
+        'electron',
+        'flutter',
+        'ios',
+        'macos',
+        'javascript',
+        'react-native',
+        'unity',
+        'unreal',
+        'blueprint',
+        'web',
+        'windows',
+      ],
+    });
   });
 });

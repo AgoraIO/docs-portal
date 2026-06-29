@@ -345,8 +345,7 @@ unsubscribe a package.
     
     *Unsubscribing will take effect at the end of the current billing cycle. Post which, your account will automatically switch to the Free Signaling 2.x package.*
 
-If you need any further assistance, contact your account manager or reach out to
-support@agora.io to discuss your specific needs and concerns.
+If you need any further assistance, contact your account manager or reach out to support@agora.io to discuss your specific needs and concerns.
 
 ### Clean up storage
 Depending on the features you enable for your project and your actual usage, Signaling stores the relevant data and you incur the corresponding storage charges. To avoid unintended charges, delete stored data that is no longer needed as follows:

@@ -1161,7 +1161,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('href', 'https://example.com/postman');
   });
 
-  it('scopes OpenAPI markdown prose across descriptions, docs sections, schemas, and callouts', async () => {
+  it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
     const operationDescriptionMarkdown =
       'Use this endpoint to send a custom instruction.\n\n- Pause the agent.\n- Resume the agent.\n\n1. Validate the agent ID.\n2. Send the instruction.';
 
@@ -1246,33 +1246,28 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const operationDescription = await screen.findByText(
-      'Use this endpoint to send a custom instruction.',
-    );
-    const operationMarkdown = operationDescription.closest('.openapi-markdown');
-    expect(operationMarkdown).toBeInstanceOf(HTMLElement);
-    expect(operationMarkdown?.closest('.openapi-operation')).toHaveClass(
-      'not-prose',
-    );
-
-    const descriptionListItem = screen.getByText('Pause the agent.');
-    expect(descriptionListItem.tagName).toBe('LI');
-    expect(descriptionListItem.closest('ul')).toBeInstanceOf(HTMLUListElement);
-    expect(descriptionListItem.closest('.openapi-markdown')).toBe(
-      operationMarkdown,
-    );
-
-    const descriptionOrderedItem = screen.getByText('Validate the agent ID.');
-    expect(descriptionOrderedItem.tagName).toBe('LI');
-    expect(descriptionOrderedItem.closest('ol')).toBeInstanceOf(
-      HTMLOListElement,
-    );
+    expect(
+      await screen.findByRole('heading', { name: 'Usage notes' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('Use this endpoint to send a custom instruction.'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Pause the agent.')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Validate the agent ID.'),
+    ).not.toBeInTheDocument();
 
     const sectionListItem = screen.getByText('Include a trace ID.');
     expect(sectionListItem.tagName).toBe('LI');
     expect(sectionListItem.closest('ol')).toBeInstanceOf(HTMLOListElement);
     expect(sectionListItem.closest('.openapi-markdown')).toBeInstanceOf(
       HTMLElement,
+    );
+
+    const sectionMarkdown = sectionListItem.closest('.openapi-markdown');
+    expect(sectionMarkdown).toBeInstanceOf(HTMLElement);
+    expect(sectionMarkdown?.closest('.openapi-operation')).toHaveClass(
+      'not-prose',
     );
 
     const schemaListItem = screen.getByText('Use plain text.');
@@ -1446,6 +1441,70 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders custom request code samples for list endpoints without crashing', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v2/projects/{appid}/agents',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents': {
+                  get: {
+                    description:
+                      'Retrieves Conversational AI agents that match specified conditions.',
+                    operationId: 'get-agent-list',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Retrieve a list of agents',
+                    'x-codeSamples': [
+                      {
+                        lang: 'bash',
+                        label: 'curl',
+                        source:
+                          'curl --request GET https://example.com/v2/projects/:appid/agents',
+                      },
+                      {
+                        lang: 'javascript',
+                        label: 'Node.js',
+                        source:
+                          'fetch(\"https://example.com/v2/projects/:appid/agents\")',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findByRole('tab', { name: 'curl' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Node.js' })).toBeInTheDocument();
+    const requestExamples = screen
+      .getByRole('tab', { name: 'curl' })
+      .closest('.openapi-request-examples');
+    expect(requestExamples).not.toBeNull();
+    expect(
+      within(requestExamples as HTMLElement).getByRole('tabpanel'),
+    ).toHaveTextContent(
+      'curl --request GET https://example.com/v2/projects/:appid/agents',
+    );
+  });
+
   it('renders operation prose sections without repeating the page summary', async () => {
     render(
       <FumadocsOpenApiContent
@@ -1507,9 +1566,69 @@ describe('FumadocsOpenApiContent', () => {
         'Sends a custom text instruction to a specified Conversational AI agent instance.',
       ),
     ).not.toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      screen.queryByText('x-docs-code-sample-groups'),
+    ).not.toBeInTheDocument();
     expect(screen.getByText(/Implicit instruction injection/)).toBeInTheDocument();
     expect(screen.getByText(/Client-side event triggering/)).toBeInTheDocument();
     expect(screen.getByText(/Voice and text collaboration/)).toBeInTheDocument();
+  });
+
+  it('does not render the operation description block before OpenAPI prose sections', () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    description:
+                      'Creates and starts a Conversational AI agent instance.',
+                    operationId: 'start-agent',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Start a conversational AI agent',
+                    'x-docs-sections': [
+                      {
+                        markdown:
+                          'Use this endpoint to create and start a Conversational AI agent instance.',
+                        position: 'after-description',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      screen.queryByText(
+        'Creates and starts a Conversational AI agent instance.',
+      ),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Use this endpoint to create and start a Conversational AI agent instance.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders response body schema field descriptions', async () => {

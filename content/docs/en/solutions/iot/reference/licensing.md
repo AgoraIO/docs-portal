@@ -99,7 +99,7 @@ SKU capability set:
 
 - `product` (Integer):
     - 1: Video SDK
-    - 2: IoT SDK SDK
+    - 2: IoT SDK
     - 3: FPA
 - `name` (String): The name of the SKU
 - `mediaType` (Integer):

@@ -17,7 +17,10 @@ paths:
         - 实时转录翻译
       summary: 加入频道开始实时转录翻译
       description: |
-        你可以通过该方法设置是否需要启用字幕录制、字幕翻译功能。
+        启动实时转录翻译任务。
+      x-docs-sections:
+        - position: after-description
+          markdown: 你可以通过该方法设置是否需要启用字幕录制、字幕翻译功能。
       operationId: join
       parameters:
         - $ref: '#/components/parameters/appid'
@@ -91,8 +94,8 @@ paths:
       tags:
         - 实时转录翻译
       summary: 获取实时转录翻译任务的状态
-      description: 获取实时转录翻译任务的状态。
-      operationId: get
+      description: 获取实时转录翻译任务状态。
+      operationId: query
       security:
         - Basic Auth: []
       parameters:
@@ -125,7 +128,10 @@ paths:
       tags:
         - 实时转录翻译
       summary: 停止实时转录翻译
-      description: 开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。
+      description: 停止实时转录翻译任务并离开频道。
+      x-docs-sections:
+        - position: after-description
+          markdown: 开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。
       operationId: leave
       security:
         - Basic Auth: []
@@ -144,7 +150,10 @@ paths:
       tags:
         - 实时转录翻译
       summary: 更新实时转录翻译任务
-      description: '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。'
+      description: 更新实时转录翻译任务配置。
+      x-docs-sections:
+        - position: after-description
+          markdown: '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。'
       operationId: update
       security:
         - Basic Auth: []
@@ -196,8 +205,8 @@ paths:
       tags:
         - 实时转录翻译
       summary: 获取任务列表
-      description: 检索符合指定条件的实时转录翻译任务列表。
-      operationId: get-task-list
+      description: 获取符合指定条件的实时转录翻译任务列表。
+      operationId: list
       security:
         - Basic Auth: []
       parameters:
