@@ -1276,6 +1276,13 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps the OpenAI MLLM page free of broken overview self-links', () => {
+    const source = readDoc('ai/models/mllm/openai.mdx');
+
+    expect(source).not.toContain('[MLLM Overview](overview)');
+    expect(source).not.toContain('[MLLM Overview](.)');
+  });
+
   it('keeps the video unreal setup section fully populated', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
