@@ -1494,8 +1494,12 @@ describe('FumadocsOpenApiContent', () => {
 
     expect(await screen.findByRole('tab', { name: 'curl' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Node.js' })).toBeInTheDocument();
+    const requestExamples = screen
+      .getByRole('tab', { name: 'curl' })
+      .closest('.openapi-request-examples');
+    expect(requestExamples).not.toBeNull();
     expect(
-      screen.getByRole('tabpanel'),
+      within(requestExamples as HTMLElement).getByRole('tabpanel'),
     ).toHaveTextContent(
       'curl --request GET https://example.com/v2/projects/:appid/agents',
     );
