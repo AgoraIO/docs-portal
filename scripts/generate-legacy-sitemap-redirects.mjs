@@ -114,6 +114,306 @@ const RENAMED_LEAVES = new Map([
   ['authentication', ['authentication', 'restful-authentication']],
 ]);
 
+const PRODUCT_SPECIFIC_TARGETS = {
+  'agora-analytics': {
+    'analyze/chat-sdk/data-insights':
+      '/en/solutions/agora-analytics/build/explore-and-analyze-data/chat-data-insights',
+    'analyze/chat-sdk/data-metrics':
+      '/en/solutions/agora-analytics/build/explore-and-analyze-data/chat-data-metrics',
+  },
+  'agora-chat': {
+    'agora-console/ip_whitelist':
+      '/en/realtime-media/im/build/secure-access-and-authentication/ip-whitelist-rest-api',
+    'develop/ip_allowlist':
+      '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
+    'reference/http-status-codes':
+      '/en/realtime-media/im/reference/error-codes',
+    'reference/limitations':
+      '/en/realtime-media/im/reference/supported-platforms',
+    'restful-api/chat-group-management/create-delete-retrieve-groups':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-chat-groups',
+    'restful-api/chat-group-management/manage-group-allowlist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-members',
+    'restful-api/chat-group-management/manage-group-announcement-files':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-attributes',
+    'restful-api/chat-group-management/manage-group-blocklist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-members',
+    'restful-api/chat-group-management/manage-group-mutelist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-group/manage-group-members',
+    'restful-api/chatroom-management/manage-chatroom-admins':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatroom-members',
+    'restful-api/chatroom-management/manage-chatroom-allowlist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatroom-members',
+    'restful-api/chatroom-management/manage-chatroom-blocklist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatroom-members',
+    'restful-api/chatroom-management/manage-chatroom-mutelist':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/manage-chatroom-members',
+    'restful-api/contact-management':
+      '/en/realtime-media/im/build/build-core-messaging/contacts',
+    'restful-api/message-management':
+      '/en/realtime-media/im/build/build-core-messaging/messages/manage-messages',
+    'restful-api/offline-push/offline-push-configuration':
+      '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/configure-push-notifications',
+    'restful-api/offline-push/offline-push-extension':
+      '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/set-display-content',
+    'restful-api/push-notification-management':
+      '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/configure-push-notifications',
+    'restful-api/restful-overview':
+      '/en/realtime-media/im/reference/error-codes',
+    'restful-api/thread-management/create-delete-retrieve-threads':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management',
+    'restful-api/thread-management/manage-thread-members':
+      '/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management',
+    'restful-api/user-attributes-management':
+      '/en/realtime-media/im/build/build-core-messaging/user-attributes',
+  },
+  'convo-ai-device-kit': {
+    'get-started/run-the-demo': '/en/ai/device-kit/build/run-the-r1-demo',
+    'overview/architecture': '/en/ai/device-kit/build/architecture-overview',
+    'overview/product-overview': '/en/ai/device-kit',
+  },
+  'extensions-marketplace': {
+    'develop/integrate/ht_3d_avatar':
+      '/en/realtime-media/marketplace/build/add-video-and-ar-effects/ht-3d-avatar',
+    'overview/product-overview': '/en/realtime-media/marketplace',
+  },
+  'flexible-classroom': {
+    'client-api/classroom-sdk':
+      '/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom',
+    'client-api/proctor-sdk':
+      '/en/solutions/flexible-classroom/build/enable-teaching-features/proctor-exams-online',
+    'client-api/ui-scene':
+      '/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk',
+    'develop/integrate/integrate-flexible-classroom/integrate':
+      '/en/solutions/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom',
+    'get-started/demo-quickstart':
+      '/en/solutions/flexible-classroom/quickstart',
+    'reference/restful-authentication':
+      '/en/solutions/flexible-classroom/reference/classroom-rest-api',
+    'restful-api/classroom-api':
+      '/en/solutions/flexible-classroom/reference/classroom-rest-api',
+  },
+  iot: {
+    'reference/communicate_with_rtc_sdk':
+      '/en/solutions/iot/reference/communicate-with-rtc-sdk',
+    'reference/restful-authentication':
+      '/en/solutions/iot/build/set-up-authentication-and-security/authentication-workflow',
+  },
+  'media-gateway': {
+    'advanced/abr':
+      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate',
+    'advanced/low-bitrate-hd':
+      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/pvc-and-super-quality-configuration',
+    'best-practices/best-practice':
+      '/en/realtime-media/rtmp-gateway/build/set-up-and-authenticate/quickstart-best-practices',
+    'overview/product-features':
+      '/en/realtime-media/rtmp-gateway/reference/media-gateway-features',
+    'overview/product-overview': '/en/realtime-media/rtmp-gateway',
+    'reference/rest-api/endpoints/flow-configuration-template/create-reset-template':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/flow-configuration-template/delete-template':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/flow-configuration-template/set-global-template':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/flow-configuration-template/update-template':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/message-notification-service/query-ip-address':
+      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications',
+    'reference/rest-api/endpoints/streaming-information/force-disconnection':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-information/mute':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-information/query-streaming-information':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-information/query-streaming-list':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-key/create-streaming-key':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-key/delete-streaming-key':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/endpoints/streaming-key/query-streaming-key-information':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/limitations':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/overview':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/response-status-codes':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+    'reference/rest-api/webhooks/media-gateway-event-type':
+      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications',
+    'reference/restful-authentication':
+      '/en/realtime-media/rtmp-gateway/reference/rest-api',
+  },
+  'media-pull': {
+    'overview/product-overview': '/en/realtime-media/media-pull',
+    'reference/restful-api': '/en/realtime-media/media-pull/reference/rest-api',
+    'reference/restful-authentication':
+      '/en/realtime-media/media-pull/reference/rest-api',
+  },
+  'media-push': {
+    'develop/restful-api': '/en/realtime-media/media-push/reference/rest-api',
+    'overview/product-overview': '/en/realtime-media/media-push',
+    'reference/restful-authentication':
+      '/en/realtime-media/media-push/reference/rest-api',
+    'reference/restful-type-definition':
+      '/en/realtime-media/media-push/build/receive-notifications',
+  },
+  'open-ai-integration': {
+    'get-started/quickstart': '/en/ai/reference/openai-realtime-integration',
+    'overview/core-concepts': '/en/ai/reference/openai-realtime-integration',
+    'overview/product-overview': '/en/ai/reference/openai-realtime-integration',
+    'reference/security': '/en/ai/reference/openai-realtime-integration',
+  },
+  'real-time-stt': {
+    'develop/api-callback-service':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service',
+    'rest-api/restful-authentication':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v5.x/query':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v5.x/start':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service',
+    'rest-api/v5.x/stop':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v5.x/update':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
+    'rest-api/v6.x/query':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v6.x/start':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service',
+    'rest-api/v6.x/stop':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v6.x/update':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
+    'rest-api/v7.x/query':
+      '/en/realtime-media/speech-to-text/get-started/quickstart',
+    'rest-api/v7.x/update':
+      '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
+  },
+  'server-gateway': {
+    'get-started/integrate-sdk': '/en/realtime-media/rtc-server-sdk/quickstart',
+    'overview/product-overview': '/en/realtime-media/rtc-server-sdk',
+    'reference/api': '/en/realtime-media/rtc-server-sdk/reference/downloads',
+    'reference/download':
+      '/en/realtime-media/rtc-server-sdk/reference/downloads',
+  },
+  signaling: {
+    'get-started/sdk-quickstart': '/en/realtime-media/rtm/quickstart',
+    'reference/api': '/en/realtime-media/rtm/reference/downloads',
+    'reference/cloud-proxy-allowed-ips':
+      '/en/realtime-media/rtm/reference/cloud-proxy-migration-guide',
+    'rest-api/channel-events':
+      '/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions',
+    'rest-api/channel-message':
+      '/en/realtime-media/rtm/build/work-with-channels/message-channel',
+    'rest-api/overview': '/en/realtime-media/rtm/reference/rest-api',
+    'rest-api/peer-to-peer-message':
+      '/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management',
+    'rest-api/restful-authentication':
+      '/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow',
+    'rest-api/user-events':
+      '/en/realtime-media/rtm/build/manage-presence-and-metadata/presence',
+  },
+  'ten-framework': {
+    'architecture/addon-systems': '/en/ai/ten-agent/architecture/addon-system',
+    'architecture/dependencies':
+      '/en/ai/ten-agent/architecture/build-dependencies',
+    'architecture/sub-graphs': '/en/ai/ten-agent/architecture/subgraphs',
+    'develop/architecture': '/en/ai/ten-agent/architecture/graphs',
+    'develop/build': '/en/ai/ten-agent/develop/build-ten-applications',
+    'develop/debug': '/en/ai/ten-agent/develop/debug-ten-applications',
+    'develop/profile': '/en/ai/ten-agent/develop/profile-performance',
+    'develop/test': '/en/ai/ten-agent/develop/test-ten-extensions-and-apps',
+    'develop/workflow': '/en/ai/ten-agent/develop/development-workflow',
+    'get-started/ten-designer': '/en/ai/ten-agent/get-started/use-ten-designer',
+    'get-started/ten-manager': '/en/ai/ten-agent/get-started/use-ten-manager',
+    'overview/core-cooncepts': '/en/ai/ten-agent/core-concepts',
+    'reference/required': '/en/ai/ten-agent/reference/required-fields',
+  },
+  'ten-agent': {
+    'config/properties': '/en/ai/ten-agent/architecture/metadata-system',
+    'get-started/docker-setup':
+      '/en/ai/ten-agent/get-started/set-up-environment',
+    'overview/architecture': '/en/ai/ten-agent/architecture/graphs',
+  },
+};
+
+const SHARED_PRODUCT_TARGETS = {
+  'channel-management-api/agora-console-rest-api': 'reference/console-overview',
+  'channel-management-api/best-practices/ban-user-privileges':
+    'build/secure-and-protect-channels/prevent-stream-bombing',
+  'channel-management-api/best-practices/ensure-service-reliability':
+    'reference/service-limits',
+  'channel-management-api/endpoint/ban-user-privileges/create-rules':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/ban-user-privileges/delete-rules':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/ban-user-privileges/get-rule-list':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/ban-user-privileges/update-expiration-time':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/message-notification-service/query-ip-address':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/query-channel-information/query-channel-list':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/query-channel-information/query-host-list':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/query-channel-information/query-user-list':
+    'reference/channel-management-api',
+  'channel-management-api/endpoint/query-channel-information/query-user-status':
+    'reference/channel-management-api',
+  'channel-management-api/how-to-call-api': 'reference/channel-management-api',
+  'channel-management-api/overview': 'reference/channel-management-api',
+  'channel-management-api/response-status-code': 'reference/error-codes',
+  'channel-management-api/webhook/channel-event-type':
+    'build/optimize-and-operate/receive-notifications',
+  'overview/product-overview': '',
+  'overview/release-notes': 'reference/release-notes',
+  'reference/api-sunset': 'reference/migration-guide',
+  'enhance-call-quality/video-transmission-optimization':
+    'build/manage-connection-and-quality/multipath-transmission',
+};
+
+const SHARED_TARGET_BY_PRODUCT = {
+  'channel-management-api/restful-authentication': {
+    'broadcast-streaming': 'build/authenticate-users/use-tokens',
+    'interactive-live-streaming': 'build/authenticate-users/use-tokens',
+    'video-calling': 'build/authenticate-users/authentication-workflow',
+    'voice-calling': 'build/set-up-token-authentication/use-tokens',
+  },
+  'token-authentication/authentication-workflow': {
+    'broadcast-streaming': 'build/authenticate-users/use-tokens',
+    'interactive-live-streaming': 'build/authenticate-users/use-tokens',
+    'video-calling': 'build/authenticate-users/authentication-workflow',
+    'voice-calling': 'build/set-up-token-authentication/use-tokens',
+  },
+  'enhance-call-quality/configure-audio-encoding': {
+    'broadcast-streaming':
+      'build/control-audio-and-devices/configure-audio-encoding',
+    'interactive-live-streaming':
+      'build/control-audio-and-devices/configure-audio-encoding',
+    'video-calling':
+      'build/enhance-the-audio-experience/best-practices-sound-quality',
+    'voice-calling': 'build/control-audio-and-devices/configure-audio-encoding',
+  },
+  'enhance-call-quality/configure-video-encoding': {
+    'broadcast-streaming':
+      'build/manage-video-and-streaming/configure-video-encoding',
+    'interactive-live-streaming':
+      'build/manage-video-and-streaming/configure-video-encoding',
+    'video-calling': 'build/capture-and-render-video/custom-video',
+  },
+  'enhance-call-quality/in-call-quality-monitoring': {
+    'broadcast-streaming':
+      'build/optimize-quality-and-connection/in-call-quality-monitoring',
+    'interactive-live-streaming':
+      'build/optimize-quality-and-connection/in-call-quality-monitoring',
+    'video-calling': 'build/manage-connection-and-quality/pre-call-tests',
+    'voice-calling':
+      'build/manage-connection-and-quality/in-call-quality-monitoring',
+  },
+};
+
 const inventory = buildInventory();
 writeJson(INVENTORY_PATH, {
   generatedAt: SNAPSHOT_DOWNLOADED_AT,
@@ -190,6 +490,7 @@ function buildRedirects(routes) {
     const candidates = candidateRoutes(routes, info.product);
     const match =
       exactTarget(info, routeSet) ||
+      curatedTarget(info, routeSet) ||
       leafTarget(info, candidates) ||
       fallback(info, candidates);
     const summaryKey = {
@@ -201,11 +502,12 @@ function buildRedirects(routes) {
       unavailable: 'unavailable',
     }[match.type];
     const confidence =
-      match.type === 'product-fallback' || match.type === 'unavailable'
+      match.confidence ||
+      (match.type === 'product-fallback' || match.type === 'unavailable'
         ? 'low'
         : match.type === 'semantic-page-match'
           ? 'medium'
-          : 'high';
+          : 'high');
 
     summary[summaryKey] += 1;
     rules.push({
@@ -339,6 +641,44 @@ function leafTarget(info, candidates) {
   return null;
 }
 
+function curatedTarget(info, routeSet) {
+  const productTarget =
+    PRODUCT_SPECIFIC_TARGETS[info.product]?.[info.rest.join('/')];
+  const sharedTarget = sharedTargetFor(info);
+  const target = productTarget || sharedTarget;
+
+  if (!target || !routeSet.has(target)) {
+    return null;
+  }
+
+  return {
+    target,
+    type: 'semantic-page-match',
+    confidence: 'high',
+    evidence: [
+      `legacy path ${info.rest.join('/')} maps to inspected article ${target}`,
+      productTarget
+        ? `product-specific mapping preserves ${info.product} semantics`
+        : `shared RTC mapping preserves ${info.product} product area`,
+      platformEvidence(info),
+    ],
+  };
+}
+
+function sharedTargetFor(info) {
+  const legacyPath = info.rest.join('/');
+  const relativeTarget =
+    SHARED_TARGET_BY_PRODUCT[legacyPath]?.[info.product] ||
+    SHARED_PRODUCT_TARGETS[legacyPath];
+  const mapping = PRODUCT_MAPPINGS[info.product];
+
+  if (relativeTarget === undefined || !mapping) {
+    return null;
+  }
+
+  return relativeTarget ? `${mapping.base}/${relativeTarget}` : mapping.base;
+}
+
 function fallback(info, candidates) {
   const mapping = PRODUCT_MAPPINGS[info.product];
   if (!mapping) {
@@ -356,21 +696,54 @@ function fallback(info, candidates) {
     evidence: [
       'no high-confidence article-level target found',
       `legacy product ${info.product} maps to fallback ${mapping.fallback}`,
+      `inspected candidates: ${fallbackCandidateSummary(info, candidates)}`,
+      platformEvidence(info),
     ],
     candidates: candidates
-      .map((route) => ({
-        target: route.routePath,
-        confidence: 'medium',
-        evidence: [
-          `candidate score ${overlapScore(
-            info.rest.join(' '),
-            `${route.routePath} ${route.title} ${route.headings.join(' ')}`,
-          ).toFixed(2)}`,
-          `target title: ${route.title}`,
-        ],
-      }))
+      .map((route) => candidateEvidence(info, route))
+      .sort((a, b) => b.score - a.score)
       .slice(0, 5),
   };
+}
+
+function fallbackCandidateSummary(info, candidates) {
+  const best = candidates
+    .map((route) => candidateEvidence(info, route))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+  if (best.length === 0) {
+    return 'no candidates exist in the mapped product area';
+  }
+
+  return best
+    .map((candidate) => `${candidate.target} (${candidate.score.toFixed(2)})`)
+    .join(', ');
+}
+
+function candidateEvidence(info, route) {
+  const score = overlapScore(
+    info.rest.join(' '),
+    `${route.routePath} ${route.title} ${route.headings.join(' ')}`,
+  );
+
+  return {
+    target: route.routePath,
+    confidence: score >= 0.48 ? 'medium' : 'low',
+    score,
+    evidence: [
+      `candidate score ${score.toFixed(2)}`,
+      `target title: ${route.title}`,
+    ],
+  };
+}
+
+function platformEvidence(info) {
+  const platform = info.searchParams.get('platform');
+
+  return platform
+    ? `legacy platform ${platform} is preserved in the redirect query string; selected target is product-level or platform-neutral content`
+    : 'legacy URL has no platform query';
 }
 
 function candidateRoutes(routes, product) {
@@ -393,6 +766,7 @@ function legacyInfo(href) {
     href,
     legacyPath: url.pathname,
     legacySearch: url.search,
+    searchParams: url.searchParams,
     locale,
     product,
     rest,
