@@ -225,4 +225,5 @@ Agora is committed to providing support throughout the lifecycle of its products
 | v0.9.2 | May 8, 2019 | September 19, 2020 |
 | v0.9.1 | April 4, 2019 | September 19, 2020 |
 | v0.9.0 | February 4, 2019 | September 19, 2020 |
+
 <!-- END product-specific tail (Signaling) -->

@@ -27,7 +27,7 @@ This page lists the details of the pricing plans for Chat.
 ## Group
 
 | Description                          | Free | Starter |  Pro   | Enterprise |
-| :----------------------------------- | :--: | :-----: | :----: | :--------: |
+| :----------------------------------- | :---: | :-----: | :----: | :--------: |
 | Total number of groups               | 100  | 10,000  | 50,000 |  Customizable (100,000 by default)  |
 | Number of group members              | 100  |   250   | 1,000  |  Customizable (5,000 by default)    |
 | Number of groups that users can join | 100  |  1,000  | 2,000  |  Customizable (10,000 by default)   |
@@ -35,7 +35,7 @@ This page lists the details of the pricing plans for Chat.
 ## 
 
 | Description                                                  | Free | Starter |  Pro   |      Enterprise       |
-| :----------------------------------------------------------- | :--: | :-----: | :----: | :-------------------: |
+| :----------------------------------------------------------- | :---: | :-----: | :----: | :-------------------: |
 | Number of s                                          | 100  | 10,000 | 50,000  | Customizable (100,000 by default)  |
 | Number of  members                                   | 100  |  2,000  | 10,000 | Customizable (20,000 by default)   |
 | Number of s that users can join                      | 100  |  1,000  | 2,000  | Customizable (10,000 by default)   |
@@ -47,7 +47,7 @@ This page lists the details of the pricing plans for Chat.
 ## Features
 
 | Description                                                  | Free | Starter | Pro  | Enterprise |
-| :----------------------------------------------------------- | :--: | :-----: | :--: | :--------: |
+| :----------------------------------------------------------- | :---: | :-----: | :---: | :--------: |
 | Message and event callback (provides full message routing and forwarding, support messages, and multiple event types) |  X   |    X    |  ✓   |     ✓      |
 | User status callback (synchronizes the user's offline status through callback) |  X   |    X    |  ✓   |     ✓      |
 | Callback before sending (used to connect to third-party message review services) |  X   |    X    |  ✓   |     ✓      |
@@ -70,7 +70,7 @@ This page lists the details of the pricing plans for Chat.
 ## Content moderation
 
 | Description        | Free | Starter | Pro  | Enterprise |
-| :----------------- | :--: | :-----: | :--: | :--------: |
+| :----------------- | :---: | :-----: | :---: | :--------: |
 | Reporting messages     |  X   |    X    |  ✓   |     ✓      |
 | Banning users          |   ✓   |    ✓    |  ✓   |     ✓      |
 | Muting users            |   ✓   |    ✓    |  ✓   |     ✓      |
@@ -83,14 +83,14 @@ This page lists the details of the pricing plans for Chat.
 ## Analytics
 
 | Description        | Free | Starter | Pro  | Enterprise |
-| :----------------- | :--: | :-----: | :--: | :--------: |
+| :----------------- | :---: | :-----: | :---: | :--------: |
 | Usage inspection  |   ✓   |    ✓    |  ✓   |     ✓      |
 | Quality inspection (BETA) |   ✓   |    ✓    |  ✓   |     ✓      |
 
 ## Security
 
 | Description        | Free | Starter | Pro  | Enterprise |
-| :----------------- | :--: | :-----: | :--: | :--------: |
+| :----------------- | :---: | :-----: | :---: | :--------: |
 | TLS/SSL encryption |  ✓   |    ✓    |  ✓   |     ✓      |
 | File encryption    |  ✓   |    ✓    |  ✓   |     ✓      |
 | Personal data deletion API           |  ✓   |    ✓    |  ✓   |     ✓      |
@@ -99,7 +99,7 @@ This page lists the details of the pricing plans for Chat.
 ## Compliance
 
 | Description | Free | Starter | Pro  | Enterprise |
-| :---------- | :--: | :-----: | :--: | :--------: |
+| :---------- | :---: | :-----: | :---: | :--------: |
 | ISO27001    |  ✓   |    ✓    |  ✓   |     ✓      |
 | GDPR        |  ✓   |    ✓    |  ✓   |     ✓      |
 | HIPPA       |  ✓   |    ✓    |  ✓   |     ✓      |

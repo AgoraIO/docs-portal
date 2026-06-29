@@ -40,6 +40,7 @@ Agora uses [standard minutes](#standard-minutes-calculator) to measure usage for
 | Broadcast Streaming Audience Video Full HD | 1 : 4.57 | $4.59 |
 | Broadcast Streaming Audience Video 2K | 1 : 8 | $7.99 |
 | Broadcast Streaming Audience Video 2K+ | 1 : 18 | $17.99 |
+
 :::note
 To estimate the standard minutes consumed for your use case, use the [Standard minutes calculator](#standard-minutes-calculator).
 :::
@@ -179,7 +180,7 @@ Agora uses standard duration for unified billing. It is calculated using the fol
 *Standard Duration = Usage Time × Conversion Coefficient*
 
 | Role             | Audio | HD Video | Full HD | 2K | 2K+ |
-| ---------------------------- | ----- | -------- | ------- | -- | --- |
+| ---------------------------- | ----- | -------- | ------- | --- | --- |
 | Host             | 1   |  4   | 9    | 16 | 36 |
 | Interactive Live Audience  | 1   |  4   | 9    | 16 | 36 |
 | Broadcast Streaming Audience | 0.57 |  2   | 4.57  | 8 | 18 |
@@ -291,6 +292,7 @@ The resolution of a screen sharing video stream is determined by the video resol
 | Windows   | `ScreenCaptureParameters`         | 1920 × 1080      |
 | macOS    | `AgoraScreenCaptureParameters`       | 1920 × 1080      |
 | Web     | `ScreenVideoTrackInitConfig.encoderConfig` | 1920 × 1080      |
+
 :::note
 On the Web platform, some browsers may not support the resolution you set due to device and browser limitations. In such cases, billing is based on the actual captured resolution, not the configured value.
 :::

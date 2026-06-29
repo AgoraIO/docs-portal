@@ -220,10 +220,8 @@ If the status code is `200`, the request is successful. The response returns the
 | Parameter             | Category | Description             |
 | :-------------------- | :------- |:-----------------------------|
 | `uuid`                | string   | The task UUID, which is the unique identifier of the file-conversion task.|
-| `status`              | string   | The status of the conversion task:- `Waiting`: Conversion is `waiting` to start.<br />- `Converting`: Conversion is in progress.<br />- `Finished`: Conversion has `finished`.<br />- `Fail`: Conversion failed.<br />      |
-| `type`                | string   | The conversion type:
-
-- `dynamic`: Dynamic-file conversion, converting the file to web pages.<br />- `static`: Static-file conversion, converting the file to images.<br />   |
+| `status`              | string   | <Slot name="query-conversion-status" /> |
+| `type`                | string   | <Slot name="query-conversion-type" /> |
 | `convertedPercentage` | number   | The progress of the conversion expressed as a percentage.                 |
 | `prefix`              | string   | The prefix of the address of the generated file. |
 | `pageCount`           | number   | The number of file pages. This value is not available when the conversion task fails.              |
@@ -234,6 +232,26 @@ If the status code is `200`, the request is successful. The response returns the
 | `errorMessage`        | string   | The error message corresponding to the error code, describing the cause of the error. This parameter is only returned when the conversion task fails.|
 | `zip`  | string   | Provides a link to a downloadable ZIP package containing the complete set of conversion results for the PPT. This package includes preview images and all rendering resources. It can be used with SDK APIs to redirect to local resources, enabling full preloading. This reduces wait times when users view the PPT or switch pages, as resources are not requested from the server each time. |
 | `resources`  | array[string] |  A list of download URLs for all required rendering resources. This can be used with private cloud storage for bulk link signing, enabling secure sharing or access to these resources. |
+
+<Slot for="query-conversion-status">
+
+The status of the conversion task:
+
+- `Waiting`: Conversion is waiting to start.
+- `Converting`: Conversion is in progress.
+- `Finished`: Conversion is finished.
+- `Fail`: Conversion failed.
+
+</Slot>
+
+<Slot for="query-conversion-type">
+
+The conversion type:
+
+- `dynamic`: Dynamic-file conversion, converting the file to web pages.
+- `static`: Static-file conversion, converting the file to images.
+
+</Slot>
 
 :::info
 The API for querying the progress of file conversion tasks only supports tasks created within the past seven days. To prevent the loss of status information or results, Agora recommends that you additionally store task information after completing or failing a conversion, or receive notifications of task status changes through webhook callbacks.

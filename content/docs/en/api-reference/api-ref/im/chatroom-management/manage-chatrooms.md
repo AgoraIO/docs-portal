@@ -154,6 +154,7 @@ For the parameters and detailed descriptions, see [Common parameters ](#param).
 | :------- | :----- | :------------------------ | :------- |
 | `limit`  | Number | The number of s expected to be fetched each time. The value range is [1,100], the default is `10`, This parameter is only required when fetching pages.  | No  |
 | `cursor` | String |  The starting position for data query. This parameter is required only for paginated queries.  For the first query, you do not need to set `cursor` and the server returns s of the number specified with `limit` in the descending order of their creation time. You can get the cursor from the response body and pass it in the URL of the next query request. If there is no longer a `cursor` field in the response body, all s in the app are retrieved. | No  |
+
 :::info
  If neither is set in the request `limit` and `cursor`, before the server returns the first page of the  list 10 .
 :::
