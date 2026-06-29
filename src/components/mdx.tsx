@@ -950,7 +950,7 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           <FumadocsImage alt={alt} src={src} {...props} />
         </button>
       </DialogTrigger>
-      <DialogContent className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
+      <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
         <DialogTitle className="sr-only">{title}</DialogTitle>
         <DialogDescription className="sr-only">
           Enlarged documentation image preview.
