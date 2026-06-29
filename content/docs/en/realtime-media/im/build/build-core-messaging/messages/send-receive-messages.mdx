@@ -941,8 +941,9 @@ message.chatType = AgoraChatTypeChat;
 ### Send and receive a CMD message
 
 CMD messages are command messages that instruct a specified user to take a certain action. The recipient deals with the command messages themselves.
+
 :::info
-CMD messages are not stored in the local database.Actions beginning with `em_` and `easemob::` are internal fields. Do not use them.
+CMD messages are not stored in the local database. Actions beginning with `em_` and `easemob::` are internal fields. Do not use them.
 :::
 
 ```objective-c
@@ -1325,10 +1326,8 @@ The default time limit for recalling a message is two minutes. You can extend th
 ![message-recall](/images/im/message-recall.png)
 
 :::info
-
-  1. Except CMD messages, you can recall all types of message. 2. If an
-  attachment message, like an image, voice, video, or file message, is recalled,
-  the attachment of the message is also deleted.
+1. Except CMD messages, you can recall all types of message.
+2. If an attachment message, like an image, voice, video, or file message, is recalled, the attachment of the message is also deleted.
 
 :::
 

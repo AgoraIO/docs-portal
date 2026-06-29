@@ -4,22 +4,24 @@ description: "A highly reliable global communication platform where users can ch
 ---
 Instant messaging enhances user engagement by enabling users to connect and form a community within the app. Increased engagement can lead to increased user satisfaction and loyalty to your app. An instant messaging feature can also provide real-time support to users, allowing them to get help and answers to their questions quickly. The Chat SDK enables you to embed real-time messaging in any app, on any device, anywhere.
 
-This page guides you through implementing peer-to-peer messaging into your app using the Chat SDK for Web.
+This page guides you through implementing peer-to-peer messaging into your app using the Chat SDK.
 
 ## Understand the tech
 
 The following figure shows the workflow of sending and receiving peer-to-peer messages using Chat SDK.
 
-Chat SDK workflow
+<details>
+<summary>Chat SDK workflow</summary>
 
 ![understand](/images/im/get-started-sdk-understand.png)
+</details>
 
 1. Clients retrieve an authentication token from your app server.
 1. Users log in to Chat using the app key, their user ID, and token.
 1. Clients send and receive messages through Chat as follows:
-	1. Client A sends a message to Client B. The message is sent to  Chat.
-	1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
-	1. Client B listens for the event to read and display the message.
+    1. Client A sends a message to Client B. The message is sent to Chat.
+    1. The server delivers the message to Client B. When Client B receives a message, the SDK triggers an event.
+    1. Client B listens for the event to read and display the message.
 
 ## Prerequisites
 
@@ -30,7 +32,7 @@ In order to follow the procedure on this page, you must have:
 - The [App Key](./enable#get-chat-project-information) for the project.
 - Internet access.
 
-	Ensure that no firewall is blocking your network communication.
+    Ensure that no firewall is blocking your network communication.
 
 <PlatformStructured platform="android">
 
@@ -55,13 +57,12 @@ In order to follow the procedure on this page, you must have:
     - FireFox 10 or later
     - Chrome 54 or later
     - Safari 6 or later
-  - Access to the Internet. If your network has a firewall, follow the instructions in [Firewall Requirements](/en/api-reference/faq/product/agora_product) to access Agora services.
+  - Access to the Internet. If your network has a firewall, follow the instructions in [Firewall Requirements](https://docs.agora.io/en/Agora%20Platform/firewall) to access Agora services.
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-
 - Flutter 2.10 or higher.
 - Dart 2.16 or higher.
 
@@ -121,7 +122,6 @@ In order to follow the procedure in this page, you must have the following:
 
 </PlatformStructured>
 
-
 ## Project setup
 
 <PlatformStructured platform="android">
@@ -138,22 +138,22 @@ To integrate Chat into your app, do the following:
 
         To add the SDK to your project:
         
-        1. In `/Gradle Scripts/build.gradle (Module: .app)`, add the following line under `dependencies`:
+        1. In `/Gradle Scripts/build.gradle (Module: <projectname>.app)`, add the following line under `dependencies`:
 
             ```groovy
             dependencies {
                 ...
-                implementation 'io.agora.rtc:chat-sdk:'
+                implementation 'io.agora.rtc:chat-sdk:<version>'
             }
             ```
 
-            Replace `` with the version number for the latest Chat SDK release, for example `1.3.1`. You can obtain the latest version information using [Maven Central Repository Search](https://central.sonatype.com/artifact/io.agora.rtc/chat-sdk/versions).
+            Replace `<version>` with the version number for the latest Chat SDK release, for example `1.3.1`. You can obtain the latest version information using [Maven Central Repository Search](https://central.sonatype.com/artifact/io.agora.rtc/chat-sdk/versions).
 
         1. To download the SDK from Maven Central, press **Sync Now**.
 
     1. Add permissions for network and device access.
 
-        To add the necessary permissions, in `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
+        To add the necessary permissions, in `/app/Manifests/AndroidManifest.xml`, add the following permissions after `</application>`:
             
         ```xml
         <uses-permission android:name="android.permission.INTERNET" />
@@ -192,8 +192,16 @@ To integrate Chat into your app, do the following:
     ChatClient.getInstance().init(mContext, options);
     ```
     :::tip
-This method is applicable when you integrate the SDK manually but not when you integrate the SDK with Maven Central.You can specify the path of `.so` files with the path parameter in the `ChatOptions#setNativeLibBasePath` method. The path must be a valid and private directory of the app.If you set this parameter, the SDK will use `System.load` to load the `.so` library from the directory you specify, so that the app dynamically loads the required `.so` files when it runs, thereby reducing the package size.If you do not set this parameter or set it to `null`, the SDK will use `system.load` to load the `.so` library from the default path, when compiling the app, thus increasing the package size compared to the previous method.Since March 6, 2024, using this method to reduce the app size no longer meets the requirements of Google Play. For details, refer to the [Developer Program Policies](https://support.google.com/googleplay/android-developer/answer/14906471?hl=en&visit_id=638555962315571301-1274648059&rd=1) issued by Google. If your app needs to be listed on Google Play, please try other ways to reduce the app size. For details, see [App size optimization](/en/realtime-media/rtc/best-practices/app-size-optimization#dynamically-load-so-files).
-:::
+    This method is applicable when you integrate the SDK manually but not when you integrate the SDK with Maven Central.
+
+    You can specify the path of `.so` files with the path parameter in the `ChatOptions#setNativeLibBasePath` method. The path must be a valid and private directory of the app.
+
+    If you set this parameter, the SDK will use `System.load` to load the `.so` library from the directory you specify, so that the app dynamically loads the required `.so` files when it runs, thereby reducing the package size.
+
+    If you do not set this parameter or set it to `null`, the SDK will use `System.load` to load the `.so` library from the default path when compiling the app, thus increasing the package size compared to the previous method.
+
+    Since March 6, 2024, using this method to reduce the app size no longer meets the requirements of Google Play. For details, refer to the [Developer Program Policies](https://support.google.com/googleplay/android-developer/answer/14906471?hl=en&visit_id=638555962315571301-1274648059&rd=1) issued by Google. If your app needs to be listed on Google Play, please try other ways to reduce the app size. For details, see [App size optimization](/en/realtime-media/rtc/best-practices/app-size-optimization#dynamically-load-so-files).
+    :::
 
 </PlatformStructured>
 
@@ -201,7 +209,7 @@ This method is applicable when you integrate the SDK manually but not when you i
 
 To integrate Chat into your app, do the following:
 
-1. [Create a new project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) for this Web app using the **App** template. Select the **Storyboard** Interface and **Swift** Language.
+1. [Create a new project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) for this device app using the **App** template. Select the **Storyboard** Interface and **Swift** Language.
 
     If you have not already added team information, click **Add account…**, input your Apple ID, then click **Next**.
 
@@ -223,14 +231,16 @@ To integrate Chat into your app, do the following:
         https://github.com/AgoraIO/AgoraChat_iOS.git
         ```
 
-        You see the available Agora packages. In **AgoraChat_iOS**, specify the latest Chat SDK version, for example `1.0.9`. You can obtain the latest version information in the [release notes](/en/realtime-media/im/reference/release-notes).
+        You see the available Agora packages. In **AgoraChat_iOS**, specify the latest Chat SDK version, for example `1.0.9`. You can obtain the latest version information in the [release notes](./reference/release-notes).
 
     1.  Click **Add Package**. In the new window, click **Add Package**.
 
         You see **AgoraChat** in **Package Dependencies** for your project.
 
 :::warning
-The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/AgoraChat_PrivacyInfo.xcprivacy) file that you can include in your project. If you are using Chat SDK 1.2 or earlier, refer to [Add a privacy manifest file](#add-a-privacy-manifest-file) for details.
+
+The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/AgoraChat_PrivacyInfo.xcprivacy) file that you can include in your project. If you are using Chat SDK 1.2 or earlier, refer to [Add a privacy manifest file](#add-a-privacy-manifest-file) for details. 
+
 :::
 
 </PlatformStructured>
@@ -272,7 +282,6 @@ To create the environment necessary to add peer-to-peer messaging into your app,
         }
     }
    ```
-
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -295,12 +304,12 @@ To integrate Chat into your app, do the following:
     You can also create a new project from the terminal using the following command:
 
     ```bash
-    flutter create 
+    flutter create <--insert project name-->
     ```
 
 1. **Add Chat SDK to your project**
 
-    Add the following line to the `/pubspec.yaml` file under `dependencies`:
+    Add the following line to the `<project_folder>/pubspec.yaml` file under `dependencies`:
 
     ```yaml
     dependencies:
@@ -309,7 +318,7 @@ To integrate Chat into your app, do the following:
       agora_chat_sdk: ^x.y.z
     ...
     ```
-    To get the latest Web Chat SDK version number, visit [pub.dev](https://pub.dev/packages?q=agora_chat_sdk).
+    To get the latest device Chat SDK version number, visit [pub.dev](https://pub.dev/packages?q=agora_chat_sdk).
 
     You can also add the Chat SDK dependency to your project by running the following command in the project folder:
 
@@ -331,7 +340,7 @@ To integrate Chat into your app, do the following:
 
     * **Android**
 
-        * In the `/android/app/build.gradle` file, set the Android `minSdkVersion` to `21` under `defaultConfig {`.
+        * In the `<project_folder>/android/app/build.gradle` file, set the Android `minSdkVersion` to `21` under `defaultConfig {`.
 
             ``` json
             android {
@@ -341,7 +350,7 @@ To integrate Chat into your app, do the following:
             }
             ```
 
-        * In the `/android/app/proguard-rules.pro` file, add the following lines to prevent code obfuscation:
+        * In the `<project_folder>/android/app/proguard-rules.pro` file, add the following lines to prevent code obfuscation:
 
             ```bash
             -keep class com.hyphenate.** {*;}
@@ -350,7 +359,7 @@ To integrate Chat into your app, do the following:
 
     * **iOS**
 
-        Open the `/ios/Runner.xcodeproj` file in **Xcode**, and select **TARGETS** > **Runner** in the left sidebar. In the **General** > **Deployment Info** section, set the minimum iOS version to `iOS 10.0`.
+        Open the `<project_folder>/ios/Runner.xcodeproj` file in **Xcode**, and select **TARGETS** > **Runner** in the left sidebar. In the **General** > **Deployment Info** section, set the minimum iOS version to `iOS 10.0`.
 
 </PlatformStructured>
 
@@ -395,7 +404,6 @@ You can use npm or other tools.
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-
 1. **Create a Unity project**:
 
     1. In Unity Hub, select **Projects**, then click **New Project**.
@@ -429,19 +437,19 @@ This section shows how to integrate Chat SDK into your project.
 
     1. [Download](/sdks) the Chat SDK NuGet package.
 
-    2. In Solution Explorer, right-click `` and select **Manage NuGet Packages...**.
+    2. In Solution Explorer, right-click `<project-name>` and select **Manage NuGet Packages...**.
 
-    3. On the `NuGet: ` page, select the **Gear** icon at the top right.
+    3. On the `NuGet: <project-name>` page, select the **Gear** icon at the top right.
 
     4. In **Options**,
         1. Click **+** at the top right, then select the new package source.
         1. Set **Name**, then set **Source** to the parent directory of the Nuget package resides.
         1. Click **OK**.
 
-    5. Go back to the `NuGet: ` page, open the **Package source** drop-down list at the top right, then
+    5. Go back to the `NuGet: <project-name>` page, open the **Package source** drop-down list at the top right, then
       select the package you just added.
 
-    6. In **Browse** on the `NuGet: ` page, select **agora_chat_sdk**, then click **Install**.
+    6. In **Browse** on the `NuGet: <project-name>` page, select **agora_chat_sdk**, then click **Install**.
 
           If you don't see **agora_chat_sdk**, refresh the page.
 
@@ -451,19 +459,656 @@ You have installed Chat SDK.
 
 </PlatformStructured>
 
-
 ## Implement peer-to-peer messaging
+
 This section shows how to use the Chat SDK to implement peer-to-peer messaging in your app, step by step.
 
 <PlatformStructured platform="android">
 
-_No platform-specific content._
+### Create the UI
 
+In the quickstart app, you create a simple UI that consists of the following elements:
+
+* A `Button` to log in or out of  Chat.
+* An `EditText` box to specify the recipient user ID.
+* An `EditText` box to enter a text message.
+* A `Button` to send the text message.
+* A scrollable layout to display sent and received messages.
+
+To add the UI framework to your device project, open `app/res/layout/activity_main.xml` and replace the content with the following:
+
+   ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ECE5DD">
+
+        <Button
+            android:id="@+id/btnJoinLeave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:onClick="joinLeave"
+            android:text="Join" />
+
+        <EditText
+            android:id="@+id/etRecipient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/btnJoinLeave"
+            android:layout_alignTop="@id/btnJoinLeave"
+            android:layout_toStartOf="@id/btnJoinLeave"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:background="#FFFFFF"
+            android:hint="Enter recipient user ID" />
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btnSendMessage"
+            android:layout_below="@id/etRecipient"
+            android:background="#ECE5DD">
+
+            <LinearLayout
+                android:id="@+id/messageList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+        </ScrollView>
+
+        <EditText
+            android:id="@+id/etMessageText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btnSendMessage"
+            android:layout_alignBottom="@id/btnSendMessage"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:background="#FFFFFF"
+            android:hint="Message" />
+
+        <Button
+            android:id="@+id/btnSendMessage"
+            android:layout_width="50dp"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:onClick="sendMessage"
+            android:text=">>" />
+    </RelativeLayout>
+   ```
+
+You see `Cannot resolve symbol` errors in your IDE. This is because this layout refers to methods that you create later.
+
+### Handle the system logic
+
+Import the necessary classes, and add a method to show status updates to the user.
+
+1.  **Import the relevant Agora and Android classes**
+
+    In `/app/java/com.example.<projectname>/MainActivity`, add the following lines after `package com.example.<project name>`:
+
+    ```java
+    import android.widget.Button;
+    import android.widget.EditText;
+    import android.widget.LinearLayout;
+    import android.widget.TextView;
+    import android.view.View;
+    import android.widget.Toast;
+    import android.graphics.Color;
+    import android.view.Gravity;
+    import android.view.inputmethod.InputMethodManager;
+    import android.util.Log;
+    import java.util.List;
+
+    import io.agora.CallBack;
+    import io.agora.ConnectionListener;
+    import io.agora.MessageListener;
+    import io.agora.chat.ChatClient;
+    import io.agora.chat.ChatMessage;
+    import io.agora.chat.ChatOptions;
+    import io.agora.chat.TextMessageBody;
+    ```
+   
+1.  **Log events and show status updates to your users**
+
+    In the `MainActivity` class, add the following method before `onCreate`.
+
+    ``` javascript
+    private void showLog(String text) {
+        // Show a toast message
+        runOnUiThread(() ->
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show());
+        
+        // Write log
+        Log.d("AgoraChatQuickStart", text);
+    }
+    ```
+
+### Send and receive messages
+
+When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+
+The following figure shows the API call sequence for implementing this workflow.
+
+<details>
+<summary>API call sequence</summary>
+
+![image](/images/im/chat-call-logic-android.svg)
+</details>
+
+To implement this workflow in your app, take the following steps:
+
+1. **Declare variables**
+
+    In the `MainActivity` class, add the following declarations:
+
+   ```java
+    private String userId = "<User ID of the local user>";
+    private String token = "<Your authentication token>";
+    private String appKey = "<App key from Agora console>";
+
+    private ChatClient agoraChatClient;
+    private boolean isJoined = false;
+    EditText editMessage;
+    ```
+
+1. **Set up Chat when the app starts**
+
+    When the app starts, you create an instance of the `ChatClient` and set up callbacks to handle Chat events.
+    To do this, replace the `onCreate` method in the `MainActivity` class with the following:
+
+    ```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        setupChatClient(); // Initialize the ChatClient
+        setupListeners(); // Add event listeners
+
+        // Set up UI elements for code access
+        editMessage = findViewById(R.id.etMessageText);
+    }
+    ```
+   
+1. **Instantiate the `ChatClient`**   
+
+    To implement peer-to-peer messaging, you use Chat SDK to initialize a `ChatClient` instance. In the `MainActivity` class, add the following method before `onCreate`.
+
+    ```java
+    private void setupChatClient() {
+        ChatOptions options = new ChatOptions();
+        if (appKey.isEmpty()) {
+            showLog("You need to set your AppKey");
+            return;
+        }
+        options.setAppKey(appKey); // Set your app key in options
+        agoraChatClient = ChatClient.getInstance();
+        agoraChatClient.init(this, options); // Initialize the ChatClient
+        agoraChatClient.setDebugMode(true); // Enable debug info output
+    }
+    ```
+
+1.  **Handle and respond to Chat events**
+
+    To receive notification of Chat events such as connection, disconnection, and token expiration, you add a `ConnectionListener`. To handle message delivery and new message notifications, you add a `MessageListener`. When you receive the `onMessageReceived` notification, you display the message to the user.
+
+    In `/app/java/com.example.<projectname>/MainActivity`, add the following method after `setupChatClient`:
+
+    ```java
+    private void setupListeners() {
+        // Add message event callbacks
+        agoraChatClient.chatManager().addMessageListener(new MessageListener() {
+            @Override
+            public void onMessageReceived(List<ChatMessage> messages) {
+                for (ChatMessage message : messages) {
+                    runOnUiThread(() ->
+                            displayMessage(((TextMessageBody) message.getBody()).getMessage(),
+                                    false)
+                    );
+                    showLog("Received a " + message.getType().name()
+                            + " message from " + message.getFrom());
+                }
+            }
+        });
+
+        // Add connection event callbacks
+        agoraChatClient.addConnectionListener(new ConnectionListener() {
+            @Override
+            public void onConnected() {
+                showLog("Connected");
+            }
+
+            @Override
+            public void onDisconnected(int error) {
+                if (isJoined) {
+                    showLog("Disconnected: " + error);
+                    isJoined = false;
+                }
+            }
+
+            @Override
+            public void onLogout(int errorCode) {
+                showLog("User logging out: " + errorCode);
+            }
+
+            @Override
+            public void onTokenExpired() {
+                // The token has expired
+            }
+
+            @Override
+            public void onTokenWillExpire() {
+                // The token is about to expire. Get a new token 
+                // from the token server and renew the token.
+            }
+        });
+    }
+    ```
+
+1. **Log in to  Chat**
+
+    When a user clicks **Join**, your app logs in to  Chat. When a user clicks **Leave**, the app logs out of  Chat.
+
+    To implement this logic, in the `MainActivity` class, add the following method before `onCreate`:
+
+    ```java
+    public void joinLeave(View view) {
+        Button button = findViewById(R.id.btnJoinLeave);
+
+        if (isJoined) {
+            agoraChatClient.logout(true, new CallBack() {
+                @Override
+                public void onSuccess() {
+                    showLog("Sign out success!");
+                    runOnUiThread(() -> button.setText("Join"));
+                    isJoined = false;
+                }
+                @Override
+                public void onError(int code, String error) {
+                    showLog(error);
+                }
+            });
+        } else {
+            agoraChatClient.loginWithToken(userId, token, new CallBack() {
+                @Override
+                public void onSuccess() {
+                    showLog("Signed in");
+                    isJoined = true;
+                    runOnUiThread(() -> button.setText("Leave"));
+                }
+                @Override
+                public void onError(int code, String error) {
+                    if (code == 200) { // Already joined
+                        isJoined = true;
+                        runOnUiThread(() -> button.setText("Leave"));
+                    } else {
+                        showLog(error);
+                    }
+                }
+            });
+        }
+    }
+    ```
+
+1. **Send a message**
+    
+    To send a message to  Chat when a user presses the **Send** button, add the following method to the `MainActivity` class, before `onCreate`:
+
+    ```java
+    public void sendMessage(View view) {
+        // Read the recipient name from the EditText box
+        String toSendName = ((EditText) findViewById(R.id.etRecipient)).getText().toString().trim();
+        String content = editMessage.getText().toString().trim();
+
+        if (toSendName.isEmpty() || content.isEmpty()) {
+            showLog("Enter a recipient name and a message");
+            return;
+        }
+
+        // Create a ChatMessage
+        ChatMessage message = ChatMessage.createTextSendMessage(content, toSendName);
+
+        // Set the message callback before sending the message
+        message.setMessageStatusCallback(new CallBack() {
+            @Override
+            public void onSuccess() {
+                showLog("Message sent");
+                runOnUiThread(() -> {
+                    displayMessage(content, true);
+                    // Clear the box and hide the keyboard after sending the message
+                    editMessage.setText("");
+                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(editMessage.getApplicationWindowToken(),0);
+                });
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                showLog(error);
+            }
+        });
+
+        // Send the message
+        agoraChatClient.chatManager().sendMessage(message);
+    }
+    ```
+
+1. **Display chat messages**
+    
+    To display the messages the current user has sent and received in your app, add the following method to the `MainActivity` class:
+
+    ```java
+    void displayMessage(String messageText, boolean isSentMessage) {
+        // Create a new TextView
+        final TextView messageTextView = new TextView(this);
+        messageTextView.setText(messageText);
+        messageTextView.setPadding(10,10,10,10);
+        
+        // Set formatting
+        LinearLayout messageList = findViewById(R.id.messageList);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        if (isSentMessage) {
+            params.gravity = Gravity.END;
+            messageTextView.setBackgroundColor(Color.parseColor("#DCF8C6"));
+            params.setMargins(100,25,15,5);
+        } else {
+            messageTextView.setBackgroundColor(Color.parseColor("white"));
+            params.setMargins(15,25,100,5);
+        }
+
+        // Add the message TextView to the LinearLayout
+        messageList.addView(messageTextView, params);
+    }
+    ```
+    
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-_No platform-specific content._
+### Create the UI
+
+In the quickstart app, you create a simple UI that consists of the following elements:
+
+* A `UIButton` to log in or out of the Chat.
+* A `UITextField` box to specify the recipient user ID.
+* A `UITextField` box to enter a text message.
+* A `UIButton` to send the text message.
+* A `UITextView` to display sent and received messages.
+
+To create this user interface, in the `ViewController` class:
+
+1.  **Add the UI elements you need**
+
+    Add the following declarations at the top of the class.
+
+    ```swift
+    var btnJoinLeave: UIButton!
+    var etRecipient: UITextField!
+    var scrollView: UITextView!
+    var etMessageText: UITextField!
+    var btnSendMessage: UIButton!
+    ```
+
+1. **Configure the UI elements in your interface**
+
+    Add the following below `super.viewDidLoad()` inside the `viewDidLoad` method:
+
+    ```swift
+    btnJoinLeave = UIButton(type: .system)
+    btnJoinLeave.frame = CGRect(x: 60, y: 100, width: 250, height: 30)
+    btnJoinLeave.setTitle("Join", for: .normal)
+    btnJoinLeave.addTarget(self, action: #selector(joinLeave), for: .touchUpInside)
+    self.view.addSubview(btnJoinLeave)
+
+    etRecipient = UITextField(frame: CGRect(x: 100, y: 150, width: 300, height: 30))
+    etRecipient.placeholder = "Enter recipient user ID"
+    self.view.addSubview(etRecipient)
+
+    scrollView = UITextView(frame: CGRect(x: 130, y: 200, width: 300, height: 100))
+    scrollView.isEditable = false
+    self.view.addSubview(scrollView)
+
+    etMessageText = UITextField(frame: CGRect(x: 80, y: 320, width: 200, height: 30))
+    etMessageText.placeholder = "Message"
+    self.view.addSubview(etMessageText)
+
+    btnSendMessage = UIButton(type: .system)
+    btnSendMessage.frame = CGRect(x: 270, y: 320, width: 80, height: 30)
+    btnSendMessage.setTitle(">>", for: .normal)
+    btnSendMessage.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+    self.view.addSubview(btnSendMessage)
+    ```
+
+### Handle the system logic
+
+Import the necessary classes, and add a method to show status updates to the user.
+
+1. **Import the Chat SDK class**
+
+    In `ViewController`, add the provided code sample after `import UIKit`:
+
+    ```swift
+    import AgoraChat
+    ```
+
+If Xcode does not recognize this import, click **File** &gt; **Packages** &gt; **Reset Package Caches**.
+
+2.  **Log events and show status updates to your users**
+
+    In `ViewController`, add the following method after the `viewDidLoad` function:
+
+    ```swift
+    func showLog(_ text: String) -> Void {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "", message: text, preferredStyle: .alert)
+            self.present(alert, animated: true)
+            alert.dismiss(animated: true, completion: nil)
+        }
+    }
+    ```
+
+### Send and receive messages
+
+When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to the Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to the Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+
+To implement this workflow in your app, take the following steps:
+
+1. **Declare variables**
+
+    In the `ViewController` class, add the following declarations at the top:
+
+   ```swift
+    var userId = "<User ID of the local user>"
+    var token = "<Your authentication token>"
+    var appKey = "<App key from Agora console>"
+
+    var agoraChatClient: AgoraChatClient!
+    var isJoined: Bool = false
+    ```
+
+1. **Set up Chat when the app starts**
+
+    When the app starts, you create an instance of the `AgoraChatClient`. To do this, add the following to `viewDidLoad`:
+
+    ```swift
+    setupChatClient()  // Initialize the ChatClient
+    ```
+
+1. **Instantiate the `AgoraChatClient`**
+
+    To implement peer-to-peer messaging, you use Chat SDK to initialize an `AgoraChatClient` instance. In the `ViewController` class, add the following method after the `viewDidLoad` function:
+
+    ```swift
+    func setupChatClient() {
+        if (appKey.isEmpty) {
+            showLog("You need to set your AppKey")
+            return
+        }
+        let options = AgoraChatOptions(appkey: appKey)  // Create AgoraChatOptions with your app key
+        agoraChatClient = AgoraChatClient.shared()
+        options.enableConsoleLog = true  // Enable printing logs on console
+        agoraChatClient.initializeSDK(with: options)  // Initialize the AgoraChatClient
+        agoraChatClient.chatManager?.add(self, delegateQueue: nil)  // Adds the chat delegate to receive messages
+    }
+    ```
+
+1.  **Handle and respond to Chat events**
+
+    The `AgoraChatClientDelegate` implements callbacks to receive notification of Chat events such as a connection state change, and a token expiration. The `AgoraChatManagerDelegate` implements a callback to handle the receival of messages. When you receive the `messagesDidReceive` notification, you display the message to the user.
+
+    To handle these events, add the following extensions to the `ViewController`:
+
+    ```swift
+    // Add message event callbacks
+    extension ViewController: AgoraChatManagerDelegate {
+        func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
+            for message in aMessages {
+                let msgBody = message.body as! AgoraChatTextMessageBody
+
+                DispatchQueue.main.async {
+                    self.displayMessage(messageText: msgBody.text, isSentMessage: false)
+                }
+
+                showLog("Received a message from \(message.from)")
+            }
+        }
+    }
+
+    // Add connection event callbacks
+    extension ViewController: AgoraChatClientDelegate {
+        func connectionStateDidChange(_ aConnectionState: AgoraChatConnectionState) {
+            if aConnectionState == .connected {
+                showLog("Connected to the chat server.")
+            } else {
+                if isJoined {
+                    showLog("Disconnected from the chat server.")
+                    isJoined = false
+                }
+            }
+        }
+
+        func tokenWillExpire(_ aErrorCode: AgoraChatErrorCode) {
+            showLog("Token will expire (log in using new token)")
+        }
+
+        func tokenDidExpire(_ aErrorCode: AgoraChatErrorCode) {
+            showLog("Token expired (log in using new token)")
+        }
+    }
+    ```
+
+1. **Log in to the Chat**
+
+    When a user presses **Join**, your app logs in to the Chat. When a user presses **Leave**, the app logs out of the Chat.
+
+    To implement this logic, put the following method to the `ViewController`:
+
+    ```swift
+    @objc func joinLeave() {
+        if (isJoined) {
+            let result: AgoraChatError? = agoraChatClient.logout(true)
+            guard result == nil else {
+                showLog(result!.errorDescription)
+                return
+            }
+
+            showLog("Signed out")
+            DispatchQueue.main.async {
+                self.btnJoinLeave.setTitle("Join", for: .normal)
+                self.isJoined = false
+            }
+        } else {
+            let result: AgoraChatError? = agoraChatClient.login(withUsername: userId, token: token)
+            guard result == nil else {
+                if (result!.code.rawValue == 200) {  // Already joined
+                    isJoined = true
+                    showLog("Already signed in")
+                    DispatchQueue.main.async {
+                        self.btnJoinLeave.setTitle("Leave", for: .normal)
+                    }
+                } else {
+                    showLog(result!.errorDescription)
+                }
+                return
+            }
+
+            showLog("Signed in")
+            isJoined = true
+
+            DispatchQueue.main.async {
+                self.btnJoinLeave.setTitle("Leave", for: .normal)
+            }
+        }
+    }
+    ```
+
+1. **Send a message**
+
+    To send a message to the Chat when a user presses the **Send** button, perform the following steps:
+
+    1. Add the following method to the `ViewController` class before the `viewDidLoad` function:
+
+        ```swift
+          @objc func sendMessage() {
+              // Read the recipient name from the EditText box
+              let toSendName = etRecipient.text!.trimmingCharacters(in: .whitespaces)
+              let content = etMessageText.text!.trimmingCharacters(in: .whitespaces)
+
+              if (toSendName.isEmpty || content.isEmpty) {
+                  showLog("Enter a recipient name and a message.")
+                  return
+              }
+
+              // Create a ChatMessage
+              let message = AgoraChatMessage(
+                  conversationID: toSendName,
+                  from: agoraChatClient.currentUsername!,
+                  to: toSendName,
+                  body: AgoraChatTextMessageBody(text: content),
+                  ext: nil
+              )
+
+              // Send the message
+              agoraChatClient.chatManager?.send(message, progress: nil) { _, err in
+                  if let err = err {
+                      self.showLog("Error occurred when sending the message. \(err.errorDescription)")
+                  } else {
+                      self.showLog("Message sent successfully.")
+                      DispatchQueue.main.async {
+                          self.displayMessage(messageText: content, isSentMessage: true)
+                          self.etMessageText.text = ""
+                      }
+                  }
+              }
+          }
+        ```
+
+1. **Display chat messages**
+
+    To display the messages the current user has sent and received in your app, add the following method to the `ViewController` class:
+
+    ```swift
+    func displayMessage(messageText: String, isSentMessage: Bool) {
+        DispatchQueue.main.async {
+            self.scrollView.text.append(
+                DateFormatter.localizedString(from: Date.now, dateStyle: .none, timeStyle: .medium)
+                + ":  " + String(reflecting: messageText) + "\r\n"
+            )
+            self.scrollView.scrollRangeToVisible(NSRange(location: self.scrollView.text.count, length: 1))
+        }
+    }
+    ```
 
 </PlatformStructured>
 
@@ -474,8 +1119,8 @@ Copy the following code to the `App.jsx` file to implement the UI:
 ```jsx
 
 function App() {
-  // Replaces  with your app key.
-  const appKey = "";
+  // Replaces <Your app key> with your app key.
+  const appKey = "<Your app key>";
   const [userId, setUserId] = useState("");
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -572,64 +1217,477 @@ function App() {
 
   return (
     <>
-      
-        Agora Chat Examples
+      <div
+        style={{
+          width: "500px",
+          display: "flex",
+          gap: "10px",
+          flexDirection: "column",
+        }}
+      >
+        <h2>Agora Chat Examples</h2>
         {!isLoggedIn ? (
           <>
-            
-              UserID: 
-               setUserId(e.target.value)}
+            <div>
+              <label>UserID: </label>
+              <input
+                type="text"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
                 placeholder="Enter the user ID"
               />
-            
-            
-              Token: 
-               setToken(e.target.value)}
+            </div>
+            <div>
+              <label>Token: </label>
+              <input
+                type="text"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
                 placeholder="Enter the token"
               />
-            
-            Login
-          
+            </div>
+            <button onClick={handleLogin}>Login</button>
+          </>
         ) : (
           <>
-            Welcome, {userId}
-            Logout
-            
-              Peer userID: 
-               setPeerId(e.target.value)}
+            <h3>Welcome, {userId}</h3>
+            <button onClick={handleLogout}>Logout</button>
+            <div>
+              <label>Peer userID: </label>
+              <input
+                type="text"
+                value={peerId}
+                onChange={(e) => setPeerId(e.target.value)}
                 placeholder="Enter the peer user ID"
               />
-            
-            
-              Peer message: 
-               setMessage(e.target.value)}
+            </div>
+            <div>
+              <label>Peer message: </label>
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder="Input message"
               />
-              Send
-            
-          
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
+          </>
         )}
 
-        Operation log
-        
+        <h3>Operation log</h3>
+        <div
+          style={{
+            height: "300px",
+            overflowY: "auto",
+            border: "1px solid #ccc",
+            padding: "10px",
+            textAlign: "left",
+          }}
+        >
           {logs.map((log, index) => (
-            {log}
+            <div key={index}>{log}</div>
           ))}
-        
-      
-    
+        </div>
+      </div>
+    </>
   );
 }
 
 export default App;
 ```
 
+<a name="test"></a>
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
 
-_No platform-specific content._
+### Handle the system logic
 
+Import the Chat SDK package and set up the app framework.
+
+1. **Add the Chat SDK package**
+
+    Open the file `/lib/main.dart` and add the following `import` statement at the top of the file:
+
+    ```dart
+    import 'package:agora_chat_sdk/agora_chat_sdk.dart';
+    ```
+
+1. **Declare global variables**
+
+    In `/lib/main.dart` add the following declaration after the `import` statements:
+
+    ```dart
+    // Global key to access the scaffold messenger
+    final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+        GlobalKey<ScaffoldMessengerState>(); 
+    ```
+
+1. **Enable SnackBar messages**
+
+    Update the root widget to add the `scaffoldMessengerKey` for showing SnackBar messages, and set the background color. In `/lib/main.dart`, replace the `MyApp` class with the following:
+
+    ```dart
+    class MyApp extends StatelessWidget {
+      const MyApp({Key? key}) : super(key: key);
+      // This widget is the root of your application.
+      @override
+      Widget build(BuildContext context) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color(0xFFECE5DD),
+          ),
+          home: const MyHomePage(title: 'Agora Chat Quickstart'),
+        );
+      }
+    }
+    ```
+
+1. **Set up the app framework**
+
+    To set up a Flutter app framework for Chat, you do the following:
+
+    1. Create a stateful widget
+    1. Declare variables to manage the connection and access UI elements
+    1. Add a method to display information to the user
+
+    To do this, replace the `_MyHomePageState` class with the following:
+
+    ```dart
+    class _MyHomePageState extends State<MyHomePage> {
+      static const String appKey = "<App key from Agora console>";
+      static const String userId = "<User ID of the local user>";
+      String token = "<Your authentication token>";
+      
+      late ChatClient agoraChatClient;
+      bool isJoined = false;
+
+      ScrollController scrollController = ScrollController();
+      TextEditingController messageBoxController = TextEditingController();
+      String messageContent = "", recipientId = "";
+      final List<Widget> messageList = [];
+      
+      showLog(String message) {
+        scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
+          content: Text(message),
+        ));
+      }
+
+    }
+    ```
+
+### Build the UI
+
+In the quickstart app, you create a simple UI that consists of the following elements:
+
+* An `ElevatedButton` to log in or out of  Chat
+* A `TextField` to specify the recipient user ID
+* A `TextField` to enter a text message
+* An `ElevatedButton` to send the text message
+* A `ListView.builder` to display sent and received messages
+
+To create this UI, add the following `build` method to the `_MyHomePageState` class:
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 40,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Enter recipient's userId",
+                      ),
+                      onChanged: (chatUserId) => recipientId = chatUserId,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                SizedBox(
+                  width: 80,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: joinLeave,
+                    child: Text(isJoined ? "Leave" : "Join"),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                itemBuilder: (_, index) {
+                  return messageList[index];
+                },
+                itemCount: messageList.length,
+              ),
+            ),
+            Row(children: [
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: TextField(
+                    controller: messageBoxController,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Message",
+                    ),
+                    onChanged: (msg) => messageContent = msg,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: 50,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: sendMessage,
+                  child: const Text(">>"),
+                ),
+              ),
+            ]),
+          ],
+        ),
+      ),
+    );
+  }
+```
+
+### Send and receive messages
+
+When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+
+The following figure shows the API call sequence for implementing this workflow.
+
+<details>
+<summary>API call sequence</summary>
+
+![image](/images/im/chat-call-logic-flutter.svg)
+</details>
+
+To implement this workflow in your app, take the following steps:
+
+1. **Set up Chat when the app starts**
+
+    When the app starts, you create an instance of the `ChatClient` and set up callbacks to handle Chat events.
+    To do this, add the following `initState` method to the `_MyHomePageState` class:
+
+    ```dart
+    @override
+    void initState() {
+      super.initState();
+      setupChatClient();
+      setupListeners();
+    }
+    ```
+   
+1. **Instantiate the `ChatClient`**   
+
+    To implement peer-to-peer messaging, you use Chat SDK to initialize a `ChatClient` instance. In the `_MyHomePageState` class, add the following method after `initState`.
+
+    ```dart
+    void setupChatClient() async {
+      ChatOptions options = ChatOptions(
+        appKey: appKey,
+        autoLogin: false,
+      );
+      agoraChatClient = ChatClient.getInstance;
+      await agoraChatClient.init(options);
+    // Notify the SDK that the Ul is ready. After the following method is executed, callbacks within ChatRoomEventHandler and ChatGroupEventHandler can be triggered.
+    await ChatClient.getlnstance.startCallback();
+    }
+    ```
+
+1.  **Handle and respond to Chat events**
+
+    To receive notification of Chat events such as connection, disconnection, and token expiration, you add a `ConnectionEventHandler`. To handle message delivery and new message notifications, you add a `ChatEventHandler`. When you receive the `onMessageReceived` notification, you display the message to the user.
+
+    In the `_MyHomePageState` class, add the following methods after `setupChatClient`:
+
+    ```dart
+    void setupListeners() {
+
+      agoraChatClient.addConnectionEventHandler(
+        "CONNECTION_HANDLER",
+        ConnectionEventHandler(
+          onConnected: onConnected,
+          onDisconnected: onDisconnected,
+          onTokenWillExpire: onTokenWillExpire,
+          onTokenDidExpire: onTokenDidExpire
+        ),
+      );
+
+      agoraChatClient.chatManager.addEventHandler(
+        "MESSAGE_HANDLER",
+        ChatEventHandler(onMessagesReceived: onMessagesReceived),
+      );
+    }
+
+    void onMessagesReceived(List<ChatMessage> messages) {
+      for (var msg in messages) {
+        if (msg.body.type == MessageType.TXT) {
+          ChatTextMessageBody body = msg.body as ChatTextMessageBody;
+          displayMessage(body.content, false);
+          showLog("Message from ${msg.from}");
+        } else {
+          String msgType = msg.body.type.name;
+          showLog("Received $msgType message, from ${msg.from}");
+        }
+      }
+    }
+
+    void onTokenWillExpire() {
+      // The token is about to expire. Get a new token
+      // from the token server and renew the token.
+    }
+    void onTokenDidExpire() {
+      // The token has expired
+    }
+    void onDisconnected () {
+      // Disconnected from the Chat server
+    }
+    void onConnected() {
+      showLog("Connected");
+    }   
+    ```
+
+1. **Log in to  Chat**
+
+    When a user presses **Join**, your app logs in to  Chat. When a user presses **Leave**, the app log out of  Chat.
+
+    To implement this logic, in the `_MyHomePageState` class, add the following method before `showLog`:
+
+    ```dart
+    void joinLeave() async {
+      if (!isJoined) { // Log in
+        try {
+          await agoraChatClient.loginWithToken(userId, token);
+          showLog("Logged in successfully as $userId");
+          setState(() {
+            isJoined = true;
+          });
+        } on ChatError catch (e) {
+          if (e.code == 200) { // Already logged in
+            setState(() {
+              isJoined = true;
+            });
+          } else {
+            showLog("Login failed, code: ${e.code}, desc: ${e.description}");
+          }
+        }
+      } else { // Log out
+        try {
+          await agoraChatClient.logout(true);
+          showLog("Logged out successfully");
+          setState(() {
+            isJoined = false;
+          });
+        } on ChatError catch (e) {
+          showLog("Logout failed, code: ${e.code}, desc: ${e.description}");
+        }
+      }
+    }
+  
+    ```
+
+1. **Send a message**
+    
+    To send a message to  Chat when a user presses the **Send** button, add the following method to the `_MyHomePageState` class, after `joinLeave`:
+
+    ```dart
+    void sendMessage() async {
+      if (recipientId.isEmpty || messageContent.isEmpty) {
+        showLog("Enter recipient user ID and type a message");
+        return;
+      }
+
+      var msg = ChatMessage.createTxtSendMessage(
+        targetId: recipientId,
+        content: messageContent,
+      );
+      ChatClient.getInstance.chatManager.addMessageEvent(
+      "UNIQUE_HANDLER_ID",
+      ChatMessageEvent(
+      onSuccess: (msgId, msg) {
+      _addLogToConsole("on message succeed");
+      },
+      onProgress: (msgId, progress) {
+      _addLogToConsole("on message progress");
+      },
+      onError: (msgId, msg, error) {
+      _addLogToConsole(
+      "on message failed, code: ${error.code}, desc: ${error.description}",
+      );
+      },
+      ),
+      );
+      ChatClient.getInstance.chatManager.removeMessageEvent("UNIQUE_HANDLER_ID");
+      agoraChatClient.chatManager.sendMessage(msg);
+    }
+    ```
+
+1. **Display chat messages**
+    
+    To display the messages the current user has sent and received in your app, add the following method to the `_MyHomePageState` class:
+
+    ```dart   
+    void displayMessage(String text, bool isSentMessage) {
+      messageList.add(Row(children: [
+        Expanded(
+          child: Align(
+            alignment:
+            isSentMessage ? Alignment.centerRight : Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              margin: EdgeInsets.fromLTRB(
+                  (isSentMessage ? 50 : 0), 5, (isSentMessage ? 0 : 50), 5),
+              decoration: BoxDecoration(
+                color: isSentMessage
+                    ? const Color(0xFFDCF8C6)
+                    : const Color(0xFFFFFFFF),
+              ),
+              child: Text(text),
+            ),
+          ),
+        ),
+      ]));
+
+      setState(() {
+        scrollController.jumpTo(scrollController.position.maxScrollExtent + 50);
+      });
+    }    
+    ```
+
+1. **Remove event handlers on exit**    
+
+    When a user closes the app, you remove the message and connection event handlers. To do this, add the following `dispose` method to the `_MyHomePageState` class:
+
+    ```dart
+    @override
+    void dispose() {
+      agoraChatClient.chatManager.removeEventHandler("MESSAGE_HANDLER");
+      agoraChatClient.removeConnectionEventHandler("CONNECTION_HANDLER");
+      super.dispose();
+    }
+    ```
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -638,20 +1696,1259 @@ _No platform-specific content._
 
 This section introduces the codes you need to add to your project to start one-to-one messaging.
 
+### Implement one-to-one messaging
+
+To send a one-to-one message, users must register a Chat account, log in to Agora Chat, and send a text message.
+
+Open `simple_demo/App.js`, and replace the code with the following:
+
+```javascript
+// Imports dependencies.
+
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+
+  ChatClient,
+  ChatOptions,
+  ChatMessageChatType,
+  ChatMessage,
+} from 'react-native-agora-chat';
+
+// Defines the App object.
+const App = () => {
+  // Defines the variable.
+  const title = 'AgoraChatQuickstart';
+  // Replaces <your appKey> with your app key.
+  const appKey = '<your appKey>';
+  // Replaces <your userId> with your user ID.
+  const [username, setUsername] = React.useState('<your userId>');
+  // Replaces <your agoraToken> with your Agora token.
+  const [chatToken, setChatToken] = React.useState('<your token>');
+  const [targetId, setTargetId] = React.useState('');
+  const [content, setContent] = React.useState('');
+  const [logText, setWarnText] = React.useState('Show log area');
+  const chatClient = ChatClient.getInstance();
+  const chatManager = chatClient.chatManager;
+
+  // Outputs console logs.
+  useEffect(() => {
+    logText.split('\n').forEach((value, index, array) => {
+      if (index === 0) {
+        console.log(value);
+      }
+    });
+  }, [logText]);
+
+  // Outputs UI logs.
+  const rollLog = text => {
+    setWarnText(preLogText => {
+      let newLogText = text;
+      preLogText
+        .split('\n')
+        .filter((value, index, array) => {
+          if (index > 8) {
+            return false;
+          }
+          return true;
+        })
+        .forEach((value, index, array) => {
+          newLogText += '\n' + value;
+        });
+      return newLogText;
+    });
+  };
+
+  useEffect(() => {
+    // Registers listeners for messaging.
+    const setMessageListener = () => {
+      let msgListener = {
+        onMessagesReceived(messages) {
+          for (let index = 0; index < messages.length; index++) {
+            rollLog('received msgId: ' + messages[index].msgId);
+          }
+        },
+        onCmdMessagesReceived: messages => {},
+        onMessagesRead: messages => {},
+        onGroupMessageRead: groupMessageAcks => {},
+        onMessagesDelivered: messages => {},
+        onMessagesRecalled: messages => {},
+        onConversationsUpdate: () => {},
+        onConversationRead: (from, to) => {},
+      };
+
+      chatManager.removeAllMessageListener();
+      chatManager.addMessageListener(msgListener);
+    };
+
+    // Initializes the SDK.
+    // Initializes any interface before calling it.
+    const init = () => {
+      let o = new ChatOptions({
+        autoLogin: false,
+        appKey: appKey,
+      });
+      chatClient.removeAllConnectionListener();
+      chatClient
+        .init(o)
+        .then(() => {
+          rollLog('init success');
+          let listener = {
+            onTokenWillExpire() {
+              rollLog('token expire.');
+            },
+            onTokenDidExpire() {
+              rollLog('token did expire');
+            },
+            onConnected() {
+              rollLog('onConnected');
+              setMessageListener();
+            },
+            onDisconnected(errorCode) {
+              rollLog('onDisconnected:' + errorCode);
+            },
+          };
+          chatClient.addConnectionListener(listener);
+        })
+        .catch(error => {
+          rollLog(
+            'init fail: ' +
+              (error instanceof Object ? JSON.stringify(error) : error),
+          );
+        });
+    };
+
+    init();
+  }, [chatClient, chatManager, appKey]);
+
+  // Logs in with an account ID and a token.
+  const login = () => {
+    rollLog('start login ...');
+    chatClient
+      .loginWithToken(username, chatToken)
+      .then(() => {
+        rollLog('login operation success.');
+      })
+      .catch(reason => {
+        rollLog('login fail: ' + JSON.stringify(reason));
+      });
+  };
+
+  // Logs out from server.
+  const logout = () => {
+    rollLog('start logout ...');
+    chatClient
+      .logout()
+      .then(() => {
+        rollLog('logout success.');
+      })
+      .catch(reason => {
+        rollLog('logout fail:' + JSON.stringify(reason));
+      });
+  };
+
+  // Sends a text message to somebody.
+  const sendmsg = () => {
+    let msg = ChatMessage.createTextMessage(
+      targetId,
+      content,
+      ChatMessageChatType.PeerChat,
+    );
+    const callback = new (class {
+      onProgress(locaMsgId, progress) {
+        rollLog(`send message process: ${locaMsgId}, ${progress}`);
+      }
+      onError(locaMsgId, error) {
+        rollLog(`send message fail: ${locaMsgId}, ${JSON.stringify(error)}`);
+      }
+      onSuccess(message) {
+        rollLog('send message success: ' + message.localMsgId);
+      }
+    })();
+    rollLog('start send message ...');
+    chatClient.chatManager
+      .sendMessage(msg, callback)
+      .then(() => {
+        rollLog('send message: ' + msg.localMsgId);
+      })
+      .catch(reason => {
+        rollLog('send fail: ' + JSON.stringify(reason));
+      });
+  };
+
+  // Renders the UI.
+  return (
+    <SafeAreaView>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+      <ScrollView>
+        <View style={styles.inputCon}>
+          <TextInput
+            multiline
+            style={styles.inputBox}
+            placeholder="Enter username"
+            onChangeText={text => setUsername(text)}
+            value={username}
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={styles.inputCon}>
+          <TextInput
+            multiline
+            style={styles.inputBox}
+            placeholder="Enter chatToken"
+            onChangeText={text => setChatToken(text)}
+            value={chatToken}
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={styles.buttonCon}>
+          <Text style={styles.eachBtn} onPress={login}>
+            SIGN IN
+          </Text>
+          <Text style={styles.eachBtn} onPress={logout}>
+            SIGN OUT
+          </Text>
+        </View>
+        <View style={styles.inputCon}>
+          <TextInput
+            multiline
+            style={styles.inputBox}
+            placeholder="Enter the username you want to send"
+            onChangeText={text => setTargetId(text)}
+            value={targetId}
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={styles.inputCon}>
+          <TextInput
+            multiline
+            style={styles.inputBox}
+            placeholder="Enter content"
+            onChangeText={text => setContent(text)}
+            value={content}
+            autoCapitalize={'none'}
+          />
+        </View>
+        <View style={styles.buttonCon}>
+          <Text style={styles.btn2} onPress={sendmsg}>
+            SEND TEXT
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.logText}>{logText}</Text>
+        </View>
+        <View>
+          <Text style={styles.logText}>{}</Text>
+        </View>
+        <View>
+          <Text style={styles.logText}>{}</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+// Sets UI styles.
+const styles = StyleSheet.create({
+  titleContainer: {
+    height: 60,
+    backgroundColor: '#6200ED',
+  },
+  title: {
+    lineHeight: 60,
+    paddingLeft: 15,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  inputCon: {
+    marginLeft: '5%',
+    width: '90%',
+    height: 60,
+    paddingBottom: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  inputBox: {
+    marginTop: 15,
+    width: '100%',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  buttonCon: {
+    marginLeft: '2%',
+    width: '96%',
+    flexDirection: 'row',
+    marginTop: 20,
+    height: 26,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  eachBtn: {
+    height: 40,
+    width: '28%',
+    lineHeight: 40,
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 16,
+    backgroundColor: '#6200ED',
+    borderRadius: 5,
+  },
+  btn2: {
+    height: 40,
+    width: '45%',
+    lineHeight: 40,
+    textAlign: 'center',
+    color: '#fff',
+    fontSize: 16,
+    backgroundColor: '#6200ED',
+    borderRadius: 5,
+  },
+  logText: {
+    padding: 10,
+    marginTop: 10,
+    color: '#ccc',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+});
+
+export default App;
+```
+
+<a name="build"></a>
+
+### Build and run your project
+
+To build and run the app on iOS platform:
+
+```sh
+yarn run ios
+```
+
+To build and run the app on Android platform:
+
+```sh
+yarn run android
+```
+
+To start the debug service:
+
+```sh
+yarn run start
+```
+
+If the project runs properly, the following user interface appears:
+
+- Android platform
+
+![](https://web-cdn.agora.io/doc-cms/uploads/1742458543456-android_rn_quickstart.png)
+
+- iOS platform 
+
+![](https://web-cdn.agora.io/doc-cms/uploads/1742458548797-ios_rn_quickstart.png)
+
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
 
-_No platform-specific content._
+### Create the UI
 
+In the quick start app, you create a simple UI that consists of the following elements:
+
+* A `Button - TextMeshPro` to log in or out of  Chat.
+* An `Input Field - TextMeshPro` to specify the recipient user ID.
+* An `Input Field - TextMeshPro` to enter a text message.
+* A `Button - TextMeshPro` to send the text message.
+* A `Scroll View` to display all sent and received messages.
+
+To implement this user interface, in your Unity project:
+
+1. **Set up the Scroll View**
+
+    1. In Unity Editor, right-click **Sample Scene**, then click **Game Object** > **UI** > **Scroll View**. A scroll view appears in the **Scene** Canvas. In **Inspector**, rename the **Scroll View** to `scrollView`.
+
+        If you can't see the view clearly in Unity, zoom out and rotate the scene
+
+    1. To adjust the `scrollView` size, change the following coordinates in **Inspector**:
+
+        * **Pos X** - `0`
+        * **Pos Y** - `0`
+        * **Width** - `250`
+        * **Height** - `300`
+
+    1. In **Hierarchy** select **scrollView > Viewport > Content**. In **Inspector** click **Add Component** and choose **Layout > Vertical Layout Group**.
+
+    1. In **Inspector** click **Add Component** again, and select **Layout > Content Size Fitter**. Set the **Vertical fit** property of the component to `Preferred Size`.
+
+    1. In **Inspector** click **Add Component** again, and select **UI > TextMeshPro - Text (UI)**. In the **TMP Importer** pop-up, click **Import TMP Essentials**. Your project imports the required components to your project. Expand the **TextMeshPro - Text** component properties and under **Extra Settings** set the **Left**, **Top**, **Right** and **Bottom** margins to `10`.
+
+1. **Add a login button**
+
+    1. In **Hierarchy**, right-click **Sample Scene**, then click **UI** > **Button - TextMeshPro**. A button appears in the **Scene** Canvas. In **Inspector**, rename **Button** to `joinBtn`, then change the following properties:
+
+        * **Pos X** - `89`
+        * **Pos Y** - `160`
+        * **Width** - `70`
+        * **Height** - `30`
+
+    1. Select the **Text (TMP)** sub-item of `joinBtn` and in **Inspector**, change **Text** to `Join`.
+
+1. **Add a send button**
+
+    1. Right-click **Sample Scene**, then click **UI** > **Button - TextMeshPro**. A button appears in the **Scene** Canvas. In **Inspector**, rename **Button** to `sendBtn`, then change the following properties:
+
+        * **Pos X** - `97`
+        * **Pos Y** - `-162`
+        * **Width** - `57`
+        * **Height** - `30`
+
+    1. Select the **Text (TMP)** sub-item of `sendBtn` and in **Inspector**, change **Text** to `>>`.
+
+1. **Add input fields to enter a message and a recipient user ID**
+
+    1. Right-click **Sample Scene**, then click **UI** > **Input Field - TextMeshPro**. An input field appears in the **Scene** Canvas. In **Inspector**, rename **InputField (TMP)** to `message`, and change the following coordinates:
+
+        * **Pos X** - `-27`
+        * **Pos Y** - `-162`
+        * **Width** - `195`
+        * **Height** - `30`
+
+    1. Repeat the procedure in the previous step to add another input field named `userName`. In **Inspector** set the following coordinates:
+
+        * **Pos X** - `-35`
+        * **Pos Y** - `160`
+        * **Width** - `180`
+        * **Height** - `30`
+
+### Handle the system logic
+
+In this section, you create a script file, add the necessary namespaces, and bind your script to the canvas.
+
+1. **Create a new script**
+
+    1. In **Project**, open **Assets** > **AgoraChat** > **Scripts**. Right-click **Scripts**, then click **Create** > **C# Script**. In **Assets**, you see the `NewBehaviourScript` file that you use to implement Chat SDK in your app.
+
+    1. In **Inspector**, click **Open**. `NewBehaviourScript.cs` opens in your default text editor.
+
+1.  **Import the relevant Agora and Unity classes**
+
+    In `NewBehaviourScript.cs`, add the following lines after `using UnityEngine;`:
+
+    ```csharp
+    using UnityEngine.UI;
+    using TMPro;
+    using AgoraChat;
+    using AgoraChat.MessageBody;
+    ```
+
+1. **Bind your script to the canvas**
+
+    1. Drag `NewBehaviourScript.cs` from `Assets/AgoraChat/Scripts`, and drop it on to **Canvas** in the **Hierarchy**.
+
+    1. Click **Canvas**, you see that your script is added to **Canvas** in **Inspector**.
+   
+### Send and receive messages
+
+When a user opens the app, you instantiate and initialize a `SDKClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **>>**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+
+The following figure shows the API call sequence for implementing this workflow.
+
+<details>
+<summary>API call sequence</summary>
+
+![image](/images/im/chat-call-logic-android.svg)
+</details>
+
+To implement this workflow in your app, take the following steps:
+
+1. **Declare variables**
+
+    In the `NewBehaviourScript` class, add the following declarations:
+
+    ```csharp
+    private TMP_Text messageList;
+    private string userId = "";
+    private string token = ""; 
+    private string appKey = "";
+    private bool isJoined = false;
+    SDKClient agoraChatClient;
+    ```
+
+1. **Set up Chat when the app starts**
+
+    When the app starts, you set up a `SDKClient` and callbacks to handle Chat events. To do this, replace the `Start` method in the `NewBehaviourScript` class with the following:
+
+    ```csharp
+    void Start()
+    {
+        GameObject.Find("userName/Text Area/Placeholder").GetComponent<TMP_Text>().text = "Enter recipient name";
+        GameObject.Find("message/Text Area/Placeholder").GetComponent<TMP_Text>().text = "Message";
+        messageList = GameObject.Find("scrollView/Viewport/Content").GetComponent<TextMeshProUGUI>();
+        messageList.fontSize = 14;
+        messageList.text = "";
+        GameObject button = GameObject.Find("joinBtn");
+        button.GetComponent<Button>().onClick.AddListener(joinLeave);
+        button = GameObject.Find("sendBtn");
+        button.GetComponent<Button>().onClick.AddListener(sendMessage);
+        setupChatSDK();
+    }
+    ```
+   
+1. **Instantiate the `SDKClient`**   
+
+    To implement peer-to-peer messaging, you use Chat SDK to initialize a `SDKClient` instance. In the `NewBehaviourScript` class, add the following method before `Start`.
+
+    ```csharp
+    void setupChatSDK()
+    {
+        if (appKey == "")
+        {
+            Debug.Log("You should set your appKey first!");
+            return;
+        }
+        // Initialize the Agora Chat SDK
+        Options options = new Options(appKey);
+        options.UsingHttpsOnly = true;
+        options.DebugMode = true;
+        agoraChatClient = SDKClient.Instance;
+        agoraChatClient.InitWithOptions(options);
+    }
+    ```
+
+1.  **Handle and respond to Chat events**
+
+     To receive notification of Chat events such as connection, disconnection, and token expiration, you use `IChatManagerDelegate` and `IConnectionDelegate`. When you receive the `onMessageReceived` notification, you display the message to the user. To implement these notifications in your app, do the following:
+
+    1. In the `NewBehaviourScript` class, add the following at the end of `setupChatSDK`:
+
+        ```csharp
+        agoraChatClient.ChatManager.AddChatManagerDelegate(this);
+        ```
+
+    1. Implement the `IChatManagerDelegate` and `IConnectionDelegate` interfaces in the `NewBehaviourScript` class. In `NewBehaviourScript.cs`, add the following after `public class NewBehaviourScript : MonoBehaviour`:
+
+        ```csharp
+        , IChatManagerDelegate, IConnectionDelegate 
+        ```
+
+    1. In the `NewBehaviourScript` class, add the following callbacks before `setupChatSDK`:
+
+        ```csharp
+        public void OnMessagesReceived(List<Message> messages)
+        {
+            foreach (Message msg in messages) 
+            {
+                if (msg.Body.Type == MessageBodyType.TXT)
+                {
+                    TextBody txtBody = msg.Body as TextBody;
+                    string Msg = msg.From + ":" + txtBody.Text;
+                    displayMessage(Msg, false);
+                }
+            }
+        }
+        public void OnCmdMessagesReceived(List<Message> messages)
+        {
+            // This callback is triggered only by the reception of a command message that is usually invisible to users.
+        }
+        public void OnMessagesRead(List<Message> messages)
+        {
+            // Occurs when a read receipt is received for a message.
+        }
+        public void OnMessagesDelivered(List<Message> messages)
+        {
+            // Occurs when a delivery receipt is received.
+        }
+        public void OnMessagesRecalled(List<Message> messages)
+        {
+            // Occurs when a received message is recalled.
+        }
+        public void OnReadAckForGroupMessageUpdated()
+        {
+            // Occurs when the read status updates of a group message is received.
+        }
+        public void OnGroupMessageRead(List<GroupReadAck> list)
+        {
+            // Occurs when a read receipt is received for a group message.
+        }
+        public void OnConversationsUpdate()
+        {
+            // Occurs when the number of conversations changes.
+        }
+        public void OnConversationRead(string from, string to)
+        {
+            // Occurs when the read receipt is received for a conversation.
+        }
+        public void MessageReactionDidChange(List<MessageReactionChange> list)
+        {
+            // Occurs when the reactions change.
+        }
+        public void OnConnected()
+        {
+            Debug.Log("Connected");
+        }    
+        public void OnTokenExpired()
+        {
+            // Occurs when the token has expired.
+        }    
+        public void OnTokenWillExpire()
+        {
+            // Occurs when the token is about to expire
+        }
+        public void OnAuthFailed()
+        {
+            // Occurs when the user is forced to log out of the current account due to an authentication failure.
+        }
+        public void OnKickedByOtherDevice()
+        {
+            // Occurs when the user is forced to log out of the current account on the current device due to login to another device.
+        }
+        public void OnLoginTooManyDevice()
+        {
+            // Occurs when the user is forced to log out of the current account because he or she reached the maximum number of devices that the user can log in to with the current account.
+        }
+        public void OnChangedIMPwd()
+        {
+            // Occurs when the user is forced to log out of the current account because the login password has changed.
+        }
+        public void OnForbidByServer()
+        {
+            // Occurs when the current user account is banned.
+        }
+        public void OnRemovedFromServer()
+        {
+            // Occurs when the current user account is removed from the server.
+        }
+        public void OnLoggedOtherDevice(string deviceName, string info)
+        {
+            // Occurs when the user logs in to another device with the current account.
+        }
+        public void OnDisconnected()
+        {
+            Debug.Log("Disconnected");
+        }
+        public void OnMessageContentChanged(Message msg, string operatorId, long operationTime)
+        {
+        }
+        public void OnMessagePinChanged(string messageId, string conversationId, bool isPinned, string operatorId, long operationTime)
+        {
+        }
+        public void OnLoggedOtherDevice(string str)
+        {
+        }
+        public void OnAppActiveNumberReachLimitation()
+        {
+        }
+        public void OnMessageContentChanged(Message msg, string operatorId, long operationTime)
+        {
+        }
+        public void OnMessagePinChanged(string messageId, string conversationId, bool isPinned, string operatorId, long operationTime)
+        {
+        }
+        public void OnOfflineMessageSyncStart()
+        {
+        }
+        public void OnOfflineMessageSyncFinish()
+        {
+        }
+        ```
+
+1. **Log in to  Chat**
+
+    When a user presses **Join**, your app logs in to  Chat. When a user presses **Leave**, the app log out of  Chat. To implement this logic, in the `NewBehaviourScript` class, add the following method before `Start`:
+
+    ```csharp
+    public void joinLeave()
+    {
+        if (isJoined)
+        {
+            agoraChatClient.Logout(true, callback: new CallBack(
+            onSuccess: () =>
+            {
+                Debug.Log("Logout succeed");
+                isJoined = false;
+                GameObject.Find("joinBtn").GetComponentInChildren<TextMeshProUGUI>().text = "Join";
+            },
+            onError: (code, desc) =>
+            {
+                Debug.Log($"Logout failed, code: {code}, desc: {desc}");
+            }));
+        }
+        else
+        {
+            // Use LoginWithToken to replace LoginWithAgoraToken for the SDK of v1.3.0 or later
+            agoraChatClient.LoginWithAgoraToken(userId, token, callback: new CallBack(
+            onSuccess: () =>
+            {
+                Debug.Log("Login succeed");
+                isJoined = true;
+                GameObject.Find("joinBtn").GetComponentInChildren<TextMeshProUGUI>().text = "Leave";
+            },
+            onError: (code, desc) =>
+            {
+                Debug.Log($"Login failed, code: {code}, desc: {desc}");
+            }));
+        }
+    }
+    ```
+
+1. **Send a message**
+    
+    To send a message to  Chat when a user presses the **>>** button, add the following method to the `NewBehaviourScript` class, before `Start`:
+
+    ```csharp
+    public void sendMessage()
+    {
+        string recipient = GameObject.Find("userName").GetComponent<TMP_InputField>().text;
+        string Msg = GameObject.Find("message").GetComponent<TMP_InputField>().text;
+        if (Msg == "" || recipient == "")
+        {
+            Debug.Log("You did not type your message");
+            return;
+        }
+        Message msg = Message.CreateTextSendMessage(recipient, Msg);
+        displayMessage(Msg, true);
+        agoraChatClient.ChatManager.SendMessage(ref msg, new CallBack(
+            onSuccess: () =>
+            {
+                Debug.Log($"Send message succeed");
+                GameObject.Find("message").GetComponent<TMP_InputField>().text = "";
+            },
+            onError: (code, desc) =>
+            {
+                Debug.Log($"Send message failed, code: {code}, desc: {desc}");
+            }));
+    }
+    ```
+
+7. **Display chat messages**
+    
+    To display sent and received  messages in your app, add the following method to the `NewBehaviourScript` class:
+
+    ```csharp
+    public void displayMessage(string messageText, bool isSentMessage)
+    {
+        if (isSentMessage)
+        {
+            messageList.text += "<align=\"right\"><color=black><mark=#dcf8c655 padding=\"10, 10, 0, 0\">" + messageText + "</color></mark>\n";
+        }
+        else
+        {
+            messageList.text += "<align=\"left\"><color=black><mark=#ffffff55 padding=\"10, 10, 0, 0\">" + messageText + "</color></mark>\n";
+        }
+    }
+    ```
+
+1. **Clean up the resources**
+
+    When you quit the app, it calls `OnApplicationQuit`. You use this method for clean up. To Implement the clean up logic, in the `NewBehaviourScript` class, add the following after `Start`:
+
+    ```csharp
+    void OnApplicationQuit()
+    {
+        agoraChatClient.ChatManager.RemoveChatManagerDelegate(this);
+        agoraChatClient.Logout(true, callback: new CallBack(
+            onSuccess: () => 
+            {
+                Debug.Log("Logout succeed");
+            },
+            onError: (code, desc) => 
+            {
+                Debug.Log($"Logout failed, code: {code}, desc: {desc}");
+            }));
+    }
+    ```
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
 
-_No platform-specific content._
+### Create the UI
 
+In your project, create a simple UI that consists of the following elements:
+
+* A `Button` to **Join** or **Leave** Agora Chat.
+* A `TextBox` box to specify the recipient user ID.
+* A `TextBox` box to enter a text message.
+* A `Button` to send the text message.
+* A scrollable layout to display sent and received messages.
+
+To add the UI framework to your device project, In Solution Explorer, open `<project-name>` **>** `MainWindow.xaml`, then replace the file contents with the following:
+
+```xml
+<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AgoraWindowsChat"
+        xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" x:Class="AgoraWindowsChat.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="457" Width="804">
+    <Grid x:Name="mainGrid">
+        <Button x:Name="btnJoinLeave" Content="Join" HorizontalAlignment="Left" Margin="662,53,0,0" VerticalAlignment="Top" Height="36" Width="107" Click="JoinLeave_Click" Background="#FF4B5ADE" FontSize="18">
+            <Button.Foreground>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
+            </Button.Foreground>
+        </Button>
+        <TextBox x:Name="eReciepientUserId" HorizontalAlignment="Left" Height="39" Margin="10,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Width="642" Foreground="Gray" Opacity="1.0" Text="">
+            <TextBox.Resources>
+                <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock FontStyle="Normal" Text="Recipient User Id"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </TextBox.Resources>
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Button x:Name="btnMessageSend" Content="&gt;&gt;" HorizontalAlignment="Left" Margin="662,334,0,0" VerticalAlignment="Top" Height="36" Width="107" Click="MessageSend_Click" Background="#FF4B5ADE" FontSize="18">
+            <Button.Foreground>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
+            </Button.Foreground>
+        </Button>
+        <TextBox x:Name="eMessage" HorizontalAlignment="Left" Height="39" Margin="5,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="652" FontSize="20" Foreground="Gray" Opacity="1.0" Text="" >
+            <TextBox.Resources>
+                <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="0.3" Stretch="None" AlignmentX="Left">
+                    <VisualBrush.Visual>
+                        <TextBlock FontStyle="Normal" Text="Message"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </TextBox.Resources>
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <Label x:Name="appNameLabel" Content="   agoraChatQuickStart" HorizontalAlignment="Left" Height="45" Margin="10,0,0,0" VerticalAlignment="Top" Width="759" Background="#FF4655D6" FontSize="22" FontWeight="Bold" Foreground="White"/>
+        <ScrollViewer x:Name="scrollMessagesView" HorizontalAlignment="Left" Height="198" Margin="10,94,0,0" VerticalAlignment="Top" Width="763" Foreground="#FF000000"  Background="Linen" RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+            <StackPanel></StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
+```
+
+### Handle the system logic
+
+This section shows you how to add Chat SDK headers and setup logging. To do this:
+
+1. **Import the Agora namespaces**
+
+    In the Solution Explorer, select `<project-name>` > `MainWindow.xaml`, and double-click it to open the `MainWindow.xaml.cs` file. Add the following lines to the namespaces list in the file:
+
+    ```c#
+    using AgoraChat;
+    using AgoraChat.MessageBody;
+    ```
+
+1.  **Log events and show status updates to your users**
+
+    In the `MainWindow` class, add the following helper method:
+
+    ```c#
+    private void showLog(string log)
+    {
+        // Show a message box
+        Dip?.Invoke(() =>
+        {
+            MessageBox.Show(log);
+        });
+
+        // Write log
+        Console.WriteLine(log);
+    }
+    ```
+
+### Send and receive messages
+
+When a user opens the app, you instantiate and initialize a `SDKClient`. When the user clicks the **Join** button, the app logs in to Agora Chat. When a user types a message in the text box and then presses Send, the typed message is sent to another registered user. When the app receives a message from Agora Chat, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality. 
+
+The following figure shows the API call sequence for implementing this workflow.
+
+<details>
+<summary>API call sequence</summary>
+
+![image](/images/im/chat-call-logic-windows.svg)
+</details>
+
+To implement this workflow in your app, take the following steps:
+
+1. **Declare connection variables**
+
+    In the `MainWindow` class, add the following declarations:
+
+    ```c#
+    private readonly string userId = "<User ID of the local user>";
+    private string token = "<Your authentication token>";
+    private readonly string app_key = "<App key from Agora console>";
+    private bool isJoined = false;
+    // Update the UI from callbacks on a separate thread
+    private readonly System.Windows.Threading.Dispatcher? Dip = null; 
+    ```
+
+1. **Set up Chat when the app starts**
+
+    When the app starts, you create an instance of `SDKClient` and set up delegates to handle connection and Chat events.
+    To do this, replace the `MainWindow()` constructor in the `MainWindow` class with the following:
+
+    ```c#
+    public MainWindow()
+    {
+        // Initialize the thread dispatcher            
+        Dip = System.Windows.Threading.Dispatcher.CurrentDispatcher; 
+        // Initialize Chat SDK client
+        setupChatClient();  
+        // Add connection and chat delegates to handle callbacks
+        SDKClient.Instance.AddConnectionDelegate(this);
+        SDKClient.Instance.ChatManager.AddChatManagerDelegate(this); 
+        // Execute the CloseWindow method when the app closes
+        Closed += CloseWindow; 
+    }
+    ```
+1. **Initialize the `SDKClient`**   
+
+    To implement peer-to-peer messaging, you use Chat SDK to initialize a `SDKClient` instance. In the `MainWindow` class, add the following method:
+
+    ```c#
+    private void setupChatClient()
+    {
+        var options = new Options(appKey: app_key);
+        options.UsingHttpsOnly = true;
+        // Initialize the chat SDKClient
+        SDKClient.Instance.InitWithOptions(options);
+    }
+    ```
+
+1. **Log in to Agora Chat** 
+
+    When a user clicks **Join**, your app logs in to Agora Chat. When they click **Leave**, the app logs out. To implement this logic, add the following method after `showLog()` in the `MainWindow` class:
+
+    ```c#
+    private void JoinLeave_Click(object sender, RoutedEventArgs e)
+    {
+        Button button = (Button)this.FindName("btnJoinLeave");
+        
+        if (isJoined) 
+        {
+            SDKClient.Instance.Logout(true, callback: new CallBack(
+                onSuccess: () =>
+                {
+                    showLog("Sign out from Agora Chat succeed");
+                    Dip?.Invoke(() =>
+                    {
+                        button.Content = "Join";
+                    });
+                    isJoined = false;
+                
+                },
+                onError: (code, desc) =>
+                {
+                    showLog(desc);
+                }
+            ));
+        } 
+        else 
+        {
+            // Log in to the Chat service with userId and Agora token.
+            SDKClient.Instance.LoginWithToken(userId, token, callback: new CallBack(
+            onSuccess: () =>
+            {
+                showLog("Sign in to Agora Chat succeed");
+                isJoined = false;
+                Dip?.Invoke(() =>
+                {
+                    button.Content = "Leave";
+                });
+            },
+            onError: (code, desc) =>
+            {
+                if (code == 200)
+                { // Already joined
+                    isJoined = true;
+                    Dip?.Invoke(() =>
+                    {
+                        button.Content = "Leave";
+                    });
+                }
+                else
+                {
+                    showLog(desc);
+                }
+            }
+        ));
+        }
+    }
+    ```
+
+1. **Send a message**
+    
+    When a user types a message and presses the Send button, the app sends the message to the recipient. To do this, add the following method to the `MainWindow` class, after `JoinLeave_Click()`:
+
+    ```c#
+    private void MessageSend_Click(object sender, RoutedEventArgs e)
+        {
+            if (eReciepientUserId.Text.Equals("") || eMessage.Text.Equals(""))
+            {
+                showLog("Enter a recipient name and a message");
+                return;
+            }
+            //Send Message
+            Message msg = Message.CreateTextSendMessage(eReciepientUserId.Text, eMessage.Text);
+            SDKClient.Instance.ChatManager.SendMessage(ref msg, new CallBack(
+                onSuccess: () =>
+                {
+                // The success callback uses the System.Windows.Threading.Dispatcher to update UI elements 
+
+                Dip?.Invoke(() =>
+                {
+                    TextBody? txtBody = msg.Body as TextBody;
+                    if (txtBody != null)
+                    {
+                        displayMessage(txtBody.Text, true);
+                    }
+                    eMessage.Text = "";
+                });
+
+                },
+                onError: (code, desc) =>
+                {
+                   showLog(desc);
+                }
+            ));
+        }
+    ```
+
+1. **Set up callbacks for handling Chat events**
+
+    To set up callbacks for handling connection and Chat events, you implement the `IConnectionDelegate` and `IChatManagerDelegate` interfaces in the `MainWindow` class. Update the `MainWindow` class definition as follows:
+
+    ```c#
+    public partial class MainWindow : Window, IConnectionDelegate, IChatManagerDelegate
+    ```
+
+1. **Handle connection events**
+
+    To implement all `IConnectionDelegate` callbacks, add the following code to the `MainWindow` class: 
+
+    ```c#
+    public void OnConnected() 
+    {
+        showLog("SDK connected successfully.");
+    }
+
+    public void OnDisconnected() 
+    {
+        showLog("SDK disconnected.");
+    }
+
+    public void OnLoggedOtherDevice(string deviceName, string info)
+    {
+
+    }
+
+    public void OnRemovedFromServer() 
+    { 
+    
+    }
+
+    public void OnForbidByServer() 
+    { 
+    
+    }
+
+    public void OnChangedIMPwd() 
+    {
+
+    }
+
+    public void OnLoginTooManyDevice() 
+    { 
+    
+    }
+
+    public void OnKickedByOtherDevice() 
+    {
+
+    }
+
+    public void OnAuthFailed() 
+    {
+        showLog("User authentication failed.");
+    }
+
+    public void OnTokenExpired() 
+    {
+        showLog("The token has expired.");
+    }
+
+    public void OnTokenWillExpire() 
+    {
+        showLog("The token is about to expire. Get a new token from the token server and renew the token.");
+    }
+    public void OnAppActiveNumberReachLimitation()
+    {
+
+    }
+    public void OnOfflineMessageSyncStart()
+    {
+
+    }
+    public void OnOfflineMessageSyncFinish()
+    {
+
+    }
+    ```
+
+1. **Handle Chat events**
+
+    To read and display received chat messages, you add code to the `OnMessagesReceived` callback of the `IChatManagerDelegate`. To implement all `IChatManagerDelegate` callbacks, add the following code to the `MainWindow` class: 
+
+    ```c#
+    public void OnMessagesReceived(List<Message> messages)
+    {
+        foreach (Message msg in messages)
+        {
+            Dip?.Invoke(() =>
+            {
+                TextBody? txtBody = msg.Body as TextBody;
+                if (txtBody != null)
+                {
+                    displayMessage(txtBody.Text, false);
+                }
+            });
+                                
+        }
+    }
+
+    public void OnCmdMessagesReceived(List<Message> messages)
+    {
+        
+    }
+
+    public void OnMessagesRead(List<Message> messages)
+    {
+        
+    }
+
+    public void OnMessagesDelivered(List<Message> messages)
+    {
+        
+    }
+
+    public void OnMessagesRecalled(List<Message> messages)
+    {
+        
+    }
+
+    public void OnReadAckForGroupMessageUpdated()
+    {
+        
+    }
+
+    public void OnGroupMessageRead(List<GroupReadAck> list)
+    {
+        
+    }
+
+    public void OnConversationsUpdate()
+    {
+        
+    }
+
+    public void OnConversationRead(string from, string to)
+    {
+        
+    }
+
+    public void MessageReactionDidChange(List<MessageReactionChange> list)
+    {
+
+    }
+    public void OnMessageContentChanged(Message msg, string operatorId, long operationTime)
+    {
+    }
+    public void OnMessagePinChanged(string messageId, string conversationId, bool isPinned, string operatorId, long operationTime)
+    {
+    }
+    ```
+
+1. **Display chat messages**
+    
+    To display sent and received messages, add the following method to the `MainWindow` class:
+
+    ```c#
+    private void displayMessage(string messageText, bool isSentMessage)
+    {
+        // Create a new TextBlock
+        TextBlock messageTextBlock = new TextBlock();
+        messageTextBlock.Text = messageText;
+        messageTextBlock.Padding = new Thickness(10);
+
+        // Set formatting
+        ScrollViewer? messageList = FindName("scrollMessagesView") as ScrollViewer;
+        if (messageList != null)
+        {
+            if (isSentMessage)
+            {
+                messageTextBlock.Background = new SolidColorBrush(Color.FromRgb(220, 248, 198));
+                messageTextBlock.HorizontalAlignment = HorizontalAlignment.Right;
+                messageTextBlock.Margin = new Thickness(100, 25, 15, 5);
+            }
+            else
+            {
+                messageTextBlock.Background = Brushes.White;
+                messageTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                messageTextBlock.Margin = new Thickness(15, 25, 100, 5);
+            }
+
+            // Add the message TextBlock to the StackPanel inside the ScrollViewer
+            StackPanel? messageStackPanel = messageList.Content as StackPanel;
+            if (messageStackPanel != null)
+            {
+                messageStackPanel.Children.Add(messageTextBlock);
+                messageList.ScrollToEnd(); // Scroll to the bottom of the messages
+            }
+        }
+    }
+    ```
+
+1.  **Clean up when the window is closed**
+
+    Add the following method to the `MainWindow` class:
+
+    ```c#
+    private void CloseWindow(object sender, EventArgs e)
+    {
+        SDKClient.Instance.ChatManager.RemoveChatManagerDelegate(this);
+        SDKClient.Instance.DeleteConnectionDelegate(this);
+    }
+    ```
+    
 </PlatformStructured>
-
 
 ## Test your implementation
 
@@ -661,9 +2958,9 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
 1. Create an app instance for the first user:
 
-    1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
+    1. [Register a user](/./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](/./enable#generate-a-user-token).
 
-    1. In the `MainActivity` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `MainActivity` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](/./enable#get-chat-project-information).
 
     1. Connect a physical Android device to your development device.
 
@@ -693,11 +2990,11 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
 1. Create an app instance for the first user:
 
-    1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
+    1. [Register a user](/./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](/./enable#generate-a-user-token).
 
-    1. In the `ViewController` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `ViewController` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](/./enable#get-chat-project-information).
 
-    1. Connect a physical Web device to your development device.
+    1. Connect a physical device device to your development device.
 
     1. In Xcode, click **Run app**. A moment later you see the project installed on your device.
 
@@ -707,7 +3004,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. In the `ViewController` class, update `userId` and `token` with values for the second user. Make sure you use the same `appKey` as for the first user.
 
-    1. Run the modified app on a device emulator or a second physical Web device.
+    1. Run the modified app on a device emulator or a second physical device device.
 
 1. On each device, click **Join** to log in to the Chat.
 
@@ -746,7 +3043,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
    Fill in the user ID of the receiver (`Roy`) in the **single chat id** box and type in the message ("Hi, how are you doing?") to send in the **message content** box, and click **Send** to send the message.
 
-	![Send a message](/images/im/send-message-web.png)
+    ![Send a message](/images/chat/send-message-web.png)
 
 1. Log out
 
@@ -756,7 +3053,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
    Open the same page in a new window, log in as the receiver (`Roy`) and receive the message ("Hi, how are you doing?") sent from **Leo**.
 
-   ![Receive a message](/images/im/receive-message-web.png)
+   ![Receive a message](/images/chat/receive-message-web.png)
 
 </PlatformStructured>
 
@@ -764,9 +3061,9 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
 1. Create an app instance for the first user:
 
-    1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
+    1. [Register a user](/./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](/./enable#generate-a-user-token).
 
-    1. In the `_MyHomePageState` class, update `appKey`, `token`, and `userId` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `_MyHomePageState` class, update `appKey`, `token`, and `userId` with values from Agora Console.  To get your app key, see [Get Chat project information](/./enable#get-chat-project-information).
 
     1. Connect a physical test device to your development device.
 
@@ -795,7 +3092,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 <PlatformStructured platform="react-native">
 
 :::info
-You can log in to the app by either modifying the fields in the `App.js` file as stated below, or entering the required fields in the user interface.
+You can log in to the app by either modifying the fields in the <code>App.js</code> file as stated below, or entering the required fields in the user interface.
 :::
 
 To validate the peer-to-peer messaging you have just integrated into your app using Agora Chat, perform the following operations:
@@ -821,9 +3118,9 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 <PlatformStructured platform="unity">
 
-1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
+1. [Register a user](/./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](/./enable#generate-a-user-token).
 
-1. In the `NewBehaviourScript` class, update `userId`, `token`, and `appKey` with values from Agora Console. To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+1. In the `NewBehaviourScript` class, update `userId`, `token`, and `appKey` with values from Agora Console. To get your app key, see [Get Chat project information](/./enable#get-chat-project-information).
 
 1. In Unity Editor, click **Play**. A moment later you see the project installed on your development device.
 
@@ -835,7 +3132,7 @@ You can also read from the logs on the UI to see whether you have successfully s
     
     The message is sent and a confirmation message is displayed in the debug console.
     
-1. [Register the recipient user](./enable#register-a-user) in Agora Console and [Generate a user token](./enable#generate-a-user-token).
+1. [Register the recipient user](/./enable#register-a-user) in Agora Console and [Generate a user token](/./enable#generate-a-user-token).
 
 1. In the `NewBehaviourScript` class, update `userId` and `token` with values you generated for recipient. Make sure you use the same `appKey` as for both users.
 
@@ -851,13 +3148,13 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. Create an app instance for the first user:
 
-    1. [Register a user](./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](./enable#generate-a-user-token).
+    1. [Register a user](/./enable#register-a-user) in [Agora Console](https://console.agora.io/v2) and [Generate a user token](/./enable#generate-a-user-token).
 
-    1. In the `MainWindow` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](./enable#get-chat-project-information).
+    1. In the `MainWindow` class, update `userId`, `token`, and `appKey` with values from Agora Console.  To get your app key, see [Get Chat project information](/./enable#get-chat-project-information).
 
     1. Click the **Start** button. You see the following interface:
     
-        ![image](/images/im/chat-windows-interface.png)   
+        ![image](/images/chat/chat-windows-interface.png)   
 
 1. Create an app instance for the second user:
 
@@ -879,21 +3176,235 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 </PlatformStructured>
 
-
 ## Reference
+
 This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
 
 * For more code samples, see [Samples and demos](./downloads).
 
 <PlatformStructured platform="android">
 
-* [Manual install](./manual-sdk-install) shows you how to integrate Chat SDK into your project manually.
+* [Manual install](./reference/manual-sdk-install) shows you how to integrate Chat SDK into your project manually.
+
+### Integration issues
+
+If your project integrates Agora Chat SDK 1.3.2 or later and either Signaling SDK 2.2.0 or later or Video SDK 4.3.0 or later, you may encounter a compilation error because the `libaosl.so` library is included in both SDKs.
+
+```
+com.android.builder.merge.DuplicateRelativeFileException: More than one file was found with OS independent path 'lib/x86/libaosl.so'
+```
+
+To resolve this issue, add packaging options under the `Android` node in the `build.gradle` file of your app. This ensures that the build process prioritizes the first matching file:
+
+<Tabs defaultValue="groovy" groupId="build-script" persist>
+<TabsList>
+  <TabsTrigger value="groovy">Groovy</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+</TabsList>
+
+<TabsContent value="groovy">
+
+* **Android Gradle Plugin &lt; 7.x**
+
+    ```groovy
+    android {
+        packagingOptions {
+            pickFirst 'lib/**/libaosl.so'
+        }
+    }
+
+    dependencies {
+        implementation 'io.agora.infra:aosl:x.y.z'
+        // implementation RTM sdk
+        // implementation RTC sdk
+    }
+    ```
+
+* **Android Gradle Plugin 7.x or later**
+
+    ```groovy
+    android {
+        packaging {
+            jniLibs {
+                pickFirsts += ["lib/**/libaosl.so"]
+            }
+        }
+    }
+
+    dependencies {
+        implementation 'io.agora.infra:aosl:x.y.z'
+        // implementation RTM sdk
+        // implementation RTC sdk
+    }
+    ```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+* **Android Gradle Plugin &lt; 7.x**
+
+    ```kotlin
+    android {
+        packagingOptions {
+            pickFirst("lib/**/libaosl.so")
+        }
+    }
+
+    dependencies {
+        implementation("io.agora.infra:aosl:x.y.z")
+        // implementation RTM sdk
+        // implementation RTC sdk
+    }
+    ```
+
+* **Android Gradle Plugin 7.x or later**
+
+    ```kotlin
+    android {
+        packaging {
+            jniLibs {
+                pickFirsts += setOf("lib/**/libaosl.so")
+            }
+        }
+    }
+
+    dependencies {
+        implementation("io.agora.infra:aosl:x.y.z")
+        // implementation RTM sdk
+        // implementation RTC sdk
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+### API reference
+
+- [`ChatClient.init()`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_client.html#ab8220f870c05ad326f4de256c5814852)
+
+- [`ChatClient.loginWithToken()`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_client.html#abb72e1e403e7e3f4ded23e8b4f460bd6)
+
+- [`ChatClient.logout()`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_client.html#a014e2abb85595417b64799dabfb8ac74)
+
+- [`ChatManager.sendMessage()`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_manager.html#aed75ce0a590423ac18a94e1d339e97f4)
+
+- [`ChatManager`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_manager.html)
+
+- [`ChatMessage`](https://api-ref.agora.io/en/chat-sdk/android/1.x/classio_1_1agora_1_1chat_1_1_chat_message.html)
+
+- [`ConnectionListener`](https://api-ref.agora.io/en/chat-sdk/android/1.x/interfaceio_1_1agora_1_1_connection_listener.html)
+
+- [`MessageListener`](https://api-ref.agora.io/en/chat-sdk/android/1.x/interfaceio_1_1agora_1_1_message_listener.html)
 
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-_No platform-specific content._
+### Integrate the SDK through CocoaPods
+
+1. Install CocoaPods. For details, see [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started).
+
+1. In the Terminal, navigate to the project root directory and run the `pod init` command to create a text file `Podfile` in the project folder.
+
+1. Open the `Podfile` file and add the Agora Chat SDK. Remember to replace `Your project target` with the target name of your project.
+
+   ```swift
+   platform :ios, '11.0'
+
+   target 'Your project target' do
+       pod 'Agora_Chat_iOS'
+   end
+   ```
+1. In the project root directory, run the following command to integrate the SDK:
+
+   ```swift
+   pod install
+   ```
+
+   When the SDK is installed successfully, you can see `Pod installation complete!` in the Terminal and an `xcworkspace` file in the project folder.
+
+1. Open the `xcworkspace` file in Xcode.
+
+ ### Add a privacy manifest file
+
+ The Agora Chat SDK for device provides the `PrivacyInfo.xcprivacy` file that contains the required reasons for the APIs used by the SDK. To add the privacy manifest to your app in Xcode, follow these steps:
+
+1. Create a privacy manifest in your app project:
+
+   1. Choose **File > New File**.
+   
+   1. Scroll down to the **Resource** section and select **App Privacy File** type. 
+
+   1. Click **Next**.
+
+   1. Check your app in the **Targets** list.
+
+   1. Click **Create**.
+
+   The default file name is `PrivacyInfo.xcprivacy` which is also the required file name for bundled privacy manifests.
+
+2. Add the items in `PrivacyInfo.xcprivacy` file of the Agora Chat SDK to `PrivacyInfo.xcprivacy` of the app in either of the following ways:  
+
+    - Add the following source code:
+
+        ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>NSPrivacyAccessedAPITypes</key>
+            <array>
+                <dict>
+                    <key>NSPrivacyAccessedAPITypeReasons</key>
+                    <array>
+                        <string>CA92.1</string>
+                    </array>
+                    <key>NSPrivacyAccessedAPIType</key>
+                    <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+                </dict>
+                <dict>
+                    <key>NSPrivacyAccessedAPITypeReasons</key>
+                    <array>
+                        <string>C617.1</string>
+                    </array>
+                    <key>NSPrivacyAccessedAPIType</key>
+                    <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+                </dict>
+            </array>
+            <key>NSPrivacyCollectedDataTypes</key>
+            <array/>
+            <key>NSPrivacyTrackingDomains</key>
+            <array/>
+            <key>NSPrivacyTracking</key>
+            <false/>
+        </dict>
+        </plist>
+        ```
+
+    - Add the list of items as shown in the following figure:
+
+        ![img](/images/common/apple_privacy_policy.png) 
+
+### Frequently asked questions
+
+* [How can I add a privacy manifest to my iOS app?](/help/other-issues/ios_privacy_manifest)
+
+### API reference
+
+- [`AgoraChatClient.initializeSDKWithOptions`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/interface_agora_chat_client.html#aa628257db8692884cc69e39cc6d7a58b)
+
+- [`AgoraChatClient.loginWithUsername:token:`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/interface_agora_chat_client.html#a504a9bef378815cb0da3f35a559db4a8)
+
+- [`AgoraChatClient.logout`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/interface_agora_chat_client.html#a71bb810fe29f67741fe820811370c809)
+
+- [`AgoraChatManager.sendMessage:progress:completion:`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/protocol_i_agora_chat_manager-p.html#a78bad292be9cd44c08df18e557b9939a)
+
+- [`AgoraChatManagerDelegate`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/protocol_agora_chat_manager_delegate-p.html)
+
+- [`AgoraChatClientDelegate`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/protocol_agora_chat_client_delegate-p.html)
+
+- [`AgoraChatOptions`](https://api-ref.agora.io/en/chat-sdk/ios/1.x/interface_agora_chat_options.html)
 
 </PlatformStructured>
 
@@ -901,18 +3412,34 @@ _No platform-specific content._
 
 For details:
 
-* [Manual install](./manual-sdk-install) shows you how to integrate Chat SDK into your project manually.
+* [Manual install](./reference/manual-sdk-install) shows you how to integrate Chat SDK into your project manually.
 
 * [Sample code](https://github.com/AgoraIO/Agora-Chat-API-Examples/blob/main/Chat-Web/src/index.js) for getting
   started with Chat.
 
-* Install the [demo  app](./downloads).
+* Install the [demo  app](./reference/downloads).
 
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
 
-_No platform-specific content._
+### API reference
+
+- [`ChatClient.init`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_chat_client/ChatClient/init.html)
+
+- [`ChatClient.loginWithToken`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_chat_client/ChatClient/loginWithToken.html)
+
+- [`ChatClient.logout`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_chat_client/ChatClient/logout.html)
+
+- [`ChatManager.sendMessage`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_chat_manager/ChatManager/sendMessage.html)
+
+- [`ChatManager`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_chat_manager/ChatManager-class.html)
+
+- [`ChatMessage`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_models_chat_message/ChatMessage-class.html)
+
+- [`ConnectionEventHandler`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_event_handler_manager_event_handler/ConnectionEventHandler-class.html)
+
+- [`ChatEventHandler`](https://api-ref.agora.io/en/chat-sdk/flutter/1.x/file-___Users_dujiepeng_work_flutter_agora_chat_sdk_lib_src_event_handler_manager_event_handler/ChatEventHandler-class.html)
 
 </PlatformStructured>
 
@@ -924,7 +3451,19 @@ For details, see the [sample code](https://github.com/AgoraIO/Agora-Chat-API-Exa
 
 <PlatformStructured platform="unity">
 
-_No platform-specific content._
+### API reference​
+
+- [`SDKClient.InitWithOptions`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/class_agora_chat_1_1_s_d_k_client.html#a77b332d22c4a2318a15ea127fa2f66dc)
+
+- [`SDKClient.LoginWithAgoraToken()`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/class_agora_chat_1_1_s_d_k_client.html#a66ed705ea3ab6e9af1c410393f297ac0)
+
+- [`SDKClient.Logout()`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/class_agora_chat_1_1_s_d_k_client.html#a98b67e590dbe9f6253449df9e82dd0c8)
+
+- [`Message.CreateTextSendMessage()`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/class_agora_chat_1_1_message.html#aa97fe7e237c0c2c7f2fd22a206985e2b)
+
+- [`IChatManagerDelegate`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/interface_agora_chat_1_1_i_chat_manager_delegate.html)
+
+- [`IConnectionDelegate`](https://api-ref.agora.io/en/chat-sdk/unity/1.x/interface_agora_chat_1_1_i_connection_delegate.html)
 
 </PlatformStructured>
 
@@ -933,5 +3472,34 @@ _No platform-specific content._
 * Avoid blocked callbacks  
   Each callback of a Chat client instance is triggered from internal threads. To avoid blocking internal threads, Agora recommends that you execute your operations in other threads when callbacks are triggered.
 
+### API reference​
+
+- [`AgoraChat.SDKClient Class`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html)
+
+- [`SDKClient.InitWithOptions()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html#a77b332d22c4a2318a15ea127fa2f66dc)
+
+- [`SDKClient.LoginWithAgoraToken()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html#a66ed705ea3ab6e9af1c410393f297ac0)
+
+- [`SDKClient.Logout()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html#a98b67e590dbe9f6253449df9e82dd0c8)
+
+- [`AgoraChat.Message Class`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_message.html)
+
+- [`CreateTextSendMessage()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_message.html#aa97fe7e237c0c2c7f2fd22a206985e2b)
+
+- [`AgoraChat.ChatManager Class`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_chat_manager.html)
+
+- [`ChatManager.SendMessage()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_chat_manager.html#af9f598e16100bebd4b035d8335262e2b)
+
+- [`AddChatManagerDelegate()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_chat_manager.html#ad82fe37433d576cbf96af1fe9ad381db)
+
+- [`RemoveChatManagerDelegate()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_chat_manager.html#af04896f0b9f6569bbd37d044ec7771bc)
+
+- [`AddConnectionDelegate()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html#a7156cf061b2ac478ebaabb7776c18079)
+
+- [`DeleteConnectionDelegate()`](https://api-ref.agora.io/en/chat-sdk/windows/1.x/class_agora_chat_1_1_s_d_k_client.html#a5dbada1cc1567eb62784bdbae935517a)
+
 </PlatformStructured>
 
+### Next steps
+
+In a production environment, best practice is to deploy your own token server. Users retrieve a token from the token server to log in to Chat. To see how to implement a server that generates and serves tokens on request, see [Secure authentication with tokens](../develop/authentication).

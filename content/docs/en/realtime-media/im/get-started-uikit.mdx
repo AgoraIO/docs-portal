@@ -55,70 +55,70 @@ Follow the steps to create the environment necessary to add video call into your
 
 2. Integrate the Chat SDK into your project with Maven Central.
 
-    1. In `/Gradle Scripts/build.gradle(Project: )`, add the following lines to add the Maven Central dependency:
+   1. In `/Gradle Scripts/build.gradle(Project: <projectname>)`, add the following lines to add the Maven Central dependency:
 
-        ```java
-        buildscript {
-            repositories {
-                ...
-                mavenCentral()
-            }
-        }
-        allprojects {
-            repositories {
-                ...
-                mavenCentral()
-            }
-        }
-        ```
+      ```java
+      buildscript {
+          repositories {
+              ...
+              mavenCentral()
+          }
+      }
+      allprojects {
+          repositories {
+              ...
+              mavenCentral()
+          }
+      }
+      ```
 
-  1. In `/Gradle Scripts/build.gradle(Module: .app)`, add the following lines to integrate the Chat UI Samples into your Android project:
+   2. In `/Gradle Scripts/build.gradle(Module: <projectname>.app)`, add the following lines to integrate the Chat UI Samples into your Android project:
 
-        ```java
-        android {
-            defaultConfig {
-                    // The Android OS version should be 21 or higher.
-                    minSdkVersion 21
-            }
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
-            }
-        }
-        dependencies {
-            ...
-            // Replace X.Y.Z with the latest version of the Chat UI Samples.
-            // For the latest version, go to https://search.maven.org/.
-            implementation 'io.agora.rtc:chat-uikit:X.Y.Z'
-        }
-        ```
+      ```java
+      android {
+          defaultConfig {
+                  // The Android OS version should be 21 or higher.
+                  minSdkVersion 21
+          }
+          compileOptions {
+              sourceCompatibility JavaVersion.VERSION_1_8
+              targetCompatibility JavaVersion.VERSION_1_8
+          }
+      }
+      dependencies {
+          ...
+          // Replace X.Y.Z with the latest version of the Chat UI Samples.
+          // For the latest version, go to https://search.maven.org/.
+          implementation 'io.agora.rtc:chat-uikit:X.Y.Z'
+      }
+      ```
 
 3. Add permissions for network and device access.
 
-   In `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
+   In `/app/Manifests/AndroidManifest.xml`, add the following permissions after `</application>`:
 
-  ```xml
+   ```xml
+   <uses-permission android:name="android.permission.INTERNET" />
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+   <uses-permission android:name="android.permission.CAMERA"/>
+   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+   <!-- For Android 12, you need to add the following line to apply for the alarm clock permission. For Agora Chat 1.0.9 or later, this permission is optional.-->
+   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+   ```
 
-
-
-
-
-
-
-
-
-  ```
-
-  These are the minimum permissions you need to add to start Chat. You can also add other permissions according to your use case.
+   These are the minimum permissions you need to add to start Chat. You can also add other permissions according to your use case.
 
 4. Prevent code obfuscation.
 
    In `/Gradle Scripts/proguard-rules.pro`, add the following line:
 
-  ```java
-  -keep class io.agora.** {*;}
-  -dontwarn  io.agora.**
-  ```
+   ```java
+   -keep class io.agora.** {*;}
+   -dontwarn  io.agora.**
+   ```
 
 ## Implementation
 
@@ -131,60 +131,160 @@ This section shows how to use the Chat UI Samples to implement peer-to-peer mess
 1. To add the text strings used by the UI, open `app/res/values/strings.xml ` and  replace the content with the following:
 
     ```xml
+    <resources>
+        <string name="app_name">AgoraChatUIKitQuickstart</string>
 
-        AgoraChatUIKitQuickstart
+        <string name="username_or_pwd_miss">Username or password is empty</string>
+        <string name="sign_up_success">Sign up success!</string>
+        <string name="sign_in_success">Sign in success!</string>
+        <string name="sign_out_success">Sign out success!</string>
+        <string name="send_message_success">Send message success!</string>
+        <string name="enter_username">Enter username</string>
+        <string name="enter_password">Enter password</string>
+        <string name="sign_in">Sign in</string>
+        <string name="sign_out">Sign out</string>
+        <string name="sign_up">Sign up</string>
+        <string name="enter_to_username">Enter to username</string>
+        <string name="start_chat">Start chat</string>
+        <string name="enter_content">Enter content</string>
+        <string name="log_hint">Show log area...</string>
+        <string name="has_login_before">An account has been signed in, please sign out first and then sign in</string>
+        <string name="sign_in_first">Please sign in first</string>
+        <string name="not_find_send_name">Please enter the username who you want to send first!</string>
 
-        Username or password is empty
-        Sign up success!
-        Sign in success!
-        Sign out success!
-        Send message success!
-        Enter username
-        Enter password
-        Sign in
-        Sign out
-        Sign up
-        Enter to username
-        Start chat
-        Enter content
-        Show log area...
-        An account has been signed in, please sign out first and then sign in
-        Please sign in first
-        Please enter the username who you want to send first!
-
-        41117440#383391
-
+        <string name="app_key">41117440#383391</string>
+    </resources>
     ```
 
 2. To add the UI framework, open `app/res/layout/activity_main.xml` and replace the content with the following:
 
     ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_username"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/et_pwd"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"/>
 
+            <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword"
+                app:layout_constraintLeft_toRightOf="@id/et_username"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_username"
+                android:layout_marginEnd="20dp"/>
 
+            <Button
+                android:id="@+id/btn_sign_in"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/sign_in"
+                android:onClick="signInWithToken"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_pwd"
+                app:layout_constraintRight_toLeftOf="@id/btn_sign_out"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"/>
 
+            <Button
+                android:id="@+id/btn_sign_out"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/sign_out"
+                android:onClick="signOut"
+                app:layout_constraintLeft_toRightOf="@id/btn_sign_in"
+                app:layout_constraintTop_toBottomOf="@id/et_pwd"
+                app:layout_constraintRight_toLeftOf="@id/btn_sign_up"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"/>
 
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_up"
+                android:textSize="12sp"
+                android:onClick="signUp"
+                app:layout_constraintLeft_toRightOf="@id/btn_sign_out"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_pwd"
+                app:layout_constraintTop_toTopOf="@id/btn_sign_in"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"/>
 
+            <EditText
+                android:id="@+id/et_to_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_to_username"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn_start_chat"
+                app:layout_constraintTop_toBottomOf="@id/btn_sign_up"
+                app:layout_constraintHorizontal_weight="2"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
+            <Button
+                android:id="@+id/btn_start_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/start_chat"
+                android:onClick="startChat"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toRightOf="@id/et_to_username"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/et_to_username"
+                app:layout_constraintHorizontal_weight="1"
+                android:layout_marginEnd="10dp"/>
 
+            <FrameLayout
+                android:id="@+id/fl_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_start_chat"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tv_log"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="@string/log_hint"
+            android:scrollbars="vertical"
+            android:padding="10dp"/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </LinearLayout>
     ```
 
 ### Implementation
@@ -686,20 +786,26 @@ To enable your app to send and receive messages between individual users, do the
    Under `/app/src/main/res/`, create a folder, name it `xml`, and create an xml file named `file_paths.xml` under `xml`. Open `file_paths.xml`, replace the code with the following:
 
     ```xml
-
-
-
-
-
+    <?xml version="1.0" encoding="utf-8"?>
+    <paths>
+        <external-path path="Android/data/io/agora/chatuikitquickstart/" name="files_root" />
+        <external-path path="." name="external_storage_root" />
+    </paths>
     ```
 
-    In `/app/Manifests/AndroidManifest.xml`, add the following lines before ``:
+    In `/app/Manifests/AndroidManifest.xml`, add the following lines before `</application>`:
 
     ```xml
-
-
-
-
+    <!-- After android 7.0, you should add -->
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileProvider"
+        android:grantUriPermissions="true"
+        android:exported="false">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
     ```
 
 4. Click `Sync Project with Gradle Files` to sync your project. Now you are ready to test your app.

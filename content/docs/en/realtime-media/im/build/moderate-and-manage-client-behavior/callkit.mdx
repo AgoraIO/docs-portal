@@ -45,19 +45,19 @@ Take the following steps to integrate the `AgoraChatCallKit` into your project a
 
 2. Add project permissions
 
-    In `/app/Manifests/AndroidManifest.xml`, add the following permissions after ``:
+    In `/app/Manifests/AndroidManifest.xml`, add the following permissions after `</application>`:
 
     ```xml
-
-
-
-
-
-
-
-
-
-
+    <!-- Add alert window -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Access to the internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Access to the microphone -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Access to the camera -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Access to the tasks -->
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
     ```
 
 3. Add the `AgoraChatCallKit` Activity
@@ -65,8 +65,20 @@ Take the following steps to integrate the `AgoraChatCallKit` into your project a
     In `/app/Manifests/AndroidManifest.xml`, add activities for the one-to-one audio and video call, and the group video call, for example, `CallSingleBaseActivity` (inherited from `EaseCallSingleBaseActivity`) and `CallMultipleBaseActivity` (inherited from `EaseCallMultipleBaseActivity`).
 
     ```xml
-
-
+    <activity
+        android:name=".av.CallSingleBaseActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:excludeFromRecents="true"
+        android:label="@string/demo_activity_label_video_call"
+        android:launchMode="singleInstance"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".av.CallMultipleBaseActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:excludeFromRecents="true"
+        android:label="@string/demo_activity_label_multi_call"
+        android:launchMode="singleInstance"
+        android:screenOrientation="portrait" />
     ```
 
 ## Implement audio and video calling
