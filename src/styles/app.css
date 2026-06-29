@@ -573,6 +573,12 @@
     font-weight: 500;
   }
 
+  .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)) {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   .prose :where(pre):not(:where(.not-prose, .not-prose *)) {
     overflow: hidden;
     border: 0;
