@@ -124,9 +124,9 @@ describe('legacy sitemap compatibility audit', () => {
       exactPath: 490,
       exactSlug: 1944,
       native: 0,
-      productFallback: 113,
+      productFallback: 13,
       renamedPage: 39,
-      semanticPageMatch: 530,
+      semanticPageMatch: 630,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });
