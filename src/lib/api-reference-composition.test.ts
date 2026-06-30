@@ -73,6 +73,12 @@ describe('api reference composition', () => {
     expect(restUrlOf('Cloud Recording')).toBe(
       '/en/api-reference/api-ref/cloud-recording',
     );
+    expect(restUrlOf('Analytics')).toBe(
+      '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
+    );
+    expect(restUrlOf('Console')).toBe(
+      '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
+    );
     expect(restUrlOf('Media Player Kit')).toBeUndefined();
     expect(restUrlOf('IoT')).toBeUndefined();
   });

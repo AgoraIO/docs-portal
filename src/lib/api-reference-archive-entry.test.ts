@@ -56,4 +56,34 @@ describe('api reference archive removed from sidebar', () => {
     expect(flat.find((n) => n.title === 'Voice & Video')).toBeDefined();
     expect(flat.find((n) => n.title === 'RESTful API')).toBeUndefined();
   });
+
+  it('keeps the single-page Console REST API in the unified product rail', async () => {
+    const payload = await loadDocsPagePayload('en', 'api-reference', [
+      'api-ref',
+      'console',
+      'solutions-agora-console-rest-api',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected an api-reference docs page payload');
+    }
+
+    const flat = flattenSidebarNodes(payload.sidebar);
+    const consoleSection = flat.find(
+      (n) => n.type === 'section' && n.title === 'Console',
+    ) as Extract<DocsSidebarNode, { type: 'section' }> | undefined;
+
+    expect(payload.sidebarHeader).toBeUndefined();
+    expect(consoleSection).toBeDefined();
+    expect(consoleSection?.children).toEqual([
+      expect.objectContaining({
+        title: 'REST API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
+      }),
+    ]);
+    expect(
+      flat.find((n) => n.type === 'section' && n.title === 'Agora Console'),
+    ).toBeUndefined();
+  });
 });
