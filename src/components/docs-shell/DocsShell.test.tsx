@@ -736,6 +736,9 @@ describe('DocsShell', () => {
     expect(
       within(siteFooter).getByRole('link', { name: 'GitHub' }),
     ).toHaveAttribute('href', 'https://github.com/AgoraIO-Community');
+    expect(
+      within(siteFooter).getByRole('link', { name: 'Discord' }),
+    ).toHaveAttribute('href', 'https://discord.gg/QfgBCvuX4d');
 
     expect(within(siteFooter).getByText('Contact Us')).toBeInTheDocument();
     expect(

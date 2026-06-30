@@ -146,5 +146,9 @@ export const docsFooterContent = {
       href: 'https://github.com/AgoraIO-Community',
       label: 'GitHub',
     },
+    {
+      href: 'https://discord.gg/QfgBCvuX4d',
+      label: 'Discord',
+    },
   ],
 } as const;
