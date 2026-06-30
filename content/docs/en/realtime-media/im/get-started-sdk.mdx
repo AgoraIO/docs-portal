@@ -117,7 +117,7 @@ For more information, see [Setting up the environment](https://reactnative.dev/d
 
 - A device running Windows 7 or higher.
 - Visual Studio IDE 2019 or later
-- .Net Framework 4.5.2 or later
+- .NET Framework 4.5.2 or later
 
 </PlatformStructured>
 
@@ -1115,7 +1115,10 @@ To implement this workflow in your app, take the following steps:
 
 Copy the following code to the `App.jsx` file to implement the UI:
 
-```tsx
+```jsx
+import { useEffect, useState, useRef } from "react";
+import "./App.css";
+import AgoraChat from "agora-chat";
 
 function App() {
   // Replaces <Your app key> with your app key.

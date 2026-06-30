@@ -793,7 +793,7 @@ describe('common MDX registry', () => {
   });
 
   it('does not push URL paths for inline platform tab groups', () => {
-    window.history.replaceState({}, '', '/en/ai/get-started/test-mdx-comps');
+    window.history.replaceState({}, '', '/en/ai/get-started/quickstart');
 
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
@@ -812,7 +812,7 @@ describe('common MDX registry', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Android' }));
 
-    expect(window.location.pathname).toBe('/en/ai/get-started/test-mdx-comps');
+    expect(window.location.pathname).toBe('/en/ai/get-started/quickstart');
     expect(screen.getByText('Android inline').closest('section')).toBeVisible();
   });
 

@@ -43,6 +43,7 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { legacyDocsBannerConfig } from '@/lib/shared';
+import { AgoraLogoMark } from './AgoraLogoMark';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -242,13 +243,23 @@ export function DocsShell({
                   <SheetHeader className="min-w-0 border-b pr-12">
                     <SheetTitle className="min-w-0">
                       <Link
-                        className="inline-flex max-w-full min-w-0 items-center rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        className="inline-flex h-8 max-w-full min-w-0 items-center gap-2 rounded-sm text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                         onClick={() => setIsMobileSheetOpen(false)}
                         params={{}}
                         search={{}}
                         to={homeHref}
                       >
-                        <span className="truncate">{t('app.name')}</span>
+                        <span className="sr-only">{t('app.name')}</span>
+                        <AgoraLogoMark
+                          aria-hidden="true"
+                          className="h-8 shrink-0 translate-y-2"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="truncate text-[15px] font-semibold"
+                        >
+                          Docs
+                        </span>
                       </Link>
                     </SheetTitle>
                     <SheetDescription className="sr-only">
@@ -274,12 +285,19 @@ export function DocsShell({
               </Sheet>
               <div className="flex min-w-0 items-center gap-2.5">
                 <Link
-                  className="flex min-w-0 items-center text-[15px] font-semibold text-[color:var(--ink-1)]"
+                  className="flex h-8 min-w-0 items-center gap-2 text-[15px] font-semibold text-[color:var(--ink-1)]"
                   params={{}}
                   search={{}}
                   to={homeHref}
                 >
-                  <span className="truncate">{t('app.name')}</span>
+                  <span className="sr-only">{t('app.name')}</span>
+                  <AgoraLogoMark
+                    aria-hidden="true"
+                    className="h-8 shrink-0 translate-y-2"
+                  />
+                  <span aria-hidden="true" className="truncate">
+                    Docs
+                  </span>
                 </Link>
               </div>
             </div>

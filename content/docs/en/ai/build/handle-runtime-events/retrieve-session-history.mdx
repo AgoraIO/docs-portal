@@ -15,6 +15,7 @@ Conversational AI Engine provides separate retrieval paths for pushed history, p
 | Goal | Best source | Use this |
 | --- | --- | --- |
 | Receive history automatically when the session ends | Webhook event | [`103 agent history`](../../reference/event-types#103-agent-history) |
+| Receive post-session turn data automatically | Webhook event | [`112 turns finished`](../../reference/event-types#112-turns-finished) |
 | Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) |
 | Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 
@@ -33,6 +34,20 @@ This event includes:
 - `labels`
 
 Each `contents` item includes the message sender and content, which is enough for common transcript-style archiving and post-session review.
+
+For sessions that use `llm.vendor` set to `custom`, each `contents` item can also include speech timing fields:
+
+- `speech_start_ms`: Unix timestamp in milliseconds indicating when the user started speaking or the agent started TTS playback.
+- `speech_end_ms`: Unix timestamp in milliseconds indicating when the user stopped speaking, or when TTS playback completed or was interrupted.
+- `speech_algorithmic_delay`: Total delay in milliseconds introduced by audio processing algorithms after audio is captured from the user's microphone. This field is returned only when `contents[].role` is `user` and actual voice input is present.
+
+Use these timing fields when you need to align transcript entries with cloud recording audio or analyze the actual speech timeline.
+
+## Use `112 turns finished` for pushed turn analytics
+
+[`112 turns finished`](../../reference/event-types#112-turns-finished) is the best fit when you want Agora to push conversation turn data after the session ends.
+
+This event includes turn start and end metadata, latency metrics, `total_turn_count`, and `is_truncated`, which help with post-session analysis and archiving.
 
 ## Use the history API when you need to pull data
 
@@ -86,6 +101,7 @@ When your server receives history after the session ends:
 Use these rules to quickly choose a retrieval option:
 
 - For immediate delivery when the session ends, use `103 agent history`.
+- For pushed turn data after the session ends, use `112 turns finished`.
 - For on-demand fetching, use the history API.
 - For timing and completion analysis, use the turns API.
 - For complete postmortems, combine all three.

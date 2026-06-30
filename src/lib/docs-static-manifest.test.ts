@@ -101,7 +101,7 @@ describe('docs-static-manifest', () => {
               platforms: '["web","android"]',
             },
           },
-          markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
+          markdownUrl: '/en/introduction/about-agora.md',
         }),
         ok: true,
         status: 200,
@@ -122,7 +122,7 @@ describe('docs-static-manifest', () => {
           initialPlatform: 'android',
         },
       },
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
+      markdownUrl: '/en/introduction/about-agora/android.md',
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
@@ -154,8 +154,7 @@ describe('docs-static-manifest', () => {
                 platforms: '["android","web"]',
               },
             },
-            markdownUrl:
-              '/llms.mdx/docs/en/introduction/about-agora/android.md',
+            markdownUrl: '/en/introduction/about-agora/android.md',
             toc: [
               {
                 depth: 2,
@@ -182,7 +181,7 @@ describe('docs-static-manifest', () => {
           initialPlatform: 'web',
         },
       },
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/web.md',
+      markdownUrl: '/en/introduction/about-agora/web.md',
       toc: [],
     });
   });
@@ -206,7 +205,7 @@ describe('docs-static-manifest', () => {
                 platforms: '["web"]',
               },
             },
-            markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
+            markdownUrl: '/en/introduction/about-agora.md',
           }),
           ok: true,
           status: 200,
@@ -243,8 +242,7 @@ describe('docs-static-manifest', () => {
                 platforms: '["ios","android"]',
               },
             },
-            markdownUrl:
-              '/llms.mdx/docs/en/ai/get-started/platform-split/index.md',
+            markdownUrl: '/en/ai/get-started/platform-split.md',
           }),
           ok: true,
           status: 200,
