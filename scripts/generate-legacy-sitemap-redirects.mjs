@@ -426,18 +426,17 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'get-started/mcp': '/en/realtime-media/rtm',
     'get-started/sdk-quickstart': '/en/realtime-media/rtm/quickstart',
     'get-started/skills': '/en/realtime-media/rtm',
-    'reference/api': '/en/realtime-media/rtm/reference/downloads',
     'reference/cloud-proxy-allowed-ips':
       '/en/realtime-media/rtm/reference/cloud-proxy-migration-guide',
     'rest-api/channel-events':
       '/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions',
     'rest-api/channel-message':
       '/en/realtime-media/rtm/build/work-with-channels/message-channel',
-    'rest-api/overview': '/en/realtime-media/rtm/reference/rest-api',
+    'rest-api/overview': '/en/api-reference/api-ref/signaling',
     'rest-api/peer-to-peer-message':
       '/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management',
     'rest-api/restful-authentication':
-      '/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow',
+      '/en/api-reference/api-ref/signaling/authentication',
     'rest-api/user-events':
       '/en/realtime-media/rtm/build/manage-presence-and-metadata/presence',
   },
@@ -507,6 +506,22 @@ const PRODUCT_PLATFORM_TARGETS = {
         unreal: 'unreal',
         web: 'web',
         windows: 'windows',
+      },
+    },
+  },
+  signaling: {
+    'reference/api': {
+      base: '/en/api-reference/api-ref/signaling',
+      platforms: {
+        android: 'android',
+        flutter: 'flutter',
+        ios: 'ios',
+        'linux-cpp': 'linux-cpp',
+        macos: 'macos',
+        'react-native': 'react-native',
+        unity: 'unity',
+        web: 'web',
+        windows: 'windows-cpp',
       },
     },
   },
@@ -866,7 +881,9 @@ function curatedTarget(info, routeSet) {
         : productTarget
           ? `product-specific mapping preserves ${info.product} semantics`
           : `shared RTC mapping preserves ${info.product} product area`,
-      platformEvidence(info),
+      platformTarget
+        ? `legacy platform ${info.searchParams.get('platform')} is represented in the target path`
+        : platformEvidence(info),
     ],
   };
 }
