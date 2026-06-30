@@ -8,29 +8,42 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { appDescription, appName } from '@/lib/shared';
 import appCss from '@/styles/app.css?url';
 
+export const rootHead = {
+  meta: [
+    {
+      charSet: 'utf-8',
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1',
+    },
+    {
+      title: appName,
+    },
+    {
+      name: 'description',
+      content: appDescription,
+    },
+  ],
+  links: [
+    {
+      rel: 'icon',
+      href: '/favicon.svg',
+      type: 'image/svg+xml',
+      sizes: 'any',
+    },
+    {
+      rel: 'icon',
+      href: '/favicon.ico',
+      type: 'image/png',
+      sizes: '512x512',
+    },
+    { rel: 'stylesheet', href: appCss },
+  ],
+};
+
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: appName,
-      },
-      {
-        name: 'description',
-        content: appDescription,
-      },
-    ],
-    links: [
-      { rel: 'icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: appCss },
-    ],
-  }),
+  head: () => rootHead,
   component: RootComponent,
 });
 
