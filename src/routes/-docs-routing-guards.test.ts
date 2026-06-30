@@ -1,6 +1,28 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+
+vi.mock('@/lib/docs-page', () => ({
+  getDocsPagePayload: async ({
+    data,
+  }: {
+    data: { locale: string; slugSegments: string[]; tab: string };
+  }) => {
+    const { loadDocsPagePayload } = await import('@/lib/docs-page.server');
+
+    return loadDocsPagePayload(data.locale, data.tab, data.slugSegments);
+  },
+  getDocsTabIndex: async ({
+    data,
+  }: {
+    data: { locale: string; tab: string };
+  }) => {
+    const { loadDocsTabIndex } = await import('@/lib/docs-page.server');
+
+    return loadDocsTabIndex(data.locale, data.tab);
+  },
+}));
+
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
@@ -179,6 +201,32 @@ describe('docs route locale guards', () => {
       ),
     ).toBe(false);
   });
+
+  for (const platform of ['android', 'ios'] as const) {
+    it(`loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`, async () => {
+      const payload = await getLoader(DocPageRoute)({
+        location: {
+          hash: '',
+          searchStr: '',
+        },
+        params: {
+          _splat: `api-ref/uikit-sdk/${platform}`,
+          locale: 'en',
+          tab: 'api-reference',
+        },
+      } as never);
+
+      expect(payload).toMatchObject({
+        body: {
+          kind: 'mdx',
+          platformTabs: {
+            initialPlatform: platform,
+          },
+        },
+        markdownUrl: `/en/api-reference/api-ref/uikit-sdk/${platform}.md`,
+      });
+    });
+  }
 
   it('serves direct .md docs page URLs as markdown', async () => {
     const response = (await getGetHandler(DocPageRoute)({

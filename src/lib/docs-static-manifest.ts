@@ -131,15 +131,10 @@ export async function resolvePlatformStaticDocsPayload<
     return null;
   }
 
-  if (canonicalPayload.body.kind === 'platform-group') {
-    return canonicalPayload.activePath
-      ? {
-          redirectUrl: canonicalPayload.activePath,
-        }
-      : null;
-  }
-
-  if (canonicalPayload.body.kind !== 'mdx') {
+  if (
+    canonicalPayload.body.kind !== 'mdx' &&
+    canonicalPayload.body.kind !== 'platform-group'
+  ) {
     return null;
   }
 

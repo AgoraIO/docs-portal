@@ -1684,6 +1684,7 @@ Web body
         platformTabs: {
           canonicalPlatform: 'ios',
           defaultPlatform: 'ios',
+          initialPlatform: undefined,
           platforms: '["ios","android"]',
         },
         platforms: ['ios', 'android'],
@@ -1698,18 +1699,32 @@ Web body
     ).not.toContain('/en/ai/get-started/platform-split/ios');
   });
 
-  it('redirects split-file platform panel routes to the parent page', async () => {
+  it('resolves split-file platform panel routes with the selected platform active', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
 
-    mockedGetPage.mockReturnValue(iosPage);
+    mockedGetPage.mockImplementation((slugs) =>
+      slugs.includes('ios') ? iosPage : parentPage,
+    );
     mockedGetPages.mockReturnValue([parentPage, iosPage]);
     mockedGetPageTree.mockReturnValue(pageTree);
 
-    await expect(
-      loadDocsPagePayload('en', 'ai', ['get-started', 'platform-split', 'ios']),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/get-started/platform-split',
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'get-started',
+      'platform-split',
+      'ios',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/en/ai/get-started/platform-split',
+      body: {
+        contentPath: 'en/ai/get-started/platform-split/index.mdx',
+        kind: 'platform-group',
+        platformTabs: {
+          initialPlatform: 'ios',
+        },
+      },
+      markdownUrl: '/en/ai/get-started/platform-split/ios.md',
     });
   });
 
