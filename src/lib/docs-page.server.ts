@@ -22,6 +22,7 @@ import {
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -137,6 +138,7 @@ export async function loadDocsPagePayload(
   locale: string,
   tab: string,
   slugSegments: string[],
+  search?: string,
 ) {
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
@@ -180,6 +182,16 @@ export async function loadDocsPagePayload(
     return {
       redirectUrl: legacyProductRedirect,
     };
+  }
+
+  const legacySitemapRedirect = resolveLegacySitemapRedirect(
+    locale,
+    tab,
+    slugSegments,
+    search,
+  );
+  if (legacySitemapRedirect) {
+    return legacySitemapRedirect;
   }
 
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
@@ -783,6 +795,23 @@ function resolveLegacyProductRedirect(
   return redirects[`${tab}/${normalizedPath}`] ?? null;
 }
 
+export function resolveLegacySitemapRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+  search?: string,
+) {
+  const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
+  const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
+
+  return rule
+    ? {
+        preserveSearch: rule.preserveSearch,
+        redirectUrl: rule.target,
+      }
+    : null;
+}
+
 function resolveRealtimeMediaRedirect(
   locale: string,
   tab: string,
@@ -955,8 +984,13 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
 
 export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
-  null | { redirectUrl: string }
+  null | DocsRedirectPayload
 >;
+
+export type DocsRedirectPayload = {
+  preserveSearch?: boolean;
+  redirectUrl: string;
+};
 
 async function readProcessedText(page: PageWithSource) {
   try {

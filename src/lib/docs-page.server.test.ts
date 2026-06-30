@@ -2505,6 +2505,71 @@ Web body
     });
   });
 
+  it('redirects legacy docs.agora.io sitemap URLs to article-level targets when available', async () => {
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'video-calling',
+        ['get-started', 'get-started-sdk'],
+        '?platform=android',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+    });
+
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'agora-chat',
+        ['client-api', 'messages', 'send-receive-messages'],
+        '?platform=android',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl:
+        '/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'convo-ai-device-kit', [
+        'overview',
+        'product-overview',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/ai/device-kit',
+    });
+  });
+
+  it('redirects legacy sitemap URLs with platform query to platform-specific targets', async () => {
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'broadcast-streaming',
+        ['overview', 'release-notes'],
+        '?platform=ios',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+    });
+
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'broadcast-streaming',
+        ['overview', 'release-notes'],
+        '?platform=react-js',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    });
+  });
+
   it('redirects the Deploy to IoT devices path entry to the Device Kit product space', async () => {
     await expect(
       loadDocsPagePayload('en', 'ai', [
