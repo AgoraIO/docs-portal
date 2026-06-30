@@ -1,0 +1,4282 @@
+---
+title: iOS
+description: API reference for the Agora Signaling iOS SDK for Swift.
+---
+
+:::info
+This is the Swift API reference. For Objective-C, see the [macOS SDK API reference](macos).
+:::
+
+The Signaling SDK API reference is divided into the following sections:
+
+- [Setup](#setup)
+- [User authentication](#user-authentication)
+- [Channels](#channels)
+- [Topics](#topics)
+- [Messages](#messages)
+- [Presence](#presence)
+- [Storage](#storage)
+- [Lock](#lock)
+- [Enumerated types](#enumerated-types)
+- [Troubleshooting](#troubleshooting)
+
+## Setup
+
+The API reference for the Signaling SDK documents interface descriptions, methods, basic usage, and return values of the Signaling APIs.
+
+### AgoraRtmClientConfig
+
+#### Description
+
+Use the `AgoraRtmClientConfig` to set additional properties for Signaling initialization. These configuration properties take effect throughout the lifecycle of the Signaling client and affect the behavior of the Signaling client.
+
+#### Method
+
+You can create an `AgoraRtmClientConfig` instance as follows:
+
+```swift
+AgoraRtmClientConfig(
+    appId: String,
+    userId: String,
+    useStringUserId: Bool,
+    ispPolicyEnabled: Bool,
+    multipath: Bool,
+    presenceTimeout: UInt32,
+    heartbeatInterval: UInt32,
+    reconnectTimeout: UInt32,
+    areaCode: AgoraRtmAreaCode,
+    proxyConfig: AgoraRtmProxyConfig?,
+    protocolType: AgoraRtmProtocolType,
+    logConfig: AgoraRtmLogConfig?,
+    encryptionConfig: AgoraRtmEncryptionConfig?,
+    privateConfig: AgoraRtmPrivateConfig?
+)
+```
+
+| Properties | Type | Required | Default | Description |
+| :---------------: | :--------: | :------: | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appId` | String | Required | - | App ID obtained when creating a project in the Agora Console. |
+| `userId` | String | Required | - | User ID for identify a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
+| `multipath` | Bool | Required | `false` | Whether to enable dual-network transmission. |
+| `areaCode` | `AgoraRtmAreaCode` | Optional | `GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`AgoraRtmAreaCode`](#enumvareacod-e). |
+| `protocolType` | `AgoraRtmProtocolType` | Optional | `tcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`AgoraRtmProtocolType`](#enumvprotocoltyp-e). |
+| `presenceTimeout` | unsigned int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `remoteConnectionTimeout` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `remoteConnectionTimeout` event notification to other participants or delete the temporary user data associated with the user. |
+| `heartbeatInterval` | unsigned int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
+| `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `completion` callback with `errorInfo` as `AgoraRtmErrorLoginTimeout`, and also triggers the `didReceiveLinkStateEvent` callback with `currentState` as `AgoraRtmLinkStateFailed` and `reasonCode` as `AgoraRtmLinkStateChangeReasonLoginTimeout`. <br />- If reconnection times out, the SDK triggers the `didReceiveLinkStateEvent` callback with `currentState` as `AgoraRtmLinkStateFailed` and `reasonCode` as `AgoraRtmLinkStateChangeReasonReconnectTimeout`. |
+| `useStringUserId` | BOOL | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. The SDK automatically converts string-type user IDs to number-type ones. ones. In this case, the `userId` parameter must be a numeric string (for example, `"123456"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the userId parameter is consistent. |
+| `ispPolicyEnabled` | Bool | Optional | `false` | Whether to enable the ISP domain policy restriction. In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). Use this field to set the SDK's connection mode to connect to servers with domains registered with the operator or those in the IP whitelist: <br />- `true`: Enable the ISP domain policy restriction. This setting applies to scenarios where IoT devices use IoT SIM cards for network access. The SDK will only connect to servers with domains registered with the operator or those in the IP whitelist. <br />- `false`: (Default) Disable the ISP domain policy restriction. This setting applies to most common scenarios. |
+| `logConfig` | `AgoraRtmLogConfig` | Optional | - | Log configuration properties such as the log storage size, storage path, and level. |
+| `proxyConfig` | `AgoraRtmProxyConfig` | Optional | - | When using the Proxy feature of Signaling, you need to configure this parameter. |
+| `encryptionConfig` | `AgoraRtmEncryptionConfig` | Optional | - | When using the client-side encryption feature of Signaling, you need to configure this parameter. |
+| `privateConfig` | `AgoraRtmPrivateConfig` | Optional | - | When using the private deployment feature of Signaling, you need to configure this parameter. |
+
+##### AgoraRtmLogConfig
+
+Use the `AgoraRtmLogConfig` instance to configure and store local log files named `agora.log`. During the debugging phase, you can greatly improve efficiency by storing and tracking the running status of the app through logs. If you encounter complex problems and need Agora technical support to assist with the investigation, you need to provide the log information. `AgoraRtmLogConfig` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:--------------:|:---------:|:--------:|:-------:| ----------------------------------------------------------------------------------------------------------------------- |
+| `filePath` | String | Optional | - | Log file storage paths. |
+| `fileSizeInKB` | int | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128. <br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
+| `level` | `AgoraRtmLogLevel` | Optional | `info` | Output level of log information. See [`AgoraRtmLogLevel`](#enumvlogleve-l). |
+
+##### AgoraRtmProxyConfig
+
+Use the `AgoraRtmProxyConfig` instance to set properties related to the client Proxy service. In some restricted network environments, you might need to use this feature.
+
+:::info[Information]
+Keep your Proxy username and password safe. The Signaling SDK does not parse, store, or forward your username and password in any way. If you modify the proxy settings while the app is running, the settings take effect only after you rest the Signaling client.
+:::
+
+`AgoraRtmProxyConfig` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
+| `proxyType` | `AgoraRtmProxyType` | Optional | `none` | Proxy protocol type. See [`AgoraRtmProxyType`](#enumvproxytyp-e). |
+| `server` | String | Required | - | Proxy server domain name or IP address. |
+| `port` | unsigned short | Optional | - | Proxy listening port. |
+| `account` | String | Optional | - | Proxy login account. |
+| `password` | String | Optional | - | Proxy login password. |
+
+##### AgoraRtmEncryptionConfig
+
+Use the `AgoraRtmEncryptionConfig` instance to set the properties required for client-side encryption. After successfully setting the encryption mode, encryption key, and other related properties, the SDK automatically encrypts and decrypts all messages sent or all statuses set by the user on the client side.
+
+:::warning[Caution]
+Once you set the encryption feature, all users must use the same encryption mode and key, otherwise users cannot communicate with each other.
+:::
+
+`AgoraRtmEncryptionConfig` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `encryptionMode` | `AgoraRtmEncryptionMode` | Optional | `none` | Encryption mode. See [`AgoraRtmEncryptionMode`](#enumvencryptionmod-e). |
+| `encryptionKey` | String | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
+| `encryptionKdfSalt` | Data | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+
+##### AgoraRtmPrivateConfig
+
+Use the `AgoraRtmPrivateConfig` instance to set the properties required for private deployment.
+
+`AgoraRtmPrivateConfig` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `serviceType` | `EnumSet&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`AgoraRtmServiceType`](#enumvrtmservicetyp-e). |
+| `accessPointHosts` | `[String]` | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
+
+#### Basic usage
+
+```swift
+let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "yourUserId")
+config.areaCode = [.CN, .NA]
+config.presenceTimeout = 30
+config.heartbeatInterval = 10
+config.useStringUserId = true
+```
+
+### Create an instance
+#### Description
+
+Call the `AgoraRtmClientKit` initializer to create and initialize the Signaling Client instance.
+
+:::info[Information]
+<br />- Create and initialize a client instance before calling other Signaling APIs. <br />- To distinguish each user or device, ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle.
+:::
+
+#### Method
+
+You can create and initialize an instance as follows:
+
+```swift
+AgoraRtmClientKit(_ config: AgoraRtmClientConfig, delegate: (any AgoraRtmClientDelegate)?) throws
+```
+
+| Parameters | Type | Required | Default | Description |
+|:----------:|:---------:|:--------:|-------| -------------------------------------------- |
+| `config` | `AgoraRtmClientConfig` | Required | - | Initialize the configuration parameters of the Signaling Client. See `AgoraRtmClientConfig`. |
+| `delegate` | `AgoraRtmClientDelegate` | Optional | - | Signaling event notification listener settings. See [Event listeners](#event-listeners). |
+
+#### Basic usage
+
+```swift
+do {
+    let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "uniqueUserId")
+    config.areaCode = [.CN, .NA]
+    config.presenceTimeout = 30
+    config.heartbeatInterval = 10
+    config.useStringUserId = true
+ // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(config, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+#### Return Value
+
+- Success: Creates a Signaling client instance for subsequent calls to other Signaling APIs.
+- Failure: `nil`.
+
+### Event Listeners
+
+#### Description
+
+Signaling event notifications.
+
+`AgoraRtmClientDelegate`
+
+Signaling provides the following event notifications types:
+
+| Event Type | Description |
+|:----------------------------:| ------------------------------------------------------------------------------------------------ |
+| `didReceiveMessageEvent` | Receive message event notifications in subscribed message channels and subscribed topics. |
+| `didReceivePresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. |
+| `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. |
+| `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
+| `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. |
+| `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. For details, see [`AgoraRtmLinkStateEvent`](#configlinkstateeven-t). |
+| `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
+
+#### Add event listeners
+
+You can add an event listener object in the following ways:
+
+- Add an event listener object during initialization.
+- Add one or more event listener objects at any point during the app's lifecycle by calling the `addDelegate` method.
+
+##### Adding a delegate during initialization
+
+When initializing the Signaling client instance, add an event listener object as follows:
+
+```swift
+class EventHandler: NSObject, AgoraRtmClientDelegate {
+ // message event handler
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+    print("Message received from \(event.channelName): \(event.message)")
+  }
+ // presence event handler
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
+    print("User \(event.publisher) is now \(event.type)")
+  }
+}
+let eventDelegate = EventHandler()
+let rtmClient = try AgoraRtmClientKit(config, delegate: eventDelegate)
+```
+
+##### Add a delegate any time after initialization
+
+At any point during the app's lifecycle, you can add multiple event listener objects, by calling the `addDelegate` method multiple times.
+
+```swift
+// message event handler
+class MessageHandler: NSObject, AgoraRtmClientDelegate {
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+    print("Message received from \(event.channelName): \(event.message)")
+  }
+}
+ // presence event handler
+class PresenceHandler: NSObject, AgoraRtmClientDelegate {
+  func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceivePresenceEvent event: AgoraRtmPresenceEvent) {
+    print("User \(event.publisher) is now \(event.type)")
+  }
+}
+let messageDelegate = MessageHandler()
+let presenceDelegate = PresenceHandler()
+rtmClient.addDelegate(messageDelegate)
+rtmClient.addDelegate(presenceDelegate)
+```
+
+`removeDelegate`
+
+If you no longer need to listen to a specific event listener, but still need to listen to other event listener objects, you can call the `removeDelegate` method to remove the specified event listener.
+
+```swift
+rtmClient.removeDelegate(messageDelegate)
+```
+
+##### AgoraRtmMessageEvent
+
+Message event.
+
+`AgoraRtmMessageEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelName` | String | Channel name. |
+| `channelTopic` | String | Topic name. |
+| `message` | `AgoraRtmMessage` | Message. |
+| `publisher` | String | User ID of the message publisher. |
+| `customType` | String | A user-defined field. Only supports String type. |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+`AgoraRtmMessage` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `rawData` | Data | Binary message. |
+| `stringData` | String | String message. |
+
+##### AgoraRtmPresenceEvent
+
+User presence event.
+
+`AgoraRtmPresenceEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `type` | `AgoraRtmPresenceEventType` | Presence event type. See [`AgoraRtmPresenceEventType`](#enumvpresencetyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelName` | String | Channel name. |
+| `publisher` | String | User ID of the message publisher. |
+| `states` | [String : String] | Key-value pair that identifies the user's presence state. |
+| `interval` | `AgoraRtmPresenceIntervalInfo` | In the Interval state, the aggregated incremental information of event notifications such as user joining, leaving, timeout, and status change in the previous period of the current channel. |
+| `snapshot` | `[AgoraRtmUserState]` | When the user first joins the channel, the server pushes the snapshot data of all users in the current channel and their statuses to the user. |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+The `AgoraRtmPresenceIntervalInfo` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `joinUserList` | `[String]` | List of users who joined the channel in the previous cycle. |
+| `leaveUserList` | `[String]` | List of users who left the channel in the previous cycle. |
+| `timeoutUserList` | `[String]` | List of users who timed out joining the channel in the previous cycle. |
+| `userStateList` | `[UserState]` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+
+The `AgoraRtmUserState` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :-------------------------------------: |
+| `userId` | String | User ID. |
+| `states` | [String : String] | List of online users and their temporary state information in a specified channel. |
+
+##### AgoraRtmTopicEvent
+
+Topic event.
+
+`AgoraRtmTopicEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `type` | `AgoraRtmTopicEventType` | Topic event type. See [`AgoraRtmTopicEventType`](#enumvtopictyp-e). |
+| `channelName` | String | Channel name. |
+| `publisher` | String | User ID. |
+| `topicInfos` | `[AgoraRtmTopicInfo]` | Topic information. |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+The `AgoraRtmTopicInfo` data type contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `topic` | String | Topic name. |
+| `publishers` | `[AgoraRtmPublisherInfo]` | Message publisher array. |
+
+The `AgoraRtmPublisherInfo` data type contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `publisherUserId` | String | User ID of the message publisher. |
+| `publisherMeta` | String | Metadata of the message publisher. |
+
+##### AgoraRtmStorageEvent
+
+Storage event.
+
+`AgoraRtmStorageEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `storageType` | `AgoraRtmStorageType` | Storage type. See [`AgoraRtmStorageType`](#enumvstoragetyp-e). |
+| `eventType` | `AgoraRtmStorageEventType` | Storage event type. See [`AgoraRtmStorageEventType`](#enumvstorageeventtyp-e). |
+| `target` | String | User ID or channel name. |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](../storage#AgoraRtmMetadata). |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+##### AgoraRtmLockEvent
+
+Lock event.
+
+`AgoraRtmLockEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `eventType` | `AgoraRtmLockEventType` | Lock event type. See [`AgoraRtmLockEventType`](#enumvlocktyp-e). |
+| `channelName` | String | Channel name. |
+| `lockDetailList` | `ArrayList&lt;LockDetail&gt;` | Details of lock. |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+The `AgoraRtmLockDetail` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `lockName` | String | Lock name. |
+| `owner` | String | The ID of the user who has a lock. |
+| `ttl` | int | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `didReceiveLockEvent` event receives the `lockReleased` event. |
+
+##### AgoraRtmLinkStateEvent
+
+SDK link state event.
+
+`AgoraRtmLinkStateEvent` data type contains the following properties:
+
+| Parameters | Type | Description |
+|:----------:|:-----:|:--------------------------- |
+| `currentState` | `AgoraRtmLinkState` | The current link state. See [`AgoraRtmLinkState`](#enumvlinkstat-e). |
+| `previousState` | `AgoraRtmLinkState` | The previous link state. See [`AgoraRtmLinkState`](#enumvlinkstat-e). |
+| `serviceType` | `AgoraRtmServiceType` | The network connection type. See [`AgoraRtmServiceType`](#enumvrtmservicetyp-e). |
+| `operation` | `AgoraRtmLinkOperation` | The operation that triggered the current state transition. See [`AgoraRtmLinkOperation`](#enumvlinkoperatio-n). |
+| `reasonCode` | `AgoraRtmLinkStateChangeReason` | The reason for this state transition. See [`AgoraRtmLinkStateChangeReason`](#enumvlinkstatereaso-n). |
+| `reason` | String | The reason for the current state transition. This parameter will be deprecated in the future, please use the `reasonCode` parameter instead. |
+| `affectedChannels` | `[String]` | The channels affected by the current state transition. |
+| `unrestoredChannels` | `[String]` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
+| `isResumed` | Bool | Within 2 minutes of the disconnection, whether the state transitions from `AgoraRtmLinkStateDisconnected` to `AgoraRtmLinkStateConnected`. `true` refers to the state has transitioned. |
+| `timestamp` | UInt64 | The timestamp when the event occurs. |
+
+### AgoraRtmClientKit
+
+Signaling client instance
+
+### login
+
+#### Description
+
+After creating and initializing the Signaling instance, you need to perform the `login` operation to log in to the Signaling service. After successful login, the client establishes a long connection with the Signaling server, and then the SDK allows the client to access Signaling resources.
+
+:::info[Information]
+After the user successfully logs in to the Signaling service, the PCU of the application increases, which affects your billing data.
+:::
+
+#### Method
+
+You can log in to the Signaling system as follows:
+
+```swift
+login(_ token: String?) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+|:----------:|:---------:|:--------:|:-------:| -------------------------------------------- |
+| `token` | String | Optional | - | The token used for logining to the Signaling system.<br />- If your project enables token authentication, you can provide either the [Signaling temporary token](https://agora-token-generator-demo.vercel.app/) or the Signaling token generated by your token server. See [User authentication](/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow). <br />- If your project does not enable token authentication, you can enter an empty string or the App ID of a project that enables Signaling services. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+After calling most of the APIs of the Signaling Objective-C SDK, the SDK executes a `completion` callback, which includes `response` and `errorInfo` parameters. Based on different calling results, the SDK returns different parameter values:
+
+- Success: Returns the corresponding data in the `response` parameter, and the `nil` in the `errorInfo` parameter.
+- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter.
+
+The `errorInfo` of `AgoraRtmErrorInfo` data type contains the error code, error reason, and API operation name for this call, as follows:
+
+The return value of the type `AgoraRtmErrorInfo` includes the error code, error reason, and API operation name of the call, as follows:
+
+```dart
+class AgoraRtmErrorInfo : NSError {
+    var errorCode: AgoraRtmErrorCode  // Error code
+    var operation: String  // API name
+    var reason: String  // Brief description of the error reason
+}
+```
+
+You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await rtmClient.login("your_token_here")
+if let error = error {
+    print("Login failed with error: \(error.reason)")
+} else if let response = response {
+    print("Login successful!")
+} else {
+    print("Unknown error")
+}
+```
+
+```swift
+// callback
+rtmClient.login(token) { response, error in
+    if let errorInfo = error {
+        print("Login failed with error: \(errorInfo.reason)")
+    } else let loginResponse = response {
+        print("Login successful: \(loginResponse)")
+    }
+}
+```
+
+### logout
+
+#### Description
+
+When you no longer need to operate, you can log out of the system. This operation affects the PCU item in your billing data.
+
+#### Method
+
+You can log out as follows:
+
+```swift
+logout() async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+logout(_ completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+|:----------:|:---------:|:--------:|:-------:| -------------------------------------------- |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+ // async-await
+let (response, error) = await rtmClient.logout()
+if let error = error {
+  print("Logout failed with error: \(error.reason)")
+} else if let response = response {
+  print("Logout successful!")
+} else {
+  print("Unknown error")
+}
+```
+
+```swift
+ // callback
+rtmClient.logout { response, error in
+  if let errorInfo = error {
+    print("Logout failed with error: \(errorInfo.reason)")
+  } else let logoutResponse = response {
+    print("Logout successful: \(logoutResponse)")
+  }
+}
+
+```
+
+### releaseLock
+
+#### Description
+
+When you no longer need the Signaling service, it is best to destroy the `AgoraRtmClientKit` instance. Doing so protects you from the performance degradation caused by memory leaks, errors, and exceptions.
+
+#### Method
+
+You can destroy the `AgoraRtmClientKit` instance as follows:
+
+```swift
+destroy() -> AgoraRtmErrorCode
+```
+
+#### Basic usage
+
+```swift
+let errorCode = rtmClient.destroy()
+if errorCode == .ok {
+    print("RTM instance destroyed successfully.")
+} else {
+    print("Failed to destroy RTM instance: \(errorCode)")
+}
+```
+
+#### Return Value
+
+The `releaseLock` method returns an `AgoraRtmErrorCode` data structure. See the [Error codes table](#error-codes-table).
+
+## User authentication
+
+Authentication is the process of validating the identity of each user before they access a system. Agora uses digital tokens to authenticate users and their privileges.
+
+Signaling provides 3 types of channels: message channels, user channels and stream channels. Different types of channels require different types of tokens:
+
+- For message channels and user channels: When logging in to the Signaling system using the `login` method, you only need to pass the token that enables the Signaling service.
+- For stream channels: When joining a stream channel using the `joinTopic` method, in addition to the Signaling token you also need to pass the token that enables the RTC service (RTC Token).
+
+The token is valid for up to 24 hours. Agora recommends that you update the token before it expires. This article describes how to renew the token.
+
+### AgoraRtmClientKit.renewToken
+
+#### Description
+
+Call the `AgoraRtmClientKit.renewToken` method to renew the Signaling token.
+
+To ensure timely token updates, Agora recommends listening for the `tokenPrivilegeWillExpire` callback. See [Event listeners](#event-listeners) for details. Once you successfully add the event listener, when the Signaling token is about to expire within 30 seconds, the SDK triggers the `tokenPrivilegeWillExpire` callback to notify the user about the impending token expiration.
+
+Upon receiving this callback, retrieve a new Signaling token from the token server and call the `renewToken` method to provide the SDK with the newly generated Signaling token.
+
+#### Method
+
+Call the `AgoraRtmClientKit.renewToken` method as follows:
+
+```swift
+renewToken(_ token: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+```swift
+renewToken(_ token: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `token` | String | Required | - | The newly generated Signaling token. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await rtmClient.renewToken(token: "your_token_here")
+if let error = error {
+    print("Login failed with error: \(error.reason)")
+} else if let response = response {
+    print("renew token successful!")
+} else {
+    print("Unknown error")
+}
+```
+
+```swift
+// callback
+rtmClient.renewToken(token: "your_token_here") { response, error in
+    if let errorInfo = error {
+        print("renew token failed with error: \(errorInfo.reason)")
+    } else let loginResponse = response {
+        print("renew token successful: \(loginResponse)")
+    }
+}
+```
+
+### AgoraRtmStreamChannel.renewToken
+
+#### Description
+
+Call the `AgoraRtmStreamChannel.renewToken` method to renew the RTC token.
+
+To ensure timely token updates, Agora recommends listening for the `tokenPrivilegeWillExpire` callback. See [Event listeners](#event-listeners) for details. Once you successfully add the event listener, when the RTC token is about to expire within 30 seconds, the SDK triggers the `tokenPrivilegeWillExpire` callback to notify the user about the impending token expiration.
+
+Upon receiving this callback, retrieve a new RTC token from the token server and call the `renewToken` method to provide the SDK with the newly generated RTC token.
+
+#### Method
+
+Call the `AgoraRtmStreamChannel.renewToken` method as follows:
+
+```swift
+renewToken(_ token: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+```swift
+renewToken(_ token: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `token` | String | Required | - | The newly generated RTC token. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await streamChannel.renewToken(token: "your_token_here")
+if let error = error {
+    print("Login failed with error: \(error.reason)")
+} else if let response = response {
+    print("renew token successful!")
+} else {
+    print("Unknown error")
+}
+```
+
+```swift
+// callback
+streamChannel.renewToken(token: "your_token_here") { response, error in
+    if let errorInfo = error {
+        print("renew token failed with error: \(errorInfo.reason)")
+    } else let loginResponse = response {
+        print("renew token successful: \(loginResponse)")
+    }
+}
+```
+
+## Channels
+
+Signaling provides a highly efficient channel management mechanism for data transmission. Any user who subscribes or joins a channel can receive messages and events transmitted within 100 milliseconds. Signaling allows clients to subscribe to hundreds or even thousands of channels. Most Signaling APIs perform actions such as sending, receiving, and encrypting based on channels.
+
+Signaling provides the following channel types for different application use-cases:
+
+- Message Channel: Follows the industry-standard Pub/Sub (publish/subscribe) mode. You can send and receive messages within the channel by subscribing to a channel, and do not need to create the channel in advance. There is no limit to the number of publishers and subscribers in a channel.
+
+- User Channel: Point-to-point message sending and receiving based on the Pub/Sub (publish/subscribe) model. Users do not need to subscribe to the channel, they can directly specify the user ID to send messages. To receive messages, they only need to listen to `didReceiveMessageEvent` events.
+
+- Stream Channel: Follows a concept similar to the observer pattern in the industry, where users need to create and join a channel before sending and receiving messages. You can create different topics in the channel, and messages are organized and managed through topics.
+
+AgoraRtmClientKit
+
+### subscribeTopic
+
+#### Description
+
+Signaling provides event notification capabilities for messages and states. By listening for callbacks, you can receive messages and events within subscribed channels. For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
+
+By calling the `subscribeTopic` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `remoteJoinChannel` type of `didReceivePresenceEvent` event. See [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the message channel.
+:::
+
+#### Method
+
+You can call the `subscribeTopic` method as follows:
+
+```swift
+subscribe(
+    channelName: String,
+    option subscribeOption: AgoraRtmSubscribeOptions?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+subscribe(
+    channelName: String,
+    option subscribeOption: AgoraRtmSubscribeOptions?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | ------------ |
+| `channelName` | String | Required | - | Channel name. |
+| `subscribeOption` | `AgoraRtmSubscribeOptions` | Optional | - | Options for subscribing to a channel. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+`AgoraRtmSubscribeOptions` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :----: | ------------------------------------ |
+| `features` | `AgoraRtmSubscribeChannelFeature` | Optional | `[.message, .presence]` | Sets event notification types when subscribing to a channel. You can use bitwise operations to set multiple event notifications simultaneously. The SDK enables the message and presence event notifications by default. |
+
+#### Basic usage
+
+```swift
+// async-await
+let subscribeOptions = AgoraRtmSubscribeOptions()
+subscribeOptions.features = [.presence, .message, .metadata]
+
+let (response, error) = await rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions)
+if let error = error {
+    print("Failed to subscribe with error: \(error.reason)")
+} else {
+    print("Successfully subscribed to the channel.")
+}
+```
+
+```swift
+// callback
+let subscribeOptions = AgoraRtmSubscribeOptions()
+subscribeOptions.features = [.presence, .message, .metadata]
+
+rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions) { response, error in
+    if let errorInfo = error {
+        print("Subscription failed with error: \(errorInfo.reason)")
+    } else let SubscribeResponse = response {
+        print("Subscription to \(SubscribeResponse.channelName) successful!")
+    }
+}
+```
+
+### unsubscribeTopic
+
+#### Description
+
+When you no longer need to subscribe to a channel, call `unsubscribeTopic` to unsubscribe from the channel. After successfully calling this method, users who subscribe to the channel and enable event listeners receive the `remoteLeaveChannel` type of `didReceivePresenceEvent` event notification. See [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the message channel.
+:::
+
+#### Method
+
+Call the `unsubscribeTopic` method as follows:
+
+```swift
+unsubscribe(_ channelName: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+unsubscribe(_ channelName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | ------------ |
+| `channelName` | String | Required | - | Channel name. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await rtmClient.unsubscribe("exampleChannel")
+if let error = error {
+    // Handle error
+    print("Failed to unsubscribe with error: \(error.reason)")
+} else if let response = response {
+    // Handle success
+    print("Unsubscribed from channel successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while unsubscribing.")
+}
+
+// callback
+rtmClient.unsubscribe("exampleChannel") { response, error in
+    if let errorInfo = error {
+        print("Unsubscribe failed with error: \(errorInfo.localizedDescription)")
+    } else let unsubscribeResponse = response {
+        print("Successfully unsubscribed from \(unsubscribeResponse.channelName).")
+    }
+}
+```
+
+###
+
+#### Description
+
+Before using a stream channel, call the `` method to create the `AgoraRtmStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+Call the `` method as follows:
+
+```swift
+createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | ---------- |
+| `channelName` | String | Required | - | Channel name. |
+| `error` | NSError | Required | - | (Output) Error description. |
+
+#### Basic usage
+
+```swift
+do {
+    let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
+    print("Stream channel created successfully: \(streamChannel)")
+    // You can now use the streamChannel instance
+} catch {
+    print("Failed to create stream channel: \(error)")
+}
+```
+
+#### Return Value
+
+- Success: Returns an instance of `AgoraRtmStreamChannel` you can use for subsequent calls to other stream channel APIs.
+- Failure: `nil`.
+
+### joinTopic
+
+#### Description
+
+After successfully creating a stream channel, you can call the `joinTopic` method to join the stream channel. Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and have added event listeners receive the following event notifications:
+
+- For the local user:
+    - The `snapshot` type of the `didReceivePresenceEvent` event.
+    - The `snapshot` type of the `didReceiveTopicEvent` event.
+- For remote users:
+    - The `remoteJoinChannel` type of the `didReceivePresenceEvent` event.
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+Call the `joinTopic` method as follows:
+
+```swift
+join(_ option: AgoraRtmJoinChannelOption) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :----: | :------: | :----: | ------------- |
+| `option` | `AgoraRtmJoinChannelOption` | Required | - | Options for joining a channel. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmJoinChannelOption` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :----: | ------------------------------------------------------ |
+| `token` | String | Optional | - | The token used for joining a stream channel.<br />- If your project enables token authentication, you can provide either the [RTC temporary token](/video-calling/get-started/manage-agora-account#generate-temporary-tokens) or obtain an RTC token generated by your [token server](/video-calling/token-authentication/deploy-token-server). <br />- If your project does not enable token authentication, you can enter an empty string or the App ID of a project that enables RTC and Signaling services. |
+| `features` | `AgoraRtmJoinChannelFeature` | Optional | `[.message, .presence]` | Sets event notification types when joining a channel. You can use bitwise operations to set multiple event notifications simultaneously. The SDK enables the presence event notification by default. |
+
+#### Basic usage
+
+```swift
+// async-await
+let joinOptions = AgoraRtmJoinChannelOption()
+joinOptions.token = 'your_token'
+joinOptions.features = [.message, .presence]
+
+let (response, error) = await streamChannel.join(joinOptions)
+if let errorInfo = error {
+    print("Failed to join the channel with error: \(errorInfo.reason)")
+} else if let joinResponse = response {
+    print("Successfully joined the channel. Response: \(joinResponse)")
+} else {
+    print("Join operation completed with no response or error.")
+}
+```
+
+```swift
+// callback
+let joinOptions = AgoraRtmJoinChannelOption()
+joinOptions.token = "your_token"
+joinOptions.features = [.presence, .presence]
+
+streamChannel.join(joinOptions, completion: { (res, error) in
+    if error != nil {
+        print("\(error?.operation ?? "Operation") failed! Error reason is \(error?.reason ?? "Unknown reason")")
+    } else {
+        print("Success")
+    }
+})
+```
+
+### leaveTopic
+
+#### Description
+
+When you no longer need to stay in a channel, call the `leaveTopic` method to leave the channel. After leaving the channel, you no longer receive any messages, states, or event notifications from this channel. Also, you are no longer the publisher or subscriber of all topics. To restore your previous publisher role and subscriber relationship, call `joinTopic`, `joinTopic` and `subscribeTopic` methods in the specified order.
+
+After successfully leaving the channel, remote users in the channel receive the `remoteLeaveChannel` type of `didReceivePresenceEvent` event notification. For details, see [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+Call the `leaveTopic` method as follows:
+
+```swift
+leave() async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+leave(_ completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :----: | :------: | :----: | ------------- |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await streamChannel.leave()
+if let errorInfo = error {
+    print("Failed to leave the channel with error: \(errorInfo.localizedDescription)")
+} else if let commonResponse = response {
+    print("Successfully left the channel. Response: \(commonResponse)")
+} else {
+    print("Leave operation completed with no response or error.")
+}
+```
+
+```swift
+// callback
+streamChannel.leave({ res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+```
+
+### releaseLock
+
+#### Description
+
+When you no longer need a channel, call the `releaseLock` method to destroy the corresponding stream channel instance and release resources. Calling the `releaseLock` method does not destroy the stream channel. It can be re-joined later by calling `` and `joinTopic` again.
+
+:::info[Caution]
+This method only applies to the stream channel. If you don't call `leaveTopic` to leave the channel before directly calling `releaseLock` to destroy the stream channel instance, the SDK automatically calls the `leaveTopic` and triggers the corresponding event.
+:::
+
+#### Method
+
+Call the `releaseLock` method as follows:
+
+```swift
+destroy() -> AgoraRtmErrorCode
+```
+
+#### Basic usage
+
+```swift
+streamChannel.destroy()
+```
+
+#### Return Value
+
+The `releaseLock` method returns an `AgoraRtmErrorCode` data structure. See [Error code](#error-codes-table).
+
+## Topics
+
+Topic is a data stream management mechanism in stream channels. Users use topics to subscribe to and distribute data streams, as well as notify events in data streams in stream channels.
+
+:::info[Information]
+Topics exist in stream channels only. Before using the relevant features, create an `AgoraRtmStreamChannel` instance.
+:::
+
+### joinTopic
+
+#### Description
+
+The purpose of joining a topic is to register as a message publisher for the topic, so that the user can send messages in the topic. This operation does not affect whether or not the user becomes a subscriber to the topic.
+
+:::info[Information]
+- Currently, Signaling supports a single client joining up to 8 topics in the same stream channel at a time.
+- Before joining a topic, create an `AgoraRtmStreamChannel` instance and call the `joinTopic` method to join the channel. See [Channels](#channels).
+:::
+
+After successfully joining a topic, users who subscribe to that topic and add event listeners receive the `remoteJoinTopic` type of `didReceiveTopicEvent` event notification. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `joinTopic` method as follows:
+
+```swift
+joinTopic(
+    _ topic: String,
+    option: AgoraRtmJoinTopicOption?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+joinTopic(
+    _ topic: String,
+    option: AgoraRtmJoinTopicOption?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :----------------: | :------: | :-----: | --------------------- |
+| `topic` | String | Required | - | Topic name. |
+| `option` | `AgoraRtmJoinTopicOption` | Optional | - | Options for joining a topic. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmJoinTopicOption` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :---------------: | :------: | :--------------: | ----------------------------------- |
+| `qos` | `AgoraRtmMessageQos` | Optional | `unordered` | Whether the data transmitted in the topic is ordered. See [`AgoraRtmMessageQos`](#enumvmessageqo-s). |
+| `priority` | `AgoraRtmMessagePriority` | Optional | `normal` | The priority of data transmission in the topic compared to other topics in the same channel. See [`AgoraRtmMessagePriority`](#enumvmessagepriorit-y). |
+| `meta` | String | Optional | - | Adds additional metadata when joining the topic. |
+| `syncWithMedia` | Bool | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
+
+#### Basic usage
+
+```swift
+// async-await
+let topic = "exampleTopic"
+let joinOption = AgoraRtmJoinTopicOption()
+joinOption.priority = .high
+joinOption.syncWithMedia = false
+
+let (response, error) = await stChannel.joinTopic(topic, option: joinOption)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to join topic with error: \(errorInfo.reason)")
+} else if let joinTopicResponse = response {
+    // Handle success
+    print("Successfully joined topic.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while joining the topic.")
+}
+```
+
+```swift
+// callack
+let topic = "exampleTopic"
+let joinOption = AgoraRtmJoinTopicOption()
+joinOption.priority = .high
+joinOption.syncWithMedia = false
+
+stChannel.joinTopic(topic, option: joinOption) { (response, error) in
+    if let errorInfo = error {
+ // Handle error
+        print("Failed to join topic with error: \(errorInfo.reason)")
+    } else if let joinTopicResponse = response {
+ // Handle success
+        print("Successfully joined topic.")
+    } else {
+ // Handle unknown error
+        print("Unknown error occurred while joining the topic.")
+    }
+}
+```
+
+### publishTopicMessage
+
+#### Description
+
+Use the `publishTopicMessage` method to send messages to a topic. Users who have subscribed to the topic and the message publisher in the channel receive the message within 100 milliseconds. Before calling the `publishTopicMessage` method, users MUST join the stream channel, and then register as a message publisher for that topic by calling the `joinTopic` method.
+
+The messages sent by users are encrypted with TLS during transmission, and data link encryption is enabled by default and cannot be disabled. To achieve a higher level of data security, users can also enable client encryption during initialization. For details, see [Setup](#setup).
+
+#### Method
+
+Call the `publishTopicMessage`[1/2] and `publishTopicMessage`[2/2] methods as follows:
+
+- Send a string message
+
+```swift
+  publishTopicMessage(
+      topic: String,
+      message: String,
+      option options: AgoraRtmTopicMessageOptions?
+  )   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+  publishTopicMessage(
+      topic: String,
+      message: String,
+      option options: AgoraRtmTopicMessageOptions?,
+      completion completionBlock: AgoraRtmOperationBlock? = nil
+  )
+```
+
+- Send a binary message
+
+```swift
+  publishTopicMessage(
+      topic: String,
+      ata: Data,
+      option options: AgoraRtmTopicMessageOptions?
+  )   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+  publishTopicMessage(
+      topic: String,
+      data: Data,
+      option options: AgoraRtmTopicMessageOptions?,
+      completion completionBlock: AgoraRtmOperationBlock? = nil
+  )
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :---------------------: | :------: | :-----: | --------------------- |
+| `topic` | String | Required | - | Topic name. |
+| `message` | String | Required | - | Sends string messages in the `publishTopicMessage`[1/2] method. |
+| `data` | Data | Required | - | Sends binary messages in the `publishTopicMessage`[2/2] method. |
+| `options` | `AgoraRtmTopicMessageOptions` | Optional | - | Message options. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmTopicMessageOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :----------: | :----------------: | :------: | :-----: | ------------------------ |
+| `sendTs` | UInt64 | Optional | `0` | The timestamp when the SDK sends a message. This parameter is only valid when you set `syncWithMedia = true` in the `joinTopic` method. The SDK synchronizes data with RTC audio and video streams based on this timestamp. |
+| `customType` | String | Required | - | A user-defined field. Only supports String type. |
+
+#### Basic usage
+
+Example 1: Send string messages to a specified channel.
+
+```swift
+// async-await
+let topic = "exampleTopic"
+let message = "Hello, Agora!"
+let messageOptions = AgoraRtmTopicMessageOptions()
+messageOption.customType = "PlainText"
+
+let (response, error) = await stChannel.publishTopicMessage(
+    topic: topic,
+    message: message,
+    option: messageOptions
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to publish message with error: \(errorInfo.reason)")
+} else if let publishResponse = response {
+    // Handle success
+    print("Message published successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while publishing the message.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+let message = "Hello, Agora!"
+let messageOptions = AgoraRtmTopicMessageOptions()
+messageOption.customType = "PlainText"
+
+stChannel.publishTopicMessage(
+    topic: topic,
+    message: message,
+    option: messageOptions
+) { (response, error) in
+    if let errorInfo = error {
+ // Handle error
+        print("Failed to publish message with error: \(errorInfo.reason)")
+    } else if let publishResponse = response {
+ // Handle success
+        print("Message published successfully.")
+    } else {
+ // Handle unknown error
+        print("Unknown error occurred while publishing the message.")
+    }
+}
+```
+
+Example 2: Send byte messages to a specified channel.
+
+```swift
+// async-await
+let topic = "exampleTopic"
+let messageOptions = AgoraRtmTopicMessageOptions()
+messageOption.customType = "BinaryData"
+let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+let binaryData = Data(byteArray)
+
+let (response, error) = await stChannel.publishTopicMessage(
+    topic: topic,
+    ata: binaryData,
+    option: messageOptions
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to publish binary data with error: \(errorInfo.reason)")
+} else if let publishResponse = response {
+    // Handle success
+    print("Binary data published successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while publishing the binary data.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+let messageOptions = AgoraRtmTopicMessageOptions()
+messageOption.customType = "BinaryData"
+let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+let binaryData = Data(byteArray)
+
+stChannel.publishTopicMessage(
+    topic: topic,
+    ata: binaryData,
+    option: messageOptions
+) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to publish binary data with error: \(errorInfo.reason)")
+    } else if let publishResponse = response {
+    // Handle success
+        print("Binary data published successfully.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while publishing the binary data.")
+    }
+}
+```
+
+### leaveTopic
+
+#### Description
+
+When you no longer need to publish messages to a topic, can call the `leaveTopic` method to unregister as a message publisher for that topic and release resources. This method does not affect whether or not you subscribe to that topic or any other operations performed by other users on that topic.
+
+After successfully calling this method, users who subscribe to the channel and enable event listeners receive the `remoteLeaveTopic` type of `didReceiveTopicEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `leaveTopic` method as follows:
+
+```swift
+leaveTopic(
+    _ topic: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+leaveTopic(
+    _ topic: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :----------------------: | :------: | :-----: | --------------------- |
+| `topic` | String | Required | - | Topic name. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let topic = "exampleTopic"
+
+let (response, error) = await stChannel.leaveTopic(topic)
+if let errorInfo = error {
+ // Handle error
+    print("Failed to leave topic with error: \(errorInfo.reason)")
+} else if let leaveTopicResponse = response {
+ // Handle success
+    print("Successfully left topic.")
+} else {
+ // Handle unknown error
+    print("Unknown error occurred while leaving the topic.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+
+stChannel.leaveTopic(topic) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to leave topic with error: \(errorInfo.reason)")
+    } else if let leaveTopicResponse = response {
+    // Handle success
+        print("Successfully left topic.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while leaving the topic.")
+    }
+}
+```
+
+### subscribeTopic
+
+#### Description
+
+After joining a channel, you can call the `subscribeTopic` method to subscribe to message publishers of the topic in the channel.
+
+`subscribeTopic` is an incremental method.
+For example, if you call this method for the first time with a subscribing list of
+`[UserA, UserB]`, and then call it again with a subscribing list of `[UserB, UserC]`,
+the final successful subscribing result is `[UserA, UserB, UserC]`.
+
+A user can subscribe to a maximum of 50 topics in each channel, and a maximum of 64 message publishers in each topic. See [API usage restrictions](./reference/limitations).
+
+#### Method
+
+You can call the `subscribeTopic` method as follows:
+
+```swift
+subscribeTopic(
+    _ topic: String,
+    option: AgoraRtmTopicOption?
+)   async -> (AgoraRtmTopicSubscriptionResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+subscribeTopic(
+    _ topic: String,
+    option: AgoraRtmTopicOption?,
+    completion completionBlock: AgoraRtmTopicSubscriptionBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-----------------: | :------: | :-----: | -------------------------------- |
+| `topic` | String | Required | - | Topic name. |
+| `option` | `AgoraRtmTopicOption` | Optional | - | Options for subscribing to a topic. |
+| `completion` | `AgoraRtmTopicSubscriptionBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmTopicSubscriptionResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmTopicOption` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :--------: | :-------------------: | :------: | :-----: | ----- |
+| `users` | `[String]` | Optional | - | A list of `UserId` of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
+
+The `AgoraRtmTopicSubscriptionResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------: | :-------------------: | ------------ |
+| `succeedUsers` | `[String]` | A list of successfully subscribed users. |
+| `failedUsers` | `[String]` | A list of users that the SDK fails to subscribe to. |
+
+#### Basic usage
+
+Example 1: Subscribe to the specified message publisher in the topic.
+
+```swift
+// async-await
+let topic = "exampleTopic"
+let topicOption = AgoraRtmTopicOption() // Optional, configure if needed
+topicOption.users = ["user1", "user2"] // Specify users to subscribe to
+
+let (response, error) = await stChannel.subscribeTopic(topic, option: topicOption)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to subscribe to topic with error: \(errorInfo.reason)")
+} else if let subscriptionResponse = response {
+    // Handle success
+    print("Successfully subscribed to topic.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while subscribing to the topic.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+let topicOption = AgoraRtmTopicOption() // Optional
+topicOption.users = ["user1", "user2"] // Specify users to subscribe to
+
+stChannel.subscribeTopic(topic, option: topicOption) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to subscribe to topic with error: \(errorInfo.reason)")
+    } else if let subscriptionResponse = response {
+    // Handle success
+        print("Successfully subscribed to topic.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while subscribing to the topic.")
+    }
+}
+```
+
+Example 2: Randomly subscribe to 64 message publishers in the topic.
+
+```swift
+// async-await
+let topic = "exampleTopic"
+
+let (response, error) = await stChannel.subscribeTopic(topic, option: nil)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to subscribe to topic with error: \(errorInfo.reason)")
+} else if let subscriptionResponse = response {
+    // Handle success
+    print("Successfully subscribed to topic.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while subscribing to the topic.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+
+stChannel.subscribeTopic(topic, option: nil) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to subscribe to topic with error: \(errorInfo.reason)")
+    } else if let subscriptionResponse = response {
+    // Handle success
+        print("Successfully subscribed to topic.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while subscribing to the topic.")
+    }
+}
+```
+
+### unsubscribeTopic
+
+#### Description
+
+When you are no longer interested in a specified topic, or no longer need to subscribe to one or more message publishers in the topic, call the `unsubscribeTopic` method to unsubscribe from the topic or the specified message publishers in the topic.
+
+#### Method
+
+Call the `unsubscribeTopic` method as follows:
+
+```swift
+unsubscribeTopic(
+    _ topic: String,
+    option: AgoraRtmTopicOption?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+unsubscribeTopic(
+    _ topic: String,
+    option: AgoraRtmTopicOption?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-----------------: | :------: | :-----: | --------------------- |
+| `topic` | String | Required | - | Topic name. |
+| `options` | `AgoraRtmTopicOption` | Optional | - | Options for unsubscribe from a topic. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmTopicOption` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :--------: | :-------------------: | :------: | :-----: | ------------- |
+| `users` | `[String]` | Optional | - | A list of `UserId` of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users by default. |
+
+#### Basic usage
+
+Example 1: Unsubscribe the specified message publisher in the topic
+
+```swift
+// async-await
+let topic = "exampleTopic"
+let topicOption = AgoraRtmTopicOption()
+// Set specific users to unsubscribe from if needed
+topicOption.users = ["user1", "user2"]
+
+let (response, error) = await stChannel.unsubscribeTopic(topic, option: topicOption)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to unsubscribe from topic with error: \(errorInfo.reason)")
+} else if let unsubscribeResponse = response {
+     // Handle success
+    print("Successfully unsubscribed from topic with specified options.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while unsubscribing from the topic.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+let topicOption = AgoraRtmTopicOption()
+ // Set specific users to unsubscribe from if needed
+topicOption.users = ["user1", "user2"]
+
+stChannel.unsubscribeTopic(topic, option: topicOption) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to unsubscribe from topic with error: \(errorInfo.reason)")
+    } else if let unsubscribeResponse = response {
+    // Handle success
+        print("Successfully unsubscribed from topic with specified options.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while unsubscribing from the topic.")
+    }
+}
+```
+
+Example 2: Randomly unsubscribe from up to 64 message publishers in the topic.
+
+```swift
+// async-await
+let topic = "exampleTopic"
+
+ // Unsubscribing without options
+let (response, error) = await stChannel.unsubscribeTopic(topic, option: nil)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to unsubscribe from topic with error: \(errorInfo.reason)")
+} else if let unsubscribeResponse = response {
+    // Handle success
+    print("Successfully unsubscribed from topic.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while unsubscribing from the topic.")
+}
+```
+
+```swift
+// callback
+let topic = "exampleTopic"
+
+// Unsubscribing without options
+stChannel.unsubscribeTopic(topic, option: nil) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to unsubscribe from topic with error: \(errorInfo.reason)")
+    } else if let unsubscribeResponse = response {
+    // Handle success
+        print("Successfully unsubscribed from topic.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while unsubscribing from the topic.")
+    }
+}
+```
+
+## Messages
+
+Sending and receiving messages is the most basic function of the Signaling service. A message sent by the Signaling server is delivered to online subscribing users within 100 ms. Depending on your business requirements, you can send messages to a single user or broadcast messages to multiple users.
+
+Signaling offers three types of channels. These channel types have the following differences in how messages are transmitted and methods are called:
+
+- Message Channel: The real-time channel. Messages are transmitted through the channel, and the channel is highly scalable. Local users can call the `publishTopicMessage` method, set the `channelType` parameter to `message`, and set the `channelName` parameter to the channel name to send messages in the channel. The remote users can call the `subscribeTopic` method to subscribe to the channel and receive messages.
+
+- User Channel: The real-time channel. Messages are transmitted to the specified user. Local users can call the `publishTopicMessage` method, set the `channelType` parameter to `user`, and set the `channelName` parameter to the user ID to send messages to the specified user. The specified remote users receive messages through the `didReceiveMessageEvent` event notifications.
+
+- Stream Channel: The streaming transmission channel. Messages are transmitted through topics. Users need to join a channel first, and then join a topic. Local users can call the `publishTopicMessage` method to send messages in the topic, and remote users can call the `subscribeTopic` method to subscribe to the topic and receive messages.
+
+This section introduces APIs to send and receive messages in a message channel or a user channel.
+
+### publishTopicMessage
+
+#### Description
+
+Directly call the `publishTopicMessage` method to send messages to all online users subscribed to a channel. Even a user does not subscribe to the channel, they can still send messages in the channel.
+
+:::info[Information]
+The following practices can effectively improve the reliability of message transmission:
+<br />- The message payload should be within 32 KB; otherwise, sending will fail. <br />- The upper limit of the rate at which messages are sent to a single channel is 60 QPS. If the sending rate exceeds the limit, some messages are discarded. A lower rate is better, as long as the requirements are met.
+:::
+
+After successfully calling this method, the SDK triggers a `didReceiveMessageEvent` event notification. Users who subscribe to the channel and have enabled the event listener receive this event notification. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `publishTopicMessage`[1/2] or `publishTopicMessage`[2/2] methods as follows:
+
+- Send a string message
+
+```swift
+  publish(
+      channelName: String,
+      message: String,
+      option publishOption: AgoraRtmPublishOptions?
+  )   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+  publish(
+      channelName: String,
+      message: String,
+      option publishOption: AgoraRtmPublishOptions?,
+      completion completionBlock: AgoraRtmOperationBlock? = nil
+  )
+```
+
+- Send a binary message
+
+```swift
+  publish(
+      channelName: String,
+      data: Data,
+      option publishOption: AgoraRtmPublishOptions?
+  )   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+  publish(
+      channelName: String,
+      data: Data,
+      option publishOption: AgoraRtmPublishOptions?,
+      completion completionBlock: AgoraRtmOperationBlock? = nil
+  )
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :---------------: | :------: | :----: | ------------------------------------------------ |
+| `channelName` | String | Required | - | <br />- Fill in a channel name to send messages in a specified channel. <br />- Fill in a user ID to send messages to a specified user. |
+| `message` | String | Required | - | Sends string messages in the `publishTopicMessage`[1/2] method. |
+| `data` | Data | Required | - | Sends binary messages in the `publishTopicMessage`[2/2] method. |
+| `publishOption` | `AgoraRtmTopicMessageOptions` | Optional | - | Message options. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmTopicMessageOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :----------: | :----: | :------: | :----: | --------------------------------------- |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `customType` | String | Required | - | A user-defined field. Only supports string type. |
+
+#### Basic usage
+
+Example 1: Send string messages to a specified channel.
+
+```swift
+// async-await
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .message // Which channel type, .user or .message
+publishOptions.customType = "PlaintText" // Custom type "PlaintText"
+let (response, error) = await rtmClient.publish(
+    channelName: "exampleChannel",
+    message: "Hello, Agora!",
+    option: publishOptions)
+if let errorInfo = error {
+    // handle error
+    print("Failed to publish message with error: \(errorInfo.reason)")
+} else if let publishResponse = response {
+    // handle success
+    print("Message published successfully.")
+} else {
+    // handle unknown error
+    print("Unknown error occurred while publishing the message.")
+}
+```
+
+```swift
+// callback
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .message // Set the channel type to .message
+publishOptions.customType = "PlainText" // Set a custom type to "PlainText"
+
+rtmClient.publish(
+    channelName: "exampleChannel",
+    message: "Hello, Agora!",
+    option: publishOptions
+) { (response, error) in
+    if let errorInfo = error {
+    // Handle error
+        print("Failed to publish message with error: \(errorInfo.reason)")
+    } else if let publishResponse = response {
+    // Handle success
+        print("Message published successfully.")
+    } else {
+    // Handle unknown error
+        print("Unknown error occurred while publishing the message.")
+    }
+}
+```
+
+Example 2: Send byte messages to a specified channel.
+
+```swift
+// async-await
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .message // Set channel type, .user or .message
+publishOptions.customType = "BinaryData" // Set custom message type "BinaryData"
+let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+let binaryData = Data(byteArray)
+
+let (response, error) = await rtmClient.publish(
+    channelName: "exampleChannel",
+    data: binaryData,
+    option: publishOptions)
+if let errorInfo = error {
+    // handle error
+    print("Failed to publish message with error: \(errorInfo.reason)")
+} else if let publishResponse = response {
+    // handle success
+    print("Message published successfully.")
+} else {
+    // handle unknown error
+    print("Unknown error occurred while publishing the message.")
+}
+```
+
+```swift
+// callback
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .message // Set the channel type to .message
+publishOptions.customType = "BinaryData" // Set a custom type to "BinaryData"
+let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+let binaryData = Data(byteArray)
+
+rtmClient.publish(
+    channelName: "exampleChannel",
+    data: binaryData,
+    option: publishOptions
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to publish message with error: \(errorInfo.reason)")
+    } else if let publishResponse = response {
+        // Handle success
+        print("Message published successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while publishing the message.")
+    }
+}
+```
+
+Example 3: Send messages to a specified user channel.
+
+```swift
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .user
+publishOptions.customType = "PlaintText"
+
+let (response, error) = await rtmClient.publish(
+    channelName: "exampleChannel",
+    message: "Hello, Agora!",
+    option: publishOptions)
+if let errorInfo = error {
+    // handle error
+    print("Failed to publish message with error: \(errorInfo.reason)")
+} else if let publishResponse = response {
+    // handle success
+    print("Message published successfully.")
+} else {
+    // handle unknown error
+    print("Unknown error occurred while publishing the message.")
+}
+```
+
+```swift
+// callback
+let publishOptions = AgoraRtmPublishOptions()
+publishOptions.channelType = .user
+publishOptions.customType = "PlainText"
+
+rtmClient.publish(
+    channelName: "exampleChannel",
+    message: "Hello, Agora!",
+    option: publishOptions
+) { (response, error) in
+    if let errorInfo = error {
+        // handle error
+        print("Failed to publish message with error: \(errorInfo.reason)")
+    } else if let publishResponse = response {
+        // handle success
+        print("Message published successfully.")
+    } else {
+        // handle unknown error
+        print("Unknown error occurred while publishing the message.")
+    }
+}
+```
+
+:::info[Information]
+After successfully calling this method, the SDK triggers a `didReceiveMessageEvent` event notification. Users who subscribe to the channel and have enabled the event listener receive this event notification. For details, see [Event Listeners](#event-listeners).
+:::
+
+### Receive
+
+Signaling provides event notifications for messages, states, and event changes. By listening for callbacks, you can receive messages and events within subscribed channels. The following code snippet shows how to receive messages from a user channel.
+
+```swift
+// message event handler
+class MessageHandler: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        print("Message received from \(event.channelName): \(event.message)")
+    }
+}
+let messageDelegate = MessageHandler()
+rtmClient.addDelegate(messageDelegate)
+```
+
+For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
+
+## Presence
+
+The presence feature provides the ability to monitor user online, offline, and user historical state change. With the Presence feature, you can get real-time access to the following information:
+
+- Real-time event notification when a user joins or leaves a specified channel.
+- Real-time event notification when the custom temporary user state changes.
+- Query which channels a specified user has joined or subscribed to.
+- Query which users have joined a specified channel and their temporary user state data.
+
+:::info[Information]
+Presence applies to both message channels and stream channels.
+:::
+
+  AgoraRtmPresence
+
+  Presence instance
+
+### getOnlineUsers
+
+#### Description
+
+  By calling the `getOnlineUsers` method,
+  you can query real-time information about the number of online users, the list
+  of online users, and the temporary state of online users in a specified
+  channel.
+
+#### Method
+
+Call the `getOnlineUsers` method as follows:
+
+```swift
+getOnlineUsers(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmGetOnlineUsersOptions?
+)   async -> (AgoraRtmGetOnlineUsersResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getOnlineUsers(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmGetOnlineUsersOptions?,
+    completion completionBlock: AgoraRtmGetOnlineUsersBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :--------------------------: | :------: | :-----: | ---- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `options` | `AgoraRtmGetOnlineUsersOptions` | Optional | - | Query options. |
+| `completion` | `AgoraRtmGetOnlineUsersBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetOnlineUsersResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmGetOnlineUsersOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :------: | :------: | :-----: | ------------- |
+| `includeUserId` | Bool | Optional | `true` | Whether the returned result includes the user ID of online members.|
+| `includeState` | Bool | Optional | `false` | Whether the returned result includes temporary state data of online users. |
+| `page` | String | Required | - | Page number of the returned result. You can check whether there is next page in the returned result. |
+
+The `AgoraRtmGetOnlineUsersResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------------- | :----------------------------: | --------------------- |
+| `totalOccupancy` | int | The list length of `UserStateList`. When you set both `includeUserId` and `includeState` properties in the `AgoraRtmGetOnlineUsersOptions` data type to `false`, this value represents the total number of current online users in the channel. |
+| `userStateList` | `[AgoraRtmUserState]` | List of online users and their temporary state information in a specified channel. |
+| `nextPage` | String | Page number of the next page. Confirm whether there is a next page:<br />- A null value indicates that next page does not exist. <br />- A non-null value indicates that there is a next page. You can fill this value in the `page` property of the `getOnlineUsers` method to query the next page results. |
+
+The `AgoraRtmUserState` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------- | :----------------------------: | ------------------------ |
+| `userId` | String | User ID. |
+| `states` | `[String : String]` | List of online users and their temporary state information in a specified channel. |
+
+#### Basic usage
+
+```swift
+// async-await
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+let (response, error) = await rtmClient.getPresence()!.getOnlineUsers(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions)
+
+if let errorInfo = error {
+    print("Error querying online users: \(errorInfo.reason)")
+} else if let getOnlineUsersResponse = response {
+    // Handle the response containing user presence information
+    print("Users in channel: \(getOnlineUsersResponse)")
+}
+```
+
+```swift
+// callback
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+rtmClient.getPresence()!.getOnlineUsers(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error querying online users: \(errorInfo.reason)")
+    } else if let getOnlineUsersResponse = response {
+        // Handle the response containing user presence information
+        print("Users in channel: \(getOnlineUsersResponse)")
+    } else {
+        print("Online users query completed with no response or error.")
+    }
+}
+```
+
+### getUserChannels
+
+#### Description
+In use-cases such as statistic analytics and debugging, you may need to know all the channels that a specified user has subscribed to or joined. Call the
+`getUserChannels` method to get the list of channels where the specified user is present in real time.
+
+#### Method
+
+Call the `getUserChannels` method as follows:
+
+```swift
+getUserChannels(userId: String) async -> (AgoraRtmGetUserChannelsResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getUserChannels(userId: String, completion completionBlock: AgoraRtmGetUserChannelsBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :---------------------: | :------: | :-----: | ------ |
+| `userId` | String | Required | - | User ID.|
+| `completion` | `AgoraRtmGetUserChannelsBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetUserChannelsResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmGetUserChannelsResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------- | :-: | ----------- |
+| `totalChannel` | Int32 | Number of channels the user is in. |
+| `channels` | `[AgoraRtmChannelInfo]` | List of channel information, including channel name and channel type. |
+
+The `AgoraRtmChannelInfo` data type contains the following properties:
+
+| Properties | Type | Description|
+| :------------ | :--------------------------: | ------------------------- |
+| `channelName` | String | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+
+#### Basic usage
+
+```swift
+// async-await
+let (response, error) = await rtmClient.getPresence()!.getUserChannels(userId:"your_userID")
+if let errorInfo = error {
+    print("Error querying user channels: \(errorInfo.reason)")
+} else if let getUserChannelsResponse = response {
+ // Handle the response containing user presence information
+    print("channels: \(getUserChannelsResponse)")
+}
+```
+
+```swift
+// callback
+rtmClient.getPresence()!.getUserChannels(userId: "your_userID") { (response, error) in
+    if let errorInfo = error {
+        print("Error querying user channels: \(errorInfo.reason)")
+    } else if let getUserChannelsResponse = response {
+        // Process the list of channels the user is currently in
+        print("User is present in channels: \(getUserChannelsResponse.channels)")
+    } else {
+        print("No response or error.")
+    }
+}
+```
+
+### setState
+
+#### Description
+
+To meet requirements in different business use-cases for setting user states, Signaling provides the `setState` method to customize the temporary user state. Users can add custom states such as scores, game state, location, mood, and hosting state for themselves.
+
+After successful setup, as long as the user keeps subscribing to the channel and stays online, the custom states persists in the channel. `setState` method sets the temporary user state, and the state disappears when the user leaves the channel or disconnects from Signaling. If you need to restore user states when rejoining a channel or reconnecting, you need to cache the data locally in real time. If you want to permanently save user states, Agora recommends using the `setUserMetadata` method of the storage functionality instead.
+
+If a user modifies the temporary user state, Signaling triggers the `remoteStateChanged` type of `didReceivePresenceEvent` event in real time. You can receive the event by subscribing to the channel and configuring the corresponding property.
+
+#### Method
+
+Call the `setState` method as follows:
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String],
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :---------------------: | :------: | :-----: | -------------- |
+| `channelName` | String | Required | - | Channel name |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `items` | [String : String] | Required | - | User state, an array of `StateItem`. |
+| `completion` |`AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let stateItems: [String: String] = ["user1": "online","user2": "busy"]
+// Call the setState function
+let (response, error) = await rtmClient.getPresence()!.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+  )
+if let errorInfo = error {
+    print("Error setting state: \(errorInfo.reason)")
+} else if let setStateResponse = response {
+    // Handle the response indicating the result of the state update
+    print("State update response: \(setStateResponse)")
+}
+```
+
+```swift
+// callback
+let stateItems: [String: String] = ["user1": "online", "user2": "busy"]
+ // Call the setState function using a callback
+rtmClient.getPresence()?.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error setting state: \(errorInfo.reason)")
+    } else if let setStateResponse = response {
+        // Handle the response indicating the result of the state update
+        print("State update response: \(setStateResponse)")
+    } else {
+        print("No response or error received.")
+    }
+}
+```
+
+### getState
+
+#### Description
+
+To get the temporary user state of a specified user in a channel, use the `getState` method.
+
+#### Method
+
+Call the `getState` method as follows:
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String
+)   async -> (AgoraRtmPresenceGetStateResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String,
+    completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :--------------------------: | :------: | :-----: | -------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `userId` | String | Required | - | User ID. |
+| `completion` | `AgoraRtmPresenceGetStateBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmPresenceGetStateResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmPresenceGetStateResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------- | :-----------------: | :----------------------: |
+| `state` | `AgoraRtmUserState` | List of online users and their temporary state information in a specified channel. |
+
+The `AgoraRtmUserState` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------- | :----------------------------: | :---------------------- |
+| `userId` | String | User ID. |
+| `states` | `[String : String]` | List of online users and their temporary state information in a specified channel. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "user1"
+// Call the getState function
+let (response, error) = await rtmClient.getPresence()!.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId
+)
+if let errorInfo = error {
+    print("Error getting state: \(errorInfo.reason)")
+} else if let getStateResponse = response {
+    // Handle the response containing the user's state
+    print("User state response: \(getStateResponse)")
+}
+```
+
+```swift
+// callback
+let userId = "user1"
+// Call the getState function
+rtmClient.getPresence()?.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error getting state: \(error.reason)")
+        } else if let getStateResponse = response {
+            // Handle the response containing the user's state
+            print("User state response: \(getStateResponse)")
+        }
+    }
+)
+```
+
+### removeState
+
+#### Description
+
+When a temporary user state is no longer needed, call the `removeState` method to remove one or more of your temporary states. When the user state is removed, the user who has subscribed to the channel and enabled the presence event listener receives the `remoteStateChanged` type of `didReceivePresenceEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `removeState` method as follows:
+
+```swift
+removeState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    keys: [String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeState(
+  channelName: String,
+  channelType: AgoraRtmChannelType,
+  keys: [String],
+  completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :--------------------------: | :------: | :-----: | ---- |
+| `channelName` | String | Required | - | Channel name |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `keys` | `[String]` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
+| `completion` |`AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let stateKeys: [String] = ["user1", "user2"]
+// Call the removeState function
+let (response, error) = await rtmClient.getPresence()!.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys
+)
+if let errorInfo = error {
+    print("Error removing state: \(errorInfo.reason)")
+} else if let removeStateResponse = response {
+    // Handle the response indicating the result of the state removal
+    print("State removal response: \(removeStateResponse)")
+}
+```
+
+```swift
+// callback
+let stateKeys: [String] = ["user1", "user2"]
+rtmClient.getPresence()?.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error removing state: \(errorInfo.reason)")
+        } else if let removeStateResponse = response {
+            // Handle the response indicating the result of the state removal
+            print("State removal response: \(removeStateResponse)")
+        }
+    }
+)
+```
+
+## Storage
+
+The storage feature provides a dynamic database mechanism that allows developers to dynamically set, store, update, and delete data such as channel metadata and user metadata.
+
+### setChannelMetadata
+
+#### Description
+
+The `setChannelMetadata` method sets metadata for a message channel or stream channel. A channel can only have one set of metadata, but each set of metadata can have one or more metadata items. When you call this method multiple times, the SDK retrieves the `key` of the metadata items in turn and applies settings according to the following rules:
+
+- If you set metadata with different keys, the SDK adds each set of metadata in sequence according to the order of the method calls.
+- If you set metadata with the same `key`, the `value` of the last setting overwrites the previous one.
+
+After successfully setting channel metadata, users who subscribe to the channel and enable event listeners receive the `channel` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+Channel metadata also provides version control logic CAS (Compare And Set). This feature provides two independent version control fields. You can set one or both according to your actual business use-case:
+
+- Enable version number verification for the entire set of channel metadata by setting the `majorRevision` property in the `AgoraRtmMetadata` data type.
+
+- Enable version number verification for a single metadata item by setting the `revision` property in the `AgoraRtmMetadataItem` class.
+
+When setting channel metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, which indicates that this method call does not perform any CAS verification. If the channel metadata or metadata item already exists, the latest value overwrites the previous one. If the channel metadata or metadata item does not exist, the SDK creates it.
+
+- If the revision property is a positive integer, this method call performs CAS verification. If the channel metadata or metadata item already exists, the SDK updates the corresponding value after the version number verification succeeds. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+
+#### Method
+
+Call the `setChannelMetadata` method as follows:
+
+```swift
+setChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    lock: String?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    lock: String?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lock` | String | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+
+// Create metadata items
+let metadataItem1 = AgoraRtmMetadataItem(key: "topic", value: "discussion", revision: 174298200)
+let metadataItem2 = AgoraRtmMetadataItem(key: "status", value: "active", revision: 174298100)
+
+// Create metadata
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [metadataItem1, metadataItem2]
+
+// Set metadata options
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Set channel metadata
+let (response, error) = await rtmClient.setChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: metadataOptions,
+    lock: nil // or provide a lock name
+)
+
+if let errorInfo = error {
+// Handle error
+    print("Failed to set channel metadata with error: \(errorInfo.reason)")
+} else if let setMetadataResponse = response {
+// Handle success
+    print("Channel metadata set successfully.")
+} else {
+// Handle unknown error
+    print("Unknown error occurred while setting channel metadata.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+
+// Create metadata items
+let metadataItem1 = AgoraRtmMetadataItem(key: "topic", value: "discussion", revision: 174298200)
+let metadataItem2 = AgoraRtmMetadataItem(key: "status", value: "active", revision: 174298100)
+
+// Create metadata
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [metadataItem1, metadataItem2]
+
+// Set metadata options
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Set channel metadata
+rtmClient.setChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: metadataOptions,
+    lock: nil, // or provide a lock name
+    completion: { (response, error) in
+        if let errorInfo = error {
+            // Handle error
+            print("Failed to set channel metadata with error: \(errorInfo.reason)")
+        } else if let setMetadataResponse = response {
+            // Handle success
+            print("Channel metadata set successfully.")
+        } else {
+            // Handle unknown error
+            print("Unknown error occurred while setting channel metadata.")
+        }
+    }
+)
+```
+
+### getChannelMetadata
+
+#### Description
+
+The `getChannelMetadata` method gets the metadata of the specified channel.
+
+#### Method
+
+Call the `getChannelMetadata` method as follows:
+
+```swift
+getChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType
+)   async -> (AgoraRtmGetMetadataResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+getChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    completion completionBlock: AgoraRtmGetMetadataBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | --------------------------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `completion` | `AgoraRtmGetMetadataBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetMetadataResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmGetMetadataResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | ------------------------------------- |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+
+// Retrieve channel metadata
+let (response, error) = await rtmClient.getChannelMetadata(
+    channelName: channelName,
+    channelType: channelType
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to get channel metadata with error: \(errorInfo.reason)")
+} else if let getMetadataResponse = response, let metadata = getMetadataResponse.data {
+    // Handle success and access the metadata
+    print("Retrieved channel metadata: \(metadata)")
+    for item in metadata.items ?? [] {
+        print("Key: \(item.key), Value: \(item.value), Last updated by: \(item.authorUserId)")
+    }
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while getting channel metadata.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+
+// Retrieve channel metadata
+rtmClient.getChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            // Handle error
+            print("Failed to get channel metadata with error: \(errorInfo.reason)")
+        } else if let getMetadataResponse = response, let metadata = getMetadataResponse.data {
+            // Handle success and access the metadata
+            print("Retrieved channel metadata: \(metadata)")
+            for item in metadata.items ?? [] {
+                print("Key: \(item.key), Value: \(item.value), Last updated by: \(item.authorUserId)")
+            }
+        } else {
+            // Handle unknown error
+            print("Unknown error occurred while getting channel metadata.")
+        }
+    }
+)
+```
+
+### removeChannelMetadata
+
+#### Description
+
+The `removeChannelMetadata` method removes channel metadata or metadata items.
+
+When removing channel metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, which indicates that this method call does not perform any CAS verification. If the channel metadata or metadata item already exists, the SDK removes it. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+
+- If the revision property is a positive integer, this method call performs CAS verification. If the channel metadata or metadata item already exists, the SDK removes the corresponding value after the version number verification succeeds. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+
+After successfully removing channel metadata or metadata items, users who subscribe to the channel and enable event listeners receive the `channel` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+#### Method
+
+Call the `removeChannelMetadata` method as follows:
+
+```swift
+removeChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    lock: String?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    lock: String?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | --------------------------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lock` | String | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+// Create metadata items to remove
+let itemToRemove = AgoraRtmMetadataItem()
+itemToRemove.key = "topic"
+itemToRemove.revision = 174298200
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [itemToRemove]
+
+// Call removeChannelMetadata with async/await
+let (response, error) = await rtmClient.removeChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: nil,
+    lock: nil
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to remove metadata with error: \(errorInfo.reason)")
+} else if let removeMetadataResponse = response {
+    // Handle success
+    print("Metadata removed successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while removing metadata.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+// Create metadata items to remove
+let itemToRemove = AgoraRtmMetadataItem()
+itemToRemove.key = "topic"
+itemToRemove.revision = 174298200
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [itemToRemove]
+
+// Call removeChannelMetadata with callback
+rtmClient.removeChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: nil,
+    lock: nil
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to remove metadata with error: \(errorInfo.reason)")
+    } else if let removeMetadataResponse = response {
+        // Handle success
+        print("Metadata removed successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while removing metadata.")
+    }
+}
+```
+
+### updateChannelMetadata
+
+#### Description
+
+The `updateChannelMetadata` method updates existing channel metadata. Each time you call this method, you can update one channel metadata or a channel metadata item.
+
+After successfully updating channel metadata, users who subscribe to the channel and enable event listeners receive the `channel` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+:::info[Information]
+You cannot use this method to update metadata items which do not exist.
+:::
+
+#### Method
+
+Call the `updateChannelMetadata` method as follows:
+
+```swift
+updateChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+updateChannelMetadata(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    lock: String?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-----------: | :----: | :------: | :----: | --------------------------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lock` | String | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "topic"
+metadataItem.value = "New Topic"
+metadataItem.revision = 174298200
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call updateChannelMetadata with async/await
+let (response, error) = await rtmClient.updateChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: metadataOptions,
+    lock: nil
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to update metadata with error: \(errorInfo.reason)")
+} else if let updateMetadataResponse = response {
+    // Handle success
+    print("Metadata updated successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while updating metadata.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "topic"
+metadataItem.value = "New Topic"
+metadataItem.revision = 174298200
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 174298270
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call updateChannelMetadata with completion block (callback)
+rtmClient.updateChannelMetadata(
+    channelName: channelName,
+    channelType: channelType,
+    data: metadata,
+    options: metadataOptions,
+    lock: nil
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to update metadata with error: \(errorInfo.reason)")
+    } else if let updateMetadataResponse = response {
+        // Handle success
+        print("Metadata updated successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while updating metadata.")
+    }
+}
+```
+
+### setUserMetadata
+
+#### Description
+
+The `setUserMetadata` method sets metadata for a user. If you call this method multiple times, the SDK retrieves the `key` of the metadata items and applies settings according to the following rules:
+
+- If you set metadata with different keys, the SDK adds each set of metadata in sequence according to the order of the method calls.
+
+- If you set metadata with the same `key`, the `value` of the last setting overwrites the previous one.
+
+After successfully setting user metadata, users who subscribe to the user and enable event listeners receive the `user` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+User metadata also provides version control logic CAS (Compare And Set). This method provides two independent version control fields. You can set one or both of them according to your actual business use-case:
+
+- Enable version number verification for the entire set of channel metadata by setting the `majorRevision` property in the `AgoraRtmMetadata` data type.
+
+- Enable version number verification for a single metadata item by setting the `revision` property in the `AgoraRtmMetadataItem` class.
+
+When setting user metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, which indicates that this method call does not perform any CAS verification. If the user metadata or metadata item already exists, the latest value overwrites the previous one. If the user metadata or metadata item does not exist, the SDK creates it.
+
+- If the revision property is a positive integer, this method call performs the CAS verification. If the user metadata or metadata item already exists, the SDK updates the corresponding value after the version number verification succeeds. If the user metadata or metadata item does not exist, the SDK returns the error code.
+
+#### Method
+
+Call the `setUserMetadata` method as follows:
+
+```swift
+setUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.value = "active"
+metadataItem.revision = 12345
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call setUserMetadata with async/await
+let (response, error) = await rtmClient.setUserMetadata(
+    userId: userId,
+    data: metadata,
+    options: metadataOptions
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to set user metadata with error: \(errorInfo.reason)")
+} else if let setUserMetadataResponse = response {
+    // Handle success
+    print("User metadata set successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while setting user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.value = "active"
+metadataItem.revision = 12345
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call setUserMetadata with a callback
+rtmClient.setUserMetadata(
+    userId: userId,
+    data: metadata,
+    options: metadataOptions
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to set user metadata with error: \(errorInfo.reason)")
+    } else if let setUserMetadataResponse = response {
+        // Handle success
+        print("User metadata set successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while setting user metadata.")
+    }
+}
+```
+
+### getUserMetadata
+
+#### Description
+
+The `getUserMetadata` method gets the metadata and metadata item for the specified user.
+
+#### Method
+
+Call the `getUserMetadata` method as follows:
+
+```swift
+getUserMetadata(userId: String) async -> (AgoraRtmGetMetadataResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getUserMetadata(userId: String, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `completion` | `AgoraRtmGetMetadataBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetMetadataResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmGetMetadataResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | ------------------------------------- |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+
+// Call getUserMetadata with async/await
+let (response, error) = await rtmClient.getUserMetadata(userId: userId)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to get user metadata with error: \(errorInfo.reason)")
+} else if let getUserMetadataResponse = response {
+    // Handle success and access the metadata
+    if let metadata = getUserMetadataResponse.data {
+        print("User metadata retrieved successfully.")
+        for item in metadata.items ?? [] {
+            print("Key: \(item.key), Value: \(item.value), Author: \(item.authorUserId), Revision: \(item.revision)")
+        }
+    }
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while getting user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+
+// Call getUserMetadata with a callback
+rtmClient.getUserMetadata(userId: userId) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to get user metadata with error: \(errorInfo.reason)")
+    } else if let getUserMetadataResponse = response {
+        // Handle success and access the metadata
+        if let metadata = getUserMetadataResponse.data {
+            print("User metadata retrieved successfully.")
+            for item in metadata.items ?? [] {
+                print("Key: \(item.key), Value: \(item.value), Author: \(item.authorUserId), Revision: \(item.revision)")
+            }
+        }
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while getting user metadata.")
+    }
+}
+```
+
+### removeUserMetadata
+
+#### Description
+
+The `removeUserMetadata` method removes user metadata or metadata items.
+
+After successfully removing user metadata, users who subscribe to the user and enable event listeners receive the `user` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+#### Method
+
+Call the `removeUserMetadata` method as follows:
+
+```swift
+removeUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :-------------: | :------: | :----: | -------------------------------------- |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+// Create metadata items to remove
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.revision = 12345 // Make sure to provide the correct revision
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+// Call removeUserMetadata with async/await
+let (response, error) = await rtmClient.removeUserMetadata(
+    userId: userId,
+    data: metadata,
+    options: nil
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to remove user metadata with error: \(errorInfo.reason)")
+} else if let removeUserMetadataResponse = response {
+    // Handle success
+    print("User metadata removed successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while removing user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+
+// Create metadata items to remove
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.revision = 12345 // Make sure to provide the correct revision
+
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+
+// Call removeUserMetadata with a callback
+rtmClient.removeUserMetadata(userId: userId, data: metadata, options: nil) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to remove user metadata with error: \(errorInfo.reason)")
+    } else if let removeUserMetadataResponse = response {
+        // Handle success
+        print("User metadata removed successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while removing user metadata.")
+    }
+}
+```
+
+### updateUserMetadata
+
+#### Description
+
+The `updateUserMetadata` method updates existing user metadata. After successfully updating channel metadata, users who subscribe to the user and enable event listeners receive the `user` type of `didReceiveStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+:::info[Information]
+You cannot use this method to update metadata items which do not exist.
+:::
+
+#### Method
+
+Call the `updateUserMetadata` method as follows:
+
+```swift
+updateUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+updateUserMetadata(
+    userId: String,
+    data: AgoraRtmMetadata,
+    options: AgoraRtmMetadataOptions?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmMetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :-----: | :------: | :-----: | ----------------------------------------------------------------------------------------------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.value = "active"// Set the new value
+metadataItem.revision = 12345// Provide the current revision
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call updateUserMetadata with async/await
+let (response, error) = await rtmClient.updateUserMetadata(
+    userId: userId,
+    data: metadata,
+    options: metadataOptions
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to update user metadata with error: \(errorInfo.reason)")
+} else if let updateUserMetadataResponse = response {
+    // Handle success
+    print("User metadata updated successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while updating user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+// Create metadata items to update
+let metadataItem = AgoraRtmMetadataItem()
+metadataItem.key = "status"
+metadataItem.value = "active"// Set the new value
+metadataItem.revision = 12345// Provide the current revision
+// Create metadata object
+let metadata = AgoraRtmMetadata()
+metadata.majorRevision = 12346
+metadata.items = [metadataItem]
+// Optional: Define metadata options if needed
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordTs = true
+metadataOptions.recordUserId = true
+
+// Call updateUserMetadata with a callback
+rtmClient.updateUserMetadata(userId: userId, data: metadata, options: metadataOptions) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to update user metadata with error: \(errorInfo.reason)")
+    } else if let updateUserMetadataResponse = response {
+        // Handle success
+        print("User metadata updated successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while updating user metadata.")
+    }
+}
+```
+
+### subscribeUserMetadata
+
+#### Description
+
+The `subscribeUserMetadata` method subscribes to metadata for a specified user. After successfully subscribing to the user metadata, you receive the `user` type of `didReceiveStorageEvent` event notification when the metadata for that user changes. See [Event listeners](#event-listeners).
+
+#### Method
+
+Call the `subscribeUserMetadata` method as follows:
+
+```swift
+subscribeUserMetadata(userId: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+subscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :-------: | :-------------: | :------: | :----: | ---------------------------------- |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+
+// Call subscribeUserMetadata with async/await
+let (response, error) = await rtmClient.subscribeUserMetadata(userId: userId)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to subscribe to user metadata with error: \(errorInfo.reason)")
+} else if let subscribeResponse = response {
+    // Handle success
+    print("Successfully subscribed to user metadata.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while subscribing to user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+
+// Call subscribeUserMetadata with a callback
+rtmClient.subscribeUserMetadata(userId: userId) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to subscribe to user metadata with error: \(errorInfo.reason)")
+    } else if let subscribeResponse = response {
+        // Handle success
+        print("Successfully subscribed to user metadata.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while subscribing to user metadata.")
+    }
+}
+```
+
+### unsubscribeUserMetadata
+
+#### Description
+
+When you no longer need to receive notifications of changes to a user's metadata, call the `unsubscribeUserMetadata` method to unsubscribe.
+
+#### Method
+
+Call the `unsubscribeUserMetadata` method as follows:
+
+```swift
+unsubscribeUserMetadata(userId: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+```swift
+unsubscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :------: | :----: | :------: | :----: | --------- |
+| `userId` | String | Required | `userId` of the current user | User ID. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let userId = "exampleUser"
+
+// Call unsubscribeUserMetadata with async/await
+let (response, error) = await rtmClient.unsubscribeUserMetadata(userId: userId)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to unsubscribe from user metadata with error: \(errorInfo.reason)")
+} else if let unsubscribeResponse = response {
+    // Handle success
+    print("Successfully unsubscribed from user metadata.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while unsubscribing from user metadata.")
+}
+```
+
+```swift
+// callback
+let userId = "exampleUser"
+
+// Call unsubscribeUserMetadata with a callback
+rtmClient.unsubscribeUserMetadata(userId: userId) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to unsubscribe from user metadata with error: \(errorInfo.reason)")
+    } else if let unsubscribeResponse = response {
+        // Handle success
+        print("Successfully unsubscribed from user metadata.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while unsubscribing from user metadata.")
+    }
+}
+```
+
+### AgoraRtmMetadata
+
+Use the `AgoraRtmMetadata` data type to set and manage metadata, containing the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | The version control switch:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `items` | `[AgoraRtmMetadataItem]` | Optional | `nil` | Metadata items. |
+
+The `AgoraRtmMetadataItem` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :----------: | :------------: | :------: | :-----: | ---------------------------------------------------------- |
+| `key` | String | Required | - | Key. |
+| `value` | String | Required | - | Value. |
+| `authorUserId` | String | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | UInt64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | UInt64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+## Lock
+
+A critical resource should only be used by one process at a time. If a critical resource is shared between different processes, each process needs to adopt a mutually exclusive method to prevent mutual interference. Signaling provides a full set of lock solutions. By controlling different processes in a distributed system, you can solve the competition problem when users access shared resources.
+
+:::info[Information]
+The client is able to set, remove, and revoke locks. Agora recommends that you control the permissions of these operations on the client side based on your business needs.
+:::
+
+### setLock
+
+#### Description
+Configure the lock name, time to live (TTL) and other parameters by calling the `setLock` method. If the configuration succeeds, all users in the channel receive the `didReceiveLockEvent` event notifications of `lockSet` type. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `setLock` method as follows:
+
+```swift
+setLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    ttl: Int32
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    ttl: Int32,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-------------: | :------: | :-----: | ----------------------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `lockName` | String | Required | - | Lock name. |
+| `ttl` | Int32 | Optional | `10` | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `didReceiveLockEvent` event receives the `lockReleased` event. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Lock for 1 hour
+let ttl: Int32 = 3600
+
+let (response, error) = await rtmClient.setLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    ttl: ttl)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to set lock with error: \(errorInfo.reason)")
+} else if let setLockResponse = response {
+    // Handle success
+    print("Lock set successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while setting the lock.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Lock for 1 hour
+let ttl: Int32 = 3600
+
+rtmClient.setLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    ttl: ttl
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to set lock with error: \(errorInfo.reason)")
+    } else if let setLockResponse = response {
+        // Handle success
+        print("Lock set successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while setting the lock.")
+    }
+}
+```
+
+### acquireLock
+
+#### Description
+
+After successfully configuring a lock, call the `acquireLock` method on the client to acquire the right to the lock. When you acquire the lock, other users in the channel receive the `lockAcquired` type of `didReceiveLockEvent` event. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `acquireLock` method as follows:
+
+```swift
+acquireLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    retry: Bool
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+acquireLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    retry: Bool,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-: | :------: | :-----: | ------ |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `lockName` | String | Required | - | Lock name. |
+| `retry` | Bool | Required | - | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Whether to retry acquiring the lock if it fails
+let retry = true
+
+let (response, error) = await rtmClient.acquireLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    retry: retry
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to acquire lock with error: \(errorInfo.reason)")
+} else if let acquireLockResponse = response {
+    // Handle success
+    print("Lock acquired successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while acquiring the lock.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Whether to retry acquiring the lock if it fails
+let retry = true
+
+rtmClient.acquireLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    retry: retry
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to acquire lock with error: \(errorInfo.reason)")
+    } else if let acquireLockResponse = response {
+        // Handle success
+        print("Lock acquired successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while acquiring the lock.")
+    }
+}
+```
+
+### releaseLock
+
+#### Description
+
+When a user no longer needs to own a lock, call the `releaseLock` method on the client side to release the lock. After successful lock release, other users in the channel receive the `lockReleased` type of `didReceiveLockEvent` event. See [Event Listeners](#event-listeners).
+
+At this time, if another user wants to acquire the lock, they can call the `acquireLock` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
+
+#### Method
+
+Call the `releaseLock` method as follows:
+
+```swift
+releaseLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+releaseLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-: | :------: | :-----: | ------ |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `lockName` | String | Required | - | Lock name. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+let (response, error) = await rtmClient.releaseLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to acquire lock with error: \(errorInfo.reason)")
+} else if let acquireLockResponse = response {
+    // Handle success
+    print("Lock released successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while releasing the lock.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+rtmClient.releaseLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to acquire lock with error: \(errorInfo.reason)")
+    } else if let acquireLockResponse = response {
+        // Handle success
+        print("Lock released successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while releasing the lock.")
+    }
+}
+```
+
+### revokeLock
+
+#### Description
+
+To ensure that your business is not affected when a lock is occupied, you may need to revoke the lock and give other users a chance to acquire it. Revoke the occupied lock by calling `revokeLock`. When a lock is revoked, all users in the channel receive the `lockReleased` type of `didReceiveLockEvent` event. See [Event Listeners](#event-listeners).
+
+At this time, if other users want to acquire the lock, they can call the `acquireLock` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
+
+#### Method
+
+Call the `revokeLock` method as follows:
+
+```swift
+revokeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    userId: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+revokeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    userId: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-: | :------: | :-----: | ------ |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `lockName` | String | Required | - | Lock name. |
+| `userId` | String | Required | - | The ID of the user who has a lock. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+let userId = "user123"// The ID of the user who holds the lock
+let (response, error) = await rtmClient.revokeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    userId: userId
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to revoke lock with error: \(errorInfo.reason)")
+} else if let revokeLockResponse = response {
+    // Handle success
+    print("Lock revoked successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while revoking the lock.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+let userId = "user123" // The ID of the user who holds the lock
+rtmClient.revokeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    userId: userId
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to revoke lock with error: \(errorInfo.reason)")
+    } else if let revokeLockResponse = response {
+        // Handle success
+        print("Lock revoked successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while revoking the lock.")
+    }
+}
+```
+
+### getMessages
+
+#### Description
+
+To query lock information such as the total number of locks, lock name, lock user, and time to live, call the `getMessages` method on the client.
+
+#### Method
+
+Call the `getMessages` method as follows:
+
+```swift
+getLocks(
+    channelName: String,
+    channelType: AgoraRtmChannelType
+)   async -> (AgoraRtmGetLocksResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getLocks(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    completion completionBlock: AgoraRtmGetLocksBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-: | :------: | :-----: | -------- |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `completion` | `AgoraRtmGetLocksBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetLocksResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+The `AgoraRtmGetLocksResponse` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------------- | :-----------: | - |
+| `lockDetailList` | `[AgoraRtmLockDetail]` | Lock details array. |
+
+The `AgoraRtmLockDetail` data type contains the following properties:
+
+| Properties | Type | Description |
+| :--------- | :------: | -------- |
+| `lockName` | String | Lock name. |
+| `owner` | String | The ID of the user who has a lock. |
+| `ttl` | Int32 | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `didReceiveLockEvent` event receives the `lockReleased` event. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let (response, error) = await rtmClient.getLocks(
+    channelName: channelName,
+    channelType: channelType
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to get locks with error: \(errorInfo.reason)")
+} else if let getLocksResponse = response {
+    // Handle success
+    print("Locks retrieved successfully.")
+    print("Locks: \(getLocksResponse.locks)")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while retrieving the locks.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+rtmClient.getLocks(
+    channelName: channelName,
+    channelType: channelType
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to get locks with error: \(errorInfo.reason)")
+    } else if let getLocksResponse = response {
+        // Handle success
+        print("Locks retrieved successfully.")
+        print("Locks: \(getLocksResponse.locks)")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while retrieving the locks.")
+    }
+}
+```
+
+### removeLock
+
+#### Description
+
+When you no longer need a lock, call the `removeLock` method to remove the lock. After successfully removing the lock, all users in the channel receive the `lockRemoved` type of `didReceiveLockEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+Call the `removeLock` method as follows:
+
+```swift
+removeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| Parameters | Type | Required | Default | Description |
+| :---------------: | :-: | :------: | :-----: | ------ |
+| `channelName` | String | Required | - | Channel name. |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel type. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `lockName` | String | Required | - | Lock name. |
+| `completion` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter. <br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
+
+#### Basic usage
+
+```swift
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+let (response, error) = await rtmClient.removeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to remove lock with error: \(errorInfo.reason)")
+} else if let removeLockResponse = response {
+    // Handle success
+    print("Lock removed successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while removing the lock.")
+}
+```
+
+```swift
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+rtmClient.removeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to remove lock with error: \(errorInfo.reason)")
+    } else if let removeLockResponse = response {
+        // Handle success
+        print("Lock removed successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while removing the lock.")
+    }
+}
+```
+
+## Enumerated types
+
+### Enum
+
+#### AgoraRtmAreaCode
+
+The region for connection, which is the region where the server the SDK connects to is located.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `CN` | `0x00000001`: Mainland China. |
+| `NA` | `0x00000002`: North America. |
+| `EU` | `0x00000004`: Europe. |
+| `AS` | `0x00000008`: Asia, excluding Mainland China. |
+| `JP` | `0x00000010`: Japan. |
+| `IN` | `0x00000020`: India. |
+| `GLOB` | `0xFFFFFFFF`: Global. |
+
+#### AgoraRtmChannelType
+
+Channel types.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `message` | `1`: Message channel. |
+| `stream` | `2`: Stream channel. |
+| `user` | `3`: User Channel. |
+
+#### AgoraRtmClientConnectionChangeReason
+
+Reasons causing the change of the connection state.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `connecting` | `0`: The SDK is connecting with the server. |
+| `joinSuccess` | `1`: The SDK has joined the channel successfully. |
+| `interrupted` | `2`: The connection between the SDK and the server is interrupted. |
+| `bannedByServer` | `3`: The connection between the SDK and the server is banned by the server. |
+| `joinFailed` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
+| `leaveChannel` | `5`: The SDK has left the channel. |
+| `invalidAppId` | `6`: The connection failed because the App ID is not valid. |
+| `invalidChannelName` | `7`: The connection failed because the channel name is not valid. |
+| `invalidToken` | `8`: The connection failed because the token is not valid. |
+| `tokenExpired` | `9`: The connection failed because the token is expired. |
+| `rejectedByServer` | `10`: The connection is rejected by server. |
+| `settingProxyServer` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
+| `renewToken` | `12`: The connection state changed because the token is renewed. |
+| `clientIpAddressChanged` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
+| `keepAliveTimeout` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
+| `rejoinSuccess` | `15`: The user has rejoined the channel successfully. |
+| `changedLost` | `16`: The connection between the SDK and the server is lost. |
+| `echoTest` | `17`: The connection state changes due to the echo test. |
+| `clientIpAddressChangedByUser` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
+| `sameUidLogin` | `19`: The user joined the same channel from different devices with the same UID. |
+| `tooManyBroadcasters` | `20`: The number of hosts in the channel has reached the upper limit. |
+| `licenseValidationFailure` | `21`: License verification failed. |
+| `certificationVerifyFailure` | `22`: Server certificate verification failed. |
+| `streamChannelNotAvailable` | `23`: The stream channel does not exist. |
+| `inconsistentAppId` | `24`: App ID and Token do not match. |
+| `loginSuccess` | `10001`: The SDK logs in to the Signaling system. |
+| `logout` | `10002`: The SDK logs out from the Signaling system. |
+| `presenceNotReady` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
+
+#### AgoraRtmClientConnectionState
+
+SDK connection states.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `disconnected` | `1`: The SDK has disconnected with the server. |
+| `connecting` | `2`: The SDK is connecting with the server. |
+| `connected` | `3`: The SDK has connected with the server. |
+| `reconnecting` | `4`: The connection is lost. The SDK is reconnecting with the server. |
+| `failed` | `5`: The SDK failed to connect with the server. |
+
+#### AgoraRtmEncryptionMode
+
+Encryption mode.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `none` | `0`: No encryption. |
+| `AES128GCM` | `1`: AES-128-GCM mode. |
+| `AES256GCM` | `2`: AES-256-GCM mode. |
+
+#### AgoraRtmJoinChannelFeature
+
+The event notification types set when joining a channel. You can use bitwise operations to set multiple event notifications simultaneously.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `` | `0`: No event notifications. |
+| `presence` | `1`: Sets the presence event notification. |
+| `metadata` | `1 &lt;&lt; 1`: Sets the storage event notification.|
+| `lock` | `1 &lt;&lt; 2`: Sets the lock event notification. |
+| `beQuiet` | `1 &lt;&lt; 3`: Sets the silent mode. In this mode, the SDK has the following behaviors:<br />- You can still receive other users' event notifications. <br />- Event notifications related to your channel activity such as joining or leaving the channel, and actions related to setting, getting, or deleting temporary user states, can not be broadcasted to other users. <br />- When calling the `getOnlineUsers` method, your information can not be found. <br />- When calling the `getUserChannels` method, channels that you join in silent mode can not be detected. |
+
+#### AgoraRtmLockEventType
+
+Lock event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `snapshot` | `1`: The snapshot of the lock when the user joined the channel. |
+| `lockSet` | `2`: The lock is set. |
+| `lockRemoved` | `3`: The lock is removed. |
+| `lockAcquired` | `4`: The lock is acquired. |
+| `lockReleased` | `5`: The lock is released. |
+| `lockExpired` | `6`: The lock expired. |
+
+#### AgoraRtmLogLevel
+
+Log output levels.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `none` | `0x0000`: No log. |
+| `info` | `0x0001`: Output the log at the `FATAL`, `ERROR`, `WARN`, or `INFO` level. We recommend you set to this value. |
+| `warn` | `0x0002`: Output the log at the `FATAL`, `ERROR`, `WARN` level. |
+| `error` | `0x0004`: Output the log at the `FATAL`, `ERROR` level. |
+| `fatal` | `0x0008`: Output the log at the `FATAL` level. |
+
+#### AgoraRtmMessagePriority
+
+Message priority.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `highest` | `0`: Highest. |
+| `high` | `1`: High. |
+| `normal` | `4`: Normal. |
+| `low` | `8`: Low. |
+
+#### AgoraRtmMessageQos
+
+QoS guarantee when sending topic messages.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `unordered` | `0`: Message data is not guaranteed to arrive in order. |
+| `ordered` | `1`: Message data arrives in order. |
+
+#### AgoraRtmPresenceEventType
+
+Presence event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `snapshot` | `1`: The snapshot of the presence when the user joined the channel. |
+| `interval` | `2`: When users in the channel reach the setting value, the event notifications are sent at intervals rather than in real time. |
+| `remoteJoinChannel` | `3`: A remote user joined the channel. |
+| `remoteLeaveChannel` | `4`: A remote user left the channel. |
+| `remoteConnectionTimeout` | `5`: A remote user's connection timed out. |
+| `remoteStateChanged` | `6`: A remote user's temporary state changed. |
+| `errorOutOfService` | `7`: The user did not enable presence when joining the channel. |
+
+#### AgoraRtmLinkOperation
+
+Operation type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `login` | `0`: The user logins to the Signaling system. |
+| `logout` | `1`: The user logouts of the Signaling system. |
+| `join` | `2`: The user joins in a stream channel. |
+| `leave` | `3`: The user leaves a stream channel. |
+| `serverReject` | `4`: The Signaling server reject the connection. |
+| `autoReconnect` | `5`: The SDK is automatically reconnecting to the Signaling server. |
+| `reconnected` | `6`: The SDK is reconnected to the Signaling server. |
+| `heartbeatTimeout` | `7`: The Signaling server does not receive the heartbeat packet within the specified timeout period. |
+| `serverTimeout` | `8`: The Signaling server has timed out. |
+| `networkChange` | `9`: The network status changes. |
+
+#### AgoraRtmLinkState
+
+Link state type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `idle` | `0`: The init state. |
+| `connecting` | `1`: Connecting. |
+| `connected` | `2`: Connected. |
+| `disconnected` | `3`: Disconnected. |
+| `suspended` | `4`: Suspended. |
+| `failed` | `5`: Failed. |
+
+#### AgoraRtmLinkStateChangeReason
+
+Link state change reason.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `unknown` | `0`: Unknown reason. |
+| `login` | `1`: Logging in. |
+| `loginSuccess` | `2`: Login successful. |
+| `loginTimeout` | `3`: Login timeout. |
+| `loginNotAuthorized` | `4`: Login not authorized. |
+| `loginRejected` | `5`: Login rejected. |
+| `relogin` | `6`: Re-login. |
+| `logout` | `7`: Logout. |
+| `autoReconnect` | `8`: Auto-reconnect. |
+| `reconnectTimeout` | `9`: Reconnect timeout. |
+| `reconnectSuccess` | `10`: Reconnect successful. |
+| `join` | `11`: Joining a channel. |
+| `joinSuccess` | `12`: Join channel successful. |
+| `joinFailed` | `13`: Join channel failed. |
+| `rejoin` | `14`: Re-join a channel. |
+| `leave` | `15`: Leave a channel. |
+| `invalidToken` | `16`: Invalid token. |
+| `tokenExpired` | `17`: Token expired. |
+| `inconsistentAppId` | `18`: Inconsistent app ID. |
+| `invalidChannelName` | `19`: Invalid channel name. |
+| `invalidUserId` | `20`: Invalid user ID. |
+| `notInitialized` | `21`: SDK not initialized. |
+| `rtmServiceNotConnected` | `22`: RTM service not connected. |
+| `channelInstanceExceedLimitation` | `23`: Channel instance exceeds the limit. |
+| `operationRateExceedLimitation` | `24`: Operation frequency exceeds the limit. |
+| `channelInErrorState` | `25`: Channel in error state. |
+| `presenceNotConnected` | `26`: Presence service not connected. |
+| `sameUidLogin` | `27`: Login with the same user ID. |
+| `kickedOutByServer` | `28`: Kicked out by the server. |
+| `keepAliveTimeout` | `29`: Keepalive timeout. |
+| `connectionError` | `30`: Connection error. |
+| `presenceNotReady` | `31`: Presence service not ready. |
+| `networkChange` | `32`: Network changed. |
+| `serviceNotSupported` | `33`: Service not supported. |
+| `streamChannelNotAvailable` | `34`: Stream Channel not available. |
+| `storageNotAvailable` | `35`: Storage service not available. |
+| `lockNotAvailable` | `36`: Lock service not available. |
+| `loginTooFrequent` | `37`: The login operation is too frequent.|
+
+#### AgoraRtmProtocolType
+
+Protocol type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `tcpUdp` | `0`: Both TCP and UDP protocols. |
+| `tcpOnly` | `1`: Only TCP protocol. |
+
+#### AgoraRtmServiceType
+
+Service type
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `message` | The foundational services comprise the message channel, user channel, presence, storage, and lock services. |
+| `stream` | The stream channel service. |
+
+:::info[Information]
+To fully utilize all services offered by Signaling, you can employ bitwise operations to simultaneously configure two service types.
+:::
+
+#### AgoraRtmProxyType
+
+Proxy type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `none` | `0`: Do not enable the proxy. |
+| `http` | `1`: Enable the proxy for the HTTP protocol. |
+| `cloudTcp` | `2`: Enable the cloud proxy for the TCP protocol. |
+
+#### AgoraRtmStorageEventType
+
+Storage event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `snapshot` | `1`: When a user subscribes to channel metadata or user etadata for the first time, or joins a channel, the local user receives notifications of this type of event. |
+| `set` | `2`: Occurs when calling `setChannelMetadata` or `setUserMetadata`. Caution: This event only occurs in incremental data update mode. |
+| `update` | `3`: Occurs when calling methods to set, update, or delete the channel metadata or user metadata. |
+| `remove` | `4`: Occurs when calling `removeChannelMetadata` or `removeUserMetadata`. Caution: This event only occurs in incremental data update mode. |
+
+#### AgoraRtmStorageType
+
+Storage type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `user` | `1`: User metadata event. |
+| `channel` | `2`: Channel metadata event. |
+
+#### AgoraRtmSubscribeChannelFeature
+
+The event notification types set when subscribing to a channel. You can use bitwise operations to set multiple event notifications simultaneously.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `` | `0`: No event notifications |
+| `presence` | `1`: Sets the presence event notification. |
+| `metadata` | `1 &lt;&lt; 1`: Sets the storage event notification.|
+| `message` | `1 &lt;&lt; 2`: Sets the message event notification. |
+| `lock` | `1 &lt;&lt; 3`: Sets the lock event notification. |
+| `beQuiet` | `1 &lt;&lt; 4`: Sets the silent mode. In this mode, the SDK has the following behaviors:<br />- You can still receive other users' event notifications. <br />- Event notifications related to your channel activity such as subscribing or unsubscribing the channel, and actions related to setting, getting, or deleting temporary user states, can not be broadcasted to other users. <br />- When calling the `getOnlineUsers` method, your information can not be found. <br />- When calling the `getUserChannels` method, channels that you join in silent mode can not be detected. |
+
+#### AgoraRtmTopicEventType
+
+Topic event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `snapshot` | `1`: The snapshot of the topic when the user joined the channel. |
+| `remoteJoinTopic` | `2`: A remote user joined the channel. |
+| `remoteLeaveTopic` | `3`: A remote user left the channel. |
+
+## Troubleshooting
+
+Refer to the following information for troubleshooting API calls.
+
+#### ErrorInfo
+
+When calling the Signaling Swift API, if an error occurs, the SDK returns a value of type `AgoraRtmErrorInfo`:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | ------------------------------------- |
+| `errorCode` | `AgoraRtmErrorCode` | Error code for this operation. |
+| `reason` | String | Error reason for this operation. |
+| `operation` | String | Operation type. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+#### Error codes table
+
+Refer to the following error codes table to identify and troubleshoot the problem:
+
+| Error code| Error description| Cause and solution |
+| :------ | :---------------------- | :------------------------------------------------------------|
+| `0` | `ok` | Correct call |
+| `-10001` | `notInitialized` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `` method before performing other operations. |
+| `-10002` | `notLogin` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
+| `-10003` | `invalidAppId` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
+| `-10005` | `invalidToken` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |
+| `-10006` | `invalidUserId` | Invalid User ID: <br /> - Check if user ID is empty. <br /> - Check if the user ID contains illegal characters. |
+| `-10007` | `initServiceFailed` | SDK initialization failed. Please reinitialize by calling the `` method. |
+| `-10008` | `invalidChannelName` | Invalid channel name: <br /> - Check if the channel name is empty. <br /> - Check if the channel name contains illegal characters. |
+| `-10009` | `tokenExpired` | Token expired. Call `renewToken` to reacquire the Token. |
+| `-10010` | `loginNoServerResources` | Server resources are limited. It is recommended to log in again. |
+| `-10011` | `loginTimeout` | Login timeout. Check whether the current network is stable and switch to a stable network environment. |
+| `-10012` | `loginRejected` | SDK login rejected by the server: <br /> - Check tha Signaling is activated on your App ID. <br /> - Check if the token or `userId` is banned. |
+| `-10013` | `loginAborted` | SDK login interrupted due to unknown problem: <br /> - Check that the current network is stable and switch to a stable network environment. <br /> - The current `userId` is logged in. |
+| `-10014` | `invalidParameter` | Invalid parameter. Please check if the parameters you provided are correct. |
+| `-10015` | `loginNotAuthorized` | No RTM service permissions. Check that the console opens Signaling services. |
+| `-10016` | `loginInconsistentAppId` | Inconsistent App ID. Please check whether the App ID used for initialization, login, and joining a channel are consistent. |
+| `-10017` | `duplicateOperation` | Duplicate operation. |
+| `-10018` | `instanceAlreadyReleased` | Repeat `rtm` instantiation or `RTMStreamChannel` instantiation. |
+| `-10019` | `invalidChannelType` | Invalid channel type. The SDK only supports the following channel types. Please use the correct value: <br /> - `message`: Message Channel <br /> - `stream`: Stream Channel <br /> - `user`: User Channel |
+| `-10020` | `invalidEncryptionParameter` | Message encryption parameters are invalid. <br />- Check that the encryption key generated is a String. <br />- Check that the generated encryption salt is `Uint8Array` type and that the length is 32 bytes. <br />- Check that the encryption method matches the encryption key and the encryption salt. |
+| `-10021` | `operationRateExceedLimitation` | Channel metadata or User Metadata -related API call frequency is exceeding the limit. Please control the call frequency within 10/second. |
+| `-10022` | `serviceNotSupport` | The service type is not supported. Check whether the service type you set in `AgoraRtmServiceType` is correct. This error code is only applicable to the private deployment function. |
+| `-10023` | `loginCanceled` | The login operation has been canceled. Possible reasons are as follows: <br />- After calling the `login` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. <br />- Calling the `logout` method to log out before successfully logging in. |
+| `-10024` | `invalidPrivateConfig` | The private deployment parameter settings are invalid. Please check whether the service type and server address you set in `AgoraRtmPrivateConfig` are valid. |
+| `-10025` | `notConnected` | Not connected to the Signaling server. When you call APIs related to message subscription, metadata, or the Lock module, this error is reported if the Signaling service is not connected.|
+| `-10026` | `renewTokenTimeout` | Token renewal timed out. |
+| `-11001` | `channelNotJoined` | The user has not joined the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
+| `-11002` | `channelNotSubscribed` | The user has not subscribed to the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
+| `-11003` | `channelExceedTopicUserLimitation` | The number of subscribers to this topic exceeds the limit. |
+| `-11004` | `channelReused` | In co-channel mode, RTM released the Stream Channel. |
+| `-11005` | `channelInstanceExceedLimitation` | The number of created or subscribed channels exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-11006` | `channelInErrorState` | Channel is not available. Please recreate the Stream Channel or resubscribe to the Message Channel. |
+| `-11007` | `channelJoinFailed` | Failed to join this channel: <br /> - Check if the number of joined channels exceeds the limit. <br /> - Check if the channel name is illegal. <br /> - Check if the network is disconnected. |
+| `-11008` | `channelInvalidTopicName` | Invalid topic name: <br /> - Check whether the topic name contains illegal characters. <br /> - Check if the topic name is empty. |
+| `-11009` | `channelInvalidMessage` | Invalid message. Check whether the message type is legal, Signaling only supports `string`, `Uint8Array` type messages. |
+| `-11010` | `channelMessageLengthExceedLimitation` | Message length exceeded limit. Check if the message payload size exceeds the limit: <br /> - Message Channel single message package limit is 32 KB. <br /> - Stream Channel single message package limit is 1 KB. |
+| `-11011` | `channelInvalidUserList` | Invalid user list: <br /> - Check if the user list is empty. <br /> - Check if the user list contains invalid entries. |
+| `-11012` | `channelNotAvailable` | Invalid user list: <br /> - Check if the user list is empty<br /> - Check if the user list contains illegal items. |
+| `-11013` | `channelTopicNotSubscribed` | The topic is not subscribed. |
+| `-11014` | `channelExceedTopicLimitation` | The number of topics exceeds the limit. |
+| `-11015` | `channelJoinTopicFailed` | Failed to join this topic. Check whether the number of added topics exceeds the limit. |
+| `-11016` | `channelTopicNotJoined` | The topic has not been joined. To send a message, you need to join the Topic first. |
+| `-11017` | `channelTopicNotExist` | The topic does not exist. Check that the topic name is correct. |
+| `-11018` | `channelInvalidTopicMeta` | The `meta` parameters in the topic are invalid. Check if the `meta` parameter exceeds 256 bytes. |
+| `-11019` | `channelSubscribeTimeout` | Channel subscription timed out. Check for broken connections. |
+| `-11020` | `channelSubscribeTooFrequent` | The channel subscription operation is too frequent. Make sure that the subscription operation of the same channel within a 5 seconds interval does not exceed 2 attempts. |
+| `-11021` | `channelSubscribeFailed` | Channel subscription failed.11003 Check if the number of subscribed channels exceeds the limit. |
+| `-11022` | `channelUnsubscribeFailed` | Failed to unsubscribe from the channel. Check if the connection is disconnected. |
+| `-11023` | `channelEncryptMessageFailed` | Message encryption failed: <br /> - Check that the `cipherKey` is valid. <br /> - Check that the `salt` is valid. <br /> - Check if `encryptionMode` mode matches the `cipherKey` and `salt`. |
+| `-11024` | `channelPublishMessageFailed` | Message publishing failed. Check for broken connections. |
+| `-11026` | `channelPublishMessageTimeout` | Message publishing timed out. Check for broken connections. |
+| `-11027` | `channelNotConnected` | The SDK is disconnected from the Signaling server. Please log in again. |
+| `-11028` | `channelLeaveFailed` | Failed to leave the channel. Check for broken connections. |
+| `-11029` | `channelCustomTypeLengthOverflow` | Custom type length overflow. The length of the `customType` field must to be within 32 characters. |
+| `-11030` | `channelInvalidCustomType` | `customType` field is invalid. Check the `customType` field for illegal characters. |
+| `-11031` | `channelUnsupportedMessageType` | Message type is not supported. |
+| `-11032` | `channelPresenceNotReady` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
+| `-11033` | `channelReceiverOffline` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
+| `-11034` | `channelJoinCanceled` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-12001` | `storageOperationFailed` | Storage operation failed. |
+| `-12002` | `storageMetadataItemExceedLimitation` | The number of Storage Metadata Items exceeds the limit. |
+| `-12003` | `storageInvalidMetadataItem` | Invalid Metadata Item. |
+| `-12004` | `storageInvalidArgument` | Invalid argument. |
+| `-12005` | `storageInvalidRevision` | Invalid Revision parameter. |
+| `-12006` | `storageMetadataLengthOverflow` | Metadata overflows. |
+| `-12007` | `storageInvalidLockName` | Invalid Lock name. |
+| `-12008` | `storageLockNotAcquired` | The Lock was not acquired. |
+| `-12009` | `storageInvalidKey` | Invalid Metadata key. |
+| `-12010` | `storageInvalidValue` | Invalid metadata value. |
+| `-12011` | `storageKeyLengthOverflow` | Metadata key length overflow. |
+| `-12012` | `storageValueLengthOverflow` | Metadata value length overflow. |
+| `-12013` | `storageDuplicateKey` | Duplicate Metadata Item key. |
+| `-12014` | `storageOutdatedRevision` | Outdated Revision parameter. |
+| `-12015` | `storageNotSubscribe` | This channel is not subscribed. |
+| `-12016` | `storageInvalidMetadataInstance` | Metadata instance does not exist. Please create a Metadata instance. |
+| `-12017` | `storageSubscribeUserExceedLimitation` | The number of subscribers exceeds the limit. |
+| `-12018` | `storageOperationTimeout` | Storage operation timed out. |
+| `-12019` | `storageNotAvailable` | The Storage service is not available. |
+| `-13001` | `presenceNotConnected` | The user is not connected to the system. |
+| `-13002` | `presenceNotWritable` | Presence service is unavailable. |
+| `-13003` | `presenceInvalidArgument` | Invalid argument. |
+| `-13004` | `presenceCacheTooManyStates` | The temporary user state cached before joining the channel exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-13005` | `presenceStateCountOverflow` | The number of temporary user state key/value pairs exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-13006` | `presenceInvalidStateKey` | Invalid state key. |
+| `-13007` | `presenceInvalidStateValue` | Invalid state value. |
+| `-13008` | `presenceStateKeySizeOverflow` | Presence key length overflow. |
+| `-13009` | `presenceStateValueSizeOverflow` | Presence value overflow |
+| `-13010` | `presenceStateDuplicateKey` | Repeated state key. |
+| `-13011` | `presenceUserNotExist` | The user does not exist. |
+| `-13012` | `presenceOperationTimeout` | Presence operation timed out. |
+| `-13013` | `presenceOperationFailed` | Presence operation failed. |
+| `-14001` | `lockOperationFailed` | Lock operation failed. |
+| `-14002` | `lockOperationTimeout` | Lock operation timed out. |
+| `-14003` | `lockOperationPerforming` | Lock operation in progress. |
+| `-14004` | `lockAlreadyExist` | Lock already exists. |
+| `-14005` | `lockInvalidName` | Invalid Lock name. |
+| `-14006` | `lockNotAcquired` | The Lock was not acquired. |
+| `-14007` | `lockAcquireFailed` | Failed to acquire the Lock. |
+| `-14008` | `lockNotExist` | The Lock does not exist. |
+| `-14009` | `lockNotAvailable` | Lock service is not available. |

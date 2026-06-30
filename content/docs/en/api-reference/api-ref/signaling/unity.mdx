@@ -1,0 +1,3430 @@
+---
+title: Unity
+description: API reference for the Agora Signaling Unity SDK.
+---
+
+The Signaling SDK API reference is divided into the following sections:
+
+- [Setup](#setup)
+- [Channels](#channels)
+- [Topics](#topics)
+- [Messages](#messages)
+- [Presence](#presence)
+- [Storage](#storage)
+- [Lock](#lock)
+- [Enumerated types](#enumerated-types)
+- [Troubleshooting](#troubleshooting)
+
+## Setup
+
+The API reference for the Signaling SDK documents interface descriptions, methods, basic usage, and return values of the Signaling APIs.
+
+Before initializing the Signaling client instance, you need to import the Signaling SDK as follows:
+
+1. Download the latest Signaling Unity SDK.
+2. In Unity, click **Assets** &gt; **Import Package** &gt; **Custom Package** to import the SDK.
+3. In your script file, add the following to the list of namespace declarations:
+
+```csharp
+  using Agora.Rtm;
+```
+
+### CreateAgoraRtmClient
+
+#### Description
+
+Create and initialize the Signaling client instance. You need to provide `appId` and `userId` parameters, and you can get the App ID when you create an Agora project in the Agora Console.
+
+:::info[Information]
+<br />- Create and initialize the client instance before calling other Signaling APIs. <br />- To distinguish each user and device, you need to ensure that the `userId` parameter is globally unique, and remains the same for the lifetime of the user or device.
+:::
+
+#### Method
+
+Call the `CreateAgoraRtmClient` method as follows:
+
+```csharp
+IRtmClient CreateAgoraRtmClient(RtmConfig config);
+```
+
+| Properties | Type | Required | Default | Description |
+| :------------------------------------------------: | :-------------------------------------------------------: | :------: | :--------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `config` | `RtmConfig` | Required | - | Configuration parameters for initializing the Signaling client instance. See `RtmConfig`. |
+
+#### Basic usage
+
+```csharp
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation , e.Status.ErrorCode , e.Status.Reason));
+}
+```
+
+#### Return value
+
+The SDK returns the `IRtmClient` instance，for subsequent calls of other Signaling APIs.
+
+### RtmConfig
+
+#### Description
+
+Use the `RtmConfig` instance to set the configuration parameters of the Signaling client. These configuration parameters take effect throughout the lifecycle of the Signaling client and affect the behavior of the Signaling client.
+
+#### Method
+
+Create the `RtmConfig` instance as follows:
+
+```csharp
+new RtmConfig()
+```
+
+| Properties | Type | Required | Default | Description |
+| :------------------------------------------------: | :-------------------------------------------------------: | :------: | :--------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `appId` | string | Required | - | App ID obtained when creating a project in the Agora Console. |
+| `userId` | string | Required | - | User ID for identify a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
+| `areaCode` | `RTM_AREA_CODE` | Optional | `GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`RTM_AREA_CODE`](#enumvareacod-e). |
+| `presenceTimeout` | UInt32 | Optional | `300` | Presence timeout in seconds, and the value range is [10,300]. |
+| `useStringUserId` | Bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. The SDK automatically converts string-type user IDs to number-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123456"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
+| `logConfig` | `RtmLogConfig` | Optional | - | Log configuration properties such as the log storage size, storage path, and level. |
+| `eventListener` | `RtmEventListener` | Required | - | Signaling event notification listener settings. See [Event listeners](#event-listeners). |
+| `proxyConfig` | `RtmProxyConfig` | Optional | - | When using the Proxy feature of Signaling, you need to configure this parameter. |
+| `encryptionConfig` | `RtmEncryptionConfig` | Optional | - | When using the client-side encryption feature of Signaling, you need to configure this parameter. |
+
+##### RtmLogConfig
+
+Use the `RtmLogConfig` instance to configure and store local log files named `agora.log`. During the debugging phase, you can greatly improve efficiency by storing and tracking the running status of the app through logs. If you encounter complex problems and need Agora technical support to assist with the investigation, you need to provide the log information. The `RtmLogConfig` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:--------------:|:---------:|:--------:|:-------:| ----------------------------------------------------------------------------------------------------------------------- |
+| `filePath` | string | Optional | - | Log file storage paths. |
+| `fileSizeInKB` | uint | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
+| `level` | `RTM_LOG_LEVEL` | Optional | `INFO` | Output level of log information. See [`RTM_LOG_LEVEL`](#enumvlogleve-l). |
+
+##### RtmProxyConfig
+
+Use the `RtmProxyConfig` instance to set properties related to the client Proxy service. In some restricted network environments, you might need to use this feature.
+
+:::warning[Caution]
+You need to keep your Proxy username and password safe. The Signaling SDK does not parse, store, or forward your username and password in any way. In addition, if you modify the Proxy settings during the app running process, the settings will take effect only after restarting the Signaling client.
+:::
+
+The `RtmProxyConfig` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
+| `proxyType` | `RTM_PROXY_TYPE` | Optional | `NONE` | Proxy protocol type. See [`RTM_PROXY_TYPE`](#enumvproxytyp-e). |
+| `server` | string | Optional | - | Proxy server domain name or IP address. |
+| `port` | UInt16 | Optional | - | Proxy listening port. |
+| `account` | string | Optional | - | Proxy login account. |
+| `password` | string | Optional | - | Proxy login password. |
+
+##### RtmEncryptionConfig
+
+Use the `RtmEncryptionConfig` instance to set the properties required for the client-side encryption. After successfully setting encryption modes, encryption keys, and other related properties, the SDK automatically encrypts and decrypts all messages sent or all statuses set by the user on the client side.
+
+:::info[Information]
+Once you set the encryption feature, all users must use the same encryption mode and key, otherwise users cannot communicate with each other.
+:::
+
+The `RtmEncryptionConfig` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+|:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `encryptionMode` | `RTM_ENCRYPTION_MODE` | Optional | `NONE` | Encryption mode. See [`RTM_ENCRYPTION_MODE`](#enumvencryptionmod-e). |
+| `encryptionKey` | string | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
+| `encryptionKdfSalt` | byte[32] | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+
+#### Basic usage
+
+```csharp
+// Create an RtmConfig instance
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+
+// Create a LogConfig instance.
+LogConfig logConfig = new LogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set agore.log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+// initialize logconfig
+config.logConfig = logConfig;
+
+// Create an RtmProxyConfig instance.
+RtmProxyConfig proxyConfig = new RtmProxyConfig()
+// set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// set your Proxy Server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "Tony";
+// set your proxy password
+proxyConfig.password = "my_password"
+// initialize proxyConfig
+config.proxy = proxyConfig;
+
+// Create an RtmEncryptionConfig instance.
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig()
+// set encryption Mode as RTM_ENCRYPTION_MODE_AES_128_GCM.
+encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_128_GCM;
+// set your cipherKey, you must keep your cipherKey safety.
+encryptionConfig.encryptionKey = "your_cerpherKey";
+// set your Salt.
+encryptionConfig.encryptionKdfSalt = "yourSalt";
+// when you set the config.encryptionConfig  parameter. the end-to-end encryption will be turned on automatically
+config.encryptionConfig = encryptionConfig;
+
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation , e.Status.ErrorCode , e.Status.Reason));
+}
+
+```
+
+#### Return value
+
+The SDK returns the `RtmConfig` instance.
+
+### Event Listeners
+
+#### Description
+IRtmClient
+Signaling client instance
+
+Signaling has a total of 7 types of event notifications, as shown in the following table:
+
+| Event Type | Description |
+| :----------------: | -------------------------- |
+| `OnMessageEvent` | Receive message event notifications in subscribed message channels and subscribed topics. |
+| `OnPresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. |
+| `OnTopicEvent` | Receive all topic event notifications in joined stream channels. |
+| `OnStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
+| `OnLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. |
+| `OnConnectionStateChanged` | Receive event notifications when client connection status changes. For details, see [`RTM_CONNECTION_STATE`](#enumvconnectionstat-e) and [`RTM_CONNECTION_CHANGE_REASON`](#enumvconnectionreaso-n). |
+| `OnTokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
+
+#### Add event listeners
+
+You can add event listeners as follows:
+
+```csharp
+// add message event listener
+rtmClient.OnMessageEvent += ( MessageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var topic = event.channelTopic;
+    var publisher = event.publiser;
+    var messageType = event.messageType;
+    var message = event.message;
+    var customType = event.customType;
+    Debug.Log(string.Format("Received Message {0} from userId:{1} at channel:{2} with channel type of {3}. ", message, publisher , channelName, channelType));
+    if (message != null)
+    {
+        // your logic
+    }
+};
+
+// add presence event listener
+rtmClient.OnPresenceEvent += ( PresenceEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var publisher = event.publiser;
+    var stateItems = event.stateItems;
+    var interval = event.interval;
+    var snapshot = event.snapshot;
+    Debug.Log(string.Format("Received presence Event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
+}
+
+// add topic event listener
+rtmClient.OnTopicEvent += ( TopicEvent event ) =>
+{
+    var channelName = event.channelName;
+    var eventType = event.type;
+    var publisher = event.publisher;
+    var topicInfos = event.topicInfos;
+    Debug.Log(string.Format("Received topic event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
+    if (topicInfos != null)
+    {
+        // your logic
+    }
+}
+
+// add storage event listener
+rtmClient.OnStorageEvent += ( StorageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.eventType;
+    var category = event.target;
+    var data = event.data;
+    Debug.Log(string.Format("Received storage event {0} at channel:{1} with channel type of {2}. ", category , channelName, channelType));
+    if (data != null)
+    {
+        // your logic
+    }
+}
+
+// add lock event listener
+rtmClient.OnLockEvent += ( LockEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var LockDetail = event.lockDetailList;
+    Debug.Log(string.Format("Received lock event {0} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
+    if( LockDetail != null )
+    {
+        // your logic
+    }
+}
+
+// add OnConnectionStateChanged event listener
+rtmClient.OnConnectionStateChanged += ( string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason ) =>
+{
+    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason);
+}
+
+// add OnTokenPrivilegeWillExpire event listener
+rtmClient.OnTokenPrivilegeWillExpire += ( string channelName ) =>
+{
+    Debug.Log(string.Format("OnTokenPrivilegeWillExpire channelName {0}", channelName));
+}
+```
+
+Message event. `MessageEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `messageType` | `RTM_MESSAGE_TYPE` | Message types. See [`RTM_MESSAGE_TYPE`](#enumvmessagetyp-e). |
+| `channelName` | string | Channel name. |
+| `channelTopic` | string | Topic name. |
+| `message` | `IRtmMessage` | Message. |
+| `publisher` | string | User ID of the message publisher. |
+| `customType` | string | A user-defined field. Only supports string type. |
+
+##### PresenceEvent
+
+User presence event. `PresenceEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `type` | `RTM_PRESENCE_EVENT_TYPE` | Presence event type. See [`RTM_PRESENCE_EVENT_TYPE`](#enumvpresencetyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelName` | string | Channel name. |
+| `publisher` | string | User ID of the message publisher. |
+| `stateItems` | `StateItem[]` | Key-value pair that identifies the user's presence state. |
+| `interval` | `IntervalInfo` | In the Interval state, the aggregated incremental information of event notifications such as user joining, leaving, timeout, and status change in the previous period of the current channel. |
+| `snapshot` | `SnapshotInfo` | When the user first joins the channel, the server pushes the snapshot data of all users in the current channel and their statuses to the user. |
+
+`IntervalInfo` contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `joinUserList` | string[] | List of users who joined the channel in the previous cycle. |
+| `leaveUserList` | string[] | List of users who left the channel in the previous cycle. |
+| `timeoutUserList` | string[] | List of users who timed out joining the channel in the previous cycle. |
+| `userStateList` | `UserState[]` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+
+`SnapshotInfo` contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `userStateList` | `UserState[]` | Snapshot information of the user when first joining the channel, including user ID and key-value pairs of status. |
+
+##### TopicEvent
+
+Topic event.`TopicEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `type` | `RTM_TOPIC_EVENT_TYPE` | Topic event type. See [`RTM_TOPIC_EVENT_TYPE`](#enumvtopictyp-e). |
+| `channelName` | string | Channel name. |
+| `publisher` | string | User ID. |
+| `topicInfos` | `TopicInfo[]` | Topic information. |
+
+`TopicInfo` data type contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `topic` | string | Topic name. |
+| `publishers` | `PublisherInfo[]` | Message publisher array. |
+
+`PublisherInfo[]` data type contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `publisherUserId` | string | User ID of the message publisher. |
+| `publisherMeta` | string | Metadata of the message publisher. |
+
+##### StorageEvent
+
+Storage event.`StorageEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `storageType` | `RTM_STORAGE_TYPE` | Storage type. See [`RTM_STORAGE_TYPE`](#enumvstoragetyp-e). |
+| `eventType` | `RTM_STORAGE_EVENT_TYPE` | Storage event type. See [`RTM_STORAGE_EVENT_TYPE`](#enumvstorageeventtyp-e). |
+| `target` | string | User ID or channel name. |
+| `data` | `RtmMetadata` | Metadata item. |
+
+##### LockEvent
+
+Lock event. `LockEvent` contains the following properties:
+
+| Properties | Type | Description |
+|:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `eventType` | `RTM_LOCK_EVENT_TYPE` | Lock event type. See [`RTM_LOCK_EVENT_TYPE`](#enumvlocktyp-e). |
+| `channelName` | string | Channel name. |
+| `lockDetailList` | `LockDetail[]` | Details of lock. |
+
+The `LockDetail` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `lockName` | string | Lock name. |
+| `owner` | string | The ID of the user who has a lock. |
+| `ttl` | uint | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+
+#### Remove event listeners
+
+If you no longer need to use event notifications, to avoid memory leaks, errors or anomalies, Agora recommends removing event listeners.
+
+```csharp
+private void AddEventsListener()
+{
+    rtmClient.OnMessageEvent += OnMessageEvent;
+    rtmClient.OnPresenceEvent += OnPresenceEvent;
+    rtmClient.OnTopicEvent += OnTopicEvent;
+    rtmClient.OnStorageEvent += OnStorageEvent;
+    rtmClient.OnLockEvent += OnLockEvent;
+    rtmClient.OnConnectionStateChanged += OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire += OnTokenPrivilegeWillExpire;
+}
+
+private void RemoveEventsListener()
+{
+    rtmClient.OnMessageEvent -= OnMessageEvent;
+    rtmClient.OnPresenceEvent -= OnPresenceEvent;
+    rtmClient.OnTopicEvent -= OnTopicEvent;
+    rtmClient.OnStorageEvent -= OnStorageEvent;
+    rtmClient.OnLockEvent -= OnLockEvent;
+    rtmClient.OnConnectionStateChanged -= OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire -= OnTokenPrivilegeWillExpire;
+}
+
+private void OnMessageEvent( MessageEvent Event)
+{
+    // your logic
+ };
+
+private void OnPresenceEvent( PresenceEvent Event)
+{
+    // your logic
+};
+
+private void OnTopicEvent( TopicEvent Event)
+{
+    // your logic
+};
+
+...
+```
+
+### LoginAsync
+
+#### Description
+
+After creating and initializing the Signaling instance, you need to perform the `LoginAsync` operation to log in to the Signaling service. After successful login, the client establishes a long connection with the Signaling server, and then the SDK allows the client to access Signaling resources.
+
+:::info[Information]
+After the user successfully logs in to the Signaling service, the PCU of the application increases, which affects your billing data.
+:::
+
+#### Method
+
+You can log in to the Signaling system as follows:
+
+```csharp
+RtmResult<LoginResult> LoginAsync(string token);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :--------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `token` | string | Required | - | Dynamic keys are generally generated by the user's token server. |
+
+#### Basic usage
+
+```csharp
+var ( status,response ) = await rtmClient.LoginAsync(token);
+if (status.Error)
+{
+   Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation , status.ErrorCode , status.Reason));
+}
+else
+{
+   Debug.Log("Login Successfully")
+}
+```
+
+#### Return value
+
+This operation returns the `RtmResult&lt;LoginResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------: | :-----------------: | :----------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state.|
+| `Response` | `LoginResult` | After the operation succeeds, this property returns a `LoginResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### LogoutAsync
+
+#### Description
+
+When you no longer need to operate, you can log out of the system. This operation affects the PCU item in your billing data.
+
+#### Method
+
+You can log out as follows:
+
+```csharp
+RtmResult<LogoutResult> LogoutAsync();
+```
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.LogoutAsync();
+```
+
+#### Return value
+
+This operation returns the `RtmStatus` data type, including the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### ReleaseLockAsync
+
+#### Description
+
+Once you no longer need the Signaling service, it is best to destroy the `IRtmClient` instance. Doing so protects you from the performance degradation caused by memory leaks, errors, and exceptions.
+
+#### Method
+
+You can destroy the `IRtmClient` instance as follows:
+
+```csharp
+RtmStatus Dispose();
+```
+
+#### Basic usage
+
+```csharp
+var status = Dispose();
+```
+
+#### Return value
+
+This operation returns the `RtmStatus` data type, including the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+## Channels
+
+Signaling provides a highly efficient channel management mechanism for data transmission. Any user who subscribes or joins a channel can receive messages and events transmitted within 100 milliseconds. Signaling allows clients to subscribe to hundreds or even thousands of channels. Most Signaling APIs perform actions such as sending, receiving, and encrypting based on channels.
+
+Based on capabilities of Agora, Signaling channels are divided into two types to match different application use-cases:
+
+- Message Channel: Follows the industry-standard Pub/Sub (publish/subscribe) mode. You can send and receive messages within the channel by subscribing to a channel, and do not need to create the channel in advance. There is no limit to the number of publishers and subscribers in a channel.
+- Stream Channel: Follows a concept similar to the observer pattern in the industry, where users need to create and join a channel before sending and receiving messages. You can create different topics in the channel, and messages are organized and managed through topics.
+
+IRtmClient
+Signaling client instance
+### SubscribeTopicAsync
+
+#### Description
+
+Signaling provides event notification capabilities for messages and states. By listening for callbacks, you can receive messages and events within subscribed channels. For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
+
+By calling the `SubscribeTopicAsync` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `REMOTE_JOIN` type of the `OnPresenceEvent` event. See [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the message channel.
+:::
+
+#### Method
+
+You can call the `SubscribeTopicAsync` method as follows:
+
+```csharp
+RtmResult<SubscribeResult> SubscribeAsync(string channelName, SubscribeOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :--------------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `SubscribeOptions` | `SubscribeOptions` | Required | - | Options for subscribing to a channel. |
+
+`SubscribeOptions` contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :----: | ------------------------------------ |
+| `withMessage` | bool | Optional | `true` | Whether to subscribe to message event notifications in the channel. |
+| `withPresence` | bool | Optional | `true` | Whether to subscribe to presence event notifications in the channel. |
+| `withMetadata` | bool | Optional | `false` | Whether to subscribe to storage event notifications in the channel. |
+| `withLock` | bool | Optional | `false` | Whether to subscribe to lock event notifications in the channel. |
+
+#### Basic usage
+
+```csharp
+var options = new SubscribeOptions();
+options.withMessage = true;
+options.withPresence = true;
+var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Subscribe channel success! at Channel:{0}", response.ChannelName));
+}
+```
+
+#### Return value
+
+The `SubscribeTopicAsync` operation returns a `RtmResult&lt;SubscribeTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------ | :----: | :------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `SubscribeTopicResult` | After the operation succeeds, this property returns a `SubscribeTopicResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `SubscribeTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------ | :----: | :------------------------- |
+| `ChannelName` | string | The name of a message channel. |
+
+### UnsubscribeTopicAsync
+
+#### Description
+
+If you no longer need to subscribe to a channel, you can call the `UnsubscribeTopicAsync` method to unsubscribe from the channel. After successfully calling this method, users who subscribe to the channel and enable event listeners can receive the `REMOTE_LEAVE` type of the `OnPresenceEvent` event notification. See [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the message channel.
+:::
+
+#### Method
+
+You can call the `UnsubscribeTopicAsync` method as follows:
+
+```csharp
+RtmResult<UnsubscribeResult> UnsubscribeAsync(string channelName);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :--------------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.UnsubscribeAsync(channelName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+#### Return value
+
+The `UnsubscribeTopicAsync` operation returns a `RtmResult&lt;UnsubscribeTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------ | :----: | :------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `UnsubscribeTopicResult` | After the operation succeeds, this property returns a `UnsubscribeTopicResult` data type. Currently, this data type does not contain any data, you can ignore this property. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### CreateAgoraRtmClient
+
+#### Description
+
+Before using a stream channel, you need to call the `CreateAgoraRtmClient` method to create an `IStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+You can call the `CreateAgoraRtmClient` method as follows:
+
+```csharp
+IStreamChannel CreateStreamChannel(string channelName);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :--------------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+
+#### Basic usage
+
+```csharp
+try
+{
+    IStreamChannel streamChannel = rtmClient.CreateStreamChannel("Chat_room");
+}
+catch(RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation , e.Status.ErrorCode , e.Status.Reason));
+}
+```
+
+#### Return value
+
+Returns an `IStreamChannel` instance.
+
+IStreamChannel
+Stream channel instance
+### JoinTopicAsync
+
+#### Description
+
+After successfully creating a stream channel, you can call the `JoinTopicAsync` method to join the stream channel. Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and add event listeners can receive the following event notifications:
+
+- For the local user:
+   - The `SNAPSHOT` type of the `OnPresenceEvent` event.
+   - The `SNAPSHOT` type of the `OnTopicEvent` event.
+- For remote users: The `REMOTE_JOIN` type of the `OnPresenceEvent` event.
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+You can call the `JoinTopicAsync` method as follows:
+
+```csharp
+RtmResult<JoinResult> JoinAsync(JoinChannelOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :----------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options` | `JoinChannelOptions` | Required | - | Options for joining a channel. |
+
+The `JoinChannelOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :----: | ------------------------------------------------------ |
+| `token` | String | Required | - | The token used for joining a stream channel, which is currently the same as the RTC token. |
+| `withMetadata` | bool | Optional | `false` | Whether to subscribe to storage event notifications in the channel. |
+| `withPresence` | bool | Optional | `true` | Whether to subscribe to presence event notifications in the channel. |
+| `withLock` | bool | Optional | `false` | Whether to subscribe to lock event notifications in the channel. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await streamChannel.JoinAsync(options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+#### Return value
+
+The `JoinTopicAsync` operation returns a `RtmResult&lt;JoinTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------: | :-----------------: | :----------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `JoinTopicResult` | After the operation succeeds, this property returns a `JoinTopicResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `JoinTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------ | :----: | :------------------------- |
+| `ChannelName` | string | Name of a message channel. |
+| `UserId` | string | User ID. |
+
+### LeaveTopicAsync
+
+#### Description
+
+If you no longer need to stay in a channel, you can call the `LeaveTopicAsync` method to leave the channel. After leaving the channel, you can no longer receive any messages, states, or event notifications from this channel. At the same time, you can no loger be the topic publisher or subscriber of all topics. If you want to restore your previous publisher role and subscribing relationship, you need to call `JoinTopicAsync`, `JoinTopicAsync` and `SubscribeTopicAsync` methods in order.
+
+After successfully leaving the channel, remote users in the channel can receive the `REMOTE_LEAVE` type of the `OnPresenceEvent` event notification. For details, see [Event Listeners](#event-listeners).
+
+:::info[Information]
+This method only applies to the stream channel.
+:::
+
+#### Method
+
+You can call the `LeaveTopicAsync` method as follows:
+
+```csharp
+RtmResult<LeaveResult> LeaveAsync();
+```
+
+#### Basic usage
+
+```csharp
+var (status,response) = await streamChannel.LeaveAsync();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+#### Return value
+
+The `LeaveTopicAsync` operation returns a `RtmResult&lt;LeaveTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------: | :-----------------: | :----------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state.|
+| `Response` | `LeaveTopicResult` | After the operation succeeds, this property returns a `LeaveTopicResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `LeaveTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----: | :------------------------- |
+| `ChannelName` | string | Name of a message channel. |
+| `UserId` | string | User ID. |
+
+### ReleaseLockAsync
+
+#### Description
+
+If you no longer need a channel, you can call the `ReleaseLockAsync` method to destroy the corresponding stream channel instance and release resources. Calling the `ReleaseLockAsync` method does not destroy the stream channel, and it can be re-joined later by calling `CreateAgoraRtmClient` and `JoinTopicAsync` again.
+
+:::info[Information]
+This method only applies to the stream channel. If you don't call `LeaveTopicAsync` to leave the channel before directly calling `ReleaseLockAsync` to destroy the stream channel instance, the SDK automatically calls the `LeaveTopicAsync` and triggers the corresponding event.
+:::
+
+#### Method
+
+You can call the `ReleaseLockAsync` method as follows:
+
+```csharp
+RtmStatus Dispose();
+```
+
+#### Basic usage
+
+```csharp
+var status = streamChannel.Dispose();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Dispose Channel Success!");
+}
+```
+
+#### Return value
+
+This operation returns the `RtmStatus` data type.
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+## Topics
+
+Topic is a data stream management mechanism in stream channels. Users can use topics to subscribe to and distribute data streams, as well as notify events in data streams in stream channels.
+
+:::info[Information]
+Topics only exist in stream channels. Therefore, before using relevant features, you need to create the `IStreamChannel` instance.
+:::
+
+IStreamChannel
+Stream channel instance
+### JoinTopicAsync
+
+#### Description
+
+The purpose of joining a topic is to register as one of the message publishers for the topic, so that the user can send messages in the topic. This operation does not affect whether or not the user becomes a subscriber to the topic.
+
+:::info[Information]
+- Currently, Signaling supports a single client joining up to 8 topics in the same stream channel at a time.
+- Before joining a topic, a user needs to create the `IStreamChannel` instance and call the `JoinTopicAsync` method to join the channel.
+:::
+
+After successfully joining a topic, users who subscribe to that topic and add event listeners can receive the `REMOTE_JOIN` type of the `OnTopicEvent` event notification. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `JoinTopicAsync` method as follows:
+
+```csharp
+RtmResult<JoinTopicResult> JoinTopicAsync(string topic, JoinTopicOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------- |
+| `topic` | string | Required | - | Topic name. |
+| `options` | `JoinTopicOptions` | Required | - | Options for joining a topic. |
+
+The `JoinTopicOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-------------: | :------------------------------------------------------: | :------: | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `qos` | `RTM_MESSAGE_QOS` | Optional | `UNORDERED` | Whether the data transmitted in the topic is ordered. See [`RTM_MESSAGE_QOS`](#enumvmessageqo-s). |
+| `priority` | `RTM_MESSAGE_PRIORITY` | Optional | `NORMAL` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RTM_MESSAGE_PRIORITY`](#enumvmessagepriorit-y). |
+| `meta` | string | Optional | - | Adds additional metadata when joining the topic. |
+| `syncWithMedia` | bool | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
+
+#### Basic usage
+
+```csharp
+var options = new JoinTopicOptions();
+options.qos = RTM_MESSAGE_QOS.ORDERED;
+
+var (status,response) = await streamChannel.JoinTopicAsync(topic, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+#### Return value
+
+The `JoinTopicAsync` operation returns a `RtmResult&lt;JoinTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `JoinTopicResult` | After the operation succeeds, this property returns a `JoinTopicResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `JoinTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----: | :----------------------- |
+| `ChannelName` | string | Channel name. |
+| `UserId` | string | User ID. |
+| `Topic` | string | Topic name. |
+| `Meta` | string | Additional information of this operation. |
+
+### PublishTopicMessageAsync
+
+#### Description
+
+Use the `PublishTopicMessageAsync` method to send messages to a topic. Users who have subscribed to the topic and the message publisher in the channel can receive the message within 100 milliseconds. Before calling the `PublishTopicMessageAsync` method, users need to join the stream channel, and then register as a message publisher for that topic by calling the `JoinTopicAsync` method.
+
+The messages sent by users are encrypted with TLS during transmission, and data link encryption is enabled by default and cannot be disabled. To achieve a higher level of data security, users can also enable client encryption during initialization. For details, see [Setup](#setup).
+
+#### Method
+
+You can call the `PublishTopicMessageAsync`[1/2] and `PublishTopicMessageAsync`[2/2] method as follows:
+
+```csharp
+// PublishTopicMessageAsync[1/2]
+RtmResult<PublishTopicMessageResult> PublishTopicMessageAsync(string topic, byte[] message, TopicMessageOptions option);
+```
+
+```csharp
+// PublishTopicMessageAsync[2/2]
+RtmResult<PublishTopicMessageResult> PublishTopicMessageAsync(string topic, string message, TopicMessageOptions option);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `topic` | string | Required | - | Topic name. |
+| `message` | string\byte[] | Required | - | Message payload. You need to fill in string messages in the `PublishTopicMessageAsync`[1/2] method, and binary messages in the `PublishTopicMessageAsync`[2/2] method. |
+| `options` | `TopicMessageOptions` | Optional | - | Message options. |
+
+The `TopicMessageOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :----------: | :----: | :------: | :----: | ------------------------------------------------ |
+| `sendTs` | UInt64 | Optional | `0` | The timestamp when the SDK sends a message. This parameter is only valid when you set `syncWithMedia = true` in the `JoinTopicAsync` method. The SDK synchronizes data with RTC audio and video streams based on this timestamp. |
+| `customType` | string | Optional | `null` | A user-defined field. Only supports string type. |
+
+#### Basic usage
+
+```csharp
+var message = "Hello World";
+var topic = "Motion";
+var options = new TopicMessageOptions();
+options.customType = "PlainText";
+var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+
+```
+
+#### Return value
+
+The `PublishTopicMessageAsync` operation returns a `RtmResult&lt;PublishTopicMessageResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :---------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `PublishTopicMessageResult` | After the operation succeeds, this property returns a `PublishTopicMessageResult` data type. Currently, this data type does not contain any data, you can ignore this property. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### LeaveTopicAsync
+
+#### Description
+
+When you no longer need to publish messages to a topic, to release resources, you can call the `LeaveTopicAsync` method to unregister as a message publisher for that topic. This method does not affect whether or not you subscribe to that topic or any other operations performed by other users on that topic.
+
+After successfully calling this method, users who subscribe to the channel and enable event listeners can receive the `REMOTE_LEAVE` type of the `OnTopicEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `LeaveTopicAsync` method as follows:
+
+```csharp
+RtmResult<LeaveTopicResult> LeaveTopicAsync(string topic);
+```
+ Parameters | Type | Required | Default | Description |
+| :--------------: | :--------------------: | :------: | :----: | -------------------------------------------------------------------------------------------------- |
+| `topic` | string | Required | - | Topic name. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await streamChannel.LeaveTopicAsync("Motion");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+}
+
+```
+
+#### Return value
+
+The `LeaveTopicAsync` operation returns a `RtmResult&lt;LeaveTopicResult&gt;` data type, including the following properties:
+
+ Parameters | Type | Description |
+| :--------: | :-------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `LeaveTopicResult` | After the operation succeeds, this property returns a `LeaveTopicResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `LeaveTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----: | :----------------------- |
+| `ChannelName` | string | Channel name. |
+| `UserId` | string | User ID. |
+| `Topic` | string | Topic name. |
+| `Meta` | string | Additional information of this operation. |
+
+### SubscribeTopicAsync
+
+#### Description
+
+After joining the channel, you can call the `SubscribeTopicAsync` method to subscribe to the message publisher of the topic in the channel.
+
+`SubscribeTopicAsync` is an incremental method. For example, if you call this method for the first time with a subscribing list of `[UserA, UserB]`, and then call it again with a subscribing list of `[UserB, UserC]`, the final successful subscribing result is `[UserA, UserB, UserC]`.
+
+A user can subscribe to a maximum of 50 topics in each channel, and a maximum of 64 message publishers in each topic. See [API usage restrictions](./reference/limitations).
+
+#### Method
+
+You can call the `SubscribeTopicAsync` method as follows:
+
+```csharp
+RtmResult<SubscribeTopicResult> SubscribeTopicAsync(string topic, TopicOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `topic` | string | Required | - | Topic name. |
+| `options` | `TopicOptions` | Optional | - | Options for subscribing to a topic. |
+
+The `TopicOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----: | :-----------------: | :------: | :----: | ----------------------------------------------------------------------------------------------- |
+| `users` | string[] | Optional | - | A list of `UserId` of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
+
+#### Basic usage
+
+```csharp
+List<string> userList = new List<string>();
+userList.Add("Tony");
+userList.Add("Marry");
+
+var options = new TopicOptions();
+options.users = userList.ToArray();
+
+var (status,response) = await streamChannel.SubscribeTopicAsync(subtopic, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+#### Return value
+
+The `SubscribeTopicAsync` operation returns a `RtmResult&lt;SubscribeTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-----------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------ |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `SubscribeTopicResult` | After the operation succeeds, this property returns a `SubscribeTopicResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `SubscribeTopicResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----: | :----------------------- |
+| `ChannelName` | string | Channel name. |
+| `UserId` | string | User ID. |
+| `Topic` | string | Topic name. |
+| `SucceedUsers` | `string[]` | A list of successfully subscribed users. |
+| `FailedUsers` | `string[]` | A list of users that the SDK fails to subscribe to. |
+
+### UnsubscribeTopicAsync
+
+#### Description
+
+If you are no longer interested in a specified topic, or no longer need to subscribe to one or more message publishers in the topic, you can call the `UnsubscribeTopicAsync` method to unsubscribe from the topic or the specified message publishers in the topic.
+
+#### Method
+
+You can call the `UnsubscribeTopicAsync` method as follows:
+
+```csharp
+RtmResult<UnsubscribeTopicResult> UnsubscribeTopicAsync(string topic, TopicOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `topic` | string | Required | - | Topic name. |
+| `options` | `TopicOptions` | Optional | - | Options for unsubscribing from a topic. |
+
+The `TopicOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----: | :-----------------: | :------: | :----: | ----------------------------------------------------------------------------------------------- |
+| `users` | string[] | Optional | - | A list of `UserId` of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users by default. |
+
+#### Basic usage
+
+```csharp
+List<string> userList = new List<string>();
+userList.Add("Tony");
+userList.Add("Marry");
+
+var options = new TopicOptions();
+topicOptions.users = userList.ToArray();
+
+var (status,response) = await streamChannel.UnsubscribeTopicAsync(subtopic, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+#### Return value
+
+The `UnsubscribeTopicAsync` operation returns a `RtmResult&lt;UnsubscribeTopicResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, which contains the operation of the state. |
+| `Response` | `UnsubscribeTopicResult` | After the operation succeeds, this property returns a `UnsubscribeTopicResult` data type. Currently, this data type does not contain any data, you can ignore this property. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+## Messages
+
+Sending and receiving messages is the most basic function of the Signaling service. Any message sent by the Signaling server can be delivered to any online subscribing user within 100 ms. Depending on your business requirements, you can send messages to one user only or broadcast messages to multiple users.
+
+Signaling offers two types of channels: message channels and stream channels. These channel types have the following differences in how messages are transmitted and methods are called:
+- Message Channel: The real-time channel. Messages are transmitted through the channel, and the channel is highly scalable. Local users can call the `PublishTopicMessageAsync` method to send messages in the channel, and remote users can call the `SubscribeTopicAsync` method to subscribe to the channel and receive messages.
+- Stream Channel: The streaming transmission channel. Messages are transmitted through the topic. Users need to join a channel first, and then join a topic. Local users can call the `PublishTopicMessageAsync` method to send messages in the topic, and remote users can call the `SubscribeTopicAsync` method to subscribe to the topic and receive messages.
+
+This page introduces how to send and receive messages in a Message Channel.
+
+IRtmClient
+Signaling client instance
+### PublishTopicMessageAsync
+
+#### Description
+
+You can directly call the `PublishTopicMessageAsync` method to send messages to all online users subscribed to this channel. Even if you do not subscribe to the channel, you can still send messages in the channel.
+
+:::info[Information]
+The following practices can effectively improve the reliability of message transmission:<br />- The message payload should be within 32 KB; otherwise, the sending will fail. <br />- The upper limit of the rate at which messages are sent to a single channel is 60 QPS. If the sending rate exceeds the limit, some messages will be discarded. A lower rate is better, as long as the requirements are met.
+:::
+
+After successfully calling this method, the SDK triggers a `OnMessageEvent` event notification. Users who subscribe to the channel and enabled the event listener can receive this event notification. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `PublishTopicMessageAsync` [1/2] and `PublishTopicMessageAsync` [2/2] methods as follows:
+
+```csharp
+// PublishAsync[1/2]
+RtmResult<PublishResult> PublishAsync(string channelName, byte[] message, PublishOptions option);
+```
+
+```csharp
+// PublishAsync[2/2]
+RtmResult<PublishResult> PublishAsync(string channelName, string message, PublishOptions option);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. You can only send messages to one channel at a time. |
+| `message` | string\byte[] | Required | - | Message payload. You need to fill in string messages in the `PublishTopicMessageAsync`[1/2] method, and binary messages in the `PublishTopicMessageAsync`[2/2] method. |
+| `options` | `TopicMessageOptions` | Required | - | Message options. |
+
+The `TopicMessageOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :----------: | :----: | :------: | :----: | ------------------------------------------------ |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `customType` | string | Optional | - | A user-defined field. Only supports string type. |
+
+#### Basic usage
+
+```csharp
+var message = "Hello World";
+var channelName = "my_channel";
+var options = new PublishOptions();
+options.customType = "PlainText";
+
+var (status,response) = await rtmClient.PublishAsync(channelName, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Publish Message Success!");
+}
+```
+
+#### Return value
+
+The `PublishTopicMessageAsync` operation returns a `RtmResult&lt;PublishTopicMessageResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-----------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------ |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `PublishTopicMessageResult` | After the operation succeeds, this property returns a `PublishTopicMessageResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `PublishTopicMessageResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+
+### Receive
+
+Signaling provides event notifications for messages, states, and event changes. By listening for callbacks, you can receive messages and events within subscribed channels.
+
+For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
+
+## Presence
+
+The presence feature provides the ability to monitor user online, offline, and user historical state change. With the Presence feature, you can get real-time access to the following information:
+
+- Real-time event notification when a user joins or leaves a specified channel.
+- Real-time event notification when the custom temporary user state changes.
+- Query which channels a specified user has joined or subscribed to.
+- Query which users have joined a specified channel and their temporary user state data.
+
+:::info[Information]
+Presence applies to both message channels and stream channels.
+:::
+
+IRtmClient
+Signaling client instance
+
+### WhoNowAsync
+
+#### Description
+
+By calling the `WhoNowAsync` method, you can query real-time information about the number of online users, the list of online users, and the temporary state of online users in a specified channel.
+
+#### Method
+
+You can call the `WhoNowAsync` method as follows:
+
+```csharp
+RtmResult<GetOnlineUsersResult> rtmClient.GetPresence().GetOnlineUsersAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    PresenceOptions options
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. If you do not fill in the parameter, the `WhoNowAsync` method returns in all online users information in the channel which is accordance with the `RTM_CHANNEL_TYPE` conditions. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `options` | `PresenceOptions` | Required | - | Query options. |
+
+The `PresenceOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :--------------: | :-----: | :------: | :-----: | ------------------------------------------------------------------------------------- |
+| `includeUserId` | bool | Optional | `true` | Whether the returned result includes the user ID of online members. |
+| `includeState` | bool | Optional | `false` | Whether the returned result includes temporary state data of online users. |
+| `page` | string | Optional | - | Page number of the returned result. If you do not provide this property, the SDK returns the first page by default. You can check whether there is next page in the returned result. |
+
+#### Basic usage
+```csharp
+var options = new PresenceOptions();
+options.withState = true;
+
+var (status,response) = await rtmClient.GetPresence().GetOnlineUsersAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
+if (result.Status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("You have got {0} users information ", response.TotalOccupancy));
+    if (response.NextPage != null)
+    {
+        Debug.Log("you have the next page information waiting for read!");
+    }
+}
+```
+
+#### Return value
+
+The `WhoNowAsync` operation returns a `RtmResult&lt;WhoNowResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-----------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `WhoNowResult` | After the operation succeeds, this property returns a `WhoNowResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `WhoNowResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :---------------: | :--------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NextPage` | string | Page number of the next page. Confirm whether there is a next page:<br />- A null value indicates that next page does not exist.<br />- A non-null value indicates that there is a next page. You can fill this value in the `page` property of the `WhoNowAsync` method to query the next page results. |
+| `UserStateList` | `UserState[]` | List of online users and their temporary state information in a specified channel. |
+| `TotalOccupancy` | int | The list length of `UserStateList`. When you set both `includeUserId` and `includeState` properties in the `GetOnlineUsersOptions` data type to `false`, this value represents the total number of current online users in the channel. |
+
+The `UserState[]` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-------: | :-----------: | :------------------- |
+| `states` | `StateItem[]` | User temporary state information. |
+| `userId` | string | User ID. |
+
+`StateItem` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `key` | string | Key of the user state. If the specified key already exists, the SDK overwrites the value; if the specified key does not exist, the SDK creates the key-value pair. |
+| `value` | string | Value of the user state. |
+
+### WhereNowAsync
+
+#### Description
+
+In use-cases such as statistic analytics and debugging, you may need to know all the channels that a specified user has subscribed to or joined. Call the `WhereNowAsync` method to get the list of channels where the specified user is in real time.
+
+#### Method
+
+You can call the `WhereNowAsync` method as follows:
+
+```csharp
+RtmResult<GetUserChannelsResult> rtmClient.GetPresence().GetUserChannelsAsync(string userId);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Required | User ID of the current user | User ID |
+
+#### Basic usage
+
+```csharp
+var (status,respones) = await rtmClient.GetPresence().GetUserChannelsAsync("Tony");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User Tony is now in {0} channels ", response.Channels.Length));
+    if (response.Channels.Length > 0)
+    {
+        for (int i = 0; i < response.Channels.Length; i++)
+        {
+            var channelInfo = response.Channels[i];
+            string infor = string.Format("Tony is in channelName:{0}, channelType:{1}", channelInfo.channelName, channelInfo.channelType);
+            Debug.Log(infor);
+        }
+    }
+}
+```
+
+#### Return value
+
+The `WhereNowAsync` operation returns a `RtmResult&lt;WhereNowResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `WhereNowResult` | After the operation succeeds, this property returns a `WhereNowResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `WhereNowResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------- | :----------------------: | ------------------------------------------------ |
+| `Channels` | `ChannelInfo[]` | List of channel information, including channel name and channel type. |
+
+The `ChannelInfo` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------: | :-------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+### SetStateAsync
+
+#### Description
+
+To meet different requirements in different business use-cases for setting user states, Signaling provides the `SetStateAsync` method to customize the temporary user state. Users can add custom states such as scores, game state, location, mood, and hosting state for themselves.
+
+After successful setup, as long as the user keeps subscribing to the channel and stays online, the custom states can persist in the channel. `SetStateAsync` method sets the temporary user state, and the state disappears when the user leaves the channel or disconnects from Signaling. If you need to restore user states when rejoining a channel or reconnecting, you need to cache the data locally in real time. If you want to permanently save user states, Agora recommends you use the `SetUserMetadataAsync` method of the storage function instead.
+
+If a user modifies the temporary user state, Signaling triggers the `REMOTE_STATE_CHANGED` type of the `OnPresenceEvent` event in real time. You can receive the event by subscribing to the channel and configuring the corresponding property.
+
+#### Method
+
+You can call the `SetStateAsync` method as follows:
+
+```csharp
+RtmResult<SetStateResult> rtmClient.GetPresence().SetStateAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    StateItem[] items
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `items` | `StateItem[]` | Required | - | User state, an array of `StateItem`. |
+
+`StateItem` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `key` | string | Key of the user state. If the specified key already exists, the SDK overwrites the value; if the specified key does not exist, the SDK creates the key-value pair. |
+| `value` | string | Value of the user state. |
+
+#### Basic usage
+
+```csharp
+var stateItems = new StateItem[1];
+stateItems[0] = new StateItem("state", "Online");
+var (status,response) = await rtmClient.GetPresence().SetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, stateItems);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Set State Success!");
+}
+```
+
+#### Return value
+
+The `SetStateAsync` operation returns a `RtmResult&lt;SetStateResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `SetStateResult` | After the operation succeeds, this property returns a `SetStateResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### GetStateAsync
+
+#### Description
+
+To get the temporary user state of a specified user in the channel, you can use the `GetStateAsync` method.
+
+#### Method
+
+You can call the `GetStateAsync` method as follows:
+
+```csharp
+RtmResult<GetStateResult> rtmClient.GetPresence().GetStateAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string userId
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Required | User ID of the current user | User ID. |
+| `channelName` | string | Required | - | Channel name. If you do not fill in the parameter, the `WhoNowAsync` method returns in all online users information in the channel which is accordance with the `RTM_CHANNEL_TYPE` conditions. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetPresence().GetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, userId);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0}, have stateCount:{1} states",response.State.userId, response.State.states.Length));
+}
+```
+
+#### Return value
+
+The `GetStateAsync` operation returns a `RtmResult&lt;GetStateResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `GetStateResult` | After the operation succeeds, this property returns a `GetStateResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `GetStateResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------ | :---------: | :------------- |
+| `State` | `UserState` | User temporary state. |
+
+The `UserState` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-------: | :-----------: | :------------------- |
+| `states` | `StateItem[]` | User temporary state information. |
+| `userId` | string | User ID. |
+
+`StateItem` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `key` | string | Key of the user state. If the specified key already exists, the SDK overwrites the value; if the specified key does not exist, the SDK creates the key-value pair. |
+| `value` | string | Value of the user state. |
+
+### RemoveStateAsync
+
+#### Description
+
+When a temporary user state is no longer needed, you can call the `RemoveStateAsync` method to remove one or more of your temporary states. When the user state is removed, the user who has subscribed to the channel and enabled the presence event listener receives the `REMOTE_STATE_CHANGED` type of `OnPresenceEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `RemoveStateAsync` method as follows:
+
+```csharp
+RtmResult<RemoveStateResult> rtmClient.GetPresence().RemoveStateAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string[] keys
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `keys` | `string[]` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
+
+#### Basic usage
+
+```csharp
+var channelName = "Chat_room";
+string[] keys = new string[] { "mode" };
+var (status,respones) = await rtmClient.GetPresence().RemoveStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, keys);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Remove State Success!");
+}
+```
+
+#### Return value
+
+The `RemoveStateAsync` operation returns a `RtmResult&lt;RemoveStateResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :----------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `RemoveStateResult` | After the operation succeeds, this property returns a `RemoveStateResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+## Storage
+
+The storage feature provides a dynamic database mechanism that allows developers to dynamically set, store, update, and delete data such as channel metadata and user metadata.
+
+IRtmClient
+Signaling client instance
+
+### SetChannelMetadataAsync
+
+#### Description
+
+The `SetChannelMetadataAsync` method sets metadata for a message channel or stream channel. A channel can only have one set of metadata, but each set of metadata can have one or more metadata items. If you call this method multiple times, the SDK retrieves the `key` of the metadata items in turn and apply settings according to the following rules:
+
+- If you set metadata with different `key`, the SDK adds each set of metadata in sequence according to the order of the method calls.
+- If you set metadata with the same `key`, the `value` of the last setting overwrites the previous one.
+
+After successfully setting channel metadata, users who subscribe to the channel and enable event listeners can receive the `CHANNEL` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+Channel metadata also introduces the version control logic CAS (Compare And Set). This method provides two independent version control fields, and you can set one or more of them according to your actual business use-case:
+
+- Enable version number verification for the entire set of channel metadata by setting the `majorRevision` property in the `RtmMetadata` class.
+- Enable version number verification for a single metadata item by setting the `revision` property in the `MetadataItem` class within the `RtmMetadata` class.
+
+When setting channel metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, indicating that this method call does not perform any CAS verification. If the channel metadata or metadata item already exists, the latest value overwrites the previous one. If the channel metadata or metadata item does not exist, the SDK creates it.
+- If the revision property is a positive integer, this method call performs the CAS verification. If the channel metadata or metadata item already exists, the SDK updates the corresponding value after the version number verification succeeds. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+
+#### Method
+
+You can call the `SetChannelMetadataAsync` method as follows:
+
+```csharp
+RtmResult<SetChannelMetadataResult> rtmClient.GetStorage().SetChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lockName` | string | Optional | - | Lock name. If set, only users who call the `AcquireLockAsync` method to acquire the lock can perform operations. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "100",
+                revision = 174298200,
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "200",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var metadataOptions = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+var lockName = "lockName";
+
+var (status,respones) = await rtmClient.GetStorage().SetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `SetChannelMetadataAsync` operation returns a `RtmResult&lt;SetChannelMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `SetChannelMetadataResult` | After the operation succeeds, this property returns a `SetChannelMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `SetChannelMetadataResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----------------: | :-------------------------------------------------------------- |
+| `channelName` | string | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+### GetChannelMetadataAsync
+
+#### Description
+
+The `GetChannelMetadataAsync` method can get the metadata of the specified channel.
+
+#### Method
+
+You can call the `GetChannelMetadataAsync` method as follows:
+
+```csharp
+RtmResult<GetChannelMetadataResult> rtmClient.GetStorage().GetChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+#### Basic usage
+
+```csharp
+var (status,respones) = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    var data =  response.data;
+    if (data.metadataItemsSize != 0)
+    {
+        Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
+        for ( int i =0; i < data.metadataItemsSize; i++)
+        {
+            Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
+        }
+    }
+}
+```
+#### Return value
+
+The `GetChannelMetadataAsync` operation returns a `RtmResult&lt;GetChannelMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `GetChannelMetadataResult` | After the operation succeeds, this property returns a `GetChannelMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `GetChannelMetadataResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----------------: | :-------------------------------------------------------------- |
+| `channelName` | string | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `Data` | `RtmMetadata` | Metadata item array. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+### RemoveChannelMetadataAsync
+
+#### Description
+
+The `RemoveChannelMetadataAsync` method can remove channel metadata or metadata items.
+
+When removing channel metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, indicating that this method call does not perform any CAS verification. If the channel metadata or metadata item already exists, the SDK removes it. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+- If the revision property is a positive integer, this method call performs the CAS verification. If the channel metadata or metadata item already exists, the SDK removes the corresponding value after the version number verification succeeds. If the channel metadata or metadata item does not exist, the SDK returns the error code.
+
+After successfully removing channel metadata or metadata items, users who subscribe to the channel and enable event listeners can receive the `CHANNEL` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+#### Method
+
+You can call the `RemoveChannelMetadataAsync` method as follows:
+
+```csharp
+RtmResult<RemoveChannelMetadataResult> rtmClient.GetStorage().RemoveChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lockName` | string | Optional | - | Lock name. If set, only users who call the `AcquireLockAsync` method to acquire the lock can perform operations. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var metadataItem = new MetadataItem()
+            {
+                key = "174298270",
+                revision = 174298200,
+            };
+metadata.metadataItems = new MetadataItem[] { metadataItem };
+metadata.metadataItemsSize = 1;
+var options = new MetadataOptions() { };
+
+var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, oOptions,"");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `RemoveChannelMetadataAsync` operation returns a `RtmResult&lt;RemoveChannelMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `RemoveChannelMetadataResult` | After the operation succeeds, this property returns a `RemoveChannelMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `RemoveChannelMetadataResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----------------: | :-------------------------------------------------------------- |
+| `channelName` | string | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+### UpdateChannelMetadataAsync
+
+#### Description
+
+The `UpdateChannelMetadataAsync` method can update existing channel metadata. Each time you call this method, you can update one channel metadata or a channel metadata item.
+
+After successfully updating channel metadata, users who subscribe to the channel and enable event listeners can receive the `CHANNEL` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+#### Method
+
+You can call the `UpdateChannelMetadataAsync` method as follows:
+
+```csharp
+RtmResult<UpdateChannelMetadataResult> rtmClient.GetStorage().UpdateChannelMetadataAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    RtmMetadata data,
+    MetadataOptions options,
+    string lockName
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Optional | - | Options for setting the channel metadata. |
+| `lockName` | string | Optional | - | Lock name. If set, only users who call the `AcquireLockAsync` method to acquire the lock can perform operations. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270 ;
+var apple = new MetadataItem()
+            {
+                key = "Apple",
+                value = "120",
+                revision = 174298200,
+            };
+var banana = new MetadataItem()
+            {
+                key = "Banana",
+                value = "220",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { apple, banana };
+metadata.metadataItemsSize = 2;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var lockName = "lockName";
+
+var (status,response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, data, options, lockName);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `UpdateChannelMetadataAsync` operation returns a `RtmResult&lt;UpdateChannelMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `UpdateChannelMetadataResult` | After the operation succeeds, this property returns a `UpdateChannelMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `UpdateChannelMetadataResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :----------------: | :-------------------------------------------------------------- |
+| `channelName` | string | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+### SetUserMetadataAsync
+
+#### Description
+
+The `SetUserMetadataAsync` method can set metadata for a user. If you call this method multiple times, the SDK retrieves the `key` of the metadata items in turn and apply settings according to the following rules:
+
+- If you set metadata with different `key`, the SDK adds each set of metadata in sequence according to the order of the method calls.
+- If you set metadata with the same `key`, the `value` of the last setting overwrites the previous one.
+
+After successfully setting user metadata, users who subscribe to the user and enable event listeners can receive the `USER` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+User metadata also introduces the version control logic CAS (Compare And Set). This method provides two independent version control fields, and you can set one or more of them according to your actual business use-case:
+
+- Enable version number verification for the entire set of user metadata by setting the `majorRevision` property in the `RtmMetadata` class.
+- Enable version number verification for a single metadata item by setting the `revision` property in the `MetadataItem` class within the `RtmMetadata` class.
+
+When setting user metadata or metadata items, you can control whether to enable version number verification by specifying the revision property:
+
+- The default value of the revision property is `-1`, indicating that this method call does not perform any CAS verification. If the user metadata or metadata item already exists, the latest value overwrites the previous one. If the user metadata or metadata item does not exist, the SDK creates it.
+- If the revision property is a positive integer, this method call performs the CAS verification. If the user metadata or metadata item already exists, the SDK updates the corresponding value after the version number verification succeeds. If the user metadata or metadata item does not exist, the SDK returns the error code.
+
+#### Method
+
+You can call the `SetUserMetadataAsync` method as follows:
+
+```csharp
+RtmResult<SetUserMetadataResult> rtmClient.GetStorage().SetUserMetadataAsync(
+    string userId,
+    RtmMetadata data,
+    MetadataOptions options
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Optional | User ID of the current user | User ID. |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var name = new MetadataItem()
+            {
+                key = "Name",
+                value = "Tony",
+                revision = 174298200,
+            };
+var mute = new MetadataItem()
+            {
+                key = "Mute",
+                value = "true",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { name, mute };
+metadata.metadataItemsSize = 2;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var (status,response) = await rtmClient.GetStorage().SetUserMetadataAsync("Tony",  rtmMetadata, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set user :{0} metadata success! ", response.UserId));
+}
+```
+
+#### Return value
+
+The `SetUserMetadataAsync` operation returns a `RtmResult&lt;SetUserMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `SetUserMetadataResult` | After the operation succeeds, this property returns a `SetUserMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `SetUserMetadataResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------: | :----: | :-------- |
+| `UserId` | string | User ID. |
+
+### GetUserMetadataAsync
+
+#### Description
+
+The `GetUserMetadataAsync` method can get the metadata and metadata item for the specified user.
+
+#### Method
+
+You can call the `GetUserMetadataAsync` method as follows:
+
+```csharp
+RtmResult<GetUserMetadataResult> GetUserMetadataAsync(string userId);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Optional | User ID of the current user | User ID. |
+
+#### Basic usage
+
+```csharp
+var result = await rtmClient.GetStorage().GetUserMetadataAsync("Tony");
+if (result.Status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get User :{0} metadata success!  ", result.Response.UserId));
+    var data =  result.Response.data;
+    if (data.metadataItemsSize != 0)
+    {
+        Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
+        for ( int i =0; i < data.metadataItemsSize; i++)
+        {
+            Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
+        }
+    }
+}
+```
+
+#### Return value
+
+The `GetUserMetadataAsync` operation returns a `RtmResult&lt;GetUserMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------ | :---------------: | :----------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `GetUserMetadataResult` | After the operation succeeds, this property returns a `GetUserMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `GetUserMetadataResult` data type contains the following properties:
+
+| Parameters | Type | Description |
+| :--------------: | :-------------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UserId` | string | User ID. |
+| `Data` | `RtmMetadata` | Metadata item. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+### RemoveUserMetadataAsync
+
+#### Description
+
+The `RemoveUserMetadataAsync` method can remove user metadata or metadata items.
+
+After successfully removing user metadata, users who subscribe to the user and enable event listeners can receive the `USER` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+#### Method
+
+You can call the `RemoveUserMetadataAsync` method as follows:
+
+```csharp
+RtmResult<RemoveUserMetadataResult>rtmClient.GetStorage().RemoveUserMetadataAsync(string userId, RtmMetadata data, MetadataOptions options);
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Optional | User ID of the current user | User ID. |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+var metadataItem = new MetadataItem()
+            {
+                key = "Mute",
+                revision = 174298100,
+            };
+var options = new MetadataOptions() {};
+
+var (status,response) = await rtmClient.GetStorage().RemoveUserMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `RemoveUserMetadataAsync` operation returns a `RtmResult&lt;RemoveUserMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `RemoveUserMetadataResult` | After the operation succeeds, this property returns a `RemoveUserMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `RemoveUserMetadataResult` data type contains the following properties:
+
+| Parameters | Type | Description |
+| :--------------: | :-------------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UserId` | string | User ID. |
+
+### UpdateUserMetadataAsync
+
+#### Description
+
+The `UpdateUserMetadataAsync` method can update existing user metadata. After successfully updating channel metadata, users who subscribe to the user and enable event listeners can receive the `USER` type of the `OnStorageEvent` event notification. See [Event listeners](#event-listeners).
+
+:::info[Information]
+You cannot use this method to update metadata items which do not exist.
+:::
+
+#### Method
+
+You can call the `UpdateUserMetadataAsync` method as follows:
+
+```csharp
+RtmResult<UpdateUserMetadataResult> rtmClient.GetStorage().UpdateUserMetadataAsync(
+    string userId,
+    RtmMetadata data,
+    MetadataOptions options
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | Optional | User ID of the current user | User ID. |
+| `data` | `RtmMetadata` | Required | - | Metadata item. |
+| `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
+
+The `RtmMetadata` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :-----------------: | :--------------: | :------: | :----: | -------------------------------------------------------------------------------------------------------------- |
+| `majorRevision` | Int64 | Optional | `-1` | Version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
+| `metadataItems` | `MetadataItem[]` | Required | - | Metadata item array. |
+| `metadataItemsSize` | UInt64 | Required | - | Length of the `MetadataItem[]` array. |
+
+The `MetadataItem`  data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `key` | string | Required | - | Key. |
+| `value` | string | Required | - | Value. |
+| `authorUserId` | string | Required | - | The user ID of the editor. This value is read-only and does not support writing. |
+| `revision` | Int64 | Optional | `-1` | <br />- Returns the real version number in read operations.<br />- Serves as a version control switch in write operations:<br />- `-1`: Disable the version verification. <br />- &gt; `0`: Enable version verification, only perform the operation if the target version number matches this value. |
+| `updateTs` | Int64 | Optional | `0` | Update timestamp. This value is read-only and does not support writing. |
+
+The `MetadataOptions` data type contains the following properties:
+
+| Properties | Type | Required | Default | Description |
+| :------------: | :-----: | :------: | :-----: | ------------------------- |
+| `recordTs` | Bool | Optional | `false` | Whether to record the timestamp of the edits. |
+| `recordUserId` | Bool | Optional | `false` | Whether to record the user ID of the editor. |
+
+#### Basic usage
+
+```csharp
+var metadata = new RtmMetadata();
+metadata.majorRevision = 174298270;
+ var metadataItem = new MetadataItem()
+            {
+                key = "Mute",
+                value = "false",
+                revision = 174298100,
+            };
+metadata.metadataItems = new MetadataItem[] { metadataItem };
+metadata.metadataItemsSize = 1;
+var options = new MetadataOptions()
+            {
+                recordUserId = true,
+                recordTs = true
+            };
+
+var (status,response) = await rtmClient.GetStorage().UpdateUserMetadataAsync("Tony", data, metadataOptions);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Update User :{0} metadata success! ", response.UserId));
+}
+```
+
+#### Return value
+
+The `UpdateUserMetadataAsync` operation returns a `RtmResult&lt;UpdateUserMetadataResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `UpdateUserMetadataResult` | After the operation succeeds, this property returns a `UpdateUserMetadataResult` data type, which contains the execution result of this operation. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `UpdateUserMetadataResult` data type contains the following properties:
+
+| Parameters | Type | Description |
+| :--------------: | :-------------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `userId` | string | User ID. |
+
+## Lock
+
+A critical resource can only be used by one process at a time. If a critical resource is shared between different processes, each process needs to adopt a mutually exclusive method to prevent mutual interference. Signaling provides a full set of lock solutions. By controlling different processes in a distributed system, you can solve the competition problem when users access shared resources.
+
+:::info[Information]
+The client is able to set, remove, and revoke locks. We recommend that you control the permissions of these operations on the client side based on your business needs.
+:::
+
+IRtmClient
+Signaling client instance
+### SetLockAsync
+
+#### Description
+
+You need to configure the lock name, time to live (TTL) and other parameters by calling the `SetLockAsync` method. If the configuration succeeds, all users in the channel receives the `OnLockEvent` event notifications of the `SET` type. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `SetLockAsync` method as follows:
+
+```csharp
+RtmResult<SetLockResult> rtmClient.GetLock().SetLockAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string lockName,
+    int ttl
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `lockName` | string | Required | - | Lock name. |
+| `ttl` | Number | Required | - | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().SetLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", 30);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Set Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+}
+```
+#### Return value
+
+The `SetLockAsync` operation returns a `RtmResult&lt;SetLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :--------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `SetLockResult` | After the operation succeeds, this property returns a `SetLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `SetLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockName` | string | Lock name. |
+
+### AcquireLockAsync
+
+#### Description
+
+After successfully configuring a lock, you can call the `AcquireLockAsync` method on the client to acquire the right to own the lock. When you acquire the lock, other users in the channel receives the `ACQUIRED` type of the `OnLockEvent` event. For details, see [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `AcquireLockAsync` method as follows:
+
+```csharp
+RtmResult<AcquireLockResult> rtmClient.GetLock().AcquireLockAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string lockName,
+    bool retry
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `lockName` | string | Required | - | Lock name. |
+| `retry` | bool | Required | - | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().AcquireLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", false);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Acquire Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+}
+```
+
+#### Return value
+
+The `AcquireLockAsync` operation returns a `RtmResult&lt;AcquireLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `AcquireLockResult` | After the operation succeeds, this property returns a `AcquireLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `AcquireLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockName` | string | Lock name. |
+
+### ReleaseLockAsync
+
+#### Description
+
+When a user no longer needs to own a lock, the user can call the `ReleaseLockAsync` method on the client side to release the lock. After successful release the lock, other users in the channel receives the `RELEASED` type of the `OnLockEvent` event. See [Event Listeners](#event-listeners).
+
+At this time, if other users want to acquire the lock, they can call the `AcquireLockAsync` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
+
+#### Method
+
+You can call the `ReleaseLockAsync` method as follows:
+
+```csharp
+RtmResult<ReleaseLockResult> rtmClient.GetLock().ReleaseLockAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string lockName
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `lockName` | string | Required | - | Lock name. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().ReleaseLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Release Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+}
+```
+
+#### Return value
+
+The `ReleaseLockAsync` operation returns a `RtmResult&lt;ReleaseLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `ReleaseLockResult` | After the operation succeeds, this property returns a `ReleaseLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `ReleaseLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockName` | string | Lock name. |
+
+### RevokeLockAsync
+
+#### Description
+
+When the lock is occupied, to ensure that your business is not affected, you may need to revoke the lock and give other users a chance to obtain it. Revoke the occupied lock by calling `RevokeLockAsync`. When the lock is revoked, all users in the channel receives the `RELEASED` type of the `OnLockEvent` event. See [Event Listeners](#event-listeners).
+
+At this time, if other users want to acquire the lock, they can call the `AcquireLockAsync` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
+
+#### Method
+
+You can call the `RevokeLockAsync` method as follows:
+
+```csharp
+RtmResult<RevokeLockResult> rtmClient.GetLock().RevokeLockAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string lockName,
+    string owner
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `lockName` | string | Required | - | Lock name. |
+| `owner` | string | Required | - | The ID of the user who has a lock. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().RevokeLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1","Tony");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("RevokeLock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+}
+```
+
+#### Return value
+
+The `RevokeLockAsync` operation returns a `RtmResult&lt;RevokeLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :------------ | :-----------------: | :----------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `RevokeLockResult` | After the operation succeeds, this property returns a `RevokeLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `RevokeLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockName` | string | Lock name. |
+
+###
+
+#### Description
+
+If you want to query the lock information such as lock total number, lock name, and lock user, time to live, you can call the `` method on the client.
+
+#### Method
+
+You can call the `` method as follows:
+
+```csharp
+RtmResult<GetLocksResult> rtmClient.GetLock().GetLocksAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().GetLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Get Lock at Channel:{0} with Channel Type {1} success! ", response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `` operation returns a `RtmResult&lt;GetLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :--------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `GetLockResult` | After the operation succeeds, this property returns a `GetLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `GetLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockDetailList` | `LockDetail[]` | Detailed information of locks. |
+
+The `LockDetail` data type contains the following properties:
+
+| Properties | Type | Description |
+| :------------------ | :--------------------: | :------------------------------------- |
+| `LockName` | string | Lock name. |
+| `owner` | string | The ID of the user who has a lock. |
+| `ttl` | number | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+
+### RemoveLockAsync
+
+#### Description
+
+If you no longer need a lock, you can call the `RemoveLockAsync` method to remove the lock. After successfully removing the lock, all users in the channel receives the `REMOVED` type of `OnLockEvent` event notification. See [Event Listeners](#event-listeners).
+
+#### Method
+
+You can call the `RemoveLockAsync` method as follows:
+
+```csharp
+RtmResult<RemoveLockResult> rtmClient.GetLock().RemoveLockAsync(
+    string channelName,
+    RTM_CHANNEL_TYPE channelType,
+    string lockName
+    );
+```
+
+| Parameters | Type | Required | Default | Description |
+| :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `channelName` | string | Required | - | Channel name. |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `lockName` | string | Required | - | Lock name. |
+
+#### Basic usage
+
+```csharp
+var (status,response) = await rtmClient.GetLock().RemoveLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("Remove Lock{0} at Channel:{1} with Channel Type {2} success! ",response.LocklName, response.ChannelName, response.ChannelType));
+}
+```
+
+#### Return value
+
+The `RemoveLockAsync` operation returns a `RtmResult&lt;RemoveLockResult&gt;` data type, including the following properties:
+
+| Properties | Type | Description |
+| :--------: | :-----------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
+| `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
+| `Response` | `RemoveLockResult` | After the operation succeeds, this property returns a `RemoveLockResult` data type. |
+
+The `RtmStatus` data type contains the following properties:
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+The `RemoveLockResult` data type contains the following properties:
+
+| Properties | Type | Description |
+| :-----------: | :-------------------------------------------------------: | :-------------------------------------------------------------- |
+| `ChannelName` | string | Channel name. |
+| `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `LockName` | string | Lock name. |
+
+## Enumerated types
+
+### Enum
+
+#### RTM_AREA_CODE
+
+The region for connection, which is the region where the server the SDK connects to is located.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `CN` | `0x00000001`: Mainland China. |
+| `NA` | `0x00000002`: North America. |
+| `EU` | `0x00000004`: Europe. |
+| `AS` | `0x00000008`: Asia, excluding Mainland China. |
+| `JP` | `0x00000010`: Japan. |
+| `IN` | `0x00000020`: India. |
+| `GLOB` | `0xFFFFFFFF`: Global. |
+
+#### RTM_CHANNEL_TYPE
+
+Channel types.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `MESSAGE` | `1`: Message channel. |
+| `STREAM` | `2`: Stream channel. |
+
+#### RTM_CONNECTION_CHANGE_REASON
+
+Reasons causing the change of the connection state.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `CONNECTING` | `0`: The SDK is connecting with the server. |
+| `JOIN_SUCCESS` | `1`: The SDK has joined the channel successfully. |
+| `INTERRUPTED` | `2`: The connection between the SDK and the server is interrupted. |
+| `BANNED_BY_SERVER` | `3`: The connection between the SDK and the server is banned by the server. |
+| `JOIN_FAILED` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
+| `LEAVE_CHANNEL` | `5`: The SDK has left the channel. |
+| `INVALID_APP_ID` | `6`: The connection failed because the App ID is not valid. |
+| `INVALID_CHANNEL_NAME` | `7`: The connection failed because the channel name is not valid. |
+| `INVALID_TOKEN` | `8`: The connection failed because the token is not valid. |
+| `TOKEN_EXPIRED` | `9`: The connection failed because the token is expired. |
+| `REJECTED_BY_SERVER` | `10`: The connection is rejected by server. |
+| `SETTING_PROXY_SERVER` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
+| `RENEW_TOKEN` | `12`: The connection state changed because the token is renewed. |
+| `CLIENT_IP_ADDRESS_CHANGED` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
+| `KEEP_ALIVE_TIMEOUT` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
+| `REJOIN_SUCCESS` | `15`: The user has rejoined the channel successfully. |
+| `LOST` | `16`: The connection between the SDK and the server is lost. |
+| `ECHO_TEST` | `17`: The connection state changes due to the echo test. |
+| `CLIENT_IP_ADDRESS_CHANGED_BY_USER` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
+| `SAME_UID_LOGIN` | `19`: The user joined the same channel from different devices with the same UID. |
+| `TOO_MANY_BROADCASTERS` | `20`: The number of hosts in the channel has reached the upper limit. |
+| `/` | `22`: The stream channel does not exist. |
+| `INCONSISTENT_APPID` | `23`: The App ID does not match the token. |
+| `/` | `10001`: The SDK logs in to the Signaling system. |
+| `LOGOUT` | `10002`: The SDK logs out from the Signaling system. |
+| `PRESENCE_NOT_READY` | `10003`: Presence service is not ready. You need to call the `LoginAsync` method again to log in to the Signaling system and re-execute all operations on the SDK. |
+
+#### RTM_CONNECTION_STATE
+
+SDK connection states.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `DISCONNECTED` | `1`: The SDK has disconnected with the server. |
+| `CONNECTING` | `2`: The SDK is connecting with the server. |
+| `CONNECTED` | `3`: The SDK has connected with the server. |
+| `RECONNECTING` | `4`: The connection is lost. The SDK is reconnecting with the server. |
+| `FAILED` | `5`: The SDK failed to connect with the server. |
+
+#### RTM_ENCRYPTION_MODE
+
+Encryption mode.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `NONE` | `0`: No encryption. |
+| `AES_128_GCM` | `1`: AES-128-GCM mode. |
+| `AES_256_GCM` | `2`: AES-256-GCM mode. |
+
+#### RTM_LOCK_EVENT_TYPE
+
+Lock event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `SNAPSHOT` | `1`: The snapshot of the lock when the user joined the channel. |
+| `SET` | `2`: The lock is set. |
+| `REMOVED` | `3`: The lock is removed. |
+| `ACQUIRED` | `4`: The lock is acquired. |
+| `RELEASED` | `5`: The lock is released. |
+| `EXPIRED` | `6`: The lock expired. |
+
+#### RTM_LOG_LEVEL
+
+Log output levels.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `NONE` | `0x0000`: No log. |
+| `INFO` | `0x0001`: Output the log at the `FATAL`, `ERROR`, `WARN`, or `INFO` level. We recommend you set to this value. |
+| `WARN` | `0x0002`: Output the log at the `FATAL`, `ERROR`, `WARN` level. |
+| `ERROR` | `0x0004`: Output the log at the `FATAL`, `ERROR` level. |
+| `FATAL` | `0x0008`: Output the log at the `FATAL` level. |
+
+#### RTM_MESSAGE_PRIORITY
+
+Message priority.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `HIGHEST` | `0`: Highest. |
+| `HIGH` | `1`: High. |
+| `NORMAL` | `4`: Normal. |
+| `LOW` | `8`: Low. |
+
+#### RTM_MESSAGE_QOS
+
+QoS guarantee when sending topic messages.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `UNORDERED` | `0`: Message data is not guaranteed to arrive in order. |
+| `ORDERED` | `1`: Message data arrives in order. |
+
+#### RTM_MESSAGE_TYPE
+
+Message type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `BINARY` | `0`: Binary type. |
+| `STRING` | `1`: String type. |
+
+#### RTM_PRESENCE_EVENT_TYPE
+
+Presence event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `SNAPSHOT` | `1`: The snapshot of the presence when the user joined the channel. |
+| `INTERVAL` | `2`: When users in the channel reach the setting value, the event notifications are sent at intervals rather than in real time. |
+| `REMOTE_JOIN` | `3`: A remote user joined the channel. |
+| `REMOTE_LEAVE` | `4`: A remote user left the channel. |
+| `REMOTE_TIMEOUT` | `5`: A remote user's connection timed out. |
+| `REMOTE_STATE_CHANGED` | `6`: A remote user's temporary state changed. |
+| `ERROR_OUT_OF_SERVICE` | `7`: The user did not enable presence when joining the channel. |
+
+#### RTM_PROXY_TYPE
+
+Proxy type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `NONE` | `0`: Do not enable the proxy. |
+| `HTTP` | `1`: Enable the proxy for the HTTP protocol. |
+
+#### RTM_STORAGE_EVENT_TYPE
+
+Storage event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `SNAPSHOT` | `1`: When a user subscribes to channel metadata or user etadata for the first time, or joins a channel, the local user receives notifications of this type of event. |
+| `SET` | `2`: Occurs when calling `SetChannelMetadataAsync` or `SetUserMetadataAsync`. Caution: This event only occurs in incremental data update mode. |
+| `UPDATE` | `3`: Occurs when calling methods to set, update, or delete the channel metadata or user metadata. |
+| `REMOVE` | `4`: Occurs when calling `RemoveChannelMetadataAsync` or `RemoveUserMetadataAsync`. Caution: This event only occurs in incremental data update mode. |
+
+#### RTM_STORAGE_TYPE
+
+Storage type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `USER` | `1`: User metadata event. |
+| `CHANNEL` | `2`: Channel metadata event. |
+
+#### RTM_TOPIC_EVENT_TYPE
+
+Topic event type.
+
+| Value | Description |
+| :----------: | ---------------------------------------------------------- |
+| `SNAPSHOT` | `1`: The snapshot of the topic when the user joined the channel. |
+| `REMOTE_JOIN` | `2`: A remote user joined the channel. |
+| `REMOTE_LEAVE` | `3`: A remote user left the channel. |
+
+## Troubleshooting
+
+Refer to the following information for troubleshooting API calls.
+
+### ErrorInfo
+
+| Property | Type | Description |
+| :------------------: | :--------------------: | ------------------------------------- |
+| `Error` | bool | Whether this operation is an error. |
+| `ErrorCode` | string | Error code for this operation. |
+| `Operation` | string | Operation type for this operation. |
+| `Reason` | string | Error reason for this operation. |
+
+To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
+
+### Error codes table
+
+Refer to the following error codes table to identify and troubleshoot the problem:
+
+| Error code| Error description| Cause and solution |
+| :------ | :------------------|:---------------------------|
+| `0` | `OK` | Correct call |
+| `-10001` | `NOT_INITIALIZED` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `CreateAgoraRtmClient` method before performing other operations. |
+| `-10002` | `NOT_LOGIN` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
+| `-10003` | `INVALID_APP_ID` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
+| `-10005` | `INVALID_TOKEN` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |
+| `-10006` | `INVALID_USER_ID` | Invalid User ID: <br /> - Check if user ID is empty. <br /> - Check if the user ID contains illegal characters. |
+| `-10007` | `INIT_SERVICE_FAILED` | SDK initialization failed. Please reinitialize by calling the `CreateAgoraRtmClient` method. |
+| `-10008` | `INVALID_CHANNEL_NAME` | Invalid channel name: <br /> - Check if the channel name is empty. <br /> - Check if the channel name contains illegal characters. |
+| `-10009` | `TOKEN_EXPIRED` | Token expired. Call `renewToken` to reacquire the Token. |
+| `-10010` | `LOGIN_NO_SERVER_RESOURCES` | Server resources are limited. It is recommended to log in again. |
+| `-10011` | `LOGIN_TIMEOUT` | Login timeout. Check whether the current network is stable and switch to a stable network environment. |
+| `-10012` | `LOGIN_REJECTED` | SDK login rejected by the server: <br /> - Check tha Signaling is activated on your App ID. <br /> - Check if the token or `userId` is banned. |
+| `-10013` | `LOGIN_ABORTED` | SDK login interrupted due to unknown problem: <br /> - Check that the current network is stable and switch to a stable network environment. <br /> - The current `userId` is logged in. |
+| `-10014` | `INVALID_PARAMETER` | Invalid parameter. Please check if the parameters you provided are correct. |
+| `-10015` | `LOGIN_NOT_AUTHORIZED` | No RTM service permissions. Check that the console opens Signaling services. |
+| `-10016` | `INCONSISTENT_APPID` | Inconsistent App ID. Please check whether the App ID used for initialization, login, and joining a channel are consistent. |
+| `-10017` | `DUPLICATE_OPERATION` | Duplicate operation. |
+| `-10018` | `INSTANCE_ALREADY_RELEASED` | Repeat `rtm` instantiation or `RTMStreamChannel` instantiation. |
+| `-10019` | `INVALID_CHANNEL_TYPE` | Invalid channel type. The SDK only supports the following channel types. Please use the correct value: <br /> - `MESSAGE`: Message Channel <br /> - `STREAM`: Stream Channel |
+| `-10020` | `INVALID_ENCRYPTION_PARAMETER` | Message encryption parameters are invalid. <br />- Check that the encryption key generated is a String. <br />- Check that the generated encryption salt is `Uint8Array` type and that the length is 32 bytes. <br />- Check that the encryption method matches the encryption key and the encryption salt. |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | Channel metadata or User Metadata -related API call frequency is exceeding the limit. Please control the call frequency within 10/second. |
+| `-11001` | `CHANNEL_NOT_JOINED` | The user has not joined the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
+| `-11002` | `CHANNEL_NOT_SUBSCRIBED` | The user has not subscribed to the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
+| `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | The number of subscribers to this topic exceeds the limit. |
+| `-11004` | `CHANNEL_IN_REUSE` | In co-channel mode, RTM released the Stream Channel. |
+| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | The number of created or subscribed channels exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-11006` | `CHANNEL_IN_ERROR_STATE` | Channel is not available. Please recreate the Stream Channel or resubscribe to the Message Channel. |
+| `-11007` | `CHANNEL_JOIN_FAILED` | Failed to join this channel: <br /> - Check if the number of joined channels exceeds the limit. <br /> - Check if the channel name is illegal. <br /> - Check if the network is disconnected. |
+| `-11008` | `CHANNEL_INVALID_TOPIC_NAME` | Invalid topic name: <br /> - Check whether the topic name contains illegal characters. <br /> - Check if the topic name is empty. |
+| `-11009` | `CHANNEL_INVALID_MESSAGE` | Invalid message. Check whether the message type is legal, Signaling only supports `string`, `Uint8Array` type messages. |
+| `-11010` | `CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | Message length exceeded limit. Check if the message payload size exceeds the limit: <br /> - Message Channel single message package limit is 32 KB. <br /> - Stream Channel single message package limit is 1 KB. |
+| `-11011` | `CHANNEL_INVALID_USER_LIST` | Invalid user list: <br /> - Check if the user list is empty. <br /> - Check if the user list contains invalid entries. |
+| `-11012` | `CHANNEL_NOT_AVAILABLE` | Invalid user list: <br /> - Check if the user list is empty<br /> - Check if the user list contains illegal items. |
+| `-11013` | `CHANNEL_TOPIC_NOT_SUBSCRIBED` | The topic is not subscribed. |
+| `-11014` | `CHANNEL_EXCEED_TOPIC_LIMITATION` | The number of topics exceeds the limit. |
+| `-11015` | `CHANNEL_JOIN_TOPIC_FAILED` | Failed to join this topic. Check whether the number of added topics exceeds the limit. |
+| `-11016` | `CHANNEL_TOPIC_NOT_JOINED` | The topic has not been joined. To send a message, you need to join the Topic first. |
+| `-11017` | `CHANNEL_TOPIC_NOT_EXIST` | The topic does not exist. Check that the topic name is correct. |
+| `-11018` | `CHANNEL_INVALID_TOPIC_META` | The `meta` parameters in the topic are invalid. Check if the `meta` parameter exceeds 256 bytes. |
+| `-11019` | `CHANNEL_SUBSCRIBE_TIMEOUT` | Channel subscription timed out. Check for broken connections. |
+| `-11020` | `CHANNEL_SUBSCRIBE_TOO_FREQUENT` | The channel subscription operation is too frequent. Make sure that the subscription operation of the same channel within a 5 seconds interval does not exceed 2 attempts. |
+| `-11021` | `CHANNEL_SUBSCRIBE_FAILED` | Channel subscription failed. Check if the number of subscribed channels exceeds the limit. |
+| `-11022` | `CHANNEL_UNSUBSCRIBE_FAILED` | Failed to unsubscribe from the channel. Check if the connection is disconnected. |
+| `-11023` | `CHANNEL_ENCRYPT_MESSAGE_FAILED` | Message encryption failed: <br /> - Check that the `cipherKey` is valid. <br /> - Check that the `salt` is valid. <br /> - Check if `encryptionMode` mode matches the `cipherKey` and `salt`. |
+| `-11024` | `CHANNEL_PUBLISH_MESSAGE_FAILED` | Message publishing failed. Check for broken connections. |
+| `-11026` | `CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | Message publishing timed out. Check for broken connections. |
+| `-11027` | `CHANNEL_NOT_CONNECTED` | The SDK is disconnected from the Signaling server. Please log in again. |
+| `-11028` | `CHANNEL_LEAVE_FAILED` | Failed to leave the channel. Check for broken connections. |
+| `-11029` | `CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type length overflow. The length of the `customType` field must to be within 32 characters. |
+| `-11030` | `CHANNEL_INVALID_CUSTOM_TYPE` | `customType` field is invalid. Check the `customType` field for illegal characters. |
+| `-11031` | `CHANNEL_UNSUPPORTED_MESSAGE_TYPE` | Message type is not supported. |
+| `-11032` | `CHANNEL_PRESENCE_NOT_READY` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
+| `-11033` | `CHANNEL_RECEIVER_OFFLINE` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
+| `-12001` | `STORAGE_OPERATION_FAILED` | Storage operation failed. |
+| `-12002` | `STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | The number of Storage Metadata Items exceeds the limit. |
+| `-12003` | `STORAGE_INVALID_METADATA_ITEM` | Invalid Metadata Item. |
+| `-12004` | `STORAGE_INVALID_ARGUMENT` | Invalid argument. |
+| `-12005` | `STORAGE_INVALID_REVISION` | Invalid Revision parameter. |
+| `-12006` | `STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata overflows. |
+| `-12007` | `STORAGE_INVALID_LOCK_NAME` | Invalid Lock name. |
+| `-12008` | `STORAGE_LOCK_NOT_ACQUIRED` | The Lock was not acquired. |
+| `-12009` | `STORAGE_INVALID_KEY` | Invalid Metadata key. |
+| `-12010` | `STORAGE_INVALID_VALUE` | Invalid metadata value. |
+| `-12011` | `STORAGE_KEY_LENGTH_OVERFLOW` | Metadata key length overflow. |
+| `-12012` | `STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata value length overflow. |
+| `-12013` | `STORAGE_DUPLICATE_KEY` | Duplicate Metadata Item key. |
+| `-12014` | `STORAGE_OUTDATED_REVISION` | Outdated Revision parameter. |
+| `-12015` | `STORAGE_NOT_SUBSCRIBE` | This channel is not subscribed. |
+| `-12016` | `STORAGE_INVALID_METADATA_INSTANCE` | Metadata instance does not exist. Please create a Metadata instance. |
+| `-12017` | `STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | The number of subscribers exceeds the limit. |
+| `-12018` | `STORAGE_OPERATION_TIMEOUT` | Storage operation timed out. |
+| `-12019` | `STORAGE_NOT_AVAILABLE` | The Storage service is not available. |
+| `-13001` | `PRESENCE_NOT_CONNECTED` | The user is not connected to the system. |
+| `-13002` | `PRESENCE_NOT_WRITABLE` | Presence service is unavailable. |
+| `-13003` | `PRESENCE_INVALID_ARGUMENT` | Invalid argument. |
+| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | The temporary user state cached before joining the channel exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | The number of temporary user state key/value pairs exceeds the limit. See [API usage limits](/en/realtime-media/rtm/reference/limitations) for details. |
+| `-13006` | `PRESENCE_INVALID_STATE_KEY` | Invalid state key. |
+| `-13007` | `PRESENCE_INVALID_STATE_VALUE` | Invalid state value. |
+| `-13008` | `PRESENCE_STATE_KEY_SIZE_OVERFLOW` | Presence key length overflow. |
+| `-13009` | `PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | Presence value overflow |
+| `-13010` | `PRESENCE_STATE_DUPLICATE_KEY` | Repeated state key. |
+| `-13011` | `PRESENCE_USER_NOT_EXIST` | The user does not exist. |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence operation timed out. |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | Presence operation failed. |
+| `-14001` | `LOCK_OPERATION_FAILED` | Lock operation failed. |
+| `-14002` | `LOCK_OPERATION_TIMEOUT` | Lock operation timed out. |
+| `-14003` | `LOCK_OPERATION_PERFORMING` | Lock operation in progress. |
+| `-14004` | `LOCK_ALREADY_EXIST` | Lock already exists. |
+| `-14005` | `LOCK_INVALID_NAME` | Invalid Lock name. |
+| `-14006` | `LOCK_NOT_ACQUIRED` | The Lock was not acquired. |
+| `-14007` | `LOCK_ACQUIRE_FAILED` | Failed to acquire the Lock. |
+| `-14008` | `LOCK_NOT_EXIST` | The Lock does not exist. |
+| `-14009` | `LOCK_NOT_AVAILABLE` | Lock service is not available. |
