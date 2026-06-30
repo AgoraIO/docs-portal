@@ -25,6 +25,7 @@ import {
   getPlatformLLMText,
   canonicalSource as source,
 } from '../src/lib/source.server.ts';
+import { createStaticSeoManifest } from '../src/lib/static-seo.ts';
 
 const repoRoot = process.cwd();
 const outputRoot = path.join(repoRoot, 'public', '__static', 'docs');
@@ -33,6 +34,12 @@ const searchOutputRoot = path.join(
   'public',
   '__static',
   'docs-search',
+);
+const seoManifestPath = path.join(
+  repoRoot,
+  'public',
+  '__static',
+  'docs-seo.json',
 );
 const markdownOutputRoot = path.join(repoRoot, 'public');
 
@@ -53,6 +60,7 @@ export async function generateStaticDocsPayload() {
     .filter((route) => route !== '/')
     .sort();
   let generated = 0;
+  const staticSeoPages = [];
 
   for (const locale of SUPPORTED_LOCALES) {
     await writeSearchIndex(searchOutputRoot, {
@@ -105,9 +113,20 @@ export async function generateStaticDocsPayload() {
       slugSegments: parsed.slugSegments,
       tab: parsed.tab,
     });
+    if (!('redirectUrl' in payload)) {
+      staticSeoPages.push({
+        description: payload.description,
+        title: payload.title,
+        url: route,
+      });
+    }
     generated += 1;
   }
 
+  await writeTextFile(
+    seoManifestPath,
+    `${JSON.stringify(createStaticSeoManifest({ pages: staticSeoPages }))}\n`,
+  );
   console.log(`[static-payload] generated ${generated} payload files`);
 
   const markdownGenerated = await generateStaticMachineReadableDocs();

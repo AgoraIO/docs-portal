@@ -8,6 +8,7 @@ import {
   readStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
+import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/')({
   loader: async ({ location, params }) => {
@@ -70,6 +71,8 @@ export const Route = createFileRoute('/$locale/$tab/')({
       ...payload,
     };
   },
+  head: ({ loaderData }) =>
+    loaderData ? createDocsRouteSeoHead(loaderData) : {},
   component: TabIndexPage,
 });
 
