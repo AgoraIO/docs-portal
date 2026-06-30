@@ -16,10 +16,12 @@ description: 语音与视频是通话、互动直播、会议、课堂和媒体�
 
 语音与视频支持常见的 Web、移动端、桌面端和嵌入式实时互动接入路径，并可结合声网客户端 SDK 与相关工具使用。
 
-## 快速入口
+## 后续内容
 
-- [接入 AI 工具](quick-start/integrate-with-ai-tools.md)
-- [从零开始搭建](quick-start/build-from-scratch.md)
-- [音频](audio)
-- [视频](video)
-- [参考](reference)
+以下中文内容入口仍在迁移中，完成后会补充为可点击页面：
+
+- 接入 AI 工具
+- 从零开始搭建
+- 音频
+- 视频
+- 参考

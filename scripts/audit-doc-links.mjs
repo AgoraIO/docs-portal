@@ -84,6 +84,7 @@ function createStats() {
     invalidLinks: [],
     invalidInternalLinks: [],
     legacyRootDocLinks: [],
+    apiReferenceMacroLinks: [],
     missingHashLinks: [],
     missingRootLinks: [],
     missingRelativeMarkdownLinks: [],
@@ -512,6 +513,16 @@ function classifyLink(
     return;
   }
 
+  if (isApiReferenceMacroHref(href)) {
+    stats.apiReferenceMacroLinks.push({
+      href,
+      reason: 'api-reference-macro',
+      source: link.source,
+      sourcePath,
+    });
+    return;
+  }
+
   const parsed = splitHref(href);
 
   if (!isRelativeDocsHref(parsed)) {
@@ -819,6 +830,10 @@ function normalizeExternalTarget(href) {
   }
 
   return '';
+}
+
+function isApiReferenceMacroHref(href) {
+  return /^{{\s*global\.API_REF_[A-Z0-9_]+\s*}}/i.test(href);
 }
 
 /**
@@ -1485,6 +1500,7 @@ export function formatReport(stats, maxSamples) {
     `resolvedRelativeMarkdownLinks: ${stats.resolvedRelativeMarkdownLinks.length}`,
     `missingRelativeMarkdownLinks: ${stats.missingRelativeMarkdownLinks.length}`,
     `legacyRootDocLinks: ${stats.legacyRootDocLinks.length}`,
+    `apiReferenceMacroLinks: ${stats.apiReferenceMacroLinks.length}`,
     `rootLinks: ${stats.rootLinks.length}`,
     `skippedRootLinks: ${stats.skippedRootLinks.length}`,
     `missingRootLinks: ${stats.missingRootLinks.length}`,
@@ -1540,6 +1556,12 @@ export function formatReport(stats, maxSamples) {
     lines,
     'Sample legacy /doc/* links',
     stats.legacyRootDocLinks,
+    maxSamples,
+  );
+  appendSection(
+    lines,
+    'Sample API reference macro links',
+    stats.apiReferenceMacroLinks,
     maxSamples,
   );
   appendSection(lines, 'Sample valid root links', stats.rootLinks, maxSamples);

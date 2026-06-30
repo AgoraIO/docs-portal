@@ -39,7 +39,7 @@ Agora Console provides access to the following:
 
 - Generate Customer ID and Customer Secret
 
-  To use Agora RESTful APIs, you need a set of Customer ID and Customer Secret. See [Generate a customer ID and customer secret](#generate-a-customer-id-and-customer-secret).
+  To use Agora RESTful APIs, you need a set of Customer ID and Customer Secret. See [Generate a customer ID and customer secret](/en/api-reference/api-ref/console/solutions-agora-console-rest-api#authentication).
 
 - Agora Analytics
 
@@ -445,6 +445,8 @@ You can track the status of your ticket under **Tickets**.
 ## Delete your Agora account
 
 This section describes how to delete your Agora account created with an email address or phone number.
+
+### Prerequisites
 
 Before deleting your Agora account, ensure that the following requirements are met:
 

@@ -199,7 +199,7 @@ import io.agora.rtc2.RtcEngineConfig
 </CodeBlockTabs>
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to-voice-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -1099,7 +1099,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-voice-sdk-events).
 
 ```swift
 var agoraKit: AgoraRtcEngineKit!
@@ -1658,7 +1658,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](manage-agora-account.md) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-voice-sdk-events).
 
 ```swift
 var agoraKit: AgoraRtcEngineKit!
@@ -2173,7 +2173,7 @@ async function publishMicrophoneAudioTrack() {
 }
 ```
 
-See [Local audio tracks](#local--tracks) to learn more about local tracks.
+See [Local audio tracks](#local-audio-tracks) to learn more about local tracks.
 
 ### Set up event listeners
 
@@ -2565,7 +2565,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
+For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to-voice-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
 
 ```cpp
 // Declare the required variables
@@ -3343,7 +3343,7 @@ let uid = 123;
 
 ### Initialize the engine
 
-For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](manage-agora-account.md). Call `registerEventHandler` to register a custom [event handler](#subscribe-to--events) for managing user interactions within the channel.
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](manage-agora-account.md). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-voice-sdk-events) for managing user interactions within the channel.
 
 ```js
 let rtcEngine;
@@ -3580,7 +3580,7 @@ window.onload = () => {
 ```
 :::note
 - In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
-- If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#get-device-permissions).
+- If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#set-up-the-main-process).
 :::
 To test the complete code, see [Test the sample code](#test-the-sample-code).
 
@@ -5841,7 +5841,7 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to--events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](manage-agora-account.md), and custom [event handler](#subscribe-to-voice-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
 Add the `SetupSDKEngine` method declaration and implementation to the following files:
 
