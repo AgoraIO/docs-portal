@@ -16,7 +16,7 @@ By default, a new account is assigned the Free package when the first project is
 - Under **All Subscriptions**, click **Signaling > Upgrade Plan**.
 - Select your package and click **Subscribe**.
 
-![Available packages](/images/signaling/signaling-plans.png)
+![Available packages](https://assets-docs.agora.io/images/signaling/signaling-plans.png)
 
 :::info
 - If you are a non-contracted customer, all packages except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).

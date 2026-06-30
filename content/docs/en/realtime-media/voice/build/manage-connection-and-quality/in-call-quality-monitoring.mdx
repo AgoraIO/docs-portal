@@ -14,7 +14,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -129,7 +129,7 @@ private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEven
     Log.i(TAG, "onRtcStats->" + "User count: " + rtcStats.userCount + ", Packet loss rate: " + rtcStats.rxPacketLossRate);
   }
 };
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -242,7 +242,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -374,7 +374,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -508,7 +508,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -573,7 +573,7 @@ console.log("Remote user video statistics:", remoteVideoStats);
 
 ```
 
-The SDK reports abnormal events in the channel through the `AgoraRTCClient.on("exception")` callback. Unusual events are not errors, but often cause call quality issues. After an abnormal event occurs, if the situation returns to normal, you receive this callback again. 
+The SDK reports abnormal events in the channel through the `AgoraRTCClient.on("exception")` callback. Unusual events are not errors, but often cause call quality issues. After an abnormal event occurs, if the situation returns to normal, you receive this callback again.
 
 ```js
 client.on("exception", function(evt) {
@@ -638,7 +638,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -832,7 +832,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -983,7 +983,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -1187,7 +1187,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -1338,7 +1338,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -1382,25 +1382,25 @@ In your game, add the following code:
 // Event handler class to handle the events raised by Agora's RtcEngine instance
 internal class EventHandler : IRtcEngineEventHandler
 {
-  public override void OnNetworkQuality(RtcConnection connection, uint remoteUid, int txQuality, int rxQuality) 
+  public override void OnNetworkQuality(RtcConnection connection, uint remoteUid, int txQuality, int rxQuality)
   {
     Debug.Log($"OnNetworkQuality - Connection: {connection}, RemoteUid: {remoteUid}, TxQuality: {txQuality}, RxQuality: {rxQuality}");
   }
 
-  public override void OnRtcStats(RtcConnection connection, RtcStats rtcStats) 
+  public override void OnRtcStats(RtcConnection connection, RtcStats rtcStats)
   {
     string msg = $"{rtcStats.userCount} user(s)";
     msg += $"Packet loss rate: {rtcStats.rxPacketLossRate}";
     Debug.Log(msg);
   }
 
-  public override void OnRemoteVideoStateChanged(RtcConnection connection, uint remoteUid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed) 
+  public override void OnRemoteVideoStateChanged(RtcConnection connection, uint remoteUid, REMOTE_VIDEO_STATE state, REMOTE_VIDEO_STATE_REASON reason, int elapsed)
   {
     string msg = $"Remote video state changed: \n Uid = {remoteUid}\n NewState = {state}\n reason = {reason}\n elapsed = {elapsed}";
     Debug.Log(msg);
   }
 
-  public override void OnRemoteVideoStats(RtcConnection connection, RemoteVideoStats stats) 
+  public override void OnRemoteVideoStats(RtcConnection connection, RemoteVideoStats stats)
   {
     string msg = $"Remote Video Stats: \n User id = {stats.uid}\n Received bitrate = {stats.receivedBitrate}\n Total frozen time = {stats.totalFrozenTime}";
     Debug.Log(msg);
@@ -1447,7 +1447,7 @@ internal class EventHandler : IRtcEngineEventHandler
 ## Reference
 
 ### Network quality score
- 
+
 | Value | Enumeration | Description |
 |:-----:|:------------|:------------|
 | 0 | `QUALITY_UNKNOWN` | The quality is unknown or the user is not receiving a stream. |
@@ -1490,7 +1490,7 @@ When there is a change in the audio or video state of a user, Video SDK triggers
 
 **Audio transmission process**
 
-![Audio transmission process](/images/video-sdk/in-call-quality.svg)
+![Audio transmission process](https://assets-docs.agora.io/images/video-sdk/in-call-quality.svg)
 
 To monitor the call quality, Agora provides the following call quality notifications:
 
@@ -1604,7 +1604,7 @@ class MyRtcEngineEventHandler : public IRtcEngineEventHandler
 ## Reference
 
 ### Network quality score
- 
+
 | Value | Enumeration | Description |
 |:-----:|:------------|:------------|
 | 0 | `QUALITY_UNKNOWN` | The quality is unknown or the user is not receiving a stream. |

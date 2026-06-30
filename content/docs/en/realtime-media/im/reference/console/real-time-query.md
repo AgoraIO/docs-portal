@@ -10,7 +10,7 @@ Agora Chat provides the following statistical data to help you monitor the usage
 - **Device Log**: Retrieve client logs.
 - **User Connection Status**: Query end users' presence (online or offline).
 
-![Real-time query](/images/im/real-time-query.png)
+![Real-time query](https://assets-docs.agora.io/images/im/real-time-query.png)
 
 ## Real-time query overview
 
@@ -20,22 +20,22 @@ The real-time query overview page provides a quick insight into the rest of the 
 - **Percentage Of Daily Login Devices**: The number of devices logged-in on the day of viewing, updated every minute.
 - **Message Volume Query**: The message volume for private chats, group chats, and chat rooms, updated every 10 minutes.
 
-![Real-time query overview page](/images/im/real-time-query-overview.png)
+![Real-time query overview page](https://assets-docs.agora.io/images/im/real-time-query-overview.png)
 
 ## Hotspot Data
 
 To query the data, select the hotspot type and the required time range, down to minutes:
 
-![Hotspot data](/images/im/hot-spot-data.png)
+![Hotspot data](https://assets-docs.agora.io/images/im/hot-spot-data.png)
 
 ## Device Log
 
 Query and download user device logs by specifying the user ID:
 
-![Device log](/images/im/device-log.png)
+![Device log](https://assets-docs.agora.io/images/im/device-log.png)
 
 ## User Connection Status
 
 Query the user's historical connection status by user ID and time range in the previous three days.
 
-![User connection status](/images/im/user-connection-status.png)
+![User connection status](https://assets-docs.agora.io/images/im/user-connection-status.png)

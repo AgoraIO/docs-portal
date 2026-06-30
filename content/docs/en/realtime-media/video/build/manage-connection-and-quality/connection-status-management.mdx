@@ -14,7 +14,7 @@ This page describes the various channel connection states, reasons for state cha
 The following figure shows the various connection states and how the connection state changes between a user joining and leaving a channel:
 
 <PlatformStructured platform="web">
-![Connection State](/images/video-sdk/connection-state-main-web.svg)
+![Connection State](https://assets-docs.agora.io/images/video-sdk/connection-state-main-web.svg)
 </PlatformStructured>
 
 ##### Disconnection and reconnection
@@ -27,35 +27,35 @@ During the communication process, if the user is disconnected due to network pro
 * The user rejoins the channel
 
 <PlatformStructured platform="android">
-![Disconnection Connection](/images/video-sdk/connection-state-native.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-![Disconnection Connection](/images/video-sdk/connection-state-native.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-![Disconnection Connection](/images/video-sdk/connection-state-native.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
-![Disconnection Connection](/images/video-sdk/connection-state-native.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
-![Disconnection Connection](/images/video-sdk/connection-state-native.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
-![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
 </PlatformStructured>
 
 The following platform-specific timelines explain the reconnection sequence in detail.
@@ -175,7 +175,7 @@ In the diagram:
 - **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(connectionStateFailed, connectionChangedJoinFailed)` callback and the user must exit and then rejoin the channel.
 </PlatformStructured>
 <PlatformStructured platform="unity">
-![Disconnection Connection](/images/video-sdk/connection-state-unity.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-unity.svg)
 
 In the diagram:
 
@@ -215,7 +215,7 @@ In the diagram:
 - **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
 </PlatformStructured>
 <PlatformStructured platform="web">
-![Disconnection Connection](/images/video-sdk/connection-state-web.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-web.svg)
 
 In the diagram:
 
@@ -261,7 +261,7 @@ In the diagram:
 - **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
 </PlatformStructured>
 <PlatformStructured platform="blueprint">
-![Disconnection Connection](/images/video-sdk/connection-state-blueprint.svg)
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-blueprint.svg)
 
 In the diagram:
 
@@ -411,11 +411,11 @@ When the connection status changes, Video SDK sends a `FOnConnectionStateChanged
 
  1. Add a listener for the `OnConnectionStateChanged` callback as shown below:
 
-     ![Channel Connection Event](/images/video-sdk/connection-status-mng-blueprint-channel-connection-event.png)
+     ![Channel Connection Event](https://assets-docs.agora.io/images/video-sdk/connection-status-mng-blueprint-channel-connection-event.png)
 
  1. When the channel connection state changes and the `OnConnectionStateChanged` callback is triggered, it prints information about the state of the monitored network connection. You can read the current connection state and the reason for the state change from the log which helps you troubleshoot the network.
 
-     ![Channel Connection Log](/images/video-sdk/connection-status-mng-blueprint-channel-connection-log.png)
+     ![Channel Connection Log](https://assets-docs.agora.io/images/video-sdk/connection-status-mng-blueprint-channel-connection-log.png)
 </PlatformStructured>
 
 ## Reference

@@ -19,15 +19,15 @@ description: "Provides periodic call-usage and call-quality statistics."
 
 -   **Usage Insights**: Select the timezone, data granularity, and time frame in the upper-right corner.
 
-![usage-insights-filters](/images/analytics/usage-insights-filters.png)
+![usage-insights-filters](https://assets-docs.agora.io/images/analytics/usage-insights-filters.png)
 
 -   **Quality Insights**: Select the product type in the upper-left corner, and the timezone, data granularity, and time frame in the upper-right corner.
 
-![quality-insights-filters](/images/analytics/quality-insights-filters.png)
+![quality-insights-filters](https://assets-docs.agora.io/images/analytics/quality-insights-filters.png)
 
 ## Usage Insights
 
-![rtm-peak-traffic](/images/analytics/rtm-peak-traffic.png)
+![rtm-peak-traffic](https://assets-docs.agora.io/images/analytics/rtm-peak-traffic.png)
 
 The **Usage Insights** page presents metrics that can help you locate the dates with abnormalities and understand how usage is distributed in different dimensions.
 
@@ -47,7 +47,7 @@ Each line chart provides the following features:
 
 ### Metric Analysis
 
-![metric-analysis](/images/analytics/metric-analysis.png)
+![metric-analysis](https://assets-docs.agora.io/images/analytics/metric-analysis.png)
 
 The **Metric Analysis** panel has six sections: **Region**, **Network type**, **Operating system**, **SDK version**, **Device type**, and **Channel size**. Each section presents the top six values for that dimension in the chart form.
 
@@ -57,13 +57,13 @@ The six dimensions are described in [Dimensions](#dimensions).
 
 ### Media Service
 
-![rtm-media-service](/images/analytics/rtm-media-service.png)
+![rtm-media-service](https://assets-docs.agora.io/images/analytics/rtm-media-service.png)
 
 The **Media Service** panel presents peak numbers for Cloud Recording and Media Pull concurrent workers in the line chart form. Hover over a data point to see the value and its change compared to the previous week. The summary boxes in the upper-left corner highlight maximum values.
 
 ## Quality Insights
 
-![rtm-user-experience](/images/analytics/rtm-user-experience.png)
+![rtm-user-experience](https://assets-docs.agora.io/images/analytics/rtm-user-experience.png)
 
 The **Quality Insights** page presents metrics that can help you locate the dates and hours with abnormalities and understand how quality is related to usage in different dimensions.
 
@@ -91,7 +91,7 @@ Additionally, the line chart for **User experience** provides the data sampling 
 
 ### Metric Analysis
 
-![metric-analysis](/images/analytics/quality-metric-analysis.png)
+![metric-analysis](https://assets-docs.agora.io/images/analytics/quality-metric-analysis.png)
 
 The **Metric Analysis** panel has six sections: **Region**, **Network type**, **Operating system**, **SDK version**, **Device type**, and **Channel size**. Each section presents the connection between quality and usage in the chart form.
 

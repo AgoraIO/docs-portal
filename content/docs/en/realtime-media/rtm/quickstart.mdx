@@ -18,7 +18,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-android.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-android.svg)
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -46,7 +46,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
     1. Open Android Studio and select **File > New > New Project...**.
     1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
-    1. Set the project name and storage path. 
+    1. Set the project name and storage path.
     1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the project.
 
         :::note
@@ -90,24 +90,24 @@ Use either of the following methods to integrate Signaling SDK into your project
 2. Add the following to the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file under `dependencies` to integrate the SDK into your Android project:
 
     - Groovy
-    
+
         ```text
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
         ```
 
-        To resolve integration issues when co-integrating with the RTC SDK use: 
+        To resolve integration issues when co-integrating with the RTC SDK use:
 
         ```text
         implementation 'io.agora.rtm:rtm-sdk-lite:x.y.z'
         ```
 
     - Kotlin
-    
+
         ```kotlin
         implementation("io.agora.rtm:rtm-sdk:x.y.z")
         ```
 
-        To resolve integration issues when co-integrating with the RTC SDK use: 
+        To resolve integration issues when co-integrating with the RTC SDK use:
 
         ```kotlin
         implementation("io.agora.rtm:rtm-sdk-lite:x.y.z")
@@ -130,7 +130,7 @@ Use either of the following methods to integrate Signaling SDK into your project
                     }
                 }
         ```
-    
+
         :::note
         Supporting all architectures increases the app size. Best practice is to only add essential architectures based on your targets. For most use-cases, `armeabi-v7a` and `arm64-v8a` architectures are sufficient when releasing the Android app.
         :::
@@ -343,21 +343,21 @@ public class JavaActivity extends AppCompatActivity {
     private final RtmEventListener eventListener = new RtmEventListener() {
         @Override
         public void onMessageEvent(MessageEvent event) {
-            String text = "Message received from " + event.getPublisherId() 
+            String text = "Message received from " + event.getPublisherId()
                     + ", Message: " + event.getMessage().getData();
             writeToMessageHistory(text);
         }
 
         @Override
         public void onPresenceEvent(PresenceEvent event) {
-            String text = "Received presence event, user: " + event.getPublisherId() 
+            String text = "Received presence event, user: " + event.getPublisherId()
                     + ", Event: " + event.getEventType();
             writeToMessageHistory(text);
         }
 
         @Override
         public void onLinkStateEvent(LinkStateEvent event) {
-            String text = "Connection state changed to " + event.getCurrentState() 
+            String text = "Connection state changed to " + event.getCurrentState()
                     + ", Reason: " + event.getReason();
             writeToMessageHistory(text);
         }
@@ -733,7 +733,7 @@ class MainActivity : AppCompatActivity() {
 </CodeBlockTabs>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
- 
+
 ### Import Agora classes
 
 To use Signaling APIs in your project, import the relevant Agora classes and interfaces:
@@ -836,21 +836,21 @@ The event listener enables you to implement the processing logic in response to 
 private RtmEventListener eventListener = new RtmEventListener() {
     @Override
     public void onMessageEvent(MessageEvent event) {
-        String text = "Message received from " + event.getPublisherId() 
+        String text = "Message received from " + event.getPublisherId()
                 + " Message: " + event.getMessage().getData();
         writeToMessageHistory(text);
     }
 
     @Override
     public void onPresenceEvent(PresenceEvent event) {
-        String text = "Received presence event, user: " + event.getPublisherId() 
+        String text = "Received presence event, user: " + event.getPublisherId()
                 + " Event: " + event.getEventType();
         writeToMessageHistory(text);
    }
 
     @Override
     public void onLinkStateEvent(LinkStateEvent event) {
-        String text = "Connection state changed to " + event.getCurrentState() 
+        String text = "Connection state changed to " + event.getCurrentState()
                 + ", Reason: " + event.getReason();
         writeToMessageHistory(text);
     }
@@ -934,7 +934,7 @@ private fun login(token: String) {
 </CodeBlockTabs>
 
 
-To confirm that login is successful, use the `login` return value, or listen to the `onLinkStateEvent` event notification which provides the error code and reason for the login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
+To confirm that login is successful, use the `login` return value, or listen to the `onLinkStateEvent` event notification which provides the error code and reason for the login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
@@ -1223,7 +1223,7 @@ In this guide you retrieve a temporary token from a [Token Builder](https://agor
 
 ### Sample projects
 
-Agora provides the following open source sample projects on GitHub for your reference. 
+Agora provides the following open source sample projects on GitHub for your reference.
 
 **Java**
 - [Quickstart](https://github.com/AgoraIO/RTM2/tree/main/Agora-RTM2-QuickStart-Android-Java)
@@ -1255,7 +1255,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-ios-macos.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-ios-macos.svg)
 
 ## Prerequisites
 
@@ -1270,7 +1270,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -1283,7 +1283,7 @@ In Xcode, create a Single View app under the iOS platform. Configure the project
 - Product Name: `RtmQuickstart`
 - Organization Identifier: `agora`
 - User Interface: Storyboard
-- Language: Choose Swift or Objective-C 
+- Language: Choose Swift or Objective-C
 
 ### Integrate the SDK
 
@@ -1313,7 +1313,7 @@ Use either of the following methods to integrate Signaling SDK into your project
     ```
 
     Replace `Your App` with your target name and `x.y.z` with the specific SDK version number, such as 2.2.0. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
-  
+
     :::warning
     If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
     :::
@@ -1613,7 +1613,7 @@ class ChatViewModel: NSObject, ObservableObject, AgoraRtmClientDelegate {
         initializeEngine()
     }
 
-    // Initialization the engine 
+    // Initialization the engine
     func initializeEngine() {
         if rtmKit == nil {
             let config = AgoraRtmClientConfig(appId: appid)
@@ -1627,10 +1627,10 @@ class ChatViewModel: NSObject, ObservableObject, AgoraRtmClientDelegate {
             addToMessageList(str: "RTM already logged in! Logout first!")
             return
         }
-        
+
         let config = AgoraRtmClientConfig(appId: appid, userId: username)
         rtmKit = try! AgoraRtmClientKit(config, delegate: self)
-        
+
         rtmKit?.login(token, userId: username, completion: { response, error in
             if let error = error {
                 self.addToMessageList(str: "Login failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
@@ -1995,7 +1995,7 @@ Before calling any other Signaling SDK API, initialize an `AgoraRtmClientKit` ob
 <CodeBlockTab value="swift">
 
 ```swift
-// Initialization the engine 
+// Initialization the engine
 func initializeEngine() {
     if rtmKit == nil {
         let config = AgoraRtmClientConfig(appId: appid)
@@ -2092,10 +2092,10 @@ func login() {
         addToMessageList(str: "RTM already logged in! Logout first!")
         return
     }
-    
+
     let config = AgoraRtmClientConfig(appId: appid, userId: username)
     rtmKit = try! AgoraRtmClientKit(config, delegate: self)
-    
+
     rtmKit?.login(token, userId: username, completion: { response, error in
         if let error = error {
             self.addToMessageList(str: "Login failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
@@ -2126,13 +2126,13 @@ func login() {
 
 </CodeBlockTabs>
 
-Use the `login` return value, or listen to the `didReceiveLinkStateEvent` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `connecting`. After a successful login, the state is updated to `Connected`. 
+Use the `login` return value, or listen to the `didReceiveLinkStateEvent` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `connecting`. After a successful login, the state is updated to `Connected`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `AgoraRtmLinkState` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
-Use the `loginByToken` return value, or listen to the `connectionChangedToState` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `AgoraRtmClientConnectionStateConnecting`. After a successful login, the state is updated to `AgoraRtmClientConnectionStateConnected`. 
+Use the `loginByToken` return value, or listen to the `connectionChangedToState` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `AgoraRtmClientConnectionStateConnecting`. After a successful login, the state is updated to `AgoraRtmClientConnectionStateConnected`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `connectionChangedToState` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
@@ -2349,7 +2349,7 @@ Take the following steps to test the sample code:
 
 1. In your code, replace the values for `appID` and `token` with your app ID and the generated token.
 
-1. Choose the device or simulator you want to run the app on from the device selection dropdown menu in the Xcode toolbar. 
+1. Choose the device or simulator you want to run the app on from the device selection dropdown menu in the Xcode toolbar.
 
 1. Click **Run** in the Xcode toolbar, or press Command + R on your keyboard. Xcode builds your project and launches the app on the selected device or simulator.
 
@@ -2379,7 +2379,7 @@ In this guide you retrieve a temporary token from a [Token Builder](https://agor
 
 ### Sample projects
 
-Agora provides the following open source sample projects on GitHub for your reference. 
+Agora provides the following open source sample projects on GitHub for your reference.
 
 - [Quickstart - Swift](https://github.com/AgoraIO/RTM2/tree/main/Agora-RTM2-QuickStart-iOS-Swift)
 - [Quickstart - Objective-C](https://github.com/AgoraIO/RTM2/tree/main/Agora-RTM2-QuickStart-iOS-Objective-C)
@@ -2408,7 +2408,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-javascript.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-javascript.svg)
 
 ## Prerequisites
 
@@ -2424,7 +2424,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -2611,7 +2611,7 @@ A complete code sample that implements the basic features of Signaling is presen
 ```
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
- 
+
 ### Initialize the Signaling engine
 
 Before calling any other Signaling SDK API, initialize an `RTM` object instance.
@@ -2671,7 +2671,7 @@ try {
 }
 ```
 
-Use the `login` return value, or listen to the `status` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
+Use the `login` return value, or listen to the `status` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `status` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
@@ -2762,9 +2762,9 @@ Take the following steps to test the sample code:
 
 1. Update the value for the `userId` with an integer value.
 
-1. Save the file and run it in your browser. 
+1. Save the file and run it in your browser.
 
-1. Make a copy of the project. Use the same `app_id` but a different `userId`. Launch another instance of the page in a separate browser tab. 
+1. Make a copy of the project. Use the same `app_id` but a different `userId`. Launch another instance of the page in a separate browser tab.
 
 1. Type a message in the text input box in either instance and click the **Send** button. The message is displayed in the other app instance.
 
@@ -2782,7 +2782,7 @@ In this guide you retrieve a temporary token from a [Token Builder](https://agor
 
 ### Sample project
 
-Explore and experiment with the [Signaling Online demo](https://digitallysavvy.github.io/RTM2/). To download and customize the source code, refer to the [GitHub repository](https://github.com/digitallysavvy/RTM2). 
+Explore and experiment with the [Signaling Online demo](https://digitallysavvy.github.io/RTM2/). To download and customize the source code, refer to the [GitHub repository](https://github.com/digitallysavvy/RTM2).
 
 ### API reference
 
@@ -2803,7 +2803,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-flutter.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-flutter.svg)
 
 ## Prerequisites
 
@@ -2830,7 +2830,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -2870,7 +2870,7 @@ To create a new Flutter project, follow these steps:
 
     void main() async {
         // Wait for Widgets to be initialized.
-        WidgetsFlutterBinding.ensureInitialized();        
+        WidgetsFlutterBinding.ensureInitialized();
 
         // Create a Signaling client instance
 
@@ -3012,7 +3012,7 @@ Follow the implementation steps to understand the core API calls in the sample c
 
 ### Initialize the Signaling engine
 
-Before calling any other Signaling SDK API, initialize an `RtmClient` object instance. Add the following code to the `lib/main.dart` file. 
+Before calling any other Signaling SDK API, initialize an `RtmClient` object instance. Add the following code to the `lib/main.dart` file.
 
 ```dart
 import 'package:agora_rtm/agora_rtm.dart';
@@ -3243,7 +3243,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-linux.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-linux.svg)
 
 ## Prerequisites
 
@@ -3259,7 +3259,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -3561,7 +3561,7 @@ int main(int argc, const char * argv[]) {
 ```
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
- 
+
 ### Include the header file
 
 To use Signaling APIs in your project, include the `IAgoraRtmClient` header file:
@@ -3642,7 +3642,7 @@ rtmClient_->login(TOKEN.c_str(), requestId);
 ```
 After you call this method, the SDK triggers the `onLoginResult` callback and returns the API call result.
 
-Use the `login` return value, or listen to the `onConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_CONNECTION_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_CONNECTION_STATE_CONNECTED`. 
+Use the `login` return value, or listen to the `onConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_CONNECTION_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_CONNECTION_STATE_CONNECTED`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
@@ -3734,7 +3734,7 @@ Take the following steps to test the sample code:
     ./RTMQuickStart
     ```
 
-    You see menu options to **subscribe**, **unsubscribe**, **publish**, and **logout**. 
+    You see menu options to **subscribe**, **unsubscribe**, **publish**, and **logout**.
 
 5. Follow the prompts to **subscribe** to a channel.
 
@@ -3775,7 +3775,7 @@ To create a pub/sub session for Signaling, implement the following steps in your
 
 **Signaling workflow**
 
-![](/images/signaling/get-started-workflow-unity.svg)
+![](https://assets-docs.agora.io/images/signaling/get-started-workflow-unity.svg)
 
 ## Prerequisites
 
@@ -3798,7 +3798,7 @@ To implement the code presented on this page you need to have:
 - Ensure that a firewall is not blocking your network communication.
 
 :::note
-Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details. 
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
 :::
 
 ## Project setup
@@ -3833,26 +3833,26 @@ SampleScene
  - Image            // Window background
  - Txt1             // Text label, text content is Send string message to message channel
  - InputField1      // Message input box
- - Btn1             // Send message 
+ - Btn1             // Send message
  - Txt2             // Text label, text content is Send binary message to stream channel
- - Btn2             // Create Stream Channel 
- - Btn3             // Join Stream Channel 
- - Btn4             // Join Topic 
- - Btn5             // Subscribe to message publishers in Topic 
+ - Btn2             // Create Stream Channel
+ - Btn3             // Join Stream Channel
+ - Btn4             // Join Topic
+ - Btn5             // Subscribe to message publishers in Topic
  - InputField2      // Message input box
  - Btn6             // Send message button
  - Btn7             // Release Stream Channel button
  - Btn8             // Leave Stream Channel button
  - Btn9             // Leave Topic button
- - Btn10            // Unsubscribe from message publishers in Topic 
+ - Btn10            // Unsubscribe from message publishers in Topic
  - Pannel           // Information output panel
      - Txt3         // Information output text
 - EventSystem
 ```
 
-Your interface should look similar to the following: 
+Your interface should look similar to the following:
 
-![](/images/signaling/signaling-quickstart-ui-unity.png)
+![](https://assets-docs.agora.io/images/signaling/signaling-quickstart-ui-unity.png)
 
 ## Implement Signaling
 
@@ -4329,11 +4329,11 @@ public class HelloWorld : MonoBehaviour
 ```
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
- 
+
 ### Import Agora classes
 
 To use the relevant Unity and Signaling APIs in your project, import the corresponding namespaces:
- 
+
 ```csharp
 using System.Collections;
 using System.Collections.Generic;
@@ -4473,7 +4473,7 @@ else
 }
 ```
 
-Use the `LoginAsync` return value, or listen to the `OnConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`. 
+Use the `LoginAsync` return value, or listen to the `OnConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `CONNECTING`. After a successful login, the state is updated to `CONNECTED`.
 
 :::note[Best practice]
 To continuously monitor the network connection state of the client, best practice is to continue to listen for `OnConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
@@ -4578,13 +4578,13 @@ var (status,response) = await rtmClient.LogoutAsync();
 
 Take the following steps to test the sample code:
 
-1. In your code, replace `your_appId` with your app ID from Agora Console and `your_userId` with a numeric string. 
+1. In your code, replace `your_appId` with your app ID from Agora Console and `your_userId` with a numeric string.
 
 1. Use the [Token Builder](https://agora-token-generator-demo.vercel.app/) to generate a Signaling token:
 
     1. Select Signaling from the Agora products dropdown.
     1. Fill in your app ID and app certificate from [Agora Console](https://console.agora.io/v2). Leave the remaining fields blank.
-    1. Click **Generate Token**. 
+    1. Click **Generate Token**.
     1. In your code, replace `your_token` with the generated token.
 
 1. Repeat the previous step to generate a stream channel token but this time also fill in the channel name with the value for `stChannelName` and the User ID with the value for `userId` from your code. Use the generated token to replace `your_RTC_token` in your code.

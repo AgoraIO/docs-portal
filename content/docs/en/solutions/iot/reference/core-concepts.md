@@ -10,7 +10,7 @@ This article introduces the key processes and concepts you need to know to use A
 
 ## Using the Agora Console
 
-![Create project in Agora Console](/images/common/create-project.svg)
+![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 
 #### Agora Console
 

@@ -26,7 +26,7 @@ Before configuring network access, ensure the following:
 6. After the connection succeeds, click **Configure Network** to send the Wi-Fi credentials to the device.
 7. After the network configuration completes, click **Disconnect** to end the Bluetooth connection.
 
-![Android app](/images/convo-ai-device-kit/convo-ai-device-app.jpg)
+![Android app](https://assets-docs.agora.io/images/convo-ai-device-kit/convo-ai-device-app.jpg)
 
 ## Set up network access
 

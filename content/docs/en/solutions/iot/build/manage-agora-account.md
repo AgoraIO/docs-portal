@@ -5,7 +5,7 @@ platform: android
 ---
 
 
-This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
+This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token.
 
 ## Get started with Agora
 
@@ -57,7 +57,7 @@ To create an Agora project, do the following:
 
 3. Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
 
-    ![configure_project](/images/signaling/create_new_project.png)
+    ![configure_project](https://assets-docs.agora.io/images/signaling/create_new_project.png)
 
 4. Click **Submit**. You see the new project on the **Projects** page.
 
@@ -67,7 +67,7 @@ Agora automatically assigns a unique identifier to each project, called an App I
 
 To copy this App ID, find your project on the [Projects](https://console.agora.io/v2/project-management) page in Agora Console, and click the copy icon in the **App ID** column.
 
-![configure_project](/images/signaling/app-id.png)
+![configure_project](https://assets-docs.agora.io/images/signaling/app-id.png)
 
 ## Security and authentication
 
@@ -75,17 +75,17 @@ Use the following features from your Agora account to implement security and aut
 
 ### Get the App Certificate
 
-When generating an authentication token on your app server, you need an App Certificate, in addition to the App ID. 
+When generating an authentication token on your app server, you need an App Certificate, in addition to the App ID.
 
 To get an App Certificate, do the following:
 
 1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon to edit the project you want to use.
 
-    ![Console project management page](/images/common/console-project-management-page.png)
+    ![Console project management page](https://assets-docs.agora.io/images/common/console-project-management-page.png)
 
 1. Click the copy icon under **Primary Certificate**.
 
-    ![Console primary certificate](/images/common/console-primary-certificate.png)
+    ![Console primary certificate](https://assets-docs.agora.io/images/common/console-primary-certificate.png)
 
 ### Generate temporary tokens
 

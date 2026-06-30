@@ -18,10 +18,10 @@ Follow these steps to enable the Interactive Whiteboard in Agora Console:
 1. Log in to [Agora Console](https://console.agora.io/v2), and click the **Projects** in the navigation panel.
 
 2. On the **My Projects** page, click the **Edit** ✎ icon against the project for which you want to enable Interactive Whiteboard.
-    ![](/images/common/console-configure-project.png)
+    ![](https://assets-docs.agora.io/images/common/console-configure-project.png)
 
 3. Under **ALL FEATURES**, select **Whiteboard**, and then toggle the **Enable Whiteboard** button.
-    ![Enable Whiteboard](/images/interactive-whiteboard/console-enable-whiteboard.png)
+    ![Enable Whiteboard](https://assets-docs.agora.io/images/interactive-whiteboard/console-enable-whiteboard.png)
 
 ## Get security credentials for your whiteboard project
 
@@ -37,7 +37,7 @@ To get the security credentials:
 
 1. Under **ALL FEATURES**, select **Whiteboard**, and then choose **Basic information**.
 
-    ![Security Credentials](/images/interactive-whiteboard/console-security-credentials.png)
+    ![Security Credentials](https://assets-docs.agora.io/images/interactive-whiteboard/console-security-credentials.png)
 
 3. **Copy** ⧉ the **App Identifier**, **Access Key (AK)**, and **Secret Key (SK)**. Save them to a secure location.
 
@@ -73,15 +73,15 @@ Follow these steps to enable one or more features and configure the storage sett
 
 3. On the **Services Configuration** view, select a data center and click **Configure** ✎. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](../../reference/rest-api/room-management.md#create-a-room-post) API; otherwise, the service configurations does not take effect.
 
-    ![](/images/interactive-whiteboard/console-services-configuration.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-services-configuration.png)
 
 4. On the **Services configuration** page, one or more of **Docs to Picture**, **Docs to web**, or **Screenshot**.
-    ![](/images/interactive-whiteboard/console-configure-service.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-configure-service.png)
 
 5. Set up the storage space:
     - Click the **Storage** dropdown and select a previously configured storage space in the drop-down list or click **Create** to add a new storage space.
 
-    ![](/images/interactive-whiteboard/console-storage.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-storage.png)
 
     To add a new storage space, fill in the following information:
     - **Name**: (Required) The name of your storage space.

@@ -11,7 +11,7 @@ Before calling the following methods, make sure you understand the call frequenc
 
 The following table lists common request and response parameters of the Chat RESTful APIs:
 
-### Request parameters 
+### Request parameters
 
 | Parameter | Type | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Required |
 | :--------- | :----- |:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------- |
@@ -34,7 +34,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 
 </Slot>
 
-### Response parameters 
+### Response parameters
 
 | Parameter | Type | Description |
 | :------------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -189,7 +189,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter      | Type   | Description |
 | :------- |:-------------|:-------------|
-| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the username of the message recipient and value the message ID. For example, if the returned data is `"user2":"1029457500870543736"`, it means that user2 has sent a message with the ID of 1029457500870543736.  | 
+| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the username of the message recipient and value the message ID. For example, if the returned data is `"user2":"1029457500870543736"`, it means that user2 has sent a message with the ID of 1029457500870543736.  |
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
@@ -202,7 +202,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 - Send a text message to the specified user without synchronizing the message with the sender
 
     ```bash
-    # Replace {YourToken} with the app token generated on your server         
+    # Replace {YourToken} with the app token generated on your server
     curl -X POST -i 'http://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["user2"],"type": "txt","body": {"msg": "testmessages"},"roam_ignore_users": [],"ext": {"em_ignore_notification": true}}'
     ```
 
@@ -460,7 +460,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter      | Type   | Description |
 | :------- |:-------------|:-------------|
-| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the group ID that receives the message and value the message ID. For example, if the returned data is `"184524748161025": "1029544257947437432"`, it means that a message with the ID of 1029544257947437432 is sent in chat group 184524748161025.  | 
+| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the group ID that receives the message and value the message ID. For example, if the returned data is `"184524748161025": "1029544257947437432"`, it means that a message with the ID of 1029544257947437432 is sent in chat group 184524748161025.  |
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
@@ -523,7 +523,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
     # Replace {YourToken} with the app token generated on your server
     curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["184524748161025"],"type": "img","body": {"filename":"testimg.jpg","secret":"VfXXXXNb_","url":"https://XXXX/XXXX/XXXX/chatfiles/55f12940-XXXX-XXXX-8a5b-ff2336f03252","size":{"width":480,"height":720}}}'
     ```
-    
+
 - Send a voice message
 
     ```bash
@@ -773,7 +773,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Parameter      | Type   | Description |
 | :------- |:-------------|:-------------|
-| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the chat room ID that receives the message and value the message ID. For example, if the returned data is `"185145305923585": "1029545553039460728"`, it means that a message with the ID of 1029545553039460728 is sent in chat room 185145305923585.  | 
+| `data` | JSON | The detailed content of the response. The value of this parameter includes a key-value pair where key represents the chat room ID that receives the message and value the message ID. For example, if the returned data is `"185145305923585": "1029545553039460728"`, it means that a message with the ID of 1029545553039460728 is sent in chat room 185145305923585.  |
 
 For the other parameters and descriptions, see [Common parameters](#param).
 
@@ -821,7 +821,7 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 - Send a location message
 
     ```bash
-    # Replace {YourToken} with the app token generated on your server 
+    # Replace {YourToken} with the app token generated on your server
     curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatrooms"  -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d '{"from": "user1","to": ["185145305923585"],"type": "loc","body":{"lat": "39.966","lng":"116.322","addr":"North America"}}'
     ```
 
@@ -1261,22 +1261,22 @@ This method enables you to upload images, audios, videos, or other types of file
 - Images: After uploading an image, the Agora server automatically generates the thumbnail of the image.
 - Videos: The Agora server does not generate thumbnails for videos automatically. After uploading a video, you must recall this method to upload the thumbnail for the video yourself.
 
-    
-        
+
+
             File sizeThumbnail size
-        
-    
-    
-        
+
+
+
+
             ≤10 MBThe size of the thumbnail remains the same as that of the original file.
-        
-        
+
+
             10 MBA thumbnail is generated based on the specified `thumbnail-height` and `thumbnail-width` parameters.
-        
-        
+
+
             If you leave `thumbnail-height` and `thumbnail-width` empty, the height and width of the thumbnail is 170 × 170 pixels by default.
-        
-    
+
+
 
 Take note of the following considerations before calling this method:
 
@@ -1362,7 +1362,7 @@ curl -X POST 'https://XXXX/XXXX/XXXX/chatfiles' -H 'Authorization: Bearer ' -H '
 
 ## Download a file
 
-This method downloads images, audio, video, or other types of files. 
+This method downloads images, audio, video, or other types of files.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -1467,7 +1467,7 @@ curl -X GET -H 'Accept: application/octet-stream' -H 'Authorization: Bearer {You
 
 ## Retrieve historical messages
 
-This method retrieves historical messages sent and received by the user. 
+This method retrieves historical messages sent and received by the user.
 
 - For each request, you can retrieve all the historical messages sent and received within one hour from the specified time.
 - Messages cannot be retrieved in real time. For example, at 9 a.m., you can retrieve messages that are sent or received at 8 a.m.
@@ -1522,18 +1522,18 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}'
 #### Response example
 
 ```json
-{  
-    "action": "get",  
-    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",  
-    "uri": "'http://XXXX/XXXX/XXXX/chatmessages/2018112717",  
-    "data": [    
-        {      
-            "url": "http://XXXX?Expires=1543316122&OSSAccessKeyId=XXXX&Signature=XXXX"    
+{
+    "action": "get",
+    "application": "8be024f0-XXXX-XXXX-b697-5d598d5f8402",
+    "uri": "'http://XXXX/XXXX/XXXX/chatmessages/2018112717",
+    "data": [
+        {
+            "url": "http://XXXX?Expires=1543316122&OSSAccessKeyId=XXXX&Signature=XXXX"
         }
-    ],  
-    "timestamp": 1543314322601,  
-    "duration": 0,  
-    "organization": "XXXX",  
+    ],
+    "timestamp": 1543314322601,
+    "duration": 0,
+    "organization": "XXXX",
     "applicationName": "testapp"
 }
 ```
@@ -1552,28 +1552,28 @@ Historical messages contain the following parameters in JSON format:
 | `to` | String | The message recipient.For a one-to-one chat, this parameter indicates the peer user that receives the message.For a group chat, this parameter indicates the chat group ID.|
 | `chat_type` | String | The chat type:`chat`: One-to-one chat.`groupchat`: Group chat.`chatroom`: Chat room. |
 | `payload` | JSON | The content of the message, including message extensions and customzied message attributes. |
-  
+
 ```json
-{    
-    "msg_id": "5I02W-XX-8278a",     
-    "timestamp": 1403099033211,     
-    "direction":"outgoing",    
-    "to": "XXXX",    
-    "from": "XXXX",     
-    "chat_type": "chat",     
-    "payload": 
-    {        
+{
+    "msg_id": "5I02W-XX-8278a",
+    "timestamp": 1403099033211,
+    "direction":"outgoing",
+    "to": "XXXX",
+    "from": "XXXX",
+    "chat_type": "chat",
+    "payload":
+    {
         "bodies": [
-            {             
-            // For different message types, the parameters differ         
-            }        
-        ],        
-        "ext": 
-            {            
-                "key1": "value1",              ...        
-            },         
-        "from":"XXXX",         
-        "to":"XXXX"    
+            {
+            // For different message types, the parameters differ
+            }
+        ],
+        "ext":
+            {
+                "key1": "value1",              ...
+            },
+        "from":"XXXX",
+        "to":"XXXX"
     }
 }
 ```
@@ -1922,7 +1922,7 @@ Once a message is sent, you can call this API to recall it. This API recalls a m
 
 The default time limit for recalling a message is two minutes. You can extend this time frame to up to 7 days in Agora Console. To do so, select a project that enables Agora Chat, then click **Configure** > **Features** > **Message recall**.
 
-![message-recall](/images/im/message-recall.png)
+![message-recall](https://assets-docs.agora.io/images/im/message-recall.png)
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -2000,15 +2000,15 @@ If the request fails, refer to [Status codes](./http-status-codes) for possible 
 
 ```bash
 # Replace {YourToken} with the app token generated on your server
-curl -i -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer {YourToken}" 
-"http://XXXX/XXXX/XXXX/messages/msg_recall" 
+curl -i -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer {YourToken}"
+"http://XXXX/XXXX/XXXX/messages/msg_recall"
 -d '{
     "msg_id": "1028442084794698104",
     "to": "user2",
     "from": "user1",
     "chat_type": "chat",
     "force": true
-}'  
+}'
 ```
 
 #### Response example
@@ -2039,12 +2039,12 @@ curl -i -X POST -H 'Content-Type: application/json' -H 'Accept: application/json
 
     ```json
     {
-        "msgs": 
+        "msgs":
         [
             {   "msg_id":"673296835082717140",
-                "recalled":"not_found msg" 
+                "recalled":"not_found msg"
             }
-        ] 
+        ]
     }
     ```
   Possible causes for failing to recall the message include the following:

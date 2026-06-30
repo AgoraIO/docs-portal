@@ -11,7 +11,7 @@ Using Agora Console you subscribe to specific events for your project and config
 
 The following figure illustrates the workflow when Notifications is enabled for the specific Media Pull events you subscribe to:
 
-![media-pull](/images/notification-center-service/ncs-media-pull.svg)
+![media-pull](https://assets-docs.agora.io/images/notification-center-service/ncs-media-pull.svg)
 
 1. A user commits an action that creates an event.
 2. Notifications sends an HTTPS POST request to your webhook.
@@ -206,11 +206,11 @@ To enable Notifications:
 
 1. Log in to [Agora Console](https://console.agora.io/v2). On the **Projects** tab, locate the project for which you want to enable Notifications and click **Edit**.
 
-    ![Project tab](/images/video-sdk/enable-ncs-project-tabs.png)
+    ![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
 
 2. In the **All Features** section, open the **Notifications** tab and click on the service for which you want to enable notifications. The section expands to show configuration options.
 
-    ![Notification tab](/images/video-sdk/enable-ncs-notification-tab.png)
+    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
 
 3. Fill in the following information:
 
@@ -235,7 +235,7 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
     * **Whitelist**: If your server is behind a firewall, check the box here, and ensure that you call the [IP address query API](#ip-address-query-api) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
 
-    ![Notification tab](/images/video-sdk/enable-ncs-configuration-tab.png)
+    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
 
 4. Copy the **Secret** displayed against the product name by clicking the copy icon. You use this secret to [Add signature verification](#add-signature-verification).
 
@@ -247,7 +247,7 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
     3. When the Notifications health test succeeds, read the prompt and press **Apply Settings**. After your configuration is saved, the **Status** of Notifications shows **Enabled**.
 
-        ![Apply Settings](/images/video-sdk/enable-ncs-apply-settings.png)
+        ![Apply Settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
 
         If the Notifications health test fails, follow the prompt on the Agora Console to troubleshoot the error. Common errors include the following:
 
@@ -261,7 +261,7 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
 <details>
 <summary>Video walkthrough</summary>
-<video src="/images/video-sdk/enable-notifications.mp4" controls loop>
+<video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls loop>
     Your browser does not support the <code>video</code> element.
 </video>
 </details>

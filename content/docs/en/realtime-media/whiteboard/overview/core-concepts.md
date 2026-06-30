@@ -7,7 +7,7 @@ Interactive Whiteboard extends Agora's realtime stack with a shared visual works
 
 ## Core concepts
 
-![Whiteboard concepts](/images/interactive-whiteboard/whiteboard-concepts.png)
+![Whiteboard concepts](https://assets-docs.agora.io/images/interactive-whiteboard/whiteboard-concepts.png)
 
 - **AppIdentifier**: the unique identifier of your whiteboard project. You use it when initializing the SDK.
 - **Access Key and Secret Key**: the credential pair used to generate whiteboard tokens.

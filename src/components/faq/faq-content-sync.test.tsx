@@ -90,12 +90,7 @@ describe('faq content integrity', () => {
     }
   });
 
-  it('keeps local image references pointing at real assets', () => {
-    for (const imageRef of listFaqLocalImageRefs()) {
-      expect(
-        existsSync(path.join(process.cwd(), 'public', imageRef)),
-        imageRef,
-      ).toBe(true);
-    }
+  it('does not leave FAQ image references pointing at local public assets', () => {
+    expect(listFaqLocalImageRefs()).toEqual([]);
   });
 });

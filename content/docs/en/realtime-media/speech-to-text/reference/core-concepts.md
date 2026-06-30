@@ -66,7 +66,7 @@ Agora SDRTN<sup>®</sup> enables live user engagement through real-time communic
 [Agora Console](https://console.agora.io/v2) is the main dashboard where you manage your Agora projects and services. Before you can use Agora's SDKs, you must first create a project in the Agora Console. See [Agora account management](./manage-agora-account) for
   details.
 
-![Create project in Agora Console](/images/common/create-project.svg)
+![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 
 Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an Agora account, you use the Agora Console to perform the following tasks:
 

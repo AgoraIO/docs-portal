@@ -13,7 +13,7 @@ Standard and Premium, see [pricing](../../reference/pricing.md).
 
 **Want to try out this functionality? There is a 30 day trial period just for you. Please [submit a ticket](https://agora-ticket.agora.io/) to enroll for the trial.**
 
-## Project setup 
+## Project setup
 
 To set up Agora Analytics for your account, take the following steps:
 
@@ -45,16 +45,16 @@ To set up Agora Analytics for your account, take the following steps:
 
       When you click an indicator, it is used as the main analysis indicator for subsequent analysis.
 
-      ![](/images/analytics/diplus-metrics-selection.png)
+      ![](https://assets-docs.agora.io/images/analytics/diplus-metrics-selection.png)
 
 4. **Set global filters**
 
     At the top of the Data Studio page is the global filter area. The filter conditions in this area affect the global data on the page.
 
-    ![](/images/analytics/diplus-dimension-and-time-filter.png)
+    ![](https://assets-docs.agora.io/images/analytics/diplus-dimension-and-time-filter.png)
 
     * **Dimension filtering**: Click the **Add Filter** button on the left to select a dimension in the drop-down box for filtering. Up to three [dimensions](#dimensions) can be selected at the same time, and the effective range is the time series analysis area and the dimension analysis area. The dimension values in the drop-down box are sorted in descending order of the number of active calls.
-    
+
     * **Time filtering**: Use the right side of the global filter area to customize the time range, time granularity (by day/hour) and time zone (local/UTC time). It supports querying data within 90 days. The long query range is 30 days. The time series thumbnail in the indicator selection area depends on the time filter conditions in the global filter.
 
 5. **Start the analysis**
@@ -73,7 +73,7 @@ Data Insights Plus supports the following analysis methods:
 
 Above the analysis area on the Data Insights page is the time series analysis section, which displays the changes in indicators over time based on the selected conditions.
 
-![](/images/analytics/diplus-timing-analysis.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-timing-analysis.png)
 
 Timing analysis includes the following functions:
 
@@ -84,7 +84,7 @@ Timing analysis includes the following functions:
     You interact with the line chart in the following ways:
 
     * Hover over a data point to display the indicator-dimension group name, timestamp, and indicator value.
-    
+
     * Click a data point to:
         * View hour-level data. Use this point as the data range granularity to switch to a one-hour view.
         * Perform dimensional decomposition. Initiate dimensional analysis with this data point.
@@ -98,11 +98,11 @@ Timing analysis includes the following functions:
 
 The dimensional analysis area is located below the analysis area on the data insight page. It shows the distribution of selected indicators under each dimension.
 
-![](/images/analytics/diplus-dimensional-analysis.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-dimensional-analysis.png)
 
 Dimensional analysis includes the following capabilities:
 
-* **Dimension Time Picker** 
+* **Dimension Time Picker**
 
     * The dimension analysis area features an independent time selector that aligns with the selected time interval in the time series analysis area. It maintains the same time granularity as the data points in the time series analysis.
     * By default, when you select a time interval in the time series analysis chart, the dimension analysis displays the result for the last data point within that interval.
@@ -112,7 +112,7 @@ Dimensional analysis includes the following capabilities:
 
 * **One-dimensional analysis**: In addition to the quick distribution, the analysis dimensions supported by the selected indicator are displayed on the left side of the dimensional analysis area. When you click a dimension, the analysis result list of this dimension is displayed on the right.
 
-    ![](/images/analytics/diplus-individual-dimension-analysis.png)
+    ![](https://assets-docs.agora.io/images/analytics/diplus-individual-dimension-analysis.png)
 
 * **Linkage with global filter conditions**: The charts in the quick distribution of dimensional analysis and the results of one-dimensional analysis are generated according to the filter conditions set in the global filter.
 
@@ -120,7 +120,7 @@ Dimensional analysis includes the following capabilities:
 
 Sampling analysis is only supported when video/audio freeze rate and network transmission delay rate are selected as the main analysis indicators. Click a data point in the time series analysis diagram of these three indicators, and select **Data Sampling** to sample and analyze the data point.
 
-![](/images/analytics/diplus-sampling-analysis.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-sampling-analysis.png)
 
 Sampling analysis includes the following functions:
 
@@ -135,9 +135,9 @@ Sampling analysis includes the following functions:
 
 ### Comparative analysis
 
-You find the comparative analysis button in the upper right corner of the analysis area, click and select the desired analysis method to start the comparative analysis. 
+You find the comparative analysis button in the upper right corner of the analysis area, click and select the desired analysis method to start the comparative analysis.
 
-![](/images/analytics/diplus-comparative-analysis.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-comparative-analysis.png)
 
 Comparative analysis supports the following methods:
 
@@ -145,7 +145,7 @@ Comparative analysis supports the following methods:
 
 Indicator comparison allows you to analyze and compare the changing trends of different indicators within the same time period.
 
-![](/images/analytics/diplus-index-comparison.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-index-comparison.png)
 
 Consider the following when using this feature:
 
@@ -155,23 +155,23 @@ Consider the following when using this feature:
 
 #### Time comparison
 
-Time comparison is utilized to compare the data performance and change trend of the same indicator across different time periods. 
+Time comparison is utilized to compare the data performance and change trend of the same indicator across different time periods.
 
-![](/images/analytics/diplus-time-comparison.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-time-comparison.png)
 
 The time comparison method supports the following selection modes:
 
-    * **Comparison with the previous cycle**: Compares the data from the previous 14-day cycle. 
+    * **Comparison with the previous cycle**: Compares the data from the previous 14-day cycle.
     * **Compare with last month**: Compares the data from the corresponding period in the previous month.
-    * **Custom time**: Allows you to choose a comparison period based on your preference. The granularity is in days, and the number of days selected should match the current time period. 
-    
+    * **Custom time**: Allows you to choose a comparison period based on your preference. The granularity is in days, and the number of days selected should match the current time period.
+
 Ensure that the start time of all comparison time periods does not precede the earliest query time permitted by your package.
 
 #### Global comparison
 
 Global comparison is used to compare the results of a certain indicator under dimensional conditions with global results. When using this method, please note that the global comparison only takes effect when the main analysis indicator is selected and the dimension filter condition is added.
 
-![](/images/analytics/diplus-global-comparison.png)
+![](https://assets-docs.agora.io/images/analytics/diplus-global-comparison.png)
 
 ## Reference
 

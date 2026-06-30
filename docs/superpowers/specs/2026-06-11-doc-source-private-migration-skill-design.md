@@ -80,7 +80,7 @@ Target content rules:
 - `meta.json` navigation
 - Markdown or MDX native first
 - no legacy JSX survival
-- repo-local static assets under `public/images/**`
+- docs-owned static assets under `https://assets-docs.agora.io/images/**`
 
 ## Source Priority
 
@@ -182,7 +182,7 @@ Plain email references should be normalized to `mailto:` links when appropriate.
 
 ### Local images
 
-If a page references a source-controlled image and that image exists under `Doc-Source-Private/assets/images/**`, the migration must copy it into the portal's `public/images/**` tree and rewrite the page to use the local asset path.
+If a page references a source-controlled image and that image exists under `Doc-Source-Private/assets/images/**`, the migration must rewrite the page to use the corresponding `https://assets-docs.agora.io/images/**` URL and verify or request publication of the asset.
 
 Default behavior:
 
@@ -193,7 +193,7 @@ Default behavior:
 
 If the source page references a remote image such as `https://web-cdn.agora.io/...`:
 
-- prefer downloading it to `public/images/**`
+- prefer publishing it to `https://assets-docs.agora.io/images/**`
 - if download fails or is blocked, keep the remote URL temporarily
 - record the failure in the migration report
 
@@ -273,7 +273,7 @@ Each migration run should produce a structured report with:
 - migrated source file count
 - generated target file count
 - created or updated `meta.json` files
-- copied local asset count
+- verified or requested S3 asset count
 - unresolved internal links
 - unresolved remote images
 - skipped or deferred pages

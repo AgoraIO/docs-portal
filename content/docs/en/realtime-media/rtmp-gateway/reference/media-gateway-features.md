@@ -8,7 +8,7 @@ Media Gateway enables users to push content to Agora SDRTN(R) using standard str
 
 The following figure shows the overall architecture of Media Gateway:
 
-![Product Architecture](/images/media-gateway/media-gateway-flow.svg)
+![Product Architecture](https://assets-docs.agora.io/images/media-gateway/media-gateway-flow.svg)
 
 ## Product features
 

@@ -3,7 +3,7 @@ title: "Core concepts"
 description: "Ideas that are central to developing with Agora."
 ---
 
-Agora’s Signaling SDK enables real-time metadata synchronization and low-latency event notifications between edge devices, servers and channel attributes in your apps. 
+Agora’s Signaling SDK enables real-time metadata synchronization and low-latency event notifications between edge devices, servers and channel attributes in your apps.
 
 This article introduces the key processes and concepts you need to know to use the Signaling SDK.
 
@@ -67,7 +67,7 @@ Users cannot simultaneously log in to Signaling using the same UID from multiple
 [Agora Console](https://console.agora.io/v2) is the main dashboard where you manage your Agora projects and services. Before you can use Agora's SDKs, you must first create a project in the Agora Console. See [Agora account management](./manage-agora-account.md) for
   details.
 
-![Create project in Agora Console](/images/common/create-project.svg)
+![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 
 Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an Agora account, you use the Agora Console to perform the following tasks:
 

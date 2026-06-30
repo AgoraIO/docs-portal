@@ -41,7 +41,7 @@ To create an Agora project, do the following:
 2. Click **Create New**.
 3. Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
 
-    ![Create new project](/images/signaling/create_new_project.png)
+    ![Create new project](https://assets-docs.agora.io/images/signaling/create_new_project.png)
 
 4. Click **Submit**. You see the new project on the **Projects** page.
 
@@ -51,7 +51,7 @@ Agora automatically assigns a unique identifier to each project, called an App I
 
 To copy this App ID, find your project on the [Projects](https://console.agora.io/v2/project-management) page in Agora Console, and click the copy icon in the **App ID** column.
 
-![App ID](/images/signaling/app-id.png)
+![App ID](https://assets-docs.agora.io/images/signaling/app-id.png)
 
 ## Security and authentication
 
@@ -65,11 +65,11 @@ To get an App Certificate, do the following:
 
 1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon to edit the project you want to use.
 
-    ![Console project management page](/images/common/console-project-management-page.png)
+    ![Console project management page](https://assets-docs.agora.io/images/common/console-project-management-page.png)
 
 2. Click the copy icon under **Primary Certificate**.
 
-    ![Console primary certificate](/images/common/console-primary-certificate.png)
+    ![Console primary certificate](https://assets-docs.agora.io/images/common/console-primary-certificate.png)
 
 ### Generate temporary tokens
 

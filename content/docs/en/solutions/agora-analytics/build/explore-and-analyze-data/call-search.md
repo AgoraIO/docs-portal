@@ -5,14 +5,14 @@ description: "See the quality of your calls in diagrams displaying data during t
 
 The Agora Analytics Call Inspector enables you to:
 
-- Find a call or a group of calls. 
-- Determine the overall call quality in a channel. 
-- Dive into user-specific metrics and events. 
-- Examine user experience issues. 
+- Find a call or a group of calls.
+- Determine the overall call quality in a channel.
+- Dive into user-specific metrics and events.
+- Examine user experience issues.
 
 The following workflow shows how to use Call Inspector features:
 
-![call-inspector](/images/analytics/call-inspector.svg)
+![call-inspector](https://assets-docs.agora.io/images/analytics/call-inspector.svg)
 
 :::note[Enable Call Inspector]
 To enable Call Inspector, subscribe to an Agora Analytics pricing plan. For details, see [Pricing](../../reference/pricing.md).
@@ -22,7 +22,7 @@ To enable Call Inspector, subscribe to an Agora Analytics pricing plan. For deta
 
 On the Call Search page, you can apply multiple filters such as channel name, call duration, call freeze rates, and number of users to search calls and view their basic information.
 
-![Call Search](/images/analytics/call-search.png)
+![Call Search](https://assets-docs.agora.io/images/analytics/call-search.png)
 
 To search calls, follow these steps:
 
@@ -53,7 +53,7 @@ The Call Overview page consists of the following sections.
 
 This section shows issues that might significantly affect user experience in the current call, including the following subsections:
 
-![Call Overview](/images/analytics/call-overview.png)
+![Call Overview](https://assets-docs.agora.io/images/analytics/call-overview.png)
 
 |  | Description | Notes |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -207,7 +207,7 @@ Follow these steps to locate abnormal receivers:
 
 - If the line chart has many red glitches, the receiver might experience significant freezing issues. In the upper right corner of the line chart, click **Inspect a remote client**, and select the corresponding sender’s user ID from the drop-down menu. You enter the [end-to-end details page](#end-to-end-details-page) for further inspection.
 
-- If an exclamation mark ![](/images/analytics/exclaimaition.png) appears in the upper right corner, the user might have encountered an issue that significantly affected the user experience. Click the exclamation mark to enter this user’s [Call diagnosis (Beta)](#view-call-diagnosis-beta) page.
+- If an exclamation mark ![](https://assets-docs.agora.io/images/analytics/exclaimaition.png) appears in the upper right corner, the user might have encountered an issue that significantly affected the user experience. Click the exclamation mark to enter this user’s [Call diagnosis (Beta)](#view-call-diagnosis-beta) page.
 
 ### End-to-end details page
 

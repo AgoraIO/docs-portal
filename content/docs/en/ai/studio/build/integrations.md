@@ -11,7 +11,7 @@ To save your credentials for a vendor:
 1. From the left sidebar, select **Integration**.
 2. At the top of the page, select **Credentials**.
 3. Click **`+ Add Credential`**.
-    ![Add credential](/images/conversational-ai/studio/create-credential.png)
+    ![Add credential](https://assets-docs.agora.io/images/conversational-ai/studio/create-credential.png)
 
 4. From the **Type** dropdown, select **ASR**, **LLM**, or **TTS**.
 5. Select the **Vendor** from the dropdown for which you want to add the credential.
@@ -19,7 +19,7 @@ To save your credentials for a vendor:
 7. Paste your provider API key and fill in other related parameters, if any.
 8. Click **Save**.
 
-After you add a credential, you can select it from the **Credential** dropdown when customizing your ASR, LLM, or TTS configuration for any agent. 
+After you add a credential, you can select it from the **Credential** dropdown when customizing your ASR, LLM, or TTS configuration for any agent.
 
 You can edit and delete credentials using the **Actions** column in the credential list.
 
@@ -48,7 +48,7 @@ To create a knowledge base:
 1. From the left sidebar, select **Integration**.
 2. At the top of the page, select **Knowledge Bases**.
 3. Click **+ Add Knowledge Base**.
-    ![Create knowledge base](/images/conversational-ai/studio/create-knowledge-base.png)
+    ![Create knowledge base](https://assets-docs.agora.io/images/conversational-ai/studio/create-knowledge-base.png)
 4. Enter a **Knowledge Base Name**.
 5. Enter a **Description**.
 6. Upload one or more files by clicking **Browse files** or dragging and dropping files into the upload area.
@@ -68,7 +68,7 @@ To add an MCP server:
 1. From the left sidebar, select **Integration**.
 2. At the top of the page, select **MCPs**.
 3. Click **+ Add Server**.
-    ![Add MCP server](/images/conversational-ai/studio/create-mcp.png)
+    ![Add MCP server](https://assets-docs.agora.io/images/conversational-ai/studio/create-mcp.png)
 4. Enter a descriptive **Name** for the MCP server.
 5. Enter the **Server URL**.
 6. Set the **Timeout (ms)**. If the server does not respond within this duration, the agent stops waiting and continues executing.

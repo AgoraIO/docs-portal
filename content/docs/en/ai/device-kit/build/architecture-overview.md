@@ -8,7 +8,7 @@ The Convo AI Device Kit solution is built on Agora's Media Stream Acceleration (
 
 The Convo AI Device Kit solution consists of two main components connected through Agora's backend.
 
-![Solution Architecture](/images/convo-ai-device-kit/architecture.png)
+![Solution Architecture](https://assets-docs.agora.io/images/convo-ai-device-kit/architecture.png)
 
 - **Convo AI Device Kit**
 
@@ -27,7 +27,7 @@ The system uses G.711/G.722 audio codecs and MJPEG/H.264 video codecs for effici
 
 The R1 Kit integrates multiple hardware components to enable multimodal AI interactions:
 
-![R1 Kit Hardware](/images/convo-ai-device-kit/device.png)
+![R1 Kit Hardware](https://assets-docs.agora.io/images/convo-ai-device-kit/device.png)
 
 **Key components:**
 
@@ -48,7 +48,7 @@ The R1 Kit integrates multiple hardware components to enable multimodal AI inter
 
 The software package provides a complete development framework for building conversational AI applications:
 
-![R1 Kit Software](/images/convo-ai-device-kit/developer-kit.png)
+![R1 Kit Software](https://assets-docs.agora.io/images/convo-ai-device-kit/developer-kit.png)
 
 ## Related pages
 

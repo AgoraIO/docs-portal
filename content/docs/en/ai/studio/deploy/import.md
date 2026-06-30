@@ -25,11 +25,11 @@ To import a phone number from your Twilio SIP trunk:
 
 1. In Agent Studio, select **Phone Numbers** from the sidebar.
 
-    ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
+    ![Import phone number](https://assets-docs.agora.io/images/conversational-ai/studio/import-phone-number-1.png)
 
 2. Click **Add Phone Number**.
 
-    ![Import phone number](/images/conversational-ai/studio/import-phone-number-2.png)
+    ![Import phone number](https://assets-docs.agora.io/images/conversational-ai/studio/import-phone-number-2.png)
 
 3. Fill in the required information:
 
@@ -53,7 +53,7 @@ To update the configuration of an imported phone number:
 
 1. In Agent Studio, select **Phone Numbers** from the sidebar.
 
-    ![Import phone number](/images/conversational-ai/studio/import-phone-number-1.png)
+    ![Import phone number](https://assets-docs.agora.io/images/conversational-ai/studio/import-phone-number-1.png)
 
 2. Locate the phone number you want to edit.
 3. From the action menu, select **Edit**.

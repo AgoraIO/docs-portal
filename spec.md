@@ -20,7 +20,7 @@ Primary target content surface:
 - `content/docs/{locale}/**`
 
 Primary static asset surface:
-- `public/images/**`
+- `https://assets-docs.agora.io/images/**`
 
 Out of scope unless explicitly added in a later task:
 - Generated API reference implementations
@@ -489,9 +489,9 @@ Content structure triggers:
 - source contains large multi-platform or multi-language example sections
 
 Resource dependency triggers:
-- source references shared image directories outside product-private assets, such as `/images/common/**`, `/images/console/**`, `/images/video-sdk/**`, `/images/chat/**`, or equivalent shared trees
+- source references shared image directories outside product-private assets, such as `https://assets-docs.agora.io/images/common/**`, `https://assets-docs.agora.io/images/console/**`, `https://assets-docs.agora.io/images/video-sdk/**`, `https://assets-docs.agora.io/images/chat/**`, or equivalent shared trees
 - source references assets introduced by shared-content dependencies rather than only product-private assets
-- source requires asset sync into `public/images/**` before the page can render safely
+- source requires asset publishing or availability verification under `https://assets-docs.agora.io/images/**` before the page can render safely
 - source depends on remote-hosted legacy images that may require availability classification or reporting
 
 Target collision triggers:
@@ -639,7 +639,7 @@ The spec must distinguish tasks that must be scripted from those that may remain
 - product-scope extraction from multi-product shared containers
 - asset reference collection
 - asset existence verification
-- shared asset sync into `public/images/**`
+- shared asset publishing or availability verification under `https://assets-docs.agora.io/images/**`
 - remote image classification
 - structural normalization of legacy wrappers, tabs, callouts, and details blocks
 - target collision classification scaffolding
@@ -759,17 +759,17 @@ A staging page may still be complex after normalization; complexity alone is not
 
 Shared image asset handling is a first-class migration step.
 
-Before promoting any page that references `/images/**`, the agent must:
+Before promoting any page that references `https://assets-docs.agora.io/images/**`, the agent must:
 1. collect all image references from the page and its expanded shared dependencies
-2. verify whether each referenced asset already exists in `public/images/**`
-3. sync any missing assets from source-controlled image trees
+2. verify whether each referenced asset is available under `https://assets-docs.agora.io/images/**`
+3. publish or request publication of any missing assets from source-controlled image trees
 4. rerun page-level verification after sync
 
 The agent must not assume only product-private image directories are relevant.
 
 If a page depends on shared image directories, this is a complex-page trigger.
 
-This contract applies only to repository-hosted asset paths such as `/images/**`.
+This contract applies only to docs-owned asset paths such as `https://assets-docs.agora.io/images/**`.
 
 ### 12.1 Remote Image Tolerance Contract
 
@@ -781,12 +781,12 @@ Default behavior:
 - do not treat a missing local mirror as a page-fatal trigger
 - record the page as using `remote-hosted legacy asset` or `image-not-verified` when verification was not performed
 
-Repository-hosted image paths such as `/images/**` may remain in final promoted pages even when the file is currently missing, unless the task explicitly requires image availability verification or localization.
+Docs-owned image paths such as `https://assets-docs.agora.io/images/**` may remain in final promoted pages even when the file is currently missing, unless the task explicitly requires image availability verification or localization.
 
-Default behavior for missing repository-hosted images:
+Default behavior for missing docs-owned images:
 - preserve the original image syntax
 - do not block final promotion for image absence alone
-- record the page as `local-missing-image-kept` or equivalent report status
+- record the page as `s3-reference-not-verified` or equivalent report status
 
 An image problem becomes blocking only when:
 - the image syntax itself breaks MDX or page parsing

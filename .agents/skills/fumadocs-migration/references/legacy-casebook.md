@@ -83,13 +83,13 @@ Use native HTML `<table>` only for real row spans, column spans, or block-heavy 
 Legacy:
 
 ```mdx
-<Image src="/img/rtc/echotest.svg" alt="设备质量检测流程图" width="50%" />
+<Image src="https://assets-docs.agora.io/img/rtc/echotest.svg" alt="设备质量检测流程图" width="50%" />
 ```
 
 Target default:
 
 ```md
-![设备质量检测流程图](/img/rtc/echotest.svg)
+![设备质量检测流程图](https://assets-docs.agora.io/img/rtc/echotest.svg)
 ```
 
 If width, inline behavior, or captions matter and no standard exists, mark `needs-image-standard` instead of preserving `<Image>`.

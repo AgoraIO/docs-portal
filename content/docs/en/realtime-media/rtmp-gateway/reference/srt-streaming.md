@@ -25,7 +25,7 @@ Set up SRT streaming in OBS Studio by configuring the server and stream key sett
    srt://{streaming_domain_name}:6001
    ```
 
-![Server settings](/images/media-gateway/srt-server-setting.png)
+![Server settings](https://assets-docs.agora.io/images/media-gateway/srt-server-setting.png)
 
 You can use the Agora unified domain name or bind your own domain name.
 

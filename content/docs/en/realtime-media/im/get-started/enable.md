@@ -17,15 +17,15 @@ To enable Chat, make sure that you have the following:
 
 1. Log in to the [Agora Console](https://console.agora.io/v2).
 
-2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use. 
+2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
 
 3. In the **Features** section of the **Edit Project** page, click **Enable** next to **Chat** to enable Chat.
 
-    
+
 
     If this is your first Chat project, select and subscribe to a Chat package:
 
-    ![](/images/im/subscribe.png)
+    ![](https://assets-docs.agora.io/images/im/subscribe.png)
 
 1. Select a data center closest to where most of your end users are located.
 
@@ -35,7 +35,7 @@ To enable Chat, make sure that you have the following:
 
 1. Enable the advanced Chat features based on your business requirements.
 
-    ![](/images/im/chat_feature_overview.png)
+    ![](https://assets-docs.agora.io/images/im/chat_feature_overview.png)
 
 For details about these advanced features, see the following:
 - [Message Callback](/en/realtime-media/im/build/notifications-and-event-handling/setup-webhooks)
@@ -96,7 +96,7 @@ To register a user, do the following:
 
 In the **Data Center** section of the **Application Information** page, click **Generate** next to **Chat App Temp Token** to generate a token with app privileges.
 
-    ![token_generate_app_token](/images/im/token_generate_app_token.png)
+    ![token_generate_app_token](https://assets-docs.agora.io/images/im/token_generate_app_token.png)
 
 ### Generate a user token
 
@@ -126,7 +126,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
     ![img](https://web-cdn.agora.io/docs-files/1665389469534)
 
-   **Note:** 
+   **Note:**
    - The plan change takes effect immediately.
    - Agora doesn't recommend plan downgrading, as it could impact the capacity of your applications and availability of certain features.
 
@@ -139,7 +139,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 3. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
 
 4. On the **Application Information** page, disable Chat in the **Chat Service Status** section.
-   
+
    **Note:** When you disable Chat, the Chat-related data is still stored in the Chat data center, and you are still charged for the plan activation fee.
 
    ![img](https://web-cdn.agora.io/docs-files/1665387330975)

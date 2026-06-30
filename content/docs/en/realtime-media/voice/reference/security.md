@@ -11,7 +11,7 @@ Agora services provide built-in encryption and customized encryption. You can us
 
 **Encrypted data transmission process**
 
-![Encrypted data transmission process](/images/common/encrypted-data-transmission-process.svg)
+![Encrypted data transmission process](https://assets-docs.agora.io/images/common/encrypted-data-transmission-process.svg)
 
 #### Purpose
 
@@ -144,7 +144,7 @@ When using Agora services, the audio and video data are transmitted through the 
 
 ## Whitepaper
 
-People engage longer when they see, hear, and interact with each other. The future of meaningful human connections is made possible now with Agora’s Real-Time Engagement Platform. People rely on Agora’s Real-Time Engagement Platform to exchange millions of calls and messages, with vivid voice and video embedded in any application, on any device, anywhere. 
+People engage longer when they see, hear, and interact with each other. The future of meaningful human connections is made possible now with Agora’s Real-Time Engagement Platform. People rely on Agora’s Real-Time Engagement Platform to exchange millions of calls and messages, with vivid voice and video embedded in any application, on any device, anywhere.
 
 Agora, Inc. is proud to offer the professional Real-Time Engagement Platform as a Service (RTE PaaS) with Compliance, Safety, Security, and Trust. Our commitment to compliance, data, and information security and privacy protection is a part of the core values of our company. From our Software-Defined Real-Time Network (SDRTN®) architecture to our day-to-day business operations, Agora continually invests in innovations and business processes that build trust with our customers, investors, and developer community. Agora works to high standards to follow the best security practices and comply with strict privacy regulations and standards as we respect the privacy of all our customers.
 
@@ -152,7 +152,7 @@ The information contained in this document is intended to provide transparency i
 
 **Agora security programs**
 
-Agora thrives to incorporate security into all our products and services and integrates the best security practices into everyday business operations. To meet these primary goals and improve the overall information security posture in an efficient and effective manner, Agora has built its security framework against the ISO27001 Information Security Management Standard. 
+Agora thrives to incorporate security into all our products and services and integrates the best security practices into everyday business operations. To meet these primary goals and improve the overall information security posture in an efficient and effective manner, Agora has built its security framework against the ISO27001 Information Security Management Standard.
 
 As threats to information security continue to evolve, having dedicated security resources is essential. Agora’s Executive Security Committee meets regularly to address security concerns and coordinate company-wide security initiatives. The Agora Strategic Security Program Roadmap has been developed and approved by the committee to guide the implementation of our security programs. Our dedicated security team, led by the Chief Information Security Officer, has the responsibility for building and enforcing information security programs.
 
@@ -229,7 +229,7 @@ Data centers hosting Agora services are maintained by certified and industry-lea
 
 **Network security**
 
-The production environment, where all our customers data and functional servers reside, are completely separated from our internal organization network including the development and testing environments. This guarantees that all our customers data will stay in the production environment and never be used for development or testing purposes. 
+The production environment, where all our customers data and functional servers reside, are completely separated from our internal organization network including the development and testing environments. This guarantees that all our customers data will stay in the production environment and never be used for development or testing purposes.
 
 Access to the Agora production and non-production network is minimized to the greatest extent. Agora also implements network segmentation in production network based on various factors such as the type of business, the criticality of data, and the potential risks, to secure the sensitive customer data.
 
@@ -237,19 +237,19 @@ Access to the Agora production and non-production network is minimized to the gr
 Agora regularly scans our core network nodes in the production environment to check and clear potential security vulnerabilities Anti-DDoS firewalls are configured in each core cloud data center for protection. With more than two hundred distributed data centers around the world, Agora can guarantee you with sufficient capabilities and resources to minimize the impact of DDoS attacks and ensure high-availability of real-time video and audio anywhere around the globe.
 
 **Monitoring, logging and analysis**
-Agora continuously monitors and analyzes log events to gain a comprehensive view of the security state of our production environment. The logging covers both successful and unsuccessful security events, with an emphasis on the event data of critical infrastructure. 
+Agora continuously monitors and analyzes log events to gain a comprehensive view of the security state of our production environment. The logging covers both successful and unsuccessful security events, with an emphasis on the event data of critical infrastructure.
 
-To provide customers with better visibility and security insights, Agora Analytics is made available to consumers as a tracking and analysis tool. This tool enables customers to efficiently locate quality issues and identify root causes for a better end user experience. 
+To provide customers with better visibility and security insights, Agora Analytics is made available to consumers as a tracking and analysis tool. This tool enables customers to efficiently locate quality issues and identify root causes for a better end user experience.
 
 The tool contains the Real-Time Alarm function, which enables you to monitor call quality and informs you in real time when the user’s communication experience is below expectation. With Real-Time Alarm, you can undertake the following actions in real time:
 - Monitor users who are having poor communication experience.
 - Identify abnormalities, analyze quality factor, and locate the source of an abnormal issue.
 
 **Network geo-fencing**
-Agora has embedded Network Geo-Fencing in Real-Time Voice, Video and Messaging SDKs to ensure your data is secured from the rising concerns in network security and privacy breaches. Agora Network Geo-Fencing establishes a virtual boundary within Agora SDRTN® and you have the choice to restricted your network traffic in one or more designated region(s). 
+Agora has embedded Network Geo-Fencing in Real-Time Voice, Video and Messaging SDKs to ensure your data is secured from the rising concerns in network security and privacy breaches. Agora Network Geo-Fencing establishes a virtual boundary within Agora SDRTN® and you have the choice to restricted your network traffic in one or more designated region(s).
 
 **Network redundancy**
-Agora has more than 200 data centers POPs (Points of Presence) across the world, covering the United States, Europe, China, Japan, India and Asia Pacific and other areas. The POPs in the SD-TRN network adopt the full mesh topology with superior routing capabilities. This is to ensure that the network services are not interrupted due to a single point of failure. The POPs build fault tolerance and disaster recovery capability of Agora service across the regions. 
+Agora has more than 200 data centers POPs (Points of Presence) across the world, covering the United States, Europe, China, Japan, India and Asia Pacific and other areas. The POPs in the SD-TRN network adopt the full mesh topology with superior routing capabilities. This is to ensure that the network services are not interrupted due to a single point of failure. The POPs build fault tolerance and disaster recovery capability of Agora service across the regions.
 
 POPs also measure the performance of every possible path through the global network to find the “optimized” paths to ensure high data packet delivery success rate within the smallest time window.
 
@@ -310,7 +310,7 @@ Agora products and services are designed and built with multiple protection meas
 |---|---|---|
 |Channel separation |Yes |All real-time use-cases.|
 |Token-based authentication |No |All real-time apps in a production environment should use token-based end-user authentication.|
-|Encryption |No |Real-time use-cases that require confidentiality.| 
+|Encryption |No |Real-time use-cases that require confidentiality.|
 |Network geofencing |No |Real-time use-cases where customers wish to restrict access to Agora servers to within a specified region.|
 
 ### Level 1 - Channels separation
@@ -325,13 +325,13 @@ A token is generated with important information such as App ID, user ID (`uid`),
 
 **Authentication workflow**
 
-![Authentication workflow](/images/chat/chat-authentication.svg)
+![Authentication workflow](https://assets-docs.agora.io/images/chat/chat-authentication.svg)
 
 The app developer can enable token-based authentication (App Certificate) on [Agora Console](https://console.agora.io/v2). When enabled, all user’s request to join a channel must be done with a valid token.
 
 **Enable token-based authentication**
 
-![img](/images/certificate-enable.png)
+![img](https://assets-docs.agora.io/images/certificate-enable.png)
 
 Please note for best security practices, you need to set the token expiration time (24 hours by default). A token has three expiration timestamps:
 
@@ -342,17 +342,17 @@ Please note for best security practices, you need to set the token expiration ti
 
 ### Level 3 - Encryption
 
-The next layer of security in the Agora platform is encrytion. Agora supports transmission encryption and data encryption. 
+The next layer of security in the Agora platform is encrytion. Agora supports transmission encryption and data encryption.
 
 To guarantee data confidentiality during transmission, Agora uses the AUT (Agora Universal Transport) encryption protocol, Agora's proprietary secured transport layer.
 
-Data encryption encrypts all the audio and video streams with a symmetric key and encryption controlled by the app developer. In this level the app provides a symmetric encryption key to the local SDK libraries. 
+Data encryption encrypts all the audio and video streams with a symmetric key and encryption controlled by the app developer. In this level the app provides a symmetric encryption key to the local SDK libraries.
 
 The SDK encrypts all the captured media using the key and the configured encryptions using AES 128/256 (based on configuration). The data is sent encrypted to Agora SDRTN® and from there to the other endpoints in the channel. The receiving endpoint will use the key provided by the app layer to decrypt the media streams and send to the renders. With this method, only the application knows the keys. In the Native SDK (iOS, Android, Mac, Windows) the keys are not sent to Agora servers.
 
 **Token encryption**
 
-![Token encryption](/images/common/token-encryption.svg)
+![Token encryption](https://assets-docs.agora.io/images/common/token-encryption.svg)
 
 When using Other Agora services like Web SDK, Cloud Recording, Content Moderation, Transcoding etc, encryption is done a bit differently and it is not end-to-end. In this case media is still encrypted but the Agora service needs to be aware of the key to be able to connect to the channel and provide service. For example, in Web SDK the User/Browser protection is done via the web-server protection (HTTPS) as well as the WebRTC standard, security practice (encryption, key management etc). More information on WebRTC security can be found [here](https://webrtc-security.github.io/).
 
@@ -360,7 +360,7 @@ The media encryption on Web SDK is done via WebRTC standard but the interoperabi
 
 **Media encryption**
 
-![img](/images/common/media-encryption.svg)
+![img](https://assets-docs.agora.io/images/common/media-encryption.svg)
 
 ### Level 4 - Network geofencing
 
@@ -399,7 +399,7 @@ The following table shows system importance classifications (in descending order
 
 **System importance classifications**
 
-|Classification |Asset Examples| 
+|Classification |Asset Examples|
 |---|---|
 |Core system |Agora SDRTN®, the mail system, and official websites such as [www.agora.io](http://www.agora.io/), [sso.agora.io](http://sso.agora.io/), and `api.agora.io`|
 |General system |Forums and the Developer Portal|

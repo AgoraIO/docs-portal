@@ -12,7 +12,7 @@ Agora services provide built-in encryption and customized encryption. You can us
 <details>
 <summary>Encrypted data transmission process</summary>
 
-![Encrypted data transmission process](/images/common/encrypted-data-transmission-process.svg)
+![Encrypted data transmission process](https://assets-docs.agora.io/images/common/encrypted-data-transmission-process.svg)
 
 </details>
 

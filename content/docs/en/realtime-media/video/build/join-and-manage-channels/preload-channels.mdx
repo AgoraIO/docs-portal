@@ -9,13 +9,13 @@ This page explains how to implement channel preloading to achieve near-instant c
 
 The following video demonstrates the channel preload experience:
 
-<video src="/images/video-sdk/preload.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
+<video src="https://assets-docs.agora.io/images/video-sdk/preload.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
 Your browser does not support the <code>video</code> element.
 </video>
 
 The following figure illustrates the best practice when preloading channels:
 
-![preload channels best practice](/images/video-sdk/preload-channels-best-practice.png)
+![preload channels best practice](https://assets-docs.agora.io/images/video-sdk/preload-channels-best-practice.png)
 
 Following these guidelines, you can reduce the first frame loading time for Chrome browsers on Windows and macOS to as low as 300 milliseconds.
 
@@ -82,7 +82,7 @@ Implement pre-joining for different mouse interactions:
     |--------|-------|
     | 1. The user joins the channel.<br />2. The channel sends the host/media information.<br />3. The user subscribes to the media stream in the channel.<br />4. The Agora backend starts sending the media stream in the channel.<br />5. The user waits for the Agora backend to send the media stream, receives it, and renders it locally. | 1. The user joins the channel.<br />2. The Agora backend immediately sends the media stream in the channel.<br />3. The channel sends the host/media information.<br />4. After the user subscribes to the media stream, they can immediately receive and render the media stream locally. |
 
-    ![first-frame-rendring](/images/video-sdk/first-frame-rendering.png)
+    ![first-frame-rendring](https://assets-docs.agora.io/images/video-sdk/first-frame-rendering.png)
 
     :::info[Note]
 

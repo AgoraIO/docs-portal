@@ -20,7 +20,7 @@ When a user attempts to connect to an Agora channel, your app requests a token f
 
 **Token authentication flow**
 
-![token authentication flow](/images/video-sdk/token-authentication.svg)
+![token authentication flow](https://assets-docs.agora.io/images/video-sdk/token-authentication.svg)
 
 ## Prerequisites
 

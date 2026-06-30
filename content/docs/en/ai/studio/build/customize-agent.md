@@ -12,7 +12,7 @@ Follow the [quickstart](../quickstart) to create your first Agent Studio agent.
 
 The Prompt tab contains the core instructions that define your agent's identity and behavior.
 
-![](/images/conversational-ai/studio/agent-editor-prompt.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-prompt.png)
 
 - **System Prompt**: Defines how your agent behaves. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design) for guidance on writing effective prompts.
 - **Greeting Message**: The first thing your agent says when a session starts. For example: `Hello! How can I help you today?`
@@ -22,9 +22,9 @@ See [Template variables](prompt-design#template-variables) to customize the syst
 
 ## Models
 
-The Models tab is where you select the ASR, LLM, and TTS services your agent uses. The dropdowns list vendor-model combinations that support Agora Managed Key. 
+The Models tab is where you select the ASR, LLM, and TTS services your agent uses. The dropdowns list vendor-model combinations that support Agora Managed Key.
 
-![](/images/conversational-ai/studio/agent-editor-models.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-models.png)
 
 ### ASR
 
@@ -50,7 +50,7 @@ For advanced TTS settings, click the settings icon next to the TTS dropdown. For
 
 To use your own API key or to select a vendor or model not available under Agora Managed Key, click the settings icon next to the relevant dropdown. This opens a configuration panel where you can select any supported vendor and add your own API credentials. See [Manage integrations](integrations#credentials) for details on adding credentials.
 
-![](/images/conversational-ai/studio/configure-llm.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/configure-llm.png)
 
 ## Advanced
 
@@ -62,14 +62,14 @@ The Advanced tab contains configuration options for turn detection, speech detec
 
 Turn detection controls how the agent manages conversation flow and turn-taking behavior. Use the **Quick Presets** to get started quickly, or select **Custom** to configure individual parameters.
 
-![](/images/conversational-ai/studio/turn-detection.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/turn-detection.png)
 
 **Quick Presets:**
 
 - **Responsive**: Optimized for fast-paced conversations
 - **Balanced**: A middle ground between responsiveness and naturalness. Suitable for most use-cases.
 - **Patient**: Optimized for slower, more thoughtful conversations.
-- **Custom**: Manually configure individual parameters. 
+- **Custom**: Manually configure individual parameters.
 
 - **Threshold**: The audio level required for the system to detect speech. Lower values increase sensitivity and work better in quiet environments; higher values help filter out background noise.
 
@@ -77,7 +77,7 @@ Turn detection controls how the agent manages conversation flow and turn-taking 
 
 Controls how the system detects when the user starts speaking.
 
-![](/images/conversational-ai/studio/start-of-speech.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/start-of-speech.png)
 
 - **Detection Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects speech based on silence duration.
@@ -92,7 +92,7 @@ Controls how the system detects when the user starts speaking.
 
 Controls how the system decides the user has finished their thought.
 
-![](/images/conversational-ai/studio/end-of-speech.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/end-of-speech.png)
 
 - **Detection Mode**: Select one of the following:
   - **Voice Activity Detection (VAD)**: Detects end of speech based on silence duration.
@@ -104,7 +104,7 @@ Controls how the system decides the user has finished their thought.
 
 Helps the agent focus on the right voice while filtering out background conversations and noise.
 
-![](/images/conversational-ai/studio/selective-attention-locking.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/selective-attention-locking.png)
 
 - **SAL Mode**: Select one of the following:
   - **Speaker Lock**: Blocks all other background noise and adapts to the detected speaker.
@@ -116,7 +116,7 @@ Helps the agent focus on the right voice while filtering out background conversa
 
 When enabled, the agent uses natural filler phrases while processing a response, reducing awkward silences.
 
-![](/images/conversational-ai/studio/filler-words.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/filler-words.png)
 
 - **Filler words / phrases**: Enter up to 100 filler phrases, one per line. For example:
     ```text
@@ -126,7 +126,7 @@ When enabled, the agent uses natural filler phrases while processing a response,
     ```
 - **Response Wait Threshold (ms)**: How long the agent waits before it starts using filler words. Lower values trigger fillers sooner; higher values give the LLM more time to respond before fillers are used.
 - **Selection Rule**: Controls how filler phrases are selected:
-    - **Shuffle**: Random, no repeats until all phrases are exhausted. 
+    - **Shuffle**: Random, no repeats until all phrases are exhausted.
     - **Round Robin**: Played sequentially.
 
 ### History
@@ -137,7 +137,7 @@ When enabled, the agent uses natural filler phrases while processing a response,
 
 The Actions tab is where you connect your agent to external data and services.
 
-![](/images/conversational-ai/studio/agent-editor-actions.png)
+![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-actions.png)
 
 ### Knowledge base
 

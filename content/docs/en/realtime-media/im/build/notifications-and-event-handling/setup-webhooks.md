@@ -32,7 +32,7 @@ You can verify the signature to check whether the callbacks are sent from the Ch
     - The callback ID, which is the `callId` parameter in the request body of the callback.
     - The secret assigned to the callback rule. You can find it on the callback rule list on the **Callback** page on the [Agora console](https://console.agora.io/).
 
-		![](/images/im/callback_secret.png)
+		![](https://assets-docs.agora.io/images/im/callback_secret.png)
 
 	- The callback timestamp, which is the timestamp parameter in the request body of the callback.
 
@@ -57,12 +57,12 @@ To receive the HTTP callbacks, you need to configure rules for the pre- or post-
 1. Log in to Agora Console and find your project on the **Project Management** page, then click the edit button.
 2. Find **Chat** on the project editing page, and click **Configure**.
 3. Choose **Features** > **Callback** and click **Add Callback Address** on the **Callback** page.
-   
-    ![](/images/im/callback_addr_list.png)
-		
+
+    ![](https://assets-docs.agora.io/images/im/callback_addr_list.png)
+
 4. To add a rule for pre-delivery callbacks, fill the following fields under the **Pre Send** tab and then click **Save**:
 
-     ![](/images/im/pre-delivery-callback.png)
+     ![](https://assets-docs.agora.io/images/im/pre-delivery-callback.png)
 
      - **Rule Name**: Enter a name for the rule. Under one project, each rule must have a unique name.
      - **Conversation Type**: Select the types of chat this rule applies to.
@@ -75,9 +75,9 @@ To receive the HTTP callbacks, you need to configure rules for the pre- or post-
 
 5. To add a rule for post-delivery callbacks, fill the following fields under the **Post Send** tab and then click **Save**:
 
-     ![](/images/im/post-delivery-callback.png)
+     ![](https://assets-docs.agora.io/images/im/post-delivery-callback.png)
 
-     ![](/images/im/post-delivery-callback-advanced.png)
+     ![](https://assets-docs.agora.io/images/im/post-delivery-callback-advanced.png)
 
      - **Rule Name**: Enter a name for the rule. Under one project, each rule must have a unique name.
      - **Callback URL**: Enter the URL of your app server for receiving the post-delivery callbacks. Both HTTP and HTTPS URLs are allowed.
@@ -107,7 +107,7 @@ The following figure shows how the pre-delivery callbacks work.
 
 Pre-delivery callback
 
-![](/images/im/pre_delivery_callback.png)
+![](https://assets-docs.agora.io/images/im/pre_delivery_callback.png)
 
 As shown in the figure, the workflow of pre-delivery callbacks is as follows:
 
@@ -194,7 +194,7 @@ The workflow of post-delivery callbacks is as follows:
 
 Post-delivery callback
 
-![](/images/im/post_delivery_callback.png)
+![](https://assets-docs.agora.io/images/im/post_delivery_callback.png)
 
 As shown in the figure, the workflow of post-delivery callbacks is as follows:
 

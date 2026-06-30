@@ -16,7 +16,7 @@ By default, a new account is assigned the Free package when the first project is
 - Under **All Subscriptions**, click **RTC Prepaid Plans**.
 - Select your package and click **Subscribe**.
 
-  ![image](/images/video-sdk/prepaid-packages.png)
+  ![image](https://assets-docs.agora.io/images/video-sdk/prepaid-packages.png)
 :::note
 - For non-contracted customers, all packages, except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).
 - You can upgrade sequentially or skip levels. For example, you may upgrade from Starter to Business Plus directly.

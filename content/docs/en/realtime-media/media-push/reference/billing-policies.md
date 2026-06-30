@@ -35,7 +35,7 @@ To view billing information for your projects:
 
     You see the detailed billing information for your projects, including billing period, due date, and amount.
 
-    ![View bills](/images/video-sdk/bills.png)
+    ![View bills](https://assets-docs.agora.io/images/video-sdk/bills.png)
 
 #### Additional charges
 
@@ -192,13 +192,13 @@ Agora employs the following policies to manage your account balance and ensure u
 
 You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
 
-![bill estimate preview](/images/console/bill-estimate-preview.png)
+![bill estimate preview](https://assets-docs.agora.io/images/console/bill-estimate-preview.png)
 
 ### Real-time reservation of balance
 
 Your reserved balance is updated continuously based on your real-time bill estimation. The corresponding estimated amount is reserved from your available balance at all times.
 
-![Available and reserved balance](/images/console/available-reserved-balance.png)
+![Available and reserved balance](https://assets-docs.agora.io/images/console/available-reserved-balance.png)
 
 ### Auto-recharge and account suspension
 
@@ -220,7 +220,7 @@ Your final bill is issued monthly. After bill finalization:
 
 You can withdraw your available balance at any time directly from the Agora Console.
 
-![Withdraw balance](/images/console/withdraw-balance.png)
+![Withdraw balance](https://assets-docs.agora.io/images/console/withdraw-balance.png)
 
 ## End-of-life policy
 

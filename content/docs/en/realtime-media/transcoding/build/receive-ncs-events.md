@@ -24,7 +24,7 @@ To set up and use Notifications, you must have:
 - A [valid Agora account](manage-agora-account).
 - An [active Agora project](manage-agora-account).
 - A computer with Internet access.
-    
+
     If your network access is restricted by a firewall, call the [IP address query API](#ip-address-query-api) to retrieve the Notifications IP addresses , then configure the firewall to allow these IP addresses.
 
 ## Handle notifications for specific events
@@ -59,7 +59,7 @@ To do this, take the following steps:
 
     ```go
     package main
-    
+
     import (
       "encoding/json"
       "fmt"
@@ -125,7 +125,7 @@ To do this, take the following steps:
 3. **Run your Go server**
 
     Run the server using the following command:
-    
+
     ```sh
     go run main.go
     ```
@@ -139,7 +139,7 @@ To do this, take the following steps:
         ```bash
         choco install ngrok
         ```
-    
+
     2. Add an `authtoken` to ngrok:
 
         ```bash
@@ -178,7 +178,7 @@ To do this, take the following steps:
       }
     }'
     ```
-    
+
     Make sure you replace `ngrok_url` with the forwarding url.
 
     Once the HTTP request is successful, you see the following `JSON` payload in your browser:
@@ -203,11 +203,11 @@ To enable Notifications:
 
 1. Log in to [Agora Console](https://console.agora.io/v2). On the **Projects** tab, locate the project for which you want to enable Notifications and click **Edit**.
 
-    ![Project tab](/images/video-sdk/enable-ncs-project-tabs.png)
+    ![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
 
 2. In the **All Features** section, open the **Notifications** tab and click on the service for which you want to enable notifications. The section expands to show configuration options.
 
-    ![Notification tab](/images/video-sdk/enable-ncs-notification-tab.png)
+    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
 
 3. Fill in the following information:
 
@@ -227,22 +227,22 @@ To enable Notifications:
 
             * `MaxKeepAliveRequests`: 100 or more
             * `KeepAliveTimeout`: 10 seconds or more
-    
+
     * **Whitelist**: If your server is behind a firewall, check the box here, and ensure that you call the [IP address query API](#ip-address-query-api) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
 
-    ![Notification tab](/images/video-sdk/enable-ncs-configuration-tab.png)
+    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
 
 4. Copy the **Secret** displayed against the product name by clicking the copy icon. You use this secret to [Add signature verification](#add-signature-verification).
 
 5. Press **Check**. Agora performs a health test for your configuration as follows:
 
-    1. The Notifications health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server. 
-        
+    1. The Notifications health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server.
+
     2. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
 
     3. When the Notifications health test succeeds, read the prompt and press **Apply Settings**. After your configuration is saved, the **Status** of Notifications shows **Enabled**.
 
-        ![Apply Settings](/images/video-sdk/enable-ncs-apply-settings.png)
+        ![Apply Settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
 
         If the Notifications health test fails, follow the prompt on the Agora Console to troubleshoot the error. Common errors include the following:
 
@@ -256,7 +256,7 @@ To enable Notifications:
 
 **Video walkthrough**
 
-<video src="/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
+<video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
     Your browser does not support the `video` element.
 </video>
 
@@ -268,15 +268,15 @@ To communicate securely between Notifications and your webhook, Agora SDRTN®  u
 2. When sending a notification, Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
 3. When your server receives a callback, you can verify `Agora-Signature` or `Agora-Signature-V2`:
 
-    * To verify `Agora-Signature`, use the secret, the raw request body, and the `crypto/sha1` algorithm. 
+    * To verify `Agora-Signature`, use the secret, the raw request body, and the `crypto/sha1` algorithm.
     * To verify `Agora-Signature-V2`, use the secret, the raw request body, and the `crypto/sha256` algorithm.
-     
-The following sample code uses `crypto/sha1`. 
+
+The following sample code uses `crypto/sha1`.
 
 To add signature verification to your server, take the following steps:
 
 1. In the `main.go` file, replace your imports with the following:
-    
+
     ```go
     import (
         "crypto/hmac"
@@ -286,7 +286,7 @@ To add signature verification to your server, take the following steps:
         "fmt"
         "io"
         "log"
-        "net/http"	
+        "net/http"
     )
     ```
 
@@ -379,7 +379,7 @@ Agora occasionally adjusts the Notifications IP addresses. Best practice is to c
 
 #### Request header
 
-Authorization: You must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and then pass the credential to the Authorization field in the HTTP request header. 
+Authorization: You must generate a Base64-encoded credential with the Customer ID and Customer Secret provided by Agora, and then pass the credential to the Authorization field in the HTTP request header.
 
 #### Request body
 

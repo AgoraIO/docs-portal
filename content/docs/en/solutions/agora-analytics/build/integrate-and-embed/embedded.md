@@ -25,13 +25,13 @@ To access **Embed Settings**, do the following:
 1. In the navigation panel, click Agora Analytics.
 1. From the user profile menu, select **Embed**.
 
-    ![analytics-embedded-configuration](/images/analytics/analytics-embedded-configuration-1.png)
+    ![analytics-embedded-configuration](https://assets-docs.agora.io/images/analytics/analytics-embedded-configuration-1.png)
 
 ### Get the URL of the embedded page
 
 To obtain the URL for embedding Agora Analytics feature page in your portal, send an HTTP request from your server. The **Embed Settings** page shows a `Node.js` code sample to send the request:
 
-![1636604964375](/images/analytics/analytics-embedded-configuration-2.png)
+![1636604964375](https://assets-docs.agora.io/images/analytics/analytics-embedded-configuration-2.png)
 
 #### HTTP request
 
@@ -39,7 +39,7 @@ To obtain the URL for embedding Agora Analytics feature page in your portal, sen
 - Method: `POST`
 - Endpoint: `https://analytics-lab.agora.io/api/getEmbedLocation`
 - Authentication: Use `clientId` and `clientSecret` to generate the Authorization parameter in the request header. To obtain your authentication credentials, click [Apply](https://console.agora.io/credentials).
-- Request body parameters: 
+- Request body parameters:
     - `feature`: Specifies the Agora Analytics feature page to embed. Set this to one of the following:
         - `callSearch`: **Call Inspector** page.
         - `dataInsightUsage`: **Usage Overview** page.
@@ -63,7 +63,7 @@ Use the page attributes panel on the **Embed Settings** page to customize the UR
 
 For example, if you select English as the Language, `&locale=en` is appended to the parameter string.
 
-![1636533452121](/images/analytics/analytics-embedded-configuration-3.png)
+![1636533452121](https://assets-docs.agora.io/images/analytics/analytics-embedded-configuration-3.png)
 
 The following table lists the available setting in **Page Attributes** and their corresponding parameters in the code snippet:
 
@@ -119,7 +119,7 @@ Copy the following code snippet into your portal, and replace `iframeUrl` with t
 
 ### Get the URL to a detailed Call Inspector page
 
-To get the URL for a detailed Call Inspector page, append the required parameters to the following base URL: 
+To get the URL for a detailed Call Inspector page, append the required parameters to the following base URL:
 
 ```text
 https://analytics-lab.agora.io/api/analytics/research

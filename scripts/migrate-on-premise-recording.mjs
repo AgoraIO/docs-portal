@@ -8,6 +8,7 @@ const sourceRoot =
   '/Users/yejiayi/Documents/Doc-Source-Private/on-premise-recording';
 const sharedRoot = '/Users/yejiayi/Documents/Doc-Source-Private/shared';
 const assetRoot = '/Users/yejiayi/Documents/Doc-Source-Private/assets/images';
+const assetBaseUrl = 'https://assets-docs.agora.io/images';
 const targetRoot =
   '/Users/yejiayi/Documents/docs-portal/content/docs/en/realtime-media/on-premise-recording';
 const stagingRoot =
@@ -722,27 +723,30 @@ function rewriteMarkdownLinks(value, currentSource) {
   });
 }
 
+function rewriteAssetRefs(value) {
+  return value.replace(
+    /(?<![A-Za-z0-9:._-])\/images\/([^\s"'`)<]+)/g,
+    `${assetBaseUrl}/$1`,
+  );
+}
+
 function collectImageRefs(value) {
   const refs = new Set();
-  for (const match of value.matchAll(/!\[[^\]]*]\((\/images\/[^)]+)\)/g)) {
+  for (const match of value.matchAll(
+    /!\[[^\]]*]\((https:\/\/assets-docs\.agora\.io\/images\/[^)]+)\)/g,
+  )) {
     refs.add(match[1]);
   }
   return [...refs].sort();
 }
 
 async function syncImage(ref) {
-  const relative = ref.replace(/^\/images\//, '');
+  const relative = ref.replace(`${assetBaseUrl}/`, '');
   const source = path.join(assetRoot, relative);
-  const target = path.join(repoRoot, 'public/images', relative);
-  if (await exists(target)) {
-    return { ref, status: 'verified-existing' };
-  }
   if (!(await exists(source))) {
-    return { ref, status: 'local-missing-image-kept' };
+    return { ref, status: 's3-reference-not-verified' };
   }
-  await ensureDir(path.dirname(target));
-  await fs.copyFile(source, target);
-  return { ref, status: 'synced' };
+  return { ref, status: 'source-present-for-s3-asset' };
 }
 
 function findFatalPatterns(value) {
@@ -837,6 +841,7 @@ async function migratePage(page, blockers, promoted, staged, verifications) {
   };
   let body = expanded.body;
   body = rewriteMarkdownLinks(body, page.source);
+  body = rewriteAssetRefs(body);
 
   const images = collectImageRefs(body);
   const imageStatuses = [];

@@ -13,7 +13,7 @@ The command-line examples are for demonstration purposes only. In a production e
 
 The following diagram outlines the process of implementing Real-Time STT:
 
-![real-time-stt-flow](/images/real-time-stt/real-time-stt-flow.png)
+![real-time-stt-flow](https://assets-docs.agora.io/images/real-time-stt/real-time-stt-flow.png)
 
 This process includes calling the following RESTful API methods:
 

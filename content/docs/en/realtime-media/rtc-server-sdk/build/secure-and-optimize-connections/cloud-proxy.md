@@ -7,7 +7,7 @@ Agora Cloud Proxy is a feature of Agora Voice and Video SDKs. It ensures reliabl
 
 The following figure illustrates how Agora Cloud Proxy works:
 
-![](/images/video-sdk/cloud-proxy-tech.svg)
+![](https://assets-docs.agora.io/images/video-sdk/cloud-proxy-tech.svg)
 
 1. The SDK initiates a request to Cloud proxy.
 1. Cloud proxy returns the corresponding proxy information.
