@@ -140,7 +140,7 @@ curl -g -X POST 'http://XXXX/XXXX/XXXX/reaction/user/e1' -H 'Authorization: Bear
 
 This method retrieves the information of the reaction according to the message ID, including the reaction ID, emoji ID, and the user IDs that have used this reaction. This method only returns the first three chat users that added this reaction.
 
-For each method call, you can retrieve reactions in either s or s, but not in both of them.
+For each method call, you can retrieve reactions in either one-to-one chats or group chats, but not in both of them.
 
 ### HTTP request
 
