@@ -97,6 +97,7 @@ Use webhooks when your backend must receive and persist runtime events.
 - `101 agent joined`
 - `102 agent left`
 - `103 agent history`
+- `104 agent expire`
 - `110 agent error`
 - `111 agent metrics`
 - `112 turns finished`
@@ -126,7 +127,7 @@ This path is best for:
 - backend debugging and incident review
 - turn and metric aggregation across many sessions
 
-For the full webhook setup and signature verification steps, see [Receive agent runtime events on your server](webhooks).
+For the full webhook setup, request format, and signature verification steps, see [Webhooks](webhooks).
 
 </TabsContent>
 </Tabs>
@@ -145,5 +146,6 @@ Some developer goals have two implementation paths, while others do not:
 
 - If you want to understand what the webhook event numbers mean, see [Notification event types](../../reference/event-types).
 - If you want to decide which events to use for state, errors, and performance, see [Monitor agent status, errors, and performance](monitor-agent-runtime).
+- If you want to receive server-side webhook callbacks, see [Webhooks](webhooks).
 - If you want to investigate failures, see [Debug agent failures with runtime events](debug-agent-failures).
 - If you want post-session history and turn data, see [Retrieve conversation history after a session ends](retrieve-session-history).

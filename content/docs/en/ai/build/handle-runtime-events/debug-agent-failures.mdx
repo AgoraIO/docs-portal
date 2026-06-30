@@ -72,6 +72,7 @@ For backend debugging, configure [webhooks](webhooks) and subscribe to these eve
 
 - `101 agent joined`
 - `102 agent left`
+- `104 agent expire`
 - `110 agent error`
 - `111 agent metrics`
 
@@ -114,7 +115,7 @@ Use this event to answer whether the session degraded before failure:
 - compare healthy and failed sessions by `labels`
 - isolate whether the problem is model-side, telephony-side, or client-perceived only
 
-For performance-focused analysis, also see [Optimize conversation latency](../best-practices/optimize-latency).
+For performance-focused analysis, also see [Optimize conversation latency](../../best-practices/optimize-latency).
 
 ## Correlate client and server records
 
@@ -141,6 +142,6 @@ When you combine local reproduction with backend evidence, match records by:
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Get runtime events](get-runtime-events)
 - [Listen to agent runtime events on software clients](event-notifications)
-- [Receive agent runtime events on your server](webhooks)
+- [Webhooks](webhooks)
 - [Notification event types](../../reference/event-types)
 - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)

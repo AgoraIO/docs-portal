@@ -15,6 +15,7 @@ Conversational AI Engine provides different retrieval paths depending on whether
 | Goal | Best source | Use this |
 | --- | --- | --- |
 | Receive history automatically when the session ends | Webhook event | [`103 agent history`](../../reference/event-types#103-agent-history) |
+| Receive post-session turn data automatically | Webhook event | [`112 turns finished`](../../reference/event-types#112-turns-finished) |
 | Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) |
 | Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 
@@ -33,6 +34,12 @@ This event includes:
 - `labels`
 
 Each `contents` item includes the message sender and content, which is enough for common transcript-style archiving and post-session review.
+
+## Use `112 turns finished` for pushed turn analytics
+
+[`112 turns finished`](../../reference/event-types#112-turns-finished) is the best fit when you want Agora to push conversation turn data after the session ends.
+
+This event includes turn start and end metadata, latency metrics, `total_turn_count`, and `is_truncated`, which help with post-session analysis and archiving.
 
 ## Use the history API when you need to pull data
 
@@ -84,6 +91,7 @@ When your server receives history after the session ends:
 ## Common decision rules
 
 - If you need a webhook immediately after the session ends, use `103 agent history`.
+- If you need pushed turn data after the session ends, use `112 turns finished`.
 - If you need to fetch history on demand, use the history API.
 - If you need timing and completion analysis, use the turns API.
 - If you need complete postmortems, combine all three.
@@ -92,8 +100,8 @@ When your server receives history after the session ends:
 
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Get runtime events](get-runtime-events)
-- [Receive agent runtime events on your server](webhooks)
-- [Notification event types](../../reference/event-types#103-agent-history)
-- [Keep conversation context across turns](short-term-memory)
+- [Webhooks](webhooks)
+- [Notification event types](../../reference/event-types)
+- [Keep conversation context across turns](../shape-the-conversation/short-term-memory)
 - [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)
 - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)
