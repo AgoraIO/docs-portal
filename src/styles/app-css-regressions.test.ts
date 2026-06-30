@@ -13,12 +13,57 @@ function normalizeSelector(selector: string) {
   return selector.replace(/\s+/g, ' ').trim();
 }
 
+function normalizeDeclarationValue(value: string) {
+  return value
+    .replace(/\s+/g, ' ')
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+\)/g, ')')
+    .trim();
+}
+
+function expectDeclaration(
+  rule: postcss.Rule,
+  prop: string,
+  expectedValue: string,
+) {
+  const declaration = rule.nodes.find(
+    (node): node is postcss.Declaration =>
+      node.type === 'decl' && node.prop === prop,
+  );
+
+  expect(declaration).toBeDefined();
+  expect(normalizeDeclarationValue(declaration?.value ?? '')).toBe(
+    normalizeDeclarationValue(expectedValue),
+  );
+}
+
 function getRuleBody(selector: string) {
   let rule: postcss.Rule | undefined;
   const normalizedSelector = normalizeSelector(selector);
 
   appCssRoot.walkRules((candidate) => {
     if (normalizeSelector(candidate.selector) === normalizedSelector) {
+      rule = candidate;
+    }
+  });
+
+  expect(rule?.type).toBe('rule');
+
+  return {
+    rule: rule as postcss.Rule,
+    sourceStart: rule?.source?.start?.offset ?? -1,
+  };
+}
+
+function getRuleBodyContaining(selectorPart: string) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkRules((candidate) => {
+    if (
+      !rule &&
+      normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
+    ) {
       rule = candidate;
     }
   });
@@ -363,7 +408,7 @@ describe('app prose CSS regressions', () => {
     expect(link.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'color',
-        value: 'var(--accent-brand)',
+        value: 'var(--foreground)',
       }),
     );
     expect(link.rule.nodes).toContainEqual(
@@ -375,7 +420,7 @@ describe('app prose CSS regressions', () => {
     expect(linkHover.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'background',
-        value: 'var(--accent-brand-soft)',
+        value: 'transparent',
       }),
     );
     expect(linkFocus.rule.nodes).toContainEqual(
@@ -395,6 +440,53 @@ describe('app prose CSS regressions', () => {
         prop: 'overflow-wrap',
         value: 'anywhere',
       }),
+    );
+  });
+
+  it('keeps rendered prose links foreground-colored after Fumadocs prose styles', () => {
+    const linkOverride = getRuleBodyContaining(
+      ':where(html) .prose :where([data-parameter-description] a)',
+    );
+    const linkHoverOverride = getRuleBodyContaining(
+      ':where(html) .prose :where([data-parameter-description] a):hover',
+    );
+    const darkCodeOverride = getRuleBodyContaining(
+      ':where(html.dark) .prose :where(:not(pre) > code)',
+    );
+
+    expect(linkOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'color',
+        value: 'var(--foreground)',
+      }),
+    );
+    expectDeclaration(
+      linkOverride.rule,
+      '-webkit-text-decoration-color',
+      'color-mix(in srgb, var(--foreground) 42%, transparent)',
+    );
+    expectDeclaration(
+      linkOverride.rule,
+      'text-decoration-color',
+      'color-mix(in srgb, var(--foreground) 42%, transparent)',
+    );
+    expect(linkHoverOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'background',
+        value: 'transparent',
+      }),
+    );
+    expect(linkHoverOverride.rule.nodes).toContainEqual(
+      expect.objectContaining({
+        prop: 'text-decoration-color',
+        value: 'var(--foreground)',
+      }),
+    );
+    expect(linkOverride.sourceStart).toBeLessThan(
+      linkHoverOverride.sourceStart,
+    );
+    expect(linkHoverOverride.sourceStart).toBeLessThan(
+      darkCodeOverride.sourceStart,
     );
   });
 
