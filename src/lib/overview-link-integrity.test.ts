@@ -44,6 +44,16 @@ function getFrontmatterTitle(sourceFile: string) {
   return readDoc(sourceFile).match(/^title:\s*["']?(.+?)["']?\s*$/m)?.[1] ?? '';
 }
 
+function getMarkdownHeadings(sourceFile: string) {
+  return [...readDoc(sourceFile).matchAll(/^#{1,6}\s+(.+)$/gm)].map(
+    ([, heading]) => heading.trim(),
+  );
+}
+
+function getProductNameFromOverviewTitle(title: string) {
+  return title.replace(/\s+overview$/i, '').trim();
+}
+
 function getSidebarIndexTitle(metaFile: string) {
   return JSON.parse(readDoc(metaFile)).sidebarIndexTitle ?? '';
 }
@@ -199,6 +209,43 @@ describe('overview entry links', () => {
     );
 
     expect(actualTitles).toEqual(expectedTitles);
+  });
+
+  it('does not repeat product names as body headings on product overview pages', () => {
+    const overviewPages = [
+      'en/realtime-media/broadcast-streaming/index.mdx',
+      'en/realtime-media/broadcast-streaming/product-overview.mdx',
+      'en/realtime-media/cloud-recording/index.mdx',
+      'en/realtime-media/im/index.mdx',
+      'en/realtime-media/marketplace/index.mdx',
+      'en/realtime-media/media-pull/index.mdx',
+      'en/realtime-media/media-push/index.mdx',
+      'en/realtime-media/on-premise-recording/index.mdx',
+      'en/realtime-media/rtc-server-sdk/index.mdx',
+      'en/realtime-media/rtm/index.mdx',
+      'en/realtime-media/rtmp-gateway/index.mdx',
+      'en/realtime-media/speech-to-text/index.mdx',
+      'en/realtime-media/transcoding/index.mdx',
+      'en/realtime-media/video/index.mdx',
+      'en/realtime-media/voice/index.mdx',
+      'en/realtime-media/whiteboard/index.mdx',
+      'en/solutions/agora-analytics/product-overview.mdx',
+      'en/solutions/flexible-classroom/product-overview.mdx',
+      'en/solutions/interactive-live-streaming/product-overview.mdx',
+      'en/solutions/iot/product-overview.mdx',
+    ] as const;
+
+    const duplicatedHeadings = overviewPages.flatMap((sourceFile) => {
+      const productName = getProductNameFromOverviewTitle(
+        getFrontmatterTitle(sourceFile),
+      );
+
+      return getMarkdownHeadings(sourceFile)
+        .filter((heading) => heading === productName)
+        .map((heading) => ({ heading, sourceFile }));
+    });
+
+    expect(duplicatedHeadings).toEqual([]);
   });
 
   it('uses product-specific sidebar titles for overview entries', () => {
