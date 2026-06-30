@@ -1,6 +1,8 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { normalizeDocsHref } from './docs-link-normalize';
+import { source } from './source.server';
 
 const contentRoot = path.join(process.cwd(), 'content', 'docs');
 
@@ -12,7 +14,85 @@ function docExists(relativePath: string) {
   return existsSync(path.join(contentRoot, relativePath));
 }
 
+function listMarkdownFiles(root: string): string[] {
+  const files: string[] = [];
+
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
+    const entryPath = path.join(root, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...listMarkdownFiles(entryPath));
+      continue;
+    }
+
+    if (entry.isFile() && /\.(?:md|mdx)$/.test(entry.name)) {
+      files.push(entryPath);
+    }
+  }
+
+  return files;
+}
+
+function extractDocHrefs(markdown: string) {
+  const patterns = [
+    /(?<!!)\[[^\]\n]*\]\(([^)\n]+)\)/g,
+    /\bhref="([^"]+)"/g,
+    /\bto="([^"]+)"/g,
+  ];
+
+  return patterns.flatMap((pattern) => {
+    pattern.lastIndex = 0;
+
+    return [...markdown.matchAll(pattern)]
+      .map((match) => match[1]?.trim() ?? '')
+      .filter(Boolean);
+  });
+}
+
 describe('docs journeys', () => {
+  it('keeps internal links under /en/ai pointed at existing docs routes', () => {
+    const validRoutes = new Set(source.getPages('en').map((page) => page.url));
+    const aiDocsRoot = path.join(contentRoot, 'en', 'ai');
+    const markdownFiles = listMarkdownFiles(aiDocsRoot);
+    const failures: Array<{
+      file: string;
+      raw: string;
+      normalized: string;
+      kind: string;
+    }> = [];
+
+    for (const file of markdownFiles) {
+      const relativePath = path.relative(contentRoot, file).replace(/\\/g, '/');
+      const markdown = readFileSync(file, 'utf8');
+
+      for (const rawHref of extractDocHrefs(markdown)) {
+        const normalized = normalizeDocsHref(rawHref, {
+          contentPath: relativePath,
+        });
+
+        if (
+          normalized.kind !== 'internal-doc' &&
+          normalized.kind !== 'root'
+        ) {
+          continue;
+        }
+
+        const route = normalized.href.split(/[?#]/, 1)[0];
+
+        if (!validRoutes.has(route)) {
+          failures.push({
+            file: relativePath,
+            raw: rawHref,
+            normalized: normalized.href,
+            kind: normalized.kind,
+          });
+        }
+      }
+    }
+
+    expect(failures).toEqual([]);
+  });
+
   it('connects the Voice Agent home, quickstart, recipes, and reference path', () => {
     const intro = readDoc('en/introduction/index.mdx');
     expect(intro).toContain('/en/ai/choose-your-path/quickstart-coding');
