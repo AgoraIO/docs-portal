@@ -11,6 +11,7 @@ import {
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
+import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
 import {
   isKnownPlatform,
   normalizePlatformKey,
@@ -41,6 +42,23 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
+
+    if (shouldUseStaticDocsPayload()) {
+      const legacyRedirect = resolveStaticLegacySitemapRedirect(
+        `/${[params.locale, params.tab, ...slugSegments].join('/')}`,
+        location.searchStr,
+      );
+
+      if (legacyRedirect) {
+        throw redirect({
+          href: preserveRedirectSearch(
+            legacyRedirect.redirectUrl,
+            location,
+            legacyRedirect.preserveSearch,
+          ),
+        });
+      }
+    }
 
     const loadPayload = (segments: string[]) =>
       shouldUseStaticDocsPayload()

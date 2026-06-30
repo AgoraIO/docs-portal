@@ -11,12 +11,30 @@ import {
   readStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
+import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/')({
   loader: async ({ location, params }) => {
     if (!isSupportedDocLocale(params.locale)) {
       throw notFound();
+    }
+
+    if (shouldUseStaticDocsPayload()) {
+      const legacyRedirect = resolveStaticLegacySitemapRedirect(
+        `/${params.locale}/${params.tab}`,
+        location.searchStr,
+      );
+
+      if (legacyRedirect) {
+        throw redirect({
+          href: preserveRedirectSearch(
+            legacyRedirect.redirectUrl,
+            location,
+            legacyRedirect.preserveSearch,
+          ),
+        });
+      }
     }
 
     const payload = shouldUseStaticDocsPayload()
