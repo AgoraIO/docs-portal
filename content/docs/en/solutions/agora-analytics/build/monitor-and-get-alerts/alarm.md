@@ -19,9 +19,9 @@ Alert Notifications provides the following features:
 
 To access the Alert Notifications page, do the following:
 
-1.  Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Alert Notifications** service.
+1. Subscribe to a [pricing plan](../../reference/pricing.md) to enable the **Alert Notifications** service.
 
-2.  Log in to [Agora Console](https://console.agora.io/v2), and click **Agora Analytics** &gt; **Alert Notifications** on the left navigation bar.
+2. Log in to [Agora Console](https://console.agora.io/v2), and click **Agora Analytics** &gt; **Alert Notifications** on the left navigation bar.
 
 ## Alert rules
 
@@ -33,11 +33,11 @@ This section introduces how to create, enable, edit, and delete an alert rule. I
 
 To create an alert rule, do the following:
 
-1.  On the top of the page, click **Alert rules**.
+1. On the top of the page, click **Alert rules**.
 
-2.  In the upper-left corner, select a project from the dropdown menu.
+2. In the upper-left corner, select a project from the dropdown menu.
 
-3.  In the upper-right corner, click the **Create a rule** button, and fill in the following information in the pop-up window:
+3. In the upper-right corner, click the **Create a rule** button, and fill in the following information in the pop-up window:
 
 | Item | Description | Limitations |
 | --- | --- | --- |
@@ -63,9 +63,9 @@ To create an alert rule, do the following:
 
 A newly created alert rule is disabled by default. To enable a rule, do the following:
 
-1.  On the top of the page, click **Alert rules**.
+1. On the top of the page, click **Alert rules**.
 
-2.  Find the rule you want to enable, click **Enabled** in the **Operation** column, and click **OK** in the pop-up window.
+2. Find the rule you want to enable, click **Enabled** in the **Operation** column, and click **OK** in the pop-up window.
 
 To enable a group of rules all at once, check the box next to the name of each rule, and click **Enabled**.
 
@@ -73,23 +73,23 @@ To enable a group of rules all at once, check the box next to the name of each r
 
 To edit a rule, do the following:
 
-1.  On the top of the page, click **Alert rules**.
+1. On the top of the page, click **Alert rules**.
 
-2.  Find the rule you want to edit, and click **Edit** in the **Operation** column.
+2. Find the rule you want to edit, and click **Edit** in the **Operation** column.
 
 If you did not create this rule, a pop-up window appears. Read the text, and click **OK**.
 
-1.  Make your changes, and click **OK**.
+1. Make your changes, and click **OK**.
 
 ### Delete an alert rule
 
 To delete a rule, do the following:
 
-1.  On the top of the page, click **Alert rules**.
+1. On the top of the page, click **Alert rules**.
 
-2.  Find the rule you want to delete, and click **Delete** in the **Operation** column.
+2. Find the rule you want to delete, and click **Delete** in the **Operation** column.
 
-3.  Read the text in the pop-up window, and click **OK**.
+3. Read the text in the pop-up window, and click **OK**.
 
 To delete a group of rules all at once, check the box next to the name of each rule, and then click **Delete**.
 
@@ -176,13 +176,13 @@ This section introduces how to create, edit, and delete a contact.
 
 To create a contact, do the following:
 
-1.  On the top of the page, click **Alert contacts**.
+1. On the top of the page, click **Alert contacts**.
 
-2.  In the upper-right corner, click **Create a contact**.
+2. In the upper-right corner, click **Create a contact**.
 
-3.  Enter the contact’s name and email address, and click **Get the verification code**.
+3. Enter the contact’s name and email address, and click **Get the verification code**.
 
-4.  Enter your verification code, and click **OK**.
+4. Enter your verification code, and click **OK**.
 
 Note the following limitations when creating a contact:
 
@@ -194,21 +194,21 @@ Note the following limitations when creating a contact:
 
 To edit a contact, do the following:
 
-1.  On the top of the page, click **Alert contacts**.
+1. On the top of the page, click **Alert contacts**.
 
-2.  Find the contact, and click **Edit** below in the **Operation** column.
+2. Find the contact, and click **Edit** below in the **Operation** column.
 
-3.  Make your changes in the pop-up window, and click **OK**.
+3. Make your changes in the pop-up window, and click **OK**.
 
 ### Delete a contact
 
 To delete a contact, do the following:
 
-1.  On the top of the page, click **Alert contacts**.
+1. On the top of the page, click **Alert contacts**.
 
-2.  Find the contact, and click **Delete** in the **Operation** column.
+2. Find the contact, and click **Delete** in the **Operation** column.
 
-3.  Read the text in the pop-up window, and click **OK**.
+3. Read the text in the pop-up window, and click **OK**.
 
 To delete a group of contacts all at once, check the box next to the name of each contact, and then click **Delete**.
 
@@ -222,9 +222,9 @@ This section introduces how to view and manage alert records.
 
 To view your alert records, do the following:
 
-1.  On the top of the page, click **Alert records**.
+1. On the top of the page, click **Alert records**.
 
-2.  (Optional) Apply the following filters:
+2. (Optional) Apply the following filters:
 
     -   Project filter: Select a project from the dropdown menu in the upper-left corner.
 
@@ -236,16 +236,16 @@ To view your alert records, do the following:
 
 To manage an alert record, do the following:
 
-1.  On the top of the page, click **Alert records**.
+1. On the top of the page, click **Alert records**.
 
-2.  Find the record, and click the dropdown menu in the **Status** column:
+2. Find the record, and click the dropdown menu in the **Status** column:
 
     -   If you have resolved the issue, select **Resolved**.
 
     -   If the issue does not require action, select **Ignored**.
 
-3.  (Optional) To further analyze an alert record, click **Call details** to use the [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) service.
+3. (Optional) To further analyze an alert record, click **Call details** to use the [Call Inspector](/en/solutions/agora-analytics/build/explore-and-analyze-data/call-search) service.
 
-4.  (Optional) To adjust the rule corresponding to an alert record, click **Edit Alert Rule**, and make changes in the pop-up window.
+4. (Optional) To adjust the rule corresponding to an alert record, click **Edit Alert Rule**, and make changes in the pop-up window.
 
 To manage a group of alert records all at once, check the box in the first column for each record and click **Mark as resolved**, **Mark as ignored**, or **Delete**.

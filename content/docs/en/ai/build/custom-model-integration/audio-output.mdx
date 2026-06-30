@@ -6,8 +6,8 @@ In addition to text output, the Agora Conversational AI Engine can deliver respo
 
 ## Prerequisites
 
-- A reference implementation of a conversational AI agent that includes the [basic logic](../get-started/quickstart) for interacting with an AI agent.
-- If you plan to implement subtitles for audio output, read the [Display live subtitles](transcripts) documentation and complete the required configuration.
+- A reference implementation of a conversational AI agent that includes the [basic logic](../../get-started/quickstart) for interacting with an AI agent.
+- If you plan to implement subtitles for audio output, read the [Display live subtitles](../transcripts) documentation and complete the required configuration.
 
 ## Implement audio output
 
@@ -15,7 +15,7 @@ Take the following steps to set up and configure the audio output mode.
 
 ### Select the output mode
 
-To configure the output mode, set the `llm.output_modalities` field when you [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join), as follows:
+To configure the output mode, set the `llm.output_modalities` field when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), as follows:
 
 - `["audio"]`: Sets the output to audio-only mode. In this configuration, you don't need to set up a text-to-speech (TTS) module. The agent directly plays the audio returned by the custom LLM. This page focuses on how to use this audio-only mode.
 
@@ -34,7 +34,7 @@ Compared with `text` requests, `audio` requests include two additional optional 
 - `modalities`: Specifies the output mode.
 - `audio`: Specifies the output timbre (`voice`) and `format`.
 
-Include these fields in the `llm.params` object of the [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join) request.
+Include these fields in the `llm.params` object of the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request.
 
 The following example shows the format of an audio request:
 
@@ -162,14 +162,12 @@ When the response contains the `audio.transcript` field, the agent automatically
 To ensure the agent retains the audio modality output in short-term memory, include the `audio.transcript` field in the response.
 
 ### Subtitle alignment
-When you [Display live subtitles](transcripts), the Conversational AI Engine can use the `audio.words` field to segment the audio. The engine aligns subtitles based on the `start_ts`, `end_ts`, and `duration` fields within `audio.words`.
+When you [Display live subtitles](../transcripts), the Conversational AI Engine can use the `audio.words` field to segment the audio. The engine aligns subtitles based on the `start_ts`, `end_ts`, and `duration` fields within `audio.words`.
 
 To enable the agent to segment the audio based on subtitle content during playback, make sure that the LLM sends both the `audio.data` and `audio.words` fields in the response.
 
 ### Agent message broadcasts
-If the agent you created is not configured with a TTS module but is set to use audio output with  `output_modalities` is set to ["audio"], you can enable it to broadcast custom messages by adapting your LLM as follows:
-
-If the agent isn't configured with a TTS module but is set to use audio output (output_modalities is set to ["audio"]), you can enable it to broadcast custom messages by adapting your LLM as follows:
+If the agent isn't configured with a TTS module but has `output_modalities` set to `["audio"]`, you can enable it to broadcast custom messages by adapting your LLM as follows:
 
 In the `messages` list received by the agent and passed to the LLM, the model should handle the last message based on its `role`:
 
@@ -181,7 +179,7 @@ In the `messages` list received by the agent and passed to the LLM, the model sh
 > The following agent broadcasts also adopt this protocol:
 >
 > - When the agent announces a greeting `greeting_message` or a processing failure prompt  `failure_message`.
-> - When you [Broadcast a custom message using the TTS module](../../api-reference/conversational-ai/rest-api/agent/speak).
+> - When you [Broadcast a custom message using the TTS module](/en/api-reference/api-ref/conversational-ai/speak).
 
 ## Reference
 

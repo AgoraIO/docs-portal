@@ -4,14 +4,13 @@ title: "What are some common mistakes in integrating and using Flexible Classroo
 
 ### Error when running Flexible Classroom on Web
 
-If you encounter the following errors when running the Flexible Classroom Web project:
+If you encounter either of the following errors when running the Flexible Classroom Web project:
 
 ```javascript
 ./node_modules/agora-electron-sdk/js/Api/index.js
 Module not found: Can't resolve '../../build/Release/agora_node_ext'
 in'/Users/magikarp/workspace/web/teacher-classroom/node_modules/agora-electron-sdk/js/Api'
 ```
-or
 
 ```javascript
 Error running install script for optional dependency: "/root/flexible-classroom-desktop/node modules/agora-rdc-core: Command failed.
@@ -108,7 +107,7 @@ After:
 
    You generally encounter the `600001-1` or `401` error because the Token passed in by the `launch` method is either wrong, or does not match the App ID. Check whether the Token is correct and ensure that the App ID and Token match.
 
-   Agora recommends that you generate a Token on backend and call it on frontend. For details, refer to [Secure authentication with tokens](/en/flexible-classroom/develop/integrate/authentication-workflow).
+   Agora recommends that you generate a Token on backend and call it on frontend. For details, refer to [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow).
 
    If you need to generate Token temporarily for testing, you can use [this tool](https://webdemo.agora.io/token-builder/).
 
@@ -118,7 +117,7 @@ After:
 
    The error is produced when the room number (`roomUuid`) has already been used to create a small classroom and is now being configured as a different room type. Agora does not recommend using the same room number to create multiple classrooms, and each room should be configured with a different room type.
 
-  For other related server error codes, refer to [Response Status Codes](/en/flexible-classroom/restful-api/classroom-api#status-code).
+  For other related server error codes, refer to [Response Status Codes](/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#status-code).
 
 - `Error Domain=last launch not finished Code=-1 "(null)` when entering the classroom
 

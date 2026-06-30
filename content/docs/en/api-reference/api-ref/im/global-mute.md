@@ -3,9 +3,9 @@ title: "Global mute"
 description: "Introduces the global-mute feature."
 ---
 
-With increasingly strict rules and regulations on app compliance, content supervision has become a crucial part of the app lifecycle. To meet this need, Chat provides the global-mute feature, which enables you to mute any user ID in one-to-one chats, s, or s, preventing these users from sending messages to other chat users, s, or s. When global-mute expires, the chat server automatically unmutes the user ID, and this user resumes the privilege of sending messages.
+With increasingly strict rules and regulations on app compliance, content supervision has become a crucial part of the app lifecycle. To meet this need, Chat provides the global-mute feature, which enables you to mute any user ID in one-to-one chats, chat groups, or chat rooms, preventing these users from sending messages to other chat users, chat groups, or chat rooms. When global-mute expires, the chat server automatically unmutes the user ID, and this user resumes the privilege of sending messages.
 
-This feature can be widely applied in apps that power real-time engagements. For example, if a user frequently sends illegitimate advertisements to multiple s, you can use global-mute to prevent this user from sending  messages for 15 days; if a user makes improper statements concerning politics, global-mute can permanently prevent this user from sending any messages in one-to-one chats, s, or s.
+This feature can be widely applied in apps that power real-time engagements. For example, if a user frequently sends illegitimate advertisements to multiple chat rooms, you can use global-mute to prevent this user from sending chat room messages for 15 days; if a user makes improper statements concerning politics, global-mute can permanently prevent this user from sending any messages in one-to-one chats, chat groups, or chat rooms.
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
 
@@ -43,7 +43,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `action` | String | The request method. |
 | `organization` | String | The unique identifier assigned to each company (organization) by the Chat service. This is the same as `org_name`. |
 | `application` | String | A unique internal ID assigned to each app by the Chat service. You can safely ignore this parameter. |
-| `applicationName` | String | The unique identifier assigned to each app by the Chat service . This is the same as `app_name`. |
+| `applicationName` | String | The unique identifier assigned to each app by the Chat service. This is the same as `app_name`. |
 | `uri` | String | The request URI. |
 | `path` | String | The request path, which is part of the request URL. You can safely ignore this parameter. |
 | `data`  | JSON | The response details.  |
@@ -62,7 +62,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Globally mute a specified user
 
-This method mutes a specified user in one-to-one chats, s, or s. After a successful method call, this user can no longer send messages in one-to-one chats, s, or s, depending on your settings in the request parameter.
+This method mutes a specified user in one-to-one chats, chat groups, or chat rooms. After a successful method call, this user can no longer send messages in one-to-one chats, chat groups, or chat rooms, depending on your settings in the request parameter.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -82,14 +82,14 @@ For parameters and the detailed descriptions, see [Common parameters](#param).
 | --- | --- | --- | --- |
 | `username` | String | Yes | The user ID that you want to globally mute. |
 | `chat` | Number | No | The amount of time to mute this user ID in one-to-one chats, in seconds. The maximum value is 2,147,483,647.&gt; 0: The amount of time to mute the user in one-to-one chats.0: Unmutes the user in one-to-one chats.-1: Permanently mutes the user in one-to-one chats.If you set this parameter as any other negative values, the setting does not take effect. |
-| `groupchat` | Number | No | The amount of time to mute this user in s, in seconds. The maximum value is 2,147,483,647.&gt; 0: The amount of time to mute the user in s.0: Unmutes the user in s.-1: Permanently mutes the user in s.If you set this parameter as any other negative values, the setting does not take effect. |
-| `chatroom` | Number | No | The amount of time to mute this user in s, in seconds. The maximum value is 2,147,483,647.&gt; 0: The amount of time to mute the user in s.0: Unmutes the user in s.-1: Permanently mutes the user in s.If you set this parameter as any other negative values, the setting does not take effect. |
+| `groupchat` | Number | No | The amount of time to mute this user in chat groups, in seconds. The maximum value is 2,147,483,647.&gt; 0: The amount of time to mute the user in chat groups.0: Unmutes the user in chat groups.-1: Permanently mutes the user in chat groups.If you set this parameter as any other negative values, the setting does not take effect. |
+| `chatroom` | Number | No | The amount of time to mute this user in chat rooms, in seconds. The maximum value is 2,147,483,647.&gt; 0: The amount of time to mute the user in chat rooms.0: Unmutes the user in chat rooms.-1: Permanently mutes the user in chat rooms.If you set this parameter as any other negative values, the setting does not take effect. |
 
 #### Request header
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `Content-Type` | String | The content type. Set is as `application/json`. |
+| `Content-Type` | String | The content type. Set it to `application/json`. |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. |
 
 ### HTTP response
@@ -120,7 +120,7 @@ curl -L -X POST 'https://XXXX/XXXX/XXXX/mutes' \
 }'
 ```
 
-#### Reponse example
+#### Response example
 
 ```json
 {
@@ -140,7 +140,7 @@ curl -L -X POST 'https://XXXX/XXXX/XXXX/mutes' \
 
 ## Query the detailed information of global-mute
 
-This method queries the detailed information of the global-mute settings of the specified user in one-to-one chats, s, or chatrooms.
+This method queries the detailed information of the global-mute settings of the specified user in one-to-one chats, chat groups, or chat rooms.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -162,7 +162,7 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `Content-Type` | String | The content type. Set is as `application/json`. |
+| `Content-Type` | String | The content type. Set it to `application/json`. |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. |
 
 ### HTTP response
@@ -173,8 +173,8 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | --- | --- | --- |
 | `userid` | String | The user ID whose global-mute settings you want to query. |
 | `chat` | Number | The remaining time that this user is muted in one-to-one chats, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in one-to-one chats.0: This user is unmuted in one-to-one chats.-1: This user is permanently muted in one-to-one chats. |
-| `groupchat` | Number | The remaining time that this user is muted in s, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in s.0: This user is unmuted in s.-1: This user is permanently muted in s. |
-| `chatroom` | Number | The remaining time that this user is muted in group rooms, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in s.0: This user is unmuted in s.-1: This user is permanently muted in s. |
+| `groupchat` | Number | The remaining time that this user is muted in chat groups, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in chat groups.0: This user is unmuted in chat groups.-1: This user is permanently muted in chat groups. |
+| `chatroom` | Number | The remaining time that this user is muted in chat rooms, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in chat rooms.0: This user is unmuted in chat rooms.-1: This user is permanently muted in chat rooms. |
 | `unixtime` | Number | The Unix timestamp of the current operation. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -233,7 +233,7 @@ For parameters and the detailed descriptions, see [Common parameters](#param).
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `Content-Type` | String | The content type. Set is as `application/json`. |
+| `Content-Type` | String | The content type. Set it to `application/json`. |
 | `Authorization` | String | The authentication token of the user or admin, in the format of `Bearer ${YourAppToken}`, where `Bearer` is a fixed character, followed by an English space, and then the obtained token value. |
 
 #### Query parameter
@@ -251,8 +251,8 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | --- | --- | --- |
 | `username` | String | The user ID whose global-mute settings you want to query. |
 | `chat` | Number | The remaining time that this user is muted in one-to-one chats, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in one-to-one chats.0: This user is unmuted in one-to-one chats.-1: This user is permanently muted in one-to-one chats. |
-| `groupchat` | Number | The remaining time that this user is muted in s, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining that this user in s.0: This user is unmuted in s.-1: This user is permanently muted in s. |
-| `chatroom` | Number | The remaining time that this user is muted in group rooms, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining duration for muting this user in s.0: This user is unmuted in s.-1: This user is permanently muted in s. |
+| `groupchat` | Number | The remaining time that this user is muted in chat groups, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in chat groups.0: This user is unmuted in chat groups.-1: This user is permanently muted in chat groups. |
+| `chatroom` | Number | The remaining time that this user is muted in chat rooms, in seconds. The maximum value is 2,147,483,647.&gt; 0: The remaining time that this user is muted in chat rooms.0: This user is unmuted in chat rooms.-1: This user is permanently muted in chat rooms. |
 | `unixtime` | Number | The Unix timestamp of the current operation. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).

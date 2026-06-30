@@ -240,6 +240,12 @@ jobs:
         run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Build with Vercel
+        env:
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          ALGOLIA_ADMIN_API_KEY: ${{ github.event_name == 'push' && github.ref_name == 'main' && secrets.ALGOLIA_ADMIN_API_KEY || '' }}
+          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+          ALGOLIA_SYNC_DISABLED: ${{ github.event_name == 'push' && github.ref_name == 'main' && 'false' || 'true' }}
         run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Verify Vercel output

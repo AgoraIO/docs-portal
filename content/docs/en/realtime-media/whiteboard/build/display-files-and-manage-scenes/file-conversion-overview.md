@@ -5,7 +5,7 @@ description: "Understand how Interactive Whiteboard converts source files into i
 
 Interactive Whiteboard supports file conversion from PPT and PPTX files into dynamic HTML web pages. The generated web pages can be accessed directly or presented on the whiteboard.
 
-Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability.  The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](../../reference/rest-api/file-conversion.md).
+Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability. The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](../../reference/rest-api/file-conversion.md).
 
 ## Introduction
 
@@ -32,7 +32,7 @@ When using static-file conversion, pay attention to the following issues:
 - The higher the image resolution in the source file, the slower the conversion.
 - PDF files generate the most accurate images when converted. If the generated image differs greatly from the source file in content or formatting, convert the source file to PDF and try again.
 - Only valid PDF files are supported, that is, files that conform to PDF standards and have a valid header starting with `%PDF`.
-- Note that because this feature is implemented with support from [Aspose](https://www.aspose.app/), Agora might not be able to respond to requests for customization as quickly as usual.  Agora recommends that you run sufficient tests of the file-conversion feature. If the test result do not meet your expectations, consider using a third-party service.
+- Note that because this feature is implemented with support from [Aspose](https://www.aspose.app/), Agora might not be able to respond to requests for customization as quickly as usual. Agora recommends that you run sufficient tests of the file-conversion feature. If the test result do not meet your expectations, consider using a third-party service.
 - The new file conversion currently does not support generating resource packages. However, because the resources path is fixed, users can download resources by themselves.
 
 ### Dynamic-file conversion
@@ -41,28 +41,28 @@ Dynamic-file conversion refers to converting PPT/PPTX files edited with Microsof
 
 When using dynamic-file conversion, pay attention to the following issues:
 
-- Converting WPS files is not yet supported.  You might also encounter problems when using PPTX files converted from WPS files.
+- Converting WPS files is not yet supported. You might also encounter problems when using PPTX files converted from WPS files.
 - The new file conversion currently does not support generating resource packages. However, because the resources path is fixed, users can download resources by themselves.
 - If a font is missing in a generated web page, you can either use the SDK to add a custom font or contact support@agora.io.
 - Due to inherent constrains in the PPT file format, PPT files are converted into PPTX files at the backend before parsing, which might encounter failure. Therefore, Agora recommends you to upload PPTX files for conversion.
 - A generated web page can be rendered into canvas pages via Fastboard SDK (coming soon), [@netless/slide](https://www.npmjs.com/package/@netless/slide), or [@netless/projector-plugin](https://github.com/netless-io/projector-plugin). The differences between these three rendering solutions are as follows:
   - Fastboard SDK is the rendering plan designed for multi-window use-cases in Agora Interactive Whiteboard. Fastboard SDK is coming soon.
-  - @netless/slide is a stand-alone document conversion and rendering dependency that does not include such things as whiteboards or state synchronization.  Adopting this solution requires you to write extra codes to synchronize states. It is designed for use-cases where PPT is used alone in whiteboard apps.
+  - @netless/slide is a stand-alone document conversion and rendering dependency that does not include such things as whiteboards or state synchronization. Adopting this solution requires you to write extra codes to synchronize states. It is designed for use-cases where PPT is used alone in whiteboard apps.
   - @netless/projector-plugin is a plug-in for Whiteboard SDK that supports state synchronization, but it only works in single-window use-cases.
 
 ### Version comparison
 
 Compared with the old version, the new file conversion adopts an engine developed by Agora and has the following advantages:
 
-- **Support for stand-alone access**.  The new file conversion is no longer bound to Interactive Whiteboard and can be integrated with third-party whiteboard SDKs.
-- **Faster conversion speed**.  The conversion speed of the new version is increased by 200% to 400%.
-- **Stronger content parsing**.  The new file conversion supports parsing content that the old version cannot, including additional animations, filters, and other effects.  The new version can parse all normal PPTX content.
-- **Improved stability**.  The new file conversion fixes multiple issues in the old version that could cause conversion failures.
-- **New features**.  Users can now pause ongoing conversion tasks or adjust task priorities.
+- **Support for stand-alone access**. The new file conversion is no longer bound to Interactive Whiteboard and can be integrated with third-party whiteboard SDKs.
+- **Faster conversion speed**. The conversion speed of the new version is increased by 200% to 400%.
+- **Stronger content parsing**. The new file conversion supports parsing content that the old version cannot, including additional animations, filters, and other effects. The new version can parse all normal PPTX content.
+- **Improved stability**. The new file conversion fixes multiple issues in the old version that could cause conversion failures.
+- **New features**. Users can now pause ongoing conversion tasks or adjust task priorities.
 
-The new and the old versions of file conversion are **independent of each other**: The conversion task UUID generated by the new version cannot call the old version to query the progress, while the uuid generated by the old version cannot query the progress through the new version.  If you want to query the progress of the old conversion tasks through the new version, contact [support@agora.io](mailto:support@agora.io).
+The new and the old versions of file conversion are **independent of each other**: The conversion task UUID generated by the new version cannot call the old version to query the progress, while the uuid generated by the old version cannot query the progress through the new version. If you want to query the progress of the old conversion tasks through the new version, contact [support@agora.io](mailto:support@agora.io).
 
-Although Agora Interactive Whiteboard continues to maintain the old version of file conversion, some issues could arise due to inherent limits in the architectural design.  Agora recommends you choose an appropriate time to switch to the new file conversion.  If you need support for the old version of file conversion, see the following resources:
+Although Agora Interactive Whiteboard continues to maintain the old version of file conversion, some issues could arise due to inherent limits in the architectural design. Agora recommends you choose an appropriate time to switch to the new file conversion. If you need support for the old version of file conversion, see the following resources:
 
 - [Old File Conversion Overview](../../reference/file-conversion-overview-deprecated.mdx)
 - [Old File Conversion API Reference](../../reference/rest-api/file-conversion-deprecated.mdx)

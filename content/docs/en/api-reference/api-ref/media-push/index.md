@@ -90,7 +90,7 @@ Details for these fields are shown in the following table:
 | transcodeOptions.videoOptions.vertical | (Optional) JSON Object | Vertical layout. This parameter must be set when `layoutType` is 1. See [vertical](./restful-type-definition#vertical) for details. |
 | transcodeOptions.videoOptions.defaultPlaceholderImageUrl | (Optional) String | <Slot name="transcodeoptions-videooptions-defaultplaceholderimageurl" /> |
 | transcodeOptions.videoOptions.bitrate | (Required) Number | The encoding bitrate (Kbps) of the video. The value range is [1,10000]. |
-| transcodeOptions.videoOptions.gop | (Optional) Number | The GOP of the video. The defalt value is the value of `frameRate` * 2。 |
+| transcodeOptions.videoOptions.gop | (Optional) Number | The GOP of the video. The default value is the value of `frameRate` * 2. |
 | transcodeOptions.videoOptions.frameRate | (Optional) Number | The encoding frame rate (fps) of the video. The value range is [1,30]. The default value is 15. |
 | transcodeOptions.videoOptions.codec | (Optional) String | <Slot name="transcodeoptions-videooptions-codec" /> |
 | transcodeOptions.videoOptions.codecProfile | (Optional) String | <Slot name="transcodeoptions-videooptions-codecprofile" /> |
@@ -501,7 +501,7 @@ DELETE https://api.agora.io/{region}/v1/projects/{appId}/rtmp-converters/{conver
 #### Path parameter
 
 - `region`: (Required) String. The region where the Converter is created in, which must be the same as the `region` set when creating Converter.
-- `appId`: (Required) String type parameter. The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
+- `appId`: (Required) String type parameter. The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
 - `converterId`: (Required) String type parameter. The **ID** of the Converter.
 
 #### Request header
@@ -686,7 +686,7 @@ GET https://api.agora.io/{region}/v1/projects/{appId}/rtmp-converters/{converter
 #### Path parameter
 
 - `region`: (Required) String. The region where the Converter is created in, which must be the same as the `region` set when creating Converter.
-- `appId`: (Required) String type parameter. The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
+- `appId`: (Required) String type parameter. The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
 - `converterId`: (Required) String type parameter. The **ID** of the Converter.
 
 #### Request header
@@ -952,7 +952,7 @@ If the status code is 2XX, the request is successful.
 - `cname`: (Required) String. The Agora channel name. This is the channel to which the stream processed by the Converter belongs. The maximum length of the string is 64 characters, and the following character sets (89 characters in total) are supported:
  - All lowercase English letters (a-z)
  - All uppercase English letters (A-Z)
- - Numbers 0-9The space character
+ - Numbers 0-9 and the space character
  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
 
 #### Query Parameters
@@ -960,7 +960,7 @@ If the status code is 2XX, the request is successful.
 `cursor`: (Optional) String. Cursor for paging query Converters. The value must be greater than or equal to 0.
 
 > - You do not need to set the cursor when you initiate a `List` request for the first time. After the request is successful, the list of Converters on the first page return.
-> - Each request returns information about a maximum of 500 Converters.. If the number of Converters under the project exceeds 500, get the `cursor` from the response body, and pass the `cursor` in the URL of the next request. Until the value of the `cursor` field in the response body is `0`, it means that all Converters under the project or the specified channel have been queried.
+> - Each request returns information about a maximum of 500 Converters. If the number of Converters under the project exceeds 500, get the `cursor` from the response body, and pass the `cursor` in the URL of the next request. Until the value of the `cursor` field in the response body is `0`, it means that all Converters under the project or the specified channel have been queried.
 
 The HTTPS URL using Query Parameters is as follows:
 
@@ -1005,7 +1005,7 @@ Details for these fields are shown in the following table:
 | `data.members.rtcChannel` | String | The Agora channel name. This is the channel to which the stream processed by the Converter belongs. |
 | `data.members.converterName` | String | The name of the Converter. |
 | `data.members.updateTs` | Number | The Unix timestamp(seconds) when the Converter configuration was last updated. |
-| `data.members.appId` | String | The **App ID** provided by Agora . You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
+| `data.members.appId` | String | The **App ID** provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project. |
 | `data.members.rtmpUrl` | String | The CDN streaming address. |
 | `data.members.converterId` | String | The **ID** of the Converter. The unique identifier for the Converter. |
 | `data.members.create` | Number | The Unix timestamp(seconds) when the Converter was created. |

@@ -24,7 +24,10 @@ const enCommon = {
     searchPlaceholder: 'Search docs, APIs, guides...',
     searchEmpty: 'No matching pages found.',
     searchUnavailable: 'Search index unavailable.',
+    searchLoading: 'Searching...',
+    searchAllPlatforms: 'All platforms',
     tabsLabel: 'Tabs',
+    sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',
     toc: 'On this page',
     tocEmpty: 'No headings on this page.',
@@ -65,6 +68,9 @@ const enCommon = {
     feedbackCancel: 'Cancel',
     feedbackSubmit: 'Open issue',
     openMenu: 'Open navigation',
+    legacyDocsBanner:
+      'Looking for the previous docs site? Visit the legacy docs homepage.',
+    opensInNewTab: 'opens in a new tab',
   },
   home: {
     eyebrow: 'Agora developer documentation',

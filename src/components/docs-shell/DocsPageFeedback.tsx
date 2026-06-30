@@ -27,8 +27,7 @@ import {
 
 type FeedbackKind = 'issue' | 'suggestion' | 'usability';
 
-const FEEDBACK_ISSUE_URL =
-  'https://github.com/Shengwang-Community/docs-portal/issues/new';
+const FEEDBACK_ISSUE_URL = 'https://github.com/AgoraIO/docs-portal/issues/new';
 
 export function DocsPageFeedback({
   className,

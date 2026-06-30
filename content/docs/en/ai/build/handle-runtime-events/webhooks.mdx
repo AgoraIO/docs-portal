@@ -2,9 +2,11 @@
 title: Receive agent runtime events on your server
 description: Use webhooks to collect agent lifecycle, error, history, and metrics events on your backend.
 ---
-A webhook is a user-defined HTTPS callback that lets your backend receive notifications when Conversational AI events occur. Agora sends POST requests to your webhook endpoint so your system can react to agent lifecycle changes, history delivery, errors, and performance metrics in real time. Use this page when you need durable backend records for monitoring, alerting, or analytics. If you need live UI state inside the app, use [Listen to agent runtime events on client apps](event-notifications) instead.
+A webhook is a user-defined HTTPS callback that lets your backend receive notifications when Conversational AI events occur. Agora sends POST requests to your webhook endpoint so your system can react to agent lifecycle changes, history delivery, errors, and performance metrics in real time.
 
-For an overview that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
+For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
+
+Use this page when you need durable backend records for monitoring, alerting, or analytics. If you need live UI state inside the app, use [Client-side events](event-notifications).
 
 ## Understand the tech
 
@@ -94,7 +96,7 @@ Agora can notify your server of the following Conversational AI events:
 | `201` | Incoming call status change |
 | `202` | Outgoing call status change |
 
-For payload details, see [Notification event types](/en/ai/reference/event-types).
+For payload details, see [Notification event types](../../reference/event-types).
 
 ## Signature verification
 
@@ -149,7 +151,7 @@ if !verify(string(body), agoraSignature) {
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Debug agent failures with runtime events](debug-agent-failures)
 - [Retrieve conversation history after a session ends](retrieve-session-history)
-- [Listen to agent runtime events on client apps](event-notifications)
-- [Notification event types](/en/ai/reference/event-types)
-- [Start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join)
-- [Retrieve agent history](/en/api-reference/conversational-ai/rest-api/agent/history)
+- [Client-side events](event-notifications)
+- [Notification event types](../../reference/event-types)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)

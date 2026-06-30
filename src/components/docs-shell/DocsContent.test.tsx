@@ -58,13 +58,16 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
   return {
     ...actual,
     PlatformHeaderTabs: ({
+      defaultPlatform,
       initialPlatform,
       platforms,
     }: {
+      defaultPlatform?: string;
       initialPlatform?: string;
       platforms?: string;
     }) => (
       <div
+        data-default-platform={defaultPlatform}
         data-initial-platform={initialPlatform}
         data-testid="platform-header-tabs"
       >
@@ -173,7 +176,7 @@ describe('DocsContent', () => {
         ]}
         contentPath="en/introduction/about-agora.md"
         description="Learn the platform basics."
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="about-agora"
         title="About Agora"
         toc={[]}
@@ -257,7 +260,7 @@ describe('DocsContent', () => {
     ).toHaveTextContent('/v2/projects/{appid}/join');
   });
 
-  it('does not render the generic header description for OpenAPI bodies', async () => {
+  it('renders the generic header description for OpenAPI bodies', async () => {
     renderWithRouter(
       <DocsContent
         body={{
@@ -294,8 +297,10 @@ describe('DocsContent', () => {
       await screen.findByTestId('fumadocs-openapi-content'),
     ).toHaveTextContent('/v2/projects/{appid}/agents/{agentId}/instructions');
     expect(
-      screen.queryByText(/Implicit instruction injection/),
-    ).not.toBeInTheDocument();
+      screen.getByText(
+        'Use this endpoint for the following scenarios: - **Implicit instruction injection**',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders the generic header description for MDX-authored pages', async () => {
@@ -503,6 +508,7 @@ describe('DocsContent', () => {
           kind: 'mdx',
           platformTabs: {
             canonicalPlatform: 'web',
+            defaultPlatform: 'android',
             initialPlatform: 'android',
             platforms: '["web","android"]',
           },
@@ -519,6 +525,7 @@ describe('DocsContent', () => {
     const body = await screen.findByTestId('docs-content-body');
 
     expect(tabs).toHaveTextContent('["web","android"]');
+    expect(tabs).toHaveAttribute('data-default-platform', 'android');
     expect(tabs).toHaveAttribute('data-initial-platform', 'android');
     expect(
       title.compareDocumentPosition(tabs) & Node.DOCUMENT_POSITION_FOLLOWING,
@@ -551,7 +558,9 @@ describe('DocsContent', () => {
     await screen.findByRole('heading', { name: 'Quickstart' });
     await screen.findByTestId('docs-content-body');
 
-    expect(screen.queryByTestId('platform-header-tabs')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('platform-header-tabs'),
+    ).not.toBeInTheDocument();
   });
 
   it('shows a return path on a docs page reached from a docs body link', async () => {
@@ -728,7 +737,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -760,7 +769,7 @@ describe('DocsContent', () => {
     ).toHaveAttribute('href', '/en/introduction/agora-mcp');
     expect(
       screen.getByRole('menuitem', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/llms.mdx/docs/en/introduction/about-agora.md');
+    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
   });
 
   it('copies MCP config and command from the copy page menu', async () => {
@@ -770,7 +779,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -818,7 +827,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -828,7 +837,7 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenCalledWith(
-        `${window.location.origin}/llms.mdx/docs/en/introduction/about-agora.md`,
+        `${window.location.origin}/en/introduction/about-agora.md`,
       );
     });
   });
@@ -840,7 +849,7 @@ describe('DocsContent', () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
-        markdownUrl="/llms.mdx/docs/en/introduction/about-agora.md"
+        markdownUrl="/en/introduction/about-agora.md"
         slug="introduction/about-agora"
         title="About Agora"
       />,
@@ -965,14 +974,11 @@ describe('DocsTableOfContents', () => {
       screen.getByRole('link', { name: 'Edit this page' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs',
+      'https://github.com/AgoraIO/docs-portal/tree/main/content/docs',
     );
     expect(
       screen.getByRole('link', { name: 'View on GitHub' }),
-    ).toHaveAttribute(
-      'href',
-      'https://github.com/Shengwang-Community/docs-portal',
-    );
+    ).toHaveAttribute('href', 'https://github.com/AgoraIO/docs-portal');
   });
 
   it('keeps mobile heading links interactive and collapses after a selection', async () => {
@@ -1412,9 +1418,47 @@ describe('DocsMainColumn', () => {
     ).toHaveAttribute('href', '/en/introduction/next-page');
   });
 
+  it('does not reserve an empty pager column when only one page link exists', async () => {
+    renderWithRouter(
+      <DocsMainColumn
+        next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
+      >
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+    const pager = within(footer).getByTestId('docs-pager');
+
+    expect(
+      within(pager).getByRole('link', { name: /Next Next Page/i }),
+    ).toHaveAttribute('href', '/en/introduction/next-page');
+    expect(
+      within(pager).queryByRole('link', { name: /Previous/i }),
+    ).not.toBeInTheDocument();
+    expect(pager).toHaveClass('grid-cols-1');
+    expect(pager).not.toHaveClass('sm:grid-cols-2');
+    expect(pager.children).toHaveLength(1);
+  });
+
   it('widens footer content in openapi layout', async () => {
     renderWithRouter(
       <DocsMainColumn layoutMode="openapi">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
+    const footer = within(desktopScroll).getByTestId('docs-page-footer');
+
+    expect(footer).toHaveClass('max-w-none');
+    expect(footer).not.toHaveClass('max-w-[var(--content-max)]');
+  });
+
+  it('widens footer content when the main content fills the shell width', async () => {
+    renderWithRouter(
+      <DocsMainColumn contentFillsWidth>
         <article>Body</article>
       </DocsMainColumn>,
     );
@@ -1569,9 +1613,7 @@ describe('DocsPageFeedback placement', () => {
     const issueBody = new URL(href).searchParams.get('body') ?? '';
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(href).toContain(
-      'https://github.com/Shengwang-Community/docs-portal/issues/new',
-    );
+    expect(href).toContain('https://github.com/AgoraIO/docs-portal/issues/new');
     expect(issueBody).toContain(
       'Page: http://localhost:3000/en/introduction/about-agora?platform=web#what-is',
     );

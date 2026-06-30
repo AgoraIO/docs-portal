@@ -247,6 +247,142 @@ describe('fumadocs openapi source', () => {
     expect(overloaded).toEqual([]);
   });
 
+  it('keeps Chinese Speech-to-Text descriptions as short page summaries', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const expectedDescriptions = new Map([
+      [
+        'zh-CN/api-reference/api-ref/speech-to-text/join.mdx',
+        {
+          description: '启动实时转录翻译任务。',
+          prose: '你可以通过该方法设置是否需要启用字幕录制、字幕翻译功能。',
+        },
+      ],
+      [
+        'zh-CN/api-reference/api-ref/speech-to-text/query.mdx',
+        {
+          description: '获取实时转录翻译任务状态。',
+        },
+      ],
+      [
+        'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
+        {
+          description: '停止实时转录翻译任务并离开频道。',
+          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+        },
+      ],
+      [
+        'zh-CN/api-reference/api-ref/speech-to-text/update.mdx',
+        {
+          description: '更新实时转录翻译任务配置。',
+          prose:
+            '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。',
+        },
+      ],
+      [
+        'zh-CN/api-reference/api-ref/speech-to-text/list.mdx',
+        {
+          description: '获取符合指定条件的实时转录翻译任务列表。',
+        },
+      ],
+    ]);
+
+    for (const [pagePath, expected] of expectedDescriptions) {
+      const page = source.files.find(
+        (file) => file.type === 'page' && file.path === pagePath,
+      );
+
+      expect(page?.type).toBe('page');
+      if (page?.type !== 'page') {
+        throw new Error(`Missing OpenAPI page ${pagePath}`);
+      }
+
+      const props = await page.data.getClientAPIPageProps();
+      const operation = props.operations?.[0];
+
+      expect(operation).toBeDefined();
+      if (!operation) {
+        throw new Error(`Missing operation payload for ${pagePath}`);
+      }
+
+      const pathItem = props.payload.bundled.paths?.[operation.path];
+      const method = operation.method.toLowerCase();
+      const operationObject = pathItem?.[method as keyof typeof pathItem] as
+        | { description?: unknown; ['x-docs-sections']?: unknown }
+        | undefined;
+
+      expect(
+        typeof operationObject?.description === 'string'
+          ? operationObject.description.trim()
+          : operationObject?.description,
+      ).toBe(expected.description);
+
+      if (!expected.prose) {
+        continue;
+      }
+
+      const sections = Array.isArray(operationObject?.['x-docs-sections'])
+        ? operationObject['x-docs-sections']
+        : [];
+
+      expect(sections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            position: 'after-description',
+            markdown: expect.stringContaining(expected.prose),
+          }),
+        ]),
+      );
+    }
+  });
+
+  it('keeps English docs sections free of malformed leading fragments', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const englishPages = source.files.filter(
+      (file) =>
+        file.type === 'page' &&
+        file.path.startsWith('en/api-reference/api-ref/'),
+    );
+    const malformed: string[] = [];
+    const malformedLeadingFragmentPattern = /^\s*\/[^\n]*"\s*>/;
+
+    for (const page of englishPages) {
+      if (page.type !== 'page') {
+        continue;
+      }
+
+      const props = await page.data.getClientAPIPageProps();
+      for (const operation of props.operations ?? []) {
+        const pathItem = props.payload.bundled.paths?.[operation.path];
+        const method = operation.method.toLowerCase();
+        const operationObject = pathItem?.[method as keyof typeof pathItem] as
+          | { ['x-docs-sections']?: unknown; operationId?: unknown }
+          | undefined;
+        const sections = Array.isArray(operationObject?.['x-docs-sections'])
+          ? operationObject['x-docs-sections']
+          : [];
+
+        for (const section of sections) {
+          if (
+            typeof section !== 'object' ||
+            section === null ||
+            !('markdown' in section) ||
+            typeof section.markdown !== 'string'
+          ) {
+            continue;
+          }
+
+          if (malformedLeadingFragmentPattern.test(section.markdown)) {
+            malformed.push(
+              `${page.path}:${String(operationObject?.operationId ?? operation.path)}:${section.markdown}`,
+            );
+          }
+        }
+      }
+    }
+
+    expect(malformed).toEqual([]);
+  });
+
   it('exposes the Fumadocs OpenAPI loader plugin', () => {
     expect(getOpenApiLoaderPlugin().name).toBe('fumadocs:openapi');
   });

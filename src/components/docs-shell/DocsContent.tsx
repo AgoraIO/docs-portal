@@ -222,7 +222,7 @@ export function DocsContent({
             <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
               {displayTitle}
             </h1>
-            {!isOpenApiBody && description ? (
+            {description ? (
               <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
                 {description}
               </p>
@@ -245,6 +245,7 @@ export function DocsContent({
           <PlatformHeaderTabs
             canonicalPlatform={platformTabs.canonicalPlatform}
             className="pt-1"
+            defaultPlatform={platformTabs.defaultPlatform}
             initialPlatform={platformTabs.initialPlatform}
             locale={currentLocale}
             platforms={platformTabs.platforms}
@@ -264,6 +265,7 @@ export function DocsContent({
           {resolvedBody?.kind === 'mdx' ? (
             <Suspense fallback={<DocsContentSkeleton />}>
               <PlatformTabsPlacementProvider
+                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
                 value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
@@ -277,11 +279,13 @@ export function DocsContent({
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>
               <PlatformTabsPlacementProvider
+                defaultPlatform={platformTabs?.defaultPlatform}
                 initialPlatform={platformTabs?.initialPlatform}
                 value="header"
               >
                 <PlatformTabsGroup
                   canonicalPlatform={resolvedBody.canonicalPlatform}
+                  defaultPlatform={platformTabs?.defaultPlatform}
                   groupMode="structured"
                   initialPlatform={platformTabs?.initialPlatform}
                   locale={currentLocale}
@@ -607,6 +611,7 @@ export type DocsContentBodyPayload =
       kind: 'mdx';
       platformTabs?: {
         canonicalPlatform: PlatformKey;
+        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
@@ -621,6 +626,7 @@ export type DocsContentBodyPayload =
       }[];
       platformTabs: {
         canonicalPlatform: PlatformKey;
+        defaultPlatform?: PlatformKey;
         initialPlatform?: PlatformKey;
         platforms: string;
       };
@@ -861,7 +867,7 @@ export function DocsTableOfContents({
         <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
           <a
             className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-            href="https://github.com/Shengwang-Community/docs-portal/tree/main/content/docs"
+            href="https://github.com/AgoraIO/docs-portal/tree/main/content/docs"
             rel="noreferrer"
             target="_blank"
           >
@@ -870,7 +876,7 @@ export function DocsTableOfContents({
           </a>
           <a
             className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-            href="https://github.com/Shengwang-Community/docs-portal"
+            href="https://github.com/AgoraIO/docs-portal"
             rel="noreferrer"
             target="_blank"
           >

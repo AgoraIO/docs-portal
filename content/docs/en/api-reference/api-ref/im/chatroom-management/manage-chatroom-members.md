@@ -3,16 +3,16 @@ title: "Manage chat room members"
 description: "Shows how to manage chat room members by calling the Agora Chat RESTful APIs."
 ---
 
-This page shows how to manage  members by calling the Chat RESTful APIs, including adding, retrieving, and deleting  members and revoking administrative privileges of  administrators.
+This page shows how to manage chat room members by calling the Chat RESTful APIs, including adding, retrieving, and deleting chat room members and revoking administrative privileges of chat room administrators.
 Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
 
-## Description of  member roles
+## Description of chat room member roles
 
 | Role | Description | Privilege |
 | :----------- | :--------------------------------------------------- | :----------------------------------------------------------------------------- |
-| Regular member |  members without administrative privileges. | Regular  members can modify their own  profiles. |
-|  admin |  admins are authorized by the  owner and have  management privileges. | The admins can manage regular members of the .  A maximum of 99 admins can be added. |
-|  owner | The creator of the .  owners have the highest privileges. | The  owner can add  admins, disband the , modify  information, and manage regular members of the . |
+| Regular member | Chat room members without administrative privileges. | Regular chat room members can modify their own chat room profiles. |
+| chat room admin | Chat room admins are authorized by the chat room owner and have chat room management privileges. | The admins can manage regular members of the chat room.  A maximum of 99 admins can be added. |
+| chat room owner | The creator of the chat room. Chat room owners have the highest privileges. | The chat room owner can add chat room admins, disband the chat room, modify chat room information, and manage regular members of the chat room. |
 
 ## Common parameters
 
@@ -26,7 +26,7 @@ The following table lists common request and response parameters of the Chat RES
 | `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
 | `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
-| `chatroom_id` | String | The  ID. The unique  identifier assigned to each  by the Chat. You can get the  ID from the response body in [Retrieve the basic information of all s](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
+| `chatroom_id` | String | The chat room ID. The unique chat room identifier assigned to each chat room by the Chat. You can get the chat room ID from the response body in [Retrieve the basic information of all chat rooms](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
 
 <Slot for="username">
 
@@ -59,9 +59,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `timestamp` | Number | The Unix timestamp (ms) when the user is registered. |
 | `duration` | Number | The time duration (ms) from sending the HTTP request to receiving the response. |
 
-## Adding a  member
+## Adding a chat room member
 
-Adds the specified user to the .
+Adds the specified user to the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -75,7 +75,7 @@ POST https://{host}/{org_name}/{app_name}/chatrooms/{chatroomid}/users/{username
 
 For the parameters and detailed descriptions, see [Common parameters ](#param).
 
-> If the specified user does not exist in the app or is already a member of the , the request fails and the error code `400` is returned.
+> If the specified user does not exist in the app or is already a member of the chat room, the request fails and the error code `400` is returned.
 
 #### Request header
 
@@ -93,10 +93,10 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The addition result:`true`: Success`false`: Failure |
-| `action` | String | The operation that is performed. `add_member` means to add a member to the . |
-| `id` | String | The  ID. This is the unique identifier assigned to the  by the Chat service. |
-| `user` | String | The array of usernames of the existing  members. |
+| `result` | Bool | The addition result: `true`: Success. `false`: Failure. |
+| `action` | String | The operation that is performed. `add_member` means to add a member to the chat room. |
+| `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat service. |
+| `user` | String | The array of usernames of the existing chat room members. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#code) for possible reasons.
 
@@ -130,9 +130,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Adding multiple  members
+## Adding multiple chat room members
 
-Adds multiple specified users to the .
+Adds multiple specified users to the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -164,7 +164,7 @@ The request body is a JSON object, which contains the following fields:
 
 | Field | Type | Description | Required |
 | :---------- | :--------- | :----------------------- | :------- |
-| `usernames` | JSONArray | The array of usernames of  members that you want to add to the . | Yes |
+| `usernames` | JSONArray | The array of usernames of chat room members that you want to add to the chat room. | Yes |
 
 ### HTTP response
 
@@ -174,9 +174,9 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :----------- | :--------- | :---------------------------------------------------- |
-| `newmembers` | JSONArray | The array of usernames of the exsiting  members. |
-| `action` | String | The operation that is performed. `add_member` means to add a member to the . |
-| `id` | String | The  ID. This is the unique identifier assigned to the  by the Chat. |
+| `newmembers` | JSONArray | The array of usernames of the existing chat room members. |
+| `action` | String | The operation that is performed. `add_member` means to add a member to the chat room. |
+| `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -215,9 +215,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Retrieving  members with pagination
+## Retrieving members with pagination
 
-Retrieves  members with pagination.
+Retrieves members with pagination.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -235,8 +235,8 @@ For the parameters and detailed descriptions, see [Common parameters ](#param).
 
 | Parameter | Type | Description | Required |
 | :--------- | :--- | :----------------------------------------------------------- | :------- |
-| `pagenum` | Int | The number of page on which  members are retrieved. The default value is 1. | No |
-| `pagesize` | Int | The number of  members displayed on each page. The default value is 1000. The value range is [0,1000]. If you pass in a value greater than `1000`, the server still returns 1000  members.| No |
+| `pagenum` | Int | The page number on which chat room members are retrieved. The default value is 1. | No |
+| `pagesize` | Int | The number of chat room members displayed on each page. The default value is 1000. The value range is [0,1000]. If you pass in a value greater than `1000`, the server still returns 1000 chat room members.| No |
 
 #### Request header
 
@@ -253,9 +253,9 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------- |
-| `owner` | String | The username of the  owner, for example, `{"owner":"user1"}`. |
-| `member` | String | The username of a  admin or regular  member, for example, `{"member":"user2"}`. |
-| `count` | String | The number of  members retrieved at this call of this API. |
+| `owner` | String | The username of the chat room owner, for example, `{"owner":"user1"}`. |
+| `member` | String | The username of a chat room admin or regular chat room member, for example, `{"member":"user2"}`. |
+| `count` | String | The number of chat room members retrieved at this call of this API. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -298,9 +298,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Removing the specified  member
+## Removing the specified member
 
-Removes the specified user from the .
+Removes the specified user from the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -329,10 +329,10 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The deletion result:`true`: Success`false`: Failure |
-| `action` | String | The operation that is performed. `remove_member` means to delete a  member. |
-| `user` | String | The username of the  member that is removed. |
-| `id` | String | The  ID. This is the unique identifier assigned to the  by the Chat service. |
+| `result` | Bool | The deletion result: `true`: Success. `false`: Failure. |
+| `action` | String | The operation that is performed. `remove_member` means to delete a chat room member. |
+| `user` | String | The username of the chat room member that is removed. |
+| `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat service. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -366,9 +366,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 }
 ```
 
-## Removing multiple  members
+## Removing multiple chat room members
 
-Removes multiple users from the .
+Removes multiple users from the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -403,11 +403,11 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The deletion result:`true`: Success`false`: Failure |
-| `action` | String | The operation that is performed. `remove_member` means to remove a  member. |
+| `result` | Bool | The deletion result: `true`: Success. `false`: Failure. |
+| `action` | String | The operation that is performed. `remove_member` means to remove a chat room member. |
 | `reason` | String | The reason why the method fails. |
-| `user` | String | The list of usernames of  members that are deleted. |
-| `id` | String | The  ID. This is the unique identifier assigned to the  by the Chat service. |
+| `user` | String | The list of usernames of chat room members that are deleted. |
+| `id` | String | The chat room ID. This is the unique identifier assigned to the chat room by the Chat service. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 
@@ -450,9 +450,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http:/
 }
 ```
 
-## Adding a  admin
+## Adding a chat room admin
 
-Adds a regular  member as the  admin.
+Adds a regular chat room member as the chat room admin.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -480,7 +480,7 @@ The request body is a JSON object, which contains the following fields:
 
 | Field | Type | Description | Required |
 | :--------- | :----- | :--------------------- | :------- |
-| `newadmin` | String | The username to be added as the  admin. | Yes |
+| `newadmin` | String | The username to be added as the chat room admin. | Yes |
 
 ### HTTP response
 
@@ -490,8 +490,8 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :--------- | :----- | :---------------------------------------------- |
-| `result` | Bool | The addition result: `true`: Success`false`: Failure |
-| `newadmin` | String | The username of the  administrator that is added. |
+| `result` | Bool | The addition result: `true`: Success. `false`: Failure. |
+| `newadmin` | String | The username of the chat room administrator that is added. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#code) for possible reasons.
@@ -525,9 +525,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Retrieving  admins
+## Retrieving admins
 
-Retrieves all the admins of the specified .
+Retrieves all the admins of the specified chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -588,9 +588,9 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer ' 'http://XX
 }
 ```
 
-## Removing  admins
+## Removing admins
 
-Removes the administrative privileges of the  admin and that admin becomes a regular  member.
+Removes the administrative privileges of the chat room admin, and that admin becomes a regular chat room member.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -604,7 +604,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/admin/{oldad
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :----------------------------- | :------- |
-| `oldadmin` | String | The username of the  admin to be demoted as a regular  member. | Yes |
+| `oldadmin` | String | The username of the chat room admin to be demoted as a regular chat room member. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -623,8 +623,8 @@ If the returned HTTP status code is `200`, the request succeeds and the response
 
 | Field | Type | Description |
 | :--------- | :------ | :---------------------------------------------- |
-| `result` | Boolean | The revocation result: `true`: Success`false`: Failure |
-| `oldadmin` | String | The username of the  administrator whose administrative privileges are revoked. |
+| `result` | Boolean | The revocation result: `true`: Success. `false`: Failure. |
+| `oldadmin` | String | The username of the chat room administrator whose administrative privileges are revoked. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

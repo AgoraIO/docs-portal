@@ -53,6 +53,13 @@ const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
 const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
+const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
+const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
+  '[&_h2#request-body]:font-semibold',
+  '[&_h2#request-body]:text-2xl',
+  '[&_h2#response-body]:font-semibold',
+  '[&_h2#response-body]:text-2xl',
+] as const;
 
 const ClientAPIPage = createClientAPIPage({
   content: {
@@ -108,7 +115,13 @@ export function FumadocsOpenApiContent({
   const operation = getCurrentOperation(pageProps);
 
   return (
-    <div className={cn('not-prose openapi-operation', className)}>
+    <div
+      className={cn(
+        'not-prose openapi-operation',
+        ...OPENAPI_GENERATED_BODY_HEADING_CLASSES,
+        className,
+      )}
+    >
       <OpenApiSourceOperationContext.Provider value={operation}>
         <OpenApiDocsCallouts
           operation={operation}
@@ -648,7 +661,9 @@ function OpenApiFieldList({
 }) {
   return (
     <section className="mt-8">
-      <h2 className="mb-3 font-semibold text-2xl">{title}</h2>
+      <h2 className={cn('mb-3', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}>
+        {title}
+      </h2>
       <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
         {fields.map((field) => (
           <div
@@ -877,7 +892,10 @@ function OpenApiCodeSampleGroupSelector({
         </CodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTab key={value} value={value}>
-            {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
+            {renderCodeBlock(
+              getCodeSampleLanguage(sample.lang),
+              sample.source,
+            )}
           </CodeBlockTab>
         ))}
       </CodeBlockTabs>

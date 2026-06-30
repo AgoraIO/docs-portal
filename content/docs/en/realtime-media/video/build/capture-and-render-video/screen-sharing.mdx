@@ -365,8 +365,7 @@ Agora provides an open-source Android [sample project](https://github.com/AgoraI
 - [`ScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_screencaptureparameters2.html)
 - [`updateScreenCaptureParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_updatescreencaptureparameters)
 - [`stopScreenCapture`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_stopscreencapture)
-- <Link to="{{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_setscreencapturescenario">`setScreenCaptureScenario
-`</Link>
+- [`setScreenCaptureScenario`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setscreencapturescenario)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -573,16 +572,16 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
 
   2. Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording. The sample code is as follows:
 
-    ``` swift
-    let frame = CGRect(x: 0, y:0, width: 60, height: 60)
-    systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
-    systemBroadcastPicker?.showsMicrophoneButton = false
-    systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-    // Get the Bundle Identifier of the main application
-    let bundleId = Bundle.main.bundleIdentifier ?? ""
-    // Set the Extension Name
-    systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
-    ```
+     ``` swift
+     let frame = CGRect(x: 0, y:0, width: 60, height: 60)
+     systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
+     systemBroadcastPicker?.showsMicrophoneButton = false
+     systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+     // Get the Bundle Identifier of the main application
+     let bundleId = Bundle.main.bundleIdentifier ?? ""
+     // Set the Extension Name
+     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
+     ```
 
     :::note
     `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
@@ -1119,12 +1118,12 @@ To customize the selection interface, refer to the following steps:
 
 4. Call the `createScreenVideoTrack` method and fill in `sourceId` with `electronScreenSourceId` to create the corresponding screen share stream.
 
-  ``` javascript
-  AgoraRTC.createScreenVideoTrack({
-   // Fill in the sourceId selected by the user
-   electronScreenSourceId： sourceId,
-  }).then(localScreenTrack => );
-  ```
+   ``` javascript
+   AgoraRTC.createScreenVideoTrack({
+    // Fill in the sourceId selected by the user
+    electronScreenSourceId： sourceId,
+   }).then(localScreenTrack => );
+   ```
 
 ##### Additional notes
 
@@ -2396,27 +2395,27 @@ Take the following steps to implement screen sharing on macOS and Windows:
 
 1. Get a list of screens and windows that can be shared. Call `GetScreenCaptureSources` method to get the **Display ID** of the screen or the **Window ID** of the window to be shared:
 
-  ``` csharp
-  SIZE thumbSize = new SIZE(360,240);
-  SIZE iconSize = new SIZE(360,240);
-  ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
-  ```
+   ``` csharp
+   SIZE thumbSize = new SIZE(360,240);
+   SIZE iconSize = new SIZE(360,240);
+   ScreenCaptureSourceInfo[] screenCaptureSourceInfos = RtcEngine.GetScreenCaptureSources(thumbSize, iconSize, true);
+   ```
 
 1. Share the specified screen or window. Depending on the sharing object, call the `StartScreenCaptureByDisplayId` or `StartScreenCaptureByWindowId` method to start screen sharing:
 
-  ``` csharp
-  ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
-  if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Screen)
-  {
-    ulong displayId = info.sourceId;
-    RtcEngine.StartScreenCaptureByDisplayId((uint)displayId, default(Rectangle),default(ScreenCaptureParameters));
-  }
-   else if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Window)
-  {
-     ulong windowId = info.sourceId;
-     RtcEngine.StartScreenCaptureByWindowId(windowId, default(Rectangle),default(ScreenCaptureParameters));
-  }
-  ```
+   ``` csharp
+   ScreenCaptureSourceInfo info = screenCaptureSourceInfos[0];
+   if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Screen)
+   {
+     ulong displayId = info.sourceId;
+     RtcEngine.StartScreenCaptureByDisplayId((uint)displayId, default(Rectangle),default(ScreenCaptureParameters));
+   }
+    else if (info.type == ScreenCaptureSourceType.ScreenCaptureSourceType_Window)
+   {
+      ulong windowId = info.sourceId;
+      RtcEngine.StartScreenCaptureByWindowId(windowId, default(Rectangle),default(ScreenCaptureParameters));
+   }
+   ```
 
 1. Join a channel and publish screen sharing stream.
 
@@ -2850,28 +2849,6 @@ Create two button controls named `Btn_StartScreenCapture` and `Btn_StopScreenCap
 
 ![Create UMG](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-umg.png)
 
-#### Get available screens and windows
-
-Follow the steps below to obtain and add available screens and windows:
-
-1. In **Get Screen Display Id**, refer to the following steps to get the currently available screen and window resources and add them to the options in the drop-down list:
-
-    1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
-
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
-
-    1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
-
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
-
-1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
-
-    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
-
-1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
-
-    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
-
 #### Join a channel and publish the screen sharing stream
 
 Refer to the following steps to join a channel and publish a screen sharing stream:
@@ -2933,6 +2910,28 @@ The main nodes are as follows:
 |:---|:---------------|
 | Get Screen Display Id | After initializing the Agora Engine, get information about the shareable screens and windows. Use this information to set the options and indexes in the drop-down lists. |
 | Init Default Screen Capture Config | Prepare the parameter configuration for screen sharing and save the configuration for later use. |
+
+#### Get available screens and windows
+
+Follow the steps below to obtain and add available screens and windows:
+
+1. In **Get Screen Display Id**, refer to the following steps to get the currently available screen and window resources and add them to the options in the drop-down list:
+
+    1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
+
+        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
+
+    1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
+
+        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
+
+1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
+
+    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
+
+1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
+
+    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
 
 
 #### Configure screen sharing parameters

@@ -3,7 +3,7 @@ title: "Reaction"
 description: "Introduces the reaction functionalities provided by Agora Chat RESTful APIs."
 ---
 
-During s and s, users can reply to a message with emojis, which adds fun and diversity to real-time chatting. In Agora Chat, this feature is known as reaction. For a message, one emoji is counted as one reaction even if it is added repeatedly. A maximum of 20 reactions can be added for one message. To increase the upper limit, contact [support@agora.io](mailto:support@agora.io).
+During one-to-one chats and group chats, users can reply to a message with emojis, which adds fun and diversity to real-time chatting. In Agora Chat, this feature is known as reaction. For a message, one emoji is counted as one reaction even if it is added repeatedly. A maximum of 20 reactions can be added for one message. To increase the upper limit, contact [support@agora.io](mailto:support@agora.io).
 This page shows how to use the Agora Chat RESTful API to implement reaction in your project.
 
 Before calling the following methods, make sure you understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
@@ -42,7 +42,7 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `data`  | JSON | The response details.  |
 | `timestamp` | Number | The Unix timestamp (ms) of the HTTP response. |
 | `username` | String | The user ID. |
-| `groupname` | String | The  name. |
+| `groupname` | String | The chat group name. |
 
 ## Authorization
 
@@ -56,7 +56,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Create/Add a reaction
 
-This method creates or adds a reaction to a specified message in s or s. A maximum of 20 reactions can be added for one message. For one message, if many users add the same reaction, these reactions are counted as one reaction. A message can have a maximum of 20 reactions. To raise the limit, contact [support@agora.io](mailto:support@agora.io).
+This method creates or adds a reaction to a specified message in one-to-one chats or chat groups. A maximum of 20 reactions can be added for one message. For one message, if many users add the same reaction, these reactions are counted as one reaction. A message can have a maximum of 20 reactions. To raise the limit, contact [support@agora.io](mailto:support@agora.io).
 
 ### HTTP request
 
@@ -97,8 +97,8 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `requestStatusCode` | String | The status code of this request. `ok` means that the request succeeds. |
 | `id` | String | The reaction ID. |
 | `msgId` | String | The message ID. |
-| `msgType` | String | The message type:`chat`: .`groupchat`: . |
-| `groupId` | String | The  ID. If the message type is `chat`, the server returns null. |
+| `msgType` | String | The message type: `chat`: One-to-one chat. `groupchat`: Group chat. |
+| `groupId` | String | The group ID. If the message type is `chat`, the server returns null. |
 | `reaction` | String | The ID of the emoji added as the reaction, same as `message` in the request body. |
 | `createAt` | Instant | The time when the reaction is created. |
 | `updateAt` | Instant | The time when the reaction is updated. |
@@ -161,8 +161,8 @@ For other parameters and the detailed descriptions, see [Common parameters](#par
 | Parameter| Type   | Description       | Required |
 | :---------- | :----- | :------------ | :------- |
 | `msgIdList` | Array  |  The ID of the message from which you attempt to retrieve reactions. You can pass in up to 20 message IDs.  | Yes      |
-| `msgType`   | String | The chat type:`chat`: s.`groupchat`: s.  | Yes     |
-| `groupId`   | String | The ID of the . This parameter is only required if you set `msgType` to `groupchat`.  |  No    |
+| `msgType`   | String | The chat type: `chat`: One-to-one chat. `groupchat`: Group chat.  | Yes     |
+| `groupId`   | String | The ID of the group. This parameter is only required if you set `msgType` to `groupchat`.  |  No    |
 
 #### Request header
 
@@ -184,7 +184,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `reactionId` | String | The reaction ID returned in the response body of [Create a reaction](#create). |
 | `reaction` | String | The emoji ID that is the same as the `message` parameter specified in the request body when [adding a reaction](#create).    |
 | `count` | Number | The number of users that have added this reaction to the message. |
-| `state` | Bool  | Whether the user sending this request has added a reaction to this message:`true`: Yes.`false`: No. |
+| `state` | Bool  | Whether the user sending this request has added a reaction to this message: `true`: Yes. `false`: No. |
 | `userList` | Array | The list of user IDs that have added this reaction. It contains a maximum of three users that first added this reaction. |
 
 If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](./http-status-codes) for possible reasons.
@@ -352,7 +352,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the `data` 
 | `reactionId` | String | The reaction ID. |
 | `reaction` | String | The emoji ID that is the same as the `message` parameter specified in the request body when [adding a reaction](#create). |
 | `count` | Number | The number of users that have added the reaction. |
-| `state` | Bool | Whether the user sending this request has added a reaction to this message:`true`: Yes.`false`: No. |
+| `state` | Bool | Whether the user sending this request has added a reaction to this message: `true`: Yes. `false`: No. |
 | `userList` | Array | The list of the users that have added this reaction. Users are listed in the ascending order of the reaction addition time.|
 | `cursor` | String | The cursor that indicates that starting position of the next query. |
 

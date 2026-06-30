@@ -1,10 +1,10 @@
 ---
 title: Build a backend and client from scratch
-description: Set up a token server, start and stop agents using the Agent Server SDK, and stream live transcripts to a browser client.
+description: Set up a token server, start and stop agents using the Agora Agent SDK, and stream live transcripts to a browser client.
 ---
 This guide walks through building the full Conversational AI stack from scratch: a server that issues tokens and manages agent sessions, and a browser client that captures microphone audio and streams live transcripts. You end up with the same structure as the official [Next.js](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-nextjs) and [Python](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python) starter repos, but with every step explained.
 
-If you want to hear an agent speak in under five minutes, follow the [Voice AI quickstart](../get-started/quickstart) guide.
+If you want to hear an agent speak in under five minutes, follow the [Voice AI quickstart](../../get-started/quickstart) guide.
 
 :::info[Info]
 This project uses Agora-managed presets, so no vendor API keys are required to complete this tutorial. If you prefer to switch to your own vendor accounts, see the documentation for your chosen [ASR](../../models/asr/deepgram), [LLM](../../models/llm/openai), and [TTS](../../models/tts/minimax) providers.
@@ -16,7 +16,7 @@ A complete client-server app:
 
 - **Backend**: Three HTTP endpoints:
   - `POST /api/token`: Issues RTC and RTM tokens for a given channel and UID
-  - `POST /api/invite-agent`: Starts the agent using the Agent Server SDK
+  - `POST /api/invite-agent`: Starts the agent using the Agora Agent SDK
   - `POST /api/stop-conversation`: Stops the agent by ID
 - **Frontend**: A Next.js page that:
   - Requests microphone permission
@@ -172,7 +172,7 @@ The backend reads `APP_ID` and `APP_CERTIFICATE` directly. The frontend only rec
 The Go backend walkthrough is not yet available. It will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints.
 :::
 
-In the meantime, use the [Voice AI quickstart](../get-started/quickstart) for a Go agent walkthrough that runs as a single process without a frontend.
+In the meantime, use the [Voice AI quickstart](../../get-started/quickstart) for a Go agent walkthrough that runs as a single process without a frontend.
 
 </TabsContent>
 </Tabs>
@@ -237,7 +237,7 @@ export async function POST(req: NextRequest) {
 
 Endpoint: `POST /api/invite-agent`
 
-This endpoint uses the Agent Server SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
+This endpoint uses the Agora Agent SDK to configure an agent and start a session. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `apiKey`.
 
 ```ts
 // app/api/invite-agent/route.ts
@@ -401,7 +401,7 @@ def token(body: TokenRequest):
 
 Endpoint: `POST /api/invite-agent`
 
-This endpoint uses the Agent Server SDK to configure an agent and start a session in the caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `api_key`.
+This endpoint uses the Agora Agent SDK to configure an agent and start a session in the caller's channel. The STT, LLM, and TTS configurations use Agora-managed presets and therefore do not require an `api_key`.
 
 Add the following to `main.py`:
 
@@ -502,7 +502,7 @@ Swagger docs are available at `http://localhost:8000/docs`.
 The Go backend walkthrough is not yet available. It will mirror the Python path: a standalone backend on port 8000, a Next.js web client on port 3000, and the same three HTTP endpoints.
 :::
 
-In the meantime, see the [Voice AI quickstart](../get-started/quickstart) guide to get started with Go.
+In the meantime, see the [Voice AI quickstart](../../get-started/quickstart) guide to get started with Go.
 
 </TabsContent>
 </Tabs>
@@ -785,7 +785,7 @@ Open `http://localhost:3000`.
 The Go walkthrough is not yet available.
 :::
 
-See the [Voice AI quickstart](../get-started/quickstart) guide in the meantime.
+See the [Voice AI quickstart](../../get-started/quickstart) guide in the meantime.
 
 </TabsContent>
 </Tabs>

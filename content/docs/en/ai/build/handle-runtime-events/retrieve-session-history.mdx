@@ -14,13 +14,13 @@ Conversational AI Engine provides separate retrieval paths for pushed history, p
 
 | Goal | Best source | Use this |
 | --- | --- | --- |
-| Receive history automatically when the session ends | Webhook event | [`103 agent history`](/en/ai/reference/event-types#103-agent-history) |
-| Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/conversational-ai/rest-api/agent/history) |
-| Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/conversational-ai/rest-api/agent/turns) |
+| Receive history automatically when the session ends | Webhook event | [`103 agent history`](../../reference/event-types#103-agent-history) |
+| Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) |
+| Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 
 ## Use the history webhook for automatic delivery
 
-The [`103 agent history`](/en/ai/reference/event-types#103-agent-history) webhook event is the best fit when you want the platform to push session history to your server after the agent stops.
+The [`103 agent history`](../../reference/event-types#103-agent-history) webhook event is the best fit when you want the platform to push session history to your server after the agent stops.
 
 This event includes:
 
@@ -36,7 +36,7 @@ Each `contents` item includes the message sender and content, which is enough fo
 
 ## Use the history API when you need to pull data
 
-Use [`Retrieve agent history`](/en/api-reference/conversational-ai/rest-api/agent/history) when:
+Use [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) when:
 
 - Your backend needs to fetch history on demand
 - You need a pull-based workflow instead of webhook delivery
@@ -46,7 +46,7 @@ This path is often better for internal tools and admin workflows where users ope
 
 ## Use the turns API for diagnostics
 
-Use [`Query conversation turn information`](/en/api-reference/conversational-ai/rest-api/agent/turns) when you care about turn lifecycle and timing more than message text.
+Use [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) when you care about turn lifecycle and timing more than message text.
 
 This API is the better choice for questions such as:
 
@@ -58,7 +58,7 @@ If you need both transcript content and timing analysis, store the `103 agent hi
 
 ## Set the history limit before you start the agent
 
-The number of stored history items in [`103 agent history`](/en/ai/reference/event-types#103-agent-history) depends on `llm.max_history` when you start the agent. The default is `32`.
+The number of stored history items in [`103 agent history`](../../reference/event-types#103-agent-history) depends on `llm.max_history` when you start the agent. The default is `32`.
 
 If your sessions are longer, increase that value when creating the agent:
 
@@ -79,7 +79,7 @@ When your server receives history after the session ends:
 1. Store the raw `103` payload for traceability.
 2. Index records by `agent_id`, `channel`, and `stop_ts`.
 3. Preserve `labels` so you can filter by tenant, campaign, environment, or experiment.
-4. Link the stored history to turn-level analytics from [`turns`](/en/api-reference/conversational-ai/rest-api/agent/turns) when needed.
+4. Link the stored history to turn-level analytics from [`turns`](/en/api-reference/api-ref/conversational-ai/turns) when needed.
 
 ## Common decision rules
 
@@ -95,7 +95,7 @@ Use these rules to quickly choose a retrieval option:
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Get runtime events](get-runtime-events)
 - [Receive agent runtime events on your server](webhooks)
-- [Notification event types](/en/ai/reference/event-types)
-- [Keep conversation context across turns](/en/ai/build/shape-the-conversation/short-term-memory)
-- [Retrieve agent history](/en/api-reference/conversational-ai/rest-api/agent/history)
-- [Query conversation turn information](/en/api-reference/conversational-ai/rest-api/agent/turns)
+- [Notification event types](../../reference/event-types#103-agent-history)
+- [Keep conversation context across turns](../shape-the-conversation/short-term-memory)
+- [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)
+- [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)

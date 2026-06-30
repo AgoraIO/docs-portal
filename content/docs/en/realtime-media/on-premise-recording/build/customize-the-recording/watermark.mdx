@@ -2,6 +2,9 @@
 title: "Add watermark to recordings"
 description: "How to add watermarks to video recordings using the On-Premise Recording SDK."
 ---
+
+<PlatformStructured platform="linux-cpp">
+
 This guide explains how to configure and apply watermarks when recording video with the On-Premise Recording SDK.
 
 ## Understand the tech
@@ -14,23 +17,15 @@ Use watermarks to display logos, timestamps, or custom text for branding, copyri
 
 ## Prerequisites
 
-Before adding watermarks, integrate the On-Premise Recording SDK and complete the [Quickstart](/en/realtime-media/on-premise-recording/index) guide to ensure basic recording works as expected.
+Before adding watermarks, integrate the On-Premise Recording SDK and complete the [Quickstart](/en/realtime-media/on-premise-recording/quickstart) guide to ensure basic recording works as expected.
 
 ## Implementation
 
 To add watermarks to your recordings, follow the platform-specific implementation instructions:
 
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
-
-<TabsContent value="cpp">
-
 To add or update a watermark in composite recording mode, call `enableAndUpdateVideoWatermarks` and pass an array of watermark configuration objects. Each object defines one watermark, including its type, content, position, and appearance. To remove all watermarks, call `disableVideoWatermarks`.
 
-:::info[info]
+:::info
 To use watermarks in individual recording mode, call `enableAndUpdateVideoWatermarksByUid` and `disableVideoWatermarksByUid` instead.
 :::
 
@@ -96,31 +91,32 @@ You can set watermark positions using either absolute pixels or relative ratios.
 
 - Portrait mode
 
-    ```cpp
-    // Use fixed-pixel positioning
-    watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
-    watermarks[i].options.zOrder = 1;
+  ```cpp
+  // Use fixed-pixel positioning
+  watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
+  watermarks[i].options.zOrder = 1;
 
-    watermarks[i].options.positionInPortraitMode.x = 50;
-    watermarks[i].options.positionInPortraitMode.y = 50;
-    watermarks[i].options.positionInPortraitMode.width = 200;
-    watermarks[i].options.positionInPortraitMode.height = 100;
-    ```
+  watermarks[i].options.positionInPortraitMode.x = 50;
+  watermarks[i].options.positionInPortraitMode.y = 50;
+  watermarks[i].options.positionInPortraitMode.width = 200;
+  watermarks[i].options.positionInPortraitMode.height = 100;
+  ```
 
 - Landscape mode
 
-    ```cpp
-    // Use fixed-pixel positioning
-    watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
-    watermarks[i].options.zOrder = 1;
+  ```cpp
+  // Use fixed-pixel positioning
+  watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
+  watermarks[i].options.zOrder = 1;
 
-    watermarks[i].options.positionInLandscapeMode.x = 50;
-    watermarks[i].options.positionInLandscapeMode.y = 50;
-    watermarks[i].options.positionInLandscapeMode.width = 200;
-    watermarks[i].options.positionInLandscapeMode.height = 100;
-    ```
+  watermarks[i].options.positionInLandscapeMode.x = 50;
+  watermarks[i].options.positionInLandscapeMode.y = 50;
+  watermarks[i].options.positionInLandscapeMode.width = 200;
+  watermarks[i].options.positionInLandscapeMode.height = 100;
+  ```
 
 #### Relative position (ratio)
+
 ```cpp
 // Use ratio-based positioning
 watermarks[i].options.mode = agora::rtc::FIT_MODE_USE_IMAGE_RATIO;
@@ -133,7 +129,9 @@ watermarks[i].options.watermarkRatio.widthRatio = 0.6;
 
 ### Complete sample
 
-### Full example for adding watermarks
+<details>
+<summary>Full example for adding watermarks</summary>
+
 ```cpp
 if (!recorderConfig.waterMark.empty()) {
   std::vector<WatermarkConfig> watermarks(recorderConfig.waterMark.size());
@@ -172,25 +170,46 @@ if (!recorderConfig.waterMark.empty()) {
 }
 ```
 
+</details>
+
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 ### API references
 
-- [`WatermarkLitera`](/on-premise-recording/reference/api-reference#watermarklitera)
-- [`enableAndUpdateVideoWatermarks`](/on-premise-recording/reference/api-reference#enableandupdatevideowatermarks)
-- [`WatermarkTimestamp`](/on-premise-recording/reference/api-reference#watermarktimestamp)
-- [`WatermarkOptions`](/on-premise-recording/reference/api-reference#watermarkoptions)
-- [`Rectangle`](/on-premise-recording/reference/api-reference#rectangle)
-- [`WatermarkRatio`](/on-premise-recording/reference/api-reference#watermarkratio)
-</TabsContent>
+- [`WatermarkLitera`](/en/api-reference/api-ref/on-premise-recording#watermarklitera)
+- [`enableAndUpdateVideoWatermarks`](/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks)
+- [`WatermarkTimestamp`](/en/api-reference/api-ref/on-premise-recording#watermarktimestamp)
+- [`WatermarkOptions`](/en/api-reference/api-ref/on-premise-recording#watermarkoptions)
+- [`Rectangle`](/en/api-reference/api-ref/on-premise-recording#rectangle)
+- [`WatermarkRatio`](/en/api-reference/api-ref/on-premise-recording#watermarkratio)
 
-<TabsContent value="java">
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+This guide explains how to configure and apply watermarks when recording video with the On-Premise Recording SDK.
+
+## Understand the tech
+
+Use watermarks to display logos, timestamps, or custom text for branding, copyright, or verification. The On-Premise Recording SDK supports three types of watermarks in both individual and composite recording modes:
+
+- **Text watermark**: Shows user-defined text with customizable font and size.
+- **Timestamp watermark**: Displays the current time from the recording server.
+- **Image watermark**: Renders a static image in PNG or JPG format.
+
+## Prerequisites
+
+Before adding watermarks, integrate the On-Premise Recording SDK and complete the [Quickstart](/en/realtime-media/on-premise-recording/quickstart) guide to ensure basic recording works as expected.
+
+## Implementation
+
+To add watermarks to your recordings, follow the platform-specific implementation instructions:
 
 To apply or update a watermark in composite recording mode, call `enableAndUpdateVideoWatermarks` and pass an array of watermark configuration objects. Each object defines one watermark, including its type, content, position, and appearance. To remove all watermarks, call `disableVideoWatermarks`.
 
-:::info[info]
+:::info
 To apply watermarks in individual recording mode, use `enableAndUpdateVideoWatermarksByUid` and `disableVideoWatermarksByUid` instead.
 :::
 
@@ -262,35 +281,36 @@ You can set watermark positions using either absolute pixels or relative ratios.
 
 - Portrait mode
 
-   ```java
-   WatermarkOptions options = new WatermarkOptions();
-   options.setMode(Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION);
-   options.setZOrder(1);
+  ```java
+  WatermarkOptions options = new WatermarkOptions();
+  options.setMode(Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION);
+  options.setZOrder(1);
 
-   Rectangle portrait = new Rectangle();
-   portrait.setX(50);
-   portrait.setY(50);
-   portrait.setWidth(200);
-   portrait.setHeight(100);
+  Rectangle portrait = new Rectangle();
+  portrait.setX(50);
+  portrait.setY(50);
+  portrait.setWidth(200);
+  portrait.setHeight(100);
 
-   options.setPositionInPortraitMode(portrait);
-   watermarks[i].setOptions(options);
-   ```
+  options.setPositionInPortraitMode(portrait);
+  watermarks[i].setOptions(options);
+  ```
 
 - Landscape mode
 
-   ```java
-   Rectangle landscape = new Rectangle();
-   landscape.setX(50);
-   landscape.setY(50);
-   landscape.setWidth(200);
-   landscape.setHeight(100);
+  ```java
+  Rectangle landscape = new Rectangle();
+  landscape.setX(50);
+  landscape.setY(50);
+  landscape.setWidth(200);
+  landscape.setHeight(100);
 
-   options.setPositionInLandscapeMode(landscape);
-   watermarks[i].setOptions(options);
-   ```
+  options.setPositionInLandscapeMode(landscape);
+  watermarks[i].setOptions(options);
+  ```
 
 #### Relative position (ratios)
+
 ```java
 WatermarkOptions options = new WatermarkOptions();
 options.setMode(Constants.WatermarkFitMode.FIT_MODE_USE_IMAGE_RATIO);
@@ -307,7 +327,9 @@ watermarks[i].setOptions(options);
 
 ### Complete sample
 
-### Full example for adding watermarks
+<details>
+<summary>Full example for adding watermarks</summary>
+
 ```java
 if (recorderConfig.getWaterMark() != null && !recorderConfig.getWaterMark().isEmpty()) {
   WatermarkConfig[] watermarks = new WatermarkConfig[recorderConfig.getWaterMark().size()];
@@ -362,18 +384,19 @@ if (recorderConfig.getWaterMark() != null && !recorderConfig.getWaterMark().isEm
 }
 ```
 
+</details>
+
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 ### API references
 
-- [`WatermarkLitera`](/on-premise-recording/reference/api-reference#watermarklitera)
-- [`enableAndUpdateVideoWatermarks`](/on-premise-recording/reference/api-reference#enableandupdatevideowatermarks)
-- [`WatermarkTimestamp`](/on-premise-recording/reference/api-reference#watermarktimestamp)
-- [`WatermarkOptions`](/on-premise-recording/reference/api-reference#watermarkoptions)
-- [`Rectangle`](/on-premise-recording/reference/api-reference#rectangle)
-- [`WatermarkRatio`](/on-premise-recording/reference/api-reference#watermarkratio)
+- [`WatermarkLitera`](/en/api-reference/api-ref/on-premise-recording#watermarklitera)
+- [`enableAndUpdateVideoWatermarks`](/en/api-reference/api-ref/on-premise-recording#enableandupdatevideowatermarks)
+- [`WatermarkTimestamp`](/en/api-reference/api-ref/on-premise-recording#watermarktimestamp)
+- [`WatermarkOptions`](/en/api-reference/api-ref/on-premise-recording#watermarkoptions)
+- [`Rectangle`](/en/api-reference/api-ref/on-premise-recording#rectangle)
+- [`WatermarkRatio`](/en/api-reference/api-ref/on-premise-recording#watermarkratio)
 
-</TabsContent>
-</Tabs>
+</PlatformStructured>

@@ -9,7 +9,7 @@ This guide introduces the key processes and concepts you need to know to use Rea
 
 ## General concepts
 
-Agora  relies on the following fundamental concepts to enable seamless real-time communication:
+Agora relies on the following fundamental concepts to enable seamless real-time communication:
 
 ### App ID
 

@@ -3,7 +3,7 @@ title: "Manage group members"
 description: "Shows how to manage group members by calling the Agora Chat RESTful APIs."
 ---
 
-Group member management involves operations such as member creation and deletion.  Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.
+Group member management involves operations such as member creation and deletion. Chat provides multiple APIs for adding and retrieving group members, adding a group administrator, and transferring the group owner.
 
 This page shows how to manage group members by calling the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
@@ -152,7 +152,7 @@ curl -X GET -H 'Accept: application/json' 'http://XXXX/XXXX/XXXX/chatgroups/1013
 
 ## Adding a user to the chat group
 
-Adds the specified user to the chat group.  If the user is already a member of the chat group, an error is returned.
+Adds the specified user to the chat group. If the user is already a member of the chat group, an error is returned.
 
 ### HTTP request
 
@@ -707,7 +707,7 @@ For other parameters and detailed descriptions, see [Common parameters](#common-
 
 #### Response body
 
-If the returned HTTP status code is 200, the request succeeds， and the `data` field in the response body contain the information of the chat group admins. For other fields and descriptions, see [Common parameters](#common-parameters).
+If the returned HTTP status code is 200, the request succeeds, and the `data` field in the response body contains the information of the chat group admins. For other fields and descriptions, see [Common parameters](#common-parameters).
 
 If the returned HTTP status code is not 200, the request fails. You can refer to [Status codes](#code) for possible causes.
 
@@ -844,7 +844,7 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | :------- | :------ | :---------------------------------------------- |
-| `result` | Boolean | Whether the group admin is successfully demoted to a regular group member:`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group admin is successfully demoted to a regular group member: `true`: Yes. `false`: No. |
 | `oldadmin` | String | The ID of the group admin demoted to a regular group member. |
 
 For other fields and descriptions, see [Common parameters](#common-parameters).

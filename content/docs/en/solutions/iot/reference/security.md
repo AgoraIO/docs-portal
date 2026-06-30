@@ -175,7 +175,7 @@ Agora is certified to ISO/IEC 27001:2022 by DNV GL, demonstrating our informatio
 
 Download the certificate: [ISO/IEC 27001:2022](/files/Agora_ISO_27001.pdf)
 
-**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in publics clouds acting as PII processors**
+**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in public clouds acting as PII processors**
 
 Agora is certified to ISO/IEC 27018 by DNV GL. This standard is a Code of Practice for protecting personal data in the cloud environment. Agora continuously strives to protect the sensitive data with our customers.
 
@@ -183,7 +183,7 @@ Download the certificate: [ISO/IEC 27018:2019](/files/Agora_ISO_27018.pdf)
 
 **SOC 2 Report**
 
-Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accounts (AICPA) standards for security, availability and confidently and achieves the SOC 2 report. 
+Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls, and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accountants (AICPA) standards for security, availability, and confidentiality, and have achieved SOC 2 reporting.
 
 **PCI DSS**
 
@@ -215,7 +215,7 @@ Furthermore, Agora provides static key, dynamic key, and hybrid authentication m
 
 **Data protection and encryption**
 
-At Agora, you choose how your content is secured. We offer you various options for your content in transit and provide you with full control of your own encryption keys. There features include:
+At Agora, you choose how your content is secured. We offer you various options for your content in transit and provide you with full control of your own encryption keys. These features include:
 - Agora Software Development Kits (SDKs) provide built-in encryption algorithm including AES-128 and AES-256 to protect all data transmitted between the end users and Agora services.
 - We also provide you with the choice to use your own encryption algorithm to protect users’ media stream during real-time engagement. The encryption key is completely under your control.
 - The communication between the end users and Agora network (that is, Agora SDRTN®) is protected by encrypted transmission protocols such as the Agora Private Transmission Protocol, Transport Layer Security (TLS) and WebSocket Secure (WSS).
@@ -307,7 +307,7 @@ Agora products and services are designed and built with multiple protection meas
 
 |Protection measures |Applied by default |Recommended use-cases|
 |---|---|---|
-|Channel seperation |Yes |All real-time use-cases.| 
+|Channel separation |Yes |All real-time use-cases.|
 |Token-based authentication |No |All real-time apps in a production environment should use token-based end-user authentication.|
 |Encryption |No |Real-time use-cases that require confidentiality.| 
 |Network geofencing |No |Real-time use-cases where customers wish to restrict access to Agora servers to within a specified region.|
@@ -369,14 +369,14 @@ These SDKs support network geofencing in the following regions: global (default)
 
 ### Security best practice checklist
 
-Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
+Use this list to quickly check what measures you have or have not taken to best protect the security of your app and users:
 
 1. [Enable token-based authentication](../build/manage-agora-account.md) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
 3. [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
 5. Set the token expiration date to a reasonable time. See [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
-6. If needed, contact  support@agora.io to enable token privilege and set token per role.
+6. If needed, contact support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.
 9. Pass the channel encryption key (secret) securely outside of Agora engine to authenticated endpoints that are allowed to join the channel.

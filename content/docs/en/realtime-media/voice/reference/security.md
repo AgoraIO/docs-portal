@@ -174,17 +174,17 @@ Agora adheres to regional and international information security standards as we
 
 Agora is certified to ISO/IEC 27001:2022 by DNV GL, demonstrating our information security maturity level. Our security team implements the Information Security Management System in partnership with Ernst & Young. Security is a top priority at Agora, and this achievement demonstrates our commitment and continuous efforts to improve the efficiency of information security controls.
 
-Download the certificate: [ISO/IEC 27001:2022](/files/Agora_ISO_27001.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27001:2022](https://www.agora.io/en/compliance/)
 
-**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in publics clouds acting as PII processors**
+**ISO/IEC 27018 Information Technology – Security techniques – Code of practice for protection of personally identifiable information (PII) in public clouds acting as PII processors**
 
 Agora is certified to ISO/IEC 27018 by DNV GL. This standard is a Code of Practice for protecting personal data in the cloud environment. Agora continuously strives to protect the sensitive data with our customers.
 
-Download the certificate: [ISO/IEC 27018:2019](/files/Agora_ISO_27018.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27018:2019](https://www.agora.io/en/compliance/)
 
 **SOC 2 Report**
 
-Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accounts (AICPA) standards for security, availability and confidently and achieves the SOC 2 report. 
+Agora is confident with our security practices and we continue to engage independent third parties to perform a strict SOC 2 audit on our internal processes, security controls, and the design of Agora products. We meet all audit requirements set by the American Institute of Certified Public Accountants (AICPA) standards for security, availability, and confidentiality, and have achieved SOC 2 reporting.
 
 **PCI DSS**
 
@@ -216,7 +216,7 @@ Furthermore, Agora provides static key, dynamic key, and hybrid authentication m
 
 **Data protection and encryption**
 
-At Agora, you choose how your content is secured. We offer you various options for your content in transit and provide you with full control of your own encryption keys. There features include:
+At Agora, you choose how your content is secured. We offer you various options for your content in transit and provide you with full control of your own encryption keys. These features include:
 - Agora Software Development Kits (SDKs) provide built-in encryption algorithm including AES-128 and AES-256 to protect all data transmitted between the end users and Agora services.
 - We also provide you with the choice to use your own encryption algorithm to protect users’ media stream during real-time engagement. The encryption key is completely under your control.
 - The communication between the end users and Agora network (that is, Agora SDRTN®) is protected by encrypted transmission protocols such as the Agora Private Transmission Protocol, Transport Layer Security (TLS) and WebSocket Secure (WSS).
@@ -278,25 +278,25 @@ The ISO certification of Agora has passed the supervision and accreditation of t
 
 ISO/IEC 27001:2022 is the most authoritative, widely accepted and applied system certification standard in the field of information security. This system covers the information security management during the global operation and maintenance of Agora's cloud platform for real-time engagement.
 
-Download the certificate: [ISO/IEC 27001:2022](/files/Agora_ISO_27001.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27001:2022](https://www.agora.io/en/compliance/)
 
 #### ISO/IEC 27017:2015
 
 ISO/IEC 27017:2015 is a supplementary standard to ISO 27001, which provides information security implementation specifications for cloud service providers.
 
-Download the certificate: [ISO/IEC 27017:2015](/files/Agora_ISO_27017.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27017:2015](https://www.agora.io/en/compliance/)
 
 #### ISO/IEC 27018:2019
 
 ISO/IEC 27018:2019 is a supplementary standard to ISO 27001, which provides implementation specifications for the protection of personal information for cloud service providers.
 
-Download the certificate: [ISO/IEC 27018:2019](/files/Agora_ISO_27018.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27018:2019](https://www.agora.io/en/compliance/)
 
 #### ISO/IEC 27701:2019
 
 ISO/IEC 27701:2019 is a privacy extension to ISO/IEC 27001 information security management and ISO/IEC 27002 security controls. It is an international standard system of management systems that provides guidance on the protection of personal privacy, including how organizations should manage personal information.
 
-Download the certificate: [ISO/IEC 27701:2019](/files/Agora_ISO_27701.pdf)
+For current certification details, see Agora's compliance page: [ISO/IEC 27701:2019](https://www.agora.io/en/compliance/)
 
 ## Security best practices
 
@@ -308,7 +308,7 @@ Agora products and services are designed and built with multiple protection meas
 
 |Protection measures |Applied by default |Recommended use-cases|
 |---|---|---|
-|Channel seperation |Yes |All real-time use-cases.| 
+|Channel separation |Yes |All real-time use-cases.|
 |Token-based authentication |No |All real-time apps in a production environment should use token-based end-user authentication.|
 |Encryption |No |Real-time use-cases that require confidentiality.| 
 |Network geofencing |No |Real-time use-cases where customers wish to restrict access to Agora servers to within a specified region.|
@@ -370,7 +370,7 @@ These SDKs support network geofencing in the following regions: global (default)
 
 ### Security best practice checklist
 
-Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
+Use this list to quickly check what measures you have or have not taken to best protect the security of your app and users:
 
 1. [Enable token-based authentication](../manage-agora-account.md) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.

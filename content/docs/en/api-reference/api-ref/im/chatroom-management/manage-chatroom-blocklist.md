@@ -234,7 +234,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 | Parameter      | Type    | Description                                                         |
 | :-------- | :------ | :----------------------------------------------------------- |
-| `result`  | Boolean | Whether the users are successfully added to the chat room blocklist.`true`: Yes. `false`: No. |
+| `result`  | Boolean | Whether the users are successfully added to the chat room blocklist. `true`: Yes. `false`: No. |
 | `reason`  | String  | The reason why the users fail to be added to the chat room blocklist.                                       |
 | `user`    | String  | The usernames added to the chat room blocklist.                                     |
 
@@ -315,7 +315,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 | Parameter      | Type    | Description                                                         |
 | :-------- | :------ | :----------------------------------------------------------- |
-| `result`  | Boolean | Whether the user is successfully removed from the chat room blocklist.`true`: Yes.`false`: No. |
+| `result`  | Boolean | Whether the user is successfully removed from the chat room blocklist. `true`: Yes. `false`: No. |
 | `user`    | String  | The username removed from the chat room blocklist.                                     |
 
 For the parameters and detailed descriptions, see [Common parameters](#param).
@@ -390,7 +390,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 | Parameter      | Type    | Description                                                         |
 | :-------- | :------ | :----------------------------------------------------------- |
-| `result`  | Boolean | Whether the users are successfully removed from the chat room blocklist.`true`: Yes.`false`: No. |
+| `result`  | Boolean | Whether the users are successfully removed from the chat room blocklist. `true`: Yes. `false`: No. |
 | `user`    | String  | The usernames removed from the chat room blocklist.                            |
 
 For the parameters and detailed descriptions, see [Common parameters](#param).

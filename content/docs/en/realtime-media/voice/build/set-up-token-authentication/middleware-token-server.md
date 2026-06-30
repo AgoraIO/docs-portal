@@ -33,9 +33,9 @@ Take the following steps to set up and run the middleware project:
 
     1. Copy the example `.env` file.
 
-        ```bash
-        cp .env.example .env
-        ```
+       ```bash
+       cp .env.example .env
+       ```
 
     1. Update the following variables in the `.env` file:
 

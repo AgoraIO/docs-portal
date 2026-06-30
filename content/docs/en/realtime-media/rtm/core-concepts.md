@@ -8,7 +8,7 @@ Agora’s Signaling SDK enables real-time metadata synchronization and low-laten
 This article introduces the key processes and concepts you need to know to use the Signaling SDK.
 
 ## General concepts
-Agora  relies on the following fundamental concepts to enable seamless real-time communication:
+Agora relies on the following fundamental concepts to enable seamless real-time communication:
 
 <a name="agora-sd-rtn"></a>
 ### Agora SDRTN®

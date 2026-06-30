@@ -1,8 +1,8 @@
 ---
-title: Listen to agent runtime events on client apps
+title: Client-side events
 description: Use toolkit callbacks to update the UI and react to agent events during a live session.
 ---
-Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement agent event handling with the Conversational AI Engine toolkit. Use this page when you need in-session events in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks) instead.
+Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement client-side event handling with the Conversational AI Engine toolkit. Use this page when you need in-session events in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks) instead.
 
 For an overview that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
 
@@ -10,10 +10,10 @@ For an overview that compares client toolkit and webhook delivery, see [Get runt
 
 Agora provides a flexible, scalable, and standardized Conversational AI Engine toolkit. The toolkit supports **Android**, **iOS**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate Agora Signaling SDK and Video SDK capabilities to enable the following features:
 
-- [Interrupt agents](/en/ai/build/shape-the-conversation/interrupt-agent)
-- [Display live transcripts](/en/ai/build/transcripts)
+- [Interrupt agents](../shape-the-conversation/interrupt-agent)
+- [Display live transcripts](../transcripts)
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
-- [Set optimal audio parameters](/en/ai/best-practices/audio-setup) for iOS and Android
+- [Set optimal audio parameters](../../best-practices/audio-setup) for iOS and Android
 
 The toolkit exposes callback methods that let you listen for various agent-related events and system information:
 
@@ -27,10 +27,10 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ## Prerequisites
 
-- Implemented the Conversational AI Engine [REST quickstart](/en/ai/get-started/quickstart).
-- Integrated Agora Video SDK v4.5.1 or later and completed the [audio and video quickstart](/en/introduction/realtime-audio-video).
+- Implemented the Conversational AI Engine [quickstart](../../get-started/quickstart).
+- Your app integrates Agora Video SDK v4.5.1 or later and includes the [Video SDK quickstart](../../../realtime-media/video/quickstart).
 - Enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm/quickstart) for basic messaging.
-- Maintained active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
+- Maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 ## Implementation
 
@@ -104,7 +104,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -192,7 +192,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |
@@ -250,7 +250,7 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 5. **Add a conversational AI agent to the channel**
 
-   To [start a conversational AI agent](/en/api-reference/conversational-ai/rest-api/agent/join), configure:
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
 
    | Parameter | Description | Required |
    | --- | --- | --- |

@@ -1,9 +1,9 @@
 ---
 title: Integrate with MCP
-description: Use an AI coding agent to integrate Shengwang products more efficiently. By configuring the Shengwang Doc MCP Server, your coding agent can directly search and read Shengwang official documentation before answering questions or generating code, so it can work with the latest official content and provide more accurate support.
+description: Use an AI coding agent to integrate Agora products more efficiently. By configuring the Agora Doc MCP Server, your coding agent can directly search and read Agora official documentation before answering questions or generating code, so it can work with the latest official content and provide more accurate support.
 ---
 
-## Connect to the Shengwang Doc MCP Server
+## Connect to the Agora Doc MCP Server
 
 Choose one of the following ways to connect to the MCP server:
 
@@ -18,7 +18,7 @@ Add the following configuration manually in Trae under Settings > MCP:
   "mcpServers": {
     "shengwang-docs": {
       "type": "http",
-      "url": "https://doc-mcp.shengwang.cn/mcp"
+      "url": "https://mcp.agora.io"
     }
   }
 }
@@ -29,7 +29,7 @@ Add the following configuration manually in Trae under Settings > MCP:
 **Add with the `CLI`:**
 
 ```bash
-claude mcp add --transport http shengwang-docs https://doc-mcp.shengwang.cn/mcp
+claude mcp add --transport http shengwang-docs https://mcp.agora.io
 ```
 
 **Or configure it manually:**
@@ -41,7 +41,7 @@ Create or edit `.mcp.json` in the project root, then add the following section:
   "mcpServers": {
     "shengwang-docs": {
       "type": "http",
-      "url": "https://doc-mcp.shengwang.cn/mcp"
+      "url": "https://mcp.agora.io"
     }
   }
 }
@@ -52,7 +52,7 @@ Create or edit `.mcp.json` in the project root, then add the following section:
 **Add with the `CLI`:**
 
 ```bash
-codex mcp add shengwang-docs --url https://doc-mcp.shengwang.cn/mcp
+codex mcp add shengwang-docs --url https://mcp.agora.io
 ```
 
 **Or configure it manually:**
@@ -61,7 +61,7 @@ Create or edit `.codex/config.toml` in the project root, then add the following 
 
 ```text
 [mcp_servers.shengwang-docs]
-url = "https://doc-mcp.shengwang.cn/mcp"
+url = "https://mcp.agora.io"
 ```
 
 #### Cursor
@@ -74,7 +74,7 @@ Create or edit `.cursor/mcp.json` in the project root, then add the following se
 {
   "mcpServers": {
     "shengwang-docs": {
-      "url": "https://doc-mcp.shengwang.cn/mcp"
+      "url": "https://mcp.agora.io"
     }
   }
 }
@@ -90,7 +90,7 @@ Create or edit `.kiro/settings/mcp.json` in the project root, then add the follo
 {
   "mcpServers": {
     "shengwang-docs": {
-      "url": "https://doc-mcp.shengwang.cn/mcp"
+      "url": "https://mcp.agora.io"
     }
   }
 }
@@ -101,7 +101,7 @@ Create or edit `.kiro/settings/mcp.json` in the project root, then add the follo
 **Add with the `CLI`:**
 
 ```bash
-code --add-mcp '{"name":"shengwang-docs","type":"http","url":"https://doc-mcp.shengwang.cn/mcp"}'
+code --add-mcp '{"name":"shengwang-docs","type":"http","url":"https://mcp.agora.io"}'
 ```
 
 **Or configure it manually:**
@@ -113,7 +113,7 @@ Create or edit `.vscode/mcp.json` in the root directory, then add the following 
   "servers": {
     "shengwang-docs": {
       "type": "http",
-      "url": "https://doc-mcp.shengwang.cn/mcp"
+      "url": "https://mcp.agora.io"
     }
   }
 }
@@ -134,7 +134,7 @@ In Agent Mode, you can describe your requirement directly and let the coding age
 For example:
 
 ```text
-Search the relevant Shengwang documentation, read the document content, and tell me how to build the simplest possible 1v1 real-time audio and video call.
+Search the relevant Agora documentation, read the document content, and tell me how to build the simplest possible 1v1 real-time audio and video call.
 ```
 **Specify tool calls in the prompt**
 
@@ -143,6 +143,5 @@ You can also specify which MCP tools to use in the prompt through the tool-calli
 For example:
 
 ```text
-#search-docs #get-doc-content Use search-docs to find relevant Shengwang documentation, then use get-doc-content to read the full content of the matched document and tell me how to build an interactive experience with an AI agent.
+#search-docs #get-doc-content Use search-docs to find relevant Agora documentation, then use get-doc-content to read the full content of the matched document and tell me how to build an interactive experience with an AI agent.
 ```
-
