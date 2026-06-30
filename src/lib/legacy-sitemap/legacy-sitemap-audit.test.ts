@@ -7,6 +7,16 @@ import {
 } from './redirects';
 import reviewReport from './review-report.json';
 
+type LegacySitemapReviewItem = {
+  appliedRuleType: string;
+  legacyUrl: string;
+};
+
+type LegacySitemapReviewReport = {
+  items: LegacySitemapReviewItem[];
+  summary: typeof reviewReport.summary;
+};
+
 type LegacySitemapUrl = {
   href: string;
   path: string;
@@ -15,6 +25,7 @@ type LegacySitemapUrl = {
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
+  const typedReviewReport = reviewReport as LegacySitemapReviewReport;
 
   it('keeps traceable metadata for the persisted sitemap snapshot', () => {
     expect(legacySitemapRedirectConfig.sourceSitemapUrl).toBe(
@@ -29,16 +40,17 @@ describe('legacy sitemap compatibility audit', () => {
 
   it('has no duplicate or conflicting redirect rules', () => {
     const legacyUrls = new Set<string>();
-    const pathTargets = new Map<string, string>();
+    const pathSearchTargets = new Map<string, string>();
 
     for (const rule of legacySitemapRedirectConfig.rules) {
       expect(legacyUrls.has(rule.legacyUrl)).toBe(false);
       legacyUrls.add(rule.legacyUrl);
 
-      const existingTarget = pathTargets.get(rule.legacyPath);
+      const pathSearchKey = `${rule.legacyPath}${rule.legacySearch ?? ''}`;
+      const existingTarget = pathSearchTargets.get(pathSearchKey);
 
       expect(existingTarget && existingTarget !== rule.target).toBeFalsy();
-      pathTargets.set(rule.legacyPath, rule.target);
+      pathSearchTargets.set(pathSearchKey, rule.target);
     }
   });
 
@@ -49,7 +61,7 @@ describe('legacy sitemap compatibility audit', () => {
         return false;
       }
 
-      return !resolveLegacySitemapRedirectPath(url.path);
+      return !resolveLegacySitemapRedirectPath(url.path, url.search);
     });
 
     expect(broken).toEqual([]);
@@ -72,7 +84,9 @@ describe('legacy sitemap compatibility audit', () => {
         reviewReport.summary.unavailable,
     );
     expect(
-      redirectedUrls.every((url) => resolveLegacySitemapRedirectPath(url.path)),
+      redirectedUrls.every((url) =>
+        resolveLegacySitemapRedirectPath(url.path, url.search),
+      ),
     ).toBe(true);
   });
 
@@ -98,7 +112,7 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('targets existing new docs portal pages', () => {
-    const docsPaths = getDocsContentUrls();
+    const docsPaths = getDocsPortalUrls();
     const missingTargets = legacySitemapRedirectConfig.rules
       .map((rule) => rule.target)
       .filter((target) => !docsPaths.has(target));
@@ -112,26 +126,42 @@ describe('legacy sitemap compatibility audit', () => {
     expect(queryUrl).toBeDefined();
 
     const rule = queryUrl
-      ? resolveLegacySitemapRedirectPath(queryUrl.path)
+      ? resolveLegacySitemapRedirectPath(queryUrl.path, queryUrl.search)
       : undefined;
 
     expect(rule?.preserveSearch).toBe(true);
   });
 
+  it('maps reviewed legacy URLs to their inspected article-level targets', () => {
+    for (const { legacyUrl, target } of reviewedRedirectTargets) {
+      const url = new URL(legacyUrl);
+
+      expect(
+        resolveLegacySitemapRedirectPath(url.pathname, url.search),
+      ).toEqual(
+        expect.objectContaining({
+          confidence: 'high',
+          target,
+          type: 'semantic-page-match',
+        }),
+      );
+    }
+  });
+
   it('keeps the human review report aligned with the audit summary', () => {
-    expect(reviewReport.summary).toEqual({
+    expect(typedReviewReport.summary).toEqual({
       broken: 0,
       exactPath: 490,
-      exactSlug: 1944,
+      exactSlug: 1942,
       native: 0,
-      productFallback: 13,
+      productFallback: 0,
       renamedPage: 39,
-      semanticPageMatch: 630,
+      semanticPageMatch: 645,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });
     const reportUrls = new Set(
-      reviewReport.items.map((item) => item.legacyUrl),
+      typedReviewReport.items.map((item) => item.legacyUrl),
     );
     const fallbackOrUnavailableUrls = legacySitemapRedirectConfig.rules
       .filter(
@@ -142,13 +172,15 @@ describe('legacy sitemap compatibility audit', () => {
       )
       .map((rule) => rule.legacyUrl);
 
-    expect(reviewReport.items).toHaveLength(fallbackOrUnavailableUrls.length);
+    expect(typedReviewReport.items).toHaveLength(
+      fallbackOrUnavailableUrls.length,
+    );
     expect(reportUrls.size).toBe(fallbackOrUnavailableUrls.length);
     expect(
       fallbackOrUnavailableUrls.every((legacyUrl) => reportUrls.has(legacyUrl)),
     ).toBe(true);
     expect(
-      reviewReport.items.every(
+      typedReviewReport.items.every(
         (item) => item.appliedRuleType === 'product-fallback',
       ),
     ).toBe(true);
@@ -170,7 +202,103 @@ function readLegacySitemapUrls(): LegacySitemapUrl[] {
   });
 }
 
+const reviewedRedirectTargets = [
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/agora-chat/restful-api/user-system-registration',
+    target: '/en/api-reference/api-ref/im/user-system-registration',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=android',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/android',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=ios',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=macos',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/macos',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=web',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/web',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=windows',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/windows',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=electron',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/electron',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=flutter',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/flutter',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-native',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/react-native',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-js',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unity',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/unity',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unreal',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/unreal',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=blueprint',
+    target:
+      '/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint',
+  },
+  {
+    legacyUrl: 'https://docs.agora.io/en/conversational-ai/models/asr/amazon',
+    target: '/en/ai/models/asr/openai',
+  },
+  {
+    legacyUrl: 'https://docs.agora.io/en/conversational-ai/overview/pricing',
+    target: '/en/ai/reference/pricing',
+  },
+];
+
 function getDocsContentUrls() {
+  return getDocsPortalUrls({ includePlatformRoutes: false });
+}
+
+function getDocsPortalUrls({
+  includePlatformRoutes = true,
+}: {
+  includePlatformRoutes?: boolean;
+} = {}) {
   const docsRoot = join(process.cwd(), 'content/docs');
   const urls = new Set<string>();
   const visit = (directory: string) => {
@@ -193,10 +321,24 @@ function getDocsContentUrls() {
         .replace(/\/index$/, '');
 
       urls.add(`/${contentPath}`);
+
+      if (includePlatformRoutes) {
+        const text = readFileSync(fullPath, 'utf8');
+        for (const match of text.matchAll(
+          /<PlatformStructured\s+platform=["']([^"']+)["']/g,
+        )) {
+          const platform = normalizePlatform(match[1]);
+          urls.add(`/${contentPath}/${platform}`);
+        }
+      }
     }
   };
 
   visit(docsRoot);
 
   return urls;
+}
+
+function normalizePlatform(platform: string) {
+  return platform === 'react-js' ? 'javascript' : platform;
 }

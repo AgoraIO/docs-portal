@@ -50,12 +50,12 @@ The current snapshot contains 3116 legacy URLs and 0 broken URLs. The latest
 generated mapping classifies them as:
 
 - `exact-path`: 490
-- `exact-slug`: 1944
+- `exact-slug`: 1942
 - `renamed-page`: 39
-- `semantic-page-match`: 630
-- `product-fallback`: 13
+- `semantic-page-match`: 645
+- `product-fallback`: 0
 - `unavailable`: 0
 
-`review-report.json` contains the 13 remaining product-level fallback cases.
-Each fallback records inspected article-level candidates and keeps the legacy
-query string, including `platform`, for the redirect.
+`review-report.json` contains no remaining product-level fallback cases.
+Platform-specific targets can opt out of preserving the legacy query string
+when the platform is encoded in the target path.

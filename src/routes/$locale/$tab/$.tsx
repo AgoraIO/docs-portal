@@ -1,7 +1,10 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import {
@@ -42,7 +45,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     const loadPayload = (segments: string[]) =>
       shouldUseStaticDocsPayload()
         ? resolvePlatformStaticDocsPayload<
-            DocsPagePayload | { redirectUrl: string }
+            DocsPagePayload | DocsRedirectPayload
           >({
             locale: params.locale,
             slugSegments: segments,
@@ -51,6 +54,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
         : getDocsPagePayload({
             data: {
               locale: params.locale,
+              search: location.searchStr,
               slugSegments: segments,
               tab: params.tab,
             },
@@ -81,13 +85,15 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
+      const preserveSearch =
+        'preserveSearch' in payload ? payload.preserveSearch : true;
 
       if (!redirectUrl) {
         throw notFound();
       }
 
       throw redirect({
-        href: preserveRedirectSearch(redirectUrl, location),
+        href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
       });
     }
 
@@ -139,12 +145,13 @@ function Page() {
 function preserveRedirectSearch(
   href: string,
   location: { hash?: string; searchStr?: string },
+  preserveSearch = true,
 ) {
   if (/[?#]/.test(href)) {
     return href;
   }
 
-  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
+  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
 }
 
 export function getKnownPlatformSearchParam(searchStr?: string) {
@@ -157,7 +164,7 @@ export function getKnownPlatformSearchParam(searchStr?: string) {
 }
 
 export function payloadSupportsPlatform(
-  payload: DocsPagePayload | { redirectUrl: string },
+  payload: DocsPagePayload | DocsRedirectPayload,
   platform: PlatformKey,
 ) {
   const platformTabs = getPayloadPlatformTabs(payload);
@@ -175,7 +182,7 @@ export function payloadSupportsPlatform(
 }
 
 function getPayloadPlatformTabs(
-  payload: DocsPagePayload | { redirectUrl: string },
+  payload: DocsPagePayload | DocsRedirectPayload,
 ) {
   if ('redirectUrl' in payload || payload.body.kind === 'openapi') {
     return undefined;

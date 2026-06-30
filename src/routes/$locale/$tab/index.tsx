@@ -1,7 +1,10 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import {
@@ -17,7 +20,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
     }
 
     const payload = shouldUseStaticDocsPayload()
-      ? await readStaticDocsPayload<DocsPagePayload | { redirectUrl: string }>({
+      ? await readStaticDocsPayload<DocsPagePayload | DocsRedirectPayload>({
           locale: params.locale,
           slugSegments: [],
           tab: params.tab,
@@ -43,6 +46,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
           return getDocsPagePayload({
             data: {
               locale: params.locale,
+              search: location.searchStr,
               slugSegments: [],
               tab: params.tab,
             },
@@ -55,13 +59,15 @@ export const Route = createFileRoute('/$locale/$tab/')({
 
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
+      const preserveSearch =
+        'preserveSearch' in payload ? payload.preserveSearch : true;
 
       if (!redirectUrl) {
         throw notFound();
       }
 
       throw redirect({
-        href: preserveRedirectSearch(redirectUrl, location),
+        href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
       });
     }
 
@@ -113,10 +119,11 @@ function TabIndexPage() {
 function preserveRedirectSearch(
   href: string,
   location: { hash?: string; searchStr?: string },
+  preserveSearch = true,
 ) {
   if (/[?#]/.test(href)) {
     return href;
   }
 
-  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
+  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
 }

@@ -138,6 +138,7 @@ export async function loadDocsPagePayload(
   locale: string,
   tab: string,
   slugSegments: string[],
+  search?: string,
 ) {
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
@@ -187,11 +188,10 @@ export async function loadDocsPagePayload(
     locale,
     tab,
     slugSegments,
+    search,
   );
   if (legacySitemapRedirect) {
-    return {
-      redirectUrl: legacySitemapRedirect,
-    };
+    return legacySitemapRedirect;
   }
 
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
@@ -799,11 +799,17 @@ export function resolveLegacySitemapRedirect(
   locale: string,
   tab: string,
   slugSegments: string[],
+  search?: string,
 ) {
   const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
-  const rule = resolveLegacySitemapRedirectPath(legacyPath);
+  const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
 
-  return rule?.target ?? null;
+  return rule
+    ? {
+        preserveSearch: rule.preserveSearch,
+        redirectUrl: rule.target,
+      }
+    : null;
 }
 
 function resolveRealtimeMediaRedirect(
@@ -978,8 +984,13 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
 
 export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
-  null | { redirectUrl: string }
+  null | DocsRedirectPayload
 >;
+
+export type DocsRedirectPayload = {
+  preserveSearch?: boolean;
+  redirectUrl: string;
+};
 
 async function readProcessedText(page: PageWithSource) {
   try {

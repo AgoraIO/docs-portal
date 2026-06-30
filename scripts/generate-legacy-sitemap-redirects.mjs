@@ -168,6 +168,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management',
     'restful-api/user-attributes-management':
       '/en/realtime-media/im/build/build-core-messaging/user-attributes',
+    'restful-api/user-system-registration':
+      '/en/api-reference/api-ref/im/user-system-registration',
   },
   'convo-ai-device-kit': {
     'get-started/run-the-demo': '/en/ai/device-kit/build/run-the-r1-demo',
@@ -210,6 +212,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
   },
   'conversational-ai': {
+    'models/asr/amazon': '/en/ai/models/asr/openai',
     'best-practices/cloud-recording':
       '/en/ai/best-practices/record-agent-conversation',
     'models/asr/overview': '/en/ai/models/asr/deepgram',
@@ -247,6 +250,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/reference': '/en/api-reference/api-ref/conversational-ai',
     'rest-api/restful-authentication':
       '/en/api-reference/api-ref/conversational-ai/authentication',
+    'overview/pricing': '/en/ai/reference/pricing',
     'studio/overview': '/en/ai/studio',
   },
   'broadcast-streaming': {
@@ -486,6 +490,28 @@ const PRODUCT_SPECIFIC_TARGETS = {
   },
 };
 
+const PRODUCT_PLATFORM_TARGETS = {
+  'broadcast-streaming': {
+    'overview/release-notes': {
+      base: '/en/realtime-media/broadcast-streaming/reference/release-notes',
+      platforms: {
+        android: 'android',
+        blueprint: 'blueprint',
+        electron: 'electron',
+        flutter: 'flutter',
+        ios: 'ios',
+        macos: 'macos',
+        'react-js': 'javascript',
+        'react-native': 'react-native',
+        unity: 'unity',
+        unreal: 'unreal',
+        web: 'web',
+        windows: 'windows',
+      },
+    },
+  },
+};
+
 const SHARED_PRODUCT_TARGETS = {
   'channel-management-api/agora-console-rest-api': 'reference/console-overview',
   'channel-management-api/best-practices/ban-user-privileges':
@@ -581,8 +607,6 @@ function buildInventory() {
   return files.sort().map((file) => {
     const text = fs.readFileSync(file, 'utf8');
     const routePath = routeFromFile(file);
-    const segments = routePath.split('/').filter(Boolean);
-    const [, tab, productOrSection, section] = segments;
     const title = titleFrom(text, file);
     const headings = headingsFrom(text);
     const body = stripFrontmatter(text)
@@ -590,6 +614,8 @@ function buildInventory() {
       .replace(/<[^>]+>/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+    const segments = routePath.split('/').filter(Boolean);
+    const [, tab, productOrSection, section] = segments;
 
     return {
       routePath,
@@ -606,13 +632,28 @@ function buildInventory() {
   });
 }
 
+function platformStructuredRoutes(text) {
+  return Array.from(
+    new Set(
+      Array.from(
+        text.matchAll(/<PlatformStructured\s+platform=["']([^"']+)["']/g),
+        (match) => normalizePlatform(match[1]),
+      ),
+    ),
+  );
+}
+
+function normalizePlatform(platform) {
+  return platform === 'react-js' ? 'javascript' : platform;
+}
+
 function buildRedirects(routes) {
   const xml = fs.readFileSync(SITEMAP_PATH, 'utf8');
   const legacyUrls = Array.from(
     xml.matchAll(/<loc>([^<]+)<\/loc>/g),
     (match) => match[1],
   );
-  const routeSet = new Set(routes.map((route) => route.routePath));
+  const routeSet = getRouteSet(routes);
   const summary = {
     totalLegacyUrls: legacyUrls.length,
     native: 0,
@@ -666,7 +707,7 @@ function buildRedirects(routes) {
       type: match.type,
       confidence,
       evidence: match.evidence,
-      preserveSearch: true,
+      preserveSearch: match.preserveSearch ?? true,
     });
 
     if (
@@ -701,6 +742,19 @@ function buildRedirects(routes) {
       items: reviewItems,
     },
   };
+}
+
+function getRouteSet(routes) {
+  const routeSet = new Set(routes.map((route) => route.routePath));
+
+  for (const route of routes) {
+    const text = fs.readFileSync(route.sourceFilePath, 'utf8');
+    for (const platform of platformStructuredRoutes(text)) {
+      routeSet.add(`${route.routePath}/${platform}`);
+    }
+  }
+
+  return routeSet;
 }
 
 function exactTarget(info, routeSet) {
@@ -790,10 +844,11 @@ function leafTarget(info, candidates) {
 }
 
 function curatedTarget(info, routeSet) {
+  const platformTarget = platformTargetFor(info);
   const productTarget =
     PRODUCT_SPECIFIC_TARGETS[info.product]?.[info.rest.join('/')];
   const sharedTarget = sharedTargetFor(info);
-  const target = productTarget || sharedTarget;
+  const target = platformTarget || productTarget || sharedTarget;
 
   if (!target || !routeSet.has(target)) {
     return null;
@@ -803,14 +858,30 @@ function curatedTarget(info, routeSet) {
     target,
     type: 'semantic-page-match',
     confidence: 'high',
+    ...(platformTarget ? { preserveSearch: false } : {}),
     evidence: [
       `legacy path ${info.rest.join('/')} maps to inspected article ${target}`,
-      productTarget
-        ? `product-specific mapping preserves ${info.product} semantics`
-        : `shared RTC mapping preserves ${info.product} product area`,
+      platformTarget
+        ? `product-platform mapping preserves ${info.product} platform ${info.searchParams.get('platform')}`
+        : productTarget
+          ? `product-specific mapping preserves ${info.product} semantics`
+          : `shared RTC mapping preserves ${info.product} product area`,
       platformEvidence(info),
     ],
   };
+}
+
+function platformTargetFor(info) {
+  const platform = info.searchParams.get('platform');
+  if (!platform) {
+    return null;
+  }
+
+  const targetConfig =
+    PRODUCT_PLATFORM_TARGETS[info.product]?.[info.rest.join('/')];
+  const targetPlatform = targetConfig?.platforms[platform];
+
+  return targetPlatform ? `${targetConfig.base}/${targetPlatform}` : null;
 }
 
 function sharedTargetFor(info) {

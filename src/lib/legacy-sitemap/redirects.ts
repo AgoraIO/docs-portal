@@ -26,16 +26,36 @@ export const legacySitemapRedirectConfig = legacySitemapRedirects as {
   sourceSitemapUrl: string;
 };
 
-export function resolveLegacySitemapRedirectPath(legacyPath: string) {
+export function resolveLegacySitemapRedirectPath(
+  legacyPath: string,
+  legacySearch?: string,
+) {
   const normalizedPath = normalizeLegacyPath(legacyPath);
+  const normalizedSearch = normalizeLegacySearch(legacySearch);
 
   return (
     legacySitemapRedirectConfig.rules.find(
-      (rule) => normalizeLegacyPath(rule.legacyPath) === normalizedPath,
-    ) ?? null
+      (rule) =>
+        normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
+        normalizeLegacySearch(rule.legacySearch) === normalizedSearch,
+    ) ??
+    legacySitemapRedirectConfig.rules.find(
+      (rule) =>
+        normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
+        !rule.legacySearch,
+    ) ??
+    null
   );
 }
 
 function normalizeLegacyPath(path: string) {
   return path.startsWith('/') ? path : `/${path}`;
+}
+
+function normalizeLegacySearch(search: string | undefined) {
+  if (!search) {
+    return '';
+  }
+
+  return search.startsWith('?') ? search : `?${search}`;
 }

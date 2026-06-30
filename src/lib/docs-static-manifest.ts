@@ -1,3 +1,4 @@
+import type { DocsRedirectPayload } from './docs-page.server';
 import { isKnownPlatform } from './platforms/registry';
 
 const STATIC_DOCS_BASE = '/__static/docs';
@@ -89,7 +90,7 @@ type PlatformStaticPayload = {
 };
 
 export async function resolvePlatformStaticDocsPayload<
-  T extends PlatformStaticPayload | { redirectUrl: string },
+  T extends PlatformStaticPayload | DocsRedirectPayload,
 >({
   locale,
   slugSegments,
