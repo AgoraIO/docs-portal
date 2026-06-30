@@ -17,6 +17,7 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
+import { createSitemapXml, getSitemapUrls } from '../src/lib/sitemap.ts';
 import {
   getLLMText,
   getPageMarkdownUrl,
@@ -155,6 +156,7 @@ async function writeSearchIndex(root, { locale, pages }) {
 async function removeGeneratedMachineReadableDocs() {
   await fs.rm(path.join(markdownOutputRoot, 'llms.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'llms-full.txt'), { force: true });
+  await fs.rm(path.join(markdownOutputRoot, 'sitemap.xml'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, MACHINE_READABLE_LOCALE), {
     force: true,
     recursive: true,
@@ -179,6 +181,17 @@ async function generateStaticMachineReadableDocs() {
   await writeTextFile(
     path.join(markdownOutputRoot, 'llms-full.txt'),
     [...fullText, ...openApiPages.map((page) => page.markdown)].join('\n\n'),
+  );
+  generated += 1;
+
+  await writeTextFile(
+    path.join(markdownOutputRoot, 'sitemap.xml'),
+    createSitemapXml(
+      getSitemapUrls({
+        openApiPages,
+        pages,
+      }),
+    ),
   );
   generated += 1;
 
