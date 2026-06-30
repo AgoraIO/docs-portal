@@ -125,7 +125,7 @@ function createPayload(
     hideToc: false,
     layoutMode: overrides.body.kind === 'openapi' ? 'openapi' : 'docs',
     localeLinks: [],
-    markdownUrl: '/llms.mdx/docs/en/about.mdx',
+    markdownUrl: '/en/introduction/about.md',
     navigation: {
       next: undefined,
       previous: undefined,

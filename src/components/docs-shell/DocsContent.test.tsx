@@ -474,7 +474,7 @@ describe('DocsContent', () => {
             ],
           },
         }}
-        markdownUrl="/llms.mdx/docs/en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools.md"
+        markdownUrl="/en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools.md"
         slug="integrate-with-ai-tools"
         title="Integrate with AI tools"
         toc={[]}
