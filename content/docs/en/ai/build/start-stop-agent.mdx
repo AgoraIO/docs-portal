@@ -6,39 +6,35 @@ This page describes how to call the Conversational AI Engine APIs to start and s
 
 ## Understand the tech
 
-Agora’s Conversational AI technology enables real-time voice interactions between users and an AI-driven agent within an Agora channel. The basic process is as follows:
-
-1. **User joins a Agora channel**: A user joins an Agora channel.
-2. **Start an AI agent**: The user sends a request to your business server, which then makes an API call to the Conversational AI Engine to start an agent. The agent joins the same channel as the user.
-3. **Real-time interaction**: The user communicates with the AI agent through voice, leveraging the specified LLM, a text-to-speech service, and Agora's low-latency backend.
-4. **Stop the AI agent**: When the user ends the conversation, the business server sends a request to stop the AI agent. The agent then leaves the Agora channel.
-5. **User leaves the Agora channel**: The user disconnects from the session.
+A user joins a channel and triggers your business server to start an agent via the Conversational AI Engine API. The agent joins the same channel and communicates with the user through voice, using the specified LLM, TTS service, and Agora’s low-latency Software-Defined Real-Time Network (SDRTN®). When the conversation ends, the business server stops the agent and the user leaves the channel.
 
 <details>
 <summary>Conversational AI Engine workflow</summary>
 
 ![](/images/conversational-ai/ai-agent-tech.svg)
+
 </details>
 
 ## Prerequisites
 
-- [Enabled Agora conversational AI](../reference/enable-conversational-ai#enable-conversational-ai) for your project.
-- The following information from Agora Console:
-  - [App ID](../reference/enable-conversational-ai#get-the-app-id): The string identifier for your project used to call the Conversational AI Engine REST API.
-  - [Customer ID and Customer secret](/en/api-reference/api-ref/conversational-ai/authentication#generate-customer-id-and-customer-secret): Used for HTTP authentication when calling the REST APIs.
-  - A [temporary token](../reference/enable-conversational-ai#generate-temporary-tokens): The token is used by the agent for authentication when joining an Agora channel.
-- Obtained API keys for:
-  - A supported Large Language Model (LLM) provider such as [OpenAI](https://openai.com/index/openai-api/).
-  - A supported text-to-speech (TTS) provider such as [Microsoft Azure](https://azure.microsoft.com/en-us/products/ai-services/ai-speech).
+Use the [Agora CLI](/en/introduction/agora-cli) to create or select an Agora project, enable RTC and Conversational AI, verify project readiness, and export local credentials:
+
+```bash
+agora login
+agora project create conv-ai-tutorial --feature rtc --feature convoai
+agora project use conv-ai-tutorial
+agora project doctor --feature convoai
+agora project env --format shell --with-secrets
+```
+
+You also need:
+
+- A client app that can join an Agora RTC channel, such as the [Voice Calling](../../realtime-media/voice/quickstart) or [Video Calling](../../realtime-media/video/quickstart) quickstart.
+- [REST API authentication credentials](/en/api-reference/api-ref/conversational-ai/authentication#generate-customer-id-and-customer-secret) for Curl requests.
+- Third-party ASR, LLM, and TTS credentials for the provider configuration you plan to use.
 
 :::note[Tips]
 If you don't yet have API keys from a third-party LLM or TTS provider, [use presets](custom-model-integration/presets) to start your first agent without ASR, LLM, and TTS credentials.
-:::
-
-- Implemented the [Voice Calling](../../realtime-media/voice/quickstart) or [Video Calling](../../realtime-media/video/quickstart) quickstart.
-
-:::info[Info]
-For the best conversational experience, Agora recommends using Conversational AI Engine with specific Agora Video/Voice SDK versions. For details, [contact technical support](mailto:support@agora.io).
 :::
 
 ## Install the SDK
@@ -83,14 +79,14 @@ This section introduces the basic RESTful API requests you use to start and stop
 
 ### Start a conversational AI agent
 
-Call the `join` endpoint to create an agent instance that joins an Agora channel. For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
+Call the `join` endpoint to create an agent instance that joins an Agora channel. 
 
 <Tabs>
 <TabsList>
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">Curl</TabsTrigger>
+  <TabsTrigger value="curl">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">
@@ -249,6 +245,7 @@ func main() {
 </TabsContent>
 
 <TabsContent value="curl">
+For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
 
 ```bash
 curl --request POST \
@@ -321,7 +318,7 @@ To end the conversation with the AI agent, call the `leave` endpoint. This cause
   <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
   <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="curl">Curl</TabsTrigger>
+  <TabsTrigger value="curl">REST API</TabsTrigger>
 </TabsList>
 
 <TabsContent value="python">

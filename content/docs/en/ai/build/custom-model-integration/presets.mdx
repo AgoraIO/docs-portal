@@ -7,13 +7,19 @@ supported third-party AI providers without supplying your own API keys. You can 
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+Use the [Agora CLI](/en/introduction/agora-cli) to create or select an Agora project, enable RTC and Conversational AI, and export local credentials:
 
-- An Agora account
-- A valid Agora app ID 
-- One of the following to authenticate REST API requests:
-  - A customer ID and customer secret, to use [Basic HTTP authentication](/en/api-reference/api-ref/conversational-ai/authentication#implement-basic-http-authentication)
-  - An RTC token generated from your app ID and app certificate, to use [token authentication](/en/api-reference/api-ref/conversational-ai/authentication#implement-token-authentication)
+```bash
+agora login
+agora project create conv-ai-tutorial --feature rtc --feature convoai
+agora project use conv-ai-tutorial
+agora project env --format shell --with-secrets
+```
+
+You also need one of the following to authenticate REST API requests:
+
+- A customer ID and customer secret, to use [Basic HTTP authentication](/en/api-reference/api-ref/conversational-ai/authentication#implement-basic-http-authentication).
+- An RTC token generated from your app ID and app certificate, to use [token authentication](/en/api-reference/api-ref/conversational-ai/authentication#implement-token-authentication).
 
 ## Understand the tech
 
@@ -42,7 +48,7 @@ and MiniMax for TTS, with no BYOK credentials required for any provider.
 
 <Tabs>
 <TabsList>
-  <TabsTrigger value="curl">Curl</TabsTrigger>
+  <TabsTrigger value="curl">REST API</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
   <TabsTrigger value="nodejs">Node.js</TabsTrigger>
 </TabsList>
