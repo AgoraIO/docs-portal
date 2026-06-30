@@ -826,10 +826,6 @@ function SidebarPageLabel({
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
-  if (/\/solutions(?:\/index)?$/.test(url)) {
-    return url.includes('/zh-CN/') ? '总览' : 'Overview';
-  }
-
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;

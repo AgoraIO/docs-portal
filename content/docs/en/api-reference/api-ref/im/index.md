@@ -1,5 +1,5 @@
 ---
-title: "Chat RESTful API overview"
+title: "Chat Overview"
 description: "Gives an overview of RESTful APIs."
 ---
 

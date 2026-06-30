@@ -1,5 +1,5 @@
 ---
-title: Quickstart
+title: Convo AI Device Kit quickstart
 description: Get started with the Agora Convo AI Device Kit in just a few minutes.
 ---
 This guide walks you through the essential steps to get your Convo AI Device Kit R1 up and running. You'll learn how to power on the device, connect it to your network, and start talking to the AI agent.

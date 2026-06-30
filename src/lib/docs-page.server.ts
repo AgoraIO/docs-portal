@@ -1553,7 +1553,7 @@ function buildAiProductSidebar(
   return [
     {
       ...aiOverview,
-      title: isZhCn ? '概览' : 'Overview',
+      title: isZhCn ? '概览' : aiOverview.title,
     },
     {
       children: stripSidebarSectionMetaFromNodes([
