@@ -235,23 +235,23 @@ describe('docs route locale guards', () => {
         throw new Error('expected platform .md request to be handled directly');
       }),
       params: {
-        _splat: 'get-started/test-mdx-comps/android.md',
+        _splat: 'api-ref/uikit-sdk/android.md',
         locale: 'en',
-        tab: 'ai',
+        tab: 'api-reference',
       },
-      pathname: '/en/ai/get-started/test-mdx-comps/android.md',
+      pathname: '/en/api-reference/api-ref/uikit-sdk/android.md',
       request: new Request(
-        'https://docs.example.com/en/ai/get-started/test-mdx-comps/android.md',
+        'https://docs.example.com/en/api-reference/api-ref/uikit-sdk/android.md',
       ),
     } as never)) as Response;
     const markdown = await response.text();
 
     expect(response.headers.get('Content-Type')).toBe('text/markdown');
     expect(markdown).toContain(
-      '# MDX component fixture (/en/ai/get-started/test-mdx-comps/android)',
+      '# Fastboard API (/en/api-reference/api-ref/uikit-sdk/android)',
     );
-    expect(markdown).toContain('### Install on Android');
-    expect(markdown).not.toContain('### Install with JavaScript');
+    expect(markdown).toContain('## FastboardView class');
+    expect(markdown).not.toContain('## createFastboard');
   });
 
   it('does not serve zh-CN direct platform .md docs page URLs', async () => {
@@ -262,13 +262,13 @@ describe('docs route locale guards', () => {
           throw new Error('expected zh-CN platform .md request to be rejected');
         }),
         params: {
-          _splat: 'get-started/test-mdx-comps/android.md',
+          _splat: 'api-ref/uikit-sdk/android.md',
           locale: 'zh-CN',
-          tab: 'ai',
+          tab: 'api-reference',
         },
-        pathname: '/zh-CN/ai/get-started/test-mdx-comps/android.md',
+        pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
         request: new Request(
-          'https://docs.example.com/zh-CN/ai/get-started/test-mdx-comps/android.md',
+          'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
         ),
       } as never);
     } catch (error) {

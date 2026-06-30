@@ -760,7 +760,6 @@
 - Original:     Use `setExtensionPropertyWithVendor` to set lighting effects, with `key` set to `setEffectVideo` and `value` containing a series of lighting materials and their corresponding parameter configurations. MetaKit offers lighting effects such as 3D lighting, ad lights, screen ripples, aurora effects, portrait edge flames, and ambient light groups, and allows fine-tuning of parameters like color, intensity, and range. S
 - Why suspicious: The trailing isolated `S` is a visible leftover after an otherwise complete sentence.
 - Suggested change:     Use `setExtensionPropertyWithVendor` to set lighting effects, with `key` set to `setEffectVideo` and `value` containing a series of lighting materials and their corresponding parameter configurations. MetaKit offers lighting effects such as 3D lighting, ad lights, screen ripples, aurora effects, portrait edge flames, and ambient light groups, and allows fine-tuning of parameters like color, intensity, and range.
-
 ## MEDIUM content/docs/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit.mdx:2705
 
 - Problem type: unfinished sentence residue
@@ -781,4 +780,3 @@
 - Original:     Use `setExtensionPropertyWithVendor` to set lighting effects, with `key` set to `setEffectVideo` and `value` containing a series of lighting materials and their corresponding parameter configurations. MetaKit offers lighting effects such as 3D lighting, ad lights, screen ripples, aurora effects, portrait edge flames, and ambient light groups, and allows fine-tuning of parameters like color, intensity, and range. S
 - Why suspicious: The trailing isolated `S` is a visible leftover after an otherwise complete sentence.
 - Suggested change:     Use `setExtensionPropertyWithVendor` to set lighting effects, with `key` set to `setEffectVideo` and `value` containing a series of lighting materials and their corresponding parameter configurations. MetaKit offers lighting effects such as 3D lighting, ad lights, screen ripples, aurora effects, portrait edge flames, and ambient light groups, and allows fine-tuning of parameters like color, intensity, and range.
-
