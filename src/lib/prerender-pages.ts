@@ -1,3 +1,5 @@
+import { isMachineReadableDocsPath } from './machine-readable-docs';
+
 type PrerenderSourcePage = {
   url: string;
 };
@@ -12,10 +14,18 @@ export function createDocsPrerenderPaths({
   const paths = new Set<string>(['/']);
 
   for (const page of pages) {
+    if (!isMachineReadableDocsPath(page.url)) {
+      continue;
+    }
+
     paths.add(page.url);
   }
 
   for (const path of openApiPaths) {
+    if (!isMachineReadableDocsPath(path)) {
+      continue;
+    }
+
     paths.add(path);
   }
 

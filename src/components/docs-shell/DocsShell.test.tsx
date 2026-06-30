@@ -393,6 +393,9 @@ describe('DocsShell', () => {
     const githubControl = within(mainHeaderRow).getByRole('link', {
       name: 'GitHub',
     });
+    const brandHomeLink = within(mainHeaderRow).getByRole('link', {
+      name: 'Agora Docs',
+    });
     const tabsIntroductionLink = within(docsTabsStrip).getByRole('tab', {
       name: 'Introduction',
     });
@@ -406,7 +409,8 @@ describe('DocsShell', () => {
     }
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(themeControl);
-    expect(mainHeaderRow.querySelector('.docs-brand-mark')).toBeNull();
+    expect(within(brandHomeLink).getByText('Docs')).toBeInTheDocument();
+    expect(brandHomeLink.querySelector('svg')).toBeInTheDocument();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);

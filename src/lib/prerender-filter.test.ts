@@ -9,10 +9,8 @@ describe('shouldPrerenderRoute', () => {
     expect(shouldPrerenderRoute('/zh-CN/ai/quick-start')).toBe(true);
   });
 
-  it('excludes raw markdown routes discovered from page utility links', () => {
-    expect(
-      shouldPrerenderRoute('/llms.mdx/docs/en/introduction/about-agora.mdx'),
-    ).toBe(false);
+  it('does not special-case legacy raw markdown routes', () => {
+    expect(shouldPrerenderRoute('/en/introduction/about-agora.md')).toBe(true);
   });
 
   it('includes openapi endpoint canonical routes for static generation', () => {
@@ -37,12 +35,9 @@ describe('shouldPrerenderRoute', () => {
       '/',
       '/en/api-reference/api-ref/conversational-ai/join',
       '/en/introduction/about-agora',
-      '/zh-CN/ai/domain-overview',
     ]);
     expect(paths).toContain('/en/introduction/about-agora');
-    expect(paths).toContain('/zh-CN/ai/domain-overview');
-    expect(paths).toContain(
-      '/en/api-reference/api-ref/conversational-ai/join',
-    );
+    expect(paths).not.toContain('/zh-CN/ai/domain-overview');
+    expect(paths).toContain('/en/api-reference/api-ref/conversational-ai/join');
   });
 });

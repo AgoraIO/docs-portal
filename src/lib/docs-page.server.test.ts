@@ -8,30 +8,12 @@ import {
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (
-    page: { path: string; type?: string; url: string },
-    platform?: string,
-  ) => {
-    const segments = page.path
-      .split('/')
-      .filter(Boolean)
-      .map((segment, index, array) =>
-        index === array.length - 1 ? segment.replace(/\.mdx$/, '.md') : segment,
-      );
-    const markdownSegments = platform
-      ? [
-          ...segments.slice(0, -1),
-          segments.at(-1)?.replace(/\.md$/, '') ?? 'index',
-          `${platform}.md`,
-        ]
-      : segments;
+  getPageMarkdownUrl: (page: { url: string }, platform?: string) => {
+    const url = platform ? `${page.url}/${platform}.md` : `${page.url}.md`;
 
     return {
-      segments: markdownSegments,
-      url:
-        platform || page.type === 'openapi'
-          ? `/llms.mdx/docs/${markdownSegments.join('/')}`
-          : `${page.url}.md`,
+      segments: url.split('/').filter(Boolean),
+      url,
     };
   },
   source: {
@@ -1374,7 +1356,7 @@ Web body
           platforms: '["android","web"]',
         },
       },
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
+      markdownUrl: '/en/introduction/about-agora/android.md',
       toc: [
         {
           depth: 2,
@@ -1437,7 +1419,7 @@ Web body
           platforms: '["android","web"]',
         },
       },
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/android.md',
+      markdownUrl: '/en/introduction/about-agora/android.md',
       toc: [
         {
           depth: 2,
@@ -1495,7 +1477,7 @@ Web body
           platforms: '["javascript","web"]',
         },
       },
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora/javascript.md',
+      markdownUrl: '/en/introduction/about-agora/javascript.md',
       toc: [
         {
           depth: 2,
@@ -1674,8 +1656,7 @@ Web body
           locale: 'zh-CN',
         },
       ],
-      markdownUrl:
-        '/llms.mdx/docs/en/api-reference/api-ref/conversational-ai/join.md',
+      markdownUrl: '/en/api-reference/api-ref/conversational-ai/join.md',
       tabs: [
         {
           id: 'api-reference',
