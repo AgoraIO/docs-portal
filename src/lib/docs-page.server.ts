@@ -292,9 +292,33 @@ export async function loadDocsPagePayload(
   const platformGroupParent = resolvePlatformGroupParentPage(page, localePages);
 
   if (platformGroupParent) {
-    return {
-      redirectUrl: platformGroupParent.url,
-    };
+    const panelPage = page;
+    const platformGroup = resolvePlatformGroupDefinition(
+      platformGroupParent,
+      localePages,
+    );
+    const panelPlatform = platformGroup?.panels.find(
+      (panel) => panel.contentPath === panelPage.path,
+    )?.platform;
+
+    if (!panelPlatform) {
+      return {
+        redirectUrl: platformGroupParent.url,
+      };
+    }
+
+    const parentPage = source.getPage(
+      platformGroupParent.slugs.slice(1),
+      locale,
+    );
+    if (!parentPage) {
+      return {
+        redirectUrl: platformGroupParent.url,
+      };
+    }
+
+    page = parentPage;
+    requestedPlatform = panelPlatform;
   }
 
   const pageTree = getCanonicalPageTree(source, locale);
@@ -357,6 +381,7 @@ export async function loadDocsPagePayload(
         platformTabs: {
           canonicalPlatform: platformGroup.canonicalPlatform,
           defaultPlatform: platformGroup.canonicalPlatform,
+          initialPlatform: requestedPlatform,
           platforms: JSON.stringify(platformGroup.platforms),
         },
         platforms: platformGroup.platforms,

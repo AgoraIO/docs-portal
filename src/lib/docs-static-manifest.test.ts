@@ -289,7 +289,7 @@ describe('docs-static-manifest', () => {
     ).resolves.toBeNull();
   });
 
-  it('redirects static platform group panel paths to the canonical payload path', async () => {
+  it('resolves static platform group panel paths to the selected platform payload', async () => {
     vi.stubGlobal(
       'fetch',
       vi
@@ -323,8 +323,14 @@ describe('docs-static-manifest', () => {
         slugSegments: ['get-started', 'platform-split', 'ios'],
         tab: 'ai',
       }),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/get-started/platform-split',
+    ).resolves.toMatchObject({
+      activePath: '/en/ai/get-started/platform-split',
+      body: {
+        platformTabs: {
+          initialPlatform: 'ios',
+        },
+      },
+      markdownUrl: '/en/ai/get-started/platform-split/ios.md',
     });
   });
 });

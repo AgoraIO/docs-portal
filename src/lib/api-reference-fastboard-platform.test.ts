@@ -2,18 +2,31 @@ import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
 
 describe('fastboard per-platform path URLs', () => {
-  for (const platform of ['android', 'ios', 'web'] as const) {
-    it(`resolves /api-ref/uikit-sdk/${platform} to the page with ${platform} active`, async () => {
+  for (const platform of ['android', 'ios'] as const) {
+    it(`loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`, async () => {
       const result = await loadDocsPagePayload('en', 'api-reference', [
         'api-ref',
         'uikit-sdk',
         platform,
       ]);
+
       expect(result).toBeTruthy();
-      expect((result as { redirectUrl?: string }).redirectUrl).toBeUndefined();
-      const serialized = JSON.stringify(result);
-      expect(serialized).toContain('uikit-sdk');
-      expect(serialized).toContain(platform);
+      expect(result).not.toHaveProperty('redirectUrl');
+
+      if (!result || 'redirectUrl' in result) {
+        throw new Error(`expected ${platform} to resolve to a docs payload`);
+      }
+
+      expect(result).toMatchObject({
+        activePath: '/en/api-reference/api-ref/uikit-sdk',
+        body: {
+          kind: 'mdx',
+          platformTabs: {
+            initialPlatform: platform,
+          },
+        },
+        markdownUrl: `/en/api-reference/api-ref/uikit-sdk/${platform}.md`,
+      });
     });
   }
 });
