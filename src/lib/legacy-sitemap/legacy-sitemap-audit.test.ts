@@ -118,15 +118,33 @@ describe('legacy sitemap compatibility audit', () => {
     expect(rule?.preserveSearch).toBe(true);
   });
 
+  it('maps manually reviewed legacy sitemap URLs to precise replacement pages', () => {
+    const preciseTargets = {
+      '/en/agora-chat/restful-api/user-system-registration':
+        '/en/api-reference/api-ref/im/user-system-registration',
+      '/en/broadcast-streaming/overview/release-notes':
+        '/en/realtime-media/broadcast-streaming/reference/release-notes',
+      '/en/conversational-ai/models/asr/amazon': '/en/ai/models/asr/deepgram',
+      '/en/conversational-ai/overview/pricing': '/en/ai/reference/pricing',
+    };
+
+    for (const [legacyPath, target] of Object.entries(preciseTargets)) {
+      expect(resolveLegacySitemapRedirectPath(legacyPath)).toMatchObject({
+        confidence: 'high',
+        target,
+      });
+    }
+  });
+
   it('keeps the human review report aligned with the audit summary', () => {
     expect(reviewReport.summary).toEqual({
       broken: 0,
       exactPath: 490,
-      exactSlug: 1944,
+      exactSlug: 1942,
       native: 0,
-      productFallback: 13,
+      productFallback: 0,
       renamedPage: 39,
-      semanticPageMatch: 630,
+      semanticPageMatch: 645,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });

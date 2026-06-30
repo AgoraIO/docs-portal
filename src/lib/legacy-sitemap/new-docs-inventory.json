@@ -12547,6 +12547,43 @@
       "searchText": "/en/realtime-media/broadcast-streaming/reference/pricing pricing basic service subscription packages additional usage top-up packages monthly postpaid billing billing example value-added services reference aggregate resolution standard duration calculation standard minutes calculator standard minutes calculator faqs free minutes billing duration and usage video resolution arrears see also this page explains the updated pricing for agora broadcast streaming and guides you through the new pricing model. :::note - starting august 29, 2025, all new agora customers are automatically subscribed to the rtc free package when creating a new project in the agora console. this ensures you can start using our service immediately. if auto-subscription fails, you can subscribe manually. for assistance, contact [`support@agora.io`](mailto:support@agora.io). - if you are an existing agora customer before august 29, 2025, your projects continue under the legacy billing model. for details, see [legacy pricing](pricing-legacy). you may also manually subscribe or upgrade in the agora console to switch to the new rtc pricing model. - if you have signed a sales contract with agora, your billing follows the terms in your contract. ::: billing for broadcast streaming includes charges for the following service categories: * [basic service](#basic-service): audio and video subscription service for hosts and audience. * [value-added services](#value-added-services): independently billed services such as screenshot uploads, co-host across channels, agora hybrid cloud, and other media services. the following diagram shows the billing structure: ![billing structure](/images/video-sdk/pricing-structure.png) for post-payment, agora follows a monthly billing cycle. at the end of each month, agora calculates usage fees for all projects under the [agora console](https://console.agora.io/v2). your previous month's charges are finalized on the 1st day of each month. if payment is required, deductions from your payment method occur on the 6th day of the month. the following diagram walks you through how your usage is calculated and billed each month: ![package usage workflow](/images/video-sdk/pricing-workflow.svg) ## basic service agora uses [standard minutes](#standard-minutes-calculator) to measure usage for all basic services. audio and video usage is converted into standard minutes "
     },
     {
+      "routePath": "/en/realtime-media/broadcast-streaming/reference/release-notes",
+      "title": "Release notes",
+      "headings": [
+        "Video SDK",
+        "Compatibility",
+        "Known issues",
+        "v4.24.3",
+        "New features",
+        "Improvements",
+        "v4.24.2",
+        "Issue description",
+        "Solution",
+        "v4.24.1",
+        "New Features",
+        "Improvements",
+        "Bug Fixes",
+        "v4.24.0",
+        "New features",
+        "Improvements",
+        "Issues fixed",
+        "v4.23.4",
+        "v4.23.3",
+        "v4.23.2"
+      ],
+      "product": "broadcast-streaming",
+      "section": "reference",
+      "sourceFilePath": "content/docs/en/realtime-media/broadcast-streaming/reference/release-notes.mdx",
+      "slugSegments": [
+        "realtime-media",
+        "broadcast-streaming",
+        "reference",
+        "release-notes"
+      ],
+      "leafSlug": "release-notes",
+      "searchText": "/en/realtime-media/broadcast-streaming/reference/release-notes release notes video sdk compatibility known issues v4.24.3 new features improvements v4.24.2 issue description solution v4.24.1 new features improvements bug fixes v4.24.0 new features improvements issues fixed v4.23.4 v4.23.3 v4.23.2 this page provides the release notes for the video sdk release streams used by video calling. - [video sdk](#video-sdk) - [ai noise suppression](#ai-noise-suppression) - [virtual background](#virtual-background) - [super clarity extension](#super-clarity-extension) - [watermark extension](#watermark-extension) - [video compositor extension](#video-compositor-extension) - [beauty effect extension](#beauty-effect-extension) - [notifications](#notifications) ## video sdk video calling 4.x is a javascript and typescript library loaded by an html web page. the sdk library uses apis in the web browser to establish connections and control the communication, broadcast streaming and interactive live streaming services. ### compatibility see [supported platforms](/en/realtime-media/video/reference/supported-platforms). ### known issues ### v4.24.3 released on april 1, 2026. #### new features - **ai noise suppression extension upgrade** the ai noise suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)) is upgraded to v2.0.1. this version adds a low-latency mode and the ability to configure the log level of the wasm module. for details, see [extension release notes](#ai-noise-suppression). #### improvements this release includes the following improvements: - optimizes the interactive video experience in h.264 encoding scenarios. - the [super clarity extension](#super-clarity-extension) is upgraded to v2.0.1, with sharpening algorithm improvements that provide better video experience in some scenarios. ### v4.24.2 released on december 12, 2025. this release addresses a compatibility issue introduced in chrome 143. #### issue description during a communication session between users a and b, if user a unsubscribes and stops publishing an audio stream and then tries to publish audio again, the sdk triggers the following error: `session error code: error_content` a breaking change in chrome causes this issue and affects all "
+    },
+    {
       "routePath": "/en/realtime-media/broadcast-streaming/reference/security",
       "title": "Security",
       "headings": [

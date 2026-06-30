@@ -168,6 +168,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management',
     'restful-api/user-attributes-management':
       '/en/realtime-media/im/build/build-core-messaging/user-attributes',
+    'restful-api/user-system-registration':
+      '/en/api-reference/api-ref/im/user-system-registration',
   },
   'convo-ai-device-kit': {
     'get-started/run-the-demo': '/en/ai/device-kit/build/run-the-r1-demo',
@@ -212,11 +214,13 @@ const PRODUCT_SPECIFIC_TARGETS = {
   'conversational-ai': {
     'best-practices/cloud-recording':
       '/en/ai/best-practices/record-agent-conversation',
+    'models/asr/amazon': '/en/ai/models/asr/deepgram',
     'models/asr/overview': '/en/ai/models/asr/deepgram',
     'models/avatar/overview': '/en/ai/models/avatar/generic',
     'models/llm/overview': '/en/ai/models/llm/openai',
     'models/mllm/overview': '/en/ai/models/mllm/openai',
     'models/tts/overview': '/en/ai/models/tts/openai',
+    'overview/pricing': '/en/ai/reference/pricing',
     'reference/sdk/go':
       '/en/ai/build/custom-model-integration/build-server-client',
     'reference/sdk/python':
