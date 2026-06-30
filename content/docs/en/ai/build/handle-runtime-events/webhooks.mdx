@@ -32,6 +32,18 @@ Before you begin, make sure you have:
 - a public HTTPS endpoint that can receive webhook callbacks
 - server-side access to store and validate the secret used for signature verification
 
+For lower delivery latency, Agora recommends that your receiving server supports HTTP keep-alive with `MaxKeepAliveRequests` set to `100` or more and `KeepAliveTimeout` set to `10` seconds or more.
+
+### Test locally with ngrok
+
+If you are developing locally, expose your local webhook handler through a public HTTPS tunnel, then use the tunnel URL in Agora Console. For example, point Agora Console to a URL like `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`.
+
+Your local handler must still behave like the production endpoint:
+
+- accept HTTPS POST requests
+- verify signatures against the raw request body
+- return a JSON response with HTTP status `200` within 10 seconds
+
 ## Enable notifications
 
 To enable Agora notifications for Conversational AI:
@@ -40,15 +52,45 @@ To enable Agora notifications for Conversational AI:
 2. Open **Projects** and locate the target project.
 3. Open the **Notifications** configuration area for the project.
 4. Select the Conversational AI event types you want to subscribe to.
-5. Enter the HTTPS callback URL of your receiving server.
+5. Configure the receiving server:
+   - **Receiving Server Region**: Select the region where your webhook server is located. Agora connects to the nearest Agora node based on this selection.
+   - **Receiving Server URL Endpoint**: Enter the public HTTPS callback URL of your receiving server.
+   - **Whitelist**: If your receiving server is behind a firewall, enable the whitelist option and add the Agora message notification server IP addresses to your firewall allowlist.
 6. Save the generated **Secret**. You need it for signature verification.
 7. Run the console-side health check and confirm your server responds with `200 OK`.
+8. Save the configuration. After the configuration is saved successfully, the message notification status shows **Enabled**.
 
 ### Recommended webhook endpoint settings
 
 - Use HTTPS only.
 - Enable HTTP keep-alive if possible.
 - Make sure your server returns within 10 seconds.
+
+### Allow Agora notification IP addresses
+
+If your receiving server is behind a firewall, call the IP query API and add every returned `primaryIP` value to your firewall allowlist:
+
+```bash
+curl --request GET \
+  --url https://api.agora.io/v2/ncs/ip \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+Agora can adjust message notification server IP addresses. Query this endpoint at least every 24 hours and update your firewall configuration automatically.
+
+### Health check errors
+
+During the Console health check, Agora sends test callbacks for the events you subscribed to. Your server must return status code `200` within 10 seconds, and the response body must be JSON.
+
+Common health check errors include:
+
+| Error | Meaning | What to check |
+| --- | --- | --- |
+| `590` request timeout | Your server did not return `200` within 10 seconds. | Confirm that your handler responds quickly and that the network path from Agora to your server works. |
+| `591` domain name unreachable | The domain name is invalid or cannot resolve to the target IP address. | Confirm that your endpoint domain is deployed and publicly resolvable. |
+| `592` certificate error | Agora could not verify the SSL certificate returned by your server. | Confirm that the HTTPS certificate is valid. If your server uses a firewall, also confirm that all Agora notification IP addresses are allowlisted. |
+| Other response errors | Your server returned a status code other than `200`. | Check the status code and message shown in Agora Console. |
 
 ## Request header
 
@@ -69,7 +111,7 @@ The request body of notification callbacks contains the following fields:
 | `noticeId` | String | Notification ID that uniquely identifies this callback |
 | `productId` | Number | Business ID of the notification source. A value of `17` indicates a Conversational AI Engine notification. |
 | `eventType` | Number | Type of event being notified |
-| `notifyMs` | Number | Unix timestamp in milliseconds when Agora sends the callback |
+| `notifyMs` | Number | Unix timestamp in milliseconds when Agora sends the callback. This value is updated when Agora retries the notification. |
 | `sid` | String | Session ID |
 | `payload` | JSON object | Event-specific data |
 
@@ -150,7 +192,11 @@ if !verify(string(body), agoraSignature) {
 - Keep the webhook secret on the server side only.
 - Store raw payloads for troubleshooting when useful.
 - Design webhook processing to be idempotent, because retries can happen.
+- Agora does not guarantee that notification callbacks arrive in the same order as events occur. Use an ordering strategy before mutating session state.
+- Your server might receive more than one callback for a single event. To log only one callback event and ignore duplicates, use a combination of `noticeId` and `notifyMs`.
 - Return `200 OK` quickly and move heavier processing to async workers if needed.
+
+If Agora does not receive `200 OK` within 10 seconds, or if your server returns a non-`200` status code, Agora treats the delivery as failed and retries immediately. The retry interval then gradually increases, and Agora stops sending the notification after three retries.
 
 ## Related resources
 

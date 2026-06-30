@@ -1199,19 +1199,22 @@ describe('docs content regressions', () => {
 
   it('preserves explicit table cell line breaks in processed markdown', async () => {
     const { source } = await import('./source.server');
-    const page = source.getPage(['ai', 'get-started', 'test-mdx-comps'], 'en');
+    const page = source.getPage(
+      ['ai', 'best-practices', 'optimize-latency'],
+      'en',
+    );
 
     expect(page).toBeDefined();
     expect(page?.type).toBe('docs');
 
     if (!page || !('getText' in page.data)) {
-      throw new Error('Expected test MDX page to expose processed markdown.');
+      throw new Error('Expected latency page to expose processed markdown.');
     }
 
     const processed = await page.data.getText('processed');
 
     expect(processed).toContain(
-      'Default value includes all users.<br />An empty array excludes all audio streams.',
+      'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
     );
   });
 

@@ -1115,7 +1115,10 @@ To implement this workflow in your app, take the following steps:
 
 Copy the following code to the `App.jsx` file to implement the UI:
 
-```tsx
+```jsx
+import { useEffect, useState, useRef } from "react";
+import "./App.css";
+import AgoraChat from "agora-chat";
 
 function App() {
   // Replaces <Your app key> with your app key.

@@ -295,11 +295,30 @@ An `eventType` of `103` notifies the history of a user and agent dialogue. The n
     <Parameter name="content" type="string">
       Message content.
     </Parameter>
+    <Parameter name="speech_start_ms" type="integer" required={false}>
+      Unix timestamp in milliseconds indicating when the user started speaking or the agent started TTS playback. Only returned when `llm.vendor` is `custom`.
+    </Parameter>
+    <Parameter name="speech_end_ms" type="integer" required={false}>
+      Unix timestamp in milliseconds indicating when the user stopped speaking, or when TTS playback completed or was interrupted. Only returned when `llm.vendor` is `custom`.
+    </Parameter>
+    <Parameter name="speech_algorithmic_delay" type="integer" required={false}>
+      The total delay in milliseconds introduced by audio processing algorithms, including noise reduction, background voice suppression, and voiceprint locking, after audio is captured from the user's microphone. Use this value to align timestamps with cloud recording audio.
+
+      Only returned when:
+
+      - `llm.vendor` is `custom`
+      - `contents[].role` is `user`
+      - Actual voice input is present
+    </Parameter>
   </Parameter>
   <Parameter name="labels" type="object" required={false}>
     Custom labels in key-value pair format. Contains the same labels that were set when starting the agent.
   </Parameter>
 </ParameterList>
+
+:::info
+`speech_start_ms`, `speech_end_ms`, and `speech_algorithmic_delay` are returned only in `103 agent history` events for sessions that use `llm.vendor` set to `custom`.
+:::
 
 #### Payload examples
 

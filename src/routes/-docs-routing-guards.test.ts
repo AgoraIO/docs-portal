@@ -210,16 +210,16 @@ describe('docs route locale guards', () => {
   it('keeps existing llms platform markdown routes working', async () => {
     const response = (await getGetHandler(LlmsMarkdownRoute)({
       params: {
-        _splat: 'en/ai/get-started/test-mdx-comps/android.md',
+        _splat: 'en/api-reference/api-ref/uikit-sdk/android.md',
       },
     } as never)) as Response;
     const markdown = await response.text();
 
     expect(response.headers.get('Content-Type')).toBe('text/markdown');
     expect(markdown).toContain(
-      '# MDX component fixture (/en/ai/get-started/test-mdx-comps/android)',
+      '# Fastboard API (/en/api-reference/api-ref/uikit-sdk/android)',
     );
-    expect(markdown).toContain('### Install on Android');
-    expect(markdown).not.toContain('### Install with JavaScript');
+    expect(markdown).toContain('## FastboardView class');
+    expect(markdown).not.toContain('## createFastboard');
   });
 });
