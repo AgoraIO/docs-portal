@@ -1,11 +1,11 @@
 ---
-title: Create a TTS extension
-description: Choose HTTP, WebSocket, or SDK-based implementation paths for a TEN Agent TTS extension
+title: Contribute a TTS extension
+description: Choose HTTP, WebSocket, or SDK-based implementation paths for a TTS extension
 ---
 
-This guide explains how a TTS extension fits into a TEN Agent graph and how to choose an implementation path for a vendor text-to-speech service.
+This guide explains how a TTS extension fits into a voice agent graph and how to choose an implementation path for a vendor text-to-speech service.
 
-In a TEN Agent graph, a TTS extension receives generated text and streams synthesized audio to downstream RTC, playback, or audio-processing extensions.
+In a voice agent graph, a TTS extension receives generated text and streams synthesized audio to downstream RTC, playback, or audio-processing extensions.
 
 ## What a TTS extension does
 
@@ -21,7 +21,7 @@ The TTS Extension is mainly responsible for:
 
 ### Position in the Conversation Flow
 
-As a standard building block, the TTS Extension plays the key role of converting text into audio inside a TEN Agent conversation flow:
+As a standard building block, the TTS Extension plays the key role of converting text into audio inside a voice agent conversation flow:
 
 ```json
 [Upstream Extension]  ──text stream──>  [TTS Extension]  ──audio stream──>  [Downstream Extension]
