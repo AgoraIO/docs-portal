@@ -1513,18 +1513,14 @@ describe('docs content regressions', () => {
     );
 
     expect(customInformationSource).toContain(
-      '[Quickstart](../../get-started/quickstart)',
+      '](../../get-started/quickstart)',
     );
     expect(customInformationSource).not.toContain(
-      '[Quickstart](../get-started/quickstart)',
+      '](../get-started/quickstart)',
     );
 
-    expect(customLlmSource).toContain(
-      '[Quickstart](../../get-started/quickstart)',
-    );
-    expect(customLlmSource).not.toContain(
-      '[Quickstart](../get-started/quickstart)',
-    );
+    expect(customLlmSource).toContain('](../../get-started/quickstart)');
+    expect(customLlmSource).not.toContain('](../get-started/quickstart)');
   });
 
   it('keeps the OpenAI MLLM page free of broken overview self-links', () => {
