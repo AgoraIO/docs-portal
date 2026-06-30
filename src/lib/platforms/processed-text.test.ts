@@ -50,7 +50,30 @@ iOS inline body
 
     expect(extractStructuredPlatformTabs(processedText)).toEqual({
       canonicalPlatform: 'web',
+      defaultPlatform: 'android',
       platforms: ['android', 'web'],
+    });
+  });
+
+  it('defaults structured platform tabs to Android when Android is present', () => {
+    const processedText = `
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="windows" />
+Windows body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web body
+<_PlatformProcessedMarker close="true" />
+`;
+
+    expect(extractStructuredPlatformTabs(processedText)).toEqual({
+      canonicalPlatform: 'web',
+      defaultPlatform: 'android',
+      platforms: ['windows', 'android', 'web'],
     });
   });
 

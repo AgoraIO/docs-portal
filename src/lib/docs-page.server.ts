@@ -301,7 +301,7 @@ export async function loadDocsPagePayload(
     ? ''
     : (platformResolvedProcessedText ?? (await readProcessedText(page)));
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
-  const defaultStructuredPlatform = structuredPlatformTabs?.platforms[0];
+  const defaultStructuredPlatform = structuredPlatformTabs?.defaultPlatform;
   const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
