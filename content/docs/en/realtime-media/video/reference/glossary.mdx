@@ -280,7 +280,7 @@ User attributes are tags added to Signaling users, including property names and 
 
 In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback.
 
-In the Agora Signaling SDK, a user ID identifiers a user in Signaling.
+In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
 The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
 
