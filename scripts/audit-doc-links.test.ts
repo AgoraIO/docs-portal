@@ -128,6 +128,7 @@ describe('auditDocsLinks', () => {
         '<Card href="/en/ai" />',
         '<Card href="/en/api-reference/api-ref/rtc/query-channel-list" />',
         '<Card href="/en/api-reference/rtc/android/overview" />',
+        '<Card href="/en/api-reference/rtc/android/(current)/broken" />',
         '<Card href="/en/missing-page" />',
         '<Card href="https://example.com/docs" />',
       ].join('\n'),
@@ -153,12 +154,21 @@ describe('auditDocsLinks', () => {
       href: '/en/api-reference/rtc/android/overview',
       resolution: 'hosted-reference',
     });
-    expect(missingRootLinks).toHaveLength(1);
-    expect(missingRootLinks[0]).toMatchObject({
-      href: '/en/missing-page',
-      normalizedHref: '/en/missing-page',
-      sourcePath: 'en/introduction/index.mdx',
-    });
+    expect(missingRootLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/api-reference/rtc/android/(current)/broken',
+          normalizedHref: '/en/api-reference/rtc/android/(current)/broken',
+          sourcePath: 'en/introduction/index.mdx',
+        }),
+        expect.objectContaining({
+          href: '/en/missing-page',
+          normalizedHref: '/en/missing-page',
+          sourcePath: 'en/introduction/index.mdx',
+        }),
+      ]),
+    );
+    expect(missingRootLinks).toHaveLength(2);
     expect(stats.externalLinks).toBe(1);
   });
 
@@ -234,6 +244,13 @@ describe('auditDocsLinks', () => {
         }),
       ]),
     );
+    expect(
+      validHashLinks.some(
+        (entry) =>
+          entry.href === 'guide#missing-anchor' &&
+          entry.resolution === 'generated-anchor',
+      ),
+    ).toBe(false);
     expect(invalidInternalLinks).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
