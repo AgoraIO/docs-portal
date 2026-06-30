@@ -29,12 +29,14 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 - **SD-RTN**: Provides Agora's low-latency transport layer.
 - **OpenAI Realtime API**: Provides the model-side realtime conversation flow.
 
-## Recommended quickstart flow
+## Quickstart flow
 
 1. Prepare your Agora account and project.
 2. Decide how your client joins the Agora session and how the OpenAI-side session is coordinated.
 3. Configure the OpenAI Realtime model and audio flow.
 4. Run the round-trip voice path locally and validate latency, auth, and media behavior.
+
+For an implementation walkthrough, see [OpenAI Realtime quickstart](quickstart).
 
 ## Security and network checks
 
@@ -45,9 +47,8 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 
 ## Related pages
 
-- [Agora account management](../openai-realtime/get-started/manage-agora-account)
-- [OpenAI Realtime quickstart](../openai-realtime/get-started/quickstart)
+- [OpenAI Realtime quickstart](quickstart)
 - [Core pieces](#core-pieces)
-- [Security](../openai-realtime/reference/security)
-- [Firewall requirements](../openai-realtime/reference/firewall)
-- [Glossary](../openai-realtime/reference/glossary)
+- [Security and privacy](/en/introduction/security-privacy)
+- [Firewall requirements](/en/introduction/firewall)
+- [Glossary](/en/introduction/glossary)

@@ -30,23 +30,126 @@ Before you begin, make sure you have:
 - A public HTTPS endpoint that can receive webhook callbacks
 - Server-side access to store and validate the secret used for signature verification
 
+For local testing, you also need:
+
+- A local HTTP server that can receive POST requests.
+- A tunnel such as ngrok to expose the local server over HTTPS.
+
 ## Enable notifications
 
 To enable Agora notifications for Conversational AI:
 
 1. Sign in to the [Agora Console](https://console.agora.io).
 2. Open **Projects** and locate the target project.
-3. Open the **Notifications** configuration area for the project.
-4. Select the Conversational AI event types you want to subscribe to.
-5. Enter the HTTPS callback URL of your receiving server.
-6. Save the generated **Secret**. You need it for signature verification.
-7. Run the console-side health check and confirm your server responds with `200 OK`.
+3. From the product navigation, open **Conversational AI Engine** and select the **Webhook** tab.
+4. Add an event and configure the delivery settings:
+   - **Receiving region**: Select the region where your webhook server is deployed. Agora uses this region to route notifications to a nearby notification server.
+   - **Receiving URL**: Enter the public HTTPS URL of your webhook endpoint.
+   - **Subscribed events**: Select the event types you want to receive. If you need several events, select them in one configuration to avoid repeating the health check.
+   - **IP allowlist**: Enable this option only if your webhook server is protected by a firewall, then add Agora notification server IP addresses to your firewall allowlist.
+5. Save the generated **Secret**. You need it for signature verification.
+6. Run the console-side health check and confirm your server responds with `200 OK`.
+7. Save the configuration. After the health check succeeds, confirm that the webhook status is **Enabled**.
 
 ### Recommended webhook endpoint settings
 
 - Use HTTPS only.
 - Enable HTTP keep-alive if possible.
 - Make sure your server responds within 10 seconds.
+- For keep-alive, use at least `MaxKeepAliveRequests >= 100` and `KeepAliveTimeout >= 10` seconds when your server stack exposes these settings.
+
+## Test a local webhook
+
+During development, you can run a small local server, expose it with ngrok, and use the generated HTTPS URL in Agora Console.
+
+### Run a Go receiver
+
+The following Go example listens on `/ncsNotify`, reads the raw request body, logs the notification, and returns a JSON `200 OK` response. Add signature verification before using the endpoint in production.
+
+```go
+package main
+
+import (
+    "encoding/json"
+    "io"
+    "log"
+    "net/http"
+)
+
+func ncsNotify(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    body, err := io.ReadAll(r.Body)
+    if err != nil {
+        http.Error(w, "failed to read body", http.StatusBadRequest)
+        return
+    }
+
+    log.Printf("Agora-Signature: %s", r.Header.Get("Agora-Signature"))
+    log.Printf("Agora-Signature-V2: %s", r.Header.Get("Agora-Signature-V2"))
+    log.Printf("Notification body: %s", string(body))
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    _ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+}
+
+func main() {
+    http.HandleFunc("/ncsNotify", ncsNotify)
+    log.Println("Listening on :8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+```
+
+Run the server:
+
+```bash
+go run main.go
+```
+
+### Expose the local endpoint
+
+Start an HTTPS tunnel to your local server:
+
+```bash
+ngrok http 8080
+```
+
+Use the HTTPS forwarding URL as your receiving URL in Agora Console:
+
+```text
+https://example.ngrok-free.app/ncsNotify
+```
+
+When the Console health check runs, your server receives test callbacks where `channelName` is `test_webhook` and `uid` is `12121212`.
+
+## Configure firewall allowlists
+
+If your webhook server is behind a firewall, query Agora notification server IP addresses and add all returned addresses to your firewall allowlist.
+
+Call the IP query API with your Agora customer ID and customer secret:
+
+```bash
+curl -u "$AGORA_CUSTOMER_KEY:$AGORA_CUSTOMER_SECRET" \
+  https://api.agora.io/v2/ncs/ip
+```
+
+Agora may update notification server IP addresses. Query this API and refresh your firewall allowlist at least every 24 hours.
+
+## Health check
+
+Before enabling the webhook, Agora sends test callbacks for the events you subscribed to. Your server must respond within 10 seconds, return HTTP status code `200`, and use a JSON response body.
+
+If the health check fails, Agora Console shows one of the following errors:
+
+| Code | Error | How to fix |
+| --- | --- | --- |
+| `590` | Request timeout | Your server did not return `200 OK` within 10 seconds. Check response timing and network connectivity from Agora notification servers to your endpoint. |
+| `591` | Domain name unreachable | The domain name is invalid or cannot resolve to the target IP address. Check DNS and server deployment. |
+| `592` | Certificate error | Agora could not verify your server's SSL certificate. Check the certificate chain and, if your server uses a firewall, confirm that all Agora notification server IP addresses are allowlisted. |
 
 ## Request header
 
@@ -143,8 +246,10 @@ if !verify(string(body), agoraSignature) {
 
 - Keep the webhook secret on the server side only.
 - Store raw payloads for troubleshooting when useful.
-- Design webhook processing to be idempotent, because retries can happen.
+- Use `noticeId` as the deduplication key when storing or processing notifications, because retries can deliver the same event more than once.
+- Use `notifyMs` to detect stale or out-of-order notifications. Agora does not guarantee that webhook callbacks arrive in event order.
 - Return `200 OK` quickly and move heavier processing to async workers if needed.
+- If Agora does not receive a `200 OK` response within 10 seconds, it retries delivery. Retry intervals increase with each attempt and delivery stops after three retries.
 
 ## Related resources
 
