@@ -20,6 +20,7 @@
     "docs:links": "node scripts/audit-doc-links.mjs",
     "docs:links:strict": "node scripts/audit-doc-links.mjs --fail-on-invalid",
     "docs:links:external": "node scripts/audit-doc-links.mjs --check-external --external-concurrency=8 --external-retries=2 --external-timeout=5000",
+    "docs:lint:english": "node scripts/audit-english-doc-low-errors.mjs",
     "docs:migration-parity": "node scripts/audit-migration-parity.mjs",
     "docs:rendering-audit": "node scripts/audit-doc-rendering-patterns.mjs --out=docs/agents/reports/2026-06-25-legacy-rendering-pattern-audit",
     "lint": "biome check biome.json package.json source.config.ts tsconfig.json vite.config.ts src",
