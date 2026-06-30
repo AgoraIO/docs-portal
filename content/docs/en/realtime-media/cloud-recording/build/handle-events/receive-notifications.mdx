@@ -445,10 +445,10 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
   - `4`: Major
   - `5`: Fatal. A fatal error may cause the recording to exit. If you receive a message of this level, call `query` to check the current status and process the error according to the error notifications.
 - `errorCode`: Number. The error code.
-  - If the error occurs in the recorder module (`0`), see [common errors](/en/cloud-recording/reference/common-errors).
+  - If the error occurs in the recorder module (`0`), see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
   - If the error occurs in the uploader (`1`), see [upload error code](#uploaderr).
   - If the error occurs in the Agora Cloud Recording Service (`2`), see [cloud recording service error code](#clouderr).
-  - If the error occurs in the other modules, see [common errors](/en/cloud-recording/reference/common-errors).
+  - If the error occurs in the other modules, see [common errors](/en/realtime-media/cloud-recording/reference/common-errors).
   If you do not find any error code in the above-mentioned pages, contact our technical support.
 - `stat`: Number. The event status. 0 indicates normal status; other values indicate abnormal status.
 - `errorMsg`: String. The detailed description of the error.
@@ -462,7 +462,7 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
   - `0`: The recorder.
   - `1`: The uploader.
 - `warnCode`: Number. The warning code.
-- If the warning occurs in the recorder, see [warning code](/en/on-premise-recording/reference/error-code#warning-codes).
+- If the warning occurs in the recorder, see [warning code](#cloudrecordingwarning).
 - If the warning occurs in the uploader, see [upload warning code](#uploadwarn).
 
 #### cloud_recording_status_update
@@ -828,7 +828,7 @@ eventType 43 indicates that the state of the audio stream has changed, and `deta
 | `1`          | `max_recording_hour`  | The recording time reaches the set maximum recording length (`maxRecordingHour`), which causes the recording to stop. |
 | `2`          | `capability_limit`    | The web page to be recorded uses an unsupported function, causing the web page recording to stop. |
 | `3`          | `start_engine_failed` | The recording engine failed to start, causing the web page recording to stop. |
-| `4`          | `page_load_timeout`   | When you use the [web page load timeout detection](/en/cloud-recording/develop/webpage-load-timeout), the web page load timeout causes the web page recording to stop. |
+| `4`          | `page_load_timeout`   | When you use the [web page load timeout detection](/en/realtime-media/cloud-recording/build/customize-the-recording/webpage-load-timeout), the web page load timeout causes the web page recording to stop. |
 | `5`          | `access_url_failed`   | An error occurred when opening the web page to be recorded, which causes the web page recording to stop. |
 | `6`          | `recorder_error `     | The web page recording has an error and cannot continue, causing the web page recording to stop. |
 
@@ -866,7 +866,7 @@ eventType 43 indicates that the state of the audio stream has changed, and `deta
 - `msgName`: String. The message name, `"web_recorder_reload"`.
 - `reason`: String. The reason for the page reload:
   - `"audio_silence"`: Audio loss issue.
-  - `"page_load_timeout"`: Web page load timeout. The callback returns this field only if the web page load detection function is enabled and there is a web page load timeout. See [Web page load detection](/en/cloud-recording/develop/webpage-load-timeout).
+  - `"page_load_timeout"`: Web page load timeout. The callback returns this field only if the web page load detection function is enabled and there is a web page load timeout. See [Web page load detection](/en/realtime-media/cloud-recording/build/customize-the-recording/webpage-load-timeout).
 
 #### transcoder_started
 
