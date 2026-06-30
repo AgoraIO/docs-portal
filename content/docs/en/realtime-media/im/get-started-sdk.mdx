@@ -117,7 +117,7 @@ For more information, see [Setting up the environment](https://reactnative.dev/d
 
 - A device running Windows 7 or higher.
 - Visual Studio IDE 2019 or later
-- .Net Framework 4.5.2 or later
+- .NET Framework 4.5.2 or later
 
 </PlatformStructured>
 
@@ -411,9 +411,9 @@ You can use npm or other tools.
 
         Your project opens in Unity Editor.
 
-2. **Integrate  Chat SDK  into your project**:
+2. **Integrate Chat SDK into your project**:
 
-    1. Unzip [ Chat SDK for Unity](/en/api-reference/sdks?product=chat&platform=unity) to a local folder:
+    1. Unzip [Chat SDK for Unity](/en/api-reference/sdks?product=chat&platform=unity) to a local folder:
 
     1. In Unity, click **Assets > Import Package > Custom Package**.
 
@@ -468,7 +468,7 @@ This section shows how to use the Chat SDK to implement peer-to-peer messaging i
 
 In the quickstart app, you create a simple UI that consists of the following elements:
 
-* A `Button` to log in or out of  Chat.
+* A `Button` to log in or out of Agora Chat.
 * An `EditText` box to specify the recipient user ID.
 * An `EditText` box to enter a text message.
 * A `Button` to send the text message.
@@ -593,7 +593,7 @@ Import the necessary classes, and add a method to show status updates to the use
 
 ### Send and receive messages
 
-When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to Agora Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to Agora Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
 
 The following figure shows the API call sequence for implementing this workflow.
 
@@ -713,9 +713,9 @@ To implement this workflow in your app, take the following steps:
     }
     ```
 
-1. **Log in to  Chat**
+1. **Log in to Agora Chat**
 
-    When a user clicks **Join**, your app logs in to  Chat. When a user clicks **Leave**, the app logs out of  Chat.
+    When a user clicks **Join**, your app logs in to Agora Chat. When a user clicks **Leave**, the app logs out of Agora Chat.
 
     To implement this logic, in the `MainActivity` class, add the following method before `onCreate`:
 
@@ -760,7 +760,7 @@ To implement this workflow in your app, take the following steps:
 
 1. **Send a message**
 
-    To send a message to  Chat when a user presses the **Send** button, add the following method to the `MainActivity` class, before `onCreate`:
+    To send a message to Agora Chat when a user presses the **Send** button, add the following method to the `MainActivity` class, before `onCreate`:
 
     ```java
     public void sendMessage(View view) {
@@ -1115,7 +1115,10 @@ To implement this workflow in your app, take the following steps:
 
 Copy the following code to the `App.jsx` file to implement the UI:
 
-```tsx
+```jsx
+import { useEffect, useState, useRef } from "react";
+import "./App.css";
+import AgoraChat from "agora-chat";
 
 function App() {
   // Replaces <Your app key> with your app key.
@@ -1382,7 +1385,7 @@ Import the Chat SDK package and set up the app framework.
 
 In the quickstart app, you create a simple UI that consists of the following elements:
 
-* An `ElevatedButton` to log in or out of  Chat
+* An `ElevatedButton` to log in or out of Agora Chat
 * A `TextField` to specify the recipient user ID
 * A `TextField` to enter a text message
 * An `ElevatedButton` to send the text message
@@ -1472,7 +1475,7 @@ To create this UI, add the following `build` method to the `_MyHomePageState` cl
 
 ### Send and receive messages
 
-When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+When a user opens the app, you instantiate and initialize a `ChatClient`. When the user taps the **Join** button, the app logs in to Agora Chat. When a user types a message in the text box and then presses **Send**, the typed message is sent to Agora Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
 
 The following figure shows the API call sequence for implementing this workflow.
 
@@ -1568,9 +1571,9 @@ To implement this workflow in your app, take the following steps:
     }
     ```
 
-1. **Log in to  Chat**
+1. **Log in to Agora Chat**
 
-    When a user presses **Join**, your app logs in to  Chat. When a user presses **Leave**, the app log out of  Chat.
+    When a user presses **Join**, your app logs in to Agora Chat. When a user presses **Leave**, the app logs out of Agora Chat.
 
     To implement this logic, in the `_MyHomePageState` class, add the following method before `showLog`:
 
@@ -1609,7 +1612,7 @@ To implement this workflow in your app, take the following steps:
 
 1. **Send a message**
 
-    To send a message to  Chat when a user presses the **Send** button, add the following method to the `_MyHomePageState` class, after `joinLeave`:
+    To send a message to Agora Chat when a user presses the **Send** button, add the following method to the `_MyHomePageState` class, after `joinLeave`:
 
     ```dart
     void sendMessage() async {
@@ -2061,7 +2064,7 @@ If the project runs properly, the following user interface appears:
 
 In the quick start app, you create a simple UI that consists of the following elements:
 
-* A `Button - TextMeshPro` to log in or out of  Chat.
+* A `Button - TextMeshPro` to log in or out of Agora Chat.
 * An `Input Field - TextMeshPro` to specify the recipient user ID.
 * An `Input Field - TextMeshPro` to enter a text message.
 * A `Button - TextMeshPro` to send the text message.
@@ -2155,7 +2158,7 @@ In this section, you create a script file, add the necessary namespaces, and bin
 
 ### Send and receive messages
 
-When a user opens the app, you instantiate and initialize a `SDKClient`. When the user taps the **Join** button, the app logs in to  Chat. When a user types a message in the text box and then presses **>>**, the typed message is sent to  Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
+When a user opens the app, you instantiate and initialize a `SDKClient`. When the user taps the **Join** button, the app logs in to Agora Chat. When a user types a message in the text box and then presses **>>**, the typed message is sent to Agora Chat. When the app receives a message from the server, the message is displayed in the message list. This simple workflow enables you to rapidly build a Chat client with basic functionality.
 
 The following figure shows the API call sequence for implementing this workflow.
 
@@ -2358,9 +2361,9 @@ To implement this workflow in your app, take the following steps:
         }
         ```
 
-1. **Log in to  Chat**
+1. **Log in to Agora Chat**
 
-    When a user presses **Join**, your app logs in to  Chat. When a user presses **Leave**, the app log out of  Chat. To implement this logic, in the `NewBehaviourScript` class, add the following method before `Start`:
+    When a user presses **Join**, your app logs in to Agora Chat. When a user presses **Leave**, the app logs out of Agora Chat. To implement this logic, in the `NewBehaviourScript` class, add the following method before `Start`:
 
     ```csharp
     public void joinLeave()
@@ -2399,7 +2402,7 @@ To implement this workflow in your app, take the following steps:
 
 1. **Send a message**
 
-    To send a message to  Chat when a user presses the **>>** button, add the following method to the `NewBehaviourScript` class, before `Start`:
+    To send a message to Agora Chat when a user presses the **>>** button, add the following method to the `NewBehaviourScript` class, before `Start`:
 
     ```csharp
     public void sendMessage()
@@ -2428,7 +2431,7 @@ To implement this workflow in your app, take the following steps:
 
 7. **Display chat messages**
 
-    To display sent and received  messages in your app, add the following method to the `NewBehaviourScript` class:
+    To display sent and received messages in your app, add the following method to the `NewBehaviourScript` class:
 
     ```csharp
     public void displayMessage(string messageText, bool isSentMessage)
@@ -2973,7 +2976,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     1. Run the modified app on a device emulator or a second physical Android device.
 
-1. On each device, click **Join** to log in to  Chat.
+1. On each device, click **Join** to log in to Agora Chat.
 
 1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
 
@@ -2981,7 +2984,7 @@ To ensure that you have implemented Peer-to-Peer Messaging in your app:
 
     The message is sent and appears on the other device.
 
-1. Press **Leave** to log out of  Chat.
+1. Press **Leave** to log out of Agora Chat.
 
 </PlatformStructured>
 
@@ -3076,7 +3079,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
     1. Run the modified app on a device emulator or a second physical test device.
 
-1. On each device, click **Join** to log in to  Chat.
+1. On each device, click **Join** to log in to Agora Chat.
 
 1. Edit the recipient name on each device to show the user ID of the user logged in to the other device.
 
@@ -3084,7 +3087,7 @@ To validate the peer-to-peer messaging you have just integrated into your Web ap
 
     The message is sent and appears on the other device.
 
-1. Press **Leave** to log out of  Chat.
+1. Press **Leave** to log out of Agora Chat.
 
 </PlatformStructured>
 
@@ -3123,7 +3126,7 @@ You can also read from the logs on the UI to see whether you have successfully s
 
 1. In Unity Editor, click **Play**. A moment later you see the project installed on your development device.
 
-1. Click **Join** to log in to  Chat.
+1. Click **Join** to log in to Agora Chat.
 
 1. Type the recipient user name in the **Recepient Name** field.
 

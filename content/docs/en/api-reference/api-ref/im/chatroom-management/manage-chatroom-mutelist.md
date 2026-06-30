@@ -80,7 +80,7 @@ The request body is a JSON object, which contains the following fields:
 | Field | Type | Description | Required |
 | :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `mute_duration` | Number | The length of time to mute speech from the current time. The unit is milliseconds.`-1` indicates that the member is muted permanently. | Yes |
-| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
+| `usernames` | String | The array of user IDs of chat room members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
 
 ### HTTP response
 

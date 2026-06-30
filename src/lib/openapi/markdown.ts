@@ -1,5 +1,9 @@
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import {
+  isMachineReadableLocale,
+  MACHINE_READABLE_LOCALE,
+} from '@/lib/machine-readable-docs';
+import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
   getOpenApiLanes,
@@ -83,11 +87,13 @@ export function serializeOpenApiOperationMarkdown({
 export async function getOpenApiMarkdownPages() {
   const pages = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
-      getOpenApiLaneLocales(lane).map(async (locale) => {
-        const operations = await getOpenApiOperations(lane, locale);
+      getOpenApiLaneLocales(lane)
+        .filter((locale) => locale === MACHINE_READABLE_LOCALE)
+        .map(async (locale) => {
+          const operations = await getOpenApiOperations(lane, locale);
 
-        return { lane, locale, operations };
-      }),
+          return { lane, locale, operations };
+        }),
     ),
   );
 
@@ -127,7 +133,7 @@ export async function getOpenApiMarkdownByContentPath(path: string) {
   const fileName = rest.at(-1);
 
   if (
-    (locale !== 'en' && locale !== 'zh-CN') ||
+    !isMachineReadableLocale(locale) ||
     tab !== 'api-reference' ||
     fileName?.endsWith('.md') !== true
   ) {

@@ -36,7 +36,7 @@ The specific feature differences are listed in the following table:
 | Maximum number of members | 5,000 | 20,000+  |
 | Message push support | If the offline push function is integrated, members receive push notifications when they go offline. | Members do not receive push notifications when they go offline, as the offline push function is supported in chat rooms. |
 | Offline message storage   | This feature is supported. Agora Chat servers store messages sent to offline group members and send to them once they go back online. A maximum number of 200 messages across chat groups can be stored per end user.  | Chat room does not store messages sent to offline chat room members and this feature is not supported in chat rooms. |
-| Message history  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../../../reference/pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/api-reference/api-ref/im/message-management#retrieve-historical-messages), in the format of JSON files. You can call [this Client API](../../build-core-messaging/messages/retrieve-messages#retrieve-historical-messages-of-the-specified-conversation) to allow the SDK to retrieve message history of a chat group. This allows end users to synchronize messages history across multiple end devices.  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../../../reference/pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/api-reference/api-ref/im/message-management#retrieve-historical-messages), in the format of JSON files. Agora Chat currently does not support SDK retrieving message history of a chat room via client APIs. However, when a user joins a chat room, Agora Chat servers can send 10 most recent messages to the client side via the message receiving callback. To enable this function, you need to contact [support@agora.io](mailto:support@agora.io). The number of historical messages sent to the new chat room member can be increased up to 200, without additional charges.|
+| Message history  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../../../reference/pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/api-reference/api-ref/im/message-management#retrieve-historical-messages), in the format of JSON files. You can call [this Client API](../../build-core-messaging/messages/retrieve-messages#retrieve-historical-messages-of-the-specified-conversation) to allow the SDK to retrieve message history of a chat group. This allows end users to synchronize message history across multiple end devices.  | Agora Chat servers store message history, subject to the [data retention period of your package selection](../../../reference/pricing-plan-details#message). The history can be retrieved by your app server via [this RESTful API](..//en/api-reference/api-ref/im/message-management#retrieve-historical-messages), in the format of JSON files. Agora Chat currently does not support SDK retrieving message history of a chat room via client APIs. However, when a user joins a chat room, Agora Chat servers can send 10 most recent messages to the client side via the message receiving callback. To enable this function, you need to contact [support@agora.io](mailto:support@agora.io). The number of historical messages sent to the new chat room member can be increased up to 200, without additional charges.|
 | Message reliability | Each member receives all the messages in the chat group. | Members might not see all messages. The SDK discards messages if the chat room message threshold is exceeded. The default threshold is 100 messages per second. You can adjust this threshold according to your needs.  |
 
 ## Chat group features
@@ -59,7 +59,7 @@ Chat group members and admins can quit a chat group. Once they do, they no longe
 
 ### Add a chat group member
 
-Owners and admins for both public and private chat groups can invite other users to join their group. 
+Owners and admins for both public and private chat groups can invite other users to join their group.
 
 ### Remove a chat group member
 
@@ -103,7 +103,7 @@ Chat group owners and admins can retrieve the chat group allow list. Members on 
 
 ### Manage a chat group mute list
 
-Chat group owner or admin can add specifed group members to the group mute list. They can also remove them from list. Members on the mute list can no longer send chat group messages. Muted members still receive group messages. 
+Chat group owner or admin can add specified group members to the group mute list. They can also remove them from the list. Members on the mute list can no longer send chat group messages. Muted members still receive group messages.
 
 ### Mute all chat group members
 

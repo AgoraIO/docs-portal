@@ -1,7 +1,5 @@
-const RAW_MARKDOWN_ROUTE_PREFIX = '/llms.mdx/docs/';
-
-export function shouldPrerenderRoute(path: string) {
-  return !path.startsWith(RAW_MARKDOWN_ROUTE_PREFIX);
+export function shouldPrerenderRoute(_path: string) {
+  return true;
 }
 
 export function shouldPrerenderPage(page: { path: string }) {

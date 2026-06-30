@@ -12,9 +12,14 @@ import {
   getPlatformGroupPanelUrls,
   isPlatformGroupPanelPage,
   resolvePlatformGroupDefinition,
+  resolvePlatformGroupParentPage,
 } from './platforms/platform-group-pages';
+import {
+  buildPlatformLLMText,
+  extractStructuredPlatformTabs,
+} from './platforms/processed-text';
 import { getPlatformLabel, type PlatformKey } from './platforms/registry';
-import { docsContentRoute, docsRoute } from './shared';
+import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
 
@@ -81,45 +86,23 @@ export function getPageMarkdownUrl(
   page: InferPageType<typeof source>,
   platform?: PlatformKey,
 ) {
-  const pageSegments = page.path
-    .split('/')
-    .filter(Boolean)
-    .map((segment, index, array) => {
-      if (index !== array.length - 1) {
-        return segment;
-      }
-
-      return segment.replace(/\.mdx$/, '.md');
-    });
-
-  const segments = platform
-    ? getPlatformMarkdownSegments(pageSegments, platform)
-    : pageSegments;
-  const useContentRoute = platform || page.type === 'openapi';
+  const pageUrl = resolveCanonicalMarkdownPageUrl(page);
+  const url = platform ? `${pageUrl}/${platform}.md` : `${pageUrl}.md`;
 
   return {
-    segments,
-    url: useContentRoute
-      ? `${docsContentRoute}/${segments.join('/')}`
-      : `${page.url}.md`,
+    segments: url.split('/').filter(Boolean),
+    url,
   };
 }
 
-function getPlatformMarkdownSegments(
-  segments: string[],
-  platform: PlatformKey,
-) {
-  const leaf = segments.at(-1) ?? 'index.md';
+function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
+  const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
+  const platformGroupParent = resolvePlatformGroupParentPage(
+    page,
+    source.getPages(locale),
+  );
 
-  if (leaf === 'index.md') {
-    return [...segments.slice(0, -1), `${platform}.md`];
-  }
-
-  return [
-    ...segments.slice(0, -1),
-    leaf.replace(/\.md$/, ''),
-    `${platform}.md`,
-  ];
+  return platformGroupParent?.url ?? page.url;
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
@@ -137,6 +120,80 @@ export async function getLLMText(page: InferPageType<typeof source>) {
   return `# ${page.data.title} (${page.url})
 
 ${processed}`;
+}
+
+export async function getPlatformLLMText(
+  page: InferPageType<typeof source>,
+  platform: PlatformKey,
+) {
+  const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
+  const pages = source.getPages(locale);
+  const platformGroup = resolvePlatformGroupDefinition(page, pages);
+
+  if (platformGroup) {
+    const panel = platformGroup.panels.find(
+      (item) => item.platform === platform,
+    );
+
+    if (!panel) {
+      return null;
+    }
+
+    const parentText =
+      'getText' in page.data && typeof page.data.getText === 'function'
+        ? await page.data.getText('processed')
+        : '';
+    const panelPage = pages.find((item) => item.path === panel.contentPath);
+    const panelText =
+      panelPage &&
+      'getText' in panelPage.data &&
+      typeof panelPage.data.getText === 'function'
+        ? await panelPage.data.getText('processed')
+        : '';
+
+    return `# ${page.data.title} (${page.url}/${platform})
+
+${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
+  }
+
+  if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
+    return null;
+  }
+
+  const processedText = await page.data.getText('processed');
+  const platformTabs = extractStructuredPlatformTabs(processedText);
+
+  if (!platformTabs?.platforms.includes(platform)) {
+    return null;
+  }
+
+  return buildPlatformLLMText({
+    pageTitle: page.data.title,
+    pageUrl: page.url,
+    platform,
+    processedText,
+  });
+}
+
+export async function getPagePlatformKeys(page: InferPageType<typeof source>) {
+  const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
+  const platformGroup = resolvePlatformGroupDefinition(
+    page,
+    source.getPages(locale),
+  );
+
+  if (platformGroup) {
+    return platformGroup.platforms;
+  }
+
+  if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
+    return [];
+  }
+
+  return (
+    extractStructuredPlatformTabs(await page.data.getText('processed'))
+      ?.platforms ?? []
+  );
 }
 
 async function getPlatformGroupLLMText(page: InferPageType<typeof source>) {

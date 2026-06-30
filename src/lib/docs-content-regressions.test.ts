@@ -1233,19 +1233,22 @@ describe('docs content regressions', () => {
 
   it('preserves explicit table cell line breaks in processed markdown', async () => {
     const { source } = await import('./source.server');
-    const page = source.getPage(['ai', 'get-started', 'test-mdx-comps'], 'en');
+    const page = source.getPage(
+      ['ai', 'best-practices', 'optimize-latency'],
+      'en',
+    );
 
     expect(page).toBeDefined();
     expect(page?.type).toBe('docs');
 
     if (!page || !('getText' in page.data)) {
-      throw new Error('Expected test MDX page to expose processed markdown.');
+      throw new Error('Expected latency page to expose processed markdown.');
     }
 
     const processed = await page.data.getText('processed');
 
     expect(processed).toContain(
-      'Default value includes all users.<br />An empty array excludes all audio streams.',
+      'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
     );
   });
 
@@ -1543,6 +1546,32 @@ describe('docs content regressions', () => {
     expect(webSection).not.toContain(
       'Explore sample implementations to quickly integrate Conversational AI.',
     );
+  });
+
+  it('keeps nested AI build quickstart links pointed at the in-app quickstart page', () => {
+    const customInformationSource = readDoc(
+      'ai/build/shape-the-conversation/custom-information.mdx',
+    );
+    const customLlmSource = readDoc(
+      'ai/build/custom-model-integration/custom-llm.mdx',
+    );
+
+    expect(customInformationSource).toContain(
+      '](../../get-started/quickstart)',
+    );
+    expect(customInformationSource).not.toContain(
+      '](../get-started/quickstart)',
+    );
+
+    expect(customLlmSource).toContain('](../../get-started/quickstart)');
+    expect(customLlmSource).not.toContain('](../get-started/quickstart)');
+  });
+
+  it('keeps the OpenAI MLLM page free of broken overview self-links', () => {
+    const source = readDoc('ai/models/mllm/openai.mdx');
+
+    expect(source).not.toContain('[MLLM Overview](overview)');
+    expect(source).not.toContain('[MLLM Overview](.)');
   });
 
   it('keeps the video unreal setup section fully populated', () => {

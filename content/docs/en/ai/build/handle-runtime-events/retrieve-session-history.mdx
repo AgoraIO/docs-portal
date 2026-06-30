@@ -2,25 +2,26 @@
 title: Retrieve conversation history
 description: Choose between webhook history events and REST APIs to retrieve messages, timestamps, and per-turn data after an agent session.
 ---
-After a session ends, you may want to answer one of these questions:
+After a session ends, you may need to answer questions such as:
 
-- what did the user and agent say
-- when did the session start and stop
-- which turn was slow or incomplete
+- What did the user and agent say?
+- When did the session start and stop?
+- Which turn was slow or incomplete?
 
-Conversational AI Engine provides different retrieval paths depending on whether you want pushed history, pulled history, or turn analytics.
+Conversational AI Engine provides separate retrieval paths for pushed history, pulled history, and turn analytics. Choose the one that matches your needs.
 
 ## Choose the retrieval method
 
 | Goal | Best source | Use this |
 | --- | --- | --- |
 | Receive history automatically when the session ends | Webhook event | [`103 agent history`](../../reference/event-types#103-agent-history) |
+| Receive post-session turn data automatically | Webhook event | [`112 turns finished`](../../reference/event-types#112-turns-finished) |
 | Pull the agent's stored memory from your backend workflow | REST API | [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) |
 | Analyze start, end, and latency for each turn | REST API | [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) |
 
-## Use `103 agent history` for automatic delivery
+## Use the history webhook for automatic delivery
 
-[`103 agent history`](../../reference/event-types#103-agent-history) is the best fit when you want the platform to push session history to your server after the agent stops.
+The [`103 agent history`](../../reference/event-types#103-agent-history) webhook event is the best fit when you want the platform to push session history to your server after the agent stops.
 
 This event includes:
 
@@ -34,29 +35,43 @@ This event includes:
 
 Each `contents` item includes the message sender and content, which is enough for common transcript-style archiving and post-session review.
 
+For sessions that use `llm.vendor` set to `custom`, each `contents` item can also include speech timing fields:
+
+- `speech_start_ms`: Unix timestamp in milliseconds indicating when the user started speaking or the agent started TTS playback.
+- `speech_end_ms`: Unix timestamp in milliseconds indicating when the user stopped speaking, or when TTS playback completed or was interrupted.
+- `speech_algorithmic_delay`: Total delay in milliseconds introduced by audio processing algorithms after audio is captured from the user's microphone. This field is returned only when `contents[].role` is `user` and actual voice input is present.
+
+Use these timing fields when you need to align transcript entries with cloud recording audio or analyze the actual speech timeline.
+
+## Use `112 turns finished` for pushed turn analytics
+
+[`112 turns finished`](../../reference/event-types#112-turns-finished) is the best fit when you want Agora to push conversation turn data after the session ends.
+
+This event includes turn start and end metadata, latency metrics, `total_turn_count`, and `is_truncated`, which help with post-session analysis and archiving.
+
 ## Use the history API when you need to pull data
 
 Use [`Retrieve agent history`](/en/api-reference/api-ref/conversational-ai/history) when:
 
-- your backend wants to fetch history on demand
-- you need a pull-based workflow instead of webhook delivery
-- the session is still running and you want the current stored memory
+- Your backend needs to fetch history on demand
+- You need a pull-based workflow instead of webhook delivery
+- The session is still running and you want the current stored memory
 
 This path is often better for internal tools and admin workflows where users open a session record and fetch the latest stored memory explicitly.
 
-## Use the turns API for diagnostics, not transcript storage
+## Use the turns API for diagnostics
 
 Use [`Query conversation turn information`](/en/api-reference/api-ref/conversational-ai/turns) when you care about turn lifecycle and timing more than message text.
 
 This API is the better choice for questions such as:
 
-- which turn was slow
-- which turn ended abnormally
-- how many turns completed in the session
+- Which turn was slow?
+- Which turn ended abnormally?
+- How many turns completed successfully?
 
-If you need both transcript content and timing analysis, store `103 agent history` and query `turns` for deeper diagnostics.
+If you need both transcript content and timing analysis, store the `103 agent history` event and query the turns API for deeper diagnostics.
 
-## Configure enough history before the session starts
+## Set the history limit before you start the agent
 
 The number of stored history items in [`103 agent history`](../../reference/event-types#103-agent-history) depends on `llm.max_history` when you start the agent. The default is `32`.
 
@@ -83,10 +98,13 @@ When your server receives history after the session ends:
 
 ## Common decision rules
 
-- If you need a webhook immediately after the session ends, use `103 agent history`.
-- If you need to fetch history on demand, use the history API.
-- If you need timing and completion analysis, use the turns API.
-- If you need complete postmortems, combine all three.
+Use these rules to quickly choose a retrieval option:
+
+- For immediate delivery when the session ends, use `103 agent history`.
+- For pushed turn data after the session ends, use `112 turns finished`.
+- For on-demand fetching, use the history API.
+- For timing and completion analysis, use the turns API.
+- For complete postmortems, combine all three.
 
 ## Related resources
 
@@ -94,6 +112,6 @@ When your server receives history after the session ends:
 - [Get runtime events](get-runtime-events)
 - [Receive agent runtime events on your server](webhooks)
 - [Notification event types](../../reference/event-types#103-agent-history)
-- [Keep conversation context across turns](short-term-memory)
+- [Keep conversation context across turns](../shape-the-conversation/short-term-memory)
 - [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)
 - [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns)
