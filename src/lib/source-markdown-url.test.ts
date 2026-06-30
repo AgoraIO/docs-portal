@@ -29,18 +29,18 @@ describe('getPageMarkdownUrl', () => {
     );
   });
 
-  it('keeps platform-specific markdown URLs on the llms route', () => {
+  it('builds public platform-specific markdown URLs', () => {
     const page = createPage({
       path: 'en/realtime-media/video/reference/supported-platforms.mdx',
       url: '/en/realtime-media/video/reference/supported-platforms',
     });
 
     expect(getPageMarkdownUrl(page, 'android').url).toBe(
-      '/llms.mdx/docs/en/realtime-media/video/reference/supported-platforms/android.md',
+      '/en/realtime-media/video/reference/supported-platforms/android.md',
     );
   });
 
-  it('keeps OpenAPI markdown URLs on the llms route', () => {
+  it('builds public OpenAPI markdown URLs', () => {
     const page = createPage({
       path: 'en/api-reference/api-ref/conversational-ai/join.mdx',
       type: 'openapi',
@@ -48,7 +48,7 @@ describe('getPageMarkdownUrl', () => {
     });
 
     expect(getPageMarkdownUrl(page).url).toBe(
-      '/llms.mdx/docs/en/api-reference/api-ref/conversational-ai/join.md',
+      '/en/api-reference/api-ref/conversational-ai/join.md',
     );
   });
 });

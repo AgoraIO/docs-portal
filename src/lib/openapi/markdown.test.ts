@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { OPENAPI_LANES } from './lanes';
 import {
   getOpenApiMarkdownByContentPath,
+  getOpenApiMarkdownPages,
   serializeOpenApiOperationMarkdown,
 } from './markdown';
 import { getOpenApiOperation } from './source.server';
@@ -39,6 +40,14 @@ describe('openapi markdown serializer', () => {
     expect(markdown).toContain(
       '# Start a conversational AI agent (/en/api-reference/api-ref/conversational-ai/join)',
     );
+  });
+
+  it('publishes only English openapi pages to machine-readable feeds', async () => {
+    const pages = await getOpenApiMarkdownPages();
+
+    expect(pages.length).toBeGreaterThan(0);
+    expect(pages.every((page) => page.url.startsWith('/en/'))).toBe(true);
+    expect(pages.some((page) => page.url.startsWith('/zh-CN/'))).toBe(false);
   });
 
   it('does not publish RTC REST markdown for zh-CN', async () => {

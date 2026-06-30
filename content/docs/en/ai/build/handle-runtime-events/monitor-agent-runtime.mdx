@@ -1,18 +1,18 @@
 ---
-title: Monitor agent status
-description: Choose the right runtime events to update the UI, debug failures, and monitor agent health.
+title: Monitor agent status, errors, and performance
+description: Choose the right runtime events to display agent status, handle errors, and monitor performance.
 ---
-When building a voice agent in client apps, runtime event handling usually serves one of these goals:
+This page helps you choose the right path for common monitoring goals, then links you to the detailed setup guides.
 
-- show the agent's current state in the app UI
-- capture errors and debug signals during a live session
-- collect lifecycle and latency data on your server
+Runtime event handling on client apps usually serves one of the following goals:
 
-This page helps you choose the right event source for each goal, then links you to the detailed setup guides.
+- Update the app UI according to the agent's current state
+- Capture errors and debug logs during a live session
+- Collect lifecycle and latency data on your server
 
-## Choose the right event source
+## Choose a path for each goal
 
-| Goal | Best source | Use these events |
+| Goal | Best path | Use these events |
 | --- | --- | --- |
 | Update the in-call UI with the agent's current state | Toolkit callbacks in the client | `onAgentStateChanged`, `onAgentListeningChanged`, `onAgentThinkingChanged`, `onAgentSpeakingChanged` |
 | Handle interruptions during a live session | Toolkit callbacks in the client | `onAgentInterrupted` |
@@ -24,7 +24,7 @@ This page helps you choose the right event source for each goal, then links you 
 
 ## Use client callbacks for live state and local debugging
 
-Use the toolkit when the signal must arrive during the current session:
+Use the toolkit when the event must arrive during the current session:
 
 - `onAgentStateChanged` is the main UI state callback for `silent`, `listening`, `thinking`, and `speaking`.
 - `onAgentListeningChanged`, `onAgentThinkingChanged`, and `onAgentSpeakingChanged` are better when you need separate loading, waveform, or avatar behaviors.
@@ -63,7 +63,7 @@ Use webhook events when the data must leave the device and be available for dash
 - `110 agent error` captures structured module errors with vendor-specific codes and messages.
 - `111 agent metrics` reports latency and other runtime metrics that are better suited to backend aggregation.
 
-If you need to answer questions such as "why did this session fail", "which customers are seeing LLM errors", or "how long does TTS take in production", webhook events are the better primary source.
+If you need to answer questions such as why a session failed, which customers are seeing LLM errors, or how long TTS takes in production, webhook events are the better primary source.
 
 For the first-step setup of both client and server paths, see [Get runtime events](get-runtime-events). For the full server integration flow, setup steps, request headers, request body, and signature verification, see [Webhooks](webhooks). For complete webhook payloads, see [Notification event types](../../reference/event-types).
 
@@ -97,7 +97,7 @@ Use webhook events when you need durable backend observability:
 
 - [`110 agent error`](../../reference/event-types#110-agent-error) for structured module failures
 - [`102 agent left`](../../reference/event-types#102-agent-left) to understand whether the session terminated abnormally
-- alerting, dashboards, incident review, and cross-session aggregation
+- Alerting, dashboards, incident review, and cross-session aggregation
 
 This path is best when the problem must be visible outside the current device or session.
 
@@ -116,9 +116,9 @@ This path is best when the problem must be visible outside the current device or
 
 Use `onAgentMetrics` when performance must shape the live experience:
 
-- show current latency or quality indicators in the UI
-- react to degraded experience during the session
-- compare what the user feels with what the client observes
+- Show current latency or quality indicators in the UI
+- React to degraded experience during the session
+- Compare what the user feels with what the client observes
 
 </TabsContent>
 
@@ -126,9 +126,9 @@ Use `onAgentMetrics` when performance must shape the live experience:
 
 Use [`111 agent metrics`](../../reference/event-types#111-agent-metrics) when performance must be monitored over time:
 
-- store metrics for dashboards and alerts
-- compare cohorts by `labels`
-- analyze regression patterns across sessions and environments
+- Store metrics for dashboards and alerts
+- Compare cohorts by `labels`
+- Analyze regression patterns across sessions and environments
 
 </TabsContent>
 </Tabs>
@@ -143,7 +143,7 @@ For most production apps, use both channels together:
 
 `labels` are especially useful when you want to group runtime data by customer segment, campaign, environment, or experiment.
 
-## Detailed references
+## Related resources
 
 - [Debug agent failures with runtime events](debug-agent-failures)
 - [Retrieve conversation history after a session ends](retrieve-session-history)

@@ -1507,6 +1507,32 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps nested AI build quickstart links pointed at the in-app quickstart page', () => {
+    const customInformationSource = readDoc(
+      'ai/build/shape-the-conversation/custom-information.mdx',
+    );
+    const customLlmSource = readDoc(
+      'ai/build/custom-model-integration/custom-llm.mdx',
+    );
+
+    expect(customInformationSource).toContain(
+      '](../../get-started/quickstart)',
+    );
+    expect(customInformationSource).not.toContain(
+      '](../get-started/quickstart)',
+    );
+
+    expect(customLlmSource).toContain('](../../get-started/quickstart)');
+    expect(customLlmSource).not.toContain('](../get-started/quickstart)');
+  });
+
+  it('keeps the OpenAI MLLM page free of broken overview self-links', () => {
+    const source = readDoc('ai/models/mllm/openai.mdx');
+
+    expect(source).not.toContain('[MLLM Overview](overview)');
+    expect(source).not.toContain('[MLLM Overview](.)');
+  });
+
   it('keeps the video unreal setup section fully populated', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),

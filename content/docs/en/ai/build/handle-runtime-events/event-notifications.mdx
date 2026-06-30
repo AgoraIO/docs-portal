@@ -2,15 +2,13 @@
 title: Client-side events
 description: Use toolkit callbacks to update the UI and react to agent events during a live session.
 ---
-Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement client-side event handling with the Conversational AI Engine toolkit.
+Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement client-side event handling with the Conversational AI Engine toolkit. Use this page when you need in-session events in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Receive agent runtime events on your server](webhooks) instead.
 
-For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
-
-Use this page when you need in-session signals in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Webhooks](webhooks) instead.
+For an overview that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
 
 ## Understand the tech
 
-Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the Agora Signaling SDK and Video SDK to enable the following features:
+Agora provides a flexible, scalable, and standardized Conversational AI Engine toolkit. The toolkit supports **Android**, **iOS**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate Agora Signaling SDK and Video SDK capabilities to enable the following features:
 
 - [Interrupt agents](../shape-the-conversation/interrupt-agent)
 - [Display live transcripts](../transcripts)
@@ -19,35 +17,35 @@ Agora provides a flexible, scalable, and standardized conversational AI engine t
 
 The toolkit exposes callback methods that let you listen for various agent-related events and system information:
 
-- **`onAgentStateChanged`**: listen for agent state changes such as `silent`, `listening`, `thinking`, and `speaking`.
-- **`onAgentListeningChanged`**: track when the agent starts or stops listening.
-- **`onAgentThinkingChanged`**: track when the agent starts or stops processing.
-- **`onAgentSpeakingChanged`**: track when the agent starts or stops playing speech.
-- **`onAgentInterrupted`**: handle interruption events triggered during a conversation.
-- **`onAgentMetrics`**: observe performance metrics such as LLM and TTS latency.
-- **`onAgentError`**: handle module-level failures such as LLM or TTS errors.
+- **`onAgentStateChanged`**: Listen for agent state changes such as `silent`, `listening`, `thinking`, and `speaking`.
+- **`onAgentListeningChanged`**: Track when the agent starts or stops listening.
+- **`onAgentThinkingChanged`**: Track when the agent starts or stops processing.
+- **`onAgentSpeakingChanged`**: Track when the agent starts or stops playing speech.
+- **`onAgentInterrupted`**: Handle interruption events triggered during a conversation.
+- **`onAgentMetrics`**: Observe performance metrics such as LLM and TTS latency.
+- **`onAgentError`**: Handle module-level failures such as LLM or TTS errors.
 
 ## Prerequisites
 
 - Implemented the Conversational AI Engine [quickstart](../../get-started/quickstart).
 - Your app integrates Agora Video SDK v4.5.1 or later and includes the [Video SDK quickstart](../../../realtime-media/video/quickstart).
 - Enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm/quickstart) for basic messaging.
-- You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
+- Maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
 ## Implementation
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 1. **Integrate the toolkit**
 
-   Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import the toolkit before calling the toolkit API. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import the toolkit before calling the toolkit API. See [Folder structure](#folder-structure) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -127,13 +125,13 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    api.destroy()
    ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 1. **Integrate the toolkit**
 
-   Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import the toolkit before calling the toolkit APIs. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import the toolkit before calling the toolkit API. See [Folder structure](#folder-structure) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -217,13 +215,13 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    convoAIAPI.destroy()
    ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="web">
+<TabsContent value="web">
 
 1. **Integrate the toolkit**
 
-   Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import the toolkit before calling its API. Refer to [Folder structure](#folder-structure) to understand the role of each file.
+   Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import the toolkit before calling the toolkit API. See [Folder structure](#folder-structure) to understand the role of each file.
 
 2. **Create a toolkit instance**
 
@@ -268,9 +266,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    conversationalAIAPI.destroy()
    ```
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Reference
 
@@ -285,14 +283,14 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
 ### Folder structure
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 - `IConversationalAIAPI.kt`: API interface, data structures, and enumerations
 - `ConversationalAIAPIImpl.kt`: main implementation logic
@@ -301,18 +299,18 @@ The toolkit exposes callback methods that let you listen for various agent-relat
   - `TranscriptionController.kt`: transcript rendering and synchronization
   - `MessageParser.kt`: transcription and message parsing
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - `ConversationalAIAPI.swift`: API interface, data structures, and enumerations
 - `ConversationalAIAPIImpl.swift`: main implementation logic
 - `Transcription/`
   - `TranscriptionController.swift`: transcript rendering and control
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="web">
+<TabsContent value="web">
 
 - `index.ts`: main API class
 - `type.ts`: API interfaces, data structures, and enumerations
@@ -321,19 +319,19 @@ The toolkit exposes callback methods that let you listen for various agent-relat
   - `events.ts`: event management class
   - `sub-render.ts`: transcript rendering module
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ### API reference
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="web">Web</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 - [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
@@ -347,9 +345,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 - [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmetrics)
 - [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagenterror)
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
 - [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
@@ -363,9 +361,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 - [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmetrics)
 - [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagenterror)
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="web">
+<TabsContent value="web">
 
 - [`IConversationalAIAPIEventHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
 - [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
@@ -373,5 +371,5 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 - [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
 - [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>

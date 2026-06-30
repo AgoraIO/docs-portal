@@ -1,19 +1,20 @@
 ---
 title: Get runtime events
-description: Receive runtime events in clients and on your server, and understand which signals are shared or different.
+description: Receive runtime events in clients and on your server.
 ---
-When developers first integrate runtime events, the first question is usually not "which event should I analyze", but "how do I receive events at all".
 
-For Conversational AI Engine, runtime events come through two different paths:
+This page explains how to receive runtime events from Conversational AI Engine. It compares the delivery paths so you can choose the one that fits your use case, or use both approaches together.
 
-- **Client toolkit** for live, in-session interaction signals
-- **Webhook** for backend monitoring, durable records, and post-session processing
+You can receive runtime events through the following paths:
 
-These are not identical event sets. Some signals overlap semantically, but many are exclusive to one path.
+- **Client toolkit**: for live, in-session interaction events
+- **Webhook**: for backend monitoring, durable records, and post-session processing
 
-## Compare event coverage
+The paths don't deliver identical events. Some events overlap semantically, but many are exclusive to one path.
 
-| Runtime signal | Client toolkit | Webhook |
+## Event coverage
+
+| Runtime event | Client toolkit | Webhook |
 | --- | --- | --- |
 | Agent state changes such as `listening`, `thinking`, and `speaking` | Yes | No |
 | Interrupt events during a live session | Yes | No |
@@ -24,7 +25,7 @@ These are not identical event sets. Some signals overlap semantically, but many 
 | Telephony call state | No | Yes |
 | Debug logs and message-level client diagnostics | Yes | No |
 
-If you only need current UI state, use the client path. If you need monitoring, history, or backend analytics, use the webhook path. If you need both live UX and production observability, use both.
+If you only need current UI state, use the client path. If you need monitoring, history, or backend analytics, use the webhook path. If you need live UX with production observability, use both.
 
 ## Choose how to receive events
 
@@ -54,7 +55,7 @@ Use the client toolkit when the app must react during the current session.
 
 - RTC integrated in the client
 - RTM enabled for the project
-- authenticated RTC and RTM instances with lifecycle managed by your app
+- Authenticated RTC and RTM instances with lifecycle managed by your app
 
 ### How to receive events
 
@@ -79,10 +80,10 @@ Use the client toolkit when the app must react during the current session.
 
 This path is best for:
 
-- updating in-call UI state
-- reacting to interruptions
-- surfacing errors immediately in the app
-- observing client-side runtime behavior during live debugging
+- Updating in-call UI state
+- Reacting to interruptions
+- Surfacing errors immediately in the app
+- Observing client-side runtime behavior during live debugging
 
 For the full client setup and platform examples, see [Client-side events](event-notifications).
 
@@ -106,9 +107,9 @@ Use webhooks when your backend must receive and persist runtime events.
 
 ### What you need
 
-- a public HTTPS callback endpoint
-- access to the Agora Console project notification settings
-- server-side storage for the generated secret
+- A public HTTPS callback endpoint
+- Access to the Agora Console project notification settings
+- Server-side storage for the generated secret
 
 ### How to receive events
 
@@ -121,20 +122,20 @@ Use webhooks when your backend must receive and persist runtime events.
 
 This path is best for:
 
-- alerting and dashboards
-- session lifecycle records
-- post-session history processing
-- backend debugging and incident review
-- turn and metric aggregation across many sessions
+- Alerting and dashboards
+- Session lifecycle records
+- Post-session history processing
+- Backend debugging and incident review
+- Turn and metric aggregation across many sessions
 
 For the full webhook setup, request format, and signature verification steps, see [Webhooks](webhooks).
 
 </TabsContent>
 </Tabs>
 
-## Shared and non-shared goals
+## How to achieve your goals
 
-Some developer goals have two implementation paths, while others do not:
+You can achieve some goals through either path; others work with only one:
 
 - **Status UI**: mainly client toolkit
 - **Errors**: client toolkit and webhook
@@ -142,7 +143,7 @@ Some developer goals have two implementation paths, while others do not:
 - **Debugging failures**: client toolkit for live reproduction, webhook for backend investigation
 - **Conversation history**: webhook and REST APIs, not client toolkit
 
-## What to read next
+## Related resources
 
 - If you want to understand what the webhook event numbers mean, see [Notification event types](../../reference/event-types).
 - If you want to decide which events to use for state, errors, and performance, see [Monitor agent status, errors, and performance](monitor-agent-runtime).
