@@ -13,9 +13,9 @@ By design, the SDK triggers the [`onRtcStats`](https://api-ref.agora.io/en/video
 The above callback is in Java. For other programming languages, use the following parameters to get the user's call duration:
 - C++: The `duration` parameter of the `onRtcStats` callback.
 - Objective-C: The `duration` parameter of the [`reportRtcStats`](https://api-ref.agora.io/en/video-sdk/ios/3.x/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportRtcStats:) callback.
-- Javascript: The `Duration` parameter of the `Client.getSessionStats` method.
+- JavaScript: The `Duration` parameter of the `Client.getSessionStats` method.
 
-If the connection is lost under poor network conditions, the calculated duration maybe inaccurate. Use [Agora Signaling SDK](/en/signaling/develop/manage-connection-states) or a different signaling system to implement a heartbeat mechanism, and get the disconnected time of the client. You can calculate the user's call duration by subtracting the disconnected time of the client from the call duration obtained from the Agora Video SDK.
+If the connection is lost under poor network conditions, the calculated duration may be inaccurate. Use [Agora Signaling SDK](/en/signaling/develop/manage-connection-states) or a different signaling system to implement a heartbeat mechanism, and get the disconnected time of the client. You can calculate the user's call duration by subtracting the disconnected time of the client from the call duration obtained from the Agora Video SDK.
 
 ### Use Agora Analytics
 

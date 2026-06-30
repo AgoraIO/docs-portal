@@ -39,7 +39,7 @@ In order to handle notifications for the events you subscribe to, you need to:
 
 Once Notifications is enabled, Agora SDRTN® sends notification callbacks as `HTTPS POST` requests to your webhook when events that you are subscribed to occur. The data format of the requests is JSON, the character encoding is `UTF-8`, and the signature algorithm is `HMAC/SHA1` or `HMAC/SHA256`.
 
-For Notifications, a webhook is an endpoint on an `HTTPS` server that handles these requests. In a production environment you write this in your web infrastructure, for development purposes best practice is to create a simple local server and use a service such as [ngrok](https://ngrok.com/download) to supply a public URL that you register with  Agora SDRTN® when you enable Notifications.
+For Notifications, a webhook is an endpoint on an `HTTPS` server that handles these requests. In a production environment you write this in your web infrastructure, for development purposes best practice is to create a simple local server and use a service such as [ngrok](https://ngrok.com/download) to supply a public URL that you register with Agora SDRTN® when you enable Notifications.
 
 To do this, take the following steps:
 
@@ -264,10 +264,10 @@ For enhanced security, Notifications no longer supports `HTTP` addresses.
 
 ### Add signature verification
 
-To communicate securely between Notifications and your webhook,  Agora SDRTN®  uses signatures for identity verification as follows:
+To communicate securely between Notifications and your webhook, Agora SDRTN®  uses signatures for identity verification as follows:
 
-1. When you configure Notifications in Agora Console,  Agora SDRTN®  generates a secret you use for verification.
-2. When sending a notification,  Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
+1. When you configure Notifications in Agora Console, Agora SDRTN®  generates a secret you use for verification.
+2. When sending a notification, Notifications generates two signature values from the secret using `HMAC/SHA1` and `HMAC/SHA256` algorithms. These signatures are added as `Agora-Signature` and `Agora-Signature-V2` to the `HTTPS` request header.
 3. When your server receives a callback, you can verify `Agora-Signature` or `Agora-Signature-V2`:
 
     * To verify `Agora-Signature`, use the secret, the raw request body, and the `crypto/sha1` algorithm.
@@ -277,7 +277,7 @@ The following sample code uses `crypto/sha1`.
 
 To add signature verification to your server, take the following steps:
 
-1. In the `main.go` file, replace your imports with with the following:
+1. In the `main.go` file, replace your imports with the following:
 
     ```go
     import (
@@ -752,8 +752,8 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
 
 - `msgName`: String. The message name, `recorder_slice_start`.
 - `startUtcMs`：Number. The time (ms) in UTC when the recording starts (the starting time of the first slice file).
-- `discontinueUtcMs`：Number. In most cases, this field is the same as `startUtcMs`. When the recording is interrupted, the Agora Cloud Recording service automatically resumes the recording and  triggers this event. In this case, the value of this field is the time (ms) in UTC when the last slice file stops.
-- `mixedAllUser`:  Boolean. Whether the audio and video of all users are mixed into a single file.
+- `discontinueUtcMs`：Number. In most cases, this field is the same as `startUtcMs`. When the recording is interrupted, the Agora Cloud Recording service automatically resumes the recording and triggers this event. In this case, the value of this field is the time (ms) in UTC when the last slice file stops.
+- `mixedAllUser`: Boolean. Whether the audio and video of all users are mixed into a single file.
   - `true`: All users are recorded in a single file.
   - `false`: Each user is recorded separately.
 - `streamUid`: String. User ID. The user whose audio or video is recorded in the file. In composite mode, `streamUid` is `0`.
@@ -863,8 +863,8 @@ eventType 43 indicates that the state of the audio stream has changed, and `deta
 #### web_recorder_reload
 `eventType` 73 indicates a web page reload. `details` includes the following fields:
 
-- `msgName: `String. The message name, `"web_recorder_reload"`:
-- `reason: `String. The reason for the page reload:
+- `msgName`: String. The message name, `"web_recorder_reload"`.
+- `reason`: String. The reason for the page reload:
   - `"audio_silence"`: Audio loss issue.
   - `"page_load_timeout"`: Web page load timeout. The callback returns this field only if the web page load detection function is enabled and there is a web page load timeout. See [Web page load detection](/en/cloud-recording/develop/webpage-load-timeout).
 

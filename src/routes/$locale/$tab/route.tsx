@@ -4,6 +4,22 @@ import type { DocsPagePayload } from '@/lib/docs-page.server';
 import { readStaticDocsSearchIndex } from '@/lib/docs-search-index';
 
 export const Route = createFileRoute('/$locale/$tab')({
+  server: {
+    handlers: {
+      GET: async ({ next, params }) => {
+        const { getPublicDocsMarkdownResponse } = await import(
+          '@/lib/docs-markdown.server'
+        );
+        const response = await getPublicDocsMarkdownResponse({
+          locale: params.locale,
+          slugSegments: [],
+          tab: params.tab,
+        });
+
+        return response ?? next();
+      },
+    },
+  },
   component: DocsTabLayout,
 });
 

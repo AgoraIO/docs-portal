@@ -35,7 +35,7 @@ The fee you pay for stream subscription is divided into audio stream charges and
 - Audio stream charges = unit price for audio × audio subscription minutes
 - Video stream charges = unit price for video × video subscription minutes
 
-When you begin publishing streams in your channel, the Agora streaming server joins your channel as an audience member and subscribes to the streams you publish. This process is the same as an audience member subscribing to the streams published by the host in the channel.  You can refer to [Pricing for Real-time Communication](/en/solutions/interactive-live-streaming/reference/pricing) for more information about subscription fees.
+When you begin publishing streams in your channel, the Agora streaming server joins your channel as an audience member and subscribes to the streams you publish. This process is the same as an audience member subscribing to the streams published by the host in the channel. You can refer to [Pricing for Real-time Communication](/en/solutions/interactive-live-streaming/reference/pricing) for more information about subscription fees.
 
 The subscription minutes for audio and video streams are included in [the audio and video service minutes](/en/solutions/interactive-live-streaming/reference/pricing) calculated when you implement an Video SDK function. Agora's free-of-charge policy for the first 10,000 minutes applies to these subscription fees. See [Agora's free-of-charge policy for the first 10,000 minutes](../reference/billing-policies#agoras-free-of-charge-policy-for-the-first-10000-minutes) for details.
 
@@ -43,7 +43,7 @@ In a dual-stream use-case, Agora only subscribes to the high-quality video strea
 
 ## Transcoding fee
 
-The Agora streaming server charges you when transcoding the subscribed streams. **The transcoding fee is accumulative, depending on the category and type of the output media stream.**
+The Agora streaming server charges you when transcoding the subscribed streams. **The transcoding fee is cumulative, depending on the category and type of the output media stream.**
 
 Agora's free-of-charge policy for the first 10,000 minutes does not apply to the transcoding fee.
 
@@ -85,9 +85,9 @@ Agora only charges a video transcoding fee when the Agora streaming server trans
 | High-Definition (HD) | Up to 921,600 (1280 × 720) |
 | Full High-Definition (Full HD) | From greater than 921600 (1280 × 720) to 2073600 (1920 × 1080) |
 
-You can set the resolution of output video in the `width` and `height` properties of the `LiveTranscoding` class. The resolution of output video transcoded by Agora  is no higher than 1920 × 1080.
+You can set the resolution of output video in the `width` and `height` properties of the `LiveTranscoding` class. The resolution of output video transcoded by Agora is no higher than 1920 × 1080.
 
-When there is more than one host publishing streams in a channel, the transcoding fee is charged according to **the multi-hosted interactive streaming use-case**. For example, if there are two hosts in a channel, and they choose to only transcode their own media streams, the transcoding fee  is calculated based on the **unit price for transcoding streams in a multi-hosted interactive streaming use-case**.
+When there is more than one host publishing streams in a channel, the transcoding fee is charged according to **the multi-hosted interactive streaming use-case**. For example, if there are two hosts in a channel, and they choose to only transcode their own media streams, the transcoding fee is calculated based on the **unit price for transcoding streams in a multi-hosted interactive streaming use-case**.
 
 #### In an interactive streaming use-case where there is only one host:
 
@@ -117,7 +117,7 @@ The length of time for transcoding can be divided into the following two types:
 
 #### Cohosted audio streaming
 
-**Use-case description**: In a cohosted audio streaming use-case, the audio streams are mixed as one stream after transcoding and pushed to the CDN. The cohosted audio streaming lasts for 20 minutes,   Subsequently, one host leaves the channel, and the other continues the audio streaming for another 20 minutes.
+**Use-case description**: In a cohosted audio streaming use-case, the audio streams are mixed as one stream after transcoding and pushed to the CDN. The cohosted audio streaming lasts for 20 minutes, Subsequently, one host leaves the channel, and the other continues the audio streaming for another 20 minutes.
 
 **Billing plan**: Audio transcoding fee occurs during the first 20 minutes when there is co-hosted audio streaming, and during the last 20 minutes when the host continues the audio streaming and pushes streams.
 
@@ -127,8 +127,8 @@ Transcoding fee = 3.99 ($US/1,000 minutes) × 20/1,000 + 1.99 ($US/1,000 minutes
 
 **Use-case description**:In an audio and video streaming cohosted by A and B, the media streams published by these two hosts are processed according to the following settings:
 
-- Host A is  the left side of the screen and host B is  on the right side of the screen. The Agora streaming server performs the transcoding according to this screen layout, outputs a media stream with a resolution of 1280 × 720, and pushes the stream to a CDN address.
-- Host A is  on the right side of the screen and host B is  on the left side of the screen. The Agora streaming server performs the transcoding according to this screen layout, outputs another media stream with a resolution of 1920 × 1080, and pushes the stream to another CDN address.
+- Host A is the left side of the screen and host B is on the right side of the screen. The Agora streaming server performs the transcoding according to this screen layout, outputs a media stream with a resolution of 1280 × 720, and pushes the stream to a CDN address.
+- Host A is on the right side of the screen and host B is on the left side of the screen. The Agora streaming server performs the transcoding according to this screen layout, outputs another media stream with a resolution of 1920 × 1080, and pushes the stream to another CDN address.
 
 H.264 encoding is used when transcoding both of the streams, and the cohosted audio and video streaming lasts for 20 minutes.
 

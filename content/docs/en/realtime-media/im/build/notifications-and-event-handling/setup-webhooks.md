@@ -137,7 +137,7 @@ For pre-delivery callbacks, if your app server does not return the HTTP code 200
 | :---------------- | :------------------------ |:------------------------ |
 | `callId`    | String  | The callback ID which is the unique identifier assigned to each callback. The callback ID is in the format of `{appKey}_{uuid}`, where the value of `uuid` is randomly generated.     |
 | `timestamp`  | Number  | The Unix timestamp when the Chat server receives the message, in milliseconds.         |
-| `chat_type` | String | The chat type:`chat`: One-to-one chats.`group`: Chat groups. `chatroom`: Chat room chats. |
+| `chat_type` | String | The chat type: `chat`: One-to-one chats. `group`: Chat groups. `chatroom`: Chat room chats. |
 | `group_id`   | String      | The group or chat room where the message included in the request is to be sent. This parameter is valid only for group and room chats. |
 | `from`   | String | The user ID of the message sender.  |
 | `to` | String | The message recipient.:One-to-one chat: The user ID of the message recipient.Group chat: The group ID. Chat room chat: The chat room ID. |
@@ -152,8 +152,8 @@ The HTTP responses cannot exceed 1,000 characters; otherwise, the callbacks fail
 
 | Field      | Type   | Required | Description      |
 | :-------- | :----- | :----------------- | :----------- |
-| `valid`   | Boolean   | Yes   | Controls whether the message is appropriate according to the rules specified on your app server：`true`: The message is valid and the Chat server should deliver the message;`false`: The message is invalid and the Chat server should reject the message. |
-| `code`    | String | No   | Custom pre-delivery callback error description on the client. The value of the `code` field is displayed as the error on the client only when **Report Error** on the **Pre Send** tab page is set to **Yes** on the Agora Console. Callback errors are displayed as follows on the client: If `code` contains the content of the string type, the content is reported as the error; If `code` is not included in the response, `custom logic denied` is displayed.  If `code` is returned as an empty string, `Message blocked by external logic` is displayed on a mobile client;  If no response is received within the specified period, the default error `custom internal error` is reported. If a response error occurs, including the `valid` field being absent or fields being of an incorrect type, `custom internal error` is reported.   |
+| `valid`   | Boolean   | Yes   | Controls whether the message is appropriate according to the rules specified on your app server: `true`: The message is valid and the Chat server should deliver the message; `false`: The message is invalid and the Chat server should reject the message. |
+| `code`    | String | No   | Custom pre-delivery callback error description on the client. The value of the `code` field is displayed as the error on the client only when **Report Error** on the **Pre Send** tab page is set to **Yes** on the Agora Console. Callback errors are displayed as follows on the client: If `code` contains the content of the string type, the content is reported as the error; If `code` is not included in the response, `custom logic denied` is displayed. If `code` is returned as an empty string, `Message blocked by external logic` is displayed on a mobile client; If no response is received within the specified period, the default error `custom internal error` is reported. If a response error occurs, including the `valid` field being absent or fields being of an incorrect type, `custom internal error` is reported.   |
 | `payload` | Object | No   | The modified message content. Currently, only the text content is allowed. The modified content must be in the same format as the original message and cannot exceed 1 KB. If it is unnecessary to modify the message, ignore this field.  |
 
 #### Request example
@@ -390,4 +390,4 @@ For details, see [HTTP Status Codes](../http-status-codes).
 
 Q: Why is the message delivered to the intended recipient even though the value of the `valid` field is `false` in the pre-delivery callback response?
 
-A: Maybe your server fails to return the pre-delivery callback response within the period specified with the **Timeout** parameter in the pre-delivery callback rule on the **Pre Send** page on the [Agora Console](https://console.agora.io/v2). In this case, the message is delivered if **Fallback Action** on the **Pre Send** page page is set to **Passed**. To avoid this issue, you are advised to increase the value of the **Timeout** parameter (200 milliseconds by default), for example, to 1000 milliseconds.
+A: Maybe your server fails to return the pre-delivery callback response within the period specified with the **Timeout** parameter in the pre-delivery callback rule on the **Pre Send** page on the [Agora Console](https://console.agora.io/v2). In this case, the message is delivered if **Fallback Action** on the **Pre Send** page is set to **Passed**. To avoid this issue, you are advised to increase the value of the **Timeout** parameter (200 milliseconds by default), for example, to 1000 milliseconds.

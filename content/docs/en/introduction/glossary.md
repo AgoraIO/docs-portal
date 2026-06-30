@@ -52,7 +52,7 @@ A callee is a Signaling user who receives a [call invitation](#call-invitation).
 
 ### Caller
 
-A caller is an Signaling user who sends a [call invitation](#call-invitation).
+A caller is a Signaling user who sends a [call invitation](#call-invitation).
 
 ###  Call invitation
 
@@ -140,7 +140,7 @@ Inject online media stream refers to injecting an online media stream in an Inte
 
 ### Interactive Live Streaming
 
-Enabled by either Agora’s Video SDK or ASDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
+Enabled by either Agora’s Video SDK or Voice SDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
 
 ## J
 
@@ -184,7 +184,7 @@ Mirroring is an effect that a video image renders.
 
 ### Offline
 
-Offline describes the status of an Signaling user who has successfully logged out of Signaling.
+Offline describes the status of a Signaling user who has successfully logged out of Signaling.
 
 ### Offline message
 
@@ -260,7 +260,7 @@ TCP (Transmission Control Protocol) is a connection-oriented and reliable transp
 
 ### Token
 
-A token, also known as a dynamic key, is used for authentication when an app user joins an channel or logs onto the Agora Signaling.
+A token, also known as a dynamic key, is used for authentication when an app user joins a channel or logs onto the Agora Signaling.
 
 ### Transcoding
 
@@ -280,7 +280,7 @@ User attributes are tags added to Signaling users, including property names and 
 
 In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback.
 
-In the Agora Signaling SDK, a user ID identifiers a user in Signaling.
+In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
 The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
 
@@ -306,9 +306,9 @@ The video profile refers to a set of video attributes, such as resolution, bitra
 
 An SDK developed by Agora to enable developers to add real-time audio interaction to their projects.
 
-### ASDK
+### Voice SDK
 
-Agora provides the ASDK to enable real-time audio communication.
+Agora provides the Voice SDK to enable real-time audio communication.
 
 ## W
 

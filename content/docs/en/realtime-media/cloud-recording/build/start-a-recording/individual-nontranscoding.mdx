@@ -6,7 +6,7 @@ When recording audio only (`streamTypes` is `0`) in [individual recording mode](
 
 |     | Individual audio recording  | Individual audio non-transcoding recording  |
 | :--- | :-------------------------- | :------------------------------------------ |
-| Whether to transcode when encoding audio | Yes.     | No.|
+| Whether to transcode when encoding audio | Yes.     | No. |
 | Audio profile     | The sample rate, number of audio channels, and bitrate are fixed at 48 kHz, mono, and 48 Kbps, respectively. | The sample rate, number of audio channels, and bitrate are determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration of the streaming sender. |
 | Audio codec | LC-AAC.  | Determined by the [AudioProfile](/en/api-reference/api-ref/cloud-recording#transcodingconfig) configuration set by the streaming sender. |
 | Recorded files    | One M3U8 file and several TS files are generated per user ID. | The same as Individual transcoding recording. However, when the user calls `mute`, `disable`, or `leaveChannel`, the audio recording is stopped immediately, and there is no recorded data for silenced audio frames. |

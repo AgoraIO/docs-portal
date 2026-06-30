@@ -3,7 +3,7 @@ title: "Manage chat room mute list"
 description: "Shows how to perform chat room member mute management by calling the Agora Chat RESTful APIs."
 ---
 
-This page shows how to perform  member mute management by calling the Chat RESTful APIs, including muting and unmuting members in a , and retrieving the list of muted members.
+This page shows how to perform chat room member mute management by calling the Chat RESTful APIs, including muting and unmuting members in a chat room, and retrieving the list of muted members.
 
 Before calling the following methods, ensure that you understand the call frequency limit of the Chat RESTful APIs described in [Limitations](../limitations#call-limit-of-server-sides).
 
@@ -19,7 +19,7 @@ The following table lists common request and response parameters of the Chat RES
 | `org_name` | String | The unique identifier assigned to each company (organization) by the Chat service. For how to get the org name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                 | Yes |
 | `app_name` | String | The unique identifier assigned to each app by the Chat service. For how to get the app name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project).                                                                                                                                                                                                                                                                    | Yes |
 | `username` | String | <Slot name="username" /> | Yes |
-| `chatroom_id` | String | The  ID. The unique  identifier assigned to each  by the Chat. You can get the  ID from the response body in [Retrieve the basic information of all s](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
+| `chatroom_id` | String | The chat room ID. The unique chat room identifier assigned to each chat room by the Chat. You can get the chat room ID from the response body in [Retrieve the basic information of all chat rooms](manage-chatrooms#retrieving-basic-information-of-all-chat-rooms).                                                                                                                                    | Yes |
 
 <Slot for="username">
 
@@ -49,9 +49,9 @@ Do not use any of the 26 uppercase English letters (A-Z). Ensure that each `user
 | `timestamp` | Number | The Unix timestamp (ms) when the user is registered. |
 | `duration` | Number | The time duration (ms) from sending the HTTP request to receiving the response. |
 
-## Muting a  member
+## Muting a chat room member
 
-Mutes a  member. Once a  member is muted, this member cannot send messages in the .
+Mutes a chat room member. Once a chat room member is muted, this member cannot send messages in the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -80,7 +80,7 @@ The request body is a JSON object, which contains the following fields:
 | Field | Type | Description | Required |
 | :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------- | :------- |
 | `mute_duration` | Number | The length of time to mute speech from the current time. The unit is milliseconds.`-1` indicates that the member is muted permanently. | Yes |
-| `usernames` | String | The array of user IDs of  members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
+| `usernames` | String | The array of user IDs of chat room members that are to be muted. You can pass in a maximum of 60 user IDs. | Yes |
 
 ### HTTP response
 
@@ -90,7 +90,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | The mute result:`true: `Success`false`: Failure |
+| `result` | Bool | The mute result: `true: `Success. `false`: Failure. |
 | `expire` | Number | The Unix timestamp (ms) when the mute state expires. |
 | `user` | Array | The username of the muted  member. |
 
@@ -141,9 +141,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 }
 ```
 
-## Unmuting  members
+## Unmuting members
 
-Unmutes one or more  members. The unmuted members can continue to send messages in the .
+Unmutes one or more chat room members. The unmuted members can continue to send messages in the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -157,7 +157,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatrooms/{chatroom_id}/mute/{member
 
 | Parameter | Type | Description | Required |
 | :------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `member` | String | The username of the  member to be unmuted. You can pass in a maximum of 60 user IDs that are separated with commas (","). In the URL, use "%2C" to represent ",". | Yes |
+| `member` | String | The username of the chat room member to be unmuted. You can pass in a maximum of 60 user IDs that are separated with commas (","). In the URL, use "%2C" to represent ",". | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -176,7 +176,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Field | Type | Description |
 | :------- | :----- | :------------------------------------------------- |
-| `result` | Bool | The unmute result: `true: `Success`false`: Failure |
+| `result` | Bool | The unmute result: `true: `Success. `false`: Failure. |
 | `user` | String | The username of the unmuted  member. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -213,9 +213,9 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https:
 }
 ```
 
-## Retrieving muted  members
+## Retrieving muted members
 
-Retrieves the list of all the muted members in the specified .
+Retrieves the list of all the muted members in the specified chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -285,11 +285,11 @@ curl -X DELETE -H 'Accept: application/json' -H 'Authorization: Bearer ' 'https:
 }
 ```
 
-## Muting all  members
+## Muting all chat room members
 
-Mutes all  members. Once this method call succeeds, only the members on the  allow list can send messages. For details, see [Manage Chat Room Allow List](./manage-chatroom-mutelist).
+Mutes all chat room members. Once this method call succeeds, only the members on the chat room allow list can send messages. For details, see [Manage Chat Room Allow List](./manage-chatroom-mutelist).
 
-Muting all  members has no connection with the mute list. That is to say, calling this API will not add all  members to the  mute list.
+Muting all chat room members has no connection with the mute list. That is to say, calling this API will not add all chat room members to the chat room mute list.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -318,7 +318,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Parameter | Type | Description |
 | :------- | :----- | :------------------------------------------------------ |
-| `result` | Bool | Whether all members are successfully muted:`true`: Yes.`false`: No.|
+| `result` | Bool | Whether all members are successfully muted: `true`: Yes. `false`: No. |
 | `expire` | Long | The Unix timestamp when the global mute state expires. Unit: milliseconds. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
@@ -351,9 +351,9 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 } 
 ```
 
-## Unmuting all  members
+## Unmuting all chat room members
 
-Unmutes all  members. Once unmuted, the  members resume the right to send messages in the .
+Unmutes all chat room members. Once unmuted, the chat room members resume the right to send messages in the chat room.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -382,7 +382,7 @@ If the returned HTTP status code is `200`, the request succeeds. The response bo
 
 | Parameter     | Type    | Description                                              |
 | :------- | :------ | :---------------------------------------------------- |
-| `result` | Boolean | Whether all  members are successfully unmuted:`true`: Yes.`false`: No. |
+| `result` | Boolean | Whether all chat room members are successfully unmuted: `true`: Yes. `false`: No. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

@@ -17,7 +17,7 @@ The number of newly registered users under this project today (00:00 – current
 
 ### Daily active users (DAU)
 
-The number of users who log in or send or receive messages today (00:00 – current time).  A user connected through multiple devices is regarded as one active user.
+The number of users who log in or send or receive messages today (00:00 – current time). A user connected through multiple devices is regarded as one active user.
 
 ### Monthly Max. DAU
 
@@ -105,7 +105,7 @@ The number of messages sent from the Chat server to offline users as of yesterda
 - The username or password is empty or incorrect.
 - The username is illegal.
 - The password is invalid.
-- Ths user cannot perform the operation without an admin permission.
+- The user cannot perform the operation without an admin permission.
 - The user does not exist.
 - The chat group does not exist.
 - The user is not found in the chat group.

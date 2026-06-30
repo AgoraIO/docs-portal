@@ -229,7 +229,7 @@ Normalization is the process of standardizing billing calculations to 30-day mon
 
 Storage Cost = 3.93 GB × $15.00 per GB = $58.95
 
-If you still have questions, refer to the [FAQ on the recently announced package changes​](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io).
+If you still have questions, refer to the [FAQ on the recently announced package changes](#faq-on-the-recently-announced-package-changes) or contact [Agora support](mailto:support@agora.io).
 
 ### Package feature comparison
 
@@ -345,8 +345,7 @@ unsubscribe a package.
     
     *Unsubscribing will take effect at the end of the current billing cycle. Post which, your account will automatically switch to the Free Signaling 2.x package.*
 
-If you need any further assistance, contact your account manager or reach out to
-support@agora.io to discuss your specific needs and concerns.
+If you need any further assistance, contact your account manager or reach out to support@agora.io to discuss your specific needs and concerns.
 
 ### Clean up storage
 Depending on the features you enable for your project and your actual usage, Signaling stores the relevant data and you incur the corresponding storage charges. To avoid unintended charges, delete stored data that is no longer needed as follows:

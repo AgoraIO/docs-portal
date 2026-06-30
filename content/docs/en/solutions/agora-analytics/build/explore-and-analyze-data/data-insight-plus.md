@@ -8,7 +8,7 @@ Data insights in Agora Analytics offer periodic analysis of call usage and quali
 The regular version of Data Studio currently supports query analysis of time series graphs and one-dimensional
 queries. Data Insights Plus offers additional capabilities, including multi-dimensional cross analysis, sampling
 analysis, comparative analysis, and extended querying of service indicators for Video Calling, Voice Calling,
-Interactive Live Streaming, and Broadcast Streaming. For a detailed comparison of  Agora Analytics
+Interactive Live Streaming, and Broadcast Streaming. For a detailed comparison of Agora Analytics
 Standard and Premium, see [pricing](../../reference/pricing.md).
 
 **Want to try out this functionality? There is a 30 day trial period just for you. Please [submit a ticket](https://agora-ticket.agora.io/) to enroll for the trial.**
@@ -53,7 +53,7 @@ To set up Agora Analytics for your account, take the following steps:
 
     ![](/images/analytics/diplus-dimension-and-time-filter.png)
 
-    * **Dimension filtering**: Click the **Add Filter** button on the left to select a dimension in the drop-down box for filtering. Up to three [dimensions](#dimensions) can be selected at the same time, and the effective range is the time series analysis area and the dimension analysis area. The dimension values ​​in the drop-down box are sorted in descending order of the number of active calls.
+    * **Dimension filtering**: Click the **Add Filter** button on the left to select a dimension in the drop-down box for filtering. Up to three [dimensions](#dimensions) can be selected at the same time, and the effective range is the time series analysis area and the dimension analysis area. The dimension values in the drop-down box are sorted in descending order of the number of active calls.
     
     * **Time filtering**: Use the right side of the global filter area to customize the time range, time granularity (by day/hour) and time zone (local/UTC time). It supports querying data within 90 days. The long query range is 30 days. The time series thumbnail in the indicator selection area depends on the time filter conditions in the global filter.
 
@@ -198,9 +198,9 @@ The following indicators are available in addition to the core indicators.
 | Indicator name | Description |
 |---------|------------------------------|
 | Number of calling users (by user ID) | Each user ID is counted as one user.<br/>The number of users is the total number of users who made calls during the selected time range. |
-| Call time | The accumulative duration of calls made by all users using the RTC SDK, in minutes. When audio and video exist at the same time, only the video duration is counted. |
-| Video call duration | The accumulative duration of video calls made by all users using the RTC SDK, in minutes. |
-| Audio call duration | The accumulative duration of audio calls made by all users using the RTC SDK, in minutes. |
+| Call time | The cumulative duration of calls made by all users using the RTC SDK, in minutes. When audio and video exist at the same time, only the video duration is counted. |
+| Video call duration | The cumulative duration of video calls made by all users using the RTC SDK, in minutes. |
+| Audio call duration | The cumulative duration of audio calls made by all users using the RTC SDK, in minutes. |
 | Active calls | Each time a user enters and exits a channel is counted as one active call, and the same user repeatedly joins the same channel as multiple active calls.<br/>Active calls are the total number of sessions that occurred within the selected time frame. |
 | 5s join channel success rate | Number of successful channel joins within 5 seconds / number of attempts to join the channel * 100% |
 | End-to-end network transmission delay rate | The delay from the sending end to the receiving end through network transmission (excluding network jitter delay) is greater than 400ms, which is recorded as a delay.<br/>End-to-end network delay rate = total audio and video network transmission delay time ÷ total audio and video time length * 100% |

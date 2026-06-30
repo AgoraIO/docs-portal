@@ -3,9 +3,9 @@ title: "Manage chat group allow list"
 description: "Shows how to manage a chat group allow list using the Agora Chat RESTful APIs."
 ---
 
-A  allow list refers to a list of  members that can send group messages after the group owner or admins have muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.
+A group allow list refers to a list of group members that can send group messages after the group owner or admins have muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method. Chat provides a complete set of allow list management methods, including adding users to the allow list and removing them from it, as well as retrieving the members on the allow list.
 
-This page shows how to manage a  allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
+This page shows how to manage a group allow list using the Chat RESTful APIs. Before calling the following methods, ensure that you understand the call frequency limit described in [Limitations](../limitations#call-limit-of-server-sides).
 
 ## Common parameters
 
@@ -61,7 +61,7 @@ In order to improve the security of the project, Agora uses a token (dynamic key
 
 ## Retrieving the group allow list
 
-This method retrieves the list of all the members on the  allow list. 
+This method retrieves the list of all the members on the group allow list.
 
 ### HTTP request
 
@@ -72,7 +72,7 @@ GET https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/white/users
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -124,7 +124,7 @@ curl -X GET -H 'Accept: application/json' -H 'Authorization: Bearer {Your app to
 
 ## Adding a member to the group allow list
 
-This method adds the specified user to the  allow list. Members in the group allow list can still send group messages after the group owner or admin has muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method.
+This method adds the specified user to the group allow list. Members in the group allow list can still send group messages after the group owner or admin has muted all the group members using the [mute-all](./manage-group-mutelist#muting-all-chat-group-members) method.
 
 ### HTTP request
 
@@ -136,7 +136,7 @@ POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/white/users/{use
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 | `username` | String | The user ID that you want to add to the group allow list. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
@@ -156,9 +156,9 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the  member is successfully added to the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to add the member to the allow list. |
-| `groupid` | String | The  ID. |
+| `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |
 | `user` | String | The user ID added to the allow list. |
 
@@ -197,7 +197,7 @@ curl -X POST -H 'Accept: application/json' -H 'Authorization: Bearer {Your app t
 
 ## Adding multiple members to the group allow list
 
-This method adds multiple  members to the group allow list. You can add a maximum of 60 group members to the allow list per method call.
+This method adds multiple members to the group allow list. You can add a maximum of 60 group members to the allow list per method call.
 
 ### HTTP request
 
@@ -207,7 +207,7 @@ POST https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/white/users
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
 
@@ -230,9 +230,9 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the  member is successfully added to the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully added to the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to add the member to the allow list. |
-| `groupid` | String | The  ID. |
+| `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |
 | `user` | String | The user ID added to the allow list. |
 
@@ -279,7 +279,7 @@ curl -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -
 
 ## Removing members from the group allow list
 
-This method removes the specified  member(s) from the group allow list. You can remove a maximum of 60 group members from the allow list per method call.
+This method removes the specified member(s) from the group allow list. You can remove a maximum of 60 group members from the allow list per method call.
 
 ### HTTP request
 
@@ -291,7 +291,7 @@ DELETE https://{host}/{org_name}/{app_name}/chatgroups/{group_id}/white/users/{u
 
 | Parameter | Type | Description | Required |
 | --- | --- | --- | --- |
-| `group_id` | String | The  ID. | Yes |
+| `group_id` | String | The group ID. | Yes |
 | `username` | String | The user ID(s) that you want to remove from the allow list. For multiple user IDs, use the English comma "," to separate each user ID.| Yes |
 
 For other parameters and detailed descriptions, see [Common parameters](#param).
@@ -309,9 +309,9 @@ If the returned HTTP status code is 200, the request succeeds, and the `data` fi
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `result` | Boolean | Whether the  member is successfully removed from the group allow list. `true`: Yes.`false`: No. |
+| `result` | Boolean | Whether the group member is successfully removed from the group allow list. `true`: Yes. `false`: No. |
 | `reason` | String | The reason for failing to remove the member from the allow list. |
-| `groupid` | String | The  ID. |
+| `groupid` | String | The group ID. |
 | `action` | String | The operation of the method call. |
 | `user` | String | The user ID removed from the allow list. |
 

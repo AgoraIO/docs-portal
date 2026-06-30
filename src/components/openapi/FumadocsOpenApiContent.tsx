@@ -18,6 +18,7 @@ import {
   createContext,
   type ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -25,6 +26,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { cn } from '@/lib/cn';
+import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
   buildOpenApiSchemaRows,
   type OpenApiSchemaRow,
@@ -53,6 +55,13 @@ const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
 const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
+const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
+const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
+  '[&_h2#request-body]:font-semibold',
+  '[&_h2#request-body]:text-2xl',
+  '[&_h2#response-body]:font-semibold',
+  '[&_h2#response-body]:text-2xl',
+] as const;
 
 const ClientAPIPage = createClientAPIPage({
   content: {
@@ -84,6 +93,7 @@ const ClientAPIPage = createClientAPIPage({
   schemaUI: {
     render: (options, ctx) => (
       <OpenApiSchemaRows
+        anchorPrefix={getOpenApiSchemaAnchorPrefix(options)}
         document={ctx.schema.dereferenced}
         readOnly={options.readOnly}
         renderMarkdown={ctx.renderMarkdown}
@@ -107,8 +117,16 @@ export function FumadocsOpenApiContent({
 }) {
   const operation = getCurrentOperation(pageProps);
 
+  useOpenApiHashScroll();
+
   return (
-    <div className={cn('not-prose openapi-operation', className)}>
+    <div
+      className={cn(
+        'not-prose openapi-operation',
+        ...OPENAPI_GENERATED_BODY_HEADING_CLASSES,
+        className,
+      )}
+    >
       <OpenApiSourceOperationContext.Provider value={operation}>
         <OpenApiDocsCallouts
           operation={operation}
@@ -477,6 +495,7 @@ function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
 
         return (
           <OpenApiFieldList
+            anchorPrefix={getOpenApiParameterGroupAnchorPrefix(location)}
             fields={groupParameters.map((parameter) => ({
               callouts: getOpenApiDocsCallouts(parameter),
               description: parameter.description,
@@ -541,7 +560,9 @@ function OpenApiResponseHeaders({
 
   return (
     <OpenApiFieldList
+      anchorPrefix="response-headers"
       fields={responseHeaders.map((header) => ({
+        anchorSuffix: `${header.statusCode}-${header.name}`,
         callouts: header.callouts,
         description: header.description,
         metadata: [
@@ -568,10 +589,7 @@ function OpenApiResponseBodySchemas({
   const responses = Object.entries(getRecord(operation?.responses) ?? {})
     .map(([statusCode, response]) => {
       const resolvedResponse = getRecord(
-        resolveLocalReference(
-          operation?.__document,
-          response,
-        ),
+        resolveLocalReference(operation?.__document, response),
       );
       const content = getRecord(resolvedResponse?.content);
       const jsonContent = getRecord(content?.['application/json']);
@@ -588,9 +606,7 @@ function OpenApiResponseBodySchemas({
         statusCode,
       };
     })
-    .filter(
-      (response) => response.description || response.rows.length > 0,
-    );
+    .filter((response) => response.description || response.rows.length > 0);
 
   if (responses.length === 0) {
     return null;
@@ -619,6 +635,7 @@ function OpenApiResponseBodySchemas({
             ) : null}
             {response.rows.length > 0 ? (
               <OpenApiSchemaRows
+                anchorPrefix={`responses-${slugOpenApiAnchorSegment(response.statusCode)}`}
                 document={operation?.__document}
                 readOnly
                 renderMarkdown={renderOpenApiMarkdown}
@@ -633,10 +650,13 @@ function OpenApiResponseBodySchemas({
 }
 
 function OpenApiFieldList({
+  anchorPrefix,
   fields,
   title,
 }: {
+  anchorPrefix: string;
   fields: {
+    anchorSuffix?: string;
     callouts?: OpenApiDisplayCallout[];
     description?: string;
     metadata: OpenApiMetadataItem[];
@@ -646,37 +666,55 @@ function OpenApiFieldList({
   }[];
   title: string;
 }) {
+  const titleId = anchorPrefix;
+
   return (
     <section className="mt-8">
-      <h2 className="mb-3 font-semibold text-2xl">{title}</h2>
+      <h2
+        className={cn('mb-3 scroll-mt-24', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}
+        id={titleId}
+      >
+        <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
+      </h2>
       <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-        {fields.map((field) => (
-          <div
-            className="border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
-            key={`${title}:${field.name}`}
-          >
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <code className="font-medium text-fd-primary">{field.name}</code>
-              {field.required ? (
-                <span className="font-medium text-red-500">*</span>
-              ) : (
-                <span className="text-fd-muted-foreground">?</span>
-              )}
-              <span className="font-mono text-fd-muted-foreground text-xs">
-                {field.type}
-              </span>
-            </div>
-            {field.description ? (
-              <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-                {renderOpenApiMarkdown(
-                  normalizeOpenApiDescriptionMarkdown(field.description),
+        {buildUniqueOpenApiAnchorIds(
+          anchorPrefix,
+          fields.map((field) => field.anchorSuffix ?? field.name),
+        ).map((anchorId, index) => {
+          const field = fields[index];
+
+          return (
+            <div
+              className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+              id={anchorId}
+              key={`${title}:${field.name}`}
+            >
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <code className="font-medium text-fd-primary">
+                  {field.name}
+                </code>
+                <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+                {field.required ? (
+                  <span className="font-medium text-red-500">*</span>
+                ) : (
+                  <span className="text-fd-muted-foreground">?</span>
                 )}
+                <span className="font-mono text-fd-muted-foreground text-xs">
+                  {field.type}
+                </span>
               </div>
-            ) : null}
-            <OpenApiInlineCallouts callouts={field.callouts} />
-            <OpenApiMetadata items={field.metadata} />
-          </div>
-        ))}
+              {field.description ? (
+                <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
+                  {renderOpenApiMarkdown(
+                    normalizeOpenApiDescriptionMarkdown(field.description),
+                  )}
+                </div>
+              ) : null}
+              <OpenApiInlineCallouts callouts={field.callouts} />
+              <OpenApiMetadata items={field.metadata} />
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -877,10 +915,7 @@ function OpenApiCodeSampleGroupSelector({
         </CodeBlockTabsList>
         {sampleEntries.map(({ sample, value }) => (
           <CodeBlockTab key={value} value={value}>
-            {renderCodeBlock(
-              getCodeSampleLanguage(sample.lang),
-              sample.source,
-            )}
+            {renderCodeBlock(getCodeSampleLanguage(sample.lang), sample.source)}
           </CodeBlockTab>
         ))}
       </CodeBlockTabs>
@@ -1066,13 +1101,136 @@ function OpenApiMetadata({ items }: { items: OpenApiMetadataItem[] }) {
   );
 }
 
+function OpenApiAnchorLink({
+  anchorId,
+  children,
+  className,
+}: {
+  anchorId: string;
+  children?: ReactNode;
+  className?: string;
+}) {
+  const href = `#${anchorId}`;
+
+  if (children) {
+    return (
+      <a className="group inline-flex items-center gap-2" href={href}>
+        <span>{children}</span>
+        <span
+          aria-hidden="true"
+          className="text-fd-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+        >
+          #
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    <a
+      aria-label={`Copy link to ${anchorId}`}
+      className={cn(
+        'text-fd-muted-foreground opacity-70 hover:text-fd-primary hover:opacity-100',
+        className,
+      )}
+      href={href}
+    >
+      #
+    </a>
+  );
+}
+
+function useOpenApiHashScroll() {
+  useEffect(() => {
+    const handleHashChange = () => {
+      syncDocsHashTargetFromLocation('auto');
+    };
+
+    const frame = window.requestAnimationFrame(handleHashChange);
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+}
+
+function getOpenApiSchemaAnchorPrefix(options: {
+  readOnly?: boolean;
+  writeOnly?: boolean;
+}) {
+  if (options.writeOnly) {
+    return 'request-body';
+  }
+
+  if (options.readOnly) {
+    return 'response-body';
+  }
+
+  return 'schema';
+}
+
+function getOpenApiParameterGroupAnchorPrefix(location: string) {
+  return `${slugOpenApiAnchorSegment(location)}-parameters`;
+}
+
+function buildOpenApiAnchorId(prefix: string, value: string) {
+  return `${prefix}-${slugOpenApiAnchorSegment(value)}`;
+}
+
+function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
+  const baseIds = values.map((value) => buildOpenApiAnchorId(prefix, value));
+  const duplicateBaseIds = new Set(
+    baseIds.filter((baseId, index) => baseIds.indexOf(baseId) !== index),
+  );
+  const seen = new Map<string, number>();
+
+  return values.map((value, index) => {
+    const baseId = baseIds[index];
+
+    if (!duplicateBaseIds.has(baseId)) {
+      return baseId;
+    }
+
+    const occurrence = seen.get(baseId) ?? 0;
+    seen.set(baseId, occurrence + 1);
+
+    return `${baseId}-${hashOpenApiAnchorSegment(value)}${
+      occurrence > 0 ? `-${occurrence + 1}` : ''
+    }`;
+  });
+}
+
+function hashOpenApiAnchorSegment(value: string) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+
+  return hash.toString(36);
+}
+
+function slugOpenApiAnchorSegment(value: string) {
+  return value
+    .trim()
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[.[\]]+/g, '-')
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase();
+}
+
 function OpenApiSchemaRows({
+  anchorPrefix,
   document,
   readOnly,
   renderMarkdown,
   root,
   writeOnly,
 }: {
+  anchorPrefix: string;
   document?: unknown;
   readOnly?: boolean;
   renderMarkdown: (markdown: string) => ReactNode;
@@ -1090,27 +1248,38 @@ function OpenApiSchemaRows({
 
   return (
     <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      {rows.map((row) => (
-        <OpenApiSchemaRowItem
-          key={row.path}
-          renderMarkdown={renderMarkdown}
-          row={row}
-        />
-      ))}
+      {buildUniqueOpenApiAnchorIds(
+        anchorPrefix,
+        rows.map((row) => row.path),
+      ).map((anchorId, index) => {
+        const row = rows[index];
+
+        return (
+          <OpenApiSchemaRowItem
+            anchorId={anchorId}
+            key={row.path}
+            renderMarkdown={renderMarkdown}
+            row={row}
+          />
+        );
+      })}
     </div>
   );
 }
 
 function OpenApiSchemaRowItem({
+  anchorId,
   renderMarkdown,
   row,
 }: {
+  anchorId: string;
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
 }) {
   return (
     <div
-      className="border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+      className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+      id={anchorId}
       style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
     >
       <div className="flex min-w-0 flex-wrap items-center gap-2">
@@ -1122,6 +1291,7 @@ function OpenApiSchemaRowItem({
         >
           {row.name}
         </code>
+        <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
         <OpenApiSchemaRequiredBadge required={row.required} />
         <span className="font-mono text-fd-muted-foreground text-xs">
           {row.type}
@@ -1232,8 +1402,12 @@ function getOpenApiSchemaMetadata(
           value: rangeMetadata[1],
         }
       : null,
-    rangeMetadata ? null : getConstraintMetadata('Minimum', schemaRecord?.minimum),
-    rangeMetadata ? null : getConstraintMetadata('Maximum', schemaRecord?.maximum),
+    rangeMetadata
+      ? null
+      : getConstraintMetadata('Minimum', schemaRecord?.minimum),
+    rangeMetadata
+      ? null
+      : getConstraintMetadata('Maximum', schemaRecord?.maximum),
     getConstraintMetadata('Min length', schemaRecord?.minLength),
     getConstraintMetadata('Max length', schemaRecord?.maxLength),
     getConstraintMetadata('Min items', schemaRecord?.minItems),
@@ -1281,16 +1455,24 @@ function getConstraintMetadata(label: string, value: unknown) {
     : null;
 }
 
-function getConstraintTuple(label: string, value: unknown): [string, string] | null {
+function getConstraintTuple(
+  label: string,
+  value: unknown,
+): [string, string] | null {
   return typeof value === 'number' ? [label, String(value)] : null;
 }
 
-function getRangeMetadata(schema: {
-  exclusiveMaximum?: unknown;
-  exclusiveMinimum?: unknown;
-  maximum?: unknown;
-  minimum?: unknown;
-} | null | undefined): [string, string] | null {
+function getRangeMetadata(
+  schema:
+    | {
+        exclusiveMaximum?: unknown;
+        exclusiveMinimum?: unknown;
+        maximum?: unknown;
+        minimum?: unknown;
+      }
+    | null
+    | undefined,
+): [string, string] | null {
   const minimum = getNumberBound(schema?.minimum, schema?.exclusiveMinimum);
   const maximum = getNumberBound(schema?.maximum, schema?.exclusiveMaximum);
 
@@ -1387,11 +1569,7 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   const content = openApiMarkdownProcessor.processSync({ value: markdown })
     .result as ReactNode;
 
-  return (
-    <div className="openapi-markdown prose-no-margin">
-      {content}
-    </div>
-  );
+  return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
 function createOpenApiMarkdownProcessor() {

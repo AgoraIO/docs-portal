@@ -364,6 +364,11 @@ describe('normalizeDocsHref', () => {
       kind: 'root',
     });
 
+    expect(normalizeDocsHref('/en/ai/models/mllm/overview')).toEqual({
+      href: '/en/ai/models/mllm/gemini',
+      kind: 'root',
+    });
+
     expect(
       normalizeDocsHref(
         '/en/api-reference/api-ref/conversational-ai/server-sdk/typescript',

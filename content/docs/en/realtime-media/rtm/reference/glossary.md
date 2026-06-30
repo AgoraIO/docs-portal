@@ -261,7 +261,7 @@ TCP (Transmission Control Protocol) is a connection-oriented and reliable transp
 
 ### Token
 
-A token, also known as a dynamic key, is used for authentication when an app user joins an channel or logs onto the Agora Signaling.
+A token, also known as a dynamic key, is used for authentication when an app user joins a channel or logs onto the Agora Signaling.
 
 ### Transcoding
 

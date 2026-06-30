@@ -106,13 +106,13 @@ The request body is a JSON object, which contains the following parameters:
 | --- | --- | --- | --- |
 | `from` | String | The username of the message sender. If you do not set this field, the Chat server takes the `admin` as the sender. If you set it as the empty string "", this request fails.  | No |
 | `to` | Array | An array of the usernames of the message recipients. For each request, you can send a message to a maximum of 600 users. Within one minute, you can send messages to a maximum of 6,000 users. | Yes |
-| `type` | String | The message type: `txt`: Text message`img`: Image message`audio`: Voice message`video`: Video message`file`: File message`loc`: Location message`cmd`: Command message`custom`: Custom message | Yes |
+| `type` | String | The message type: `txt`: Text message. `img`: Image message. `audio`: Voice message. `video`: Video message. `file`: File message. `loc`: Location message. `cmd`: Command message. `custom`: Custom message | Yes |
 | `body` | JSON | The message content. For different message types, this parameter contains different fields. For details, see [Body of different message types](#body). | Yes |
 | `roam_ignore_users` | List | No | Which users cannot obtain such message when they pull messages from the server. A maximum of 20 users can be passed in each time. |
-| `sync_device` | Bool | Whether to synchronize the message to the message sender.`true`: Yes.`false`: No. | No |
+| `sync_device` | Bool | Whether to synchronize the message to the message sender. `true`: Yes. `false`: No. | No |
 | `routetype` | String | Whether the message is delivered only when the recipient(s) is/are online: If this parameter is set to `ROUTE_TYPE`, the message is delivered only when the recipient(s) is/are online. In this case, the message is discarded if the recipient is offline.If you do not set this parameter, the message is delivered whether the recipients are online or not. If the recipient(s) is/are offline, the message will not be delivered until they get online. | No |
 | `ext`  | JSON  | The extension field of the message. It cannot be `null`.| No |
-| `ext.em_ignore_notification` | Bool | Whether to send a silent message: `true`: Yes;(Default)`false`: No.Sending silent messages means that when the user is offline, Agora Chat will not push message notifications to the user's device through a third-party message push service. Therefore, users will not receive push notifications for messages. When the user goes online again, all messages sent from the offline period will be received. Unlike the Do Not Disturb mode which is set by the recipient to prevent notifications during a certain period, sending silent messages is set by the sender.| No |
+| `ext.em_ignore_notification` | Bool | Whether to send a silent message: `true`: Yes (Default). `false`: No. Sending silent messages means that when the user is offline, Agora Chat will not push message notifications to the user's device through a third-party message push service. Therefore, users will not receive push notifications for messages. When the user goes online again, all messages sent from the offline period will be received. Unlike the Do Not Disturb mode which is set by the recipient to prevent notifications during a certain period, sending silent messages is set by the sender.| No |
 
 **Body of different message types**
 
@@ -230,7 +230,8 @@ If the returned HTTP status code is not `200`, the request fails. You can refer 
 
     ```bash
     # Replace {YourToken} with the app token generated on your server
-    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["user2"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'    ```
+    curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/users' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer {YourToken}' -d  '{"from": "user1","to": ["user2"],"type": "video","body": {"filename":"testvideo.avi","thumb" : "https://XXXX/XXXX/XXXX/chatfiles/67279b20-7f69-11e4-8eee-21d3334b3a97","length" : 0,"secret":"VfXXXXNb_","file_length" : 58103,"thumb_secret" : "ZyXXXX2I","url" : "https://XXXX/XXXX/XXXX/chatfiles/671dfe30-XXXX-XXXX-ba67-8fef0d502f46"}}'
+    ```
 
 - Send a file message
 
@@ -1437,7 +1438,7 @@ For the other parameters and detailed descriptions, see [Common parameters](#par
 | :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
 | `Accept` | String | `application/octet-stream`, which means to download files in binary data stream format. | Yes |
 | `Authorization` | String | `Bearer ${YourAppToken}` | Yes |
-| `thumbnail` | Bool | Whether to download the thumbnail of the image or video file.`true`: Yes.`false`: (Default) No. Download the original file instead. | No. |
+| `thumbnail` | Bool | Whether to download the thumbnail of the image or video file. `true`: Yes. `false`: (Default) No. Download the original file instead. | No |
 
 ### HTTP response
 
@@ -1659,7 +1660,7 @@ The fields of `bodies` for different message types vary:
     | Field | Type | Description |
     | :------------ | :----- | :-------------------------------------------------------------------------------- |
     | `file_length` | Number | The size of the audio file, in bytes. |
-    | `filename` | String | The audio file name, including a suffix that indicates the the audio file format. |
+    | `filename` | String | The audio file name, including a suffix that indicates the audio file format. |
     | `secret` | String | The audio file access key. This field exists if you set the access restriction when calling the [upload-file](#upload) method. |
     | `length` | Number | The duration of the audio file, in seconds. |
     | `type` | String | The message type. For voice messages, set it as `audio`. |
@@ -1947,7 +1948,7 @@ For the parameters and detailed descriptions, see [Common parameters](#param).
 | :---------- | :------- | :------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `msg_id`    | String   | Yes     | The ID of the message to recall. As only one message can be recalled each time, you can pass in only one message ID.                                                                                                                                                                                                                          |
 | `to` | String | Yes | <Slot name="to" /> |
-| `chat_type` | String   | Yes     | The type of the chat where the message to recall is sent. `chat`: An one-on-one chat.`groupchat`: A chat group.`chatroom`: A chat room.                                                                                                                                                                   |
+| `chat_type` | String   | Yes     | The type of the chat where the message to recall is sent. `chat`: A one-on-one chat. `groupchat`: A chat group. `chatroom`: A chat room.                                                                                                                                                                   |
 | `from`      | String   | No   | The user who recalls the message. By default, the recaller is the app admin. You can also specify another user as the recaller.                                                                                                                                                                                                               |
 | `sync_device` | Bool | No | <Slot name="sync-device" /> |
 | `force` | Bool | No | Whether to allow to recall messages forcibly: `true`: Yes. In this case, you can recall messages whether they expire. To recall the expired messages, you must set `force` to `true`. (Default) `false`: No. In this case, you can only recall messages that still exist on the server within the recall duration. |
@@ -1987,7 +1988,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 | `recalled` | String  | Returns `yes` if the request is successful.                         |
 | `from`    | String  | The user who recalls the message. By default, the recaller is the app admin.          |
 | `to`      | String  | The user, chat group, or chat room that receives the recalled message.                      |
-| `chattype` | String | The type of the chat where the recalled message is located. `chat`: An one-on-one chat.`group_chat`: A chat group.`chatroom`: A chat room. |
+| `chattype` | String | The type of the chat where the recalled message is located. `chat`: A one-on-one chat. `group_chat`: A chat group. `chatroom`: A chat room. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

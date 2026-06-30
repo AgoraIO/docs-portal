@@ -2,11 +2,24 @@
 
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react';
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  MenuIcon,
+  MoonIcon,
+  SunIcon,
+} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Sheet,
@@ -29,6 +42,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -45,8 +59,6 @@ const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
-const mobileTabLinkClassName =
-  'h-auto min-h-10 w-full min-w-0 max-w-full items-start justify-start overflow-hidden rounded-md border border-transparent px-3 py-2.5 text-left text-sm leading-5 whitespace-normal text-muted-foreground [overflow-wrap:anywhere] after:hidden hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring data-[state=active]:border-[color:var(--accent-brand)] data-[state=active]:bg-[color:var(--accent-brand-soft)] data-[state=active]:font-semibold data-[state=active]:text-[color:var(--accent-brand)] data-[state=active]:shadow-[inset_3px_0_0_var(--accent-brand)]';
 const mobilePageLinkClassName =
   'relative flex min-h-10 w-full min-w-0 max-w-full items-start gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm leading-5 transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:break-words [&>span:first-child]:whitespace-normal [&>span:first-child]:[overflow-wrap:anywhere]';
 const mobileActivePageLinkClassName =
@@ -126,6 +138,7 @@ export function DocsShell({
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
   const homeHref = buildDocPath(currentLocale, 'introduction');
+  const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -193,6 +206,16 @@ export function DocsShell({
               ))}
             </nav>
           ) : null}
+          <a
+            className="block w-full whitespace-normal break-words border-b border-[color:color-mix(in_srgb,var(--accent-brand)_22%,transparent)] bg-[color:var(--accent-brand-soft)] px-4 py-2 text-center text-sm font-medium leading-5 text-[color:var(--accent-brand)] underline-offset-4 [overflow-wrap:anywhere] hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:px-6"
+            data-testid="legacy-docs-banner"
+            href={legacyDocsHref}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {t('docs.legacyDocsBanner')}
+            <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
+          </a>
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',
@@ -304,7 +327,7 @@ export function DocsShell({
                   variant="ghost"
                 >
                   <a
-                    href="https://github.com/Shengwang-Community/docs-portal"
+                    href="https://github.com/AgoraIO/docs-portal"
                     rel="noreferrer"
                     target="_blank"
                   >
@@ -380,6 +403,7 @@ export function DocsShell({
             resetKey={sidebarResetKey}
           />
           <DocsMainColumn
+            contentFillsWidth={contentFillsWidth}
             layoutMode={layoutMode}
             locale={currentLocale}
             next={next}
@@ -442,6 +466,7 @@ function MobileSidebar({
 }) {
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(currentLocale, 'common');
+  const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
@@ -450,31 +475,72 @@ function MobileSidebar({
         data-testid="docs-mobile-sidebar-scroll"
       >
         <div className="flex min-w-0 max-w-full flex-col gap-6 overflow-x-hidden pb-6">
-          <div className="flex min-w-0 flex-col gap-2.5">
-            <p className={mobileSidebarGroupLabelClassName}>
-              {t('docs.tabsLabel')}
-            </p>
-            <Tabs className="w-full" orientation="vertical" value={activeTab}>
-              <TabsList
-                className="flex h-auto w-full flex-col items-stretch gap-1.5 bg-transparent p-0"
-                variant="line"
-              >
-                {tabs.map((tab) => (
-                  <TabsTrigger asChild key={tab.id} value={tab.id}>
-                    <Link
-                      className={mobileTabLinkClassName}
-                      onClick={onSelectPath}
-                      params={{}}
-                      search={{}}
-                      to={tab.url}
-                    >
-                      {tab.title}
-                    </Link>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </div>
+          {currentTab ? (
+            <div className="flex min-w-0 flex-col gap-2">
+              <p className={mobileSidebarGroupLabelClassName}>
+                {t('docs.sectionPickerLabel')}
+              </p>
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    aria-label={`${t('docs.sectionPickerLabel')}: ${currentTab.title}`}
+                    className="h-10 min-w-0 w-full justify-between gap-2 px-3 text-left text-sm font-medium"
+                    data-testid="docs-mobile-section-picker"
+                    type="button"
+                    variant="outline"
+                  >
+                    <span className="min-w-0 truncate">{currentTab.title}</span>
+                    <ChevronDownIcon
+                      aria-hidden="true"
+                      data-icon="inline-end"
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  aria-label={t('docs.sectionPickerLabel')}
+                  className="max-h-72 w-[var(--radix-dropdown-menu-trigger-width)] rounded-lg p-1"
+                >
+                  <DropdownMenuGroup>
+                    {tabs.map((tab) => {
+                      const isCurrentTab = tab.id === activeTab;
+
+                      return (
+                        <DropdownMenuItem
+                          asChild
+                          className={cn(
+                            'min-h-9 cursor-pointer justify-between rounded-md px-2.5 text-sm',
+                            isCurrentTab
+                              ? 'font-semibold text-[color:var(--accent-brand)]'
+                              : undefined,
+                          )}
+                          key={tab.id}
+                        >
+                          <Link
+                            aria-current={isCurrentTab ? 'page' : undefined}
+                            onClick={onSelectPath}
+                            params={{}}
+                            search={{}}
+                            to={tab.url}
+                          >
+                            <span className="min-w-0 truncate">
+                              {tab.title}
+                            </span>
+                            {isCurrentTab ? (
+                              <CheckIcon
+                                aria-hidden="true"
+                                className="opacity-80"
+                              />
+                            ) : null}
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          ) : null}
           <div className="flex min-w-0 flex-col gap-2.5">
             <p className={mobileSidebarGroupLabelClassName}>
               {t('docs.pagesLabel')}

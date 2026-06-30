@@ -137,7 +137,9 @@ describe('FumadocsOpenApiContent', () => {
     const requestExamples = curlTab.closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
     const examplesScope = within(requestExamples as HTMLElement);
-    expect(examplesScope.getByRole('tab', { name: 'curl' })).toBeInTheDocument();
+    expect(
+      examplesScope.getByRole('tab', { name: 'curl' }),
+    ).toBeInTheDocument();
     expect(
       examplesScope.getByRole('tab', { name: 'Python' }),
     ).toBeInTheDocument();
@@ -1161,6 +1163,87 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('href', 'https://example.com/postman');
   });
 
+  it('scopes generated OpenAPI body headings to the shared major section typography', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/agents/{agentId}/think',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/agents/{agentId}/think': {
+                  post: {
+                    operationId: 'agent-think',
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              text: {
+                                type: 'string',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const operation = document.querySelector('.openapi-operation');
+    expect(operation).toBeInstanceOf(HTMLElement);
+    const pathHeading = await screen.findByRole('heading', {
+      name: 'Path Parameters',
+    });
+    const requestBodyHeading = screen.getByRole('heading', {
+      name: 'Request Body',
+    });
+    const responseBodyHeading = screen.getByRole('heading', {
+      name: 'Response Body',
+    });
+
+    expect(pathHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
+    expect(responseBodyHeading).toHaveAttribute('id', 'response-body');
+    expect(operation).toHaveClass(
+      '[&_h2#request-body]:font-semibold',
+      '[&_h2#request-body]:text-2xl',
+      '[&_h2#response-body]:font-semibold',
+      '[&_h2#response-body]:text-2xl',
+    );
+  });
+
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
     const operationDescriptionMarkdown =
       'Use this endpoint to send a custom instruction.\n\n- Pause the agent.\n- Resume the agent.\n\n1. Validate the agent ID.\n2. Send the instruction.';
@@ -1416,9 +1499,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       examplesScope.getByRole('tab', { name: 'Python' }),
     ).toBeInTheDocument();
-    expect(
-      examplesScope.getByRole('tabpanel'),
-    ).toHaveTextContent('curl --request POST https://example.com/join');
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'curl --request POST https://example.com/join',
+    );
 
     fireEvent.change(examplesScope.getByLabelText('Request example scenario'), {
       target: {
@@ -1429,12 +1512,12 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       examplesScope.getByRole('tab', { name: 'Node.js' }),
     ).toBeInTheDocument();
-    expect(
-      examplesScope.getByRole('tabpanel'),
-    ).toHaveTextContent('fetch("https://example.com/join")');
-    expect(
-      examplesScope.getByRole('tabpanel'),
-    ).not.toHaveTextContent('curl --request POST https://example.com/join');
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'fetch("https://example.com/join")',
+    );
+    expect(examplesScope.getByRole('tabpanel')).not.toHaveTextContent(
+      'curl --request POST https://example.com/join',
+    );
     expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
@@ -1480,7 +1563,7 @@ describe('FumadocsOpenApiContent', () => {
                         lang: 'javascript',
                         label: 'Node.js',
                         source:
-                          'fetch(\"https://example.com/v2/projects/:appid/agents\")',
+                          'fetch("https://example.com/v2/projects/:appid/agents")',
                       },
                     ],
                   },
@@ -1492,7 +1575,9 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(await screen.findByRole('tab', { name: 'curl' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('tab', { name: 'curl' }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Node.js' })).toBeInTheDocument();
     const requestExamples = screen
       .getByRole('tab', { name: 'curl' })
@@ -1570,9 +1655,15 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
-    expect(screen.getByText(/Implicit instruction injection/)).toBeInTheDocument();
-    expect(screen.getByText(/Client-side event triggering/)).toBeInTheDocument();
-    expect(screen.getByText(/Voice and text collaboration/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Implicit instruction injection/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Client-side event triggering/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Voice and text collaboration/),
+    ).toBeInTheDocument();
   });
 
   it('does not render the operation description block before OpenAPI prose sections', () => {
@@ -1749,5 +1840,108 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
+  });
+
+  it('adds stable deep-link anchors to parameters and schema fields', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    parameters: [
+                      {
+                        description: 'The App ID.',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Pagination cursor.',
+                        in: 'query',
+                        name: 'pageToken',
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              appId: { type: 'string' },
+                              channelName: { type: 'string' },
+                              config: {
+                                properties: {
+                                  idleTimeout: { type: 'integer' },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            required: ['appId', 'channelName'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                data: {
+                                  properties: {
+                                    agentId: { type: 'string' },
+                                  },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: /Path Parameters/ });
+
+    expect(document.getElementById('path-parameters-appid')).not.toBeNull();
+    expect(
+      document.getElementById('query-parameters-page-token'),
+    ).not.toBeNull();
+    expect(document.getElementById('request-body-app-id')).not.toBeNull();
+    expect(document.getElementById('request-body-channel-name')).not.toBeNull();
+    expect(
+      document.getElementById('request-body-config-idle-timeout'),
+    ).not.toBeNull();
+    expect(
+      document.getElementById('responses-200-data-agent-id'),
+    ).not.toBeNull();
+    expect(
+      document.querySelector('a[href="#request-body-channel-name"]'),
+    ).not.toBeNull();
   });
 });

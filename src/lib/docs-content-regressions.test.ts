@@ -135,6 +135,257 @@ describe('docs content regressions', () => {
     return segments;
   }
 
+  it('keeps AI short-term memory notification event link in the AI reference section', () => {
+    const content = readDoc(
+      'ai/build/shape-the-conversation/short-term-memory.mdx',
+    );
+
+    expect(content).toContain(
+      '[Notification event types](../../reference/event-types#103-agent-history)',
+    );
+    expect(content).not.toContain(
+      '[Notification event types](../reference/event-types#103-agent-history)',
+    );
+  });
+
+  it('keeps AI short-term memory Custom LLM link in custom model integration', () => {
+    const content = readDoc(
+      'ai/build/shape-the-conversation/short-term-memory.mdx',
+    );
+
+    expect(content).toContain(
+      '[Custom LLM](../custom-model-integration/custom-llm)',
+    );
+    expect(content).not.toContain('[Custom LLM](custom-llm)');
+  });
+
+  it('keeps AI interrupt agent quickstart link on the Video Calling SDK quickstart', () => {
+    const content = readDoc('ai/build/shape-the-conversation/interrupt-agent.mdx');
+
+    expect(content).toContain(
+      '[Quickstart](../../../realtime-media/video/quickstart)',
+    );
+    expect(content).not.toContain(
+      '[Quickstart](../../introduction/realtime-audio-video)',
+    );
+    expect(content).not.toContain(
+      '[Quickstart](../../../introduction/realtime-audio-video)',
+    );
+  });
+
+  it('keeps AI Video SDK quickstart links on the Video Calling SDK quickstart', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
+    const offenders = files.flatMap((file) => {
+      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+
+      return lines.flatMap((line, index) =>
+        (/Video SDK|Video Calling/.test(line) &&
+          /introduction\/realtime-audio-video/.test(line)) ||
+        /audio and video quickstart/.test(line)
+          ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
+          : [],
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI build interrupt links in shape the conversation', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
+    const offenders = files.flatMap((file) => {
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(interrupt-agent\)/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI build event notification links in handle runtime events', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
+    const offenders = files.flatMap((file) => {
+      const relativePath = relative(resolve(docsRoot, 'ai/build'), file);
+
+      if (relativePath.includes('/')) {
+        return [];
+      }
+
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(event-notifications\)/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI best practices webhook links in handle runtime events', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai/best-practices'));
+    const offenders = files.flatMap((file) => {
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(\.\.\/build\/webhooks/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI regional restriction media zone links on the Video SDK geofencing page', () => {
+    const content = readDoc('ai/best-practices/regional-restrictions.mdx');
+
+    expect(content).toContain(
+      '[Restrict media zones](../../realtime-media/video/build/manage-connection-and-quality/geofencing)',
+    );
+    expect(content).not.toContain(
+      '[Restrict media zones](../../best-practices/geofencing)',
+    );
+  });
+
+  it('keeps AI best practices start-stop links in the build section', () => {
+    const content = readDoc('ai/best-practices/record-agent-conversation.mdx');
+
+    expect(content).toContain('[Start and stop an agent](../build/start-stop-agent)');
+    expect(content).not.toContain('[Start and stop an agent](start-stop-agent)');
+  });
+
+  it('keeps AI filler words MCP servers link on the Conversational AI join API', () => {
+    const content = readDoc('ai/build/shape-the-conversation/filler-words.mdx');
+
+    expect(content).toContain(
+      '[MCP servers](../../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
+    );
+    expect(content).not.toContain(
+      '[MCP servers](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
+    );
+  });
+
+  it('keeps AI shape-the-conversation API reference links outside the AI section', () => {
+    const files = listMarkdownFiles(
+      resolve(docsRoot, 'ai/build/shape-the-conversation'),
+    );
+    const offenders = files.flatMap((file) => {
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(\.\.\/\.\.\/api-reference\//g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI shape-the-conversation quickstart links outside the build section', () => {
+    const files = listMarkdownFiles(
+      resolve(docsRoot, 'ai/build/shape-the-conversation'),
+    );
+    const offenders = files.flatMap((file) => {
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(\.\.\/get-started\/quickstart/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps nested AI build quickstart links outside the build section', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
+    const offenders = files.flatMap((file) => {
+      const relativePath = relative(resolve(docsRoot, 'ai/build'), file);
+
+      if (!relativePath.includes('/')) {
+        return [];
+      }
+
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(\.\.\/get-started\/quickstart/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI handle-runtime-events notification type links in the AI reference section', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai/build/handle-runtime-events'));
+    const offenders = files.flatMap((file) => {
+      const content = readFileSync(file, 'utf8');
+
+      return [...content.matchAll(/\]\(\.\.\/reference\/event-types/g)].map(
+        (match) => `${relative(process.cwd(), file)}:${match.index ?? 0}`,
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps AI event type goal link in handle runtime events', () => {
+    const content = readDoc('ai/reference/event-types.mdx');
+
+    expect(content).toContain(
+      '[Monitor agent status, errors, and performance](../build/handle-runtime-events/monitor-agent-runtime)',
+    );
+    expect(content).toContain(
+      '[Retrieve conversation history after a session ends](../build/handle-runtime-events/retrieve-session-history)',
+    );
+    expect(content).toContain(
+      '[Debug agent failures with runtime events](../build/handle-runtime-events/debug-agent-failures)',
+    );
+    expect(content).not.toContain(
+      '[Monitor agent status, errors, and performance](../build/monitor-agent-runtime)',
+    );
+    expect(content).not.toContain(
+      '[Retrieve conversation history after a session ends](../build/retrieve-session-history)',
+    );
+    expect(content).not.toContain(
+      '[Debug agent failures with runtime events](../build/debug-agent-failures)',
+    );
+  });
+
+  it('keeps custom model integration audio output subtitles links on the AI build transcripts page', () => {
+    const content = readDoc('ai/build/custom-model-integration/audio-output.mdx');
+
+    expect(content).toContain('[Display live subtitles](../transcripts)');
+    expect(content).not.toContain('[Display live subtitles](transcripts)');
+  });
+
+  it('keeps custom model integration presets prerequisites focused on an Agora account', () => {
+    const content = readDoc('ai/build/custom-model-integration/presets.mdx');
+
+    expect(content).toContain('- An Agora account');
+    expect(content).not.toContain('Conversational AI Engine enabled');
+    expect(content).not.toContain('../reference/enable-conversational-ai');
+  });
+
+  it('keeps Ares ASR pricing link in the AI reference pricing page', () => {
+    const content = readDoc('ai/models/asr/ares.mdx');
+
+    expect(content).toContain('[pricing](../../reference/pricing)');
+    expect(content).not.toContain('[pricing](/en/ai/pricing)');
+  });
+
+  it('keeps AI quickstart links from referring to a REST quickstart', () => {
+    const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
+    const offenders = files.flatMap((file) => {
+      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+
+      return lines.flatMap((line, index) =>
+        /\bREST Quickstart\b|\bREST quickstart\b/.test(line)
+          ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
+          : [],
+      );
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
   it('keeps block-style lists and notes out of GFM table cells', () => {
     const blockSyntaxPattern =
       /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;

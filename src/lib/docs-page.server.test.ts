@@ -8,7 +8,10 @@ import {
 import { type PageWithSource, source } from './source.server';
 
 vi.mock('./source.server', () => ({
-  getPageMarkdownUrl: (page: { path: string }, platform?: string) => {
+  getPageMarkdownUrl: (
+    page: { path: string; type?: string; url: string },
+    platform?: string,
+  ) => {
     const segments = page.path
       .split('/')
       .filter(Boolean)
@@ -25,7 +28,10 @@ vi.mock('./source.server', () => ({
 
     return {
       segments: markdownSegments,
-      url: `/llms.mdx/docs/${markdownSegments.join('/')}`,
+      url:
+        platform || page.type === 'openapi'
+          ? `/llms.mdx/docs/${markdownSegments.join('/')}`
+          : `${page.url}.md`,
     };
   },
   source: {
@@ -1312,7 +1318,7 @@ describe('loadDocsPagePayload', () => {
           locale: 'zh-CN',
         },
       ],
-      markdownUrl: '/llms.mdx/docs/en/introduction/about-agora.md',
+      markdownUrl: '/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
       toc: [
@@ -3176,18 +3182,18 @@ Web body
                       children: [
                         {
                           $id: 'ai-reference-ten-agent-create-asr-extension',
-                          name: 'Create an ASR extension',
+                          name: 'Contribute an ASR extension',
                           type: 'page',
                           url: '/en/ai/reference/ten-agent/create-asr-extension',
                         },
                         {
                           $id: 'ai-reference-ten-agent-create-tts-extension',
-                          name: 'Create a TTS extension',
+                          name: 'Contribute a TTS extension',
                           type: 'page',
                           url: '/en/ai/reference/ten-agent/create-tts-extension',
                         },
                       ],
-                      name: 'TEN Agent',
+                      name: 'Contribute an ASR/TTS extension',
                       type: 'folder',
                     },
                     {
@@ -3467,7 +3473,9 @@ Web body
     ).toBe(true);
     expect(
       dedicatedDevicesSection.children.some(
-        (node) => node.type === 'section' && node.title === 'TEN Agent',
+        (node) =>
+          node.type === 'section' &&
+          node.title === 'Contribute an ASR/TTS extension',
       ),
     ).toBe(false);
     expect(
@@ -3477,11 +3485,13 @@ Web body
       ),
     ).toBe(true);
     const tenAgentSection = softwareReferenceSection.children.find(
-      (node) => node.type === 'section' && node.title === 'TEN Agent',
+      (node) =>
+        node.type === 'section' &&
+        node.title === 'Contribute an ASR/TTS extension',
     );
 
     if (!tenAgentSection || tenAgentSection.type !== 'section') {
-      throw new Error('expected TEN Agent section');
+      throw new Error('expected Contribute an ASR/TTS extension section');
     }
 
     expect(

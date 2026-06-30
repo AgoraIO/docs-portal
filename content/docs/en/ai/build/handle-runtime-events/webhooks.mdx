@@ -6,29 +6,29 @@ A webhook is a user-defined HTTPS callback that lets your backend receive notifi
 
 For the combined entry point that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
 
-Use this page when you need durable backend records for monitoring, alerting, or analytics. If you need live UI state inside the app, use [Listen to agent runtime events on software clients](event-notifications).
+Use this page when you need durable backend records for monitoring, alerting, or analytics. If you need live UI state inside the app, use [Client-side events](event-notifications).
 
 ## Understand the tech
 
 Using Agora Console, you subscribe to specific events for your project and configure the URL of the webhook endpoint that receives them. Agora sends event notifications to that endpoint whenever the subscribed events occur. Your server verifies the request signature, processes the JSON payload, and returns `200 OK` to confirm receipt.
 
-## What webhook notifications are used for
+## Common uses
 
-Typical uses include:
+Webhooks are typically used to:
 
-- tracking when an agent joins or leaves a channel
-- receiving short-term memory history after an agent session ends
-- capturing module-level errors for monitoring and debugging
-- collecting performance metrics such as LLM and TTS latency
+- Track when an agent joins or leaves a channel
+- Receive short-term memory history after an agent session ends
+- Capture module-level errors for monitoring and debugging
+- Collect performance metrics such as LLM and TTS latency
 
 ## Prerequisites
 
 Before you begin, make sure you have:
 
-- an Agora account
-- an active Agora project with Conversational AI enabled
-- a public HTTPS endpoint that can receive webhook callbacks
-- server-side access to store and validate the secret used for signature verification
+- An Agora account
+- An active Agora project with Conversational AI enabled
+- A public HTTPS endpoint that can receive webhook callbacks
+- Server-side access to store and validate the secret used for signature verification
 
 ## Enable notifications
 
@@ -46,7 +46,7 @@ To enable Agora notifications for Conversational AI:
 
 - Use HTTPS only.
 - Enable HTTP keep-alive if possible.
-- Make sure your server returns within 10 seconds.
+- Make sure your server responds within 10 seconds.
 
 ## Request header
 
@@ -70,7 +70,7 @@ The request body of notification callbacks contains the following fields:
 | `notifyMs` | Number | Unix timestamp in milliseconds when Agora sends the callback |
 | `payload` | JSON object | Event-specific data |
 
-### Example
+The following example shows a sample request body:
 
 ```json
 {
@@ -88,15 +88,15 @@ Agora can notify your server of the following Conversational AI events:
 
 | eventType | Description |
 | --- | --- |
-| `101` | An agent has joined a channel |
-| `102` | An agent has left a channel |
-| `103` | History notification for a user and agent dialogue |
-| `110` | An agent has encountered an error |
-| `111` | Performance metrics for an agent |
-| `201` | Changes in the status of an incoming call |
-| `202` | Changes in the status of an outgoing call |
+| `101` | Agent joined a channel |
+| `102` | Agent left a channel |
+| `103` | Dialogue history notification |
+| `110` | Agent error |
+| `111` | Agent performance metrics |
+| `201` | Incoming call status change |
+| `202` | Outgoing call status change |
 
-For payload details, see [Notification event types](../reference/event-types).
+For payload details, see [Notification event types](../../reference/event-types).
 
 ## Signature verification
 
@@ -106,7 +106,7 @@ To communicate securely between Agora and your webhook, Agora uses signatures fo
 2. When sending a notification, Agora generates `Agora-Signature` and `Agora-Signature-V2` values using HMAC/SHA1 and HMAC/SHA256.
 3. When your server receives the callback, verify one of those signatures against the raw request body.
 
-### Go example
+The following Go example calculates a signature and compares it with the received value:
 
 ```go
 import (
@@ -151,7 +151,7 @@ if !verify(string(body), agoraSignature) {
 - [Monitor agent status, errors, and performance](monitor-agent-runtime)
 - [Debug agent failures with runtime events](debug-agent-failures)
 - [Retrieve conversation history after a session ends](retrieve-session-history)
-- [Listen to agent runtime events on software clients](event-notifications)
-- [Notification event types](../reference/event-types)
-- [Start a conversational AI agent](../../api-reference/conversational-ai/rest-api/agent/join)
-- [Retrieve agent history](../../api-reference/conversational-ai/rest-api/agent/history)
+- [Client-side events](event-notifications)
+- [Notification event types](../../reference/event-types)
+- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history)

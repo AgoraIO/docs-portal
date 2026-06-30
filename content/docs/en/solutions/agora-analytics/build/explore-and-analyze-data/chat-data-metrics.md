@@ -17,51 +17,51 @@ The number of newly registered users under this project today (00:00 – current
 
 ### Daily active users (DAU)
 
-The number of users who log in or send or receive messages today (00:00 – current time).  A user connected through multiple devices is regarded as one active user.
+The number of users who log in or send or receive messages today (00:00 – current time). A user connected through multiple devices is regarded as one active user.
 
 ### Monthly Max. DAU
 
 The highest number of DAU from 00:00 on the first day of this month to the current time.
 
-### Total CHAT_GROUP.toLowerCase()s
+### Total group chats
 
-The number of created CHAT_GROUP.toLowerCase()s under this project as of the current time (disbanded CHAT_GROUP.toLowerCase()s are excluded).
+The number of created group chats under this project as of the current time (disbanded group chats are excluded).
 
-### Daily new CHAT_GROUP.toLowerCase()s
+### Daily new group chats
 
-The number of newly created CHAT_GROUP.toLowerCase()s under this project today (00:00 – current time).
+The number of newly created group chats under this project today (00:00 – current time).
 
-### Daily disbanded CHAT_GROUP.toLowerCase()s
+### Daily disbanded group chats
 
-The number of disbanded CHAT_GROUP.toLowerCase()s under this project today (00:00 – current time).
+The number of disbanded group chats under this project today (00:00 – current time).
 
-### Daily active CHAT_GROUP.toLowerCase()s
+### Daily active group chats
 
-The number of CHAT_GROUP.toLowerCase()s that send uplink messages or receive downlink messages today (00:00 – current time).
+The number of group chats that send uplink messages or receive downlink messages today (00:00 – current time).
 
-### Total CHAT_ROOM.toLowerCase()s
+### Total chat rooms
 
-The number of created CHAT_ROOM.toLowerCase()s under this project as of the current time (disbanded CHAT_ROOM.toLowerCase()s are excluded).
+The number of created chat rooms under this project as of the current time (disbanded chat rooms are excluded).
 
-### Daily new CHAT_ROOM.toLowerCase()s
+### Daily new chat rooms
 
-The number of newly created CHAT_ROOM.toLowerCase()s under this project today (00:00 – current time).
+The number of newly created chat rooms under this project today (00:00 – current time).
 
-### Daily disbanded CHAT_ROOM.toLowerCase()s
+### Daily disbanded chat rooms
 
-The number of disbanded CHAT_ROOM.toLowerCase()s under this project today (00:00 – current time).
+The number of disbanded chat rooms under this project today (00:00 – current time).
 
-### Daily active CHAT_ROOM.toLowerCase()s
+### Daily active chat rooms
 
-The number of CHAT_ROOM.toLowerCase()s that send uplink messages or receive downlink messages today (00:00 – current time).
+The number of chat rooms that send uplink messages or receive downlink messages today (00:00 – current time).
 
-### Daily CHAT_ROOM.toLowerCase() PCU
+### Daily chat room PCU
 
-The highest number of users connected to servers at the same time in CHAT_ROOM.toLowerCase()s under this project today (00:00 - current time). Note that the displayed data has a 10-minute delay.
+The highest number of users connected to servers at the same time in chat rooms under this project today (00:00 - current time). Note that the displayed data has a 10-minute delay.
 
 ## Message count metrics
 
-The following metrics apply to CHAT_ONE.toLowerCase()s, CHAT_GROUP.toLowerCase()s, and CHAT_ROOM.toLowerCase()s, as well as all message types.
+The following metrics apply to one-to-one chats, group chats, and chat rooms, as well as all message types.
 
 ### Total dispatched messages
 
@@ -86,12 +86,12 @@ The number of messages sent from the Chat server to offline users as of yesterda
 | Metric type | Description |
 | :--------- | :----------------------------------------------- |
 | Manual login | Users log in through a password or token. |
-| Automatic login | Users log in automatically (TODO). |
+| Automatic login | Users log in automatically through a persistent token. |
 | Message sending | Users send messages. |
 | Friends management | User operations such as adding or removing friends from their contacts. |
 | User management | User operations such as creating and updating a profile. |
-| Group chat management | User operations such as creating and deleting CHAT_GROUP.toLowerCase()s. |
-| Chat room management | User operations such as creating and deleting CHAT_ROOM.toLowerCase()s. |
+| Group chat management | User operations such as creating and deleting group chats. |
+| Chat room management | User operations such as creating and deleting chat rooms. |
 
 ### Metric
 
@@ -105,10 +105,10 @@ The number of messages sent from the Chat server to offline users as of yesterda
 - The username or password is empty or incorrect.
 - The username is illegal.
 - The password is invalid.
-- Ths user cannot perform the operation without an admin permission.
+- The user cannot perform the operation without an admin permission.
 - The user does not exist.
-- The CHAT_GROUP.toLowerCase() does not exist.
-- The user is not found in the CHAT_GROUP.toLowerCase().
+- The group chat does not exist.
+- The user is not found in the group chat.
 
 ## Server API metrics
 
@@ -120,8 +120,8 @@ The number of messages sent from the Chat server to offline users as of yesterda
 | User system registration | User registration and retrieving, modifying, and deleting user information through the RESTful API. |
 | File upload / download | Uploading and downloading audio, image, and other files through the RESTful API. |
 | Message sending | Sending a message through the RESTful API. |
-| Group chat management | Functions such as creating and deleting CHAT_GROUP.toLowerCase()s through the RESTful API. |
-| Chat room management | Functions such as creating and deleting CHAT_ROOM.toLowerCase()s through the RESTful API. |
+| Group chat management | Functions such as creating and deleting group chats through the RESTful API. |
+| Chat room management | Functions such as creating and deleting chat rooms through the RESTful API. |
 | User attributes | Functions such as setting and deleting user attributes through the RESTful API. |
 
 ### Metric

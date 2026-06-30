@@ -1,4 +1,11 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { ComponentType, ReactNode } from 'react';
@@ -183,9 +190,14 @@ describe('common MDX registry', () => {
 
     expect(dialog).toHaveTextContent('Product Architecture');
     expect(dialog).toHaveTextContent('Enlarged documentation image preview.');
-    expect(
-      within(dialog).getByRole('img', { name: 'Product Architecture' }),
-    ).toHaveAttribute('src', '/images/product.png');
+    const previewImage = within(dialog).getByRole('img', {
+      name: 'Product Architecture',
+    });
+
+    expect(previewImage).toHaveAttribute('src', '/images/product.png');
+    expect(dialog).toHaveClass('w-fit');
+    expect(dialog).not.toHaveClass('w-full');
+    expect(dialog).toHaveClass('justify-items-center');
   });
 
   it('keeps relative docs links normalized', () => {
@@ -645,6 +657,36 @@ describe('common MDX registry', () => {
     expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe(
       'flutter',
     );
+  });
+
+  it('updates canonical page defaults when the rendered payload changes', async () => {
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web","flutter"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="web"
+        platforms='["android","ios","web","flutter"]'
+      />,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: 'Web' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      );
+    });
   });
 
   it('keeps an initial overflow platform visible as a selected header tab', () => {

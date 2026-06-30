@@ -31,6 +31,4 @@ Clone the repository once and point your AI coding assistant to the skill files 
     git clone https://github.com/AgoraIO/skills.git ~/agora-skills
     ```
 
-1.  Point your AI assistant to `skills/agora/`. 
-
-    Follow the instructions for your AI coding assistant:
+1. Point your AI assistant to `skills/agora/`.

@@ -2,13 +2,16 @@
 title: "Quickstart"
 description: "How to integrate the On-Premise Recording SDK."
 ---
+
+<PlatformStructured platform="linux-cpp">
+
 This article describes how to use the On-Premise Recording SDK to record real-time audio and video.
 
 ## Understand the tech
 
 Recording audio and video in a channel using the On-Premise Recording SDK works by adding a special user to the Video SDK channel. This special user captures the audio and video from the channel, transcodes it, and stores it on your Linux server.
 
-![](/images/on-premise-recording/quickstart.svg)
+![On-Premise Recording SDK recording workflow](/images/on-premise-recording/quickstart.svg)
 
 :::info
 Integrate the On-Premise Recording SDK into your Linux server, not your client app. To record audio and video without deploying a Linux server, use Agora [Cloud Recording](/en/realtime-media/cloud-recording).
@@ -18,7 +21,7 @@ Integrate the On-Premise Recording SDK into your Linux server, not your client a
 
 Before you begin, complete the following steps and ensure your environment meets the required specifications:
 
-* [Create an Agora project](/on-premise-recording/get-started/manage-agora-account#generate-temporary-token/) in the Agora Console and obtain an App ID and a temporary token.
+* [Create an Agora project](/en/realtime-media/on-premise-recording/manage-agora-account#generate-temporary-token) in the Agora Console and obtain an App ID and a temporary token.
 * Implement a Video SDK project that includes basic audio and video interaction.
 
 **Server hardware requirements:**
@@ -44,14 +47,6 @@ Before you begin, complete the following steps and ensure your environment meets
 ## Project setup
 
 This section shows how to integrate the On-Premise Recording SDK into your app.
-
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
-
-<TabsContent value="cpp">
 
 ### Integrate the SDK
 
@@ -89,9 +84,302 @@ This section shows how to integrate the On-Premise Recording SDK into your app.
 :::info
 The `example` directory contains a complete sample project for local recording. To run it, see [Test the project](#test-the-project).
 :::
-</TabsContent>
 
-<TabsContent value="java">
+## Implement On-Premise Recording
+
+This section shows how to implement On-Premise recording in your app, step by step.
+
+The following figure illustrates the essential steps:
+
+<details>
+
+<summary>Quickstart sequence diagram</summary>
+
+![On-Premise Recording quickstart sequence diagram](/images/on-premise-recording/on-premise-recording-quickstart-logic-cpp.svg)
+</details>
+
+### Initialize the service
+
+Create the Agora service using `createAgoraService`. Then initialize it with media configuration options and logging settings.
+
+```cpp
+auto service = createAgoraService();
+
+agora::base::AgoraServiceConfiguration service_config;
+service_config.enableAudioDevice = false;
+service_config.enableAudioProcessor = true;
+service_config.enableVideo = true;
+service_config.appId = config.appId.c_str();
+service_config.useStringUid = config.UseStringUid;
+
+service->initialize(service_config);
+service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024 * 1024 * 5);
+```
+
+### Create the recorder instance
+
+Call `createAgoraMediaComponentFactory` and use it to create a `IAgoraMediaRtcRecorder` instance. Then initialize the recorder with the service and recording mode.
+
+```cpp
+agora::rtc::IMediaComponentFactory* factory = createAgoraMediaComponentFactory();
+agora::agora_refptr<agora::rtc::IAgoraMediaRtcRecorder> recorder = factory->createMediaRtcRecorder();
+
+// Set the recording mode
+// - false: Record each user's audio and video stream separately (single stream recording)
+// - true: Record all users' audio and video streams together (composite recording)
+
+bool isMix = false;
+// Initialize recorder
+recorder->initialize(service, isMix);
+```
+
+### Register the event handler
+
+Call `registerRecorderEventHandle` to register a user-defined event handler that receives recorder callbacks.
+
+```cpp
+std::unique_ptr<RecorderEventHandler> eventHandler{new RecorderEventHandler(recorder, config)};
+recorder->registerRecorderEventHandle(eventHandler.get());
+```
+
+### Subscribe to audio and video streams
+
+Call `subscribeAllAudio` and `subscribeAllVideo` to receive all audio and video streams in the channel.
+
+```cpp
+recorder->subscribeAllAudio();
+recorder->subscribeAllVideo(options);
+```
+
+### Configure recording
+
+Call `setRecorderConfig` to define recording parameters such as resolution, frame rate, audio settings, and the storage location.
+
+:::info
+Ensure that the directory specified in `storagePath` exists. If not, the recording will fail.
+:::
+
+```cpp
+// Set recording configuration
+agora::media::MediaRecorderConfiguration recorder_config;
+
+recorder_config.width = config.video.width;
+recorder_config.height = config.video.height;
+recorder_config.fps = config.video.fps;
+recorder_config.storagePath = config.recorderPath.c_str();
+recorder_config.sample_rate = config.audio.sampleRate;
+recorder_config.channel_num = config.audio.numOfChannels;
+// Set recording stream type: audio stream, video stream, or audio and video stream
+recorder_config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config.recorderStreamType);
+// Set the maximum recording duration
+recorder_config.maxDurationMs = config.maxDuration * 1000;
+
+recorder->setRecorderConfig(recorder_config);
+```
+
+### Join the channel and start recording
+
+Call `joinChannel` to join the specified channel and `startRecording` to begin recording.
+
+```cpp
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+recorder->startRecording();
+```
+
+### Stop recording and release resources
+
+Call the cleanup methods to end recording, unsubscribe from streams, and release memory.
+
+```cpp
+recorder->unsubscribeAllAudio();
+recorder->unsubscribeAllVideo();
+recorder->stopRecording();
+
+recorder->unregisterRecorderEventHandle(eventHandler.get());
+eventHandler = nullptr;
+
+recorder->leaveChannel();
+recorder = nullptr;
+
+service->release();
+```
+
+### Complete sample code
+
+The following example shows the full implementation of an On-Premise Recording workflow.
+
+<details>
+<summary>Complete sample code for On-Premise Recording</summary>
+
+```cpp
+// Create and initialize the Agora service, and configure logging
+auto service = createAgoraService();
+agora::base::AgoraServiceConfiguration service_config;
+service_config.enableAudioDevice = false;
+service_config.enableAudioProcessor = true;
+service_config.enableVideo = true;
+service_config.appId = config.appId.c_str();
+service_config.useStringUid = config.UseStringUid;
+service->initialize(service_config);
+service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024 * 1024 * 5);
+
+// Create the media recorder instance
+agora::rtc::IMediaComponentFactory* factory = createAgoraMediaComponentFactory();
+agora::agora_refptr<agora::rtc::IAgoraMediaRtcRecorder> recorder = factory->createMediaRtcRecorder();
+
+// Initialize the recorder
+// Set to true for mixed recording or false for individual streams
+bool isMix = false;
+recorder->initialize(service, isMix);
+
+// Register the event handler for recorder callbacks
+std::unique_ptr<RecorderEventHandler> eventHandler{new RecorderEventHandler(recorder, config)};
+recorder->registerRecorderEventHandle(eventHandler.get());
+
+// Subscribe to all audio and video streams
+recorder->subscribeAllAudio();
+recorder->subscribeAllVideo(options); // 'options' should be properly defined before use
+
+// Configure recorder settings
+agora::media::MediaRecorderConfiguration recorder_config;
+recorder_config.width = config.video.width;
+recorder_config.height = config.video.height;
+recorder_config.fps = config.video.fps;
+recorder_config.storagePath = config.recorderPath.c_str();
+recorder_config.sample_rate = config.audio.sampleRate;
+recorder_config.channel_num = config.audio.numOfChannels;
+recorder_config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config.recorderStreamType);
+recorder_config.maxDurationMs = config.maxDuration * 1000;
+
+recorder->setRecorderConfig(recorder_config);
+
+// Join the channel and start recording
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+recorder->startRecording();
+
+// Stop recording and clean up
+recorder->unsubscribeAllAudio();
+recorder->unsubscribeAllVideo();
+recorder->stopRecording();
+
+recorder->unregisterRecorderEventHandle(eventHandler.get());
+eventHandler = nullptr;
+
+recorder->leaveChannel();
+recorder = nullptr;
+
+service->release();
+```
+
+</details>
+
+## Test the project
+
+Agora provides a complete sample project in the SDK download package. After downloading and extracting the package, follow these steps to build and run it:
+
+1. Navigate to the sample project directory:
+
+    ```sh
+    cd agora_rtc_sdk/example
+    ```
+
+2. Build the sample project:
+
+    ```sh
+    ./build.sh
+    ```
+
+3. Add the SDK library path to the `LD_LIBRARY_PATH` environment variable:
+
+    ```sh
+    export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
+    ```
+
+4. Choose a configuration file for your recording mode:
+
+    * Use `recorder.json` for composite recording.
+    * Use `singleVideo.json` for individual recording.
+
+    :::info
+    For more information on the differences between mixed and individual recording modes, see [Individual recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode) and [Composite recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode).
+    :::
+
+5. Run the sample recorder with the selected configuration file:
+
+    ```sh
+    # Example: Run individual recording
+    ./out/sample_recorder singleVideo.json
+    ```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`createAgoraService`](/en/api-reference/api-ref/on-premise-recording#createagoraservice)
+- [`initialize`](/en/api-reference/api-ref/on-premise-recording#initialize)
+- [`setLogFile`](/en/api-reference/api-ref/on-premise-recording#setlogfile)
+- [`createAgoraMediaComponentFactory`](/en/api-reference/api-ref/on-premise-recording#createagoramediacomponentfactory)
+- [`registerRecorderEventHandle`](/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandle)
+- [`subscribeAllAudio`](/en/api-reference/api-ref/on-premise-recording#subscribeallaudio)
+- [`subscribeAllVideo`](/en/api-reference/api-ref/on-premise-recording#subscribeallvideo)
+- [`setRecorderConfig`](/en/api-reference/api-ref/on-premise-recording#setrecorderconfig)
+- [`joinChannel`](/en/api-reference/api-ref/on-premise-recording#joinchannel)
+- [`startRecording`](/en/api-reference/api-ref/on-premise-recording#startrecording)
+- [`unsubscribeAllAudio`](/en/api-reference/api-ref/on-premise-recording#unsubscribeallaudio)
+- [`unsubscribeAllVideo`](/en/api-reference/api-ref/on-premise-recording#unsubscribeallvideo)
+- [`stopRecording`](/en/api-reference/api-ref/on-premise-recording#stoprecording)
+- [`unregisterRecorderEventHandle`](/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandle)
+- [`leaveChannel`](/en/api-reference/api-ref/on-premise-recording#leavechannel)
+- [`release`](/en/api-reference/api-ref/on-premise-recording#release)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+This article describes how to use the On-Premise Recording SDK to record real-time audio and video.
+
+## Understand the tech
+
+Recording audio and video in a channel using the On-Premise Recording SDK works by adding a special user to the Video SDK channel. This special user captures the audio and video from the channel, transcodes it, and stores it on your Linux server.
+
+![On-Premise Recording SDK recording workflow](/images/on-premise-recording/quickstart.svg)
+
+:::info
+Integrate the On-Premise Recording SDK into your Linux server, not your client app. To record audio and video without deploying a Linux server, use Agora [Cloud Recording](/en/realtime-media/cloud-recording).
+:::
+
+## Prerequisites
+
+Before you begin, complete the following steps and ensure your environment meets the required specifications:
+
+* [Create an Agora project](/en/realtime-media/on-premise-recording/manage-agora-account#generate-temporary-token) in the Agora Console and obtain an App ID and a temporary token.
+* Implement a Video SDK project that includes basic audio and video interaction.
+
+**Server hardware requirements:**
+
+* **CPU**: 8 cores, 1.8 GHz
+* **Memory**: At least 4 GB (recommended)
+
+**Server software requirements:**
+
+* **Operating system**: Ubuntu 18.04 or later, or CentOS 7.0 or later
+* **CPU architecture**: arm64 or x86-64
+* **glibc**: version 2.18 or later
+* **gcc**: version 4.8 or later
+
+**Network requirements:**
+
+* The server is connected to the public internet and has a public IP address.
+* The server allows access to the following domains:
+
+  * `*.agora.io`
+  * `*.agoralab.co`
+
+## Project setup
+
+This section shows how to integrate the On-Premise Recording SDK into your app.
 
 <Tabs defaultValue="maven">
 <TabsList>
@@ -137,7 +425,7 @@ Add the following dependencies to your project’s` pom.xml` file based on your 
 
 ### Integrate the SDK
 
-Choose one of the following methods to add the SDK to your project
+Choose one of the following methods to add the SDK to your project.
 
 #### Use a local maven repository
 
@@ -277,7 +565,7 @@ You can create a shell script to automate the setup:
 #!/bin/bash
 
 # Get the directory of this script
-SCRIPT_DIR="\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Define paths
 LIB_PATH="$SCRIPT_DIR/libs/native/linux/x86_64"
@@ -302,8 +590,6 @@ chmod +x run.sh
 ```
 </TabsContent>
 </Tabs>
-</TabsContent>
-</Tabs>
 
 ## Implement On-Premise Recording
 
@@ -311,188 +597,17 @@ This section shows how to implement On-Premise recording in your app, step by st
 
 The following figure illustrates the essential steps:
 
-### Quickstart sequence diagram
+<details>
 
-![](/images/on-premise-recording/on-premise-recording-quickstart-logic-cpp.svg)
+<summary>Quickstart sequence diagram</summary>
 
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
-
-<TabsContent value="cpp">
-
-### Initialize the service
-
-Create the Agora service using `createAgoraService`. Then initialize it with media configuration options and logging settings.
-```cpp
-auto service = createAgoraService();
-
-agora::base::AgoraServiceConfiguration service_config;
-service_config.enableAudioDevice = false;
-service_config.enableAudioProcessor = true;
-service_config.enableVideo = true;
-service_config.appId = config.appId.c_str();
-service_config.useStringUid = config.UseStringUid;
-
-service->initialize(service_config);
-service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024 * 1024 * 5);
-```
-
-### Create the recorder instance
-
-Call `createAgoraMediaComponentFactory` and use it to create a `IAgoraMediaRtcRecorder` instance. Then initialize the recorder with the service and recording mode.
-```cpp
-agora::rtc::IMediaComponentFactory* factory = createAgoraMediaComponentFactory();
-agora::agora_refptr<agora::rtc::IAgoraMediaRtcRecorder> recorder = factory->createMediaRtcRecorder();
-
-// Set the recording mode
-// - false: Record each user's audio and video stream separately (single stream recording)
-// - true: Record all users' audio and video streams together (composite recording)
-
-bool isMix = false;
-// Initialize recorder
-recorder->initialize(service, isMix);
-```
-
-### Register the event handler
-
-Call `registerRecorderEventHandle` to register a user-defined event handler that receives recorder callbacks.
-```cpp
-std::unique_ptr<RecorderEventHandler> eventHandler{new RecorderEventHandler(recorder, config)};
-recorder->registerRecorderEventHandle(eventHandler.get());
-```
-
-### Subscribe to audio and video streams
-
-Call `subscribeAllAudio` and `subscribeAllVideo` to receive all audio and video streams in the channel.
-```cpp
-recorder->subscribeAllAudio();
-recorder->subscribeAllVideo(options);
-```
-
-### Configure recording
-
-Call `setRecorderConfig` to define recording parameters such as resolution, frame rate, audio settings, and the storage location.
-
-:::info
-Ensure that the directory specified in `storagePath` exists. If not, the recording will fail.
-:::
-```cpp
-// Set recording configuration
-agora::media::MediaRecorderConfiguration recorder_config;
-
-recorder_config.width = config.video.width;
-recorder_config.height = config.video.height;
-recorder_config.fps = config.video.fps;
-recorder_config.storagePath = config.recorderPath.c_str();
-recorder_config.sample_rate = config.audio.sampleRate;
-recorder_config.channel_num = config.audio.numOfChannels;
-// Set recording stream type: audio stream, video stream, or audio and video stream
-recorder_config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config.recorderStreamType);
-// Set the maximum recording duration
-recorder_config.maxDurationMs = config.maxDuration * 1000;
-
-recorder->setRecorderConfig(recorder_config);
-```
-
-### Join the channel and start recording
-
-Call `joinChannel` to join the specified channel and `startRecording` to begin recording.
-```cpp
-recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
-recorder->startRecording();
-```
-
-### Stop recording and release resources
-
-Call the cleanup methods to end recording, unsubscribe from streams, and release memory.
-```cpp
-recorder->unsubscribeAllAudio();
-recorder->unsubscribeAllVideo();
-recorder->stopRecording();
-
-recorder->unregisterRecorderEventHandle(eventHandler.get());
-eventHandler = nullptr;
-
-recorder->leaveChannel();
-recorder = nullptr;
-
-service->release();
-```
-
-### Complete sample code
-
-The following example shows the full implementation of an On-Premise Recording workflow.
-
-### Complete sample code for On-Premise Recording
-```cpp
-// Create and initialize the Agora service, and configure logging
-auto service = createAgoraService();
-agora::base::AgoraServiceConfiguration service_config;
-service_config.enableAudioDevice = false;
-service_config.enableAudioProcessor = true;
-service_config.enableVideo = true;
-service_config.appId = config.appId.c_str();
-service_config.useStringUid = config.UseStringUid;
-service->initialize(service_config);
-service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024 * 1024 * 5);
-
-// Create the media recorder instance
-agora::rtc::IMediaComponentFactory* factory = createAgoraMediaComponentFactory();
-agora::agora_refptr<agora::rtc::IAgoraMediaRtcRecorder> recorder = factory->createMediaRtcRecorder();
-
-// Initialize the recorder
-// Set to true for mixed recording or false for individual streams
-bool isMix = false;
-recorder->initialize(service, isMix);
-
-// Register the event handler for recorder callbacks
-std::unique_ptr<RecorderEventHandler> eventHandler{new RecorderEventHandler(recorder, config)};
-recorder->registerRecorderEventHandle(eventHandler.get());
-
-// Subscribe to all audio and video streams
-recorder->subscribeAllAudio();
-recorder->subscribeAllVideo(options); // 'options' should be properly defined before use
-
-// Configure recorder settings
-agora::media::MediaRecorderConfiguration recorder_config;
-recorder_config.width = config.video.width;
-recorder_config.height = config.video.height;
-recorder_config.fps = config.video.fps;
-recorder_config.storagePath = config.recorderPath.c_str();
-recorder_config.sample_rate = config.audio.sampleRate;
-recorder_config.channel_num = config.audio.numOfChannels;
-recorder_config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config.recorderStreamType);
-recorder_config.maxDurationMs = config.maxDuration * 1000;
-
-recorder->setRecorderConfig(recorder_config);
-
-// Join the channel and start recording
-recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
-recorder->startRecording();
-
-// Stop recording and clean up
-recorder->unsubscribeAllAudio();
-recorder->unsubscribeAllVideo();
-recorder->stopRecording();
-
-recorder->unregisterRecorderEventHandle(eventHandler.get());
-eventHandler = nullptr;
-
-recorder->leaveChannel();
-recorder = nullptr;
-
-service->release();
-```
-</TabsContent>
-
-<TabsContent value="java">
+![On-Premise Recording quickstart sequence diagram](/images/on-premise-recording/on-premise-recording-quickstart-logic-cpp.svg)
+</details>
 
 ### Initialize the service
 
 Create an `AgoraService` instance and initialize it with your App ID and feature flags.
+
 ```java
 // Create and configure the service
 AgoraService agoraService = new AgoraService();
@@ -516,6 +631,7 @@ int ret = agoraService.initialize(config);
 ### Create a recorder instance
 
 Call `createMediaRtcRecorder` to create a recorder instance,and then use `AgoraMediaRtcRecorder.initialize` to initialize it.
+
 ```java
 // Create recorder
 AgoraMediaRtcRecorder agoraMediaRtcRecorder = agoraService.createMediaRtcRecorder();
@@ -532,6 +648,7 @@ agoraMediaRtcRecorder.initialize(agoraService, enableMix);
 ### Register event handlers
 
 Register an event handler to receive recording callbacks.
+
 ```java
 // Define the event handler
 private IAgoraMediaRtcRecorderEventHandler eventHandler = new IAgoraMediaRtcRecorderEventHandler() {
@@ -555,6 +672,7 @@ agoraMediaRtcRecorder.registerRecorderEventHandler(eventHandler);
 ### Subscribe to audio and video streams
 
 Subscribe to all audio streams and high-quality video streams in the channel.
+
 ```java
 // Subscribe to audio
 agoraMediaRtcRecorder.subscribeAllAudio();
@@ -569,6 +687,7 @@ agoraMediaRtcRecorder.subscribeAllVideo(options);
 ### Configure the recorder
 
 Set the resolution, frame rate, duration, and file path for the recording.
+
 ```java
 // Configure the recorder
 MediaRecorderConfiguration recorderConfig = new MediaRecorderConfiguration();
@@ -592,6 +711,7 @@ Ensure that the `storagePath` exists before you start recording. If the director
 ### Join the channel and start recording
 
 Use the following code to join a channel and begin recording:
+
 ```java
 agoraMediaRtcRecorder.joinChannel(
     recorderConfig.getToken(),
@@ -604,6 +724,7 @@ agoraMediaRtcRecorder.startRecording();
 ### Stop and release resources
 
 Unsubscribe from streams, stop the recording, and release resources.
+
 ```java
 agoraMediaRtcRecorder.unsubscribeAllAudio();
 agoraMediaRtcRecorder.unsubscribeAllVideo();
@@ -618,7 +739,9 @@ The recorded MP4 file is saved to the storage path you specified in the recordin
 
 ### Complete sample code
 
-### Complete sample code for On-Premise Recording
+<details>
+<summary>Complete sample code for On-Premise Recording</summary>
+
 ```java
 // Initialize Service resources and set log
 AgoraService agoraService = new AgoraService();
@@ -686,57 +809,10 @@ agoraMediaRtcRecorder.leaveChannel();
 agoraMediaRtcRecorder.release();
 agoraService.release();
 ```
-</TabsContent>
-</Tabs>
+
+</details>
 
 ## Test the project
-
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
-
-<TabsContent value="cpp">
-
-Agora provides a complete sample project in the SDK download package. After downloading and extracting the package, follow these steps to build and run it:
-
-1. Navigate to the sample project directory:
-
-    ```sh
-    cd agora_rtc_sdk/example
-    ```
-
-2. Build the sample project:
-
-    ```sh
-    ./build.sh
-    ```
-
-3. Add the SDK library path to the `LD_LIBRARY_PATH` environment variable:
-
-    ```sh
-    export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
-    ```
-
-4. Choose a configuration file for your recording mode:
-
-    * Use `recorder.json` for composite recording.
-    * Use `singleVideo.json` for individual recording.
-
-:::info[info]
-For more information on the differences between mixed and individual recording modes, see [Individual recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/individual-mode) and [Composite recording](/en/realtime-media/on-premise-recording/build/record-audio-and-video/composite-mode).
-:::
-
-5. Run the sample recorder with the selected configuration file:
-
-    ```sh
-    # Example: Run individual recording
-    ./out/sample_recorder singleVideo.json
-    ```
-</TabsContent>
-
-<TabsContent value="java">
 
 Agora provides an open source sample project on GitHub for your reference. Download or view the [Agora Recording Java SDK](https://github.com/AgoraIO-Extensions/Agora-Recording-Java-SDK) project for a more detailed example.
 
@@ -772,9 +848,9 @@ Follow these steps to compile, configure, and run the Agora recording sample usi
    - `libagora-fdkaac.so`
    - `libaosl.so`
 
-:::info[info]
-These libraries must be available at runtime. If any are missing, the application will fail to load the native dependencies.
-:::
+   :::info
+   These libraries must be available at runtime. If any are missing, the application will fail to load the native dependencies.
+   :::
 
 4. **Run the sample application**
 
@@ -805,11 +881,9 @@ These libraries must be available at runtime. If any are missing, the applicatio
      http://<your-server-ip>:18080/api/recording/stop?taskId=<taskId>
      ```
 
-:::info[info]
-Place all configuration files (such as `mix_stream_recorder_audio_video_water_marks.json`) in the `Examples-Mvn/src/main/resources/` directory.
-:::
-</TabsContent>
-</Tabs>
+   :::info
+   Place all configuration files (such as `mix_stream_recorder_audio_video_water_marks.json`) in the `Examples-Mvn/src/main/resources/` directory.
+   :::
 
 ## Reference
 
@@ -817,51 +891,22 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-<Tabs defaultValue="cpp">
-<TabsList>
-  <TabsTrigger value="cpp">C++</TabsTrigger>
-  <TabsTrigger value="java">Java</TabsTrigger>
-</TabsList>
+- [`AgoraService`](/en/api-reference/api-ref/on-premise-recording#agoraservice)
+- [`AgoraServiceConfiguration`](/en/api-reference/api-ref/on-premise-recording#agoraserviceconfiguration)
+- [`LogConfig`](/en/api-reference/api-ref/on-premise-recording#logconfig)
+- [`initialize`](/en/api-reference/api-ref/on-premise-recording#initialize)
+- [`AgoraMediaRtcRecorder`](/en/api-reference/api-ref/on-premise-recording#agoramediartcrecorder)
+- [`registerRecorderEventHandler`](/en/api-reference/api-ref/on-premise-recording#registerrecordereventhandler)
+- [`subscribeAllAudio`](/en/api-reference/api-ref/on-premise-recording#subscribeallaudio)
+- [`subscribeAllVideo`](/en/api-reference/api-ref/on-premise-recording#subscribeallvideo)
+- [`setRecorderConfig`](/en/api-reference/api-ref/on-premise-recording#setrecorderconfig)
+- [`joinChannel`](/en/api-reference/api-ref/on-premise-recording#joinchannel)
+- [`startRecording`](/en/api-reference/api-ref/on-premise-recording#startrecording)
+- [`unsubscribeAllAudio`](/en/api-reference/api-ref/on-premise-recording#unsubscribeallaudio)
+- [`unsubscribeAllVideo`](/en/api-reference/api-ref/on-premise-recording#unsubscribeallvideo)
+- [`stopRecording`](/en/api-reference/api-ref/on-premise-recording#stoprecording)
+- [`unregisterRecorderEventHandler`](/en/api-reference/api-ref/on-premise-recording#unregisterrecordereventhandler)
+- [`leaveChannel`](/en/api-reference/api-ref/on-premise-recording#leavechannel)
+- [`release`](/en/api-reference/api-ref/on-premise-recording#release)
 
-<TabsContent value="cpp">
-
-- [`createAgoraService`](/on-premise-recording/reference/api-reference#createagoraservice)
-- [`initialize`](/on-premise-recording/reference/api-reference#initialize)
-- [`setLogFile`](/on-premise-recording/reference/api-reference#setlogfile)
-- [`createAgoraMediaComponentFactory`](/on-premise-recording/reference/api-reference#createagoramediacomponentfactory)
-- [`registerRecorderEventHandle`](/on-premise-recording/reference/api-reference#registerrecordereventhandle)
-- [`subscribeAllAudio`](/on-premise-recording/reference/api-reference#subscribeallaudio)
-- [`subscribeAllVideo`](/on-premise-recording/reference/api-reference#subscribeallvideo)
-- [`setRecorderConfig`](/on-premise-recording/reference/api-reference#setrecorderconfig)
-- [`joinChannel`](/on-premise-recording/reference/api-reference#joinchannel)
-- [`startRecording`](/on-premise-recording/reference/api-reference#startrecording)
-- [`unsubscribeAllAudio`](/on-premise-recording/reference/api-reference#unsubscribeallaudio)
-- [`unsubscribeAllVideo`](/on-premise-recording/reference/api-reference#unsubscribeallvideo)
-- [`stopRecording`](/on-premise-recording/reference/api-reference#stoprecording)
-- [`unregisterRecorderEventHandle`](/on-premise-recording/reference/api-reference#unregisterrecordereventhandle)
-- [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
-- [`release`](/on-premise-recording/reference/api-reference#release)
-</TabsContent>
-
-<TabsContent value="java">
-
-- [`AgoraService`](/on-premise-recording/reference/api-reference#agoraservice)
-- [`AgoraServiceConfiguration`](/on-premise-recording/reference/api-reference#agoraserviceconfiguration)
-- [`LogConfig`](/on-premise-recording/reference/api-reference#logconfig)
-- [`initialize`](/on-premise-recording/reference/api-reference#initialize)
-- [`AgoraMediaRtcRecorder`](/on-premise-recording/reference/api-reference#agoramediartcrecorder)
-- [`registerRecorderEventHandler`](/on-premise-recording/reference/api-reference#registerrecordereventhandler)
-- [`subscribeAllAudio`](/on-premise-recording/reference/api-reference#subscribeallaudio)
-- [`subscribeAllVideo`](/on-premise-recording/reference/api-reference#subscribeallvideo)
-- [`setRecorderConfig`](/on-premise-recording/reference/api-reference#setrecorderconfig)
-- [`joinChannel`](/on-premise-recording/reference/api-reference#joinchannel)
-- [`startRecording`](/on-premise-recording/reference/api-reference#startrecording)
-- [`unsubscribeAllAudio`](/on-premise-recording/reference/api-reference#unsubscribeallaudio)
-- [`unsubscribeAllVideo`](/on-premise-recording/reference/api-reference#unsubscribeallvideo)
-- [`stopRecording`](/on-premise-recording/reference/api-reference#stoprecording)
-- [`unregisterRecorderEventHandler`](/on-premise-recording/reference/api-reference#unregisterrecordereventhandler)
-- [`leaveChannel`](/on-premise-recording/reference/api-reference#leavechannel)
-- [`release`](/on-premise-recording/reference/api-reference#release)
-
-</TabsContent>
-</Tabs>
+</PlatformStructured>

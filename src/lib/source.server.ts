@@ -95,10 +95,13 @@ export function getPageMarkdownUrl(
   const segments = platform
     ? getPlatformMarkdownSegments(pageSegments, platform)
     : pageSegments;
+  const useContentRoute = platform || page.type === 'openapi';
 
   return {
     segments,
-    url: `${docsContentRoute}/${segments.join('/')}`,
+    url: useContentRoute
+      ? `${docsContentRoute}/${segments.join('/')}`
+      : `${page.url}.md`,
   };
 }
 

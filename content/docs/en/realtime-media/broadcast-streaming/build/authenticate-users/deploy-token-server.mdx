@@ -43,7 +43,7 @@ Before starting, ensure that you have:
 
 ## Token generation code
 
-Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages ​​to generate tokens on your own server using the `HMAC-SHA256` algorithm:
+Agora provides an open source token generator code repository on [GitHub](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey). The repository provides code in the following languages to generate tokens on your own server using the `HMAC-SHA256` algorithm:
 
 | Language | Core Method     | Sample Code     |
 |:---------|:--------------------|:---------------------|
@@ -311,11 +311,11 @@ The code samples presented on this page use an integer user ID to generate a tok
 ### Advanced authentication features
 This section presents advanced functions related to token authentication.
 
-- [Wildcard token​s](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
+- [Wildcard tokens](#generate-wildcard-tokens): Allow users to join multiple channels or switch channels without frequently requesting new tokens.
 
 - [Co-host token authentication](#co-host-token-authentication): Enable fine-grained control to ensure only authorized users can publish streams.
 
-#### Generate wildcard token​s
+#### Generate wildcard tokens
 In use-cases where users need to join multiple channels, or frequently switch between channels, they need to request a new token from the token server, each time they join a channel. To solve the problem of frequently requesting tokens when switching channels, Agora enables you to generate wildcard tokens that set the user ID or channel name as a wildcard. Users reuse the same wildcard token to join different channels, which speeds up the process of switching and joining channels. It also helps reduce the pressure on your token server.
 :::note
 To generate wildcard tokens, deploy an `AccessToken2` server. If you are still using `AccessToken`, see the [AccessToken upgrade guide](integrate-token-generation) to upgrade to `AccessToken2`.
@@ -365,7 +365,7 @@ See the [API reference](#api-reference) for detailed parameter descriptions.
 
 #### Generate a token with advanced permissions
 
-Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) ​​to generate tokens with advanced permissions:
+Use the following methods from the token generation [Github repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) to generate tokens with advanced permissions:
 
 | Language | Core Method     | Sample Code     |
 |:---------|:--------------------|:---------------------|
@@ -377,7 +377,7 @@ Use the following methods from the token generation [Github repository](https://
 | Java   | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/RtcTokenBuilder2.java#L135)  | [RtcTokenBuilder2Sample.java](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/sample/RtcTokenBuilder2Sample.java)      |
 | C++   | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/RtcTokenBuilder2.h#L172)  | [RtcTokenBuilder2Sample.cpp](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/cpp/sample/RtcTokenBuilder2Sample.cpp)      |
 
-Refer to the following code samples to generate a token with advanced permissions
+Refer to the following code samples to generate a token with advanced permissions:
 
 <CodeBlockTabs defaultValue="go">
 <CodeBlockTabsList>
@@ -741,7 +741,7 @@ The [`agora-token`](https://www.npmjs.com/package/agora-token) NPM package provi
   }
   ```
 
-### Deploy with Docker​
+### Deploy with Docker
 
 Refer to the following steps to deploy a Docker-based token generator locally:
 
@@ -928,7 +928,7 @@ After the token generator is deployed successfully, your terminal returns the to
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
-### API Reference​
+### API Reference
 
 This section documents the core methods you use to generate tokens, using the Golang code as an example.
 

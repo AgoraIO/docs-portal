@@ -434,7 +434,7 @@ const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
   '/media-push/product-overview': '/en/api-reference/api-ref/rtc',
   '/sdks': '/en/api-reference/sdks',
   '/en/ai/best-practices/start-stop-agent': '/en/ai/build/start-stop-agent',
-  '/en/ai/models/mllm/overview': '/en/ai/models/mllm',
+  '/en/ai/models/mllm/overview': '/en/ai/models/mllm/gemini',
   '/en/best-practices/geofencing':
     '/en/realtime-media/voice/build/manage-connection-and-quality/geofencing',
   '/en/api-reference/api-ref/conversational-ai/server-sdk/go':

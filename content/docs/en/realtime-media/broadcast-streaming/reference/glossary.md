@@ -53,7 +53,7 @@ A callee is a Signaling user who receives a [call invitation](#call-invitation).
 
 ### Caller
 
-A caller is an Signaling user who sends a [call invitation](#call-invitation).
+A caller is a Signaling user who sends a [call invitation](#call-invitation).
 
 ### Call invitation
 
@@ -185,7 +185,7 @@ Mirroring is an effect that a video image renders.
 
 ### Offline
 
-Offline describes the status of an Signaling user who has successfully logged out of Signaling.
+Offline describes the status of a Signaling user who has successfully logged out of Signaling.
 
 ### Offline message
 
@@ -211,7 +211,7 @@ A peer-to-peer message is a message that an online Signaling user sends to an on
 
 ### Publish
 
-Publishing is the action of sending the user's audio and/or video data to the channel. 
+Publishing is the action of sending the user's audio and/or video data to the channel.
 
 ## R
 
@@ -221,7 +221,7 @@ Raw data, including raw audio data and raw video data, is the unprocessed data w
 
 ### Render the first video frame
 
-Rendering the first video frame is the action of rendering the first video frame on the local device. 
+Rendering the first video frame is the action of rendering the first video frame on the local device.
 
 ## S
 
@@ -261,7 +261,7 @@ TCP (Transmission Control Protocol) is a connection-oriented and reliable transp
 
 ### Token
 
-A token, also known as a dynamic key, is used for authentication when an app user joins an channel or logs onto the Agora Signaling.
+A token, also known as a dynamic key, is used for authentication when an app user joins a channel or logs onto the Agora Signaling.
 
 ### Transcoding
 
@@ -279,9 +279,9 @@ User attributes are tags added to Signaling users, including property names and 
 
 ### User ID (uid)
 
-In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback. 
+In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback.
 
-In the Agora Signaling SDK, a user ID identifiers a user in Signaling. 
+In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
 The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
 
@@ -293,7 +293,7 @@ The type of user role determines whether the user in the channel has streaming p
 
 ### Video layout
 
-Video layout arranges the display of users when multiple users are mixed into one stream, such as in Media Push or a composite recording. 
+Video layout arranges the display of users when multiple users are mixed into one stream, such as in Media Push or a composite recording.
 
 ### Video mixing
 
@@ -301,7 +301,7 @@ Video mixing means combining multiple video streams into one.
 
 ### Video profile
 
-The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate. 
+The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate.
 
 ### Video SDK
 

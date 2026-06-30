@@ -262,7 +262,7 @@ GET https://{host}/{org_name}/{app_name}/thread?limit={limit}&cursor={cursor}&so
 |:------------|:-------|:-----|:-----------|
 | `limit` | String | The maximum number of threads to retrieve per page. The range is [1, 50]. The default value is 50. | No |
 | `cursor` | String | The page from which to start retrieving threads. Pass in `null` or an empty string at the first query. | No |
-| `sort` | String | The order in which to list the query results:`asc`: In chronological order of thread creation.(Default) `desc`: In reverse chronological order of thread creation. | No |
+| `sort` | String | The order in which to list the query results: `asc`: In chronological order of thread creation. (Default) `desc`: In reverse chronological order of thread creation. | No |
 
 For the descriptions of the other path parameters, see [Common Parameters](#request).
 
@@ -336,7 +336,7 @@ For the descriptions of the path parameters, see [Common Parameters](#request).
 |:------------|:-------|:-----|:-----------|
 | `limit` | String | The maximum number of threads to retrieve per page. The range is [1, 50]. The default value is 50. | No |
 | `cursor` | String | The page from which to start retrieving threads. Pass in `null` or an empty string at the first query. | No |
-| `sort` | String | The order in which to list the query results:`asc`: In chronological order of thread creation.(Default) `desc`: In reverse chronological order of thread creation. | No |
+| `sort` | String | The order in which to list the query results: `asc`: In chronological order of thread creation. (Default) `desc`: In reverse chronological order of thread creation. | No |
 
 For the descriptions of the other path parameters, see [Common Parameters](#request).
 
@@ -356,7 +356,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the entity 
 | `owner` | String | The thread creator. |
 | `id` | String | The thread ID. |
 | `msgId` | String | The ID of the message based on which the thread is created. |
-| `groupId` | String | The ID of the  to which the thread belongs. |
+| `groupId` | String | The ID of the group to which the thread belongs. |
 | `created` | String | The Unix timestamp when the thread is created. |
 | `properties.cursor` | String | The cursor that indicates the starting position of the next query. |
 
@@ -398,9 +398,8 @@ curl -X GET http://XXXX.com/XXXX/testapp/threads/user/test4 -H 'Authorization: B
 }
 ```
 
-## Retrieving all the threads a user joins under a 
-
-Retrieves all the threads a user joins under a .
+## Retrieving all the threads a user joins under a group
+Retrieves all the threads a user joins under a group.
 
 For each App Key, the call frequency limit of this method is 100 per second.
 
@@ -414,7 +413,7 @@ GET https://{host}/{org_name}/{app_name}/threads/chatgroups/{group_id}/user/{use
 
 | Parameter | Type | Description | Required |
 |:---------|:-------|:-----|:--------------------------|
-| `group_id`   | String | The ID of the .  | Yes |
+| `group_id`   | String | The ID of the group.  | Yes |
 | `username` | String | The unique login account of the user. | Yes |
 
 For the descriptions of the other path parameters, see [Common Parameters](#request).
@@ -425,7 +424,7 @@ For the descriptions of the other path parameters, see [Common Parameters](#requ
 |:---------|:-------|:-----|:--------------------------|
 | `limit` | String | The maximum number of threads to retrieve per page. The range is [1, 50]. The default value is 50. | No |
 | `cursor` | String | The page from which to start retrieving threads. Pass in `null` or an empty string at the first query. | No |
-| `sort` | String | The order in which to list the query results:`asc`: In chronological order of thread creation.(Default) `desc`: In reverse chronological order of thread creation. | No |
+| `sort` | String | The order in which to list the query results: `asc`: In chronological order of thread creation. (Default) `desc`: In reverse chronological order of thread creation. | No |
 
 #### Request header
 
@@ -445,7 +444,7 @@ For the last page of data, the response still contains `cursor` and the number o
 | `owner` | String | The thread creator. |
 | `id` | String | The thread ID. |
 | `msgId` | String | The ID of the message based on which the thread is created. |
-| `groupId` | String | The ID of the  to which the thread belongs. |
+| `groupId` | String | The ID of the group to which the thread belongs. |
 | `created` | String | The Unix timestamp when the thread is created. |
 
 For other fields and descriptions, see [Common parameters](#response).
