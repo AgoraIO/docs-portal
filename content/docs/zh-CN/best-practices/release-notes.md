@@ -436,7 +436,7 @@ description: 该版本于 2026 年 4 月 22 日发布。
 - [实时字幕](../user-guides/realtime-sub.md)：将用户与智能体的对话内容实时以文本输出并显示到终端界面上。该版本全面升级了字幕组件，提供更完善的功能支持、更强的可扩展性、更好的错误处理、更完善的会话管理和更强大的通信机制。
 - [打断智能体](../user-guides/interrupt-agent.md)：打断智能体说话和思考流程，让智能体“闭嘴”。
 - [监听智能体相关事件](../user-guides/listen-agent-events.md)：监听智能体对话状态变更、性能指标和错误事件。
-- [设置最佳音频参数](../best-practice/audio-settings.md)：快速设置音频参数最佳实践，提升对话式智能体的对话体验。
+- [设置最佳音频参数](/zh-CN/best-practices/audio-settings)：快速设置音频参数最佳实践，提升对话式智能体的对话体验。
 
 ### API 变更
 
