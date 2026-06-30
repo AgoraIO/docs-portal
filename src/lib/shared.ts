@@ -2,7 +2,7 @@ export const appName = 'Agora Docs';
 export const appDescription =
   'Agora Docs is a protocol-inspired developer documentation surface for product docs, API reference, and AI-readable content.';
 export const docsRoute = '/en/introduction';
-export const docsImageRoute = '/og/docs';
+export const docsImageRoute = 'https://assets-docs.agora.io/og/docs.png';
 
 export const legacyDocsBannerConfig = {
   hrefs: {

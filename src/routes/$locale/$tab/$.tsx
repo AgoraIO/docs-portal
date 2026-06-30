@@ -13,6 +13,7 @@ import {
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
   server: {
@@ -96,6 +97,8 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       ...payload,
     };
   },
+  head: ({ loaderData }) =>
+    loaderData ? createDocsRouteSeoHead(loaderData) : {},
   component: Page,
 });
 
