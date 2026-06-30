@@ -6,6 +6,10 @@ const root = process.cwd();
 const docsRoot = path.join(root, 'content/docs/en');
 const reportDir = path.join(root, 'docs/agents/reports');
 const reportPath = path.join(reportDir, 'english-doc-low-errors.json');
+const roundsArg = process.argv.find((arg) => arg.startsWith('--rounds='));
+const roundCount = Number.parseInt(roundsArg?.split('=')[1] ?? '1', 10);
+const scanRounds =
+  Number.isFinite(roundCount) && roundCount > 0 ? roundCount : 1;
 
 const allowedChineseFiles = new Set([
   // These pages intentionally demonstrate multilingual message payloads.
@@ -21,10 +25,7 @@ const allowedChinesePatterns = [
   /new RoomContent\(TokenRole\.Admin,\s*"房间的 UUID"\)/u,
 ];
 
-const properRepeatedWords = new Set([
-  'had',
-  'that',
-]);
+const properRepeatedWords = new Set(['had', 'that']);
 
 const knownWordFixes = [
   {
@@ -36,7 +37,8 @@ const knownWordFixes = [
   {
     pattern: /\bconst const\b/,
     issueType: 'repeated keyword',
-    rationale: 'The C++ declaration repeats the `const` keyword and would not compile as written.',
+    rationale:
+      'The C++ declaration repeats the `const` keyword and would not compile as written.',
     replacement: 'const',
   },
   {
@@ -63,13 +65,15 @@ const wrongWordFixes = [
   {
     pattern: /\band displays the location\b/,
     issueType: 'wrong verb form',
-    rationale: 'The coordinated verbs should agree with the subject `you`: `extract` and `display`.',
+    rationale:
+      'The coordinated verbs should agree with the subject `you`: `extract` and `display`.',
     replacement: 'and display the location',
   },
   {
     pattern: /\bpost sender-side processing\b/i,
     issueType: 'wrong compound phrase',
-    rationale: '`post sender-side processing` is an awkward compound where the intended meaning is after sender-side processing.',
+    rationale:
+      '`post sender-side processing` is an awkward compound where the intended meaning is after sender-side processing.',
     replacement: 'after sender-side processing',
   },
 ];
@@ -102,7 +106,8 @@ const suspiciousWordFixes = [
   {
     pattern: /\baccumulative\b/i,
     issueType: 'wrong word',
-    rationale: '`Cumulative` is the expected adjective for fees that add up over time.',
+    rationale:
+      '`Cumulative` is the expected adjective for fees that add up over time.',
     replacement: 'cumulative',
   },
   {
@@ -114,13 +119,15 @@ const suspiciousWordFixes = [
   {
     pattern: /\bFor example\. in\b/i,
     issueType: 'punctuation error',
-    rationale: '`For example` should be followed by a comma, not a sentence break before a lowercase continuation.',
+    rationale:
+      '`For example` should be followed by a comma, not a sentence break before a lowercase continuation.',
     replacement: 'For example, in',
   },
   {
     pattern: /\bcompetitions users\b/i,
     issueType: 'missing comma',
-    rationale: 'The introductory phrase ends before `users`; a comma is needed to avoid running the words together.',
+    rationale:
+      'The introductory phrase ends before `users`; a comma is needed to avoid running the words together.',
     replacement: 'competitions, users',
   },
   {
@@ -132,13 +139,15 @@ const suspiciousWordFixes = [
   {
     pattern: /\bidentifiers a user\b/i,
     issueType: 'wrong verb form',
-    rationale: '`Identifiers` is a noun; the sentence needs the verb `identifies`.',
+    rationale:
+      '`Identifiers` is a noun; the sentence needs the verb `identifies`.',
     replacement: 'identifies a user',
   },
   {
     pattern: /\bTo join a On-Premise\b/,
     issueType: 'article error',
-    rationale: '`On-Premise` starts with a vowel sound, so the article should be `an`.',
+    rationale:
+      '`On-Premise` starts with a vowel sound, so the article should be `an`.',
     replacement: 'To join an On-Premise',
   },
   {
@@ -174,8 +183,22 @@ const suspiciousWordFixes = [
   {
     pattern: /Users log in automatically \(TODO\)\./,
     issueType: 'placeholder residue',
-    rationale: '`TODO` is an unresolved authoring placeholder; the parallel metrics page describes automatic login as using a persistent token.',
+    rationale:
+      '`TODO` is an unresolved authoring placeholder; the parallel metrics page describes automatic login as using a persistent token.',
     replacement: 'Users log in automatically through a persistent token.',
+  },
+  {
+    pattern: /\bcreates a new folder named (`[^`]+`) and initialize\b/i,
+    issueType: 'subject-verb agreement',
+    rationale:
+      'The coordinated verbs should agree with the singular subject `This`: `creates` and `initializes`.',
+    replacement: 'creates a new folder named $1 and initializes',
+  },
+  {
+    pattern: /\.Net Framework\b/g,
+    issueType: 'wrong product term',
+    rationale: 'The Microsoft platform name is styled as `.NET Framework`.',
+    replacement: '.NET Framework',
   },
 ];
 
@@ -183,7 +206,8 @@ const generatedResidueFixes = [
   {
     pattern: /`BLUETOOTH_CONNECT`permission/g,
     issueType: 'missing space',
-    rationale: 'The permission noun is joined directly to the inline code span.',
+    rationale:
+      'The permission noun is joined directly to the inline code span.',
     replacement: '`BLUETOOTH_CONNECT` permission',
   },
   {
@@ -248,7 +272,10 @@ function stripInlineNoise(line) {
 
 function isMdxTagOnly(line) {
   const trimmed = line.trim();
-  return /^<\/?[A-Z][A-Za-z0-9]*(\s|>|\/>)/.test(trimmed) || /^<\/?[a-z][A-Za-z0-9-]*(\s|>|\/>)/.test(trimmed);
+  return (
+    /^<\/?[A-Z][A-Za-z0-9]*(\s|>|\/>)/.test(trimmed) ||
+    /^<\/?[a-z][A-Za-z0-9-]*(\s|>|\/>)/.test(trimmed)
+  );
 }
 
 function isLikelyTableSeparator(line) {
@@ -275,6 +302,10 @@ function isStructuralLine(line) {
   );
 }
 
+function isCodeFenceLine(line) {
+  return /^\s*```/.test(line) || /^\s*~~~/.test(line);
+}
+
 function isIndentedCodeLike(line, prevLine) {
   if (!/^\s{4,}\S/.test(line)) {
     return false;
@@ -283,10 +314,33 @@ function isIndentedCodeLike(line, prevLine) {
   if (/^(?:[-*+]|\d+\.)\s+/.test(trimmed)) {
     return false;
   }
-  if (/^(?:\/\/|\/\*|\*|#|<|>|}|{|;|\)|\]|const |let |var |if |else\b|for |while |return\b|public |private |class |func |def |import |using |typedef |virtual |static |new |Debug\.|console\.|UE_LOG|Payload\b|[A-Za-z_][\w.]*\s*[=:({])/i.test(trimmed)) {
+  if (
+    /^(?:\/\/|\/\*|\*|#|<|>|}|{|;|\)|\]|const |let |var |if |else\b|for |while |return\b|public |private |class |func |def |import |using |typedef |virtual |static |new |Debug\.|console\.|UE_LOG|Payload\b|[A-Za-z_][\w.]*\s*[=:({])/i.test(
+      trimmed,
+    )
+  ) {
     return true;
   }
   return prevLine != null && /^\s*```/.test(prevLine);
+}
+
+function isLikelyStandaloneCodeLike(line) {
+  const trimmed = line.trim();
+  return (
+    /^(?:\/\/|\/\*|\*\/|\* @|#include\b|#define\b|const |let |var |if |else\b|for |while |return\b|public |private |class |func |def |import |using |typedef |virtual |static |new |Debug\.|console\.|UE_LOG|Payload\b)/i.test(
+      trimmed,
+    ) ||
+    /^[A-Za-z_][\w.:<>-]*\s*(?:[=:({]|;)/.test(trimmed) ||
+    /^<\/?[A-Za-z][A-Za-z0-9-]*(\s|>|\/>)/.test(trimmed)
+  );
+}
+
+function isProseCandidateLine(line, prevLine) {
+  return (
+    !isStructuralLine(line) &&
+    !isIndentedCodeLike(line, prevLine) &&
+    !isLikelyStandaloneCodeLike(line)
+  );
 }
 
 function isCommandOutputContext(lines, index) {
@@ -305,6 +359,18 @@ function nextVisibleLine(lines, index) {
   for (let cursor = index + 1; cursor < lines.length; cursor += 1) {
     const candidate = lines[cursor].trim();
     if (candidate !== '') {
+      return { line: lines[cursor], index: cursor };
+    }
+  }
+  return null;
+}
+
+function visibleLineAfterBlank(lines, index) {
+  if ((lines[index + 1] ?? '').trim() !== '') {
+    return null;
+  }
+  for (let cursor = index + 2; cursor < lines.length; cursor += 1) {
+    if (lines[cursor].trim() !== '') {
       return { line: lines[cursor], index: cursor };
     }
   }
@@ -344,7 +410,7 @@ function scanFile(filePath) {
       return;
     }
 
-    if (/^\s*```/.test(line) || /^\s*~~~/.test(line)) {
+    if (isCodeFenceLine(line)) {
       inFence = !inFence;
       return;
     }
@@ -368,7 +434,7 @@ function scanFile(filePath) {
     const cleaned = stripInlineNoise(line);
 
     for (const fix of knownWordFixes) {
-      if (fix.pattern.test(cleaned)) {
+      if (isProseCandidateLine(line, prevLine) && fix.pattern.test(cleaned)) {
         const suggestion = line.replace(fix.pattern, fix.replacement);
         addFinding(findings, {
           severity: 'high',
@@ -383,7 +449,7 @@ function scanFile(filePath) {
     }
 
     for (const fix of wrongWordFixes) {
-      if (!isIndentedCodeLike(line, prevLine) && fix.pattern.test(cleaned)) {
+      if (isProseCandidateLine(line, prevLine) && fix.pattern.test(cleaned)) {
         const suggestion = line.replace(fix.pattern, fix.replacement);
         addFinding(findings, {
           severity: 'high',
@@ -399,7 +465,7 @@ function scanFile(filePath) {
 
     for (const fix of suspiciousWordFixes) {
       fix.pattern.lastIndex = 0;
-      if (!isIndentedCodeLike(line, prevLine) && fix.pattern.test(cleaned)) {
+      if (isProseCandidateLine(line, prevLine) && fix.pattern.test(cleaned)) {
         const suggestion = line.replace(fix.pattern, fix.replacement);
         addFinding(findings, {
           severity: 'high',
@@ -415,8 +481,10 @@ function scanFile(filePath) {
 
     for (const fix of generatedResidueFixes) {
       fix.pattern.lastIndex = 0;
-      if (!isIndentedCodeLike(line, prevLine) && fix.pattern.test(line)) {
-        const suggestion = line.replace(fix.pattern, fix.replacement).replace(/\s+\|/g, ' |');
+      if (isProseCandidateLine(line, prevLine) && fix.pattern.test(line)) {
+        const suggestion = line
+          .replace(fix.pattern, fix.replacement)
+          .replace(/\s+\|/g, ' |');
         addFinding(findings, {
           severity: 'high',
           file: rel,
@@ -430,12 +498,14 @@ function scanFile(filePath) {
     }
 
     const repeated = cleaned.match(/\b([A-Za-z]{2,})\s+\1\b/i);
-    if (repeated) {
+    if (repeated && isProseCandidateLine(line, prevLine)) {
       const word = repeated[1].toLowerCase();
       if (
         !properRepeatedWords.has(word) &&
         !/\b(in)\s+in-(?:ear|app|browser|call|person)\b/i.test(cleaned) &&
-        !/\b(?:in|on|to|for|as|with|by|at|from)\s+(?:in|on|to|for|as|with|by|at|from)\b/i.test(cleaned)
+        !/\b(?:in|on|to|for|as|with|by|at|from)\s+(?:in|on|to|for|as|with|by|at|from)\b/i.test(
+          cleaned,
+        )
       ) {
         addFinding(findings, {
           severity: 'high',
@@ -444,7 +514,10 @@ function scanFile(filePath) {
           snippet: line,
           issueType: 'repeated word',
           rationale: `The word \`${repeated[1]}\` appears twice in a row.`,
-          suggestion: line.replace(new RegExp(`\\b(${repeated[1]})\\s+${repeated[1]}\\b`, 'i'), '$1'),
+          suggestion: line.replace(
+            new RegExp(`\\b(${repeated[1]})\\s+${repeated[1]}\\b`, 'i'),
+            '$1',
+          ),
         });
       }
     }
@@ -452,7 +525,9 @@ function scanFile(filePath) {
     if (isListMarkerOnly(line) && !isIndentedCodeLike(line, prevLine)) {
       const nearbyLooksLikeCode = [prevLine, nextLine].some((nearby) => {
         const t = nearby.trim();
-        return /^(?:\/\*|\*\/|\* @|\/\/|[A-Za-z_][\w.]*\s*[=:({]|}|<\w+)/.test(t);
+        return /^(?:\/\*|\*\/|\* @|\/\/|[A-Za-z_][\w.]*\s*[=:({]|}|<\w+)/.test(
+          t,
+        );
       });
       if (!nearbyLooksLikeCode) {
         addFinding(findings, {
@@ -461,13 +536,19 @@ function scanFile(filePath) {
           line: lineNumber,
           snippet: line,
           issueType: 'broken list item',
-          rationale: 'The list marker has no item text or nested content attached to it.',
-          suggestion: 'Remove the empty marker or add the missing list item text.',
+          rationale:
+            'The list marker has no item text or nested content attached to it.',
+          suggestion:
+            'Remove the empty marker or add the missing list item text.',
         });
       }
     }
 
-    if (!isStructuralLine(line) && /:\s*$/.test(cleaned) && !isCommandOutputContext(lines, index)) {
+    if (
+      isProseCandidateLine(line, prevLine) &&
+      /:\s*$/.test(cleaned) &&
+      !isCommandOutputContext(lines, index)
+    ) {
       const nextVisible = nextVisibleLine(lines, index);
       const nextTrimmed = nextVisible?.line.trim() ?? '';
       const hasContentNext =
@@ -485,14 +566,22 @@ function scanFile(filePath) {
           line: lineNumber,
           snippet: line,
           issueType: 'empty colon lead-in',
-          rationale: 'The sentence ends with a colon but is not followed by visible content.',
-          suggestion: 'Add the missing content after the colon, or replace the colon with terminal punctuation.',
+          rationale:
+            'The sentence ends with a colon but is not followed by visible content.',
+          suggestion:
+            'Add the missing content after the colon, or replace the colon with terminal punctuation.',
         });
       }
     }
 
-    if (!allowedChineseFiles.has(rel) && /[\p{Script=Han}]/u.test(line)) {
-      const isAllowed = allowedChinesePatterns.some((pattern) => pattern.test(line));
+    if (
+      !allowedChineseFiles.has(rel) &&
+      isProseCandidateLine(line, prevLine) &&
+      /[\p{Script=Han}]/u.test(line)
+    ) {
+      const isAllowed = allowedChinesePatterns.some((pattern) =>
+        pattern.test(line),
+      );
       if (!isAllowed) {
         addFinding(findings, {
           severity: 'high',
@@ -500,16 +589,25 @@ function scanFile(filePath) {
           line: lineNumber,
           snippet: line,
           issueType: 'Chinese text in English doc',
-          rationale: 'The English documentation contains Chinese characters outside an allowed multilingual sample, URL, or preserved proper noun context.',
-          suggestion: 'Translate the Chinese text to English, or move it into an explicitly multilingual code sample if intentional.',
+          rationale:
+            'The English documentation contains Chinese characters outside an allowed multilingual sample, URL, or preserved proper noun context.',
+          suggestion:
+            'Translate the Chinese text to English, or move it into an explicitly multilingual code sample if intentional.',
         });
       }
     }
 
-    if (!isStructuralLine(line) && !isIndentedCodeLike(line, prevLine) && !/[.!?):\]}`]$/.test(trimmed)) {
-      const startsLikeSentence = /^(?:The|This|These|Those|You|If|When|After|Before|For|To|Use|Run|Create|Configure|Set|Call|Click|Open|Select|Ensure|Make|Add|Copy|Paste|Download|Install|Enable|Disable|Start|Stop|Join|Leave|Send|Receive|Get|Update|Delete)\b/.test(trimmed);
-      const nextIsBlankOrHeading = nextLine.trim() === '' || /^#{1,6}\s/.test(nextLine.trim());
-      const obviousFragment = /(?:\.\s+[A-Z]\s*$|\b(?:and|or|to|with|for|from|by|of|the|a|an|is|are|was|were|be|been|being|can|could|should|will|would|may|might|must)\s*$)/.test(trimmed);
+    if (isProseCandidateLine(line, prevLine) && !/[.!?):\]}`]$/.test(trimmed)) {
+      const startsLikeSentence =
+        /^(?:The|This|These|Those|You|If|When|After|Before|For|To|Use|Run|Create|Configure|Set|Call|Click|Open|Select|Ensure|Make|Add|Copy|Paste|Download|Install|Enable|Disable|Start|Stop|Join|Leave|Send|Receive|Get|Update|Delete)\b/.test(
+          trimmed,
+        );
+      const nextIsBlankOrHeading =
+        nextLine.trim() === '' || /^#{1,6}\s/.test(nextLine.trim());
+      const obviousFragment =
+        /(?:\.\s+[A-Z]\s*$|\b(?:and|or|to|with|for|from|by|of|the|a|an|is|are|was|were|be|been|being|can|could|should|will|would|may|might|must)\s*$)/.test(
+          trimmed,
+        );
       if (startsLikeSentence && nextIsBlankOrHeading && obviousFragment) {
         addFinding(findings, {
           severity: 'medium',
@@ -517,8 +615,38 @@ function scanFile(filePath) {
           line: lineNumber,
           snippet: line,
           issueType: 'possibly unfinished sentence',
-          rationale: 'The line starts like prose but has no terminal punctuation before a boundary.',
-          suggestion: 'Complete the sentence or add the missing terminal punctuation.',
+          rationale:
+            'The line starts like prose but has no terminal punctuation before a boundary.',
+          suggestion:
+            'Complete the sentence or add the missing terminal punctuation.',
+        });
+      }
+    }
+
+    if (isProseCandidateLine(line, prevLine)) {
+      const afterBlank = visibleLineAfterBlank(lines, index);
+      const afterBlankTrimmed = afterBlank?.line.trim() ?? '';
+      const endsAsContinuation =
+        /[,;]\s*$/.test(cleaned.trim()) ||
+        /\b(?:and|or|to|with|for|from|by|of|the|a|an|is|are|was|were|be|been|being|can|could|should|will|would|may|might|must|that|which|when|where|because|such as)\s*$/i.test(
+          cleaned.trim(),
+        );
+      const nextContinuesSentence =
+        afterBlankTrimmed !== '' &&
+        !isStructuralLine(afterBlank.line) &&
+        !/^(?:[-*+]|\d+\.)\s+/.test(afterBlankTrimmed) &&
+        /^[a-z(]/.test(stripInlineNoise(afterBlankTrimmed));
+      if (endsAsContinuation && nextContinuesSentence) {
+        addFinding(findings, {
+          severity: 'medium',
+          file: rel,
+          line: lineNumber,
+          snippet: line,
+          issueType: 'abnormal blank line in sentence',
+          rationale:
+            'The line ends as an unfinished continuation, but a blank line separates it from the next prose fragment.',
+          suggestion:
+            'Remove the blank line or complete the sentence before the paragraph break.',
         });
       }
     }
@@ -527,17 +655,26 @@ function scanFile(filePath) {
   return findings;
 }
 
-const findings = walk(docsRoot)
-  .sort()
-  .flatMap(scanFile)
-  .sort((a, b) => {
-    const severityRank = { high: 0, medium: 1, low: 2 };
-    return (
-      severityRank[a.severity] - severityRank[b.severity] ||
-      a.file.localeCompare(b.file) ||
-      a.line - b.line
-    );
-  });
+function collectFindings() {
+  return walk(docsRoot)
+    .sort()
+    .flatMap(scanFile)
+    .sort((a, b) => {
+      const severityRank = { high: 0, medium: 1, low: 2 };
+      return (
+        severityRank[a.severity] - severityRank[b.severity] ||
+        a.file.localeCompare(b.file) ||
+        a.line - b.line
+      );
+    });
+}
+
+const roundResults = [];
+let findings = [];
+for (let round = 1; round <= scanRounds; round += 1) {
+  findings = collectFindings();
+  roundResults.push({ round, findingCount: findings.length });
+}
 
 fs.mkdirSync(reportDir, { recursive: true });
 fs.writeFileSync(
@@ -546,6 +683,8 @@ fs.writeFileSync(
     {
       generatedAt: new Date().toISOString(),
       scope: 'content/docs/en/**/*.md{x}',
+      roundCount: scanRounds,
+      rounds: roundResults,
       findingCount: findings.length,
       findings,
     },
@@ -556,7 +695,9 @@ fs.writeFileSync(
 
 if (process.argv.includes('--markdown')) {
   for (const finding of findings) {
-    console.log(`- ${finding.severity.toUpperCase()} ${finding.file}:${finding.line}`);
+    console.log(
+      `- ${finding.severity.toUpperCase()} ${finding.file}:${finding.line}`,
+    );
     console.log(`  - Original: ${finding.snippet}`);
     console.log(`  - Type: ${finding.issueType}`);
     console.log(`  - Why: ${finding.rationale}`);
