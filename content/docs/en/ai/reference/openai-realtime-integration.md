@@ -388,7 +388,6 @@ Join the same Agora channel from a client app or the [Agora Voice Call Demo](htt
 
 ## Reference
 
-- [OpenAI Realtime integration](./)
 - [Demo project on GitHub](https://github.com/AgoraIO/openai-realtime-python)
 - [Voice calling quickstart](/en/realtime-media/voice/quickstart)
 - [RTC API reference](/en/api-reference/api-ref/rtc)
