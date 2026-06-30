@@ -12,8 +12,8 @@ description: "A list of platforms supported by Agora Analytics."
 - *iOS*:
     |Operating system |Features |VP8 |	H.264|
     |:-----|:-----|:-----|:-----|
-    |Applications with  built-in WebView|Receiving streams|iOS 12.2 and later |iOS 12.1.4 and later|
-    |Applications with  built-in WebView| Sending streams|iOS 14.3 and later |iOS 14.3 and later|
+    |Applications with built-in WebView|Receiving streams|iOS 12.2 and later |iOS 12.1.4 and later|
+    |Applications with built-in WebView| Sending streams|iOS 14.3 and later |iOS 14.3 and later|
     |Safari |Sending and receiving streams |OS 12.2 and later |iOS 11 and later|
 
 - *Desktop*:

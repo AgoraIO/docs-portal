@@ -12,7 +12,7 @@ description: "Introduces Agora Analytics for Agora Chat."
 Agora Analytics offers the following features for Chat:
 
 - Automatic collection, processing, and storage of usage and quality metrics data. This data has a delay of one minute.
-- Display of current and historical data at the user, , and levels, as well as historical trends in message count and message type.
+- Display of current and historical data at the user, chat group, and chat room levels, as well as historical trends in message count and message type.
 - Display of the number of request attempts, request success rate, and request delay of API calls at the client side and server side.
 
 ### Enable Chat-related features
@@ -29,22 +29,22 @@ Follow these steps to view the Chat Usage Insights page:
 
 ### Scale Statistics
 
-The Scale Statistics page shows the scale of users, s, and s on the current day and within a past period. This page includes the following sections:
+The Scale Statistics page shows the scale of users, chat groups, and chat rooms on the current day and within a past period. This page includes the following sections:
 
 || Description | Notes |
 | :----------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
 | Today's Overview | Values of key usage metrics as of today. For a detailed description of each metric, see [Scale Metrics](/en/realtime-media/im/reference/console/data-metrics). | N/A |
-| Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | The maximum time range to query is the past 30 days.Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay (except for Daily  PCU, which has a delay of 10 minutes). |
+| Historical Data | Line charts and bar charts showing how the metric values change in a certain time range. | The maximum time range to query is the past 30 days.Each metric in this section is calculated at an interval of a day, and the data has a one-minute delay (except for Daily chat room PCU, which has a delay of 10 minutes). |
 
 ![](https://web-cdn.agora.io/docs-files/1656493263570)
 
 ![](https://web-cdn.agora.io/docs-files/1656491897724)
 
-Taking the historical data for s as an example, the bar chart contains the following information:
+Taking the historical data for chat rooms as an example, the bar chart contains the following information:
 
-- The red bar chart represents the number of new s.
-- The cyan bar chart represents the number of disbanded s.
-- Line charts are used for total s, peak concurrent users, and daily active s.
+- The red bar chart represents the number of new chat rooms.
+- The cyan bar chart represents the number of disbanded chat rooms.
+- Line charts are used for total chat rooms, peak concurrent users, and daily active chat rooms.
 
 To hide the bar chart or line chart for a metric, click the corresponding legend.
 
@@ -61,7 +61,7 @@ The Message Statistics page shows the historical numbers of messages and distrib
 
 ![](https://web-cdn.agora.io/docs-files/1656492249498)
 
-Taking the uplink message trends of s as an example, the pie chart contains the following information:
+Taking the uplink message trends of chat rooms as an example, the pie chart contains the following information:
 
 - By default, it shows the message type breakdown within the selected time range.
 - If you click a data point in the line chart on the left, the pie chart is updated to show the message type breakdown on that specific day. Click the blue **Back** button to restore the default pie chart.

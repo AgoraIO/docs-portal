@@ -356,7 +356,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the entity 
 | `owner` | String | The thread creator. |
 | `id` | String | The thread ID. |
 | `msgId` | String | The ID of the message based on which the thread is created. |
-| `groupId` | String | The ID of the  to which the thread belongs. |
+| `groupId` | String | The ID of the group to which the thread belongs. |
 | `created` | String | The Unix timestamp when the thread is created. |
 | `properties.cursor` | String | The cursor that indicates the starting position of the next query. |
 
@@ -444,7 +444,7 @@ For the last page of data, the response still contains `cursor` and the number o
 | `owner` | String | The thread creator. |
 | `id` | String | The thread ID. |
 | `msgId` | String | The ID of the message based on which the thread is created. |
-| `groupId` | String | The ID of the  to which the thread belongs. |
+| `groupId` | String | The ID of the group to which the thread belongs. |
 | `created` | String | The Unix timestamp when the thread is created. |
 
 For other fields and descriptions, see [Common parameters](#response).

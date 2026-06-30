@@ -556,7 +556,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the respons
 
 | Field | Type | Description |
 | :----- | :--------- | :----------------------- |
-| `data` | JSONArray | The array of usernames of  administrators. |
+| `data` | JSONArray | The array of usernames of chat room administrators. |
 
 For other fields and detailed descriptions, see [Common parameters](#param).
 

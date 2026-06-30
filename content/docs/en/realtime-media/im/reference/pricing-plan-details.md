@@ -61,7 +61,7 @@ This page lists the details of the pricing plans for Chat.
 | File sharing                                      |  ✓   |    ✓    |  ✓   |     ✓      |
 | Generating thumbnails for image messages                     |  ✓   |    ✓    |  ✓   |     ✓      |
 | Retrieving offline messages                                 |  ✓   |    ✓    |  ✓   |     ✓      |
-|  and  notifications                       |  ✓   |    ✓    |  ✓   |     ✓      |
+| Group chat and chat room notifications                       |  ✓   |    ✓    |  ✓   |     ✓      |
 | Reactions                                                    |  ✓   |    ✓    |  ✓   |     ✓      |
 | Message threading                                            |  ✓   |    ✓    |  ✓   |     ✓      |
 | Presence                                                     |  ✓   |    ✓    |  ✓   |     ✓      |
@@ -156,8 +156,8 @@ Submit a support ticket if you want to lift the limits and pay for overage charg
 | User relationship management | Block user | 50 | N | / | POST | `/{org_name}/{app_name}/users/{owner_username}/blocks/users` |
 | User relationship management | Remove user of block user | 50 | N | / | DELETE | `/{org_name}/{app_name}/users/{owner_username}/blocks/users/{blocked_username}` |
 | Message | Send a single chat message | 6,000 messages per minute | Y | $50/month/additional 6,000 messages/minute | POST | `/{org_name}/{app_name}/messages/users` |
-| Message | Send a  message | 20 messages per second | Y | $200/month/ additional 20 messages/second | POST | `/{org_name}/{app_name}/messages/chatgroups` |
-| Message | Send  message | 100 messages per second | Y | $200/month/ additional 100 messages/second | POST | `/{org_name}/{app_name}/messages/chatrooms` |
+| Message | Send a group chat message | 20 messages per second | Y | $200/month/ additional 20 messages/second | POST | `/{org_name}/{app_name}/messages/chatgroups` |
+| Message | Send a chat room message | 100 messages per second | Y | $200/month/ additional 100 messages/second | POST | `/{org_name}/{app_name}/messages/chatrooms` |
 | Message | Get message history file | 10 times per minute | Y | $50/month/additional 10 times/minute | GET | `/{org_name}/{app_name}/chatmessages/${time}` |
 | Message | Send a message | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/messages` |
 | Message | Upload files | 100 | Y | $50/month/additional 50 QPS | POST | `/{org_name}/{app_name}/chatfiles` |
