@@ -160,7 +160,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps AI interrupt agent quickstart link on the Video Calling SDK quickstart', () => {
-    const content = readDoc('ai/build/shape-the-conversation/interrupt-agent.mdx');
+    const content = readDoc(
+      'ai/build/shape-the-conversation/interrupt-agent.mdx',
+    );
 
     expect(content).toContain(
       '[Quickstart](../../../realtime-media/video/quickstart)',
@@ -249,8 +251,12 @@ describe('docs content regressions', () => {
   it('keeps AI best practices start-stop links in the build section', () => {
     const content = readDoc('ai/best-practices/record-agent-conversation.mdx');
 
-    expect(content).toContain('[Start and stop an agent](../build/start-stop-agent)');
-    expect(content).not.toContain('[Start and stop an agent](start-stop-agent)');
+    expect(content).toContain(
+      '[Start and stop an agent](../build/start-stop-agent)',
+    );
+    expect(content).not.toContain(
+      '[Start and stop an agent](start-stop-agent)',
+    );
   });
 
   it('keeps AI filler words MCP servers link on the Conversational AI join API', () => {
@@ -314,7 +320,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps AI handle-runtime-events notification type links in the AI reference section', () => {
-    const files = listMarkdownFiles(resolve(docsRoot, 'ai/build/handle-runtime-events'));
+    const files = listMarkdownFiles(
+      resolve(docsRoot, 'ai/build/handle-runtime-events'),
+    );
     const offenders = files.flatMap((file) => {
       const content = readFileSync(file, 'utf8');
 
@@ -350,7 +358,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps custom model integration audio output subtitles links on the AI build transcripts page', () => {
-    const content = readDoc('ai/build/custom-model-integration/audio-output.mdx');
+    const content = readDoc(
+      'ai/build/custom-model-integration/audio-output.mdx',
+    );
 
     expect(content).toContain('[Display live subtitles](../transcripts)');
     expect(content).not.toContain('[Display live subtitles](transcripts)');
@@ -487,9 +497,7 @@ describe('docs content regressions', () => {
         '<TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>',
       );
       expect(providerSection).toContain('<TabsContent value="aws">');
-      expect(providerSection).toContain(
-        '<TabsContent value="alibaba-cloud">',
-      );
+      expect(providerSection).toContain('<TabsContent value="alibaba-cloud">');
     }
   });
 
@@ -534,7 +542,7 @@ describe('docs content regressions', () => {
     const iosSection = content.slice(platformStart, platformEnd);
 
     expect(iosSection).toContain(
-      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)',
     );
   });
 
@@ -561,7 +569,7 @@ describe('docs content regressions', () => {
     const macosSection = content.slice(platformStart, platformEnd);
 
     expect(macosSection).toContain(
-      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)',
     );
   });
 
@@ -588,7 +596,7 @@ describe('docs content regressions', () => {
     const windowsSection = content.slice(platformStart, platformEnd);
 
     expect(windowsSection).toContain(
-      '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+      '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)',
     );
   });
 
@@ -602,31 +610,31 @@ describe('docs content regressions', () => {
         next: '<PlatformStructured platform="electron">',
         platform: '<PlatformStructured platform="android">',
         image:
-          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+          '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)',
       },
       {
         next: '<PlatformStructured platform="flutter">',
         platform: '<PlatformStructured platform="electron">',
         image:
-          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+          '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)',
       },
       {
         next: '<PlatformStructured platform="ios">',
         platform: '<PlatformStructured platform="flutter">',
         image:
-          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+          '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)',
       },
       {
         next: '<PlatformStructured platform="unity">',
         platform: '<PlatformStructured platform="react-native">',
         image:
-          '![Disconnection Connection](/images/video-sdk/connection-state-flutter-rn-electron.svg)',
+          '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)',
       },
       {
         next: '<PlatformStructured platform="web">',
         platform: '<PlatformStructured platform="unreal">',
         image:
-          '![Disconnection Connection](/images/video-sdk/connection-state-native.svg)',
+          '![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)',
       },
     ] as const;
 
@@ -749,7 +757,9 @@ describe('docs content regressions', () => {
       'realtime-media/rtmp-gateway/reference/srt-streaming.md',
     );
 
-    expect(srtStreaming).toContain('`srtlive-rtcpush-prod-{region}.agoramdn.com`');
+    expect(srtStreaming).toContain(
+      '`srtlive-rtcpush-prod-{region}.agoramdn.com`',
+    );
     expect(srtStreaming).toContain('- `na`: North America');
     expect(srtStreaming).toContain(
       '[Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key)',
@@ -815,7 +825,9 @@ describe('docs content regressions', () => {
     );
 
     expect(activeFence).toContain('| Title and key | Type | Meaning |');
-    expect(activeFence).toContain('| `requestId` | Text | Request ID of the screenshot |');
+    expect(activeFence).toContain(
+      '| `requestId` | Text | Request ID of the screenshot |',
+    );
 
     const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
 
@@ -906,7 +918,9 @@ describe('docs content regressions', () => {
       'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
     );
 
-    expect(rtmpNotifications).toContain('| `eventType` | Event name | Description |');
+    expect(rtmpNotifications).toContain(
+      '| `eventType` | Event name | Description |',
+    );
     expect(rtmpNotifications).toContain('| `3` | `live_stream_aborted` |');
 
     const whiteboardReleaseNotes = readDoc(
@@ -919,7 +933,9 @@ describe('docs content regressions', () => {
     expect(whiteboardReleaseNotes).toContain(
       "implementation 'com.github.netless-io:whiteboard-android:<version>'",
     );
-    expect(whiteboardReleaseNotes).toContain("pod 'Whiteboard/Whiteboard-YYKit'");
+    expect(whiteboardReleaseNotes).toContain(
+      "pod 'Whiteboard/Whiteboard-YYKit'",
+    );
     expect(whiteboardReleaseNotes).not.toContain('<Admonition');
     expect(whiteboardReleaseNotes).not.toContain('<Link to="{{Global.');
     expect(whiteboardReleaseNotes).not.toContain(
@@ -1180,7 +1196,25 @@ describe('docs content regressions', () => {
     }
   });
 
-  it('uses the local Flexible Classroom product architecture image asset', () => {
+  it('keeps virtual background sample app image paths local to the sample', () => {
+    const samplePaths = [
+      'realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
+      'realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background.mdx',
+      'realtime-media/video/build/apply-video-effects/virtual-background.mdx',
+      'solutions/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
+    ];
+
+    for (const samplePath of samplePaths) {
+      const source = readFileSync(resolve(docsRoot, samplePath), 'utf8');
+
+      expect(source).toContain("imgElement.src = '/images/background.png';");
+      expect(source).not.toContain(
+        'https://assets-docs.agora.io/images/background.png',
+      );
+    }
+  });
+
+  it('uses the docs-owned Flexible Classroom product architecture image asset', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
@@ -1190,7 +1224,7 @@ describe('docs content regressions', () => {
     );
 
     expect(source).toContain(
-      '![Product Architecture](/images/flexible-classroom/product-architecture.png)',
+      '![Product Architecture](https://assets-docs.agora.io/images/flexible-classroom/product-architecture.png)',
     );
     expect(source).not.toContain(
       'https://web-cdn.agora.io/docs-files/1658392957746',
@@ -1300,7 +1334,6 @@ describe('docs content regressions', () => {
     }
   });
 
-
   it('does not leave multi-host optimization pages as placeholder stubs', () => {
     const pages = [
       'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
@@ -1311,7 +1344,9 @@ describe('docs content regressions', () => {
     for (const relativePath of pages) {
       const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
 
-      expect(source).not.toContain('**This feature guide is not available yet.**');
+      expect(source).not.toContain(
+        '**This feature guide is not available yet.**',
+      );
       expect(source).toContain('client-customized composite layout');
       expect(source).toContain('Cloud Transcoding');
     }
@@ -1345,8 +1380,12 @@ describe('docs content regressions', () => {
     for (const relativePath of pages) {
       const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
 
-      expect(source).not.toContain('https://api-ref.agora.io/en/voice-sdk/ios/4.x/');
-      expect(source).toContain('https://api-ref.agora.io/en/video-sdk/ios/4.x/');
+      expect(source).not.toContain(
+        'https://api-ref.agora.io/en/voice-sdk/ios/4.x/',
+      );
+      expect(source).toContain(
+        'https://api-ref.agora.io/en/video-sdk/ios/4.x/',
+      );
     }
   });
 
@@ -1384,9 +1423,7 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
-    expect(source).toContain(
-      '| Item | Simulcasting | Dual-stream video |',
-    );
+    expect(source).toContain('| Item | Simulcasting | Dual-stream video |');
     expect(source).toContain(
       '| Number of published stream layers | Up to four simultaneous layers from one video source |',
     );
@@ -1420,7 +1457,7 @@ describe('docs content regressions', () => {
       'If bandwidth or device performance is limited, the sender automatically disables extra streams.',
     );
     expect(source).toContain(
-      'Simulcasting supports publishing video streams at specific tiers based on the subscriber\'s settings.',
+      "Simulcasting supports publishing video streams at specific tiers based on the subscriber's settings.",
     );
   });
 
@@ -1430,11 +1467,13 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
-    expect(source).toContain("- Groovy `build.gradle`\n\n          ```groovy");
+    expect(source).toContain('- Groovy `build.gradle`\n\n          ```groovy');
     expect(source).toContain(
-      "- Kotlin `build.gradle.kts`\n\n          ```kotlin",
+      '- Kotlin `build.gradle.kts`\n\n          ```kotlin',
     );
-    expect(source).not.toContain("```json\nimplementation 'io.agora.rtc:full-sdk:x.y.z'");
+    expect(source).not.toContain(
+      "```json\nimplementation 'io.agora.rtc:full-sdk:x.y.z'",
+    );
   });
 
   it('keeps voice quickstart free of isolated directive closers in setup steps', () => {
@@ -1483,7 +1522,9 @@ describe('docs content regressions', () => {
       resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
       'utf8',
     );
-    const webSectionStart = source.indexOf('<PlatformStructured platform="web">');
+    const webSectionStart = source.indexOf(
+      '<PlatformStructured platform="web">',
+    );
     const unrealSectionStart = source.indexOf(
       '<PlatformStructured platform="unreal">',
     );
@@ -1519,7 +1560,10 @@ describe('docs content regressions', () => {
     expect(unrealSectionStart).toBeGreaterThanOrEqual(0);
     expect(blueprintSectionStart).toBeGreaterThan(unrealSectionStart);
 
-    const unrealSection = source.slice(unrealSectionStart, blueprintSectionStart);
+    const unrealSection = source.slice(
+      unrealSectionStart,
+      blueprintSectionStart,
+    );
 
     expect(unrealSection).toContain('<TabsList>');
     expect(unrealSection).toContain(
@@ -1529,7 +1573,9 @@ describe('docs content regressions', () => {
       '1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.',
     );
     expect(unrealSection).toContain('3. Add the Agora dependency library');
-    expect(unrealSection).toContain('1. Create a new C++ class and generate header and library files');
+    expect(unrealSection).toContain(
+      '1. Create a new C++ class and generate header and library files',
+    );
     expect(unrealSection).toContain('1. Associate C++ classes and Widgets');
     expect(unrealSection).toContain(
       '1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare bones UI.',
@@ -1575,12 +1621,8 @@ describe('docs content regressions', () => {
 
     const blueprintSection = source.slice(blueprintSectionStart);
 
-    expect(blueprintSection).toContain(
-      '2. Configure your project as follows:',
-    );
-    expect(blueprintSection).toContain(
-      '* **Language**: Select **Blueprint**.',
-    );
+    expect(blueprintSection).toContain('2. Configure your project as follows:');
+    expect(blueprintSection).toContain('* **Language**: Select **Blueprint**.');
     expect(blueprintSection).toContain(
       '* **Target Platform**: Pick **Desktop**.',
     );
@@ -1601,7 +1643,10 @@ describe('docs content regressions', () => {
 
   it('keeps voice supported platforms expanded into the shared multi-platform structure', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/voice/reference/supported-platforms.mdx'),
+      resolve(
+        docsRoot,
+        'realtime-media/voice/reference/supported-platforms.mdx',
+      ),
       'utf8',
     );
 
@@ -1662,13 +1707,25 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
-    expect(source).toContain('description: "Procedures to prevent and respond to room bombing."');
-    expect(source).toContain('This page describes a series of measures to deal with room bombing and disruptive behavior');
-    expect(source).toContain('[Secure authentication with tokens](../token-authentication/authentication-workflow)');
-    expect(source).toContain('[Channel Management RESTful API](/en/api-reference/api-ref/video)');
+    expect(source).toContain(
+      'description: "Procedures to prevent and respond to room bombing."',
+    );
+    expect(source).toContain(
+      'This page describes a series of measures to deal with room bombing and disruptive behavior',
+    );
+    expect(source).toContain(
+      '[Secure authentication with tokens](../token-authentication/authentication-workflow)',
+    );
+    expect(source).toContain(
+      '[Channel Management RESTful API](/en/api-reference/api-ref/video)',
+    );
     expect(source).toContain('`unsubscribe`');
-    expect(source).not.toContain('description: "Procedures to prevent and respond to housebreaking."');
-    expect(source).not.toContain('[Secure authentication with tokens](../../authenticate-users/use-tokens.mdx)');
+    expect(source).not.toContain(
+      'description: "Procedures to prevent and respond to housebreaking."',
+    );
+    expect(source).not.toContain(
+      '[Secure authentication with tokens](../../authenticate-users/use-tokens.mdx)',
+    );
   });
 
   it('keeps voice error codes page in the condensed reference format', () => {
@@ -1680,8 +1737,12 @@ describe('docs content regressions', () => {
     expect(source).toContain('## Common error codes');
     expect(source).toContain('## Audio-related error codes');
     expect(source).toContain('## Data stream-related error codes');
-    expect(source).toContain('| `109` | The current token has expired and is no longer valid. Generate a new token on the server and call `renewToken`. |');
-    expect(source).toContain('| `1501` | There is no permission to use the microphone or related capture device. Check device permissions. |');
+    expect(source).toContain(
+      '| `109` | The current token has expired and is no longer valid. Generate a new token on the server and call `renewToken`. |',
+    );
+    expect(source).toContain(
+      '| `1501` | There is no permission to use the microphone or related capture device. Check device permissions. |',
+    );
     expect(source).not.toContain('<PlatformStructured platform="android">');
     expect(source).not.toContain('<PlatformStructured platform="web">');
   });
@@ -1710,10 +1771,14 @@ describe('docs content regressions', () => {
     );
 
     expect(abr).toContain('### API endpoint');
-    expect(abr).toContain('https://api.agora.io/{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}');
+    expect(abr).toContain(
+      'https://api.agora.io/{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}',
+    );
     expect(notifications).toContain('### Media Gateway event types');
     expect(notifications).toContain('### `live_stream_aborted` error codes');
-    expect(features).toContain('## Related APIs and implementation entry points');
+    expect(features).toContain(
+      '## Related APIs and implementation entry points',
+    );
     expect(features).toContain('REST API overview');
   });
 
@@ -1782,12 +1847,14 @@ describe('docs content regressions', () => {
   it('renders AI model callout directives through the processed markdown pipeline', async () => {
     const { source } = await import('./source.server');
     const modelDocsRoot = resolve(docsRoot, 'ai/models');
-    const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter((file) => {
-      const sourceText = readFileSync(file, 'utf8');
-      return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
-        sourceText,
-      );
-    });
+    const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
+      (file) => {
+        const sourceText = readFileSync(file, 'utf8');
+        return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
+          sourceText,
+        );
+      },
+    );
 
     for (const file of filesWithCallouts) {
       const page = source.getPage(aiModelsDocSlugs(file), 'en');
@@ -1832,14 +1899,18 @@ describe('docs content regressions', () => {
       !('getText' in deepgram.data) ||
       !('getText' in elevenLabs.data)
     ) {
-      throw new Error('Expected AI model regression pages to expose processed markdown.');
+      throw new Error(
+        'Expected AI model regression pages to expose processed markdown.',
+      );
     }
 
     const akoolProcessed = await akool.data.getText('processed');
     const deepgramProcessed = await deepgram.data.getText('processed');
     const elevenLabsProcessed = await elevenLabs.data.getText('processed');
 
-    expect(akoolProcessed.match(/<CalloutContainer type="info">/g) ?? []).toHaveLength(3);
+    expect(
+      akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
+    ).toHaveLength(3);
     expect(akoolProcessed).toContain('sales@agora.io');
     expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
     expect(deepgramProcessed).toContain('callback_method');

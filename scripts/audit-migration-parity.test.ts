@@ -127,7 +127,7 @@ describe('auditMigrationParity', () => {
         'Use `getCurrentMonotonicTimeInMs`.',
         '</Admonition>',
         '',
-        '![API call sequence](/images/custom.svg)',
+        '![API call sequence](https://assets-docs.agora.io/images/custom.svg)',
         '- [joinChannel]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel)',
       ].join('\n'),
       location: 'source.mdx',
@@ -150,7 +150,7 @@ describe('auditMigrationParity', () => {
     expect(records).toContainEqual(
       expect.objectContaining({
         kind: 'image',
-        value: 'API call sequence -> /images/custom.svg',
+        value: 'API call sequence -> https://assets-docs.agora.io/images/custom.svg',
       }),
     );
     expect(records).toContainEqual(

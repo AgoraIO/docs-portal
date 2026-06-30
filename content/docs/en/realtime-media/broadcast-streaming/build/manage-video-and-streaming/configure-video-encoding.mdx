@@ -41,7 +41,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -65,35 +65,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -127,7 +127,7 @@ To set video encoder configuration, refer to the following sample configurations
 
 ### Standard video calls
 
-Use the following as a starting configuration for one-to-one and group video calls: 
+Use the following as a starting configuration for one-to-one and group video calls:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -141,7 +141,7 @@ Use the following as a starting configuration for one-to-one and group video cal
 VideoEncoderConfiguration videoConfig = new VideoEncoderConfiguration(
   // Use VD_640x360 for one-to-one calls with larger video windows
   // Use VD_320x240 for group calls with multiple smaller video windows
-  VideoEncoderConfiguration.VD_640x360, 
+  VideoEncoderConfiguration.VD_640x360,
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
   VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
@@ -153,7 +153,7 @@ videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE
 videoConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(videoConfig);
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -162,7 +162,7 @@ engine.setVideoEncoderConfiguration(videoConfig);
 val videoConfig = VideoEncoderConfiguration(
   // Use VD_640x360 for one-to-one calls with larger video windows
   // Use VD_320x240 for group calls with multiple smaller video windows
-  VideoEncoderConfiguration.VD_640x360, 
+  VideoEncoderConfiguration.VD_640x360,
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
   VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
@@ -180,7 +180,7 @@ engine.setVideoEncoderConfiguration(videoConfig)
 </CodeBlockTabs>
 ### Live streaming or broadcasting
 
-Use the following as a starting configuration for Interactive live streaming or Broadcasting streaming use-cases: 
+Use the following as a starting configuration for Interactive live streaming or Broadcasting streaming use-cases:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -204,7 +204,7 @@ liveStreamConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR
 liveStreamConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(liveStreamConfig);
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -229,7 +229,7 @@ engine.setVideoEncoderConfiguration(liveStreamConfig)
 </CodeBlockTabs>
 ### Low-bandwidth use-cases
 
-Use the following as a starting configuration for limited bandwidth or mobile networks: 
+Use the following as a starting configuration for limited bandwidth or mobile networks:
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -253,7 +253,7 @@ lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRR
 lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(lowBandwidthConfig);
-``` 
+```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
@@ -384,7 +384,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -410,35 +410,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -643,7 +643,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -669,35 +669,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -1128,7 +1128,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -1152,35 +1152,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -1378,7 +1378,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -1402,35 +1402,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -1618,7 +1618,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -1642,35 +1642,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -1865,7 +1865,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -1889,35 +1889,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -2106,7 +2106,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -2130,35 +2130,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -2360,7 +2360,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -2384,35 +2384,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -2611,7 +2611,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 * **Fixed Portrait**
 
   In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
-  
+
 * **Fixed Landscape**
 
   In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
@@ -2635,35 +2635,35 @@ The following images illustrate the orientation behavior:
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_locked_landscape](/images/video-sdk/orientation_adaptive_locked_landscape.png) 
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
 
 * Screen rotation: _Disabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_locked_portrait](/images/video-sdk/orientation_adaptive_locked_portrait.png) 
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Landscape_
-  ![orientation_adaptive_unlocked_landscape](/images/video-sdk/orientation_adaptive_unlocked_landscape.png) 
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
 
 * Screen rotation: _Enabled_
 * Capturing device orientation: _Portrait_
-  ![orientation_adaptive_unlocked_portrait](/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
 
 **Landscape orientation mode**
 
 * Capturing device orientation: _Landscape_
-  ![orientation_landscape_landscape](/images/video-sdk/orientation_landscape_landscape.png) 
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
 
 * Capturing device orientation: _Portrait_
-  ![orientation_landscape_portrait](/images/video-sdk/orientation_landscape_portrait.png)
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
 
 **Portrait orientation mode**
 
 * Capturing device orientation: _Portrait_
-  ![orientation_portrait_portrait](/images/video-sdk/orientation_portrait_portrait.png) 
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
 
 * Capturing device orientation: _Landscape_
-  ![orientation_portrait_landscape](/images/video-sdk/orientation_portrait_landscape.png)
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
 
 #### Degradation preference
 
@@ -2678,15 +2678,15 @@ Ensure that you have implemented the [SDK quickstart](../../index) in your proje
 
 ## Implementation
 
-Use the `SetVideoEncoderConfiguration` method to configure video encoding parameters. 
+Use the `SetVideoEncoderConfiguration` method to configure video encoding parameters.
 You can call this method at any point after initialization, whether it's before or after joining a channel. For optimal performance, best practice is to enable the video module by calling `EnableVideo` before calling `SetVideoEncoderConfiguration`. This approach reduces the time required for the first frame to be generated.
 
 To set the video encoder configuration, take the following steps:
 
-1. **Create UI** 
+1. **Create UI**
 
   In `BP_VideoWidget`, create a **Video Encoder Configuration** area containing the following controls:
-  
+
   * `ET_FPS`: Set the frame rate of video encoding.
   * `ET_Width`: Set the width of the video.
   * `ET_Height`: Set the height of the video.
@@ -2694,58 +2694,58 @@ To set the video encoder configuration, take the following steps:
   * `ET_MinBitRate`: Set the minimum encoding bitrate of the video.
 
   Sample UI Interface:
-  ![Video call ui](/images/video-sdk/blueprint-assets/bp-videoprofile-ui.png)
+  ![Video call ui](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-videoprofile-ui.png)
 
 2. **Bind events**
 
   Follow the steps below to bind the corresponding events in the node.
-  
-  1. In the `Bind UIEvent` node, bind the `OnVideoConfigConfirmClicked` callback. This callback is triggered when the user sets the video encoding parameters in the video encoder configuration. 
-   
-      ![OnVideoConfigConfirmClicked callback](/images/video-sdk/blueprint-assets/bp-bind-onvideoconfigconfirmclicked.png)
-  
-  2. In the `Bind Event` node, bind the `OnVideoSizeChanged` callback. This callback is triggered when there is a change in the video size or rotation information. 
 
-      ![OnVideoSizeChanged callback](/images/video-sdk/blueprint-assets/bp-bind-onvideosizechanged.png)
+  1. In the `Bind UIEvent` node, bind the `OnVideoConfigConfirmClicked` callback. This callback is triggered when the user sets the video encoding parameters in the video encoder configuration.
+
+      ![OnVideoConfigConfirmClicked callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-bind-onvideoconfigconfirmclicked.png)
+
+  2. In the `Bind Event` node, bind the `OnVideoSizeChanged` callback. This callback is triggered when there is a change in the video size or rotation information.
+
+      ![OnVideoSizeChanged callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-bind-onvideosizechanged.png)
 
 3. **Implement the `OnVideoConfigConfirmClicked` callback**
 
   To change the video encoder configuration, take the following steps:
 
-  1. In the **My Blueprint panel** of the Level Blueprint, follow these steps to create an `OnVideoConfigConfirmClicked` UI event node: 
+  1. In the **My Blueprint panel** of the Level Blueprint, follow these steps to create an `OnVideoConfigConfirmClicked` UI event node:
     1. Open the Level Blueprint.
     2. Locate the **My Blueprint** panel.
     3. Create a new UI event node named `OnVideoConfigConfirmClicked`.
-  
+
   2. Connect the created UI element to the **Make VideoEncoderConfiguration** node. Pass in the encoding parameters entered by the user to configure the `VideoEncoderConfiguration`. Follow the steps below:
     1. Retrieve the user-specified values from the UI elements.
     2. Use these values as inputs to the **Make VideoEncoderConfiguration** node.
     3. Connect the output of the **Make VideoEncoderConfiguration** node to the appropriate input of the video encoding process.
-    
-        ![VideoEncoderConfiguration](/images/video-sdk/blueprint-assets/bp-videoconfig-value.png)
-  
+
+        ![VideoEncoderConfiguration](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-videoconfig-value.png)
+
   3. Call the `SetVideoEncoderConfiguration` method and configure the following parameters in the **Make VideoEncoderConfiguration** node according to your specific requirements:
     1. **Orientation Mode:** Set the rotation direction of the video.
     2. **Degradation Preference:** Specify the degradation preference for video encoding when bandwidth is limited.
     3. **Mirror Mode:** Define whether the video screen seen by the remote user should be mirrored.
     4. **Compression Preference:** Set the compression preference for video encoding.
-    
+
     Refer to the following sample interface:
 
-    ![Orientation Mode](/images/video-sdk/blueprint-assets/bp-setvideoencoderconfiguration.png)
+    ![Orientation Mode](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-setvideoencoderconfiguration.png)
 
 4. **Implement the `OnVideoSizeChanged` callback**
 
   Follow the steps below to implement the `OnVideoSizeChanged` callback function and adjust the local view based on the video change information obtained in the callback:
-  
+
   1. In the **My Blueprint** panel of the level blueprint, create an `OnVideoSizeChanged` event node.
   2. Within the `OnVideoSizeChanged` callback, obtain the key parameters of the video change information: `sourceType`, `uid`, `width`, `height`, `rotation`.
   3. Pass these parameters into the **Make FVideoViewIdentity** node to adjust both the local and remote views accordingly.
-  
+
   Sample implementation:
     - Connect the obtained parameters (`sourceType`, `uid`, `width`, `height`, `rotation`) to the corresponding inputs of the **Make FVideoViewIdentity** node.
     - Adjust the local and remote views using the output of the **Make FVideoViewIdentity** node.
-  ![OnVideoSizeChanged callback](/images/video-sdk/blueprint-assets/bp-onvideosizechanged.png)
+  ![OnVideoSizeChanged callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-onvideosizechanged.png)
 
 ### Troubleshooting
 

@@ -14,7 +14,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -26,7 +26,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -108,7 +108,7 @@ Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust 
 ```java
 int volume = 50;
 int uid = 123456;
-// Set the local playback volume for all remote users 
+// Set the local playback volume for all remote users
 mRtcEngine.adjustPlaybackSignalVolume(volume);
 // Set the local playback volume for a specific remote user. For example, a user with uid=123
 mRtcEngine.adjustUserPlaybackSignalVolume(uid, volume);
@@ -217,7 +217,7 @@ Voice SDK enables you to obtain the user IDs and corresponding volumes of the th
 
 <CodeBlockTab value="java">
 ```java
-private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() 
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler()
 {
    // ...
    // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
@@ -302,7 +302,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -314,13 +314,13 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
 Use one or more of the following volume control methods to adjust volume settings.
 
-### Mute and unmute users 
+### Mute and unmute users
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
@@ -340,7 +340,7 @@ Use one or more of the following volume control methods to adjust volume setting
   ```swift
   // Stop publishing the local audio stream
   agoraKit.muteLocalAudioStream(true)
-  
+
   // Resume publishing the local audio stream
   agoraKit.muteLocalAudioStream(false)
   ```
@@ -364,7 +364,7 @@ Use one or more of the following volume control methods to adjust volume setting
   ```swift
   // Stop subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
-  
+
   // Resume subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
   ```
@@ -477,8 +477,8 @@ Call `enableAudioVolumeIndication` to enable reporting of the users' volume in t
 ```objc
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
-- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine 
-reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers 
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine
+reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers
            totalVolume:(NSInteger)totalVolume {
 }
 ```
@@ -489,8 +489,8 @@ reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonn
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
 func rtcEngine(
-_ engine: AgoraRtcEngineKit, 
-reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], 
+_ engine: AgoraRtcEngineKit,
+reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo],
 totalVolume: Int
 ) {
 }
@@ -540,7 +540,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -550,13 +550,13 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
 Use one or more of the following volume control methods to adjust volume settings.
 
-### Mute and unmute users 
+### Mute and unmute users
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
@@ -576,7 +576,7 @@ Use one or more of the following volume control methods to adjust volume setting
   ```swift
   // Stop publishing the local audio stream
   agoraKit.muteLocalAudioStream(true)
-  
+
   // Resume publishing the local audio stream
   agoraKit.muteLocalAudioStream(false)
   ```
@@ -600,7 +600,7 @@ Use one or more of the following volume control methods to adjust volume setting
   ```swift
   // Stop subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
-  
+
   // Resume subscribing to the audio stream of the remote user
   agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
   ```
@@ -713,8 +713,8 @@ Call `enableAudioVolumeIndication` to enable reporting of the users' volume in t
 ```objc
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
-- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine 
-reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers 
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine
+reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonnull)speakers
            totalVolume:(NSInteger)totalVolume {
 }
 ```
@@ -725,8 +725,8 @@ reportAudioVolumeIndicationOfSpeakers:(NSArray<AgoraRtcAudioVolumeInfo *> *_Nonn
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
 func rtcEngine(
-_ engine: AgoraRtcEngineKit, 
-reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo], 
+_ engine: AgoraRtcEngineKit,
+reportAudioVolumeIndicationOfSpeakers speakers: [AgoraRtcAudioVolumeInfo],
 totalVolume: Int
 ) {
 }
@@ -772,7 +772,7 @@ For adjusting the playback volume of mixing or audio effect files, refer to the 
 
 <PlatformStructured platform="web">
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -844,7 +844,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -854,13 +854,13 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
 Use one or more of the following volume control methods to adjust volume settings.
 
-### Mute and unmute users 
+### Mute and unmute users
 
 To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
@@ -890,7 +890,7 @@ Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust 
 ```cpp
 int volume = 50;
 int uid = 123456;
-// Set the local playback volume for all remote users 
+// Set the local playback volume for all remote users
 m_rtcEngine->adjustPlaybackSignalVolume(volume);
 // Set the local playback volume for a specific remote user. For example, user 123456
 m_rtcEngine->adjustUserPlaybackSignalVolume(uid, volume)
@@ -967,7 +967,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -977,7 +977,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1011,7 +1011,7 @@ To mute remote users without unsubscribing, set their [playback volume](#adjust-
 Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
 
 ```typescript
-// Set the local playback volume to 50 for all remote users 
+// Set the local playback volume to 50 for all remote users
 engine.adjustPlaybackSignalVolume(50);
 // Set the local playback volume for a specific remote user. For example, user with uid 12
 engine.adjustUserPlaybackSignalVolume(12, 50);
@@ -1087,7 +1087,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1097,7 +1097,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1132,7 +1132,7 @@ Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust 
 
 ```dart
 const int volume = 50;
-// Set the local playback volume to 50 for all remote users 
+// Set the local playback volume to 50 for all remote users
 await _rtcEngine.adjustPlaybackSignalVolume(volume);
 // Set the local playback volume for a specific remote user. For example, user with uid 1000
 await _rtcEngine.adjustUserPlaybackSignalVolume(uid: 1000, volume: volume);
@@ -1154,7 +1154,7 @@ When configuring audio settings, it's essential to understand the default behavi
 * If the SDK detects that the recording volume is too low in the current environment, it automatically increases the volume of the recording device.
 * The volume of the recording device directly influences the global volume of the device.
 * If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
-  
+
 ### Get volume information of users
 
 Voice SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
@@ -1211,7 +1211,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1221,13 +1221,13 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
 Use one or more of the following volume control methods to adjust volume settings.
 
-### Mute and unmute users 
+### Mute and unmute users
 
 To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
@@ -1255,7 +1255,7 @@ To mute remote users without unsubscribing, set their [playback volume](#adjust-
 Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust the volume of the audio playback signal.
 
 ```typescript
-// Set the local playback volume to 50 for all remote users 
+// Set the local playback volume to 50 for all remote users
 engine.adjustPlaybackSignalVolume(50);
 // Set the local playback volume for a specific remote user. For example, user with uid 12
 engine.adjustUserPlaybackSignalVolume(12, 50);
@@ -1330,7 +1330,7 @@ For adjusting the playback volume of mixing or audio effect files, refer to the 
 
 <PlatformStructured platform="react-js">
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1475,7 +1475,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1485,7 +1485,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1501,7 +1501,7 @@ RtcEngine.MuteLocalAudioStream(true);
 
 // Resume publishing the local audio stream
 RtcEngine.MuteLocalAudioStream(false);
-``` 
+```
 
 To mute or unmute a remote user, call `MuteRemoteAudioStream` with the `uid` of the remote user:
 
@@ -1551,7 +1551,7 @@ Call `EnableAudioVolumeIndication` to enable reporting of the users' volume in t
 RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
 UserEventHandler handler = new UserEventHandler(this);
 RtcEngineContext context = new RtcEngineContext(
-  _appID, 
+  _appID,
   0,
   CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
   AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT
@@ -1568,9 +1568,9 @@ class UserEventHandler : IRtcEngineEventHandler
 {
   // This callback is triggered at the interval set in EnableAudioVolumeIndication and reports the three users with the highest instant volume in the channel
   public override void OnAudioVolumeIndication(
-    RtcConnection connection, 
-    AudioVolumeInfo[] speakers, 
-    uint speakerNumber, 
+    RtcConnection connection,
+    AudioVolumeInfo[] speakers,
+    uint speakerNumber,
     int totalVolume
   ) { }
 }
@@ -1610,7 +1610,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1620,7 +1620,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1637,7 +1637,7 @@ To mute or unmute the local audio stream, call `muteLocalAudioStream`:
   // Resume publishing the local audio stream
   m_rtcEngine->muteLocalAudioStream(false);
   ```
-  
+
 To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
   ```cpp
@@ -1656,7 +1656,7 @@ Call `adjustPlaybackSignalVolume` or `adjustUserPlaybackSignalVolume` to adjust 
 ```cpp
 int volume = 50;
 int uid = 123456;
-// Set the local playback volume for all remote users 
+// Set the local playback volume for all remote users
 m_rtcEngine->adjustPlaybackSignalVolume(volume);
 // Set the local playback volume for a specific remote user. For example, user 123456
 m_rtcEngine->adjustUserPlaybackSignalVolume(uid, volume)
@@ -1727,7 +1727,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1737,7 +1737,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 
@@ -1749,13 +1749,13 @@ This section shows you how to adjust the audio playback signal volume using `Adj
 
     Create a **Slider** widget named **Slider_PlaybackSignalVolume** for users to drag the volume bar to adjust the playback volume. In this example, set the minimum value to `0` (mute) and the maximum value to `100` (original volume), as shown in the following figure:
 
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-1.png)
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-1.png)
 
 1. Bind UI Events
 
     Create a **Bind Event to On Value Changed node** and connect it to the **Slider_PlaybackSignalVolume** widget and the **OnPlaybackSignalVolumeValChanged** callback. When users drag the volume bar to adjust the audio playback signal, the **OnPlaybackSignalVolumeValChanged** callback is triggered, as shown in the following figure:
-  
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-2.png)
+
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-2.png)
 
 1. Implement Callback Function
 
@@ -1766,8 +1766,8 @@ This section shows you how to adjust the audio playback signal volume using `Adj
     | `value` | Float | Playback Volume |
 
     When this callback is triggered, the specified playback volume is obtained and assigned to the Volume parameter of **Adjust Playback Signal Volume**. The **AdjustPlaybackSignalVolume** method is called to adjust the playback volume, as shown in the following figure:
-  
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-3.png)
+
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-3.png)
 
 ### Adjust recording volume
 
@@ -1776,14 +1776,14 @@ This section shows you how to adjust the audio recording signal volume using `Ad
 1. Create UMG
 
     Create a **Slider** widget named **Slider_RecordingSignalVolume** to enable users to adjust the recording volume. For this example, set the minimum value to `0` (mute) and the maximum value to `100` (original volume), as shown in the following figure:
-  
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-4.png)
+
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-4.png)
 
 1. Bind UI Events
 
     Create a **Bind Event to On Value Changed node** and connect it to the **Slider_RecordingSignalVolume** widget and the **OnRecordingSignalVolumeValChanged** callback. When users drag the volume bar to adjust the audio recording signal, the **OnRecordingSignalVolumeValChanged** callback is triggered, as shown in the following figure:
 
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-5.png)
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-5.png)
 
 3. Implement UI Events
 
@@ -1794,7 +1794,7 @@ This section shows you how to adjust the audio recording signal volume using `Ad
     | `value` | Float | Recording Volume |
 
     When the callback is triggered, the specified recording volume is obtained and assigned to the Volume parameter of **Adjust Recording Signal Volume**. The **AdjustRecordingSignalVolume** method is called to adjust the recording volume, as shown in the following figure:
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-6.png)
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-6.png)
 
     When configuring audio settings, it's essential to understand the default behavior and the options available. Here are the key points to keep in mind:
 
@@ -1812,44 +1812,44 @@ Throughout the process of audio recording, mixing, and playback, you can obtain 
 
     Create a **Button** widget named **Btn_EnableAudioIndication** for users to control whether to enable the volume indication. As shown in the following figure:
 
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-7.png)
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-7.png)
 
 1. Bind UI Events
 
     Create a **Bind Event to On Clicked node** and connect it to the **Btn_EnableAudioIndication** widget and the **OnVolumeIndicationClick** callback. When users press the button to enable the volume indication, the **OnVolumeIndicationClick** callback is triggered, as shown in the following figure:
 
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-8.png)
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-8.png)
 
 1. Implement UI Events
 
     Create the **OnVolumeIndicationClick** callback function. When this callback is triggered, the **Enable Audio Volume Indication** method is called to enable volume indication. In this example, set the volume indication **Interval** to 200 milliseconds, the smoothing factor **Smooth** to 3, and check **Report Vad** to activate the voice detection function, as shown in the following figure:
-  
-    ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-9.png)
+
+    ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-9.png)
 
 4. Add Callback Event
 
     1. Create the **OnAudioVolumeIndication** callback function with the following parameters:
-  
+
     | Input parameter | Data type | Parameter description |
     | -------- | ------------- | ------------ |
     | `speaker` | Float | Structure Volume information of users, see [FAudioVolumeInfo](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiovolumeindication) for details. |
     | `totalVolume` | Integer | The total volume after mixing |
 
     1. Enable listening to the **OnAudioVolumeIndication** callback, as shown in the following figure:
-  
-        ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-10.png)
+
+        ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-10.png)
 
     1. When the **OnAudioVolumeIndication** callback is triggered, print the received user volume information, as shown in the following figure:
-  
-        ![VolumeControlMute](/images/video-sdk/volume-control-mute-implementation-blueprint-11.png)
+
+        ![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-implementation-blueprint-11.png)
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 ### Sample projects
 
-Agora provides an open-source [Blueprint sample project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference. 
-To learn how to implement call volume adjustment, refer to [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio) in the sample project. 
+Agora provides an open-source [Blueprint sample project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference.
+To learn how to implement call volume adjustment, refer to [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio) in the sample project.
 
 ### Frequently asked questions
 
@@ -1874,7 +1874,7 @@ The figure below shows the workflow of adjusting the volume.
 
 **Volume adjust workflow**
 
-![VolumeControlMute](/images/video-sdk/volume-control-mute-adjustVolume.svg)
+![VolumeControlMute](https://assets-docs.agora.io/images/video-sdk/volume-control-mute-adjustVolume.svg)
 
 **Playback** refers to transmitting an audio signal from a sender to a recipient, where it is played back through a playback device.
 
@@ -1884,7 +1884,7 @@ The figure below shows the workflow of adjusting the volume.
 If you set the volume too high using the signal volume adjustment methods, it may lead to audio distortion on some devices.
 :::
 ## Prerequisites
-Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project. 
+Ensure that you have implemented the [SDK quickstart](../index.mdx) in your project.
 
 ## Implement volume control
 

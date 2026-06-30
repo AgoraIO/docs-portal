@@ -34,7 +34,7 @@ To view billing information for your projects:
 
    You see the detailed billing information for your projects, including billing period, due date, and amount.
 
-   ![View bills](/images/video-sdk/bills.png)
+   ![View bills](https://assets-docs.agora.io/images/video-sdk/bills.png)
 
 #### Additional charges
 

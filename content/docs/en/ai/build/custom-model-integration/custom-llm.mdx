@@ -1040,7 +1040,7 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
 
         text_content = await read_text_file(text_file_path)
         audio_chunks = await read_pcm_file(pcm_file_path, sample_rate, duration_ms)
-        
+
         async def generate():
             try:
                 # Send text content
@@ -1091,7 +1091,7 @@ async def create_audio_chat_completion(request: ChatCompletionRequest):
             except asyncio.CancelledError:
                 logger.info("Audio stream was cancelled")
                 raise
-        
+
         return StreamingResponse(generate(), media_type="text/event-stream")
     except asyncio.CancelledError:
         logger.info("Audio request was cancelled")
@@ -1123,7 +1123,7 @@ func (s *Server) handleAudioChatCompletion(c *gin.Context) {
 
    // Set SSE headers
    c.Header("Content-Type", "text/event-stream")
-   
+
    // Read text and audio files
    textContent, err := s.readTextFile("./file.txt")
    if err != nil {
@@ -1475,7 +1475,7 @@ In streaming response (SSE) scenarios, a single LLM response is segmented into m
 
 To use these features, modify your custom LLM service to output a special first-chunk response that meets the Conversational AI Engine's requirements. The diagram below shows how the engine processes this metadata chunk before handling the rest of the response.
 
-![](/images/conversational-ai/custom-llm-metadata-flow.svg)
+![](https://assets-docs.agora.io/images/conversational-ai/custom-llm-metadata-flow.svg)
 
 #### Configure LLM response interruption
 

@@ -16,7 +16,7 @@ describe('voice stream-raw-audio platforms', () => {
 
     expect(content).toContain('<PlatformStructured platform="web">');
     expect(content).toContain('Web Audio API');
-    expect(content).toContain('/images/video-sdk/process-raw-audio-web.svg');
+    expect(content).toContain('https://assets-docs.agora.io/images/video-sdk/process-raw-audio-web.svg');
 
     const compiled = String(
       await compile(content, {

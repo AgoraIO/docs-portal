@@ -23,9 +23,9 @@ Your account is a paid account if you have registered with Agora and completed a
 
 ### Billing cycle
 
-Agora provides each account with [10,000 free minutes](#free-of-charge-policy) every month. 
+Agora provides each account with [10,000 free minutes](#free-of-charge-policy) every month.
 
-On the first day of each month, Agora issues your bill for the previous calendar month. 
+On the first day of each month, Agora issues your bill for the previous calendar month.
 
 To view billing information for your projects:
 
@@ -35,7 +35,7 @@ To view billing information for your projects:
 
     You see the detailed billing information for your projects, including billing period, due date, and amount.
 
-    ![View bills](/images/video-sdk/bills.png)
+    ![View bills](https://assets-docs.agora.io/images/video-sdk/bills.png)
 
 #### Additional charges
 
@@ -77,7 +77,7 @@ Free accounts include 10,000 free minutes per month. For details, see [Free-of-c
 Agora suspends your account on the second day after any of the following occur:
 
 - Your total usage exceeds the free quota of a service or product.
-- You use Agora services or products not included in the free quota. 
+- You use Agora services or products not included in the free quota.
 
 After account suspension, none of your projects can access Agora services. To restore access:
 
@@ -188,38 +188,38 @@ For uninterrupted access to Agora's products and services, ensure at least one o
 Agora employs the following policies to manage your account balance and ensure uninterrupted access to its products and services.
 
 ### Real-time usage and estimated bill
- 
+
 You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
 
-![bill estimate preview](/images/console/bill-estimate-preview.png)
- 
+![bill estimate preview](https://assets-docs.agora.io/images/console/bill-estimate-preview.png)
+
 ### Real-time reservation of balance
- 
+
 Your reserved balance is updated continuously based on your real-time bill estimation. The corresponding estimated amount is reserved from your available balance at all times.
- 
-![Available and reserved balance](/images/console/available-reserved-balance.png)
+
+![Available and reserved balance](https://assets-docs.agora.io/images/console/available-reserved-balance.png)
 
 ### Auto-recharge and account suspension
- 
+
 On the **7th, 14th, 21st, and 28th** of each calendar month (excluding February 28), if your available balance is in arrears by more than **$50**:
- 
+
 - If a valid credit card is linked, the system automatically recharges your balance to zero.
 - If no credit card is linked, or if auto-recharge fails, a notification email is sent to you.
 - Top up your wallet within the **24-hour grace period** to avoid account suspension.
 - If your balance remains in arrears after 24 hours, your account is suspended until the balance is restored to zero or above.
 
 ### Monthly billing
- 
+
 Your final bill is issued monthly. After bill finalization:
- 
+
 - Any overpaid amount is refunded to your balance.
 - Any undercharged amount is deducted accordingly.
 
 ### Balance withdrawal
- 
+
 You can withdraw your available balance at any time directly from the Agora Console.
 
-![Withdraw balance](/images/console/withdraw-balance.png)
+![Withdraw balance](https://assets-docs.agora.io/images/console/withdraw-balance.png)
 
 ## End-of-life policy
 

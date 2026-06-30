@@ -1426,12 +1426,12 @@ Source root: `content/docs`
 - Samples:
   - L683 `legacy-anchor-name`: <a name="setoptions"></a>
   - L737 `legacy-anchor-name`: <a name="virtualbackgroundeffectoptions"></a>
-  - L16 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L266 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L373 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L788 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L927 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L1030 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L16 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L266 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L373 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L788 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L927 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L1030 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
 
 ### en/realtime-media/broadcast-streaming/build/voice-activity-detection.mdx
 
@@ -1906,7 +1906,7 @@ Source root: `content/docs`
   - `raw-html:video`: 2
   - `unapproved-jsx-component:Replace`: 1
 - Samples:
-  - L259 `raw-html:video`: <video src="/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
+  - L259 `raw-html:video`: <video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
   - L261 `raw-html:video`: </video>
   - L299 `unapproved-jsx-component:Replace`: const secret = "<Replace with your secret code>"
 
@@ -2222,12 +2222,12 @@ Source root: `content/docs`
 - Samples:
   - L683 `legacy-anchor-name`: <a name="setoptions"></a>
   - L737 `legacy-anchor-name`: <a name="virtualbackgroundeffectoptions"></a>
-  - L16 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L266 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L373 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L788 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L927 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L1030 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L16 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L266 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L373 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L788 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L927 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L1030 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
 
 ### en/realtime-media/marketplace/reference/downloads.mdx
 
@@ -2344,7 +2344,7 @@ Source root: `content/docs`
   - L354 `raw-html:li`: | `productId` | Number | The product ID: <ul><li> `1`: Realtime Communication (RTC) service</li><li>`3`: Cloud Recording</li><li>`4`: Media Pull</li><li>`5`: Media Push</li></ul> |
   - L263 `raw-html:summary`: <summary>Video walkthrough</summary>
   - L354 `raw-html:ul`: | `productId` | Number | The product ID: <ul><li> `1`: Realtime Communication (RTC) service</li><li>`3`: Cloud Recording</li><li>`4`: Media Pull</li><li>`5`: Media Push</li></ul> |
-  - L264 `raw-html:video`: <video src="/images/video-sdk/enable-notifications.mp4" controls loop>
+  - L264 `raw-html:video`: <video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls loop>
   - L266 `raw-html:video`: </video>
 
 ### en/realtime-media/media-pull/reference/restful-api.md
@@ -2448,7 +2448,7 @@ Source root: `content/docs`
   - L354 `raw-html:li`: | `productId` | Number | The product ID: <ul><li> `1`: Realtime Communication (RTC) service</li><li>`3`: Cloud Recording</li><li>`4`: Media Pull</li><li>`5`: Media Push</li></ul> |
   - L263 `raw-html:summary`: <summary>Video walkthrough</summary>
   - L354 `raw-html:ul`: | `productId` | Number | The product ID: <ul><li> `1`: Realtime Communication (RTC) service</li><li>`3`: Cloud Recording</li><li>`4`: Media Pull</li><li>`5`: Media Push</li></ul> |
-  - L264 `raw-html:video`: <video src="/images/video-sdk/enable-notifications.mp4" controls loop>
+  - L264 `raw-html:video`: <video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls loop>
   - L266 `raw-html:video`: </video>
 
 ### en/realtime-media/media-push/build/restful-api.md
@@ -2979,7 +2979,7 @@ Source root: `content/docs`
 - Patterns:
   - `raw-html:video`: 2
 - Samples:
-  - L259 `raw-html:video`: <video src="/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
+  - L259 `raw-html:video`: <video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
   - L261 `raw-html:video`: </video>
 
 ### en/realtime-media/video/build/ai-noise-suppression.mdx
@@ -3307,12 +3307,12 @@ Source root: `content/docs`
 - Samples:
   - L683 `legacy-anchor-name`: <a name="setoptions"></a>
   - L737 `legacy-anchor-name`: <a name="virtualbackgroundeffectoptions"></a>
-  - L16 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L266 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L373 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L788 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L927 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L1030 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L16 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L266 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L373 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L788 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L927 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L1030 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
 
 ### en/realtime-media/video/build/voice-activity-detection.mdx
 
@@ -4514,12 +4514,12 @@ Source root: `content/docs`
 - Samples:
   - L683 `legacy-anchor-name`: <a name="setoptions"></a>
   - L737 `legacy-anchor-name`: <a name="virtualbackgroundeffectoptions"></a>
-  - L16 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L266 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L373 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L788 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L927 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
-  - L1030 `raw-html:video`: | Video/Animated background | <video src="/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L16 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L266 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L373 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L788 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L927 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
+  - L1030 `raw-html:video`: | Video/Animated background | <video src="https://assets-docs.agora.io/images/extensions-marketplace/virtual-background.mp4" poster="https://web-cdn.agora.io/docs-files/1654571689670" controls width="100%" he
 
 ### en/solutions/interactive-live-streaming/product-overview.md
 

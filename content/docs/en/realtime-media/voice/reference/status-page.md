@@ -17,7 +17,7 @@ The [Status Page](https://status.agora.io/) interface is divided into the follow
 
 The following image shows a snapshot of the Agora Status Page.
 
-![image](/images/status-page/status-page.png)
+![image](https://assets-docs.agora.io/images/status-page/status-page.png)
 :::note
 The screenshots on this page were generated in a test environment for demonstration purposes and do not reflect actual historical availability data or events.
 :::
@@ -27,14 +27,14 @@ The health banner at the top of the page provides buttons for event RSS subscrip
 
 #### RSS subscription
 
-The RSS feed provides live updates on incidents and historical events related to Agora's services, such as service quality degradation and interruptions. Each incident includes details such as investigation, identification, resolution steps, and a summary. 
+The RSS feed provides live updates on incidents and historical events related to Agora's services, such as service quality degradation and interruptions. Each incident includes details such as investigation, identification, resolution steps, and a summary.
 
 To use the RSS feed in an feed reader:
 
-1. Click the **Event RSS feed** button, the raw RSS feed opens in your browser. 
+1. Click the **Event RSS feed** button, the raw RSS feed opens in your browser.
 1. Copy the URL from the address bar.
 1. Paste the URL into your feed reader's **Add subscription** or **Add feed** section.
-1. Save and view your subscription. 
+1. Save and view your subscription.
     :::note
     After you subscribe to the RSS feed, you start receiving the latest updates about the status of Agora's products and services. Check your RSS reader regularly to stay aware of product and service events.
     :::
@@ -46,17 +46,17 @@ To view a list of historical events for selected products & services during the 
 
     You see a list of events, in your browser.
 
-    ![image](/images/status-page/status-historical-events.png)
+    ![image](https://assets-docs.agora.io/images/status-page/status-historical-events.png)
 
-1. Select a specific event from the list to view its details. 
+1. Select a specific event from the list to view its details.
 
-    ![image](/images/status-page/status-event-details.png)
+    ![image](https://assets-docs.agora.io/images/status-page/status-event-details.png)
 
 ### Product and service Filter
 
 Use the filter dropdown to select a product or service. By default, the page displays the status for all Agora products and services.
 
-![image](/images/status-page/status-product-filter.png)
+![image](https://assets-docs.agora.io/images/status-page/status-product-filter.png)
 
 The filter section also displays the time of the last update and the corresponding time zone for the dashboard data. The page updates the data automatically every 5 minutes. To view the latest status at any time, manually refresh the page.
 
@@ -72,25 +72,25 @@ The color of each column indicates the operating state:
 
 The status dashboard shows the following data:
 
-![image](/images/status-page/status-check-running.png)
+![image](https://assets-docs.agora.io/images/status-page/status-check-running.png)
 
 1. **Global comprehensive service quality**
 
     This dashboard graphic shows the comprehensive service status over the past 24 hours. The quality columns are arranged in chronological order with one column for every 5 minutes. The height of the column represents the quality of the comprehensive service experience. The text on the right shows the latest real-time interactive service status and the update time. Hover the mouse over a quality column to view the corresponding time and status.
 
-    ![image](/images/status-page/status-hover.png)
+    ![image](https://assets-docs.agora.io/images/status-page/status-hover.png)
 
 1. **24-hour real-time experience metrics**
 
     Use the expand button to view detailed [quality metrics](#quality-metrics), which together constitute the comprehensive service experience quality index of real-time interaction. The quality columns, show the service quality based on each metric for the past 24 hours. There is a quality column every 5 minutes, and the height of the quality column represents the quality of the indicator.
 
-    ![image](/images/status-page/status-quality-metrics.png)
+    ![image](https://assets-docs.agora.io/images/status-page/status-quality-metrics.png)
 
 3. **90-day service status**
 
     The quality columns show the availability data for the past 90 days. There is one quality column for each day. Hover the mouse over the quality column to view the corresponding date and event for the day.
 
-    ![image](/images/status-page/status-event-popup.png)
+    ![image](https://assets-docs.agora.io/images/status-page/status-event-popup.png)
 
 Currently, the status dashboard provides information regarding the following Agora products and services.
 

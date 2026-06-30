@@ -15,7 +15,7 @@ This section explains how you can integrate Interactive Live Streaming features 
 
 **Magic Leap Interactive Live Streaming workflow**
 
-![Video Calling Web UIKit](/images/interactive-live-streaming/get-started-sdk-livestreaming.png)
+![Video Calling Web UIKit](https://assets-docs.agora.io/images/interactive-live-streaming/get-started-sdk-livestreaming.png)
 
 In an Interactive Live Streaming event, hosts stream a video feed to an audience. For example, when a CEO is giving a speech to the company employees, the CEO does not need to see all members of the audience. To represent this in your app, when you join as a host, the local feed is started and you see your own video feed. When you join as a member of the audience, you see the host's video feed.
 
@@ -47,7 +47,7 @@ To test the code used in this page you need to have:
 * Installed [ML Hub](https://developer-docs.magicleap.cloud/docs/guides/getting-started/install-the-tools)
 * Installed [Unity Hub](https://unity.com/download)
 * [Install and configure the Unity Editor required to develop for Magic Leap 2](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/install-the-tools)
- 
+
 ## Project setup
 
 To integrate Interactive Live Streaming into your Magic Leap project, do the following:

@@ -33,7 +33,7 @@ Each of the following constitutes one message:
 Each of the following constitutes one message:
   - Subscribing to a message channel
   - Unsubscribing from a message channel
-  - Creating a stream channel instance 
+  - Creating a stream channel instance
   - Joining a stream channel
   - Leaving a stream channel
 
@@ -60,9 +60,9 @@ Each of the following constitutes one message:
 
 **Presence**
 Each of the following constitutes one message:
-- A `whoNow` query 
-- A `whereNow` query 
-- Each `setState`, `getState`, or `removeState` call to manage temporary user state 
+- A `whoNow` query
+- A `whereNow` query
+- Each `setState`, `getState`, or `removeState` call to manage temporary user state
 - Each triggered presence event notification, such as a client entering a channel, leaving a channel, timing out, or changing status.
 - Each received presence event notification. For example, if a client enters a channel and 10 other clients are subscribed to the channel, it sends 1 presence event notification, and the other 10 clients each receive 1 presence event notification, totaling in 11 messages.
 
@@ -75,10 +75,10 @@ Each of the following constitutes one message:
 If you turn off the storage module in Agora Console, no storage message count is generated. If storage is enabled, each of the following counts as one message:
 
 ##### Channel metadata
-- Setting channel metadata using `setChannelMetadata` 
-- Querying channel metadata using `getChannelMetadata` 
-- Updating channel metadata using `updateChannelMetadata` 
-- Deleting channel metadata using `removeChannelMetadata` 
+- Setting channel metadata using `setChannelMetadata`
+- Querying channel metadata using `getChannelMetadata`
+- Updating channel metadata using `updateChannelMetadata`
+- Deleting channel metadata using `removeChannelMetadata`
 - Receiving a channel metadata change event notification. For example, if a client sets metadata in a channel, and the channel is subscribed to by 10 users, it sends 1 storage event notification, and the other 10 clients each receive 1 storage event notification, for a total of 11 messages.
 
 :::info
@@ -89,7 +89,7 @@ If you turn off the storage module in Agora Console, no storage message count is
 ##### User metadata
 - Setting user metadata using `setUserMetadata`
 - Querying user metadata using `getUserMetadata`
-- Updating user metadata using `updateUserMetadata` 
+- Updating user metadata using `updateUserMetadata`
 - Deleting user metadata using `removeUserMetadata`
 - Receiving a user metadata change event notification. For example, if a client sets user metadata, and 10 other users are subscribed to this user's metadata, it sends 1 storage event notification, and the other 10 users each receive 1 storage event notification, for a total of 11 messages.
 
@@ -116,7 +116,7 @@ In Signaling, a message is calculated in 1 KB. Therefore, if you send a message 
 
 Storage in Signaling generates cloud storage occupancy. Agora measures the total storage occupancy and bills the amount for the month by sampling the customer's actual storage use at 1-hour intervals during a calendar month. At the end of the month, the average storage occupancy is calculated by dividing the sum of all sample values by the number of samples. The average occupancy is then multiplied by the monthly unit price to calculate the monthly charge. The following formula mathematically represents this calculation process:
 
-![Signaling storage calculation formula](/images/signaling/signaling-storage-calculation-formula.png)
+![Signaling storage calculation formula](https://assets-docs.agora.io/images/signaling/signaling-storage-calculation-formula.png)
 
 For billing purposes, the calculation standardizes each month to 30 days, regardless of the actual number of calendar days. This approach ensures consistent month-to-month billing.
 
@@ -331,10 +331,10 @@ PCU, 1M monthly messages), Agora recommends upgrading to the Starter package
 You can subscribe to a new package or change the subscribed package using Agora Console.
 
 The console shows the following messages when you attempt to upgrade, downgrade or
-unsubscribe a package. 
+unsubscribe a package.
 
 - **Upgrade notice**:
-    
+
     *When upgrading your package, the new package tariffs are applied immediately. The charge will be prorated based on the remaining days of the current billing cycle.*
 
 - **Downgrade notice**:
@@ -342,7 +342,7 @@ unsubscribe a package.
     *Your downgrade will take effect at the end of the current billing cycle. Until then, you will be charged at the current package rate.*
 
 - **Unsubscribe notice**:
-    
+
     *Unsubscribing will take effect at the end of the current billing cycle. Post which, your account will automatically switch to the Free Signaling 2.x package.*
 
 If you need any further assistance, contact your account manager or reach out to support@agora.io to discuss your specific needs and concerns.

@@ -235,16 +235,10 @@ describe('overview MDX components', () => {
       screen.getByRole('link', {
         name: /How to implement basic HTTP authentication/i,
       }),
-    ).toHaveAttribute(
-      'href',
-      '/en/introduction/support',
-    );
+    ).toHaveAttribute('href', '/en/introduction/support');
     expect(
       screen.getByRole('link', { name: /Integration issues/i }),
-    ).toHaveAttribute(
-      'href',
-      '/en/introduction/support',
-    );
+    ).toHaveAttribute('href', '/en/introduction/support');
   });
 
   it('renders feature cards for editorial introduction pages', () => {
@@ -358,7 +352,7 @@ describe('overview MDX components', () => {
         <OverviewImageCard
           description="Define how users exchange media inside a live session."
           imageAlt="Video calling overview"
-          imageSrc="/images/video-calling/video-calling-overview.png"
+          imageSrc="https://assets-docs.agora.io/images/video-calling/video-calling-overview.png"
           title="Build live interaction"
         />
       </OverviewImageCardGrid>,
@@ -374,7 +368,7 @@ describe('overview MDX components', () => {
     ).toBeVisible();
     expect(screen.getByAltText('Video calling overview')).toHaveAttribute(
       'src',
-      '/images/video-calling/video-calling-overview.png',
+      'https://assets-docs.agora.io/images/video-calling/video-calling-overview.png',
     );
   });
 

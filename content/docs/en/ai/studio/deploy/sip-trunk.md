@@ -43,7 +43,7 @@ The following steps are required for both inbound and outbound calling:
     2. Click **Create a new SIP Trunk** (or select an existing one).
     3. Give it a descriptive name. For example, “Agora Studio – Production”
 
-        ![](/images/conversational-ai/twilio/select-sip-trunk.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/select-sip-trunk.png)
 
     > **Info**
     > You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
@@ -68,7 +68,7 @@ The following steps are required for both inbound and outbound calling:
         - **Disabled**: Choose **TCP** or **UDP** in Agent Studio configuration.
     4. Save any changes.
 
-        ![](/images/conversational-ai/twilio/general-settings.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/general-settings.png)
 
 > **Caution**
 > The transport setting in Agent Studio must match SIP trunk’s Secure Trunking setting. A mismatch causes calls to fail silently.
@@ -85,7 +85,7 @@ Complete the following steps to enable your agent to make outbound calls through
     2. Set a custom **Termination SIP URI**. For example: `yourcompany.pstn.twilio.com`.
     3. This domain is required later in Agent Studio as the **SIP Trunk Address**.
 
-        ![](/images/conversational-ai/twilio/termination-uri.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/termination-uri.png)
 
 2. **Create an IP Access Control List** (Whitelist)
 
@@ -99,7 +99,7 @@ Complete the following steps to enable your agent to make outbound calls through
         <details>
         <summary>+1 (United States)</summary>
 
-        ```text 
+        ```text
         49.51.250.59
         49.51.250.76
         ```
@@ -108,7 +108,7 @@ Complete the following steps to enable your agent to make outbound calls through
         <details>
         <summary>+52 (Mexico), +54 (Argentina), +55 (Brazil), +56 (Chile), +51 (Peru), +44 (United Kingdom), +33 (France), +49 (Germany), +39 (Italy), +34 (Spain), +61 (Australia), +64 (New Zealand)</summary>
 
-        ```text 
+        ```text
         43.157.157.7
         43.157.180.46
         43.157.154.150
@@ -127,7 +127,7 @@ Complete the following steps to enable your agent to make outbound calls through
         <details>
         <summary>+82 (South Korea), +65 (Singapore), +81 (Japan), +91 (India), +886 (Taiwan), +27 (South Africa), +20 (Egypt), +254 (Kenya)</summary>
 
-        ```text 
+        ```text
         3.111.249.176
         15.207.132.164
         13.205.109.117
@@ -145,9 +145,9 @@ Complete the following steps to enable your agent to make outbound calls through
 
     5. Save the Access Control List.
 
-        ![](/images/conversational-ai/twilio/access-control-list.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/access-control-list.png)
 
-        ![](/images/conversational-ai/twilio/access-list-configuration.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/access-list-configuration.png)
 
 3. **Add IP Access Control List**
 
@@ -155,9 +155,9 @@ Complete the following steps to enable your agent to make outbound calls through
     2. Under **IP Access Control Lists**, select the authentication list you just created. If you do not see the list you created, access the list by clicking **View all Authentication lists**.
     3. Click **Save**.
 
-        ![](/images/conversational-ai/twilio/ip-access-control-list.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/ip-access-control-list.png)
 
-        ![](/images/conversational-ai/twilio/authentication.png)
+        ![](https://assets-docs.agora.io/images/conversational-ai/twilio/authentication.png)
 
 4. **Credential Lists** (Optional)
 
@@ -168,7 +168,7 @@ Complete the following steps to enable your agent to make outbound calls through
 
     To set up a credential list:
 
-    1. Under **Authentication**, find **Credential Lists**. 
+    1. Under **Authentication**, find **Credential Lists**.
     2. Use the `+` button to create a new list.
     3. Give your list a descriptive name.
     4. Specify a username and password.
@@ -190,7 +190,7 @@ Complete the following steps to enable customers to call your agent through your
 
         The Origination URI depends on the country code of your phone number. Select the URI for your region and enter it in SIP trunk.
 
-        - **United States** 
+        - **United States**
 
             | Transport | URI |
             |-----------|-----|

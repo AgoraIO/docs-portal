@@ -9,7 +9,7 @@ This page introduces how to use Server Gateway to send media streams to the clie
 
 The following figure shows the basic workflow you implement to send and receive audio and video streams using Server Gateway:
 
-![Basic workflow](/images/server-gateway/send-and-receive-media-streams.svg)
+![Basic workflow](https://assets-docs.agora.io/images/server-gateway/send-and-receive-media-streams.svg)
 
 ## Prerequisites
 

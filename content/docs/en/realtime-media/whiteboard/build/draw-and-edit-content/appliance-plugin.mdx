@@ -257,7 +257,7 @@ This section describes how to use various features of the Appliance Plugin.
 
 The laser pen feature allows users to annotate with a pencil tool and draw temporary content that disappears after a second.
 
-![](/images/interactive-whiteboard/appliance-laser-pen.gif)
+![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-laser-pen.gif)
 
 To implement this feature:
 
@@ -283,7 +283,7 @@ To implement this feature:
     setMemberState({strokeType: EStrokeType.LongDotted });
     ```
 
-    ![](/images/interactive-whiteboard/appliance-stroke-type.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-stroke-type.png)
 
 3. **Set stroke opacity**:
 
@@ -291,7 +291,7 @@ To implement this feature:
     setMemberState({strokeOpacity: 0.5 });
     ```
 
-    ![](/images/interactive-whiteboard/appliance-stroke-opacity.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-stroke-opacity.png)
 
 4. **Set the text properties**:
 
@@ -299,7 +299,7 @@ To implement this feature:
     setMemberState({textOpacity: 0.5, textBgOpacity: 0.5, textBgColor:[0, 0, 0]});
     ```
 
-    ![](/images/interactive-whiteboard/appliance-text-properties.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-text-properties.png)
 
 ### Use different shapes
 
@@ -310,7 +310,7 @@ To implement this feature:
     setMemberState({currentApplianceName: ApplianceNames.shape, shapeType: ShapeType.Polygon, vertices: 5});
     ```
 
-    ![](/images/interactive-whiteboard/appliance-shape-polygon.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-shape-polygon.png)
 
 2. **Stars**:
 
@@ -319,7 +319,7 @@ To implement this feature:
     setMemberState({currentApplianceName: ApplianceNames.shape, shapeType: ShapeType.Star, vertices: 12, innerVerticeStep: 2, innerRatio: 0.8});
     ```
 
-    ![](/images/interactive-whiteboard/appliance-shape-star.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-shape-star.png)
 
 3. **Speech Balloon**:
 
@@ -328,7 +328,7 @@ To implement this feature:
     setMemberState({currentApplianceName: ApplianceNames.shape, shapeType: ShapeType.SpeechBalloon, placement: 'bottomLeft'});
     ```
 
-    ![](/images/interactive-whiteboard/appliance-shape-balloon.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-shape-balloon.png)
 
 4. **Set shape fill color and fill opacity**:
 
@@ -336,13 +336,13 @@ To implement this feature:
     setMemberState({fillOpacity: 0.5, fillColor:[0, 0, 0]});
     ```
 
-    ![](/images/interactive-whiteboard/appliance-shape-fill.png)
+    ![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-shape-fill.png)
 
 ### Split the display screen
 
 To implement a split screen display, integrate the [`@netless/app-little-white-board`](https://github.com/netless-io/app-little-white-board) (Version >=1.1.3).
 
-![](/images/interactive-whiteboard/appliance-split-screen.gif)
+![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-split-screen.gif)
 
 ### Use the mini map feature
 
@@ -359,7 +359,7 @@ createMiniMap(viewId: string, div: HTMLElement): Promise<void>;
 destroyMiniMap(viewId: string): Promise<void>;
 ```
 
-![](/images/interactive-whiteboard/appliance-minimap.gif)
+![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-minimap.gif)
 
 ### Filter annotations
 
@@ -382,7 +382,7 @@ filterRenderByUid(viewId: string, filter: { render?: _ArrayTrue, hide?: _ArrayTr
 cancelFilterRender(viewId: string, isSync?:boolean): void;
 ```
 
-![](/images/interactive-whiteboard/appliance-filter.gif)
+![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-filter.gif)
 
 ### Use the auto draw feature
 
@@ -406,7 +406,7 @@ const autoDrawPlugin = new AutoDrawPlugin({
 plugin.usePlugin(autoDrawPlugin);
 ```
 
-![](/images/interactive-whiteboard/appliance-autodraw.gif)
+![](https://assets-docs.agora.io/images/interactive-whiteboard/appliance-autodraw.gif)
 
 ## Reference
 

@@ -19,7 +19,7 @@ For added security, Agora Chat provides the IP whitelist function. If only certa
 
 4. Click **OK** to complete the configuration.
 
-    ![IP_whitelist_add_IP](/images/im/IP_whitelist_add_IP.png)
+    ![IP_whitelist_add_IP](https://assets-docs.agora.io/images/im/IP_whitelist_add_IP.png)
 
 ### Remove an IP address from the IP whitelist
 
@@ -31,6 +31,6 @@ If you no longer allow an IP address to send messages via the RESTful APIs, you 
 
 3. In the IP Whitelist list, click **Delete** to the right of an IP address.
 
-    ![IP_whitelist_delete_IP](/images/im/IP_whitelist_delete_IP.png)
+    ![IP_whitelist_delete_IP](https://assets-docs.agora.io/images/im/IP_whitelist_delete_IP.png)
 
 4. Click **OK** to delete the IP address.

@@ -10,11 +10,11 @@ The Agent Studio test interface allows you to test your agent configuration and 
 
 2. Select the **Test Call** tab in the right panel. The agent visualizer shows **Agent Disconnected** status.
 
-    ![Test agent panel](/images/conversational-ai/studio/test-agent-panel.png)
+    ![Test agent panel](https://assets-docs.agora.io/images/conversational-ai/studio/test-agent-panel.png)
 
 3. Click **Start Call**. The agent status changes to "Joining" to "Connecting Agent" to "Talking" and then to "Listening", indicating the agent is ready to hear you.
 
-    ![Test agent connected](/images/conversational-ai/studio/test-agent-connected.png)
+    ![Test agent connected](https://assets-docs.agora.io/images/conversational-ai/studio/test-agent-connected.png)
 
 4. Speak to your agent and confirm it responds correctly and maintains a conversation without errors.
 
@@ -78,7 +78,7 @@ If the agent's voice sounds distorted or unnatural:
 
 - Check your audio output device
 - Try selecting a different voice model in TTS settings
-- Adjust TTS parameters such as sample rate 
+- Adjust TTS parameters such as sample rate
 - Consider switching to a different TTS provider
 
 ## Next steps

@@ -3,7 +3,7 @@ title: "Agora account management"
 description: "Create, manage and update your Agora account."
 ---
 
-This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token. 
+This page shows you how to sign up for an Agora account, create a new project, and get the app ID and app certificate to generate a temporary token.
 
 ## Get started with Agora
 
@@ -51,7 +51,7 @@ To create an Agora project, do the following:
 
 1. Follow the on-screen instructions to enter a project name and use case, and check **Secured mode: APP ID + Token (Recommended)** as the authentication mechanism.
 
-    ![configure_project](/images/signaling/create_new_project.png)
+    ![configure_project](https://assets-docs.agora.io/images/signaling/create_new_project.png)
 
 1. Click **Submit**. You see the new project on the **Projects** page.
 
@@ -61,7 +61,7 @@ Agora automatically assigns a unique identifier to each project, called an App I
 
 To copy this App ID, find your project on the [Projects](https://console.agora.io/v2/project-management) page in Agora Console, and click the copy icon in the **App ID** column.
 
-![configure_project](/images/signaling/app-id.png)
+![configure_project](https://assets-docs.agora.io/images/signaling/app-id.png)
 
 <!-- PRODUCT-SPECIFIC TAIL (Signaling) START — globalization candidate: the section below is Signaling-specific (Presence/Storage/Stream channel configuration); the content above (account signup, project creation, App ID) is generic and reusable across products. -->
 ## Enable and configure Signaling
@@ -77,11 +77,11 @@ The following steps apply to the new version of Agora Console. If you are using 
 
 1. Select your project on the [Projects](https://console.agora.io/v2) page and click the corresponding pencil icon to configure it.
 
-    ![configure_project](/images/signaling/configure_project.png)
+    ![configure_project](https://assets-docs.agora.io/images/signaling/configure_project.png)
 
 1. Go to **All features** > **Signaling** > **Basic information** and select a data center in the dropdown.
 
-    ![project_settings_signaling](/images/signaling/project_settings_signaling.png)
+    ![project_settings_signaling](https://assets-docs.agora.io/images/signaling/project_settings_signaling.png)
 
 :::info
    The data center setting determines the storage location for user state data, channel metadata, and user metadata for your application. Once you select a data center, this setting cannot be changed.
@@ -90,7 +90,7 @@ The following steps apply to the new version of Agora Console. If you are using 
 
 1. Go to **Subscriptions** > **Signaling** and subscribe to a plan.
 
-    ![signaling-pricing-page](/images/signaling/signaling-pricing-plans.png)
+    ![signaling-pricing-page](https://assets-docs.agora.io/images/signaling/signaling-pricing-plans.png)
 
    Once subscribed, you will be able to unsubscribe from the same page.
 
@@ -113,9 +113,9 @@ To configure presence, go to **All features** > **Signaling** > **Presence Confi
 
 - **Event notification debounce time**
 
-    Specifies the time interval within which no presence event is triggered if a user quickly leaves and re-joins. The default value is 2 seconds. 
+    Specifies the time interval within which no presence event is triggered if a user quickly leaves and re-joins. The default value is 2 seconds.
 
-   ![signaling-presence-configuration](/images/signaling/signaling-presence-configuration.png)
+   ![signaling-presence-configuration](https://assets-docs.agora.io/images/signaling/signaling-presence-configuration.png)
 
 ### Storage configuration
 
@@ -126,7 +126,7 @@ To configure storage, go to **All features** > **Signaling** > **Storage Configu
    - **Channel attribute callback**: Enable/disable callbacks for channel attribute changes.
    - **Distributed lock**: Enable/disable distributed locks.
 
-   ![signaling-storage-configuration](/images/signaling/signaling-storage-configuration.png)
+   ![signaling-storage-configuration](https://assets-docs.agora.io/images/signaling/signaling-storage-configuration.png)
 
 ### Activate stream channels
 
@@ -145,17 +145,17 @@ Use the following features from your Agora account to implement security and aut
 
 ### Get the App Certificate
 
-When generating an authentication token on your app server, you need an App Certificate, in addition to the App ID. 
+When generating an authentication token on your app server, you need an App Certificate, in addition to the App ID.
 
 To get an App Certificate, do the following:
 
 1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon to edit the project you want to use.
 
-    ![Console project management page](/images/common/console-project-management-page.png)
+    ![Console project management page](https://assets-docs.agora.io/images/common/console-project-management-page.png)
 
 1. Click the copy icon under **Primary Certificate**.
 
-    ![Console primary certificate](/images/common/console-primary-certificate.png)
+    ![Console primary certificate](https://assets-docs.agora.io/images/common/console-primary-certificate.png)
 
 ### Generate temporary tokens
 

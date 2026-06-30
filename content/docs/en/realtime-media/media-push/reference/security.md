@@ -12,7 +12,7 @@ Agora services provide built-in encryption and customized encryption. You can us
 <details>
 <summary>Encrypted data transmission process</summary>
 
-![Encrypted data transmission process](/images/common/encrypted-data-transmission-process.svg)
+![Encrypted data transmission process](https://assets-docs.agora.io/images/common/encrypted-data-transmission-process.svg)
 
 </details>
 
@@ -381,14 +381,14 @@ A token is generated with important information such as App ID, user ID (`uid`),
 
 <details>
 <summary>Authentication workflow</summary>
-![Authentication workflow](/images/chat/chat-authentication.svg)
+![Authentication workflow](https://assets-docs.agora.io/images/chat/chat-authentication.svg)
 </details>
 
 The app developer can enable token-based authentication (App Certificate) on [Agora Console](https://console.agora.io/v2). When enabled, all user’s request to join a channel must be done with a valid token.
 
 <details>
 <summary>Enable token-based authentication</summary>
-![img](/images/certificate-enable.png)
+![img](https://assets-docs.agora.io/images/certificate-enable.png)
 </details>
 
 Please note for best security practices, you need to set the token expiration time (24 hours by default). A token has three expiration timestamps:
@@ -410,7 +410,7 @@ The SDK encrypts all the captured media using the key and the configured encrypt
 
 <details>
 <summary>Token encryption</summary>
-![Token encryption](/images/common/token-encryption.svg)
+![Token encryption](https://assets-docs.agora.io/images/common/token-encryption.svg)
 </details>
 
 When using Other Agora services like Web SDK, Cloud Recording, Content Moderation, Transcoding etc, encryption is done a bit differently and it is not end-to-end. In this case media is still encrypted but the Agora service needs to be aware of the key to be able to connect to the channel and provide service. For example, in Web SDK the User/Browser protection is done via the web-server protection (HTTPS) as well as the WebRTC standard, security practice (encryption, key management etc). More information on WebRTC security can be found [here](https://webrtc-security.github.io/).
@@ -419,7 +419,7 @@ The media encryption on Web SDK is done via WebRTC standard but the interoperabi
 
 <details>
 <summary>Media encryption</summary>
-![img](/images/common/media-encryption.svg)
+![img](https://assets-docs.agora.io/images/common/media-encryption.svg)
 </details>
 
 ### Level 4 - Network geofencing

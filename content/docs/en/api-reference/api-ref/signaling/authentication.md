@@ -23,7 +23,7 @@ To generate a set of Customer ID and Customer Secret, do the following:
 
 1. In [Agora Console](https://console.agora.io/v2), click **Developer Toolkit** > **RESTful API**.
 
-    ![RESTful API](/images/common/console-restful-api.png)
+    ![RESTful API](https://assets-docs.agora.io/images/common/console-restful-api.png)
 
 2. Click **Add a secret**, and click **OK**. A set of Customer ID and Customer Secret is generated.
 

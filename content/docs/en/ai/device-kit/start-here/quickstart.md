@@ -18,14 +18,14 @@ Before you begin, ensure you have the following:
 2. Press and hold the **Middle button** until the vibration stops.
 3. Release the button. The red LED blinks and you hear the voice prompt: "The network connection has failed, please check your network."
 
-    ![](/images/convo-ai-device-kit/power_on.png)
+    ![](https://assets-docs.agora.io/images/convo-ai-device-kit/power_on.png)
 
 The device is now powered on and ready for setup.
 
 ## Install the Agora Convo AI app
 
 1. Scan the QR code on the device using your smartphone camera.
-    ![](/images/convo-ai-device-kit/download-app.png)
+    ![](https://assets-docs.agora.io/images/convo-ai-device-kit/download-app.png)
 2. Follow the instructions to download and install the app.
 3. Launch the Convo AI IoT app (Mindchat).
 4. Tap **Call AI Engine** to access the login screen.

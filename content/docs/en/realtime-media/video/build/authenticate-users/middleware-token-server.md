@@ -9,7 +9,7 @@ To streamline token authentication and REST API workflows in your infrastructure
 
 The following figure illustrates the architecture of the middleware token generation microservice.
 
-![Middleware token generation architecture](/images/common/middleware-token-generation.svg)
+![Middleware token generation architecture](https://assets-docs.agora.io/images/common/middleware-token-generation.svg)
 
 ## Set up and run the Go backend middleware
 

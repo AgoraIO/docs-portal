@@ -142,10 +142,10 @@ In Agora Console, open your project, configure the webhook URL, and subscribe to
 
 Relevant UI screenshots:
 
-![Project tab](/images/video-sdk/enable-ncs-project-tabs.png)
-![Notification tab](/images/video-sdk/enable-ncs-notification-tab.png)
-![Notification configuration tab](/images/video-sdk/enable-ncs-configuration-tab.png)
-![Apply settings](/images/video-sdk/enable-ncs-apply-settings.png)
+![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
+![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
+![Notification configuration tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
+![Apply settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
 
 ## Verify Notifications signatures
 

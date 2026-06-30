@@ -119,10 +119,10 @@ describe('speech-to-text audit regressions', () => {
     );
 
     expect(source).not.toContain(
-      '    ![real-time-stt-flow](/images/real-time-stt/real-time-stt-flow.png)',
+      '    ![real-time-stt-flow](https://assets-docs.agora.io/images/real-time-stt/real-time-stt-flow.png)',
     );
     expect(source).toContain(
-      '![real-time-stt-flow](/images/real-time-stt/real-time-stt-flow.png)',
+      '![real-time-stt-flow](https://assets-docs.agora.io/images/real-time-stt/real-time-stt-flow.png)',
     );
   });
 

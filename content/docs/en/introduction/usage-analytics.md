@@ -3,7 +3,7 @@ title: Usage Analytics
 description: Track usage, quality, performance, alerts, and embedded analytics across Agora products.
 ---
 
-![Analytics overview](/images/analytics/analytics-overview.png)
+![Analytics overview](https://assets-docs.agora.io/images/analytics/analytics-overview.png)
 
 Agora Analytics tracks and analyzes the usage, quality, and performance of real-time voice, video, live streaming, chat, and other Agora products.
 

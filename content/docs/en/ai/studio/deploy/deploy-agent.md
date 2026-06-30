@@ -15,7 +15,7 @@ To publish your agent:
 
 1. Click the **Publish Agent** button at the top of the agent editor to open the publishing panel.
 
-    ![Publish agent panel](/images/conversational-ai/studio/publish-agent.png)
+    ![Publish agent panel](https://assets-docs.agora.io/images/conversational-ai/studio/publish-agent.png)
 
 2. Review and configure the deployment settings:
 

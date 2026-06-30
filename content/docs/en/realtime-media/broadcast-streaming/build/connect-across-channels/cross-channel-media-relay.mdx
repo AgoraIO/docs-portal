@@ -16,20 +16,20 @@ Due to its real-time and interactive nature, this feature enriches live broadcas
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
 1. Start cross-channel media stream relay
 
-  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
   ```java
   // Configure source channel information
@@ -161,20 +161,20 @@ Agora provides an open-source [HostAcrossChannels](https://github.com/AgoraIO/AP
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
-1. Start cross-channel media stream relay 
+1. Start cross-channel media stream relay
 
-  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
   ```swift
   // Configure source channel information
@@ -210,9 +210,9 @@ The updated configuration completely **replaces** the previous configuration.
   isPauseRelaying = true
   agoraKit.pauseAllChannelMediaRelay()
   ```
-  
+
   To resume forwarding the media stream to all target channels, call `resumeAllChannelMediaRelay`.
-  
+
   ```swift
   isPauseRelaying = false
   agoraKit.resumeAllChannelMediaRelay()
@@ -228,7 +228,7 @@ The updated configuration completely **replaces** the previous configuration.
   agoraKit.stopChannelMediaRelay()
   pauseRelayButton.isEnabled = false
   ```
-  
+
 :::note
 If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
 
@@ -238,8 +238,8 @@ If this method fails, you can call `leaveChannel` to leave the channel, and cros
   During cross-channel media stream relay, the SDK reports changes in the status of media stream relay through the `onChannelMediaRelayStateChanged` callback. Implement relevant business logic based on the [status codes](#status-codes).
 
   ```swift
-  func rtcEngine(_ engine: AgoraRtcEngineKit, 
-        channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState, 
+  func rtcEngine(_ engine: AgoraRtcEngineKit,
+        channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState,
         error: AgoraChannelMediaRelayError) {
 
     LogUtils.log(message: "channelMediaRelayStateDidChange: \(state.rawValue) error \(error.rawValue)", level: .info)
@@ -306,20 +306,20 @@ Agora provides an open-source [MediaChannelRelay](https://github.com/AgoraIO/API
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
-1. Start cross-channel media stream relay 
+1. Start cross-channel media stream relay
 
-  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
   ```swift
   // Configure source channel information
@@ -355,9 +355,9 @@ The updated configuration completely **replaces** the previous configuration.
   isPauseRelaying = true
   agoraKit.pauseAllChannelMediaRelay()
   ```
-  
+
   To resume forwarding the media stream to all target channels, call `resumeAllChannelMediaRelay`.
-  
+
   ```swift
   isPauseRelaying = false
   agoraKit.resumeAllChannelMediaRelay()
@@ -373,7 +373,7 @@ The updated configuration completely **replaces** the previous configuration.
   agoraKit.stopChannelMediaRelay()
   pauseRelayButton.isEnabled = false
   ```
-  
+
 :::note
 If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
 
@@ -383,8 +383,8 @@ If this method fails, you can call `leaveChannel` to leave the channel, and cros
   During cross-channel media stream relay, the SDK reports changes in the status of media stream relay through the `onChannelMediaRelayStateChanged` callback. Implement relevant business logic based on the [status codes](#status-codes).
 
   ```swift
-  func rtcEngine(_ engine: AgoraRtcEngineKit, 
-        channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState, 
+  func rtcEngine(_ engine: AgoraRtcEngineKit,
+        channelMediaRelayStateDidChange state: AgoraChannelMediaRelayState,
         error: AgoraChannelMediaRelayError) {
 
     LogUtils.log(message: "channelMediaRelayStateDidChange: \(state.rawValue) error \(error.rawValue)", level: .info)
@@ -451,7 +451,7 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO/API
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
@@ -471,7 +471,7 @@ To implement cross-channel media stream relay in your app, take the following st
    token: "yourSrcToken",
   });
 
-  // Set target channel information. 
+  // Set target channel information.
   // It can be called multiple times, for up to 4 target channels
   channelMediaConfig.addDestChannelInfo({
    channelName: "destChannel1",
@@ -551,20 +551,20 @@ This section contains content that completes the information on this page, or po
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
 1. Start cross-channel media stream relay
 
-  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
 	```cpp
 	// Configure source channel information
@@ -572,7 +572,7 @@ To implement cross-channel media stream relay in your app, take the following st
 	m_srcInfo->channelName = new char[szChannelId.size() + 1];
 	strcpy_s(const_cast<char *>(m_srcInfo->channelName), szChannelId.size() + 1,
 			szChannelId.data());
-	// Note: The token for source channel is different from the token used when joining the source channel. 
+	// Note: The token for source channel is different from the token used when joining the source channel.
 	// It needs to be regenerated using the source channel name and uid = 0
 	m_srcInfo->token = APP_TOKEN;
 	// It is recommended to set the uid of the source channel to 0, allowing the SDK to assign a random uid.
@@ -603,7 +603,7 @@ To implement cross-channel media stream relay in your app, take the following st
 	  * The source channel token in `srcChannelInfo` should be different from the one used when joining the source channel. Generate a new token using the source channel name and `uid = 0`.
 	  * For the destination channel, set the uid to `0`, to allow the SDK to assign a random `uid`, or specify a `uid`, ensuring that it is different from all uids in the target channel.
 	:::
-	
+
 2. Update media stream relay channels
 
   To forward the stream to multiple target channels or exit the current forwarding channel after staring channel media relay, call `startOrUpdateChannelMediaRelay` again to add or remove target channels for forwarding.
@@ -621,7 +621,7 @@ The updated configuration completely **replaces** the previous configuration.
 	```
 
 	To resume forwarding the media stream to all target channels, call `resumeAllChannelMediaRelay`.
-	
+
 	```cpp
 	m_rtcEngine->resumeAllChannelMediaRelay();
 	```
@@ -635,7 +635,7 @@ The updated configuration completely **replaces** the previous configuration.
 	m_lstInfo.AddString(_T("stopChannelMediaRelay"));
 	m_btnStartMediaRelay.SetWindowText(CrossChannelStartMediaRelay);
 	```
-	
+
 :::note
 If this method fails, you can call `leaveChannel` to leave the channel, and cross-channel media stream relay will automatically stop.
 
@@ -647,14 +647,14 @@ If this method fails, you can call `leaveChannel` to leave the channel, and cros
 	```cpp
 	class CAgoraCrossChannelEventHandler : public IRtcEngineEventHandler {
 		virtual void onChannelMediaRelayStateChanged(
-      CHANNEL_MEDIA_RELAY_STATE state, 
+      CHANNEL_MEDIA_RELAY_STATE state,
       CHANNEL_MEDIA_RELAY_ERROR code) override {
 			if (m_hMsgHanlder)
-				::PostMessage(m_hMsgHanlder, 
-               WM_MSGID(EID_CHANNEL_MEDIA_RELAY_STATE_CHNAGENED), 
+				::PostMessage(m_hMsgHanlder,
+               WM_MSGID(EID_CHANNEL_MEDIA_RELAY_STATE_CHNAGENED),
                state, code);
 		}
-	}; 
+	};
 	```
 
 ### Development considerations
@@ -700,14 +700,14 @@ Agora provides an open-source [CrossChannel](https://github.com/AgoraIO/API-Exam
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
@@ -720,7 +720,7 @@ To implement cross-channel media stream relay in your app, take the following st
   const destChannelId = "destChannel";
   const uid = 0;
   const token = "insert-your-token";
-  
+
   // Start cross-channel media stream forwarding
   rtcEngine.startOrUpdateChannelMediaRelay({
     // Configure source channel information srcInfo
@@ -832,20 +832,20 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO-Ext
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
 1. Start cross-channel media stream relay
 
-  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining a channel, call `startOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
   ```dart
   // Configures the source channel information for media relay.
@@ -979,14 +979,14 @@ The following table shows the main forwarding states and their corresponding cod
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your app, take the following steps:
 
@@ -999,7 +999,7 @@ To implement cross-channel media stream relay in your app, take the following st
   const destChannelId = "destChannel";
   const uid = 0;
   const token = "insert-your-token";
-  
+
   // Start cross-channel media stream forwarding
   rtcEngine.startOrUpdateChannelMediaRelay({
     // Configure source channel information srcInfo
@@ -1111,20 +1111,20 @@ Agora provides an open-source [ChannelMediaRelay](https://github.com/AgoraIO-Ext
 Cross-channel media stream relay is included in Agora's policy of [10,000 free minutes](/en/api-reference/faq/account/billing_free) every month. For usage beyond the free quota, please refer to [Pricing](../../reference/pricing).
 :::
 ## Prerequisites
-- Ensure that you have implemented the [SDK quickstart](../../index) in your project. 
+- Ensure that you have implemented the [SDK quickstart](../../index) in your project.
 - Contact [technical support](https://agora-ticket.agora.io/) to activate the cross-channel media stream relay feature.
 
 ## Implement cross-channel media stream relay
 
 The following figure shows the workflow you implement to facilitate cross-channel media stream relay:
 
-![CrossChannelMediaStreamForwarding](/images/video-sdk/cross-channel-forwarding.svg)
+![CrossChannelMediaStreamForwarding](https://assets-docs.agora.io/images/video-sdk/cross-channel-forwarding.svg)
 
 To implement cross-channel media stream relay in your game, take the following steps:
 
 1. Start cross-channel media stream relay
 
-  After joining the channel, call `StartOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream. 
+  After joining the channel, call `StartOrUpdateChannelMediaRelay` to configure the source and target channel information and start forwarding a media stream.
 
   ```csharp
   private void OnStartButtonClick()
@@ -1217,7 +1217,7 @@ The updated configuration completely **replaces** the previous configuration.
 - In a live broadcast use-case, only hosts can call `StartOrUpdateChannelMediaRelay`.
 - `StartOrUpdateChannelMediaRelay` must be called after successfully joining the channel, otherwise an error is reported.
 - Multiple hosts can forward media streams in a channel. Each host can forward media streams to up to 6 target channels.
-- This function does not support `String` `uid`s. Additionally, to use the cross-channel microphone function, use the `Int` type in the normal microphone function `uid`. 
+- This function does not support `String` `uid`s. Additionally, to use the cross-channel microphone function, use the `Int` type in the normal microphone function `uid`.
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

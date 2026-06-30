@@ -178,7 +178,12 @@ describe('common MDX registry', () => {
     const components = getMDXComponents();
     const Image = components.img as ImageComponent;
 
-    render(<Image alt="Product Architecture" src="/images/product.png" />);
+    render(
+      <Image
+        alt="Product Architecture"
+        src="https://assets-docs.agora.io/images/product.png"
+      />,
+    );
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -194,7 +199,10 @@ describe('common MDX registry', () => {
       name: 'Product Architecture',
     });
 
-    expect(previewImage).toHaveAttribute('src', '/images/product.png');
+    expect(previewImage).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/product.png',
+    );
     expect(dialog).toHaveClass('w-fit');
     expect(dialog).not.toHaveClass('w-full');
     expect(dialog).toHaveClass('justify-items-center');

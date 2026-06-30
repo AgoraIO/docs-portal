@@ -30,7 +30,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -56,7 +56,7 @@ This section introduces how to implement screen sharing in your project. The bas
 
 **API call sequence**
 
-![API call sequence](/images/video-sdk/screen-sharing-android-ios.svg)
+![API call sequence](https://assets-docs.agora.io/images/video-sdk/screen-sharing-android-ios.svg)
 
 Choose one of the following methods to enable screen sharing according to your use-case:
 
@@ -385,7 +385,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -407,14 +407,14 @@ Since Apple does not support capturing the screen in the main process of the app
 
 **Screen sharing iOS tech**
 
-![Screen Sharing iOS Tech](/images/video-sdk/screen-sharing-ios-tech.svg)
+![Screen Sharing iOS Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-tech.svg)
 
 Take the following steps to set up your screen sharing project:
 
 1. Go to your project folder and open the `.xcodeproj` file with Xcode.
 1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+    ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
 1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.swift` files.
 1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -423,7 +423,7 @@ Take the following steps to set up your screen sharing project:
 
    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
 
-     ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+     ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
    - If you need to implement some additional business logic, you can inherit the `AgoraReplayKitHandler` class. Modify the `SampleHandler.swift` file as follows:
 
@@ -514,7 +514,7 @@ This section introduces how to implement screen sharing in your project. The bas
 
 **Screen share process**
 
-![Screen Share Process](/images/video-sdk/screen-sharing-android-ios.svg)
+![Screen Share Process](https://assets-docs.agora.io/images/video-sdk/screen-sharing-android-ios.svg)
 
 Depending on the actual business use-case, you can choose either of the following methods to call the API to implement screen sharing:
 
@@ -692,7 +692,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -729,7 +729,7 @@ This section shows you how to implement screen sharing in your project. The basi
 
 **Screen share process**
 
-![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+![Screen Share Process](https://assets-docs.agora.io/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
 
 Depending on your business use-case, you can choose either of the following methods to implement screen sharing:
 
@@ -952,7 +952,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -1016,7 +1016,7 @@ AgoraRTC.createScreenVideoTrack({
 
 :::note
 - After you call the method, the end user must check **Share Audio** in the screen sharing popup box for the setting to take effect.
- ![Chrome Screen Share](/images/video-sdk/tmp_screen-sharing-web-chrome.png)
+ ![Chrome Screen Share](https://assets-docs.agora.io/images/video-sdk/tmp_screen-sharing-web-chrome.png)
 - If you choose to share a single app window, the audio cannot be shared.
 :::
 
@@ -1090,7 +1090,7 @@ AgoraRTC.createScreenVideoTrack({
 
 The SDK provides its own default interface for end users to select a screen or window to share, as shown in the following figure:
 
-![Electron Screen Share Default Interface](/images/video-sdk/tmp_screen-sharing-web-electron-default-interface.png)
+![Electron Screen Share Default Interface](https://assets-docs.agora.io/images/video-sdk/tmp_screen-sharing-web-electron-default-interface.png)
 
 #### Custom interface
 
@@ -1098,7 +1098,7 @@ To customize the selection interface, refer to the following steps:
 
 1. Call the `AgoraRTC.getElectronScreenSources` method provided by the SDK to get information about the screens that can be shared. `sources` is a list of `source` objects that contain information about the sharing source and `sourceId`. Its `source` properties are as follows:
 
-    ![Electron Screen Share Custom Interface Source Properties](/images/video-sdk/screen-sharing-web-electron-custom-interface-source-properties.png)
+    ![Electron Screen Share Custom Interface Source Properties](https://assets-docs.agora.io/images/video-sdk/screen-sharing-web-electron-custom-interface-source-properties.png)
 
   - **`id`**: The `sourceId`.
   - **`name`**: The name of the screen source.
@@ -1112,7 +1112,7 @@ To customize the selection interface, refer to the following steps:
 
 2. Based on the attributes of `source`, draw a selection interface using HTML and CSS to allow the user to select the screen source to be shared. The corresponding relationship between the properties of `source` and the screen sharing selection interface is as follows:
 
-    ![Electron Screen Share Custom Interface Thumbnail Name Relationship](/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
+    ![Electron Screen Share Custom Interface Thumbnail Name Relationship](https://assets-docs.agora.io/images/video-sdk/tmp_screen-sharing-web-electron-custom-interface-thumbnail-name.jpg)
 
 3. Get the `sourceId` selected by the user.
 
@@ -1160,7 +1160,7 @@ Promise.all([startScreenCall(), startVideoCall()]).then(() => );
 
 Subscribing to your own track incurs additional charges, as illustrated in the following figure:
 
-![Electron Screen Share Subscribing Yourself Additional Charges](/images/video-sdk/screen-sharing-web-electron-subscribing-yourself.svg)
+![Electron Screen Share Subscribing Yourself Additional Charges](https://assets-docs.agora.io/images/video-sdk/screen-sharing-web-electron-subscribing-yourself.svg)
 
 - To avoid double billing, best practice is to store the `uid` returned by each client after successfully joining a channel in a list. Each time a `user-published` event is monitored, check if the track is a local track; if so, do not subscribe.
 - The client sharing the screen should not subscribe to any streams.
@@ -1202,7 +1202,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -1239,7 +1239,7 @@ This section shows you how to implement screen sharing in your project. The basi
 
 **Screen share process**
 
-![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+![Screen Share Process](https://assets-docs.agora.io/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
 
 Depending on your business use-case, choose either of the following methods to implement screen sharing:
 
@@ -1464,7 +1464,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -1491,7 +1491,7 @@ The API calling sequence is shown in the figure below:
 
 **API calling sequence**
 
-![API Calling Sequence](/images/video-sdk/screen-sharing-flutter-electron.svg)
+![API Calling Sequence](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-electron.svg)
 
 ## Implement screen sharing
 
@@ -1649,7 +1649,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -1681,14 +1681,14 @@ Since Apple does not support capturing the screen in the main process of the app
 
 **API calling sequence**
 
-![Screen Sharing Flutter Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+![Screen Sharing Flutter Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 Take the following steps to set up your screen sharing project:
 
 1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
 1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-    ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+    ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
 1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
 1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -1698,7 +1698,7 @@ The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sur
 
    - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **SampleHandler** to **AgoraReplayKitHandler**:
 
-     ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+     ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
    - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
 
@@ -1754,7 +1754,7 @@ The API calling sequence is shown in the figure below:
 
 **API calling sequence**
 
-![API Calling Sequence](/images/video-sdk/screen-sharing-flutter-electron.svg)
+![API Calling Sequence](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-electron.svg)
 
 </CodeBlockTab>
 
@@ -1980,7 +1980,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -2002,7 +2002,7 @@ Screen sharing modes are available on different platforms as follows:
 
 Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
 
-  ![Screen Sharing React Native Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+  ![Screen Sharing React Native Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 ## Implement screen sharing
 
@@ -2026,7 +2026,7 @@ Since Apple does not support capturing the screen in the main process of the app
 
 **Screen sharing React Native tech**
 
-![Screen Sharing React Native Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+![Screen Sharing React Native Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 Take the following steps to set up your screen sharing project:
 
@@ -2035,7 +2035,7 @@ Take the following steps to set up your screen sharing project:
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
   1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-      ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+      ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
   1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
   1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -2043,7 +2043,7 @@ Take the following steps to set up your screen sharing project:
 
      - To use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
-       ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+       ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
      - To implement additional business logic, refer to the following code to modify the `SampleHandler.h` file:
 
@@ -2188,7 +2188,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -2216,7 +2216,7 @@ Screen sharing modes are available on different platforms as follows:
 
 You use the iOS native `ReplayKit` framework in the extension to record the screen, and then add the screen sharing stream to the channel as a user. Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream.
 
-  ![Screen Sharing Unity Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+  ![Screen Sharing Unity Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 </CodeBlockTab>
 
@@ -2290,7 +2290,7 @@ Since Apple does not support capturing the screen in the main process of the app
 
 **Screen sharing Unity tech**
 
-![Screen Sharing Unity Tech](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+![Screen Sharing Unity Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 Take the following steps to set up your screen sharing project:
 
@@ -2299,7 +2299,7 @@ Take the following steps to set up your screen sharing project:
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
   1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-      ![Select Broadcast Upload Extension](/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+      ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
   1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
   1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
@@ -2307,7 +2307,7 @@ Take the following steps to set up your screen sharing project:
 
      - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
-       ![Use AgoraReplayKitHandler](/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+       ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
      - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
 
@@ -2530,7 +2530,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -2567,7 +2567,7 @@ This section shows you how to implement screen sharing in your project. The basi
 
 **Screen share process**
 
-![Screen Share Process](/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
+![Screen Share Process](https://assets-docs.agora.io/images/video-sdk/screen-sharing-macos-unreal-windows.svg)
 
 To enable screen sharing, choose one of the following methods according to your use-case:
 
@@ -2797,7 +2797,7 @@ The screen sharing feature provides the following screen sharing modes for use i
 
 **Screen sharing use-cases**
 
-![Screen Sharing Functionality](/images/video-sdk/screen-sharing-functionality.png)
+![Screen Sharing Functionality](https://assets-docs.agora.io/images/video-sdk/screen-sharing-functionality.png)
 
 - **Share the entire screen**: Share your entire screen, including all the information on the screen. This feature supports collecting and sharing information from two screens at the same time.
 - **Share an app window**: If you don't want to share the entire screen with other users, you can share only the area within an app window.
@@ -2821,7 +2821,7 @@ Since Apple does not support capturing the screen in the main process of the app
 
 **Screen sharing sequence**
 
-![Screen Sharing Blueprint Tech Android iOS](/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
+![Screen Sharing Blueprint Tech Android iOS](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
 Refer to the [iOS Screen Sharing Guide](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/blob/main/Agora-Unreal-SDK-CPP-Example/IOS%20ScreenShare%20Guide.md) to create an Extension for your Unreal (Blueprint) project.
 
@@ -2833,7 +2833,7 @@ Agora currently supports the following screen sharing solutions for macOS and Wi
   - Share a specified window or part of a specified window using the `windowId`.
 
 The basic API call sequence is shown in the figure below:
-![Screen Sharing Blueprint Tech Windows macOS](/images/video-sdk/screen-sharing-blueprint-windows-macos-tech.png)
+![Screen Sharing Blueprint Tech Windows macOS](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-tech.png)
 
 ## Implement screen sharing
 
@@ -2847,7 +2847,7 @@ This subsection describes how to start and stop screen sharing on Android and iO
 
 Create two button controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`. Users **start** or **stop** screen sharing using these two buttons as shown in the figure below:
 
-![Create UMG](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-umg.png)
+![Create UMG](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-umg.png)
 
 #### Join a channel and publish the screen sharing stream
 
@@ -2855,7 +2855,7 @@ Refer to the following steps to join a channel and publish a screen sharing stre
 
 1. In **Bind UIEvent**, bind the UI event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown in the following figure:
 
-    ![Bind UI Start](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
+    ![Bind UI Start](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-start.png)
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When a button click triggers this callback, execute the following flow:
 
@@ -2870,7 +2870,7 @@ Refer to the following steps to join a channel and publish a screen sharing stre
         - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user role as host or audience.
         - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING` to set the channel scene to live broadcast scene as shown below:
 
-        ![Join Channel and Publish Screen Sharing Stream](/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-start.png)
+        ![Join Channel and Publish Screen Sharing Stream](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-android-ios-mobile-start.png)
 
 #### Stop screen sharing
 
@@ -2878,11 +2878,11 @@ Follow the steps below to stop screen capture:
 
 1. In **Bind UIEvent**, bind the UI event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback function respectively. This callback is triggered when the user clicks the **Stop Screen Share** button.
 
-    ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
+    ![Bind UI Event for Stop Button Click](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-android-ios-bind-ui-stop.png)
 
 1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown in the following image:
 
-    ![Bind UI Event for Stop Button Click](/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
+    ![Bind UI Event for Stop Button Click](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-android-ios-stop.png)
 
 ### Windows and macOS platforms
 
@@ -2896,13 +2896,13 @@ Refer to the following steps to create a UMG:
 
 1. Create two **Button** controls named `Btn_StartScreenCapture` and `Btn_StopScreenCapture`, for the user to start or stop screen sharing.
 
-    ![Windows macOS UMG](/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
+    ![Windows macOS UMG](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-umg.png)
 
 #### Add the basic process
 
 In **EventGraph**, add and connect the event nodes required for screen sharing as shown in the following diagram:
 
-![EventGraph](/images/video-sdk/screen-sharing-blueprint-windows-macos-event-graph.png)
+![EventGraph](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-event-graph.png)
 
 The main nodes are as follows:
 
@@ -2919,19 +2919,19 @@ Follow the steps below to obtain and add available screens and windows:
 
     1. Call the **Get Screen Capture Sources** method to return a list of shareable screens and windows, and call **Get Count** to get the number of shareable screens and windows, as shown in the following figure:
 
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
+        ![Get Screen Capture Sources](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-get-screen-capture-sources.png)
 
     1. Traverse the list, call **Get Source Info** to get information about a specific screen or window, and add the **Source Name** to each of the options in the drop-down list for the users to choose from. Call **Release** to release the list of shareable screens and windows. Refer to the following figure:
 
-        ![Get Screen Capture Sources](/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
+        ![Get Screen Capture Sources](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-get-source-info.png)
 
 1. In **Bind UIEvent**, bind the UI event of the dropdown list selection change. Create a **Bind Event to On Selection Changed** node that connects the `CBS_DisplayID` drop-down list control and the `OnCBDisplayIDSelectionChanged` callback function, respectively. This callback is triggered when the user selects the specified screen or window in the drop-down list as shown in the following figure:
 
-    ![Bind Event On Selection Changed](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
+    ![Bind Event On Selection Changed](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-event-to-on-selection-changed.png)
 
 1. Create and implement the `OnCBDisplayIDSelectionChanged` callback. When an option change triggers this callback, it looks up the index of the option and sets the option by index as shown below:
 
-    ![OnCBDisplayIDSelectionChanged](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
+    ![OnCBDisplayIDSelectionChanged](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-on-cbdisplay-id-selection-changed.png)
 
 
 #### Configure screen sharing parameters
@@ -2944,19 +2944,19 @@ In **Init Default Screen Capture Config**, configure screen sharing parameters s
 
 Save this configuration for subsequent use when starting screen capture. Refer to the following figure:
 
-![Save Screen Share Config](/images/video-sdk/screen-sharing-blueprint-windows-macos-save-config.png)
+![Save Screen Share Config](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-save-config.png)
 
 #### Join a channel and publish a screen sharing stream
 
 1. In **Bind UIEvent**, bind the event of clicking the **Start Screen Share** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StartScreenShare` button control and the `OnStartScreenShareClicked` callback functions, respectively. This callback is triggered when the user clicks the **Start Screen Share** button as shown below:
 
-    ![Bind Event to On Clicked](/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
+    ![Bind Event to On Clicked](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
   1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
   1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
 
-      ![OnStartScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
+      ![OnStartScreenShareClicked callback](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
 
   1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
   1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
@@ -2967,17 +2967,17 @@ Save this configuration for subsequent use when starting screen capture. Refer t
      - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user's role as anchor or audience.
      - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
-     ![Call Join Channel](/images/video-sdk/screen-sharing-blueprint-windows-macos-call-join-channel.png)
+     ![Call Join Channel](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-call-join-channel.png)
 
 #### Stop screen sharing and leave the channel
 
 1. In **Bind UIEvent**, bind the event of clicking the **Stop Screen Sharing** button. Create a **Bind Event to On Clicked** node that connects the `Btn_StopScreenShare` button control and the `OnStopScreenShareClicked` callback functions respectively. This callback is triggered when the user clicks the **Stop Screen Share** button. Refer to the following figure:
 
-    ![Bind UI Event of Stop Button Click](/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
+    ![Bind UI Event of Stop Button Click](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-bind-ui-stop.png)
 
 1. Create and implement the `OnStopScreenShareClicked` callback. When a button click triggers this callback, **Stop Screen Capture** is called to stop screen sharing as shown below:
 
-    ![OnStopScreenShareClicked callback](/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
+    ![OnStopScreenShareClicked callback](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-on-stop-screen-share-clicked.png)
 
 ### Limitations
 
