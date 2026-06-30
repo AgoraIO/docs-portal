@@ -8,9 +8,10 @@ import {
   MenuIcon,
   MoonIcon,
   SunIcon,
+  XIcon,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -58,6 +59,10 @@ const DOCS_DESKTOP_GRID_CLASS_NAME =
   'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
+export const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY =
+  'agora-docs:legacy-docs-banner-dismissed';
+const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE = 'true';
+const DISMISS_LEGACY_DOCS_BANNER_LABEL = 'Dismiss legacy docs banner';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobilePageLinkClassName =
@@ -93,6 +98,21 @@ export function getDocsSidebarResetKey(
     sidebarHeader.backHref,
     sidebarHeader.versionSwitcher?.currentId ?? '',
   ].join('\0');
+}
+
+function isLegacyDocsBannerDismissed() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  try {
+    return (
+      window.localStorage.getItem(LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY) ===
+      LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function DocsShell({
@@ -137,9 +157,17 @@ export function DocsShell({
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerOffset, setHeaderOffset] = useState(0);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const [isLegacyDocsBannerVisible, setIsLegacyDocsBannerVisible] =
+    useState(true);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
   const homeHref = buildDocPath(currentLocale, 'introduction');
   const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
+
+  useEffect(() => {
+    if (isLegacyDocsBannerDismissed()) {
+      setIsLegacyDocsBannerVisible(false);
+    }
+  }, []);
 
   useLayoutEffect(() => {
     const node = headerRef.current;
@@ -165,6 +193,19 @@ export function DocsShell({
       window.removeEventListener('resize', updateHeaderOffset);
     };
   }, []);
+
+  const dismissLegacyDocsBanner = () => {
+    setIsLegacyDocsBannerVisible(false);
+
+    try {
+      window.localStorage.setItem(
+        LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY,
+        LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE,
+      );
+    } catch {
+      // The in-memory state still dismisses the banner when storage is blocked.
+    }
+  };
 
   const shellOffsetStyle = {
     '--docs-shell-header-offset': `${headerOffset}px`,
@@ -207,16 +248,33 @@ export function DocsShell({
               ))}
             </nav>
           ) : null}
-          <a
-            className="block w-full whitespace-normal break-words border-b border-[color:color-mix(in_srgb,var(--accent-brand)_22%,transparent)] bg-[color:var(--accent-brand-soft)] px-4 py-2 text-center text-sm font-medium leading-5 text-[color:var(--accent-brand)] underline-offset-4 [overflow-wrap:anywhere] hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:px-6"
-            data-testid="legacy-docs-banner"
-            href={legacyDocsHref}
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t('docs.legacyDocsBanner')}
-            <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
-          </a>
+          {isLegacyDocsBannerVisible ? (
+            <div className="flex w-full items-center gap-2 border-b border-[color:color-mix(in_srgb,var(--accent-brand)_22%,transparent)] bg-[color:var(--accent-brand-soft)] px-2 py-1.5 sm:px-4">
+              <a
+                className="min-w-0 flex-1 whitespace-normal break-words px-2 py-0.5 text-center text-sm font-medium leading-5 text-[color:var(--accent-brand)] underline-offset-4 [overflow-wrap:anywhere] hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                data-testid="legacy-docs-banner"
+                href={legacyDocsHref}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {t('docs.legacyDocsBanner')}
+                <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
+              </a>
+              <Button
+                aria-label={DISMISS_LEGACY_DOCS_BANNER_LABEL}
+                className="text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)]"
+                onClick={dismissLegacyDocsBanner}
+                size="icon-xs"
+                type="button"
+                variant="ghost"
+              >
+                <XIcon />
+                <span className="sr-only">
+                  {DISMISS_LEGACY_DOCS_BANNER_LABEL}
+                </span>
+              </Button>
+            </div>
+          ) : null}
           <div
             className={cn(
               'mx-auto flex h-[52px] w-full items-center gap-3 px-4 sm:px-7',

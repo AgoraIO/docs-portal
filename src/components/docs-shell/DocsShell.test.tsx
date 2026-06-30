@@ -22,7 +22,10 @@ import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
 import { i18n } from '@/lib/i18n/i18n';
 import { LOCALE_STORAGE_KEY } from '@/lib/i18n/i18n-config';
 import { legacyDocsBannerConfig } from '@/lib/shared';
-import { DocsShell } from './DocsShell';
+import {
+  DocsShell,
+  LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY,
+} from './DocsShell';
 
 const tabs: TabSummary[] = [
   {
@@ -290,6 +293,7 @@ describe('DocsShell', () => {
   afterEach(async () => {
     vi.useRealTimers();
     window.localStorage.removeItem(LOCALE_STORAGE_KEY);
+    window.localStorage.removeItem(LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY);
     await i18n.changeLanguage('en');
     vi.restoreAllMocks();
   });
@@ -476,8 +480,37 @@ describe('DocsShell', () => {
     expect(banner).toHaveAttribute('href', legacyDocsBannerConfig.hrefs.en);
     expect(banner).toHaveAttribute('target', '_blank');
     expect(banner).toHaveAttribute('rel', 'noreferrer');
-    expect(banner).toHaveClass('block');
+    expect(
+      screen.getByRole('button', { name: 'Dismiss legacy docs banner' }),
+    ).toBeVisible();
     expect(screen.getByRole('banner')).toContainElement(banner);
+  });
+
+  it('dismisses the legacy docs banner immediately and persists the dismissal', async () => {
+    const { unmount } = renderDocsShell();
+
+    await screen.findByTestId('legacy-docs-banner');
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Dismiss legacy docs banner' }),
+    );
+
+    expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Dismiss legacy docs banner' }),
+    ).not.toBeInTheDocument();
+    expect(
+      window.localStorage.getItem(LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY),
+    ).toBe('true');
+
+    unmount();
+    renderDocsShell();
+
+    await waitFor(() => {
+      expect(
+        screen.queryByTestId('legacy-docs-banner'),
+      ).not.toBeInTheDocument();
+    });
   });
 
   it('localizes the legacy docs banner copy for Chinese docs chrome', async () => {
