@@ -370,7 +370,7 @@ These SDKs support network geofencing in the following regions: global (default)
 
 ### Security best practice checklist
 
-Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
+Use this list to quickly check what measures you have or have not taken to best protect the security of your app and users:
 
 1. [Enable token-based authentication](../manage-agora-account) on [Agora Console](https://console.agora.io/v2).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.

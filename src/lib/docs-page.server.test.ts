@@ -3182,18 +3182,18 @@ Web body
                       children: [
                         {
                           $id: 'ai-reference-ten-agent-create-asr-extension',
-                          name: 'Create an ASR extension',
+                          name: 'Contribute an ASR extension',
                           type: 'page',
                           url: '/en/ai/reference/ten-agent/create-asr-extension',
                         },
                         {
                           $id: 'ai-reference-ten-agent-create-tts-extension',
-                          name: 'Create a TTS extension',
+                          name: 'Contribute a TTS extension',
                           type: 'page',
                           url: '/en/ai/reference/ten-agent/create-tts-extension',
                         },
                       ],
-                      name: 'TEN Agent',
+                      name: 'Contribute an ASR/TTS extension',
                       type: 'folder',
                     },
                     {
@@ -3473,7 +3473,9 @@ Web body
     ).toBe(true);
     expect(
       dedicatedDevicesSection.children.some(
-        (node) => node.type === 'section' && node.title === 'TEN Agent',
+        (node) =>
+          node.type === 'section' &&
+          node.title === 'Contribute an ASR/TTS extension',
       ),
     ).toBe(false);
     expect(
@@ -3483,11 +3485,13 @@ Web body
       ),
     ).toBe(true);
     const tenAgentSection = softwareReferenceSection.children.find(
-      (node) => node.type === 'section' && node.title === 'TEN Agent',
+      (node) =>
+        node.type === 'section' &&
+        node.title === 'Contribute an ASR/TTS extension',
     );
 
     if (!tenAgentSection || tenAgentSection.type !== 'section') {
-      throw new Error('expected TEN Agent section');
+      throw new Error('expected Contribute an ASR/TTS extension section');
     }
 
     expect(
