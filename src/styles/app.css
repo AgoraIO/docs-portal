@@ -578,13 +578,18 @@
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)) {
     border-radius: 0.2rem;
-    color: var(--accent-brand);
+    color: var(--foreground);
     font-weight: 500;
+    -webkit-text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
     text-decoration-line: underline;
     text-decoration-thickness: 0.08em;
     text-decoration-color: color-mix(
       in srgb,
-      var(--accent-brand) 38%,
+      var(--foreground) 42%,
       transparent
     );
     text-underline-offset: 0.2em;
@@ -595,9 +600,10 @@
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
-    background: var(--accent-brand-soft);
-    color: var(--accent-brand);
-    text-decoration-color: var(--accent-brand);
+    background: transparent;
+    color: var(--foreground);
+    -webkit-text-decoration-color: var(--foreground);
+    text-decoration-color: var(--foreground);
   }
 
   .prose :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
@@ -607,13 +613,18 @@
 
   .prose :where([data-parameter-description] a) {
     border-radius: 0.2rem;
-    color: var(--accent-brand);
+    color: var(--foreground);
     font-weight: 500;
+    -webkit-text-decoration-color: color-mix(
+      in srgb,
+      var(--foreground) 42%,
+      transparent
+    );
     text-decoration-line: underline;
     text-decoration-thickness: 0.08em;
     text-decoration-color: color-mix(
       in srgb,
-      var(--accent-brand) 38%,
+      var(--foreground) 42%,
       transparent
     );
     text-underline-offset: 0.2em;
@@ -624,9 +635,10 @@
   }
 
   .prose :where([data-parameter-description] a):hover {
-    background: var(--accent-brand-soft);
-    color: var(--accent-brand);
-    text-decoration-color: var(--accent-brand);
+    background: transparent;
+    color: var(--foreground);
+    -webkit-text-decoration-color: var(--foreground);
+    text-decoration-color: var(--foreground);
   }
 
   .prose :where([data-parameter-description] a):focus-visible {
@@ -1279,10 +1291,34 @@
   overflow: visible;
 }
 
+/* Fumadocs emits unlayered prose link styles after Tailwind layers.
+   Keep the product decision for body links here so the rendered underline
+   matches the foreground text instead of the brand accent. */
+:where(html) .prose :where(a):not(:where(.not-prose, .not-prose *)),
+:where(html) .prose :where([data-parameter-description] a) {
+  color: var(--foreground);
+  -webkit-text-decoration-color: color-mix(
+    in srgb,
+    var(--foreground) 42%,
+    transparent
+  );
+  text-decoration-color: color-mix(in srgb, var(--foreground) 42%, transparent);
+}
+
+:where(html) .prose :where(a):not(:where(.not-prose, .not-prose *)):hover,
+:where(html) .prose :where([data-parameter-description] a):hover {
+  background: transparent;
+  color: var(--foreground);
+  -webkit-text-decoration-color: var(--foreground);
+  text-decoration-color: var(--foreground);
+}
+
 /* Fumadocs prose/table/code styles are emitted outside Tailwind layers.
    Keep these unlayered dark-mode overrides after the imports so rendered
    Markdown tables, code blocks, and inline code get the intended contrast. */
-:where(html.dark) .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)),
+:where(html.dark)
+  .prose
+  :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)),
 :where(html.dark)
   .prose
   :where([data-parameter-description] :not(pre) > code):not(
