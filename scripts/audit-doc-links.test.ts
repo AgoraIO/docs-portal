@@ -129,31 +129,89 @@ describe('auditDocsLinks', () => {
         '<Card href="/en/api-reference/api-ref/rtc/query-channel-list" />',
         '<Card href="/en/api-reference/rtc/android/overview" />',
         '<Card href="/en/api-reference/rtc/android/(current)/broken" />',
+        '<Card href="/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo" />',
+        '<Card href="/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo" />',
         '<Card href="/en/missing-page" />',
         '<Card href="https://example.com/docs" />',
       ].join('\n'),
     );
     await writeDoc(path.join(docsRoot, 'en', 'ai', 'index.mdx'));
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'en',
+        'api-reference',
+        'rtc',
+        'android',
+        '(current)',
+        'video',
+        'video-basic.mdx',
+      ),
+      ['# Video basic', '', '<a id="api_irtcengine_enablevideo"></a>'].join(
+        '\n',
+      ),
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'zh-CN',
+        'api-reference',
+        'rtc',
+        'android',
+        '(current)',
+        'video',
+        'video-basic.mdx',
+      ),
+      ['# Video basic', '', '<a id="api_irtcengine_enablevideo"></a>'].join(
+        '\n',
+      ),
+    );
 
     const stats = auditDocsLinks({ docsRoot });
     const rootLinks = stats.rootLinks as AuditEntry[];
     const skippedRootLinks = stats.skippedRootLinks as AuditEntry[];
     const missingRootLinks = stats.missingRootLinks as AuditEntry[];
+    const validHashLinks = stats.validHashLinks as AuditEntry[];
 
     expect(rootLinks.map((entry) => entry.href)).toEqual([
       '/en/ai',
       '/en/api-reference/api-ref/rtc/query-channel-list',
+      '/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+      '/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
     ]);
     expect(rootLinks.at(1)).toMatchObject({
       resolution: 'openapi-route',
       resolvedTargetPath:
         'openapi:/en/api-reference/api-ref/rtc/query-channel-list',
     });
-    expect(skippedRootLinks).toHaveLength(1);
-    expect(skippedRootLinks[0]).toMatchObject({
-      href: '/en/api-reference/rtc/android/overview',
-      resolution: 'hosted-reference',
+    expect(rootLinks.at(2)).toMatchObject({
+      resolution: 'route',
+      resolvedTargetPath:
+        'en/api-reference/rtc/android/(current)/video/video-basic.mdx',
     });
+    expect(rootLinks.at(3)).toMatchObject({
+      resolution: 'route',
+      resolvedTargetPath:
+        'zh-CN/api-reference/rtc/android/(current)/video/video-basic.mdx',
+    });
+    expect(validHashLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+          anchor: 'api_irtcengine_enablevideo',
+        }),
+        expect.objectContaining({
+          href: '/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+          anchor: 'api_irtcengine_enablevideo',
+        }),
+      ]),
+    );
+    expect(skippedRootLinks).toEqual([
+      expect.objectContaining({
+        href: '/en/api-reference/rtc/android/overview',
+        resolution: 'hosted-reference',
+      }),
+    ]);
     expect(missingRootLinks).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
