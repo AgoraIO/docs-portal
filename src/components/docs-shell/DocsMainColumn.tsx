@@ -61,6 +61,7 @@ export function DocsMainColumn({
           <div className="min-w-0">{children}</div>
           <DocsPageFooter
             contentFillsWidth={contentFillsWidth}
+            includeFeedback
             layoutMode={layoutMode}
             locale={locale}
             next={next}

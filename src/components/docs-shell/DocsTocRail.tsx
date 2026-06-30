@@ -4,7 +4,6 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import { cn } from '@/lib/cn';
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { DocsTableOfContents } from './DocsContent';
-import { DocsPageFeedback } from './DocsPageFeedback';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsTocRail({
@@ -15,20 +14,22 @@ export function DocsTocRail({
   toc: TOCItemType[];
 }) {
   const { isScrollbarVisible, scrollContainerRef } =
-    useTransientScrollbar<HTMLElement>();
+    useTransientScrollbar<HTMLDivElement>();
 
   return (
     <aside
-      className={cn(
-        'docs-scrollbar hidden w-[220px] shrink-0 overflow-y-auto bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:h-[var(--docs-shell-body-height)] xl:min-h-0 xl:self-start',
-        isScrollbarVisible && 'docs-scrollbar-visible',
-      )}
+      className="hidden w-[220px] shrink-0 bg-transparent xl:sticky xl:top-[var(--docs-shell-header-offset)] xl:block xl:h-[var(--docs-shell-body-height)] xl:min-h-0 xl:self-start"
       data-testid="docs-toc-rail"
-      ref={scrollContainerRef}
     >
-      <div className="flex flex-col gap-4 px-2 py-9 pl-6">
+      <div
+        className={cn(
+          'docs-scrollbar h-full min-h-0 overflow-y-auto px-2 py-9 pl-6',
+          isScrollbarVisible && 'docs-scrollbar-visible',
+        )}
+        data-testid="docs-toc-rail-scroll"
+        ref={scrollContainerRef}
+      >
         <DocsTableOfContents locale={locale} toc={toc} />
-        <DocsPageFeedback compact locale={locale} />
       </div>
     </aside>
   );

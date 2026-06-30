@@ -1553,7 +1553,7 @@ describe('DocsMainColumn', () => {
 });
 
 describe('DocsTocRail', () => {
-  it('renders helpfulness feedback below the desktop toc actions', async () => {
+  it('keeps feedback out of the sticky toc rail while bounding long toc scroll', async () => {
     renderWithRouter(
       <DocsTocRail
         locale="en"
@@ -1562,16 +1562,24 @@ describe('DocsTocRail', () => {
     );
 
     expect(await screen.findByText('On this page')).toBeInTheDocument();
-    expect(screen.getByTestId('docs-feedback')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Yes' })).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Send feedback' }),
-    ).toBeInTheDocument();
-    expect(screen.getByTestId('docs-feedback').lastElementChild).toHaveClass(
-      'flex-wrap',
+    expect(screen.queryByTestId('docs-feedback')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Yes' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Send feedback' })).toBeNull();
+
+    const tocRail = screen.getByTestId('docs-toc-rail');
+    expect(tocRail).toHaveClass(
+      'xl:sticky',
+      'xl:top-[var(--docs-shell-header-offset)]',
+      'xl:h-[var(--docs-shell-body-height)]',
+      'xl:min-h-0',
     );
-    expect(screen.getByRole('button', { name: 'Send feedback' })).toHaveClass(
-      'w-full',
+    expect(tocRail).not.toHaveClass('docs-scrollbar', 'overflow-y-auto');
+
+    expect(screen.getByTestId('docs-toc-rail-scroll')).toHaveClass(
+      'docs-scrollbar',
+      'h-full',
+      'min-h-0',
+      'overflow-y-auto',
     );
   });
 });
@@ -1623,7 +1631,7 @@ describe('DocsPageFeedback placement', () => {
     );
   });
 
-  it('shows helpfulness feedback in the mobile footer only', async () => {
+  it('shows helpfulness feedback in desktop and mobile page footers', async () => {
     renderWithRouter(
       <DocsMainColumn
         next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
@@ -1638,7 +1646,9 @@ describe('DocsPageFeedback placement', () => {
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
     const desktopFooter = within(desktopScroll).getByTestId('docs-page-footer');
-    expect(within(desktopFooter).queryByTestId('docs-feedback')).toBeNull();
+    expect(
+      within(desktopFooter).getByTestId('docs-feedback'),
+    ).toBeInTheDocument();
 
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
     const mobileFooter = within(mobileFlow).getByTestId('docs-page-footer');
