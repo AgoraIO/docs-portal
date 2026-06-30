@@ -52,6 +52,8 @@ describe('auditDocsLinks', () => {
         '[index route](guide.md)',
         '[legacy operation](../operations/start-agent.md#llm-max_history)',
         '[generated endpoint](../api-reference/conversational-ai/rest-api/agent/join.md)',
+        '[api macro]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel)',
+        '[lowercase api macro]({{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:))',
         '[missing](missing.md)',
       ].join('\n'),
     );
@@ -102,6 +104,18 @@ describe('auditDocsLinks', () => {
       resolvedTargetPath:
         'openapi:/en/api-reference/api-ref/conversational-ai/join',
     });
+    expect(stats.apiReferenceMacroLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '{{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel',
+          reason: 'api-reference-macro',
+        }),
+        expect.objectContaining({
+          href: '{{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:',
+          reason: 'api-reference-macro',
+        }),
+      ]),
+    );
   });
 
   it('checks root JSX links against known docs and OpenAPI routes', async () => {

@@ -22,7 +22,7 @@ To ensure you have the latest security updates, best practice is to upgrade to t
 
 ### Use token authentication
 
-To ensure communication security, Agora strongly recommends use of token authentication in your app. Token authentication not only ensures that only authorized users can join a channel, but also controls the user's streaming privileges. To use token authentication, integrate token generation into your business server, and enable token verification on the Agora server. Refer to [Secure authentication with tokens](../token-authentication/authentication-workflow) for details.
+To ensure communication security, Agora strongly recommends use of token authentication in your app. Token authentication not only ensures that only authorized users can join a channel, but also controls the user's streaming privileges. To use token authentication, integrate token generation into your business server, and enable token verification on the Agora server. Refer to [Secure authentication with tokens](../authenticate-users/authentication-workflow) for details.
 
 #### Set an appropriate validity period for tokens and permissions
 
@@ -89,7 +89,7 @@ When a token is about to expire, the SDK triggers the `token-privilege-will-expi
 
 :::info
 - Agora recommends setting the validity period of `tokenExpirationInSeconds` and `privilegeExpirationInSeconds` to be the same.
-- Ensure the secrecy of your app ID and app certificate. Agora recommends storing the app ID and app certificate securely on the app server. If you suspect leakage, [Switch to a new primary certificate](../get-started/manage-agora-account#switch-to-a-new-primary-certificate).
+- Ensure the secrecy of your app ID and app certificate. Agora recommends storing the app ID and app certificate securely on the app server. If you suspect leakage, [Switch to a new primary certificate](/en/realtime-media/video/reference/console-overview#switch-to-a-new-primary-certificate).
 - When updating the app certificate, best practice is to choose a time when the number of online users is at a minimum to avoid large-scale user login failure.
 :::
 
@@ -210,7 +210,7 @@ To use co-host token authentication, set the user role using the `role` paramete
 </PlatformStructured>
 
 :::info
-If your business use-case requires more refined streaming permission control, refer to the [Co-host token authentication](../token-authentication/authentication-workflow#co-host-token-authentication) guide.
+If your business use-case requires more refined streaming permission control, refer to the [Co-host token authentication](../authenticate-users/deploy-token-server#co-host-token-authentication) guide.
 :::
 
 After implementing co-host authentication, use it together with your business logic to verify that the user's ID is legitimate and that they are authorized to broadcast streams.
