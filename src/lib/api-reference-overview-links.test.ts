@@ -13,6 +13,10 @@ function readDoc(...segments: string[]) {
   return readFileSync(path.join(docsRoot, ...segments), 'utf8');
 }
 
+function getFrontmatterTitle(markdown: string) {
+  return markdown.match(/^title:\s*["']?(.+?)["']?\s*$/m)?.[1] ?? '';
+}
+
 function extractSolutionCards(markdown: string): SolutionCard[] {
   return [...markdown.matchAll(/<SolutionCard\b([\s\S]*?)\/>/g)].map(
     ([, attributes]) => ({
@@ -65,10 +69,12 @@ describe('API reference overview links', () => {
       'index.mdx',
     );
     const apiReferenceCards = extractSolutionCards(overviewMarkdown).filter(
-      (card) => card.href.startsWith('/en/api-reference/api-ref/'),
+      (card) =>
+        card.href === '/en/api-reference/api-ref' ||
+        card.href.startsWith('/en/api-reference/api-ref/'),
     );
-    const analyticsCard = apiReferenceCards.find(
-      (card) => card.title === 'Analytics',
+    const apiReferenceCard = apiReferenceCards.find(
+      (card) => card.title === 'API Reference',
     );
     const analyticsCatalogHref = getCatalogHrefForProduct(
       catalogMarkdown,
@@ -78,10 +84,49 @@ describe('API reference overview links', () => {
     expect(analyticsCatalogHref).toBe(
       '/en/api-reference/api-ref/agora-analytics/analytics-rest-api',
     );
-    expect(analyticsCard?.href).toBe(analyticsCatalogHref);
+    expect(apiReferenceCard?.href).toBe('/en/api-reference/api-ref');
     expect(apiReferenceCards).not.toHaveLength(0);
     expect(apiReferenceCards.filter((card) => !routeExists(card.href))).toEqual(
       [],
     );
+  });
+
+  it('uses product-specific overview titles for API reference product entry pages', () => {
+    const expectedTitles = {
+      'broadcast-streaming': 'Broadcast Streaming Overview',
+      'cloud-recording': 'Cloud Recording Overview',
+      'cloud-transcoding': 'Cloud Transcoding Overview',
+      'conversational-ai': 'Conversational AI Overview',
+      im: 'Chat Overview',
+      'media-pull': 'Media Pull Overview',
+      'media-push': 'Media Push Overview',
+      'on-premise-recording': 'On-Premise Recording Overview',
+      rtc: 'Voice & Video Calling Overview',
+      'rtmp-gateway': 'Media Gateway Overview',
+      signaling: 'Signaling Overview',
+      'speech-to-text': 'Speech-to-Text Overview',
+      video: 'Video Calling Overview',
+      voice: 'Voice Calling Overview',
+      whiteboard: 'Interactive Whiteboard Overview',
+    } as const;
+
+    const actualTitles = Object.fromEntries(
+      Object.entries(expectedTitles).map(([product, _title]) => {
+        const extension = ['im', 'media-pull', 'media-push', 'whiteboard'].includes(
+          product,
+        )
+          ? 'md'
+          : 'mdx';
+
+        return [
+          product,
+          getFrontmatterTitle(
+            readDoc('en', 'api-reference', 'api-ref', product, `index.${extension}`),
+          ),
+        ];
+      }),
+    );
+
+    expect(actualTitles).toEqual(expectedTitles);
   });
 });

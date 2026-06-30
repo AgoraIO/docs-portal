@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Interactive Whiteboard Overview"
 description: "Basic information about the Interactive Whiteboard REST API."
 ---
 
