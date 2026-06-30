@@ -39,19 +39,6 @@ export type StaticSeoManifestPage = StaticSeoMetadata & {
 const HEAD_CLOSE = '</head>';
 const META_TITLE_SEPARATOR = ' | ';
 
-export function createRobotsTxt({
-  baseUrl = getSitemapBaseUrl(),
-}: {
-  baseUrl?: string;
-} = {}) {
-  return [
-    'User-agent: *',
-    'Allow: /',
-    `Sitemap: ${baseUrl}/sitemap.xml`,
-    '',
-  ].join('\n');
-}
-
 export function createStaticSeoManifest({
   baseUrl = getSitemapBaseUrl(),
   pages,

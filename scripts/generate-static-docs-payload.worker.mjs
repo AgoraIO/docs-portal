@@ -25,10 +25,7 @@ import {
   getPlatformLLMText,
   canonicalSource as source,
 } from '../src/lib/source.server.ts';
-import {
-  createRobotsTxt,
-  createStaticSeoManifest,
-} from '../src/lib/static-seo.ts';
+import { createStaticSeoManifest } from '../src/lib/static-seo.ts';
 
 const repoRoot = process.cwd();
 const outputRoot = path.join(repoRoot, 'public', '__static', 'docs');
@@ -179,7 +176,6 @@ async function removeGeneratedMachineReadableDocs() {
   await fs.rm(path.join(markdownOutputRoot, 'llms.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'llms-full.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, 'sitemap.xml'), { force: true });
-  await fs.rm(path.join(markdownOutputRoot, 'robots.txt'), { force: true });
   await fs.rm(path.join(markdownOutputRoot, MACHINE_READABLE_LOCALE), {
     force: true,
     recursive: true,
@@ -215,12 +211,6 @@ async function generateStaticMachineReadableDocs() {
         pages,
       }),
     ),
-  );
-  generated += 1;
-
-  await writeTextFile(
-    path.join(markdownOutputRoot, 'robots.txt'),
-    createRobotsTxt(),
   );
   generated += 1;
 

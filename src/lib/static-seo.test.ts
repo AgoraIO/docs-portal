@@ -1,17 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  createRobotsTxt,
   createStaticSeoManifest,
   injectStaticSeoHead,
 } from './static-seo';
 
 describe('static SEO metadata', () => {
-  it('creates robots.txt with the production sitemap', () => {
-    expect(createRobotsTxt({ baseUrl: 'https://docs.example.com' })).toBe(
-      'User-agent: *\nAllow: /\nSitemap: https://docs.example.com/sitemap.xml\n',
-    );
-  });
-
   it('creates page-specific crawler metadata from docs pages', () => {
     expect(
       createStaticSeoManifest({
