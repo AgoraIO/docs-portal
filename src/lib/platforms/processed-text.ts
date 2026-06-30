@@ -7,6 +7,7 @@ const PLATFORM_MARKER_PATTERN =
 
 export type ProcessedPlatformTabs = {
   canonicalPlatform: PlatformKey;
+  defaultPlatform: PlatformKey;
   platforms: PlatformKey[];
 };
 
@@ -95,6 +96,21 @@ export function extractStructuredPlatformTabs(
       canonicalPlatform && platforms.includes(canonicalPlatform)
         ? canonicalPlatform
         : platforms[0],
+    defaultPlatform: getDefaultStructuredPlatform(platforms),
     platforms,
   };
+}
+
+function getDefaultStructuredPlatform(platforms: PlatformKey[]) {
+  if (platforms.includes('android')) {
+    return 'android';
+  }
+
+  const fallback = platforms[0];
+
+  if (!fallback) {
+    throw new Error('Cannot resolve default platform from an empty group.');
+  }
+
+  return fallback;
 }

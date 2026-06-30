@@ -1377,6 +1377,104 @@ Web body
     });
   });
 
+  it('defaults a no-explicit-platform structured page to Android when Android is present', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="windows" />
+## Windows setup
+Windows body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale === 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const canonicalPayload = await loadDocsPagePayload('en', 'introduction', [
+      'about-agora',
+    ]);
+
+    expect(canonicalPayload).toMatchObject({
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          defaultPlatform: 'android',
+          platforms: '["windows","android","web"]',
+        },
+      },
+      markdownUrl: '/en/introduction/about-agora/android.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'Android setup',
+          url: '#android-setup',
+        },
+      ],
+    });
+    expect(unwrapPayload(canonicalPayload).toc).not.toContainEqual(
+      expect.objectContaining({ title: 'Windows setup' }),
+    );
+
+    const windowsPayload = await loadDocsPagePayload('en', 'introduction', [
+      'about-agora',
+      'windows',
+    ]);
+
+    expect(windowsPayload).toMatchObject({
+      activePath: '/en/introduction/about-agora',
+      body: {
+        kind: 'mdx',
+        platformTabs: {
+          canonicalPlatform: 'web',
+          defaultPlatform: 'android',
+          initialPlatform: 'windows',
+          platforms: '["windows","android","web"]',
+        },
+      },
+      markdownUrl: '/en/introduction/about-agora/windows.md',
+      toc: [
+        {
+          depth: 2,
+          title: 'Shared intro',
+          url: '#shared-intro',
+        },
+        {
+          depth: 2,
+          title: 'Windows setup',
+          url: '#windows-setup',
+        },
+      ],
+    });
+  });
+
   it('resolves a trailing platform URL segment to the canonical docs page', async () => {
     const page = createPage();
 
