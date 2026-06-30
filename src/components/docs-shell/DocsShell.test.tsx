@@ -667,14 +667,17 @@ describe('DocsShell', () => {
     expect(
       within(tocRail).queryByRole('button', { name: 'Copy Page' }),
     ).not.toBeInTheDocument();
+    expect(within(tocRail).queryByTestId('docs-feedback')).toBeNull();
 
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
+    const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
     expect(
       within(mainColumn).getByRole('link', { name: /Next Next Page/i }),
     ).toBeInTheDocument();
     expect(
       within(mainColumn).getByRole('link', { name: /Previous Previous Page/i }),
     ).toBeInTheDocument();
+    expect(within(pageFooter).getByTestId('docs-feedback')).toBeInTheDocument();
     expect(
       within(mainColumn).queryByTestId('docs-site-footer'),
     ).not.toBeInTheDocument();
@@ -835,7 +838,7 @@ describe('DocsShell', () => {
     expect(screen.queryByText('On this page')).not.toBeInTheDocument();
   });
 
-  it('keeps desktop content in normal page flow while sidebar and toc own their scroll regions', async () => {
+  it('keeps feedback in normal page flow while only navigation areas own scroll regions', async () => {
     renderDocsShell({
       next: { title: 'Next Page', url: '/en/introduction/next-page' },
       previous: { title: 'Previous Page', url: '/en/introduction/prev-page' },
@@ -872,11 +875,19 @@ describe('DocsShell', () => {
       'min-h-0',
       'overflow-y-auto',
     );
-    expect(screen.getByTestId('docs-toc-rail')).toHaveClass(
-      'docs-scrollbar',
+
+    const tocRail = screen.getByTestId('docs-toc-rail');
+    expect(tocRail).toHaveClass(
       'xl:sticky',
       'xl:top-[var(--docs-shell-header-offset)]',
       'xl:h-[var(--docs-shell-body-height)]',
+      'xl:min-h-0',
+    );
+    expect(tocRail).not.toHaveClass('docs-scrollbar', 'overflow-y-auto');
+    expect(screen.getByTestId('docs-toc-rail-scroll')).toHaveClass(
+      'docs-scrollbar',
+      'h-full',
+      'min-h-0',
       'overflow-y-auto',
     );
   });
