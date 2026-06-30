@@ -43,7 +43,7 @@ In a dual-stream use-case, Agora only subscribes to the high-quality video strea
 
 ## Transcoding fee
 
-The Agora streaming server charges you when transcoding the subscribed streams. **The transcoding fee is accumulative, depending on the category and type of the output media stream.**
+The Agora streaming server charges you when transcoding the subscribed streams. **The transcoding fee is cumulative, depending on the category and type of the output media stream.**
 
 Agora's free-of-charge policy for the first 10,000 minutes does not apply to the transcoding fee.
 

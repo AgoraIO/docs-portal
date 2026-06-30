@@ -105,7 +105,7 @@ The number of messages sent from the Chat server to offline users as of yesterda
 - The username or password is empty or incorrect.
 - The username is illegal.
 - The password is invalid.
-- Ths user cannot perform the operation without an admin permission.
+- The user cannot perform the operation without an admin permission.
 - The user does not exist.
 - The chat group does not exist.
 - The user is not found in the chat group.

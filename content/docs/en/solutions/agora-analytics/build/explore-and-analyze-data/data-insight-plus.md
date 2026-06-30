@@ -198,9 +198,9 @@ The following indicators are available in addition to the core indicators.
 | Indicator name | Description |
 |---------|------------------------------|
 | Number of calling users (by user ID) | Each user ID is counted as one user.<br/>The number of users is the total number of users who made calls during the selected time range. |
-| Call time | The accumulative duration of calls made by all users using the RTC SDK, in minutes. When audio and video exist at the same time, only the video duration is counted. |
-| Video call duration | The accumulative duration of video calls made by all users using the RTC SDK, in minutes. |
-| Audio call duration | The accumulative duration of audio calls made by all users using the RTC SDK, in minutes. |
+| Call time | The cumulative duration of calls made by all users using the RTC SDK, in minutes. When audio and video exist at the same time, only the video duration is counted. |
+| Video call duration | The cumulative duration of video calls made by all users using the RTC SDK, in minutes. |
+| Audio call duration | The cumulative duration of audio calls made by all users using the RTC SDK, in minutes. |
 | Active calls | Each time a user enters and exits a channel is counted as one active call, and the same user repeatedly joins the same channel as multiple active calls.<br/>Active calls are the total number of sessions that occurred within the selected time frame. |
 | 5s join channel success rate | Number of successful channel joins within 5 seconds / number of attempts to join the channel * 100% |
 | End-to-end network transmission delay rate | The delay from the sending end to the receiving end through network transmission (excluding network jitter delay) is greater than 400ms, which is recorded as a delay.<br/>End-to-end network delay rate = total audio and video network transmission delay time ÷ total audio and video time length * 100% |
