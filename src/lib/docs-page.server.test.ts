@@ -3331,6 +3331,12 @@ Web body
                   $id: 'ai-reference-folder',
                   children: [
                     {
+                      $id: 'ai-reference-openai-realtime-integration',
+                      name: 'OpenAI Realtime quickstart',
+                      type: 'page',
+                      url: '/en/ai/reference/openai-realtime-integration',
+                    },
+                    {
                       $id: 'ai-reference-event-types',
                       name: 'Notification event types',
                       type: 'page',
@@ -3356,16 +3362,16 @@ Web body
                       type: 'folder',
                     },
                     {
-                      $id: 'ai-reference-release-notes',
-                      name: 'Release notes',
-                      type: 'page',
-                      url: '/en/ai/reference/release-notes',
-                    },
-                    {
                       $id: 'ai-reference-pricing',
                       name: 'Pricing',
                       type: 'page',
                       url: '/en/ai/reference/pricing',
+                    },
+                    {
+                      $id: 'ai-reference-release-notes',
+                      name: 'Release notes',
+                      type: 'page',
+                      url: '/en/ai/reference/release-notes',
                     },
                   ],
                   name: 'Reference',
@@ -3491,6 +3497,7 @@ Web body
       expect.arrayContaining([
         '/en/ai',
         '/en/ai/get-started/quickstart',
+        '/en/ai/reference/openai-realtime-integration',
         '/en/api-reference/api-ref/server-sdk/typescript',
         '/en/ai/reference/event-types',
         '/en/ai/reference/ten-agent/create-asr-extension',
@@ -3548,6 +3555,17 @@ Web body
     ) {
       throw new Error('expected the software reference section');
     }
+    expect(
+      softwareReferenceSection.children.map((node) => node.title),
+    ).toEqual([
+      'OpenAI Realtime quickstart',
+      'Notification event types',
+      'RESTful API',
+      'Agora Agent SDK',
+      'Contribute an ASR/TTS extension',
+      'Pricing',
+      'Release notes',
+    ]);
 
     const buildSection = softwareSection.children.find(
       (node) => node.type === 'section' && node.title === 'Build',

@@ -1563,35 +1563,18 @@ function buildAiProductSidebar(
     url: serverSdkTypescriptUrl,
   } satisfies DocsSidebarPageNode;
 
-  const referenceLeadingChildren = referenceSection.children.filter(
-    (child) =>
-      child.type === 'page' &&
-      (child.url === '/en/ai/reference/event-types' ||
-        child.url === '/zh-CN/ai/reference/event-types'),
-  );
-  const referenceTrailingChildren = referenceSection.children.filter(
-    (child) =>
-      !(
-        child.type === 'page' &&
-        (child.url === '/en/ai/reference/event-types' ||
-          child.url === '/zh-CN/ai/reference/event-types' ||
-          child.url === '/en/ai/reference/restful-api' ||
-          child.url === '/zh-CN/ai/reference/restful-api' ||
-          child.url === '/en/ai/reference/server-sdk' ||
-          child.url === '/en/ai/reference/client-toolkit' ||
-          child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit')
-      ),
+  const referenceChildren = stripSidebarSectionMetaFromNodes(
+    referenceSection.children.filter(
+      (child) => !(child.type === 'page' && isLegacyAiReferencePage(child.url)),
+    ),
   );
 
   const mergedReferenceSection: DocsSidebarSectionNode = {
     ...stripSidebarSectionMeta(referenceSection),
-    children: [
+    children: orderAiReferenceChildren(referenceChildren, [
       restApiPage,
       serverSdkTypescriptPage,
-      ...referenceLeadingChildren,
-      ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
-    ],
+    ]),
   };
 
   const mergedBuildSection: DocsSidebarSectionNode = {
@@ -1644,6 +1627,49 @@ function buildAiProductSidebar(
       type: 'section',
     },
   ];
+}
+
+function orderAiReferenceChildren(
+  children: DocsSidebarNode[],
+  apiPages: DocsSidebarPageNode[],
+): DocsSidebarNode[] {
+  const openAiRealtime = takeAiReferencePages(children, [
+    '/en/ai/reference/openai-realtime-integration',
+    '/zh-CN/ai/reference/openai-realtime-integration',
+  ]);
+  const eventTypes = takeAiReferencePages(children, [
+    '/en/ai/reference/event-types',
+    '/zh-CN/ai/reference/event-types',
+  ]);
+  const prioritizedIds = new Set(
+    [...openAiRealtime, ...eventTypes].map((node) => node.id),
+  );
+  const remaining = children.filter((node) => !prioritizedIds.has(node.id));
+
+  return [...openAiRealtime, ...eventTypes, ...apiPages, ...remaining];
+}
+
+function takeAiReferencePages(
+  children: DocsSidebarNode[],
+  urls: string[],
+): DocsSidebarPageNode[] {
+  const urlSet = new Set(urls);
+
+  return children.filter(
+    (child): child is DocsSidebarPageNode =>
+      child.type === 'page' && urlSet.has(child.url),
+  );
+}
+
+function isLegacyAiReferencePage(url: string) {
+  return [
+    '/en/ai/reference/restful-api',
+    '/zh-CN/ai/reference/restful-api',
+    '/en/ai/reference/server-sdk',
+    '/zh-CN/ai/reference/server-sdk',
+    '/en/ai/reference/client-toolkit',
+    '/zh-CN/ai/reference/client-toolkit',
+  ].includes(url);
 }
 
 function flattenDeviceKitSidebarChildren(
