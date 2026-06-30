@@ -186,6 +186,73 @@ describe('docs-static-manifest', () => {
     });
   });
 
+  it('treats static HTML fallbacks as missing platform payloads', async () => {
+    const htmlJsonMock = vi.fn();
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        headers: new Headers({
+          'content-type': 'text/html; charset=utf-8',
+        }),
+        json: htmlJsonMock,
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+      })
+      .mockResolvedValueOnce({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        json: async () => ({
+          body: {
+            kind: 'mdx',
+            platformTabs: {
+              canonicalPlatform: 'web',
+              platforms: '["android","ios","web","electron"]',
+            },
+          },
+          markdownUrl:
+            '/llms.mdx/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.md',
+        }),
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+      });
+
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'en',
+        slugSegments: [
+          'flexible-classroom',
+          'build',
+          'customize-the-ui-and-plugins',
+          'customize-classroom',
+          'ios',
+        ],
+        tab: 'solutions',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
+          initialPlatform: 'ios',
+        },
+      },
+      markdownUrl:
+        '/llms.mdx/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.md',
+    });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      '/__static/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.json',
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      '/__static/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.json',
+    );
+    expect(htmlJsonMock).not.toHaveBeenCalled();
+  });
+
   it('does not render canonical static payloads for unsupported platform paths', async () => {
     vi.stubGlobal(
       'fetch',

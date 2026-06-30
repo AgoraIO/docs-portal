@@ -60,7 +60,17 @@ export async function readStaticDocsPayload<T>({
     );
   }
 
+  if (isStaticFallbackHtml(response)) {
+    return null;
+  }
+
   return (await response.json()) as T;
+}
+
+function isStaticFallbackHtml(response: Response) {
+  const contentType = response.headers?.get('content-type')?.toLowerCase();
+
+  return contentType?.includes('text/html') ?? false;
 }
 
 type PlatformStaticPayload = {
