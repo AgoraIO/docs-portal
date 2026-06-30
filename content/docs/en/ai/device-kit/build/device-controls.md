@@ -24,8 +24,9 @@ This guide provides information about the operational features, controls, and st
 
 | Task | How to do it |
 |---|---|
-| Enter network configuration mode | When powered on, press and hold the **Left button** for 3+ seconds. The device enters waiting state and is ready to pair via Bluetooth. |
-| Use hotspot-only setup | Pre-configure a hotspot on your smartphone with name `AGORA_AI_KIT` and password `1234567890`. The device automatically detects and connects during network configuration. |
+| Use firmware-configured Wi-Fi | Build and flash firmware with the target SSID, password, and backend server URL. The device connects after restart or wake. |
+| Enter optional BLE provisioning mode | When powered on, press and hold the **Left button** for 3+ seconds. The device enters waiting state and is ready to pair through the optional Android BLE app. |
+| Use hotspot-only setup | Pre-configure a 2.4 GHz hotspot with name `AGORA_AI_KIT` and password `1234567890`. The device automatically detects and connects during network configuration. |
 
 ## Voice interaction
 

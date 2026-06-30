@@ -14,8 +14,8 @@ Use this product space when you need a hardware-first developer workflow instead
 
 - [Run the R1 demo](build/run-the-r1-demo)
 - [Run the demo server](build/run-the-demo-server)
-- [Configure device network](build/configure-device-network)
 - [Build and flash firmware](build/build-and-flash-firmware)
+- [Optional BLE network provisioning](build/configure-device-network)
 
 ## Understand the system
 
