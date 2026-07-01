@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  createStaticSeoManifest,
-  injectStaticSeoHead,
-} from './static-seo';
+import { createStaticSeoManifest, injectStaticSeoHead } from './static-seo';
 
 describe('static SEO metadata', () => {
   it('creates page-specific crawler metadata from docs pages', () => {
@@ -72,6 +69,39 @@ describe('static SEO metadata', () => {
     expect(result).not.toContain('Global description');
   });
 
+  it('injects public docs URLs when no site URL env is configured', () => {
+    const previousSiteUrl = process.env.SITE_URL;
+    const previousViteSiteUrl = process.env.VITE_SITE_URL;
+    const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
+
+    delete process.env.SITE_URL;
+    delete process.env.VITE_SITE_URL;
+    delete process.env.PUBLIC_SITE_URL;
+
+    try {
+      const result = injectStaticSeoHead(
+        '<html><head></head><body></body></html>',
+        {
+          title: 'Introduction',
+          url: '/en/introduction',
+        },
+      );
+
+      expect(result).toContain(
+        '<link rel="canonical" href="https://docs.agora.io/en/introduction">',
+      );
+      expect(result).toContain(
+        '<meta property="og:url" content="https://docs.agora.io/en/introduction">',
+      );
+      expect(result).not.toContain('agora-docs-portal.vercel.app');
+      expect(result).not.toContain('docs-legacy.agora.io');
+    } finally {
+      restoreEnvValue('SITE_URL', previousSiteUrl);
+      restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
+      restoreEnvValue('PUBLIC_SITE_URL', previousPublicSiteUrl);
+    }
+  });
+
   it('injects manifest metadata without normalizing titles twice', () => {
     const result = injectStaticSeoHead(
       '<html><head></head><body></body></html>',
@@ -88,3 +118,12 @@ describe('static SEO metadata', () => {
     expect(result).not.toContain('Introduction | Agora Docs | Agora Docs');
   });
 });
+
+function restoreEnvValue(key: string, value: string | undefined) {
+  if (value === undefined) {
+    delete process.env[key];
+    return;
+  }
+
+  process.env[key] = value;
+}
