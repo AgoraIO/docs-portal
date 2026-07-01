@@ -7,6 +7,7 @@ import remarkDirective from 'remark-directive';
 import { z } from 'zod';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
+import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
 
@@ -87,18 +88,7 @@ export const docs = defineDocs({
         [
           remarkDirectiveAdmonition,
           {
-            types: {
-              caution: 'warning',
-              danger: 'error',
-              error: 'error',
-              info: 'info',
-              note: 'info',
-              ok: 'ok',
-              success: 'ok',
-              tip: 'ok',
-              warn: 'warning',
-              warning: 'warning',
-            },
+            types: directiveCalloutTypes,
           },
         ],
         remarkPlatformContent,

@@ -1,5 +1,30 @@
+import { compile } from '@mdx-js/mdx';
+import { remarkDirectiveAdmonition } from 'fumadocs-core/mdx-plugins';
+import remarkDirective from 'remark-directive';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createScopedDocsFiles } from './docs-dev-scope';
+import { directiveCalloutTypes } from './mdx/directive-callouts';
+
+async function compileDirectiveCallout(
+  directive: string,
+  types: Record<string, string>,
+) {
+  return String(
+    await compile(`:::${directive}\nCallout body.\n:::`, {
+      format: 'mdx',
+      jsx: true,
+      remarkPlugins: [
+        remarkDirective,
+        [
+          remarkDirectiveAdmonition,
+          {
+            types,
+          },
+        ],
+      ],
+    }),
+  );
+}
 
 describe('source config', () => {
   afterEach(() => {
@@ -40,5 +65,33 @@ describe('source config', () => {
       'en/ai/meta.{json,yaml}',
       'en/ai/openai-realtime/**/meta.{json,yaml}',
     ]);
+  });
+
+  it('maps directive callout aliases to supported Fumadocs callout types', async () => {
+    const expectedTypes = {
+      caution: 'warning',
+      danger: 'error',
+      error: 'error',
+      info: 'info',
+      note: 'info',
+      ok: 'success',
+      success: 'success',
+      tip: 'success',
+      warn: 'warning',
+      warning: 'warning',
+    };
+
+    expect(directiveCalloutTypes).toEqual(expectedTypes);
+
+    await Promise.all(
+      Object.entries(expectedTypes).map(async ([directive, calloutType]) => {
+        const compiled = await compileDirectiveCallout(
+          directive,
+          directiveCalloutTypes,
+        );
+
+        expect(compiled).toContain(`<CalloutContainer type="${calloutType}">`);
+      }),
+    );
   });
 });
