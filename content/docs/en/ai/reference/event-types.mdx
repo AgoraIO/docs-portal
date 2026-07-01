@@ -486,7 +486,8 @@ An `eventType` of `110` indicates that an agent has encountered an error. The `p
 <Tabs>
   <TabsList>
     <TabsTrigger value="llm">LLM module error</TabsTrigger>
-    <TabsTrigger value="sip">SIP module error</TabsTrigger>
+    <TabsTrigger value="greeting">Greeting audio URL error</TabsTrigger>
+    {/* <TabsTrigger value="sip">SIP module error</TabsTrigger> */}
   </TabsList>
   <TabsContent value="llm">
 
@@ -505,6 +506,30 @@ An `eventType` of `110` indicates that an agent has encountered an error. The `p
 }
 ```
   </TabsContent>
+  <TabsContent value="greeting">
+
+When the greeting audio file fails to download, times out, is in an unsupported format, or fails to decode, the system reports the error via a `110 agent error` event and automatically falls back to TTS synthesis using `greeting_message`. In these errors, `errors[].module` is `agent`.
+
+```json
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "name": "outbound_voice_agent",
+  "start_ts": 1737111452,
+  "channel": "outbound_call_channel_001",
+  "turn_id": 0,
+  "errors": [
+    {
+      "module": "agent",
+      "turn_id": 0,
+      "code": 4001,
+      "message": "Greeting audio URL unreachable, fallback to TTS. audio_url: https://cdn.example.com/audio/welcome.mp3"
+    }
+  ],
+  "labels": {}
+}
+```
+  </TabsContent>
+  {/*
   <TabsContent value="sip">
 
 ```json
@@ -522,7 +547,12 @@ An `eventType` of `110` indicates that an agent has encountered an error. The `p
 }
 ```
   </TabsContent>
+  */}
 </Tabs>
+
+:::info[Info]
+If `parameters.enable_error_message` is set to `true` when starting the agent, greeting audio URL errors are also delivered to the client via the `onMessageError` RTM callback, in addition to the server-side webhook event.
+:::
 
 ### 111 agent metrics
 

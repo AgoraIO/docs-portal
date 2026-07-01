@@ -1382,11 +1382,17 @@ paths:
                 preset:
                   type: string
                   description: >-
+                    Deprecated. Use `credential_mode: "managed"` within the `asr`, `llm`, or `tts`
+                    block instead. See [Use managed
+                    mode](/en/ai/build/custom-model-integration/managed-mode).
+
+
                     A comma-separated string of one or more presets. Each preset provides a
                     predefined configuration for ASR, LLM, and TTS. You can specify a preset for any
                     or all of ASR, LLM, and TTS. When a preset is specified, you do not need to
                     provide the endpoint URL, API key, or model for the preset providers. Use the
                     `asr`, `llm`, and `tts` fields to configure additional settings.
+                  deprecated: true
                 pipeline_id:
                   type: string
                   description: >-
@@ -1551,6 +1557,23 @@ paths:
                       additionalProperties: true
                       description: Automatic Speech Recognition (ASR) configuration.
                       properties:
+                        credential_mode:
+                          type: string
+                          default: byok
+                          enum:
+                            - managed
+                            - byok
+                          description: >-
+                            The credential mode for this provider:
+
+
+                            - `managed`: Use Agora-managed credentials. You do not need to provide an
+                            API key. See [Use managed
+                            mode](/en/ai/build/custom-model-integration/managed-mode).
+
+
+                            - `byok`: Bring your own key. Provide your own provider credentials,
+                            including the API key.
                         language:
                           type: string
                           default: en-US
@@ -1609,6 +1632,23 @@ paths:
                       additionalProperties: true
                       description: Text-to-speech (TTS) module configuration.
                       properties:
+                        credential_mode:
+                          type: string
+                          default: byok
+                          enum:
+                            - managed
+                            - byok
+                          description: >-
+                            The credential mode for this provider:
+
+
+                            - `managed`: Use Agora-managed credentials. You do not need to provide an
+                            API key. See [Use managed
+                            mode](/en/ai/build/custom-model-integration/managed-mode).
+
+
+                            - `byok`: Bring your own key. Provide your own provider credentials,
+                            including the API key.
                         vendor:
                           type: string
                           enum:
@@ -1721,6 +1761,23 @@ paths:
                       additionalProperties: true
                       description: Large language model (LLM) configuration.
                       properties:
+                        credential_mode:
+                          type: string
+                          default: byok
+                          enum:
+                            - managed
+                            - byok
+                          description: >-
+                            The credential mode for this provider:
+
+
+                            - `managed`: Use Agora-managed credentials. You do not need to provide an
+                            API key. See [Use managed
+                            mode](/en/ai/build/custom-model-integration/managed-mode).
+
+
+                            - `byok`: Bring your own key. Provide your own provider credentials,
+                            including the API key.
                         url:
                           type: string
                           description: The LLM callback address.
@@ -1818,11 +1875,67 @@ paths:
                                 the user speaks multiple times while the greeting plays, the system
                                 merges the speech segments after the greeting ends and sends them to
                                 the LLM for a single response.
+                            audio_download_timeout_ms:
+                              type: integer
+                              default: 1000
+                              minimum: 200
+                              maximum: 10000
+                              description: >-
+                                The timeout in milliseconds for downloading the greeting audio file.
+                                Only takes effect when `greeting_audio_url` is configured. If the
+                                download times out, the system falls back to TTS synthesis using
+                                `greeting_message`.
+                            audio_pcm_sample_rate:
+                              type: integer
+                              default: 16000
+                              description: >-
+                                The sample rate in Hz of the greeting audio file when the format is
+                                PCM. Only takes effect when `greeting_audio_url` is configured and the
+                                audio format is PCM. Not required for `mp3` or `wav` files.
+                        greeting_audio_url:
+                          type: string
+                          description: >-
+                            The URL of a pre-recorded audio file to play as the agent's greeting. When
+                            configured, the system downloads and plays this recording instead of
+                            synthesizing the greeting via TTS.
+
+
+                            Supported formats: `mp3`, `wav`, `pcm`.
+
+
+                            - Only `http://` or `https://` URLs are supported. An empty string,
+                            non-URL string, or a URL exceeding `2048` bytes causes the request to
+                            return a `400` error.
+
+                            - For `pcm` files, set `greeting_configs.audio_pcm_sample_rate` to specify
+                            the sample rate.
+
+                            - The system resamples the imported audio to match `tts.params.sample_rate`
+                            before playback.
+
+
+                            You must also configure `greeting_message` as a fallback when using
+                            `greeting_audio_url`; otherwise the request returns a `400` error. If the
+                            recording fails to download, decode, or is in an unsupported format, the
+                            system automatically falls back to TTS synthesis using `greeting_message`.
                         greeting_message:
                           type: string
                           description: >-
-                            Agent greeting. If provided, the first user in the channel is
-                            automatically greeted with the message upon joining.
+                            Agent greeting text. This field serves the following purposes:
+
+
+                            - **Standalone greeting**: If provided without `greeting_audio_url`, the
+                            agent greets the first user who joins the channel using TTS synthesis.
+
+                            - **Audio greeting fallback**: When `greeting_audio_url` is configured,
+                            this field is required as a fallback. If the audio file fails to download,
+                            decode, or is in an unsupported format, the agent falls back to TTS
+                            synthesis using this text.
+
+                            - **Interrupted greeting context**: When `greeting_configs.interruptable`
+                            is `true` and the audio greeting is interrupted, the system uses this text
+                            to estimate the portion already played and injects it into short-term
+                            memory to maintain conversation context.
                         failure_message:
                           type: string
                           description: >-
@@ -2393,6 +2506,7 @@ paths:
                                   type: string
                                   enum:
                                     - vad
+                                    - manual
                                     - keywords
                                     - disabled
                                   description: >-
@@ -2401,6 +2515,10 @@ paths:
                                     - `vad`: Based on VAD (Voice Activity Detection). Uses audio
                                     signal detection.
 
+                                    - `manual`: Manual SoS mode. Disables automatic start-of-speech
+                                    detection. The client explicitly signals the start of user speech
+                                    via RTM.
+
                                     - `keywords`: Deprecated. Use [`interruption.mode =
                                     "keywords"`](#properties-interruption-mode) instead.
 
@@ -2408,6 +2526,15 @@ paths:
                                     false`](#properties-interruption-enable) with
                                     [`interruption.disabled_config.strategy`](#properties-interruption-disabled-config-strategy)
                                     to configure the handling strategy.
+                                  x-docs-callouts:
+                                    - type: info
+                                      title: Note
+                                      position: after-description
+                                      markdown: >
+                                        When `mode` is `manual`, you must also set
+                                        `advanced_features.enable_rtm = true` and
+                                        `parameters.data_channel = "rtm"`. This mode does not support
+                                        `manual_config`; no additional configuration is required.
                                 "{mode}_config":
                                   type: object
                                   additionalProperties: true
@@ -2536,6 +2663,7 @@ paths:
                                   enum:
                                     - vad
                                     - semantic
+                                    - manual
                                   description: >-
                                     End of speech detection mode. Possible values:
 
@@ -2544,18 +2672,23 @@ paths:
 
                                     - `semantic`: Based on semantic triggering. Uses semantic
                                     understanding to determine when conversation ends.
+
+                                    - `manual`: Manual EoS mode. Disables automatic end-of-speech
+                                    detection. The client explicitly signals the end of user speech
+                                    via RTM.
                                   x-docs-callouts:
                                     - type: info
                                       title: Note
                                       position: after-description
                                       markdown: >
-                                        When `mode` is `semantic`, EOS detection supports English
-                                        and
+                                        - When `mode` is `semantic`, EoS detection supports English
+                                        and Chinese only. For unsupported languages, the engine falls
+                                        back to VAD.
 
-                                        Chinese only. For unsupported languages, the engine falls
-                                        back
-
-                                        to VAD.
+                                        - When `mode` is `manual`, you must also set
+                                        `advanced_features.enable_rtm = true` and
+                                        `parameters.data_channel = "rtm"`. This mode does not support
+                                        `manual_config`; no additional configuration is required.
                                 "{mode}_config":
                                   type: object
                                   additionalProperties: true
