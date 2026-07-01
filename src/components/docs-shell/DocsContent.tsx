@@ -32,6 +32,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
 import type { PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
@@ -92,6 +93,7 @@ export function DocsContent({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const sourceTitle = displayTitle ?? t('app.name');
@@ -219,7 +221,7 @@ export function DocsContent({
         <div
           className={cn(
             'flex flex-col gap-3',
-            markdownUrl && 'xl:flex-row xl:items-start xl:gap-6',
+            canCopyMarkdownContent && 'xl:flex-row xl:items-start xl:gap-6',
           )}
         >
           <div className="min-w-0 flex-1">
@@ -232,7 +234,7 @@ export function DocsContent({
               </p>
             ) : null}
           </div>
-          {markdownUrl ? (
+          {canCopyMarkdownContent && markdownUrl ? (
             <DocsCopyMenu
               className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
               locale={currentLocale}
