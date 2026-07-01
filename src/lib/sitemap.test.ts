@@ -1,7 +1,37 @@
 import { describe, expect, it } from 'vitest';
-import { createSitemapXml, getSitemapUrls } from './sitemap';
+import { createSitemapXml, getSitemapBaseUrl, getSitemapUrls } from './sitemap';
 
 describe('sitemap', () => {
+  it('falls back to the public docs host for canonical URLs', () => {
+    const previousSiteUrl = process.env.SITE_URL;
+    const previousViteSiteUrl = process.env.VITE_SITE_URL;
+    const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
+
+    delete process.env.SITE_URL;
+    delete process.env.VITE_SITE_URL;
+    delete process.env.PUBLIC_SITE_URL;
+
+    try {
+      expect(getSitemapBaseUrl()).toBe('https://docs.agora.io');
+    } finally {
+      restoreEnvValue('SITE_URL', previousSiteUrl);
+      restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);
+      restoreEnvValue('PUBLIC_SITE_URL', previousPublicSiteUrl);
+    }
+  });
+
+  it('normalizes configured English docs hosts to the canonical root', () => {
+    const previousSiteUrl = process.env.SITE_URL;
+
+    process.env.SITE_URL = 'https://docs.agora.io/en/';
+
+    try {
+      expect(getSitemapBaseUrl()).toBe('https://docs.agora.io');
+    } finally {
+      restoreEnvValue('SITE_URL', previousSiteUrl);
+    }
+  });
+
   it('builds English-only canonical page URLs', () => {
     expect(
       getSitemapUrls({
@@ -33,3 +63,12 @@ describe('sitemap', () => {
     );
   });
 });
+
+function restoreEnvValue(key: string, value: string | undefined) {
+  if (value === undefined) {
+    delete process.env[key];
+    return;
+  }
+
+  process.env[key] = value;
+}
