@@ -1,3 +1,4 @@
+import { createLink } from '@tanstack/react-router';
 import {
   Accordion,
   Accordions as FumadocsAccordions,
@@ -47,7 +48,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/cn';
-import { normalizeDocsHref } from '@/lib/docs-link-normalize';
+import {
+  type NormalizedDocsHref,
+  normalizeDocsHref,
+} from '@/lib/docs-link-normalize';
 import {
   PlatformInline,
   PlatformProcessedMarker,
@@ -65,6 +69,8 @@ const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
 const FumadocsImage = defaultMdxComponents.img;
+const RouterFumadocsAnchor = createLink(FumadocsAnchor);
+const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
@@ -73,7 +79,8 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
-type DocsCardProps = ComponentProps<typeof FumadocsCard>;
+type DocsCardProps = ComponentProps<typeof FumadocsCard> &
+  Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'download' | 'rel' | 'target'>;
 type AccordionsRootProps = Omit<
   ComponentProps<typeof FumadocsAccordions>,
   'defaultValue' | 'onValueChange' | 'type' | 'value'
@@ -887,10 +894,15 @@ function createDocsAnchor(contentPath?: string) {
     href,
     ...props
   }: AnchorHTMLAttributes<HTMLAnchorElement>) {
-    const normalizedHref =
+    const normalized =
       typeof href === 'string'
-        ? normalizeDocsHref(href, { contentPath }).href
-        : href;
+        ? normalizeDocsHref(href, { contentPath })
+        : null;
+    const normalizedHref = normalized?.href ?? href;
+
+    if (normalized && shouldUseRouterLink(normalized, props)) {
+      return <RouterFumadocsAnchor {...props} to={normalized.href} />;
+    }
 
     return <FumadocsAnchor href={normalizedHref} {...props} />;
   }
@@ -915,21 +927,65 @@ function createLegacyDocsLink(contentPath?: string) {
 
 function createDocsCard(contentPath?: string) {
   function DocsCard({ className, href, ...props }: DocsCardProps) {
-    const normalizedHref =
+    const normalized =
       typeof href === 'string'
-        ? normalizeDocsHref(href, { contentPath }).href
-        : href;
+        ? normalizeDocsHref(href, { contentPath })
+        : null;
+    const normalizedHref = normalized?.href ?? href;
+    const cardClassName = cn(href && 'docs-card-link', className);
+
+    if (normalized && shouldUseRouterLink(normalized, props)) {
+      return (
+        <RouterFumadocsCard
+          {...props}
+          className={cardClassName}
+          to={normalized.href}
+        />
+      );
+    }
 
     return (
       <FumadocsCard
         {...props}
-        className={cn(href && 'docs-card-link', className)}
+        className={cardClassName}
         href={normalizedHref}
       />
     );
   }
 
   return DocsCard;
+}
+
+function shouldUseRouterLink(
+  normalized: NormalizedDocsHref,
+  props:
+    | AnchorHTMLAttributes<HTMLAnchorElement>
+    | (DocsCardProps & { external?: boolean }),
+) {
+  if (
+    props.download !== undefined ||
+    props.target !== undefined ||
+    ('external' in props && props.external)
+  ) {
+    return false;
+  }
+
+  if (normalized.kind === 'internal-doc') {
+    return true;
+  }
+
+  return normalized.kind === 'root' && isDocsRouteHref(normalized.href);
+}
+
+function isDocsRouteHref(href: string) {
+  const [path] = href.split(/[?#]/, 1);
+
+  return (
+    path === '/en' ||
+    path.startsWith('/en/') ||
+    path === '/zh-CN' ||
+    path.startsWith('/zh-CN/')
+  );
 }
 
 function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
