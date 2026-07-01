@@ -726,16 +726,12 @@ describe('DocsShell', () => {
     const docsBodyShell = await screen.findByTestId('docs-body-shell');
     const mainColumn = screen.getByTestId('docs-main-desktop-scroll');
     const pageFooter = within(mainColumn).getByTestId('docs-page-footer');
-    const siteFooter = screen
-      .getAllByTestId('docs-site-footer')
-      .find((footer) => !footer.classList.contains('lg:hidden'));
-    if (!siteFooter) {
-      throw new Error('expected a desktop site footer');
-    }
+    const siteFooter = screen.getByTestId('docs-site-footer');
     const footerContent = within(siteFooter).getByTestId(
       'docs-site-footer-content',
     );
 
+    expect(screen.getAllByTestId('docs-site-footer')).toHaveLength(1);
     expect(docsBodyShell).not.toContainElement(siteFooter);
     expect(mainColumn).not.toContainElement(siteFooter);
     expect(pageFooter).not.toContainElement(siteFooter);
@@ -752,10 +748,15 @@ describe('DocsShell', () => {
       'w-full',
       'border-t',
       'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
-      'lg:block',
     );
     expect(siteFooter).not.toHaveClass('w-screen', '-ml-8');
     expect(footerContent).toHaveClass('mx-auto', 'lg:px-10');
+    expect(
+      within(siteFooter).queryByRole('heading', { name: 'Contact Us' }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(siteFooter).queryByRole('heading', { name: 'Why Agora' }),
+    ).not.toBeInTheDocument();
 
     expect(
       within(siteFooter).getByRole('link', { name: 'LinkedIn' }),
@@ -822,19 +823,14 @@ describe('DocsShell', () => {
   it('keeps the shell footer responsive on mobile', async () => {
     renderDocsShell();
 
-    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
-    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
+    await screen.findByTestId('docs-main-mobile-flow');
+    const siteFooter = screen.getByTestId('docs-site-footer');
     const navGrid = within(siteFooter).getByText('Contact Us').closest('.grid');
     const copyrightRow = within(siteFooter)
       .getByText('Copyright © 2026 Agora')
       .closest('div');
 
-    expect(siteFooter).toHaveClass(
-      'left-1/2',
-      'w-screen',
-      '-translate-x-1/2',
-      'lg:hidden',
-    );
+    expect(siteFooter).toHaveClass('mx-auto', 'w-full');
     expect(navGrid).toHaveClass(
       'grid-cols-1',
       'sm:grid-cols-2',
@@ -905,7 +901,6 @@ describe('DocsShell', () => {
     );
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',

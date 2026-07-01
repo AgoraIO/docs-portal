@@ -1420,25 +1420,31 @@ describe('DocsTableOfContents', () => {
 });
 
 describe('DocsMainColumn', () => {
-  it('keeps desktop content in normal page flow instead of a nested scroll viewport', async () => {
+  it('keeps docs content in normal page flow without duplicating the article DOM', async () => {
     renderWithRouter(
       <DocsMainColumn>
-        <article>Body</article>
+        <article>
+          <h1>Body</h1>
+        </article>
       </DocsMainColumn>,
     );
 
     const mainColumn = await screen.findByTestId('docs-main-column');
     const desktopContent = screen.getByTestId('docs-main-desktop-scroll');
+    const mobileFlow = screen.getByTestId('docs-main-mobile-flow');
 
     expect(mainColumn).toHaveClass('min-w-0', 'bg-background');
     expect(mainColumn).not.toHaveClass('h-full', 'min-h-0', 'overflow-hidden');
-    expect(desktopContent).toHaveClass('hidden', 'lg:block');
     expect(desktopContent).not.toHaveClass(
       'docs-scrollbar',
       'h-full',
       'min-h-0',
       'overflow-y-auto',
     );
+    expect(
+      within(mobileFlow).getByRole('heading', { name: 'Body' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { name: 'Body' })).toHaveLength(1);
   });
 
   it('renders reference-style pager cards in the footer', async () => {
@@ -1538,7 +1544,7 @@ describe('DocsMainColumn', () => {
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
-  it('keeps the mobile site footer outside the page footer semantics', async () => {
+  it('does not render the site footer inside the page footer semantics', async () => {
     renderWithRouter(
       <DocsMainColumn>
         <article>Body</article>
@@ -1547,13 +1553,13 @@ describe('DocsMainColumn', () => {
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
     const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
-    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
-    const siteFooter = within(mobileFlow).getByTestId('docs-site-footer');
 
     expect(
       within(desktopScroll).queryByTestId('docs-site-footer'),
     ).not.toBeInTheDocument();
-    expect(pageFooter).not.toContainElement(siteFooter);
+    expect(
+      pageFooter.querySelector('[data-testid="docs-site-footer"]'),
+    ).toBeNull();
   });
 
   it('marks the desktop scroll region for router-managed scroll restoration', async () => {
@@ -1677,7 +1683,7 @@ describe('DocsPageFeedback placement', () => {
     );
   });
 
-  it('shows helpfulness feedback in desktop and mobile page footers', async () => {
+  it('shows helpfulness feedback in the single page footer', async () => {
     renderWithRouter(
       <DocsMainColumn
         next={{ title: 'Next Page', url: '/en/introduction/next-page' }}
@@ -1691,15 +1697,9 @@ describe('DocsPageFeedback placement', () => {
     );
 
     const desktopScroll = await screen.findByTestId('docs-main-desktop-scroll');
-    const desktopFooter = within(desktopScroll).getByTestId('docs-page-footer');
-    expect(
-      within(desktopFooter).getByTestId('docs-feedback'),
-    ).toBeInTheDocument();
+    const pageFooter = within(desktopScroll).getByTestId('docs-page-footer');
 
-    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
-    const mobileFooter = within(mobileFlow).getByTestId('docs-page-footer');
-    expect(
-      within(mobileFooter).getByTestId('docs-feedback'),
-    ).toBeInTheDocument();
+    expect(screen.getAllByTestId('docs-page-footer')).toHaveLength(1);
+    expect(within(pageFooter).getByTestId('docs-feedback')).toBeInTheDocument();
   });
 });

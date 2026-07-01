@@ -501,10 +501,7 @@ export function DocsShell({
           )}
         </div>
         <DocsSiteFooter
-          className={cn(
-            'mx-auto hidden w-full shrink-0 lg:block',
-            shellWidthClassName,
-          )}
+          className={cn('mx-auto w-full shrink-0', shellWidthClassName)}
           contentClassName="px-4 sm:px-6 lg:px-10"
         />
       </div>
