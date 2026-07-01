@@ -75,25 +75,19 @@ agent := agentkit.NewAgent(client).WithStt(
 
 <TabsContent value="rest-api">
 
-- **Preset**
+- **Managed mode**
 
-  To use Deepgram ASR with an Agora managed key, specify one of the following presets in the `preset` field when starting an agent:
-
-    - `deepgram_nova_2`
-    - `deepgram_nova_3`
-
-  When using a `preset`, you do not need to provide the API key, endpoint URL, or model. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`.
+  To use Deepgram ASR with Agora-managed credentials, set `credential_mode` to `"managed"` in the `asr` block. When using managed mode, `params.key` is not required. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
 
     ```json
-    "name": "unique_name",
-    "preset": "deepgram_nova_3",
-    "properties": {
-      // ...
-      "asr": {
-        "language": "en-US",
-        "params": {
-          "keyterm": "term1%20term2"
-        }
+    "asr": {
+      "credential_mode": "managed",
+      "vendor": "deepgram",
+      "params": {
+        "url": "wss://api.deepgram.com/v1/listen",
+        "model": "nova-3",
+        "language": "en",
+        "keyterm": "agora%20convo"
       }
     }
     ```
