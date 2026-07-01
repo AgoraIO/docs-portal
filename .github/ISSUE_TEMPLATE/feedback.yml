@@ -1,0 +1,37 @@
+name: Documentation feedback
+description: Share general feedback about the documentation experience.
+title: "[Feedback]: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for general documentation feedback. For incorrect or missing page content, use "Documentation issue". Do not include secrets, private credentials, customer data, or confidential support details.
+  - type: dropdown
+    id: feedback-area
+    attributes:
+      label: Feedback area
+      options:
+        - Content clarity
+        - Navigation
+        - Search
+        - Localization
+        - API reference
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Feedback
+      description: What should we improve?
+    validations:
+      required: true
+  - type: input
+    id: page-url
+    attributes:
+      label: Related page URL
+      description: Add a docs URL if the feedback is tied to a specific page.
+      placeholder: https://docs.agora.io/...
+    validations:
+      required: false
