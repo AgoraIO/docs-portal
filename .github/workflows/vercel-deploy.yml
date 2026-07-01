@@ -40,7 +40,7 @@ jobs:
     name: Deploy Preview to Vercel
     if: |
       github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && github.ref_name != 'main') ||
+      (github.event_name == 'push' && github.ref_name != 'release/prod') ||
       (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
     runs-on: ubuntu-latest
     env:
@@ -210,7 +210,7 @@ jobs:
   deploy-production:
     name: Deploy Production to Vercel
     if: |
-      (github.event_name == 'push' && github.ref_name == 'main') ||
+      (github.event_name == 'push' && github.ref_name == 'release/prod') ||
       (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
     runs-on: ubuntu-latest
     env:
@@ -243,10 +243,15 @@ jobs:
         env:
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
-          ALGOLIA_ADMIN_API_KEY: ${{ github.event_name == 'push' && github.ref_name == 'main' && secrets.ALGOLIA_ADMIN_API_KEY || '' }}
-          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
-          ALGOLIA_SYNC_DISABLED: ${{ github.event_name == 'push' && github.ref_name == 'main' && 'false' || 'true' }}
         run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Sync Algolia search index
+        if: github.event_name == 'push' && github.ref_name == 'release/prod'
+        env:
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+        run: bun run search:sync
 
       - name: Verify Vercel output
         run: |
