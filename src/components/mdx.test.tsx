@@ -1,4 +1,12 @@
 import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  RouterProvider,
+} from '@tanstack/react-router';
+import {
   act,
   fireEvent,
   render,
@@ -8,7 +16,7 @@ import {
 } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { ComponentType, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
@@ -54,10 +62,12 @@ type CodeBlockPreComponent = ComponentType<{
   'data-line-numbers'?: boolean;
   'data-line-numbers-start'?: number | string;
 }>;
-type AnchorComponent = ComponentType<{
-  children: ReactNode;
-  href: string;
-}>;
+type AnchorComponent = ComponentType<
+  AnchorHTMLAttributes<HTMLAnchorElement> & {
+    children: ReactNode;
+    href: string;
+  }
+>;
 type ImageComponent = ComponentType<{
   alt?: string;
   src?: string;
@@ -114,6 +124,34 @@ function createStorageMock(): Storage {
     key: (index) => Array.from(values.keys()).at(index) ?? null,
     removeItem: (key) => values.delete(key),
     setItem: (key, value) => values.set(key, value),
+  };
+}
+
+function renderWithMdxRouter(children: ReactNode, initialEntry = '/en/ai') {
+  const rootRoute = createRootRoute({
+    component: () => <Outlet />,
+  });
+  const component = () => children;
+  const docsIndexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab',
+    component,
+  });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$',
+    component,
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsIndexRoute, docsRoute]),
+    history: createMemoryHistory({
+      initialEntries: [initialEntry],
+    }),
+  });
+
+  return {
+    router,
+    ...render(<RouterProvider router={router} />),
   };
 }
 
@@ -208,18 +246,50 @@ describe('common MDX registry', () => {
     expect(dialog).toHaveClass('justify-items-center');
   });
 
-  it('keeps relative docs links normalized', () => {
+  it('routes normalized relative docs links through TanStack Router', async () => {
     const components = getMDXComponents(undefined, {
       contentPath: 'en/ai/index.md',
     });
     const Anchor = components.a as AnchorComponent;
 
-    render(<Anchor href="get-started/quickstart.md">Quickstart</Anchor>);
-
-    expect(screen.getByRole('link', { name: 'Quickstart' })).toHaveAttribute(
-      'href',
-      '/en/ai/get-started/quickstart',
+    const { router } = renderWithMdxRouter(
+      <Anchor href="get-started/quickstart.md">Quickstart</Anchor>,
     );
+
+    const link = await screen.findByRole('link', { name: 'Quickstart' });
+
+    expect(link).toHaveAttribute('href', '/en/ai/get-started/quickstart');
+    await act(async () => {
+      fireEvent.click(link);
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/ai/get-started/quickstart',
+      );
+    });
+  });
+
+  it('routes normalized root docs links through TanStack Router', async () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/ai/index.md',
+    });
+    const Anchor = components.a as AnchorComponent;
+
+    const { router } = renderWithMdxRouter(
+      <Anchor href="/api-reference">API reference</Anchor>,
+    );
+
+    const link = await screen.findByRole('link', { name: 'API reference' });
+
+    expect(link).toHaveAttribute('href', '/en/api-reference');
+    await act(async () => {
+      fireEvent.click(link);
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/en/api-reference');
+    });
   });
 
   it('keeps external markdown links compatible with standard anchors', () => {
@@ -236,26 +306,78 @@ describe('common MDX registry', () => {
     );
   });
 
-  it('supports legacy MDX Link components that pass destinations via to', () => {
+  it('keeps hash-only and opted-out links compatible with standard anchors', () => {
+    const components = getMDXComponents(undefined, {
+      contentPath: 'en/ai/index.md',
+    });
+    const Anchor = components.a as AnchorComponent;
+
+    render(
+      <>
+        <Anchor href="#overview">Overview</Anchor>
+        <Anchor href="get-started/quickstart.md" target="_blank">
+          Targeted quickstart
+        </Anchor>
+        <Anchor download href="/downloads/sdk.zip">
+          Download SDK
+        </Anchor>
+      </>,
+    );
+
+    expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute(
+      'href',
+      '#overview',
+    );
+    expect(
+      screen.getByRole('link', { name: 'Targeted quickstart' }),
+    ).toHaveAttribute('href', '/en/ai/get-started/quickstart');
+    expect(
+      screen.getByRole('link', { name: 'Targeted quickstart' }),
+    ).toHaveAttribute('target', '_blank');
+    expect(screen.getByRole('link', { name: 'Download SDK' })).toHaveAttribute(
+      'href',
+      '/downloads/sdk.zip',
+    );
+    expect(screen.getByRole('link', { name: 'Download SDK' })).toHaveAttribute(
+      'download',
+    );
+  });
+
+  it('routes legacy MDX Link components through TanStack Router', async () => {
     const components = getMDXComponents(undefined, {
       contentPath: 'en/realtime-media/broadcast-streaming/build/index.mdx',
     });
     const Link = components.Link as LegacyLinkComponent;
 
-    render(<Link to="../index.mdx">SDK quickstart</Link>);
+    const { router } = renderWithMdxRouter(
+      <Link to="../index.mdx">SDK quickstart</Link>,
+      '/en/realtime-media/broadcast-streaming/build',
+    );
 
-    expect(
-      screen.getByRole('link', { name: 'SDK quickstart' }),
-    ).toHaveAttribute('href', '/en/realtime-media/broadcast-streaming');
+    const link = await screen.findByRole('link', { name: 'SDK quickstart' });
+
+    expect(link).toHaveAttribute(
+      'href',
+      '/en/realtime-media/broadcast-streaming',
+    );
+    await act(async () => {
+      fireEvent.click(link);
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/broadcast-streaming',
+      );
+    });
   });
 
-  it('adds jump affordance and normalizes docs card links', () => {
+  it('routes normalized docs card links through TanStack Router', async () => {
     const components = getMDXComponents(undefined, {
       contentPath: 'en/ai/index.md',
     });
     const Card = components.Card as CardComponent;
 
-    render(
+    const { router } = renderWithMdxRouter(
       <Card
         description="Build and run a working voice agent in under 15 minutes."
         href="choose-your-path/quickstart-coding.mdx"
@@ -263,13 +385,22 @@ describe('common MDX registry', () => {
       />,
     );
 
-    const card = screen.getByRole('link', { name: /Quickstart/i });
+    const card = await screen.findByRole('link', { name: /Quickstart/i });
 
     expect(card).toHaveAttribute(
       'href',
       '/en/ai/choose-your-path/quickstart-coding',
     );
     expect(card).toHaveClass('docs-card-link');
+    await act(async () => {
+      fireEvent.click(card);
+    });
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/ai/choose-your-path/quickstart-coding',
+      );
+    });
   });
 
   it('keeps only one MDX accordion open across separate roots', () => {
