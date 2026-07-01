@@ -1,17 +1,22 @@
-# docs-portal
+# Docs Portal
 
-`docs-portal` is a TanStack Start documentation portal built with `fumadocs-core`, `fumadocs-mdx`, and local `shadcn/ui` components.
+This repository powers the Agora documentation portal at
+[docs.agora.io](https://docs.agora.io). It is a TanStack Start documentation
+site built with Fumadocs, React, Vite, and local shadcn/ui components.
 
-## Architecture
+## What Is Here
 
-- Content source of truth: `content/docs`
-- Content pipeline: `fumadocs-mdx`
-- Page tree, TOC, search data, and `llms.txt`: `fumadocs-core`
-- App shell, navigation, search dialog, and theme handling: local app code with `shadcn/ui`
+- Product documentation in `content/docs/{en,zh-CN}`.
+- OpenAPI source files in `content/openapi`.
+- Static assets in `public`.
+- Application routes in `src/routes`.
+- Shared app logic in `src/lib`.
+- UI components in `src/components`.
+- Repository and contributor guidance in `docs/agents` and `CONTRIBUTING.md`.
 
 ## Content Layout
 
-The portal groups content by locale and top-level tab:
+Documentation is grouped by locale and top-level navigation tab:
 
 ```text
 content/docs/
@@ -27,11 +32,23 @@ content/docs/
     api-reference/
 ```
 
-Each top-level folder maps directly to a header tab. Navigation inside a tab is driven by `meta.json`.
+Each top-level folder maps to a header tab. Navigation inside a tab is driven by
+`meta.json` or `meta.yaml` files.
+
+## Prerequisites
+
+- Node.js 22.12 or newer.
+- Bun for local scripts and dependency installation.
+
+Install dependencies:
+
+```bash
+bun install
+```
 
 ## Development
 
-Start the local dev server:
+Start the full local dev server:
 
 ```bash
 bun run dev
@@ -53,3 +70,24 @@ bun run build
 
 See [docs/development.md](docs/development.md) for script semantics, scoped dev
 rules, and verification guidance.
+
+## Authoring Docs
+
+Docs content should follow the repo Markdown and MDX contract in
+[docs/agents/markdown-authoring-standard.md](docs/agents/markdown-authoring-standard.md).
+Use standard Markdown first, and use only the documented MDX primitives for
+callouts, tabs, platform variants, images, tables, and list continuations.
+
+## Contributing
+
+Start with [CONTRIBUTING.md](CONTRIBUTING.md). It explains how to report docs
+issues, propose content changes, run local checks, and open pull requests.
+
+## Security
+
+Do not open public issues for security vulnerabilities. Follow
+[SECURITY.md](SECURITY.md) instead.
+
+## License
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).
