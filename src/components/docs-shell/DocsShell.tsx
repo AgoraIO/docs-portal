@@ -52,6 +52,7 @@ import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
+import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -119,6 +120,7 @@ export function DocsShell({
   activePath,
   activeTab,
   children,
+  contentPath,
   loadPages,
   localeLinks,
   locale,
@@ -134,6 +136,7 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  contentPath?: string;
   loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
   hideToc?: boolean;
@@ -148,6 +151,7 @@ export function DocsShell({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
@@ -489,7 +493,11 @@ export function DocsShell({
             {children}
           </DocsMainColumn>
           {contentFillsWidth ? null : (
-            <DocsTocRail locale={currentLocale} toc={toc} />
+            <DocsTocRail
+              locale={currentLocale}
+              sourceLinks={sourceLinks}
+              toc={toc}
+            />
           )}
         </div>
         <DocsSiteFooter

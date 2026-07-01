@@ -44,6 +44,7 @@ function DocsTabLayout() {
   const {
     activePath,
     activeTab,
+    contentPath,
     localeLinks,
     layoutMode,
     hideToc,
@@ -58,6 +59,7 @@ function DocsTabLayout() {
     <DocsShell
       activePath={activePath}
       activeTab={activeTab}
+      contentPath={contentPath}
       loadPages={() => readStaticDocsSearchIndex(params.locale)}
       localeLinks={localeLinks}
       layoutMode={layoutMode}

@@ -4,13 +4,16 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import { cn } from '@/lib/cn';
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { DocsTableOfContents } from './DocsContent';
+import type { DocsSourceLinks } from './docs-source-links';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsTocRail({
   locale,
+  sourceLinks,
   toc,
 }: {
   locale?: AppLocale | string;
+  sourceLinks?: DocsSourceLinks | null;
   toc: TOCItemType[];
 }) {
   const { isScrollbarVisible, scrollContainerRef } =
@@ -29,7 +32,11 @@ export function DocsTocRail({
         data-testid="docs-toc-rail-scroll"
         ref={scrollContainerRef}
       >
-        <DocsTableOfContents locale={locale} toc={toc} />
+        <DocsTableOfContents
+          locale={locale}
+          sourceLinks={sourceLinks}
+          toc={toc}
+        />
       </div>
     </aside>
   );
