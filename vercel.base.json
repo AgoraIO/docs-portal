@@ -2,6 +2,13 @@
   "buildCommand": "bun run build",
   "outputDirectory": "dist/client",
   "framework": null,
+  "redirects": [
+    {
+      "source": "/cn",
+      "destination": "/en",
+      "statusCode": 301
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!_build/|assets/|__static/|images/|openapi/|favicon.ico|robots.txt|sitemap.xml).*)",

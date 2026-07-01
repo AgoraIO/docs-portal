@@ -30,7 +30,7 @@ const vercelConfig = {
   outputDirectory: baseConfig.outputDirectory,
   framework: baseConfig.framework,
   bulkRedirectsPath: 'vercel-legacy-redirects.json',
-  ...(queryRedirects.length > 0 ? { redirects: queryRedirects } : {}),
+  ...createRedirectsConfig(baseConfig.redirects, queryRedirects),
   rewrites: baseConfig.rewrites,
 };
 
@@ -113,6 +113,11 @@ function createVercelRedirects(rules) {
     queryRedirects: queryRedirects.sort(compareVercelRedirects),
     querySplitPaths: querySplitPaths.sort(),
   };
+}
+
+function createRedirectsConfig(baseRedirects = [], queryRedirects) {
+  const redirects = [...baseRedirects, ...queryRedirects];
+  return redirects.length > 0 ? { redirects } : {};
 }
 
 function parseLegacySearch(search) {
