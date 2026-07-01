@@ -1,5 +1,5 @@
 ---
-title: Demo server APIs
+title: Demo server RESTful APIs 
 description: Reference for the server-side APIs used by the Convo AI Device Kit development workflow.
 ---
 The demo server provides three RESTful APIs for device operations. This example project does not implement authentication. You can add authentication as needed.
@@ -8,7 +8,7 @@ The demo server provides three RESTful APIs for device operations. This example 
 
 **Authentication**: None
 
-## Get device RTC token
+### Get device RTC token
 
 Retrieves RTC credentials for the device to join a channel.
 
@@ -23,7 +23,7 @@ Retrieves RTC credentials for the device to join a channel.
   }
   ```
 
-## Start conversational AI agent
+### Start conversational AI agent
 
 Starts the Conversational AI Engine for the specified channel.
 
@@ -39,7 +39,7 @@ Starts the Conversational AI Engine for the specified channel.
   }
   ```
 
-## Stop conversational AI agent
+### Stop conversational AI agent
 
 Stops the Conversational AI Engine.
 
