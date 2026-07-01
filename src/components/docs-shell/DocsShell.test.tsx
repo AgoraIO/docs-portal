@@ -138,6 +138,7 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    contentPath: 'en/introduction/about-agora.md',
     loadPages: loadSearchPages,
     localeLinks: [
       {

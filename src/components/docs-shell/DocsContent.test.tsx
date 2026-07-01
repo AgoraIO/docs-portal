@@ -941,6 +941,12 @@ describe('DocsTableOfContents', () => {
           <h3 id="details">Details</h3>
         </div>
         <DocsTableOfContents
+          sourceLinks={{
+            editUrl:
+              'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/en/introduction/about-agora.md',
+            viewUrl:
+              'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/en/introduction/about-agora.md',
+          }}
           toc={[
             { depth: 2, title: 'Overview', url: '#overview' },
             { depth: 3, title: 'Details', url: '#details' },
@@ -974,11 +980,51 @@ describe('DocsTableOfContents', () => {
       screen.getByRole('link', { name: 'Edit this page' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/AgoraIO/docs-portal/tree/main/content/docs',
+      'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/en/introduction/about-agora.md',
     );
     expect(
       screen.getByRole('link', { name: 'View on GitHub' }),
-    ).toHaveAttribute('href', 'https://github.com/AgoraIO/docs-portal');
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/en/introduction/about-agora.md',
+    );
+  });
+
+  it('uses localized docs source links for the table of contents actions', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 200, overflow: 'auto' }}
+        >
+          <h2 id="overview">概览</h2>
+        </div>
+        <DocsTableOfContents
+          locale="zh-CN"
+          sourceLinks={{
+            editUrl:
+              'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/zh-CN/introduction/about-agora.md',
+            viewUrl:
+              'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/zh-CN/introduction/about-agora.md',
+          }}
+          toc={[{ depth: 2, title: '概览', url: '#overview' }]}
+          variant="mobile"
+        />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '本页目录' }));
+
+    expect(screen.getByRole('link', { name: '编辑此页' })).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/zh-CN/introduction/about-agora.md',
+    );
+    expect(
+      screen.getByRole('link', { name: '在 GitHub 查看' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/zh-CN/introduction/about-agora.md',
+    );
   });
 
   it('keeps mobile heading links interactive and collapses after a selection', async () => {

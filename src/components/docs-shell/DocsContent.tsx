@@ -42,6 +42,7 @@ import {
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsCopyMenu } from './docs-copy-menu';
+import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_ARTICLE_RETURN_STORAGE_KEY = 'docs-portal:article-return:v1';
 const TOC_ACTIVE_OFFSET = 96;
@@ -96,6 +97,7 @@ export function DocsContent({
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
   const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const sourceLinks = getDocsSourceLinks(contentPath);
   const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
     sourceTitle,
   });
@@ -122,7 +124,9 @@ export function DocsContent({
       ? resolvedBody.platformTabs
       : undefined;
   const hidePlatformTabs =
-    resolvedBody?.kind === 'mdx' ? resolvedBody.hidePlatformTabs === true : false;
+    resolvedBody?.kind === 'mdx'
+      ? resolvedBody.hidePlatformTabs === true
+      : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
 
@@ -314,6 +318,7 @@ export function DocsContent({
         <DocsTableOfContents
           className="xl:hidden"
           locale={currentLocale}
+          sourceLinks={sourceLinks}
           toc={toc}
           variant="mobile"
         />
@@ -667,11 +672,13 @@ function DocsContentSkeleton() {
 export function DocsTableOfContents({
   className,
   locale = DEFAULT_LOCALE,
+  sourceLinks = null,
   toc,
   variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
+  sourceLinks?: ReturnType<typeof getDocsSourceLinks>;
   toc: TOCItemType[];
   variant?: 'mobile' | 'rail';
 }) {
@@ -863,11 +870,11 @@ export function DocsTableOfContents({
       ) : (
         linkItems
       )}
-      {variant === 'rail' || isMobileOpen ? (
+      {sourceLinks && (variant === 'rail' || isMobileOpen) ? (
         <div className="mt-2 flex flex-col gap-1 border-t border-[color:var(--line)] pt-3">
           <a
             className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-            href="https://github.com/AgoraIO/docs-portal/tree/main/content/docs"
+            href={sourceLinks.editUrl}
             rel="noreferrer"
             target="_blank"
           >
@@ -876,7 +883,7 @@ export function DocsTableOfContents({
           </a>
           <a
             className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]"
-            href="https://github.com/AgoraIO/docs-portal"
+            href={sourceLinks.viewUrl}
             rel="noreferrer"
             target="_blank"
           >
