@@ -1,6 +1,9 @@
 'use client';
 
+import { PlusIcon, RotateCcwIcon, SaveIcon, Trash2Icon } from 'lucide-react';
 import { useId, useMemo, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,151 +12,121 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 
-export type RTCTierId = 'audio' | 'hd' | 'full-hd' | '2k' | '2k-plus';
-export type RTCModeId = 'interactive-live' | 'broadcast';
+type RTCStreamingMode = 'interactive' | 'broadcast';
+type RTCUserRole = 'Host' | 'Audience';
+type RTCResolutionClassification =
+  | 'Audio'
+  | 'Video HD'
+  | 'Video Full HD'
+  | 'Video 2K'
+  | 'Video 2K+';
 
-type RTCCoefficients = {
-  broadcastAudience: number;
-  host: number;
-  interactiveAudience: number;
-};
-
-type RTCTier = {
-  coefficients: RTCCoefficients;
-  id: RTCTierId;
+type RTCResolutionOption = {
+  height: number;
   label: string;
+  width: number;
 };
 
-type RTCMode = {
-  audienceCoefficientKey: keyof Pick<
-    RTCCoefficients,
-    'broadcastAudience' | 'interactiveAudience'
-  >;
-  audienceRole: string;
-  id: RTCModeId;
-  label: string;
+type RTCMinutesCalculatorType = 'audio' | 'default';
+
+export type RTCStream = {
+  id: string;
+  resolution: string;
 };
 
-export type RTCMinutesCalculatorInput = {
+export type RTCUser = {
   audienceCount: number;
+  id: string;
+  streams: RTCStream[];
+  subscriptions: string[];
+};
+
+export type RTCCalculatedUser = RTCUser & {
+  aggregateResolution: number;
+  classification: RTCResolutionClassification;
+  perUserStandardMinutes: string;
+  ratio: number;
+  role: RTCUserRole;
+  standardMinutes: string;
+};
+
+export type RTCUserStandardMinutesInput = {
   durationMinutes: number;
-  hostCount: number;
-  mode: RTCModeId;
-  tier: RTCTierId;
+  resolutions?: RTCResolutionOption[];
+  streamingMode: RTCStreamingMode;
+  users: RTCUser[];
 };
 
-export type RTCMinutesBreakdownLine = {
-  coefficient: number;
-  count: number;
-  exactStandardMinutes: number;
-  label: string;
+export type RTCUserStandardMinutesResult = {
+  totalStandardMinutes: string;
+  users: RTCCalculatedUser[];
 };
 
-export type RTCMinutesCalculatorResult = {
-  audienceLine: RTCMinutesBreakdownLine;
-  exactStandardMinutes: number;
-  hostLine: RTCMinutesBreakdownLine;
-  mode: RTCMode;
-  tier: RTCTier;
-  totalStandardMinutes: number;
-};
+const MAX_DURATION_MINUTES = 1440;
 
-export const RTC_TIERS: RTCTier[] = [
-  {
-    id: 'audio',
-    label: 'Audio',
-    coefficients: {
-      host: 1,
-      interactiveAudience: 1,
-      broadcastAudience: 0.57,
-    },
-  },
-  {
-    id: 'hd',
-    label: 'HD Video',
-    coefficients: {
-      host: 4,
-      interactiveAudience: 4,
-      broadcastAudience: 2,
-    },
-  },
-  {
-    id: 'full-hd',
-    label: 'Full HD Video',
-    coefficients: {
-      host: 9,
-      interactiveAudience: 9,
-      broadcastAudience: 4.57,
-    },
-  },
-  {
-    id: '2k',
-    label: '2K Video',
-    coefficients: {
-      host: 16,
-      interactiveAudience: 16,
-      broadcastAudience: 8,
-    },
-  },
-  {
-    id: '2k-plus',
-    label: '2K+ Video',
-    coefficients: {
-      host: 36,
-      interactiveAudience: 36,
-      broadcastAudience: 18,
-    },
-  },
+const RESOLUTIONS: RTCResolutionOption[] = [
+  { label: '640 x 480', width: 640, height: 480 },
+  { label: '960 x 720', width: 960, height: 720 },
+  { label: '1280 x 720', width: 1280, height: 720 },
+  { label: '1920 x 1080', width: 1920, height: 1080 },
+  { label: '2560 x 1440', width: 2560, height: 1440 },
+  { label: '4096 x 2160', width: 4096, height: 2160 },
+  { label: 'Audio only', width: 0, height: 0 },
 ];
 
-export const RTC_MODES: RTCMode[] = [
-  {
-    id: 'interactive-live',
-    label: 'Interactive live',
-    audienceRole: 'Interactive live audience',
-    audienceCoefficientKey: 'interactiveAudience',
-  },
-  {
-    id: 'broadcast',
-    label: 'Broadcast streaming',
-    audienceRole: 'Broadcast streaming audience',
-    audienceCoefficientKey: 'broadcastAudience',
-  },
+const AUDIO_RESOLUTIONS: RTCResolutionOption[] = [
+  { label: 'Audio only', width: 0, height: 0 },
 ];
 
-const DEFAULT_INPUT: RTCMinutesCalculatorInput = {
-  durationMinutes: 60,
-  mode: 'interactive-live',
-  hostCount: 1,
-  audienceCount: 10,
-  tier: 'hd',
+const CONVERSION_RATIOS: Record<RTCResolutionClassification, number> = {
+  Audio: 1,
+  'Video HD': 4,
+  'Video Full HD': 9,
+  'Video 2K': 16,
+  'Video 2K+': 36,
+};
+
+const BROADCAST_AUDIENCE_RATIOS: Record<RTCResolutionClassification, number> = {
+  Audio: 0.57,
+  'Video HD': 2,
+  'Video Full HD': 4.57,
+  'Video 2K': 8,
+  'Video 2K+': 18,
 };
 
 const selectClassName =
   'h-9 w-full min-w-0 rounded-md border border-input bg-background px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm';
 
-const numberFormatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 2,
-});
-const wholeNumberFormatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 0,
-});
+const numberFormatter = new Intl.NumberFormat('en-US');
 
-function getTier(tierId: RTCTierId) {
-  return RTC_TIERS.find((tier) => tier.id === tierId) ?? RTC_TIERS[1];
+function createId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-function getMode(modeId: RTCModeId) {
-  return RTC_MODES.find((mode) => mode.id === modeId) ?? RTC_MODES[0];
+function getUserLabel(index: number) {
+  return `User ${String.fromCharCode(65 + index)}`;
 }
 
 function sanitizeDuration(value: number) {
-  return Number.isFinite(value) ? Math.max(0, value) : 0;
+  if (!Number.isFinite(value)) {
+    return 0;
+  }
+
+  return Math.min(Math.max(value, 0), MAX_DURATION_MINUTES);
 }
 
-function sanitizeCount(value: number) {
-  return Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0;
+function sanitizeAudienceCount(value: number) {
+  if (!Number.isFinite(value)) {
+    return 1;
+  }
+
+  return Math.max(1, Math.trunc(value));
 }
 
 function parseNumberInput(value: string) {
@@ -166,102 +139,405 @@ function parseNumberInput(value: string) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function formatNumber(value: number) {
-  return numberFormatter.format(value);
+function getStorageKey(type: RTCMinutesCalculatorType) {
+  return type === 'audio'
+    ? 'pricingCalculatorConfigAudio'
+    : 'pricingCalculatorConfig';
 }
 
-function formatWholeNumber(value: number) {
-  return wholeNumberFormatter.format(value);
+function getResolution(
+  resolutionLabel: string,
+  resolutions: RTCResolutionOption[],
+) {
+  return (
+    resolutions.find((resolution) => resolution.label === resolutionLabel) ??
+    resolutions[0]
+  );
 }
 
-export function calculateRTCStandardMinutes(
-  input: RTCMinutesCalculatorInput,
-): RTCMinutesCalculatorResult {
-  const durationMinutes = sanitizeDuration(input.durationMinutes);
-  const hostCount = sanitizeCount(input.hostCount);
-  const audienceCount = sanitizeCount(input.audienceCount);
-  const tier = getTier(input.tier);
-  const mode = getMode(input.mode);
-  const hostCoefficient = tier.coefficients.host;
-  const audienceCoefficient = tier.coefficients[mode.audienceCoefficientKey];
-  const hostExactStandardMinutes =
-    durationMinutes * hostCount * hostCoefficient;
-  const audienceExactStandardMinutes =
-    durationMinutes * audienceCount * audienceCoefficient;
-  const exactStandardMinutes =
-    hostExactStandardMinutes + audienceExactStandardMinutes;
+function getAllStreams(users: RTCUser[]) {
+  return users.flatMap((user) => user.streams);
+}
+
+function getUserRole(user: RTCUser): RTCUserRole {
+  return user.streams.length > 0 ? 'Host' : 'Audience';
+}
+
+export function getRTCResolutionClassification(
+  totalResolution: number,
+): RTCResolutionClassification {
+  if (totalResolution > 0 && totalResolution <= 921_600) {
+    return 'Video HD';
+  }
+
+  if (totalResolution > 921_600 && totalResolution <= 2_073_600) {
+    return 'Video Full HD';
+  }
+
+  if (totalResolution > 2_073_600 && totalResolution <= 3_686_400) {
+    return 'Video 2K';
+  }
+
+  if (totalResolution > 3_686_400) {
+    return 'Video 2K+';
+  }
+
+  return 'Audio';
+}
+
+export function calculateRTCAggregateResolution(
+  user: RTCUser,
+  users: RTCUser[],
+  resolutions: RTCResolutionOption[] = RESOLUTIONS,
+) {
+  const streams = getAllStreams(users);
+
+  return user.subscriptions.reduce((total, streamId) => {
+    const stream = streams.find((candidate) => candidate.id === streamId);
+
+    if (!stream) {
+      return total;
+    }
+
+    const resolution = getResolution(stream.resolution, resolutions);
+
+    return total + resolution.width * resolution.height;
+  }, 0);
+}
+
+export function calculateRTCUserStandardMinutes({
+  durationMinutes,
+  resolutions = RESOLUTIONS,
+  streamingMode,
+  users,
+}: RTCUserStandardMinutesInput): RTCUserStandardMinutesResult {
+  const sanitizedDuration = sanitizeDuration(durationMinutes);
+  const calculatedUsers = users.map((user) => {
+    const role = getUserRole(user);
+    const aggregateResolution = calculateRTCAggregateResolution(
+      user,
+      users,
+      resolutions,
+    );
+    const classification = getRTCResolutionClassification(aggregateResolution);
+    const ratio =
+      role === 'Audience' && streamingMode === 'broadcast'
+        ? BROADCAST_AUDIENCE_RATIOS[classification]
+        : CONVERSION_RATIOS[classification];
+    const perUserStandardMinutes = (sanitizedDuration * ratio).toFixed(2);
+    const standardMinutes =
+      role === 'Audience'
+        ? (
+            Number.parseFloat(perUserStandardMinutes) *
+            sanitizeAudienceCount(user.audienceCount)
+          ).toFixed(2)
+        : perUserStandardMinutes;
+
+    return {
+      ...user,
+      audienceCount: sanitizeAudienceCount(user.audienceCount),
+      aggregateResolution,
+      classification,
+      perUserStandardMinutes,
+      ratio,
+      role,
+      standardMinutes,
+    };
+  });
+  const totalStandardMinutes = calculatedUsers
+    .reduce((total, user) => total + Number.parseFloat(user.standardMinutes), 0)
+    .toFixed(2);
 
   return {
-    audienceLine: {
-      coefficient: audienceCoefficient,
-      count: audienceCount,
-      exactStandardMinutes: audienceExactStandardMinutes,
-      label: mode.audienceRole,
-    },
-    exactStandardMinutes,
-    hostLine: {
-      coefficient: hostCoefficient,
-      count: hostCount,
-      exactStandardMinutes: hostExactStandardMinutes,
-      label: 'Host',
-    },
-    mode,
-    tier,
-    totalStandardMinutes: Math.ceil(exactStandardMinutes),
+    totalStandardMinutes,
+    users: calculatedUsers,
   };
 }
 
-function BreakdownLine({
+function formatDecimalString(value: string) {
+  return Number(value).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function getAggregateResolutionExpression(
+  user: RTCUser,
+  users: RTCUser[],
+  resolutions: RTCResolutionOption[],
+) {
+  const streams = getAllStreams(users);
+  const parts = user.subscriptions
+    .map((streamId) => {
+      const stream = streams.find((candidate) => candidate.id === streamId);
+
+      if (!stream) {
+        return null;
+      }
+
+      const resolution = getResolution(stream.resolution, resolutions);
+
+      if (resolution.width === 0) {
+        return null;
+      }
+
+      return `(${resolution.width} x ${resolution.height})`;
+    })
+    .filter(Boolean);
+
+  if (parts.length === 0) {
+    return 'This user is not subscribed to any video streams. Time spent in a channel, not subscribed to video streams is counted as audio usage.';
+  }
+
+  return `= ${parts.join(' + ')}`;
+}
+
+function UserSummary({
+  calculatedUser,
   durationMinutes,
-  line,
+  resolutions,
+  user,
+  userIndex,
+  users,
 }: {
+  calculatedUser: RTCCalculatedUser;
   durationMinutes: number;
-  line: RTCMinutesBreakdownLine;
+  resolutions: RTCResolutionOption[];
+  user: RTCUser;
+  userIndex: number;
+  users: RTCUser[];
 }) {
   return (
-    <div className="grid gap-1 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-      <dt className="min-w-0 text-sm font-medium text-foreground">
-        {line.label}
-      </dt>
-      <dd className="min-w-0 text-sm text-muted-foreground sm:text-right">
-        {formatNumber(line.count)} x {formatNumber(durationMinutes)} min x{' '}
-        {formatNumber(line.coefficient)} ={' '}
-        <span className="font-medium text-foreground">
-          {formatNumber(line.exactStandardMinutes)}
+    <section
+      aria-label={`Summary for ${getUserLabel(userIndex)}`}
+      className="flex flex-col gap-3 rounded-md border border-border bg-muted/25 p-3"
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <Badge variant="outline">{calculatedUser.role}</Badge>
+        <span className="text-sm font-medium text-foreground">
+          {getUserLabel(userIndex)} summary
         </span>
-      </dd>
-    </div>
+      </div>
+      <dl className="grid gap-2 text-sm sm:grid-cols-[12rem_minmax(0,1fr)]">
+        <dt className="text-muted-foreground">Aggregate Resolution</dt>
+        <dd className="min-w-0 text-foreground">
+          {numberFormatter.format(calculatedUser.aggregateResolution)} pixels
+          <span className="block text-xs leading-5 text-muted-foreground">
+            {getAggregateResolutionExpression(user, users, resolutions)}
+          </span>
+        </dd>
+        <dt className="text-muted-foreground">Aggregate Resolution Type</dt>
+        <dd className="font-medium text-foreground">
+          {calculatedUser.classification}
+        </dd>
+        <dt className="text-muted-foreground">Conversion Ratio</dt>
+        <dd className="font-medium text-foreground">
+          1 : {calculatedUser.ratio}
+        </dd>
+        <dt className="text-muted-foreground">Standard Minutes</dt>
+        <dd className="font-medium text-foreground">
+          {formatDecimalString(calculatedUser.perUserStandardMinutes)}
+          {calculatedUser.audienceCount > 1 &&
+            ` x ${calculatedUser.audienceCount}`}
+          <span className="block text-xs leading-5 text-muted-foreground">
+            = {durationMinutes} x {calculatedUser.ratio}
+          </span>
+        </dd>
+      </dl>
+    </section>
   );
 }
 
-export function RTCMinutesCalculator() {
-  const durationId = useId();
-  const modeId = useId();
-  const hostCountId = useId();
-  const audienceCountId = useId();
-  const tierId = useId();
-  const [durationMinutes, setDurationMinutes] = useState(
-    String(DEFAULT_INPUT.durationMinutes),
-  );
-  const [mode, setMode] = useState<RTCModeId>(DEFAULT_INPUT.mode);
-  const [hostCount, setHostCount] = useState(String(DEFAULT_INPUT.hostCount));
-  const [audienceCount, setAudienceCount] = useState(
-    String(DEFAULT_INPUT.audienceCount),
-  );
-  const [tier, setTier] = useState<RTCTierId>(DEFAULT_INPUT.tier);
-  const parsedDurationMinutes = parseNumberInput(durationMinutes);
+export function RTCMinutesCalculator({
+  type = 'default',
+}: {
+  type?: RTCMinutesCalculatorType;
+}) {
+  const durationInputId = useId();
+  const resolutions = type === 'audio' ? AUDIO_RESOLUTIONS : RESOLUTIONS;
+  const storageKey = getStorageKey(type);
+  const [users, setUsers] = useState<RTCUser[]>([]);
+  const [sessionDuration, setSessionDuration] = useState('60');
+  const [streamingMode, setStreamingMode] =
+    useState<RTCStreamingMode>('interactive');
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const durationMinutes = sanitizeDuration(parseNumberInput(sessionDuration));
   const result = useMemo(
     () =>
-      calculateRTCStandardMinutes({
-        audienceCount: parseNumberInput(audienceCount),
-        durationMinutes: parsedDurationMinutes,
-        hostCount: parseNumberInput(hostCount),
-        mode,
-        tier,
+      calculateRTCUserStandardMinutes({
+        durationMinutes,
+        resolutions,
+        streamingMode,
+        users,
       }),
-    [audienceCount, hostCount, mode, parsedDurationMinutes, tier],
+    [durationMinutes, resolutions, streamingMode, users],
   );
-  const sanitizedDurationMinutes = sanitizeDuration(parsedDurationMinutes);
+
+  function addUser() {
+    setUsers((previousUsers) => {
+      const newUser: RTCUser = {
+        id: createId(),
+        streams: [],
+        subscriptions: previousUsers.flatMap((user) =>
+          user.streams.map((stream) => stream.id),
+        ),
+        audienceCount: 1,
+      };
+
+      return [...previousUsers, newUser];
+    });
+  }
+
+  function removeUser(userId: string) {
+    setUsers((previousUsers) => {
+      const removedStreamIds =
+        previousUsers
+          .find((user) => user.id === userId)
+          ?.streams.map((stream) => stream.id) ?? [];
+
+      return previousUsers
+        .filter((user) => user.id !== userId)
+        .map((user) => ({
+          ...user,
+          subscriptions: user.subscriptions.filter(
+            (streamId) => !removedStreamIds.includes(streamId),
+          ),
+        }));
+    });
+  }
+
+  function addStream(userId: string) {
+    const streamId = createId();
+
+    setUsers((previousUsers) =>
+      previousUsers.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            audienceCount: 1,
+            streams: [
+              ...user.streams,
+              {
+                id: streamId,
+                resolution: resolutions[0].label,
+              },
+            ],
+          };
+        }
+
+        return {
+          ...user,
+          subscriptions: [...user.subscriptions, streamId],
+        };
+      }),
+    );
+  }
+
+  function removeStream(userId: string, streamId: string) {
+    setUsers((previousUsers) =>
+      previousUsers.map((user) =>
+        user.id === userId
+          ? {
+              ...user,
+              streams: user.streams.filter((stream) => stream.id !== streamId),
+            }
+          : {
+              ...user,
+              subscriptions: user.subscriptions.filter(
+                (subscriptionId) => subscriptionId !== streamId,
+              ),
+            },
+      ),
+    );
+  }
+
+  function updateStreamResolution(
+    userId: string,
+    streamId: string,
+    resolution: string,
+  ) {
+    setUsers((previousUsers) =>
+      previousUsers.map((user) =>
+        user.id === userId
+          ? {
+              ...user,
+              streams: user.streams.map((stream) =>
+                stream.id === streamId ? { ...stream, resolution } : stream,
+              ),
+            }
+          : user,
+      ),
+    );
+  }
+
+  function toggleSubscription(userId: string, streamId: string) {
+    setUsers((previousUsers) =>
+      previousUsers.map((user) =>
+        user.id === userId
+          ? {
+              ...user,
+              subscriptions: user.subscriptions.includes(streamId)
+                ? user.subscriptions.filter(
+                    (subscriptionId) => subscriptionId !== streamId,
+                  )
+                : [...user.subscriptions, streamId],
+            }
+          : user,
+      ),
+    );
+  }
+
+  function updateAudienceCount(userId: string, value: string) {
+    setUsers((previousUsers) =>
+      previousUsers.map((user) =>
+        user.id === userId
+          ? { ...user, audienceCount: sanitizeAudienceCount(Number(value)) }
+          : user,
+      ),
+    );
+  }
+
+  function clearAll() {
+    setUsers([]);
+    setSessionDuration('60');
+    setStreamingMode('interactive');
+  }
+
+  function saveConfig() {
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        users,
+        sessionDuration,
+        streamingMode,
+      }),
+    );
+    setAlertMessage('Configuration saved successfully!');
+  }
+
+  function loadConfig() {
+    try {
+      const savedConfig = localStorage.getItem(storageKey);
+
+      if (!savedConfig) {
+        setAlertMessage('No saved configuration found!');
+        return;
+      }
+
+      const config = JSON.parse(savedConfig) as {
+        sessionDuration?: string | number;
+        streamingMode?: RTCStreamingMode;
+        users?: RTCUser[];
+      };
+
+      setUsers(config.users ?? []);
+      setSessionDuration(String(config.sessionDuration ?? 60));
+      setStreamingMode(config.streamingMode ?? 'interactive');
+      setAlertMessage('Configuration loaded successfully!');
+    } catch {
+      setAlertMessage('Failed to load configuration.');
+    }
+  }
 
   return (
     <Card className="not-prose my-6 overflow-hidden rounded-lg shadow-sm">
@@ -272,134 +548,291 @@ export function RTCMinutesCalculator() {
               Standard minutes calculator
             </CardTitle>
             <CardDescription className="leading-6">
-              Estimate basic-service usage before package deduction.
+              Estimate usage from users, published streams, subscriptions, and
+              aggregate resolution.
             </CardDescription>
           </div>
-          <span className="w-fit rounded-md border border-border bg-background px-2 py-1 text-xs font-medium text-muted-foreground">
-            Final total rounded up
-          </span>
+          <Badge variant="outline">Stream subscriptions</Badge>
         </div>
       </CardHeader>
-      <CardContent className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.82fr)]">
-        <form
-          aria-label="Standard minutes calculator"
-          className="grid gap-4 sm:grid-cols-2"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <label
-            className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground"
-            htmlFor={durationId}
-          >
-            <span>Session duration (minutes)</span>
+      <CardContent className="flex flex-col gap-5 p-4 sm:p-6">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)]">
+          <div className="flex flex-col gap-4">
+            <label
+              className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground"
+              htmlFor={durationInputId}
+            >
+              <span>Session Duration</span>
+              <div className="flex items-center gap-2">
+                <Input
+                  className="max-w-32"
+                  id={durationInputId}
+                  max={MAX_DURATION_MINUTES}
+                  min="0"
+                  onChange={(event) =>
+                    setSessionDuration(
+                      String(sanitizeDuration(Number(event.target.value))),
+                    )
+                  }
+                  type="number"
+                  value={sessionDuration}
+                />
+                <span className="text-sm text-muted-foreground">minutes</span>
+              </div>
+            </label>
             <Input
-              id={durationId}
+              aria-label="Use the slider to change the session duration or enter a number in the input box."
+              max={MAX_DURATION_MINUTES}
               min="0"
-              onChange={(event) => setDurationMinutes(event.target.value)}
-              step="0.1"
-              type="number"
+              onChange={(event) =>
+                setSessionDuration(
+                  String(sanitizeDuration(Number(event.target.value))),
+                )
+              }
+              type="range"
               value={durationMinutes}
             />
-          </label>
-          <label
-            className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground"
-            htmlFor={modeId}
-          >
-            <span>Mode / streaming type</span>
-            <select
-              className={selectClassName}
-              id={modeId}
-              onChange={(event) => setMode(event.target.value as RTCModeId)}
-              value={mode}
-            >
-              {RTC_MODES.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label
-            className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground"
-            htmlFor={hostCountId}
-          >
-            <span>Host count</span>
-            <Input
-              id={hostCountId}
-              min="0"
-              onChange={(event) => setHostCount(event.target.value)}
-              step="1"
-              type="number"
-              value={hostCount}
-            />
-          </label>
-          <label
-            className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground"
-            htmlFor={audienceCountId}
-          >
-            <span>Audience count</span>
-            <Input
-              id={audienceCountId}
-              min="0"
-              onChange={(event) => setAudienceCount(event.target.value)}
-              step="1"
-              type="number"
-              value={audienceCount}
-            />
-          </label>
-          <label
-            className="flex min-w-0 flex-col gap-2 text-sm font-medium text-foreground sm:col-span-2"
-            htmlFor={tierId}
-          >
-            <span>Resolution / tier</span>
-            <select
-              className={selectClassName}
-              id={tierId}
-              onChange={(event) => setTier(event.target.value as RTCTierId)}
-              value={tier}
-            >
-              {RTC_TIERS.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </form>
-        <section
-          aria-label="Standard minutes estimate"
-          aria-live="polite"
-          className="flex min-w-0 flex-col gap-4 rounded-lg border border-border bg-muted/25 p-4"
-        >
-          <div className="flex flex-col gap-1">
-            <p className="text-sm font-medium text-muted-foreground">
-              Estimated Standard minutes
-            </p>
-            <p className="text-3xl font-semibold tabular-nums text-foreground">
-              {formatWholeNumber(result.totalStandardMinutes)}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Exact total before rounding:{' '}
-              {formatNumber(result.exactStandardMinutes)} minutes
-            </p>
+            <fieldset className="flex flex-col gap-2">
+              <legend className="text-sm font-medium text-foreground">
+                Streaming Mode
+              </legend>
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  checked={streamingMode === 'interactive'}
+                  name="streamingMode"
+                  onChange={(event) =>
+                    setStreamingMode(event.target.value as RTCStreamingMode)
+                  }
+                  type="radio"
+                  value="interactive"
+                />
+                Video Calling / Interactive Live Streaming
+              </label>
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  checked={streamingMode === 'broadcast'}
+                  name="streamingMode"
+                  onChange={(event) =>
+                    setStreamingMode(event.target.value as RTCStreamingMode)
+                  }
+                  type="radio"
+                  value="broadcast"
+                />
+                Broadcast Streaming (audience only)
+              </label>
+            </fieldset>
           </div>
-          <dl className="overflow-hidden rounded-lg border border-border bg-background">
-            <BreakdownLine
-              durationMinutes={sanitizedDurationMinutes}
-              line={result.hostLine}
-            />
-            <div className="border-border border-t">
-              <BreakdownLine
-                durationMinutes={sanitizedDurationMinutes}
-                line={result.audienceLine}
-              />
+          <section
+            aria-live="polite"
+            className="flex flex-col justify-between gap-3 rounded-md border border-border bg-muted/25 p-4"
+          >
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-medium text-muted-foreground">
+                Total Standard Minutes
+              </p>
+              <p className="text-3xl font-semibold tabular-nums text-foreground">
+                {formatDecimalString(result.totalStandardMinutes)}
+              </p>
             </div>
-          </dl>
-          <p className="text-xs leading-5 text-muted-foreground">
-            Tier: {result.tier.label}. Audience ratio:{' '}
-            {formatNumber(result.audienceLine.coefficient)} for{' '}
-            {result.mode.label.toLowerCase()}.
-          </p>
-        </section>
+            <p className="text-xs leading-5 text-muted-foreground">
+              Broadcast Streaming rates apply to audience users only.
+            </p>
+          </section>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={addUser} type="button">
+            <PlusIcon data-icon="inline-start" />
+            Add a user
+          </Button>
+          <Button onClick={saveConfig} type="button" variant="outline">
+            <SaveIcon data-icon="inline-start" />
+            Save
+          </Button>
+          <Button onClick={loadConfig} type="button" variant="outline">
+            Load
+          </Button>
+          <Button onClick={clearAll} type="button" variant="outline">
+            <RotateCcwIcon data-icon="inline-start" />
+            Start over
+          </Button>
+        </div>
+
+        {alertMessage ? (
+          <div className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-foreground">
+            {alertMessage}
+          </div>
+        ) : null}
+
+        <div className="flex flex-col gap-4">
+          {users.map((user, userIndex) => {
+            const calculatedUser = result.users[userIndex];
+            const publishedStreams = users
+              .filter((otherUser) => otherUser.id !== user.id)
+              .flatMap((otherUser) =>
+                otherUser.streams.map((stream) => ({
+                  ownerLabel: getUserLabel(users.indexOf(otherUser)),
+                  stream,
+                })),
+              );
+
+            return (
+              <Card key={user.id} className="rounded-md shadow-none">
+                <CardHeader className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <CardTitle className="text-base tracking-normal">
+                        {getUserLabel(userIndex)}
+                      </CardTitle>
+                      <Badge variant="outline">{calculatedUser.role}</Badge>
+                    </div>
+                    <Button
+                      aria-label={`Remove ${getUserLabel(userIndex)}`}
+                      onClick={() => removeUser(user.id)}
+                      size="icon-sm"
+                      type="button"
+                      variant="ghost"
+                    >
+                      <Trash2Icon />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-4 p-4 pt-0">
+                  {user.streams.length === 0 ? (
+                    <label
+                      className="flex max-w-56 flex-col gap-2 text-sm font-medium text-foreground"
+                      htmlFor={`${user.id}-audience-count`}
+                    >
+                      <span>Number of such users</span>
+                      <Input
+                        id={`${user.id}-audience-count`}
+                        min="1"
+                        onChange={(event) =>
+                          updateAudienceCount(user.id, event.target.value)
+                        }
+                        type="number"
+                        value={user.audienceCount}
+                      />
+                    </label>
+                  ) : null}
+
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <section className="flex min-w-0 flex-col gap-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <h4 className="text-sm font-medium text-foreground">
+                          Published Streams
+                        </h4>
+                        <Button
+                          aria-label={`Add Stream for ${getUserLabel(userIndex)}`}
+                          onClick={() => addStream(user.id)}
+                          size="sm"
+                          type="button"
+                          variant="outline"
+                        >
+                          <PlusIcon data-icon="inline-start" />
+                          Add Stream
+                        </Button>
+                      </div>
+                      {user.streams.length > 0 ? (
+                        <div className="flex flex-col gap-2">
+                          {user.streams.map((stream, streamIndex) => (
+                            <div
+                              className="flex min-w-0 items-center gap-2"
+                              key={stream.id}
+                            >
+                              <select
+                                aria-label={`Resolution for ${getUserLabel(
+                                  userIndex,
+                                )} stream ${streamIndex + 1}`}
+                                className={selectClassName}
+                                onChange={(event) =>
+                                  updateStreamResolution(
+                                    user.id,
+                                    stream.id,
+                                    event.target.value,
+                                  )
+                                }
+                                value={stream.resolution}
+                              >
+                                {resolutions.map((resolution) => (
+                                  <option
+                                    key={resolution.label}
+                                    value={resolution.label}
+                                  >
+                                    {resolution.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <Button
+                                aria-label={`Remove ${getUserLabel(
+                                  userIndex,
+                                )} stream ${streamIndex + 1}`}
+                                onClick={() => removeStream(user.id, stream.id)}
+                                size="icon-sm"
+                                type="button"
+                                variant="ghost"
+                              >
+                                <Trash2Icon />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          No published streams.
+                        </p>
+                      )}
+                    </section>
+
+                    <section className="flex min-w-0 flex-col gap-3">
+                      <h4 className="text-sm font-medium text-foreground">
+                        Subscriptions
+                      </h4>
+                      {publishedStreams.length > 0 ? (
+                        <div className="flex flex-col gap-2">
+                          {publishedStreams.map(({ ownerLabel, stream }) => (
+                            <label
+                              className="flex items-center gap-2 text-sm text-foreground"
+                              key={stream.id}
+                            >
+                              <input
+                                checked={user.subscriptions.includes(stream.id)}
+                                onChange={() =>
+                                  toggleSubscription(user.id, stream.id)
+                                }
+                                type="checkbox"
+                              />
+                              {ownerLabel} - {stream.resolution}
+                            </label>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          No streams available to subscribe to.
+                        </p>
+                      )}
+                    </section>
+                  </div>
+
+                  <Separator />
+                  <UserSummary
+                    calculatedUser={calculatedUser}
+                    durationMinutes={durationMinutes}
+                    resolutions={resolutions}
+                    user={user}
+                    userIndex={userIndex}
+                    users={users}
+                  />
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="text-right text-lg font-semibold text-foreground">
+          Total Standard Minutes:{' '}
+          {formatDecimalString(result.totalStandardMinutes)}
+        </div>
       </CardContent>
     </Card>
   );
