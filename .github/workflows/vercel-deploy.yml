@@ -30,6 +30,10 @@ on:
         description: Optional PR number to comment on for preview deploys
         required: false
         type: string
+      release_sha:
+        description: Release commit SHA for production deploys triggered by Promote Production
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -143,6 +147,12 @@ jobs:
 
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VERCEL_GIT_PROVIDER: github
+          VERCEL_GIT_REPO_OWNER: ${{ github.repository_owner }}
+          VERCEL_GIT_REPO_SLUG: ${{ github.event.repository.name }}
+          VERCEL_GIT_COMMIT_REF: ${{ github.head_ref || github.ref_name }}
+          VERCEL_GIT_COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: vercel build --yes --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Verify Vercel output
@@ -157,18 +167,37 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         id: vercel-deploy
         run: |
-          url="$(vercel deploy --prebuilt --archive=tgz --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          url="$(vercel deploy \
+            --prebuilt \
+            --archive=tgz \
+            --yes \
+            --token="${{ secrets.VERCEL_TOKEN }}" \
+            --meta githubCommitOrg="${{ github.repository_owner }}" \
+            --meta githubCommitRepo="${{ github.event.repository.name }}" \
+            --meta githubCommitRef="${{ github.head_ref || github.ref_name }}" \
+            --meta githubCommitSha="${{ github.event.pull_request.head.sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Alias main preview URL
+        if: steps.preview-context.outputs.should_deploy == 'true' && github.event_name == 'push' && github.ref_name == 'main'
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+          MAIN_PREVIEW_ALIAS: ${{ vars.VERCEL_MAIN_PREVIEW_ALIAS || 'docs-portal-mocha.vercel.app' }}
+        run: vercel alias set "$DEPLOY_URL" "$MAIN_PREVIEW_ALIAS" --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Write workflow summary
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+          MAIN_PREVIEW_ALIAS: ${{ vars.VERCEL_MAIN_PREVIEW_ALIAS || 'docs-portal-mocha.vercel.app' }}
         run: |
           {
             echo "## Vercel Preview"
             echo
             echo "Preview URL: ${DEPLOY_URL}"
+            if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
+              echo "Main preview alias: https://${MAIN_PREVIEW_ALIAS}"
+            fi
             echo
             echo "Trigger: ${{ steps.preview-context.outputs.reason }}"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -230,6 +259,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
+
+      - name: Verify release ref
+        id: release-ref
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          RELEASE_SHA: ${{ inputs.release_sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$RELEASE_SHA" ]]; then
+            echo "release_sha is required for manual production dispatches."
+            exit 1
+          fi
+
+          current_sha="$(git rev-parse HEAD)"
+          if [[ "$current_sha" != "$RELEASE_SHA" ]]; then
+            echo "release_sha does not match release/prod."
+            echo "release_sha: $RELEASE_SHA"
+            echo "release/prod: $current_sha"
+            exit 1
+          fi
+
+          echo "verified=true" >> "$GITHUB_OUTPUT"
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -254,10 +308,17 @@ jobs:
         env:
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VERCEL_GIT_PROVIDER: github
+          VERCEL_GIT_REPO_OWNER: ${{ github.repository_owner }}
+          VERCEL_GIT_REPO_SLUG: ${{ github.event.repository.name }}
+          VERCEL_GIT_COMMIT_REF: release/prod
+          VERCEL_GIT_COMMIT_SHA: ${{ inputs.release_sha || github.sha }}
         run: vercel build --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Sync Algolia search index
-        if: github.event_name == 'push' && github.ref_name == 'release/prod'
+        if: |
+          (github.event_name == 'push' && github.ref_name == 'release/prod') ||
+          (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production' && steps.release-ref.outputs.verified == 'true')
         env:
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
@@ -274,7 +335,16 @@ jobs:
       - name: Deploy prebuilt output
         id: vercel-deploy
         run: |
-          url="$(vercel deploy --prebuilt --archive=tgz --prod --yes --token="${{ secrets.VERCEL_TOKEN }}")"
+          url="$(vercel deploy \
+            --prebuilt \
+            --archive=tgz \
+            --prod \
+            --yes \
+            --token="${{ secrets.VERCEL_TOKEN }}" \
+            --meta githubCommitOrg="${{ github.repository_owner }}" \
+            --meta githubCommitRepo="${{ github.event.repository.name }}" \
+            --meta githubCommitRef="release/prod" \
+            --meta githubCommitSha="${{ inputs.release_sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Write workflow summary
