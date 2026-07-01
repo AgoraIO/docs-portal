@@ -477,6 +477,9 @@ describe('DocsShell', () => {
     expect(banner).toHaveTextContent(
       'Looking for the previous docs site? Visit the legacy docs homepage.',
     );
+    expect(legacyDocsBannerConfig.hrefs.en).toBe(
+      'https://docs-legacy.agora.io/en',
+    );
     expect(banner).toHaveAttribute('href', legacyDocsBannerConfig.hrefs.en);
     expect(banner).toHaveAttribute('target', '_blank');
     expect(banner).toHaveAttribute('rel', 'noreferrer');
