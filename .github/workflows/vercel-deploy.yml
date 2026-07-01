@@ -71,6 +71,13 @@ jobs:
             }
 
             const branch = context.ref.replace('refs/heads/', '');
+            if (context.eventName === 'push' && branch === 'main') {
+              core.setOutput('should_deploy', 'true');
+              core.setOutput('pr_number', '');
+              core.setOutput('reason', 'main branch push');
+              return;
+            }
+
             const { owner, repo } = context.repo;
             const response = await github.rest.pulls.list({
               owner,
