@@ -47,6 +47,19 @@ function splitMarkdownRow(row: string) {
   return row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|');
 }
 
+function tableSection(source: string, title: string, endMarker: string) {
+  const legacyTitle = `**${title}**`;
+  const accordionTitle = `<Accordion title="${title}">`;
+  const start = Math.max(
+    source.indexOf(legacyTitle),
+    source.indexOf(accordionTitle),
+  );
+
+  expect(start).toBeGreaterThanOrEqual(0);
+
+  return source.slice(start, source.indexOf(endMarker));
+}
+
 describe('server gateway audit regressions', () => {
   it('keeps account-management procedures in continuous ordered lists', async () => {
     const source = readFileSync(
@@ -85,11 +98,11 @@ describe('server gateway audit regressions', () => {
       ),
       'utf8',
     );
-    const tableLines = source
-      .slice(
-        source.indexOf('**Data classification categories**'),
-        source.indexOf('### Data security'),
-      )
+    const tableLines = tableSection(
+      source,
+      'Data classification categories',
+      '### Data security',
+    )
       .split(/\r?\n/)
       .filter((line) => line.startsWith('|'));
     const expectedCells = splitMarkdownRow(tableLines[0]).length;

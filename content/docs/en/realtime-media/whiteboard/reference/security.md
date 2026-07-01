@@ -2,7 +2,6 @@
 title: "Security"
 description: "Learn the security practices Agora implements for Interactive Whiteboard."
 ---
-
 Data security and user privacy are the top priorities for Agora. To provide safe and reliable services, Agora adopts industry-recognized security standards and security best practices at every layer for each product.
 
 Interactive Whiteboard is a newly launched product that provides online whiteboard rooms where users can present ideas, share multimedia content, and collaborate on projects from multiple devices simultaneously. Starting in the product-design phase, Agora has assessed and prepared for the potential security threats associated with these functions and has implemented a variety of measures to secure the high availability of Interactive Whiteboard as well as the confidentiality and integrity of your data.
