@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - ".github/workflows/**"
     types:
       - opened
       - synchronize
@@ -12,6 +14,8 @@ on:
   push:
     branches:
       - "**"
+    paths-ignore:
+      - ".github/workflows/**"
   workflow_dispatch:
     inputs:
       deploy_target:
