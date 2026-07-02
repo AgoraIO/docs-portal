@@ -2189,16 +2189,6 @@ components:
             The RTC channel name for the transcoded audio and video.
 
 
-            The RTC channel name for the audio input source. Currently, only audio and video sources
-            that subscribe to a single channel are supported. The audio source and video source must
-            belong to the same channel.
-
-
-            The RTC channel name for the video input source. Currently, only audio and video sources
-            that subscribe to a single channel are supported. The audio source and video source must
-            belong to the same channel.
-
-
             The RTC channel name for the audio input source. Currently, you can only subscribe to
             audio and video sources from a single channel; the audio and video sources must belong
             to the same channel.
@@ -2234,7 +2224,7 @@ components:
             users in the channel. See Token authentication for details.
 
              The UID of Cloud Transcoder in the RTC channel is randomly assigned by Agora. Therefore, when generating a token, set the uid to 0.
-      description: Required for publishing to an RTC channel.
+      description: Required for publishing to an RTC channel. Currently, you can publish to only one RTC channel.
     canvas:
       type: object
       required:

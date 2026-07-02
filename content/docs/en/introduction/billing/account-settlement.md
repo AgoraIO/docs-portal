@@ -5,8 +5,9 @@ description: "How Agora account billing and settlement work."
 
 To ensure billing transparency and smooth service continuity, Agora implements real-time account balance reservation based on estimated usage across all Agora products for SSP customers. This does not apply to customers with a signed contract.
 
-:::note
+:::info
 For uninterrupted access to Agora's products and services, ensure at least one of the following:
+
 - Add a valid credit card for auto-recharge to your Agora account, **or**
 - Maintain sufficient funds in your Agora Console balance to cover your estimated usage.
 :::
@@ -43,6 +44,6 @@ Your final bill is issued monthly. After bill finalization:
 
 ### Balance withdrawal
 
-You can withdraw your available balance at any time directly from the Agora Console.
+You can withdraw your available balance for payments completed within the past 90 days directly through the Agora Console. Funds will be returned to the original payment method. For further inquiries, please email billing@agora.io.
 
 ![Withdraw balance](https://assets-docs.agora.io/images/console/withdraw-balance.png)

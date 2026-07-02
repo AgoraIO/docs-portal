@@ -152,11 +152,11 @@ describe('legacy sitemap compatibility audit', () => {
     expect(typedReviewReport.summary).toEqual({
       broken: 0,
       exactPath: 478,
-      exactSlug: 1941,
+      exactSlug: 1942,
       native: 0,
       productFallback: 0,
       renamedPage: 39,
-      semanticPageMatch: 658,
+      semanticPageMatch: 657,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });
@@ -291,11 +291,6 @@ const reviewedRedirectTargets = [
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/overview/pricing',
     target: '/en/ai/reference/pricing',
-  },
-  {
-    legacyUrl:
-      'https://docs.agora.io/en/interactive-whiteboard/overview/account-settlement',
-    target: '/en/realtime-media/whiteboard/reference/account-settlement',
   },
   {
     legacyUrl:
