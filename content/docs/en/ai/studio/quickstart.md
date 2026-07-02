@@ -48,7 +48,7 @@ Models determine which ASR, LLM, and TTS services your agent uses to process spe
     ![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-models.png)
 2. Review the pre-selected models for **Automatic Speech Recognition (ASR)**, **Large Language Model (LLM)**, and **Text-to-Speech (TTS)**. You can use the defaults or select a different vendor-model from the dropdowns.
 
-The dropdowns list vendor-model combinations that support Agora Managed Key. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../pricing) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent).
+The dropdowns list vendor-model combinations that support Agora Managed Key. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../reference/pricing) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent).
 
 ## Test the agent
 
