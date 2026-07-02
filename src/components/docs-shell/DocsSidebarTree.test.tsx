@@ -414,7 +414,7 @@ describe('DocsSidebarTree', () => {
       },
     ];
 
-    renderSidebarTree(tree, '/en/ai/overview/pricing');
+    renderSidebarTree(tree, '/en/ai/reference/pricing');
 
     const toggle = await screen.findByRole('button', {
       name: /SDK Quickstarts/i,

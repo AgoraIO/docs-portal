@@ -3337,10 +3337,64 @@ Web body
       redirectUrl: '/en/ai/reference/event-types',
     });
 
+    await expect(loadDocsPagePayload('en', 'ai', ['pricing'])).resolves.toEqual(
+      {
+        redirectUrl: '/en/ai/reference/pricing',
+      },
+    );
+
     await expect(
       loadDocsPagePayload('en', 'ai', ['best-practices', 'filler-words']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/build/filler-words',
+    });
+  });
+
+  it('redirects moved Reference pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'cloud-recording',
+        'pricing-webpage-recording',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/cloud-recording/reference/pricing-webpage-recording',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['whiteboard', 'overview']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'core-concepts',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'pricing',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/reference/pricing',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'whiteboard-fastboard',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/whiteboard-fastboard',
     });
   });
 

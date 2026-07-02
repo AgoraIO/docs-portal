@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import { describe, expect, it } from 'vitest';
@@ -381,6 +381,38 @@ describe('docs content regressions', () => {
     expect(content).not.toContain('[pricing](/en/ai/pricing)');
   });
 
+  it('keeps Whiteboard IA centered on the product root and Reference section', () => {
+    const productMeta = JSON.parse(readDoc('realtime-media/whiteboard/meta.json'));
+    const referenceMeta = JSON.parse(
+      readDoc('realtime-media/whiteboard/reference/meta.json'),
+    );
+
+    expect(productMeta.pages).toEqual([
+      'index',
+      '[Compare and choose](/en/realtime-media/whiteboard/whiteboard-fastboard)',
+      'build',
+      'reference',
+    ]);
+    expect(productMeta.sidebarIndexTitle).toBe('Whiteboard overview');
+    expect(productMeta.pages).not.toContain('overview');
+    expect(
+      existsSync(resolve(docsRoot, 'realtime-media/whiteboard/overview')),
+    ).toBe(false);
+    expect(
+      existsSync(
+        resolve(docsRoot, 'realtime-media/whiteboard/overview/core-concepts.md'),
+      ),
+    ).toBe(false);
+
+    expect(referenceMeta.pages.slice(0, 5)).toEqual([
+      'pricing',
+      'supported-platforms',
+      'release-notes',
+      'release-notes-uikit',
+      '!account-settlement',
+    ]);
+  });
+
   it('keeps AI quickstart links from referring to a REST quickstart', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
     const offenders = files.flatMap((file) => {
@@ -727,18 +759,6 @@ describe('docs content regressions', () => {
       '[Query message notification server IP addresses](/en/api-reference/api-ref/cloud-recording/get-ncs-ip)',
     );
 
-    const whiteboard = readDoc(
-      'realtime-media/whiteboard/overview/core-concepts.md',
-    );
-
-    expect(whiteboard).toContain(
-      '| Permission | `admin` | `writer` | `reader` |',
-    );
-    expect(whiteboard.match(/^\|:-----------\|/gm) ?? []).toHaveLength(3);
-    expect(whiteboard).toContain(
-      '| Query the progress of a specific file-conversion task | Yes | Yes | Yes |',
-    );
-
     const whiteboardStatus = readDoc(
       'realtime-media/whiteboard/reference/status-page.md',
     );
@@ -924,7 +944,7 @@ describe('docs content regressions', () => {
     expect(rtmpNotifications).toContain('| `3` | `live_stream_aborted` |');
 
     const whiteboardReleaseNotes = readDoc(
-      'realtime-media/whiteboard/overview/release-notes.mdx',
+      'realtime-media/whiteboard/reference/release-notes.mdx',
     );
 
     expect(whiteboardReleaseNotes).toContain(
