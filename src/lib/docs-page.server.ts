@@ -896,6 +896,7 @@ function resolveRealtimeMediaApiReferenceRedirect(
       '/en/api-reference/api-ref/media-push/restful-type-definition',
     'on-premise-recording/reference/api-reference':
       '/en/api-reference/api-ref/on-premise-recording',
+    'rtm/reference/rest-api': '/en/api-reference/api-ref/signaling',
     'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
     'rtmp-gateway/reference/restful-authentication':
       '/en/api-reference/api-ref/rtmp-gateway/authentication',
@@ -1243,6 +1244,11 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
     url: '/en/api-reference/api-ref/on-premise-recording',
   },
   {
+    productSlug: 'rtm',
+    title: 'Signaling REST API',
+    url: '/en/api-reference/api-ref/signaling',
+  },
+  {
     productSlug: 'rtmp-gateway',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtmp-gateway',
@@ -1301,7 +1307,8 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ...node,
       children: [
         pageNode,
-        ...node.children.filter(
+        ...filterSidebarNodes(
+          node.children,
           (child) => child.type !== 'page' || !existingUrls.has(child.url),
         ),
       ],
@@ -1354,6 +1361,8 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
       ];
     case 'on-premise-recording':
       return [`${prefix}/reference/api-reference`];
+    case 'rtm':
+      return [`${prefix}/reference/rest-api`];
     case 'rtmp-gateway':
       return [
         `${prefix}/reference/rest-api`,
