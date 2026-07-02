@@ -1,0 +1,62 @@
+---
+title: Pricing
+description: Information on Conversational AI Engine usage and billing.
+---
+This page describes how Agora calculates and bills for Conversational AI Engine usage.
+
+When you use Conversational AI Engine in your project, Agora charges a monthly fee based on your usage across all projects under your developer account. At the end of each month, the free quota is subtracted from your total usage, and the remaining minutes are multiplied by the unit price to calculate your bill, rounded to two decimal places. For general billing information, see [Billing](../introduction/billing).
+
+:::info[Info]
+If you have signed a sales contract with Agora, your billing follows the terms in your contract.
+:::
+
+## Unit price
+
+Creating a Conversational AI Engine instance using the RESTful API and joining a channel incurs an audio task fee at the following rate:
+
+| Usage Type | Pricing (USD / minute) | Free Minutes |
+| --- | --- | --- |
+| Conversational AI Engine Audio Task | 0.10* | First 300 minutes are free |
+| *The unit price includes usage of selected ASR, LLM, and TTS models. You will be charged the same price even if you bring your own key (BYOK).* |  |  |
+
+Usage of ASR, LLM, and TTS providers is included in the unit price when using an Agora managed key. Agora provides and manages the API keys for the following providers:
+
+- **ASR**
+  - ARES
+  - Deepgram nova‑2
+  - Deepgram nova‑3
+- **LLM**
+  - OpenAI GPT‑4o‑mini
+  - OpenAI GPT‑4.1‑mini
+  - OpenAI GPT‑5‑nano
+  - OpenAI GPT‑5‑mini
+- **TTS**
+  - MiniMax 2.6 Turbo
+  - MiniMax 2.8 Turbo
+  - OpenAI TTS‑1
+
+## Examples
+
+The following examples demonstrate how billing is calculated for different Conversational AI Engine configurations.
+
+### Example 1: Using ASR, LLM, and TTS managed by Agora
+
+User A joins a channel and starts a voice conversation with an instance created by Conversational AI Engine. The interaction lasts for 10 minutes. User A and the Conversational AI Engine instance exit the channel at the same time. Agora calculates the cost for this session as follows:
+
+| Usage Type | Duration (minutes) | Unit Price | Service Cost (USD) | Total Cost (USD) |
+| --- | --- | --- | --- | --- |
+| User A: Audio RTC | 10 | 0.00099 | 0.0099 | 1.0099 |
+| Conversational AI Engine Audio Task | 10 | 0.10 | 1.00 | 1.0099 |
+| ASR: ARES, LLM: OpenAI GPT‑4o‑mini, TTS: MiniMax 2.8 Turbo | 10 | 0.00 | 0.00 | 1.0099 |
+
+### Example 2: Using ASR, LLM, and TTS providers with BYOK
+
+User B joins a channel and starts a voice conversation with an instance created by Conversational AI Engine configured to use their own keys for the ASR, LLM, and TTS providers or a multimodal large language model (MLLM). The interaction lasts for 10 minutes. User B and the Conversational AI Engine instance exit the channel at the same time. Agora calculates the cost for this session as follows:
+
+| Usage Type | Duration (minutes) | Unit Price | Service Cost (USD) | Total Cost (USD) |
+| --- | --- | --- | --- | --- |
+| User B: Audio RTC | 10 | 0.00099 | 0.0099 | 1.0099 |
+| Conversational AI Engine Audio Task | 10 | 0.10 | 1.00 | 1.0099 |
+| ASR, LLM, and TTS (or MLLM) configured with your own key | 10 | Billed directly to you by your ASR, LLM, and TTS (or MLLM) providers. | Billed directly to you by your ASR, LLM, and TTS (or MLLM) providers. | 1.0099 |
+
+<!-- ### Example 3: BYOK + AI Avatar -->
