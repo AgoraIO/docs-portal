@@ -1464,17 +1464,13 @@ function OpenApiSchemaRowItem({
           </span>
         ) : null}
       </div>
-      <div className="mt-2">
-        {row.description ? (
-          <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
-            {renderMarkdown(
-              normalizeOpenApiDescriptionMarkdown(row.description),
-            )}
-          </div>
-        ) : null}
-        <OpenApiInlineCallouts callouts={row.docsCallouts} />
-        <OpenApiSchemaMeta row={row} />
-      </div>
+      {row.description ? (
+        <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
+          {renderMarkdown(normalizeOpenApiDescriptionMarkdown(row.description))}
+        </div>
+      ) : null}
+      <OpenApiInlineCallouts callouts={row.docsCallouts} />
+      <OpenApiSchemaMeta row={row} />
     </div>
   );
 }
