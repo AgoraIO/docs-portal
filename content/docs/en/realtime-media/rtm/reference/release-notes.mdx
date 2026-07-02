@@ -351,7 +351,13 @@ v2.1.7 was released on January 22, 2024.
 
 ### Known issues and limitations
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `aosl.xframework` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -365,7 +371,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 
-#### Objective-C
+</TabsContent>
+
+<TabsContent value="objc">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `aosl.xframework` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -380,6 +388,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.1 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.0 `aosl.xframework` version: 1.0.0.17.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.8
 
@@ -407,85 +418,72 @@ This release fixed the following issues:
 
 Released on November 15, 2025.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
 
-###### New features
+<TabsContent value="swift">
+
+#### New features
 
 **Support for IoT device domain allowlist**
 
 In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
-###### Improvements
+#### Improvements
 
 **New reconnection timeout configuration**
 
 This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-###### Issues fixed
+#### Issues fixed
 
 - In some scenarios, the token expiration notification was triggered multiple times.
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In some scenarios, when the iOS system exited the app, the Signaling SDK crashed.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-#### Objective-C
+</TabsContent>
 
-###### New features
+<TabsContent value="objc">
+
+#### New features
 
 **Support for IoT device domain allowlist**
 
 In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
-###### Improvements
+#### Improvements
 
 **New reconnection timeout configuration**
 
 This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-###### Issues fixed
+#### Issues fixed
 
 - In some scenarios, the token expiration notification was triggered multiple times.
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In some scenarios, when the iOS system exited the app, the Signaling SDK crashed.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.4
 
 v2.2.4 was released on April 10, 2025.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
 
-###### Improvements
+<TabsContent value="swift">
 
-- New link state change reason
-
-    This release adds the reason `LOGIN_TOO_FREQUENT` (37) to `RtmLinkStateChangeReason`, indicating that the current login operation is too frequent.
-
-- New renew token timeout error code
-
-    To better reflect the result of the renew token operation, this release adds the error code `RTM_RENEW_TOKEN_TIMEOUT` (10026).
-
-- Presence event notification optimization
-
-    When channel data fails to sync properly, the SDK retriggers the `SNAPSHOT` event. Upon receiving this event, you can update the app's local cache.
-
-- Other improvements
-
-    - Improved reconnection speed of the Signaling service when switching to background or sleep mode.
-    - Optimized SDK performance in weak network conditions.
-    - Improved selection of access nodes to enhance connection speed.
-    - Further optimized the response time of the login service.
-
-###### Issues fixed
-
-- The subscription service occasionally did not recover during reconnection.
-- Query results for users in some channels included information about abnormally offline users.
-- Uncaught exceptions in callback functions could cause the SDK to crash.
-- Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
-
-#### Objective-C
-
-###### Improvements
+#### Improvements
 
 - New link state change reason
 
@@ -506,18 +504,59 @@ v2.2.4 was released on April 10, 2025.
     - Improved selection of access nodes to enhance connection speed.
     - Further optimized the response time of the login service.
 
-###### Issues fixed
+#### Issues fixed
 
 - The subscription service occasionally did not recover during reconnection.
 - Query results for users in some channels included information about abnormally offline users.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+#### Improvements
+
+- New link state change reason
+
+    This release adds the reason `LOGIN_TOO_FREQUENT` (37) to `RtmLinkStateChangeReason`, indicating that the current login operation is too frequent.
+
+- New renew token timeout error code
+
+    To better reflect the result of the renew token operation, this release adds the error code `RTM_RENEW_TOKEN_TIMEOUT` (10026).
+
+- Presence event notification optimization
+
+    When channel data fails to sync properly, the SDK retriggers the `SNAPSHOT` event. Upon receiving this event, you can update the app's local cache.
+
+- Other improvements
+
+    - Improved reconnection speed of the Signaling service when switching to background or sleep mode.
+    - Optimized SDK performance in weak network conditions.
+    - Improved selection of access nodes to enhance connection speed.
+    - Further optimized the response time of the login service.
+
+#### Issues fixed
+
+- The subscription service occasionally did not recover during reconnection.
+- Query results for users in some channels included information about abnormally offline users.
+- Uncaught exceptions in callback functions could cause the SDK to crash.
+- Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.2
 
 v2.2.2 was released on December 13, 2024.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
 
 This is the first release of the Signaling SDK for Swift, which brings innovation in functional coverage, performance improvement, and experience optimization.
 
@@ -525,7 +564,7 @@ This is the first release of the Signaling SDK for Swift, which brings innovatio
 - Performance improvement: v2.x implements a restructured technical architecture and enhances performance through optimized network connections. Our long-term real-time network access capabilities ensure high service quality characterized by low latency, high reliability, extensive concurrency, and robust extensibility.
 - Experience optimization: v2.x redesigns and simplifies the API interface. We have additionally enriched our documentation, including user guides and API references, with extensive sample code to provide you with comprehensive developer resources. These improvements significantly reduce the effort required to understand and integrate the SDK, ultimately enhancing development efficiency.
 
-###### New features
+#### New features
 
 The release provides the following core functional modules:
 
@@ -657,9 +696,11 @@ The storage feature provides a dynamic database mechanism that allows developers
 
     The lock setting, acquisition, release, revocation, and deletion operations trigger the corresponding `onLockEvent` event notification. You can make full use of this feature to optimize the implementation logic of your business.
 
-#### Objective-C
+</TabsContent>
 
-###### Compatibility changes
+<TabsContent value="objc">
+
+#### Compatibility changes
 
 1. SNAPSHOT state trigger timing change
 
@@ -669,17 +710,17 @@ The storage feature provides a dynamic database mechanism that allows developers
 
     This release changes the calculation rule of the lock (Lock) timeout. Starting from this version, the lock timeout is calculated from the time when the server determines that the user is offline.
 
-###### New features
+#### New features
 
 1. SDK connection state change reason
 
     This release adds the [`RtmLinkStateChangeReason`](/en/api-reference/api-ref/signaling) enumeration class to the `LinkStateEvent` of the SDK connection state, to report the reason for the connection state change.
 
-###### Improvements
+#### Improvements
 
 This release improves the performance of the basic messaging service during exceptions, preventing service unavailability caused by the failure of some services.
 
-###### Fixed issues
+#### Fixed issues
 
 This release fixed the following issues:
 - In some use-cases, incorrect token types cause exceptions.
@@ -688,6 +729,9 @@ This release fixed the following issues:
 - When setting the Presence state frequently, data may be abnormal.
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.1
 
@@ -1033,7 +1077,13 @@ This release fixed the following issues:
 
 ### Known issues and limitations
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `aosl.xframework` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -1047,7 +1097,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 
-#### Objective-C
+</TabsContent>
+
+<TabsContent value="objc">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `aosl.xframework` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -1062,6 +1114,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.1 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.0 `aosl.xframework` version: 1.0.0.17.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.8
 
@@ -1089,85 +1144,72 @@ This release fixed the following issues:
 
 Released on November 15, 2025.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
 
-###### New features
+<TabsContent value="swift">
+
+#### New features
 
 **Support for IoT device domain allowlist**
 
 In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
-###### Improvements
+#### Improvements
 
 **New reconnection timeout configuration**
 
 This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-###### Issues fixed
+#### Issues fixed
 
 - In some scenarios, the token expiration notification was triggered multiple times.
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In some scenarios, when the iOS system exited the app, the Signaling SDK crashed.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-#### Objective-C
+</TabsContent>
 
-###### New features
+<TabsContent value="objc">
+
+#### New features
 
 **Support for IoT device domain allowlist**
 
 In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). To address this limitation, this version adds the `ispPolicyEnabled` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). When you set this field to `true`, the SDK connects only to servers whose domain names or IP addresses have been registered with the ISP and are included in the allowlist.
 
-###### Improvements
+#### Improvements
 
 **New reconnection timeout configuration**
 
 This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-###### Issues fixed
+#### Issues fixed
 
 - In some scenarios, the token expiration notification was triggered multiple times.
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In some scenarios, when the iOS system exited the app, the Signaling SDK crashed.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.4
 
 v2.2.4 was released on April 10, 2025.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
 
-###### Improvements
+<TabsContent value="swift">
 
-- New link state change reason
-
-    This release adds the reason `LOGIN_TOO_FREQUENT` (37) to `RtmLinkStateChangeReason`, indicating that the current login operation is too frequent.
-
-- New renew token timeout error code
-
-    To better reflect the result of the renew token operation, this release adds the error code `RTM_RENEW_TOKEN_TIMEOUT` (10026).
-
-- Presence event notification optimization
-
-    When channel data fails to sync properly, the SDK retriggers the `SNAPSHOT` event. Upon receiving this event, you can update the app's local cache.
-
-- Other improvements
-
-    - Improved reconnection speed of the Signaling service when switching to background or sleep mode.
-    - Optimized SDK performance in weak network conditions.
-    - Improved selection of access nodes to enhance connection speed.
-    - Further optimized the response time of the login service.
-
-###### Issues fixed
-
-- The subscription service occasionally did not recover during reconnection.
-- Query results for users in some channels included information about abnormally offline users.
-- Uncaught exceptions in callback functions could cause the SDK to crash.
-- Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
-
-#### Objective-C
-
-###### Improvements
+#### Improvements
 
 - New link state change reason
 
@@ -1188,18 +1230,59 @@ v2.2.4 was released on April 10, 2025.
     - Improved selection of access nodes to enhance connection speed.
     - Further optimized the response time of the login service.
 
-###### Issues fixed
+#### Issues fixed
 
 - The subscription service occasionally did not recover during reconnection.
 - Query results for users in some channels included information about abnormally offline users.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
+
+</TabsContent>
+
+<TabsContent value="objc">
+
+#### Improvements
+
+- New link state change reason
+
+    This release adds the reason `LOGIN_TOO_FREQUENT` (37) to `RtmLinkStateChangeReason`, indicating that the current login operation is too frequent.
+
+- New renew token timeout error code
+
+    To better reflect the result of the renew token operation, this release adds the error code `RTM_RENEW_TOKEN_TIMEOUT` (10026).
+
+- Presence event notification optimization
+
+    When channel data fails to sync properly, the SDK retriggers the `SNAPSHOT` event. Upon receiving this event, you can update the app's local cache.
+
+- Other improvements
+
+    - Improved reconnection speed of the Signaling service when switching to background or sleep mode.
+    - Optimized SDK performance in weak network conditions.
+    - Improved selection of access nodes to enhance connection speed.
+    - Further optimized the response time of the login service.
+
+#### Issues fixed
+
+- The subscription service occasionally did not recover during reconnection.
+- Query results for users in some channels included information about abnormally offline users.
+- Uncaught exceptions in callback functions could cause the SDK to crash.
+- Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.2
 
 v2.2.2 was released on December 13, 2024.
 
-#### Swift
+<Tabs defaultValue="swift" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="swift">Swift</TabsTrigger>
+  <TabsTrigger value="objc">Objective-C</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift">
 
 This is the first release of the Signaling SDK for Swift, which brings innovation in functional coverage, performance improvement, and experience optimization.
 
@@ -1207,7 +1290,7 @@ This is the first release of the Signaling SDK for Swift, which brings innovatio
 - Performance improvement: v2.x implements a restructured technical architecture and enhances performance through optimized network connections. Our long-term real-time network access capabilities ensure high service quality characterized by low latency, high reliability, extensive concurrency, and robust extensibility.
 - Experience optimization: v2.x redesigns and simplifies the API interface. We have additionally enriched our documentation, including user guides and API references, with extensive sample code to provide you with comprehensive developer resources. These improvements significantly reduce the effort required to understand and integrate the SDK, ultimately enhancing development efficiency.
 
-###### New features
+#### New features
 
 The release provides the following core functional modules:
 
@@ -1339,9 +1422,11 @@ The storage feature provides a dynamic database mechanism that allows developers
 
     The lock setting, acquisition, release, revocation, and deletion operations trigger the corresponding `onLockEvent` event notification. You can make full use of this feature to optimize the implementation logic of your business.
 
-#### Objective-C
+</TabsContent>
 
-###### Compatibility changes
+<TabsContent value="objc">
+
+#### Compatibility changes
 
 1. SNAPSHOT state trigger timing change
 
@@ -1351,17 +1436,17 @@ The storage feature provides a dynamic database mechanism that allows developers
 
     This release changes the calculation rule of the lock (Lock) timeout. Starting from this version, the lock timeout is calculated from the time when the server determines that the user is offline.
 
-###### New features
+#### New features
 
 1. SDK connection state change reason
 
     This release adds the [`RtmLinkStateChangeReason`](/en/api-reference/api-ref/signaling) enumeration class to the `LinkStateEvent` of the SDK connection state, to report the reason for the connection state change.
 
-###### Improvements
+#### Improvements
 
 This release improves the performance of the basic messaging service during exceptions, preventing service unavailability caused by the failure of some services.
 
-###### Fixed issues
+#### Fixed issues
 
 This release fixed the following issues:
 - In some use-cases, incorrect token types cause exceptions.
@@ -1370,6 +1455,9 @@ This release fixed the following issues:
 - When setting the Presence state frequently, data may be abnormal.
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.1
 
@@ -3076,7 +3164,13 @@ This release optimizes the handling logic for expired user status data during re
 
 ### Known issues and limitations
 
-#### Android
+<Tabs defaultValue="android" groupId="flutter-host-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios-macos">iOS and macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `libaosl.so` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -3088,7 +3182,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.2 `libaosl.so` version: 1.0.11.
 - Signaling SDK v2.2.1 `libaosl.so` version: 1.0.11.
 
-#### iOS and macOS
+</TabsContent>
+
+<TabsContent value="ios-macos">
 
 Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include the `aosl.xframework` library. If you use both SDKs, take the following steps to avoid conflicts:
 
@@ -3100,6 +3196,9 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.1 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.0 `aosl.xframework` version: 1.0.0.17.
+
+</TabsContent>
+</Tabs>
 
 ### v2.2.5
 
