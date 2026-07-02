@@ -1,6 +1,8 @@
 # Docs Link Audit
 
 Use `docs:links` to batch-check docs links without editing content files.
+For the repair workflow, see
+[`broken-link-fix-playbook.md`](./broken-link-fix-playbook.md).
 
 ```bash
 bun run docs:links

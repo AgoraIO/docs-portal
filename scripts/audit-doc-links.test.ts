@@ -230,6 +230,97 @@ describe('auditDocsLinks', () => {
     expect(stats.externalLinks).toBe(1);
   });
 
+  it('audits Markdown links embedded in OpenAPI YAML sources', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(tempRoot);
+    const docsRoot = path.join(tempRoot, 'docs');
+    const openApiRoot = path.join(tempRoot, 'openapi');
+
+    await writeDoc(
+      path.join(docsRoot, 'en', 'ai', 'models', 'asr', 'openai.mdx'),
+      '# OpenAI ASR\n',
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'en',
+        'api-reference',
+        'api-ref',
+        'conversational-ai',
+        'index.mdx',
+      ),
+      '# Conversational AI API\n',
+    );
+    await writeDoc(
+      path.join(openApiRoot, 'conversational-ai', 'rest-api.en.yaml'),
+      [
+        'openapi: 3.1.0',
+        'info:',
+        '  title: Test API',
+        '  version: 1.0.0',
+        'paths:',
+        '  /v1/test:',
+        '    get:',
+        '      summary: Test',
+        '      description: |',
+        '        Use [OpenAI ASR](/en/ai/models/asr/openai).',
+        '        See [Leave endpoint](leave).',
+        '        See [local generated anchor](#properties-test).',
+        '        See [missing topic](/en/ai/missing-topic).',
+        '        See [wrapped',
+        '        missing topic](/en/ai/wrapped-missing-topic).',
+        '        See [external docs](https://example.com/openapi).',
+      ].join('\n'),
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+    const relativeMarkdownLinks = stats.relativeMarkdownLinks as AuditEntry[];
+    const rootLinks = stats.rootLinks as AuditEntry[];
+    const missingRootLinks = stats.missingRootLinks as AuditEntry[];
+    const missingHashLinks = stats.missingHashLinks as AuditEntry[];
+
+    expect(stats.openapiFiles).toBe(1);
+    expect(rootLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/ai/models/asr/openai',
+          sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+        }),
+      ]),
+    );
+    expect(relativeMarkdownLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: 'leave',
+          normalizedHref: '/en/api-reference/api-ref/conversational-ai/leave',
+          resolution: 'openapi-route',
+          resolvedTargetPath:
+            'openapi:/en/api-reference/api-ref/conversational-ai/leave',
+          sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+        }),
+      ]),
+    );
+    expect(missingRootLinks).toEqual([
+      expect.objectContaining({
+        href: '/en/ai/missing-topic',
+        normalizedHref: '/en/ai/missing-topic',
+        sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+      }),
+      expect.objectContaining({
+        href: '/en/ai/wrapped-missing-topic',
+        normalizedHref: '/en/ai/wrapped-missing-topic',
+        sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+      }),
+    ]);
+    expect(
+      missingHashLinks.filter(
+        (entry) =>
+          entry.sourcePath === 'openapi/conversational-ai/rest-api.en.yaml',
+      ),
+    ).toEqual([]);
+    expect(stats.externalLinks).toBe(1);
+  });
+
   it('reports missing internal paths and missing hash anchors with source, target, and reason', async () => {
     const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
     tempDirs.push(docsRoot);
