@@ -44,6 +44,6 @@ Your final bill is issued monthly. After bill finalization:
 
 ### Balance withdrawal
 
-You can withdraw your available balance at any time directly from the Agora Console.
+You can withdraw your available balance for payments completed within the past 90 days directly through the Agora Console. Funds will be returned to the original payment method. For further inquiries, please email billing@agora.io.
 
 ![Withdraw balance](https://assets-docs.agora.io/images/console/withdraw-balance.png)
