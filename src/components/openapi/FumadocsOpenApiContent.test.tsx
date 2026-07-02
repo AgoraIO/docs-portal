@@ -2171,8 +2171,8 @@ describe('FumadocsOpenApiContent', () => {
                   },
                 },
               },
-            },
-          } as unknown as Document,
+            } as unknown as Document,
+          },
         }}
       />,
     );
