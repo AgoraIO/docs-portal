@@ -29,6 +29,7 @@ import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
   buildOpenApiSchemaRows,
+  getOpenApiSchemaRowLayout,
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
 
@@ -1115,11 +1116,7 @@ function OpenApiAnchorLink({
 
   if (children) {
     return (
-      <a
-        className="group inline-flex items-center gap-2"
-        href={href}
-        onClick={(event) => event.stopPropagation()}
-      >
+      <a className="group inline-flex items-center gap-2" href={href}>
         <span>{children}</span>
         <span
           aria-hidden="true"
@@ -1139,7 +1136,6 @@ function OpenApiAnchorLink({
         className,
       )}
       href={href}
-      onClick={(event) => event.stopPropagation()}
     >
       #
     </a>
@@ -1293,24 +1289,54 @@ function OpenApiSchemaRows({
   root: unknown;
   writeOnly?: boolean;
 }) {
-  const rows = buildOpenApiSchemaRows(root, {
-    document,
-    usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
-  });
-  const anchorIds = buildUniqueOpenApiAnchorIds(
-    anchorPrefix,
-    rows.map((row) => row.path),
+  const rows = useMemo(
+    () =>
+      buildOpenApiSchemaRows(root, {
+        document,
+        usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
+      }),
+    [root, document, writeOnly, readOnly],
+  );
+  const anchorIds = useMemo(
+    () =>
+      buildUniqueOpenApiAnchorIds(
+        anchorPrefix,
+        rows.map((row) => row.path),
+      ),
+    [anchorPrefix, rows],
+  );
+  const layout = useMemo(() => getOpenApiSchemaRowLayout(rows), [rows]);
+  const collapsibleAnchorIds = useMemo(
+    () => anchorIds.filter((_, index) => layout.hasChildren[index]),
+    [anchorIds, layout],
   );
   const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(
     () => new Set(),
   );
-  const allRowsExpanded =
-    anchorIds.length > 0 && anchorIds.every((id) => expandedRowIds.has(id));
 
   useOpenApiHashExpansion(anchorIds, setExpandedRowIds);
 
+  const visibleFlags = useMemo(() => {
+    const flags: boolean[] = [];
+
+    rows.forEach((_row, index) => {
+      const parent = layout.parentIndex[index];
+
+      flags[index] =
+        parent === -1
+          ? true
+          : flags[parent] && expandedRowIds.has(anchorIds[parent]);
+    });
+
+    return flags;
+  }, [rows, layout, expandedRowIds, anchorIds]);
+
+  const allRowsExpanded =
+    collapsibleAnchorIds.length > 0 &&
+    collapsibleAnchorIds.every((id) => expandedRowIds.has(id));
+
   function setAllRowsExpanded(expanded: boolean) {
-    setExpandedRowIds(expanded ? new Set(anchorIds) : new Set());
+    setExpandedRowIds(expanded ? new Set(collapsibleAnchorIds) : new Set());
   }
 
   function setRowExpanded(anchorId: string, expanded: boolean) {
@@ -1333,22 +1359,29 @@ function OpenApiSchemaRows({
 
   return (
     <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      <div className="flex justify-end border-fd-border border-b px-4 py-2">
-        <button
-          aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
-          className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
-          onClick={() => setAllRowsExpanded(!allRowsExpanded)}
-          type="button"
-        >
-          {allRowsExpanded ? 'Collapse all' : 'Expand all'}
-        </button>
-      </div>
+      {collapsibleAnchorIds.length > 0 ? (
+        <div className="flex justify-end border-fd-border border-b px-4 py-2">
+          <button
+            aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
+            className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
+            onClick={() => setAllRowsExpanded(!allRowsExpanded)}
+            type="button"
+          >
+            {allRowsExpanded ? 'Collapse all' : 'Expand all'}
+          </button>
+        </div>
+      ) : null}
       {anchorIds.map((anchorId, index) => {
+        if (!visibleFlags[index]) {
+          return null;
+        }
+
         const row = rows[index];
 
         return (
           <OpenApiSchemaRowItem
             anchorId={anchorId}
+            expandable={layout.hasChildren[index]}
             expanded={expandedRowIds.has(anchorId)}
             key={row.path}
             onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
@@ -1363,55 +1396,75 @@ function OpenApiSchemaRows({
 
 function OpenApiSchemaRowItem({
   anchorId,
+  expandable,
   expanded,
   onExpandedChange,
   renderMarkdown,
   row,
 }: {
   anchorId: string;
+  expandable: boolean;
   expanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
 }) {
+  const chevronClass = cn(
+    'select-none text-fd-muted-foreground text-xs transition-transform',
+    expanded && 'rotate-90',
+  );
+  const nameCode = (
+    <code
+      className={cn(
+        'openapi-schema-property-name font-bold text-fd-foreground',
+        row.deprecated && 'line-through opacity-70',
+      )}
+    >
+      {row.name}
+    </code>
+  );
+
   return (
-    <details
-      className="group scroll-mt-24 border-fd-border border-t text-sm first:border-t-0"
+    <div
+      className="scroll-mt-24 border-fd-border border-t py-3 pr-4 text-sm first:border-t-0"
       id={anchorId}
-      onToggle={(event) => onExpandedChange(event.currentTarget.open)}
-      open={expanded}
       style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
     >
-      <summary className="flex cursor-pointer list-none items-center gap-2 py-3 pr-4 marker:hidden hover:bg-fd-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring [&::-webkit-details-marker]:hidden">
-        <span
-          aria-hidden="true"
-          className="select-none text-fd-muted-foreground text-xs transition-transform group-open:rotate-90"
-        >
-          ▶
-        </span>
-        <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-          <code
-            className={cn(
-              'openapi-schema-property-name font-bold text-fd-foreground',
-              row.deprecated && 'line-through opacity-70',
-            )}
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
+        {expandable ? (
+          <button
+            aria-expanded={expanded}
+            aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
+            className="flex min-w-0 items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+            onClick={() => onExpandedChange(!expanded)}
+            type="button"
           >
-            {row.name}
-          </code>
-          <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-          <OpenApiSchemaRequiredBadge required={row.required} />
-          <span className="font-mono text-fd-muted-foreground text-xs">
-            {row.type}
-            {row.nullable ? ' | null' : ''}
-          </span>
-          {row.deprecated ? (
-            <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-              Deprecated
+            <span aria-hidden="true" className={chevronClass}>
+              ▶
             </span>
-          ) : null}
+            {nameCode}
+          </button>
+        ) : (
+          <>
+            <span aria-hidden="true" className="w-3 select-none text-xs">
+              &nbsp;
+            </span>
+            {nameCode}
+          </>
+        )}
+        <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+        <OpenApiSchemaRequiredBadge required={row.required} />
+        <span className="font-mono text-fd-muted-foreground text-xs">
+          {row.type}
+          {row.nullable ? ' | null' : ''}
         </span>
-      </summary>
-      <div className="pb-3 pr-4">
+        {row.deprecated ? (
+          <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
+            Deprecated
+          </span>
+        ) : null}
+      </div>
+      <div className="mt-2">
         {row.description ? (
           <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
             {renderMarkdown(
@@ -1422,7 +1475,7 @@ function OpenApiSchemaRowItem({
         <OpenApiInlineCallouts callouts={row.docsCallouts} />
         <OpenApiSchemaMeta row={row} />
       </div>
-    </details>
+    </div>
   );
 }
 
