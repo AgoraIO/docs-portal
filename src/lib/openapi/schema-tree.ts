@@ -68,6 +68,35 @@ export function buildOpenApiSchemaRows(
     });
 }
 
+export type OpenApiSchemaRowLayout = {
+  hasChildren: boolean[];
+  parentIndex: number[];
+};
+
+export function getOpenApiSchemaRowLayout(
+  rows: Pick<OpenApiSchemaRow, 'depth'>[],
+): OpenApiSchemaRowLayout {
+  const hasChildren = rows.map(
+    (row, index) =>
+      index + 1 < rows.length && rows[index + 1].depth === row.depth + 1,
+  );
+  const parentIndex = rows.map((row, index) => {
+    for (let candidate = index - 1; candidate >= 0; candidate -= 1) {
+      if (rows[candidate].depth === row.depth - 1) {
+        return candidate;
+      }
+
+      if (rows[candidate].depth < row.depth - 1) {
+        return -1;
+      }
+    }
+
+    return -1;
+  });
+
+  return { hasChildren, parentIndex };
+}
+
 type BuildContext = {
   depth: number;
   document?: unknown;
