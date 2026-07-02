@@ -151,8 +151,8 @@ describe('legacy sitemap compatibility audit', () => {
   it('keeps the human review report aligned with the audit summary', () => {
     expect(typedReviewReport.summary).toEqual({
       broken: 0,
-      exactPath: 490,
-      exactSlug: 1942,
+      exactPath: 489,
+      exactSlug: 1943,
       native: 0,
       productFallback: 0,
       renamedPage: 39,
