@@ -212,6 +212,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
   },
   'conversational-ai': {
+    'develop/presets': '/en/ai/build/custom-model-integration/managed-mode',
     'models/asr/amazon': '/en/ai/models/asr/openai',
     'best-practices/cloud-recording':
       '/en/ai/best-practices/record-agent-conversation',
@@ -353,6 +354,17 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/media-push/build/receive-notifications',
   },
   'interactive-whiteboard': {
+    'overview/account-settlement':
+      '/en/realtime-media/whiteboard/reference/account-settlement',
+    'overview/core-concepts': '/en/realtime-media/whiteboard',
+    'overview/release-notes':
+      '/en/realtime-media/whiteboard/reference/release-notes',
+    'overview/release-notes-uikit':
+      '/en/realtime-media/whiteboard/reference/release-notes-uikit',
+    'overview/supported-platforms':
+      '/en/realtime-media/whiteboard/reference/supported-platforms',
+    'overview/whiteboard-fastboard':
+      '/en/realtime-media/whiteboard/whiteboard-fastboard',
     'reference/uikit-sdk':
       '/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit',
     'reference/whiteboard-api/file-conversion-deprecated':

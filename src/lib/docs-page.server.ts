@@ -772,6 +772,7 @@ function resolveAiDocsRedirect(
     [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
     'build/code-first-architecture': `/${locale}/ai/build/architecture`,
     'build/event-types': `/${locale}/ai/reference/event-types`,
+    pricing: `/${locale}/ai/reference/pricing`,
     'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
     'reference/architecture': `/${locale}/ai/build/architecture`,
     create_asr_extension: `/${locale}/ai/reference/ten-agent/create-asr-extension`,
@@ -853,6 +854,16 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
     'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
+    'cloud-recording/pricing-webpage-recording': `/${locale}/realtime-media/cloud-recording/reference/pricing-webpage-recording`,
+    'whiteboard/overview': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/account-settlement': `/${locale}/realtime-media/whiteboard/reference/account-settlement`,
+    'whiteboard/overview/core-concepts': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/pricing': `/${locale}/realtime-media/whiteboard/reference/pricing`,
+    'whiteboard/overview/product-overview': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/release-notes': `/${locale}/realtime-media/whiteboard/reference/release-notes`,
+    'whiteboard/overview/release-notes-uikit': `/${locale}/realtime-media/whiteboard/reference/release-notes-uikit`,
+    'whiteboard/overview/supported-platforms': `/${locale}/realtime-media/whiteboard/reference/supported-platforms`,
+    'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
   };
 
   return redirects[normalizedPath] ?? null;

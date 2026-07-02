@@ -2,7 +2,7 @@
 title: Supported vendors
 description: ASR, LLM, and TTS providers currently supported by Agent Studio
 ---
-Agent Studio currently supports the following providers. Vendors marked with \* support Agora Managed Key. See [Pricing](../../pricing) for usage costs.
+Agent Studio currently supports the following providers. Vendors marked with \* support Agora Managed Key. See [Pricing](../../reference/pricing) for usage costs.
 
 ## ASR vendors
 

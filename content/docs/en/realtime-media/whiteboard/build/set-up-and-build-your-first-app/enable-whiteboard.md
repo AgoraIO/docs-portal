@@ -61,7 +61,7 @@ Interactive Whiteboard sets up five [data centers](../../reference/security#netw
 
     After enabling the file conversion features, you can call the [RESTful APIs](../../reference/rest-api/file-conversion.md) to launch a file conversion task or query the conversion progress.
 
-    Agora charges for the file-conversion feature. See [Pricing](../../overview/pricing).
+    Agora charges for the file-conversion feature. See [Pricing](../../reference/pricing).
 
 - **Screenshot**. After enabling, you can call the [RESTful APIs](../../reference/rest-api/screenshots.md) to take screenshots.
 
