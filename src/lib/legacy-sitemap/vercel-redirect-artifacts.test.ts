@@ -60,6 +60,33 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects locale-less conversational AI model overview links before app routing', () => {
+    expect(vercelConfig.redirects).toEqual(
+      expect.arrayContaining([
+        {
+          destination: '/en/ai/models/asr/deepgram',
+          source: '/conversational-ai/models/asr/overview',
+          statusCode: 301,
+        },
+        {
+          destination: '/en/ai/models/llm/openai',
+          source: '/conversational-ai/models/llm/overview',
+          statusCode: 301,
+        },
+        {
+          destination: '/en/ai/models/mllm/openai',
+          source: '/conversational-ai/models/mllm/overview',
+          statusCode: 301,
+        },
+        {
+          destination: '/en/ai/models/tts/openai',
+          source: '/conversational-ai/models/tts/overview',
+          statusCode: 301,
+        },
+      ]),
+    );
+  });
+
   it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
     expect(
       bulkRedirects.some(
