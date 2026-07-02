@@ -2914,6 +2914,26 @@ Web body
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', [
+        'rtm',
+        'reference',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/signaling',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'transcoding',
+        'reference',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/cloud-transcoding',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
         'whiteboard',
         'reference',
         'uikit-sdk',
@@ -2966,6 +2986,16 @@ Web body
     ).resolves.toEqual({
       redirectUrl:
         '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'interactive-live-streaming',
+        'reference',
+        'channel-management-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/rtc',
     });
 
     await expect(

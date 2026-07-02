@@ -899,12 +899,15 @@ function resolveRealtimeMediaApiReferenceRedirect(
     'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
     'rtmp-gateway/reference/restful-authentication':
       '/en/api-reference/api-ref/rtmp-gateway/authentication',
+    'rtm/reference/rest-api': '/en/api-reference/api-ref/signaling',
     'speech-to-text/reference/api-callback-service':
       '/en/api-reference/api-ref/speech-to-text/api-callback-service',
     'speech-to-text/reference/rest-api':
       '/en/api-reference/api-ref/speech-to-text',
     'speech-to-text/reference/restful-authentication':
       '/en/api-reference/api-ref/speech-to-text/restful-authentication',
+    'transcoding/reference/rest-api':
+      '/en/api-reference/api-ref/cloud-transcoding',
     'video/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'video/reference/api-sunset': '/en/api-reference/api-ref/rtc',
@@ -975,6 +978,8 @@ function resolveSolutionsApiReferenceRedirect(
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'interactive-live-streaming/reference/api-sunset':
       '/en/api-reference/api-ref/rtc/api-sunset',
+    'interactive-live-streaming/reference/channel-management-api':
+      '/en/api-reference/api-ref/rtc',
     'iot/reference/agora-console-rest-api':
       '/en/api-reference/api-ref/console/solutions-agora-console-rest-api',
     'iot/reference/channel-management-rest-api':
@@ -1193,13 +1198,17 @@ async function getDocsSidebarNodes({
       sidebarWithoutReferenceProductIcons,
       activePath,
     );
+  const sidebarWithProductApiReferenceLinks = markReferenceApiLinksAsLinked(
+    sidebarWithRealtimeMediaApiReference,
+    tab,
+  );
 
   if (!isOpenApiTab(tab) || !locale) {
-    return sidebarWithRealtimeMediaApiReference;
+    return sidebarWithProductApiReferenceLinks;
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
-    sidebarWithRealtimeMediaApiReference,
+    sidebarWithProductApiReferenceLinks,
     locale,
     tab,
   );
@@ -1248,9 +1257,19 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
     url: '/en/api-reference/api-ref/rtmp-gateway',
   },
   {
+    productSlug: 'rtm',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/signaling',
+  },
+  {
     productSlug: 'speech-to-text',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/speech-to-text',
+  },
+  {
+    productSlug: 'transcoding',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/cloud-transcoding',
   },
   {
     productSlug: 'video',
@@ -1359,6 +1378,8 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
         `${prefix}/reference/rest-api`,
         `${prefix}/reference/restful-authentication`,
       ];
+    case 'rtm':
+      return [`${prefix}/reference/rest-api`];
     case 'speech-to-text':
       return [
         `${prefix}/reference/api-callback-service`,
@@ -1367,6 +1388,8 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
         `${prefix}/reference/rest-api-v6`,
         `${prefix}/reference/restful-authentication`,
       ];
+    case 'transcoding':
+      return [`${prefix}/reference/rest-api`];
     case 'video':
       return [
         `${prefix}/reference/agora-console-rest-api`,
@@ -1382,6 +1405,36 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
     default:
       return [];
   }
+}
+
+function markReferenceApiLinksAsLinked(
+  nodes: DocsSidebarNode[],
+  tab: string,
+  inReference = false,
+): DocsSidebarNode[] {
+  if (isOpenApiTab(tab)) {
+    return nodes;
+  }
+
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return inReference && node.url.startsWith('/en/api-reference/')
+        ? {
+            ...node,
+            linked: true,
+          }
+        : node;
+    }
+
+    return {
+      ...node,
+      children: markReferenceApiLinksAsLinked(
+        node.children,
+        tab,
+        inReference || ['Reference', '参考'].includes(node.title),
+      ),
+    };
+  });
 }
 
 function isRecipesApiReferencePath(path?: string) {
