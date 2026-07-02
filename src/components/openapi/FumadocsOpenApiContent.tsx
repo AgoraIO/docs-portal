@@ -671,99 +671,49 @@ function OpenApiFieldList({
     anchorPrefix,
     fields.map((field) => field.anchorSuffix ?? field.name),
   );
-  const [expandedFieldIds, setExpandedFieldIds] = useState<Set<string>>(
-    () => new Set(),
-  );
-  const allFieldsExpanded =
-    anchorIds.length > 0 && anchorIds.every((id) => expandedFieldIds.has(id));
-
-  useOpenApiHashExpansion(anchorIds, setExpandedFieldIds);
-
-  function setAllFieldsExpanded(expanded: boolean) {
-    setExpandedFieldIds(expanded ? new Set(anchorIds) : new Set());
-  }
-
-  function setFieldExpanded(anchorId: string, expanded: boolean) {
-    setExpandedFieldIds((current) => {
-      const next = new Set(current);
-
-      if (expanded) {
-        next.add(anchorId);
-      } else {
-        next.delete(anchorId);
-      }
-
-      return next;
-    });
-  }
 
   return (
     <section className="mt-8">
-      <div className="mb-3 flex min-w-0 flex-wrap items-center justify-between gap-2">
-        <h2
-          className={cn('scroll-mt-24', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}
-          id={titleId}
-        >
-          <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
-        </h2>
-        <button
-          aria-label={`${allFieldsExpanded ? 'Collapse' : 'Expand'} all ${title}`}
-          className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
-          onClick={() => setAllFieldsExpanded(!allFieldsExpanded)}
-          type="button"
-        >
-          {allFieldsExpanded ? 'Collapse all' : 'Expand all'}
-        </button>
-      </div>
+      <h2
+        className={cn('mb-3 scroll-mt-24', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}
+        id={titleId}
+      >
+        <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
+      </h2>
       <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
         {anchorIds.map((anchorId, index) => {
           const field = fields[index];
-          const expanded = expandedFieldIds.has(anchorId);
 
           return (
-            <details
-              className="group scroll-mt-24 border-fd-border border-t text-sm first:border-t-0"
+            <div
+              className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
               id={anchorId}
               key={`${title}:${field.name}`}
-              onToggle={(event) =>
-                setFieldExpanded(anchorId, event.currentTarget.open)
-              }
-              open={expanded}
             >
-              <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 marker:hidden hover:bg-fd-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring [&::-webkit-details-marker]:hidden">
-                <span
-                  aria-hidden="true"
-                  className="select-none text-fd-muted-foreground text-xs transition-transform group-open:rotate-90"
-                >
-                  ▶
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <code className="font-medium text-fd-primary">
+                  {field.name}
+                </code>
+                <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+                {field.required ? (
+                  <span className="font-medium text-red-500">*</span>
+                ) : (
+                  <span className="text-fd-muted-foreground">?</span>
+                )}
+                <span className="font-mono text-fd-muted-foreground text-xs">
+                  {field.type}
                 </span>
-                <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-                  <code className="font-medium text-fd-primary">
-                    {field.name}
-                  </code>
-                  <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-                  {field.required ? (
-                    <span className="font-medium text-red-500">*</span>
-                  ) : (
-                    <span className="text-fd-muted-foreground">?</span>
-                  )}
-                  <span className="font-mono text-fd-muted-foreground text-xs">
-                    {field.type}
-                  </span>
-                </span>
-              </summary>
-              <div className="px-4 pb-3">
-                {field.description ? (
-                  <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
-                    {renderOpenApiMarkdown(
-                      normalizeOpenApiDescriptionMarkdown(field.description),
-                    )}
-                  </div>
-                ) : null}
-                <OpenApiInlineCallouts callouts={field.callouts} />
-                <OpenApiMetadata items={field.metadata} />
               </div>
-            </details>
+              {field.description ? (
+                <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
+                  {renderOpenApiMarkdown(
+                    normalizeOpenApiDescriptionMarkdown(field.description),
+                  )}
+                </div>
+              ) : null}
+              <OpenApiInlineCallouts callouts={field.callouts} />
+              <OpenApiMetadata items={field.metadata} />
+            </div>
           );
         })}
       </div>
