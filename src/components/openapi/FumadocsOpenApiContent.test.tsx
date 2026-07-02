@@ -666,6 +666,12 @@ describe('FumadocsOpenApiContent', () => {
 
     const channelField = await screen.findByText('channel');
 
+    expect(channelField).toHaveClass(
+      'openapi-schema-property-name',
+      'font-bold',
+      'text-fd-foreground',
+    );
+
     expect(channelField).toBeInTheDocument();
     expect(screen.getByText('llm')).toBeInTheDocument();
     expect(screen.getByText('url')).toBeInTheDocument();

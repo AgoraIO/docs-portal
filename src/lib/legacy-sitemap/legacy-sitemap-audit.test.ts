@@ -151,12 +151,12 @@ describe('legacy sitemap compatibility audit', () => {
   it('keeps the human review report aligned with the audit summary', () => {
     expect(typedReviewReport.summary).toEqual({
       broken: 0,
-      exactPath: 489,
-      exactSlug: 1943,
+      exactPath: 478,
+      exactSlug: 1942,
       native: 0,
       productFallback: 0,
       renamedPage: 39,
-      semanticPageMatch: 645,
+      semanticPageMatch: 657,
       totalLegacyUrls: sitemapUrls.length,
       unavailable: 0,
     });
@@ -281,12 +281,71 @@ const reviewedRedirectTargets = [
       '/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint',
   },
   {
+    legacyUrl: 'https://docs.agora.io/en/conversational-ai/develop/presets',
+    target: '/en/ai/build/custom-model-integration/managed-mode',
+  },
+  {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/models/asr/amazon',
     target: '/en/ai/models/asr/openai',
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/overview/pricing',
     target: '/en/ai/reference/pricing',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/core-concepts',
+    target: '/en/realtime-media/whiteboard',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes-uikit?platform=android',
+    target: '/en/realtime-media/whiteboard/reference/release-notes-uikit',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes-uikit?platform=ios',
+    target: '/en/realtime-media/whiteboard/reference/release-notes-uikit',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes-uikit?platform=web',
+    target: '/en/realtime-media/whiteboard/reference/release-notes-uikit',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes?platform=android',
+    target: '/en/realtime-media/whiteboard/reference/release-notes',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes?platform=ios',
+    target: '/en/realtime-media/whiteboard/reference/release-notes',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/release-notes?platform=web',
+    target: '/en/realtime-media/whiteboard/reference/release-notes',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/supported-platforms?platform=android',
+    target: '/en/realtime-media/whiteboard/reference/supported-platforms',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/supported-platforms?platform=ios',
+    target: '/en/realtime-media/whiteboard/reference/supported-platforms',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/supported-platforms?platform=web',
+    target: '/en/realtime-media/whiteboard/reference/supported-platforms',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/interactive-whiteboard/overview/whiteboard-fastboard',
+    target: '/en/realtime-media/whiteboard/whiteboard-fastboard',
   },
 ];
 

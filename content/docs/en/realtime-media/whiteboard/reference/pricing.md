@@ -50,7 +50,7 @@ Note that usage calculation will continue if live streaming has ended but users 
 To avoid additional costs, Agora recommends that you:
 
     - Call `disconnect()` to cut off a user's connection when the user leaves the room, and ensure that you receive the `onPhaseChanged(disconnected)` callback.
-    - Call the [Interactive Whiteboard RESTful API](../reference/rest-api/room-management##disable-a-room-patch)  on your app server to move all users out of the room when live streaming ends.
+    - Call the [Interactive Whiteboard REST API](/en/api-reference/api-ref/whiteboard/room-management#disable-a-room-patch) on your app server to move all users out of the room when live streaming ends.
 
 The usage calculation and unit price are the same whether the user joins a room in interactive mode or subscription mode.
 
@@ -65,7 +65,7 @@ Agora bills for this feature based on the model you select in [Agora Console](ht
 Agora calculates the number of files converted to images/web pages per month and applies the unit prices specified in the table below. This model has a hard cap of one Peak Concurrent Worker (PCW) (running conversion task) for each conversion mode running in a server region under a single project. In other words, if you have 1 project with 1 server region, you can run 2 conversion tasks simultaneously - 1 static and 1 dynamic - while the rest are queued. If you have 3 projects, each with servers in 2 regions, you can run 6 (3 x 2) dynamic and 6 (3 x 2) static conversions simultaneously.
 
 Agora does not charge for a failed file conversion task.
-You can call the [Query file conversion progress](../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task)
+You can call the [Query file conversion progress](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task)
 API to get the result of a file conversion task.
 
 #### Per Peak Concurrent Workers

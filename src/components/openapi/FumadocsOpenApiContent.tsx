@@ -1285,7 +1285,7 @@ function OpenApiSchemaRowItem({
       <div className="flex min-w-0 flex-wrap items-center gap-2">
         <code
           className={cn(
-            'font-medium text-fd-primary',
+            'openapi-schema-property-name font-bold text-fd-foreground',
             row.deprecated && 'line-through opacity-70',
           )}
         >

@@ -871,6 +871,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                 name: 'Video Calling',
                 type: 'folder',
               },
+              {
+                $id: 'realtime-media-rtm-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-rtm-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-rtm-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-rtm-rest-api',
+                        name: 'Signaling REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/rtm/reference/rest-api',
+                      },
+                      {
+                        $id: 'realtime-media-rtm-downloads',
+                        name: 'Downloads',
+                        type: 'page',
+                        url: '/en/realtime-media/rtm/reference/downloads',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-rtm-index',
+                  name: 'Signaling',
+                  type: 'page',
+                  url: '/en/realtime-media/rtm',
+                },
+                name: 'Signaling',
+                type: 'folder',
+              },
             ],
             index: {
               $id: 'realtime-media-index',
@@ -2914,6 +2951,16 @@ Web body
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', [
+        'rtm',
+        'reference',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/signaling',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
         'whiteboard',
         'reference',
         'uikit-sdk',
@@ -3077,17 +3124,20 @@ Web body
         expect.objectContaining({
           children: expect.arrayContaining([
             {
-              id: '/en/api-reference/api-ref/broadcast-streaming',
+              id: '/en/api-reference/api-ref/rtc',
               linked: true,
               title: 'RESTful API',
               type: 'page',
-              url: '/en/api-reference/api-ref/broadcast-streaming',
+              url: '/en/api-reference/api-ref/rtc',
             },
           ]),
           title: 'Reference',
           type: 'section',
         }),
       ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/api-reference/api-ref/broadcast-streaming',
     );
 
     const videoPage = {
@@ -3148,6 +3198,62 @@ Web body
     );
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
+    );
+
+    const rtmPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/rtm/index.mdx',
+          path: 'en/realtime-media/rtm/index.mdx',
+        },
+        title: 'Signaling',
+      },
+      path: 'en/realtime-media/rtm/index.mdx',
+      slugs: ['en', 'realtime-media', 'rtm', 'index'],
+      url: '/en/realtime-media/rtm',
+    };
+
+    mockedGetPage.mockReturnValue(rtmPage);
+    mockedGetPages.mockReturnValue([rtmPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtm-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Signaling',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const rtmPayload = unwrapPayload(
+      await loadDocsPagePayload('en', 'realtime-media', ['rtm']),
+    );
+
+    expect(rtmPayload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          children: expect.arrayContaining([
+            {
+              id: '/en/api-reference/api-ref/signaling',
+              linked: true,
+              title: 'Signaling REST API',
+              type: 'page',
+              url: '/en/api-reference/api-ref/signaling',
+            },
+          ]),
+          title: 'Reference',
+          type: 'section',
+        }),
+      ]),
+    );
+    expect(flattenSidebarPageUrls(rtmPayload.sidebar)).not.toContain(
+      '/en/realtime-media/rtm/reference/rest-api',
     );
   });
 
@@ -3234,10 +3340,64 @@ Web body
       redirectUrl: '/en/ai/reference/event-types',
     });
 
+    await expect(loadDocsPagePayload('en', 'ai', ['pricing'])).resolves.toEqual(
+      {
+        redirectUrl: '/en/ai/reference/pricing',
+      },
+    );
+
     await expect(
       loadDocsPagePayload('en', 'ai', ['best-practices', 'filler-words']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/build/filler-words',
+    });
+  });
+
+  it('redirects moved Reference pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'cloud-recording',
+        'pricing-webpage-recording',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/cloud-recording/reference/pricing-webpage-recording',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['whiteboard', 'overview']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'core-concepts',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'pricing',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/reference/pricing',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'whiteboard-fastboard',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/whiteboard-fastboard',
     });
   });
 
