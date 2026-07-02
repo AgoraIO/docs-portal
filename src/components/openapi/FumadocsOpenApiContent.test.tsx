@@ -671,7 +671,17 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const channelField = await screen.findByText('channel');
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const schemaTreeEl = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
+    fireEvent.click(
+      within(schemaTreeEl).getByRole('button', {
+        name: 'Expand all Request Body schema fields',
+      }),
+    );
+
+    const channelField = screen.getByText('channel');
 
     expect(channelField).toHaveClass(
       'openapi-schema-property-name',
@@ -679,7 +689,6 @@ describe('FumadocsOpenApiContent', () => {
       'text-fd-foreground',
     );
 
-    expect(channelField).toBeInTheDocument();
     expect(screen.getByText('llm')).toBeInTheDocument();
     expect(screen.getByText('url')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Token docs' })).toHaveAttribute(
@@ -698,7 +707,7 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTree = within(schemaTreeElement as HTMLElement);
     const optionalFieldRow = schemaTree
       .getByText('displayName')
-      .closest('details[style]');
+      .closest('[style]');
     expect(optionalFieldRow).toBeInstanceOf(HTMLElement);
     expect(
       within(optionalFieldRow as HTMLElement).getByText('optional'),
@@ -824,6 +833,11 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTreeElement = document.querySelector('.openapi-schema-tree');
 
     expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
+    fireEvent.click(
+      within(schemaTreeElement as HTMLElement).getByRole('button', {
+        name: 'Expand all Response Body schema fields',
+      }),
+    );
     expect(
       within(schemaTreeElement as HTMLElement).getByText('cname'),
     ).toBeInTheDocument();
@@ -1821,6 +1835,11 @@ describe('FumadocsOpenApiContent', () => {
     const responseBody = await screen.findByRole('heading', {
       name: 'Response schema',
     });
+    for (const button of screen.getAllByRole('button', {
+      name: /^Expand all .* schema fields$/,
+    })) {
+      fireEvent.click(button);
+    }
     expect(responseBody).toBeInTheDocument();
     const responseScope = within(document.body);
     const visibleText = document.body.textContent?.replace(/\s+/g, ' ') ?? '';
@@ -1853,231 +1872,6 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
-  });
-
-  it('collapses and expands OpenAPI parameter and schema details', async () => {
-    render(
-      <FumadocsOpenApiContent
-        pageProps={{
-          operations: [
-            {
-              method: 'post',
-              path: '/v2/projects/{appid}/join',
-            },
-          ],
-          payload: {
-            bundled: {
-              info: {
-                title: 'Conversational AI API',
-              },
-              openapi: '3.2.0',
-              paths: {
-                '/v2/projects/{appid}/join': {
-                  post: {
-                    operationId: 'join',
-                    parameters: [
-                      {
-                        description: 'The App ID used by this request.',
-                        in: 'path',
-                        name: 'appid',
-                        required: true,
-                        schema: { type: 'string' },
-                      },
-                    ],
-                    requestBody: {
-                      content: {
-                        'application/json': {
-                          schema: {
-                            properties: {
-                              config: {
-                                description: 'Agent runtime settings.',
-                                properties: {
-                                  idleTimeout: {
-                                    description: 'Idle timeout in seconds.',
-                                    type: 'integer',
-                                  },
-                                },
-                                type: 'object',
-                              },
-                            },
-                            type: 'object',
-                          },
-                        },
-                      },
-                    },
-                    responses: {
-                      '200': {
-                        description: 'OK',
-                      },
-                    },
-                  },
-                },
-              },
-            } as unknown as Document,
-          },
-        }}
-      />,
-    );
-
-    await screen.findByRole('heading', { name: /Path Parameters/ });
-    await act(async () => {
-      await new Promise((resolve) => window.requestAnimationFrame(resolve));
-    });
-
-    const appIdDetails = screen.getByText('appid').closest('details');
-    const configDetails = screen.getByText('config').closest('details');
-    expect(appIdDetails).not.toBeNull();
-    expect(configDetails).not.toBeNull();
-    expect(appIdDetails).not.toHaveAttribute('open');
-    expect(configDetails).not.toHaveAttribute('open');
-
-    fireEvent.click(within(appIdDetails as HTMLElement).getByText('appid'));
-    expect(appIdDetails).toHaveAttribute('open');
-    expect(
-      screen.getByText('The App ID used by this request.'),
-    ).toBeInTheDocument();
-
-    fireEvent.click(within(configDetails as HTMLElement).getByText('config'));
-    expect(configDetails).toHaveAttribute('open');
-    expect(screen.getByText('Agent runtime settings.')).toBeInTheDocument();
-
-    const pathParametersSection = screen
-      .getByRole('heading', { name: /Path Parameters/ })
-      .closest('section') as HTMLElement;
-    const pathCollapseButton = within(pathParametersSection).getByRole(
-      'button',
-      {
-        name: 'Collapse all Path Parameters',
-      },
-    );
-    fireEvent.click(pathCollapseButton);
-    expect(appIdDetails).not.toHaveAttribute('open');
-
-    const pathExpandButton = within(pathParametersSection).getByRole('button', {
-      name: 'Expand all Path Parameters',
-    });
-    fireEvent.click(pathExpandButton);
-    expect(appIdDetails).toHaveAttribute('open');
-    expect(
-      within(pathParametersSection).getByRole('button', {
-        name: 'Collapse all Path Parameters',
-      }),
-    ).toBeInTheDocument();
-
-    const requestSchemaTree = configDetails?.closest(
-      '.openapi-schema-tree',
-    ) as HTMLElement;
-    fireEvent.click(within(configDetails as HTMLElement).getByText('config'));
-    expect(configDetails).not.toHaveAttribute('open');
-
-    const requestSchemaExpandButton = within(requestSchemaTree).getByRole(
-      'button',
-      { name: 'Expand all Request Body schema fields' },
-    );
-    fireEvent.click(requestSchemaExpandButton);
-    expect(configDetails).toHaveAttribute('open');
-    expect(
-      within(requestSchemaTree).getByRole('button', {
-        name: 'Collapse all Request Body schema fields',
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('opens collapsed OpenAPI details when linking to a field hash', async () => {
-    window.history.replaceState(null, '', '#request-body-config');
-
-    render(
-      <FumadocsOpenApiContent
-        pageProps={{
-          operations: [
-            {
-              method: 'post',
-              path: '/v2/projects/{appid}/join',
-            },
-          ],
-          payload: {
-            bundled: {
-              info: {
-                title: 'Conversational AI API',
-              },
-              openapi: '3.2.0',
-              paths: {
-                '/v2/projects/{appid}/join': {
-                  post: {
-                    operationId: 'join',
-                    parameters: [
-                      {
-                        description: 'The App ID used by this request.',
-                        in: 'path',
-                        name: 'appid',
-                        required: true,
-                        schema: { type: 'string' },
-                      },
-                    ],
-                    requestBody: {
-                      content: {
-                        'application/json': {
-                          schema: {
-                            properties: {
-                              config: {
-                                description: 'Agent runtime settings.',
-                                properties: {
-                                  idleTimeout: {
-                                    description: 'Idle timeout in seconds.',
-                                    type: 'integer',
-                                  },
-                                },
-                                type: 'object',
-                              },
-                            },
-                            type: 'object',
-                          },
-                        },
-                      },
-                    },
-                    responses: {
-                      '200': {
-                        description: 'OK',
-                      },
-                    },
-                  },
-                },
-              },
-            } as unknown as Document,
-          },
-        }}
-      />,
-    );
-
-    await screen.findByRole('heading', { name: /Path Parameters/ });
-    await act(async () => {
-      await new Promise((resolve) => window.requestAnimationFrame(resolve));
-    });
-
-    const appIdDetails = screen.getByText('appid').closest('details');
-    const configDetails = screen.getByText('config').closest('details');
-    expect(appIdDetails).not.toBeNull();
-    expect(configDetails).not.toBeNull();
-
-    await waitFor(() => {
-      expect(configDetails).toHaveAttribute('open');
-    });
-    expect(screen.getByText('Agent runtime settings.')).toBeInTheDocument();
-
-    await act(async () => {
-      window.history.replaceState(null, '', '#path-parameters-appid');
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
-      await new Promise((resolve) => window.requestAnimationFrame(resolve));
-    });
-
-    await waitFor(() => {
-      expect(appIdDetails).toHaveAttribute('open');
-    });
-    expect(
-      screen.getByText('The App ID used by this request.'),
-    ).toBeInTheDocument();
-
-    window.history.replaceState(null, '', '/');
   });
 
   it('adds stable deep-link anchors to parameters and schema fields', async () => {
@@ -2166,6 +1960,12 @@ describe('FumadocsOpenApiContent', () => {
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
 
+    for (const button of screen.getAllByRole('button', {
+      name: /^Expand all .* schema fields$/,
+    })) {
+      fireEvent.click(button);
+    }
+
     expect(document.getElementById('path-parameters-appid')).not.toBeNull();
     expect(
       document.getElementById('query-parameters-page-token'),
@@ -2181,5 +1981,212 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.querySelector('a[href="#request-body-channel-name"]'),
     ).not.toBeNull();
+  });
+
+  it('shows parameter descriptions without any collapse control', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    parameters: [
+                      {
+                        description: 'The App ID used by this request.',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const pathSection = (
+      await screen.findByRole('heading', { name: 'Path Parameters' })
+    ).closest('section') as HTMLElement;
+
+    expect(
+      within(pathSection).getByText('The App ID used by this request.'),
+    ).toBeVisible();
+    expect(
+      within(pathSection).getByText('appid').closest('details'),
+    ).toBeNull();
+    expect(
+      within(pathSection).queryByRole('button', {
+        name: /Expand all|Collapse all/,
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  async function renderNestedSchema() {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description: 'Unique agent name.',
+                                type: 'string',
+                              },
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const tree = document.querySelector('.openapi-schema-tree') as HTMLElement;
+    return within(tree);
+  }
+
+  it('shows top-level schema descriptions but hides nested children until expanded', async () => {
+    const tree = await renderNestedSchema();
+
+    expect(tree.getByText('name')).toBeVisible();
+    expect(tree.getByText('Unique agent name.')).toBeVisible();
+    expect(tree.getByText('config')).toBeVisible();
+    expect(tree.getByText('Agent runtime settings.')).toBeVisible();
+
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+
+    expect(
+      tree.queryByRole('button', { name: 'Expand name properties' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      tree.getByRole('button', { name: 'Expand config properties' }),
+    );
+
+    expect(tree.getByText('idleTimeout')).toBeVisible();
+    expect(tree.getByText('Idle timeout in seconds.')).toBeVisible();
+
+    fireEvent.click(
+      tree.getByRole('button', { name: 'Collapse config properties' }),
+    );
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+  });
+
+  it('expands and collapses every nested field with the schema-wide control', async () => {
+    const tree = await renderNestedSchema();
+
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    fireEvent.click(
+      tree.getByRole('button', {
+        name: 'Expand all Request Body schema fields',
+      }),
+    );
+    expect(tree.getByText('idleTimeout')).toBeVisible();
+
+    fireEvent.click(
+      tree.getByRole('button', {
+        name: 'Collapse all Request Body schema fields',
+      }),
+    );
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('name')).toBeVisible();
+  });
+
+  it('expands nested ancestors when linking to a nested schema field', async () => {
+    window.history.replaceState(null, '', '#request-body-config-idle-timeout');
+
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    await act(async () => {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('idleTimeout')).toBeVisible();
+    });
+    expect(screen.getByText('Idle timeout in seconds.')).toBeVisible();
+
+    window.history.replaceState(null, '', '/');
   });
 });
