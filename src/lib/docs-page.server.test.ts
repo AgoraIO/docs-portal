@@ -3124,17 +3124,20 @@ Web body
         expect.objectContaining({
           children: expect.arrayContaining([
             {
-              id: '/en/api-reference/api-ref/broadcast-streaming',
+              id: '/en/api-reference/api-ref/rtc',
               linked: true,
               title: 'RESTful API',
               type: 'page',
-              url: '/en/api-reference/api-ref/broadcast-streaming',
+              url: '/en/api-reference/api-ref/rtc',
             },
           ]),
           title: 'Reference',
           type: 'section',
         }),
       ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/api-reference/api-ref/broadcast-streaming',
     );
 
     const videoPage = {

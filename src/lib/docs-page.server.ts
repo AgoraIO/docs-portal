@@ -1227,7 +1227,7 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
   {
     productSlug: 'broadcast-streaming',
     title: 'RESTful API',
-    url: '/en/api-reference/api-ref/broadcast-streaming',
+    url: '/en/api-reference/api-ref/rtc',
   },
   {
     productSlug: 'cloud-recording',
