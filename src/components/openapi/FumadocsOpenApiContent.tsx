@@ -667,52 +667,103 @@ function OpenApiFieldList({
   title: string;
 }) {
   const titleId = anchorPrefix;
+  const anchorIds = buildUniqueOpenApiAnchorIds(
+    anchorPrefix,
+    fields.map((field) => field.anchorSuffix ?? field.name),
+  );
+  const [expandedFieldIds, setExpandedFieldIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const allFieldsExpanded =
+    anchorIds.length > 0 && anchorIds.every((id) => expandedFieldIds.has(id));
+
+  useOpenApiHashExpansion(anchorIds, setExpandedFieldIds);
+
+  function setAllFieldsExpanded(expanded: boolean) {
+    setExpandedFieldIds(expanded ? new Set(anchorIds) : new Set());
+  }
+
+  function setFieldExpanded(anchorId: string, expanded: boolean) {
+    setExpandedFieldIds((current) => {
+      const next = new Set(current);
+
+      if (expanded) {
+        next.add(anchorId);
+      } else {
+        next.delete(anchorId);
+      }
+
+      return next;
+    });
+  }
 
   return (
     <section className="mt-8">
-      <h2
-        className={cn('mb-3 scroll-mt-24', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}
-        id={titleId}
-      >
-        <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
-      </h2>
+      <div className="mb-3 flex min-w-0 flex-wrap items-center justify-between gap-2">
+        <h2
+          className={cn('scroll-mt-24', OPENAPI_MAJOR_SECTION_HEADING_CLASS)}
+          id={titleId}
+        >
+          <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
+        </h2>
+        <button
+          aria-label={`${allFieldsExpanded ? 'Collapse' : 'Expand'} all ${title}`}
+          className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
+          onClick={() => setAllFieldsExpanded(!allFieldsExpanded)}
+          type="button"
+        >
+          {allFieldsExpanded ? 'Collapse all' : 'Expand all'}
+        </button>
+      </div>
       <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-        {buildUniqueOpenApiAnchorIds(
-          anchorPrefix,
-          fields.map((field) => field.anchorSuffix ?? field.name),
-        ).map((anchorId, index) => {
+        {anchorIds.map((anchorId, index) => {
           const field = fields[index];
+          const expanded = expandedFieldIds.has(anchorId);
 
           return (
-            <div
-              className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+            <details
+              className="group scroll-mt-24 border-fd-border border-t text-sm first:border-t-0"
               id={anchorId}
               key={`${title}:${field.name}`}
+              onToggle={(event) =>
+                setFieldExpanded(anchorId, event.currentTarget.open)
+              }
+              open={expanded}
             >
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <code className="font-medium text-fd-primary">
-                  {field.name}
-                </code>
-                <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-                {field.required ? (
-                  <span className="font-medium text-red-500">*</span>
-                ) : (
-                  <span className="text-fd-muted-foreground">?</span>
-                )}
-                <span className="font-mono text-fd-muted-foreground text-xs">
-                  {field.type}
+              <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 marker:hidden hover:bg-fd-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring [&::-webkit-details-marker]:hidden">
+                <span
+                  aria-hidden="true"
+                  className="select-none text-fd-muted-foreground text-xs transition-transform group-open:rotate-90"
+                >
+                  ▶
                 </span>
-              </div>
-              {field.description ? (
-                <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-                  {renderOpenApiMarkdown(
-                    normalizeOpenApiDescriptionMarkdown(field.description),
+                <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                  <code className="font-medium text-fd-primary">
+                    {field.name}
+                  </code>
+                  <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+                  {field.required ? (
+                    <span className="font-medium text-red-500">*</span>
+                  ) : (
+                    <span className="text-fd-muted-foreground">?</span>
                   )}
-                </div>
-              ) : null}
-              <OpenApiInlineCallouts callouts={field.callouts} />
-              <OpenApiMetadata items={field.metadata} />
-            </div>
+                  <span className="font-mono text-fd-muted-foreground text-xs">
+                    {field.type}
+                  </span>
+                </span>
+              </summary>
+              <div className="px-4 pb-3">
+                {field.description ? (
+                  <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                    {renderOpenApiMarkdown(
+                      normalizeOpenApiDescriptionMarkdown(field.description),
+                    )}
+                  </div>
+                ) : null}
+                <OpenApiInlineCallouts callouts={field.callouts} />
+                <OpenApiMetadata items={field.metadata} />
+              </div>
+            </details>
           );
         })}
       </div>
@@ -1114,7 +1165,11 @@ function OpenApiAnchorLink({
 
   if (children) {
     return (
-      <a className="group inline-flex items-center gap-2" href={href}>
+      <a
+        className="group inline-flex items-center gap-2"
+        href={href}
+        onClick={(event) => event.stopPropagation()}
+      >
         <span>{children}</span>
         <span
           aria-hidden="true"
@@ -1134,6 +1189,7 @@ function OpenApiAnchorLink({
         className,
       )}
       href={href}
+      onClick={(event) => event.stopPropagation()}
     >
       #
     </a>
@@ -1154,6 +1210,56 @@ function useOpenApiHashScroll() {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
+}
+
+function useOpenApiHashExpansion(
+  anchorIds: string[],
+  setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
+) {
+  useEffect(() => {
+    const openCurrentHashTarget = () => {
+      const hashAnchorId = getCurrentOpenApiHashAnchorId();
+
+      if (!hashAnchorId || !anchorIds.includes(hashAnchorId)) {
+        return;
+      }
+
+      setExpandedIds((current) => {
+        if (current.has(hashAnchorId)) {
+          return current;
+        }
+
+        const next = new Set(current);
+        next.add(hashAnchorId);
+        return next;
+      });
+      window.requestAnimationFrame(() => {
+        syncDocsHashTargetFromLocation('auto');
+      });
+    };
+
+    const frame = window.requestAnimationFrame(openCurrentHashTarget);
+    window.addEventListener('hashchange', openCurrentHashTarget);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', openCurrentHashTarget);
+    };
+  }, [anchorIds, setExpandedIds]);
+}
+
+function getCurrentOpenApiHashAnchorId() {
+  const hash = window.location.hash;
+
+  if (!hash.startsWith('#')) {
+    return '';
+  }
+
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
 }
 
 function getOpenApiSchemaAnchorPrefix(options: {
@@ -1241,6 +1347,35 @@ function OpenApiSchemaRows({
     document,
     usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
   });
+  const anchorIds = buildUniqueOpenApiAnchorIds(
+    anchorPrefix,
+    rows.map((row) => row.path),
+  );
+  const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const allRowsExpanded =
+    anchorIds.length > 0 && anchorIds.every((id) => expandedRowIds.has(id));
+
+  useOpenApiHashExpansion(anchorIds, setExpandedRowIds);
+
+  function setAllRowsExpanded(expanded: boolean) {
+    setExpandedRowIds(expanded ? new Set(anchorIds) : new Set());
+  }
+
+  function setRowExpanded(anchorId: string, expanded: boolean) {
+    setExpandedRowIds((current) => {
+      const next = new Set(current);
+
+      if (expanded) {
+        next.add(anchorId);
+      } else {
+        next.delete(anchorId);
+      }
+
+      return next;
+    });
+  }
 
   if (rows.length === 0) {
     return null;
@@ -1248,16 +1383,25 @@ function OpenApiSchemaRows({
 
   return (
     <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      {buildUniqueOpenApiAnchorIds(
-        anchorPrefix,
-        rows.map((row) => row.path),
-      ).map((anchorId, index) => {
+      <div className="flex justify-end border-fd-border border-b px-4 py-2">
+        <button
+          aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
+          className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
+          onClick={() => setAllRowsExpanded(!allRowsExpanded)}
+          type="button"
+        >
+          {allRowsExpanded ? 'Collapse all' : 'Expand all'}
+        </button>
+      </div>
+      {anchorIds.map((anchorId, index) => {
         const row = rows[index];
 
         return (
           <OpenApiSchemaRowItem
             anchorId={anchorId}
+            expanded={expandedRowIds.has(anchorId)}
             key={row.path}
+            onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
             renderMarkdown={renderMarkdown}
             row={row}
           />
@@ -1269,49 +1413,83 @@ function OpenApiSchemaRows({
 
 function OpenApiSchemaRowItem({
   anchorId,
+  expanded,
+  onExpandedChange,
   renderMarkdown,
   row,
 }: {
   anchorId: string;
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
 }) {
   return (
-    <div
-      className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+    <details
+      className="group scroll-mt-24 border-fd-border border-t text-sm first:border-t-0"
       id={anchorId}
+      onToggle={(event) => onExpandedChange(event.currentTarget.open)}
+      open={expanded}
       style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
     >
-      <div className="flex min-w-0 flex-wrap items-center gap-2">
-        <code
-          className={cn(
-            'openapi-schema-property-name font-bold text-fd-foreground',
-            row.deprecated && 'line-through opacity-70',
-          )}
+      <summary className="flex cursor-pointer list-none items-center gap-2 py-3 pr-4 marker:hidden hover:bg-fd-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring [&::-webkit-details-marker]:hidden">
+        <span
+          aria-hidden="true"
+          className="select-none text-fd-muted-foreground text-xs transition-transform group-open:rotate-90"
         >
-          {row.name}
-        </code>
-        <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-        <OpenApiSchemaRequiredBadge required={row.required} />
-        <span className="font-mono text-fd-muted-foreground text-xs">
-          {row.type}
-          {row.nullable ? ' | null' : ''}
+          ▶
         </span>
-        {row.deprecated ? (
-          <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-            Deprecated
+        <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <code
+            className={cn(
+              'openapi-schema-property-name font-bold text-fd-foreground',
+              row.deprecated && 'line-through opacity-70',
+            )}
+          >
+            {row.name}
+          </code>
+          <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+          <OpenApiSchemaRequiredBadge required={row.required} />
+          <span className="font-mono text-fd-muted-foreground text-xs">
+            {row.type}
+            {row.nullable ? ' | null' : ''}
           </span>
+          {row.deprecated ? (
+            <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
+              Deprecated
+            </span>
+          ) : null}
+        </span>
+      </summary>
+      <div className="pb-3 pr-4">
+        {row.description ? (
+          <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+            {renderMarkdown(
+              normalizeOpenApiDescriptionMarkdown(row.description),
+            )}
+          </div>
         ) : null}
+        <OpenApiInlineCallouts callouts={row.docsCallouts} />
+        <OpenApiSchemaMeta row={row} />
       </div>
-      {row.description ? (
-        <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-          {renderMarkdown(normalizeOpenApiDescriptionMarkdown(row.description))}
-        </div>
-      ) : null}
-      <OpenApiInlineCallouts callouts={row.docsCallouts} />
-      <OpenApiSchemaMeta row={row} />
-    </div>
+    </details>
   );
+}
+
+function getOpenApiSchemaGroupLabel(anchorPrefix: string) {
+  if (anchorPrefix === 'request-body') {
+    return 'Request Body schema fields';
+  }
+
+  if (anchorPrefix.startsWith('responses-')) {
+    return 'Response schema fields';
+  }
+
+  if (anchorPrefix === 'response-body') {
+    return 'Response Body schema fields';
+  }
+
+  return 'schema fields';
 }
 
 function OpenApiSchemaRequiredBadge({ required }: { required: boolean }) {

@@ -1,6 +1,13 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import type { Document } from 'fumadocs-openapi';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -691,7 +698,7 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTree = within(schemaTreeElement as HTMLElement);
     const optionalFieldRow = schemaTree
       .getByText('displayName')
-      .closest('div[style]');
+      .closest('details[style]');
     expect(optionalFieldRow).toBeInstanceOf(HTMLElement);
     expect(
       within(optionalFieldRow as HTMLElement).getByText('optional'),
@@ -1846,6 +1853,231 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       responseScope.getByText('Description of why the request failed.'),
     ).toBeInTheDocument();
+  });
+
+  it('collapses and expands OpenAPI parameter and schema details', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    parameters: [
+                      {
+                        description: 'The App ID used by this request.',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: /Path Parameters/ });
+    await act(async () => {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    const appIdDetails = screen.getByText('appid').closest('details');
+    const configDetails = screen.getByText('config').closest('details');
+    expect(appIdDetails).not.toBeNull();
+    expect(configDetails).not.toBeNull();
+    expect(appIdDetails).not.toHaveAttribute('open');
+    expect(configDetails).not.toHaveAttribute('open');
+
+    fireEvent.click(within(appIdDetails as HTMLElement).getByText('appid'));
+    expect(appIdDetails).toHaveAttribute('open');
+    expect(
+      screen.getByText('The App ID used by this request.'),
+    ).toBeInTheDocument();
+
+    fireEvent.click(within(configDetails as HTMLElement).getByText('config'));
+    expect(configDetails).toHaveAttribute('open');
+    expect(screen.getByText('Agent runtime settings.')).toBeInTheDocument();
+
+    const pathParametersSection = screen
+      .getByRole('heading', { name: /Path Parameters/ })
+      .closest('section') as HTMLElement;
+    const pathCollapseButton = within(pathParametersSection).getByRole(
+      'button',
+      {
+        name: 'Collapse all Path Parameters',
+      },
+    );
+    fireEvent.click(pathCollapseButton);
+    expect(appIdDetails).not.toHaveAttribute('open');
+
+    const pathExpandButton = within(pathParametersSection).getByRole('button', {
+      name: 'Expand all Path Parameters',
+    });
+    fireEvent.click(pathExpandButton);
+    expect(appIdDetails).toHaveAttribute('open');
+    expect(
+      within(pathParametersSection).getByRole('button', {
+        name: 'Collapse all Path Parameters',
+      }),
+    ).toBeInTheDocument();
+
+    const requestSchemaTree = configDetails?.closest(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
+    fireEvent.click(within(configDetails as HTMLElement).getByText('config'));
+    expect(configDetails).not.toHaveAttribute('open');
+
+    const requestSchemaExpandButton = within(requestSchemaTree).getByRole(
+      'button',
+      { name: 'Expand all Request Body schema fields' },
+    );
+    fireEvent.click(requestSchemaExpandButton);
+    expect(configDetails).toHaveAttribute('open');
+    expect(
+      within(requestSchemaTree).getByRole('button', {
+        name: 'Collapse all Request Body schema fields',
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it('opens collapsed OpenAPI details when linking to a field hash', async () => {
+    window.history.replaceState(null, '', '#request-body-config');
+
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    parameters: [
+                      {
+                        description: 'The App ID used by this request.',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: /Path Parameters/ });
+    await act(async () => {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    const appIdDetails = screen.getByText('appid').closest('details');
+    const configDetails = screen.getByText('config').closest('details');
+    expect(appIdDetails).not.toBeNull();
+    expect(configDetails).not.toBeNull();
+
+    await waitFor(() => {
+      expect(configDetails).toHaveAttribute('open');
+    });
+    expect(screen.getByText('Agent runtime settings.')).toBeInTheDocument();
+
+    await act(async () => {
+      window.history.replaceState(null, '', '#path-parameters-appid');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    await waitFor(() => {
+      expect(appIdDetails).toHaveAttribute('open');
+    });
+    expect(
+      screen.getByText('The App ID used by this request.'),
+    ).toBeInTheDocument();
+
+    window.history.replaceState(null, '', '/');
   });
 
   it('adds stable deep-link anchors to parameters and schema fields', async () => {
