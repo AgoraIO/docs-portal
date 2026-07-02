@@ -1,6 +1,13 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import type { Document } from 'fumadocs-openapi';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -2122,5 +2129,64 @@ describe('FumadocsOpenApiContent', () => {
     );
     expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
     expect(tree.getByText('name')).toBeVisible();
+  });
+
+  it('expands nested ancestors when linking to a nested schema field', async () => {
+    window.history.replaceState(null, '', '#request-body-config-idle-timeout');
+
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            },
+          } as unknown as Document,
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    await act(async () => {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('idleTimeout')).toBeVisible();
+    });
+    expect(screen.getByText('Idle timeout in seconds.')).toBeVisible();
+
+    window.history.replaceState(null, '', '/');
   });
 });

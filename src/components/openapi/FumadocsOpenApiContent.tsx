@@ -1158,27 +1158,44 @@ function useOpenApiHashScroll() {
   }, []);
 }
 
-function useOpenApiHashExpansion(
+function useOpenApiSchemaHashExpansion(
   anchorIds: string[],
+  parentIndex: number[],
   setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
 ) {
   useEffect(() => {
     const openCurrentHashTarget = () => {
       const hashAnchorId = getCurrentOpenApiHashAnchorId();
+      const targetIndex = anchorIds.indexOf(hashAnchorId);
 
-      if (!hashAnchorId || !anchorIds.includes(hashAnchorId)) {
+      if (targetIndex === -1) {
         return;
       }
 
-      setExpandedIds((current) => {
-        if (current.has(hashAnchorId)) {
-          return current;
-        }
+      const ancestorAnchorIds: string[] = [];
 
-        const next = new Set(current);
-        next.add(hashAnchorId);
-        return next;
-      });
+      for (
+        let parent = parentIndex[targetIndex];
+        parent !== -1;
+        parent = parentIndex[parent]
+      ) {
+        ancestorAnchorIds.push(anchorIds[parent]);
+      }
+
+      if (ancestorAnchorIds.length > 0) {
+        setExpandedIds((current) => {
+          if (ancestorAnchorIds.every((id) => current.has(id))) {
+            return current;
+          }
+
+          const next = new Set(current);
+          for (const id of ancestorAnchorIds) {
+            next.add(id);
+          }
+          return next;
+        });
+      }
+
       window.requestAnimationFrame(() => {
         syncDocsHashTargetFromLocation('auto');
       });
@@ -1191,7 +1208,7 @@ function useOpenApiHashExpansion(
       window.cancelAnimationFrame(frame);
       window.removeEventListener('hashchange', openCurrentHashTarget);
     };
-  }, [anchorIds, setExpandedIds]);
+  }, [anchorIds, parentIndex, setExpandedIds]);
 }
 
 function getCurrentOpenApiHashAnchorId() {
@@ -1314,7 +1331,11 @@ function OpenApiSchemaRows({
     () => new Set(),
   );
 
-  useOpenApiHashExpansion(anchorIds, setExpandedRowIds);
+  useOpenApiSchemaHashExpansion(
+    anchorIds,
+    layout.parentIndex,
+    setExpandedRowIds,
+  );
 
   const visibleFlags = useMemo(() => {
     const flags: boolean[] = [];
