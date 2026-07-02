@@ -21,6 +21,7 @@ const OVERVIEW_CARD_SOURCE_PATHS = [
 /**
  * @typedef {object} AuditDocsLinksOptions
  * @property {string} [docsRoot]
+ * @property {string} [openApiRoot]
  * @property {string[]} [sourcePaths]
  */
 
@@ -29,6 +30,7 @@ const OVERVIEW_CARD_SOURCE_PATHS = [
  */
 export function auditDocsLinks({
   docsRoot = path.join(process.cwd(), 'content', 'docs'),
+  openApiRoot = getDefaultOpenApiRoot(docsRoot),
   sourcePaths,
 } = {}) {
   const stats = createStats();
@@ -70,6 +72,32 @@ export function auditDocsLinks({
     }
   }
 
+  if (!sourcePathFilter && fs.existsSync(openApiRoot)) {
+    const openApiFiles = listOpenApiYamlFiles(openApiRoot);
+    const openApiSourceContexts = getOpenApiSourceContexts();
+
+    for (const filePath of openApiFiles) {
+      const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
+      const sourceContextPath =
+        openApiSourceContexts.get(sourcePath) ?? sourcePath;
+      const yaml = fs.readFileSync(filePath, 'utf8');
+      const links = extractLinks(yaml);
+
+      stats.openapiFiles += 1;
+      stats.totalLinks += links.length;
+
+      for (const link of links) {
+        classifyLink(sourcePath, link, {
+          docsPageIndex,
+          existingContentPaths,
+          existingRoutePaths,
+          stats,
+          sourceContextPath,
+        });
+      }
+    }
+  }
+
   return stats;
 }
 
@@ -85,6 +113,7 @@ function createStats() {
     invalidLinks: [],
     invalidInternalLinks: [],
     legacyRootDocLinks: [],
+    openapiFiles: 0,
     apiReferenceMacroLinks: [],
     missingHashLinks: [],
     missingRootLinks: [],
@@ -320,9 +349,39 @@ function listMarkdownFiles(root) {
   return results.sort();
 }
 
+function getDefaultOpenApiRoot(docsRoot) {
+  return path.join(path.dirname(docsRoot), 'openapi');
+}
+
+function listOpenApiYamlFiles(root) {
+  const results = [];
+
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    const fullPath = path.join(root, entry.name);
+
+    if (entry.isDirectory()) {
+      results.push(...listOpenApiYamlFiles(fullPath));
+      continue;
+    }
+
+    if (/\.ya?ml$/i.test(entry.name)) {
+      results.push(fullPath);
+    }
+  }
+
+  return results.sort();
+}
+
+function toOpenApiSourcePath(openApiRoot, filePath) {
+  return path
+    .join(path.basename(openApiRoot), path.relative(openApiRoot, filePath))
+    .split(path.sep)
+    .join(path.posix.sep);
+}
+
 function extractLinks(markdown) {
   const links = [];
-  const markdownLinkPattern = /(!?)\[[^\]\n]*\]\((<[^>\n]+>|[^)\n]+)\)/g;
+  const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
   const referenceLinkPattern = /^\s{0,3}\[[^\]\n]+\]:\s*(\S+)/gm;
   const htmlHrefPattern = /\bhref\s*=\s*(?:"([^"]*)"|'([^']*)')/gi;
 
@@ -431,7 +490,13 @@ function slugifyHeading(headingText, slugCounts) {
 function classifyLink(
   sourcePath,
   link,
-  { docsPageIndex, existingContentPaths, existingRoutePaths, stats },
+  {
+    docsPageIndex,
+    existingContentPaths,
+    existingRoutePaths,
+    stats,
+    sourceContextPath = sourcePath,
+  },
 ) {
   const href = link.href.trim();
   const parsedHref = splitHref(href);
@@ -469,13 +534,17 @@ function classifyLink(
   }
 
   if (href.startsWith('#')) {
+    if (sourcePath.startsWith('openapi/')) {
+      return;
+    }
+
     validateHashLink({
       docsPageIndex,
       entry: {
         href,
         normalizedHref: href,
         resolved: true,
-        resolvedTargetPath: sourcePath,
+        resolvedTargetPath: sourceContextPath,
         source: link.source,
         sourcePath,
       },
@@ -510,9 +579,10 @@ function classifyLink(
   }
 
   if (href.startsWith('/')) {
-    const entry = resolveRootLink(sourcePath, href, existingRoutePaths);
+    const entry = resolveRootLink(sourceContextPath, href, existingRoutePaths);
 
     entry.source = link.source;
+    entry.sourcePath = sourcePath;
 
     if (entry.skipped) {
       stats.skippedRootLinks.push(entry);
@@ -554,7 +624,7 @@ function classifyLink(
   }
 
   const entry = resolveRelativeDocsLink(
-    sourcePath,
+    sourceContextPath,
     href,
     parsed,
     existingContentPaths,
@@ -562,6 +632,7 @@ function classifyLink(
   );
 
   entry.source = link.source;
+  entry.sourcePath = sourcePath;
 
   if (entry.resolved) {
     stats.relativeMarkdownLinks.push(entry);
@@ -2288,6 +2359,30 @@ export function getOpenApiRoutePathsForAudit() {
   );
 }
 
+function getOpenApiSourceContexts() {
+  const contexts = new Map();
+
+  for (const lane of getOpenApiRouteLanesForAudit()) {
+    for (const [locale, sourcePath] of Object.entries(lane.sourcePaths)) {
+      const normalizedSourcePath = sourcePath
+        .replace(/^content\//, '')
+        .split(path.sep)
+        .join(path.posix.sep);
+
+      if (contexts.has(normalizedSourcePath) && locale !== 'en') {
+        continue;
+      }
+
+      contexts.set(
+        normalizedSourcePath,
+        `${locale}/${lane.routePrefix}/index.mdx`,
+      );
+    }
+  }
+
+  return contexts;
+}
+
 const SUPPORTED_LOCALES = ['en', 'zh-CN'];
 
 function getOpenApiRouteLanesForAudit() {
@@ -2301,6 +2396,12 @@ function getOpenApiRouteLanesForAudit() {
         .match(/locales:\s*\[([^\]]+)\]/)?.[1]
         ?.match(/'([^']+)'/g)
         ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
+    const sourcePathsBlock = extractObjectProperty(block, 'sourcePath');
+    const sourcePaths = Object.fromEntries(
+      [...sourcePathsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
+        (match) => [match[1], match[2]],
+      ),
+    );
     const operationsBlock = extractObjectProperty(block, 'operations');
     const routeLeaves = [
       ...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g),
@@ -2312,7 +2413,7 @@ function getOpenApiRouteLanesForAudit() {
       );
     }
 
-    return { locales, routePrefix, routeLeaves };
+    return { locales, routePrefix, routeLeaves, sourcePaths };
   });
 }
 
@@ -3010,6 +3111,7 @@ export function formatReport(stats, maxSamples) {
     '# Docs Link Audit',
     '',
     `docsFiles: ${stats.docsFiles}`,
+    `openapiFiles: ${stats.openapiFiles}`,
     `totalLinks: ${stats.totalLinks}`,
     `relativeMarkdownLinks: ${stats.relativeMarkdownLinks.length}`,
     `resolvedRelativeMarkdownLinks: ${stats.resolvedRelativeMarkdownLinks.length}`,
