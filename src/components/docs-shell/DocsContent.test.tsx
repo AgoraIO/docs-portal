@@ -25,6 +25,14 @@ import { DocsCopyMenu } from './docs-copy-menu';
 
 const clipboardWriteText = vi.fn();
 const fetchMock = vi.fn();
+const { captureDocsPageFeedbackMock } = vi.hoisted(() => ({
+  captureDocsPageFeedbackMock: vi.fn(),
+}));
+
+vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  initializePostHog: vi.fn(),
+}));
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => {
@@ -1703,6 +1711,36 @@ describe('DocsTocRail', () => {
 });
 
 describe('DocsPageFeedback placement', () => {
+  it('captures helpfulness feedback without changing the local pressed state', async () => {
+    renderWithRouter(
+      <DocsMainColumn locale="en">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const feedback = within(mobileFlow).getByTestId('docs-feedback');
+    const yesButton = within(feedback).getByRole('button', { name: 'Yes' });
+    const noButton = within(feedback).getByRole('button', { name: 'No' });
+
+    fireEvent.click(yesButton);
+
+    expect(yesButton).toHaveAttribute('aria-pressed', 'true');
+    expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
+      locale: 'en',
+      value: 'yes',
+    });
+
+    fireEvent.click(noButton);
+
+    expect(yesButton).toHaveAttribute('aria-pressed', 'false');
+    expect(noButton).toHaveAttribute('aria-pressed', 'true');
+    expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
+      locale: 'en',
+      value: 'no',
+    });
+  });
+
   it('opens a feedback dialog with a prefilled issue link', async () => {
     window.history.replaceState(
       {},
