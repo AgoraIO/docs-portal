@@ -1,7 +1,9 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { structure } from 'fumadocs-core/mdx-plugins';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
+import remarkDirective from 'remark-directive';
 import { buildDocPath } from '../docs-routing';
 import type { AppLocale } from '../i18n/i18n-config';
 import {
@@ -28,6 +30,18 @@ export type AlgoliaDocsRecord = DocumentRecord & {
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = ['en'];
 
+// MDAST node types extracted as searchable plain text by `structure()`. These
+// are its defaults plus `code`, so identifiers that only appear in fenced code
+// blocks stay searchable (dropping `code` would silently reduce recall).
+const STRUCTURE_CONTENT_TYPES = [
+  'heading',
+  'paragraph',
+  'blockquote',
+  'tableCell',
+  'mdxJsxFlowElement',
+  'code',
+];
+
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   const [docsRecords, openApiRecords] = await Promise.all([
     getContentDocsRecords(),
@@ -48,13 +62,7 @@ async function getContentDocsRecords() {
     }
 
     const title = page.title ?? route.slugSegments.at(-1) ?? page.url;
-    const sections = splitMarkdownSections(page.content);
-    const contents = sections.flatMap((section) =>
-      chunkText(section.content, MAX_CHUNK_LENGTH).map((content) => ({
-        content,
-        heading: section.id,
-      })),
-    );
+    const { contents, headings } = extractDocSearchContent(page.content);
 
     if (contents.length === 0 && page.description) {
       contents.push({ content: page.description, heading: undefined });
@@ -74,23 +82,78 @@ async function getContentDocsRecords() {
         },
         structured: {
           contents,
-          headings: sections.flatMap((section) =>
-            section.id && section.title
-              ? [
-                  {
-                    content: section.title,
-                    depth: section.depth,
-                    id: section.id,
-                  },
-                ]
-              : [],
-          ),
+          headings,
         },
         title,
         url: page.url,
       },
     ];
   });
+}
+
+/**
+ * Extract searchable plain text from a doc's MDX source. Uses fumadocs'
+ * `structure()` (AST-based) rather than indexing raw Markdown, so search
+ * snippets read as prose instead of Markdown/table markup. `code` is kept in
+ * the scanned node types so identifiers inside fenced blocks stay searchable.
+ */
+export function extractDocSearchContent(markdown: string) {
+  const extracted = structure(markdown, [remarkDirective], {
+    types: STRUCTURE_CONTENT_TYPES,
+  });
+
+  // `structure()` emits one block per paragraph / table cell / code block.
+  // Re-group them into per-heading sections before indexing — otherwise a
+  // single API-reference table becomes hundreds of Algolia records. Section
+  // granularity keeps the object count ~1 per heading while still giving the
+  // search engine enough text to build a windowed snippet.
+  const sectionText = new Map<string, string[]>();
+  const sectionOrder: string[] = [];
+
+  for (const block of extracted.contents) {
+    const key = block.heading ?? '';
+    const text = toPlainText(block.content);
+
+    if (!text) {
+      continue;
+    }
+
+    if (!sectionText.has(key)) {
+      sectionText.set(key, []);
+      sectionOrder.push(key);
+    }
+
+    sectionText.get(key)?.push(text);
+  }
+
+  const contents = sectionOrder.flatMap((key) =>
+    chunkText(sectionText.get(key)?.join('\n') ?? '', MAX_CHUNK_LENGTH).map(
+      (content) => ({ content, heading: key || undefined }),
+    ),
+  );
+
+  return { contents, headings: extracted.headings };
+}
+
+// Reduce inline Markdown to readable, searchable plain text, keeping every
+// word. Cleans two sources: the residue `structure()` leaves after
+// re-serializing doc blocks (fenced-code delimiters, paired emphasis/inline
+// code), and OpenAPI spec descriptions (raw Markdown, links and all).
+// Underscores are deliberately left untouched so identifiers like
+// `filler_words.enable` survive. For docs that is lossless (`structure()`
+// normalizes `_emphasis_` to `*` upstream); the rare `_emphasis_` in an
+// OpenAPI description is accepted verbatim rather than risk mangling an id.
+export function toPlainText(markdown: string) {
+  return markdown
+    .replace(/^\s*```[^\n]*$/gm, '') // fenced-code delimiters (keep code body)
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // links/images -> text/alt
+    .replace(/`([^`]+)`/g, '$1') // inline code
+    .replace(/\*\*([^*]+)\*\*/g, '$1') // bold
+    .replace(/\*([^*\n]+)\*/g, '$1') // italic
+    .replace(/~~([^~]+)~~/g, '$1') // strikethrough
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
 }
 
 async function getContentDocsPages() {
@@ -212,6 +275,7 @@ async function getOpenApiRecords() {
         ]),
       ]
         .filter(Boolean)
+        .map((part) => toPlainText(String(part)))
         .join('\n');
 
       return [
@@ -243,62 +307,6 @@ async function getOpenApiRecords() {
       ];
     }),
   );
-}
-
-function splitMarkdownSections(markdown: string) {
-  const sections: {
-    content: string;
-    depth: number;
-    id?: string;
-    title?: string;
-  }[] = [];
-  let current: {
-    content: string[];
-    depth: number;
-    id?: string;
-    title?: string;
-  } | null = null;
-
-  for (const line of markdown.split('\n')) {
-    const heading = /^(#{2,4})\s+(.+)$/.exec(line);
-
-    if (heading) {
-      if (current?.content.join('\n').trim()) {
-        sections.push({
-          content: current.content.join('\n').trim(),
-          depth: current.depth,
-          id: current.id,
-          title: current.title,
-        });
-      }
-
-      const title = stripMarkdown(heading[2]);
-      current = {
-        content: [title],
-        depth: heading[1].length,
-        id: slugifyHeading(title),
-        title,
-      };
-      continue;
-    }
-
-    if (!current) {
-      current = { content: [], depth: 2 };
-    }
-
-    current.content.push(line);
-  }
-
-  if (current?.content.join('\n').trim()) {
-    sections.push({
-      content: current.content.join('\n').trim(),
-      depth: current.depth,
-      id: current.id,
-      title: current.title,
-    });
-  }
-
-  return sections;
 }
 
 function chunkText(text: string, maxLength: number) {
@@ -394,21 +402,4 @@ function flattenSchemaNode(node: {
   ].filter(
     (value): value is string => typeof value === 'string' && Boolean(value),
   );
-}
-
-function slugifyHeading(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/[^\p{Letter}\p{Number}\s-]/gu, '')
-    .trim()
-    .replace(/\s+/g, '-');
-}
-
-function stripMarkdown(value: string) {
-  return value
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[*_~]/g, '')
-    .trim();
 }
