@@ -36,6 +36,7 @@ await client.setSettings({
       'searchable(platform)',
       'filterOnly(tab)',
       'filterOnly(objectType)',
+      'filterOnly(category)',
     ],
     attributesToRetrieve: [
       'objectID',
@@ -51,6 +52,7 @@ await client.setSettings({
       'platform',
       'tab',
       'objectType',
+      'category',
     ],
     searchableAttributes: [
       'unordered(title)',

@@ -15,7 +15,15 @@ import {
 import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 
+// Search-ranking category. Glossary pages cross-reference every term so they
+// match almost any query; legacy/deprecated pages are rarely the intent. Both
+// are demoted at query time (via optionalFilters) so real feature/reference
+// docs rank above them. Everything else — features AND normal reference — is
+// 'default' and keeps Algolia's own relevance.
+type SearchCategory = 'glossary' | 'deprecated' | 'default';
+
 type AlgoliaExtraData = {
+  category: SearchCategory;
   locale: AppLocale;
   objectType: 'docs' | 'openapi';
   platform?: string[];
@@ -29,6 +37,22 @@ export type AlgoliaDocsRecord = DocumentRecord & {
 
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = ['en'];
+
+// Classify a doc by its URL for search ranking. No taxonomy exists in
+// frontmatter, so this derives it once, at index time, from path conventions:
+// glossary pages live at `.../glossary`; legacy/deprecated pages carry those
+// words in the slug.
+export function classifySearchCategory(url: string): SearchCategory {
+  if (/(^|\/)glossary(\/|$)/i.test(url)) {
+    return 'glossary';
+  }
+
+  if (/legacy|deprecated/i.test(url)) {
+    return 'deprecated';
+  }
+
+  return 'default';
+}
 
 // MDAST node types extracted as searchable plain text by `structure()`. These
 // are its defaults plus `code`, so identifiers that only appear in fenced code
@@ -74,6 +98,7 @@ async function getContentDocsRecords() {
         breadcrumbs: route.slugSegments,
         description: page.description,
         extra_data: {
+          category: classifySearchCategory(page.url),
           locale: route.locale,
           objectType: 'docs',
           platform: inferPlatforms(page.url, page.content),
@@ -283,6 +308,7 @@ async function getOpenApiRecords() {
           _id: `openapi:${url}`,
           breadcrumbs: [locale === 'zh-CN' ? 'API 参考' : 'API Reference'],
           extra_data: {
+            category: classifySearchCategory(url),
             locale,
             objectType: 'openapi',
             platform: inferPlatforms(url, content),
