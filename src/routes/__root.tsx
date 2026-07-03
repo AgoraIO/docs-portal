@@ -28,15 +28,15 @@ export const rootHead = {
   links: [
     {
       rel: 'icon',
-      href: '/favicon.svg',
-      type: 'image/svg+xml',
-      sizes: 'any',
+      href: '/favicon-32x32.png',
+      type: 'image/png',
+      sizes: '32x32',
     },
     {
       rel: 'icon',
       href: '/favicon.ico',
       type: 'image/png',
-      sizes: '512x512',
+      sizes: '32x32',
     },
     { rel: 'stylesheet', href: appCss },
   ],
