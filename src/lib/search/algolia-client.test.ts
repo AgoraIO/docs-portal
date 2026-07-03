@@ -81,8 +81,13 @@ describe('createAlgoliaDocsClient', () => {
       requests: [
         expect.objectContaining({
           attributesToSnippet: ['content:25', 'section:20'],
+          distinct: 1,
           filters: 'locale:en AND platform:web',
           indexName: 'docs_portal_en',
+          optionalFilters: [
+            'category:default<score=2>',
+            'category:deprecated<score=1>',
+          ],
           query: 'vad',
         }),
       ],
@@ -108,7 +113,11 @@ describe('createAlgoliaDocsClient', () => {
     });
   });
 
-  it('ranks title and heading matches above body-only matches', async () => {
+  it("preserves Algolia's server ranking without re-sorting client-side", async () => {
+    // Ranking is the server's job (textual relevance + category
+    // optionalFilters). The client must return hits in the order Algolia gave
+    // them — re-sorting here could fight the server (e.g. lift a glossary
+    // heading match above a demoted-but-relevant feature page).
     const searchForHits = vi.fn().mockResolvedValue({
       results: [
         {
@@ -117,26 +126,29 @@ describe('createAlgoliaDocsClient', () => {
               _highlightResult: {
                 content: {
                   matchLevel: 'full',
-                  value: 'a <mark>start</mark> call schema field',
+                  value: 'a <mark>dual</mark> stream feature',
                 },
-                title: { matchLevel: 'none', value: 'Cloud recording schema' },
+                title: { matchLevel: 'none', value: 'Simulcasting' },
               },
-              objectID: 'body-only',
-              objectType: 'openapi',
-              title: 'Cloud recording schema',
-              url: '/en/api-reference/cloud-recording/schema',
+              objectID: 'feature',
+              objectType: 'docs',
+              title: 'Simulcasting',
+              url: '/en/realtime-media/video/build/simulcasting',
             },
             {
               _highlightResult: {
-                title: {
+                section: {
                   matchLevel: 'full',
-                  value: '<mark>Start</mark> building',
+                  value: '<mark>Dual</mark> stream',
                 },
+                title: { matchLevel: 'none', value: 'Glossary' },
               },
-              objectID: 'title-match',
+              objectID: 'glossary',
               objectType: 'docs',
-              title: 'Start building',
-              url: '/en/introduction/get-started/start',
+              section: 'Dual stream',
+              section_id: 'dual-stream',
+              title: 'Glossary',
+              url: '/en/realtime-media/video/reference/glossary',
             },
           ],
         },
@@ -151,12 +163,11 @@ describe('createAlgoliaDocsClient', () => {
       searchApiKey: 'search-key',
     });
 
-    const results = await client.search('start');
+    const results = await client.search('dual stream');
 
-    expect(results.map((entry) => entry.id)).toEqual([
-      'title-match',
-      'body-only',
-    ]);
+    // Order matches the input; the glossary heading match is NOT lifted above
+    // the feature page Algolia ranked first.
+    expect(results.map((entry) => entry.id)).toEqual(['feature', 'glossary']);
   });
 
   it('falls back to the description when only the title matched, and humanizes acronym path segments', async () => {

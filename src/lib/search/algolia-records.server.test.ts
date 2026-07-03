@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { extractDocSearchContent, toPlainText } from './algolia-records.server';
+import {
+  classifySearchCategory,
+  extractDocSearchContent,
+  toPlainText,
+} from './algolia-records.server';
 
 describe('extractDocSearchContent', () => {
   const markdown = [
@@ -79,6 +83,40 @@ describe('extractDocSearchContent', () => {
     expect(setupBlock?.content).toContain('Second paragraph about setup.');
     // One record per heading section, not per paragraph.
     expect(result.contents).toHaveLength(2);
+  });
+});
+
+describe('classifySearchCategory', () => {
+  it('flags glossary pages', () => {
+    expect(
+      classifySearchCategory('/en/realtime-media/video/reference/glossary'),
+    ).toBe('glossary');
+    expect(classifySearchCategory('/en/introduction/glossary')).toBe(
+      'glossary',
+    );
+  });
+
+  it('flags legacy and deprecated pages', () => {
+    expect(
+      classifySearchCategory(
+        '/en/realtime-media/video/reference/pricing-legacy',
+      ),
+    ).toBe('deprecated');
+    expect(
+      classifySearchCategory(
+        '/en/api-reference/whiteboard/file-conversion-deprecated',
+      ),
+    ).toBe('deprecated');
+  });
+
+  it('treats features and normal reference as default', () => {
+    expect(
+      classifySearchCategory('/en/realtime-media/video/build/simulcasting'),
+    ).toBe('default');
+    // Normal reference (pricing, error-codes) stays default — not demoted.
+    expect(classifySearchCategory('/en/solutions/iot/reference/pricing')).toBe(
+      'default',
+    );
   });
 });
 

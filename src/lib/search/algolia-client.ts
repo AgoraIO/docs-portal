@@ -63,8 +63,18 @@ export function createAlgoliaDocsClient({
             type: 'default',
             indexName,
             query,
-            distinct: 5,
+            // One result per page: a page's best-matching section, never the
+            // same page repeated for each matching heading.
+            distinct: 1,
             filters: buildFilters({ locale, platform }),
+            // Demote low-signal pages so real docs rank above them. Boosting
+            // via optionalFilters keeps Algolia's textual relevance intact and
+            // only nudges by category: normal docs (+2) and deprecated (+1)
+            // outrank glossary (no boost), which otherwise floods every query.
+            optionalFilters: [
+              'category:default<score=2>',
+              'category:deprecated<score=1>',
+            ],
             hitsPerPage: 10,
             attributesToHighlight: ['title', 'section', 'content'],
             attributesToSnippet: ['content:25', 'section:20'],
@@ -83,6 +93,7 @@ export function createAlgoliaDocsClient({
               'platform',
               'tab',
               'objectType',
+              'category',
             ],
             highlightPostTag: '</mark>',
             highlightPreTag: '<mark>',
@@ -110,7 +121,6 @@ export function createAlgoliaDocsClient({
           breadcrumbs: getStringArray(hit.breadcrumbs),
           content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
           id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
-          matchRank: getMatchRank(hit),
           objectType: getString(hit.objectType),
           path: buildPathSegments(url),
           platform: getStringArray(hit.platform),
@@ -133,11 +143,9 @@ export function createAlgoliaDocsClient({
         });
       }
 
-      // Surface results that matched a title or heading above those that only
-      // matched deep body/schema text. Array.sort is stable, so Algolia's own
-      // ranking is preserved within each tier.
-      entries.sort((a, b) => b.matchRank - a.matchRank);
-
+      // Ranking is left entirely to Algolia (textual relevance + the category
+      // optionalFilters above); the client no longer re-sorts, so it can't
+      // fight the server ranking (e.g. re-promoting a glossary heading match).
       return entries;
     },
   };
@@ -188,22 +196,6 @@ function humanizeSegment(segment: string) {
         : word.charAt(0).toUpperCase() + word.slice(1),
     )
     .join(' ');
-}
-
-function getMatchRank(hit: Record<string, unknown>) {
-  if (isMatched(hit, 'title')) {
-    return 3;
-  }
-
-  if (isMatched(hit, 'section')) {
-    return 2;
-  }
-
-  if (isMatched(hit, 'content')) {
-    return 1;
-  }
-
-  return 0;
 }
 
 function isMatched(hit: Record<string, unknown>, key: string) {
