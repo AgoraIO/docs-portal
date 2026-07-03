@@ -1509,6 +1509,14 @@ function buildAiProductSidebar(
   const conversationalAiQuickstart =
     findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
     findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const conversationalAiReleaseNotes =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/reference/release-notes') ??
+    findSidebarPageByExactUrlInNodes(
+      nodes,
+      '/zh-CN/ai/reference/release-notes',
+    );
   const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
   const bestPracticesSection = findTopLevelSidebarSection(nodes, [
     'Best practices',
@@ -1600,7 +1608,11 @@ function buildAiProductSidebar(
           child.url === '/en/ai/reference/server-sdk' ||
           child.url === '/en/ai/reference/client-toolkit' ||
           child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit')
+          child.url === '/zh-CN/ai/reference/client-toolkit' ||
+          child.url === '/en/ai/release-notes' ||
+          child.url === '/zh-CN/ai/release-notes' ||
+          child.url === '/en/ai/reference/release-notes' ||
+          child.url === '/zh-CN/ai/reference/release-notes')
       ),
   );
 
@@ -1636,6 +1648,7 @@ function buildAiProductSidebar(
     },
     {
       children: stripSidebarSectionMetaFromNodes([
+        ...(conversationalAiReleaseNotes ? [conversationalAiReleaseNotes] : []),
         {
           ...conversationalAiQuickstart,
           title: isZhCn ? 'Quickstart' : 'Quickstart',
@@ -1670,6 +1683,16 @@ function flattenDeviceKitSidebarChildren(
   children: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const flattened: DocsSidebarNode[] = [];
+  let hasPushedReleaseNotes = false;
+  const releaseNotes =
+    findSidebarPageByExactUrlInNodes(
+      children,
+      '/en/ai/device-kit/reference/release-notes',
+    ) ??
+    findSidebarPageByExactUrlInNodes(
+      children,
+      '/zh-CN/ai/device-kit/reference/release-notes',
+    );
 
   for (const child of children) {
     if (child.type === 'page') {
@@ -1680,6 +1703,12 @@ function flattenDeviceKitSidebarChildren(
         continue;
       }
 
+      if (
+        child.url === '/en/ai/device-kit/reference/release-notes' ||
+        child.url === '/zh-CN/ai/device-kit/reference/release-notes'
+      ) {
+        hasPushedReleaseNotes = true;
+      }
       flattened.push(child);
       continue;
     }
@@ -1696,6 +1725,10 @@ function flattenDeviceKitSidebarChildren(
         );
 
       if (quickstart) {
+        if (releaseNotes && !hasPushedReleaseNotes) {
+          flattened.push(releaseNotes);
+          hasPushedReleaseNotes = true;
+        }
         flattened.push({
           ...quickstart,
           title: quickstart.url.startsWith('/zh-CN/')
@@ -1719,7 +1752,10 @@ function flattenDeviceKitSidebarChildren(
               !(
                 node.type === 'page' &&
                 (node.url === '/en/ai/device-kit/reference/enable-services' ||
-                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
+                  node.url ===
+                    '/zh-CN/ai/device-kit/reference/enable-services' ||
+                  node.url === '/en/ai/device-kit/reference/release-notes' ||
+                  node.url === '/zh-CN/ai/device-kit/reference/release-notes')
               ),
           ),
         }),

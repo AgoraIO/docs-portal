@@ -3535,23 +3535,10 @@ Web body
                   $id: 'ai-device-kit-folder',
                   children: [
                     {
-                      $id: 'device-kit-start-here-folder',
-                      children: [
-                        {
-                          $id: 'device-kit-quickstart',
-                          name: 'Quickstart',
-                          type: 'page',
-                          url: '/en/ai/device-kit/start-here/quickstart',
-                        },
-                        {
-                          $id: 'device-kit-enable-services',
-                          name: 'Enable services',
-                          type: 'page',
-                          url: '/en/ai/device-kit/reference/enable-services',
-                        },
-                      ],
-                      name: 'Start here',
-                      type: 'folder',
+                      $id: 'device-kit-release-notes',
+                      name: 'Release notes',
+                      type: 'page',
+                      url: '/en/ai/device-kit/reference/release-notes',
                     },
                     {
                       $id: 'device-kit-build-folder',
@@ -3575,12 +3562,6 @@ Web body
                     {
                       $id: 'device-kit-reference-folder',
                       children: [
-                        {
-                          $id: 'device-kit-release-notes',
-                          name: 'Release notes',
-                          type: 'page',
-                          url: '/en/ai/device-kit/reference/release-notes',
-                        },
                         {
                           $id: 'device-kit-pricing',
                           name: 'Pricing',
@@ -3657,7 +3638,6 @@ Web body
         '/en/ai/reference/ten-agent/create-tts-extension',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
-        '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
         '/en/ai/device-kit/reference/release-notes',
@@ -3693,6 +3673,16 @@ Web body
       throw new Error('expected the apps section');
     }
 
+    expect(softwareSection.children.slice(0, 2)).toMatchObject([
+      {
+        type: 'page',
+        url: '/en/ai/reference/release-notes',
+      },
+      {
+        type: 'page',
+        url: '/en/ai/get-started/quickstart',
+      },
+    ]);
     expect(
       softwareSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
@@ -3708,6 +3698,12 @@ Web body
     ) {
       throw new Error('expected the software reference section');
     }
+    expect(
+      softwareReferenceSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/reference/release-notes',
+      ),
+    ).toBe(false);
 
     const buildSection = softwareSection.children.find(
       (node) => node.type === 'section' && node.title === 'Build',
@@ -3737,6 +3733,16 @@ Web body
       throw new Error('expected the dedicated devices section');
     }
 
+    expect(dedicatedDevicesSection.children.slice(0, 2)).toMatchObject([
+      {
+        type: 'page',
+        url: '/en/ai/device-kit/reference/release-notes',
+      },
+      {
+        type: 'section',
+        title: 'Build',
+      },
+    ]);
     expect(
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
@@ -3765,7 +3771,7 @@ Web body
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/reference/release-notes',
       ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       dedicatedReferenceSection.children.some(
         (node) =>
@@ -3779,7 +3785,7 @@ Web body
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/start-here/quickstart',
       ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Build',

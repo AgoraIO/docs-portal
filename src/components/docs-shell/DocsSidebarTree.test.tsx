@@ -719,7 +719,7 @@ describe('DocsSidebarTree', () => {
           },
         ],
         id: 'realtime-media',
-        title: 'Realtime Media',
+        title: 'RTC',
         type: 'section',
       },
     ];

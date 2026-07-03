@@ -99,7 +99,7 @@ const realtimeMediaSidebar: DocsSidebarNode[] = [
       },
     ],
     id: 'realtime-media',
-    title: 'Realtime Media',
+    title: 'RTC',
     type: 'section',
   },
 ];
@@ -108,7 +108,7 @@ const realtimeMediaTabs: TabSummary[] = [
   {
     icon: 'Radio',
     id: 'realtime-media',
-    title: 'Realtime Media',
+    title: 'RTC',
     url: '/en/realtime-media',
   },
 ];
@@ -1524,7 +1524,7 @@ describe('DocsShell', () => {
           },
           {
             id: 'realtime-media',
-            title: 'Realtime Media',
+            title: 'RTC',
             url: '/en/realtime-media',
           },
           {
@@ -1609,7 +1609,7 @@ describe('DocsShell', () => {
       within(sectionMenu).getByRole('menuitem', { name: 'Voice Agent' }),
     ).toBeInTheDocument();
     expect(
-      within(sectionMenu).getByRole('menuitem', { name: 'Realtime Media' }),
+      within(sectionMenu).getByRole('menuitem', { name: 'RTC' }),
     ).toBeInTheDocument();
     expect(
       within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),
