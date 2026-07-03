@@ -4,6 +4,8 @@ This file is the old-to-new syntax dictionary for migration. It answers: "When l
 
 Do not use this file for per-page progress, path choices, or human IA decisions. Put progress in `migration-ledger.csv`, addresses in `path-map.csv`, and approved decisions in `decisions.md`.
 
+The machine-readable companion is `component-map.yaml`. Migration scripts should load that file for component names, automation status, review flags, component families, and false-positive patterns. This Markdown file explains the same contract for humans.
+
 ## How To Use This Map
 
 1. Scan the source item for legacy syntax and components.
@@ -21,8 +23,11 @@ Do not use this file for per-page progress, path choices, or human IA decisions.
 | `<PlatformFilter>` and platform wrappers | Separate files/folders or `PlatformStructured` / `PlatformInline` | partial | high | Requires platform grouping judgment. |
 | `@shared` imports | Approved include files or static expansion | partial | high | Resolve nested dependencies before final migration. |
 | Legacy `<Image>` | Markdown image syntax | partial | medium | Width/caption cases may need a standard or review. |
-| `Table` / `Tr` / `Td` | GFM tables or native HTML table only when required | partial | medium | Rowspan/colspan/block cells need review. |
+| `Table` / `Tr` / `Td` | GFM tables or table `Slot` pattern | partial | medium | Rowspan/colspan/block cells need review. |
 | JSX heading or anchor tags | Stable heading IDs or compatibility anchors | partial | medium | Preserve existing fragment links. |
+| `<Detail>` | Existing `Accordions` / `Accordion` | partial | medium | Preserve heading text and anchors inside the expanded body. |
+| `Row` / `Col` plus `LinkCardV2` or card families | Existing `Cards` / `Card`, Markdown links, or lists | partial | high | Remove layout wrappers; choose cards only for real navigation groups. |
+| Release-note components | Markdown heading hierarchy | yes | low | `VersionSection` -> `##`, `VersionTitle` -> `###`, `ListTitle` -> `####`; drop `icon`. |
 | Landing/card components | Markdown links, lists, or approved overview components | no | high | Needs IA and design judgment. |
 | API reference JSX components | Structured API source, generated-reference conversion, or conservative MDX | partial | high | Do not preserve API UI JSX. |
 | `RestfulRender` / `OpenapiRender` | OpenAPI lane | partial | high | Keep YAML/JSON under `content/openapi/**`. |
@@ -89,6 +94,61 @@ Rules:
 - Use code fence tabs for small code/example alternatives.
 - Use MDX tabs only when panes contain prose, lists, images, or multiple code fences.
 - Do not invent `CodeTabs`, `PlatformTabs`, or Docusaurus `TabItem` syntax.
+
+## Details And Accordions
+
+Legacy:
+
+```mdx
+<Detail title="错误码说明">
+内容
+</Detail>
+```
+
+Target:
+
+```mdx
+<Accordions>
+<Accordion title="错误码说明">
+
+内容
+
+</Accordion>
+</Accordions>
+```
+
+Rules:
+
+- Use the existing `Accordions` and `Accordion` primitives.
+- Preserve headings, anchors, lists, and code blocks inside the expanded body.
+- If the old detail block is only hiding optional reference detail, review the target information architecture before collapsing a large section.
+
+## Release Notes
+
+Legacy examples:
+
+- `VersionSection`
+- `VersionTitle`
+- `ListTitle`
+
+Target:
+
+```md
+## v1.2.3
+
+### 新增功能
+
+#### iOS
+```
+
+Rules:
+
+- Convert `VersionSection` to a level-2 Markdown heading.
+- Convert `VersionTitle` to a level-3 Markdown heading.
+- Convert `ListTitle` to a level-4 Markdown heading.
+- Drop decorative props such as `icon`.
+- Keep version/date text, section order, lists, and anchors.
+- Do not introduce release-note runtime components.
 
 ## Platform Variants
 
@@ -160,7 +220,7 @@ Rules:
 - Preserve useful alt text.
 - If width, caption, inline placement, or sizing is content-critical, mark `needs-image-standard` or `needs_review`.
 
-## Tables
+## Tables And Table Slots
 
 Legacy:
 
@@ -181,10 +241,27 @@ Target:
 | appId | 项目 App ID。 |
 ```
 
+Target for a table cell that must preserve block content:
+
+```mdx
+| 参数 | 说明 |
+| --- | --- |
+| options | <Slot name="options" /> |
+
+<Slot for="options">
+
+- aaa
+- bbb
+
+</Slot>
+```
+
 Rules:
 
 - Prefer GFM tables.
-- Use native HTML `<table>` only for real row spans, column spans, or block-heavy cells that Markdown cannot represent clearly.
+- Use the approved table `Slot` pattern when a table cell needs lists, callouts, code fences, or multiple paragraphs and the tabular shape must be preserved.
+- Put `<Slot for="...">` immediately after the table that references it.
+- Use native HTML `<table>` only for real row spans or column spans that Markdown and Slot cannot represent clearly.
 - Do not preserve React table components.
 
 ## Anchors And Headings
@@ -231,12 +308,14 @@ Legacy examples:
 Target:
 
 - Markdown lists and links for simple navigation.
+- Existing `Cards` / `Card` primitives only for real navigation card groups.
 - Approved overview components only when the target repository already uses them for that page type.
 - A dedicated design/IA decision for complex landing pages.
 
 Rules:
 
 - Do not leave marketing/card JSX in content.
+- Remove `Row` and `Col` when they only provide visual layout around card components.
 - Do not turn a source page into a short summary unless the ledger action is `rewrite` and review accepts it.
 
 ## API Reference JSX
@@ -247,6 +326,9 @@ Legacy examples:
 - `OverloadMethodCollapse`
 - `OverloadMethodCollapsePanel`
 - generated `H2` / `H3`
+- `Glossary`
+- `Status`
+- `Stateitem`
 - API-specific table wrappers
 - `RestfulRender`
 - `OpenapiRender`
@@ -261,6 +343,7 @@ Target:
 Rules:
 
 - Do not keep legacy API UI JSX.
+- Treat `H2`, `H3`, `Glossary`, `Status`, and `Stateitem` as content syntax or generated-reference migration work, not as JS-to-MDX runtime components.
 - Preserve stable IDs, inline links, code spans, notes, parameter tables, return values, related references, and nested lists.
 - Treat non-code inline HTML as MDX-unsafe until normalized.
 
