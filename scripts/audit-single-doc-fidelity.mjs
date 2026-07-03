@@ -1,7 +1,13 @@
-import fs from 'node:fs';
+import fs, { promises as fsPromises } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
+import {
+  ensureControlProgressColumns,
+  readControlTable,
+  selectRowsReadyForAudit,
+  updateAuditProgressInPathMap,
+} from './migration-control-table.mjs';
 
 const DEFAULT_VARIABLES = {
   Vg: {
@@ -20,7 +26,27 @@ const DEFAULT_VARIABLES = {
 };
 
 const MARKDOWN_FILE_PATTERN = /\.(md|mdx)$/i;
+const ALLOWED_TARGET_MDX_COMPONENTS = new Set([
+  'Accordion',
+  'Accordions',
+  'Card',
+  'Cards',
+  'CodeBlockTab',
+  'CodeBlockTabs',
+  'CodeBlockTabsList',
+  'CodeBlockTabsTrigger',
+  'Link',
+  'PlatformInline',
+  'PlatformStructured',
+  'Slot',
+  'Tabs',
+  'TabsContent',
+  'TabsList',
+  'TabsTrigger',
+]);
 const KNOWN_STRUCTURAL_COMPONENTS = new Set([
+  'Accordion',
+  'Accordions',
   'CodeBlockTab',
   'CodeBlockTabs',
   'CodeBlockTabsList',
@@ -29,6 +55,7 @@ const KNOWN_STRUCTURAL_COMPONENTS = new Set([
   'Link',
   'PlatformInline',
   'PlatformStructured',
+  'Slot',
   'ProductWrapper',
   'Tab',
   'TabItem',
@@ -53,11 +80,17 @@ export function auditSingleDocContentFidelity({
     platform: platform ?? null,
     product: product ?? null,
   };
+  const targetRawContent = stripFrontmatter(
+    fs.readFileSync(resolvedNewPath, 'utf8'),
+  );
+  const legacyResidue = detectLegacyResidue(targetRawContent);
   const oldContent = loadLegacyContent({
     currentFile: resolvedOldPath,
     projection,
     seen: new Set(),
-    sourceRoot: sourceRoot ? path.resolve(sourceRoot) : path.dirname(resolvedOldPath),
+    sourceRoot: sourceRoot
+      ? path.resolve(sourceRoot)
+      : path.dirname(resolvedOldPath),
     variables: DEFAULT_VARIABLES,
   });
   const newContent = loadPortalContent({
@@ -77,6 +110,12 @@ export function auditSingleDocContentFidelity({
     side: 'new',
   });
   const comparison = compareRecords({ sourceRecords, targetRecords });
+  const contentDifferences =
+    comparison.findings.changed.length +
+    comparison.findings.extra.length +
+    comparison.findings.missing.length +
+    comparison.findings.moved.length +
+    comparison.findings.unsupported.length;
   const report = {
     generatedAt: new Date().toISOString(),
     page: {
@@ -94,18 +133,52 @@ export function auditSingleDocContentFidelity({
       moved: comparison.findings.moved.length,
       sourceRecords: sourceRecords.length,
       targetRecords: targetRecords.length,
-      unresolvedDifferences:
-        comparison.findings.changed.length +
-        comparison.findings.extra.length +
-        comparison.findings.missing.length +
-        comparison.findings.moved.length +
-        comparison.findings.unsupported.length,
+      legacyResidue: legacyResidue.total,
+      unresolvedDifferences: contentDifferences + legacyResidue.total,
       unsupported: comparison.findings.unsupported.length,
     },
-    findings: comparison.findings,
+    findings: {
+      ...comparison.findings,
+      legacyResidue,
+    },
   };
 
   return report;
+}
+
+export function detectLegacyResidue(content) {
+  const stripped = stripMarkdownCode(content);
+  const residue = new Map();
+
+  for (const match of stripped.matchAll(/<\/?([A-Z][A-Za-z0-9]*)\b[^>]*>/g)) {
+    const componentName = match[1];
+    if (ALLOWED_TARGET_MDX_COMPONENTS.has(componentName)) {
+      continue;
+    }
+    addResidue(residue, `legacy-component:${componentName}`);
+  }
+
+  if (
+    /^import\s+[\s\S]*?from\s+['"]@(?:shared|doc-shared|api-shared|docs\/shared)\//m.test(
+      stripped,
+    )
+  ) {
+    addResidue(residue, 'legacy-shared-import');
+  }
+
+  if (/\bfrontMatter\.|\bprops\./.test(stripped)) {
+    addResidue(residue, 'legacy-runtime-variable');
+  }
+
+  const details = [...residue.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([kind, count]) => ({ count, kind }));
+
+  return {
+    details,
+    examples: details.slice(0, 5).map((item) => item.kind),
+    total: details.reduce((sum, item) => sum + item.count, 0),
+  };
 }
 
 export function loadLegacyContent({
@@ -278,6 +351,12 @@ function resolveImportSource({ currentFile, source, sourceRoot }) {
     );
   }
 
+  if (source.startsWith('@doc-shared/')) {
+    return resolveMarkdownFile(
+      path.join(sourceRoot, 'shared', source.slice('@doc-shared/'.length)),
+    );
+  }
+
   if (source.startsWith('.')) {
     return resolveMarkdownFile(path.resolve(path.dirname(currentFile), source));
   }
@@ -311,7 +390,10 @@ function replaceComponentUsage(content, componentName, replacement) {
 }
 
 function filterOrStripWrapper(content, componentName, options) {
-  const openPattern = new RegExp(`<${escapeRegExp(componentName)}\\b[^>]*>`, 'g');
+  const openPattern = new RegExp(
+    `<${escapeRegExp(componentName)}\\b[^>]*>`,
+    'g',
+  );
   let result = '';
   let cursor = 0;
 
@@ -724,18 +806,33 @@ function normalizeMdxSyntax(content) {
     /<Tab\b[^>]*>([\s\S]*?)<\/Tab>/g,
     (_match, body) => `@@TAB:${normalizePlainText(body).trim() || 'tab'}`,
   );
-  normalized = normalized.replace(/<\/?(Tabs|TabsList|TabsContent)\b[^>]*>/g, '');
+  normalized = normalized.replace(
+    /<\/?(Tabs|TabsList|TabsContent)\b[^>]*>/g,
+    '',
+  );
   normalized = normalized.replace(
     /<\/?(CodeBlockTabs|CodeBlockTabsList)\b[^>]*>/g,
     '',
   );
-  normalized = normalized.replace(/<summary>([\s\S]*?)<\/summary>/g, (_match, body) => {
-    return `**${normalizePlainText(body).trim()}**`;
-  });
+  normalized = normalized.replace(/<\/?(Accordions|Accordion)\b[^>]*>/g, '');
+  normalized = normalized.replace(/<Slot\b[^>]*\/>/g, '');
+  normalized = normalized.replace(/<\/?Slot\b[^>]*>/g, '');
+  normalized = normalized.replace(
+    /<summary>([\s\S]*?)<\/summary>/g,
+    (_match, body) => {
+      return `**${normalizePlainText(body).trim()}**`;
+    },
+  );
   normalized = normalized.replace(/<\/?details>/g, '');
   normalized = normalized.replace(/^export\s+const\s+.+$/gm, '');
-  normalized = normalized.replace(/<\/?(PlatformStructured|PlatformInline)\b[^>]*>/g, '');
-  normalized = normalized.replace(/<\/?(ProductWrapper|PlatformWrapper)\b[^>]*>/g, '');
+  normalized = normalized.replace(
+    /<\/?(PlatformStructured|PlatformInline)\b[^>]*>/g,
+    '',
+  );
+  normalized = normalized.replace(
+    /<\/?(ProductWrapper|PlatformWrapper)\b[^>]*>/g,
+    '',
+  );
 
   return normalized;
 }
@@ -1093,6 +1190,28 @@ function stripFrontmatter(content) {
   return content.replace(/^---\n[\s\S]*?\n---\n?/, '');
 }
 
+function stripMarkdownCode(content) {
+  const withoutFences = [];
+  let inFence = false;
+
+  for (const line of content.split('\n')) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+
+    if (!inFence) {
+      withoutFences.push(line);
+    }
+  }
+
+  return withoutFences.join('\n').replace(/`[^`\n]*`/g, '');
+}
+
+function addResidue(residue, kind) {
+  residue.set(kind, (residue.get(kind) ?? 0) + 1);
+}
+
 function hashString(value) {
   let hash = 5381;
 
@@ -1128,6 +1247,7 @@ export function renderMarkdownReport(report) {
     `- Changed: ${report.summary.changed}`,
     `- Moved: ${report.summary.moved}`,
     `- Unsupported: ${report.summary.unsupported}`,
+    `- Legacy residue: ${formatLegacyResidueSummary(report.findings.legacyResidue)}`,
     `- Unresolved differences: ${report.summary.unresolvedDifferences}`,
     '',
   ];
@@ -1141,6 +1261,107 @@ export function renderMarkdownReport(report) {
   }
 
   return `${lines.join('\n')}\n`;
+}
+
+export async function auditCompletedMigrationRows({
+  includeAudited = false,
+  limit = 0,
+  outDir = 'docs/migration/generated/completed-audit',
+  pathMap = 'docs/migration/path-map.csv',
+  repoRoot = process.cwd(),
+  sourceRoot,
+  targetRoot = process.cwd(),
+} = {}) {
+  if (!sourceRoot) {
+    throw new Error('--source-root is required when auditing from --path-map.');
+  }
+
+  const pathMapPath = path.resolve(repoRoot, pathMap);
+  const table = ensureControlProgressColumns(
+    await readControlTable(pathMapPath),
+  );
+  const rowsReadyForAudit = selectRowsReadyForAudit(table, {
+    includeAudited,
+  }).filter((row) => row.source_path && row.target_path);
+  const selectedRows =
+    limit > 0 ? rowsReadyForAudit.slice(0, limit) : rowsReadyForAudit;
+  const resolvedOutDir = path.resolve(repoRoot, outDir);
+  const results = [];
+
+  await fsPromises.mkdir(resolvedOutDir, { recursive: true });
+
+  for (const row of selectedRows) {
+    const sourcePath = row.source_path;
+    const targetPath = row.target_path;
+    const reportPrefix = path.join(resolvedOutDir, safeReportStem(sourcePath));
+
+    try {
+      const report = auditSingleDocContentFidelity({
+        oldPath: path.resolve(sourceRoot, sourcePath),
+        newPath: path.resolve(targetRoot, targetPath),
+        platform: inferPlatformFromSourcePath(sourcePath),
+        product: inferProductFromSourcePath(sourcePath),
+        sourceRoot,
+      });
+      const paths = writeReport(report, reportPrefix);
+
+      results.push({
+        auditProgress: 'completed',
+        auditResult: getAuditResult(report),
+        jsonPath: paths.jsonPath,
+        legacyResidue: report.summary.legacyResidue,
+        markdownPath: paths.markdownPath,
+        sourcePath,
+        summary: report.summary,
+        targetPath,
+      });
+    } catch (error) {
+      const paths = await writeAuditErrorReport({
+        error,
+        reportPrefix,
+        sourcePath,
+        targetPath,
+      });
+
+      results.push({
+        auditProgress: 'failed',
+        auditResult: `error:${error.message}`,
+        jsonPath: paths.jsonPath,
+        markdownPath: paths.markdownPath,
+        sourcePath,
+        targetPath,
+      });
+    }
+  }
+
+  const report = createBatchAuditReport({
+    outDir: resolvedOutDir,
+    pathMapPath,
+    results,
+    rowsReadyForAudit,
+    sourceRoot,
+    targetRoot,
+  });
+  const aggregateJsonPath = path.join(resolvedOutDir, 'report.json');
+  const aggregateMarkdownPath = path.join(resolvedOutDir, 'report.md');
+  await fsPromises.writeFile(
+    aggregateJsonPath,
+    `${JSON.stringify(report, null, 2)}\n`,
+    'utf8',
+  );
+  await fsPromises.writeFile(
+    aggregateMarkdownPath,
+    renderBatchAuditMarkdownReport(report),
+    'utf8',
+  );
+
+  await updateAuditProgressInPathMap({
+    pathMapPath,
+    repoRoot,
+    results,
+  });
+
+  return report;
 }
 
 function renderFindingSection(lines, key, findings) {
@@ -1173,26 +1394,198 @@ function formatRecordSummary(record) {
   return `\`${record.side}:${record.kind}\` ${record.section} @ ${record.line} ${JSON.stringify(record.excerpt)}`;
 }
 
+function formatLegacyResidueSummary(legacyResidue) {
+  if (!legacyResidue?.total) {
+    return 'none';
+  }
+
+  return `${legacyResidue.total} issue(s); examples: ${legacyResidue.examples
+    .map((example) => `\`${example}\``)
+    .join(', ')}`;
+}
+
 function titleCase(value) {
   return value.slice(0, 1).toUpperCase() + value.slice(1);
+}
+
+function getAuditResult(report) {
+  if (report.summary.legacyResidue > 0) {
+    return `legacy-residue:${report.summary.legacyResidue}`;
+  }
+
+  if (report.summary.unresolvedDifferences > 0) {
+    return `differences:${report.summary.unresolvedDifferences}`;
+  }
+
+  return 'pass';
+}
+
+function createBatchAuditReport({
+  outDir,
+  pathMapPath,
+  results,
+  rowsReadyForAudit,
+  sourceRoot,
+  targetRoot,
+}) {
+  const passed = results.filter(
+    (result) => result.auditResult === 'pass',
+  ).length;
+  const failed = results.filter(
+    (result) => result.auditProgress === 'failed',
+  ).length;
+  const differences = results.filter((result) =>
+    result.auditResult?.startsWith('differences:'),
+  ).length;
+  const legacyResidue = results.filter((result) =>
+    result.auditResult?.startsWith('legacy-residue:'),
+  ).length;
+
+  return {
+    generatedAt: new Date().toISOString(),
+    outDir,
+    pathMapPath,
+    results,
+    sourceRoot,
+    summary: {
+      auditedRows: results.length,
+      differences,
+      eligibleRows: rowsReadyForAudit.length,
+      failed,
+      legacyResidue,
+      passed,
+    },
+    targetRoot,
+  };
+}
+
+function renderBatchAuditMarkdownReport(report) {
+  const lines = [
+    '# Completed Migration Audit Report',
+    '',
+    `Generated: ${report.generatedAt}`,
+    `Path map: \`${report.pathMapPath}\``,
+    `Source root: \`${report.sourceRoot}\``,
+    `Target root: \`${report.targetRoot}\``,
+    '',
+    '## Summary',
+    '',
+    `- Eligible rows: ${report.summary.eligibleRows}`,
+    `- Audited rows: ${report.summary.auditedRows}`,
+    `- Passed: ${report.summary.passed}`,
+    `- Differences: ${report.summary.differences}`,
+    `- Legacy residue: ${report.summary.legacyResidue}`,
+    `- Failed: ${report.summary.failed}`,
+    '',
+    '## Rows',
+    '',
+    '| Source | Target | Progress | Result | Report |',
+    '| --- | --- | --- | --- | --- |',
+    ...report.results
+      .map((result) =>
+        [
+          `\`${result.sourcePath}\``,
+          `\`${result.targetPath}\``,
+          result.auditProgress,
+          result.auditResult,
+          result.markdownPath ? `\`${result.markdownPath}\`` : '',
+        ].join(' | '),
+      )
+      .map((row) => `| ${row} |`),
+    '',
+  ];
+
+  return `${lines.join('\n')}\n`;
+}
+
+async function writeAuditErrorReport({
+  error,
+  reportPrefix,
+  sourcePath,
+  targetPath,
+}) {
+  const jsonPath = `${reportPrefix}.json`;
+  const markdownPath = `${reportPrefix}.md`;
+  const payload = {
+    error: error.message,
+    generatedAt: new Date().toISOString(),
+    sourcePath,
+    stack: error.stack,
+    targetPath,
+  };
+  await fsPromises.writeFile(jsonPath, `${JSON.stringify(payload, null, 2)}\n`);
+  await fsPromises.writeFile(
+    markdownPath,
+    [
+      '# Single Document Content Fidelity Audit',
+      '',
+      `Source: \`${sourcePath}\``,
+      `Target: \`${targetPath}\``,
+      '',
+      '## Error',
+      '',
+      error.message,
+      '',
+    ].join('\n'),
+  );
+  return { jsonPath, markdownPath };
+}
+
+function safeReportStem(sourcePath) {
+  return sourcePath
+    .replace(/\.(md|mdx)$/i, '')
+    .replace(/[^A-Za-z0-9._-]+/g, '__')
+    .slice(0, 180);
+}
+
+function inferProductFromSourcePath(sourcePath) {
+  const parts = sourcePath.split('/');
+  const docsIndex = parts.indexOf('docs');
+  return docsIndex >= 0 ? parts[docsIndex + 1] : (parts[0] ?? null);
+}
+
+function inferPlatformFromSourcePath(sourcePath) {
+  const fileName = path.basename(sourcePath).replace(/\.(md|mdx)$/i, '');
+  const suffixes = fileName.split('.').slice(1);
+  return suffixes.find((suffix) => !/^\d/.test(suffix)) ?? null;
 }
 
 function parseArgs(args) {
   const options = {
     failOnDifferences: false,
+    includeAudited: false,
+    limit: 0,
     newPath: null,
     newUrl: null,
     oldPath: null,
     oldUrl: null,
     out: null,
+    outDir: null,
+    pathMap: null,
     platform: null,
     product: null,
     sourceRoot: null,
+    targetRoot: null,
   };
 
   for (const arg of args) {
     if (arg === '--fail-on-differences') {
       options.failOnDifferences = true;
+      continue;
+    }
+
+    if (arg === '--include-audited') {
+      options.includeAudited = true;
+      continue;
+    }
+
+    if (arg.startsWith('--limit=')) {
+      options.limit = Number(arg.slice('--limit='.length));
+      continue;
+    }
+
+    if (arg.startsWith('--path-map=')) {
+      options.pathMap = arg.slice('--path-map='.length);
       continue;
     }
 
@@ -1221,6 +1614,11 @@ function parseArgs(args) {
       continue;
     }
 
+    if (arg.startsWith('--target-root=')) {
+      options.targetRoot = arg.slice('--target-root='.length);
+      continue;
+    }
+
     if (arg.startsWith('--product=')) {
       options.product = arg.slice('--product='.length);
       continue;
@@ -1236,7 +1634,19 @@ function parseArgs(args) {
       continue;
     }
 
+    if (arg.startsWith('--out-dir=')) {
+      options.outDir = arg.slice('--out-dir='.length);
+      continue;
+    }
+
     throw new Error(`Unknown argument: ${arg}`);
+  }
+
+  if (options.pathMap) {
+    if (!options.sourceRoot) {
+      throw new Error('--source-root is required with --path-map.');
+    }
+    return options;
   }
 
   if (!options.oldPath || !options.newPath) {
@@ -1259,6 +1669,31 @@ function writeReport(report, outPrefix) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
+  if (options.pathMap) {
+    const report = await auditCompletedMigrationRows({
+      includeAudited: options.includeAudited,
+      limit: options.limit,
+      outDir: options.outDir ?? undefined,
+      pathMap: options.pathMap,
+      sourceRoot: options.sourceRoot,
+      targetRoot: options.targetRoot ?? process.cwd(),
+    });
+
+    console.log(
+      `Audited ${report.summary.auditedRows} completed migration rows.`,
+    );
+    console.log(`Wrote ${path.join(report.outDir, 'report.json')}`);
+    console.log(`Wrote ${path.join(report.outDir, 'report.md')}`);
+
+    if (
+      options.failOnDifferences &&
+      (report.summary.differences > 0 || report.summary.failed > 0)
+    ) {
+      process.exitCode = 1;
+    }
+    return;
+  }
+
   const report = auditSingleDocContentFidelity({
     oldPath: options.oldPath,
     oldUrl: options.oldUrl,

@@ -4,6 +4,10 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import {
+  readControlTable,
+  updateMigrationProgressInPathMap,
+} from './migration-control-table.mjs';
 
 const DEFAULT_SOURCE_ROOTS = [
   process.env.LEGACY_DOC_SOURCE_ROOT,
@@ -142,6 +146,15 @@ export async function migrateLegacyBatch(options = {}) {
     reportToMarkdown(report),
     'utf8',
   );
+
+  if (options.updatePathMap !== false) {
+    await updateMigrationProgressInPathMap({
+      pathMapPath,
+      reportPath: path.join(outDir, 'report.md'),
+      repoRoot,
+      results,
+    });
+  }
 
   return report;
 }
@@ -2748,87 +2761,33 @@ function summarizeSignalMap(map) {
 }
 
 async function loadPathMap(pathMapPath) {
-  const raw = await fs.readFile(pathMapPath, 'utf8');
-  const rows = parseCsv(raw);
+  const table = await readControlTable(pathMapPath);
   const pathMap = new Map();
 
-  for (const row of rows.slice(1)) {
-    const [
-      sourcePath,
-      targetPath,
-      migrationAction,
-      status,
-      risk,
-      batchable,
-      blockedReason,
-      nextStep,
-      decisionRefs,
-    ] = row;
+  for (const row of table.rows) {
+    const sourcePath = row.source_path;
     if (!sourcePath) {
       continue;
     }
     pathMap.set(sourcePath, {
-      batchable,
-      blockedReason,
-      decisionRefs,
-      migrationAction,
-      nextStep,
-      risk,
+      auditProgress: row.audit_progress ?? '',
+      auditResult: row.audit_result ?? '',
+      batchable: row.batchable ?? '',
+      blockedReason: row.blocked_reason ?? '',
+      decisionRefs: row.decision_refs ?? '',
+      lastAuditReport: row.last_audit_report ?? '',
+      lastMigrationReport: row.last_migration_report ?? '',
+      migrationAction: row.migration_action ?? '',
+      migrationProgress: row.migration_progress ?? '',
+      nextStep: row.next_step ?? '',
+      risk: row.risk ?? '',
       sourcePath,
-      status,
-      targetPath,
+      status: row.status ?? '',
+      targetPath: row.target_path ?? '',
     });
   }
 
   return pathMap;
-}
-
-function parseCsv(raw) {
-  const rows = [];
-  let field = '';
-  let row = [];
-  let inQuotes = false;
-
-  for (let index = 0; index < raw.length; index += 1) {
-    const char = raw[index];
-    const next = raw[index + 1];
-
-    if (char === '"') {
-      if (inQuotes && next === '"') {
-        field += '"';
-        index += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
-      continue;
-    }
-
-    if (char === ',' && !inQuotes) {
-      row.push(field);
-      field = '';
-      continue;
-    }
-
-    if ((char === '\n' || char === '\r') && !inQuotes) {
-      if (char === '\r' && next === '\n') {
-        index += 1;
-      }
-      row.push(field);
-      rows.push(row);
-      field = '';
-      row = [];
-      continue;
-    }
-
-    field += char;
-  }
-
-  if (field || row.length > 0) {
-    row.push(field);
-    rows.push(row);
-  }
-
-  return rows;
 }
 
 async function selectPages({
@@ -3327,6 +3286,7 @@ async function resolveSourceRoot(sourceRoot) {
 function parseArgs(argv) {
   const options = {
     pages: [],
+    updatePathMap: true,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -3379,6 +3339,11 @@ function parseArgs(argv) {
 
     if (arg.startsWith('--component-map=')) {
       options.componentMap = arg.slice('--component-map='.length);
+      continue;
+    }
+
+    if (arg === '--no-path-map-update') {
+      options.updatePathMap = false;
       continue;
     }
 

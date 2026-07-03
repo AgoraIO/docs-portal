@@ -14,6 +14,7 @@ import {
   transformAdmonitions,
   transformLegacyMdx,
 } from './migrate-legacy-docs.mjs';
+import { parseCsv } from './migration-control-table.mjs';
 
 function createState(
   sourcePath = 'docs/rtc/basic-features/audio-quick-start.macos.mdx',
@@ -1636,5 +1637,74 @@ title: 未映射指南
 
     expect(report.results[0].targetPath).toBe('');
     expect(migrated).toContain('普通内容。');
+  });
+
+  it('marks mapped path-map rows as migrated and ready for audit', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-progress-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/rtc/get-started/quick-start.ios.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/rtc/get-started'), {
+      recursive: true,
+    });
+    await mkdir(path.join(repoRoot, 'docs/migration'), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 快速开始
+---
+
+这是快速开始。
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtc/get-started/quick-start.ios.mdx,migrate_page_after_syntax_and_ia_review,needs_review,low,yes,,,`,
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/component-map.yaml'),
+      '',
+      'utf8',
+    );
+
+    await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+
+    const rows = parseCsv(
+      await readFile(
+        path.join(repoRoot, 'docs/migration/path-map.csv'),
+        'utf8',
+      ),
+    );
+    const headers = rows[0];
+    const values = Object.fromEntries(
+      headers.map((header: string, index: number) => [header, rows[1][index]]),
+    );
+
+    expect(headers).toContain('migration_progress');
+    expect(headers).toContain('audit_progress');
+    expect(headers).toContain('audit_result');
+    expect(values.migration_progress).toBe('completed');
+    expect(values.audit_progress).toBe('pending');
+    expect(values.last_migration_report).toBe('out/report.md');
+    expect(values.next_step).toBe(
+      'Run the audit script for this completed migration row.',
+    );
   });
 });
