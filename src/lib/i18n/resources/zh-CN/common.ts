@@ -26,6 +26,7 @@ const zhCnCommon = {
     searchUnavailable: '搜索索引不可用。',
     searchLoading: '正在搜索...',
     searchAllPlatforms: '全部平台',
+    searchAllProducts: '全部产品',
     tabsLabel: 'Tabs',
     sectionPickerLabel: '分区',
     pagesLabel: 'Pages',

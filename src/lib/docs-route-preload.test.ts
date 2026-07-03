@@ -131,6 +131,7 @@ function createPayload(
       next: undefined,
       previous: undefined,
     },
+    productScopes: [],
     sidebar: [],
     sidebarHeader: undefined,
     slug: 'about',

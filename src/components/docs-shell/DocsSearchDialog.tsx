@@ -15,7 +15,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { TabSummary } from '@/lib/docs-tree';
+import type { ProductScope, TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -45,11 +45,13 @@ export function DocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
+  productScopes = [],
   tabs,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
+  productScopes?: ProductScope[];
   tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');
@@ -60,6 +62,10 @@ export function DocsSearchDialog({
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
+  // Selected scope id (e.g. `product:video`), or null for all products.
+  const [scopeId, setScopeId] = useState<string | null>(null);
+  const scopeFilter =
+    productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
@@ -80,6 +86,7 @@ export function DocsSearchDialog({
             indexName: algoliaIndexName,
             locale: searchLocale,
             platform: platformFilter ?? undefined,
+            scopeFilter,
             searchApiKey: algoliaSearchApiKey,
           })
         : createLocalDocsClient(pages),
@@ -89,6 +96,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      scopeFilter,
       searchLocale,
     ],
   );
@@ -101,6 +109,7 @@ export function DocsSearchDialog({
             algoliaSearchApiKey,
             searchLocale,
             platformFilter,
+            scopeFilter,
           ]
         : [pages, searchLocale],
     [
@@ -109,6 +118,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      scopeFilter,
       searchLocale,
     ],
   );
@@ -241,7 +251,34 @@ export function DocsSearchDialog({
           value={search}
         />
         {algoliaConfig ? (
-          <div className="flex flex-wrap gap-1 border-b px-3 py-2">
+          <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
+            {productScopes.length > 0 ? (
+              <select
+                aria-label={t('docs.searchAllProducts')}
+                className="mr-1 h-7 shrink-0 rounded-md border border-border bg-background px-2 text-xs text-foreground"
+                onChange={(event) => setScopeId(event.target.value || null)}
+                value={scopeId ?? ''}
+              >
+                <option value="">{t('docs.searchAllProducts')}</option>
+                {groupProductScopes(productScopes).map((group) =>
+                  group.label ? (
+                    <optgroup key={group.label} label={group.label}>
+                      {group.scopes.map((scope) => (
+                        <option key={scope.id} value={scope.id}>
+                          {scope.label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ) : (
+                    group.scopes.map((scope) => (
+                      <option key={scope.id} value={scope.id}>
+                        {scope.label}
+                      </option>
+                    ))
+                  ),
+                )}
+              </select>
+            ) : null}
             <Button
               aria-pressed={platformFilter === null}
               className="h-7 shrink-0 px-2 text-xs"
@@ -502,6 +539,28 @@ function getHighlightParts(value: string) {
   return parts.length > 0
     ? parts
     : [{ highlight: false, key: `0:text:${value}`, text: value }];
+}
+
+// Group scopes by their section header (preserving nav order) for <optgroup>
+// rendering. Tab-level scopes (no group) come through as an unlabelled group.
+function groupProductScopes(scopes: ProductScope[]) {
+  const groups: { label?: string; scopes: ProductScope[] }[] = [];
+  const byLabel = new Map<string, { label?: string; scopes: ProductScope[] }>();
+
+  for (const scope of scopes) {
+    const key = scope.group ?? '';
+    let group = byLabel.get(key);
+
+    if (!group) {
+      group = { label: scope.group, scopes: [] };
+      byLabel.set(key, group);
+      groups.push(group);
+    }
+
+    group.scopes.push(scope);
+  }
+
+  return groups;
 }
 
 function filterTabs(tabs: TabSummary[], query: string) {

@@ -26,6 +26,7 @@ const enCommon = {
     searchUnavailable: 'Search index unavailable.',
     searchLoading: 'Searching...',
     searchAllPlatforms: 'All platforms',
+    searchAllProducts: 'All products',
     tabsLabel: 'Tabs',
     sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',
