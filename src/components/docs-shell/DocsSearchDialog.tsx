@@ -317,6 +317,11 @@ export function DocsSearchDialog({
                       className="line-clamp-1 font-medium"
                       value={page.title}
                     />
+                    {page.path.length > 0 ? (
+                      <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                        {page.path.join(' › ')}
+                      </div>
+                    ) : null}
                     {page.context.length > 0 ? (
                       <div className="flex flex-wrap gap-1">
                         {page.context.map((item) => (
@@ -349,6 +354,7 @@ export function DocsSearchDialog({
 type RenderedSearchEntry = SearchEntry & {
   context: string[];
   id?: string;
+  path: string[];
   snippet?: string;
 };
 
@@ -359,6 +365,7 @@ function localSearchEntryToRenderedEntry(
     ...entry,
     context: [],
     id: entry.url,
+    path: [],
   };
 }
 
@@ -367,6 +374,7 @@ function searchResultToEntry(result: {
   content: unknown;
   id?: unknown;
   objectType?: unknown;
+  path?: unknown[];
   platform?: unknown;
   product?: unknown;
   section?: unknown;
@@ -376,20 +384,13 @@ function searchResultToEntry(result: {
   url: string;
 }): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
-  const section = getString(result.section);
-  const product = getString(result.product);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
-  const tab = getString(result.tab);
 
   return {
     context: uniqueStrings([
-      product,
-      section,
-      ...formatPlatformContext(platforms ?? []),
       objectType === 'openapi' ? 'API' : undefined,
-      tab,
-      ...(breadcrumbs ?? []).slice(0, 2),
+      ...formatPlatformContext(platforms ?? []),
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'
@@ -397,6 +398,7 @@ function searchResultToEntry(result: {
         : breadcrumbs?.filter(Boolean).join(' / '),
     ),
     id: getString(result.id),
+    path: getStringArray(result.path) ?? [],
     title:
       typeof result.title === 'string'
         ? result.title
@@ -449,7 +451,7 @@ function HighlightedText({
       {getHighlightParts(value).map((part) =>
         part.highlight ? (
           <mark
-            className="rounded-sm bg-primary/15 px-0.5 text-primary"
+            className="rounded-[3px] bg-primary/25 px-0.5 font-semibold text-primary"
             key={part.key}
           >
             {part.text}

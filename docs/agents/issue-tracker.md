@@ -1,6 +1,8 @@
 # Issue tracker: GitHub
 
-Issues and PRDs for this repo live as GitHub issues in `Shengwang-Community/docs-portal`. Use the `gh` CLI for all operations.
+Issues and PRDs for this repo live as GitHub issues in `AgoraIO/docs-portal`. Use the `gh` CLI for all operations.
+
+External pull requests are **not** a triage surface: `/triage` processes issues only. PRs are handled through the normal review workflow, not pulled into the issue queue.
 
 ## Conventions
 

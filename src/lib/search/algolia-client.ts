@@ -1,5 +1,6 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
+import { SUPPORTED_LOCALES } from '../i18n/i18n-config';
 
 export type AlgoliaSearchFilters = {
   platform?: string;
@@ -8,6 +9,31 @@ export type AlgoliaSearchFilters = {
 type AlgoliaDocsHit = Record<string, unknown> & {
   objectID: string;
 };
+
+const LOCALE_SEGMENTS = new Set<string>(SUPPORTED_LOCALES);
+
+// Segments that read better fully capitalised than title-cased.
+const ACRONYM_SEGMENTS = new Set([
+  'ai',
+  'api',
+  'asr',
+  'cli',
+  'faq',
+  'im',
+  'ios',
+  'ip',
+  'llm',
+  'mcp',
+  'mllm',
+  'rtc',
+  'rtm',
+  'sdk',
+  'stt',
+  'tts',
+  'ui',
+  'url',
+  'vad',
+]);
 
 export function createAlgoliaDocsClient({
   appId,
@@ -41,6 +67,8 @@ export function createAlgoliaDocsClient({
             filters: buildFilters({ locale, platform }),
             hitsPerPage: 10,
             attributesToHighlight: ['title', 'section', 'content'],
+            attributesToSnippet: ['content:25', 'section:20'],
+            snippetEllipsisText: '…',
             attributesToRetrieve: [
               'objectID',
               'title',
@@ -82,14 +110,21 @@ export function createAlgoliaDocsClient({
           breadcrumbs: getStringArray(hit.breadcrumbs),
           content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
           id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
+          matchRank: getMatchRank(hit),
           objectType: getString(hit.objectType),
+          path: buildPathSegments(url),
           platform: getStringArray(hit.platform),
           product: getString(hit.product),
           section: getHighlight(hit, 'section') ?? section,
           snippet:
-            getHighlight(hit, 'content') ??
-            getHighlight(hit, 'section') ??
+            (isMatched(hit, 'content')
+              ? getSnippet(hit, 'content')
+              : undefined) ??
+            (isMatched(hit, 'section')
+              ? getSnippet(hit, 'section')
+              : undefined) ??
             getString(hit.description) ??
+            getSnippet(hit, 'content') ??
             getString(hit.content),
           tab: getString(hit.tab),
           title: getHighlight(hit, 'title') ?? getString(hit.title),
@@ -97,6 +132,11 @@ export function createAlgoliaDocsClient({
           url: resultUrl,
         });
       }
+
+      // Surface results that matched a title or heading above those that only
+      // matched deep body/schema text. Array.sort is stable, so Algolia's own
+      // ranking is preserved within each tier.
+      entries.sort((a, b) => b.matchRank - a.matchRank);
 
       return entries;
     },
@@ -115,14 +155,87 @@ function buildFilters({
     .join(' AND ');
 }
 
-function getHighlight(hit: Record<string, unknown>, key: string) {
+// Turn a doc URL into a readable breadcrumb of its parent sections, e.g.
+// "/en/realtime-media/voice/vad" -> ["Realtime Media", "Voice"]. The trailing
+// segment is dropped because the page title already conveys it.
+function buildPathSegments(url: string): string[] {
+  const segments = url.split('#')[0].split('/').filter(Boolean);
+
+  if (segments.length > 0 && LOCALE_SEGMENTS.has(segments[0])) {
+    segments.shift();
+  }
+
+  if (segments.length > 1) {
+    segments.pop();
+  }
+
+  const humanized = segments.map(humanizeSegment);
+
+  return humanized.filter(
+    (segment, index) =>
+      index === 0 ||
+      segment.toLowerCase() !== humanized[index - 1].toLowerCase(),
+  );
+}
+
+function humanizeSegment(segment: string) {
+  return segment
+    .split(/[-_]/)
+    .filter(Boolean)
+    .map((word) =>
+      ACRONYM_SEGMENTS.has(word.toLowerCase())
+        ? word.toUpperCase()
+        : word.charAt(0).toUpperCase() + word.slice(1),
+    )
+    .join(' ');
+}
+
+function getMatchRank(hit: Record<string, unknown>) {
+  if (isMatched(hit, 'title')) {
+    return 3;
+  }
+
+  if (isMatched(hit, 'section')) {
+    return 2;
+  }
+
+  if (isMatched(hit, 'content')) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function isMatched(hit: Record<string, unknown>, key: string) {
   const highlight = hit._highlightResult;
 
   if (!isRecord(highlight)) {
-    return undefined;
+    return false;
   }
 
   const value = highlight[key];
+
+  return (
+    isRecord(value) &&
+    typeof value.matchLevel === 'string' &&
+    value.matchLevel !== 'none'
+  );
+}
+
+function getHighlight(hit: Record<string, unknown>, key: string) {
+  return getMarkedValue(hit._highlightResult, key);
+}
+
+function getSnippet(hit: Record<string, unknown>, key: string) {
+  return getMarkedValue(hit._snippetResult, key);
+}
+
+function getMarkedValue(source: unknown, key: string) {
+  if (!isRecord(source)) {
+    return undefined;
+  }
+
+  const value = source[key];
 
   if (!isRecord(value) || typeof value.value !== 'string') {
     return undefined;
