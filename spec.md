@@ -48,6 +48,15 @@ Every durable migration record should answer:
 
 `spec.md` must not be used as a progress ledger.
 
+## Single-Document Fidelity Audits
+
+When the task is to audit one migrated document for content fidelity, compare one source document against one target document only.
+
+- Use the same-language source baseline when it exists. Do not compare a Chinese target against an English source when a Chinese source file or generated Chinese baseline is available.
+- Audit visible content inside that document only: title, headings, paragraph meaning, callouts, lists, tables, code blocks, examples, and platform-scoped content that belongs to the same page.
+- Do not treat route reshaping, IA changes, link rewrites, indentation-only changes, or formatting-only Markdown/MDX cleanup as content drift unless the visible content meaning or order changes.
+- Prefer `scripts/audit-single-doc-fidelity.mjs` for this audit mode, and record the exact old source path, new source path, and report output path in the relevant task control file.
+
 ## Agent Work Protocol
 
 Before editing:
