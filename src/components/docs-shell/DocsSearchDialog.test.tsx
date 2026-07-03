@@ -298,6 +298,7 @@ describe('DocsSearchDialog', () => {
           content: 'Voice Activity Detection',
           id: 'android-vad',
           objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
           platform: ['android'],
           product: 'voice',
           section: 'Enable VAD',
@@ -309,6 +310,7 @@ describe('DocsSearchDialog', () => {
           content: 'Voice Activity Detection',
           id: 'ios-vad',
           objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
           platform: ['ios'],
           product: 'voice',
           section: 'Enable VAD',
@@ -366,8 +368,7 @@ describe('DocsSearchDialog', () => {
     );
     expect(screen.getByText('android')).toBeInTheDocument();
     expect(screen.getByText('ios')).toBeInTheDocument();
-    expect(screen.getAllByText('voice')).toHaveLength(2);
-    expect(screen.getAllByText('Enable VAD')).toHaveLength(2);
+    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(2);
     fireEvent.click(screen.getAllByText('Voice Activity Detection')[0]);
 
     await waitFor(() => {
