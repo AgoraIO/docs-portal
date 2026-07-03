@@ -33,6 +33,7 @@ const knownPlatforms = new Set([
   'java',
   'javascript',
   'macos',
+  'mini-program',
   'python',
   'react',
   'restful',
@@ -188,6 +189,36 @@ function parseFileName(fileName) {
     ext,
     platforms,
   };
+}
+
+function metadataKind(sourcePath) {
+  const fileName = sourcePath.split('/').at(-1);
+  if (fileName === '_products_.meta.js') {
+    return 'products';
+  }
+  if (fileName === '_platforms_.meta.js') {
+    return 'platforms';
+  }
+  if (fileName.includes('_sidebar') && fileName.includes('.meta')) {
+    return 'sidebar';
+  }
+  return 'metadata';
+}
+
+function isDummySourcePath(sourcePath) {
+  const segments = sourcePath.split('/');
+  if (segments.includes('dummy-product')) {
+    return true;
+  }
+
+  const fileName = segments.at(-1).toLowerCase();
+  const stem = fileName.replace(/\.(mdx|md|ya?ml|html|js)$/, '');
+  return /^dummy(?:[._-]|$)/.test(stem);
+}
+
+function dummyPlatforms(sourcePath) {
+  const parsed = parseFileName(sourcePath.split('/').at(-1));
+  return parsed.platforms.length > 0 ? parsed.platforms : [''];
 }
 
 function sourceUrl({ sourcePath, sourceType, platform }) {
@@ -386,22 +417,28 @@ function apiTargets({ sourcePath, apiMaps }) {
   });
 }
 
-function statusToRedirect(status) {
-  if (status === 'mapped') {
-    return 'redirect';
-  }
+function statusToRedirect(status, sourceType) {
   if (status === 'ignore' || status === 'ignore-empty') {
     return 'ignore';
+  }
+  if (sourceType === 'openapi' || sourceType === 'metadata') {
+    return 'no-redirect';
+  }
+  if (status === 'mapped') {
+    return 'redirect';
   }
   return 'defer';
 }
 
 function statusToAction(status, sourceType) {
-  if (status === 'mapped') {
-    return sourceType === 'openapi' ? 'openapi-lane' : 'rewrite';
-  }
   if (status === 'ignore' || status === 'ignore-empty') {
     return 'drop';
+  }
+  if (sourceType === 'metadata') {
+    return 'extract-navigation-metadata';
+  }
+  if (status === 'mapped') {
+    return sourceType === 'openapi' ? 'openapi-lane' : 'rewrite';
   }
   if (sourceType === 'shared') {
     return 'shared-include';
@@ -413,8 +450,8 @@ function statusToAction(status, sourceType) {
 }
 
 function createRows({ sourcePath, sourceType, product, platform, target, status, notes }) {
-  const redirectStatus = statusToRedirect(status);
-  const targetRoute = sourcePathToRoute(target);
+  const redirectStatus = statusToRedirect(status, sourceType);
+  const targetRoute = sourceType === 'openapi' ? '' : sourcePathToRoute(target);
   const oldUrl =
     sourceType === 'docs' || sourceType === 'docs-api-reference'
       ? sourceUrl({ sourcePath, sourceType, platform })
@@ -490,7 +527,22 @@ async function main() {
     path.join(legacyRoot, 'html-docs'),
     (filePath) => /\.html$/.test(filePath),
   );
-
+  const metadataFiles = [
+    ...(await listFiles(
+      path.join(legacyRoot, 'docs'),
+      (filePath) =>
+        /(?:_sidebar.*\.meta.*\.js|_platforms_\.meta\.js|_products_\.meta\.js)$/.test(
+          filePath,
+        ),
+    )),
+    ...(await listFiles(
+      path.join(legacyRoot, 'docs-api-reference'),
+      (filePath) =>
+        /(?:_sidebar.*\.meta.*\.js|_platforms_\.meta\.js|_products_\.meta\.js)$/.test(
+          filePath,
+        ),
+    )),
+  ];
   const fileMapRows = [];
   const redirectRows = [];
   const push = (row) => {
@@ -501,6 +553,23 @@ async function main() {
   for (const sourcePath of sourceMarkdownFiles) {
     const [, product] = sourcePath.split('/');
     const sourceType = product === 'shared' ? 'shared' : 'docs';
+    if (isDummySourcePath(sourcePath)) {
+      for (const platform of dummyPlatforms(sourcePath)) {
+        push(
+          createRows({
+            sourcePath,
+            sourceType,
+            product,
+            platform,
+            target: '',
+            status: 'ignore',
+            notes: 'Dummy/测试内容一律不迁移',
+          }),
+        );
+      }
+      continue;
+    }
+
     if (sourceType === 'shared') {
       push(
         createRows({
@@ -534,6 +603,23 @@ async function main() {
   for (const sourcePath of apiMarkdownFiles) {
     const [, product] = sourcePath.split('/');
     const sourceType = product === 'shared' ? 'shared' : 'docs-api-reference';
+    if (isDummySourcePath(sourcePath)) {
+      for (const platform of dummyPlatforms(sourcePath)) {
+        push(
+          createRows({
+            sourcePath,
+            sourceType,
+            product,
+            platform,
+            target: '',
+            status: 'ignore',
+            notes: 'Dummy/测试内容一律不迁移',
+          }),
+        );
+      }
+      continue;
+    }
+
     if (sourceType === 'shared') {
       push(
         createRows({
@@ -566,6 +652,21 @@ async function main() {
 
   for (const sourcePath of openApiFiles) {
     const [, product] = sourcePath.split('/');
+    if (isDummySourcePath(sourcePath)) {
+      push(
+        createRows({
+          sourcePath,
+          sourceType: 'openapi',
+          product,
+          platform: '',
+          target: '',
+          status: 'ignore',
+          notes: 'Dummy/测试内容一律不迁移',
+        }),
+      );
+      continue;
+    }
+
     push(
       createRows({
         sourcePath,
@@ -581,6 +682,21 @@ async function main() {
 
   for (const sourcePath of htmlApiFiles) {
     const [, product, platform] = sourcePath.split('/');
+    if (isDummySourcePath(sourcePath)) {
+      push(
+        createRows({
+          sourcePath,
+          sourceType: 'html-api',
+          product,
+          platform: platform ?? '',
+          target: '',
+          status: 'ignore',
+          notes: 'Dummy/测试内容一律不迁移',
+        }),
+      );
+      continue;
+    }
+
     push(
       createRows({
         sourcePath,
@@ -590,6 +706,43 @@ async function main() {
         target: '',
         status: 'defer',
         notes: 'SDK HTML API 当前 defer，后续保留 .html 文件类型再细化目标路径',
+      }),
+    );
+  }
+
+  for (const sourcePath of metadataFiles) {
+    const parts = sourcePath.split('/');
+    const kind = metadataKind(sourcePath);
+    const product = kind === 'products' ? '' : parts[1];
+    if (isDummySourcePath(sourcePath)) {
+      push(
+        createRows({
+          sourcePath,
+          sourceType: 'metadata',
+          product,
+          platform: '',
+          target: '',
+          status: 'ignore',
+          notes: 'Dummy/测试元数据一律不迁移',
+        }),
+      );
+      continue;
+    }
+
+    push(
+      createRows({
+        sourcePath,
+        sourceType: 'metadata',
+        product,
+        platform: '',
+        target: '',
+        status: 'mapped',
+        notes:
+          kind === 'products'
+            ? '旧站产品入口元数据；只进入迁移清单，不生成页面'
+            : kind === 'platforms'
+              ? '旧站平台入口元数据；只进入迁移清单，不生成页面'
+              : '旧站 sidebar 元数据；只进入迁移清单，不生成页面',
       }),
     );
   }
@@ -606,6 +759,7 @@ async function main() {
     fileMapRows: fileMapRows.length,
     redirectRows: redirectRows.length,
     redirectableRows: redirectRows.filter((row) => row.redirect_status === 'redirect').length,
+    noRedirectRows: redirectRows.filter((row) => row.redirect_status === 'no-redirect').length,
     ignoredRows: redirectRows.filter((row) => row.redirect_status === 'ignore').length,
     deferredRows: redirectRows.filter((row) => row.redirect_status === 'defer').length,
   };
