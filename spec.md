@@ -16,6 +16,7 @@ Use one file for one job:
 | `migration-ledger.csv` | Migration progress and per-item status. | Global rules or route design rationale. |
 | `path-map.csv` | Source-to-target path mapping. | Page completion status or syntax conversion rules. |
 | `syntax-map.md` | Legacy-to-target syntax mapping. | Per-page progress or product IA decisions. |
+| `component-map.yaml` | Machine-readable legacy component and syntax conversion rules for migration scripts. | Per-page progress, human IA decisions, or runtime compatibility aliases. |
 | `verification-checklist.md` | Acceptance gates and evidence expectations. | Migration ownership or path mapping. |
 | `decisions.md` | Approved human/senior-agent decisions. | Raw progress tracking. |
 
@@ -47,6 +48,23 @@ Every durable migration record should answer:
 - What should the next agent do?
 
 `spec.md` must not be used as a progress ledger.
+
+## Migration Component Map
+
+Migration scripts that rewrite legacy Shengwang MDX must load `docs/migration/component-map.yaml` before applying reusable component or syntax conversions.
+
+The component map owns the script-facing contract for:
+
+- Which legacy components can be converted automatically.
+- Which conversions must mark the target item `needs_review`.
+- Which review flags and matched rules must appear in per-batch component usage reports.
+- Which angle-bracket patterns are literals and must be escaped or code-spanned instead of treated as MDX components.
+
+`docs/migration/syntax-map.md` remains the human-readable explanation of the same rules. When a reusable legacy component rule changes, update both files or record why the change is script-only.
+
+Release-note JSX must be flattened to Markdown headings by the map: `VersionSection` becomes `##`, `VersionTitle` becomes `###`, and `ListTitle` becomes `####`; decorative props such as `icon` are dropped.
+
+API-reference JSX such as `H2`, `H3`, `Glossary`, `Status`, and `Stateitem` is content syntax or generated-reference work, not a reason to add legacy runtime components. Preserve stable IDs and convert to headings, links, prose, tables, definition lists, code fences, includes, or the generated-reference lane.
 
 ## Single-Document Fidelity Audits
 
@@ -101,6 +119,7 @@ After editing:
 - Do not mark work `done` without updating the ledger and recording verification.
 - Do not treat build success alone as content fidelity proof.
 - Do not leave legacy Docusaurus JSX, runtime platform filters, legacy shared imports, or old rendering shims in final migrated docs.
+- Do not hard-code reusable legacy component rewrite rules in migration scripts when `docs/migration/component-map.yaml` owns the rule.
 - Do not put OpenAPI YAML or JSON under `content/docs/**`; use `content/openapi/**`.
 - Do not hand-maintain `public/openapi/**` as source.
 - Do not iframe or static-dump generated HTML API reference pages unless an approved decision explicitly allows it.

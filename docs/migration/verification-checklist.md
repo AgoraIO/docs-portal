@@ -17,6 +17,8 @@ Use this checklist before marking any migration ledger row `done`.
 - [ ] Next step is concrete.
 - [ ] Status is one of the approved `spec.md` statuses.
 - [ ] Final content follows `docs/agents/markdown-authoring-standard.md`.
+- [ ] Reusable legacy component and syntax conversions match `docs/migration/component-map.yaml`.
+- [ ] Batch/scripted migration records matched component-map rules and review flags in the component usage report when applicable.
 - [ ] Verification field names the command or manual review performed.
 
 ## Prose And MDX Pages
