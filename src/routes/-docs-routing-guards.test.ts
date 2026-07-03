@@ -72,7 +72,7 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
     sidebar: [],
     sidebarHeader: {
       backHref: '/en/realtime-media/overview',
-      backLabel: 'Realtime Media',
+      backLabel: 'RTC',
       title: 'Signaling',
     },
     slug: 'presence',
