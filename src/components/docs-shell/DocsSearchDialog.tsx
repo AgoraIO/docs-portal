@@ -68,6 +68,9 @@ export function DocsSearchDialog({
   );
   // Selected scope id (e.g. `product:video`), or null for all products.
   const [scopeId, setScopeId] = useState<string | null>(null);
+  // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
+  // so the footer can describe the active result without a focus-based tooltip.
+  const [activeValue, setActiveValue] = useState<string | null>(null);
   const scopeFilter =
     productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
@@ -241,6 +244,37 @@ export function DocsSearchDialog({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenChange]);
 
+  const tabEntries = filterTabs(tabs, search);
+  const resultEntries: RenderedSearchEntry[] = isSearchUnavailable
+    ? []
+    : showFallbackPages
+      ? pages.map(localSearchEntryToRenderedEntry)
+      : normalizedSearchResults.map(searchResultToEntry);
+
+  // One detail record per rendered item, in render order (tabs first, then
+  // results). `value` matches the cmdk item value set on each CommandItem below.
+  const detailEntries = [
+    ...tabEntries.map((tab) => ({
+      path: [] as string[],
+      primary: tab.description,
+      value: tab.url,
+    })),
+    ...resultEntries.map((page) => ({
+      path: page.path,
+      primary: page.description,
+      value: page.id ?? page.url,
+    })),
+  ];
+
+  const normalizedActive = activeValue?.toLowerCase();
+  // cmdk lowercases values; match case-insensitively. Fall back to the first
+  // rendered item (cmdk auto-selects it) so the strip is populated on open and
+  // when the previously-active item was filtered out.
+  const activeDetail =
+    detailEntries.find(
+      (entry) => entry.value.toLowerCase() === normalizedActive,
+    ) ?? detailEntries[0];
+
   return (
     <>
       {mode === 'mobile' ? (
@@ -269,6 +303,7 @@ export function DocsSearchDialog({
         className="max-w-4xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
+        onValueChange={setActiveValue}
         open={open}
         shouldFilter={false}
         title={t('docs.search')}
@@ -307,10 +342,11 @@ export function DocsSearchDialog({
                 : t('docs.searchEmpty')}
           </CommandEmpty>
           <CommandGroup>
-            {filterTabs(tabs, search).map((tab) => (
+            {tabEntries.map((tab) => (
               <CommandItem
                 key={tab.url}
                 onSelect={() => void handleSelect(tab.url)}
+                value={tab.url}
               >
                 <div className="flex flex-col gap-1">
                   <span>{tab.title}</span>
@@ -329,14 +365,12 @@ export function DocsSearchDialog({
                 {t('docs.searchUnavailable')}
               </div>
             ) : (
-              (showFallbackPages
-                ? pages.map(localSearchEntryToRenderedEntry)
-                : normalizedSearchResults.map(searchResultToEntry)
-              ).map((page) => (
+              resultEntries.map((page) => (
                 <CommandItem
                   className="items-start"
                   key={page.id ?? page.url}
                   onSelect={() => void handleSelect(page.url)}
+                  value={page.id ?? page.url}
                 >
                   <div className="min-w-0 flex-1 space-y-1.5">
                     <HighlightedText
@@ -360,18 +394,31 @@ export function DocsSearchDialog({
                         ))}
                       </div>
                     ) : null}
-                    {page.description ? (
-                      <HighlightedText
-                        className="line-clamp-2 text-xs leading-5 text-muted-foreground"
-                        value={page.description}
-                      />
-                    ) : null}
                   </div>
                 </CommandItem>
               ))
             )}
           </CommandGroup>
         </CommandList>
+        {activeDetail &&
+        (activeDetail.primary || activeDetail.path.length > 0) ? (
+          <div
+            className="min-h-[3.25rem] shrink-0 border-t px-4 py-2"
+            data-testid="search-active-detail"
+          >
+            {activeDetail.primary ? (
+              <HighlightedText
+                className="line-clamp-2 text-xs leading-5 text-muted-foreground"
+                value={activeDetail.primary}
+              />
+            ) : null}
+            {activeDetail.path.length > 0 ? (
+              <div className="mt-1 line-clamp-1 text-[0.7rem] text-muted-foreground/80">
+                {activeDetail.path.join(' › ')}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </CommandDialog>
     </>
   );

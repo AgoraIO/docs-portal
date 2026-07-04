@@ -421,7 +421,10 @@ describe('DocsSearchDialog', () => {
     );
     expect(screen.getByText('android')).toBeInTheDocument();
     expect(screen.getByText('ios')).toBeInTheDocument();
-    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(2);
+    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(3);
+    expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+      'Enable VAD on Android.',
+    );
     fireEvent.click(screen.getAllByText('Voice Activity Detection')[0]);
 
     await waitFor(() => {
