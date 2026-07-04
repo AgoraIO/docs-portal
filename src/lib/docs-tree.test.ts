@@ -1707,3 +1707,80 @@ describe('docs tree helpers', () => {
     ).toEqual([{ title: 'X', url: '/x' }]);
   });
 });
+
+const scopeTreeWithDescriptions: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'rt-folder',
+          children: [
+            {
+              $id: 'video-folder',
+              children: [],
+              index: {
+                $id: 'video-index',
+                description: 'Multi-party video with adaptive quality.',
+                name: 'Video Calling',
+                type: 'page',
+                url: '/en/realtime-media/video',
+              },
+              name: 'Video Calling',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'rt-index',
+            name: 'Realtime Media',
+            type: 'page',
+            url: '/en/realtime-media',
+          },
+          name: 'Realtime Media',
+          root: true,
+          type: 'folder',
+        },
+        {
+          $id: 'ai-folder',
+          children: [],
+          index: {
+            $id: 'ai-index',
+            description: 'Voice agents with LLM, ASR, and TTS.',
+            name: 'Voice Agent',
+            type: 'page',
+            url: '/en/ai',
+          },
+          name: 'Voice Agent',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
+describe('getProductScopes descriptions', () => {
+  const scopes = getProductScopes(scopeTreeWithDescriptions);
+
+  it('carries the product index description onto product-level scopes', () => {
+    expect(scopes).toContainEqual({
+      description: 'Multi-party video with adaptive quality.',
+      filter: 'product:"video"',
+      group: 'Realtime Media',
+      id: 'product:video',
+      label: 'Video Calling',
+    });
+  });
+
+  it('carries the tab index description onto tab-level scopes', () => {
+    expect(scopes).toContainEqual({
+      description: 'Voice agents with LLM, ASR, and TTS.',
+      filter: 'tab:"ai"',
+      id: 'tab:ai',
+      label: 'Voice Agent',
+    });
+  });
+});

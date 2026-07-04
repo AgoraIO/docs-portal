@@ -15,6 +15,7 @@ export type TabSummary = {
 // expression over the already-indexed `product`/`tab` fields, so scoping needs
 // no re-sync. `group` is the section header shown in the scope dropdown.
 export type ProductScope = {
+  description?: string;
   filter: string;
   group?: string;
   id: string;
@@ -107,26 +108,41 @@ export function getProductScopes(root: Root): ProductScope[] {
           return [];
         }
 
+        const childIndex = getTabIndex(child);
         // Product id = the folder's URL segment after locale + tab, which is
         // exactly the value the index stores in `product`.
-        const productId = getTabIndex(child)?.url.split('/').filter(Boolean)[2];
+        const productId = childIndex?.url.split('/').filter(Boolean)[2];
         if (!productId) {
           return [];
         }
 
-        return [
-          {
-            filter: `product:"${productId}"`,
-            group: tabLabel,
-            id: `product:${productId}`,
-            label: normalizeLabel(child.name, productId),
-          },
-        ];
+        const scope: ProductScope = {
+          filter: `product:"${productId}"`,
+          group: tabLabel,
+          id: `product:${productId}`,
+          label: normalizeLabel(child.name, productId),
+        };
+
+        if (typeof childIndex?.description === 'string') {
+          scope.description = childIndex.description;
+        }
+
+        return [scope];
       });
     }
 
     // A whole tab (e.g. AI, Reference) as one scope.
-    return [{ filter: `tab:"${tabId}"`, id: `tab:${tabId}`, label: tabLabel }];
+    const scope: ProductScope = {
+      filter: `tab:"${tabId}"`,
+      id: `tab:${tabId}`,
+      label: tabLabel,
+    };
+
+    if (typeof item.description === 'string') {
+      scope.description = item.description;
+    }
+
+    return [scope];
   });
 }
 
