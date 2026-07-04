@@ -9,6 +9,7 @@ import {
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
@@ -32,6 +33,7 @@ describe('DocsSearchDialog', () => {
     vi.unstubAllEnvs();
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
+    window.localStorage.clear();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
@@ -100,9 +102,10 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(mobileButton);
 
-    expect(
+    fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
+      { target: { value: 'quick' } },
+    );
     fireEvent.click(await screen.findByText('Quick Start'));
 
     await waitFor(() => {
@@ -150,9 +153,12 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    expect(
+    // Tabs and results only appear once there's a query. 'ai' matches the AI
+    // tab and the Quick Start page (its url contains /ai/).
+    fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
+      { target: { value: 'ai' } },
+    );
     // 'AI' can appear in both the tab list row and the beside detail panel title.
     expect(screen.getAllByText('AI').length).toBeGreaterThanOrEqual(1);
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
@@ -270,11 +276,13 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    expect(
+    // Tabs surface once there's a query; 'ai' matches the AI tab.
+    fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
+      { target: { value: 'ai' } },
+    );
     // 'AI' can appear in both the tab list row and the beside detail panel title.
-    expect(screen.getAllByText('AI').length).toBeGreaterThanOrEqual(1);
+    expect((await screen.findAllByText('AI')).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Search index unavailable.')).toBeInTheDocument();
     expect(screen.queryByText('No matching pages found.')).toBeNull();
 
@@ -699,7 +707,13 @@ describe('DocsSearchDialog', () => {
     ).toHaveLength(1);
   });
 
-  it('cascades result rows on first open, then drops the enter animation once the user types', async () => {
+  it('shows recently-viewed pages under a Recent heading on open, and hides them once a query is typed', async () => {
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([
+        { title: 'Authentication', url: '/en/ai/authentication' },
+      ]),
+    );
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
@@ -720,20 +734,97 @@ describe('DocsSearchDialog', () => {
     render(<RouterProvider router={router} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    // First open (local mode): the fallback page cascades in with the enter
-    // animation class. ('Quick Start' also appears in the beside detail panel,
-    // so scope to the actual result row.)
-    const resultRow = async () => {
-      const matches = await screen.findAllByText('Quick Start');
+    // On open (no query): the Recent heading + the seeded page, no prompt.
+    expect(await screen.findByText('Recent')).toBeInTheDocument();
+    expect(screen.getAllByText('Authentication').length).toBeGreaterThanOrEqual(
+      1,
+    );
+    expect(screen.queryByTestId('search-prompt')).toBeNull();
+
+    // Typing replaces the recent list with search results.
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'quick' } },
+    );
+    await waitFor(() => expect(screen.queryByText('Recent')).toBeNull());
+  });
+
+  it('shows a prompt (not fake results) on open when there is no history', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            mode="desktop"
+            tabs={[
+              { description: 'AI docs', id: 'ai', title: 'AI', url: '/en/ai' },
+            ]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // No history and nothing typed: the prompt shows; the section tabs do NOT
+    // appear as fake results, and there's no Recent heading.
+    expect(await screen.findByTestId('search-prompt')).toBeInTheDocument();
+    expect(screen.queryByText('Recent')).toBeNull();
+    expect(screen.queryByText('AI')).toBeNull();
+  });
+
+  it('cascades the recent list on first open, then drops the enter animation once the user types', async () => {
+    // Seed a recently-viewed page so the empty state has something to cascade.
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([{ title: 'Recent Page', url: '/en/ai/recent-page' }]),
+    );
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // First open: the recent row cascades in with the enter animation class.
+    // ('Recent Page' also appears in the beside detail panel, so scope to the
+    // actual command item.)
+    const rowFor = async (text: string) => {
+      const matches = await screen.findAllByText(text);
       const row = matches
         .map((el) => el.closest('[data-slot="command-item"]'))
         .find(Boolean);
       if (!row) {
-        throw new Error('expected a Quick Start command item');
+        throw new Error(`expected a "${text}" command item`);
       }
       return row;
     };
-    expect((await resultRow()).className).toContain('search-result-enter');
+    expect((await rowFor('Recent Page')).className).toContain(
+      'search-result-enter',
+    );
 
     // Typing disarms the stagger, so results render instantly — no cascade on
     // every keystroke.
@@ -742,7 +833,7 @@ describe('DocsSearchDialog', () => {
       { target: { value: 'quick' } },
     );
     await waitFor(async () => {
-      expect((await resultRow()).className).not.toContain(
+      expect((await rowFor('Quick Start')).className).not.toContain(
         'search-result-enter',
       );
     });
