@@ -1528,11 +1528,6 @@ describe('DocsShell', () => {
             url: '/en/realtime-media',
           },
           {
-            id: 'solutions',
-            title: 'Solutions',
-            url: '/en/solutions',
-          },
-          {
             id: 'api-reference',
             title: 'Reference',
             url: '/en/api-reference',
@@ -1610,9 +1605,6 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
     expect(
       within(sectionMenu).getByRole('menuitem', { name: 'RTC' }),
-    ).toBeInTheDocument();
-    expect(
-      within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),
     ).toBeInTheDocument();
     expect(currentSectionItem).toHaveAttribute('aria-current');
     expect(currentSectionItem).toHaveClass(

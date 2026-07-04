@@ -26,6 +26,44 @@ describe('docs-static-manifest', () => {
     ).toBe('/__static/docs/zh-CN/ai/device-kit/start-here/quickstart.json');
   });
 
+  it('canonicalizes legacy English solutions root payload paths', () => {
+    expect(
+      getStaticDocsPayloadPath({
+        locale: 'en',
+        slugSegments: [],
+        tab: 'solutions',
+      }),
+    ).toBe('/__static/docs/en/realtime-media/overview.json');
+  });
+
+  it('canonicalizes legacy English solutions product payload paths', () => {
+    expect(
+      getStaticDocsPayloadPath({
+        locale: 'en',
+        slugSegments: ['flexible-classroom', 'quickstart'],
+        tab: 'solutions',
+      }),
+    ).toBe('/__static/docs/en/realtime-media/flexible-classroom/quickstart.json');
+  });
+
+  it('keeps non-English and unknown legacy solutions payload paths unchanged', () => {
+    expect(
+      getStaticDocsPayloadPath({
+        locale: 'zh-CN',
+        slugSegments: ['flexible-classroom'],
+        tab: 'solutions',
+      }),
+    ).toBe('/__static/docs/zh-CN/solutions/flexible-classroom.json');
+
+    expect(
+      getStaticDocsPayloadPath({
+        locale: 'en',
+        slugSegments: ['unknown-product'],
+        tab: 'solutions',
+      }),
+    ).toBe('/__static/docs/en/solutions/unknown-product.json');
+  });
+
   it('returns null for missing static payloads', async () => {
     vi.stubGlobal(
       'fetch',
@@ -212,7 +250,7 @@ describe('docs-static-manifest', () => {
             },
           },
           markdownUrl:
-            '/llms.mdx/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.md',
+            '/llms.mdx/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.md',
         }),
         ok: true,
         status: 200,
@@ -240,15 +278,15 @@ describe('docs-static-manifest', () => {
         },
       },
       markdownUrl:
-        '/llms.mdx/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.md',
+        '/llms.mdx/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.md',
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
-      '/__static/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.json',
+      '/__static/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom/ios.json',
     );
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
-      '/__static/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.json',
+      '/__static/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.json',
     );
     expect(htmlJsonMock).not.toHaveBeenCalled();
   });

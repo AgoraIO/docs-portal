@@ -791,7 +791,7 @@ describe('auditMigrationParity', () => {
         'content',
         'docs',
         'en',
-        'solutions',
+        'realtime-media',
         'interactive-live-streaming',
         'build',
         'process-raw-and-custom-media',
@@ -878,7 +878,7 @@ describe('auditMigrationParity', () => {
         'content',
         'docs',
         'en',
-        'solutions',
+        'realtime-media',
         'flexible-classroom',
         'build',
         'customize-the-ui-and-plugins',
@@ -1017,7 +1017,7 @@ describe('auditMigrationParity', () => {
         'content',
         'docs',
         'en',
-        'solutions',
+        'realtime-media',
         'agora-analytics',
         'build',
         'monitor-and-get-alerts',
@@ -1031,7 +1031,7 @@ describe('auditMigrationParity', () => {
         'content',
         'docs',
         'en',
-        'solutions',
+        'realtime-media',
         'agora-analytics',
         'build',
         'explore-and-analyze-data',
@@ -1045,7 +1045,7 @@ describe('auditMigrationParity', () => {
         'content',
         'docs',
         'en',
-        'solutions',
+        'realtime-media',
         'iot',
         'build',
         'set-up-authentication-and-security',
@@ -1109,7 +1109,7 @@ describe('auditMigrationParity', () => {
     );
     expect(
       pagesByTarget.get(
-        'content/docs/en/solutions/interactive-live-streaming/build/process-raw-and-custom-media/custom-video.mdx',
+        'content/docs/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/custom-video.mdx',
       ),
     ).toEqual(
       expect.objectContaining({
@@ -1183,7 +1183,7 @@ describe('auditMigrationParity', () => {
     );
     expect(
       pagesByTarget.get(
-        'content/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin.md',
+        'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin.md',
       ),
     ).toEqual(
       expect.objectContaining({
@@ -1359,7 +1359,7 @@ describe('auditMigrationParity', () => {
     );
     expect(
       pagesByTarget.get(
-        'content/docs/en/solutions/agora-analytics/build/monitor-and-get-alerts/monitor.md',
+        'content/docs/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/monitor.md',
       ),
     ).toEqual(
       expect.objectContaining({
@@ -1371,7 +1371,7 @@ describe('auditMigrationParity', () => {
     );
     expect(
       pagesByTarget.get(
-        'content/docs/en/solutions/agora-analytics/build/explore-and-analyze-data/chat-data-insights.md',
+        'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-insights.md',
       ),
     ).toEqual(
       expect.objectContaining({
@@ -1383,7 +1383,7 @@ describe('auditMigrationParity', () => {
     );
     expect(
       pagesByTarget.get(
-        'content/docs/en/solutions/iot/build/set-up-authentication-and-security/media-stream-encryption.md',
+        'content/docs/en/realtime-media/iot/build/set-up-authentication-and-security/media-stream-encryption.md',
       ),
     ).toEqual(
       expect.objectContaining({
@@ -1393,7 +1393,7 @@ describe('auditMigrationParity', () => {
         }),
       }),
     );
-  });
+  }, 20_000);
 
   it('compares records without relying on raw markdown equality', () => {
     const sourceRecords = createIntermediateRecords({

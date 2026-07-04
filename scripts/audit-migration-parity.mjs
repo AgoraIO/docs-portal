@@ -96,19 +96,19 @@ const FULL_AUDIT_PRODUCT_RULES = [
   },
   {
     sourceProduct: 'agora-analytics',
-    targetPrefix: 'solutions/agora-analytics',
+    targetPrefix: 'realtime-media/agora-analytics',
   },
   {
     sourceProduct: 'flexible-classroom',
-    targetPrefix: 'solutions/flexible-classroom',
+    targetPrefix: 'realtime-media/flexible-classroom',
   },
   {
     sourceProduct: 'interactive-live-streaming',
-    targetPrefix: 'solutions/interactive-live-streaming',
+    targetPrefix: 'realtime-media/interactive-live-streaming',
   },
   {
     sourceProduct: 'iot',
-    targetPrefix: 'solutions/iot',
+    targetPrefix: 'realtime-media/iot',
   },
   {
     sourceProduct: 'conversational-ai',
@@ -1305,7 +1305,7 @@ function addVideoSdkBuildGroupCandidates(candidates, target) {
     },
     {
       sourceProduct: 'interactive-live-streaming',
-      targetPrefix: 'solutions/interactive-live-streaming/build',
+      targetPrefix: 'realtime-media/interactive-live-streaming/build',
       groups: {
         'apply-effects-and-enhancements': 'advanced-features',
         'authenticate-users': {
@@ -1988,62 +1988,62 @@ function addSolutionsAliasCandidates(candidates, target) {
     sourceProduct: 'agora-analytics',
     sourcePrefix: 'analyze/video-voice-sdk',
     target,
-    targetPrefix: 'solutions/agora-analytics/build',
+    targetPrefix: 'realtime-media/agora-analytics/build',
   });
   addMappedStemCandidates(candidates, {
     reason: 'flexible-classroom-build-lane',
     sourceProduct: 'flexible-classroom',
     sourcePrefix: 'develop/best-practices',
     target,
-    targetPrefix: 'solutions/flexible-classroom/build',
+    targetPrefix: 'realtime-media/flexible-classroom/build',
   });
   addMappedStemCandidates(candidates, {
     reason: 'flexible-classroom-build-lane',
     sourceProduct: 'flexible-classroom',
     sourcePrefix: 'develop/integrate',
     target,
-    targetPrefix: 'solutions/flexible-classroom/build',
+    targetPrefix: 'realtime-media/flexible-classroom/build',
   });
   addAnalyticsGroupedBuildCandidates(candidates, target);
   addFlexibleClassroomGroupedBuildCandidates(candidates, target);
   addIotGroupedBuildCandidates(candidates, target);
 
   const exactMappings = {
-    'solutions/agora-analytics/activation':
+    'realtime-media/agora-analytics/activation':
       'agora-analytics/get-started/activation',
-    'solutions/agora-analytics/build/chat-data-insights':
+    'realtime-media/agora-analytics/build/chat-data-insights':
       'agora-analytics/analyze/chat-sdk/data-insights',
-    'solutions/agora-analytics/build/chat-data-metrics':
+    'realtime-media/agora-analytics/build/chat-data-metrics':
       'agora-analytics/analyze/chat-sdk/data-metrics',
-    'solutions/agora-analytics/build/datadog-integration':
+    'realtime-media/agora-analytics/build/datadog-integration':
       'agora-analytics/analyze/datadog-integration',
-    'solutions/agora-analytics/build/manage-agora-account':
+    'realtime-media/agora-analytics/build/manage-agora-account':
       'agora-analytics/reference/manage-agora-account',
-    'solutions/agora-analytics/product-overview':
+    'realtime-media/agora-analytics/product-overview':
       'agora-analytics/overview/product-overview',
-    'solutions/flexible-classroom/build/authentication-workflow':
+    'realtime-media/flexible-classroom/build/authentication-workflow':
       'flexible-classroom/develop/integrate/authentication-workflow',
-    'solutions/flexible-classroom/build/customize-classroom':
+    'realtime-media/flexible-classroom/build/customize-classroom':
       'flexible-classroom/develop/integrate/customize-ui/customize-classroom',
-    'solutions/flexible-classroom/build/customize-ui-scene-sdk':
+    'realtime-media/flexible-classroom/build/customize-ui-scene-sdk':
       'flexible-classroom/develop/integrate/customize-ui/customize-ui-scene-sdk',
-    'solutions/flexible-classroom/build/integrate-flexible-classroom':
+    'realtime-media/flexible-classroom/build/integrate-flexible-classroom':
       'flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate',
-    'solutions/flexible-classroom/build/integrate-flexible-classroom-fcr':
+    'realtime-media/flexible-classroom/build/integrate-flexible-classroom-fcr':
       'flexible-classroom/develop/integrate/integrate-flexible-classroom/integrate-flexible-classroom-fcr',
-    'solutions/flexible-classroom/product-overview':
+    'realtime-media/flexible-classroom/product-overview':
       'flexible-classroom/overview/product-overview',
-    'solutions/flexible-classroom/quickstart':
+    'realtime-media/flexible-classroom/quickstart':
       'flexible-classroom/get-started/demo-quickstart',
-    'solutions/flexible-classroom/reference/classroom-rest-api':
+    'realtime-media/flexible-classroom/reference/classroom-rest-api':
       'flexible-classroom/reference/agora-console-rest-api',
-    'solutions/flexible-classroom/reference/migration-guide':
+    'realtime-media/flexible-classroom/reference/migration-guide':
       'flexible-classroom/develop/migration-guide',
-    'solutions/interactive-live-streaming/build/use-tokens':
+    'realtime-media/interactive-live-streaming/build/use-tokens':
       'interactive-live-streaming/token-authentication/authentication-workflow',
-    'solutions/iot/reference/communicate-with-rtc-sdk':
+    'realtime-media/iot/reference/communicate-with-rtc-sdk':
       'iot/reference/communicate_with_rtc_sdk',
-    'solutions/iot/reference/licensing': 'iot/develop/licensing',
+    'realtime-media/iot/reference/licensing': 'iot/develop/licensing',
   };
 
   for (const [targetPath, sourceFile] of Object.entries(exactMappings)) {
@@ -2094,7 +2094,7 @@ function addFlexibleClassroomGroupedBuildCandidates(candidates, target) {
     reason: 'flexible-classroom-build-group-lane',
     sourceProduct: 'flexible-classroom',
     target,
-    targetPrefix: 'solutions/flexible-classroom/build',
+    targetPrefix: 'realtime-media/flexible-classroom/build',
   });
 }
 
@@ -2120,7 +2120,7 @@ function addAnalyticsGroupedBuildCandidates(candidates, target) {
     reason: 'analytics-build-group-lane',
     sourceProduct: 'agora-analytics',
     target,
-    targetPrefix: 'solutions/agora-analytics/build',
+    targetPrefix: 'realtime-media/agora-analytics/build',
   });
 }
 
@@ -2130,7 +2130,7 @@ function addIotGroupedBuildCandidates(candidates, target) {
     reason: 'iot-build-group-lane',
     sourceProduct: 'iot',
     target,
-    targetPrefix: 'solutions/iot/build',
+    targetPrefix: 'realtime-media/iot/build',
   });
 }
 

@@ -57,7 +57,7 @@ export type ConfigParams = {
 
 | Property | Description |
 | :--- | :--- |
-| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/realtime-media/flexible-classroom/build/manage-agora-account#get-the-app-id). |
 | `region` | (Optional) The region where the classroom is. All clients must use the same region; otherwise, they may fail to communicate with each other. Supported regions are `CN` for Mainland China, `NA` for North America, `EU` for Europe, and `AP` for Asia Pacific. |
 
 ### LaunchOption
@@ -99,11 +99,11 @@ export type LaunchOption = {
 | `roomName` | The room name for display in the classroom. The string length must be less than 64 bytes. |
 | `listener` | The state of classroom launching: `ready` means the classroom is ready, and `destroyed` means the classroom has been destroyed. |
 | `pretest` | Whether to enable the pre-class device test. If set to `true`, end users see a pop-up window to test their camera, microphone, and speaker before entering the classroom. |
-| `rtmToken` | The Signaling token used for authentication. See [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `rtmToken` | The Signaling token used for authentication. See [Secure authentication with tokens](/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
 | `language` | The language on the classroom UI. See [LanguageEnum](#languageenum) for details. |
 | `startTime` | (Optional) The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | The duration (seconds) of the class, determined by the first user joining the classroom. The maximum value is 86,400. Agora recommends that you set this value to the actual class duration. |
-| `widgets` | (Optional) Extensive widgets that extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin). |
+| `widgets` | (Optional) Extensive widgets that extend the classroom capabilities. See [Embed a custom plugin](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin). |
 | `userFlexProperties` | (Optional) User properties customized by the developer. |
 | `mediaOptions` | (Optional) Media options, including the media encryption configuration, camera video encoder configuration, and screen sharing video encoder configuration. See [LaunchMediaOptions](#launchmediaoptions) for details. |
 | `latencyLevel` | (Optional) The latency level of an audience member. This property does not apply to cohosting users. `1` means low latency, where the latency from the sender to the receiver is between 1500 ms and 2000 ms. `2` means ultra-low latency, where the latency from the sender to the receiver is between 400 ms and 800 ms. The default value is `2`. |
@@ -281,7 +281,7 @@ export enum DeviceTypeEnum {
 
 Device types.
 
-For more about main devices and secondary devices, see [Proctor exams online](/en/solutions/flexible-classroom/build/enable-teaching-features/proctor-exams-online).
+For more about main devices and secondary devices, see [Proctor exams online](/en/realtime-media/flexible-classroom/build/enable-teaching-features/proctor-exams-online).
 
 | Value | Description |
 | :--- | :--- |

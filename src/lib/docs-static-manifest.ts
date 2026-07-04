@@ -4,15 +4,53 @@ import { isKnownPlatform } from './platforms/registry';
 const STATIC_DOCS_BASE = '/__static/docs';
 const STATIC_DOCS_PUBLIC_DIR = '__static/docs';
 
-export function getStaticDocsPayloadPath({
-  locale,
-  slugSegments,
-  tab,
-}: {
+const LEGACY_SOLUTIONS_PRODUCT_SLUGS = new Set([
+  'agora-analytics',
+  'flexible-classroom',
+  'interactive-live-streaming',
+  'iot',
+]);
+
+type StaticDocsRouteInput = {
   locale: string;
   slugSegments: string[];
   tab: string;
-}) {
+};
+
+function canonicalizeStaticDocsRouteInput({
+  locale,
+  slugSegments,
+  tab,
+}: StaticDocsRouteInput): StaticDocsRouteInput {
+  if (locale !== 'en' || tab !== 'solutions') {
+    return { locale, slugSegments, tab };
+  }
+
+  if (slugSegments.length === 0) {
+    return {
+      locale,
+      slugSegments: ['overview'],
+      tab: 'realtime-media',
+    };
+  }
+
+  const [productSlug] = slugSegments;
+  if (!productSlug || !LEGACY_SOLUTIONS_PRODUCT_SLUGS.has(productSlug)) {
+    return { locale, slugSegments, tab };
+  }
+
+  return {
+    locale,
+    slugSegments,
+    tab: 'realtime-media',
+  };
+}
+
+function getCanonicalStaticDocsPayloadPath({
+  locale,
+  slugSegments,
+  tab,
+}: StaticDocsRouteInput) {
   const normalizedSegments = slugSegments.filter(Boolean);
   const fileName =
     normalizedSegments.length > 0
@@ -22,34 +60,24 @@ export function getStaticDocsPayloadPath({
   return `${STATIC_DOCS_BASE}/${locale}/${tab}/${fileName}`;
 }
 
+export function getStaticDocsPayloadPath(input: StaticDocsRouteInput) {
+  return getCanonicalStaticDocsPayloadPath(
+    canonicalizeStaticDocsRouteInput(input),
+  );
+}
+
 export function shouldUseStaticDocsPayload() {
   return import.meta.env.VITE_TSS_SPA_STATIC_EXPERIMENT === 'true';
 }
 
-export async function readStaticDocsPayload<T>({
-  locale,
-  slugSegments,
-  tab,
-}: {
-  locale: string;
-  slugSegments: string[];
-  tab: string;
-}) {
+export async function readStaticDocsPayload<T>(input: StaticDocsRouteInput) {
+  const routeInput = canonicalizeStaticDocsRouteInput(input);
+
   if (import.meta.env.SSR) {
-    return readStaticDocsPayloadFromDisk<T>({
-      locale,
-      slugSegments,
-      tab,
-    });
+    return readStaticDocsPayloadFromDisk<T>(routeInput);
   }
 
-  const response = await fetch(
-    getStaticDocsPayloadPath({
-      locale,
-      slugSegments,
-      tab,
-    }),
-  );
+  const response = await fetch(getCanonicalStaticDocsPayloadPath(routeInput));
 
   if (response.status === 404) {
     return null;
@@ -91,15 +119,10 @@ type PlatformStaticPayload = {
 
 export async function resolvePlatformStaticDocsPayload<
   T extends PlatformStaticPayload | DocsRedirectPayload,
->({
-  locale,
-  slugSegments,
-  tab,
-}: {
-  locale: string;
-  slugSegments: string[];
-  tab: string;
-}) {
+>(input: StaticDocsRouteInput) {
+  const { locale, slugSegments, tab } =
+    canonicalizeStaticDocsRouteInput(input);
+
   const payload = await readStaticDocsPayload<T>({
     locale,
     slugSegments,

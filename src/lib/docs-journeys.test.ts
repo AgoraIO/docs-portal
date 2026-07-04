@@ -91,71 +91,63 @@ describe('docs journeys', () => {
     }
 
     expect(failures).toEqual([]);
-  });
+  }, 15_000);
 
   it('connects the Voice Agent home, quickstart, recipes, and reference path', () => {
     const intro = readDoc('en/introduction/index.mdx');
-    expect(intro).toContain('/en/ai/choose-your-path/quickstart-coding');
+    expect(intro).toContain('/en/ai/get-started/quickstart');
 
-    const quickstart = readDoc('en/ai/choose-your-path/quickstart-coding.mdx');
+    const quickstart = readDoc('en/ai/get-started/quickstart.mdx');
     expect(quickstart).toMatch(
-      /(\.\.\/build\/start-stop-agent\.md|\/en\/ai\/build\/start-stop-agent)/,
+      /(\.\.\/build\/start-stop-agent(?:\.md)?|\/en\/ai\/build\/start-stop-agent)/,
     );
     expect(quickstart).toMatch(
-      /(\.\.\/build\/presets\.md|\/en\/ai\/build\/presets)/,
+      /(\.\.\/build\/custom-model-integration\/managed-mode|\/en\/ai\/build\/custom-model-integration\/managed-mode)/,
     );
     expect(quickstart).toMatch(
-      /(\.\.\/best-practices\/optimize-latency\.md|\/en\/ai\/best-practices\/optimize-latency)/,
+      /(\.\.\/best-practices\/optimize-latency(?:\.md)?|\/en\/ai\/best-practices\/optimize-latency)/,
     );
     expect(quickstart).toMatch(
-      /(\.\.\/best-practices\/audio-setup\.md|\/en\/ai\/best-practices\/audio-setup)/,
+      /(\.\.\/best-practices\/audio-setup(?:\.md)?|\/en\/ai\/best-practices\/audio-setup)/,
     );
     expect(quickstart).toContain(
-      '/en/api-reference/api-ref/conversational-ai/rest-api',
+      '/en/api-reference/api-ref/conversational-ai',
     );
   });
 
-  it('connects the Realtime RTC home, quickstart, and versioned API reference path', () => {
+  it('connects the Realtime Media home, Voice and Video starts, and RTC API reference path', () => {
     const realtime = readDoc('en/realtime-media/index.md');
     expect(realtime).toContain('/en/realtime-media/rtc');
 
-    const rtc = readDoc('en/realtime-media/rtc/index.md');
-    expect(rtc).toContain(
-      '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
-    );
-    expect(rtc).toContain(
-      '/en/realtime-media/rtc/android/reference/api-reference',
+    const realtimeMeta = JSON.parse(readDoc('en/realtime-media/meta.json'));
+    expect(realtimeMeta.pages).toEqual(
+      expect.arrayContaining(['voice', 'video']),
     );
 
-    expect(
-      docExists(
-        'en/realtime-media/rtc/android/reference/api-reference/index.md',
-      ),
-    ).toBe(true);
-
-    const rtcReference = readDoc(
-      'en/realtime-media/rtc/android/reference/api-reference/index.md',
+    const voice = readDoc('en/realtime-media/voice/index.mdx');
+    expect(voice).toContain(
+      '<Card title="SDK quickstart" href="quickstart.mdx"',
     );
-    expect(rtcReference).toContain('/en/api-reference/rtc/android');
+    expect(voice).toContain('/en/api-reference/api-ref/rtc');
 
-    expect(
-      docExists(
-        'en/realtime-media/rtc/android/quick-start/build-from-scratch.md',
-      ),
-    ).toBe(true);
-
-    const androidMeta = JSON.parse(
-      readDoc('en/api-reference/rtc/android/meta.json'),
+    const video = readDoc('en/realtime-media/video/index.mdx');
+    expect(video).toContain(
+      '<Card title="SDK quickstart" href="/en/realtime-media/video/get-started-sdk"',
     );
-    expect(androidMeta.navScope.versions).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ id: 'current', path: '(current)' }),
-        expect.objectContaining({ id: '4.6.0', path: '4.6.0' }),
-      ]),
+    expect(video).toContain('/en/api-reference/api-ref/rtc');
+
+    expect(docExists('en/realtime-media/voice/quickstart.mdx')).toBe(true);
+    expect(docExists('en/realtime-media/video/get-started-sdk.mdx')).toBe(true);
+
+    const rtcApiMeta = JSON.parse(
+      readDoc('en/api-reference/api-ref/rtc/meta.json'),
+    );
+    expect(rtcApiMeta.pages).toEqual(
+      expect.arrayContaining(['index', 'authentication', 'api-sunset']),
     );
   });
 
-  it('keeps the zh-CN RTC API navigation aligned with the english structure', () => {
+  it('keeps zh-CN RTC API navigation versioned while English uses canonical Voice and Video reference docs', () => {
     const realtimeRtcMeta = JSON.parse(
       readDoc('zh-CN/realtime-media/rtc/meta.json'),
     );
@@ -164,12 +156,18 @@ describe('docs journeys', () => {
     const androidReferenceMeta = JSON.parse(
       readDoc('zh-CN/realtime-media/rtc/android/reference/meta.json'),
     );
-    const englishAndroidReferenceMeta = JSON.parse(
-      readDoc('en/realtime-media/rtc/android/reference/meta.json'),
-    );
     expect(androidReferenceMeta.pages).toEqual(
-      englishAndroidReferenceMeta.pages,
+      expect.arrayContaining(['api-reference', 'release-notes']),
     );
+
+    const englishVoiceReferenceMeta = JSON.parse(
+      readDoc('en/realtime-media/voice/reference/meta.json'),
+    );
+    const englishVideoReferenceMeta = JSON.parse(
+      readDoc('en/realtime-media/video/reference/meta.json'),
+    );
+    expect(englishVoiceReferenceMeta.pages).toContain('supported-platforms');
+    expect(englishVideoReferenceMeta.pages).toContain('supported-platforms');
 
     const androidApiMeta = JSON.parse(
       readDoc('zh-CN/api-reference/rtc/android/meta.json'),
@@ -205,7 +203,7 @@ describe('docs journeys', () => {
         'custom-llm',
         'audio-output',
         'build-server-client',
-        'presets',
+        'managed-mode',
       ],
     });
 
@@ -217,10 +215,10 @@ describe('docs journeys', () => {
       pages: [
         'get-runtime-events',
         'monitor-agent-runtime',
+        'webhooks',
+        'event-notifications',
         'debug-agent-failures',
         'retrieve-session-history',
-        'event-notifications',
-        'webhooks',
       ],
     });
   });

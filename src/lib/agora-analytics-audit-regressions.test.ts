@@ -3,9 +3,9 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
-  'content/docs/en/solutions/agora-analytics/build/explore-and-analyze-data/data-insight-plus.md',
-  'content/docs/en/solutions/agora-analytics/build/integrate-and-embed/datadog-integration.md',
-  'content/docs/en/solutions/agora-analytics/build/manage-agora-account.md',
+  'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight-plus.md',
+  'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration.md',
+  'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md',
 ];
 
 function readContent(path: string) {
@@ -84,7 +84,7 @@ describe('agora analytics audit regressions', () => {
 
   it('keeps the security data-classification table rectangular', () => {
     const source = readContent(
-      'content/docs/en/solutions/agora-analytics/reference/security.md',
+      'content/docs/en/realtime-media/agora-analytics/reference/security.md',
     );
     const tableLines = tableSection(
       source,

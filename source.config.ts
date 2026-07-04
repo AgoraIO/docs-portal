@@ -32,7 +32,7 @@ export const docs = defineDocs({
   docs: {
     async: true,
     dynamic: useDynamicDocsRuntime,
-    files: scopedDocsFiles?.docs,
+    files: scopedDocsFiles?.docs ?? ['**/*.{md,mdx}'],
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {

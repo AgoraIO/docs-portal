@@ -5,7 +5,7 @@ description: "Introduces Agora Analytics for Agora Chat."
 
 ## Introduction
 
-[Agora Analytics](/en/solutions/agora-analytics/product-overview) provides periodic analysis of usage and quality data for [Chat](../index), helping you keep track of the usage trends and quality details.
+[Agora Analytics](/en/realtime-media/agora-analytics/product-overview) provides periodic analysis of usage and quality data for [Chat](../../index), helping you keep track of the usage trends and quality details.
 
 ### Feature overview
 
@@ -17,7 +17,7 @@ Agora Analytics offers the following features for Chat:
 
 ### Enable Chat-related features
 
-After [enabling and configuring Chat Service](../get-started/enable), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required. 
+After [enabling and configuring Chat Service](../../get-started/enable), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required. 
 
 ## Usage Insights
 
