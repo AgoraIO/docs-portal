@@ -1404,3 +1404,92 @@
     box-shadow: none;
   }
 }
+
+/* Docs search motion polish. Hand-rolled keyframes because this project does
+   NOT ship tw-animate-css, so the shadcn `animate-in`/`zoom-in-*` utility
+   classes are no-ops here. Kept unlayered so they win over cmdk/tailwind base
+   styles. The dialog/overlay enters are driven by Radix's data-state attribute.
+   Everything collapses to instant under prefers-reduced-motion. See
+   DocsSearchDialog / SearchDetailPanel. */
+@keyframes search-result-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes search-detail-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tailwind v4 centers the dialog with the `translate` property (translate:
+   -50% -50%), NOT `transform`. So we animate the individual `translate` and
+   `scale` properties too — matching that centering at rest — rather than a
+   `transform` that would stack on top of it and shove the dialog off-screen. */
+@keyframes search-dialog-enter {
+  from {
+    opacity: 0;
+    translate: -50% calc(-50% + 8px);
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    translate: -50% -50%;
+    scale: 1;
+  }
+}
+
+/* Frost fades in via compositing opacity only — the backdrop-blur radius is a
+   constant utility, so nothing animates the filter itself (no stutter). */
+@keyframes search-overlay-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.search-result-enter {
+  animation: search-result-enter 200ms ease-out both;
+}
+
+.search-detail-enter {
+  animation: search-detail-enter 180ms ease-out both;
+}
+
+/* Enter-only: Radix keeps a closing element mounted until its exit animation
+   ends, so an exit animation here would trap the dialog in the DOM. Closing is
+   left instant (matching the pre-existing behavior) and the enter is what adds
+   the polish. */
+.docs-search-dialog[data-state="open"] {
+  animation: search-dialog-enter 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.docs-search-overlay[data-state="open"] {
+  animation: search-overlay-enter 200ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Collapse every search motion to instant. The blur is a static filter, so
+     the frost still applies — it just doesn't fade. These selectors match the
+     animation rules above one-for-one and come later in source, so they win the
+     cascade without needing !important. */
+  .search-result-enter,
+  .search-detail-enter,
+  .docs-search-dialog[data-state="open"],
+  .docs-search-overlay[data-state="open"] {
+    animation: none;
+  }
+}

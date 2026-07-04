@@ -115,7 +115,11 @@ export function SearchDetailPanel({
         data-testid="search-active-detail"
       >
         {description ? (
-          <div className="line-clamp-2 text-xs leading-5 text-muted-foreground">
+          // Keyed on activeValue so the fade replays when the selection changes.
+          <div
+            className="search-detail-enter line-clamp-2 break-words text-xs leading-5 text-muted-foreground"
+            key={activeValue ?? 'first'}
+          >
             {renderText(description)}
           </div>
         ) : null}
@@ -128,18 +132,20 @@ export function SearchDetailPanel({
     return null;
   }
   return createPortal(
+    // Keyed on activeValue so the fade/nudge replays when the selection changes.
     <div
-      className="pointer-events-none fixed z-[60] w-[260px] rounded-xl border border-border bg-popover/95 p-3 shadow-2xl backdrop-blur"
+      className="search-detail-enter pointer-events-none fixed z-[60] w-[260px] rounded-xl border border-border bg-popover/95 p-3 shadow-2xl backdrop-blur"
       data-mode="beside"
       data-testid="search-active-detail"
+      key={activeValue ?? 'first'}
       style={style}
     >
       {title ? (
-        <div className="mb-1 font-medium text-sm text-foreground">
+        <div className="mb-1 break-words font-medium text-sm text-foreground">
           {renderText(title)}
         </div>
       ) : null}
-      <div className="text-xs leading-5 text-muted-foreground">
+      <div className="break-words text-xs leading-5 text-muted-foreground">
         {renderText(description)}
       </div>
     </div>,
