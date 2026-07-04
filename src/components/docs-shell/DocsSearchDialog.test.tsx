@@ -444,6 +444,33 @@ describe('DocsSearchDialog', () => {
     });
   });
 
+  it('shows a keyboard-hint bar while the dialog is open', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    const hints = await screen.findByTestId('search-keyboard-hints');
+    expect(hints).toHaveTextContent('navigate');
+    expect(hints).toHaveTextContent('select');
+    expect(hints).toHaveTextContent('close');
+  });
+
   it('updates the footer detail as the highlighted result changes', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');

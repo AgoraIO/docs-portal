@@ -405,28 +405,55 @@ export function DocsSearchDialog({
             )}
           </CommandGroup>
         </CommandList>
-        {/* Footer detail strip: mirrors the cmdk-active item's snippet + full
-            path. Rows still show their own (truncated) path so non-active rows
-            remain locatable; the active item intentionally appears in both. */}
-        {activeDetail &&
-        (activeDetail.primary || activeDetail.path.length > 0) ? (
+        {/* Footer region: active-item detail strip (when there is an active item)
+            plus an always-visible keyboard-hint bar. */}
+        <div className="shrink-0 border-t">
+          {activeDetail &&
+          (activeDetail.primary || activeDetail.path.length > 0) ? (
+            <div
+              className="min-h-[3.25rem] px-4 py-2"
+              data-testid="search-active-detail"
+            >
+              {activeDetail.primary ? (
+                <HighlightedText
+                  className="line-clamp-2 text-xs leading-5 text-muted-foreground"
+                  value={activeDetail.primary}
+                />
+              ) : null}
+              {activeDetail.path.length > 0 ? (
+                <div className="mt-1 line-clamp-1 text-[0.7rem] text-muted-foreground/80">
+                  {activeDetail.path.join(' › ')}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div
-            className="min-h-[3.25rem] shrink-0 border-t px-4 py-2"
-            data-testid="search-active-detail"
+            className="flex items-center justify-end gap-3 px-4 py-1.5 text-[0.7rem] text-muted-foreground"
+            data-testid="search-keyboard-hints"
           >
-            {activeDetail.primary ? (
-              <HighlightedText
-                className="line-clamp-2 text-xs leading-5 text-muted-foreground"
-                value={activeDetail.primary}
-              />
-            ) : null}
-            {activeDetail.path.length > 0 ? (
-              <div className="mt-1 line-clamp-1 text-[0.7rem] text-muted-foreground/80">
-                {activeDetail.path.join(' › ')}
-              </div>
-            ) : null}
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+                ↑
+              </kbd>
+              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+                ↓
+              </kbd>
+              {t('docs.searchHintNavigate')}
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+                ↵
+              </kbd>
+              {t('docs.searchHintSelect')}
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+                esc
+              </kbd>
+              {t('docs.searchHintClose')}
+            </span>
           </div>
-        ) : null}
+        </div>
       </CommandDialog>
     </>
   );
