@@ -288,6 +288,59 @@ describe('DocsSearchDialog', () => {
     });
   });
 
+  it('scopes the Algolia query to a product when a product filter is chosen', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            productScopes={[
+              {
+                description: 'Real-time voice.',
+                filter: 'product:"voice"',
+                group: 'Realtime Media',
+                id: 'product:voice',
+                label: 'Voice Calling',
+              },
+            ]}
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.click(
+      await screen.findByRole('combobox', { name: 'All products' }),
+    );
+    fireEvent.click(await screen.findByText('Voice Calling'));
+
+    await waitFor(() => {
+      expect(createAlgoliaDocsClient).toHaveBeenCalledWith(
+        expect.objectContaining({ scopeFilter: 'product:"voice"' }),
+      );
+    });
+  });
+
   it('uses Algolia search when configured and does not load the static page index', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');

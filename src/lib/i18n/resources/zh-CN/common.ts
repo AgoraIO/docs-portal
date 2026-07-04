@@ -27,6 +27,8 @@ const zhCnCommon = {
     searchLoading: '正在搜索...',
     searchAllPlatforms: '全部平台',
     searchAllProducts: '全部产品',
+    searchFilterPlatforms: '筛选平台…',
+    searchFilterProducts: '筛选产品…',
     tabsLabel: 'Tabs',
     sectionPickerLabel: '分区',
     pagesLabel: 'Pages',

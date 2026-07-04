@@ -2,9 +2,13 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { SearchIcon, XIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  type FilterGroup,
+  SearchFilterDropdown,
+} from '@/components/docs-shell/SearchFilterDropdown';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -156,6 +160,30 @@ export function DocsSearchDialog({
     [],
   );
 
+  const productFilterGroups = useMemo<FilterGroup[]>(
+    () =>
+      groupProductScopes(productScopes).map((group) => ({
+        label: group.label,
+        options: group.scopes.map((scope) => ({
+          description: scope.description,
+          label: scope.label,
+          value: scope.id,
+        })),
+      })),
+    [productScopes],
+  );
+  const platformFilterGroups = useMemo<FilterGroup[]>(
+    () => [
+      {
+        options: platformOptions.map((platform) => ({
+          label: getPlatformLabel(platform, searchLocale),
+          value: platform,
+        })),
+      },
+    ],
+    [platformOptions, searchLocale],
+  );
+
   async function handleSelect(url: string) {
     setOpen(false);
     await navigate({
@@ -253,60 +281,21 @@ export function DocsSearchDialog({
         {algoliaConfig ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
             {productScopes.length > 0 ? (
-              <select
-                aria-label={t('docs.searchAllProducts')}
-                className="mr-1 h-7 shrink-0 rounded-md border border-border bg-background px-2 text-xs text-foreground"
-                onChange={(event) => setScopeId(event.target.value || null)}
-                value={scopeId ?? ''}
-              >
-                <option value="">{t('docs.searchAllProducts')}</option>
-                {groupProductScopes(productScopes).map((group) =>
-                  group.label ? (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.scopes.map((scope) => (
-                        <option key={scope.id} value={scope.id}>
-                          {scope.label}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ) : (
-                    group.scopes.map((scope) => (
-                      <option key={scope.id} value={scope.id}>
-                        {scope.label}
-                      </option>
-                    ))
-                  ),
-                )}
-              </select>
+              <SearchFilterDropdown
+                allLabel={t('docs.searchAllProducts')}
+                groups={productFilterGroups}
+                onChange={setScopeId}
+                searchPlaceholder={t('docs.searchFilterProducts')}
+                value={scopeId}
+              />
             ) : null}
-            <Button
-              aria-pressed={platformFilter === null}
-              className="h-7 shrink-0 px-2 text-xs"
-              onClick={() => setPlatformFilter(null)}
-              size="sm"
-              variant={platformFilter === null ? 'secondary' : 'ghost'}
-            >
-              {t('docs.searchAllPlatforms')}
-            </Button>
-            {platformOptions.map((platform) => (
-              <Button
-                aria-pressed={platformFilter === platform}
-                className="h-7 shrink-0 gap-1 px-2 text-xs"
-                key={platform}
-                onClick={() =>
-                  setPlatformFilter((current) =>
-                    current === platform ? null : platform,
-                  )
-                }
-                size="sm"
-                variant={platformFilter === platform ? 'secondary' : 'ghost'}
-              >
-                {getPlatformLabel(platform, searchLocale)}
-                {platformFilter === platform ? (
-                  <XIcon className="size-3" />
-                ) : null}
-              </Button>
-            ))}
+            <SearchFilterDropdown
+              allLabel={t('docs.searchAllPlatforms')}
+              groups={platformFilterGroups}
+              onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
+              searchPlaceholder={t('docs.searchFilterPlatforms')}
+              value={platformFilter}
+            />
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
