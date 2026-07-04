@@ -589,4 +589,82 @@ describe('DocsSearchDialog', () => {
       ),
     );
   });
+
+  it('does not show the empty state before anything is searched', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    await screen.findByPlaceholderText('Search docs, APIs, guides...');
+
+    // No query typed yet → the "no matching pages" message must not appear.
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+  });
+
+  it('shows the empty message once a query resolves with no results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'zzzznomatch' } },
+    );
+
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
+  });
 });

@@ -145,6 +145,29 @@ export function DocsSearchDialog({
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const showFallbackPages = !algoliaConfig && !search.trim();
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
+  // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
+  // During that pre-fetch window `isLoading` is false and `results` still holds
+  // the previous/initial value, which briefly flashes the empty state after a
+  // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
+  const [debouncePending, setDebouncePending] = useState(false);
+  // `algoliaConfig` is a fresh object every render, so depend on a stable
+  // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
+  const algoliaEnabled = Boolean(algoliaConfig);
+  useEffect(() => {
+    if (!algoliaEnabled || search.trim() === '') {
+      setDebouncePending(false);
+      return;
+    }
+    setDebouncePending(true);
+    const id = window.setTimeout(() => setDebouncePending(false), 130);
+    return () => window.clearTimeout(id);
+  }, [algoliaEnabled, search]);
+  useEffect(() => {
+    if (isLoading) {
+      setDebouncePending(false);
+    }
+  }, [isLoading]);
+  const isBusy = isLoading || debouncePending;
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -342,7 +365,7 @@ export function DocsSearchDialog({
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          {isLoading ? (
+          {isBusy ? (
             <div className="space-y-1 p-2" data-testid="search-loading">
               {[0, 1, 2].map((row) => (
                 <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>
@@ -355,7 +378,9 @@ export function DocsSearchDialog({
             <CommandEmpty>
               {isSearchUnavailable
                 ? t('docs.searchUnavailable')
-                : t('docs.searchEmpty')}
+                : search.trim() !== '' && normalizedSearchResults.length === 0
+                  ? t('docs.searchEmpty')
+                  : null}
             </CommandEmpty>
           )}
           <CommandGroup>
