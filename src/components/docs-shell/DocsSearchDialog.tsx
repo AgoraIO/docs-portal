@@ -269,6 +269,9 @@ export function DocsSearchDialog({
 
       if (!nextOpen) {
         setActiveValue(null);
+        // Reset the query on close so reopening lands on the recent list / prompt
+        // rather than the previous search's (possibly empty) results.
+        setSearch('');
       }
 
       if (algoliaConfig || !nextOpen || pages.length > 0) {
@@ -296,7 +299,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale],
+    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
   );
 
   useEffect(() => {

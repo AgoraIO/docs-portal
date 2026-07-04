@@ -749,6 +749,52 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => expect(screen.queryByText('Recent')).toBeNull());
   });
 
+  it('resets the query on close so reopening does not show the previous no-results message', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // Type a query with no matches → the empty message shows.
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'zzzznomatch' } });
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
+
+    // Close, then reopen: the stale query and its message must be gone.
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    await waitFor(() =>
+      expect(
+        screen.queryByPlaceholderText('Search docs, APIs, guides...'),
+      ).toBeNull(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Search docs' }));
+
+    const reopenedInput = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    expect((reopenedInput as HTMLInputElement).value).toBe('');
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+  });
+
   it('shows a prompt (not fake results) on open when there is no history', async () => {
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
