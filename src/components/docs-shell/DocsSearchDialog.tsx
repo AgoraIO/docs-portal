@@ -5,6 +5,7 @@ import { useDocsSearch } from 'fumadocs-core/search/client';
 import { SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
 import {
   type FilterGroup,
   SearchFilterDropdown,
@@ -261,11 +262,13 @@ export function DocsSearchDialog({
     ...tabEntries.map((tab) => ({
       path: [] as string[],
       primary: tab.description,
+      title: tab.title,
       value: tab.url,
     })),
     ...resultEntries.map((page) => ({
       path: page.path,
       primary: page.description,
+      title: page.title,
       value: page.id ?? page.url,
     })),
   ];
@@ -304,7 +307,7 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="max-w-4xl overflow-hidden border-border p-0"
+        className="max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
@@ -414,54 +417,41 @@ export function DocsSearchDialog({
             )}
           </CommandGroup>
         </CommandList>
-        {/* Footer region: active-item detail strip (when there is an active item)
-            plus an always-visible keyboard-hint bar. */}
-        <div className="shrink-0 border-t">
-          {activeDetail &&
-          (activeDetail.primary || activeDetail.path.length > 0) ? (
-            <div
-              className="min-h-[3.25rem] px-4 py-2"
-              data-testid="search-active-detail"
-            >
-              {activeDetail.primary ? (
-                <HighlightedText
-                  className="line-clamp-2 text-xs leading-5 text-muted-foreground"
-                  value={activeDetail.primary}
-                />
-              ) : null}
-              {activeDetail.path.length > 0 ? (
-                <div className="mt-1 line-clamp-1 text-[0.7rem] text-muted-foreground/80">
-                  {activeDetail.path.join(' › ')}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
-          <div
-            className="flex items-center justify-end gap-3 px-4 py-1.5 text-[0.7rem] text-muted-foreground"
-            data-testid="search-keyboard-hints"
-          >
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-                ↑
-              </kbd>
-              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-                ↓
-              </kbd>
-              {t('docs.searchHintNavigate')}
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-                ↵
-              </kbd>
-              {t('docs.searchHintSelect')}
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-                esc
-              </kbd>
-              {t('docs.searchHintClose')}
-            </span>
-          </div>
+        {/* Active-item detail: floats beside the dialog when there's room,
+            otherwise a fixed-height strip in the footer. Either way it's out of
+            the height-varying flow, so the dialog doesn't resize on focus change. */}
+        <SearchDetailPanel
+          activeValue={activeValue}
+          description={activeDetail?.primary}
+          open={open}
+          renderText={(value) => <HighlightedText value={value} />}
+          title={activeDetail?.title}
+        />
+        <div
+          className="flex shrink-0 items-center justify-end gap-3 border-t px-4 py-1.5 text-[0.7rem] text-muted-foreground"
+          data-testid="search-keyboard-hints"
+        >
+          <span className="flex items-center gap-1">
+            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+              ↑
+            </kbd>
+            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+              ↓
+            </kbd>
+            {t('docs.searchHintNavigate')}
+          </span>
+          <span className="flex items-center gap-1">
+            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+              ↵
+            </kbd>
+            {t('docs.searchHintSelect')}
+          </span>
+          <span className="flex items-center gap-1">
+            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
+              esc
+            </kbd>
+            {t('docs.searchHintClose')}
+          </span>
         </div>
       </CommandDialog>
     </>

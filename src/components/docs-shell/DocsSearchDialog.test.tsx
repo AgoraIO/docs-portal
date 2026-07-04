@@ -153,7 +153,8 @@ describe('DocsSearchDialog', () => {
     expect(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
-    expect(screen.getByText('AI')).toBeInTheDocument();
+    // 'AI' can appear in both the tab list row and the beside detail panel title.
+    expect(screen.getAllByText('AI').length).toBeGreaterThanOrEqual(1);
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Quick Start'));
@@ -272,11 +273,12 @@ describe('DocsSearchDialog', () => {
     expect(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
     ).toBeInTheDocument();
-    expect(screen.getByText('AI')).toBeInTheDocument();
+    // 'AI' can appear in both the tab list row and the beside detail panel title.
+    expect(screen.getAllByText('AI').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Search index unavailable.')).toBeInTheDocument();
     expect(screen.queryByText('No matching pages found.')).toBeNull();
 
-    fireEvent.click(screen.getByText('AI'));
+    fireEvent.click(screen.getAllByText('AI')[0]);
 
     await waitFor(() => {
       expect(loadPagesFailure).toHaveBeenCalledOnce();
@@ -416,12 +418,13 @@ describe('DocsSearchDialog', () => {
       },
     );
 
+    // 2 result rows + 1 title in the beside detail panel (happy-dom innerWidth=1024)
     expect(await screen.findAllByText('Voice Activity Detection')).toHaveLength(
-      2,
+      3,
     );
     expect(screen.getByText('android')).toBeInTheDocument();
     expect(screen.getByText('ios')).toBeInTheDocument();
-    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(3);
+    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(2);
     expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
       'Enable VAD on Android.',
     );
