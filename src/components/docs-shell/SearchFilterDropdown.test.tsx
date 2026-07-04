@@ -48,10 +48,13 @@ describe('SearchFilterDropdown', () => {
       />,
     );
     expect(
-      screen.getByRole('combobox', { name: 'All products' }),
+      screen.getByRole('combobox', { name: /All products/ }),
     ).toHaveTextContent('Video Calling');
     fireEvent.click(screen.getByTestId('search-filter-clear'));
     expect(onChange).toHaveBeenCalledWith(null);
+    expect(
+      screen.queryByPlaceholderText('Filter products…'),
+    ).not.toBeInTheDocument();
   });
 
   it('selects an option from the open dropdown', async () => {

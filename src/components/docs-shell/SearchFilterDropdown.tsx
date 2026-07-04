@@ -52,7 +52,7 @@ export function SearchFilterDropdown({
       <PopoverTrigger asChild>
         <Button
           aria-expanded={open}
-          aria-label={allLabel}
+          aria-label={selected ? `${allLabel}: ${selected.label}` : allLabel}
           className="h-7 shrink-0 gap-1 px-2 text-xs"
           role="combobox"
           size="sm"
@@ -63,7 +63,7 @@ export function SearchFilterDropdown({
           </span>
           {selected ? (
             <XIcon
-              className="size-3 shrink-0"
+              className="pointer-events-auto size-3 shrink-0"
               data-testid="search-filter-clear"
               onClick={(event) => {
                 event.stopPropagation();
@@ -79,7 +79,7 @@ export function SearchFilterDropdown({
         <Command>
           <CommandInput placeholder={searchPlaceholder} />
           <CommandList>
-            <CommandEmpty>—</CommandEmpty>
+            <CommandEmpty>No results</CommandEmpty>
             <CommandItem
               onSelect={() => {
                 onChange(null);
