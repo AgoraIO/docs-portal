@@ -699,6 +699,55 @@ describe('DocsSearchDialog', () => {
     ).toHaveLength(1);
   });
 
+  it('cascades result rows on first open, then drops the enter animation once the user types', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // First open (local mode): the fallback page cascades in with the enter
+    // animation class. ('Quick Start' also appears in the beside detail panel,
+    // so scope to the actual result row.)
+    const resultRow = async () => {
+      const matches = await screen.findAllByText('Quick Start');
+      const row = matches
+        .map((el) => el.closest('[data-slot="command-item"]'))
+        .find(Boolean);
+      if (!row) {
+        throw new Error('expected a Quick Start command item');
+      }
+      return row;
+    };
+    expect((await resultRow()).className).toContain('search-result-enter');
+
+    // Typing disarms the stagger, so results render instantly — no cascade on
+    // every keystroke.
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'quick' } },
+    );
+    await waitFor(async () => {
+      expect((await resultRow()).className).not.toContain(
+        'search-result-enter',
+      );
+    });
+  });
+
   it('does not overlay the loading skeleton on top of existing results', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');

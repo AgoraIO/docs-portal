@@ -20,6 +20,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope, TabSummary } from '@/lib/docs-tree';
 import {
@@ -38,6 +39,11 @@ import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
 const SEARCH_DEBOUNCE_MS = 200;
+
+// First-open cascade: how many leading rows animate, and the per-row offset.
+// Capped so a long list never feels slow to appear.
+const STAGGER_MAX = 6;
+const STAGGER_STEP_MS = 30;
 
 type PagesState =
   | {
@@ -77,6 +83,9 @@ export function DocsSearchDialog({
   // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
   // so the footer can describe the active result without a focus-based tooltip.
   const [activeValue, setActiveValue] = useState<string | null>(null);
+  // The first batch of rows shown right after opening cascades in. Typing
+  // disarms it so results render instantly on every keystroke (no typing lag).
+  const [staggerArmed, setStaggerArmed] = useState(false);
   const scopeFilter =
     productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
@@ -175,6 +184,13 @@ export function DocsSearchDialog({
       setDebouncePending(false);
     }
   }, [isLoading]);
+  // Once the user starts typing, the cascade would replay on every keystroke and
+  // read as lag, so disarm it as soon as there's a query.
+  useEffect(() => {
+    if (search.trim() !== '') {
+      setStaggerArmed(false);
+    }
+  }, [search]);
   const isBusy = isLoading || debouncePending;
   const platformOptions = useMemo(
     () =>
@@ -229,6 +245,8 @@ export function DocsSearchDialog({
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
       setOpen(nextOpen);
+      // Re-arm the cascade each time the dialog opens; clear it on close.
+      setStaggerArmed(nextOpen);
 
       if (!nextOpen) {
         setActiveValue(null);
@@ -325,6 +343,17 @@ export function DocsSearchDialog({
     detailEntries.find((entry) => entry.value === activeValue) ??
     detailEntries[0];
 
+  // Per-row cascade props for the first-open stagger. `position` is the row's
+  // index across the whole list (tabs first, then results); only the first
+  // STAGGER_MAX rows animate, each offset by STAGGER_STEP_MS.
+  const staggerProps = (position: number) =>
+    staggerArmed && position < STAGGER_MAX
+      ? {
+          className: 'search-result-enter',
+          style: { animationDelay: `${position * STAGGER_STEP_MS}ms` },
+        }
+      : { className: undefined, style: undefined };
+
   return (
     <>
       {mode === 'mobile' ? (
@@ -350,11 +379,12 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="max-w-2xl overflow-hidden border-border p-0"
+        className="docs-search-dialog max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
         open={open}
+        overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
         title={t('docs.search')}
         value={activeValue ?? ''}
@@ -406,11 +436,12 @@ export function DocsSearchDialog({
             </CommandEmpty>
           )}
           <CommandGroup>
-            {tabEntries.map((tab) => (
+            {tabEntries.map((tab, index) => (
               <CommandItem
                 key={tab.url}
                 onSelect={() => void handleSelect(tab.url)}
                 value={tab.url}
+                {...staggerProps(index)}
               >
                 <div className="flex flex-col gap-1">
                   <span>{tab.title}</span>
@@ -429,38 +460,42 @@ export function DocsSearchDialog({
                 {t('docs.searchUnavailable')}
               </div>
             ) : (
-              resultEntries.map((page) => (
-                <CommandItem
-                  className="items-start"
-                  key={page.id ?? page.url}
-                  onSelect={() => void handleSelect(page.url)}
-                  value={page.id ?? page.url}
-                >
-                  <div className="min-w-0 flex-1 space-y-1.5">
-                    <HighlightedText
-                      className="line-clamp-1 font-medium"
-                      value={page.title}
-                    />
-                    {page.path.length > 0 ? (
-                      <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                        {page.path.join(' › ')}
-                      </div>
-                    ) : null}
-                    {page.context.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {page.context.map((item) => (
-                          <span
-                            className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                            key={`${page.id ?? page.url}:${item}`}
-                          >
-                            <HighlightedText value={item} />
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                </CommandItem>
-              ))
+              resultEntries.map((page, index) => {
+                const stagger = staggerProps(tabEntries.length + index);
+                return (
+                  <CommandItem
+                    className={cn('items-start', stagger.className)}
+                    key={page.id ?? page.url}
+                    onSelect={() => void handleSelect(page.url)}
+                    style={stagger.style}
+                    value={page.id ?? page.url}
+                  >
+                    <div className="min-w-0 flex-1 space-y-1.5">
+                      <HighlightedText
+                        className="line-clamp-1 font-medium"
+                        value={page.title}
+                      />
+                      {page.path.length > 0 ? (
+                        <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                          {page.path.join(' › ')}
+                        </div>
+                      ) : null}
+                      {page.context.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {page.context.map((item) => (
+                            <span
+                              className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                              key={`${page.id ?? page.url}:${item}`}
+                            >
+                              <HighlightedText value={item} />
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </CommandItem>
+                );
+              })
             )}
           </CommandGroup>
         </CommandList>
