@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { ProductScope, TabSummary } from '@/lib/docs-tree';
+import type { ProductScope } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -66,13 +66,11 @@ export function DocsSearchDialog({
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
   productScopes = [],
-  tabs,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   productScopes?: ProductScope[];
-  tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -343,9 +341,9 @@ export function DocsSearchDialog({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenChange, mode]);
 
-  // Tabs and results only appear once there's a query — the empty state is the
-  // recent list (or a prompt), not a dump of every tab/page.
-  const tabEntries = hasQuery ? filterTabs(tabs, search) : [];
+  // Results only appear once there's a query — the empty state is the recent
+  // list (or a prompt). Section tabs are navigation, not search results, so
+  // they no longer appear here; their landing pages surface as normal results.
   const resultEntries: RenderedSearchEntry[] =
     !hasQuery || isSearchUnavailable
       ? []
@@ -356,27 +354,18 @@ export function DocsSearchDialog({
   // Only show the loading skeleton when there's nothing else to show. While a
   // re-query is in flight the previous results stay visible, so the skeleton
   // must not render on top of them.
-  const showSkeleton =
-    hasQuery && isBusy && tabEntries.length === 0 && resultEntries.length === 0;
+  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
-  // pages; an active query lists tabs then results.
+  // pages; an active query lists results.
   const detailEntries: DetailEntry[] = hasQuery
-    ? [
-        ...tabEntries.map((tab) => ({
-          path: [],
-          primary: tab.description,
-          title: tab.title,
-          value: tab.url,
-        })),
-        ...resultEntries.map((page) => ({
-          path: page.path,
-          primary: page.description,
-          title: page.title,
-          value: page.id ?? page.url,
-        })),
-      ]
+    ? resultEntries.map((page) => ({
+        path: page.path,
+        primary: page.description,
+        title: page.title,
+        value: page.id ?? page.url,
+      }))
     : recentPages.map((page) => ({
         path: [],
         primary: page.description,
@@ -476,15 +465,18 @@ export function DocsSearchDialog({
                 </div>
               ))}
             </div>
-          ) : (
+          ) : hasQuery ? (
+            // Only render cmdk's empty slot during an active search. Rendering it
+            // in the prompt/recent state adds an empty padded block that throws
+            // off the prompt's vertical balance.
             <CommandEmpty>
               {isSearchUnavailable
                 ? t('docs.searchUnavailable')
-                : search.trim() !== '' && normalizedSearchResults.length === 0
+                : normalizedSearchResults.length === 0
                   ? t('docs.searchEmpty')
                   : null}
             </CommandEmpty>
-          )}
+          ) : null}
           {showPrompt ? (
             <div
               className="px-4 py-8 text-center text-sm text-muted-foreground"
@@ -522,34 +514,13 @@ export function DocsSearchDialog({
           ) : null}
           {hasQuery ? (
             <CommandGroup>
-              {tabEntries.map((tab, index) => (
-                <CommandItem
-                  key={tab.url}
-                  onSelect={() => void handleSelect(tab.url)}
-                  value={tab.url}
-                  {...staggerProps(index)}
-                >
-                  <div className="flex flex-col gap-1">
-                    <span>{tab.title}</span>
-                    {tab.description ? (
-                      <span className="text-xs text-muted-foreground">
-                        {tab.description}
-                      </span>
-                    ) : null}
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          ) : null}
-          {hasQuery ? (
-            <CommandGroup>
               {isSearchUnavailable ? (
                 <div className="px-2 py-3 text-sm text-muted-foreground">
                   {t('docs.searchUnavailable')}
                 </div>
               ) : (
                 resultEntries.map((page, index) => {
-                  const stagger = staggerProps(tabEntries.length + index);
+                  const stagger = staggerProps(index);
                   return (
                     <CommandItem
                       className={cn('items-start', stagger.className)}
@@ -779,20 +750,6 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
-}
-
-function filterTabs(tabs: TabSummary[], query: string) {
-  const normalizedQuery = query.trim().toLowerCase();
-
-  if (!normalizedQuery) {
-    return tabs;
-  }
-
-  return tabs.filter((tab) =>
-    `${tab.title}\n${tab.description ?? ''}\n${tab.url}`
-      .toLowerCase()
-      .includes(normalizedQuery),
-  );
 }
 
 function createLocalDocsClient(pages: SearchEntry[]) {

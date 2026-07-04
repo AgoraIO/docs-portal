@@ -380,7 +380,6 @@ export function DocsShell({
                   locale={currentLocale}
                   mode="mobile"
                   productScopes={productScopes}
-                  tabs={tabs}
                 />
               </div>
               <div
@@ -393,7 +392,6 @@ export function DocsShell({
                     locale={currentLocale}
                     mode="desktop"
                     productScopes={productScopes}
-                    tabs={tabs}
                   />
                 </div>
                 <Button

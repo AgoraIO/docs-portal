@@ -51,30 +51,8 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="mobile"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          <DocsSearchDialog loadPages={loadPages} mode="mobile" />
         </AppProviders>
       ),
     });
@@ -132,18 +110,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -159,14 +126,12 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    // Tabs and results only appear once there's a query. 'ai' matches the AI
-    // tab and the Quick Start page (its url contains /ai/).
+    // Results only appear once there's a query. 'ai' matches the Quick Start
+    // page (its url contains /ai/).
     fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
       { target: { value: 'ai' } },
     );
-    // 'AI' can appear in both the tab list row and the beside detail panel title.
-    expect(screen.getAllByText('AI').length).toBeGreaterThanOrEqual(1);
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Quick Start'));
@@ -190,7 +155,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPagesSpy} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPagesSpy} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -224,7 +189,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -245,7 +210,7 @@ describe('DocsSearchDialog', () => {
     ).toBeInTheDocument();
   });
 
-  it('keeps tabs usable and explains that page search is unavailable when lazy page loading fails', async () => {
+  it('explains that page search is unavailable when lazy page loading fails', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -255,18 +220,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPagesFailure}
-            mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPagesFailure} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -276,32 +230,21 @@ describe('DocsSearchDialog', () => {
         initialEntries: ['/en/introduction/about-agora'],
       }),
     });
-    const navigateSpy = vi.spyOn(router, 'navigate');
-
     render(<RouterProvider router={router} />);
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    // Tabs surface once there's a query; 'ai' matches the AI tab.
+    // The page index failed to load; typing a query surfaces the unavailable
+    // message rather than a "no matches" message or a crash.
     fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-      { target: { value: 'ai' } },
+      { target: { value: 'anything' } },
     );
-    // 'AI' can appear in both the tab list row and the beside detail panel title.
-    expect((await screen.findAllByText('AI')).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText('Search index unavailable.')).toBeInTheDocument();
+    expect(
+      await screen.findByText('Search index unavailable.'),
+    ).toBeInTheDocument();
     expect(screen.queryByText('No matching pages found.')).toBeNull();
-
-    fireEvent.click(screen.getAllByText('AI')[0]);
-
-    await waitFor(() => {
-      expect(loadPagesFailure).toHaveBeenCalledOnce();
-      expect(navigateSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: '/en/ai',
-        }),
-      );
-    });
+    await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
   });
 
   it('scopes the Algolia query to a product when a product filter is chosen', async () => {
@@ -330,7 +273,6 @@ describe('DocsSearchDialog', () => {
                 label: 'Voice Calling',
               },
             ]}
-            tabs={[]}
           />
         </AppProviders>
       ),
@@ -402,14 +344,6 @@ describe('DocsSearchDialog', () => {
             loadPages={loadPagesSpy}
             locale="en"
             mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
           />
         </AppProviders>
       ),
@@ -468,7 +402,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -501,12 +435,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
@@ -551,12 +480,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
@@ -634,12 +558,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
@@ -687,12 +606,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
@@ -724,12 +638,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
@@ -759,8 +668,8 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
-          <DocsSearchDialog loadPages={loadPages} mode="mobile" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          <DocsSearchDialog loadPages={loadPages} mode="mobile" />
         </AppProviders>
       ),
     });
@@ -796,7 +705,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -832,7 +741,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -878,13 +787,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="desktop"
-            tabs={[
-              { description: 'AI docs', id: 'ai', title: 'AI', url: '/en/ai' },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -898,11 +801,12 @@ describe('DocsSearchDialog', () => {
     render(<RouterProvider router={router} />);
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    // No history and nothing typed: the prompt shows; the section tabs do NOT
-    // appear as fake results, and there's no Recent heading.
+    // No history and nothing typed: the prompt shows; there's no Recent heading.
     expect(await screen.findByTestId('search-prompt')).toBeInTheDocument();
     expect(screen.queryByText('Recent')).toBeNull();
-    expect(screen.queryByText('AI')).toBeNull();
+    // cmdk's empty slot must NOT render in the prompt state — its padding would
+    // sit above the prompt and throw off its vertical balance.
+    expect(document.querySelector('[data-slot="command-empty"]')).toBeNull();
   });
 
   it('cascades the recent list on first open, then drops the enter animation once the user types', async () => {
@@ -917,7 +821,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -992,12 +896,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            tabs={[]}
-          />
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
         </AppProviders>
       ),
     });
