@@ -1783,4 +1783,12 @@ describe('getProductScopes descriptions', () => {
       label: 'Voice Agent',
     });
   });
+
+  it('omits the description key entirely when the index page has none', () => {
+    const scope = getProductScopes(scopeTree).find(
+      (s) => s.id === 'product:video',
+    );
+    expect(scope).toBeDefined();
+    expect(scope).not.toHaveProperty('description');
+  });
 });

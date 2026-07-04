@@ -123,7 +123,7 @@ export function getProductScopes(root: Root): ProductScope[] {
           label: normalizeLabel(child.name, productId),
         };
 
-        if (typeof childIndex?.description === 'string') {
+        if (typeof childIndex.description === 'string') {
           scope.description = childIndex.description;
         }
 
