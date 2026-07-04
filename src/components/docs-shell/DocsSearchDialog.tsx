@@ -311,6 +311,7 @@ export function DocsSearchDialog({
         open={open}
         shouldFilter={false}
         title={t('docs.search')}
+        value={activeValue ?? ''}
       >
         <CommandInput
           onValueChange={setSearch}
