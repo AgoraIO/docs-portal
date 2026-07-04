@@ -18,6 +18,63 @@ See [Supported platforms](/en/realtime-media/interactive-live-streaming/referenc
 ### Known issues
 
 
+### v4.24.5
+
+Released on June 24, 2026.
+
+#### Upgrade considerations
+
+- **Domain allowlist change**
+
+  Starting with v4.24.5, the SDK domain allowlist is updated to:
+
+  ```text
+  .agora.io
+  .edge.agora.io
+  .sd-rtn.com
+  .edge.sd-rtn.com
+  .rtnsvc.com
+  .edge.rtnsvc.com
+  .rtesvc.com
+  .edge.rtesvc.com
+  ```
+
+  If you upgrade to v4.24.5, update your firewall allowlist so the SDK continues to work in restricted-network environments. See [Firewall requirements](/en/solutions/interactive-live-streaming/reference/firewall).
+
+#### New features
+
+- **Background voice removal in AI Noise Suppression**
+
+  The AI Noise Suppression extension is enhanced to remove background human voices. In noisy environments or scenarios with multiple speakers, this capability further isolates the target speaker and improves audio capture.
+
+#### Improvements
+
+This release includes the following improvements:
+
+- Optimized the signaling flow to improve session-setup efficiency and connection success rates in complex network environments.
+- Optimized media-tracing links and jitter-buffer handling to reduce first-frame time and audio and video stuttering in certain scenarios.
+- The audio subscription flow now uses a presubscribe model by default, improving subscription efficiency and playback stability. When full-link feedback and frame-rate-priority mode are enabled, you can now set a lower bound for resolution downgrade.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Connection setup could time out in some scenarios.
+- The remote user received duplicate `user-joined` callbacks when a user with a string UID rejoined a channel immediately after leaving.
+- Messages could not be received in some scenarios.
+- The Web client could fail to receive H.265 video and metadata sent from a Native client.
+- On Safari 16.6, the local view could turn black or exit unexpectedly in some scenarios.
+- Remote video could freeze briefly after the first `client.publish(video)` call.
+- TypeScript type definition files were missing and some exported symbols were incorrect in the npm package.
+
+### v4.24.4
+
+Released on May 27, 2026.
+
+#### Improvements
+
+This release includes internal optimizations for weak-network scenarios, improving the login success rate.
+
 ### v4.24.3
 
 Released on April 1, 2026.

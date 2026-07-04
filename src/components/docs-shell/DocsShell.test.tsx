@@ -1606,6 +1606,9 @@ describe('DocsShell', () => {
     expect(
       within(sectionMenu).getByRole('menuitem', { name: 'RTC' }),
     ).toBeInTheDocument();
+    expect(
+      within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),
+    ).toBeInTheDocument();
     expect(currentSectionItem).toHaveAttribute('aria-current');
     expect(currentSectionItem).toHaveClass(
       'font-semibold',

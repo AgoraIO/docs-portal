@@ -33,7 +33,15 @@ Add the following destination domains and the corresponding ports to your firewa
 .ap.sd-rtn.com
 .statscollector.sd-rtn.com
 .webrtc-cloud-proxy.sd-rtn.com
+.rtnsvc.com
+.edge.rtnsvc.com
+.rtesvc.com
+.edge.rtesvc.com
 ```
+
+:::info
+`.rtnsvc.com`, `.edge.rtnsvc.com`, `.rtesvc.com`, and `.edge.rtesvc.com` are Simulcast-related domains added in SDK v4.24.5. Only apps that use the Simulcast feature need to add these domains to the firewall allowlist.
+:::
 
 #### Ports
 
