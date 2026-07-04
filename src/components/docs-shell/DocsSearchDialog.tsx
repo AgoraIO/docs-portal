@@ -35,6 +35,10 @@ import {
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 
+// Delay before an Algolia query fires after the last keystroke. The skeleton
+// "busy" bridge below runs slightly longer so it always outlasts this window.
+const SEARCH_DEBOUNCE_MS = 200;
+
 type PagesState =
   | {
       locale: AppLocale;
@@ -138,7 +142,7 @@ export function DocsSearchDialog({
   } = useDocsSearch(
     {
       client: searchClient,
-      delayMs: algoliaConfig ? 100 : 0,
+      delayMs: algoliaConfig ? SEARCH_DEBOUNCE_MS : 0,
     },
     searchDeps,
   );
@@ -160,7 +164,10 @@ export function DocsSearchDialog({
       return;
     }
     setDebouncePending(true);
-    const id = window.setTimeout(() => setDebouncePending(false), 130);
+    const id = window.setTimeout(
+      () => setDebouncePending(false),
+      SEARCH_DEBOUNCE_MS + 30,
+    );
     return () => window.clearTimeout(id);
   }, [algoliaEnabled, search]);
   useEffect(() => {
