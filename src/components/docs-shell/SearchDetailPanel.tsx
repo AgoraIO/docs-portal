@@ -135,7 +135,9 @@ export function SearchDetailPanel({
       style={style}
     >
       {title ? (
-        <div className="mb-1 font-medium text-sm text-foreground">{title}</div>
+        <div className="mb-1 font-medium text-sm text-foreground">
+          {renderText(title)}
+        </div>
       ) : null}
       <div className="text-xs leading-5 text-muted-foreground">
         {renderText(description)}

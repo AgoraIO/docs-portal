@@ -65,4 +65,25 @@ describe('SearchDetailPanel', () => {
     );
     expect(screen.queryByTestId('search-active-detail')).toBeNull();
   });
+
+  it('runs the title through renderText so highlight markup is not shown raw', () => {
+    // Algolia puts <mark> tags in the title; renderText (HighlightedText in the
+    // app) turns them into highlighted text rather than literal characters.
+    const stripMarks = (value: string) => (
+      <span>{value.replaceAll('<mark>', '').replaceAll('</mark>', '')}</span>
+    );
+    render(
+      <SearchDetailPanel
+        activeValue="a"
+        description="Join a channel to send streams."
+        open
+        placement="right"
+        renderText={stripMarks}
+        title="Join a <mark>channel</mark>"
+      />,
+    );
+    const el = screen.getByTestId('search-active-detail');
+    expect(el).not.toHaveTextContent('<mark>');
+    expect(el).toHaveTextContent('Join a channel');
+  });
 });
