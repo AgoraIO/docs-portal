@@ -255,6 +255,13 @@ export function DocsSearchDialog({
   );
 
   useEffect(() => {
+    // Only one instance owns the global ⌘K shortcut. DocsShell mounts several
+    // DocsSearchDialogs (desktop + mobile triggers) that are toggled by CSS, so
+    // if every instance listened, ⌘K would open multiple overlapping dialogs.
+    if (mode !== 'desktop') {
+      return;
+    }
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key.toLowerCase() !== 'k') {
         return;
@@ -270,7 +277,7 @@ export function DocsSearchDialog({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleOpenChange]);
+  }, [handleOpenChange, mode]);
 
   const tabEntries = filterTabs(tabs, search);
   const resultEntries: RenderedSearchEntry[] = isSearchUnavailable

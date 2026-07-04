@@ -667,4 +667,35 @@ describe('DocsSearchDialog', () => {
       await screen.findByText('No matching pages found.'),
     ).toBeInTheDocument();
   });
+
+  it('opens only one dialog on ⌘K even when a mobile instance is also mounted', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="mobile" tabs={[]} />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    await screen.findAllByRole('button', { name: 'Search docs' });
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+
+    await screen.findByPlaceholderText('Search docs, APIs, guides...');
+    // Both instances register no listener except the desktop one, so exactly
+    // one dialog opens — not two overlapping ones.
+    expect(
+      screen.getAllByPlaceholderText('Search docs, APIs, guides...'),
+    ).toHaveLength(1);
+  });
 });
