@@ -9,7 +9,7 @@ describe('SearchDetailPanel', () => {
     render(
       <SearchDetailPanel
         activeValue="a"
-        description="Connect to a channel."
+        description="POST /v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop"
         open
         placement="right"
         renderText={renderText}
@@ -19,7 +19,11 @@ describe('SearchDetailPanel', () => {
     const el = screen.getByTestId('search-active-detail');
     expect(el).toHaveAttribute('data-mode', 'beside');
     expect(el).toHaveTextContent('Join a channel');
-    expect(el).toHaveTextContent('Connect to a channel.');
+    // Long unbroken strings (e.g. API paths) must be allowed to wrap so they
+    // don't overflow the fixed-width card.
+    const description = el.querySelector('.break-words:last-child');
+    expect(description?.className).toContain('break-words');
+    expect(description).toHaveTextContent('/mode/{mode}/stop');
   });
 
   it('renders the in-footer strip with the description when placement is strip', () => {

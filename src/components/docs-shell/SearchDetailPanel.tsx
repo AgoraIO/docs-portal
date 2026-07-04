@@ -117,7 +117,7 @@ export function SearchDetailPanel({
         {description ? (
           // Keyed on activeValue so the fade replays when the selection changes.
           <div
-            className="search-detail-enter line-clamp-2 text-xs leading-5 text-muted-foreground"
+            className="search-detail-enter line-clamp-2 break-words text-xs leading-5 text-muted-foreground"
             key={activeValue ?? 'first'}
           >
             {renderText(description)}
@@ -141,11 +141,11 @@ export function SearchDetailPanel({
       style={style}
     >
       {title ? (
-        <div className="mb-1 font-medium text-sm text-foreground">
+        <div className="mb-1 break-words font-medium text-sm text-foreground">
           {renderText(title)}
         </div>
       ) : null}
-      <div className="text-xs leading-5 text-muted-foreground">
+      <div className="break-words text-xs leading-5 text-muted-foreground">
         {renderText(description)}
       </div>
     </div>,
