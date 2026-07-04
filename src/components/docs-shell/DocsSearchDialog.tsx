@@ -339,13 +339,22 @@ export function DocsSearchDialog({
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          <CommandEmpty>
-            {isLoading
-              ? t('docs.searchLoading')
-              : isSearchUnavailable
+          {isLoading ? (
+            <div className="space-y-1 p-2" data-testid="search-loading">
+              {[0, 1, 2].map((row) => (
+                <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>
+                  <div className="h-3.5 w-1/3 animate-pulse rounded bg-muted" />
+                  <div className="h-2.5 w-2/3 animate-pulse rounded bg-muted/70" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <CommandEmpty>
+              {isSearchUnavailable
                 ? t('docs.searchUnavailable')
                 : t('docs.searchEmpty')}
-          </CommandEmpty>
+            </CommandEmpty>
+          )}
           <CommandGroup>
             {tabEntries.map((tab) => (
               <CommandItem
