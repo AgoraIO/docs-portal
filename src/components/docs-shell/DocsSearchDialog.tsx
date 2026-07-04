@@ -293,6 +293,11 @@ export function DocsSearchDialog({
     : showFallbackPages
       ? pages.map(localSearchEntryToRenderedEntry)
       : normalizedSearchResults.map(searchResultToEntry);
+  // Only show the loading skeleton when there's nothing else to show. While a
+  // re-query is in flight the previous results stay visible, so the skeleton
+  // must not render on top of them.
+  const showSkeleton =
+    isBusy && tabEntries.length === 0 && resultEntries.length === 0;
 
   // One detail record per rendered item, in render order (tabs first, then
   // results). `value` matches the cmdk item value set on each CommandItem below.
@@ -382,7 +387,7 @@ export function DocsSearchDialog({
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          {isBusy ? (
+          {showSkeleton ? (
             <div className="space-y-1 p-2" data-testid="search-loading">
               {[0, 1, 2].map((row) => (
                 <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>

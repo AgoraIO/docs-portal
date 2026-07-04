@@ -698,4 +698,72 @@ describe('DocsSearchDialog', () => {
       screen.getAllByPlaceholderText('Search docs, APIs, guides...'),
     ).toHaveLength(1);
   });
+
+  it('does not overlay the loading skeleton on top of existing results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    // First query resolves with a result; the next query never resolves, so the
+    // dialog stays "busy" while the previous result is still on screen.
+    const search = vi
+      .fn()
+      .mockResolvedValueOnce([
+        {
+          content: 'Voice Activity Detection',
+          id: 'android-vad',
+          objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
+          platform: ['android'],
+          product: 'voice',
+          snippet: 'Enable <mark>VAD</mark> on Android.',
+          type: 'page',
+          url: '/en/voice/vad#android',
+        },
+      ])
+      .mockReturnValue(new Promise<never>(() => {}));
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search,
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'vad' } });
+    // Title shows in the result row (and the beside detail panel), so >= 1.
+    await screen.findAllByText('Voice Activity Detection');
+
+    // Type again → the second query is in flight, but the previous result stays
+    // and the skeleton must NOT appear alongside it.
+    fireEvent.input(input, { target: { value: 'vadx' } });
+    await new Promise((resolve) => {
+      setTimeout(resolve, 300);
+    });
+    expect(screen.queryByTestId('search-loading')).toBeNull();
+    expect(
+      screen.getAllByText('Voice Activity Detection').length,
+    ).toBeGreaterThan(0);
+  });
 });
