@@ -107,8 +107,14 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
-  const searchClient = useMemo(
-    () =>
+  // Count of in-flight search requests. fumadocs' `isLoading` flips off the
+  // moment ANY request settles — including a superseded one whose result it then
+  // discards — which briefly reads as "settled with no results" mid-typing and
+  // flashes the empty message. Tracking every request keeps us "busy" until the
+  // latest one actually resolves.
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const searchClient = useMemo(() => {
+    const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
         ? createAlgoliaDocsClient({
             appId: algoliaAppId,
@@ -118,17 +124,27 @@ export function DocsSearchDialog({
             scopeFilter,
             searchApiKey: algoliaSearchApiKey,
           })
-        : createLocalDocsClient(pages),
-    [
-      algoliaAppId,
-      algoliaIndexName,
-      algoliaSearchApiKey,
-      pages,
-      platformFilter,
-      scopeFilter,
-      searchLocale,
-    ],
-  );
+        : createLocalDocsClient(pages);
+    return {
+      ...base,
+      async search(query: string) {
+        setPendingRequests((count) => count + 1);
+        try {
+          return await base.search(query);
+        } finally {
+          setPendingRequests((count) => count - 1);
+        }
+      },
+    };
+  }, [
+    algoliaAppId,
+    algoliaIndexName,
+    algoliaSearchApiKey,
+    pages,
+    platformFilter,
+    scopeFilter,
+    searchLocale,
+  ]);
   const searchDeps = useMemo(
     () =>
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -198,7 +214,7 @@ export function DocsSearchDialog({
       setStaggerArmed(false);
     }
   }, [search]);
-  const isBusy = isLoading || debouncePending;
+  const isBusy = isLoading || debouncePending || pendingRequests > 0;
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>

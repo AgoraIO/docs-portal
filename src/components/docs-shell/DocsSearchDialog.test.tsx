@@ -6,7 +6,13 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
@@ -520,6 +526,76 @@ describe('DocsSearchDialog', () => {
 
     expect(await screen.findByTestId('search-loading')).toBeInTheDocument();
     expect(screen.queryByText('Searching...')).toBeNull();
+  });
+
+  it('does not flash the empty message when an in-flight request is superseded by a newer one', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    // Hand out a controllable promise per search call so we can leave the first
+    // request in flight while the second fires, then resolve the (superseded)
+    // first one — the exact race that flips fumadocs' isLoading off early.
+    const deferreds: Array<(value: never[]) => void> = [];
+    const search = vi.fn(
+      () =>
+        new Promise<never[]>((resolve) => {
+          deferreds.push(resolve);
+        }),
+    );
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search,
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+
+    // First query fires after the debounce and stays in flight.
+    fireEvent.input(input, { target: { value: 'sta' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    // Second query fires while the first is still pending.
+    fireEvent.input(input, { target: { value: 'star' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+
+    // Resolve the superseded first request (its result is discarded, but its
+    // finally() flips fumadocs' isLoading off). The second is still pending, so
+    // we must stay in the loading state — no empty message.
+    await act(async () => {
+      deferreds[0]([]);
+    });
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+    expect(screen.getByTestId('search-loading')).toBeInTheDocument();
+
+    // Once the latest request settles empty, the message is correct.
+    await act(async () => {
+      deferreds[1]([]);
+    });
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
   });
 
   it('updates the footer detail as the highlighted result changes', async () => {
