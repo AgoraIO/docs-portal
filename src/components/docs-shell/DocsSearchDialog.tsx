@@ -10,6 +10,7 @@ import {
   type FilterGroup,
   SearchFilterDropdown,
 } from '@/components/docs-shell/SearchFilterDropdown';
+import { SearchKeyboardHints } from '@/components/docs-shell/SearchKeyboardHints';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -288,9 +289,9 @@ export function DocsSearchDialog({
 
   // One detail record per rendered item, in render order (tabs first, then
   // results). `value` matches the cmdk item value set on each CommandItem below.
-  const detailEntries = [
+  const detailEntries: DetailEntry[] = [
     ...tabEntries.map((tab) => ({
-      path: [] as string[],
+      path: [],
       primary: tab.description,
       title: tab.title,
       value: tab.url,
@@ -356,6 +357,7 @@ export function DocsSearchDialog({
             {productScopes.length > 0 ? (
               <SearchFilterDropdown
                 allLabel={t('docs.searchAllProducts')}
+                emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
                 onChange={setScopeId}
                 searchPlaceholder={t('docs.searchFilterProducts')}
@@ -364,6 +366,7 @@ export function DocsSearchDialog({
             ) : null}
             <SearchFilterDropdown
               allLabel={t('docs.searchAllPlatforms')}
+              emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
               onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
@@ -459,32 +462,11 @@ export function DocsSearchDialog({
           renderText={(value) => <HighlightedText value={value} />}
           title={activeDetail?.title}
         />
-        <div
-          className="flex shrink-0 items-center justify-end gap-3 border-t px-4 py-1.5 text-[0.7rem] text-muted-foreground"
-          data-testid="search-keyboard-hints"
-        >
-          <span className="flex items-center gap-1">
-            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-              ↑
-            </kbd>
-            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-              ↓
-            </kbd>
-            {t('docs.searchHintNavigate')}
-          </span>
-          <span className="flex items-center gap-1">
-            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-              ↵
-            </kbd>
-            {t('docs.searchHintSelect')}
-          </span>
-          <span className="flex items-center gap-1">
-            <kbd className="rounded border border-border bg-muted/60 px-1 py-px text-[0.65rem] leading-none">
-              esc
-            </kbd>
-            {t('docs.searchHintClose')}
-          </span>
-        </div>
+        <SearchKeyboardHints
+          closeLabel={t('docs.searchHintClose')}
+          navigateLabel={t('docs.searchHintNavigate')}
+          selectLabel={t('docs.searchHintSelect')}
+        />
       </CommandDialog>
     </>
   );
@@ -495,6 +477,15 @@ type RenderedSearchEntry = SearchEntry & {
   id?: string;
   path: string[];
   snippet?: string;
+};
+
+// The active-item detail shown in the floating panel / footer strip, one per
+// rendered tab or result. `value` matches the item's cmdk value.
+type DetailEntry = {
+  path: string[];
+  primary?: string;
+  title: string;
+  value: string;
 };
 
 function localSearchEntryToRenderedEntry(

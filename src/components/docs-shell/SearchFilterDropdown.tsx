@@ -31,12 +31,14 @@ export type FilterGroup = {
 
 export function SearchFilterDropdown({
   allLabel,
+  emptyLabel,
   groups,
   onChange,
   searchPlaceholder,
   value,
 }: {
   allLabel: string;
+  emptyLabel: string;
   groups: FilterGroup[];
   onChange: (value: string | null) => void;
   searchPlaceholder: string;
@@ -100,7 +102,7 @@ export function SearchFilterDropdown({
         <Command>
           <CommandInput placeholder={searchPlaceholder} />
           <CommandList className="max-h-72 overflow-y-auto">
-            <CommandEmpty>No results</CommandEmpty>
+            <CommandEmpty>{emptyLabel}</CommandEmpty>
             <CommandItem
               onSelect={() => {
                 onChange(null);

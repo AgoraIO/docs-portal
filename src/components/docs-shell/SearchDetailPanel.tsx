@@ -8,7 +8,7 @@ export type DetailPlacement = 'right' | 'left' | 'strip';
 
 const PANEL_WIDTH = 260;
 const GAP = 14;
-const NEED = PANEL_WIDTH + GAP;
+const MIN_SIDE_CLEARANCE = PANEL_WIDTH + GAP;
 
 export function SearchDetailPanel({
   activeValue,
@@ -57,9 +57,9 @@ export function SearchDetailPanel({
     function compute() {
       const dr = d.getBoundingClientRect();
       let next: DetailPlacement;
-      if (window.innerWidth - dr.right >= NEED) {
+      if (window.innerWidth - dr.right >= MIN_SIDE_CLEARANCE) {
         next = 'right';
-      } else if (dr.left >= NEED) {
+      } else if (dr.left >= MIN_SIDE_CLEARANCE) {
         next = 'left';
       } else {
         next = 'strip';

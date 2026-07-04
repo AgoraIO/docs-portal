@@ -25,6 +25,7 @@ describe('SearchFilterDropdown', () => {
     render(
       <SearchFilterDropdown
         allLabel="All products"
+        emptyLabel="No results"
         groups={groups}
         onChange={vi.fn()}
         searchPlaceholder="Filter products…"
@@ -41,6 +42,7 @@ describe('SearchFilterDropdown', () => {
     render(
       <SearchFilterDropdown
         allLabel="All products"
+        emptyLabel="No results"
         groups={groups}
         onChange={onChange}
         searchPlaceholder="Filter products…"
@@ -62,6 +64,7 @@ describe('SearchFilterDropdown', () => {
     render(
       <SearchFilterDropdown
         allLabel="All products"
+        emptyLabel="No results"
         groups={groups}
         onChange={onChange}
         searchPlaceholder="Filter products…"
@@ -78,6 +81,7 @@ describe('SearchFilterDropdown', () => {
     render(
       <SearchFilterDropdown
         allLabel="All products"
+        emptyLabel="No results"
         groups={groups}
         onChange={onChange}
         searchPlaceholder="Filter products…"
