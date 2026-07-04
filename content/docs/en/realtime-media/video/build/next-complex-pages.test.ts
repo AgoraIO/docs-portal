@@ -82,6 +82,7 @@ describe('next video complex pages', () => {
 
     expect(extractStructuredPlatformTabs(compiled)).toEqual({
       canonicalPlatform: 'web',
+      defaultPlatform: 'android',
       platforms: [
         'android',
         'electron',

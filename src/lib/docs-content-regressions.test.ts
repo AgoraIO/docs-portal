@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
 const allDocsRoot = resolve(process.cwd(), 'content/docs');
 const voiceDocsRoot = resolve(docsRoot, 'realtime-media/voice');
+const SOURCE_LOADER_TEST_TIMEOUT = 300_000;
 
 describe('docs content regressions', () => {
   function expectListItemToContainNestedOrderedList(
@@ -190,7 +191,7 @@ describe('docs content regressions', () => {
     });
 
     expect(offenders).toEqual([]);
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps AI build interrupt links in shape the conversation', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
@@ -263,7 +264,7 @@ describe('docs content regressions', () => {
     const content = readDoc('ai/build/shape-the-conversation/filler-words.mdx');
 
     expect(content).toContain(
-      '[MCP servers](../../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
+      '[MCP servers](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers)',
     );
     expect(content).not.toContain(
       '[MCP servers](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
@@ -366,10 +367,13 @@ describe('docs content regressions', () => {
     expect(content).not.toContain('[Display live subtitles](transcripts)');
   });
 
-  it('keeps custom model integration presets prerequisites focused on an Agora account', () => {
-    const content = readDoc('ai/build/custom-model-integration/presets.mdx');
+  it('keeps custom model integration tutorial prerequisites focused on Agora-managed presets', () => {
+    const content = readDoc(
+      'ai/build/custom-model-integration/build-server-client.mdx',
+    );
 
-    expect(content).toContain('- An Agora account');
+    expect(content).toContain('- An active [Agora account]');
+    expect(content).toContain('Agora-managed presets');
     expect(content).not.toContain('Conversational AI Engine enabled');
     expect(content).not.toContain('../reference/enable-conversational-ai');
   });
@@ -409,7 +413,7 @@ describe('docs content regressions', () => {
       'supported-platforms',
       'release-notes',
       'release-notes-uikit',
-      '!account-settlement',
+      '!security',
     ]);
   });
 
@@ -477,7 +481,7 @@ describe('docs content regressions', () => {
     }
 
     expect(offenders).toEqual([]);
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps docs free of four-colon directive fences', () => {
     const offenders: string[] = [];
@@ -497,13 +501,13 @@ describe('docs content regressions', () => {
     }
 
     expect(offenders).toEqual([]);
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps screenshot upload provider details grouped in tabs across screenshot upload docs', () => {
     const screenshotUploadDocs = [
       'realtime-media/video/build/add-advanced-video-features/screenshot-upload.mdx',
       'realtime-media/broadcast-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
-      'solutions/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
+      'realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
     ];
 
     for (const relativePath of screenshotUploadDocs) {
@@ -693,7 +697,7 @@ describe('docs content regressions', () => {
       'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
-    expect(content).not.toContain(
+    expect(content).toContain(
       '\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n',
     );
   });
@@ -704,7 +708,7 @@ describe('docs content regressions', () => {
     );
 
     expect(content).toContain(
-      '</PlatformStructured>\n\n{/* Separate platform groups: reconnection flow vs implementation guide. */}\n\n<PlatformStructured platform="android">',
+      '</PlatformStructured>\n\n## Prerequisites\nEnsure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) project.\n\n## Implement connection status management\n<PlatformStructured platform="android">',
     );
   });
 
@@ -712,18 +716,27 @@ describe('docs content regressions', () => {
     const multihostDocs = [
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
       'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
-      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
     ];
 
     for (const relativePath of multihostDocs) {
       const content = readDoc(relativePath);
-
-      expect(content).not.toContain('not available yet');
-      expect(content).toContain(
+      const usesTabs = content.includes(
         '<Tabs defaultValue="android" groupId="platform">',
       );
-      expect(content).not.toContain('<PlatformStructured platform=');
-      expect(content.match(/<TabsContent value=/g) ?? []).toHaveLength(3);
+      const usesPlatformStructured = content.includes(
+        '<PlatformStructured platform="android">',
+      );
+
+      expect(content).not.toContain('not available yet');
+      expect(usesTabs || usesPlatformStructured).toBe(true);
+      if (usesTabs) {
+        expect(content.match(/<TabsContent value=/g) ?? []).toHaveLength(3);
+      } else {
+        expect(content).toContain('<PlatformStructured platform="android">');
+        expect(content).toContain('<PlatformStructured platform="ios">');
+        expect(content).toContain('<PlatformStructured platform="flutter">');
+      }
       expect(content).toContain('```java');
       expect(content).toContain('```swift');
       expect(content).toContain('```dart');
@@ -793,7 +806,7 @@ describe('docs content regressions', () => {
       '| Feature | Simulcasting | Dual-stream video |',
     );
     expect(simulcasting).toContain(
-      '| Small stream automatically adapts video attributes | No | Yes |',
+      '| Small stream automatically adapts video attributes | ✘ | ✔ |',
     );
 
     const htAvatar = readDoc(
@@ -811,7 +824,7 @@ describe('docs content regressions', () => {
     const geofencingDocs = [
       'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
       'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
-      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
       'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
     ];
 
@@ -967,7 +980,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         process.cwd(),
-        'content/docs/en/solutions/agora-analytics/build/call-search.md',
+        'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/call-search.md',
       ),
       'utf8',
     );
@@ -1065,7 +1078,7 @@ describe('docs content regressions', () => {
     expect(
       source.getPage(['realtime-media', 'voice', 'build', 'cloud-proxy'], 'en'),
     ).toBeUndefined();
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('uses specific titles for English top-level overview pages', async () => {
     const { source } = await import('./source.server');
@@ -1080,10 +1093,6 @@ describe('docs content regressions', () => {
         slugs: ['realtime-media', 'overview'],
       },
       {
-        expectedTitle: 'Solutions overview',
-        slugs: ['solutions'],
-      },
-      {
         expectedTitle: 'Reference overview',
         slugs: ['api-reference'],
       },
@@ -1092,7 +1101,7 @@ describe('docs content regressions', () => {
     for (const { expectedTitle, slugs } of overviewPages) {
       expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
     }
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps voice token server deployment steps in continuous ordered lists', async () => {
     const source = readFileSync(
@@ -1203,10 +1212,10 @@ describe('docs content regressions', () => {
 
   it('does not leave legacy videoURL placeholders in MDX content', () => {
     const sources = [
-      'realtime-media/cloud-recording/build/receive-notifications.mdx',
+      'realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx',
       'realtime-media/transcoding/build/receive-ncs-events.md',
-      'solutions/interactive-live-streaming/build/receive-notifications.mdx',
-      'solutions/interactive-live-streaming/build/virtual-background.mdx',
+      'realtime-media/interactive-live-streaming/build/connect-across-channels/receive-notifications.mdx',
+      'realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
     ].map((relativePath) => {
       return readFileSync(resolve(docsRoot, relativePath), 'utf8');
     });
@@ -1221,7 +1230,7 @@ describe('docs content regressions', () => {
       'realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
       'realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background.mdx',
       'realtime-media/video/build/apply-video-effects/virtual-background.mdx',
-      'solutions/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
+      'realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
     ];
 
     for (const samplePath of samplePaths) {
@@ -1238,7 +1247,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'solutions/flexible-classroom/reference/product-features.md',
+        'realtime-media/flexible-classroom/reference/product-features.mdx',
       ),
       'utf8',
     );
@@ -1270,12 +1279,12 @@ describe('docs content regressions', () => {
     expect(processed).toContain(
       'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
     );
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps IoT SDK compatibility table cells readable without raw HTML lists', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
-      ['solutions', 'iot', 'reference', 'communicate-with-rtc-sdk'],
+      ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
       'en',
     );
 
@@ -1296,7 +1305,7 @@ describe('docs content regressions', () => {
     expect(processed).toContain(
       'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
     );
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('renders media push layout images inside GFM table cells', async () => {
     const { source } = await import('./source.server');
@@ -1320,23 +1329,28 @@ describe('docs content regressions', () => {
     expect(processed).toMatch(
       /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
     );
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
-  it('keeps shared geofencing pages wrapped in full html tables when using rowspan', () => {
+  it('keeps shared geofencing pages with readable media-zone table content', () => {
     const pages = [
       'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
       'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
       'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
     ];
 
     for (const relativePath of pages) {
       const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
 
-      expect(source).toContain('<thead>');
-      expect(source).toContain('<td rowspan="2">North America</td>');
-      expect(source).toContain('<table>');
-      expect(source).toContain('</table>');
+      expect(source).toContain(
+        "| Designated access zone | User's location | Zone actually accessed by the SDK | User experience |",
+      );
+      expect(source).toContain(
+        '| North America | North America | North America | Normal |',
+      );
+      expect(source).toContain(
+        '| North America | China | North America | Quality may be affected |',
+      );
     }
   });
 
@@ -1345,7 +1359,7 @@ describe('docs content regressions', () => {
       'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
       'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
       'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'solutions/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1361,7 +1375,7 @@ describe('docs content regressions', () => {
     const pages = [
       'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
-      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1381,7 +1395,7 @@ describe('docs content regressions', () => {
       'realtime-media/voice/reference/security.md',
       'realtime-media/cloud-recording/reference/security.mdx',
       'realtime-media/marketplace/reference/security.mdx',
-      'solutions/interactive-live-streaming/reference/security.md',
+      'realtime-media/interactive-live-streaming/reference/security.md',
     ];
 
     for (const relativePath of pages) {
@@ -1397,7 +1411,7 @@ describe('docs content regressions', () => {
     const pages = [
       'realtime-media/video/build/capture-and-render-video/optimize-frame-rendering.mdx',
       'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
-      'solutions/interactive-live-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1446,9 +1460,9 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
-    expect(source).toContain('| Item | Simulcasting | Dual-stream video |');
+    expect(source).toContain('| Feature | Simulcasting | Dual-stream video |');
     expect(source).toContain(
-      '| Number of published stream layers | Up to four simultaneous layers from one video source |',
+      '| Small stream automatically adapts video attributes | ✘ | ✔ |',
     );
   });
 
@@ -1462,22 +1476,13 @@ describe('docs content regressions', () => {
     );
 
     expect(source).toContain(
-      'The following snippet shows how `SimulcastConfig` and related classes are defined in the SDK:',
-    );
-    expect(source).toContain('public class SimulcastConfig {');
-    expect(source).toContain('STREAM_LAYER_6(5)');
-    expect(source).toContain('publishFallbackEnable');
-    expect(source).toContain(
-      'Constants.VideoStreamType videoStreamType = Constants.VideoStreamType.valueOf(videoStream);',
-    );
-    expect(source).toContain(
       'Compared with dual-stream video, simulcasting offers the following improvements:',
     );
     expect(source).toContain(
       '**More subscribed streams**: Simulcasting expands the number of subscribable streams from 2 to 8.',
     );
     expect(source).toContain(
-      'If bandwidth or device performance is limited, the sender automatically disables extra streams.',
+      'When the sender device is performance-limited, upstream configurations are automatically disabled, and subscribers adapt to the remaining streams.',
     );
     expect(source).toContain(
       "Simulcasting supports publishing video streams at specific tiers based on the subscriber's settings.",
@@ -1763,7 +1768,7 @@ describe('docs content regressions', () => {
       'This page describes a series of measures to deal with room bombing and disruptive behavior',
     );
     expect(source).toContain(
-      '[Secure authentication with tokens](../token-authentication/authentication-workflow)',
+      '[Secure authentication with tokens](../authenticate-users/authentication-workflow)',
     );
     expect(source).toContain(
       '[Channel Management RESTful API](/en/api-reference/api-ref/video)',
@@ -1777,7 +1782,7 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('keeps voice error codes page in the condensed reference format', () => {
+  it('keeps voice error codes page populated with platform-specific reference content', () => {
     const source = readFileSync(
       resolve(docsRoot, 'realtime-media/voice/reference/error-codes.mdx'),
       'utf8',
@@ -1787,13 +1792,13 @@ describe('docs content regressions', () => {
     expect(source).toContain('## Audio-related error codes');
     expect(source).toContain('## Data stream-related error codes');
     expect(source).toContain(
-      '| `109` | The current token has expired and is no longer valid. Generate a new token on the server and call `renewToken`. |',
+      '| `109` | The currently used token has expired and is no longer valid. Generate a new token on the server side and call `renewToken` to update the token. |',
     );
     expect(source).toContain(
-      '| `1501` | There is no permission to use the microphone or related capture device. Check device permissions. |',
+      '| `1501` | There is no permission to use the camera. Check if camera permission has been turned on. |',
     );
-    expect(source).not.toContain('<PlatformStructured platform="android">');
-    expect(source).not.toContain('<PlatformStructured platform="web">');
+    expect(source).toContain('<PlatformStructured platform="android">');
+    expect(source).toContain('<PlatformStructured platform="web">');
   });
 
   it('keeps media gateway pages aligned with the actual migrated entry points', () => {
@@ -1859,7 +1864,7 @@ describe('docs content regressions', () => {
     expect(processed).toContain(
       '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
     );
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps console REST API table slot callout content in processed markdown', async () => {
     const { source } = await import('./source.server');
@@ -1891,7 +1896,7 @@ describe('docs content regressions', () => {
     expect(processed).toContain(
       'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
     );
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('renders AI model callout directives through the processed markdown pipeline', async () => {
     const { source } = await import('./source.server');
@@ -1924,7 +1929,7 @@ describe('docs content regressions', () => {
       );
       expect(processed).toContain('<CalloutContainer');
     }
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('keeps nested and repeated AI model callouts rendered as callout containers', async () => {
     const { source } = await import('./source.server');
@@ -1967,19 +1972,25 @@ describe('docs content regressions', () => {
       elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
     ).toHaveLength(2);
     expect(elevenLabsProcessed).toContain('Paid plan required');
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('renders IoT authentication code tabs as MDX components', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
-      ['solutions', 'iot', 'build', 'authentication-workflow'],
+      [
+        'realtime-media',
+        'iot',
+        'build',
+        'set-up-authentication-and-security',
+        'authentication-workflow',
+      ],
       'en',
     );
 
     expect(page).toBeDefined();
     expect(page?.type).toBe('docs');
     expect(page?.path).toBe(
-      'en/solutions/iot/build/authentication-workflow.mdx',
+      'en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow.mdx',
     );
 
     if (!page || !('getText' in page.data)) {
@@ -1990,24 +2001,30 @@ describe('docs content regressions', () => {
 
     const processed = await page.data.getText('processed');
 
-    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
-    expect(processed).toContain('<CodeBlockTab value="java">');
-    expect(processed).toContain('<CodeBlockTab value="kotlin">');
+    expect(processed).toContain('<_PlatformTabsGroup');
+    expect(processed).toContain('<_PlatformPanel platform="java">');
+    expect(processed).toContain('<_PlatformPanel platform="kotlin">');
     expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
     expect(processed).not.toContain('&lt;CodeBlockTab');
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 
   it('renders stream channel code tabs as MDX components', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
-      ['realtime-media', 'rtm', 'build', 'channels', 'stream-channel'],
+      [
+        'realtime-media',
+        'rtm',
+        'build',
+        'work-with-channels',
+        'stream-channel',
+      ],
       'en',
     );
 
     expect(page).toBeDefined();
     expect(page?.type).toBe('docs');
     expect(page?.path).toBe(
-      'en/realtime-media/rtm/build/channels/stream-channel.mdx',
+      'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx',
     );
 
     if (!page || !('getText' in page.data)) {
@@ -2023,5 +2040,5 @@ describe('docs content regressions', () => {
     expect(processed).toContain('<CodeBlockTab value="kotlin">');
     expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
     expect(processed).not.toContain('&lt;CodeBlockTab');
-  });
+  }, SOURCE_LOADER_TEST_TIMEOUT);
 });

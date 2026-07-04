@@ -9,8 +9,8 @@ const SNAPSHOT_DOWNLOADED_AT = '2026-06-29';
 
 const PRODUCT_MAPPINGS = {
   'agora-analytics': {
-    base: '/en/solutions/agora-analytics',
-    fallback: '/en/solutions/agora-analytics/product-overview',
+    base: '/en/realtime-media/agora-analytics',
+    fallback: '/en/realtime-media/agora-analytics/product-overview',
   },
   'agora-chat': {
     base: '/en/realtime-media/im',
@@ -41,20 +41,20 @@ const PRODUCT_MAPPINGS = {
     fallback: '/en/realtime-media/marketplace',
   },
   'flexible-classroom': {
-    base: '/en/solutions/flexible-classroom',
-    fallback: '/en/solutions/flexible-classroom/product-overview',
+    base: '/en/realtime-media/flexible-classroom',
+    fallback: '/en/realtime-media/flexible-classroom/product-overview',
   },
   'interactive-live-streaming': {
-    base: '/en/solutions/interactive-live-streaming',
-    fallback: '/en/solutions/interactive-live-streaming/product-overview',
+    base: '/en/realtime-media/interactive-live-streaming',
+    fallback: '/en/realtime-media/interactive-live-streaming/product-overview',
   },
   'interactive-whiteboard': {
     base: '/en/realtime-media/whiteboard',
     fallback: '/en/realtime-media/whiteboard',
   },
   iot: {
-    base: '/en/solutions/iot',
-    fallback: '/en/solutions/iot/product-overview',
+    base: '/en/realtime-media/iot',
+    fallback: '/en/realtime-media/iot/product-overview',
   },
   'media-gateway': {
     base: '/en/realtime-media/rtmp-gateway',
@@ -117,9 +117,9 @@ const RENAMED_LEAVES = new Map([
 const PRODUCT_SPECIFIC_TARGETS = {
   'agora-analytics': {
     'analyze/chat-sdk/data-insights':
-      '/en/solutions/agora-analytics/build/explore-and-analyze-data/chat-data-insights',
+      '/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-insights',
     'analyze/chat-sdk/data-metrics':
-      '/en/solutions/agora-analytics/build/explore-and-analyze-data/chat-data-metrics',
+      '/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-metrics',
   },
   'agora-chat': {
     'agora-console/ip_whitelist':
@@ -260,31 +260,31 @@ const PRODUCT_SPECIFIC_TARGETS = {
   },
   'flexible-classroom': {
     'client-api/classroom-sdk':
-      '/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom',
+      '/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom',
     'client-api/edu-context-sdk':
       '/en/api-reference/api-ref/flexible-classroom/edu-context-sdk',
     'client-api/proctor-sdk':
-      '/en/solutions/flexible-classroom/build/enable-teaching-features/proctor-exams-online',
+      '/en/realtime-media/flexible-classroom/build/enable-teaching-features/proctor-exams-online',
     'client-api/ui-scene':
-      '/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk',
+      '/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk',
     'develop/integrate/integrate-flexible-classroom/integrate':
-      '/en/solutions/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom',
+      '/en/realtime-media/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom',
     'get-started/demo-quickstart':
-      '/en/solutions/flexible-classroom/quickstart',
-    'get-started/mcp': '/en/solutions/flexible-classroom/product-overview',
-    'get-started/skills': '/en/solutions/flexible-classroom/product-overview',
+      '/en/realtime-media/flexible-classroom/quickstart',
+    'get-started/mcp': '/en/realtime-media/flexible-classroom/product-overview',
+    'get-started/skills': '/en/realtime-media/flexible-classroom/product-overview',
     'reference/restful-authentication':
-      '/en/solutions/flexible-classroom/reference/classroom-rest-api',
+      '/en/realtime-media/flexible-classroom/reference/classroom-rest-api',
     'restful-api/classroom-api':
-      '/en/solutions/flexible-classroom/reference/classroom-rest-api',
+      '/en/realtime-media/flexible-classroom/reference/classroom-rest-api',
   },
   iot: {
-    'get-started/mcp': '/en/solutions/iot/product-overview',
-    'get-started/skills': '/en/solutions/iot/product-overview',
+    'get-started/mcp': '/en/realtime-media/iot/product-overview',
+    'get-started/skills': '/en/realtime-media/iot/product-overview',
     'reference/communicate_with_rtc_sdk':
-      '/en/solutions/iot/reference/communicate-with-rtc-sdk',
+      '/en/realtime-media/iot/reference/communicate-with-rtc-sdk',
     'reference/restful-authentication':
-      '/en/solutions/iot/build/set-up-authentication-and-security/authentication-workflow',
+      '/en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow',
   },
   'media-gateway': {
     'advanced/abr':
@@ -333,11 +333,11 @@ const PRODUCT_SPECIFIC_TARGETS = {
   },
   'interactive-live-streaming': {
     'channel-management-api/webhook/channel-event-type':
-      '/en/solutions/interactive-live-streaming/build/connect-across-channels/receive-notifications',
+      '/en/realtime-media/interactive-live-streaming/build/connect-across-channels/receive-notifications',
     'get-started/mcp':
-      '/en/solutions/interactive-live-streaming/product-overview',
+      '/en/realtime-media/interactive-live-streaming/product-overview',
     'get-started/skills':
-      '/en/solutions/interactive-live-streaming/product-overview',
+      '/en/realtime-media/interactive-live-streaming/product-overview',
   },
   'media-pull': {
     'overview/product-overview': '/en/realtime-media/media-pull',

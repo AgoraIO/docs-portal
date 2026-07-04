@@ -3047,6 +3047,25 @@ Web body
     });
   });
 
+  it('redirects the legacy Solutions root to the Realtime Media overview', async () => {
+    await expect(loadDocsPagePayload('en', 'solutions', [])).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/overview',
+    });
+  });
+
+  it('redirects legacy Solutions product routes to realtime-media', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'interactive-live-streaming',
+        'quickstart',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/interactive-live-streaming/quickstart',
+    });
+  });
+
   it('redirects legacy standalone REST reference pages to canonical targets', async () => {
     await expect(
       loadDocsPagePayload('en', 'interactive-whiteboard', [

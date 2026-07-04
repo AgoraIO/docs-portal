@@ -1528,11 +1528,6 @@ describe('DocsShell', () => {
             url: '/en/realtime-media',
           },
           {
-            id: 'solutions',
-            title: 'Solutions',
-            url: '/en/solutions',
-          },
-          {
             id: 'api-reference',
             title: 'Reference',
             url: '/en/api-reference',

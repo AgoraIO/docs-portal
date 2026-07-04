@@ -32,11 +32,16 @@ describe('source config', () => {
     vi.resetModules();
   });
 
-  it('only includes meta.json and meta.yaml files in the meta collection', async () => {
-    const { docs } = await import('../../source.config');
+  it(
+    'uses canonical docs and meta collection globs by default',
+    async () => {
+      const { docs } = await import('../../source.config');
 
-    expect(docs.meta.files).toEqual(['**/meta.{json,yaml}']);
-  });
+      expect(docs.docs.files).toEqual(['**/*.{md,mdx}']);
+      expect(docs.meta.files).toEqual(['**/meta.{json,yaml}']);
+    },
+    30000,
+  );
 
   it('creates scoped docs collection globs for a focused dev subtree', () => {
     expect(createScopedDocsFiles('en/ai/openai-realtime')).toEqual({

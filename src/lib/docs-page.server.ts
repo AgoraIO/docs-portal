@@ -23,6 +23,7 @@ import {
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import {
   getOpenApiEndpointUrl,
@@ -223,6 +224,18 @@ export async function loadDocsPagePayload(
   if (solutionsApiReferenceRedirect) {
     return {
       redirectUrl: solutionsApiReferenceRedirect,
+    };
+  }
+
+  const legacySolutionsRedirect = getLegacySolutionsRedirectUrl({
+    locale,
+    slugSegments,
+    tab,
+  });
+  if (legacySolutionsRedirect) {
+    return {
+      preserveSearch: true,
+      redirectUrl: legacySolutionsRedirect,
     };
   }
 

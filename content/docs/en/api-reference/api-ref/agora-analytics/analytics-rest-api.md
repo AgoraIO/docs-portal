@@ -10,7 +10,7 @@ Before working with the RESTful APIs, review the Agora Analytics features in [Ag
 - [Real-time Monitoring](#real-time-monitoring)
 
 :::info
-To use Agora Analytics RESTful APIs, subscribe to an [Agora Analytics pricing plan](/en/solutions/agora-analytics/reference/pricing).
+To use Agora Analytics RESTful APIs, subscribe to an [Agora Analytics pricing plan](/en/realtime-media/agora-analytics/reference/pricing).
 :::
 
 ## Authentication
@@ -30,7 +30,7 @@ With the Call Inspector RESTful APIs, you can search for calls with quality issu
 
 ### API limits
 
-The limits of the Call Inspector RESTful APIs depend on the [pricing plan](/en/solutions/agora-analytics/reference/pricing) you subscribe to.
+The limits of the Call Inspector RESTful APIs depend on the [pricing plan](/en/realtime-media/agora-analytics/reference/pricing) you subscribe to.
 
 The Starter, Standard, Premium, and Enterprise pricing plans have the following differences in terms of API limits:
 
@@ -70,7 +70,7 @@ The following query string parameters are required in the URL as search criteria
 
 | Parameter  | Type   | Description                                                  |
 | ---------- | ------ | ------------------------------------------------------------ |
-| `appid`    | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `start_ts` | Number | The starting time of the search time frame. Unix time (in seconds since 1 January 1970) in UTC. |
 | `end_ts`   | Number | The ending time of the search time frame. Unix time (in seconds since 1 January 1970) in UTC. |
 | `cname`    | String | (Optional) The channel name.                                 |
@@ -156,7 +156,7 @@ The following query string parameters are required in the URL to specify the cal
 | `page_no`             | Number  | (Optional) The page number. The default is 1.                |
 | `page_size`           | Number  | (Optional) The number of user sessions on each page. The default is 20 and the maximum is 100. To implement pagination, specify values for both `page_no` and `page_size`. |
 | `uids`                | String  | (Optional) The list of user IDs separated by commas. For example, `uids=10001,10002,10003`. You can specify a maximum of 10 user IDs. A user ID may occur twice in the list according to the actual use-case. Therefore, if you specify 10 user IDs in the request, 10 or more user IDs are returned. |
-| `appid`               | String  | [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `exclude_server_user` | Boolean | (Optional) Whether or not to exclude Linux users. `true` by default, which represents excluding Linux users. |
 
 #### HTTP request example
@@ -256,7 +256,7 @@ The following query string parameters are required in the URL to specify the cal
 
 | Parameter  | Type   | Description                                                  |
 | ---------- | ------ | ------------------------------------------------------------ |
-| `appid`    | String | [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`    | String | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `call_id`  | String | The unique ID of the call.                                   |
 | `start_ts` | Number | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `end_ts`   | Number | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
@@ -329,7 +329,7 @@ The following query string parameters are required in the URL to specify the cal
 
 | Parameter             | Type    | Description                                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `call_id`             | String  | The unique ID of the call.                                   |
 | `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
@@ -385,7 +385,7 @@ The following query string parameters are required in the URL to specify the cal
 
 | Parameter             | Type    | Description                                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `call_id`             | String  | The unique ID of the call.                                   |
 | `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
@@ -446,7 +446,7 @@ The following query string parameters are required in the URL to specify the cal
 
 | Parameter             | Type    | Description                                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `call_id`             | String  | The unique ID of the call.                                   |
 | `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
@@ -512,7 +512,7 @@ With the Data Insights RESTful APIs, you can query the usage and quality metrics
 
 ### API limits
 
-The limits of the Data Insights RESTful APIs depend on the [pricing plan](/en/solutions/agora-analytics/reference/pricing) you subscribe to.
+The limits of the Data Insights RESTful APIs depend on the [pricing plan](/en/realtime-media/agora-analytics/reference/pricing) you subscribe to.
 
 The Starter, Standard, Premium, and Enterprise pricing plans have the following differences in terms of API limits:
 
@@ -572,14 +572,14 @@ The following query string parameters are required in the URL:
 
 | Parameter              | Type   | Description                                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
 | `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
 | `metric`               | String | Supported values: `userCount` (The total number of users across all channels. A user joining the same channel with different user IDs or joining different channels with the same user ID is counted multiple times); `sessionCount` (The total count of users joining channels. Each time any user ID joins any channel is counted); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it); `peakCurrentChannels` (The maximum number of channels in use); `peakCurrentUsers` (The maximum number of in-call users across channels); `totalDuration` (The total duration of video and audio-only calls calculated by the number of users); `totalVideoDuration` (The total duration of video calls calculated by the number of users); `totalAudioDuration` (The total duration of audio-only calls calculated by the number of users). |
 | `aggregateGranularity` | String | Supported values: `1d` (By day. Returns data for the entire day starting from UTC 00:00 within the query time range); `1h` (By hour. Returns data for each whole UTC hour within the query time range). |
 
 :::info
-For more information about calculating by the number of users, see [How does Agora calculate service minutes?](/en/solutions/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
+For more information about calculating by the number of users, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
 :::
 
 #### HTTP request example
@@ -635,7 +635,7 @@ The following query string parameters are required in the URL:
 
 | Parameter              | Type   | Description                                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
 | `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
 | `metric`               | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
@@ -643,7 +643,7 @@ The following query string parameters are required in the URL:
 | `productType`          | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
 
 :::info
-For more information about calculating by the number of streams, see [How does Agora calculate service minutes?](/en/solutions/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
+For more information about calculating by the number of streams, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
 :::
 
 #### HTTP request example
@@ -704,7 +704,7 @@ The following query string parameters are required in the URL:
 
 | Parameter              | Type   | Description                                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 
 #### Body parameters
 
@@ -861,7 +861,7 @@ The following query string parameters are required in the URL:
 
 | Parameter              | Type   | Description                                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 
 #### Body parameters
 
@@ -1019,7 +1019,7 @@ The data is returned in regular 20-second time windows starting from 00:00:00. F
 
 ### API limits
 
-The limits of the Real-time Monitoring RESTful APIs depend on the [pricing plan](/en/solutions/agora-analytics/reference/pricing) you subscribe to.
+The limits of the Real-time Monitoring RESTful APIs depend on the [pricing plan](/en/realtime-media/agora-analytics/reference/pricing) you subscribe to.
 
 The Starter, Standard, Premium, and Enterprise pricing plans have the following differences in terms of API limits:
 
@@ -1047,7 +1047,7 @@ The following query string parameters are required in the URL:
 
 | **Parameter** | Type   | **Description**                                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `startTs`     | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
 | `endTs`       | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
 | `productType` | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
@@ -1137,7 +1137,7 @@ The following query string parameters are required in the URL:
 
 | Parameter     | Type   | Description                                                  |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `startTs`     | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
 | `endTs`       | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
 | `productType` | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
@@ -1318,7 +1318,7 @@ The following query string parameters are required in the URL:
 
 | **Parameter** | Type   | **Description**                                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `ts`     | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
 | `productType` | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
 | `metric`      | String | The metric you want to query. You can only set it `userCount`, namely the number of users. One user ID in one channel is counted as one user, while one user ID in multiple channels is counted as multiple users. |
@@ -1393,7 +1393,7 @@ The following query string parameters are required in the URL:
 
 | **Parameter** | Type   | **Description**                                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/solutions/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `ts`     | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
 | `productType` | String | Supported values: `Native` (The Agora Video SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora Video SDK for Web). |
 | `metric`      | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |

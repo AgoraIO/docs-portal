@@ -27,6 +27,7 @@ describe('voice stream-raw-audio platforms', () => {
 
     expect(extractStructuredPlatformTabs(compiled)).toEqual({
       canonicalPlatform: 'web',
+      defaultPlatform: 'android',
       platforms: [
         'android',
         'ios',

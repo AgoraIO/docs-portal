@@ -13,7 +13,6 @@ const overviewFiles = [
   'en/introduction/index.mdx',
   'en/ai/index.mdx',
   'en/realtime-media/overview.mdx',
-  'en/solutions/index.mdx',
   'en/api-reference/index.mdx',
 ] as const;
 
@@ -191,13 +190,13 @@ describe('overview entry links', () => {
       'en/realtime-media/video/index.mdx': 'Video Calling overview',
       'en/realtime-media/voice/index.mdx': 'Voice Calling overview',
       'en/realtime-media/whiteboard/index.mdx': 'Whiteboard overview',
-      'en/solutions/agora-analytics/product-overview.mdx':
+      'en/realtime-media/agora-analytics/product-overview.mdx':
         'Agora Analytics overview',
-      'en/solutions/flexible-classroom/product-overview.mdx':
+      'en/realtime-media/flexible-classroom/product-overview.mdx':
         'Flexible Classroom overview',
-      'en/solutions/interactive-live-streaming/product-overview.mdx':
+      'en/realtime-media/interactive-live-streaming/product-overview.mdx':
         'Interactive Live Streaming overview',
-      'en/solutions/iot/product-overview.mdx': 'IoT SDK overview',
+      'en/realtime-media/iot/product-overview.mdx': 'IoT SDK overview',
     } as const;
 
     const actualTitles = Object.fromEntries(
@@ -228,10 +227,10 @@ describe('overview entry links', () => {
       'en/realtime-media/video/index.mdx',
       'en/realtime-media/voice/index.mdx',
       'en/realtime-media/whiteboard/index.mdx',
-      'en/solutions/agora-analytics/product-overview.mdx',
-      'en/solutions/flexible-classroom/product-overview.mdx',
-      'en/solutions/interactive-live-streaming/product-overview.mdx',
-      'en/solutions/iot/product-overview.mdx',
+      'en/realtime-media/agora-analytics/product-overview.mdx',
+      'en/realtime-media/flexible-classroom/product-overview.mdx',
+      'en/realtime-media/interactive-live-streaming/product-overview.mdx',
+      'en/realtime-media/iot/product-overview.mdx',
     ] as const;
 
     const duplicatedHeadings = overviewPages.flatMap((sourceFile) => {
@@ -251,7 +250,6 @@ describe('overview entry links', () => {
     const expectedSidebarTitles = {
       'en/ai/meta.json': 'Voice Agent overview',
       'en/api-reference/meta.json': 'Reference overview',
-      'en/solutions/meta.json': 'Solutions overview',
       'en/realtime-media/broadcast-streaming/meta.json':
         'Broadcast Streaming overview',
       'en/realtime-media/cloud-recording/meta.json':
@@ -273,12 +271,13 @@ describe('overview entry links', () => {
       'en/realtime-media/video/meta.json': 'Video Calling overview',
       'en/realtime-media/voice/meta.json': 'Voice Calling overview',
       'en/realtime-media/whiteboard/meta.json': 'Whiteboard overview',
-      'en/solutions/agora-analytics/meta.json': 'Agora Analytics overview',
-      'en/solutions/flexible-classroom/meta.json':
+      'en/realtime-media/agora-analytics/meta.json':
+        'Agora Analytics overview',
+      'en/realtime-media/flexible-classroom/meta.json':
         'Flexible Classroom overview',
-      'en/solutions/interactive-live-streaming/meta.json':
+      'en/realtime-media/interactive-live-streaming/meta.json':
         'Interactive Live Streaming overview',
-      'en/solutions/iot/meta.json': 'IoT SDK overview',
+      'en/realtime-media/iot/meta.json': 'IoT SDK overview',
     } as const;
 
     const actualSidebarTitles = Object.fromEntries(

@@ -16,10 +16,21 @@ describe('fumadocs source loader', () => {
   });
 
   it('ignores internal proposal report JSON files when resolving docs pages', () => {
-    const page = source.getPage(['solutions', 'agora-analytics'], 'en');
+    const page = source.getPage(
+      ['realtime-media', 'agora-analytics', 'product-overview'],
+      'en',
+    );
 
-    expect(page?.type).toBe('page');
-    expect(page?.url).toBe('/en/solutions/agora-analytics');
-    expect(page?.data.title).toBe('Agora Analytics');
+    expect(page?.type).toBe('docs');
+    expect(page?.url).toBe(
+      '/en/realtime-media/agora-analytics/product-overview',
+    );
+    expect(page?.data.title).toBe('Agora Analytics overview');
+    expect(
+      source.getPage(
+        ['realtime-media', 'agora-analytics', '_proposal-report'],
+        'en',
+      ),
+    ).toBeUndefined();
   });
 });
