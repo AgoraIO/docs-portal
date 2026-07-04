@@ -198,6 +198,10 @@ export function DocsSearchDialog({
     async (nextOpen: boolean) => {
       setOpen(nextOpen);
 
+      if (!nextOpen) {
+        setActiveValue(null);
+      }
+
       if (algoliaConfig || !nextOpen || pages.length > 0) {
         return;
       }
@@ -266,14 +270,14 @@ export function DocsSearchDialog({
     })),
   ];
 
-  const normalizedActive = activeValue?.toLowerCase();
-  // cmdk lowercases values; match case-insensitively. Fall back to the first
-  // rendered item (cmdk auto-selects it) so the strip is populated on open and
-  // when the previously-active item was filtered out.
+  // cmdk emits the active item's (trimmed) value via onValueChange. Our values
+  // are URLs/ids with no case or whitespace variance, so a direct match is
+  // correct. Fall back to the first rendered item (cmdk auto-selects it) so the
+  // strip is populated on open and when the previously-active item was filtered
+  // out.
   const activeDetail =
-    detailEntries.find(
-      (entry) => entry.value.toLowerCase() === normalizedActive,
-    ) ?? detailEntries[0];
+    detailEntries.find((entry) => entry.value === activeValue) ??
+    detailEntries[0];
 
   return (
     <>
@@ -400,6 +404,9 @@ export function DocsSearchDialog({
             )}
           </CommandGroup>
         </CommandList>
+        {/* Footer detail strip: mirrors the cmdk-active item's snippet + full
+            path. Rows still show their own (truncated) path so non-active rows
+            remain locatable; the active item intentionally appears in both. */}
         {activeDetail &&
         (activeDetail.primary || activeDetail.path.length > 0) ? (
           <div
