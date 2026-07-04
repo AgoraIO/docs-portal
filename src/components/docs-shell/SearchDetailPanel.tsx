@@ -1,7 +1,7 @@
 'use client';
 
 import type { CSSProperties, ReactNode } from 'react';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export type DetailPlacement = 'right' | 'left' | 'strip';
@@ -30,6 +30,11 @@ export function SearchDetailPanel({
     placementOverride ?? 'strip',
   );
   const [style, setStyle] = useState<CSSProperties>({});
+  const lastRef = useRef<{
+    placement: DetailPlacement;
+    left: number;
+    top: number;
+  } | null>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: activeValue is intentional — it triggers repositioning when the active result changes
   useLayoutEffect(() => {
@@ -46,15 +51,11 @@ export function SearchDetailPanel({
     if (!dialog) {
       return;
     }
-    const list = dialog.querySelector<HTMLElement>(
-      '[data-slot="command-list"]',
-    );
+    const d: HTMLElement = dialog;
+    const list = d.querySelector<HTMLElement>('[data-slot="command-list"]');
 
     function compute() {
-      if (!dialog) {
-        return;
-      }
-      const dr = dialog.getBoundingClientRect();
+      const dr = d.getBoundingClientRect();
       let next: DetailPlacement;
       if (window.innerWidth - dr.right >= NEED) {
         next = 'right';
@@ -63,23 +64,35 @@ export function SearchDetailPanel({
       } else {
         next = 'strip';
       }
-      setPlacement(next);
 
+      let left = 0;
+      let top = 0;
       if (next !== 'strip') {
-        const row = dialog.querySelector<HTMLElement>(
+        const row = d.querySelector<HTMLElement>(
           '[data-slot="command-item"][aria-selected="true"]',
         );
         const rr = row?.getBoundingClientRect();
-        const top = Math.min(
+        top = Math.min(
           Math.max(rr ? rr.top : dr.top, dr.top + 8),
           Math.max(dr.top + 8, dr.bottom - 96),
         );
-        setStyle({
-          left: next === 'right' ? dr.right + GAP : dr.left - GAP - PANEL_WIDTH,
-          position: 'fixed',
-          top,
-          width: PANEL_WIDTH,
-        });
+        left = next === 'right' ? dr.right + GAP : dr.left - GAP - PANEL_WIDTH;
+      }
+
+      const prev = lastRef.current;
+      if (
+        prev &&
+        prev.placement === next &&
+        prev.left === left &&
+        prev.top === top
+      ) {
+        return;
+      }
+      lastRef.current = { left, placement: next, top };
+
+      setPlacement(next);
+      if (next !== 'strip') {
+        setStyle({ left, position: 'fixed', top, width: PANEL_WIDTH });
       }
     }
 
