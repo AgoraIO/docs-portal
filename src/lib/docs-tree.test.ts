@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  getProductScopes,
   getSidebarBreadcrumb,
   getSidebarEntries,
   getSidebarNodes,
@@ -8,6 +9,114 @@ import {
   mapSidebarEntriesToTree,
   pageTreeNodeToSidebarNodes,
 } from './docs-tree';
+
+const scopeTree: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'rt-folder',
+          children: [
+            {
+              $id: 'voice-folder',
+              children: [],
+              index: {
+                $id: 'voice-index',
+                name: 'Voice Calling',
+                type: 'page',
+                url: '/en/realtime-media/voice',
+              },
+              name: 'Voice Calling',
+              type: 'folder',
+            },
+            {
+              $id: 'video-folder',
+              children: [],
+              index: {
+                $id: 'video-index',
+                name: 'Video Calling',
+                type: 'page',
+                url: '/en/realtime-media/video',
+              },
+              name: 'Video Calling',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'rt-index',
+            name: 'Realtime Media',
+            type: 'page',
+            url: '/en/realtime-media',
+          },
+          name: 'Realtime Media',
+          root: true,
+          type: 'folder',
+        },
+        {
+          $id: 'ai-folder',
+          children: [],
+          index: {
+            $id: 'ai-index',
+            name: 'Voice Agent',
+            type: 'page',
+            url: '/en/ai',
+          },
+          name: 'Voice Agent',
+          root: true,
+          type: 'folder',
+        },
+        {
+          $id: 'intro-folder',
+          children: [],
+          index: {
+            $id: 'intro-index',
+            name: 'Introduction',
+            type: 'page',
+            url: '/en/introduction',
+          },
+          name: 'Introduction',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
+describe('getProductScopes', () => {
+  const scopes = getProductScopes(scopeTree);
+
+  it('expands product tabs into per-product scopes with section groups', () => {
+    expect(scopes).toContainEqual({
+      filter: 'product:"video"',
+      group: 'Realtime Media',
+      id: 'product:video',
+      label: 'Video Calling',
+    });
+    expect(scopes).toContainEqual({
+      filter: 'product:"voice"',
+      group: 'Realtime Media',
+      id: 'product:voice',
+      label: 'Voice Calling',
+    });
+  });
+
+  it('offers a non-product tab as a single tab-level scope', () => {
+    expect(scopes).toContainEqual({
+      filter: 'tab:"ai"',
+      id: 'tab:ai',
+      label: 'Voice Agent',
+    });
+  });
+
+  it('excludes onboarding tabs', () => {
+    expect(scopes.some((s) => s.id.includes('introduction'))).toBe(false);
+  });
+});
 
 const nestedRootTree: Root = {
   children: [
@@ -1345,7 +1454,8 @@ describe('docs tree helpers', () => {
 
     const nodes = pageTreeNodeToSidebarNodes(folder);
     const section = nodes.find((node) => node.type === 'section');
-    const child = section && 'children' in section ? section.children[0] : undefined;
+    const child =
+      section && 'children' in section ? section.children[0] : undefined;
 
     expect(child).toMatchObject({
       type: 'page',
@@ -1595,5 +1705,90 @@ describe('docs tree helpers', () => {
         '/x',
       ),
     ).toEqual([{ title: 'X', url: '/x' }]);
+  });
+});
+
+const scopeTreeWithDescriptions: Root = {
+  children: [
+    {
+      $id: 'en-root',
+      children: [
+        {
+          $id: 'rt-folder',
+          children: [
+            {
+              $id: 'video-folder',
+              children: [],
+              index: {
+                $id: 'video-index',
+                description: 'Multi-party video with adaptive quality.',
+                name: 'Video Calling',
+                type: 'page',
+                url: '/en/realtime-media/video',
+              },
+              name: 'Video Calling',
+              type: 'folder',
+            },
+          ],
+          index: {
+            $id: 'rt-index',
+            name: 'Realtime Media',
+            type: 'page',
+            url: '/en/realtime-media',
+          },
+          name: 'Realtime Media',
+          root: true,
+          type: 'folder',
+        },
+        {
+          $id: 'ai-folder',
+          children: [],
+          index: {
+            $id: 'ai-index',
+            description: 'Voice agents with LLM, ASR, and TTS.',
+            name: 'Voice Agent',
+            type: 'page',
+            url: '/en/ai',
+          },
+          name: 'Voice Agent',
+          root: true,
+          type: 'folder',
+        },
+      ],
+      name: 'English',
+      type: 'folder',
+    },
+  ],
+  name: 'Docs',
+};
+
+describe('getProductScopes descriptions', () => {
+  const scopes = getProductScopes(scopeTreeWithDescriptions);
+
+  it('carries the product index description onto product-level scopes', () => {
+    expect(scopes).toContainEqual({
+      description: 'Multi-party video with adaptive quality.',
+      filter: 'product:"video"',
+      group: 'Realtime Media',
+      id: 'product:video',
+      label: 'Video Calling',
+    });
+  });
+
+  it('carries the tab index description onto tab-level scopes', () => {
+    expect(scopes).toContainEqual({
+      description: 'Voice agents with LLM, ASR, and TTS.',
+      filter: 'tab:"ai"',
+      id: 'tab:ai',
+      label: 'Voice Agent',
+    });
+  });
+
+  it('omits the description key entirely when the index page has none', () => {
+    const scope = getProductScopes(scopeTree).find(
+      (s) => s.id === 'product:video',
+    );
+    expect(scope).toBeDefined();
+    expect(scope).not.toHaveProperty('description');
   });
 });

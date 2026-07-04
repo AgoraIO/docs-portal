@@ -49,6 +49,7 @@ function DocsTabLayout() {
     layoutMode,
     hideToc,
     navigation,
+    productScopes,
     sidebar,
     sidebarHeader,
     tabs,
@@ -67,6 +68,7 @@ function DocsTabLayout() {
       locale={params.locale}
       next={navigation.next}
       previous={navigation.previous}
+      productScopes={productScopes}
       sidebar={sidebar}
       sidebarHeader={sidebarHeader}
       tabs={tabs}

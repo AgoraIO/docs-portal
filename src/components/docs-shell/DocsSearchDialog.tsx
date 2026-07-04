@@ -2,9 +2,15 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { SearchIcon, XIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
+import {
+  type FilterGroup,
+  SearchFilterDropdown,
+} from '@/components/docs-shell/SearchFilterDropdown';
+import { SearchKeyboardHints } from '@/components/docs-shell/SearchKeyboardHints';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -15,7 +21,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { TabSummary } from '@/lib/docs-tree';
+import type { ProductScope, TabSummary } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -28,6 +34,10 @@ import {
 } from '@/lib/platforms/registry';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+
+// Delay before an Algolia query fires after the last keystroke. The skeleton
+// "busy" bridge below runs slightly longer so it always outlasts this window.
+const SEARCH_DEBOUNCE_MS = 200;
 
 type PagesState =
   | {
@@ -45,11 +55,13 @@ export function DocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
+  productScopes = [],
   tabs,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
+  productScopes?: ProductScope[];
   tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');
@@ -60,6 +72,13 @@ export function DocsSearchDialog({
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
+  // Selected scope id (e.g. `product:video`), or null for all products.
+  const [scopeId, setScopeId] = useState<string | null>(null);
+  // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
+  // so the footer can describe the active result without a focus-based tooltip.
+  const [activeValue, setActiveValue] = useState<string | null>(null);
+  const scopeFilter =
+    productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
@@ -80,6 +99,7 @@ export function DocsSearchDialog({
             indexName: algoliaIndexName,
             locale: searchLocale,
             platform: platformFilter ?? undefined,
+            scopeFilter,
             searchApiKey: algoliaSearchApiKey,
           })
         : createLocalDocsClient(pages),
@@ -89,6 +109,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      scopeFilter,
       searchLocale,
     ],
   );
@@ -101,6 +122,7 @@ export function DocsSearchDialog({
             algoliaSearchApiKey,
             searchLocale,
             platformFilter,
+            scopeFilter,
           ]
         : [pages, searchLocale],
     [
@@ -109,6 +131,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      scopeFilter,
       searchLocale,
     ],
   );
@@ -119,7 +142,7 @@ export function DocsSearchDialog({
   } = useDocsSearch(
     {
       client: searchClient,
-      delayMs: algoliaConfig ? 100 : 0,
+      delayMs: algoliaConfig ? SEARCH_DEBOUNCE_MS : 0,
     },
     searchDeps,
   );
@@ -127,6 +150,32 @@ export function DocsSearchDialog({
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const showFallbackPages = !algoliaConfig && !search.trim();
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
+  // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
+  // During that pre-fetch window `isLoading` is false and `results` still holds
+  // the previous/initial value, which briefly flashes the empty state after a
+  // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
+  const [debouncePending, setDebouncePending] = useState(false);
+  // `algoliaConfig` is a fresh object every render, so depend on a stable
+  // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
+  const algoliaEnabled = Boolean(algoliaConfig);
+  useEffect(() => {
+    if (!algoliaEnabled || search.trim() === '') {
+      setDebouncePending(false);
+      return;
+    }
+    setDebouncePending(true);
+    const id = window.setTimeout(
+      () => setDebouncePending(false),
+      SEARCH_DEBOUNCE_MS + 30,
+    );
+    return () => window.clearTimeout(id);
+  }, [algoliaEnabled, search]);
+  useEffect(() => {
+    if (isLoading) {
+      setDebouncePending(false);
+    }
+  }, [isLoading]);
+  const isBusy = isLoading || debouncePending;
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -146,6 +195,30 @@ export function DocsSearchDialog({
     [],
   );
 
+  const productFilterGroups = useMemo<FilterGroup[]>(
+    () =>
+      groupProductScopes(productScopes).map((group) => ({
+        label: group.label,
+        options: group.scopes.map((scope) => ({
+          description: scope.description,
+          label: scope.label,
+          value: scope.id,
+        })),
+      })),
+    [productScopes],
+  );
+  const platformFilterGroups = useMemo<FilterGroup[]>(
+    () => [
+      {
+        options: platformOptions.map((platform) => ({
+          label: getPlatformLabel(platform, searchLocale),
+          value: platform,
+        })),
+      },
+    ],
+    [platformOptions, searchLocale],
+  );
+
   async function handleSelect(url: string) {
     setOpen(false);
     await navigate({
@@ -156,6 +229,10 @@ export function DocsSearchDialog({
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
       setOpen(nextOpen);
+
+      if (!nextOpen) {
+        setActiveValue(null);
+      }
 
       if (algoliaConfig || !nextOpen || pages.length > 0) {
         return;
@@ -186,6 +263,13 @@ export function DocsSearchDialog({
   );
 
   useEffect(() => {
+    // Only one instance owns the global ⌘K shortcut. DocsShell mounts several
+    // DocsSearchDialogs (desktop + mobile triggers) that are toggled by CSS, so
+    // if every instance listened, ⌘K would open multiple overlapping dialogs.
+    if (mode !== 'desktop') {
+      return;
+    }
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key.toLowerCase() !== 'k') {
         return;
@@ -201,7 +285,45 @@ export function DocsSearchDialog({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleOpenChange]);
+  }, [handleOpenChange, mode]);
+
+  const tabEntries = filterTabs(tabs, search);
+  const resultEntries: RenderedSearchEntry[] = isSearchUnavailable
+    ? []
+    : showFallbackPages
+      ? pages.map(localSearchEntryToRenderedEntry)
+      : normalizedSearchResults.map(searchResultToEntry);
+  // Only show the loading skeleton when there's nothing else to show. While a
+  // re-query is in flight the previous results stay visible, so the skeleton
+  // must not render on top of them.
+  const showSkeleton =
+    isBusy && tabEntries.length === 0 && resultEntries.length === 0;
+
+  // One detail record per rendered item, in render order (tabs first, then
+  // results). `value` matches the cmdk item value set on each CommandItem below.
+  const detailEntries: DetailEntry[] = [
+    ...tabEntries.map((tab) => ({
+      path: [],
+      primary: tab.description,
+      title: tab.title,
+      value: tab.url,
+    })),
+    ...resultEntries.map((page) => ({
+      path: page.path,
+      primary: page.description,
+      title: page.title,
+      value: page.id ?? page.url,
+    })),
+  ];
+
+  // cmdk emits the active item's (trimmed) value via onValueChange. Our values
+  // are URLs/ids with no case or whitespace variance, so a direct match is
+  // correct. Fall back to the first rendered item (cmdk auto-selects it) so the
+  // strip is populated on open and when the previously-active item was filtered
+  // out.
+  const activeDetail =
+    detailEntries.find((entry) => entry.value === activeValue) ??
+    detailEntries[0];
 
   return (
     <>
@@ -228,12 +350,14 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="max-w-4xl overflow-hidden border-border p-0"
+        className="max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
+        onValueChange={setActiveValue}
         open={open}
         shouldFilter={false}
         title={t('docs.search')}
+        value={activeValue ?? ''}
       >
         <CommandInput
           onValueChange={setSearch}
@@ -241,50 +365,52 @@ export function DocsSearchDialog({
           value={search}
         />
         {algoliaConfig ? (
-          <div className="flex flex-wrap gap-1 border-b px-3 py-2">
-            <Button
-              aria-pressed={platformFilter === null}
-              className="h-7 shrink-0 px-2 text-xs"
-              onClick={() => setPlatformFilter(null)}
-              size="sm"
-              variant={platformFilter === null ? 'secondary' : 'ghost'}
-            >
-              {t('docs.searchAllPlatforms')}
-            </Button>
-            {platformOptions.map((platform) => (
-              <Button
-                aria-pressed={platformFilter === platform}
-                className="h-7 shrink-0 gap-1 px-2 text-xs"
-                key={platform}
-                onClick={() =>
-                  setPlatformFilter((current) =>
-                    current === platform ? null : platform,
-                  )
-                }
-                size="sm"
-                variant={platformFilter === platform ? 'secondary' : 'ghost'}
-              >
-                {getPlatformLabel(platform, searchLocale)}
-                {platformFilter === platform ? (
-                  <XIcon className="size-3" />
-                ) : null}
-              </Button>
-            ))}
+          <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
+            {productScopes.length > 0 ? (
+              <SearchFilterDropdown
+                allLabel={t('docs.searchAllProducts')}
+                emptyLabel={t('docs.searchFilterNoResults')}
+                groups={productFilterGroups}
+                onChange={setScopeId}
+                searchPlaceholder={t('docs.searchFilterProducts')}
+                value={scopeId}
+              />
+            ) : null}
+            <SearchFilterDropdown
+              allLabel={t('docs.searchAllPlatforms')}
+              emptyLabel={t('docs.searchFilterNoResults')}
+              groups={platformFilterGroups}
+              onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
+              searchPlaceholder={t('docs.searchFilterPlatforms')}
+              value={platformFilter}
+            />
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          <CommandEmpty>
-            {isLoading
-              ? t('docs.searchLoading')
-              : isSearchUnavailable
+          {showSkeleton ? (
+            <div className="space-y-1 p-2" data-testid="search-loading">
+              {[0, 1, 2].map((row) => (
+                <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>
+                  <div className="h-3.5 w-1/3 animate-pulse rounded bg-muted" />
+                  <div className="h-2.5 w-2/3 animate-pulse rounded bg-muted/70" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <CommandEmpty>
+              {isSearchUnavailable
                 ? t('docs.searchUnavailable')
-                : t('docs.searchEmpty')}
-          </CommandEmpty>
+                : search.trim() !== '' && normalizedSearchResults.length === 0
+                  ? t('docs.searchEmpty')
+                  : null}
+            </CommandEmpty>
+          )}
           <CommandGroup>
-            {filterTabs(tabs, search).map((tab) => (
+            {tabEntries.map((tab) => (
               <CommandItem
                 key={tab.url}
                 onSelect={() => void handleSelect(tab.url)}
+                value={tab.url}
               >
                 <div className="flex flex-col gap-1">
                   <span>{tab.title}</span>
@@ -303,14 +429,12 @@ export function DocsSearchDialog({
                 {t('docs.searchUnavailable')}
               </div>
             ) : (
-              (showFallbackPages
-                ? pages.map(localSearchEntryToRenderedEntry)
-                : normalizedSearchResults.map(searchResultToEntry)
-              ).map((page) => (
+              resultEntries.map((page) => (
                 <CommandItem
                   className="items-start"
                   key={page.id ?? page.url}
                   onSelect={() => void handleSelect(page.url)}
+                  value={page.id ?? page.url}
                 >
                   <div className="min-w-0 flex-1 space-y-1.5">
                     <HighlightedText
@@ -334,18 +458,27 @@ export function DocsSearchDialog({
                         ))}
                       </div>
                     ) : null}
-                    {page.description ? (
-                      <HighlightedText
-                        className="line-clamp-2 text-xs leading-5 text-muted-foreground"
-                        value={page.description}
-                      />
-                    ) : null}
                   </div>
                 </CommandItem>
               ))
             )}
           </CommandGroup>
         </CommandList>
+        {/* Active-item detail: floats beside the dialog when there's room,
+            otherwise a fixed-height strip in the footer. Either way it's out of
+            the height-varying flow, so the dialog doesn't resize on focus change. */}
+        <SearchDetailPanel
+          activeValue={activeValue}
+          description={activeDetail?.primary}
+          open={open}
+          renderText={(value) => <HighlightedText value={value} />}
+          title={activeDetail?.title}
+        />
+        <SearchKeyboardHints
+          closeLabel={t('docs.searchHintClose')}
+          navigateLabel={t('docs.searchHintNavigate')}
+          selectLabel={t('docs.searchHintSelect')}
+        />
       </CommandDialog>
     </>
   );
@@ -356,6 +489,15 @@ type RenderedSearchEntry = SearchEntry & {
   id?: string;
   path: string[];
   snippet?: string;
+};
+
+// The active-item detail shown in the floating panel / footer strip, one per
+// rendered tab or result. `value` matches the item's cmdk value.
+type DetailEntry = {
+  path: string[];
+  primary?: string;
+  title: string;
+  value: string;
 };
 
 function localSearchEntryToRenderedEntry(
@@ -502,6 +644,28 @@ function getHighlightParts(value: string) {
   return parts.length > 0
     ? parts
     : [{ highlight: false, key: `0:text:${value}`, text: value }];
+}
+
+// Group scopes by their section header (preserving nav order) for <optgroup>
+// rendering. Tab-level scopes (no group) come through as an unlabelled group.
+function groupProductScopes(scopes: ProductScope[]) {
+  const groups: { label?: string; scopes: ProductScope[] }[] = [];
+  const byLabel = new Map<string, { label?: string; scopes: ProductScope[] }>();
+
+  for (const scope of scopes) {
+    const key = scope.group ?? '';
+    let group = byLabel.get(key);
+
+    if (!group) {
+      group = { label: scope.group, scopes: [] };
+      byLabel.set(key, group);
+      groups.push(group);
+    }
+
+    group.scopes.push(scope);
+  }
+
+  return groups;
 }
 
 function filterTabs(tabs: TabSummary[], query: string) {

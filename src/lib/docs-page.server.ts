@@ -18,6 +18,7 @@ import {
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinksFromNode,
+  getProductScopes,
   getSidebarBreadcrumb,
   getTabSummaries,
 } from './docs-tree';
@@ -463,6 +464,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    productScopes: getProductScopes(pageTree),
     sidebar,
     sidebarHeader,
     slug: page.slugs.at(-1),

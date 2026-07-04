@@ -69,6 +69,7 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
     localeLinks: [],
     markdownUrl: '/en/realtime-media/rtm/build/presence.md',
     navigation: {},
+    productScopes: [],
     sidebar: [],
     sidebarHeader: {
       backHref: '/en/realtime-media/overview',
