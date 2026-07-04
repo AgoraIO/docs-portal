@@ -57,6 +57,22 @@ describe('SearchFilterDropdown', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('still selects an option when rendered outside any dialog (container defaults to body)', async () => {
+    const onChange = vi.fn();
+    render(
+      <SearchFilterDropdown
+        allLabel="All products"
+        groups={groups}
+        onChange={onChange}
+        searchPlaceholder="Filter products…"
+        value={null}
+      />,
+    );
+    fireEvent.click(screen.getByRole('combobox', { name: 'All products' }));
+    fireEvent.click(await screen.findByText('Video Calling'));
+    expect(onChange).toHaveBeenCalledWith('product:video');
+  });
+
   it('selects an option from the open dropdown', async () => {
     const onChange = vi.fn();
     render(

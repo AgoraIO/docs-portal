@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckIcon, ChevronsUpDownIcon, XIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -43,17 +43,34 @@ export function SearchFilterDropdown({
   value: string | null;
 }) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [container, setContainer] = useState<HTMLElement | null>(null);
   const selected = groups
     .flatMap((group) => group.options)
     .find((option) => option.value === value);
 
   return (
-    <Popover onOpenChange={setOpen} open={open}>
+    <Popover
+      onOpenChange={(next) => {
+        if (next) {
+          // Portal into the enclosing modal dialog (if any) so react-remove-scroll
+          // allows the dropdown list to wheel-scroll. Falls back to body otherwise.
+          setContainer(
+            triggerRef.current?.closest<HTMLElement>(
+              '[data-slot="dialog-content"]',
+            ) ?? null,
+          );
+        }
+        setOpen(next);
+      }}
+      open={open}
+    >
       <PopoverTrigger asChild>
         <Button
           aria-expanded={open}
           aria-label={selected ? `${allLabel}: ${selected.label}` : allLabel}
           className="h-7 shrink-0 gap-1 px-2 text-xs"
+          ref={triggerRef}
           role="combobox"
           size="sm"
           variant={selected ? 'secondary' : 'ghost'}
@@ -75,10 +92,14 @@ export function SearchFilterDropdown({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-64 overflow-hidden p-0">
+      <PopoverContent
+        align="start"
+        className="w-64 overflow-hidden p-0"
+        container={container}
+      >
         <Command>
           <CommandInput placeholder={searchPlaceholder} />
-          <CommandList>
+          <CommandList className="max-h-72 overflow-y-auto">
             <CommandEmpty>No results</CommandEmpty>
             <CommandItem
               onSelect={() => {

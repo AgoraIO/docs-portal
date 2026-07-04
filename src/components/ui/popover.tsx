@@ -11,11 +11,14 @@ export const PopoverAnchor = PopoverPrimitive.Anchor;
 export function PopoverContent({
   align = 'end',
   className,
+  container,
   sideOffset = 10,
   ...props
-}: ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>) {
+}: ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> & {
+  container?: HTMLElement | null;
+}) {
   return (
-    <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Portal container={container ?? undefined}>
       <PopoverPrimitive.Content
         align={align}
         className={cn(
