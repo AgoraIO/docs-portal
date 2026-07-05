@@ -18,6 +18,7 @@ import { renderToString } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
+import { i18n } from '@/lib/i18n/i18n';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -770,6 +771,24 @@ describe('DocsContent', () => {
     expect(
       screen.getByRole('menuitem', { name: 'View as Markdown' }),
     ).toHaveAttribute('href', '/en/introduction/about-agora.md');
+  });
+
+  it('uses the route locale for copy menu labels during server render', async () => {
+    await i18n.changeLanguage('en');
+
+    const html = renderToString(
+      <AppProviders>
+        <DocsCopyMenu
+          locale="zh-CN"
+          markdownUrl="/zh-CN/ai.md"
+          slug="ai"
+          title="智能体"
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('复制页面');
+    expect(html).not.toContain('Copy Page');
   });
 
   it('copies MCP config and command from the copy page menu', async () => {
