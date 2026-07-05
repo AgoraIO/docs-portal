@@ -178,7 +178,7 @@ export function DocsSearchDialog({
   const isBusy = isLoading || debouncePending;
   const platformOptions = useMemo(
     () =>
-      (Object.keys(platformRegistry) as PlatformKey[]).sort(
+      ([...Object.keys(platformRegistry)] as PlatformKey[]).sort(
         (a, b) => platformRegistry[a].order - platformRegistry[b].order,
       ),
     [],

@@ -62,6 +62,8 @@ describe('platform registry', () => {
     expect(isKnownPlatform('linux-cpp')).toBe(true);
     expect(isKnownPlatform('linux-c')).toBe(true);
     expect(isKnownPlatform('linux-java')).toBe(true);
+    expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('typescript')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
