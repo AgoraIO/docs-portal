@@ -699,6 +699,59 @@ describe('DocsSearchDialog', () => {
     ).toHaveLength(1);
   });
 
+  it('renders the ↗ external pill and sets the aria-label for external results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([
+        {
+          content: 'Android SDK Reference',
+          id: 'ext-android',
+          objectType: 'external',
+          path: ['Voice & Video'],
+          title: 'Android',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+        },
+      ]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="en"
+            mode="desktop"
+            tabs={[]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'android' } },
+    );
+
+    // The ↗ external pill must appear in the result row.
+    expect(await screen.findByText('↗ external')).toBeInTheDocument();
+    // The CommandItem must carry the accessible label for screen readers.
+    expect(
+      screen.getByRole('option', { name: 'Android (opens in new tab)' }),
+    ).toBeInTheDocument();
+  });
+
   it('does not overlay the loading skeleton on top of existing results', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
