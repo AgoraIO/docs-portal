@@ -210,6 +210,8 @@ export function DocsSearchDialog({
 
   async function handleSelect(url: string, external?: boolean) {
     setOpen(false);
+    // External api-ref results open externally. The absolute-URL check is a
+    // defensive fallback in case the `external` flag is ever missing.
     if (external || /^https?:\/\//.test(url)) {
       window.open(url, '_blank', 'noopener,noreferrer');
       return;
@@ -424,6 +426,7 @@ export function DocsSearchDialog({
             ) : (
               resultEntries.map((page) => (
                 <CommandItem
+                  aria-label={page.external ? `${page.title} (opens in new tab)` : undefined}
                   className="items-start"
                   key={page.id ?? page.url}
                   onSelect={() => void handleSelect(page.url, page.external)}
