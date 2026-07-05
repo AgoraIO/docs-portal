@@ -101,6 +101,20 @@ export const platformRegistry = {
     },
     order: 120,
   },
+  go: {
+    label: {
+      en: 'Go',
+      'zh-CN': 'Go',
+    },
+    order: 122,
+  },
+  typescript: {
+    label: {
+      en: 'TypeScript',
+      'zh-CN': 'TypeScript',
+    },
+    order: 124,
+  },
   'linux-cpp': {
     label: {
       en: 'Linux C++',

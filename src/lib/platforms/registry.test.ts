@@ -6,6 +6,7 @@ import {
   normalizePlatformKey,
   PLATFORM_CANONICAL_PRIORITY,
   PLATFORM_PREFERENCE_STORAGE_KEY,
+  platformRegistry,
 } from './registry';
 
 describe('platform registry', () => {
@@ -90,5 +91,23 @@ describe('platform registry', () => {
 
   it('uses a namespaced storage key', () => {
     expect(PLATFORM_PREFERENCE_STORAGE_KEY).toBe('docs-portal:platform:v1');
+  });
+});
+
+describe('platform registry — SDK languages', () => {
+  it('knows go and typescript', () => {
+    expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('typescript')).toBe(true);
+  });
+
+  it('labels them for English', () => {
+    expect(getPlatformLabel('go', 'en')).toBe('Go');
+    expect(getPlatformLabel('typescript', 'en')).toBe('TypeScript');
+  });
+
+  it('orders them next to python', () => {
+    expect(platformRegistry.go.order).toBeGreaterThan(platformRegistry.python.order);
+    expect(platformRegistry.typescript.order).toBeGreaterThan(platformRegistry.go.order);
+    expect(platformRegistry.typescript.order).toBeLessThan(platformRegistry['linux-cpp'].order);
   });
 });
