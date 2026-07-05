@@ -178,19 +178,8 @@ export function DocsSearchDialog({
   const isBusy = isLoading || debouncePending;
   const platformOptions = useMemo(
     () =>
-      (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
-        [
-          'web',
-          'android',
-          'ios',
-          'javascript',
-          'flutter',
-          'react-native',
-          'windows',
-          'macos',
-          'electron',
-          'unity',
-        ].includes(platform),
+      (Object.keys(platformRegistry) as PlatformKey[]).sort(
+        (a, b) => platformRegistry[a].order - platformRegistry[b].order,
       ),
     [],
   );
