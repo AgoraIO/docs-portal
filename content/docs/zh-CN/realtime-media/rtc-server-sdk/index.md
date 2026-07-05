@@ -1,5 +1,5 @@
 ---
-title: "文档指引"
+title: "RTC Server SDK"
 ---
 声网 RTC 服务端 SDK 部署在服务端，可与集成了声网 RTC 客户端 SDK 的 App 通过 SD-RTN™ 进行实时通信，实现收发音视频流的功能。
 

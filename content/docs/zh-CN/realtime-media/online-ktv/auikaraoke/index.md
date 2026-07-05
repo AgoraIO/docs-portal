@@ -1,5 +1,5 @@
 ---
-title: "文档指引"
+title: "AUIKit K 歌"
 ---
 UIKit 开源方案提供了一整套开源 UI 组件 AUIKaraoke。在你的项目中集成 AUIKaraoke 后，你只需编写几行代码就可以实现在线点歌、K 歌、麦位管理、收发礼物、文字聊天等在线 K 歌场景中核心的 UI 和交互。
 
