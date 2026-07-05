@@ -41,6 +41,9 @@ export type ExternalNavEntry = {
   restAlias?: string;
 };
 
+// Structural subset of DocsSidebarNode (src/lib/docs-tree.ts) — kept loose on
+// purpose so this pure helper stays decoupled from the full sidebar type while
+// still accepting real DocsSidebarNode[] at the call sites.
 type SidebarNodeLike = {
   type?: string;
   title?: string;
@@ -63,9 +66,10 @@ function restAliasFromChildren(children: SidebarNodeLike[]): string | undefined 
 export function collectExternalNavEntries(
   nodes: SidebarNodeLike[],
   ancestry: string[] = [],
-  inheritedAlias?: string,
 ): ExternalNavEntry[] {
-  const groupAlias = inheritedAlias ?? restAliasFromChildren(nodes);
+  // Alias is scoped to each group's own children (where external nodes and the
+  // REST-API sibling co-exist); it is intentionally NOT inherited across depth.
+  const groupAlias = restAliasFromChildren(nodes);
 
   return nodes.flatMap((node) => {
     if (node.external && node.href && node.title) {
@@ -74,7 +78,7 @@ export function collectExternalNavEntries(
 
     if (node.children?.length) {
       const nextAncestry = node.title ? [...ancestry, node.title] : ancestry;
-      return collectExternalNavEntries(node.children, nextAncestry, undefined);
+      return collectExternalNavEntries(node.children, nextAncestry);
     }
 
     return [];

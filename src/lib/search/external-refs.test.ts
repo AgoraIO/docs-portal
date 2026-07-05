@@ -64,6 +64,38 @@ describe('collectExternalNavEntries', () => {
       restAlias: 'rtc',
     });
   });
+
+  it('accumulates ancestry across nested sections', () => {
+    const nested = [
+      {
+        type: 'section',
+        title: 'API Reference',
+        children: [
+          {
+            type: 'section',
+            title: 'Chat',
+            children: [
+              {
+                type: 'page',
+                title: 'iOS',
+                external: true,
+                href: 'https://api-ref.agora.io/en/chat-sdk/ios/1.x/index.html',
+                url: 'https://api-ref.agora.io/en/chat-sdk/ios/1.x/index.html',
+              },
+              { type: 'page', title: 'REST API', url: '/en/api-reference/api-ref/im' },
+            ],
+          },
+        ],
+      },
+    ];
+    const entries = collectExternalNavEntries(nested);
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({
+      title: 'iOS',
+      ancestry: ['API Reference', 'Chat'],
+      restAlias: 'im',
+    });
+  });
 });
 
 describe('buildExternalSearchText', () => {
