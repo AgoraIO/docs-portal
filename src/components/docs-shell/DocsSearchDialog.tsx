@@ -208,8 +208,12 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
-  async function handleSelect(url: string) {
+  async function handleSelect(url: string, external?: boolean) {
     setOpen(false);
+    if (external || /^https?:\/\//.test(url)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
     await navigate({
       to: url,
     });
@@ -422,7 +426,7 @@ export function DocsSearchDialog({
                 <CommandItem
                   className="items-start"
                   key={page.id ?? page.url}
-                  onSelect={() => void handleSelect(page.url)}
+                  onSelect={() => void handleSelect(page.url, page.external)}
                   value={page.id ?? page.url}
                 >
                   <div className="min-w-0 flex-1 space-y-1.5">
@@ -475,6 +479,7 @@ export function DocsSearchDialog({
 
 type RenderedSearchEntry = SearchEntry & {
   context: string[];
+  external?: boolean;
   id?: string;
   path: string[];
   snippet?: string;
@@ -503,6 +508,7 @@ function localSearchEntryToRenderedEntry(
 function searchResultToEntry(result: {
   breadcrumbs?: unknown[];
   content: unknown;
+  external?: unknown;
   id?: unknown;
   objectType?: unknown;
   path?: unknown[];
@@ -520,7 +526,8 @@ function searchResultToEntry(result: {
 
   return {
     context: uniqueStrings([
-      objectType === 'openapi' ? 'API' : undefined,
+      objectType === 'openapi' || objectType === 'external' ? 'API' : undefined,
+      objectType === 'external' ? '↗ external' : undefined,
       ...formatPlatformContext(platforms ?? []),
     ]),
     description: truncateSearchSnippet(
@@ -528,6 +535,7 @@ function searchResultToEntry(result: {
         ? result.snippet
         : breadcrumbs?.filter(Boolean).join(' / '),
     ),
+    external: objectType === 'external',
     id: getString(result.id),
     path: getStringArray(result.path) ?? [],
     title:
