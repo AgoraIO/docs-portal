@@ -63,4 +63,26 @@ describe('applyNavModel', () => {
     });
     expect(record.breadcrumbs).toEqual(['api-reference', 'api-ref', 'server-sdk']);
   });
+
+  it('applies a breadcrumb-only override without touching platform', () => {
+    const [record] = applyNavModel([baseRecord(url)], {
+      breadcrumbsByUrl: new Map([[url, ['API Reference', 'Voice Agents']]]),
+      platformsByUrl: new Map(),
+      externalEntries: [],
+      locale: 'en',
+    });
+    expect(record.breadcrumbs).toEqual(['API Reference', 'Voice Agents']);
+    expect(record.extra_data.platform).toEqual([]); // unchanged from baseRecord
+  });
+
+  it('applies a platform-only override without touching breadcrumbs', () => {
+    const [record] = applyNavModel([baseRecord(url)], {
+      breadcrumbsByUrl: new Map(),
+      platformsByUrl: new Map([[url, ['python']]]),
+      externalEntries: [],
+      locale: 'en',
+    });
+    expect(record.extra_data.platform).toEqual(['python']);
+    expect(record.breadcrumbs).toEqual(['api-reference', 'api-ref', 'server-sdk']); // unchanged
+  });
 });
