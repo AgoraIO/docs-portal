@@ -41,50 +41,6 @@ export type ExternalNavEntry = {
   restAlias?: string;
 };
 
-// Structural subset of DocsSidebarNode (src/lib/docs-tree.ts) — kept loose on
-// purpose so this pure helper stays decoupled from the full sidebar type while
-// still accepting real DocsSidebarNode[] at the call sites.
-type SidebarNodeLike = {
-  type?: string;
-  title?: string;
-  url?: string;
-  href?: string;
-  external?: boolean;
-  children?: SidebarNodeLike[];
-};
-
-// Find a group's internal REST-API sibling link and derive its alias slug.
-function restAliasFromChildren(children: SidebarNodeLike[]): string | undefined {
-  const rest = children.find(
-    (child) => !child.external && (child.url ?? '').includes('/api-ref/'),
-  );
-
-  return rest?.url ? deriveRestAlias(rest.url) : undefined;
-}
-
-/** Walk in-memory sidebar nodes -> external api-ref entries (ancestry = parent section titles). */
-export function collectExternalNavEntries(
-  nodes: SidebarNodeLike[],
-  ancestry: string[] = [],
-): ExternalNavEntry[] {
-  // Alias is scoped to each group's own children (where external nodes and the
-  // REST-API sibling co-exist); it is intentionally NOT inherited across depth.
-  const groupAlias = restAliasFromChildren(nodes);
-
-  return nodes.flatMap((node) => {
-    if (node.external && node.href && node.title) {
-      return [{ title: node.title, href: node.href, ancestry, restAlias: groupAlias }];
-    }
-
-    if (node.children?.length) {
-      const nextAncestry = node.title ? [...ancestry, node.title] : ancestry;
-      return collectExternalNavEntries(node.children, nextAncestry);
-    }
-
-    return [];
-  });
-}
-
 /** Searchable text for an external record: title + ancestry + href path tokens + REST alias. */
 export function buildExternalSearchText(entry: ExternalNavEntry): string {
   const hrefTokens = entry.href
