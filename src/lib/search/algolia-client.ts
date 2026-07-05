@@ -126,7 +126,11 @@ export function createAlgoliaDocsClient({
           content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
           id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
           objectType: getString(hit.objectType),
-          path: buildPathSegments(url),
+          path:
+            getStringArray(hit.breadcrumbs)?.length
+              ? (getStringArray(hit.breadcrumbs) as string[])
+              : buildPathSegments(url),
+          external: getString(hit.objectType) === 'external',
           platform: getStringArray(hit.platform),
           product: getString(hit.product),
           section: getHighlight(hit, 'section') ?? section,
