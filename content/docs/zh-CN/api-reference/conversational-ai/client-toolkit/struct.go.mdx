@@ -6,9 +6,9 @@ title: "结构体"
 
 ```go
 type BaseResponse struct {
-  RawResponse *http.Response
-  RawBody []byte
-  HttpStatusCode int
+	RawResponse *http.Response
+	RawBody []byte
+	HttpStatusCode int
 }
 ```
 
@@ -31,16 +31,16 @@ type BaseResponse struct {
 
 ```go
 type Logger interface {
-  Debug(ctx Context, module string, v ...interface{})
-  Debugf(ctx Context, module string, format string, v ...interface{})
-  Error(ctx Context, module string, v ...interface{})
-  Errorf(ctx Context, module string, format string, v ...interface{})
-  Info(ctx Context, module string, v ...interface{})
-  Infof(ctx Context, module string, format string, v ...interface{})
-  Warn(ctx Context, module string, v ...interface{})
-  Warnf(ctx Context, module string, format string, v ...interface{})
-  Level() Level
-  SetLevel(level Level)
+	Debug(ctx Context, module string, v ...interface{})
+	Debugf(ctx Context, module string, format string, v ...interface{})
+	Error(ctx Context, module string, v ...interface{})
+	Errorf(ctx Context, module string, format string, v ...interface{})
+	Info(ctx Context, module string, v ...interface{})
+	Infof(ctx Context, module string, format string, v ...interface{})
+	Warn(ctx Context, module string, v ...interface{})
+	Warnf(ctx Context, module string, format string, v ...interface{})
+	Level() Level
+	SetLevel(level Level)
 }
 ```
 
@@ -65,12 +65,12 @@ type Logger interface {
 
 ```go
 type Config struct {
-  AppID string
-  HttpTimeout time.Duration
-  Credential auth.Credential
-  DomainArea domain.Area
-  Logger log.Logger
-  ServiceRegion ServiceRegion
+	AppID string
+	HttpTimeout time.Duration
+	Credential auth.Credential
+	DomainArea domain.Area
+	Logger log.Logger
+	ServiceRegion ServiceRegion
 }
 ```
 
@@ -96,9 +96,9 @@ type Config struct {
 
 ```go
 type JoinPropertiesAdvancedFeaturesBody struct {
-  EnableAIVad *bool `json:"enable_aivad,omitempty"`
-  EnableRtm *bool `json:"enable_rtm,omitempty"`
-  EnableMLLM *bool `json:"enable_mllm,omitempty"`
+	EnableAIVad *bool `json:"enable_aivad,omitempty"`
+	EnableRtm *bool `json:"enable_rtm,omitempty"`
+	EnableMLLM *bool `json:"enable_mllm,omitempty"`
 }
 ```
 
@@ -150,13 +150,13 @@ type JoinPropertiesAdvancedFeaturesBody struct {
 
 ```go
 type TTSMinimaxVendorParams struct {
-  GroupId      string                            `json:"group_id"`
-  Key          string                            `json:"key"`
-  Model        string                            `json:"model"`
-  VoiceSetting *TTSMinimaxVendorVoiceSettingParam `json:"voice_setting"`
-  AudioSetting *TTSMinimaxVendorAudioSettingParam `json:"audio_setting"`
-  PronunciationDict *PronunciationDictParam      `json:"pronunciation_dict"`
-  TimberWeights []TimberWeightsParam             `json:"timber_weights"`
+	GroupId      string                            `json:"group_id"`
+	Key          string                            `json:"key"`
+	Model        string                            `json:"model"`
+	VoiceSetting *TTSMinimaxVendorVoiceSettingParam `json:"voice_setting"`
+	AudioSetting *TTSMinimaxVendorAudioSettingParam `json:"audio_setting"`
+	PronunciationDict *PronunciationDictParam      `json:"pronunciation_dict"`
+	TimberWeights []TimberWeightsParam             `json:"timber_weights"`
 }
 ```
 
@@ -185,14 +185,14 @@ type TTSMinimaxVendorParams struct {
 
 ```go
 type TTSTencentVendorParams struct {
-  AppId            string `json:"app_id"`
-  SecretId         string `json:"secret_id"`
-  SecretKey        string `json:"secret_key"`
-  VoiceType        int    `json:"voice_type"`
-  Volume           int    `json:"volume"`
-  Speed            int    `json:"speed"`
-  EmotionCategory  string `json:"emotion_category"`
-  EmotionIntensity int    `json:"emotion_intensity"`
+	AppId            string `json:"app_id"`
+	SecretId         string `json:"secret_id"`
+	SecretKey        string `json:"secret_key"`
+	VoiceType        int    `json:"voice_type"`
+	Volume           int    `json:"volume"`
+	Speed            int    `json:"speed"`
+	EmotionCategory  string `json:"emotion_category"`
+	EmotionIntensity int    `json:"emotion_intensity"`
 }
 ```
 
@@ -246,9 +246,9 @@ Emotion     string  `json:"emotion"`
 
 ```go
 type JoinPropertiesTTSBody struct {
-  Vendor TTSVendor `json:"vendor"`
-  Params TTSVendorParamsInterface `json:"params"`
-  SkipPatterns []int `json:"skip_patterns,omitempty"`
+	Vendor TTSVendor `json:"vendor"`
+	Params TTSVendorParamsInterface `json:"params"`
+	SkipPatterns []int `json:"skip_patterns,omitempty"`
 }
 ```
 
@@ -285,18 +285,18 @@ type JoinPropertiesTTSBody struct {
 
 ```go
 type JoinPropertiesCustomLLMBody struct {
-  Url string `json:"url"`
-  APIKey string `json:"api_key"`
-  SystemMessages []map[string]any `json:"system_messages"`
-  Params map[string]any `json:"params"`
-  MaxHistory *int `json:"max_history,omitempty"`
-  GreetingMessage string `json:"greeting_message,omitempty"`
-  InputModalities []string `json:"input_modalities,omitempty"`
-  OutputModalities []string `json:"output_modalities,omitempty"`
-  FailureMessage string `json:"failure_message,omitempty"`
-  SilenceMessage *string `json:"silence_message,omitempty"`
-  Vendor string `json:"vendor,omitempty"`
-  Style string `json:"style,omitempty"`
+	Url string `json:"url"`
+	APIKey string `json:"api_key"`
+	SystemMessages []map[string]any `json:"system_messages"`
+	Params map[string]any `json:"params"`
+	MaxHistory *int `json:"max_history,omitempty"`
+	GreetingMessage string `json:"greeting_message,omitempty"`
+	InputModalities []string `json:"input_modalities,omitempty"`
+	OutputModalities []string `json:"output_modalities,omitempty"`
+	FailureMessage string `json:"failure_message,omitempty"`
+	SilenceMessage *string `json:"silence_message,omitempty"`
+	Vendor string `json:"vendor,omitempty"`
+	Style string `json:"style,omitempty"`
 }
 ```
 
@@ -382,10 +382,10 @@ type JoinPropertiesCustomLLMBody struct {
 
 ```go
 type JoinPropertiesVadBody struct {
-  InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
-  PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
-  SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
-  Threshold *float64 `json:"threshold,omitempty"`
+	InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
+	PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
+	SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
+	Threshold *float64 `json:"threshold,omitempty"`
 }
 ```
 
@@ -400,9 +400,9 @@ type JoinPropertiesVadBody struct {
 
 ```go
 type JoinPropertiesAsrBody struct {
-  Language string `json:"language,omitempty"`
-  Vendor ASRVendor `json:"vendor,omitempty"`
-  Params ASRVendorParamsInterface `json:"params,omitempty"`
+	Language string `json:"language,omitempty"`
+	Vendor ASRVendor `json:"vendor,omitempty"`
+	Params ASRVendorParamsInterface `json:"params,omitempty"`
 }
 ```
 
@@ -434,22 +434,22 @@ type JoinPropertiesAsrBody struct {
 
 ```go
 type JoinPropertiesReqBody struct {
-  Token string `json:"token"`
-  Channel string `json:"channel"`
-  AgentRtcUId string `json:"agent_rtc_uid"`
-  RemoteRtcUIds []string `json:"remote_rtc_uids"`
-  EnableStringUId *bool `json:"enable_string_uid,omitempty"`
-  IdleTimeout *int `json:"idle_timeout,omitempty"`
-  SilenceTimeout *int `json:"silence_timeout,omitempty"`
-  AgentRtmUId *string `json:"agent_rtm_uid,omitempty"`
-  AdvancedFeatures *JoinPropertiesAdvancedFeaturesBody `json:"advanced_features,omitempty"`
-  LLM *JoinPropertiesCustomLLMBody `json:"llm,omitempty"`
-  MLLM *JoinPropertiesMLLMBody `json:"mllm,omitempty"`
-  TTS *JoinPropertiesTTSBody `json:"tts,omitempty"`
-  Vad *JoinPropertiesVadBody `json:"vad,omitempty"`
-  Asr *JoinPropertiesAsrBody `json:"asr,omitempty"`
-  TurnDetection *TurnDetectionBody `json:"turn_detection,omitempty"`
-  Parameters *Parameters `json:"parameters,omitempty"`
+	Token string `json:"token"`
+	Channel string `json:"channel"`
+	AgentRtcUId string `json:"agent_rtc_uid"`
+	RemoteRtcUIds []string `json:"remote_rtc_uids"`
+	EnableStringUId *bool `json:"enable_string_uid,omitempty"`
+	IdleTimeout *int `json:"idle_timeout,omitempty"`
+	SilenceTimeout *int `json:"silence_timeout,omitempty"`
+	AgentRtmUId *string `json:"agent_rtm_uid,omitempty"`
+	AdvancedFeatures *JoinPropertiesAdvancedFeaturesBody `json:"advanced_features,omitempty"`
+	LLM *JoinPropertiesCustomLLMBody `json:"llm,omitempty"`
+	MLLM *JoinPropertiesMLLMBody `json:"mllm,omitempty"`
+	TTS *JoinPropertiesTTSBody `json:"tts,omitempty"`
+	Vad *JoinPropertiesVadBody `json:"vad,omitempty"`
+	Asr *JoinPropertiesAsrBody `json:"asr,omitempty"`
+	TurnDetection *TurnDetectionBody `json:"turn_detection,omitempty"`
+	Parameters *Parameters `json:"parameters,omitempty"`
 }
 ```
 
@@ -527,12 +527,12 @@ type JoinPropertiesReqBody struct {
 
 ```go
 type TTSMicrosoftVendorParams struct {
-  Key string `json:"key"`
-  Region string `json:"region"`
-  VoiceName string `json:"voice_name"`
-  Speed float32 `json:"speed"`
-  Volume float32 `json:"volume"`
-  SampleRate int `json:"sample_rate"`
+	Key string `json:"key"`
+	Region string `json:"region"`
+	VoiceName string `json:"voice_name"`
+	Speed float32 `json:"speed"`
+	Volume float32 `json:"volume"`
+	SampleRate int `json:"sample_rate"`
 }
 ```
 
@@ -558,8 +558,8 @@ Text-to-Speech（TTS）模块中 Microsoft 供应商的参数。
 
 ```go
 type TTSVendorParamsInterface interface {
-  VendorParam()
-  GetVendorType() TTSVendor
+	VendorParam()
+	GetVendorType() TTSVendor
 }
 ```
 
@@ -594,11 +594,11 @@ type ASRFengmingVendorParam struct{}
 
 ```go
 type ASRTencentVendorParam struct {
-  SecretId        string `json:"secret_id"`
-  AppId           string `json:"app_id"`
-  SecretKey       string `json:"secret_key"`
-  EngineModelType string `json:"engine_model_type"`
-  VoiceId         string `json:"voice_id"`
+	SecretId        string `json:"secret_id"`
+	AppId           string `json:"app_id"`
+	SecretKey       string `json:"secret_key"`
+	EngineModelType string `json:"engine_model_type"`
+	VoiceId         string `json:"voice_id"`
 }
 ```
 
@@ -613,10 +613,10 @@ type ASRTencentVendorParam struct {
 
 ```go
 type ASRMicrosoftVendorParam struct {
-  Key        string   `json:"key"`
-  Region     string   `json:"region"`
-  Language   string   `json:"language"`
-  PhraseList []string `json:"phrase_list"`
+	Key        string   `json:"key"`
+	Region     string   `json:"region"`
+	Language   string   `json:"language"`
+	PhraseList []string `json:"phrase_list"`
 }
 ```
 
@@ -631,16 +631,16 @@ Microsoft 自动语音识别（ASR）厂商参数。
 
 ```go
 type JoinPropertiesMLLMBody struct {
-  Url string `json:"url"`
-  APIKey string `json:"api_key"`
-  Messages []map[string]any `json:"messages"`
-  Params map[string]any `json:"params"`
-  MaxHistory *int `json:"max_history,omitempty"`
-  InputModalities []string `json:"input_modalities,omitempty"`
-  OutputModalities []string `json:"output_modalities,omitempty"`
-  GreetingMessage string `json:"greeting_message,omitempty"`
-  Vendor string `json:"vendor,omitempty"`
-  Style string `json:"style,omitempty"`
+	Url string `json:"url"`
+	APIKey string `json:"api_key"`
+	Messages []map[string]any `json:"messages"`
+	Params map[string]any `json:"params"`
+	MaxHistory *int `json:"max_history,omitempty"`
+	InputModalities []string `json:"input_modalities,omitempty"`
+	OutputModalities []string `json:"output_modalities,omitempty"`
+	GreetingMessage string `json:"greeting_message,omitempty"`
+	Vendor string `json:"vendor,omitempty"`
+	Style string `json:"style,omitempty"`
 }
 ```
 
@@ -688,15 +688,15 @@ type JoinPropertiesMLLMBody struct {
 
 ```go
 type TurnDetectionBody struct {
-  Type string `json:"type"`
-  InterruptMode string `json:"interrupt_mode,omitempty"`
-  InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
-  PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
-  SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
-  Threshold *float64 `json:"threshold,omitempty"`
-  CreateResponse *bool `json:"create_response,omitempty"`
-  InterruptResponse *bool `json:"interrupt_response,omitempty"`
-  Eagerness *string `json:"eagerness,omitempty"`
+	Type string `json:"type"`
+	InterruptMode string `json:"interrupt_mode,omitempty"`
+	InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
+	PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
+	SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
+	Threshold *float64 `json:"threshold,omitempty"`
+	CreateResponse *bool `json:"create_response,omitempty"`
+	InterruptResponse *bool `json:"interrupt_response,omitempty"`
+	Eagerness *string `json:"eagerness,omitempty"`
 }
 ```
 
@@ -711,10 +711,10 @@ type TurnDetectionBody struct {
 
 ```go
 type FixedParams struct {
-  SilenceConfig *SilenceConfig `json:"silence_config,omitempty"`
-  DataChannel *string `json:"data_channel,omitempty"`
-  EnableMetrics bool `json:"enable_metrics,omitempty"`
-  EnableErrorMessage bool `json:"enable_error_message,omitempty"`
+	SilenceConfig *SilenceConfig `json:"silence_config,omitempty"`
+	DataChannel *string `json:"data_channel,omitempty"`
+	EnableMetrics bool `json:"enable_metrics,omitempty"`
+	EnableErrorMessage bool `json:"enable_error_message,omitempty"`
 }
 ```
 
@@ -769,9 +769,9 @@ type FixedParams struct {
 
 ```go
 type SilenceConfig struct {
-  TimeoutMs *int `json:"timeout_ms,omitempty"`
-  Action *string `json:"action,omitempty"`
-  Content *string `json:"content,omitempty"`
+	TimeoutMs *int `json:"timeout_ms,omitempty"`
+	Action *string `json:"action,omitempty"`
+	Content *string `json:"content,omitempty"`
 }
 ```
 
@@ -786,8 +786,8 @@ type SilenceConfig struct {
 
 ```go
 type Parameters struct {
-  ExtraParams map[string]any
-  FixedParams *FixedParams
+	ExtraParams map[string]any
+	FixedParams *FixedParams
 }
 ```
 
@@ -828,8 +828,8 @@ type ListOption func(*ListOptions)
 
 ```go
 type UpdateReqBody struct {
-  Token string `json:"token"`
-  LLM *UpdateLLMBody `json:"llm,omitempty"`
+	Token string `json:"token"`
+	LLM *UpdateLLMBody `json:"llm,omitempty"`
 }
 ```
 
@@ -851,8 +851,8 @@ type UpdateReqBody struct {
 
 ```go
 type UpdateLLMBody struct {
-  SystemMessages []map[string]any `json:"system_messages,omitempty"`
-  Params map[string]any `json:"params,omitempty"`
+	SystemMessages []map[string]any `json:"system_messages,omitempty"`
+	Params map[string]any `json:"params,omitempty"`
 }
 ```
 
@@ -874,8 +874,8 @@ type UpdateLLMBody struct {
 
 ```go
 type ErrResponse struct {
-  Detail string `json:"detail"`
-  Reason string `json:"reason"`
+	Detail string `json:"detail"`
+	Reason string `json:"reason"`
 }
 ```
 
@@ -897,8 +897,8 @@ type ErrResponse struct {
 
 ```go
 type Response struct {
-  *agora.BaseResponse
-  ErrResponse ErrResponse
+	*agora.BaseResponse
+	ErrResponse ErrResponse
 }
 ```
 
@@ -920,9 +920,9 @@ type Response struct {
 
 ```go
 type JoinSuccessResp struct {
-  AgentId string `json:"agent_id"`
-  CreateTs int `json:"create_ts"`
-  Status string `json:"status"`
+	AgentId string `json:"agent_id"`
+	CreateTs int `json:"create_ts"`
+	Status string `json:"status"`
 }
 ```
 
@@ -959,8 +959,8 @@ type JoinSuccessResp struct {
 
 ```go
 type JoinResp struct {
-  Response
-  SuccessResp JoinSuccessResp
+	Response
+	SuccessResp JoinSuccessResp
 }
 ```
 
@@ -982,7 +982,7 @@ type JoinResp struct {
 
 ```go
 type LeaveResp struct {
-  Response
+	Response
 }
 ```
 
@@ -1003,19 +1003,19 @@ type LeaveResp struct {
 
 ```go
 type ListSuccessResp struct {
-  Data struct {
-    Count int `json:"count"`
-    List []struct {
-      StartTs int64 `json:"start_ts"`
-      Status string `json:"status"`
-      AgentId string `json:"agent_id"`
-    } `json:"list"`
-  } `json:"data"`
-  Meta struct {
-    Cursor string `json:"cursor"`
-    Total int `json:"total"`
-  } `json:"meta"`
-  Status string `json:"status"`
+	Data struct {
+		Count int `json:"count"`
+		List []struct {
+			StartTs int64 `json:"start_ts"`
+			Status string `json:"status"`
+			AgentId string `json:"agent_id"`
+		} `json:"list"`
+	} `json:"data"`
+	Meta struct {
+		Cursor string `json:"cursor"`
+		Total int `json:"total"`
+	} `json:"meta"`
+	Status string `json:"status"`
 }
 ```
 
@@ -1059,8 +1059,8 @@ type ListSuccessResp struct {
 
 ```go
 type ListResp struct {
-  Response
-  SuccessRes ListSuccessResp
+	Response
+	SuccessRes ListSuccessResp
 }
 ```
 
@@ -1082,11 +1082,11 @@ type ListResp struct {
 
 ```go
 type QuerySuccessResp struct {
-  Message string `json:"message"`
-  StartTs int64 `json:"start_ts"`
-  StopTs int64 `json:"stop_ts"`
-  AgentId string `json:"agent_id"`
-  Status string `json:"status"`
+	Message string `json:"message"`
+	StartTs int64 `json:"start_ts"`
+	StopTs int64 `json:"stop_ts"`
+	AgentId string `json:"agent_id"`
+	Status string `json:"status"`
 }
 ```
 
@@ -1125,8 +1125,8 @@ type QuerySuccessResp struct {
 
 ```go
 type QueryResp struct {
-  Response
-  SuccessRes QuerySuccessResp
+	Response
+	SuccessRes QuerySuccessResp
 }
 ```
 
@@ -1148,9 +1148,9 @@ type QueryResp struct {
 
 ```go
 type UpdateSuccessResp struct {
-  AgentId string `json:"agent_id"`
-  CreateTs int `json:"create_ts"`
-  State string `json:"state"`
+	AgentId string `json:"agent_id"`
+	CreateTs int `json:"create_ts"`
+	State string `json:"state"`
 }
 ```
 
@@ -1187,8 +1187,8 @@ type UpdateSuccessResp struct {
 
 ```go
 type UpdateResp struct {
-  Response
-  SuccessResp UpdateSuccessResp
+	Response
+	SuccessResp UpdateSuccessResp
 }
 ```
 
@@ -1210,9 +1210,9 @@ type UpdateResp struct {
 
 ```go
 type SpeakBody struct {
-  Text *string `json:"text"`
-  Priority *string `json:"priority,omitempty"`
-  Interruptable *bool `json:"interrupt,omitempty"`
+	Text *string `json:"text"`
+	Priority *string `json:"priority,omitempty"`
+	Interruptable *bool `json:"interrupt,omitempty"`
 }
 ```
 
@@ -1254,8 +1254,8 @@ type SpeakBody struct {
 
 ```go
 type HistoryResp struct {
-  Response
-  SuccessRes HistorySuccessResp
+	Response
+	SuccessRes HistorySuccessResp
 }
 ```
 
@@ -1277,10 +1277,10 @@ type HistoryResp struct {
 
 ```go
 type HistorySuccessResp struct {
-  StartTs int64 `json:"start_ts"`
-  AgentId string `json:"agent_id"`
-  Status string `json:"status"`
-  Contents []HistoryContent `json:"contents"`
+	StartTs int64 `json:"start_ts"`
+	AgentId string `json:"agent_id"`
+	Status string `json:"status"`
+	Contents []HistoryContent `json:"contents"`
 }
 ```
 
@@ -1304,8 +1304,8 @@ type HistorySuccessResp struct {
 
 ```go
 type HistoryContent struct {
-  Role string `json:"role"`
-  Content string `json:"content"`
+	Role string `json:"role"`
+	Content string `json:"content"`
 }
 ```
 
@@ -1336,8 +1336,8 @@ type HistoryContent struct {
 
 ```go
 type InterruptResp struct {
-  Response
-  SuccessRes InterruptSuccessResp
+	Response
+	SuccessRes InterruptSuccessResp
 }
 ```
 
@@ -1359,9 +1359,9 @@ type InterruptResp struct {
 
 ```go
 type InterruptSuccessResp struct {
-  Channel string `json:"channel"`
-  AgentId string `json:"agent_id"`
-  StartTs int64 `json:"start_ts"`
+	Channel string `json:"channel"`
+	AgentId string `json:"agent_id"`
+	StartTs int64 `json:"start_ts"`
 }
 ```
 
@@ -1384,8 +1384,8 @@ type InterruptSuccessResp struct {
 
 ```go
 type SpeakResp struct {
-  Response
-  SuccessRes SpeakSuccessResp
+	Response
+	SuccessRes SpeakSuccessResp
 }
 ```
 
@@ -1407,9 +1407,9 @@ type SpeakResp struct {
 
 ```go
 type SpeakSuccessResp struct {
-  Channel string `json:"channel"`
-  AgentId string `json:"agent_id"`
-  StartTs int64 `json:"start_ts"`
+	Channel string `json:"channel"`
+	AgentId string `json:"agent_id"`
+	StartTs int64 `json:"start_ts"`
 }
 ```
 

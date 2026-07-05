@@ -37,14 +37,14 @@ title: "应对防火墙限制"
 
 1. 添加白名单后，请参考如下示例代码开启云代理：
 
-  ```cpp
-  // 先在调用 connect 前开启云代理服务
-  setParameters("{\"rtc.enable_proxy\": true}");
-  // 然后从以下两种云代理配置方式中选择一种
-  // 方式一：TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据
-  setParameters("{\"rtc.proxy_server\":[13,\"\",0]}");
-  // 方式二：UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据
-  setParameters("{\"rtc.proxy_server\":[1,\"\",0]}");
-  ```
+	```cpp
+	// 先在调用 connect 前开启云代理服务
+	setParameters("{\"rtc.enable_proxy\": true}");
+	// 然后从以下两种云代理配置方式中选择一种
+	// 方式一：TCP（加密）协议的云代理，即 Force TCP 云代理模式。在该模式下，SDK 始终通过 TLS 443 传输数据
+	setParameters("{\"rtc.proxy_server\":[13,\"\",0]}");
+	// 方式二：UDP 协议的云代理，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据
+	setParameters("{\"rtc.proxy_server\":[1,\"\",0]}");
+	```
 
 2. 测试是否能正常实现音视频通话或直播。

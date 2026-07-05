@@ -29,7 +29,7 @@ title: "应用配置"
 
 在 `MESSAGE` 服务中，所有功能特性将共享一条传输连接，该连接在 `config.login` 时建立，在 `config.logout` 时关闭。而在 `STREAM` 服务中，传输连接的数量取决于加入的 `STREAM CHANNEL` 数量，即每个加入的 `STREAM CHANNEL` 实例都拥有独立的连接，连接在 `channel.join` 时建立，在 `channel.leave` 时关闭。
 
-所有传输连接都由 SDK 统一管理，并通过 `config.onlinkstateevent` 事件通知给用户，详见[连接管理](/zh-CN/realtime-media/rtm/user-guide/link/link-basic.android)。深入理解 RTM 服务类型的区别，有助于你更准确地选择和使用相关能力。
+所有传输连接都由 SDK 统一管理，并通过 `config.onlinkstateevent` 事件通知给用户，详见[连接管理](/zh-CN/realtime-media/rtm/user-guide/link/link-basic)。深入理解 RTM 服务类型的区别，有助于你更准确地选择和使用相关能力。
 
 此外，服务类型还涉及私有化配置的选择。用户可以选择私有化一个服务，或者同时私有化两种服务，具体取决于应用场景和预算。详见[私有化配置](/zh-CN/realtime-media/rtm/user-guide/setup/private-setup)。
 
@@ -235,7 +235,7 @@ yarn add agora-rtx
     // 如果安装的是融合版 agora-rtx
     // import AgoraRTM from 'agora-rtx';
     // import AgoraRTC from 'agora-rtc-sdk-ng';
-    ```
+    ``` 
 
 [点击此处](https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip)下载最新版本的 Unity SDK，并在你的项目中导入它。
 
@@ -428,7 +428,7 @@ npm i --save agora-react-native-rtm
 
 下载完成后，解压 SDK 包，你将获得一个 `.har` 文件，这是 HarmonyOS 的静态共享包格式。
 
-详细流程参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start.android)。
+详细流程参考[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 
 ## 初始化 RTM 实例
 
@@ -737,7 +737,7 @@ try {
 | `enumv.loglevelerror` | 输出 `error` 级别的日志。                 |
 | `enumv.loglevelnone`  | 不输出任何日志。                          |
 
-你也可以查看[错误排查](/zh-CN/realtime-media/rtm/error-codes.android)了解更详细地调试及错误处理方法。
+你也可以查看[错误排查](/zh-CN/realtime-media/rtm/error-codes)了解更详细地调试及错误处理方法。
 
 ## Cloud Proxy 设置
 

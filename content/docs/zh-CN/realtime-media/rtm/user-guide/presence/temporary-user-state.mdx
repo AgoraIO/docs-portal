@@ -284,7 +284,7 @@ const userId = "Tony";
 try {
   const result = await rtmClient.presence.getState(channelName, RtmChannelType.MESSAGE, userId);
   console.log(`User: ${result.userState.userId}`);
-
+  
   result.userState.states.forEach(state => {
     console.log(`${state.key}: ${state.value}`);
   });

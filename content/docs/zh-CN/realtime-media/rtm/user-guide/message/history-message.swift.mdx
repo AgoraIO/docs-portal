@@ -76,7 +76,7 @@ SDK 为你提供了获取历史消息的 API，你可以使用 `getMessages()` �
  var option = AgoraRtmGetHistoryMessagesOptions()
  option.messageCount = 50
  option.end = 1688978391800
-
+        
 rtmClient.getHistory()?.getMessages(channelName: "channel_name", channelType: .message, options: option, completion: { response, error in
     if response != nil {
         print("total message count is: \(response!.messageList.count)\n\n")

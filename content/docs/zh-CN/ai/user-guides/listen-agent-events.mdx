@@ -24,8 +24,8 @@ title: "监听智能体事件"
 
 开始前，请确保完成以下准备工作：
 
-- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -86,7 +86,7 @@ val api = ConversationalAIAPIImpl(config)
 ```swift tab="iOS" tabGroup="language"
 // 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     enableLog: true
 )
@@ -168,7 +168,7 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
     override fun onAgentError(agentUserId: String, error: ModuleError) {
 
         Log.e("AgentError", "Error in ${error.type}: ${error.message} (code: ${error.code})")
-
+        
         when (error.type) {
             ModuleType.LLM -> {
                 // LLM 错误，可能需要重试或降级处理
@@ -204,7 +204,7 @@ api.addHandler(object : IConversationalAIAPIEventHandler {
 ```swift
 // 让你的类遵循 ConversationalAIAPIEventHandler 协议
 class ConversationViewController: UIViewController, ConversationalAIAPIEventHandler {
-
+    
     // 实现协议方法
     func onAgentStateChanged(agentUserId: String, event: StateChangeEvent) {
         // 更新 UI 显示智能体当前状态
@@ -212,7 +212,7 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
             self.updateAgentStatus(event.state)
         }
     }
-
+    
     func onAgentInterrupted(agentUserId: String, event: InterruptEvent) {
         // 智能体被中断，可以更新 UI 或记录日志
         print("Agent \(agentUserId) interrupted at turn \(event.turnId)")
@@ -220,7 +220,7 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
             self.showInterruptNotification()
         }
     }
-
+    
     func onAgentMetrics(agentUserId: String, metrics: Metric) {
         // 监听智能体性能指标，用于监控和优化
         switch metrics.type {
@@ -234,11 +234,11 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
             print("Unknown metric: \(metrics.name) = \(metrics.value)")
         }
     }
-
+    
     func onAgentError(agentUserId: String, error: ModuleError) {
         // 监听智能体错误事件
         print("Error in \(error.type): \(error.message) (code: \(error.code))")
-
+        
         DispatchQueue.main.async {
             switch error.type {
             case .llm:
@@ -256,7 +256,7 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
             }
         }
     }
-
+    
     // 辅助方法，用于更新 UI 显示智能体当前状态
     private func updateAgentStatus(_ state: AgentState) {
         let (text, color): (String, UIColor) = {
@@ -275,16 +275,16 @@ class ConversationViewController: UIViewController, ConversationalAIAPIEventHand
                 return ("未知状态", .red)
             }
         }()
-
+        
         statusLabel.text = text
         statusLabel.textColor = color
     }
-
+    
     private func showInterruptNotification() {
         statusLabel.text = "对话已中断"
         statusLabel.textColor = .red
     }
-
+    
     private func showErrorMessage(_ message: String) {
         let alert = UIAlertController(title: "错误", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "确定", style: .default))

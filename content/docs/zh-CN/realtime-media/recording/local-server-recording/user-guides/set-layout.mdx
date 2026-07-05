@@ -135,20 +135,20 @@ struct VideoMixingLayout  recorderLayout;
 recorderLayout.canvasWidth = 1280;
 recorderLayout.canvasHeight = 720;
 recorderLayout.canvasFps = 25;
-
+ 
 UserMixerLayout layout[2];
 layout[0].userId = "1234";
 layout[0].config.x = 0;
 layout[0].config.y = 0;
 layout[0].config.width = 640;
 layout[0].config.height = 360;
-
+ 
 layout[1].userId = "5678";
 layout[1].config.x = 720;
 layout[1].config.y = 270;
 layout[1].config.width = 540;
 layout[1].config.height = 320;
-
+ 
 recorderLayout.userLayoutConfigNum = 2;
 recorderLayout.userLayoutConfigs = layout;
 recorder->setVideoMixingLayout(recorderLayout);

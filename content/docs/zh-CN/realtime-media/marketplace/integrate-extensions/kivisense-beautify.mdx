@@ -1,0 +1,240 @@
+---
+title: "Kivisense 美颜特效"
+---
+
+本文介绍如何在你的 Web 项目中集成和使用 Kivisense 美颜特效插件。
+
+## 示例项目
+
+声网在 GitHub 提供了一个集成了 Kivisense 美颜特效插件的项目供你参考，你可以前往下载体验或查看源码。
+
+- agora-beautify-plugin
+
+## 前提条件
+
+开始前请确保满足如下要求：
+
+- Windows 或 macOS 计算机，需满足以下要求：
+  - 下载桌面端 Chrome 90 或以上版本。
+  - 具备物理音视频采集设备。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+- 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+- Safari 浏览器版本 17 或以上。
+
+## 集成和调用流程
+
+### 1. 集成 SDK 和插件
+
+开始前，你需要在项目中分别集成声网视频 SDK 和 Kivisense 美颜特效插件。
+
+#### 1.1 集成声网视频 SDK
+
+Kivisense 美颜特效插件需要与声网 Web SDK 4.x（v4.10.0 或以上）搭配使用。参考以下文档集成 Web SDK 并实现基础的视频通话：
+
+<Cards>
+  <Card title="实现视频通话" href="/zh-CN/realtime-media/rtc/get-started/quick-start" />
+</Cards>
+
+#### 1.2 购买和激活插件
+
+在声网控制台[购买和激活](/zh-CN/realtime-media/marketplace/get-started/enable-service#购买和激活插件) Kivisense 美颜特效插件，保存好获取到的 `appKey` 和 `appSecret`，后续注册插件时需要用到。
+
+#### 1.3 集成插件
+
+参考以下步骤集成插件：
+
+通过 npm 将 Kivisense 美颜特效插件集成到你的项目中。
+
+1. 运行以下命令安装插件：
+
+    ```shell
+    npm i @kivisense/agora-beautify --save
+    ```
+
+2. 在你的 `.ts` 文件中加入以下代码导入插件模块：
+
+    ```typescript
+    import KiviBeautifyExtension from "@kivisense/agora-beautify";
+    ```
+
+### 2. 注册插件
+
+参考以下步骤注册插件：
+
+1. 创建 `KiviBeautifyExtension` 实例。
+
+   ```typescript
+   const videoExtension = new KiviBeautifyExtension();
+   ```
+
+2. 调用 `AgoraRTC.registerExtensions` 并传入创建的 `videoExtension` 实例。
+
+   ```typescript
+   // 注册插件
+   AgoraRTC.registerExtensions([videoExtension]);
+   ```
+
+### 3. 开启 Kivisense 美颜特效插件
+
+参考以下步骤开启美颜：
+
+1. 调用 RTC SDK 的 `AgoraRTC.createCameraVideoTrack` 方法创建本地摄像头视频轨道：
+
+   ```typescript
+   // 使用声网 SDK 创建视频
+   const videoTrack = await AgoraRTC.createCameraVideoTrack();
+   ```
+
+2. 调用 Kivisense 美颜特效插件的 `videoExtension.createProcessor` 创建美颜插件的处理器 `processor` 实例:
+
+   ```typescript
+   // 创建美颜插件的处理器
+   const videoProcessor = videoExtension.createProcessor();
+   ```
+
+3. 调用 RTC SDK 的 `videoTrack.pipe` 方法并指定 `videoTrack.processorDestination` 属性，将插件注入到 SDK 的摄像头数据流处理管道：
+
+   ```typescript
+   // 设置视频的处理管道
+   videoTrack.pipe(processor).pipe(videoTrack.processorDestination);
+   ```
+
+4. 调用 Kivisense 美颜特效插件的 `enable` 方法启用美颜插件，然后通过 `setOptions` 方法设置美颜插件参数：
+
+   ```typescript
+   // 启用美颜插件
+   processor.enable();
+
+   // 设置美颜插件的参数
+   processor.setOptions({
+     beautifyEnabled: true, // 启用美颜功能
+     brightnessEnabled: true, // 启用调节亮度功能
+     brightness: 0.5, // 画面亮度，0.5表示不调节，范围：0 - 1，
+     beautifyStyle: 2, // 美颜风格
+   })
+   ```
+
+## 示例代码
+
+下面列出了一段实现插件功能的完整代码以供参考。
+
+```typescript
+import AgoraRTC from "agora-rtc-sdk-ng";
+import KiviBeautifyExtension from "@kivisense/agora-beautify";
+
+const videoExtension = new KiviBeautifyExtension();
+
+// 注册插件
+AgoraRTC.registerExtensions([videoExtension]);
+
+// 创建美颜插件的处理器
+const processor = videoExtension.createProcessor();
+
+// 使用声网 SDK 创建视频
+const videoTrack = await AgoraRTC.createCameraVideoTrack();
+
+// 设置视频的处理管道
+videoTrack.pipe(processor).pipe(videoTrack.processorDestination);
+
+// 启用美颜插件
+processor.enable();
+
+// 设置美颜插件的参数
+processor.setOptions({
+  beautifyEnabled: true, // 启用美颜功能
+  brightnessEnabled: true, // 启用调节亮度功能
+  brightness: 0.5, // 画面亮度，0.5表示不调节，范围：0 - 1，
+  beautifyStyle: 2, // 美颜风格
+})
+
+// 在 HTML 元素上播放视频
+videoTrack.play(document.querySelector('#video-container'));
+```
+
+<a id="api"></a>
+## API 参考
+### Kivisense 美颜特效 API
+
+#### createProcessor
+
+```typescript
+createProcessor();
+```
+
+创建一个插件处理器。返回 `KiviVideoProcessor` 实例。该方法位于 `KiviBeautifyExtension` 类下。
+
+#### enable
+
+```typescript
+enable();
+```
+
+禁用插件。该方法位于 `KiviProcessor` 类下。
+
+#### disable
+
+```typescript
+disable();
+```
+
+启用插件。该方法位于 `KiviProcessor` 类下。
+
+#### setOptions
+
+```typescript
+setOptions(options);
+```
+
+设置插件相关配置。该方法位于 `KiviProcessor` 类下。其中 `options` 可设置如下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `beautifyEnabled` | Boolean | <Slot name="kivisense-beautify-javascript-html-0-1-2" /> |
+| `beautifyStyle` | Number | <Slot name="kivisense-beautify-javascript-html-0-2-2" /> |
+| `brightnessEnabled` | Boolean | <Slot name="kivisense-beautify-javascript-html-0-3-2" /> |
+| `brightness` | Number | 画面亮度，取值范围为 [0,1]。默认值为 0.5，表示不调节。 |
+
+<Slot for="kivisense-beautify-javascript-html-0-1-2">
+
+是否启用美颜功能：
+
+        - `true`：（默认）启用
+        - `false`：不启用
+
+</Slot>
+
+<Slot for="kivisense-beautify-javascript-html-0-2-2">
+
+美颜风格：
+
+        - `1`：（默认）Beautify
+        - `2`：Moonlight
+        - `3`：Sienna
+        - `4`：Villa
+        - `5`：Linen
+        - `6`：Honey
+        - `7`：Marine
+        - `8`：Sable
+        - `9`：VintageFilm
+        - `10`：Hongkong
+        - `11`：River
+        - `12`：Dusk
+
+</Slot>
+
+<Slot for="kivisense-beautify-javascript-html-0-3-2">
+
+是否启用调节亮度功能：
+
+        - `true`：（默认）启用
+        - `false`：不启用
+
+</Slot>
+
+### RTC API
+
+声网 Web SDK 的插件相关方法：
+
+  - [`AgoraRTC.registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc#registerExtensions)
+  - [`ICameraVideoTrack.pipe`](/api-ref/rtc/javascript/interfaces/icameravideotrack#pipe)

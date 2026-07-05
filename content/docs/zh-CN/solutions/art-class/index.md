@@ -35,7 +35,7 @@ title: "文档指引"
 
 ## PaaS 方案进阶功能
 
-    - [实现明暗校正](/zh-CN/solutions/art-class/advanced-features/brightness-correction.android)
+    - [实现明暗校正](/zh-CN/solutions/art-class/advanced-features/brightness-correction)
 
     - [实现透视校正](/zh-CN/solutions/art-class/advanced-features/trapezoid-correction)
 
@@ -43,7 +43,7 @@ title: "文档指引"
 
 你可以基于声网在线美术教学特殊版 SDK、RTM 1.x SDK 和互动白板 SDK 开发在线美术教学场景。参考如下文档了解详细的 API 参考：
 
-- [在线美术教学 API 参考](/zh-CN/solutions/art-class/api/correction.android)
+- [在线美术教学 API 参考](/zh-CN/solutions/art-class/api/correction)
 - [实时消息 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=All%20Platforms)
 - [云端录制 API 参考](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)
 

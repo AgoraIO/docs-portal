@@ -69,7 +69,7 @@ title: "设备端实现 (Linux)"
     ```cpp
     // 发送 YUV 格式的原始视频数据
     videoFrameSender->sendVideoFrame(videoFrame);
-
+    
     // 发送编码后的 H.264 格式的视频数据
     videoH264FrameSender->sendEncodedVideoImage(
         reinterpret_cast<uint8_t*>(h264Frame.get()->buffer.get()), h264Frame.get()->bufferLen,
@@ -148,7 +148,7 @@ title: "设备端实现 (Linux)"
         void onMessageEvent(MessageEvent &event) override
         {
             if(_stream_channel){
-
+            
             int r = _stream_channel->publishTopicMessage(_topic.c_str(), event.message, 12);
             printf("send %d rrr \n",r);
             }

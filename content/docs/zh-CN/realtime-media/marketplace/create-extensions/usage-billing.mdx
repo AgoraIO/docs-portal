@@ -30,12 +30,12 @@ GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}
 | --- | --- | --- | --- | --- |
 | `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当天 UTC 时间的 0 点之后。 |
 | `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当天 UTC 时间的 23:59:59 之前。 |
-| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-0-3-4" /> |
+| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-3-3-4" /> |
 | `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你为该字段设置了一个默认值。 |
 | `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
 | `signature` | 必需 | String | N/A | 通过[签名算法](/zh-CN/realtime-media/marketplace/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，以确认该请求是声网发送的。 |
 
-<Slot for="usage-billing-markdown-0-3-4">
+<Slot for="usage-billing-markdown-3-3-4">
 
 用量列表的页数，表示查询第几页的用量。你需要对用量列表进行分页设置，并在响应参数的 `hasNext` 字段中返回是否还有下一页。声网在每天第一次调用该方法时，会始终将该参数设为 1，并在收到响应后重复调用该方法，直到响应参数中的 `hasNext` 字段返回 `false`。
 
@@ -125,12 +125,12 @@ GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&
 | --- | --- | --- | --- | --- |
 | `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当月第一天的 UTC 时间 0 点之后。 |
 | `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当月最后一天的 UTC 时间 23:59:59 之前。 |
-| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-2-3-4" /> |
+| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-4-3-4" /> |
 | `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你给该字段设置了一个默认值。 |
 | `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
 | `signature` | 必需 | String | N/A | 通过[签名算法](/zh-CN/realtime-media/marketplace/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，以确认该请求是声网发送的。 |
 
-<Slot for="usage-billing-markdown-2-3-4">
+<Slot for="usage-billing-markdown-4-3-4">
 
 用量列表的页数，表示查询第几页的用量。你需要对用量列表进行分页设置，并在响应参数的 `hasNext` 字段中返回是否还有下一页。声网在每天第一次调用该方法时，会始终将该参数设为 1，并在收到响应后重复调用该方法，直到响应参数中的 `hasNext` 字段返回 `false`。
 

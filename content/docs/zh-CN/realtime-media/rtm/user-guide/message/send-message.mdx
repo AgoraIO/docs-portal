@@ -1,7 +1,7 @@
 ---
 title: "发送消息"
 ---
-发送消息是 RTM 的基本能力之一，本文主要介绍如何在不同类型的频道中发送消息。同时，你也可以查看[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.android)快速构建一个示例程序并体验如何收发消息。
+发送消息是 RTM 的基本能力之一，本文主要介绍如何在不同类型的频道中发送消息。同时，你也可以查看[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)快速构建一个示例程序并体验如何收发消息。
 
 RTM 目前只支持字符串和二进制类型的消息数据格式。如果你的业务中使用了 JSON、Object 等其他数据类型，或者 protobuf 等第三方数据构建工具，那么你需要在发送消息之前对消息数据进行序列化。关于如何有效构建负载数据结构及推荐的序列化方式可以参考[消息负载结构化](/zh-CN/realtime-media/rtm/user-guide/message/constructed)和[消息负载序列化](/zh-CN/realtime-media/rtm/user-guide/message/serialized)。
 
@@ -918,7 +918,7 @@ try {
     console.error(`Operation: ${error.operation}`); // "publish" or "publishTopicMessage"
     console.error(`Error code: ${error.errorCode}`); // -11010
     console.error(`Reason: ${error.reason}`); // "Message length exceeds limit"
-
+    
     if (error.errorCode === RtmErrorCode.CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION) {
       console.error("Message is too long!");
     }

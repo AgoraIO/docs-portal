@@ -59,7 +59,7 @@ config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config_.r
 config.maxDurationMs = config_.maxDuration * 1000;
 // highlight-start
 recorder_->setRecorderConfigByUid(config, uid);
-// 设置水印
+// 设置水印 
 recorder_->enableAndUpdateVideoWatermarksByUid(watermarks, config_.waterMarks.size(), uid);
 // 开始录制
 recorder_->startSingleRecordingByUid(uid);

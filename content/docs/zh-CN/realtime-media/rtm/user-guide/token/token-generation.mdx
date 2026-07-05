@@ -81,6 +81,7 @@ Token 需要在你的服务端部署生成。当客户端发送请求时，服�
                 return
             }
 
+
             var t_rtm_str rtm_token_struct
             var unmarshalErr *json.UnmarshalTypeError
             str_decoder := json.NewDecoder(r.Body)
@@ -103,6 +104,7 @@ Token 需要在你的服务端部署生成。当客户端发送请求时，服�
             errorResponse(w, rtm_token, http.StatusOK)
             log.Println(w, r)
     }
+
 
     func errorResponse(w http.ResponseWriter, message string, httpStatusCode int){
         w.Header().Set("Content-Type", "application/json")

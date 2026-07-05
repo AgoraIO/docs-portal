@@ -1,0 +1,1283 @@
+---
+title: "通话中质量监测"
+---
+
+<PlatformStructured platform="android">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：上下行网络质量、实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 上下行网络质量报告
+
+`onNetworkQuality` 回调上报当前通话中每个用户（`COMMUNICATION` 场景）或主播（`LIVE_BROADCASTING` 场景）的上下行 last mile 网络质量，详见[质量打分](#rate)。其中：
+
+- last mile 是指你的设备到声网边缘服务器的网络。
+- 上行 last mile 网络质量打分基于实际发送码率、上行网络丢包率、平均往返时延和上行网络抖动计算。
+- 下行 last mile 网络质量打分基于下行网络丢包率、平均往返时延和下行网络抖动计算。
+
+:::info[信息]
+- 实际发送码率与目标发送码率的比值越高，该网络下的通话质量越好，该网络质量打分越高。
+- 平均往返时延指的是多次往返时延的平均值。
+:::
+
+### 统计信息报告
+
+`onRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`onLocalAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `onLocalAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+`onRemoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`onRemoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量较好。
+
+#### 远端音频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING `场景）的音频流状态改变时，SDK 会触发 `onRemoteAudioStateChanged` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`onLocalVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了[双流模式](https://docs.agora.io/en/Agora%20Platform/dual_stream_mode)，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `onLocalVideoStateChanged` 回调上报当前本地视频状态。当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+`onRemoteVideoStats` 回调上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）视频流的统计信息。你可以了解到每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+从 v4.6.0 起，SDK 在 `RemoteVideoStats` 中新增 `mosValue` 成员，用来对接收到的远端视频流的质量进行评分。该评分机制是声网自研、基于深度学习实现的实时视频 MOS（平均主观意见分）评估系统，可以模拟人眼主观感受到的各类画质问题，如轮廓不清晰、动态画面模糊、马赛克、黑屏、绿屏等。通过该参数返回的评分，你可以实时观测用户对接收到的远端视频画质的主观感受，并根据需要动态调整视频参数、实现问题调查、告警等业务逻辑。
+
+SDK 支持返回的 `mosValue` 值和对应的主观感受描述、视频示例，以及可能的原因详见 [MOS 视频质量主观打分](#mos-视频质量主观打分)。
+
+:::info[信息]
+该功能默认不开启。如需启用，可以[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 远端视频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）的视频流状态改变时，SDK 会触发 `onRemoteVideoStateChanged` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `IRtcEngineEventHandler` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `onNetworkQuality`：报告上下行 last mile 网络质量。
+   - `onRtcStats`：报告实时互动统计信息。
+   - `onLocalAudioStats`：报告发送的音频流的统计信息。
+   - `onLocalAudioStateChanged`: 报告本地音频流状态监控。
+   - `onRemoteAudioStats`：报告接收的远端音频流统计信息。
+   - `onRemoteAudioStateChanged`：报告远端音频流状态监控。
+   - `onLocalVideoStats`：报告发送的视频流统计信息。
+   - `onLocalVideoStateChanged`：报告本地视频流状态监控。
+   - `onRemoteVideoStats`：报告接收的远端视频流统计信息。
+   - `onRemoteVideoStateChanged`：报告远端视频流状态监控。
+
+```java
+private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEventHandler() {
+
+  public void onRemoteAudioStateChanged(int uid, IRtcEngineEventHandler.REMOTE_AUDIO_STATE state, IRtcEngineEventHandler.REMOTE_AUDIO_STATE_REASON reason, int elapsed) {
+    super.onRemoteAudioStateChanged(uid, state, reason, elapsed);
+    Log.i(TAG, "onRemoteAudioStateChanged->" + uid + ", state->" + state + ", reason->" + reason);
+  }
+
+  @Override
+  public void onRemoteVideoStateChanged(int uid, int state, int reason, int elapsed) {
+    super.onRemoteVideoStateChanged(uid, state, reason, elapsed);
+    Log.i(TAG, "onRemoteVideoStateChanged->" + uid + ", state->" + state + ", reason->" + reason);
+  }
+
+  @Override
+  public void onRemoteAudioStats(RemoteAudioStats remoteAudioStats) {
+    statisticsInfo.setRemoteAudioStats(remoteAudioStats);
+    updateRemoteStats();
+  }
+
+  @Override
+  public void onLocalAudioStats(LocalAudioStats localAudioStats) {
+    statisticsInfo.setLocalAudioStats(localAudioStats);
+    updateLocalStats();
+  }
+
+  @Override
+  public void onRemoteVideoStats(RemoteVideoStats remoteVideoStats) {
+    statisticsInfo.setRemoteVideoStats(remoteVideoStats);
+    updateRemoteStats();
+  }
+
+  @Override
+  public void onLocalVideoStats(LocalVideoStats localVideoStats) {
+    statisticsInfo.setLocalVideoStats(localVideoStats);
+    updateLocalStats();
+  }
+
+  @Override
+  public void onRtcStats(RtcStats rtcStats) {
+    statisticsInfo.setRtcStats(rtcStats);
+  }
+};
+```
+
+## 参考信息
+
+### API 参考
+
+- [`onNetworkQuality`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onnetworkquality)
+- [`onRtcStats`](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`onLocalAudioStats`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`onLocalAudioStateChanged`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`onRemoteAudioStats`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`onRemoteAudioStateChanged`](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`onLocalVideoStats`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`onLocalVideoStateChanged`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`onRemoteVideoStats`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`onRemoteVideoStateChanged`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| `QUALITY_UNKNOWN`(0)   | 网络质量未知。                                               |
+| `QUALITY_EXCELLENT`(1) | 网络质量极佳。                                               |
+| `QUALITY_GOOD`(2)       | 网络质量极好，但码率可能略低于极佳。                           |
+| `QUALITY_POOR`(3)      | 网络质量一般，用户可能感受到通话质量轻微下降。                    |
+| `QUALITY_BAD`(4)       | 网络质量较差，用户无法流畅通话。                               |
+| `QUALITY_VBAD`(5)      | 网络质量极差，用户几乎无法通话。                               |
+| `QUALITY_DOWN`(6)      | 网络连接中断，用户完全无法通话。                               |
+| `QUALITY_DETECTING`(8)      | 正在进行 Last-mile 探测测试。                           |
+
+### MOS 视频质量主观打分
+
+`mosValue` 的取值范围为 1 到 5 分，对应不同档位的主观感受：
+
+| 分值 | 体验等级 | 主观感受 | 视频示例 |
+| --- | --- | --- | --- |
+| 5 | 优秀，接近真实画面 | 画面极致清晰无噪点，细节完美保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386227507-5分.mov" ></video> |
+| 4 | 良好，优质画面体验 | 画面清晰锐利，边缘平滑无锯齿，噪点极少，细节大部分保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386740734-4分.mov" ></video> |
+| 3 | 一般，可以接受 | 画面清晰度一般，噪点可控，细节可见但不够锐利 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386757305-3分.mov" ></video> |
+| 2 | 差，勉强可用 | 画面模糊，边缘有锯齿，噪点明显，但能勉强识别主体内容 | <video controls width="60%" height="auto" src=" https://web-cdn.agora.io/doc-cms/uploads/1757386762185-2分.mov" ></video> |
+| 1 | 极差，无法接受 | 画面严重模糊、马赛克明显，完全无法辨认主体内容 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386766581-1分.mov" ></video> |
+
+该指标反映的画质问题可能由以下原因造成：
+
+- 用户所处环境光线差，或摄像头感光度差，导致采集视频质量不好
+- 由于网络波动或设备兼容性问题，系统模块如编码、解码、渲染、前后处理等引入的画质损失
+- 由于屏幕尺寸与分辨率不匹配导致的画面不清晰
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：上下行网络质量、实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 统计信息报告
+
+`reportRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`localAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `localAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+`remoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`remoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量也可能较好。
+
+#### 远端音频流状态监控
+
+远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）的音频流状态改变时，SDK 会触发 `remoteAudioStateChangedOfUid` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`localVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了[双流模式](https://docs.agora.io/en/Agora%20Platform/dual_stream_mode)，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `localVideoStateChangedOfState` 回调，上报当前本地视频状态。 当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+`remoteVideoStats` 回调上报当前通话中每个远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）视频流的统计信息，包括每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+从 v4.6.0 起，SDK 在 `AgoraRtcRemoteVideoStats` 中新增 `mosValue` 成员，用来对接收到的远端视频流的质量进行评分。该评分机制是声网自研、基于深度学习实现的实时视频 MOS（平均主观意见分）评估系统，可以模拟人眼主观感受到的各类画质问题，如轮廓不清晰、动态画面模糊、马赛克、黑屏、绿屏等。通过该参数返回的评分，你可以实时观测用户对接收到的远端视频画质的主观感受，并根据需要动态调整视频参数、实现问题调查、告警等业务逻辑。
+
+SDK 支持返回的 `mosValue` 值和对应的主观感受描述、视频示例，以及可能的原因详见 [MOS 视频质量主观打分](#mos-视频质量主观打分)。
+
+:::info[信息]
+该功能默认不开启。如需启用，可以[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 远端视频流状态监控
+
+远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）的视频流状态改变时，SDK 会触发 `remoteVideoStateChangedOfUid` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `AgoraRtcEngineDelegate` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `networkQuality`：报告上下行 last mile 网络质量。
+   - `reportRtcStats`：报告实时互动统计信息。
+   - `localAudioStats`：报告发送的音频流的统计信息。
+   - `localAudioStateChanged`：报告本地音频流状态监控。
+   - `remoteAudioStats`：报告接收的远端音频流统计信息。
+   - `remoteAudioStateChangedOfUid`：报告远端音频流状态监控。
+   - `localVideoStats`：报告发送的视频流统计信息。
+   - `localVideoStateChangedOfState`：报告本地视频流状态监控。
+   - `remoteVideoStats`：报告接收的远端视频流统计信息。
+   - `remoteVideoStateChangedOfUid`：报告远端视频流状态监控。
+
+```swift
+extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
+    func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+        localVideo.statsInfo?.updateChannelStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStats stats: AgoraRtcLocalVideoStats) {
+        localVideo.statsInfo?.updateChannelStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStats stats: AgoraRtcLocalAudioStats) {
+        localVideo.statsInfo?.updateLocalAudioStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStats stats: AgoraRtcRemoteVideoStats) {
+        remoteVideo.statsInfo?.updateVideoStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStats stats: AgoraRtcRemoteAudioStats) {
+        remoteVideo.statsInfo?.updateAudioStats(stats)
+    }
+}
+```
+
+## 参考信息
+
+### API 参考
+
+- [`networkQuality`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onnetworkquality)
+- [`reportRtcStats`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`localAudioStats`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`localAudioStateChanged`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`remoteAudioStats`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`remoteAudioStateChangedOfUid`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`localVideoStats`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`localVideoStateChangedOfState`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`remoteVideoStats`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`remoteVideoStateChangedOfUid`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                               | 描述                                                         |
+| :--------------------------------- | :----------------------------------------------------------- |
+| `AgoraNetworkQualityUnknown`(0)   | 网络质量未知。                                         |
+| `AgoraNetworkQualityExcellent`(1) | 网络质量极佳。                                         |
+| `AgoraNetworkQualityGood`(2)       | 网络质量较好，但码率可能略低于极佳。 |
+| `AgoraNetworkQualityPoor`(3)      | 网络质量一般，用户可能感受到通话质量轻微下降。              |
+| `AgoraNetworkQualityBad`(4)       | 网络质量较差，用户无法流畅通话。       |
+| `AgoraNetworkQualityVBad`(5)      | 网络质量极差，用户几乎无法通话。      |
+| `AgoraNetworkQualityDown`(6)      | 网络连接中断，用户完全无法通话。              |
+| `AgoraNetworkQualityDetecting`(8)      | 正在进行 Last-mile 探测测试。          |
+
+### MOS 视频质量主观打分
+
+`mosValue` 的取值范围为 1 到 5 分，对应不同档位的主观感受：
+
+| 分值 | 体验等级 | 主观感受 | 视频示例 |
+| --- | --- | --- | --- |
+| 5 | 优秀，接近真实画面 | 画面极致清晰无噪点，细节完美保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386227507-5分.mov" ></video> |
+| 4 | 良好，优质画面体验 | 画面清晰锐利，边缘平滑无锯齿，噪点极少，细节大部分保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386740734-4分.mov" ></video> |
+| 3 | 一般，可以接受 | 画面清晰度一般，噪点可控，细节可见但不够锐利 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386757305-3分.mov" ></video> |
+| 2 | 差，勉强可用 | 画面模糊，边缘有锯齿，噪点明显，但能勉强识别主体内容 | <video controls width="60%" height="auto" src=" https://web-cdn.agora.io/doc-cms/uploads/1757386762185-2分.mov" ></video> |
+| 1 | 极差，无法接受 | 画面严重模糊、马赛克明显，完全无法辨认主体内容 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386766581-1分.mov" ></video> |
+
+该指标反映的画质问题可能由以下原因造成：
+
+- 用户所处环境光线差，或摄像头感光度差，导致采集视频质量不好
+- 由于网络波动或设备兼容性问题，系统模块如编码、解码、渲染、前后处理等引入的画质损失
+- 由于屏幕尺寸与分辨率不匹配导致的画面不清晰
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：上下行网络质量、实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 统计信息报告
+
+`reportRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`localAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `localAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+`remoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`remoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量也可能较好。
+
+#### 远端音频流状态监控
+
+远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）的音频流状态改变时，SDK 会触发 `remoteAudioStateChangedOfUid` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`localVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了[双流模式](https://docs.agora.io/en/Agora%20Platform/dual_stream_mode)，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `localVideoStateChangedOfState` 回调，上报当前本地视频状态。 当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+`remoteVideoStats` 回调上报当前通话中每个远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）视频流的统计信息，包括每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+从 v4.6.0 起，SDK 在 `AgoraRtcRemoteVideoStats` 中新增 `mosValue` 成员，用来对接收到的远端视频流的质量进行评分。该评分机制是声网自研、基于深度学习实现的实时视频 MOS（平均主观意见分）评估系统，可以模拟人眼主观感受到的各类画质问题，如轮廓不清晰、动态画面模糊、马赛克、黑屏、绿屏等。通过该参数返回的评分，你可以实时观测用户对接收到的远端视频画质的主观感受，并根据需要动态调整视频参数、实现问题调查、告警等业务逻辑。
+
+SDK 支持返回的 `mosValue` 值和对应的主观感受描述、视频示例，以及可能的原因详见 [MOS 视频质量主观打分](#mos-视频质量主观打分)。
+
+:::info[信息]
+该功能默认不开启。如需启用，可以[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 远端视频流状态监控
+
+远端用户（`Communication` 场景）或远端主播（`LiveBroadcasting` 场景）的视频流状态改变时，SDK 会触发 `remoteVideoStateChangedOfUid` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `AgoraRtcEngineDelegate` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `networkQuality`：报告上下行 last mile 网络质量。
+   - `reportRtcStats`：报告实时互动统计信息。
+   - `localAudioStats`：报告发送的音频流的统计信息。
+   - `localAudioStateChanged`：报告本地音频流状态监控。
+   - `remoteAudioStats`：报告接收的远端音频流统计信息。
+   - `remoteAudioStateChangedOfUid`：报告远端音频流状态监控。
+   - `localVideoStats`：报告发送的视频流统计信息。
+   - `localVideoStateChangedOfState`：报告本地视频流状态监控。
+   - `remoteVideoStats`：报告接收的远端视频流统计信息。
+   - `remoteVideoStateChangedOfUid`：报告远端视频流状态监控。
+
+```swift
+extension JoinChannelVideoMain: AgoraRtcEngineDelegate {
+    func rtcEngine(_ engine: AgoraRtcEngineKit, reportRtcStats stats: AgoraChannelStats) {
+        localVideo.statsInfo?.updateChannelStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, localVideoStats stats: AgoraRtcLocalVideoStats) {
+        localVideo.statsInfo?.updateChannelStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, localAudioStats stats: AgoraRtcLocalAudioStats) {
+        localVideo.statsInfo?.updateLocalAudioStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, remoteVideoStats stats: AgoraRtcRemoteVideoStats) {
+        remoteVideo.statsInfo?.updateVideoStats(stats)
+    }
+
+    func rtcEngine(_ engine: AgoraRtcEngineKit, remoteAudioStats stats: AgoraRtcRemoteAudioStats) {
+        remoteVideo.statsInfo?.updateAudioStats(stats)
+    }
+}
+```
+
+## 参考信息
+
+### API 参考
+
+- [`networkQuality`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onnetworkquality)
+- [`reportRtcStats`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`localAudioStats`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`localAudioStateChanged`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`remoteAudioStats`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`remoteAudioStateChangedOfUid`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`localVideoStats`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`localVideoStateChangedOfState`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`remoteVideoStats`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`remoteVideoStateChangedOfUid`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                               | 描述                                                         |
+| :--------------------------------- | :----------------------------------------------------------- |
+| `AgoraNetworkQualityUnknown`(0)   | 网络质量未知。                                         |
+| `AgoraNetworkQualityExcellent`(1) | 网络质量极佳。                                         |
+| `AgoraNetworkQualityGood`(2)       | 网络质量较好，但码率可能略低于极佳。 |
+| `AgoraNetworkQualityPoor`(3)      | 网络质量一般，用户可能感受到通话质量轻微下降。              |
+| `AgoraNetworkQualityBad`(4)       | 网络质量较差，用户无法流畅通话。       |
+| `AgoraNetworkQualityVBad`(5)      | 网络质量极差，用户几乎无法通话。      |
+| `AgoraNetworkQualityDown`(6)      | 网络连接中断，用户完全无法通话。              |
+| `AgoraNetworkQualityDetecting`(8)      | 正在进行 Last-mile 探测测试。          |
+
+### MOS 视频质量主观打分
+
+`mosValue` 的取值范围为 1 到 5 分，对应不同档位的主观感受：
+
+| 分值 | 体验等级 | 主观感受 | 视频示例 |
+| --- | --- | --- | --- |
+| 5 | 优秀，接近真实画面 | 画面极致清晰无噪点，细节完美保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386227507-5分.mov" ></video> |
+| 4 | 良好，优质画面体验 | 画面清晰锐利，边缘平滑无锯齿，噪点极少，细节大部分保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386740734-4分.mov" ></video> |
+| 3 | 一般，可以接受 | 画面清晰度一般，噪点可控，细节可见但不够锐利 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386757305-3分.mov" ></video> |
+| 2 | 差，勉强可用 | 画面模糊，边缘有锯齿，噪点明显，但能勉强识别主体内容 | <video controls width="60%" height="auto" src=" https://web-cdn.agora.io/doc-cms/uploads/1757386762185-2分.mov" ></video> |
+| 1 | 极差，无法接受 | 画面严重模糊、马赛克明显，完全无法辨认主体内容 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386766581-1分.mov" ></video> |
+
+该指标反映的画质问题可能由以下原因造成：
+
+- 用户所处环境光线差，或摄像头感光度差，导致采集视频质量不好
+- 由于网络波动或设备兼容性问题，系统模块如编码、解码、渲染、前后处理等引入的画质损失
+- 由于屏幕尺寸与分辨率不匹配导致的画面不清晰
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+声网 Web SDK 支持获取以下统计数据来检测通话质量：
+
+- Last mile 上下行网络质量
+- 当前通话的统计数据
+- 本地轨道的统计数据
+- 远端轨道的统计数据
+- 频道内的异常事件
+
+点击[在线体验](https://webdemo.agora.io/example/advanced/displayCallStats/index.html)试用通话中质量监测功能。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
+
+## 实现方法
+
+### 获取 Last mile 上下行网络质量
+
+Last mile 是指你的设备到声网边缘服务器的网络。
+
+本地用户加入频道后，SDK 会每 2 秒触发一次 [`AgoraRTCClient.on("network-quality")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_network_quality) 回调报告本地用户的上下行 Last mile 网络质量打分。
+
+你还可以通过 [`AgoraRTCClient.getRemoteNetworkQuality`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getremotenetworkquality) 方法获取本地订阅的所有远端用户的上下行 Last mile 网络质量打分。
+
+质量打分对照表如下：
+
+| 分数 | 说明                                             |
+| :--- | :----------------------------------------------- |
+| 0    | 网络质量未知。                                   |
+| 1    | 网络质量极好。                                   |
+| 2    | 用户主观感觉和极好差不多，但码率可能略低于极好。 |
+| 3    | 用户主观感受有瑕疵但不影响沟通。                 |
+| 4    | 勉强能沟通但不顺畅。                             |
+| 5    | 网络质量非常差，基本不能沟通。                   |
+| 6    | 完全无法沟通。                                   |
+
+```javascript
+client.on("network-quality", (stats) => {
+  console.log("downlinkNetworkQuality", stats.downlinkNetworkQuality);
+  console.log("uplinkNetworkQuality", stats.uplinkNetworkQuality);
+});
+```
+
+```javascript
+const remoteNetworkQuality = client.getRemoteNetworkQuality();
+```
+
+### 获取当前通话的统计数据
+
+调用 [`AgoraRTCClient.getRTCStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getrtcstats) 方法获取当前通话的统计数据，数据说明详见 [`AgoraRTCStats`](/api-ref/rtc/javascript/interfaces/agorartcstats.html)。
+
+```javascript
+const clientStats = client.getRTCStats();
+```
+
+### 获取本地音视频轨道的统计数据
+
+调用 [`AgoraRTCClient.getLocalAudioStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getlocalaudiostats) 和 [`AgoraRTCClient.getLocalVideoStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getlocalvideostats) 方法分别获取本地发布的音频轨道和视频轨道的统计数据。数据说明详见 [`LocalAudioTrackStats`](/api-ref/rtc/javascript/interfaces/localaudiotrackstats.html) 和 [`LocalVideoTrackStats`](/api-ref/rtc/javascript/interfaces/localvideotrackstats.html)。
+
+```javascript
+const localStats = {
+  video: client.getLocalVideoStats(),
+  audio: client.getLocalAudioStats()
+};
+```
+
+### 获取远端音视频轨道的统计数据
+
+调用 [`AgoraRTCClient.getRemoteAudioStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getremoteaudiostats) 和 [`AgoraRTCClient.getRemoteVideoStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getremotevideostats) 方法获取订阅的远端音频轨道和远端视频轨道的统计数据。其中，你可参考下图理解 `end2EndDelay`、`receiveDelay` 和 `transportDelay` 字段，其他数据说明详见 [`RemoteAudioTrackStats`](/api-ref/rtc/javascript/interfaces/remoteaudiotrackstats.html) 和 [`RemoteVideoTrackStats`](/api-ref/rtc/javascript/interfaces/remotevideotrackstats.html)。
+
+![延时示意图](https://web-cdn.agora.io/doc-cms/uploads/1727168872087-远端音视频轨道数据.png)
+
+| 字段             | 描述                                                         |
+| :--------------- | :----------------------------------------------------------- |
+| `end2EndDelay`   | 端到端延时（毫秒），从远端采集音频或视频到本地播放音频或视频的延时。图中阶段 1 + 2 + 3 + 4 + 5 + 6。 |
+| `receiveDelay`   | 接收音频延时（毫秒），从远端发送音频或视频到本地播放音频或视频的延时，图中阶段 2 + 3 + 4 + 5 + 6。 |
+| `transportDelay` | 传输延时（毫秒），从远端发送音频或视频到本地接收音频或视频的延时。图中阶段 2 + 3 + 4。 |
+
+```javascript
+const remoteTracksStats = {
+  video: client.getRemoteVideoStats()[uid],
+  audio: client.getRemoteAudioStats()[uid]
+};
+```
+
+### 关注频道内的异常事件
+
+SDK 通过 [`AgoraRTCClient.on("exception")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_exception) 回调报告频道内的异常事件。异常事件不是错误，但是往往会引起通话质量问题。发生异常事件后，如果恢复正常，也会收到该回调。该回调返回：
+
+- `code`：事件码。
+- `msg`：提示消息。
+- `uid`：发生异常或恢复的用户 ID。
+
+```javascript
+client.on("exception", function(evt) {
+  console.log(evt.code, evt.msg, evt.uid);
+})
+```
+
+每个异常事件都有对应的恢复事件，详见下表：
+
+![异常事件和恢复事件](https://web-cdn.agora.io/docs-files/1547180167044)
+
+## 开发注意事项
+
+上述所有方法必须在成功加入频道之后调用。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 统计信息报告
+
+`onRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`onLocalAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `onLocalAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+下图展示 App 客户端之间的音频传输过程：
+
+![App 客户端之间的音频传输过程示意图](https://web-cdn.agora.io/docs-files/1675671038364)
+
+`onRemoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`onRemoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量较好。
+
+#### 远端音频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）的音频流状态改变时，SDK 会触发 `onRemoteAudioStateChanged` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`onLocalVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了[双流模式](https://docs.agora.io/cn/Agora%20Platform/dual_stream_mode)，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `onLocalVideoStateChanged` 回调上报当前本地视频状态。当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+下图展示 App 客户端之间的视频传输过程：
+
+![App 客户端之间的视频传输过程示意图](https://web-cdn.agora.io/docs-files/1675671087750)
+
+`onRemoteVideoStats` 回调上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）视频流的统计信息。你可以了解到每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+从 v4.6.0 起，SDK 在 `RemoteVideoStats` 中新增 `mosValue` 成员，用来对接收到的远端视频流的质量进行评分。该评分机制是声网自研、基于深度学习实现的实时视频 MOS（平均主观意见分）评估系统，可以模拟人眼主观感受到的各类画质问题，如轮廓不清晰、动态画面模糊、马赛克、黑屏、绿屏等。通过该参数返回的评分，你可以实时观测用户对接收到的远端视频画质的主观感受，并根据需要动态调整视频参数、实现问题调查、告警等业务逻辑。
+
+有关 SDK 返回的 `mosValue` 值及其对应的主观感受描述、视频示例和可能原因，详见 [MOS 视频质量主观打分](#mos-视频质量主观打分)。
+
+:::info[信息]
+该功能默认不开启。如需启用，可以[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 远端视频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）的视频流状态改变时，SDK 会触发 `onRemoteVideoStateChanged` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `IRtcEngineEventHandler` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `onRtcStats`：报告实时互动统计信息。
+   - `onLocalAudioStats`：报告发送的音频流的统计信息。
+   - `onLocalAudioStateChanged`：报告本地音频流状态监控。
+   - `onRemoteAudioStats`：报告接收的远端音频流统计信息。
+   - `onRemoteAudioStateChanged`：报告远端音频流状态监控。
+   - `onLocalVideoStats`：报告发送的视频流统计信息。
+   - `onLocalVideoStateChanged`：报告本地视频流状态监控。
+   - `onRemoteVideoStats`：报告接收的远端视频流统计信息。
+   - `onRemoteVideoStateChanged`：报告远端视频流状态监控。
+
+```cpp
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteVideoStateChanged(WPARAM wParam,
+                                                            LPARAM lParam) {
+    PVideoStateStateChanged stateChanged = (PVideoStateStateChanged)wParam;
+    if (stateChanged) {
+        // 实现 onRemoteVideoStateChanged
+        CString strSateInfo;
+        switch (stateChanged->state) {
+            case REMOTE_VIDEO_STATE_STARTING:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_STARTING");
+                break;
+            case REMOTE_VIDEO_STATE_STOPPED:
+                strSateInfo = _T("strSateInfo");
+                break;
+            case REMOTE_VIDEO_STATE_DECODING:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_DECODING");
+                break;
+            case REMOTE_VIDEO_STATE_FAILED:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_FAILED ");
+                break;
+            case REMOTE_VIDEO_STATE_FROZEN:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_FROZEN  ");
+                break;
+        }
+        CString strInfo;
+        strInfo.Format(_T("onRemoteVideoStateChanged: uid=%u, %s"),
+                       stateChanged->uid, strSateInfo);
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+    }
+    return 0;
+}
+
+// 实现 onRemoteVideoStats
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteVideoStats(WPARAM wParam,
+                                                     LPARAM lParam) {
+    RemoteVideoStats *p = reinterpret_cast<RemoteVideoStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dms"), p->delay);
+        m_staVideoNetWorkDelayVal.SetWindowText(tmp);
+        tmp.Format(_T("%dKbps"), p->receivedBitrate);
+        m_staVideoRecvBitrateVal.SetWindowText(tmp);
+
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onRemoteAudioStats
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteAudioStats(WPARAM wParam,
+                                                     LPARAM lParam) {
+    RemoteAudioStats *p = reinterpret_cast<RemoteAudioStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dms"), p->networkTransportDelay);
+        m_staAudioNetWorkDelayVal.SetWindowText(tmp);
+
+        tmp.Format(_T("%dKbps"), p->receivedBitrate);
+        m_staAudioRecvBitrateVal.SetWindowText(tmp);
+
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onRtcStats
+LRESULT CAgoraReportInCallDlg::OnEIDRtcStats(WPARAM wParam, LPARAM lParam) {
+    RtcStats *p = reinterpret_cast<RtcStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dKbps/%dKbps"), p->txKBitRate, p->rxKBitRate);
+        m_staTotalBitrateVal.SetWindowText(tmp);
+        tmp.Format(_T("%.2fMB/%.2fMB"),
+                   p->txBytes ? p->txBytes / 1024.0 / 1024 : 0,
+                   p->rxBytes ? p->rxBytes / 1024.0 / 1024 : 0);
+        m_staTotalBytesVal.SetWindowText(tmp);
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onLocalVideoStats
+LRESULT CAgoraReportInCallDlg::OnEIDLocalVideoStats(WPARAM wParam,
+                                                    LPARAM lParam) {
+    LocalVideoStats *p = reinterpret_cast<LocalVideoStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%d fps"), p->sentFrameRate);
+        m_staLocalVideoFPSVal.SetWindowText(tmp);
+        tmp.Format(_T("%d X %d"), p->encodedFrameWidth, p->encodedFrameHeight);
+        m_staLocalVideoResoultionVal.SetWindowText(tmp);
+        delete p;
+    }
+    return TRUE;
+}
+```
+
+## 参考信息
+
+### API 参考
+
+- [`onRtcStats`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`onLocalAudioStats`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`onLocalAudioStateChanged`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`onRemoteAudioStats`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`onRemoteAudioStateChanged`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`onLocalVideoStats`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`onLocalVideoStateChanged`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`onRemoteVideoStats`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`onRemoteVideoStateChanged`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| `QUALITY_UNKNOWN`(0)   | 网络质量未知。                                               |
+| `QUALITY_EXCELLENT`(1) | 网络质量极佳。                                               |
+| `QUALITY_GOOD`(2)       | 网络质量极好，但码率可能略低于极佳。                           |
+| `QUALITY_POOR`(3)      | 网络质量一般，用户可能感受到通话质量轻微下降。                    |
+| `QUALITY_BAD`(4)       | 网络质量较差，用户无法流畅通话。                               |
+| `QUALITY_VBAD`(5)      | 网络质量极差，用户几乎无法通话。                               |
+| `QUALITY_DOWN`(6)      | 网络连接中断，用户完全无法通话。                               |
+| `QUALITY_DETECTING`(8)      | 正在进行 Last-mile 探测测试。                           |
+
+### MOS 视频质量主观打分
+
+`mosValue` 的取值范围为 1 到 5 分，对应不同档位的主观感受：
+
+| 分值 | 体验等级 | 主观感受 | 视频示例 |
+| --- | --- | --- | --- |
+| 5 | 优秀，接近真实画面 | 画面极致清晰无噪点，细节完美保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386227507-5分.mov" ></video> |
+| 4 | 良好，优质画面体验 | 画面清晰锐利，边缘平滑无锯齿，噪点极少，细节大部分保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386740734-4分.mov" ></video> |
+| 3 | 一般，可以接受 | 画面清晰度一般，噪点可控，细节可见但不够锐利 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386757305-3分.mov" ></video> |
+| 2 | 差，勉强可用 | 画面模糊，边缘有锯齿，噪点明显，但能勉强识别主体内容 | <video controls width="60%" height="auto" src=" https://web-cdn.agora.io/doc-cms/uploads/1757386762185-2分.mov" ></video> |
+| 1 | 极差，无法接受 | 画面严重模糊、马赛克明显，完全无法辨认主体内容 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386766581-1分.mov" ></video> |
+
+该指标反映的画质问题可能由以下原因造成：
+
+- 用户所处环境光线差，或摄像头感光度差，导致采集视频质量不好
+- 由于网络波动或设备兼容性问题，系统模块如编码、解码、渲染、前后处理等引入的画质损失
+- 由于屏幕尺寸与分辨率不匹配导致的画面不清晰
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：上下行网络质量、实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 上下行网络质量报告
+
+`onNetworkQuality` 回调上报当前通话中每个用户（`ChannelProfileCommunication` 场景）或主播（`ChannelProfileLiveBroadcasting` 场景）的上下行 last mile 网络质量，详见[质量打分](#rate)。其中：
+
+- last mile 是指你的设备到声网边缘服务器的网络。
+- 上行 last mile 网络质量打分基于实际发送码率、上行网络丢包率、平均往返时延和上行网络抖动计算。
+- 下行 last mile 网络质量打分基于下行网络丢包率、平均往返时延和下行网络抖动计算。
+
+:::info[信息]
+- 实际发送码率与目标发送码率的比值越高，该网络下的通话质量越好，该网络质量打分越高。
+- 平均往返时延指的是多次往返时延的平均值。
+:::
+
+### 统计信息报告
+
+`onRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`onLocalAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `onLocalAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+`onRemoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`onRemoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量较好。
+
+#### 远端音频流状态监控
+
+远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）的音频流状态改变时，SDK 会触发 `onRemoteAudioStateChanged` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`onLocalVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了双流模式，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `onLocalVideoStateChanged` 回调上报当前本地视频状态。当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+`onRemoteVideoStats` 回调上报当前通话中每个远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）视频流的统计信息。你可以了解到每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+#### 远端视频流状态监控
+
+远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）的视频流状态改变时，SDK 会触发 `onRemoteVideoStateChanged` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `IRtcEngineEventHandler` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `onNetworkQuality`：报告上下行 last mile 网络质量。
+   - `onRtcStats`：报告实时互动统计信息。
+   - `onLocalAudioStats`：报告发送的音频流的统计信息。
+   - `onLocalAudioStateChanged`：报告本地音频流状态监控。
+   - `onRemoteAudioStats`：报告接收的远端音频流统计信息。
+   - `onRemoteAudioStateChanged`：报告远端音频流状态监控。
+   - `onLocalVideoStats`：报告发送的视频流统计信息。
+   - `onLocalVideoStateChanged`：报告本地视频流状态监控。
+   - `onRemoteVideoStats`：报告接收的远端视频流统计信息。
+   - `onRemoteVideoStateChanged`：报告远端视频流状态监控。
+
+```typescript
+const EventHandles = {
+  // 报告实时互动统计信息
+  onRtcStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+
+  // 报告发送的音频流的统计信息。
+  onLocalAudioStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+
+  // 报告本地音频流状态监控。
+  onLocalAudioStateChanged: (connection, state, error) => {
+    console.log(`connection:${connection}, state:${state}, error:${error}`);
+  },
+
+  // 报告接收的远端音频流统计信息。
+  onRemoteAudioStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+  // 报告远端音频流状态监控。
+  onRemoteAudioStateChanged: (
+    connection,
+    remoteUid,
+    state,
+    reason,
+    elapsed
+  ) => {
+    console.log(
+      `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+    );
+  },
+
+  // 报告发送的视频流统计信息。
+  onLocalVideoStats: (source, stats) => {
+    console.log(`source:${source}, stats:${stats}`);
+  },
+  // 报告本地视频流状态监控。
+  onLocalVideoStateChanged: (source, state, error) => {
+    console.log(`source:${source}, state:${state}, error:${error}`);
+  },
+
+  // 报告接收的远端视频流统计信息。
+  onRemoteVideoStats: (connection, stats) => {
+    console.log(`connection:${connection}, stats:${stats}`);
+  },
+  // 报告远端视频流状态监控。
+  onRemoteVideoStateChanged: (
+    connection,
+    remoteUid,
+    state,
+    reason,
+    elapsed
+  ) => {
+    console.log(
+      `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+    );
+  },
+};
+// 注册事件回调
+let rtcEngine = createAgoraRtcEngine();
+rtcEngine.registerEventHandler(EventHandles);
+```
+
+## 参考信息
+
+### API 参考
+
+- [`onNetworkQuality`](/api-ref/rtc/electron/API/toc_network#callback_irtcengineeventhandler_onnetworkquality)
+- [`onRtcStats`](/api-ref/rtc/electron/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`onLocalAudioStats`](/api-ref/rtc/electron/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`onLocalAudioStateChanged`](/api-ref/rtc/electron/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`onRemoteAudioStats`](/api-ref/rtc/electron/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`onRemoteAudioStateChanged`](/api-ref/rtc/electron/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`onLocalVideoStats`](/api-ref/rtc/electron/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`onLocalVideoStateChanged`](/api-ref/rtc/electron/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`onRemoteVideoStats`](/api-ref/rtc/electron/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`onRemoteVideoStateChanged`](/api-ref/rtc/electron/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| `QualityUnknown`(0)   | 网络质量未知。                                               |
+| `QualityExcellent`(1) | 网络质量极好。                                               |
+| `QualityGood`(2)       | 用户主观感觉和 `QualityExcellent`(1) 差不多，但码率可能略低于 `QualityExcellent`(1)。 |
+| `QualityPoor`(3)      | 用户主观感受有瑕疵但不影响沟通。                             |
+| `QualityBad`(4)       | 勉强能沟通但不顺畅。                                         |
+| `QualityVbad`(5)      | 网络质量非常差，基本不能沟通。                               |
+| `QualityDown`(6)      | 完全无法沟通。                                               |
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：上下行网络质量、实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 上下行网络质量报告
+
+`onNetworkQuality` 回调上报当前通话中每个用户（`ChannelProfileCommunication` 场景）或主播（`ChannelProfileLiveBroadcasting` 场景）的上下行 last mile 网络质量，详见[质量打分](#rate)。其中：
+
+- last mile 是指你的设备到声网边缘服务器的网络。
+- 上行 last mile 网络质量打分基于实际发送码率、上行网络丢包率、平均往返时延和上行网络抖动计算。
+- 下行 last mile 网络质量打分基于下行网络丢包率、平均往返时延和下行网络抖动计算。
+
+:::info[信息]
+- 实际发送码率与目标发送码率的比值越高，该网络下的通话质量越好，该网络质量打分越高。
+- 平均往返时延指的是多次往返时延的平均值。
+:::
+
+### 统计信息报告
+
+`onRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`onLocalAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `onLocalAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+`onRemoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`onRemoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量较好。
+
+#### 远端音频流状态监控
+
+远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）的音频流状态改变时，SDK 会触发 `onRemoteAudioStateChanged` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`onLocalVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了双流模式，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `onLocalVideoStateChanged` 回调上报当前本地视频状态。当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+`onRemoteVideoStats` 回调上报当前通话中每个远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）视频流的统计信息。你可以了解到每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+#### 远端视频流状态监控
+
+远端用户（`ChannelProfileCommunication` 场景）或远端主播（`ChannelProfileLiveBroadcasting` 场景）的视频流状态改变时，SDK 会触发 `onRemoteVideoStateChanged` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+在 `IRtcEngineEventHandler` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `onNetworkQuality`：报告上下行 last mile 网络质量。
+   - `onRtcStats`：报告实时互动统计信息。
+   - `onLocalAudioStats`：报告发送的音频流的统计信息。
+   - `onLocalAudioStateChanged`：报告本地音频流状态监控。
+   - `onRemoteAudioStats`：报告接收的远端音频流统计信息。
+   - `onRemoteAudioStateChanged`：报告远端音频流状态监控。
+   - `onLocalVideoStats`：报告发送的视频流统计信息。
+   - `onLocalVideoStateChanged`：报告本地视频流状态监控。
+   - `onRemoteVideoStats`：报告接收的远端视频流统计信息。
+   - `onRemoteVideoStateChanged`：报告远端视频流状态监控。
+
+```typescript
+const EventHandles = {
+  // 报告实时互动统计信息
+  onRtcStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+
+  // 报告发送的音频流的统计信息。
+  onLocalAudioStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+
+  // 报告本地音频流状态监控。
+  onLocalAudioStateChanged: (connection, state, error) => {
+    console.log(`connection:${connection}, state:${state}, error:${error}`);
+  },
+
+  // 报告接收的远端音频流统计信息。
+  onRemoteAudioStats: (connection, state) => {
+    console.log(`connection:${connection}, state:${state}`);
+  },
+  // 报告远端音频流状态监控。
+  onRemoteAudioStateChanged: (
+    connection,
+    remoteUid,
+    state,
+    reason,
+    elapsed
+  ) => {
+    console.log(
+      `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+    );
+  },
+
+  // 报告发送的视频流统计信息。
+  onLocalVideoStats: (source, stats) => {
+    console.log(`source:${source}, stats:${stats}`);
+  },
+  // 报告本地视频流状态监控。
+  onLocalVideoStateChanged: (source, state, error) => {
+    console.log(`source:${source}, state:${state}, error:${error}`);
+  },
+
+  // 报告接收的远端视频流统计信息。
+  onRemoteVideoStats: (connection, stats) => {
+    console.log(`connection:${connection}, stats:${stats}`);
+  },
+  // 报告远端视频流状态监控。
+  onRemoteVideoStateChanged: (
+    connection,
+    remoteUid,
+    state,
+    reason,
+    elapsed
+  ) => {
+    console.log(
+      `connection:${connection},remoteUid:${remoteUid}, state:${state}, reason:${reason}, elapsed:${elapsed}`
+    );
+  },
+};
+// 注册事件回调
+let rtcEngine = createAgoraRtcEngine();
+rtcEngine.registerEventHandler(EventHandles);
+```
+
+## 参考信息
+
+### API 参考
+
+- [`onNetworkQuality`](/api-ref/rtc/rn/API/toc_network#callback_irtcengineeventhandler_onnetworkquality)
+- [`onRtcStats`](/api-ref/rtc/rn/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`onLocalAudioStats`](/api-ref/rtc/rn/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`onLocalAudioStateChanged`](/api-ref/rtc/rn/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`onRemoteAudioStats`](/api-ref/rtc/rn/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`onRemoteAudioStateChanged`](/api-ref/rtc/rn/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`onLocalVideoStats`](/api-ref/rtc/rn/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`onLocalVideoStateChanged`](/api-ref/rtc/rn/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`onRemoteVideoStats`](/api-ref/rtc/rn/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`onRemoteVideoStateChanged`](/api-ref/rtc/rn/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| `QualityUnknown`(0)   | 网络质量未知。                                               |
+| `QualityExcellent`(1) | 网络质量极好。                                               |
+| `QualityGood`(2)       | 用户主观感觉和 `QualityExcellent`(1) 差不多，但码率可能略低于 `QualityExcellent`(1)。 |
+| `QualityPoor`(3)      | 用户主观感受有瑕疵但不影响沟通。                             |
+| `QualityBad`(4)       | 勉强能沟通但不顺畅。                                         |
+| `QualityVbad`(5)      | 网络质量非常差，基本不能沟通。                               |
+| `QualityDown`(6)      | 完全无法沟通。                                               |
+
+</PlatformStructured>

@@ -24,13 +24,13 @@ title: "操控端实现 (Android)"
     - Android API 级别 16 或以上。
     - Android 4.1 或以上版本的移动设备。
 - 联系 sales@shengwang.cn 获取平行操控 Android SDK。
-- 参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start.android#创建项目)为你的项目添加平行操控场景所需的网络及设备权限。
+- 参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建项目)为你的项目添加平行操控场景所需的网络及设备权限。
 
 ## 实现流程
 
 ### 接收音视频流
 
-接收 YUV 格式或已编码的视频数据，详细步骤请参考[实现音视频互动流程](/zh-CN/realtime-media/rtc/get-started/quick-start.android#实现流程)。
+接收 YUV 格式或已编码的视频数据，详细步骤请参考[实现音视频互动流程](/zh-CN/realtime-media/rtc/get-started/quick-start#实现流程)。
 
 ### 收发控制信令
 
@@ -40,13 +40,13 @@ title: "操控端实现 (Android)"
 
     ```java
     String app_id = getApplicationContext().getString(R.string.agora_app_id);
-
+    
     RtcEngineConfig config = new RtcEngineConfig();
     config.mContext = getBaseContext();
     config.mAppId = app_id;
     config.mEventHandler = mRtcEventHandler;
     RtcEngine mRtcEngine = RtcEngine.create(config);
-
+    
     // 创建 RtmClient
     RtmClient mRtmClient = RtmClient.create();
     // 配置 RtmClient

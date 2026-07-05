@@ -259,6 +259,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from src.RtcTokenBuilder2 import *
 
+
 def main():
     # 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
     app_id = os.environ.get("AGORA_APP_ID")
@@ -282,6 +283,7 @@ def main():
     token = RtcTokenBuilder.build_token_with_uid(app_id, app_certificate, channel_name, uid, Role_Publisher,
                                                  token_expiration_in_seconds, privilege_expiration_in_seconds)
     print("Token with int uid: {}".format(token))
+
 
 if __name__ == "__main__":
     main()
@@ -299,6 +301,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from src.RtcTokenBuilder2 import *
 
+
 def main():
     # 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
     app_id = os.environ.get("AGORA_APP_ID")
@@ -323,6 +326,7 @@ def main():
     token = RtcTokenBuilder.build_token_with_uid(app_id, app_certificate, channel_name, uid, Role_Publisher,
                                                  token_expiration_in_seconds, privilege_expiration_in_seconds)
     print("Token with int uid: {}".format(token))
+
 
 if __name__ == "__main__":
     main()

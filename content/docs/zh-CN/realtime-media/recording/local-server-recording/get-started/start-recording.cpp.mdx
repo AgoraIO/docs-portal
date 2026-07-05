@@ -179,7 +179,8 @@ service_config.appId = config.appId.c_str();
 service_config.useStringUid = config.UseStringUid;
 service->initialize(service_config);
 service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024*1024*5);
-
+ 
+ 
 // 创建 recorder
 agora::rtc::IMediaComponentFactory* factory = createAgoraMediaComponentFactory();
 agora::agora_refptr<agora::rtc::IAgoraMediaRtcRecorder> recorder = factory->createMediaRtcRecorder();
@@ -192,7 +193,7 @@ recorder->registerRecorderEventHandle(eventHandler.get());
 // 订阅流
 recorder->subscribeAllAudio();
 recorder->subscribeAllVideo(options);
-
+ 
 // 设置录制相关配置
 agora::media::MediaRecorderConfiguration recorder_config;
 recorder_config.width = config.video.width;
@@ -207,7 +208,7 @@ recorder->setRecorderConfig(recorder_config);
 // 加入频道并开始录制
 recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
 recorder->startRecording();
-
+ 
 // 结束录制 清理资源 退出频道
 recorder->unsubscribeAllAudio();
 recorder->unsubscribeAllVideo();

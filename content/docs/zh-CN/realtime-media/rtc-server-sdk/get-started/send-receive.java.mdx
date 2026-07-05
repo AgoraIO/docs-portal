@@ -206,7 +206,7 @@ service.initialize(config);
             this.width = width;
             this.fps = 1000/interval;
         }
-
+        
         // sendOneH264Frame calls the send method of imageSender to send H.264 data.
         public void sendOneFrame(byte[] data) {
             if(data == null) return;
@@ -396,16 +396,16 @@ class H264FrameReceiver extends FileWriter implements IVideoEncodedFrameObserver
     ```java
     conn.getLocalUser().unpublishAudio(customAudioTrack);
     customAudioTrack.destroy();
-
+    
     audioFrameSender.destroy();
     audioEncodedFrameSender.destroy();
-
+    
     conn.getLocalUser().unpublishVideo(customEncodedVideoTrack);
     customEncodedVideoTrack.destroy();
-
+    
     videoFrameSender.destroy();
     customEncodedImageSender.destroy();
-
+    
     conn.getLocalUser().unregisterAudioFrameObserver();
     conn.getLocalUser().unregisterAudioEncodedFrameObserver(audioEncodedFrameObserver);
     conn.getLocalUser().unregisterVideoFrameObserver(videoFrameObserver);

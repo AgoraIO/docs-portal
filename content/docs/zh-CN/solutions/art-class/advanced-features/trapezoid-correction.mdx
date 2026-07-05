@@ -127,9 +127,9 @@ title: "透视校正"
     ```c++
     // 将透视校正参数应用到远端 uid 的本地画面上
     m_lpAgoraEngine->applyTrapezoidCorrectionToRemote(uid, true);
-
+		
     // 在不需要远端本地预览进行透视校正时，关闭远端uid的本地画面梯形校正
-    m_lpAgoraEngine->applyTrapezoidCorrectionToRemote(uid, false);
+    m_lpAgoraEngine->applyTrapezoidCorrectionToRemote(uid, false); 
     ```
 
 4. （可选）教师端在调用 `applyTrapezoidCorrectionToRemote` 或 `applyTrapezoidCorrectionToRemoteEx` 前后，可以调用 `getRemoteTrapezoidCorrectionOptions` 或 `getRemoteTrapezoidCorrectionOptionsEx` 获取透视校正参数，用于保存记忆参数。
@@ -295,4 +295,4 @@ title: "透视校正"
 
 ## API 参考
 
-你可以参考[在线美术教学 API 参考](/zh-CN/solutions/art-class/api/correction.android#透视校正)了解更多 API 使用信息。
+你可以参考[在线美术教学 API 参考](/zh-CN/solutions/art-class/api/correction#透视校正)了解更多 API 使用信息。

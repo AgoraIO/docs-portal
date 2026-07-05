@@ -37,13 +37,13 @@ title: "本地截图"
         public void onYuvFrameCaptured(String channelId, String userId, VideoFrame frame) {
             // 处理 YUV 视频帧
         }
-
+        
         // H.264/H.265、JPG 帧数据回调
         @Override
         public void onEncodedFrameReceived(String channelId, String userId, byte[] imageBuffer, EncodedVideoFrameInfo info) {
             // 处理编码后的视频帧
         }
-
+        
         // JPG 文件保存回调
         @Override
         public void onJPGFileSaved(String channelId, String userId, String filename) {
@@ -103,7 +103,7 @@ videoFrameCaptureConfig.setJpgFileStorePath("/tmp/screenshots/"); // 确保目�
 
 ```java
 public class VideoFrameObserver implements IRecorderVideoFrameObserver {
-
+    
     // YUV 数据回调
     @Override
     public void onYuvFrameCaptured(String channelId, String userId, VideoFrame frame) {
@@ -112,24 +112,24 @@ public class VideoFrameObserver implements IRecorderVideoFrameObserver {
         // 可以获取帧的详细信息
         System.out.println("帧时间戳: " + frame.getTimeStamp());
     }
-
+    
     // H.264/H.265、JPG 帧数据回调
     @Override
-    public void onEncodedFrameReceived(String channelId, String userId,
+    public void onEncodedFrameReceived(String channelId, String userId, 
                                      byte[] imageBuffer, EncodedVideoFrameInfo info) {
         // 处理编码后的视频帧
-        System.out.println("收到编码帧: 频道 " + channelId + ", 用户 " + userId +
+        System.out.println("收到编码帧: 频道 " + channelId + ", 用户 " + userId + 
                           ", 数据长度 " + imageBuffer.length);
-
+        
         // 可以在这里处理图像数据，比如保存到文件或进行内容分析
         // processImageData(imageBuffer);
     }
-
+    
     // JPG 文件保存回调
     @Override
     public void onJPGFileSaved(String channelId, String userId, String filename) {
         // JPG 文件保存成功
-        System.out.println("JPG 文件已保存: 频道 " + channelId + ", 用户 " + userId +
+        System.out.println("JPG 文件已保存: 频道 " + channelId + ", 用户 " + userId + 
                           ", 文件路径 " + filename);
     }
 }

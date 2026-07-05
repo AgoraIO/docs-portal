@@ -1,0 +1,203 @@
+---
+title: "维护用户在线状态"
+---
+
+使用声网消息通知服务维护用户在线状态时，你可能会遇到以下问题：
+
+- 冗余的消息通知。为确保消息服务的可靠性，针对每次事件，声网消息通知服务器可能会发送多次消息通知。
+- 乱序的消息通知。由于网络延迟等问题，声网消息通知服务不保证消息通知完全按照事件发生的顺序到达。
+
+因此，为准确掌握用户在线状态，你需要对收到的消息通知去重和排序。本文介绍使用频道事件回调维护用户在线状态的最佳实践。
+
+## 前提条件
+
+开始前，请确保你的声网项目已经开启了消息通知服务。详见[接收 Webhook 事件](/zh-CN/realtime-media/rtc/webhook/receive_webhook)。
+
+## 解决方案
+
+声网消息通知服务向你的服务器发送 RTC 频道事件回调。除 `101` 和 `102` 频道事件外，其他频道事件 `payload` 中都包含数据类型为 `Uint64` 的 `clientSeq` 字段，代表事件的序列号，可标识事件在 App 客户端上发生的顺序。对于同一用户，该字段的值随事件发生的时间而单调递增。
+
+你可以先使用 `channelName` 和 `uid` 维护每个频道的用户列表，再通过 `clientSeq` 对每个用户的事件进行去重和排序，以维护正确的用户在线状态，具体步骤如下：
+
+1. 开通声网消息通知服务，根据频道场景，至少监听以下频道事件回调：
+
+   - [`103`](/zh-CN/realtime-media/rtc/webhook/events#103-broadcaster-join-channel)
+   - [`105`](/zh-CN/realtime-media/rtc/webhook/events#105-audience-join-channel)
+   - [`106`](/zh-CN/realtime-media/rtc/webhook/events#106-audience-leave-channel)
+   - [`111`](/zh-CN/realtime-media/rtc/webhook/events#111-client-role-change-to-broadcaster)
+   - [`112`](/zh-CN/realtime-media/rtc/webhook/events#112-client-role-change-to-audience)
+
+2. 使用监听的事件回调在你的业务服务端维护以下信息：
+
+   - 频道列表
+   - 每个频道中的用户列表
+   - 每个用户的数据，包括用户 ID、用户角色、用户是否在频道内、事件的序列号 (`clientSeq`)，用以反映用户的状态
+
+3. 当收到某个用户的消息通知时，从频道列表及其用户列表中找到对应用户；如果没有该用户的数据，则创建一份该用户的状态数据
+
+4. 针对该用户，对比当前消息通知和已处理的最后一个消息通知中 `clientSeq` 的值：
+
+   - 如果当前消息通知中的 `clientSeq` 的值更大，则处理该消息通知；
+   - 如果当前消息通知中的 `clientSeq` 的值较小，则不处理该消息通知。
+
+5. 收到用户退出频道的事件通知时，等待 1 分钟后再删除该用户的数据结构；如果立即删除，当接收到该用户的冗余或乱序事件通知时，无法再正确判断事件顺序，可能导致用户在线状态出错。
+
+## 示例代码
+
+本节以 Java 语言为例，展示在业务服务端使用频道事件回调维护直播场景下用户在线状态的代码逻辑。
+
+```java
+package io.agora;
+
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
+
+
+public class UserRegistry {
+    public static int EVENT_BROADCASTER_JOIN = 103;
+    public static int EVENT_BROADCASTER_QUIT = 104;
+    public static int EVENT_AUDIENCE_JOIN = 105;
+    public static int EVENT_AUDIENCE_QUIT = 106;
+    public static int EVENT_CHANGE_ROLE_TO_BROADCASTER = 111;
+    public static int EVENT_CHANGE_ROLE_TO_AUDIENCE = 112;
+    public static int ROLE_BROADCASTER = 1;
+    public static int ROLE_AUDIENCE = 2;
+    public static int WAIT_TIMEOUT_MS = 60 * 1000;
+
+    private static Logger logger = Logger.getLogger("UserRegistry");
+    private Timer timer;
+
+    // 定义每个用户的数据结构，包括用户 ID、用户角色、用户是否在频道内、已处理的最后一个事件的序列号
+    class User {
+        int uid;
+        int role;
+        boolean isOnline;
+        long lastClientSeq;
+
+        public User(int uid, int role, boolean isOnline, long clientSeq) {
+            this.uid = uid;
+            this.role = role;
+            this.isOnline = isOnline;
+            this.lastClientSeq = clientSeq;
+        }
+    };
+
+    // 定义频道列表和每个频道中的用户列表
+    class Channel {
+        HashMap<Integer, User> users = new HashMap<>();
+    };
+
+    private HashMap<String, Channel> channels;
+
+    // 处理声网消息通知服务发送的频道事件回调
+    public void HandleNcsEvent(String cname, int uid, int eventType, long clientSeq) {
+        // 判断收到的事件类型是否需要处理。如果不是，则丢弃；如果是，则进行以下处理：
+        if (eventType != EVENT_BROADCASTER_JOIN &&
+                eventType != EVENT_BROADCASTER_QUIT &&
+                eventType != EVENT_AUDIENCE_JOIN &&
+                eventType != EVENT_AUDIENCE_QUIT &&
+                eventType != EVENT_CHANGE_ROLE_TO_BROADCASTER &&
+                eventType != EVENT_CHANGE_ROLE_TO_AUDIENCE) {
+            logger.warning("Drop un-expected NCS event type " + eventType);
+            return;
+        }
+        // 判断是否为用户上线事件
+        boolean isOnlineInNotice = IsUserOnlineInNotice(eventType);
+        // 根据事件类型判断用户角色
+        int roleInNotice = GetUserRoleInNotice(eventType);
+
+        Channel channel = channels.get(cname);
+        if (channel == null) {
+            // 如果频道不存在，则创建频道
+            channel = new Channel();
+            channels.put(cname, channel);
+            logger.info("New channel " + cname + " created");
+        }
+
+        User user = channel.users.get(uid);
+        // 获取用户是否离开频道
+        boolean isQuit = !isOnlineInNotice && (user == null || user.isOnline);
+
+        if (user == null) {
+            // 如果用户不存在，则创建该用户的数据结构，并添加到对应频道的用户列表中
+            user = new User(uid, roleInNotice, isOnlineInNotice, clientSeq);
+            channel.users.put(uid, user);
+            if (!isOnlineInNotice) {
+                logger.info("New User " + uid + " joined");
+            } else {
+                // 缓存用户离开状态，并启动定时器
+                DelayedRemoveUserFromChannel(cname, uid, clientSeq);
+            }
+        } else if (clientSeq > user.lastClientSeq) {
+            // 如果用户已经存在，对比当前事件的 clientSeq 和已处理的该用户的上一个事件的 clientSeq
+            // 如果当前事件的 clientSeq 较大，则根据当前事件更新该用户的数据结构；否则，不处理该事件
+            user.role = roleInNotice;
+            user.isOnline = isOnlineInNotice;
+            user.lastClientSeq = clientSeq;
+            if (isQuit) {
+                // 标记用户已下线，等待一段时间后删除该用户的数据
+                logger.info("User " + uid + " quit channel " + cname);
+                DelayedRemoveUserFromChannel(cname, uid, clientSeq);
+            }
+        }
+    }
+
+    // 启动定时器并删除离线用户
+    private void DelayedRemoveUserFromChannel(final String cname, final int uid, final long clientSeq) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Channel channel = channels.get(cname);
+                if (channel == null) return;
+                User user = channel.users.get(uid);
+                if (user == null) return;
+                // 如果 clientSeq 有变化，则不做删除处理
+                if (user.lastClientSeq != clientSeq) return;
+                if (!user.isOnline) {
+                    // 当且仅当用户状态仍然是离线时删除用户，且 clientSeq 没有变化才进行清理
+                    channel.users.remove(uid);
+                    logger.info("Remove user " + uid + " from channel " + cname);
+                } else {
+                    logger.info("User " + uid + " is online while delayed removing, cancelled");
+                }
+                if (channel.users.isEmpty()) {
+                    channels.remove(cname);
+                    logger.info("Remove channel " + cname);
+                }
+            }
+        }, WAIT_TIMEOUT_MS);
+    }
+
+    // 判断是否为用户上线事件
+    private static boolean IsUserOnlineInNotice(int eventType) {
+        return eventType == EVENT_BROADCASTER_JOIN ||
+                eventType == EVENT_AUDIENCE_JOIN ||
+                eventType == EVENT_CHANGE_ROLE_TO_BROADCASTER ||
+                eventType == EVENT_CHANGE_ROLE_TO_AUDIENCE;
+    }
+
+    // 判断用户角色
+    private static int GetUserRoleInNotice(int eventType) {
+        if (eventType == EVENT_BROADCASTER_JOIN ||
+                eventType == EVENT_BROADCASTER_QUIT ||
+                eventType == EVENT_CHANGE_ROLE_TO_BROADCASTER) {
+            return ROLE_BROADCASTER;
+        } else {
+            return ROLE_AUDIENCE;
+        }
+    }
+}
+```
+
+## 异常用户处理方法
+
+当你的服务器收到 `104` 事件回调，且 `reason` 为 `999`, 表示用户因短时间内频繁登录登出频道而会被判定为行为异常。声网建议在收到 `reason` 为 `999` 的 `104` 事件 60 秒后，你的业务服务端调用踢人 RESTful API 将该用户踢出频道；否则，后续收到的该用户的事件回调可能会不准确，从而导致维护的用户状态出错。
+
+## 注意事项
+
+使用上述解决方案维护用户在线状态时，你需要注意以下几点：
+
+- 该方案只能保证用户状态的最终一致性。
+- 为保证正确计算用户的状态，必须在单个进程中接收和处理同一个频道的所有的事件回调。

@@ -14,8 +14,8 @@ title: "更新服务配置"
 开始前，请确保你的开发环境满足以下条件：
 
 - 参考[开通服务](/zh-CN/realtime-media/speech-to-text/get-started/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
-- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.android)以正常使用声网服务。
-- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start.android) 搭建一个极简的实时音视频互动 App。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
 - 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/user-guides/http-basic-auth)获取 `Authorization` 值。
 
 确保已为你的 App 启用实时转录翻译服务。
@@ -34,7 +34,7 @@ title: "更新服务配置"
     --header 'Authorization: Basic <credentials>' \
     --data '{
         "languages": [
-            "en-US",
+            "en-US", 
             "ru-RU"
         ]
     }'
@@ -50,7 +50,7 @@ title: "更新服务配置"
         "rtcConfig": {
             "subscribeAudioUids": ["12", "23", "45"],
         }
-    }'
+    }'    
     ```
 
 ### 响应示例

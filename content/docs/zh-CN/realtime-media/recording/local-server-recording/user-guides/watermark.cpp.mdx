@@ -148,7 +148,7 @@ watermarks[i].options.watermarkRatio.widthRatio = 0.6;  // 相对于视频宽度
 ```cpp
 //  设置多个水印
 for(int i = 0; i < config.waterMarks.size(); i++){
-
+    
     watermarks[i].index = i+1;
 
     if(config.waterMarks[i].type == Literal){  //  设置文字水印
@@ -164,7 +164,7 @@ for(int i = 0; i < config.waterMarks.size(); i++){
         watermarks[i].type = agora::rtc::PICTURE;
         watermarks[i].imageUrl = config.waterMarks[i].pictureMark.image_url.c_str();
     }
-
+ 
     // 用固定像素值的方式设置水印位置，注意要横屏和竖屏模式都要设置;
     watermarks[i].options.mode = agora::rtc::FIT_MODE_COVER_POSITION;
     watermarks[i].options.zOrder = config.waterMarks[i].pos.zorder;

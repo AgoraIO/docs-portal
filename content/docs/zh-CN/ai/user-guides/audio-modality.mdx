@@ -66,18 +66,18 @@ title: "使用音频模态输出"
 
 ```json
 {"choices":[{"index":0,"delta":{"role":"assistant","audio":{"data": ""}},"logprobs":null,"finish_reason":null}]}
-
+ 
 /// 音频数据
 {"choices":[{"index":0,"delta":{"audio":{"data": "base64 encoded pcm data"}},"logprobs":null,"finish_reason":null}]}
-
+ 
 /// 转录字幕
 {"choices":[{"index":0,"delta":{"audio":{"transcript": "Hello world!", "words":[{"text":"Hello", "start_ts":100, "end_ts":140, "duration":40}]}},"logprobs":null,"finish_reason":null}]}
 
 /// 逐字（词）字幕
 {"choices":[{"index":0,"delta":{"audio":{"words":[{"text":"world", "start_ts":150, "end_ts":190, "duration":40}, {"text":"!", "start_ts":190, "end_ts":200, "duration":10}]}},"logprobs":null,"finish_reason":null}]}
-
+    
 ....
-
+ 
 {"choices":[{"index":0,"delta":{},"logprobs":null,"finish_reason":"stop"}]}
 ```
 

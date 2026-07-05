@@ -155,8 +155,8 @@ curl --request POST \
 
 开始前，请确保完成以下准备工作：
 
-- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -215,7 +215,7 @@ val api = ConversationalAIAPIImpl(config)
 ```swift tab="iOS" tabGroup="language"
 // 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     enableLog: true
 )

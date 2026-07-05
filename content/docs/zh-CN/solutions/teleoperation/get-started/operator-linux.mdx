@@ -94,7 +94,7 @@ title: "操控端实现 (Linux)"
         void onMessageEvent(MessageEvent &event) override
         {
             if(_stream_channel){
-
+            
             int r = _stream_channel->publishTopicMessage(_topic.c_str(), event.message, 12);
             printf("send %d rrr \n",r);
             }

@@ -229,16 +229,16 @@ func main() {
 package main
 
 import (
-  "context"
-  "log"
-  "time"
+	"context"
+	"log"
+	"time"
 
-  "github.com/AgoraIO-Community/agora-rest-client-go/agora/auth"
-  "github.com/AgoraIO-Community/agora-rest-client-go/agora/domain"
-  agoraLogger "github.com/AgoraIO-Community/agora-rest-client-go/agora/log"
-  agoraUtils "github.com/AgoraIO-Community/agora-rest-client-go/agora/utils"
-  "github.com/AgoraIO-Community/agora-rest-client-go/services/convoai"
-  "github.com/AgoraIO-Community/agora-rest-client-go/services/convoai/req"
+	"github.com/AgoraIO-Community/agora-rest-client-go/agora/auth"
+	"github.com/AgoraIO-Community/agora-rest-client-go/agora/domain"
+	agoraLogger "github.com/AgoraIO-Community/agora-rest-client-go/agora/log"
+	agoraUtils "github.com/AgoraIO-Community/agora-rest-client-go/agora/utils"
+	"github.com/AgoraIO-Community/agora-rest-client-go/services/convoai"
+	"github.com/AgoraIO-Community/agora-rest-client-go/services/convoai/req"
 )
 ```
 
@@ -249,23 +249,23 @@ import (
 ```go
 const (
     // 声网参数配置
-  appId                 = "<your appId>"
-  cname                 = "<your cname>"
-  agentRtcUid           = "<your agent rtc uid>"
-  username              = "<the username of basic auth credential>"
-  password              = "<the password of basic auth credential>"
-  agentRtcToken         = "<your agent rtc token>"
+	appId                 = "<your appId>"
+	cname                 = "<your cname>"
+	agentRtcUid           = "<your agent rtc uid>"
+	username              = "<the username of basic auth credential>"
+	password              = "<the password of basic auth credential>"
+	agentRtcToken         = "<your agent rtc token>"
 
     // LLM 参数配置
-  llmURL                = "<your LLM URL>"
-  llmAPIKey             = "<your LLM API Key>"
-  llmModel              = "<your LLM model>"
+	llmURL                = "<your LLM URL>"
+	llmAPIKey             = "<your LLM API Key>"
+	llmModel              = "<your LLM model>"
 
     // TTS 参数配置（以火山 TTS 为例）
-  ttsBytedanceToken     = "<your bytedance tts token>"
-  ttsBytedanceAppId     = "<your bytedance tts app id>"
-  ttsBytedanceCluster   = "<your bytedance tts cluster>"
-  ttsBytedanceVoiceType = "<your bytedance tts voice type>"
+	ttsBytedanceToken     = "<your bytedance tts token>"
+	ttsBytedanceAppId     = "<your bytedance tts app id>"
+	ttsBytedanceCluster   = "<your bytedance tts cluster>"
+	ttsBytedanceVoiceType = "<your bytedance tts voice type>"
 )
 ```
 
@@ -312,7 +312,7 @@ func main() {
         log.Fatalln(err)
     }
     ctx := context.Background()
-
+    
     // ... 后续代码
 }
 ```

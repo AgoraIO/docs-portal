@@ -99,13 +99,13 @@ RTM 已被 3000+ 客户广泛应用在以下领域，如果你对某个场景感
 如果你首次集成 RTM，请查看以下文档了解如何开通服务并实现收发消息。
 
 - [开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)
-- [实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.android)
+- [实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)
 
 ### 从旧版本升级至 v2
 
 如果你是 RTM 旧版本的用户，想要升级至 v2 体验新特性，请参考迁移指南。
 
-- [迁移指南](/zh-CN/realtime-media/rtm/overview/migration-guide.android)
+- [迁移指南](/zh-CN/realtime-media/rtm/overview/migration-guide)
 
 成功实现收发消息基础功能后，你还可以查看如下文档，加深对 RTM 的理解：
 

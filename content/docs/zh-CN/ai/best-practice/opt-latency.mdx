@@ -110,10 +110,10 @@ func onAgentMetrics(agentUserId: String, metrics: Metric) {
 
 ```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.AGENT_METRICS,
+  EConversationalAIAPIEvents.AGENT_METRICS, 
   (agentUserId: string, metrics: Metric) => {
     console.log(`[${metrics.type}] ${metrics.name}: ${metrics.value}ms`);
-
+    
     if (metrics.type === 'TOTAL') {
       console.log(`Total delay for turn: ${metrics.value}ms`);
     }
@@ -239,7 +239,7 @@ rtcEngine = RtcEngine.create(config)
 ```swift tab="iOS" tabGroup="language"
 // 方式一：使用客户端组件 API（推荐）
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     enableLog: true
 )

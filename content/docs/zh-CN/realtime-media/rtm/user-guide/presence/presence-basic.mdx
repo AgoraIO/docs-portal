@@ -202,12 +202,12 @@ const options: PresenceOptions = {
 try {
   const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
   console.log(`Total users in channel: ${result.totalOccupancy}`);
-
+  
   // If nextPage exists, use it for the next whoNow call
   if (result.nextPage) {
     console.log("Next page bookmark:", result.nextPage);
   }
-
+  
   result.userStateList.forEach(userState => {
     console.log(`User: ${userState.userId}`);
     userState.states.forEach(state => {
@@ -292,7 +292,7 @@ presenceOptions.page = "your_Next_Page_Bookmark"
 rtm.getPresence()?.whoNow("your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("whoNow success!!")
-
+        
         let userCount = response?.totalOccupancy ?? 0
         let nextPage = response?.nextPage ?? ""
         let userStates = response?.userStateList ?? []
@@ -372,12 +372,12 @@ const options: PresenceOptions = {
 try {
   const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
   console.log(`Total users in channel: ${result.totalOccupancy}`);
-
+  
   // If nextPage exists, use it for the next whoNow call
   if (result.nextPage) {
     console.log("Next page bookmark:", result.nextPage);
   }
-
+  
   result.userStateList.forEach(userState => {
     console.log(`User: ${userState.userId}`);
     userState.states.forEach(state => {
@@ -467,7 +467,7 @@ presenceOptions.includeUserId = false
 rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("whoNow success!!")
-
+        
         let userCount = response?.totalOccupancy ?? 0
     } else {
         print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
@@ -608,10 +608,10 @@ mRtmClient.getPresence().whereNow("userid", new ResultCallback<ArrayList<Channel
 rtm.getPresence()?.whereNow("userId") { response, errorInfo in
     if errorInfo == nil {
         print("whereNow success!!")
-
+        
         let channelCount = response?.totalChannel ?? 0
         let channels = response?.channels ?? []
-
+        
     } else {
         print("whereNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
     }
@@ -678,7 +678,7 @@ const userId = "Tony";
 try {
   const result = await rtmClient.presence.whereNow(userId);
   console.log(`User is in ${result.channels.length} channels`);
-
+  
   result.channels.forEach(channel => {
     console.log(`Channel: ${channel.channelName}, Type: ${channel.channelType}`);
   });

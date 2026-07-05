@@ -38,8 +38,8 @@ title: "文档指引"
 
 - [开通服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)
 - [设备端实现](/zh-CN/solutions/iot-apaas/get-started/device-call)
-- [Android 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call.android)
-- [iOS 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call.ios)
+- [Android 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call)
+- [iOS 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call)
 
 ### 纯呼叫版本
 
@@ -49,9 +49,9 @@ title: "文档指引"
 
 - [开通服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)
 - [设备端实现](/zh-CN/solutions/iot-apaas/get-started/device-call-minimum)
-- [Android 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum.android)
-- [iOS 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum.ios)
-- [小程序客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum.wechat)
+- [Android 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum)
+- [iOS 客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum)
+- [小程序客户端实现](/zh-CN/solutions/iot-apaas/get-started/client-call-minimum)
 
 ## 计费
 

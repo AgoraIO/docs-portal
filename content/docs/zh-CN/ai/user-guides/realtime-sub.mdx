@@ -36,8 +36,8 @@ title: "实时字幕"
 
 <TabsContent value="android">
 
-- 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -45,8 +45,8 @@ title: "实时字幕"
 
 <TabsContent value="ios">
 
-- 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.ios)。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -54,8 +54,8 @@ title: "实时字幕"
 
 <TabsContent value="web">
 
-- 已集成 v4.24.0 及以上版本的 RTC Web SDK，并参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.javascript)在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 v4.24.0 及以上版本的 RTC Web SDK，并参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -138,14 +138,14 @@ val api = ConversationalAIAPIImpl(config)
 ```swift
 /// 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     /**
      * 设置转录字幕渲染模式，可选值：
      * - `.words`：逐字渲染模式，即回调接收的字幕内容将逐字渲染到 UI 上。
      * - `.text`：逐句渲染模式，即回调接收的字幕内容将全量渲染到 UI 上。
      */
-    renderMode: .words,
+    renderMode: .words, 
     enableLog: true
 )
 /// 创建组件实例
@@ -165,10 +165,10 @@ ConversationalAIAPI.init({
  * 设置转录字幕渲染模式，可选值：
  * - `ESubtitleHelperMode.WORD`：逐字渲染模式，即回调接收的字幕内容将逐字渲染到 UI 上。
  * - `ESubtitleHelperMode.TEXT`：逐句渲染模式，即回调接收的字幕内容将全量渲染到 UI 上。
- *
+ * 
  * 不指定则自动根据消息判断模式，或手动指定模式
  */
-    renderMode: ESubtitleHelperMode.WORD,
+    renderMode: ESubtitleHelperMode.WORD, 
     })
 
 // 获取 API 实例（单例）
@@ -226,7 +226,7 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChan
  private val covEventHandler = object : IConversationalAIAPIEventHandler {
    override fun onTranscriptUpdated(agentUserId: String, transcript: Transcript) {
         // 在此处接收字幕更新 UI
-    }
+    }      
 }
 ```
 

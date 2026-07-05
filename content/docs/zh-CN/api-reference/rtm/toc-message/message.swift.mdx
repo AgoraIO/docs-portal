@@ -11,8 +11,6 @@ RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream 
 
 本文介绍如何在 Message Channel 和 User Channel 中收发消息。
 
-AgoraRtmClientKit
-
 ## publish
 
 ### 接口描述
@@ -275,8 +273,6 @@ rtmClient.publish(
 成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
 :::
 
-AgoraRtmHistory
-
 ## getMessages
 
 ### 接口描述
@@ -288,16 +284,16 @@ AgoraRtmHistory
 你可以通过以下方式调用 `getMessages` 方法：
 
 ```swift
-getMessages(channelName: String,
-            channelType: AgoraRtmChannelType,
+getMessages(channelName: String, 
+            channelType: AgoraRtmChannelType, 
             options: AgoraRtmGetHistoryMessagesOptions?
 ) async -> (AgoraRtmGetHistoryMessagesResponse?, AgoraRtmErrorInfo)
 ```
 
 ```swift
-getMessages(channelName: String,
-            channelType: AgoraRtmChannelType,
-            options: AgoraRtmGetHistoryMessagesOptions?,
+getMessages(channelName: String, 
+            channelType: AgoraRtmChannelType, 
+            options: AgoraRtmGetHistoryMessagesOptions?, 
             completion completionBlock: AgoraRtmGetHistoryMessagesBlock? = nil
 )
 ```
@@ -359,7 +355,7 @@ let options = AgoraRtmGetHistoryMessagesOptions()
 options.messageCount = 10
 
 let (response, error) = await rtmClient.getHistory()?.getMessages(
-  channelName: "channel",
+  channelName: "channel", 
   channelType: .message,
   options: options)
 if let errorInfo = error {
@@ -378,7 +374,7 @@ if let errorInfo = error {
 // callback
  let options = AgoraRtmGetHistoryMessagesOptions()
  options.messageCount = 10
-
+        
 rtmClient.getHistory()?.getMessages(channelName: "channel", channelType: .message, options: options) { (response, errorInfo) in
   if let errorInfo = errorInfo {
     print("获取历史消息失败，错误代码: \(errorInfo.errorCode)，原因: \(errorInfo.reason)")

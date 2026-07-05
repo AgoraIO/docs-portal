@@ -16,11 +16,11 @@ RTM 的 Storage 事件通知有以下四种类型：
 | 事件类型 | 描述 |
 | --- | --- |
 | `enumv.storageeventtypesnap` | `1`: 用户第一次订阅 Channl Metadata 或 User Metadata，或加入频道时触发，本地用户会收到此类事件通知。 |
-| `enumv.storageeventtypeset` | <Slot name="event-html-0-2-1" /> |
+| `enumv.storageeventtypeset` | <Slot name="event-html-1-2-1" /> |
 | `enumv.storageeventtypeupdate` | `3`: 当调用设置、更新或删除 Channel Metadata 或 User Metadata 的方法时会返回该类型事件。 |
-| `enumv.storageeventtyperemove` | <Slot name="event-html-0-4-1" /> |
+| `enumv.storageeventtyperemove` | <Slot name="event-html-1-4-1" /> |
 
-<Slot for="event-html-0-2-1">
+<Slot for="event-html-1-2-1">
 
 `2`: 当调用 `storage.setchannel` 或者 `storage.setuser` 时触发。
 
@@ -30,7 +30,7 @@ RTM 的 Storage 事件通知有以下四种类型：
 
 </Slot>
 
-<Slot for="event-html-0-4-1">
+<Slot for="event-html-1-4-1">
 
 `4`: 当调用 `storage.removechannel` 或者 `storage.removeuser` 时触发。
 
@@ -46,12 +46,12 @@ Storage 事件的数据结构参数含义如下：
 | --- | --- |
 | `storageType` | 通知类型，可能的取值为`NONE`、`USER` 或 `CHANNEL`。`USER` 为用户属性变更，`CHANNEL` 为频道属性变更。 |
 | `channelType` | 频道类型，可能的取值为 `MESSAGE` 或 `STREAM`。 |
-| `channelName` | <Slot name="event-html-1-3-1" /> |
+| `channelName` | <Slot name="event-html-2-3-1" /> |
 | `publisher` | 触发此事件的用户 ID。 |
 | `eventType` | 事件类型。可能的取值为 `NONE`、`SNAPSHOT`、`SET`、`REMOVE` 或 `UPDATE`。 |
 | `data` | 用户或者频道属性数据。 |
 
-<Slot for="event-html-1-3-1">
+<Slot for="event-html-2-3-1">
 
 事件发生的频道名称。
 

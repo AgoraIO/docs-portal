@@ -64,38 +64,38 @@ $ pip install pyjwt
   "app_id": "YOUR_AGORA_APP_ID",
   // 声网项目的 App 证书
   "app_certificate": "YOUR_AGORA_APP_CERTIFICATE",
-
+   
   // 客户认证信息
   // 客户 ID
   "customer_key": "YOUR_CUSTOMER_KEY",
   // 客户密钥
-  "customer_secret": "YOUR_CUSTOMER_SECRET",
-
+  "customer_secret": "YOUR_CUSTOMER_SECRET",  
+   
   // 语音识别 (ASR) 配置
   "asr": {
     // 识别语言，默认中文,（支持中英文混合）
     "language": "zh-CN"
   },
-
+   
   // 系统参数配置
   "parameters": {
     // RTC 发流音频编码格式，支持格式："PCMU"、"PCMA"、"G722"、"OPUS"、"OPUSFB"
     "output_audio_codec": "PCMA"
   },
-
+   
   // 语音合成 (TTS) 配置
   "tts": {
     // TTS 服务提供商
     "vendor": "YOUR_TTS_VENDOR",
     "params": {
-
+       
     }
   },
-
+   
   // 会话超时配置
   // 会话超时时间（秒）
   "idle_timeout": 30,
-
+   
   // 大语言模型 (LLM) 配置
   "llm": {
     // LLM 服务地址
@@ -107,7 +107,7 @@ $ pip install pyjwt
     // LLM 服务 API Key
     "api_key": "YOUR_LLM_API_KEY",
     // 系统预设消息
-    "system_messages": [
+    "system_messages": [ 
       {
         "role": "system",
         "content": "You are a helpful chatbot."

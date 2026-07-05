@@ -230,8 +230,6 @@ do {
 
 ### 接口描述
 
-AgoraRtmClientDelegate
-
 RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型            | 描述         |
@@ -270,8 +268,6 @@ let rtmClient = try AgoraRtmClientKit(config, delegate: eventDelegate)
 
 #### 任意时间添加
 
-addDelegate
-
 在 App 生命周期的任意时间中，如需添加多个事件监听对象，你可以调用 `addDelegate` 方法。
 
 ```swift
@@ -295,8 +291,6 @@ rtmClient.addDelegate(presenceDelegate)
 
 <a id="删除监听"></a>
 ### 删除监听
-
-removeDelegate
 
 如果你不再需要关注某个事件监听对象，但仍需关注其他事件监听对象，你可以调用 `removeDelegate` 方法删除指定的事件监听对象。
 
@@ -444,8 +438,6 @@ SDK 连接状态事件。
 | `isResumed`    | Bool | 在连接断开的 2 分钟内，是否从 `AgoraRtmLinkStateDisconnected` 状态恢复成 `AgoraRtmLinkStateConnected` 状态。`true` 表示已恢复。 |
 | `timestamp`    | UInt64 | 本次事件通知发送的时间戳。 |
 
-AgoraRtmClientKit
-
 ## login
 
 ### 接口描述
@@ -477,7 +469,7 @@ login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = ni
 
 登录 RTM 系统的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.android.ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
     - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -506,7 +498,7 @@ class AgoraRtmErrorInfo : NSError {
 }
 ```
 
-你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/error-codes.android.ios)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
 
 ### 基本用法
 
@@ -620,4 +612,4 @@ if errorCode == .ok {
 
 ### 返回值
 
-`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/error-codes.android.ios)。
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/error-codes)。

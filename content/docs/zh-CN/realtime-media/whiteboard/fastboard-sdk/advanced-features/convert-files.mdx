@@ -111,7 +111,7 @@ curl --request GET \
 
 ### 展示转码后文档
 
-转换结果同时支持使用 [Fastboard SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk/resources-fb.javascript.javascript)、[@netless/slide](https://www.npmjs.com/package/@netless/slide) 与 [@netless/projector-plugin](https://github.com/netless-io/projector-plugin) 渲染为 canvas 页面，几个方案的不同点在于：
+转换结果同时支持使用 [Fastboard SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk/resources-fb)、[@netless/slide](https://www.npmjs.com/package/@netless/slide) 与 [@netless/projector-plugin](https://github.com/netless-io/projector-plugin) 渲染为 canvas 页面，几个方案的不同点在于：
 
   - Fastboard SDK 是互动白板多窗口场景下的文档转换渲染方案。
   - @netless/slide 是纯净的文档转换渲染依赖，不包含互动白板、状态同步等内容。该方案需要你自己编写事件同步、状态保存等额外的代码以实现多人同步的效果，适用于单独使用 PPT 的场景。
@@ -142,12 +142,12 @@ QPS（Queries-Per-Second）指每秒查询率。文档转换服务的 QPS 默认
 
 ### 文档转换 Webhook 回调
 
-互动白板的消息通知服务可以在业务层维护一个实时同步的状态机，实现实时监听文档转换任务的进度和运行状态信息，详见[Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/conversion-webhook.restful)。
+互动白板的消息通知服务可以在业务层维护一个实时同步的状态机，实现实时监听文档转换任务的进度和运行状态信息，详见[Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/conversion-webhook)。
 
 ### 相关文档
 
 - [文档转换服务 RESTful API 参考](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)
 - [文档转换服务 API 错误码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/response-code#文档转换错误码)
-- [Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/conversion-webhook.restful)
+- [Webhook 回调事件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/conversion-webhook)
 - [PPT 转换效果支持情况](/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/convert-ppt)
 - [为什么插入白板的图片或 PPT 资源无法显示？](/faq/integration-issues/whiteboard-cors)

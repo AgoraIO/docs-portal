@@ -64,7 +64,7 @@ title: "使用 RTMP 网关"
 ```javascript
 const crypto = require('crypto');
 const msgpack = require('msgpack-lite');
-
+ 
 // 你的声网项目的 App ID 对应的 App 证书
 appcert = ""
 // 声网频道名称
@@ -75,9 +75,9 @@ uid = "";
 expiresAfter = 86400;
 // 关联的流配置模板，如果不确定有什么用，请保持注释状态
 // templateId = "720p";
-
+ 
 const expiresAt = Math.floor(Date.now() / 1000) + expiresAfter;
-
+ 
 const rtcInfo = {
   C: channel,
   U: uid,
@@ -85,22 +85,22 @@ const rtcInfo = {
   // 如果不确定要不要用流配置模板，请保持注释状态
   // T: templateId,
 };
-
+ 
 // 使用 msgpack 序列化
 const data = msgpack.encode(rtcInfo);
-
+ 
 // 随机生成一个初始化向量（IV）
 const iv = crypto.randomBytes(16);
-
+ 
 // 使用 App 证书作为加密密钥
 const key = Buffer.from(appcert, 'hex');
-
+ 
 // 创建一个 AES-128 的 CTR 加密器
 const encrypter = crypto.createCipheriv('aes-128-ctr', key, iv);
-
+ 
 // 对数据进行加密
 const encrypted = Buffer.concat([iv, encrypter.update(data), encrypter.final()]);
-
+ 
 // base64 转换，并保证 URL 安全
 const streamkey = encrypted.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
 

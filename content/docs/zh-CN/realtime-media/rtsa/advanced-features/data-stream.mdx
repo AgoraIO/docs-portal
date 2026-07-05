@@ -13,28 +13,28 @@ title: "发送和接收数据流 (Data Stream)"
 
 ```c
 // 设置 App ID
-const char *appid= "YOUR OWN APPID";
+const char *appid= "YOUR OWN APPID"; 
 // 注册相关回调
 agora_rtc_event_handler_t event_handler = {xxx};
 // 设置相关全局服务参数
 rtc_service_option_t service_opt = {xxx};
 int ret = 0;
 connection_id_t conn_id = 0;
-
+ 
 // 初始化
 ret = agora_rtc_init(appid, &event_handler, &service_opt);
 if (ret != 0) {
     printf("error info: %s", agora_rtc_err_2_str(ret));
     return -1;
 }
-
+ 
 // 创建 Connection
 ret = agora_rtc_create_connection(&conn_id);
 if (ret != 0) {
     printf("error info: %s", agora_rtc_err_2_str(ret));
     return -1;
 }
-
+ 
 // 加入频道
 rtc_channel_options_t channel_opt = {xxx};
 ret = agora_rtc_join_channel(conn_id, "channel-xxx", uid, token, &channel_opt);

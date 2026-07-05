@@ -1,0 +1,1877 @@
+---
+title: "消息"
+---
+
+<PlatformStructured platform="android">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `MESSAGE`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `USER`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `onMessageEvent` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并且开启了事件监听的用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```java tab="publish [1/2]"
+// publish [1/2]
+void publish(
+        String channelName,
+        String message,
+        PublishOptions options,
+        ResultCallback<Void> resultCallback
+        );
+```
+
+```java tab="publish [2/2]"
+// publish [2/2]
+void publish(
+        String channelName,
+        byte[] message,
+        PublishOptions options,
+        ResultCallback<Void> resultCallback
+        );
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | <Slot name="message-android-html-0-1-4" /> |
+| `message` | String\byte[] | 必填 | - | 消息负载。 |
+| `options` | `PublishOptions` | 必填 | - | 消息选项。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="message-android-html-0-4-4" /> |
+
+<Slot for="message-android-html-0-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+     - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+<Slot for="message-android-html-0-4-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+<a id="options"></a>
+`PublishOptions` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | String | 选填 | - | 用户自定义字段。仅支持 String 型。 |
+| `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-android-html-1-3-4" /> |
+
+<Slot for="message-android-html-1-3-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 String 消息
+
+```java
+String message = "Hello world";
+PublishOptions options = new PublishOptions();
+options.setCustomType("PlainTxt");
+options.setStoreInHistory(true); // 设置消息是否缓存，如果设置为true，需要开通history服务
+rtmClient.publish("my_channel", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message to channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+示例 2：向指定 Message Channel 发送 Byte 消息
+
+```java
+byte[] message = new byte[] {1, 2, 3, 4};
+PublishOptions options = new PublishOptions();
+options.setCustomType("ByteArray");
+options.setStoreInHistory(true); // 设置消息是否缓存，如果设置为true，需要开通history服务
+rtmClient.publish("my_channel", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message to channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+示例 3：向指定 User Channel 发送 String 消息
+
+```java
+PublishOptions options = new PublishOptions();
+options.setChannelType(RtmChannelType.USER);
+options.setCustomType("PlainText");
+options.setStoreInHistory(true); // 设置消息是否缓存，如果设置为true，需要开通history服务
+rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+示例 4：向指定 User Channel 发送 Byte 消息
+
+```java
+byte[] message = new byte[] {1, 2, 3, 4};
+PublishOptions options = new PublishOptions();
+options.setChannelType(RtmChannelType.USER);
+options.setCustomType("ByteArray");
+options.setStoreInHistory(true); // 设置消息是否缓存，如果设置为true，需要开通history服务
+rtmClient.publish("Tony", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```java
+void getMessages(
+    String channelName,
+    RtmChannelType channelType,
+    GetHistoryMessagesOptions options,
+    ResultCallback<GetMessagesResult> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
+| `resultCallback` | `ResultCallback<GetMessagesResult>` | 必填 | - | <Slot name="message-android-html-2-4-4" /> |
+
+<Slot for="message-android-html-2-4-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法并返回 `GetMessagesResult` 数据类型。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | int |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  long  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | long |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+`GetMessagesResult` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `newStart`         |         long         | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。               |
+| `messageList`    | `ArrayList<HistoryMessage>`  | 历史消息列表。   |
+
+`HistoryMessage` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `message`                | `RtmMessage`                |  消息。   |
+| `publisher`              | String                |  消息发布者 ID。   |
+| `customType` | String | 用户自定义字段。仅支持 String 型。                |
+| `timestamp` | long | 消息发送的时间戳。                |
+
+### 基本用法
+
+```java
+GetHistoryMessagesOptions options = new GetHistoryMessagesOptions();
+options.setStart(0);
+options.setEnd(0);
+options.setMessageCount(100);
+
+rtmClient.getHistory().getMessages("my_channel", RtmConstants.RtmChannelType.MESSAGE, options, new ResultCallback<GetMessagesResult>() {
+    @Override
+    public void onSuccess(GetMessagesResult result) {
+        log(CALLBACK, "get channel history messages success! new start: " + result.getNewStart());
+        for (HistoryMessage message : result.getMessageList()) {
+            log(INFO, message.toString());
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) { log(ERROR, errorInfo.toString()); }
+});
+```
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+- 在初始化时添加事件监听：
+
+  ```java
+  rtmConfig.eventListener = new RtmEventListener {
+      @Override
+      public void onMessageEvent(MessageEvent event) {
+          // User Channel 私聊消息
+          if (event.getChannelType() == RtmChannelType.USER) {
+            log(CALLBACK, "receive message from " + event.getPublisherId() + ", message: " + event.getMessage().toString());
+          }
+      }
+      // ...
+  }
+  ```
+
+- 在任意时间添加事件监听：
+
+  ```java
+  RtmEventListener listener = new RtmEventListener() {
+      @Override
+      public void onMessageEvent(MessageEvent event) {
+          // User Channel 私聊消息
+          if (event.getChannelType() == RtmChannelType.USER) {
+            log(CALLBACK, "receive message from " + event.getPublisherId() + ", message: " + event.getMessage().toString());
+          }
+      }
+
+      @Override
+      public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
+      }
+  };
+
+  rtmClient.addEventListener(listener);
+  // ...
+
+  ```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `AgoraRtmChannelTypeMessage`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribeWithChannel` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `AgoraRtmChannelTypeUser`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `didReceiveMessageEvent` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `didReceiveMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish`[1/2] 和 `publish`[2/2] 方法：
+
+```objc tab="publish[1/2]"
+// publish[1/2]
+- (void) publish:(NSString* _Nonnull)channelName
+         message:(NSString* _Nonnull)message
+          option:(AgoraRtmPublishOptions* _Nullable)publishOption
+      completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+```
+
+```objc tab="publish[2/2]"
+// publish[2/2]
+- (void) publish:(NSString* _Nonnull)channelName
+            data:(NSData* _Nonnull)data
+          option:(AgoraRtmPublishOptions* _Nullable)publishOption
+      completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | <Slot name="message-ios-html-0-1-4" /> |
+| `message` | NSString | 必填 | - | 在 `publish`[1/2] 方法中发布 String 型消息负载。 |
+| `data` | NSData | 必填 | - | 在 `publish`[2/2] 方法中发布 Byte 型消息负载。 |
+| `publishOption` | `AgoraRtmPublishOptions` | 选填 | - | 消息选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="message-ios-html-0-5-4" /> |
+
+<Slot for="message-ios-html-0-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+    - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+<Slot for="message-ios-html-0-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+<a id="options"></a>
+`AgoraRtmPublishOptions` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | NSString | 必填 | - | 用户自定义字段。仅支持 String 型。 |
+| `storeInHistory` | BOOL | 选填 | `false` | <Slot name="message-ios-html-1-3-4" /> |
+
+<Slot for="message-ios-html-1-3-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 String 消息
+
+```objc
+NSString* message = @"Hello Agora!";
+NSString* channel = @"your_channel";
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.storeInHistory = YES;
+[rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+示例 2：向指定 Message Channel 发送 Byte 消息
+
+```objc
+unsigned char byte_array[5] = {0,1,2,3,4};
+NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+NSString* channel = @"your_channel";
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.storeInHistory = YES;
+[rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+示例 3：向指定 User Channel 发送 String 消息
+
+```objc
+NSString* message = @"Hello Agora!";
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+publish_option.storeInHistory = YES;
+
+[rtm publish:user message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+示例 4：向指定 User Channel 发送 Byte 消息
+
+```objc
+NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+publish_option.storeInHistory = YES;
+
+[rtm publish:user data:raw_message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+:::info[信息]
+成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+:::
+
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```objc
+-(void) getMessages:(NSString* _Nonnull)channelName
+        channelType:(AgoraRtmChannelType)channelType
+            options:(AgoraRtmGetHistoryMessagesOptions* _Nullable)options
+         completion:(AgoraRtmGetHistoryMessagesBlock _Nullable)completionBlock NS_SWIFT_NAME(getMessages(channelName:channelType:options:completion:));
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `AgoraRtmGetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
+| `completion` | `AgoraRtmGetHistoryMessagesBlock` | 选填 | - | <Slot name="message-ios-html-2-4-4" /> |
+
+<Slot for="message-ios-html-2-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetHistoryMessagesResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmGetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | int |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  unsigned long long  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | unsigned long long |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+`AgoraRtmGetHistoryMessagesResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `newStart`         |         unsigned long long         | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。               |
+| `messageList`    | `NSArray <AgoraRtmHistoryMessage *>`  | 历史消息列表。   |
+
+`` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `message`                | `AgoraRtmMessage`                |  消息。   |
+| `publisher`              | NSString                |  消息发布者 ID。   |
+| `customType` | NSString | 用户自定义字段。仅支持 String 型。                |
+| `timestamp` | unsigned long long | 消息发送的时间戳。                |
+
+### 基本用法
+
+```objc
+AgoraRtmGetHistoryMessagesOptions* options = [[AgoraRtmGetHistoryMessagesOptions alloc] init];
+    options.messageCount = 10;
+    [[rtm getHistory] getMessages:@"channel" channelType:AgoraRtmChannelTypeMessage options:options completion:^(AgoraRtmGetHistoryMessagesResponse * _Nullable response, AgoraRtmErrorInfo * _Nonnull errorInfo) {
+        if (errorInfo != nil) {
+            NSLog(@"get h
+            istory message failed failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        } else {
+          // process history message
+            NSArray <AgoraRtmHistoryMessage *> * messageList =  response.messageList;
+        }
+    }];
+```
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+- 在初始化时添加事件监听：
+
+  ```objc
+  @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
+  @end
+
+  @implementation RtmHandler
+  // triggered when received message from remote users
+  -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+      NSString* channel = event.channelName;
+      AgoraRtmChannelType channel_type = event.channelType;
+      if (channel_type == AgoraRtmChannelTypeUser) {
+          // process user message
+      }
+  }
+  @end
+
+  AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+  RtmListener* handler =  [[RtmListener alloc] init];
+  NSError* initError = nil;
+  AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+  ```
+
+- 在任意时间添加事件监听：
+
+  ```objc
+  @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
+  @end
+
+  @implementation RtmHandler
+  // triggered when received message from remote users
+  -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+      NSString* channel = event.channelName;
+      AgoraRtmChannelType channel_type = event.channelType;
+      if (channel_type == AgoraRtmChannelTypeUser) {
+          // process user message
+      }
+  }
+  @end
+
+  RtmListener* handler =  [[RtmListener alloc] init];
+  [rtm addDelegate:handler];
+  ```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `MESSAGE`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `USER`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `message` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```javascript
+rtm.publish(
+    channelName: string,
+    message: string | Uint8Array,
+    options?: object
+): Promise<PublishResponse>;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `message` | string/Uint8Array | 必填 | - | 消息负载。支持任意 string 类型和 Uint8Array 类型。 |
+| `channelName` | string | 必填 | - | <Slot name="message-javascript-html-0-2-4" /> |
+| `options` | object | 选填 | - | 消息选项。 |
+
+<Slot for="message-javascript-html-0-2-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+      - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+`options` 对象中包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `customType` | string |   选填   |   -    | 用户自定义字段。仅支持 string 型。     |
+|   `channelType`   |  string  |   选填   |  -   | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `storeInHistory` | boolean  |   选填   |  false  | 是否将消息存储在历史消息中。如果设置为 true，消息将会被存储在历史消息中，并可以通过 `getMessages` 方法获取。 |
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 string 消息，并存储在历史消息中
+
+```javascript
+try {
+    const result = await rtm.publish( "my_channel", "Hello world", { channelType: "MESSAGE", storeInHistory: true });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 2：向指定 Message Channel 发送 Uint8Array 消息，并存储在历史消息中
+
+```javascript
+const str2ab = function(str) {
+    var buf = new ArrayBuffer(str.length * 2); // 每个字符占用 2 个字节
+    var bufView = new Uint16Array(buf);
+    for (var i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+};
+var Message=str2ab("hello world");
+try {
+    const result = await rtm.publish("my_channel", Message, { channelType: "MESSAGE", storeInHistory: true });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 3：向指定 User Channel 发送 string 消息
+
+```javascript
+try {
+    const result = await rtm.publish("user_b", "Hello world", { channelType: "USER" });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 4：向指定 User Channel 发送 Uint8Array 消息
+
+```javascript
+const str2ab = function(str) {
+    var buf = new ArrayBuffer(str.length * 2); // 每个字符占用 2 个字节
+    var bufView = new Uint16Array(buf);
+    for (var i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+};
+var Message=str2ab("hello world");
+try {
+    const result = await rtm.publish("user_b", Message, { channelType: "USER" });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+:::info[信息]
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+:::
+
+### 返回值
+
+如果方法调用成功，则返回一个 `PublishResponse` 类型数据：
+
+```javascript
+type PublishResponse = {
+    timestamp: number,              // 预留字段
+    channelName : string            // 频道名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```javascript
+getMessages(
+    channelName: string,
+    channelType: HistoryChannelType,
+    options?: GetHistoryMessageOptions
+  ): Promise<GetMessagesResponse>;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | string | 必填 | - | 频道类型。详见 [HistoryChannelType](/zh-CN/api-reference/rtm/enumv#historychanneltype)。 |
+| `options` | object | 必填 | - | 查询选项。 |
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | int |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  long  |   选填   |  `0`   | 历史消息开始的时间戳。|
+| `end` | long |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+### 基本用法
+
+```javascript
+const options = { messageCount: 50, start: 0, end: 0 }
+try {
+    const result = await rtm.history.getMessages( "my_channel", "MESSAGE", options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `PublishResponse` 类型数据：
+
+```javascript
+export interface GetMessagesResponse extends BaseResponse {
+  // 历史消息列表
+  messageList: HistoryMessage[];
+  // 历史消息总数
+  count: number;
+  // 下一条历史消息的时间戳。如果该参数为 0，则表示没有下一条历史消息。
+  newStart: number;
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+```javascript
+rtm.addEventListener("message", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this message come from
+    const topic = event.topicName;              // Which Topic does this message come from, it is valid when the channelType is "STREAM".
+    const messageType = event.messageType;      // Which message type it is, Should be "STRING" or "BINARY" .
+    const customType = event.customType;        // User defined type
+    const publisher = event.publisher;          // Message publisher
+    const message = event.message;              // Message payload
+    const timestamp = event.timestamp;          // Message timestamp
+});
+```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `MESSAGE`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `USER`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `message` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```typescript
+async publish(channelName: string, message: string | Uint8Array, options: PublishOptions): Promise<PublishResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | <Slot name="message-harmonyos-html-0-1-4" /> |
+| `message` | string \| Uint8Array | 必填 | - | 消息负载。可以是字符串或二进制数据。 |
+| `options` | `PublishOptions` | 必填 | - | 消息选项。 |
+
+<Slot for="message-harmonyos-html-0-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+     - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+`PublishOptions` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelType` | `RtmChannelType` | 选填 | `MESSAGE` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | string | 选填 | `''` | 用户自定义字段。仅支持字符串型。 |
+| `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-harmonyos-html-1-3-4" /> |
+
+<Slot for="message-harmonyos-html-1-3-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `PublishResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`PublishResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 String 消息
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { PublishOptions } from '@shengwang/rtm-full';
+
+const options: PublishOptions = {
+  channelType: RtmChannelType.MESSAGE,
+  customType: 'PlainText',
+  storeInHistory: true
+};
+
+try {
+  const response = await rtmClient.publish('channelName', 'hello world', options);
+  console.log('Message published successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Publish message failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+示例 2：向指定频道 Message Channel 发送 Byte 消息
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { PublishOptions } from '@shengwang/rtm-full';
+
+const options: PublishOptions = {
+  channelType: RtmChannelType.MESSAGE,
+  customType: 'ByteArray',
+  storeInHistory: true
+};
+
+const message = new Uint8Array([0x00, 0x01, 0x02, 0x03, 0x04]);
+
+try {
+  const response = await rtmClient.publish('channelName', message, options);
+  console.log('Binary message published successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Publish message failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+示例 3：向指定 User Channel 发送 String 消息
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { PublishOptions } from '@shengwang/rtm-full';
+
+const options: PublishOptions = {
+  channelType: RtmChannelType.USER,
+  customType: 'PlainText',
+  storeInHistory: true
+};
+
+try {
+  const response = await rtmClient.publish('userId', 'hello world', options);
+  console.log('Message sent to user successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Publish message failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+示例 4：向指定 User Channel 发送 Byte 消息
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { PublishOptions } from '@shengwang/rtm-full';
+
+const options: PublishOptions = {
+  channelType: RtmChannelType.USER,
+  customType: 'ByteArray',
+  storeInHistory: true
+};
+
+const message = new Uint8Array([0x00, 0x01, 0x02, 0x03, 0x04]);
+
+try {
+  const response = await rtmClient.publish('userId', message, options);
+  console.log('Binary message sent to user successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Publish message failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```typescript
+async getMessages(channelName: string, channelType: RtmChannelType, options?: GetHistoryMessagesOptions): Promise<GetMessagesResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `GetHistoryMessagesOptions` | 选填 | `{}` | 查询选项。 |
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | number |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  number  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | number |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `GetMessagesResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`GetMessagesResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `newStart` | number | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。 |
+| `messageList` | `HistoryMessage[]` | 历史消息列表。 |
+
+`HistoryMessage` 数据结构如下：
+
+|     属性     |  类型  | 描述          |
+| --------- | --- | -------- |
+| `message`  | string \| Uint8Array |   消息内容。   |
+|   `messageType`   |  `RtmMessageType`  |   消息类型。   |
+| `publisher` | string |   消息发布者的用户 ID。   |
+| `customType` | string |   用户自定义字段。   |
+| `timestamp` | number |   消息被 RTM 服务器接收的时间戳（毫秒）。   |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { GetHistoryMessagesOptions } from '@shengwang/rtm-full';
+
+// Get history messages
+const options: GetHistoryMessagesOptions = {
+  start: 0,
+  end: 0,
+  messageCount: 100
+};
+
+try {
+  const response = await rtmClient.history.getMessages('channelName', RtmChannelType.MESSAGE, options);
+  console.log('Get history messages success, new start:', response.newStart);
+  console.log('Retrieved', response.messageList.length, 'messages');
+  
+  // Process messages
+  response.messageList.forEach((msg) => {
+    console.log(`${msg.publisher} at ${msg.timestamp}:`, msg.message);
+  });
+  
+  // If there are more messages, fetch next batch
+  if (response.newStart !== 0) {
+    const nextBatch = await rtmClient.history.getMessages('channelName', RtmChannelType.MESSAGE, {
+      messageCount: 100,
+      start: response.newStart
+    });
+    console.log('Retrieved next batch:', nextBatch.messageList.length, 'messages');
+  }
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Get history messages failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+```typescript
+import { RtmClient, RtmChannelType } from '@shengwang/rtm-full';
+import type { RtmMessageEvent } from '@shengwang/rtm-full';
+
+// Add event listener
+rtmClient.addEventListener('message', (event: object) => {
+  const messageEvent = event as RtmMessageEvent;
+  
+  // User Channel private message
+  if (messageEvent.channelType === RtmChannelType.USER) {
+    console.log('Received message from', messageEvent.publisher);
+    console.log('Message:', messageEvent.message);
+    console.log('Custom type:', messageEvent.customType);
+  }
+});
+```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有两种频道类型，分别是 Message Channel 和 Stream Channel。两种频道中消息的传递方式和需要调用的方法不同，区别如下：
+
+- **Message**：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `PublishAsync` 方法在频道中发送消息，远端用户可以调用 `SubscribeAsync` 方法订阅频道并接收消息。
+- **Stream**：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `PublishTopicMessageAsync` 方法在 Topic 中发送消息，远端用户可以调用 `SubscribeTopicAsync` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## PublishAsync
+
+### 接口描述
+
+你可以直接调用 `PublishAsync` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `OnMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `PublishAsync`[1/2] 和 `PublishAsync`[2/2] 方法：
+
+```csharp tab="PublishAsync[1/2]"
+// PublishAsync[1/2]
+RtmResult<PublishResult> PublishAsync(string channelName, byte[] message, PublishOptions option);
+```
+
+```csharp tab="PublishAsync[2/2]"
+// PublishAsync[2/2]
+RtmResult<PublishResult> PublishAsync(string channelName, string message, PublishOptions option);
+```
+
+|     参数      |        类型        | 是否必填 | 默认值 | 描述             |
+| ---------- | --- | ----- | --- | --------------- |
+| `channelName` |       string       |   必填   |   -    | 频道名称。       |
+|   `message`   |       string       |   必填   |   -    | 消息负载。       |
+|   `option`    | `PublishOptions` |   必填   |   -    | 发布消息的选项。 |
+
+<a id="options"></a>
+`PublishOptions` 包含以下属性：
+
+|     参数     |  类型  | 是否必填 | 默认值 | 描述               |
+| --------- | --- | ----- | --- | ----------------- |
+|   `channelType`   |  `RTM_CHANNEL_TYPE`  |   必填   |  -   | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | string |   选填   |   -    | 用户自定义字段。   |
+
+### 基本用法
+
+```csharp
+var message = "Hello World";
+var channelName = "my_channel";
+var options = new PublishOptions();
+options.customType = "PlainText";
+
+var (status,response) = await rtmClient.PublishAsync(channelName, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Publish Message Success!");
+}
+```
+
+### 返回值
+
+`PublishAsync` 操作返回一个 `RtmResult<PublishResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |       类型        | 描述         |
+| ------- | ----- | ------------ |
+|  `Status`  |   `RtmStatus`    | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。  |
+| `Response` | `PublishResult` | 操作成功后，返回一个 `PublishResult` 类型的数据结构，其中包含本次操作的执行结果。 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+`PublishResult` 包含以下属性：
+
+|     属性      |  类型  | 描述                     |
+| ---------- | --- | --------- |
+| `ChannelName` | string | Message Channel 频道名称 |
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `message`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `user`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `message` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTextMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送 String 型消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```dart
+Future<(RtmStatus, PublishResult?)> publish(
+    String channelName,
+    String message,
+    {
+        RtmChannelType channelType = RtmChannelType.message,
+        String? customType,
+        bool storeInHistory = false
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | <Slot name="message-flutter-html-0-1-4" /> |
+| `message` | String | 必填 | - | 消息负载。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
+| `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-0-5-4" /> |
+
+<Slot for="message-flutter-html-0-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+     - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+<Slot for="message-flutter-html-0-5-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 接口方法
+
+示例 1：向指定 Message Channel 发送 String 消息
+
+```dart
+var message = {
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+
+var payload = json.encode(message);
+var (status,response) =
+    await rtmClient.publish("myChannel", payload, channelType:RtmChannelType.message, customType:"poll");
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+示例 2：向指定 User Channel 发送 String 消息
+
+```dart
+var message = {
+    type: "chatInvite",
+    channel: "this is the channel you are being invited too",
+    message: "Hi Tony, welcome to the team!"
+}
+
+var payload = json.encode(message);
+var (status,response) =
+    await rtmClient.publish("userId", payload, channelType:RtmChannelType.user, customType:"chatInvite");
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, PublishResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `PublishResult` 类型的数据，当前不包含任何字段。
+
+<a id="publishbinarymessage"></a>
+## publishBinaryMessage
+
+### 接口描述
+
+你可以直接调用 `publishBinaryMessage` 方法向订阅该频道的所有在线用户发送 Binary 型消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publishBinaryMessage` 方法：
+
+```dart
+Future<PublishResult> publishBinaryMessage(
+    String channelName,
+    Uint8List message,
+    {
+        RtmChannelType channelType = RtmChannelType.message,
+        String? customType,
+        bool storeInHistory = false
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | <Slot name="message-flutter-html-1-1-4" /> |
+| `message` | Uint8List | 必填 | - | 消息负载。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
+| `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-1-5-4" /> |
+
+<Slot for="message-flutter-html-1-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+     - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+<Slot for="message-flutter-html-1-5-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 接口方法
+
+示例 1：向指定 Message Channel 发送 Binary 消息
+
+```dart
+var payload = [1,2,3,4];
+var (status,response) = await rtmClient.publishBinaryMessage(
+      "myChannel",
+      payload,
+      channelType:RtmChannelType.message,
+      customType:"UINT8LIST"
+    );
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+示例 2：向指定 User Channel 发送 Binary 消息
+
+```dart
+var payload = [1,2,3,4];
+var (status,response) = await rtmClient.publishBinaryMessage(
+      "myChannel",
+      payload,
+      channelType:RtmChannelType.message,
+      customType:"UINT8LIST"
+    );
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, PublishResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `PublishResult` 类型的数据，当前不包含任何字段。
+
+<a id="getmessages"></a>
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```dart
+Future<(RtmStatus, GetMessagesResult?)> getMessages(
+    String channelName, RtmChannelType channelType,
+    {int messageCount = 100, int start = 0, int end = 0}
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | int |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  Int  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | Int |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+`GetMessagesResult` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `messageList`    | `List<HistoryMessage>`  | 历史消息列表。   |
+| `count` | int | 获取的历史消息数。 |
+| `newStart`         |         int         | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。               |
+
+`HistoryMessage` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `messageType`                |  String               |  消息类型，详见 [`RtmMessageType`](enum#messagetype)。   |
+| `publisher`              | String                |  消息发布者 ID。   |
+| `message` |   Uint8List | 消息内容。 |
+| `messageLength` | Int | 消息长度。 |
+| `customType` | String | 用户自定义字段。仅支持 String 型。                |
+| `timestamp` | Int | 消息发送的时间戳。                |
+
+### 基本用法
+
+```dart
+final history = rtmClient.getHistory();
+final (_, result) = await history.getMessages(
+  'chat_room',
+  'MESSAGE',
+  messageCount: 100,
+  start: 0,
+  end: 0,
+);
+```
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件，示例代码如下：
+
+```dart
+rtm.addListener(
+    message: (event) {
+        print('Recieved a message from ${event.channelName}');
+        print('Message Type is ${event.messageType}');
+        print('Message : ${event.message}');
+    }
+);
+```
+
+`MessageEvent` 中的 `message` 字段为 `Uint8List` 类型，当你收到字符串类型的消息后，可以使用 `dart:convert` 库中的 `utf8.decode()` 方法将其转换成 `Srting` 类型：
+
+``` dart
+// convert Uint8List to String. ! means forced conversion
+String message = utf8.decode(event.message!);
+```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `message`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `user`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `message` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+<a id="publish"></a>
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```typescript
+publish(
+    channelName: string,
+    message: string | Uint8Array,
+    options?: PublishOptions
+): Promise<PublishResponse>;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `message` | string/Uint8Array | 必填 | - | 消息负载。支持任意 string 类型和 Uint8Array 类型。 |
+| `channelName` | string | 必填 | - | <Slot name="message-rn-html-0-2-4" /> |
+| `options` | object | 选填 | - | 消息选项。 |
+
+<Slot for="message-rn-html-0-2-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+      - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+`options` 对象中包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+|   `channelType`   |  RtmChannelType  |   选填   |  message   | 频道类型。支持的取值见[频道类型](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `messageType` | RtmMessageType | 选填 | binary | 消息类型。详见[消息类型](/zh-CN/api-reference/rtm/enumv#messagetype)。
+| `customType` | string |   选填   |   -    | 用户自定义字段。仅支持 string 型。     |
+| `storeInHistory` | boolean  |   选填   |  false  | 是否将消息存储在历史消息中。如果设置为 true，消息将会被存储在历史消息中，并可以通过 `getMessages` 方法获取。 |
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 string 消息，并存储在历史消息中
+
+```typescript
+try {
+    const result = await rtm.publish("my_channel", "Hello world", { channelType: "MESSAGE", storeInHistory: true });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 2：向指定 Message Channel 发送 Uint8Array 消息，并存储在历史消息中
+
+```typescript
+try {
+    const result = await rtm.publish("my_channel", new Uint8Array(Buffer.from(your_message)), { channelType: "MESSAGE", storeInHistory: true });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 3：向指定 User Channel 发送 string 消息
+
+```typescript
+try {
+    const result = await rtm.publish("user_b", "Hello world", { channelType: "USER" });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+示例 4：向指定 User Channel 发送 Uint8Array 消息
+
+```typescript
+try {
+    const result = await rtm.publish("user_b", new Uint8Array(Buffer.from(your_message)), { channelType: "USER" });
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+:::info[信息]
+成功调用该方法后，SDK 会触发 `messsage` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+:::
+
+### 返回值
+
+如果方法调用成功，则返回一个 `PublishResponse` 类型数据：
+
+```typescript
+type PublishResponse = {
+    timestamp: number,              // 预留字段
+    channelName: string             // 频道名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/api-reference/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+<a id="getmessages"></a>
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```typescript
+getMessages(
+    channelName: string,
+    channelType: RtmChannelType,
+    options?: GetHistoryMessagesOptions
+): Promise<GetMessagesResponse>;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | RtmChannelType | 必填 | - | 频道类型。详见 [RtmChannelType](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `options` | object | 必填 | - | 查询选项 `GetHistoryMessagesOptions`。 |
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | number |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+| `start`   |  long  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | long |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+### 基本用法
+
+```typescript
+const options = { messageCount: 50, start: 0, end: 0 };
+try {
+    const result = await rtm.history.getMessages("my_channel", "MESSAGE", options);
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `GetMessagesResponse` 类型数据：
+
+```typescript
+type GetMessagesResponse = BaseResponse & {
+    // 历史消息列表
+    messageList: HistoryMessage[];
+    // 历史消息总数
+    count: number;
+    // 下一条历史消息的时间戳。如果该参数为 0，则表示没有下一条历史消息
+    newStart: number;
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/api-reference/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+```typescript
+rtm.addEventListener("message", event => {
+    const channelType = event.channelType;      // Channel type: "STREAM", "MESSAGE", or "USER"
+    const channelName = event.channelName;      // Channel name where the message comes from
+    const topic = event.topicName;              // Topic name, valid only if channelType is "STREAM"
+    const messageType = event.messageType;      // Message type: "STRING" or "BINARY"
+    const customType = event.customType;        // User-defined type
+    const publisher = event.publisher;          // Message publisher
+    const message = event.message;              // Message payload
+    const timestamp = event.timestamp;          // Message timestamp
+});
+```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+
+</PlatformStructured>

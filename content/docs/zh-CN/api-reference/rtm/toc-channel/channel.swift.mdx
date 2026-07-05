@@ -13,8 +13,6 @@ title: "频道"
 
 - [频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)
 
-AgoraRtmClientKit
-
 ## subscribe
 
 ### 接口描述
@@ -198,8 +196,6 @@ do {
 - 方法调用成功，返回一个 `AgoraRtmStreamChannel` 实例，用以在后续调用 Stream Channel 的其他 API。
 - `nil`：方法调用失败。
 
-AgoraRtmStreamChannel
-
 ## join
 
 ### 接口描述
@@ -254,7 +250,7 @@ join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOp
 
 加入 Stream Channel 的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTC 临时 Token](/zh-CN/realtime-media/rtc/get-started/enable-service#获取临时-token) 或 Token 服务器生成的 [RTC 正式 Token](/zh-CN/realtime-media/rtc/basic-features/token-authentication.ios.ios)。
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTC 临时 Token](/zh-CN/realtime-media/rtc/get-started/enable-service#获取临时-token) 或 Token 服务器生成的 [RTC 正式 Token](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。
     - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTC 和 RTM 服务的项目 App ID。
 
 </Slot>
@@ -381,4 +377,4 @@ streamChannel.destroy()
 
 ### 返回值
 
-`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/error-codes.android.ios)。
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/error-codes)。

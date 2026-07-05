@@ -23,7 +23,7 @@ title: "文档指引"
   - 封装 RTC、RTM、白板等产品的复杂 API
   - 覆盖教育和监考两大场景
   - 提供一对一、小班课和大班课等多种班型
-  - [aPaaS 方案介绍、搭建及计费详见灵动课堂](/zh-CN/solutions/flexible-classroom/index.android.android)
+  - [aPaaS 方案介绍、搭建及计费详见灵动课堂](/zh-CN/solutions/flexible-classroom/index)
 
 ## 如何搭建 PaaS 方案？
 

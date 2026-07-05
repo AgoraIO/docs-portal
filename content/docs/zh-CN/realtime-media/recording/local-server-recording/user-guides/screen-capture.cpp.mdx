@@ -99,14 +99,14 @@ public:
     ~RecorderVideoFrameObserver() {}
 
     // YUV 数据回调
-    void onYuvFrameCaptured(const char* channelId, agora::user_id_t userId,
+    void onYuvFrameCaptured(const char* channelId, agora::user_id_t userId, 
                             const agora::media::base::VideoFrame *frame) override {
         // 处理 YUV 视频帧
         printf("收到 YUV 帧: 频道 %s, 用户 %u\n", channelId, userId);
     }
 
     // H.264/H.265、JPG 帧数据回调
-    void onEncodedFrameReceived(const char* channelId, agora::user_id_t userId,
+    void onEncodedFrameReceived(const char* channelId, agora::user_id_t userId, 
                                 const uint8_t* imageBuffer, size_t length,
                                 agora::rtc::EncodedVideoFrameInfo videoEncodedFrameInfo) override {
         // 处理编码后的视频帧
@@ -114,7 +114,7 @@ public:
     }
 
     // JPG 文件保存回调
-    void onJPGFileSaved(const char* channelId, agora::user_id_t userId,
+    void onJPGFileSaved(const char* channelId, agora::user_id_t userId, 
                         const char* jpgFilePath) override {
         // JPG 文件保存成功
         printf("JPG 文件已保存: 频道 %s, 用户 %u, 路径 %s\n", channelId, userId, jpgFilePath);

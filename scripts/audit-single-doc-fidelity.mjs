@@ -44,12 +44,15 @@ const ALLOWED_TARGET_MDX_COMPONENTS = new Set([
   'TabsList',
   'TabsTrigger',
 ]);
+const AUDIT_CARD_COMPONENT_NAMES =
+  'Card|LinkBlock|LinkCardV2|LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard';
 const CODE_LANG_ALIASES = new Map([
   ['http', 'text'],
   ['js', 'javascript'],
   ['objectivec', 'objc'],
   ['obj-c', 'objc'],
   ['shell', 'bash'],
+  ['txt', 'text'],
 ]);
 const PRODUCT_LABELS = new Map([
   ['aigc', 'AIGC'],
@@ -65,13 +68,27 @@ const PLATFORM_LABELS = new Map([
   ['harmonyos', 'HarmonyOS'],
   ['ios', 'iOS'],
   ['javascript', 'Web'],
+  ['mini-program', '小程序'],
   ['macos', 'macOS'],
+  ['react', 'React'],
   ['react-native', 'React Native'],
+  ['restful', 'RESTful'],
   ['rn', 'React Native'],
   ['unity', 'Unity'],
   ['unreal', 'Unreal'],
+  ['unreal-blueprint', 'Unreal Blueprint'],
+  ['unreal-cpp', 'Unreal C++'],
+  ['web', 'Web'],
   ['wechat', '微信小程序'],
   ['windows', 'Windows'],
+]);
+const PLATFORM_PROJECTION_ALIASES = new Map([
+  ['javascript', 'web'],
+  ['react-js', 'web'],
+  ['rn', 'react-native'],
+  ['unreal-cpp', 'unreal'],
+  ['unreal-blueprint', 'blueprint'],
+  ['wechat', 'mini-program'],
 ]);
 const JSX_ATTRS_PATTERN = String.raw`(?:[^"'>{}]|"[^"]*"|'[^']*'|\{[^}]*\})*`;
 const KNOWN_STRUCTURAL_COMPONENTS = new Set([
@@ -122,6 +139,11 @@ export function auditSingleDocContentFidelity({
     throw new Error(`Unable to resolve portal source file: ${resolvedNewPath}`);
   }
   const projection = {
+    dropSharedOutsidePlatformBlocks: shouldDropSharedOutsidePlatformBlocks({
+      platform,
+      sourcePath: resolvedOldPath,
+      targetPath: resolvedNewPath,
+    }),
     platform: platform ?? null,
     product: product ?? null,
   };
@@ -380,15 +402,19 @@ export function loadPortalContent({ currentFile, projection, seen }) {
         seen,
       }),
   });
-  content = inlineSlotDefinitions(content);
   content = filterOrStripWrapper(content, 'PlatformStructured', {
     attrName: 'platform',
+    dropOutsideWhenMatched: projection.dropSharedOutsidePlatformBlocks,
+    keepWithoutProjection: false,
     projectionValue: projection.platform,
   });
   content = filterOrStripWrapper(content, 'PlatformInline', {
     attrName: 'platform',
+    dropOutsideWhenMatched: projection.dropSharedOutsidePlatformBlocks,
+    keepWithoutProjection: false,
     projectionValue: projection.platform,
   });
+  content = inlineSlotDefinitions(content);
 
   return content;
 }
@@ -738,6 +764,7 @@ function filterOrStripWrapper(content, componentName, options) {
   );
   let result = '';
   let cursor = 0;
+  let matched = false;
 
   for (const match of content.matchAll(openPattern)) {
     const openTag = match[0];
@@ -756,18 +783,22 @@ function filterOrStripWrapper(content, componentName, options) {
       continue;
     }
 
-    result += content.slice(cursor, openIndex);
+    matched = true;
+
+    if (!options.dropOutsideWhenMatched) {
+      result += content.slice(cursor, openIndex);
+    }
     const inner = filterOrStripWrapper(
       content.slice(openIndex + openTag.length, close.start),
       componentName,
       options,
     );
-    const shouldKeep =
-      !options.projectionValue ||
-      shouldKeepProjectionTag(openTag, {
-        attrName: options.attrName,
-        projectionValue: options.projectionValue,
-      });
+    const shouldKeep = options.projectionValue
+      ? shouldKeepProjectionTag(openTag, {
+          attrName: options.attrName,
+          projectionValue: options.projectionValue,
+        })
+      : (options.keepWithoutProjection ?? true);
 
     if (shouldKeep) {
       result += inner;
@@ -776,7 +807,14 @@ function filterOrStripWrapper(content, componentName, options) {
     cursor = close.end;
   }
 
-  result += content.slice(cursor);
+  if (!matched) {
+    return content;
+  }
+
+  if (!options.dropOutsideWhenMatched) {
+    result += content.slice(cursor);
+  }
+
   const selfClosingPattern = new RegExp(
     `<${escapeRegExp(componentName)}\\b[^>]*/>`,
     'g',
@@ -818,11 +856,17 @@ function shouldKeepProjectionTag(tag, { attrName, projectionValue }) {
   const notAllowedValue = readAttribute(tag, 'notAllowed');
 
   if (allowedValue) {
-    return parseListAttribute(allowedValue).includes(projectionValue);
+    const normalizedProjection = normalizePlatformProjection(projectionValue);
+    return parseListAttribute(allowedValue)
+      .map(normalizePlatformProjection)
+      .includes(normalizedProjection);
   }
 
   if (notAllowedValue) {
-    return !parseListAttribute(notAllowedValue).includes(projectionValue);
+    const normalizedProjection = normalizePlatformProjection(projectionValue);
+    return !parseListAttribute(notAllowedValue)
+      .map(normalizePlatformProjection)
+      .includes(normalizedProjection);
   }
 
   return true;
@@ -850,6 +894,11 @@ function parseListAttribute(raw) {
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+function normalizePlatformProjection(platform) {
+  const value = String(platform ?? '').trim();
+  return PLATFORM_PROJECTION_ALIASES.get(value) ?? value;
 }
 
 function readObjectArrayAttribute(attrs, name) {
@@ -957,7 +1006,7 @@ export function createContentFidelityRecords({ content, location, side }) {
     const raw = paragraphLines.join(' ');
     const value = normalizeText(raw);
 
-    if (value && value !== '-') {
+    if (value && !isIgnorableParagraphValue(value)) {
       records.push(
         createRecord({
           kind: 'paragraph',
@@ -1048,18 +1097,26 @@ export function createContentFidelityRecords({ content, location, side }) {
     const tabMatch = trimmed.match(/^@@TAB:(.+)$/);
     if (tabMatch) {
       flushParagraph(lineNumber);
-      records.push(
-        createRecord({
-          kind: 'tab',
-          line: lineNumber,
-          location,
-          raw: trimmed,
-          records,
-          section: currentSection(),
-          side,
-          value: normalizeText(tabMatch[1]),
-        }),
-      );
+      if (
+        !isFollowingCodeFenceTabDuplicatedByComment({
+          lines,
+          startIndex: index + 1,
+          tab: tabMatch[1],
+        })
+      ) {
+        records.push(
+          createRecord({
+            kind: 'tab',
+            line: lineNumber,
+            location,
+            raw: trimmed,
+            records,
+            section: currentSection(),
+            side,
+            value: normalizeText(tabMatch[1]),
+          }),
+        );
+      }
       continue;
     }
 
@@ -1081,6 +1138,25 @@ export function createContentFidelityRecords({ content, location, side }) {
             value: normalizeCalloutValue(calloutMatch[1], calloutMatch[2]),
           }),
         );
+        const inlineBody = trimmed
+          .slice(calloutMatch[0].length)
+          .replace(/:{3,}\s*$/, '')
+          .trim();
+        const inlineValue = normalizeText(inlineBody);
+        if (inlineValue) {
+          records.push(
+            createRecord({
+              kind: 'paragraph',
+              line: lineNumber,
+              location,
+              raw: inlineBody,
+              records,
+              section: currentSection(),
+              side,
+              value: inlineValue,
+            }),
+          );
+        }
       }
       continue;
     }
@@ -1141,7 +1217,7 @@ export function createContentFidelityRecords({ content, location, side }) {
           records,
           section: currentSection(),
           side,
-          value: normalizeTableRow(collected.row),
+          value: normalizeTableRow(collected.row, { side }),
         }),
       );
       continue;
@@ -1202,9 +1278,11 @@ function normalizeMdxSyntax(content) {
   normalized = normalized.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
   const tableHeaders = parseExportedTableHeaders(normalized);
   normalized = normalizeMalformedLegacyTags(normalized);
+  normalized = stripHiddenIndexSpansForAudit(normalized);
   normalized = normalizeLegacyHeadingComponents(normalized);
   normalized = normalizeLegacyInlineComponents(normalized);
   normalized = normalizeLegacyLandingComponents(normalized);
+  normalized = normalizeLegacyTableCellCards(normalized);
   normalized = normalizeLegacyCardComponents(normalized);
 
   normalized = normalized.replace(
@@ -1220,6 +1298,19 @@ function normalizeMdxSyntax(content) {
   normalized = normalized.replace(/<Image\b([^>]*)\/>/g, (_match, attrs) => {
     const alt = readAttribute(`<Image ${attrs}>`, 'alt') ?? '';
     const src = readAttribute(`<Image ${attrs}>`, 'src') ?? '#';
+    return `![${alt}](${src})`;
+  });
+  normalized = normalized.replace(
+    /<Image\b([^>]*)>\s*<\/Image>/g,
+    (_match, attrs) => {
+      const alt = readAttribute(`<Image ${attrs}>`, 'alt') ?? '';
+      const src = readAttribute(`<Image ${attrs}>`, 'src') ?? '#';
+      return `![${alt}](${src})`;
+    },
+  );
+  normalized = normalized.replace(/<img\b([^>]*)\/?>/gi, (_match, attrs) => {
+    const alt = readAttribute(`<img ${attrs}>`, 'alt') ?? '';
+    const src = readAttribute(`<img ${attrs}>`, 'src') ?? '#';
     return `![${alt}](${src})`;
   });
   normalized = normalized.replace(
@@ -1302,6 +1393,16 @@ function normalizeMdxSyntax(content) {
   return normalized;
 }
 
+function isIgnorableParagraphValue(value) {
+  return (
+    value === '-' ||
+    value === ';' ||
+    value === '--- ---' ||
+    /^export const TableHeader[A-Za-z0-9_]*\s*=/.test(value) ||
+    /^\d+\.$/.test(value)
+  );
+}
+
 function normalizeIndentedCodeFences(content) {
   const lines = content.split('\n');
   const output = [];
@@ -1344,6 +1445,22 @@ function normalizeMalformedLegacyTags(content) {
     .replace(/<\s+(\/?)\s*(Table|Tr|Td|Th)\b/gi, '<$1$2')
     .replace(/<\/\s+(Table|Tr|Td|Th)\s*>/gi, '</$1>')
     .replace(/<\s*(\/?)\s*(Table|Tr|Td|Th)\s+>/gi, '<$1$2>');
+}
+
+function stripHiddenIndexSpansForAudit(content) {
+  return content.replace(
+    /<span\b([^>]*)>([\s\S]*?)<\/span>/g,
+    (match, attrs) => {
+      const className =
+        readAttribute(`<x ${attrs}>`, 'className') ??
+        readAttribute(`<x ${attrs}>`, 'class');
+      if (!className?.split(/\s+/).some((item) => item.startsWith('index-'))) {
+        return match;
+      }
+
+      return /display\s*:\s*['"]?none['"]?/.test(attrs) ? '' : match;
+    },
+  );
 }
 
 function normalizeLegacyHeadingComponents(content) {
@@ -1407,8 +1524,6 @@ function normalizeLegacyLandingComponents(content) {
 }
 
 function normalizeLegacyCardComponents(content) {
-  const cardNames =
-    'Card|LinkBlock|LinkCardV2|LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard';
   let normalized = content;
 
   normalized = normalized.replace(
@@ -1431,12 +1546,12 @@ function normalizeLegacyCardComponents(content) {
     (_match, body) => `\n${body.trim()}\n`,
   );
   normalized = normalized.replace(
-    new RegExp(`<(?<name>${cardNames})\\b(?<attrs>[\\s\\S]*?)>(?<body>[\\s\\S]*?)<\\/\\k<name>>`, 'g'),
+    new RegExp(`<(?<name>${AUDIT_CARD_COMPONENT_NAMES})\\b(?<attrs>[\\s\\S]*?)>(?<body>[\\s\\S]*?)<\\/\\k<name>>`, 'g'),
     (_match, _name, _attrs, _body, _offset, _source, groups) =>
       renderCardForAudit(groups.attrs, groups.body),
   );
   normalized = normalized.replace(
-    new RegExp(`<(?<name>${cardNames})\\b(?<attrs>[\\s\\S]*?)\\/>`, 'g'),
+    new RegExp(`<(?<name>${AUDIT_CARD_COMPONENT_NAMES})\\b(?<attrs>[\\s\\S]*?)\\/>`, 'g'),
     (_match, _name, _attrs, _offset, _source, groups) =>
       renderCardForAudit(groups.attrs, ''),
   );
@@ -1446,18 +1561,62 @@ function normalizeLegacyCardComponents(content) {
     .replace(/<\/ProductOverview>/g, '');
 }
 
+function normalizeLegacyTableCellCards(content) {
+  const selfClosingPattern = new RegExp(
+    `<(${AUDIT_CARD_COMPONENT_NAMES})\\b([^>]*)\\/>`,
+    'g',
+  );
+  const pairedPattern = new RegExp(
+    `<(${AUDIT_CARD_COMPONENT_NAMES})\\b([^>]*)>(.*?)<\\/\\1>`,
+    'g',
+  );
+
+  return content
+    .split('\n')
+    .map((line) => {
+      if (!isMarkdownTableRow(line) || !/<[A-Z][A-Za-z0-9]*\b/.test(line)) {
+        return line;
+      }
+
+      return line
+        .replace(pairedPattern, (_match, _name, attrs, body) =>
+          renderInlineCardForAudit(attrs, body),
+        )
+        .replace(selfClosingPattern, (_match, _name, attrs) =>
+          renderInlineCardForAudit(attrs),
+        );
+    })
+    .join('\n');
+}
+
 function renderCardForAudit(attrs, body = '') {
+  const { href, title } = readAuditCard(attrs, body);
+
+  return href ? `\n- [${title}](${href})\n` : `\n- ${title}\n`;
+}
+
+function renderInlineCardForAudit(attrs, body = '') {
+  const { href, title } = readAuditCard(attrs, body);
+
+  return href ? `[${title}](${href})` : title;
+}
+
+function readAuditCard(attrs, body = '') {
   const title =
     readAttribute(`<x ${attrs}>`, 'title') ||
     readAttribute(`<x ${attrs}>`, 'text') ||
+    readAttribute(`<x ${attrs}>`, 'fileName') ||
     normalizeText(body) ||
     readAttribute(`<x ${attrs}>`, 'href') ||
+    readAttribute(`<x ${attrs}>`, 'fileLink') ||
     readAttribute(`<x ${attrs}>`, 'link') ||
     '#';
   const href =
-    readAttribute(`<x ${attrs}>`, 'href') ?? readAttribute(`<x ${attrs}>`, 'link');
+    readAttribute(`<x ${attrs}>`, 'href') ??
+    readAttribute(`<x ${attrs}>`, 'fileLink') ??
+    readAttribute(`<x ${attrs}>`, 'link');
 
-  return href ? `\n- [${title}](${href})\n` : `\n- ${title}\n`;
+  return { href, title };
 }
 
 function renderLegacyPanelForAudit(attrs, body) {
@@ -1535,6 +1694,10 @@ function normalizeLegacyJsxTables(content, tableHeaders = new Map()) {
   return content.replace(
       /<Table\b([^>]*)>([\s\S]*?)<\/Table>/g,
       (_match, attrs, body) => {
+        if (!/<(?:Tr|Td)\b/.test(body)) {
+          return _match;
+        }
+
         const headerName = readAttribute(`<Table ${attrs}>`, 'header')?.trim();
         const header = headerName ? tableHeaders.get(headerName) : null;
         const rows = [
@@ -1553,7 +1716,7 @@ function normalizeLegacyJsxTables(content, tableHeaders = new Map()) {
 }
 
 function normalizeLegacyHtmlTables(content) {
-  return content.replace(/<table\b[^>]*>([\s\S]*?)<\/table>/gi, (match, body) => {
+  return content.replace(/<(?:Table|table)\b[^>]*>([\s\S]*?)<\/(?:Table|table)>/g, (match, body) => {
     const rawRows = [...body.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(
       (rowMatch) => {
         const cells = [
@@ -1574,6 +1737,16 @@ function normalizeLegacyHtmlTables(content) {
       return match;
     }
 
+    if (
+      !rows.some((row) => row.some((cell) => cell.kind === 'h')) &&
+      isAuditImageOnlyHtmlTable(rows)
+    ) {
+      return rows
+        .flatMap((row) => row.map((cell) => stripOptionalParagraphWrapper(cell.raw).trim()))
+        .filter(Boolean)
+        .join('\n\n');
+    }
+
     return rows
       .map((row) => {
         const cells = row.map((cell) =>
@@ -1583,6 +1756,22 @@ function normalizeLegacyHtmlTables(content) {
       })
       .join('\n');
   });
+}
+
+function isAuditImageOnlyHtmlTable(rows) {
+  return rows.every((row) =>
+    row.every((cell) => {
+      const raw = stripOptionalParagraphWrapper(cell.raw).trim();
+      return /^!\[[^\]]*]\([^)]+\)$/.test(raw);
+    }),
+  );
+}
+
+function stripOptionalParagraphWrapper(value = '') {
+  return value
+    .trim()
+    .replace(/^<p>\s*/i, '')
+    .replace(/\s*<\/p>$/i, '');
 }
 
 function normalizeCategorizedApiMarkdownTables(content) {
@@ -1764,7 +1953,9 @@ function expandHtmlTableSpans(rows) {
 function parseExportedTableHeaders(content) {
   const tableHeaders = new Map();
   const exportPattern =
-    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\[([\s\S]*?)^\s*]\s*;?\s*$/gm;
+    /^[ \t]*export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\[([\s\S]*?)^[ \t]*]\s*;?\s*$/gm;
+  const inlineExportPattern =
+    /^[ \t]*export\s+const\s+([A-Za-z0-9_]+)\s*=\s*(\[[^\n]*])\s*;?\s*$/gm;
   let exportMatch = exportPattern.exec(content);
 
   while (exportMatch) {
@@ -1784,17 +1975,40 @@ function parseExportedTableHeaders(content) {
     exportMatch = exportPattern.exec(content);
   }
 
+  exportMatch = inlineExportPattern.exec(content);
+
+  while (exportMatch) {
+    const labels = [];
+    const labelPattern = /\blabel\s*:\s*['"]([^'"]+)['"]/g;
+    let labelMatch = labelPattern.exec(exportMatch[2]);
+
+    while (labelMatch) {
+      labels.push(labelMatch[1]);
+      labelMatch = labelPattern.exec(exportMatch[2]);
+    }
+
+    if (labels.length > 0) {
+      tableHeaders.set(exportMatch[1], labels);
+    }
+
+    exportMatch = inlineExportPattern.exec(content);
+  }
+
   return tableHeaders;
 }
 
 function stripExportConstBlocks(content) {
   return content
     .replace(
-      /^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\[[\s\S]*?^\s*]\s*;?\s*$/gm,
+      /^[ \t]*export\s+const\s+[A-Za-z0-9_]+\s*=\s*\[[^\n]*]\s*;?\s*$/gm,
       '',
     )
     .replace(
-      /^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\{[\s\S]*?^\s*}\s*;?\s*$/gm,
+      /^[ \t]*export\s+const\s+[A-Za-z0-9_]+\s*=\s*\[[\s\S]*?^[ \t]*]\s*;?\s*$/gm,
+      '',
+    )
+    .replace(
+      /^[ \t]*export\s+const\s+[A-Za-z0-9_]+\s*=\s*\{[\s\S]*?^[ \t]*}\s*;?\s*$/gm,
       '',
     );
 }
@@ -1802,7 +2016,7 @@ function stripExportConstBlocks(content) {
 function isMarkdownTableSeparator(row) {
   return splitMarkdownTableRow(row)
     .filter(Boolean)
-    .every((cell) => /^:?-{3,}:?$/.test(cell));
+    .every((cell) => /^:?-+:?$/.test(cell));
 }
 
 function isMarkdownTableRow(line = '') {
@@ -1995,6 +2209,27 @@ export function compareRecords({ sourceRecords, targetRecords }) {
     );
   }
 
+  const equivalentLabelMatches = detectEquivalentStructuralLabelMatches({
+    sourceRecords: unmatchedSource,
+    targetRecords: unmatchedTarget,
+  });
+  const equivalentLabelSourceIds = new Set();
+
+  for (const match of equivalentLabelMatches) {
+    exactMatches.push(match);
+    equivalentLabelSourceIds.add(recordId(match.source));
+    matchedTargetIds.add(recordId(match.target));
+  }
+
+  if (equivalentLabelMatches.length > 0) {
+    unmatchedSource = unmatchedSource.filter(
+      (record) => !equivalentLabelSourceIds.has(recordId(record)),
+    );
+    unmatchedTarget = unmatchedTarget.filter(
+      (record) => !matchedTargetIds.has(recordId(record)),
+    );
+  }
+
   const changed = [];
   const changedSourceIds = new Set();
   const changedTargetIds = new Set();
@@ -2036,16 +2271,22 @@ export function compareRecords({ sourceRecords, targetRecords }) {
     .filter((record) => record.kind !== 'unsupported')
     .map(summarizeRecord);
   const moved = detectMovedRecords(
-    exactMatches.filter(
-      (match) =>
-        match.source.kind !== 'tab' &&
-        match.target.kind !== 'tab' &&
-        !isSyntheticTextKindMatch(match),
-    ),
+    exactMatches
+      .filter(
+        (match) =>
+          match.source.kind !== 'tab' &&
+          match.target.kind !== 'tab' &&
+          !isSyntheticTextKindMatch(match),
+      )
+      .sort(
+        (left, right) =>
+          left.source.order - right.source.order ||
+          left.target.order - right.target.order,
+      ),
   ).map((match) => ({
-      source: summarizeRecord(match.source),
-      target: summarizeRecord(match.target),
-    }));
+    source: summarizeRecord(match.source),
+    target: summarizeRecord(match.target),
+  }));
 
   return {
     findings: {
@@ -2104,7 +2345,8 @@ function isSyntheticTextKindMatch(match) {
     isTextEquivalentKind(match.source.kind) &&
     isTextEquivalentKind(match.target.kind) &&
     match.source.section === match.target.section &&
-    match.source.value === match.target.value
+    comparableRecordValue(match.source.value) ===
+      comparableRecordValue(match.target.value)
   );
 }
 
@@ -2157,7 +2399,8 @@ function hasSameSectionTextEquivalentCandidate({
     (target) =>
       !matchedTargetIds.has(recordId(target)) &&
       target.section === sourceRecord.section &&
-      target.value === sourceRecord.value &&
+      comparableRecordValue(target.value) ===
+        comparableRecordValue(sourceRecord.value) &&
       target.kind !== sourceRecord.kind &&
       isTextEquivalentKind(target.kind),
   );
@@ -2168,7 +2411,58 @@ function isTextEquivalentKind(kind) {
 }
 
 function textEquivalentKey(record) {
-  return `${record.section}\0${record.value}`;
+  return `${record.section}\0${comparableRecordValue(record.value)}`;
+}
+
+function detectEquivalentStructuralLabelMatches({ sourceRecords, targetRecords }) {
+  const matches = [];
+  const usedTargetIds = new Set();
+
+  for (const source of sourceRecords) {
+    if (!isStructuralLabelKind(source.kind)) {
+      continue;
+    }
+
+    const target = targetRecords.find(
+      (candidate) =>
+        isEquivalentStructuralLabelPair(source, candidate) &&
+        !usedTargetIds.has(recordId(candidate)),
+    );
+
+    if (!target) {
+      continue;
+    }
+
+    matches.push({ source, target });
+    usedTargetIds.add(recordId(target));
+  }
+
+  return matches;
+}
+
+function isEquivalentStructuralLabelPair(left, right) {
+  if (!isStructuralLabelKind(right.kind) || left.value !== right.value) {
+    return false;
+  }
+
+  if (left.kind === right.kind) {
+    return false;
+  }
+
+  return (
+    structuralLabelParentSection(left) === structuralLabelParentSection(right)
+  );
+}
+
+function isStructuralLabelKind(kind) {
+  return kind === 'tab' || kind.startsWith('heading:');
+}
+
+function structuralLabelParentSection(record) {
+  const suffix = ` > ${record.value}`;
+  return record.section.endsWith(suffix)
+    ? record.section.slice(0, -suffix.length)
+    : record.section;
 }
 
 function detectAggregatedListMatches({ sourceRecords, targetRecords }) {
@@ -2176,7 +2470,7 @@ function detectAggregatedListMatches({ sourceRecords, targetRecords }) {
   const usedTargetIds = new Set();
 
   for (const source of sourceRecords) {
-    if (source.kind !== 'paragraph' || !isHtmlListParagraph(source)) {
+    if (!isAggregatableSourceRecord(source)) {
       continue;
     }
 
@@ -2203,7 +2497,21 @@ function isHtmlListParagraph(record) {
   return /<\/?(?:ul|ol|li)\b/i.test(record.raw);
 }
 
+function isAggregatableParagraph(record) {
+  return isHtmlListParagraph(record) || /<br\s*\/?>/i.test(record.raw);
+}
+
+function isAggregatableSourceRecord(record) {
+  return (
+    (record.kind === 'paragraph' && isAggregatableParagraph(record)) ||
+    record.kind === 'list-item'
+  );
+}
+
 function findAggregatedListMatch({ source, targetRecords, usedTargetIds }) {
+  const requiresListItem =
+    source.kind === 'list-item' || isHtmlListParagraph(source);
+
   for (let startIndex = 0; startIndex < targetRecords.length; startIndex += 1) {
     const first = targetRecords[startIndex];
     if (
@@ -2232,7 +2540,11 @@ function findAggregatedListMatch({ source, targetRecords, usedTargetIds }) {
         targets.map((record) => record.value).join(' '),
       );
 
-      if (hasListItem && aggregate === source.value) {
+      if (
+        targets.length > 1 &&
+        (!requiresListItem || hasListItem) &&
+        aggregate === source.value
+      ) {
         return {
           source,
           targets: [...targets],
@@ -2366,16 +2678,29 @@ function longestIncreasingSubsequenceIndexes(values) {
   return result.reverse();
 }
 
-function normalizeTableRow(row) {
-  return splitMarkdownTableRow(row)
+function normalizeTableRow(row, { side } = {}) {
+  const cells = splitMarkdownTableRow(row)
     .map((cell) => normalizeTableCellText(cell))
-    .filter(Boolean)
-    .join(' | ');
+    .filter(Boolean);
+  const visibleCells =
+    side === 'new' && cells.some((cell) => !isSyntheticColumnPlaceholder(cell))
+      ? cells.filter((cell) => !isSyntheticColumnPlaceholder(cell))
+      : cells;
+
+  return visibleCells.join(' | ');
+}
+
+function isSyntheticColumnPlaceholder(cell) {
+  return /^Column\s+\d+$/i.test(cell);
 }
 
 function normalizeTableCellText(cell) {
   const withoutListMarkers = normalizeText(cell)
     .replace(/(^|[\s:：。；，])[-*+]\s+(?=\S)/g, '$1')
+    .replace(/(^|[\s:：。；，])[-*+](?=[:：])/g, '$1')
+    .replace(/(^|[\s:：。；，])\d+\.\s*(?=\S)/g, '$1')
+    .replace(/包括[-*+]\s*/g, '包括')
+    .replace(/:::info/g, ':::note')
     .replace(/\s+/g, ' ')
     .trim();
 
@@ -2460,9 +2785,42 @@ function isFenceTabDuplicatedByFirstCodeComment({
     }
 
     const commentLabel = readLeadingCommentLabel(trimmed);
-    return commentLabel
-      ? normalizeText(commentLabel) === normalizeText(tab)
-      : false;
+    if (!commentLabel) {
+      continue;
+    }
+
+    const normalizedComment = normalizeText(commentLabel);
+    const normalizedTab = normalizeText(tab);
+    if (
+      normalizedComment === normalizedTab ||
+      normalizedComment.endsWith(normalizedTab)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function isFollowingCodeFenceTabDuplicatedByComment({ lines, startIndex, tab }) {
+  for (let index = startIndex; index < lines.length; index += 1) {
+    const trimmed = lines[index].trim();
+
+    if (!trimmed) {
+      continue;
+    }
+
+    const fenceMatch = lines[index].match(/^ {0,3}(`{3,}|~{3,})([^\n]*)/);
+    if (!fenceMatch) {
+      return false;
+    }
+
+    return isFenceTabDuplicatedByFirstCodeComment({
+      fence: fenceMatch[1],
+      lines,
+      startIndex: index + 1,
+      tab,
+    });
   }
 
   return false;
@@ -2480,10 +2838,14 @@ function readLeadingCommentLabel(line) {
 }
 
 function normalizeText(value) {
-  return normalizeCjkSpacing(normalizePlainText(value).replace(/\s+/g, ' '));
+  return normalizeCjkSpacing(normalizePlainText(value).replace(/\s+/g, ' '))
+    .replace(/包括[-*+]\s*/g, '包括')
+    .replace(/包括：/g, '包括');
 }
 
 function normalizePlainText(value) {
+  const bitshiftLeft = '\uE000';
+  const bitshiftRight = '\uE001';
   const withEntities = value
     .replace(/&nbsp;/g, ' ')
     .replace(/&lt;/g, '<')
@@ -2493,8 +2855,15 @@ function normalizePlainText(value) {
     .replace(/&apos;/g, "'")
     .replace(/&#0*123;|&lcub;/gi, '{')
     .replace(/&#0*125;|&rcub;/gi, '}')
-    .replace(/&#0*124;/g, '|');
-  const genericSafe = withEntities.replace(
+    .replace(/&#0*124;/g, '|')
+    .replace(/<sup\b[^>]*>\s*([\s\S]*?)\s*<\/sup>/gi, '$1')
+    .replace(/<</g, bitshiftLeft)
+    .replace(/>>/g, bitshiftRight);
+  const withSplitGenericCode = withEntities.replace(
+    /([A-Za-z][A-Za-z0-9_]*)`<([^<>\n]+)>`/g,
+    '$1<$2>',
+  );
+  const genericSafe = withSplitGenericCode.replace(
     /\b([A-Z][A-Za-z0-9_.$]*)<([A-Z][^<>\n/]*)>/g,
     (_match, name, params) => `${name}‹${params}›`,
   );
@@ -2507,6 +2876,8 @@ function normalizePlainText(value) {
     .replace(/\\\|/g, '|')
     .replace(/\s*:::\s*/g, ':::')
     .replace(/[`*_{}[\]]/g, '')
+    .replace(new RegExp(bitshiftLeft, 'g'), '<<')
+    .replace(new RegExp(bitshiftRight, 'g'), '>>')
     .replace(/‹/g, '<')
     .replace(/›/g, '>');
 }
@@ -2612,23 +2983,42 @@ function findClosingMarkdownDestination(value, openIndex) {
 function normalizeCjkSpacing(value) {
   return value
     .trim()
+    .replace(/,\s+(?=\.[A-Za-z_])/g, ',')
+    .replace(
+      /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\s+([\p{Script=Han}])/gu,
+      '$1$2',
+    )
+    .replace(/([A-Za-z0-9_.$>)\]/])\s+([\p{Script=Han}])/gu, '$1$2')
+    .replace(/([\p{Script=Han}])\s+([A-Za-z0-9_.$(<\[])/gu, '$1$2')
     .replace(/([\p{Script=Han}])\s+([\p{Script=Han}])/gu, '$1$2')
     .replace(/([\p{Script=Han}])\s+([①-⑳])/gu, '$1$2')
     .replace(/\s+([:：])/gu, '$1')
     .replace(/([:：])\s+/gu, '$1')
     .replace(/（\s*\|\s*）/gu, '（|）')
+    .replace(
+      /([\p{Script=Han}])\s+([a-z0-9]+(?:-[a-z0-9]+)+)/gu,
+      '$1$2',
+    )
+    .replace(
+      /([a-z0-9]+(?:-[a-z0-9]+)+)\s+([\p{Script=Han}])/gu,
+      '$1$2',
+    )
     .replace(/\s+([，。！？；：、）】》])/gu, '$1')
     .replace(/\s+([（【《])/gu, '$1')
+    .replace(/([）】》])\s+([\p{Script=Han}A-Za-z0-9])/gu, '$1$2')
     .replace(/([，。！？；：、])\s+([\p{Script=Han}A-Za-z0-9（【《])/gu, '$1$2')
     .replace(/([（【《])\s+/gu, '$1')
+    .replace(/\(\s+/g, '(')
+    .replace(/\s+\)/g, ')')
     .replace(/\(\s+([A-Za-z0-9_.#-]+)\s+\)/gu, '($1)')
-    .replace(/\b([a-z][A-Za-z0-9_]*)\s+(\d+\/\d+)\b/gu, '$1$2')
+    .replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s+(\d+\/\d+)\b/gu, '$1$2')
     .replace(/([A-Za-z0-9])\s+([，。！？；：、])/gu, '$1$2')
     .replace(/\s+[-*+]$/gu, '');
 }
 
 function normalizeCalloutValue(type, title) {
-  const normalizedType = type === 'info' ? 'note' : (type ?? 'note');
+  const normalizedType =
+    type === 'info' || type === 'tips' ? 'note' : (type ?? 'note');
   const normalizedTitle = normalizeText(title ?? '');
 
   if (
@@ -2706,7 +3096,32 @@ function summarizeRecord(record) {
 }
 
 function recordKey(record) {
-  return `${record.kind}\0${record.value}`;
+  return `${record.kind}\0${comparableRecordValue(record.value, record.kind)}`;
+}
+
+function comparableRecordValue(value, kind) {
+  if (kind === 'code:text' && looksLikeMarkdownDocumentCode(value)) {
+    return normalizeText(value);
+  }
+
+  const normalized = value
+    .replace(/[。.]$/u, '')
+    .replace(/^(?:---\s+)+/, '')
+    .replace(/^js\s+\/\//, 'javascript //')
+    .replace(/\\\|/g, '|')
+    .replace(/\s*\((?:Gitee|GitHub)(?:,\s*(?:Gitee|GitHub))*\)/g, '')
+    .replace(/\b([a-z0-9_]+)\s+([A-Za-z][A-Za-z0-9_]*[A-Z][A-Za-z0-9_]*)\b/g, '$1$2')
+    .replace(/['"]([A-Za-z0-9_./<>-]+)['"]/g, '$1');
+
+  return normalizeCjkSpacing(normalized);
+}
+
+function looksLikeMarkdownDocumentCode(value) {
+  return (
+    /^#{1,6}\s+/m.test(value) ||
+    /^\s*[-*]\s+\[[^\]]+\]\([^)]+\)/m.test(value) ||
+    /<a\s+id=/i.test(value)
+  );
 }
 
 function recordId(record) {
@@ -2833,14 +3248,17 @@ export async function auditCompletedMigrationRows({
     const targetPath = row.target_path;
     const reportPrefix = path.join(
       resolvedOutDir,
-      safeReportStem(`${sourcePath}__to__${targetPath}`),
+      safeReportStem(
+        `${sourcePath}__${row.old_platform || 'all'}__${hashString(row.old_url ?? '')}__to__${targetPath}`,
+      ),
     );
 
     try {
       const report = auditSingleDocContentFidelity({
         oldPath: path.resolve(sourceRoot, sourcePath),
         newPath: path.resolve(targetRoot, targetPath),
-        platform: inferPlatformForAudit({ sourcePath, targetPath }),
+        platform:
+          row.old_platform || inferPlatformForAudit({ sourcePath, targetPath }),
         product: inferProductFromSourcePath(sourcePath),
         sourceRoot,
       });
@@ -2852,6 +3270,8 @@ export async function auditCompletedMigrationRows({
         jsonPath: paths.jsonPath,
         legacyResidue: report.summary.legacyResidue,
         markdownPath: paths.markdownPath,
+        oldPlatform: row.old_platform || null,
+        oldUrl: row.old_url || null,
         sourcePath,
         summary: report.summary,
         targetPath,
@@ -2869,6 +3289,8 @@ export async function auditCompletedMigrationRows({
         auditResult: `error:${error.message}`,
         jsonPath: paths.jsonPath,
         markdownPath: paths.markdownPath,
+        oldPlatform: row.old_platform || null,
+        oldUrl: row.old_url || null,
         sourcePath,
         targetPath,
       });
@@ -3099,6 +3521,21 @@ function inferPlatformForAudit({ sourcePath, targetPath }) {
     sourcePlatforms[0] ??
     null
   );
+}
+
+function shouldDropSharedOutsidePlatformBlocks({
+  platform,
+  sourcePath,
+  targetPath,
+}) {
+  if (!platform) {
+    return false;
+  }
+
+  const sourcePlatforms = inferPlatformsFromPath(sourcePath);
+  const targetPlatforms = inferPlatformsFromPath(targetPath);
+
+  return sourcePlatforms.length === 1 && targetPlatforms.length === 0;
 }
 
 function inferPlatformsFromPath(filePath) {

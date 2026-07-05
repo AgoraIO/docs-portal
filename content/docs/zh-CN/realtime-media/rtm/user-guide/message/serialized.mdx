@@ -223,7 +223,7 @@ extension YourClassName: AgoraRtmDelegate {
     func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
         let channel = event.channelName
         let channelType = event.channelType
-
+        
         if channelType == .stream {
             let topic = event.channelTopic // if message from stream channel, user can get topic name
         }
@@ -452,7 +452,7 @@ class RtmHandler: NSObject, AgoraRtmClientDelegate {
     func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
         let channel = event.channelName
         let channelType = event.channelType
-
+        
         if channelType == .stream {
             let topic = event.channelTopic // if message from stream channel, user can get topic name
         }
@@ -463,7 +463,7 @@ class RtmHandler: NSObject, AgoraRtmClientDelegate {
                 if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
                     let name = jsonObject["name"] as? String
                     let age = jsonObject["age"] as? Int
-                    let publisher = event.publisher
+                    let publisher = event.publisher        
                 }
             } catch {
                 print("Error parsing JSON: \(error)")
@@ -480,6 +480,7 @@ class RtmHandler: NSObject, AgoraRtmClientDelegate {
 @implementation RtmHandler
 // triggered when received message from remote
 -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+
 
     NSString* channel = event.channelName;
     AgoraRtmChannelType channel_type = event.channelType;
@@ -717,12 +718,12 @@ class RtmHandler: NSObject, AgoraRtmClientDelegate {
     func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
         let channel = event.channelName
         let channelType = event.channelType
-
+        
         if channelType == .stream {
-            let topic = event.channelTopic
+            let topic = event.channelTopic 
         }
 
-        let position = Position()
+        let position = Position() 
         position.parse(data: event.message.rawData)
     }
 }

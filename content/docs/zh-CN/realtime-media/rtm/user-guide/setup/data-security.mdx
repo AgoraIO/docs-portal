@@ -92,7 +92,7 @@ let saltData = Data(bytes: saltValues, count: saltValues.count)
 
 encryptionConfig.encryptionSalt = saltData
 
-rtmConfig.encryptionConfig = encryptionConfig
+rtmConfig.encryptionConfig = encryptionConfig    
 
 let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
     if rtmClient != nil {

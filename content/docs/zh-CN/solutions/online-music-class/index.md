@@ -23,7 +23,7 @@ title: "文档指引"
   - 封装 RTC、RTM、白板等产品的复杂 API
   - 覆盖教育和监考两大场景
   - 提供一对一，小班课和大班课多种班型
-  - [方案介绍](/zh-CN/solutions/flexible-classroom/index.android.android)
+  - [方案介绍](/zh-CN/solutions/flexible-classroom/index)
 
 ## 快速搭建 PaaS 方案
 
@@ -35,13 +35,13 @@ title: "文档指引"
 
 ## PaaS 方案进阶功能
 
-    - [实现鱼眼镜头畸变矫正](/zh-CN/solutions/online-music-class/advanced-features/fish-eye.android)
+    - [实现鱼眼镜头畸变矫正](/zh-CN/solutions/online-music-class/advanced-features/fish-eye)
 
 ## API 参考
 
 你可以基于声网在线音乐教学特殊版 SDK、RTM 1.x SDK 和互动白板 SDK 开发在线音乐教学场景。参考如下文档了解详细的 API 参考：
 
-- [在线音乐教学 API 参考](/zh-CN/solutions/online-music-class/api/fish-eye.android)
+- [在线音乐教学 API 参考](/zh-CN/solutions/online-music-class/api/fish-eye)
 - [实时消息 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=All%20Platforms)
 - [云端录制 API 参考](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)
 

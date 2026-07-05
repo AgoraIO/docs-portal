@@ -192,6 +192,17 @@ export async function updateAuditProgressInPathMap({
   const table = ensureControlProgressColumns(
     await readControlTable(pathMapPath),
   );
+  const byRowIdentity = new Map(
+    results.map((result) => [
+      auditRowKey(
+        result.sourcePath,
+        result.targetPath,
+        result.oldUrl,
+        result.oldPlatform,
+      ),
+      result,
+    ]),
+  );
   const bySourceAndTargetPath = new Map(
     results.map((result) => [
       auditResultKey(result.sourcePath, result.targetPath),
@@ -203,6 +214,14 @@ export async function updateAuditProgressInPathMap({
 
   for (const row of table.rows) {
     const result =
+      byRowIdentity.get(
+        auditRowKey(
+          row.source_path,
+          row.target_path,
+          row.old_url,
+          row.old_platform,
+        ),
+      ) ??
       bySourceAndTargetPath.get(
         auditResultKey(row.source_path, row.target_path),
       ) ?? (!row.target_path ? bySourcePath.get(row.source_path)?.[0] : null);
@@ -240,6 +259,10 @@ export async function updateAuditProgressInPathMap({
 
 function auditResultKey(sourcePath, targetPath) {
   return `${sourcePath ?? ''}\u0000${targetPath ?? ''}`;
+}
+
+function auditRowKey(sourcePath, targetPath, oldUrl, oldPlatform) {
+  return `${auditResultKey(sourcePath, targetPath)}\u0000${oldUrl ?? ''}\u0000${oldPlatform ?? ''}`;
 }
 
 export function selectRowsReadyForAudit(

@@ -6,8 +6,8 @@ title: "结构体"
 
 ```go
 type AcquireResp struct {
-  Response
-  SuccessRes AcquireSuccessResp
+	Response
+	SuccessRes AcquireSuccessResp
 }
 ```
 
@@ -29,7 +29,7 @@ type AcquireResp struct {
 
 ```go
 type AcquireSuccessResp struct {
-  ResourceId string `json:"resourceId"`
+	ResourceId string `json:"resourceId"`
 }
 ```
 
@@ -50,16 +50,16 @@ type AcquireSuccessResp struct {
 
 ```go
 type QueryIndividualRecordingServerResponse struct {
-  Status int `json:"status"`
-  FileListMode string `json:"fileListMode"`
-  FileList []struct {
-    FileName string `json:"fileName"`
-    TrackType string `json:"trackType"`
-    Uid string `json:"uid"`
-    MixedAllUser bool `json:"mixedAllUser"`
-    IsPlayable bool `json:"isPlayable"`
-    SliceStartTime int64 `json:"sliceStartTime"`
-  } `json:"fileList"`
+	Status int `json:"status"`
+	FileListMode string `json:"fileListMode"`
+	FileList []struct {
+		FileName string `json:"fileName"`
+		TrackType string `json:"trackType"`
+		Uid string `json:"uid"`
+		MixedAllUser bool `json:"mixedAllUser"`
+		IsPlayable bool `json:"isPlayable"`
+		SliceStartTime int64 `json:"sliceStartTime"`
+	} `json:"fileList"`
 }
 ```
 
@@ -142,8 +142,8 @@ fileList 字段的数据格式：
 
 ```go
 type QueryIndividualVideoScreenshotServerResponse struct {
-  Status int `json:"status"`
-  SliceStartTime int64 `json:"sliceStartTime"`
+	Status int `json:"status"`
+	SliceStartTime int64 `json:"sliceStartTime"`
 }
 ```
 
@@ -182,10 +182,10 @@ type QueryIndividualVideoScreenshotServerResponse struct {
 
 ```go
 type QueryMixRecordingHLSServerResponse struct {
-  Status int `json:"status"`
-  FileListMode string `json:"fileListMode"`
-  FileList string `json:"fileList"`
-  SliceStartTime int64 `json:"sliceStartTime"`
+	Status int `json:"status"`
+	FileListMode string `json:"fileListMode"`
+	FileList string `json:"fileList"`
+	SliceStartTime int64 `json:"sliceStartTime"`
 }
 ```
 
@@ -235,17 +235,17 @@ fileList 字段的数据格式：
 
 ```go
 type QueryMixRecordingHLSAndMP4ServerResponse struct {
-  Status int `json:"status"`
-  FileListMode string `json:"fileListMode"`
-  FileList []struct {
-    FileName string `json:"fileName"`
-    TrackType string `json:"trackType"`
-    Uid string `json:"uid"`
-    MixedAllUser bool `json:"mixedAllUser"`
-    IsPlayable bool `json:"isPlayable"`
-    SliceStartTime int64 `json:"sliceStartTime"`
-  } `json:"fileList"`
-  SliceStartTime int64 `json:"sliceStartTime"`
+	Status int `json:"status"`
+	FileListMode string `json:"fileListMode"`
+	FileList []struct {
+		FileName string `json:"fileName"`
+		TrackType string `json:"trackType"`
+		Uid string `json:"uid"`
+		MixedAllUser bool `json:"mixedAllUser"`
+		IsPlayable bool `json:"isPlayable"`
+		SliceStartTime int64 `json:"sliceStartTime"`
+	} `json:"fileList"`
+	SliceStartTime int64 `json:"sliceStartTime"`
 }
 ```
 
@@ -329,22 +329,22 @@ fileList 字段的数据格式：
 
 ```go
 type QueryWebRecordingServerResponse struct {
-  Status int `json:"status"`
-  ExtensionServiceState []struct {
-    Payload struct {
-      FileList []struct {
-        Filename string `json:"filename"`
-        SliceStartTime int64 `json:"sliceStartTime"`
-      } `json:"fileList"`
-      Onhold bool `json:"onhold"`
-      State string `json:"state"`
-      Outputs []struct {
-        RtmpUrl string `json:"rtmpUrl"`
-        Status string `json:"status"`
-      } `json:"outputs"`
-    } `json:"payload"`
-    ServiceName string `json:"serviceName"`
-  } `json:"extensionServiceState"`
+	Status int `json:"status"`
+	ExtensionServiceState []struct {
+		Payload struct {
+			FileList []struct {
+				Filename string `json:"filename"`
+				SliceStartTime int64 `json:"sliceStartTime"`
+			} `json:"fileList"`
+			Onhold bool `json:"onhold"`
+			State string `json:"state"`
+			Outputs []struct {
+				RtmpUrl string `json:"rtmpUrl"`
+				Status string `json:"status"`
+			} `json:"outputs"`
+		} `json:"payload"`
+		ServiceName string `json:"serviceName"`
+	} `json:"extensionServiceState"`
 }
 ```
 
@@ -431,17 +431,17 @@ type QueryWebRecordingServerResponse struct {
 
 ```go
 type QueryRtmpPublishServerResponse struct {
-  Status int `json:"status"`
-  ExtensionServiceState []struct {
-    Payload struct {
-      State string `json:"state"`
-      Outputs []struct {
-        RtmpUrl string `json:"rtmpUrl"`
-        Status string `json:"status"`
-      } `json:"outputs"`
-    } `json:"payload"`
-    ServiceName string `json:"serviceName"`
-  } `json:"extensionServiceState"`
+	Status int `json:"status"`
+	ExtensionServiceState []struct {
+		Payload struct {
+			State string `json:"state"`
+			Outputs []struct {
+				RtmpUrl string `json:"rtmpUrl"`
+				Status string `json:"status"`
+			} `json:"outputs"`
+		} `json:"payload"`
+		ServiceName string `json:"serviceName"`
+	} `json:"extensionServiceState"`
 }
 ```
 
@@ -515,8 +515,8 @@ type QueryRtmpPublishServerResponse struct {
 
 ```go
 type ErrResponse struct {
-  ErrorCode int `json:"code"`
-  Reason string `json:"reason"`
+	ErrorCode int `json:"code"`
+	Reason string `json:"reason"`
 }
 ```
 
@@ -538,8 +538,8 @@ type ErrResponse struct {
 
 ```go
 type Response struct {
-  *agora.BaseResponse
-  ErrResponse ErrResponse
+	*agora.BaseResponse
+	ErrResponse ErrResponse
 }
 ```
 
@@ -561,7 +561,7 @@ type Response struct {
 
 ```go
 type AppsCollection struct {
-  CombinationPolicy CombinationPolicy `json:"combinationPolicy,omitempty"`
+	CombinationPolicy CombinationPolicy `json:"combinationPolicy,omitempty"`
 }
 ```
 
@@ -582,21 +582,21 @@ type AppsCollection struct {
 
 ```go
 type RecordingConfig struct {
-  ChannelType int `json:"channelType"`
-  StreamTypes int `json:"streamTypes"`
-  StreamMode string `json:"streamMode,omitempty"`
-  DecryptionMode int `json:"decryptionMode,omitempty"`
-  Secret string `json:"secret,omitempty"`
-  Salt string `json:"salt,omitempty"`
-  AudioProfile int `json:"audioProfile,omitempty"`
-  VideoStreamType int `json:"videoStreamType,omitempty"`
-  MaxIdleTime int `json:"maxIdleTime,omitempty"`
-  TranscodingConfig *TranscodingConfig `json:"transcodingConfig,omitempty"`
-  SubscribeAudioUIDs []string `json:"subscribeAudioUids,omitempty"`
-  UnsubscribeAudioUIDs []string `json:"unSubscribeAudioUids,omitempty"`
-  SubscribeVideoUIDs []string `json:"subscribeVideoUids,omitempty"`
-  UnsubscribeVideoUIDs []string `json:"unSubscribeVideoUids,omitempty"`
-  SubscribeUidGroup int `json:"subscribeUidGroup,omitempty"`
+	ChannelType int `json:"channelType"`
+	StreamTypes int `json:"streamTypes"`
+	StreamMode string `json:"streamMode,omitempty"`
+	DecryptionMode int `json:"decryptionMode,omitempty"`
+	Secret string `json:"secret,omitempty"`
+	Salt string `json:"salt,omitempty"`
+	AudioProfile int `json:"audioProfile,omitempty"`
+	VideoStreamType int `json:"videoStreamType,omitempty"`
+	MaxIdleTime int `json:"maxIdleTime,omitempty"`
+	TranscodingConfig *TranscodingConfig `json:"transcodingConfig,omitempty"`
+	SubscribeAudioUIDs []string `json:"subscribeAudioUids,omitempty"`
+	UnsubscribeAudioUIDs []string `json:"unSubscribeAudioUids,omitempty"`
+	SubscribeVideoUIDs []string `json:"subscribeVideoUids,omitempty"`
+	UnsubscribeVideoUIDs []string `json:"unSubscribeVideoUids,omitempty"`
+	SubscribeUidGroup int `json:"subscribeUidGroup,omitempty"`
 }
 ```
 
@@ -729,7 +729,7 @@ type RecordingConfig struct {
 
 ```go
 type Container struct {
-  Format string `json:"format"`
+	Format string `json:"format"`
 }
 ```
 
@@ -761,9 +761,9 @@ type Container struct {
 
 ```go
 type TranscodeOptions struct {
-  Container *Container `json:"container"`
-  TransConfig *TransConfig `json:"transConfig"`
-  Audio *Audio `json:"audio,omitempty"`
+	Container *Container `json:"container"`
+	TransConfig *TransConfig `json:"transConfig"`
+	Audio *Audio `json:"audio,omitempty"`
 }
 ```
 
@@ -786,7 +786,7 @@ type TranscodeOptions struct {
 
 ```go
 type TransConfig struct {
-  TransMode TransMode `json:"transMode"`
+	TransMode TransMode `json:"transMode"`
 }
 ```
 
@@ -807,9 +807,9 @@ type TransConfig struct {
 
 ```go
 type Audio struct {
-  SampleRate string `json:"sampleRate"`
-  BitRate string `json:"bitrate"`
-  Channels string `json:"channels"`
+	SampleRate string `json:"sampleRate"`
+	BitRate string `json:"bitrate"`
+	Channels string `json:"channels"`
 }
 ```
 
@@ -847,17 +847,17 @@ type Audio struct {
 
 ```go
 type TranscodingConfig struct {
-  Width int `json:"width,omitempty"`
-  Height int `json:"height,omitempty"`
-  FPS int `json:"fps,omitempty"`
-  BitRate int `json:"bitrate,omitempty"`
-  MaxResolutionUid string `json:"maxResolutionUid,omitempty"`
-  MixedVideoLayout int `json:"mixedVideoLayout,omitempty"`
-  BackgroundColor string `json:"backgroundColor,omitempty"`
-  BackgroundImage string `json:"backgroundImage,omitempty"`
-  DefaultUserBackgroundImage string `json:"defaultUserBackgroundImage,omitempty"`
-  LayoutConfig []LayoutConfig `json:"layoutConfig,omitempty"`
-  BackgroundConfig []BackgroundConfig `json:"backgroundConfig,omitempty"`
+	Width int `json:"width,omitempty"`
+	Height int `json:"height,omitempty"`
+	FPS int `json:"fps,omitempty"`
+	BitRate int `json:"bitrate,omitempty"`
+	MaxResolutionUid string `json:"maxResolutionUid,omitempty"`
+	MixedVideoLayout int `json:"mixedVideoLayout,omitempty"`
+	BackgroundColor string `json:"backgroundColor,omitempty"`
+	BackgroundImage string `json:"backgroundImage,omitempty"`
+	DefaultUserBackgroundImage string `json:"defaultUserBackgroundImage,omitempty"`
+	LayoutConfig []LayoutConfig `json:"layoutConfig,omitempty"`
+	BackgroundConfig []BackgroundConfig `json:"backgroundConfig,omitempty"`
 }
 ```
 
@@ -899,13 +899,13 @@ type TranscodingConfig struct {
 
 ```go
 type LayoutConfig struct {
-  UID string `json:"uid"`
-  XAxis float32 `json:"x_axis"`
-  YAxis float32 `json:"y_axis"`
-  Width float32 `json:"width"`
-  Height float32 `json:"height"`
-  Alpha float32 `json:"alpha,omitempty"`
-  RenderMode int `json:"render_mode"`
+	UID string `json:"uid"`
+	XAxis float32 `json:"x_axis"`
+	YAxis float32 `json:"y_axis"`
+	Width float32 `json:"width"`
+	Height float32 `json:"height"`
+	Alpha float32 `json:"alpha,omitempty"`
+	RenderMode int `json:"render_mode"`
 }
 ```
 
@@ -950,7 +950,7 @@ type LayoutConfig struct {
 
 ```go
 type RecordingFileConfig struct {
-  AvFileType []string `json:"avFileType"`
+	AvFileType []string `json:"avFileType"`
 }
 ```
 
@@ -980,8 +980,8 @@ type RecordingFileConfig struct {
 
 ```go
 type SnapshotConfig struct {
-  CaptureInterval int `json:"captureInterval,omitempty"`
-  FileType []string `json:"fileType"`
+	CaptureInterval int `json:"captureInterval,omitempty"`
+	FileType []string `json:"fileType"`
 }
 ```
 
@@ -1003,14 +1003,14 @@ type SnapshotConfig struct {
 
 ```go
 type StorageConfig struct {
-  Vendor int `json:"vendor"`
-  Region int `json:"region"`
-  Bucket string `json:"bucket"`
-  AccessKey string `json:"accessKey"`
-  StsExpiration int `json:"stsExpiration,omitempty"`
-  SecretKey string `json:"secretKey"`
-  FileNamePrefix []string `json:"fileNamePrefix,omitempty"`
-  ExtensionParams *ExtensionParams `json:"extensionParams,omitempty"`
+	Vendor int `json:"vendor"`
+	Region int `json:"region"`
+	Bucket string `json:"bucket"`
+	AccessKey string `json:"accessKey"`
+	StsExpiration int `json:"stsExpiration,omitempty"`
+	SecretKey string `json:"secretKey"`
+	FileNamePrefix []string `json:"fileNamePrefix,omitempty"`
+	ExtensionParams *ExtensionParams `json:"extensionParams,omitempty"`
 }
 ```
 
@@ -1052,8 +1052,8 @@ type StorageConfig struct {
 
 ```go
 type ExtensionParams struct {
-  SSE string `json:"sse"`
-  Tag string `json:"tag"`
+	SSE string `json:"sse"`
+	Tag string `json:"tag"`
 }
 ```
 
@@ -1084,8 +1084,8 @@ type ExtensionParams struct {
 
 ```go
 type ExtensionServiceConfig struct {
-  ErrorHandlePolicy string `json:"errorHandlePolicy,omitempty"`
-  ExtensionServices []ExtensionService `json:"extensionServices"`
+	ErrorHandlePolicy string `json:"errorHandlePolicy,omitempty"`
+	ExtensionServices []ExtensionService `json:"extensionServices"`
 }
 ```
 
@@ -1117,9 +1117,9 @@ type ExtensionServiceConfig struct {
 
 ```go
 type ExtensionService struct {
-  ServiceName string `json:"serviceName"`
-  ErrorHandlePolicy string `json:"errorHandlePolicy"`
-  ServiceParam ServiceParamInterface `json:"serviceParam"`
+	ServiceName string `json:"serviceName"`
+	ErrorHandlePolicy string `json:"errorHandlePolicy"`
+	ServiceParam ServiceParamInterface `json:"serviceParam"`
 }
 ```
 
@@ -1169,7 +1169,7 @@ type ExtensionService struct {
 
 ```go
 type Outputs struct {
-  RtmpURL string `json:"rtmpUrl"`
+	RtmpURL string `json:"rtmpUrl"`
 }
 ```
 
@@ -1190,17 +1190,17 @@ type Outputs struct {
 
 ```go
 type WebRecordingServiceParam struct {
-  URL string `json:"url"`
-  VideoBitRate int `json:"VideoBitrate,omitempty"`
-  VideoFPS int `json:"videoFps,omitempty"`
-  AudioProfile int `json:"audioProfile"`
-  Mobile bool `json:"mobile,omitempty"`
-  VideoWidth int `json:"videoWidth"`
-  VideoHeight int `json:"videoHeight"`
-  MaxRecordingHour int `json:"maxRecordingHour"`
-  MaxVideoDuration int `json:"maxVideoDuration,omitempty"`
-  Onhold bool `json:"onhold"`
-  ReadyTimeout int `json:"readyTimeout"`
+	URL string `json:"url"`
+	VideoBitRate int `json:"VideoBitrate,omitempty"`
+	VideoFPS int `json:"videoFps,omitempty"`
+	AudioProfile int `json:"audioProfile"`
+	Mobile bool `json:"mobile,omitempty"`
+	VideoWidth int `json:"videoWidth"`
+	VideoHeight int `json:"videoHeight"`
+	MaxRecordingHour int `json:"maxRecordingHour"`
+	MaxVideoDuration int `json:"maxVideoDuration,omitempty"`
+	Onhold bool `json:"onhold"`
+	ReadyTimeout int `json:"readyTimeout"`
 }
 ```
 
@@ -1268,7 +1268,7 @@ type WebRecordingServiceParam struct {
 
 ```go
 type RtmpPublishServiceParam struct {
-  Outputs []Outputs `json:"outputs,omitempty"`
+	Outputs []Outputs `json:"outputs,omitempty"`
 }
 ```
 
@@ -1289,8 +1289,8 @@ type RtmpPublishServiceParam struct {
 
 ```go
 type StartResp struct {
-  Response
-  SuccessResponse StartSuccessResp
+	Response
+	SuccessResponse StartSuccessResp
 }
 ```
 
@@ -1312,10 +1312,10 @@ type StartResp struct {
 
 ```go
 type StartSuccessResp struct {
-  Cname string `json:"cname"`
-  UID string `json:"uid"`
-  ResourceId string `json:"resourceId"`
-  Sid string `json:"sid"`
+	Cname string `json:"cname"`
+	UID string `json:"uid"`
+	ResourceId string `json:"resourceId"`
+	Sid string `json:"sid"`
 }
 ```
 
@@ -1339,8 +1339,8 @@ type StartSuccessResp struct {
 
 ```go
 type StopResp struct {
-  Response
-  SuccessResponse StopSuccessResp
+	Response
+	SuccessResponse StopSuccessResp
 }
 ```
 
@@ -1362,10 +1362,10 @@ type StopResp struct {
 
 ```go
 type StopSuccessResp struct {
-  Cname string `json:"cname"`
-  UID string `json:"uid"`
-  ResourceId string `json:"resourceId"`
-  Sid string `json:"sid"`
+	Cname string `json:"cname"`
+	UID string `json:"uid"`
+	ResourceId string `json:"resourceId"`
+	Sid string `json:"sid"`
 }
 ```
 
@@ -1389,8 +1389,8 @@ type StopSuccessResp struct {
 
 ```go
 type UpdateStreamSubscribe struct {
-  AudioUidList *UpdateAudioUIDList `json:"audioUidList,omitempty"`
-  VideoUidList *UpdateVideoUIDList `json:"videoUidList,omitempty"`
+	AudioUidList *UpdateAudioUIDList `json:"audioUidList,omitempty"`
+	VideoUidList *UpdateVideoUIDList `json:"videoUidList,omitempty"`
 }
 ```
 
@@ -1412,8 +1412,8 @@ type UpdateStreamSubscribe struct {
 
 ```go
 type UpdateAudioUIDList struct {
-  SubscribeAudioUIDs []string `json:"subscribeAudioUids,omitempty"`
-  UnsubscribeAudioUIDs []string `json:"unSubscribeAudioUids,omitempty"`
+	SubscribeAudioUIDs []string `json:"subscribeAudioUids,omitempty"`
+	UnsubscribeAudioUIDs []string `json:"unSubscribeAudioUids,omitempty"`
 }
 ```
 
@@ -1444,8 +1444,8 @@ type UpdateAudioUIDList struct {
 
 ```go
 type UpdateVideoUIDList struct {
-  SubscribeVideoUIDs []string `json:"subscribeVideoUids,omitempty"`
-  UnsubscribeVideoUIDs []string `json:"unSubscribeVideoUids,omitempty"`
+	SubscribeVideoUIDs []string `json:"subscribeVideoUids,omitempty"`
+	UnsubscribeVideoUIDs []string `json:"unSubscribeVideoUids,omitempty"`
 }
 ```
 
@@ -1467,7 +1467,7 @@ type UpdateVideoUIDList struct {
 
 ```go
 type UpdateWebRecordingConfig struct {
-  Onhold bool `json:"onhold"`
+	Onhold bool `json:"onhold"`
 }
 ```
 
@@ -1497,7 +1497,7 @@ type UpdateWebRecordingConfig struct {
 
 ```go
 type UpdateRtmpPublishConfig struct {
-  Outputs []UpdateOutput `json:"outputs"`
+	Outputs []UpdateOutput `json:"outputs"`
 }
 ```
 
@@ -1518,7 +1518,7 @@ type UpdateRtmpPublishConfig struct {
 
 ```go
 type UpdateOutput struct {
-  RtmpURL string `json:"rtmpUrl"`
+	RtmpURL string `json:"rtmpUrl"`
 }
 ```
 
@@ -1539,8 +1539,8 @@ type UpdateOutput struct {
 
 ```go
 type UpdateResp struct {
-  Response
-  SuccessResponse UpdateSuccessResp
+	Response
+	SuccessResponse UpdateSuccessResp
 }
 ```
 
@@ -1558,10 +1558,10 @@ type UpdateResp struct {
 
 ```go
 type UpdateSuccessResp struct {
-  ResourceId string `json:"resourceId"`
-  Sid string `json:"sid"`
-  UID string `json:"uid"`
-  Cname string `json:"cname"`
+	ResourceId string `json:"resourceId"`
+	Sid string `json:"sid"`
+	UID string `json:"uid"`
+	Cname string `json:"cname"`
 }
 ```
 
@@ -1581,13 +1581,13 @@ type UpdateSuccessResp struct {
 
 ```go
 type UpdateLayoutConfig struct {
-  UID string `json:"uid"`
-  XAxis float32 `json:"x_axis"`
-  YAxis float32 `json:"y_axis"`
-  Width float32 `json:"width"`
-  Height float32 `json:"height"`
-  Alpha float32 `json:"alpha"`
-  RenderMode int `json:"render_mode"`
+	UID string `json:"uid"`
+	XAxis float32 `json:"x_axis"`
+	YAxis float32 `json:"y_axis"`
+	Width float32 `json:"width"`
+	Height float32 `json:"height"`
+	Alpha float32 `json:"alpha"`
+	RenderMode int `json:"render_mode"`
 }
 ```
 
@@ -1623,9 +1623,9 @@ type UpdateLayoutConfig struct {
 
 ```go
 type BackgroundConfig struct {
-  UID string `json:"uid"`
-  ImageURL string `json:"image_url"`
-  RenderMode int `json:"render_mode"`
+	UID string `json:"uid"`
+	ImageURL string `json:"image_url"`
+	RenderMode int `json:"render_mode"`
 }
 ```
 
@@ -1657,8 +1657,8 @@ type BackgroundConfig struct {
 
 ```go
 type UpdateLayoutSuccessResp struct {
-  ResourceId string `json:"resourceId"`
-  Sid string `json:"sid"`
+	ResourceId string `json:"resourceId"`
+	Sid string `json:"sid"`
 }
 ```
 
@@ -1680,8 +1680,8 @@ type UpdateLayoutSuccessResp struct {
 
 ```go
 type UpdateLayoutResp struct {
-  Response
-  SuccessResponse UpdateLayoutSuccessResp
+	Response
+	SuccessResponse UpdateLayoutSuccessResp
 }
 ```
 
@@ -1703,11 +1703,11 @@ type UpdateLayoutResp struct {
 
 ```go
 type Config struct {
-  AppID string
-  HttpTimeout time.Duration
-  Credential auth.Credential
-  DomainArea domain.Area
-  Logger log.Logger
+	AppID string
+	HttpTimeout time.Duration
+	Credential auth.Credential
+	DomainArea domain.Area
+	Logger log.Logger
 }
 ```
 
@@ -1752,10 +1752,10 @@ type Config struct {
 
 ```go
 type AcquireIndividualRecordingClientRequest struct {
-  ResourceExpiredHour int
-  ExcludeResourceIds []string
-  RegionAffinity int
-  StartParameter *StartIndividualRecordingClientRequest
+	ResourceExpiredHour int
+	ExcludeResourceIds []string
+	RegionAffinity int
+	StartParameter *StartIndividualRecordingClientRequest
 }
 ```
 
@@ -1791,13 +1791,13 @@ type AcquireIndividualRecordingClientRequest struct {
 
 ```go
 type StartIndividualRecordingClientRequest struct {
-  Token string
-  StorageConfig *StorageConfig
-  RecordingConfig *RecordingConfig
-  RecordingFileConfig *RecordingFileConfig
-  SnapshotConfig *SnapshotConfig
-  AppsCollection *AppsCollection
-  TranscodeOptions *TranscodeOptions
+	Token string
+	StorageConfig *StorageConfig
+	RecordingConfig *RecordingConfig
+	RecordingFileConfig *RecordingFileConfig
+	SnapshotConfig *SnapshotConfig
+	AppsCollection *AppsCollection
+	TranscodeOptions *TranscodeOptions
 }
 ```
 
@@ -1824,7 +1824,7 @@ type StartIndividualRecordingClientRequest struct {
 
 ```go
 type UpdateIndividualRecordingClientRequest struct {
-  StreamSubscribe *UpdateStreamSubscribe
+	StreamSubscribe *UpdateStreamSubscribe
 }
 ```
 
@@ -1845,10 +1845,10 @@ type UpdateIndividualRecordingClientRequest struct {
 
 ```go
 type AcquireMixRecodingClientRequest struct {
-  ResourceExpiredHour int
-  ExcludeResourceIds []string
-  RegionAffinity int
-  StartParameter *StartMixRecordingClientRequest
+	ResourceExpiredHour int
+	ExcludeResourceIds []string
+	RegionAffinity int
+	StartParameter *StartMixRecordingClientRequest
 }
 ```
 
@@ -1884,11 +1884,11 @@ type AcquireMixRecodingClientRequest struct {
 
 ```go
 type StartMixRecordingClientRequest struct {
-  Token string
-  RecordingConfig *RecordingConfig
-  RecordingFileConfig *RecordingFileConfig
-  StorageConfig *StorageConfig
-  SnapshotConfig *SnapshotConfig
+	Token string
+	RecordingConfig *RecordingConfig
+	RecordingFileConfig *RecordingFileConfig
+	StorageConfig *StorageConfig
+	SnapshotConfig *SnapshotConfig
 }
 ```
 
@@ -1913,7 +1913,7 @@ type StartMixRecordingClientRequest struct {
 
 ```go
 type UpdateMixRecordingClientRequest struct {
-  StreamSubscribe *UpdateStreamSubscribe
+	StreamSubscribe *UpdateStreamSubscribe
 }
 ```
 
@@ -1934,13 +1934,13 @@ type UpdateMixRecordingClientRequest struct {
 
 ```go
 type UpdateLayoutUpdateMixRecordingClientRequest struct {
-  MaxResolutionUID string
-  MixedVideoLayout int
-  BackgroundColor string
-  BackgroundImage string
-  DefaultUserBackgroundImage string
-  LayoutConfig []UpdateLayoutConfig
-  BackgroundConfig []BackgroundConfig
+	MaxResolutionUID string
+	MixedVideoLayout int
+	BackgroundColor string
+	BackgroundImage string
+	DefaultUserBackgroundImage string
+	LayoutConfig []UpdateLayoutConfig
+	BackgroundConfig []BackgroundConfig
 }
 ```
 
@@ -1978,10 +1978,10 @@ type UpdateLayoutUpdateMixRecordingClientRequest struct {
 
 ```go
 type AcquireWebRecodingClientRequest struct {
-  ResourceExpiredHour int
-  ExcludeResourceIds []string
-  RegionAffinity int
-  StartParameter *StartWebRecordingClientRequest
+	ResourceExpiredHour int
+	ExcludeResourceIds []string
+	RegionAffinity int
+	StartParameter *StartWebRecordingClientRequest
 }
 ```
 
@@ -2017,9 +2017,9 @@ type AcquireWebRecodingClientRequest struct {
 
 ```go
 type StartWebRecordingClientRequest struct {
-  RecordingFileConfig *RecordingFileConfig
-  StorageConfig *StorageConfig
-  ExtensionServiceConfig *ExtensionServiceConfig
+	RecordingFileConfig *RecordingFileConfig
+	StorageConfig *StorageConfig
+	ExtensionServiceConfig *ExtensionServiceConfig
 }
 ```
 
@@ -2042,8 +2042,8 @@ type StartWebRecordingClientRequest struct {
 
 ```go
 type UpdateWebRecordingClientRequest struct {
-  WebRecordingConfig *UpdateWebRecordingConfig
-  RtmpPublishConfig *UpdateRtmpPublishConfig
+	WebRecordingConfig *UpdateWebRecordingConfig
+	RtmpPublishConfig *UpdateRtmpPublishConfig
 }
 ```
 
@@ -2065,8 +2065,8 @@ type UpdateWebRecordingClientRequest struct {
 
 ```go
 type QueryIndividualRecordingResp struct {
-  api.Response
-  SuccessRes QueryIndividualRecordingSuccessResp
+	api.Response
+	SuccessRes QueryIndividualRecordingSuccessResp
 }
 ```
 
@@ -2088,9 +2088,9 @@ type QueryIndividualRecordingResp struct {
 
 ```go
 type QueryIndividualRecordingSuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *api.QueryIndividualRecordingServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *api.QueryIndividualRecordingServerResponse
 }
 ```
 
@@ -2113,8 +2113,8 @@ type QueryIndividualRecordingSuccessResp struct {
 
 ```go
 type QueryIndividualRecordingVideoScreenshotResp struct {
-  api.Response
-  SuccessRes QueryIndividualRecordingVideoScreenshotSuccessResp
+	api.Response
+	SuccessRes QueryIndividualRecordingVideoScreenshotSuccessResp
 }
 ```
 
@@ -2136,9 +2136,9 @@ type QueryIndividualRecordingVideoScreenshotResp struct {
 
 ```go
 type QueryIndividualRecordingVideoScreenshotSuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *api.QueryIndividualVideoScreenshotServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *api.QueryIndividualVideoScreenshotServerResponse
 }
 ```
 
@@ -2161,9 +2161,9 @@ type QueryIndividualRecordingVideoScreenshotSuccessResp struct {
 
 ```go
 type QueryMixRecordingHLSSuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *api.QueryMixRecordingHLSServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *api.QueryMixRecordingHLSServerResponse
 }
 ```
 
@@ -2186,8 +2186,8 @@ type QueryMixRecordingHLSSuccessResp struct {
 
 ```go
 type QueryMixRecordingHLSResp struct {
-  api.Response
-  SuccessResponse QueryMixRecordingHLSSuccessResp
+	api.Response
+	SuccessResponse QueryMixRecordingHLSSuccessResp
 }
 ```
 
@@ -2209,9 +2209,9 @@ type QueryMixRecordingHLSResp struct {
 
 ```go
 type QueryMixRecordingHLSAndMP4SuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *api.QueryMixRecordingHLSAndMP4ServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *api.QueryMixRecordingHLSAndMP4ServerResponse
 }
 ```
 
@@ -2234,8 +2234,8 @@ type QueryMixRecordingHLSAndMP4SuccessResp struct {
 
 ```go
 type QueryMixRecordingHLSAndMP4Resp struct {
-  Response Response
-  SuccessResponse QueryMixRecordingHLSAndMP4SuccessResp
+	Response Response
+	SuccessResponse QueryMixRecordingHLSAndMP4SuccessResp
 }
 ```
 
@@ -2257,8 +2257,8 @@ type QueryMixRecordingHLSAndMP4Resp struct {
 
 ```go
 type QueryWebRecordingResp struct {
-  api.Response
-  SuccessResponse QueryWebRecordingSuccessResp
+	api.Response
+	SuccessResponse QueryWebRecordingSuccessResp
 }
 ```
 
@@ -2280,9 +2280,9 @@ type QueryWebRecordingResp struct {
 
 ```go
 type QueryWebRecordingSuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *api.QueryWebRecordingServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *api.QueryWebRecordingServerResponse
 }
 ```
 
@@ -2305,8 +2305,8 @@ type QueryWebRecordingSuccessResp struct {
 
 ```go
 type QueryRtmpPublishResp struct {
-  api.Response
-  SuccessResponse QueryRtmpPublishSuccessResp
+	api.Response
+	SuccessResponse QueryRtmpPublishSuccessResp
 }
 ```
 
@@ -2328,9 +2328,9 @@ type QueryRtmpPublishResp struct {
 
 ```go
 type QueryRtmpPublishSuccessResp struct {
-  ResourceId string
-  Sid string
-  ServerResponse *QueryRtmpPublishServerResponse
+	ResourceId string
+	Sid string
+	ServerResponse *QueryRtmpPublishServerResponse
 }
 ```
 
@@ -2353,9 +2353,9 @@ type QueryRtmpPublishSuccessResp struct {
 
 ```go
 type BaseResponse struct {
-  RawResponse *http.Response
-  RawBody []byte
-  HttpStatusCode int
+	RawResponse *http.Response
+	RawBody []byte
+	HttpStatusCode int
 }
 ```
 

@@ -149,103 +149,103 @@ npm install -D typescript tsx @types/node
 package main
 
 import (
-  "context"
-  "fmt"
-  "log"
-  "os"
-  "time"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
 
-  Agora "github.com/AgoraIO/agora-agents-go/v2"
-  agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-  vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
+	Agora "github.com/AgoraIO/agora-agents-go/v2"
+	agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+	vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
 )
 
 const (
-  agentPrompt = "You are a concise and helpful voice assistant."
-  greeting    = "Hello! How can I help you today?"
+	agentPrompt = "You are a concise and helpful voice assistant."
+	greeting    = "Hello! How can I help you today?"
 )
 
 func requireEnv(name string) string {
-  value := os.Getenv(name)
-  if value == "" {
-    log.Fatalf("missing required environment variable: %s", name)
-  }
-  return value
+	value := os.Getenv(name)
+	if value == "" {
+		log.Fatalf("missing required environment variable: %s", name)
+	}
+	return value
 }
 
 func main() {
-  ctx := context.Background()
-  idleTimeout := 120
+	ctx := context.Background()
+	idleTimeout := 120
 
-  appID := requireEnv("AGORA_APP_ID")
-  appCertificate := requireEnv("AGORA_APP_CERTIFICATE")
+	appID := requireEnv("AGORA_APP_ID")
+	appCertificate := requireEnv("AGORA_APP_CERTIFICATE")
 
-  client := agentkit.NewAgoraClient(agentkit.ClientOptions{
-    AppID:          appID,
-    AppCertificate: appCertificate,
-  })
+	client := agentkit.NewAgoraClient(agentkit.ClientOptions{
+		AppID:          appID,
+		AppCertificate: appCertificate,
+	})
 
-  agent := agentkit.NewAgent(
-    client,
-    agentkit.WithName(fmt.Sprintf("support-agent-%d", time.Now().UnixMilli())),
-    agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
-      Language: Agora.AsrLanguageZhCn.Ptr(),
-    }),
-  ).WithStt(
-    vendors.NewXfyunSTT(vendors.XfyunSTTOptions{
-      APIKey:    requireEnv("XFYUN_API_KEY"),
-      AppID:     requireEnv("XFYUN_APP_ID"),
-      APISecret: requireEnv("XFYUN_API_SECRET"),
-      Language: "zh-CN",
-    }),
-  ).WithLlm(
-    vendors.NewAliyun(vendors.AliyunOptions{
-      APIKey:  requireEnv("ALIYUN_API_KEY"),
-      Model:   "qwen-plus",
-      BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-      SystemMessages: []map[string]interface{}{
-        {
-          "role":    "system",
-          "content": agentPrompt,
-        },
-      },
-      GreetingMessage: greeting,
-      FailureMessage:  "抱歉，我暂时无法回答这个问题。",
-      MaxHistory:      Agora.Int(10),
-    }),
-  ).WithTts(
-    vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
-      Key:   requireEnv("MINIMAX_API_KEY"),
-      Model: "speech-01-turbo",
-      VoiceSetting: &vendors.MiniMaxVoiceSetting{
-        VoiceID: "female-shaonv",
-      },
-    }),
-  )
+	agent := agentkit.NewAgent(
+		client,
+		agentkit.WithName(fmt.Sprintf("support-agent-%d", time.Now().UnixMilli())),
+		agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
+			Language: Agora.AsrLanguageZhCn.Ptr(),
+		}),
+	).WithStt(
+		vendors.NewXfyunSTT(vendors.XfyunSTTOptions{
+			APIKey:    requireEnv("XFYUN_API_KEY"),
+			AppID:     requireEnv("XFYUN_APP_ID"),
+			APISecret: requireEnv("XFYUN_API_SECRET"),
+			Language: "zh-CN",
+		}),
+	).WithLlm(
+		vendors.NewAliyun(vendors.AliyunOptions{
+			APIKey:  requireEnv("ALIYUN_API_KEY"),
+			Model:   "qwen-plus",
+			BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+			SystemMessages: []map[string]interface{}{
+				{
+					"role":    "system",
+					"content": agentPrompt,
+				},
+			},
+			GreetingMessage: greeting,
+			FailureMessage:  "抱歉，我暂时无法回答这个问题。",
+			MaxHistory:      Agora.Int(10),
+		}),
+	).WithTts(
+		vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+			Key:   requireEnv("MINIMAX_API_KEY"),
+			Model: "speech-01-turbo",
+			VoiceSetting: &vendors.MiniMaxVoiceSetting{
+				VoiceID: "female-shaonv",
+			},
+		}),
+	)
 
-  session := agent.CreateSession(agentkit.CreateSessionOptions{
-    Channel:     requireEnv("AGORA_CHANNEL"),
-    AgentUID:    requireEnv("AGORA_AGENT_UID"),
-    RemoteUIDs:  []string{"*"},
-    IdleTimeout: &idleTimeout,
-  })
+	session := agent.CreateSession(agentkit.CreateSessionOptions{
+		Channel:     requireEnv("AGORA_CHANNEL"),
+		AgentUID:    requireEnv("AGORA_AGENT_UID"),
+		RemoteUIDs:  []string{"*"},
+		IdleTimeout: &idleTimeout,
+	})
 
-  agentSessionID, err := session.Start(ctx)
-  if err != nil {
-    log.Fatal(err)
-  }
+	agentSessionID, err := session.Start(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  log.Printf("Agent started: %s", agentSessionID)
+	log.Printf("Agent started: %s", agentSessionID)
 
-  if err := session.Say(ctx, "你好，我已经进入频道，可以开始对话。", nil, nil); err != nil {
-    log.Fatal(err)
-  }
+	if err := session.Say(ctx, "你好，我已经进入频道，可以开始对话。", nil, nil); err != nil {
+		log.Fatal(err)
+	}
 
-  time.Sleep(60 * time.Second)
+	time.Sleep(60 * time.Second)
 
-  if err := session.Stop(ctx); err != nil {
-    log.Fatal(err)
-  }
+	if err := session.Stop(ctx); err != nil {
+		log.Fatal(err)
+	}
 }
 ```
 
@@ -255,11 +255,13 @@ import time
 
 from agora_agent import Agent, Agora, Area, AliyunLLM, MiniMaxCNTTS, XfyunSTT
 
+
 def require_env(name: str) -> str:
     value = os.environ.get(name)
     if not value:
         raise ValueError(f"missing required environment variable: {name}")
     return value
+
 
 def main() -> None:
     client = Agora(
@@ -318,6 +320,7 @@ def main() -> None:
     session.say("你好，我已经进入频道，可以开始对话。")
     time.sleep(60)
     session.stop()
+
 
 if __name__ == "__main__":
     main()
@@ -442,15 +445,15 @@ export MINIMAX_API_KEY="<your_minimax_api_key>"
 
 ```go tab="Go" tabGroup="language"
 import (
-  "context"
-  "fmt"
-  "log"
-  "os"
-  "time"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
 
-  Agora "github.com/AgoraIO/agora-agents-go/v2"
-  agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-  vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
+	Agora "github.com/AgoraIO/agora-agents-go/v2"
+	agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+	vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
 )
 ```
 
@@ -482,8 +485,8 @@ import {
 
 ```go tab="Go" tabGroup="language"
 client := agentkit.NewAgoraClient(agentkit.ClientOptions{
-  AppID:          appID,
-  AppCertificate: appCertificate,
+	AppID:          appID,
+	AppCertificate: appCertificate,
 })
 ```
 
@@ -515,36 +518,36 @@ const client = new AgoraClient({
 
 ```go tab="Go" tabGroup="language"
 agent := agentkit.NewAgent(client,
-  agentkit.WithName("support-agent"),
-  agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
-    Language: Agora.AsrLanguageZhCn.Ptr(),
-  }),
+	agentkit.WithName("support-agent"),
+	agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
+		Language: Agora.AsrLanguageZhCn.Ptr(),
+	}),
 ).WithStt(
-  vendors.NewXfyunSTT(vendors.XfyunSTTOptions{
-    APIKey:    requireEnv("XFYUN_API_KEY"),
-    AppID:     requireEnv("XFYUN_APP_ID"),
-    APISecret: requireEnv("XFYUN_API_SECRET"),
-    Language: "zh-CN",
-  }),
+	vendors.NewXfyunSTT(vendors.XfyunSTTOptions{
+		APIKey:    requireEnv("XFYUN_API_KEY"),
+		AppID:     requireEnv("XFYUN_APP_ID"),
+		APISecret: requireEnv("XFYUN_API_SECRET"),
+		Language: "zh-CN",
+	}),
 ).WithLlm(
-  vendors.NewAliyun(vendors.AliyunOptions{
-    APIKey:  requireEnv("ALIYUN_API_KEY"),
-    Model:   "qwen-plus",
-    BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-    SystemMessages: []map[string]interface{}{
-      {"role": "system", "content": agentPrompt},
-    },
-    GreetingMessage: greeting,
-    MaxHistory:      Agora.Int(10),
-  }),
+	vendors.NewAliyun(vendors.AliyunOptions{
+		APIKey:  requireEnv("ALIYUN_API_KEY"),
+		Model:   "qwen-plus",
+		BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": agentPrompt},
+		},
+		GreetingMessage: greeting,
+		MaxHistory:      Agora.Int(10),
+	}),
 ).WithTts(
-  vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
-    Key:   requireEnv("MINIMAX_API_KEY"),
-    Model: "speech-01-turbo",
-    VoiceSetting: &vendors.MiniMaxVoiceSetting{
-      VoiceID: "female-shaonv",
-    },
-  }),
+	vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+		Key:   requireEnv("MINIMAX_API_KEY"),
+		Model: "speech-01-turbo",
+		VoiceSetting: &vendors.MiniMaxVoiceSetting{
+			VoiceID: "female-shaonv",
+		},
+	}),
 )
 ```
 
@@ -626,10 +629,10 @@ const agent = new Agent({
 
 ```go tab="Go" tabGroup="language"
 session := agent.CreateSession(agentkit.CreateSessionOptions{
-  Channel:     requireEnv("AGORA_CHANNEL"),
-  AgentUID:    requireEnv("AGORA_AGENT_UID"),
-  RemoteUIDs:  []string{"*"},
-  IdleTimeout: &idleTimeout,
+	Channel:     requireEnv("AGORA_CHANNEL"),
+	AgentUID:    requireEnv("AGORA_AGENT_UID"),
+	RemoteUIDs:  []string{"*"},
+	IdleTimeout: &idleTimeout,
 })
 ```
 
@@ -665,7 +668,7 @@ const session = agent.createSession({
 ```go tab="Go" tabGroup="language"
 agentSessionID, err := session.Start(ctx)
 if err != nil {
-  log.Fatal(err)
+	log.Fatal(err)
 }
 
 log.Printf("Agent started: %s", agentSessionID)
@@ -693,7 +696,7 @@ console.log("Agent started:", agentSessionId);
 
 ```go tab="Go" tabGroup="language"
 if err := session.Say(ctx, "你好，我已经进入频道，可以开始对话。", nil, nil); err != nil {
-  log.Fatal(err)
+	log.Fatal(err)
 }
 ```
 
@@ -709,7 +712,7 @@ await session.say("Hello! I have joined the channel and I am ready to chat.");
 
 ```go tab="Go" tabGroup="language"
 if err := session.Stop(ctx); err != nil {
-  log.Fatal(err)
+	log.Fatal(err)
 }
 ```
 

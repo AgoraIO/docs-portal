@@ -1,8 +1,6 @@
 ---
 title: "RtcConnection 类"
 ---
-RtcConnection
-
 <span className="index-desc-rtcconnection">`RtcConnection` 类，用于管理 SDK 与 RTC 频道之间的连接。连接完成之后，你可以通过 `LocalUser` 对象在 RTC 频道中发送和接收媒体流。连接频道是异步操作，你可以通过 [`RtcConnectionObserver`](./irtcconnectionobserver) 对象监听连接状态变化和事件。`RtcConnection` 还可以监控频道中的远端用户是否加入或离开频道。</span>
 
 <a id="newrtcconnection"></a>
@@ -171,13 +169,13 @@ func (conn *RtcConnection) RenewToken(token string) int {
 
 ```go
 func (conn *RtcConnection) CreateDataStream(reliable bool, ordered bool) (int, int) {
-  if conn.cConnection == nil {
-    return -1, -1
-  }
-  // int* stream_id, int reliable, int ordered
-  cStreamId := C.int(-1)
-  ret := int(C.agora_rtc_conn_create_data_stream(conn.cConnection, &cStreamId, CIntFromBool(reliable), CIntFromBool(ordered)))
-  return int(cStreamId), ret
+	if conn.cConnection == nil {
+		return -1, -1
+	}
+	// int* stream_id, int reliable, int ordered
+	cStreamId := C.int(-1)
+	ret := int(C.agora_rtc_conn_create_data_stream(conn.cConnection, &cStreamId, CIntFromBool(reliable), CIntFromBool(ordered)))
+	return int(cStreamId), ret
 }
 ```
 
@@ -230,12 +228,12 @@ v2.2.0 起新增。
 
 ```go
 func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
-  if conn.cConnection == nil {
-    return -1
-  }
-  cMsg := C.CBytes(msg)
-  defer C.free(cMsg)
-  return int(C.agora_rtc_conn_send_stream_message(conn.cConnection, C.int(streamId), (*C.char)(cMsg), C.uint32_t(len(msg))))
+	if conn.cConnection == nil {
+		return -1
+	}
+	cMsg := C.CBytes(msg)
+	defer C.free(cMsg)
+	return int(C.agora_rtc_conn_send_stream_message(conn.cConnection, C.int(streamId), (*C.char)(cMsg), C.uint32_t(len(msg))))
 }
 ```
 

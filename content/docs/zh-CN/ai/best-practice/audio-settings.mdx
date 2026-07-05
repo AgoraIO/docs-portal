@@ -27,7 +27,7 @@ title: "优化音频设置"
 - AI 降噪插件：`libagora_ai_noise_suppression_extension.so`
 - AI 回声消除插件：`libagora_ai_echo_cancellation_extension.so`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size.android.android#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#删除不需要的插件)。
 
 </TabsContent>
 
@@ -36,13 +36,13 @@ title: "优化音频设置"
 - AI 降噪插件：`AgoraAiNoiseSuppressionExtension.xcframework`
 - AI 回声消除插件：`AgoraAiEchoCancellationExtension.xcframework`
 
-集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size.android.ios#删除不需要的插件)。
+集成方式请参考[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#删除不需要的插件)。
 
 </TabsContent>
 
 <TabsContent value="web">
 
-- 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction.javascript)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
+- 参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction)集成 AI 降噪插件：`agora-extension-ai-denoiser`。
 
 </TabsContent>
 </Tabs>
@@ -68,8 +68,8 @@ title: "优化音频设置"
 
 开始前，请确保完成以下准备工作：
 
-- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
-- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start.javascript)。
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
@@ -128,7 +128,7 @@ val api = ConversationalAIAPIImpl(config)
 ```swift tab="iOS" tabGroup="language"
 /// 为 RTC 和 RTM 实例创建配置对象
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine,
+    rtcEngine: rtcEngine, 
     rtmEngine: rtmEngine,
     enableLog: true
 )
@@ -247,7 +247,7 @@ private fun setAudioConfigParameters(routing: Int) {
         } else {
             setParameters("{\"che.audio.sf.nlpAlgRoute\":1}")
         }
-
+        
         setParameters("{\"che.audio.sf.ainlpModelPref\":10}")
         setParameters("{\"che.audio.sf.nsngAlgRoute\":12}")
         setParameters("{\"che.audio.sf.ainsModelPref\":10}")
@@ -304,7 +304,7 @@ fun joinChannel(rtcToken: String, channelName: String, uid: Int, isIndependent: 
     options.publishMicrophoneTrack = true
     options.publishCameraTrack = false
     options.autoSubscribeAudio = true
-    options.autoSubscribeVideo = false
+    options.autoSubscribeVideo = false       
     val ret = rtcEngine?.joinChannel(rtcToken, channelName, uid, options)
 }
 ```
@@ -329,7 +329,7 @@ class RTCManager: NSObject {
     private var rtcEngine: AgoraRtcEngineKit!
     private var audioDumpEnabled: Bool = false
     private var audioRouting = AgoraAudioOutputRouting.default
-
+    
     // highlight-start
     // 设置音频相关参数
     private func setAudioConfigParameters(routing: AgoraAudioOutputRouting) {
@@ -360,7 +360,7 @@ class RTCManager: NSObject {
 }
 
 extension RTCManager: RTCManagerProtocol {
-
+    
     func createRtcEngine(delegate: AgoraRtcEngineDelegate) -> AgoraRtcEngineKit {
         let config = AgoraRtcEngineConfig()
         config.appId = AppContext.shared.appId
@@ -375,9 +375,9 @@ extension RTCManager: RTCManagerProtocol {
         // highlight-end
         return rtcEngine
     }
-
+    
     func joinChannel(rtcToken: String, channelName: String, uid: String) {
-
+        
         // highlight-start
         // 初始化音频配置参数
         setAudioConfigParameters(routing: audioRouting)
@@ -390,7 +390,7 @@ extension RTCManager: RTCManagerProtocol {
         options.publishCameraTrack = false
         options.autoSubscribeAudio = true
         options.autoSubscribeVideo = false
-        let ret = rtcEngine.joinChannel(byToken: rtcToken, channelId: channelName, uid: UInt(uid) ?? 0, mediaOptions: options)
+        let ret = rtcEngine.joinChannel(byToken: rtcToken, channelId: channelName, uid: UInt(uid) ?? 0, mediaOptions: options)           
     }
 }
 
@@ -408,7 +408,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 <TabsContent value="web">
 
-参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction.javascript)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
+参考[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction)了解如何集成 AI 降噪插件以提高 AI 对话音频体验。
 
 </TabsContent>
 </Tabs>
