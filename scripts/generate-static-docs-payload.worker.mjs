@@ -260,7 +260,7 @@ function isExternalNode(node) {
 // `externalByHref` (deduped). Ancestry = humanized tab label + ancestor folder
 // titles + the group's preceding separator title. The REST-API alias for an
 // external group is derived from its sibling internal `/api-ref/` link (same
-// separator group), matching `collectExternalNavEntries`.
+// separator group) via `deriveRestAlias`.
 function harvestExternalEntriesFromPageTree(tree, externalByHref) {
   for (const tabFolder of tree.children ?? []) {
     if (tabFolder.type !== 'folder') {
