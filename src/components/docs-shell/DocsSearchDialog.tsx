@@ -532,10 +532,20 @@ export function DocsSearchDialog({
                       value={page.id ?? page.url}
                     >
                       <div className="min-w-0 flex-1 space-y-1.5">
-                        <HighlightedText
-                          className="line-clamp-1 font-medium"
-                          value={page.title}
-                        />
+                        <div className="flex items-baseline gap-1">
+                          <HighlightedText
+                            className="line-clamp-1 font-medium"
+                            value={page.title}
+                          />
+                          {page.external ? (
+                            <span
+                              aria-hidden
+                              className="shrink-0 text-[0.7rem] text-muted-foreground"
+                            >
+                              ↗
+                            </span>
+                          ) : null}
+                        </div>
                         {page.path.length > 0 ? (
                           <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
                             {page.path.join(' › ')}
