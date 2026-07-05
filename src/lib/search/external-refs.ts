@@ -1,18 +1,16 @@
-import { isKnownPlatform, normalizePlatformKey } from '@/lib/platforms/registry';
-
-// External api-ref hrefs use path tokens that don't all match registry keys.
-// Map the known oddities; everything else falls through to normalizePlatformKey.
-const EXTERNAL_PLATFORM_TOKEN_MAP: Record<string, string> = {
-  'unreal-engine': 'unreal',
-  reactjs: 'javascript',
-  'windows-csharp': 'windows',
-};
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+} from '@/lib/platforms/registry';
 
 /**
  * Resolve the platform for an external SDK api-ref link from its href.
  * Href shape: https://api-ref.agora.io/{locale}/{product}/{platform}/{version}/...
- * Returns a registry key, or undefined when the token has no registry equivalent
- * (record is still indexed and findable by title/ancestry, just not platform-filterable).
+ * The path token is normalized through the registry's own alias map (which covers
+ * oddities like `unreal-engine`/`reactjs`/`windows-csharp`), keeping the registry
+ * the single source of truth. Returns a registry key, or undefined when the token
+ * has no registry equivalent (the record is still indexed and findable by
+ * title/ancestry, just not platform-filterable).
  */
 export function platformFromExternalHref(href: string): string | undefined {
   const pathname = href.replace(/^https?:\/\/[^/]+/, '');
@@ -23,8 +21,7 @@ export function platformFromExternalHref(href: string): string | undefined {
     return undefined;
   }
 
-  const mapped = EXTERNAL_PLATFORM_TOKEN_MAP[token] ?? token;
-  const key = normalizePlatformKey(mapped);
+  const key = normalizePlatformKey(token);
 
   return isKnownPlatform(key) ? key : undefined;
 }

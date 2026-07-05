@@ -72,6 +72,12 @@ describe('platform registry', () => {
     expect(normalizePlatformKey('android')).toBe('android');
   });
 
+  it('normalizes external api-ref path-token aliases to registered keys', () => {
+    expect(normalizePlatformKey('reactjs')).toBe('javascript');
+    expect(normalizePlatformKey('unreal-engine')).toBe('unreal');
+    expect(normalizePlatformKey('windows-csharp')).toBe('windows');
+  });
+
   it('returns locale-specific labels from the registry', () => {
     expect(getPlatformLabel('web', 'en')).toBe('Web');
     expect(getPlatformLabel('web', 'zh-CN')).toBe('Web');
@@ -108,8 +114,14 @@ describe('platform registry — SDK languages', () => {
   });
 
   it('orders them next to python', () => {
-    expect(platformRegistry.go.order).toBeGreaterThan(platformRegistry.python.order);
-    expect(platformRegistry.typescript.order).toBeGreaterThan(platformRegistry.go.order);
-    expect(platformRegistry.typescript.order).toBeLessThan(platformRegistry['linux-cpp'].order);
+    expect(platformRegistry.go.order).toBeGreaterThan(
+      platformRegistry.python.order,
+    );
+    expect(platformRegistry.typescript.order).toBeGreaterThan(
+      platformRegistry.go.order,
+    );
+    expect(platformRegistry.typescript.order).toBeLessThan(
+      platformRegistry['linux-cpp'].order,
+    );
   });
 });

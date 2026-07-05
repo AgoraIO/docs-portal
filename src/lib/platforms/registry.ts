@@ -142,6 +142,10 @@ export type PlatformKey = keyof typeof platformRegistry;
 
 const platformAliases = {
   'react-js': 'javascript',
+  // External api-ref href path tokens that don't match a registry key directly.
+  reactjs: 'javascript',
+  'unreal-engine': 'unreal',
+  'windows-csharp': 'windows',
 } as const;
 
 export type PlatformAlias = keyof typeof platformAliases;
