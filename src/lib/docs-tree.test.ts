@@ -133,7 +133,7 @@ describe('docs tree helpers', () => {
     ]);
   });
 
-  it('hides legacy best-practices tabs from the top navigation', () => {
+  it('includes best-practices tabs from root folders', () => {
     const tree: Root = {
       children: [
         {
@@ -178,6 +178,11 @@ describe('docs tree helpers', () => {
         id: 'introduction',
         title: 'Introduction',
         url: '/en/introduction',
+      },
+      {
+        id: 'best-practices',
+        title: 'Best Practices',
+        url: '/en/best-practices',
       },
     ]);
   });
