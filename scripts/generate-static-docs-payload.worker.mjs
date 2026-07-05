@@ -165,9 +165,12 @@ export async function generateStaticDocsPayload() {
 
   for (const locale of SUPPORTED_LOCALES) {
     for (const page of source.getPages(locale)) {
-      const declared = Array.isArray(page.data?.platforms)
+      const declared = (Array.isArray(page.data?.platforms)
         ? page.data.platforms
-        : [];
+        : []
+      )
+        .map(normalizePlatformKey)
+        .filter(isKnownPlatform);
       const resolved = await getStaticPagePlatformKeys(page);
       const platforms = [...new Set([...declared, ...resolved])];
       if (platforms.length > 0) {
