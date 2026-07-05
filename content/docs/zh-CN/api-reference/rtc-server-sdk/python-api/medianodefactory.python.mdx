@@ -1,0 +1,71 @@
+---
+title: "MediaNodeFactory 类"
+---
+MediaNodeFactory
+
+<span className="index-desc-medianodefactory">`MediaNodeFactory` 类。</span>
+
+<a id="createaudiopcmdatasender"></a>
+## create_audio_pcm_data_sender
+
+```python
+def create_audio_pcm_data_sender(self)
+```
+
+<span className="index-desc-createaudiopcmdatasender">创建一个 PCM 数据发送模块。该方法创建一个 [`AudioPcmDataSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/audiopcmdatasender.python) 对象，可用于 [`create_custom_audio_track_pcm`](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomaudiotrackpcm) 方法。</span>
+
+#### 返回值
+
+- `AudioPcmDataSender` 对象：方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createaudioencodedframesender"></a>
+## create_audio_encoded_frame_sender
+
+```python
+def create_audio_encoded_frame_sender(self)
+```
+
+<span className="index-desc-createaudioencodedframesender">创建一个已编码音频数据发送模块。该方法创建一个 [`AudioEncodedFrameSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/audioencodedframesender.python) 对象，可用于 [`create_custom_audio_track_encoded`](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomaudiotrackencoded) 方法。</span>
+
+#### 返回值
+
+- `AudioEncodedFrameSender` 对象：方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createvideoframesender"></a>
+## create_video_frame_sender
+
+```python
+def create_video_frame_sender(self)
+```
+
+<span className="index-desc-createvideoframesender">创建一个 YUV 视频帧发送模块。该方法创建一个 [`VideoFrameSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/videoframesender.python) 对象，可用于 [`create_custom_video_track_frame`](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomvideotrackframe) 方法。</span>
+
+#### 返回值
+
+- `VideoFrameSender` 对象：方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createvideoencodedimagesender"></a>
+## create_video_encoded_image_sender
+
+```python
+def create_video_encoded_image_sender(self)
+```
+
+<span className="index-desc-createvideoencodedimagesender">创建一个已编码视频发送模块。该方法创建一个 [`VideoEncodedImageSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/videoencodedimagesender.python) 对象，可用于 [`create_custom_video_track_encoded`](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#createcustomvideotrackencoded) 方法。</span>
+
+#### 返回值
+
+- `VideoEncodedImageSender` 对象：方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="release"></a>
+## release
+
+```python
+def release(self)
+```
+
+<span className="index-desc-release">释放 `MediaNodeFactory` 对象。</span>

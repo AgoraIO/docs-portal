@@ -1,0 +1,168 @@
+---
+title: "LocalUserObserver 类"
+---
+LocalUserObserver
+
+<span className="index-desc-localuserobserver">`LocalUserObserver` 类。</span>
+
+<a id="onlocalaudiotrackstatechanged"></a>
+## on_local_audio_track_state_changed
+
+```python
+def on_local_audio_track_state_changed(self, agora_local_user, agora_local_audio_track, state, error)
+```
+
+<span className="index-desc-onlocalaudiotrackstatechanged">在本地音频轨道状态变化时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_local_user` | `LocalUserObserver` 类。 |
+| `agora_local_audio_track` | 本地音频轨道。详见 [`LocalAudioTrack`](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python)。 |
+| `state` | <Slot name="localuserobserver-python-html-0-3-1" /> |
+| `error` | <Slot name="localuserobserver-python-html-0-4-1" /> |
+
+<Slot for="localuserobserver-python-html-0-3-1">
+
+音频轨道的当前状态。
+
+    - 0：本地音频位于初始状态。
+    - 1：音频录制设备成功启动。
+    - 2：第一个音频帧成功完成编码。
+    - 3：本地音频启动失败。
+
+</Slot>
+
+<Slot for="localuserobserver-python-html-0-4-1">
+
+错误信息。
+
+    - 0：本地音频状态正常。
+    - 1：原因未知。
+    - 2：没有权限使用本地音频设备。
+    - 3：麦克风被占用。
+    - 4：本地音频录制失败。检查录制设备是否正常工作。
+    - 5：本地音频编码失败。
+
+</Slot>
+
+<a id="onuseraudiotrackstatechanged"></a>
+## on_user_audio_track_state_changed
+
+```python
+def on_user_audio_track_state_changed(self, agora_local_user, user_id, agora_remote_audio_track, state, reason, elapsed)
+```
+
+<span className="index-desc-onuseraudiotrackstatechanged">在远端音频轨道状态变化时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_local_user` | `LocalUserObserver` 类。 |
+| `user_id` | 远端用户 ID。 |
+| `agora_remote_audio_track` | 远端音频轨道。 |
+| `state` | <Slot name="localuserobserver-python-html-1-4-1" /> |
+| `reason` | <Slot name="localuserobserver-python-html-1-5-1" /> |
+| `elapsed` | 远端用户连接频道之后经过的时间（毫秒）。 |
+
+<Slot for="localuserobserver-python-html-1-4-1">
+
+音频轨道的当前状态。
+
+    - 0：远端音频位于初始状态。
+    - 1：第一个远端音频包被成功接收。
+    - 2：远端音频流正常解码和播放。
+    - 3：远端音频流卡顿。
+    - 4：远端音频流启动失败。
+
+</Slot>
+
+<Slot for="localuserobserver-python-html-1-5-1">
+
+状态改变原因。
+
+    - 0：音频状态发生改变时，会报告该原因。
+    - 1：网络阻塞。
+    - 2：网络恢复正常。
+    - 3：本地用户停止接收远端音频流或本地用户禁用音频模块。
+    - 4：本地用户恢复接收远端音频流或本地用户启动音频模块。
+    - 5：远端用户停止发送音频流或远端用户禁用音频模块。
+    - 6：远端用户恢复发送音频流或远端用户启用音频模块。
+    - 7：远端用户离开频道。
+
+</Slot>
+
+<a id="onstreammessage"></a>
+## on_stream_message
+
+```python
+def on_stream_message(self, agora_local_user, user_id, stream_id, data, length)
+```
+
+<span className="index-desc-onstreammessage">接收到数据流消息的回调。该回调表示本地用户收到了远端用户调用 [`send_stream_message`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#sendstreammessage) 方法发送的流消息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_user` | `LocalUserObserver` 类。 |
+| `user_id` | 发送消息的用户 ID。 |
+| `stream_id` | 接收到的消息的 Stream ID。 |
+| `data` | 接收到的数据。 |
+| `length` | 数据长度，单位为字节。 |
+
+<a id="onuserinfoupdated"></a>
+## on_user_info_updated
+
+```python
+def on_user_info_updated(self, agora_local_user, user_id, msg, val)
+```
+
+<span className="index-desc-onuserinfoupdated">用户媒体信息更新时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_local_user` | `LocalUserObserver` 类。 |
+| `user_id` | 发送消息的用户 ID。 |
+| `msg` | <Slot name="localuserobserver-python-html-2-3-1" /> |
+| `val` | <Slot name="localuserobserver-python-html-2-4-1" /> |
+
+<Slot for="localuserobserver-python-html-2-3-1">
+
+用户媒体信息：
+
+    - `0`: 用户已经停止发布音频流。
+    - `1`: 用户已经停止发布视频流。
+    - `4`: 用户已开启视频功能。
+
+</Slot>
+
+<Slot for="localuserobserver-python-html-2-4-1">
+
+用户是否停止发流。
+
+    - `0`: 不停止发流。
+    - `1`: 停止发流
+
+</Slot>
+
+<a id="onaudiometadatareceived"></a>
+## on_audio_meta_data_received
+
+```python
+def on_audio_meta_data_received(self, agora_local_user, user_id, data):
+```
+
+接收到对方音频 Metadata 数据的回调。该回调表示本地用户收到了远端用户调用 [`send_audio_metadata`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#sendaudiometadata) 方法发送的音频 Metadata 数据。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_user` | `LocalUserObserver` 类。 |
+| `user_id` | 发送音频 Metadata 数据的用户 ID。 |
+| `data` | 音频 Metadata 数据。ByteArray 类型。 |

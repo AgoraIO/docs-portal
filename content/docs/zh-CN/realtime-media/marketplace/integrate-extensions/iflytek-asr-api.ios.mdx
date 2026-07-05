@@ -1,0 +1,552 @@
+---
+title: "key-value 说明"
+---
+在声网 SDK 提供的插件相关方法和回调中，`key` 和 `value` 参数取决于你使用的插件。本页提供讯飞转写及翻译插件支持的 `key` 和 `value` 说明。
+
+## 插件的 key 概览
+
+### 方法 key
+
+本节列出调用声网 SDK 的插件相关方法时，支持传入的 `key` 及对应功能。
+
+| setExtensionPropertyWithVendor 方法的 key| 描述 |
+| ------------------------------------ | -------- |
+| [`start_listening`](#start_listening)               | 启动倾听         |
+| [`flush_listening`](#flush_listening)             | 结束音频获取结果          |
+| [`stop_listening`](#stop_listening)            | 停止倾听                      |
+
+| setExtensionProviderPropertyWithVendor 方法的 key| 描述 |
+| ------------------------------------ | -------- |
+| [`log_lv`](#log_lv)               | 设置日志等级        |
+
+<a id="onevent"></a>
+### 回调 key
+
+本节列出声网 SDK 的 `onEvent` 回调返回的 `key`。
+
+| onEvent 回调的 key| 描述 |
+| ------------------------------------ | -------- |
+| [`error`](#error)      | 错误类型            |
+| [`ist_result`](#ist_result) | 语音转写结果       |
+| [`its_result`](#its_result) | 文本翻译结果       |
+| [`end`](#end)        | 会话结束的最后事件 |
+
+##  方法 key 的 value 说明
+
+### start_listening
+
+value 包含的参数及含义详见以下代码注释：
+
+```json
+{
+    // 公共对象。必选。
+    "common": {
+        // 应用标识。必选。
+        "app_id": "aaa",
+        // API key。必选。
+        "api_key": "bbb",
+        // API secret。必选。
+        "api_secret": "ccc"
+    },
+    // 语音转写对象。必选。
+    "ist": {
+        // URI。必选。
+        "uri": "wss://ist-api.xfyun.cn/v2/ist",
+        // 请求对象。必选。
+        "req": {
+            // 业务对象。必选。
+            "business": {
+                // 语种。必选。中译英："zh_cn"；英译中："zh_cn"。
+                "language": "zh_cn",
+                // 口音。必选。中译英："mandarin"；英译中："mandarin"。
+                "accent": "mandarin",
+                // 领域。必选。中译英："ist_ed_open"；英译中："ist_ed_open"。
+                "domain": "ist_ed_open",
+                // 语言类型（Int）。
+                // 1：（默认）中英文模式，中文英文均可识别。中译英设为 1。
+                // 3：英文模式，只识别出英文。英译中设为 3。
+                "language_type": 1,
+                // 动态修正。
+                "dwa": "wpgs"
+            },
+            "data": {
+                // 音频数据格式，raw 表示原生音频。
+                "encoding": "raw"
+            }
+        }
+    },
+    // 文本翻译对象。
+    "its": {
+        // URI。必选。
+        "uri": "https://itrans.xfyun.cn/v2/its",
+        // 请求对象。必选。
+        "req": {
+            // 业务对象。必选。
+            "business": {
+                // 源语种。必选。中译英："cn"；英译中："en"。
+                "from": "cn",
+                // 目标语种。必选。中译英："en"；英译中："cn"。
+                "to": "en"
+            }
+        }
+    }
+}
+```
+
+其中，语音转写支持的语种所对应的 `language`、`accent`、`domain` 和 `language_type` 的设置参考下表：
+
+| 实时转写语种 | `language` | `accent` | `domain` | `language_type` |
+| --- | --- | --- | --- | --- |
+| 中英文混合 | `zh_cn` | `mandarin` | `ist_ed_open` | <Slot name="iflytek-asr-api-android-ios-windows-html-0-1-4" /> |
+| 德语 | `de_de` | `mandarin` | `ist_hy` | 无需设置 |
+| 阿拉伯语 | `ar_il` | `mandarin` | `ist_open` | 无需设置 |
+| 西班牙语 | `es_es` | `mandarin` | `ist_open` | 无需设置 |
+| 法语 | `fr_fr` | `mandarin` | `ist_open` | 无需设置 |
+| 意大利语 | `it_IT` | `mandarin` | `ist_open` | 无需设置 |
+| 日语 | `ja_jp` | `mandarin` | `ist_open` | 无需设置 |
+| 韩语 | `ko_kr` | `mandarin` | `ist_open` | 无需设置 |
+| 俄语 | `ru_ru` | `mandarin` | `ist_open` | 无需设置 |
+| 泰语 | `th_TH` | `mandarin` | `ist_open` | 无需设置 |
+| 越南语 | `vi_vn` | `mandarin` | `ist_open` | 无需设置 |
+| 粤语 | `zh_cn` | `cantonese` | `ist_open` | 无需设置 |
+| 西南官话（包含四川、重庆、云南、贵州） | `zh_cn` | `xinanese` | `ist_open` | 无需设置 |
+| 河南话 | `zh_cn` | `henanese` | `ist_open` | 无需设置 |
+| 印尼语 | `id_id` | `mandarin` | `ist_hy` | 无需设置 |
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-0-1-4">
+
+语言过滤筛选：
+
+        - `1`：（默认）中英文模式，中文英文均可识别
+        - `2`：中文模式，可识别出简单英文
+        - `3`：英文模式，只能识别出英文
+        - `4`：纯中文模式，只能识别出中文
+
+</Slot>
+
+文本翻译支持的源语 `from` 和目标语 `to` 如下：
+
+<Tabs defaultValue="cn" groupId="languageType" persist>
+<TabsList>
+  <TabsTrigger value="cn">中文与其它语种互译</TabsTrigger>
+  <TabsTrigger value="foreign">英语与其他语种互译</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cn">
+
+| 语种 | 参数 |
+| --- | --- |
+| 中文 | `cn` |
+| 英语 | `en` |
+| 日语 | `ja` |
+| 韩语 | `ko` |
+| 泰语 | `th` |
+| 斯拉夫语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-6-1" /> |
+| 越系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-7-1" /> |
+| 印欧语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-8-1" /> |
+| 阿拉伯语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-9-1" /> |
+| 印地语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-10-1" /> |
+| 外蒙哈系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-11-1" /> |
+| 突厥语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-12-1" /> |
+| 希腊语系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-13-1" /> |
+| 维语 | `ug` |
+| 藏语 | `za` |
+| 粤语 | `yue` |
+| 彝语 | `ii` |
+| 壮语 | `zua` |
+| 内蒙语 | `mn` |
+| 内哈萨克语 | `kka` |
+| 方言系 | <Slot name="iflytek-asr-api-android-ios-windows-html-1-21-1" /> |
+| 南非荷兰语 | `af` |
+| 阿姆哈拉语 | `am` |
+| 加泰罗尼亚语 | `ca` |
+| 丹麦语 | `da` |
+| 克罗地亚语 | `hr` |
+| 冰岛语 | `is` |
+| 爪哇语 | `jv` |
+| 高棉语 | `km` |
+| 老挝语 | `lo` |
+| 立陶宛语 | `lt` |
+| 拉脱维亚语 | `lv` |
+| 马拉雅拉姆语 | `ml` |
+| 马拉地语 | `mr` |
+| 缅甸语 | `my` |
+| 博克马尔挪威语 | `nb` |
+| 尼泊尔语 | `ne` |
+| 僧伽罗语 | `si` |
+| 斯洛伐克语 | `sk` |
+| 斯洛文尼亚语 | `sl` |
+| 塞尔维亚语 | `sr` |
+| 巽他语 | `su` |
+| 泰米尔语 | `ta` |
+| 泰卢固语 | `te` |
+| 塔吉克语 | `tg` |
+| 土库曼语 | `tk` |
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-6-1">
+
+- 俄语 `ru`
+      - 保加利亚语 `bg`
+      - 乌克兰语 `uk`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-7-1">
+
+- 越南语 `vi`
+      - 马来语 `ms`
+      - 印尼语 `id`
+      - 菲律宾语 `tl`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-8-1">
+
+- 德语 `de`
+      - 西班牙语 `es`
+      - 法语 `fr`
+      - 意大利语 `it`
+      - 葡萄牙语 `pt`
+      - 捷克语 `cs`
+      - 罗马尼亚语 `ro`
+      - 瑞典语 `sv`
+      - 荷兰语 `nl`
+      - 波兰语 `pl`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-9-1">
+
+- 阿拉伯语 `ar`
+      - 波斯语 `fa`
+      - 普什图语 `ps`
+      - 乌尔都语 `ur`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-10-1">
+
+- 印地语 `hi`
+      - 孟加拉语 `bn`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-11-1">
+
+- 外蒙语-西里尔 `nm`
+      - 外哈语 `kk`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-12-1">
+
+- 土耳其语 `tr`
+      - 阿塞拜疆语 `az`
+      - 芬兰语 `fi`
+      - 豪莎语 `ha`
+      - 匈牙利语 `hu`
+      - 斯瓦西里语 `sw`
+      - 乌兹别克语 `uz`
+      - 祖鲁语 `zu`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-13-1">
+
+- 希腊语 `el`
+      - 希伯来语 `he`
+      - 亚美尼亚语 `hy`
+      - 格鲁吉亚语 `ka`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-1-21-1">
+
+- 东北话 `dbiu`
+      - 山东话 `jlua`
+      - 四川话 `suji`
+      - 上海话 `xghu`
+      - 武汉话 `hbwh`
+      - 河南话 `hena`
+      - 长沙话 `hncs`
+      - 南京话 `jsnj`
+
+</Slot>
+
+</TabsContent>
+
+<TabsContent value="foreign">
+
+| 互译语种 | 参数 |
+| --- | --- |
+| 英日互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-1-1" /> |
+| 英韩互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-2-1" /> |
+| 英俄互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-3-1" /> |
+| 英西互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-4-1" /> |
+| 英法互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-5-1" /> |
+| 英粤互译 | <Slot name="iflytek-asr-api-android-ios-windows-html-2-6-1" /> |
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-1-1">
+
+- 英语 `en`
+      - 日语 `ja`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-2-1">
+
+- 英语 `en`
+      - 韩语 `ko`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-3-1">
+
+- 英语 `en`
+      - 俄语 `ru`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-4-1">
+
+- 英语 `en`
+      - 西班牙语 `es`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-5-1">
+
+- 英语 `en`
+      - 法语 `fr`
+
+</Slot>
+
+<Slot for="iflytek-asr-api-android-ios-windows-html-2-6-1">
+
+- 英语 `en`
+      - 粤语 `yue`
+
+</Slot>
+
+</TabsContent>
+</Tabs>
+
+### flush_listening
+
+无 value 参数。
+
+### stop_listening
+
+无 value 参数。
+
+### log_lv
+
+value 参数为 Int 型，支持设为以下值：
+
+- 0（默认）：LOG_LVL_UNKNOWN
+- 1：LOG_LVL_DEFAULT
+- 2：LOG_LVL_VERBOSE
+- 3：LOG_LVL_DEBUG
+- 4：LOG_LVL_INFO
+- 5：LOG_LVL_WARN
+- 6：LOG_LVL_ERROR
+- 7：LOG_LVL_FATAL
+- 8：LOG_LVL_SILENT
+
+## 回调 key 的 value 说明
+
+### error
+
+`value` 包含以下参数：
+
+| value 参数| 描述 |
+| ----------- | ---------------------- |
+| `err_code`|  Int 型，[错误码](#错误码)。|
+| `tip`|  String 型，提示内容。 |
+
+### ist_result
+
+value 包含的参数及含义详见以下代码注释：
+
+```json
+{
+    // 错误码，0标识成功。
+    "code": 0,
+    // 错误描述
+    "message": "success",
+    // 每次会话的唯一标识
+    "sid": "ist000d6ed7@dx17efb57a7faa497822",
+    // 识别数据
+    "data": {
+        // 识别结果是否结束标识：1：识别中；2：识别结束。
+        "status": 1,
+        // 识别结果
+        "result": {
+            // 返回结果的序号
+            "sn": 6,
+            // 是否是最后一片结果
+            "ls": false,
+            // 子句开始时刻，ms。
+            "bg": 1810,
+            // 子句结束时刻，ms。
+            "ed": 3840,
+            // 开启 wpgs 会有此字段，取值为 "apd"时表示该片结果是追加到前面的最终结果，取值为"rpl" 时表示替换前面的部分结果，替换范围为rg字段。
+            "pgs": "rpl",
+            // 替换范围，开启wpgs会有该字段。
+            "rg": [3, 5],
+            // 是否子句结束
+            "sub_end": true,
+            // 词组
+            "ws": [
+                {
+                    // 词相对子句开始时刻，10ms。
+                    "bg": 61,
+                    // 词多候选组
+                    "cw": [
+                        {
+                            "rl": 0,
+                            // 分数
+                            "sc": 0.0,
+                            // 词
+                            "w": "。",
+                            // 词相对子句开始时刻，10ms。
+                            "wb": 61,
+                            "wc": 0.0,
+                            // 词相对子句结束时刻，10ms。
+                            "we": 61,
+                            // 词语的属性，其中n表示正常词、s表示顺滑、p表示标点、g表示分段。
+                            "wp": "p"
+                        }
+                    ]
+                },
+                {
+                    "bg": 61,
+                    "cw": [
+                        {
+                            "rl": 0,
+                            "sc": 0.0,
+                            "w": "你好",
+                            "wb": 61,
+                            "wc": 0.0,
+                            "we": 112,
+                            "wp": "s"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    // 业务上下文id，唯一标识一路完整会话(包括重连成功的请求)。
+    "context_id": "ZHhpc3QIIKwVpJc3cuhGrtbTFj2t"
+}
+```
+
+### its_result
+
+value 包含的参数及含义详见以下代码注释：
+
+```json
+{
+    // 错误码，0标识成功。
+    "code": 0,
+    // 错误描述
+    "message": "success",
+    // 每次会话的唯一标识
+    "sid": "its000825bc@dx17efb57b09ba11d902",
+    // 翻译数据
+    "data": {
+        // 结果
+        "result": {
+            // 源语种
+            "from": "cn",
+            // 目标语种
+            "to": "en",
+            // 翻译结果
+            "trans_result": {
+                // 源文本
+                "src": "。你好你好",
+                // 目标文本
+                "dst": "。 Hello Hello"
+            }
+        }
+    },
+    // 语音转写结果序号
+    "ist_sn": 6
+}
+```
+
+## 错误码
+
+### SDK 错误码
+
+| 错误码  | 说明    | 处理方式                                                                  |
+| ---- | ----- | --------------------------------------------------------------------- |
+| -101 | 未知    | 分析日志                                                                  |
+| -102 | 内部    | 分析日志                                                                  |
+| -103 | 无效参数  | 检查输入参数                                                                |
+| -104 | 无效参数键 | 检查输入参数键                                                               |
+| -105 | 无效参数值 | 检查输入参数值                                                               |
+| -106 | 状态    | 检查当前状态下调用是否合法，例如空闲时才能调用 `start_listening`，会话中才能调用 `flush_listening` 和 `stop_listening` |
+| -107 | 繁忙    | 分析日志                                                                  |
+| -108 | 内存不足  | 检查内存用量                                                                |
+| -109 | 网络    | 检查网络是否通畅                                                              |
+| 0    | 成功    | 无                                                                     |
+
+### 常见错误码
+
+| 错误码   | 说明                        | 处理方式                                          |
+| ----- | ------------------------- | --------------------------------------------- |
+| 10043 | 音频解码失败                    | 请检查所传的音频是否与 `encoding` 字段描述的编码格式对应。               |
+| 10139 | 参数错误                      | 引擎编解码错误                                       |
+| 10221 | 服务端没有可用连接                 | 提交工单                                          |
+| 10222 | 有服务端组件服务连接超时              | 提交工单                                          |
+| 10223 | LB 找不到引擎节点                 | 提交工单                                          |
+| 10225 | 找不到 atmos                  | 提交工单                                          |
+| 10317 | 版本非法                      |         提交工单                                      |
+| 11200 | 功能未授权或授权到期                | 提交工单申请权限                                      |
+| 11201 | 日流控超限                     | 额外需求请提交工单                                     |
+| 11202 | 秒级流控超限                    | 额外需求请提交工单                                     |
+| 11203 | 并发流控超限                    | 额外需求请提交工单                                     |
+| 11204 | 组鉴权未通过，即组内所有功能均受限         | 如有需求请提交工单                                     |
+| 10160 | 请求数据格式非法                  | 检查请求数据是否是合法的 JSON                             |
+| 10161 | Base64 解码失败                | 检查发送的数据是否使用 Base64 编码了                          |
+| 10163 | 参数校验失败                    | 由客户端参数校验失败引起，客户端需要依据返回的 `message` 字段中的描述来更改请求参数   |
+| 10200 | 读取数据超时                    | 检查是否累计 10 s 未发送数据并且未关闭连接                         |
+| 10114 | 会话时间超时                    | 会话时间超过了 60000 s，请控制会话时间，保持不超过 60000 s。            |
+| 10313 | `app_id` 和 `api_key` 不匹配或者没有传 `app_id` | 检查请求参数 |
+| 11503 | 服务内部响应数据错误                | 提交工单                                          |
+| 11502 | 服务配置错误                    | 提交工单                                          |
+| 10118 | 服务端无法解析后端响应数据             | 提交工单                                          |
+| 12000 | 用户发完数据没有收到结果              | —                                            |
+| 12001 | 用户没有正常发送完数据               | -                                         |
+| 99999 | 用户异常断开连接，或者会话超时断开连接       | —                                 |
+
+### 引擎通用错误码
+
+| 错误码 | 说明                                        |
+| ------ | ------------------------------------------- |
+| 10003  |      无效操作                         |
+| 10004  | session 模式非法                             |
+| 10008  | 句柄错误（忽略）                              |
+| 10009  | 输入数据非法                                |
+| 10010  | 授权不足                                    |
+| 10019  | session 会话超时，请先自查客户端发包间隔时长 |
+| 10101  | 引擎会话已结束（忽略）                      |
+| 10300  | 排序缓冲区为空                              |
+| 10301  | 排序 channel 已关闭                           |
+| 10400  | pb 协议序列化错误                           |
+| 10401  | pb 协议反序列化错误                         |
+| 10500  | 内部同步错误                                |
+| 10600  | 事件异常错误                                |
+| 10700  | 引擎异常                                    |
+
+### 文本翻译错误码
+
+| 错误码   | 说明       | 处理方式            |
+| ----- | -------- | --------------- |
+| 10324 | Sid 生成失败  | 联系技术人员          |
+| 10106 | 非法的参数    | 检查参数是否正确上传      |
+| 10107 | 非法参数值    | 检查参数值是否在取值范围内   |
+| 10109 | 非法的 data  | 检查发送的文本是否合法     |
+| 10114 | 超时       | 检查网络是否通畅        |
+| 11210 | `app_id` 和 `api_key` 不匹配 | 检查 `app_id` 和 `api_key` 是否匹配 |

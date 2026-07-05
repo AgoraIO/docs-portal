@@ -1,0 +1,353 @@
+---
+title: "画中画"
+---
+在声网 RTC SDK 的画中画（Picture in Picture）功能中，应用在进入后台或用户切换到其他应用时，可以将当前视频内容以悬浮小窗形式持续展示在屏幕上。用户可以在不中断通话或观看的情况下继续进行其他操作，从而提升多任务体验与用户留存。
+
+## 应用场景
+
+| 场景 | 描述 |
+| :--- | :--- |
+| 视频通话 | 在视频通话过程中，用户切换到其他应用或返回桌面时，通话画面以画中画小窗形式持续显示，保证沟通不中断，适用于社交通话、远程会议及在线客服等场景。 |
+| 在线教育 | 学员在观看老师视频讲解时，可以同时查看学习资料、记笔记或操作其他应用，提升学习效率与多任务体验。 |
+| 互动直播 | 用户观看直播时可同时浏览商品、聊天或使用其他应用，直播画面通过画中画持续播放，常见于电商直播与内容直播场景。 |
+| 屏幕共享 | 在远程协作或演示过程中，即使用户切换应用，仍可通过画中画窗口持续查看共享内容，适用于远程办公、技术支持和产品演示。 |
+
+## 前提条件
+
+在开始实现前，请确保你已满足以下条件：
+
+- 项目已集成声网 RTC React Native SDK v4.6.2 或以上版本。
+- 项目已实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.rn)。
+- 如需在 Android 设备上使用画中画，设备系统版本需为 Android 8.0 或以上。
+- 如需在 iOS 设备上使用画中画，设备系统版本需为 iOS 15.0 或以上。
+
+## 实现方法
+
+自声网 RTC React Native SDK v4.6.2 起，声网提供 [`AgoraPip`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapip) 控制器及相关配置项，用于在 Android 和 iOS 平台启用和管理画中画能力。本节介绍如何在 React Native 项目中实现画中画功能。
+
+### 完成平台端配置
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- 在 Android 项目中声明当前 Activity 支持画中画模式：
+
+```xml
+<activity
+  android:name=".MainActivity"
+  android:supportsPictureInPicture="true"
+  android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
+```
+
+- 让 `MainActivity` 继承 `AgoraPIPActivity`：
+
+```kotlin
+import io.agora.rtc.ng.react.AgoraPIPActivity
+
+class MainActivity : AgoraPIPActivity() {
+}
+```
+
+- 如果你希望应用进入后台或进入画中画后仍持续采集或播放音视频，请同时完成前台服务配置。所需权限、声明和集成方式请参考[Android 后台限制](/faq/quality-issues/android-background)。
+
+:::info[信息]
+根据 Android 版本不同，进入画中画的方式有所区别：
+
+- Android 12 及以上：系统支持在用户离开当前页面的合适场景下自动进入画中画。你可以结合 `autoEnterEnabled` 使用。
+- Android 12 以下：系统不支持通过 `autoEnterEnabled` 自动进入画中画，通常需要显式触发进入画中画。
+
+如果 `MainActivity` 继承 `AgoraPIPActivity`，SDK 会接管相关系统回调的适配逻辑。
+:::
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+在 Xcode 中为 App 添加后台播放能力：
+
+1. 打开目标工程的 **Signing & Capabilities**。
+2. 点击 **+ Capability**。
+3. 添加 **Background Modes**。
+4. 勾选 **Audio, AirPlay, and Picture in Picture**。
+
+:::info[信息]
+如果你的业务需要开启在多任务模式下采集本地摄像头画面的功能，请参考[如何开启 iOS 多任务采集](https://doc.shengwang.cn/faq/integration-issues/multitasking)。
+
+当前 React Native SDK 示例未直接封装 `multitaskingCameraAccessEnabled` 的配置；如果你的业务必须在画中画期间保留本地摄像头采集，还需要额外进行原生侧适配。
+:::
+
+</TabsContent>
+</Tabs>
+
+### 获取画中画控制器、注册监听器
+
+初始化 RTC 引擎后，调用 `getAgoraPip` 获取画中画控制器，并注册状态监听器：
+
+```typescript
+this.engine = createAgoraRtcEngine();
+this.engine.initialize({
+  appId,
+  channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+});
+
+const pip = this.engine.getAgoraPip();
+pip.registerPipStateChangedObserver(this);
+```
+
+### 检查设备支持能力
+
+检查当前设备及系统是否支持相关能力：
+
+```typescript
+const isPipSupported = pip.pipIsSupported();
+const isPipAutoEnterSupported = pip.pipIsAutoEnterSupported();
+```
+
+其中：
+
+- `pipIsSupported` 用于检查当前设备是否支持画中画。
+- `pipIsAutoEnterSupported` 用于检查当前设备和系统是否支持自动进入画中画。
+
+### 配置画中画参数
+
+调用 `pipSetup` 配置画中画参数。你可以通过 [`AgoraPipOptions`](/api-ref/rtc/rn/API/class_agorapipoptions) 为 Android 和 iOS 分别设置不同选项。
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+Android 平台通常需要配置宽高比、初始区域以及无缝缩放等参数：
+
+```typescript
+const videoViewBounds = {
+  left: measuredLeft,
+  top: measuredTop,
+  right: measuredRight,
+  bottom: measuredBottom,
+};
+
+const options: AgoraPipOptions = {
+  autoEnterEnabled: pip.pipIsAutoEnterSupported(),
+  aspectRatioX: 960,
+  aspectRatioY: 540,
+  sourceRectHintLeft: videoViewBounds.left,
+  sourceRectHintTop: videoViewBounds.top,
+  sourceRectHintRight: videoViewBounds.right,
+  sourceRectHintBottom: videoViewBounds.bottom,
+  seamlessResizeEnabled: true,
+  useExternalStateMonitor: true,
+  externalStateMonitorInterval: 100,
+};
+
+pip.pipSetup(options);
+```
+
+:::info[信息]
+`sourceRectHint` 建议传入已测量的视频视图边界，用于改善进入画中画时的过渡动画效果。
+
+`useExternalStateMonitor` 默认为 `true`，示例中显式保留该配置以便说明轮询行为。只有在已继承 `AgoraPIPActivity` 且明确不希望使用轮询时，才建议考虑将其关闭。
+:::
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+iOS 平台支持设置画中画窗口尺寸、视频流布局和系统控制样式：
+
+  ```typescript
+  const options: AgoraPipOptions = {
+    autoEnterEnabled: pip.pipIsAutoEnterSupported(),
+    preferredContentWidth: 960,
+    preferredContentHeight: 540,
+    contentView: 0,
+    sourceContentView: 0,
+    contentViewLayout: {
+      padding: 0,
+      spacing: 2,
+      row: 1,
+      column: 2,
+    },
+    videoStreams: [
+      {
+        connection: {
+          channelId,
+          localUid: uid,
+        },
+        canvas: {
+          sourceType: VideoSourceType.VideoSourceCamera,
+          setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+          renderMode: RenderModeType.RenderModeHidden,
+          mirrorMode: VideoMirrorModeType.VideoMirrorModeEnabled,
+        },
+      },
+      ...remoteUsers.map((userUid) => ({
+        connection: {
+          channelId,
+          localUid: uid,
+        },
+        canvas: {
+          uid: userUid,
+          sourceType: VideoSourceType.VideoSourceRemote,
+          setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+          renderMode: RenderModeType.RenderModeHidden,
+        },
+      })),
+    ],
+    controlStyle: 2,
+  };
+
+  pip.pipSetup(options);
+  ```
+
+  在该示例中：
+
+  - 当 `contentView` 设为 `0` 时，SDK 负责管理画中画窗口中的原生视图。若传入非 0 值，则需要自行管理原生视图布局。
+  - `videoStreams` 用于定义需要展示的本地流和远端流。
+  - `contentViewLayout` 用于配置视频流在画中画窗口内的网格布局，视频流按从左到右、从上到下的顺序填充。
+  - `controlStyle: 2` 表示隐藏播放/暂停和进度条，仅保留必要的窗口控制按钮，适合实时互动场景。
+
+  :::info[信息]
+  `contentView` 或 `sourceContentView` 传入非 0 值，需要业务侧自行提供并管理原生视图 ID 的原生接入场景。对于纯 React Native 集成，建议默认将两者都传 `0`，由 SDK 托管画中画中的原生视图、布局和恢复目标；只有在你已经完成对应的原生视图接入时，才建议传入非 0 值。
+  :::
+
+</TabsContent>
+</Tabs>
+
+### 监听画中画状态变化
+
+你可以通过实现 [`AgoraPipStateChangedObserver`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapipstatechangedobserver) 监听画中画状态变化，并根据 [`AgoraPipState`](/api-ref/rtc/rn/API/enum_agorapipstate) 更新 UI 或执行异常处理逻辑。
+
+```typescript
+onPipStateChanged(state: AgoraPipState, error: string | null): void {
+  if (state === AgoraPipState.pipStateFailed) {
+    this.engine?.getAgoraPip().pipDispose();
+  }
+
+  this.setState({ pipState: state });
+}
+```
+
+`AgoraPipState` 包括以下几种状态：
+
+- `pipStateStarted`：画中画已成功启动。
+- `pipStateStopped`：画中画已停止。
+- `pipStateFailed`：画中画启动失败或运行中出现错误。
+
+### 启动、停止和销毁画中画
+
+画中画相关接口建议按两层生命周期理解：
+
+- 会话级：`pipStart`、`pipStop`、`pipDispose`，用于控制一轮画中画会话的开始、停止和资源回收。
+- 控制器或页面销毁级：`release`，用于当前页面或控制器不再使用画中画能力时的最终释放。
+
+完成配置后，先按平台差异管理当前画中画会话；当页面销毁或控制器不再复用时，再调用 `release`。这样可以避免在销毁路径里重复调用会话级接口。
+
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```typescript
+// 会话级：启动画中画
+pip.pipStart();
+
+// 会话级：结束当前画中画会话
+pip.pipDispose();
+
+// 控制器/页面销毁级：最终释放控制器
+pip.release();
+```
+
+:::info[信息]
+Android 上通常不将 `pipStop` 作为“退出画中画并恢复前台页面”的常规路径。若不再需要当前画中画会话，可调用 `pipDispose` 释放资源；恢复全屏通常由用户通过系统画中画窗口操作完成。
+:::
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+iOS 上可调用 `pipStop` 停止画中画并恢复应用界面；当一轮画中画会话结束时，再调用 `pipDispose`。如果页面即将销毁或不再使用该能力，最后再调用 `release`。
+
+```typescript
+// 会话级：启动画中画
+pip.pipStart();
+
+// 会话级：停止画中画并恢复应用界面
+pip.pipStop();
+
+// 会话级：释放当前画中画会话资源
+pip.pipDispose();
+
+// 控制器/页面销毁级：最终释放控制器
+pip.release();
+```
+
+</TabsContent>
+</Tabs>
+
+## 开发注意事项
+<Tabs defaultValue="android" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- Android 平台上，进入画中画后通常需要根据状态调整页面 UI。
+- Android 12 及以上系统支持应用在进入后台时自动进入画中画；更早版本通常需要在 Activity 生命周期中显式处理。继承 `AgoraPIPActivity` 可简化这部分适配工作。
+- 画中画不会绕过 Android 的后台限制。如果需要在后台持续采集或播放音视频，请结合前台服务完成适配；否则在部分 Android 版本上可能出现切后台后采集或播放中断的问题。详见[Android 后台限制说明](/faq/quality-issues/android-background)。
+- Android 上 `pipStop` 的行为是将任务移至后台，而不是退出画中画并恢复页面；通常由用户通过系统画中画窗口关闭或恢复应用。
+- 请区分会话级释放和控制器级释放：结束当前画中画会话时调用 `pipDispose`，页面销毁或控制器不再复用时再调用 `release`。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- iOS 平台上，画中画窗口由系统和 SDK 管理，业务层通常无需额外绘制悬浮窗。
+- 如果需要在画中画模式下显示多路视频流，建议通过 `videoStreams` 和 `contentViewLayout` 明确配置布局；远端用户加入或离开后，可直接用最新配置再次调用 `pipSetup`，无需先调用 `pipDispose`。
+- 在 iOS 上，仅允许由用户明确操作触发画中画（如点击按钮，上滑回到桌面）。通过代码主动调用或任何非用户触发行为，可能导致 App Store 审核被拒。
+- `controlStyle` 提供 4 种控制样式，其中 `2` 更适合视频通话类场景；若设为 `3`，系统会隐藏全部控件，包括关闭和恢复按钮。
+- 请区分会话级释放和控制器级释放：结束当前画中画会话时调用 `pipStop`/`pipDispose`，页面销毁或控制器不再复用时再调用 `release`。
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+### API 参考
+
+- [`AgoraPip`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapip)
+- [`AgoraPipOptions`](/api-ref/rtc/rn/API/class_agorapipoptions)
+- [`AgoraPipContentViewLayout`](/api-ref/rtc/rn/API/class_agorapipcontentviewlayout)
+- [`AgoraPipVideoStream`](/api-ref/rtc/rn/API/class_agorapipvideostream)
+- [`pipIsSupported`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipissupported)
+- [`pipIsAutoEnterSupported`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipisautoentersupported)
+- [`pipSetup`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipsetup)
+- [`pipStart`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipstart)
+- [`pipStop`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipstop)
+- [`pipDispose`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_pipdispose)
+- [`unregisterPipStateChangedObserver`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#api_agorapip_unregisterpipstatechangedobserver)
+- [`AgoraPipStateChangedObserver`](/api-ref/rtc/rn/API/rtc_interface_class#class_agorapipstatechangedobserver)
+- [`AgoraPipState`](/api-ref/rtc/rn/API/enum_agorapipstate)
+- [`onPipStateChanged`](/api-ref/rtc/rn/API/toc_video_custom_capturenrendering#callback_agorapipstatechangedobserver_onpipstatechanged)
+
+### 示例项目
+
+声网提供了画中画功能的示例项目供你参考。你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="PictureInPicture" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example/src/examples/advanced/PictureInPicture" />
+  <Card title="PictureInPicture" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/expo/app/examples/advanced/PictureInPicture" />
+</Cards>

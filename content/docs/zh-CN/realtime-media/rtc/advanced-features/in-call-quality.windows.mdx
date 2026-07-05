@@ -1,0 +1,244 @@
+---
+title: "通话中质量监测"
+---
+在通话过程中，RTC SDK 会触发与通话和直播质量相关的回调。从这些回调中，你可以了解用户的互动体验，进行问题排查和优化用户体验。
+
+本文介绍这些回调的详细信息以及回调的使用方法。
+
+## 技术原理
+
+用户加入频道后，SDK 会每隔 2 秒触发一系列回调，上报以下信息：实时互动统计信息、本地和远端音视频流的统计信息。
+
+当用户的音频或视频状态发生变化时，SDK 会触发回调，上报最新的音频或视频状态，以及状态变化的原因。
+
+### 统计信息报告
+
+`onRtcStats` 回调每 2 秒触发一次，上报本地通话统计信息。你可以了解到通话时长、当前通话频道中的人数、当前系统的 CPU 使用率、当前 App 的 CPU 使用率等重要参数。
+
+### 音频质量报告
+
+音频质量报告包括本地音频流统计信息报告、本地音频流状态监控、远端音频流统计信息报告和远端音频流状态监控。
+
+#### 本地音频流统计信息报告
+
+`onLocalAudioStats` 回调每 2 秒触发一次，上报本地设备发送音频流的统计信息。你可以了解到以下重要统计信息：
+
+- 当前通话声道数
+- 发送音频的采样率
+- 发送音频码率的平均值
+
+#### 本地音频流状态监控
+
+本地音频的状态发生改变时，如音频录制状态和音频编码状态发生改变，SDK 会触发 `onLocalAudioStateChanged` 回调上报当前本地音频状态。当本地音频出现故障时，你可以通过错误码排查问题。
+
+#### 远端音频流统计信息报告
+
+下图展示 App 客户端之间的音频传输过程：
+
+![App 客户端之间的音频传输过程示意图](https://web-cdn.agora.io/docs-files/1675671038364)
+
+`onRemoteAudioStats` 回调每 2 秒触发一次，上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）音频流的统计信息，包括远端发送的音频流质量（详见[质量打分](#rate)）、声道数等重要参数信息。
+
+`onRemoteAudioStats` 侧重报告远端音频流的全链路音频质量，更贴近你的主观感受。即使网络发生丢包，但由于 FEC（Forward Error Correction）、重传恢复和带宽估计等**抗丢包**和拥塞控制技术，最终在接收端的音频丢帧率也可能不高，所以你感知到的音频质量较好。
+
+#### 远端音频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）的音频流状态改变时，SDK 会触发 `onRemoteAudioStateChanged` 回调上报远端音频流当前状态和状态改变的原因。
+
+### 视频质量报告
+
+视频质量报告包括本地视频流统计信息报告、本地视频流状态监控、远端视频流统计信息报告和远端视频流状态监控。
+
+#### 本地视频流统计信息报告
+
+`onLocalVideoStats` 回调上报本地设备发送视频流的统计信息，包括视频编码宽/高、目标编码率、发送视频的码率等重要参数信息。
+
+:::info[信息]
+如果你此前调用 `enableDualStreamMode` 方法开启了[双流模式](https://docs.agora.io/cn/Agora%20Platform/dual_stream_mode)，则本回调描述本地设备发送的视频大流的统计信息。
+:::
+
+#### 本地视频流状态监控
+
+本地视频的状态发生改变时，SDK 会触发 `onLocalVideoStateChanged` 回调上报当前本地视频状态。当本地视频出现故障时，你可以通过错误码排查问题。
+
+#### 远端视频流统计信息报告
+
+下图展示 App 客户端之间的视频传输过程：
+
+![App 客户端之间的视频传输过程示意图](https://web-cdn.agora.io/docs-files/1675671087750)
+
+`onRemoteVideoStats` 回调上报当前通话中每个远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）视频流的统计信息。你可以了解到每个远端用户或远端主播的视频宽/高、接收视频的码率等重要参数信息。
+
+从 v4.6.0 起，SDK 在 `RemoteVideoStats` 中新增 `mosValue` 成员，用来对接收到的远端视频流的质量进行评分。该评分机制是声网自研、基于深度学习实现的实时视频 MOS（平均主观意见分）评估系统，可以模拟人眼主观感受到的各类画质问题，如轮廓不清晰、动态画面模糊、马赛克、黑屏、绿屏等。通过该参数返回的评分，你可以实时观测用户对接收到的远端视频画质的主观感受，并根据需要动态调整视频参数、实现问题调查、告警等业务逻辑。
+
+有关 SDK 返回的 `mosValue` 值及其对应的主观感受描述、视频示例和可能原因，详见 [MOS 视频质量主观打分](#mos-视频质量主观打分)。
+
+:::info[信息]
+该功能默认不开启。如需启用，可以[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 远端视频流状态监控
+
+远端用户（`COMMUNICATION` 场景）或远端主播（`LIVE_BROADCASTING` 场景）的视频流状态改变时，SDK 会触发 `onRemoteVideoStateChanged` 回调上报远端视频流当前状态和状态改变的原因。
+
+## 前提条件
+
+请确保你的项目中已实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.windows)。
+
+## 实现方法
+
+在 `IRtcEngineEventHandler` 中，实现以下实时互动质量统计信息回调和音频或视频状态监控回调，从而了解用户互动体验：
+
+   - `onRtcStats`：报告实时互动统计信息。
+   - `onLocalAudioStats`：报告发送的音频流的统计信息。
+   - `onLocalAudioStateChanged`：报告本地音频流状态监控。
+   - `onRemoteAudioStats`：报告接收的远端音频流统计信息。
+   - `onRemoteAudioStateChanged`：报告远端音频流状态监控。
+   - `onLocalVideoStats`：报告发送的视频流统计信息。
+   - `onLocalVideoStateChanged`：报告本地视频流状态监控。
+   - `onRemoteVideoStats`：报告接收的远端视频流统计信息。
+   - `onRemoteVideoStateChanged`：报告远端视频流状态监控。
+
+```cpp
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteVideoStateChanged(WPARAM wParam,
+                                                            LPARAM lParam) {
+    PVideoStateStateChanged stateChanged = (PVideoStateStateChanged)wParam;
+    if (stateChanged) {
+        // 实现 onRemoteVideoStateChanged
+        CString strSateInfo;
+        switch (stateChanged->state) {
+            case REMOTE_VIDEO_STATE_STARTING:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_STARTING");
+                break;
+            case REMOTE_VIDEO_STATE_STOPPED:
+                strSateInfo = _T("strSateInfo");
+                break;
+            case REMOTE_VIDEO_STATE_DECODING:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_DECODING");
+                break;
+            case REMOTE_VIDEO_STATE_FAILED:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_FAILED ");
+                break;
+            case REMOTE_VIDEO_STATE_FROZEN:
+                strSateInfo = _T("REMOTE_VIDEO_STATE_FROZEN  ");
+                break;
+        }
+        CString strInfo;
+        strInfo.Format(_T("onRemoteVideoStateChanged: uid=%u, %s"),
+                       stateChanged->uid, strSateInfo);
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+    }
+    return 0;
+}
+
+// 实现 onRemoteVideoStats
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteVideoStats(WPARAM wParam,
+                                                     LPARAM lParam) {
+    RemoteVideoStats *p = reinterpret_cast<RemoteVideoStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dms"), p->delay);
+        m_staVideoNetWorkDelayVal.SetWindowText(tmp);
+        tmp.Format(_T("%dKbps"), p->receivedBitrate);
+        m_staVideoRecvBitrateVal.SetWindowText(tmp);
+
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onRemoteAudioStats
+LRESULT CAgoraReportInCallDlg::OnEIDRemoteAudioStats(WPARAM wParam,
+                                                     LPARAM lParam) {
+    RemoteAudioStats *p = reinterpret_cast<RemoteAudioStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dms"), p->networkTransportDelay);
+        m_staAudioNetWorkDelayVal.SetWindowText(tmp);
+
+        tmp.Format(_T("%dKbps"), p->receivedBitrate);
+        m_staAudioRecvBitrateVal.SetWindowText(tmp);
+
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onRtcStats
+LRESULT CAgoraReportInCallDlg::OnEIDRtcStats(WPARAM wParam, LPARAM lParam) {
+    RtcStats *p = reinterpret_cast<RtcStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%dKbps/%dKbps"), p->txKBitRate, p->rxKBitRate);
+        m_staTotalBitrateVal.SetWindowText(tmp);
+        tmp.Format(_T("%.2fMB/%.2fMB"),
+                   p->txBytes ? p->txBytes / 1024.0 / 1024 : 0,
+                   p->rxBytes ? p->rxBytes / 1024.0 / 1024 : 0);
+        m_staTotalBytesVal.SetWindowText(tmp);
+        delete p;
+    }
+    return TRUE;
+}
+
+// 实现 onLocalVideoStats
+LRESULT CAgoraReportInCallDlg::OnEIDLocalVideoStats(WPARAM wParam,
+                                                    LPARAM lParam) {
+    LocalVideoStats *p = reinterpret_cast<LocalVideoStats *>(wParam);
+    if (p) {
+        CString tmp;
+        tmp.Format(_T("%d fps"), p->sentFrameRate);
+        m_staLocalVideoFPSVal.SetWindowText(tmp);
+        tmp.Format(_T("%d X %d"), p->encodedFrameWidth, p->encodedFrameHeight);
+        m_staLocalVideoResoultionVal.SetWindowText(tmp);
+        delete p;
+    }
+    return TRUE;
+}
+```
+
+## 参考信息
+
+### API 参考
+
+- [`onRtcStats`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onrtcstats)
+- [`onLocalAudioStats`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostats)
+- [`onLocalAudioStateChanged`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)
+- [`onRemoteAudioStats`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostats)
+- [`onRemoteAudioStateChanged`](/api-ref/rtc/windows/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)
+- [`onLocalVideoStats`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats)
+- [`onLocalVideoStateChanged`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged)
+- [`onRemoteVideoStats`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostats)
+- [`onRemoteVideoStateChanged`](/api-ref/rtc/windows/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+<a name="rate"> </a>
+
+### 质量打分
+
+| 代码                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| `QUALITY_UNKNOWN`(0)   | 网络质量未知。                                               |
+| `QUALITY_EXCELLENT`(1) | 网络质量极佳。                                               |
+| `QUALITY_GOOD`(2)       | 网络质量极好，但码率可能略低于极佳。                           |
+| `QUALITY_POOR`(3)      | 网络质量一般，用户可能感受到通话质量轻微下降。                    |
+| `QUALITY_BAD`(4)       | 网络质量较差，用户无法流畅通话。                               |
+| `QUALITY_VBAD`(5)      | 网络质量极差，用户几乎无法通话。                               |
+| `QUALITY_DOWN`(6)      | 网络连接中断，用户完全无法通话。                               |
+| `QUALITY_DETECTING`(8)      | 正在进行 Last-mile 探测测试。                           |
+
+### MOS 视频质量主观打分
+
+`mosValue` 的取值范围为 1 到 5 分，对应不同档位的主观感受：
+
+| 分值 | 体验等级 | 主观感受 | 视频示例 |
+| --- | --- | --- | --- |
+| 5 | 优秀，接近真实画面 | 画面极致清晰无噪点，细节完美保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386227507-5分.mov" ></video> |
+| 4 | 良好，优质画面体验 | 画面清晰锐利，边缘平滑无锯齿，噪点极少，细节大部分保留 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386740734-4分.mov" ></video> |
+| 3 | 一般，可以接受 | 画面清晰度一般，噪点可控，细节可见但不够锐利 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386757305-3分.mov" ></video> |
+| 2 | 差，勉强可用 | 画面模糊，边缘有锯齿，噪点明显，但能勉强识别主体内容 | <video controls width="60%" height="auto" src=" https://web-cdn.agora.io/doc-cms/uploads/1757386762185-2分.mov" ></video> |
+| 1 | 极差，无法接受 | 画面严重模糊、马赛克明显，完全无法辨认主体内容 | <video controls width="60%" height="auto" src="https://web-cdn.agora.io/doc-cms/uploads/1757386766581-1分.mov" ></video> |
+
+该指标反映的画质问题可能由以下原因造成：
+
+- 用户所处环境光线差，或摄像头感光度差，导致采集视频质量不好
+- 由于网络波动或设备兼容性问题，系统模块如编码、解码、渲染、前后处理等引入的画质损失
+- 由于屏幕尺寸与分辨率不匹配导致的画面不清晰

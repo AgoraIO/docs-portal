@@ -1,0 +1,694 @@
+---
+title: "实现音视频互动"
+---
+本文介绍如何集成声网实时互动 Web SDK，通过少量代码从 0 开始实现一个简单的实时互动 App。
+
+开始之前，你需要首先了解音视频实时互动的[相关概念和流程](/zh-CN/realtime-media/rtc/overview/key-concept.javascript#音视频基本流程)。
+
+实时音视频互动主要包含互动直播和视频通话两大场景，你可以按需搭建想要的场景：
+
+- **互动直播**：频道内的用户分为主播和观众，只有主播可以自由发言并且被其他用户看见。
+- **视频通话**：频道内的用户不区分主播和观众，所有用户都可以发言并看见彼此。
+
+## 前提条件
+
+在集成声网实时互动 Web SDK 快速实现音视频互动前，请确保开发环境满足以下要求：
+
+- Windows 或 macOS 计算机，需满足以下要求：
+  - 下载满足声网 [Web SDK 兼容性的浏览器](/zh-CN/realtime-media/rtc/overview/browser-compatibility.react.javascript)。声网强烈推荐使用[最新稳定版 Google Chrome 浏览器](https://www.google.com/chrome/)。
+  - 具备物理音视频采集设备。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)以正常使用声网服务。
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+
+- 有效的声网账户和声网项目，请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)，在声网控制台注册、登录并创建声网项目，然后获取项目的 App ID 和临时 Token。
+- 安装 [Node.js](https://nodejs.org/en/download/) 18 或更高版本。
+
+  :::info[信息]
+  有些框架模板可能需要更高版本的 Node.js 才能工作，如果你的包管理器发出警告，请升级你的 Node.js 版本。
+  :::
+
+## 实现步骤
+
+本节介绍如何快速搭建并实现一个实时音视频互动场景。根据你的开发偏好和需要，选择如下任意一种实现方式。
+
+<Tabs defaultValue="create-agora" groupId="integration-methods" persist>
+<TabsList>
+  <TabsTrigger value="create-agora">使用包管理工具快速创建（推荐）</TabsTrigger>
+  <TabsTrigger value="npm">使用 npm 安装</TabsTrigger>
+</TabsList>
+
+<TabsContent value="create-agora">
+
+:::info[信息]
+使用包管理工具只能快速搭建开箱即用的视频通话场景。如果你希望体验互动直播场景，请选用获取 SDK 后手动集成的方式，并在创建客户端时将 `mode` 设置为 `live`。
+:::
+
+### 1. 获取快速开始安装包
+
+在使用包管理器创建项目之前，你需要通过以下任意一种途径下载声网实时互动 Web SDK 快速开始安装包资源：
+
+<Tabs groupId="package-manager">
+
+#### 通过 GitHub 下载
+
+下载或克隆 [create-agora-app](https://github.com/AgoraIO-Community/create-agora-app)获取快速开始安装包资源。
+
+</TabsContent>
+
+<TabsContent value="npm">
+
+安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)，然后在终端通过 npm 安装快速开始资源包：
+
+```shell
+npm i create-agora-app
+```
+
+</TabsContent>
+</Tabs>
+
+### 2. 使用包管理器创建项目
+
+根据你的开发需要，使用如下一款包管理工具并继续：
+
+<Tabs defaultValue="yarn" groupId="package-manager" persist>
+<TabsList>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="bun">使用 Bun</TabsTrigger>
+</TabsList>
+
+<TabsContent value="yarn">
+
+开始前，请确保你的开发环境已[安装 Yarn](https://yarnpkg.com/getting-started/install)。
+
+运行如下命令行安装快速开始资源包：
+
+```shell
+yarn create agora-app
+```
+
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+开始前，请确保你的开发环境已[安装 pnpm](https://pnpm.io/installation)。
+
+运行如下命令行安装快速开始资源包：
+
+```shell
+pnpm create agora-app
+```
+
+</TabsContent>
+
+<TabsContent value="npm">
+
+开始前，请确保你的开发环境已[安装 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+运行如下命令行安装快速开始资源包：
+
+```shell
+npm create agora-app@latest
+```
+
+</TabsContent>
+
+<TabsContent value="bun">
+
+开始前，请确保你的开发环境已[安装 Bun](https://bun.sh/docs/installation)。
+
+运行如下命令行安装快速开始资源包：
+
+```shell
+bunx create-agora-app
+```
+
+</TabsContent>
+</Tabs>
+
+你可以在项目创建过程中修改你的项目名称，例如 `agora-project`。
+
+### 3. 选择框架模板
+
+在创建过程中，系统会提示你选择一个前端框架模板（包括 `Vanilla-js`、`Vue-ts`、`React-ts` 或 `Svelte-ts`）。你可以根据你的需求选择相应的框架。
+
+### 4. 启动项目
+
+系统将根据你的选择生成项目骨架，你需要进入项目目录并安装依赖，然后启动开发服务器。
+
+以下是使用 yarn 创建了一个 `React-ts` 项目的示例，按照屏幕提示输入命令行来完成相关操作即可：
+
+```shell
+Scaffolding project in agora-project...
+Done. Now run:
+
+cd agora-project
+yarn
+yarn dev
+```
+
+此时，开发服务器将启动，你可以在浏览器中访问 http://localhost:5173/ 查看项目运行情况。
+
+:::info[信息]
+在本地服务器 (localhost) 运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
+:::
+
+### 5. 查看预期效果
+
+你的浏览器会自动打开以下页面：
+
+![](https://web-cdn.agora.io/doc-cms/uploads/1725609431669-quick-start-update.png)
+
+打开摄像头和麦克风确认设备没有问题，之后根据界面提示，输入 App ID、临时 Token，以及生成临时 Token 时填入的频道名，可以快速实现加入频道、发布音视频流和离开频道等基础音视频互动功能。
+
+:::info[信息]
+上图以 `React-ts` 框架打开的界面为例。根据你所选择的前端框架模板，浏览器打开的界面可能有所不同。
+:::
+
+#### 获取 SDK 后手动集成
+
+你可以参考以下步骤，获取 SDK 后进行手动集成，以搭建你想要实现的音视频互动场景（视频通话或互动直播）。
+
+### 1. 创建 Web 项目
+
+创建一个名为 `agora_web_quickstart` 的文件夹。一个 Web 客户端项目至少需包含以下文件：
+
+- `index.html`: 用于设计 Web 应用的用户界面。
+- `basicEngagement.js`: 通过 `AgoraRTCClient` 实现具体应用逻辑的代码。
+- `package.json`: 安装并管理项目依赖。你可以通过命令行进入 `agora_web_quickstart` 目录并运行 `npm init` 命令来创建 `package.json` 文件。
+
+### 2. 集成 SDK
+
+参考以下步骤通过 npm 将声网 Web SDK 集成到你的项目中：
+
+在 `package.json` 文件的 `dependencies` 字段中添加 `agora-rtc-sdk-ng` 及版本号：
+
+```json
+{
+    "name": "agora_web_quickstart",
+    "version": "1.0.0",
+    "description": "",
+    "main": "basicEngagement.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        // highlight-start
+        "agora-rtc-sdk-ng": "latest"
+        // highlight-end
+    },
+    "author": "",
+    "license": "ISC"
+}
+```
+
+将以下代码复制到 `basicEngagement.js` 文件中，在你的项目中导入 `AgoraRTC` 模块。
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng"
+```
+
+### 3. 实现用户界面
+
+将以下代码复制到 `index.html` 实现客户端用户界面：
+
+```html tab="互动直播" tabGroup="mode"
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Web SDK Video Quickstart</title>
+        <!--
+        This line is used to refer to the bundle.js file packaged by webpack. A sample webpack configuration is shown in the later step of running your app.
+        -->
+        <script src="./dist/bundle.js"></script>
+    </head>
+    <body>
+        ## Web SDK Video Quickstart
+        <div class="row">
+            <div>
+                <button type="button" id="host-join">Join as host</button>
+                <button type="button" id="audience-join">Join as audience</button>
+                <button type="button" id="leave">Leave</button>
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+```html tab="视频通话" tabGroup="mode"
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Web SDK Video Quickstart</title>
+        <!--
+        This line is used to refer to the bundle.js file packaged by webpack. A sample webpack configuration is shown in the later step of running your app.
+        -->
+        <script src="./dist/bundle.js"></script>
+    </head>
+    <body>
+        ## Web SDK Video Quickstart
+        <div class="row">
+            <div>
+                <button type="button" id="join">JOIN</button>
+                <button type="button" id="leave">LEAVE</button>
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+### 4. 复制项目示例代码
+
+声网实时互动 Web SDK 提供两种模式的音视频互动，分别是视频通话和互动直播。两者创建客户端时设置的 `mode` 参数不同：
+
+```javascript
+// 视频通话场景下 mode 设为 rtc
+rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+// 视频直播场景下 mode 设为 live
+rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
+```
+
+你可以直接将以下代码复制到 `basicEngagement.js` 文件中来快速体验互动直播，注意将 `appID`、`token` 和频道名替换为[你自己的 App ID 和临时 Token](#前提条件)以及频道名。
+
+<Tabs defaultValue="live" groupId="mode" persist>
+<TabsList>
+  <TabsTrigger value="live">互动直播</TabsTrigger>
+  <TabsTrigger value="rtc">视频通话</TabsTrigger>
+</TabsList>
+
+<TabsContent value="live">
+
+<Accordions>
+<Accordion title="实现互动直播示例代码">
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng";
+
+let rtc = {
+    // For the local audio and video tracks.
+    localAudioTrack: null,
+    localVideoTrack: null,
+    client: null,
+};
+
+let options = {
+    // Pass your app ID here.
+    appId: "your_app_id",
+    // Set the channel name.
+    channel: "test",
+    // Use a temp token
+    token: "your_temp_token",
+    // Uid
+    uid: 123456,
+};
+
+async function startBasicLiveStreaming() {
+    rtc.client = AgoraRTC.createClient({mode: "live", codec: "vp8"});
+
+    window.onload = function () {
+        document.getElementById("host-join").onclick = async function () {
+            rtc.client.setClientRole("host");
+            await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+            // Create an audio track from the audio sampled by a microphone.
+            rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            // Create a video track from the video captured by a camera.
+            rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+            // Publish the local audio and video tracks to the channel.
+            await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
+            // Dynamically create a container in the form of a DIV element for playing the local video track.
+            const localPlayerContainer = document.createElement("div");
+            // Specify the ID of the DIV container. You can use the `uid` of the remote user.
+            localPlayerContainer.id = options.uid;
+            localPlayerContainer.textContent = "Local user " + options.uid;
+            localPlayerContainer.style.width = "640px";
+            localPlayerContainer.style.height = "480px";
+            document.body.append(localPlayerContainer);
+
+            rtc.localVideoTrack.play(localPlayerContainer);
+
+            console.log("publish success!");
+        };
+
+        document.getElementById("audience-join").onclick = async function () {
+            rtc.client.setClientRole("audience");
+            await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+            rtc.client.on("user-published", async (user, mediaType) => {
+                // Subscribe to a remote user.
+                await rtc.client.subscribe(user, mediaType);
+                console.log("subscribe success");
+
+                // If the subscribed track is video.
+                if (mediaType === "video") {
+                    // Get `RemoteVideoTrack` in the `user` object.
+                    const remoteVideoTrack = user.videoTrack;
+                    // Dynamically create a container in the form of a DIV element for playing the remote video track.
+                    const remotePlayerContainer = document.createElement("div");
+                    // Specify the ID of the DIV container. You can use the `uid` of the remote user.
+                    remotePlayerContainer.id = user.uid.toString();
+                    remotePlayerContainer.textContent = "Remote user " + user.uid.toString();
+                    remotePlayerContainer.style.width = "640px";
+                    remotePlayerContainer.style.height = "480px";
+                    document.body.append(remotePlayerContainer);
+
+                    // Play the remote video track.
+                    // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
+                    remoteVideoTrack.play(remotePlayerContainer);
+                }
+
+                // If the subscribed track is audio.
+                if (mediaType === "audio") {
+                    // Get `RemoteAudioTrack` in the `user` object.
+                    const remoteAudioTrack = user.audioTrack;
+                    // Play the audio track. No need to pass any DOM element.
+                    remoteAudioTrack.play();
+                }
+            });
+
+            rtc.client.on("user-unpublished", user => {
+                // Get the dynamically created DIV container.
+                const remotePlayerContainer = document.getElementById(user.uid);
+                // Destroy the container.
+                remotePlayerContainer.remove();
+            });
+        };
+
+        document.getElementById("leave").onclick = async function () {
+            // Close all the local tracks.
+            rtc.localAudioTrack.close();
+            rtc.localVideoTrack.close();
+            // Traverse all remote users.
+            rtc.client.remoteUsers.forEach(user => {
+                // Destroy the dynamically created DIV containers.
+                const playerContainer = document.getElementById(user.uid);
+                playerContainer && playerContainer.remove();
+            });
+
+            // Leave the channel.
+            await rtc.client.leave();
+        };
+    };
+}
+
+startBasicLiveStreaming();
+```
+
+</Accordion>
+</Accordions>
+
+下图展示了基础的音视频直播的 API 调用。注意图中的方法是对不同的对象调用的。
+
+![互动直播实现流程](/img/rtc/js-quick-start-live.svg)
+
+</TabsContent>
+
+<TabsContent value="rtc">
+
+<Accordions>
+<Accordion title="实现视频通话示例代码">
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng";
+
+let rtc = {
+    localAudioTrack: null,
+    localVideoTrack: null,
+    client: null,
+};
+
+let options = {
+    // Pass your App ID here.
+    appId: "Your App ID",
+    // Set the channel name.
+    channel: "test",
+    // Pass your temp token here.
+    token: "Your temp token",
+    // Set the user ID.
+    uid: 123456,
+};
+
+async function startBasicCall() {
+    // Create an AgoraRTCClient object.
+    rtc.client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+
+    // Listen for the "user-published" event, from which you can get an AgoraRTCRemoteUser object.
+    rtc.client.on("user-published", async (user, mediaType) => {
+        // Subscribe to the remote user when the SDK triggers the "user-published" event
+        await rtc.client.subscribe(user, mediaType);
+        console.log("subscribe success");
+
+        // If the remote user publishes a video track.
+        if (mediaType === "video") {
+            // Get the RemoteVideoTrack object in the AgoraRTCRemoteUser object.
+            const remoteVideoTrack = user.videoTrack;
+            // Dynamically create a container in the form of a DIV element for playing the remote video track.
+            const remotePlayerContainer = document.createElement("div");
+            // Specify the ID of the DIV container. You can use the uid of the remote user.
+            remotePlayerContainer.id = user.uid.toString();
+            remotePlayerContainer.textContent = "Remote user " + user.uid.toString();
+            remotePlayerContainer.style.width = "640px";
+            remotePlayerContainer.style.height = "480px";
+            document.body.append(remotePlayerContainer);
+
+            // Play the remote video track.
+            // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
+            remoteVideoTrack.play(remotePlayerContainer);
+        }
+
+        // If the remote user publishes an audio track.
+        if (mediaType === "audio") {
+            // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
+            const remoteAudioTrack = user.audioTrack;
+            // Play the remote audio track. No need to pass any DOM element.
+            remoteAudioTrack.play();
+        }
+
+        // Listen for the "user-unpublished" event
+        rtc.client.on("user-unpublished", user => {
+            // Get the dynamically created DIV container.
+            const remotePlayerContainer = document.getElementById(user.uid);
+            // Destroy the container.
+            remotePlayerContainer.remove();
+        });
+    });
+
+    window.onload = function () {
+        document.getElementById("join").onclick = async function () {
+            // Join an RTC channel.
+            await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+            // Create a local audio track from the audio sampled by a microphone.
+            rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            // Create a local video track from the video captured by a camera.
+            rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+            // Publish the local audio and video tracks to the RTC channel.
+            await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
+            // Dynamically create a container in the form of a DIV element for playing the local video track.
+            const localPlayerContainer = document.createElement("div");
+            // Specify the ID of the DIV container. You can use the uid of the local user.
+            localPlayerContainer.id = options.uid;
+            localPlayerContainer.textContent = "Local user " + options.uid;
+            localPlayerContainer.style.width = "640px";
+            localPlayerContainer.style.height = "480px";
+            document.body.append(localPlayerContainer);
+
+            // Play the local video track.
+            // Pass the DIV container and the SDK dynamically creates a player in the container for playing the local video track.
+            rtc.localVideoTrack.play(localPlayerContainer);
+            console.log("publish success!");
+        };
+
+        document.getElementById("leave").onclick = async function () {
+            // Destroy the local audio and video tracks.
+            rtc.localAudioTrack.close();
+            rtc.localVideoTrack.close();
+
+            // Traverse all remote users.
+            rtc.client.remoteUsers.forEach(user => {
+                // Destroy the dynamically created DIV containers.
+                const playerContainer = document.getElementById(user.uid);
+                playerContainer && playerContainer.remove();
+            });
+
+            // Leave the channel.
+            await rtc.client.leave();
+        };
+    };
+}
+
+startBasicCall();
+```
+
+</Accordion>
+</Accordions>
+
+      下图展示了实现音视频互动的 API 调用流程。注意图中的方法是对不同的对象调用的。
+
+![视频通话实现流程](/img/rtc/js-quick-start-rtc.svg)
+
+</TabsContent>
+</Tabs>
+
+### 5. 测试 App
+
+本文使用 [webpack](https://webpack.js.org/) 打包项目，使用 `webpack-dev-server` 运行项目。
+
+参考以下步骤来测试你的 App：
+
+在 `package.json` 的 `dependencies` 字段中添加 `webpack`、`webpack-cli` 和 `webpack-dev-server`，并在 `scripts` 字段中添加 `build` 和 `start:dev`。
+
+```json
+{
+    "name": "agora_web_quickstart",
+    "version": "1.0.0",
+    "description": "",
+    "main": "basicEngagement.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        // highlight-start
+        "build": "webpack --config webpack.config.js",
+        "start:dev": "webpack serve --open --config webpack.config.js"
+        // highlight-end
+    },
+    "dependencies": {
+        "agora-rtc-sdk-ng": "latest",
+        // highlight-start
+        "webpack": "5.28.0",
+        "webpack-dev-server": "3.11.2",
+        "webpack-cli": "4.10.0"
+        // highlight-end
+    },
+    "author": "",
+    "license": "ISC"
+}
+```
+
+在项目目录中创建一个名为 `webpack.config.js` 的文件，将以下代码复制到 `webpack.config.js` 配置 webpack：
+
+```javascript
+const path = require("path");
+
+module.exports = {
+    entry: "./basicEngagement.js",
+    output: {
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "./dist"),
+    },
+    devServer: {
+        compress: true,
+        port: 9000,
+    },
+};
+```
+
+运行下列命令安装依赖：
+
+```shell
+npm install
+```
+
+运行下列命令通过 webpack 编译项目：
+
+```shell
+# Use webpack to package the project
+npm run build
+```
+
+通过 webpack-dev-server 运行项目：
+
+```shell
+npm run start:dev
+```
+
+:::info[信息]
+- 在本地服务器 (localhost) 运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
+- 由于浏览器的安全策略，声网对除 127.0.0.1 以外的 HTTP 地址作了限制。
+:::
+
+ ### 6. 查看预期效果
+
+<Tabs defaultValue="live" groupId="mode" persist>
+<TabsList>
+  <TabsTrigger value="live">互动直播</TabsTrigger>
+  <TabsTrigger value="rtc">视频通话</TabsTrigger>
+</TabsList>
+
+<TabsContent value="live">
+
+你的浏览器会自动打开以下页面：
+
+![](https://web-cdn.agora.io/docs-files/1635499503072)
+
+点击 **Join as host** 以主播角色加入频道。你还可以邀请朋友克隆 [Gitee 示例项目](https://gitee.com/agoraio-community/API-Examples-Web)或 [GitHub 示例项目](https://github.com/Shengwang-Lab/API-Examples-Web)到本地，在浏览器中打开 `src/index.html` 文件，并输入相同的 App ID、频道名称和临时 Token。你的朋友以主播角色加入频道后，你们可以看到彼此，并听到彼此的声音；你的朋友以观众角色加入频道后，他可以看到你，并听到你的声音。
+
+</TabsContent>
+
+<TabsContent value="rtc">
+
+你的浏览器会自动打开以下页面：
+
+![](https://web-cdn.agora.io/docs-files/1619428543085)
+
+点击 **JOIN** 加入频道。你还可以邀请朋友克隆 [Gitee 示例项目](https://gitee.com/agoraio-community/API-Examples-Web)或 [GitHub 示例项目](https://github.com/Shengwang-Lab/API-Examples-Web)到本地，在浏览器中打开 `src/index.html` 文件，并输入相同的 App ID、频道名称和临时 Token。你的朋友加入频道后，你们可以看到彼此，并听到彼此的声音。
+
+</TabsContent>
+</Tabs>
+
+ ### 7. 后续步骤
+
+ 在完成音视频互动后，你可以阅读以下文档进一步了解：
+
+ - 本文的示例使用了临时 Token 加入频道。在正式生产环境中，为保障通信安全，你需要在自己的 App 服务端生成 Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.javascript)。
+ - 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/basic-features/ls-quick-start.javascript)。
+
+ ## 参考信息
+
+ ### 示例项目
+
+ 声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+  <Cards>
+  <Card title="Web-API-Examples" href="https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example" />
+  <Card title="Web-API-Examples" href="https://github.com/Shengwang-Lab/API-Examples-Web/tree/main/src/example" />
+</Cards>
+
+ ### 其它集成方式
+
+ 使用 npm 集成 Web SDK 还支持开启 Tree shaking 来减小集成 SDK 后的 App 体积，详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/basic-features/tree-shaking.javascript)。
+
+ 除使用 npm 获取 Web SDK 之外，你还可以使用以下方法获取 SDK：
+
+   - 在项目 HTML 文件中，添加如下代码，使用 CDN 方法获取 SDK：
+
+     ```html
+     <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
+     ```
+
+   - 下载[声网 Web SDK 4.x 版本 SDK 包](/zh-CN/realtime-media/rtc/resources.javascript)至本地，将 SDK 包中的 `.js` 文件保存到项目文件所在的目录下，然后在项目 HTML 文件中添加如下代码：
+
+     ```html
+     <script src="./AgoraRTC_N-4.24.5.js"></script>
+     ```
+
+  :::info[信息]
+  在以上方法中，SDK 都会在全局导出一个 `AgoraRTC` 对象，直接访问这个对象即可操作 SDK。
+  :::
+
+ ### 常见问题
+
+ **为什么在本地运行快速开始项目时会报错 `digital envelope routines::unsupported`？**
+
+ 本文中的快速开始项目通过 webpack 打包并在本地运行。由于 Node.js 16 及以上版本更改了对 OpenSSL 的依赖（详见 [node issue](https://github.com/nodejs/node/issues/29817)），影响了项目中本地开发环境的依赖（详见 [webpack issue](https://github.com/webpack/webpack/issues/14532)），运行项目会发生错误。解决方案如下：
+
+ - （推荐）运行如下命令，设置临时的环境变量：
+
+     ```shell
+     export NODE_OPTIONS=--openssl-legacy-provider
+     ```
+
+ - 暂时换用低版本的 Node.js。
+
+  尝试以上解决方案后，再次尝试运行项目。
+
+  </Tabs>

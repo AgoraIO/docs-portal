@@ -1,0 +1,1147 @@
+---
+title: "Fastboard Android SDK API 参考"
+---
+本页提供声网 Fastboard SDK (Android) 的 Java API 参考。
+
+<a id="fastboardview"></a>
+<a id="getfastboard"></a>
+## FastboardView 类
+### getFastboard
+
+```java
+public Fastboard getFastboard()
+```
+
+获取 `Fastboard` 对象。
+
+Fastboard SDK 不支持直接初始化 `Fastboard` 对象。你需要先将 `FastboardView` 添加到 app 的布局中，然后调用 `getFastboard` 方法获取 `Fastboard` 对象。
+
+**注意**
+
+请确保在调用其他 API 前先调用该方法获取 `Fastboard` 对象。
+
+**返回**
+
+方法调用成功时返回 `Fastboard` 对象。
+
+<a id="fastboard"></a>
+## Fastboard 类
+
+Fastboard 类提供创建 `FastRoom` 对象的方法。
+
+<a id="createfastroom"></a>
+### createFastRoom
+
+```java
+public FastRoom createFastRoom(FastRoomOptions roomOptions)
+```
+
+创建 `FastRoom` 对象。
+
+**注意**
+
+该方法需要在获取 `Fastboard` 对象后调用。
+
+**参数**
+
+- `roomOptions`：白板房间的配置选项。详见 [FastRoomOptions](#roomoptions)。
+
+**返回**
+
+方法调用成功时返回 `FastRoom` 对象。
+
+<a id="preloadwhiteboardview"></a>
+### preloadWhiteboardView
+
+```java
+public static void preloadWhiteboardView() {
+        WhiteboardViewManager.get().preload();
+    }
+```
+
+预加载白板视图。
+
+该方法仅在 [`FastboardConfig`](#fastboardconfig) 中的 `autoPreload` 为 `false` 时生效。成功调用该方法将消耗内存执行一次白板视图预加载，提升下次加入房间的速度。
+
+<a id="setconfig"></a>
+### setConfig
+
+```java
+public static void setConfig(FastboardConfig config)
+```
+
+修改 `Fastboard` 对象的辅助配置。
+
+**参数**
+
+- `config`：`Fastboard` 对象的辅助配置。详见 [FastboardConfig](#fastboardconfig)。
+
+<a id="roomoptions"></a>
+<a id="fastroomoptions"></a>
+### FastRoomOptions
+
+白板房间的配置选项。
+
+```java
+public class FastRoomOptions {
+    private final String appId;
+    private final String uuid;
+    private final String token;
+    private final String uid;
+    private final boolean writable;
+
+    private final FastRegion fastRegion;
+
+    private Float containerSizeRatio;
+
+    private FastUserPayload userPayload;
+
+    public FastRoomOptions(String appId, String uuid, String token, String uid, FastRegion fastRegion) {
+        this(appId, uuid, token, uid, fastRegion, true);
+    }
+
+    public FastRoomOptions(String appId, String uuid, String token, String uid, FastRegion fastRegion, boolean writable) {
+        this.appId = appId;
+        this.uuid = uuid;
+        this.token = token;
+        this.uid = uid;
+        this.fastRegion = fastRegion;
+        this.writable = writable;
+    }
+}
+```
+
+`FastRoomOptions` 类包含以下属性：
+
+- `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `uuid`：String。房间的 UUID，即房间的唯一标识符。详见[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)请求成功后响应包体中 `uuid` 参数的值。
+- `token`：String。房间的 Room Token，用于加入房间时的用户鉴权。可以通过以下方式获取：
+  - 调用[生成 Room Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+  - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+- `uid`：String。用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户的 uid 唯一。
+- `writable`：boolean。用户是否以互动模式加入白板房间：
+  - `true`：以互动模式加入白板房间，即具有读写权限。
+  - `false`：以订阅模式加入白板房间，即具有只读权限。
+- `fastRegion`：数据中心。详见 [`FastRegion`](#fastregion)。
+- `containerSizeRatio`：Float。本地显示窗口中，内容的高宽比，默认为 `0.56`，即 `9:16`。
+- `userPayload`：用户光标显示的用户信息，包括用户的昵称和头像。详见 [`FastUserPayload`](#fastuserpayload)。
+
+<a id="fastregion"></a>
+<a id="fastregion"></a>
+### FastRegion
+
+数据中心，包含以下枚举值：
+
+- `CN_HZ`：中国杭州，服务区覆盖东亚、东南亚、以及其他数据中心未覆盖的地区。
+
+- `US_SV`：美国硅谷，服务区覆盖北美洲、南美洲。
+
+- `SG`：新加坡，服务区覆盖新加坡、东亚、东南亚。
+
+- `IN_MUM`：印度孟买，服务区覆盖印度。
+
+- `EU`：欧洲（法兰克福），服务区覆盖欧洲。
+
+<a id="fastuserpayload"></a>
+<a id="fastuserpayload"></a>
+### FastUserPayload
+
+```java
+public class FastUserPayload {
+    private final String nickName;
+    private final String avatar;
+
+    public FastUserPayload(String nickName) {
+        this(nickName, null);
+    }
+
+    public FastUserPayload(String nickName, String avatar) {
+        this.nickName = nickName;
+        this.avatar = avatar;
+    }
+}
+```
+
+`FastUserPayload` 对象，用于储存光标上显示的用户信息，包含以下成员变量：
+
+- `nickName`：String。用户光标上显示的用户昵称。
+
+- `avatar`：String。（可选）用户光标上显示的用户头像，应传入头像对应的 URL 地址。
+
+<a id="fastboardconfig"></a>
+### FastboardConfig
+
+```java
+public class FastboardConfig {
+    private final boolean enablePreload;
+    private final int preloadCount;
+    private final boolean autoPreload;
+}
+```
+
+`Fastboard` 对象的辅助配置，包含以下属性：
+
+- `enablePreload`：boolean。是否开启白板预加载功能：
+  - `true`：开启白板预加载。
+  - `false`：（默认）关闭白板预加载。
+- `preloadCount`：int。预加载的 WebView 数量，默认为 `0`。该属性的实际生效情况受内存容量的限制，你需要根据实际情况适当调整设置。
+- `autoPreload`:boolean。该属性仅在 `enablePreload` 为 `true` 时生效。是否启用自动预加载：
+  - `true`：（默认）启用自动预加载。开启后可自动预加载白板视图，提升白板加载速度，但会占用额外的内存。
+  - `false`：关闭自动预加载。关闭后，你可以调用 [`preloadWhiteboardView`](#preloadwhiteboardview) 手动执行预加载。
+
+<a id="fastroom"></a>
+## FastRoom 类
+
+`FastRoom` 类提供管理互动白板实时房间的方法。
+
+<a id="join"></a>
+### join [1/2]
+
+```java
+public void join()
+```
+
+加入白板房间。
+
+**注意**
+
+该方法需要在成功创建 `FastRoom` 对象后调用。
+
+<a id="join"></a>
+### join [2/2]
+
+```java
+public void join(@Nullable OnRoomReadyCallback onRoomReadyCallback)
+```
+
+加入白板房间。
+
+**注意**
+
+该方法需要在成功创建 `FastRoom` 对象后调用。
+
+**参数**
+
+- `onRoomReadyCallback`：[OnRoomReadyCallback](#roomready) 接口实例。传入 `null`，表示不注册该接口。
+
+<a id="roomready"></a>
+<a id="onroomreadycallback"></a>
+### OnRoomReadyCallback
+
+`OnRoomReadyCallback` 接口，用于向 app 发送房间事件通知，包含如下成员方法：
+
+```java
+void onRoomReady(FastRoom fastRoom);
+```
+
+房间准备就绪回调。
+
+**参数**
+
+- `fastRoom`：`FastRoom` 对象。
+
+<a id="destroy"></a>
+### destroy
+
+```java
+public void destroy()
+```
+
+销毁房间，释放资源。
+
+<a id="isready"></a>
+### isReady
+
+```java
+public boolean isReady()
+```
+
+获取房间是否准备就绪。
+
+调用 `join` 方法后，需要调用该方法获取房间是否准备就绪。房间准备就绪后，才能调用 `FastRoom` 类中的其他方法对白板进行操作。
+
+**返回**
+
+房间是否准备就绪：
+
+- `true`：准备就绪。
+- `false`：尚未准备就绪。
+
+<a id="iswritable"></a>
+### isWritable
+
+```java
+public boolean isWritable()
+```
+
+获取本地用户在当前互动白板实时房间是否为互动模式。
+
+**返回**
+
+获取本地用户是否为互动模式：
+
+- `true`：互动模式，即具有读写权限。
+- `false`：订阅模式，即具有只读权限。
+
+<a id="redo"></a>
+### redo
+
+```java
+public void redo()
+```
+
+重做，即回退撤销操作。
+
+<a id="setwritable1"></a>
+### setWritable [1/2]
+
+```java
+public void setWritable(boolean writable)
+```
+
+设置用户在房间是否为互动模式。
+
+**注意**
+
+该方法需要在房间准备就绪后调用。
+
+**参数**
+
+- `writable`：用户在房间中是否为互动模式：
+  - `true`：互动模式，即具有读写权限。
+  - `false`：订阅模式，即具有只读权限。
+
+<a id="setwritable2"></a>
+### setWritable [2/2]
+
+```java
+public void setWritable(boolean writable, FastResult<Boolean> result)
+```
+
+设置用户在房间是否为互动模式。
+
+**注意**
+
+该方法需要在房间准备就绪后调用。
+
+**参数**
+
+- `writable`：用户在房间中是否为互动模式：
+  - `true`：互动模式，即具有读写权限。
+  - `false`：订阅模式，即具有只读权限。
+- `result`：`setWritable` 方法调用的结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `setWritable` 方法调用是否成功；传入 `null` 表示不监听回调。
+
+<a id="undo"></a>
+### undo
+
+```java
+public void undo()
+```
+
+撤销上一步操作。
+
+<a id="setstrokecolor"></a>
+### setStrokeColor
+
+```java
+public void setStrokeColor(@ColorInt int color)
+```
+
+设置线条的颜色。
+
+**参数**
+
+- `color`：int。线条颜色，RGB 格式，例如 `0x0000FF` 表示蓝色。
+
+<a id="setappliance"></a>
+### setAppliance
+
+```java
+public void setAppliance(FastAppliance fastAppliance)
+```
+
+设置当前使用的白板工具。
+
+**参数**
+
+- `fastAppliance`：白板工具。详见  [FastAppliance](#appliance)。
+
+<a id="appliance"></a>
+<a id="fastappliance"></a>
+### FastAppliance
+
+白板工具，包含以下枚举值：
+
+- `CLICKER(Appliance.CLICKER)`：点击工具。目前主要用于点击 HTML5 文件上的内容。
+
+- `SELECTOR(Appliance.SELECTOR)`：选择工具。
+
+- `HAND(Appliance.HAND)`：抓手工具，用于移动视图。
+
+- `PENCIL(Appliance.PENCIL)`：铅笔。
+
+- `RECTANGLE(Appliance.RECTANGLE)`：矩形工具。
+
+- `ELLIPSE(Appliance.ELLIPSE)`：椭圆工具。
+
+- `TEXT(Appliance.TEXT)`：文字工具。
+
+- `ERASER(Appliance.ERASER)`：橡皮工具。
+
+- `PENCIL_ERASER(Appliance.PENCIL_ERASER)`：铅笔橡皮工具，用于擦除局部铅笔笔迹。
+
+- `LASER_POINTER(Appliance.LASER_POINTER)`：激光笔。
+
+- `ARROW(Appliance.ARROW)`：箭头。
+
+- `STRAIGHT(Appliance.STRAIGHT)`：直线。
+
+- `PENTAGRAM(Appliance.SHAPE, ShapeType.Pentagram)`：五角星。
+
+- `RHOMBUS(Appliance.SHAPE, ShapeType.Rhombus)`：菱形。
+
+- `TRIANGLE(Appliance.SHAPE, ShapeType.Triangle)`：三角形。
+
+- `BUBBLE(Appliance.SHAPE, ShapeType.SpeechBalloon)`：对话气泡。
+
+- `OTHER_CLEAR()`：清除白板内容。
+
+<a id="setstrokewidth"></a>
+### setStrokeWidth
+
+```java
+public void setStrokeWidth(int width)
+```
+
+设置线条的宽度。
+
+**参数**
+
+- `width`：int。线条宽度（px）。
+
+<a id="cleanscene"></a>
+### cleanScene
+
+```java
+public void cleanScene()
+```
+
+清除白板内容。
+
+<a id="setwritable"></a>
+### setWritable
+
+```java
+public void setWritable(boolean writable)
+```
+
+设置用户在房间中是否为互动模式。
+
+**参数**
+
+- `writable`：boolean。用户是否为互动模式：
+  - `true`：互动模式，即具有读写权限。
+  - `false`：订阅模式，即具有只读权限。
+
+<a id="insertimage"></a>
+### insertImage
+
+```java
+public void insertImage(String url, int width, int height)
+```
+
+插入图片。
+
+该方法可以将指定的网络图片插入并展示到当前白板页面上。
+
+**参数**
+
+- `url`：String。图片的 URL 地址。请确保 app 客户端能够访问该 URL，否则图片无法正常展示。
+- `width`：int。图片的宽度（px）。
+- `height`：int。图片的高度（px）。
+
+<a id="insertvideo"></a>
+### insertVideo
+
+```java
+public void insertVideo(String url, String title)
+```
+
+在白板子窗口中插入并播放音视频。
+
+**参数**
+
+- `url`：音视频文件的 URL 地址。请确保 app 客户端能够访问该 URL，否则无法正常加载音视频文件。
+- `title`：窗口标题。
+
+<a id="insertstaticdoc"></a>
+### insertStaticDoc
+
+```java
+public void insertStaticDoc(DocPage[] pages, String title, FastResult<String> result)
+```
+
+在白板子窗口中插入静态文档。
+
+**参数**
+
+- `pages`：插入文档的参数设置。详见 [DocPage](#docpage)。
+- `title`：String。子窗口标题。
+- `result`：一个实现了 `FastResult` 接口的对象，用于处理方法调用的结果。SDK 会使用这个对象来报告操作的结果。如果你不需要监听回调，请传入 `null`。
+
+<a id="docpage"></a>
+### DocPage
+
+```java
+public class DocPage {
+    private String src;
+    private String preview;
+    private Double width;
+    private Double height;
+}
+```
+
+插入文档的参数设置。`DocPage` 类包含以下属性：
+
+- `src`：String。图片或动态 PPT 页的地址。
+  - 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)生成的 URL 地址。你可以从[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)返回的 `image` 字段中获取该地址。请确保 App 客户端能够访问该 URL，否则无法正常加载图片。
+  - 动态 PPT 页：通过[文档转换功能](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)生成的 URI 地址。
+- `preview`：String。（可选）图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[查询文档转换进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)返回的 `preview` 字段获取。传入后，将在 App 左侧展示预览图。请确保 App 客户端能够访问该 URL，否则无法正常加载预览图。
+- `width`：int。插入的文档在白板中的宽度（px）。
+- `height`：int。插入的文档在白板中的高度（px）。
+
+<a id="insertpptx"></a>
+### insertPptx
+
+```java
+public void insertPptx(String taskUuid, String prefixUrl, String title, FastResult<String> result)
+```
+
+在白板子窗口中插入动态文档。
+
+该方法可以插入通过[动态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files#动态文档转换)转换后的动态 HTML 网页。
+
+**参数**
+
+- `taskUUID`：String。文档转换任务的 Task UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)请求成功时响应包体中 `uuid` 字段的值。
+- `prefixUrl`：String。转换结果文件地址前缀路径，即[查询文档转换进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)请求成功时响应包体中 `prefix` 字段的值。
+- `title`：String。子窗口标题。
+- `result`：一个实现了 `FastResult` 接口的对象，用于处理方法调用的结果。SDK 会使用这个对象来报告操作的结果。如果你不需要监听回调，请传入 `null`。
+
+<a id="insertdocs"></a>
+### insertDocs
+
+```java
+public void insertDocs(FastInsertDocParams params, FastResult<String> result)
+```
+
+在白板子窗口中插入并展示文档。
+
+:::info
+该方法自 v1.6.0 起废弃，请改用 [insertStaticDoc](#insertstaticdoc) 或 [insertPptx](#insertpptx) 以插入静态和动态文档。
+:::
+
+[成功发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)后，可以调用该方法，传入转换后文档的相关参数，SDK 会自动创建子窗口，插入并分页展示转换后的文档。
+
+**参数**
+
+- `params`：插入文档的参数设置。详见 [FastInsertDocParams](#docparams)。
+- `result`：`insertDocs` 方法调用结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `insertDocs` 方法调用是否成功；传入 `null` 表示不监听回调。
+
+<a id="docparams"></a>
+<a id="fastinsertdocparams"></a>
+### FastInsertDocParams
+
+文档的参数设置。
+
+```java
+public class FastInsertDocParams {
+    private String taskUUID;
+    private String taskToken;
+    private FastRegion region;
+    private ConverterType converterType;
+    private String fileType;
+    private Boolean dynamicDoc;
+    private String title;
+}
+```
+
+`FastInsertDocParams` 类包含以下属性：
+
+- `taskUUID`：String。文档转换任务的 Task UUID，即[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)请求成功时响应包体中 `uuid` 字段的值。
+- `taskToken`：String。文档转换任务的 Task Token，必须和[发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)时传入的 Task Token 一致。
+- `converterType`: 枚举。文档转换服务的版本，取值如下：
+  - `Projector`: 新版。详见[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)。
+  - `WhiteboardConverter`: 旧版（默认值），当前已不再维护。
+- `fileType`：String。文档类型：
+  - `pdf`：静态文档。
+  - `pptx`：动态文档。
+- `dynamicDoc`: boolean。文档转换任务类型是否为动态转换任务。
+- `title`：String。窗口标题。
+
+<a id="setfaststyle"></a>
+### setFastStyle
+
+```java
+public void setFastStyle(FastStyle style)
+```
+
+设置白板用户界面的样式。
+
+**参数**
+
+- `style`：白板用户界面的样式。详见 [FastStyle](#faststyle)。
+
+<a id="faststyle"></a>
+<a id="faststyle"></a>
+### FastStyle
+
+白板用户界面的样式。
+
+```java
+public class FastStyle {
+    private int mainColor;
+    private boolean darkMode;
+
+    public FastStyle() {
+    }
+
+    public int getMainColor() {
+        return mainColor;
+    }
+
+    public void setMainColor(@ColorInt int color) {
+        this.mainColor = color;
+    }
+
+    public boolean isDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
+    }
+
+    public FastStyle copy() {
+        FastStyle style = new FastStyle();
+        style.mainColor = mainColor;
+        style.darkMode = darkMode;
+        return style;
+    }
+}
+```
+
+`FastStyle` 类包含如下成员方法：
+
+**getMainColor**
+
+获取白板用户界面的主题色。
+
+**返回**
+
+白板用户界面的主题色。
+
+**setMainColor**
+
+设置白板用户界面的主题色。
+
+该方法可设置部分按钮边框、白板加载时提示文字的颜色。
+
+**参数**
+
+- `color`：白板用户界面的主题色，RGB 格式，例如 `0x0000FF` 表示蓝色。
+
+**isDarkMode**
+
+获取白板用户界面是否为暗色模式。
+
+**返回**
+
+- `true`：白板用户界面为暗色模式。
+- `false`：白板用户界面为浅色模式。
+
+**setDarkMode**
+
+设置白板用户界面为暗色模式。
+
+**参数**
+
+- `darkMode`：是否使用暗色模式：
+
+ - `true`：暗色模式。
+ - `false`：浅色模式。
+
+<a id="setresource"></a>
+### setResource
+
+```java
+public void setResource(FastResource fastResource)
+```
+
+设置白板颜色相关的资源。
+
+**参数**
+
+- `fastResource`：白板颜色相关的资源。详见 [FastResource](#fastresource)。
+
+<a id="fastresource"></a>
+<a id="fastresource"></a>
+### FastResource
+
+白板颜色相关的资源。
+
+```java
+public class FastResource {
+    @ColorInt
+    public int getBackgroundColor(boolean darkMode) {
+        return color(darkMode
+                ? R.color.fast_dark_mode_bg
+                : R.color.fast_light_mode_bg
+        );
+    }
+
+    @ColorInt
+    public int getBoardBackgroundColor(boolean darkMode) {
+        return getBackgroundColor(darkMode);
+    }
+}
+```
+
+包含如下成员方法，均可通过重写方法来自定义颜色：
+
+**getBackgroundColor**
+
+获取白板控件底色。
+
+**参数**
+
+- `darkMode`：boolean。白板控件底色是否为暗色模式：
+  - `true`：暗色模式。
+  - `false`：浅色模式。
+
+**返回**
+
+十六进制的颜色值。
+
+**getBoardBackgroundColor**
+
+获取白板底色。
+
+**注意**
+
+如果不重写该方法，将默认调用 `getBackgroundColor`。
+
+**参数**
+
+- `darkMode`：boolean。白板底色是否为暗色模式：
+  - `true`：暗色模式。
+  - `false`：浅色模式。
+
+**返回**
+
+十六进制的颜色值。
+
+<a id="registerapp"></a>
+### registerApp
+
+```java
+public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result)
+```
+
+向白板房间注册第三方窗口应用。
+
+该方法允许你注册可以在白板内作为独立窗口运行的外部应用。
+
+注册支持两种方式：
+
+1. **本地脚本注册**：使用本地 JavaScript 代码（推荐方式，可靠性高）
+2. **远程包注册**：使用远程 URL（可能因网络原因失败）
+
+:::warning[注意]
+- 注册必须在加入房间前完成，以确保应用能够正常加载。
+- 确保所有客户端使用一致的应用版本，避免运行时问题。
+- 在加入房间前注册应用。
+- 注册的应用将可通过 `getRoom().addApp()` 添加到房间中。
+:::
+
+**参数**
+
+- `params`：注册参数，包含应用配置。详见 [FastRegisterAppParams](#fastregisterappparams)。
+- `result`：`registerApp` 方法调用的结果。详见 [FastResult](#result)。传入 `FastResult` 实例，SDK 会触发在 `FastResult` 接口中实现的回调，报告 `registerApp` 方法调用是否成功；传入 `null` 表示不监听回调。
+
+<a id="fastregisterappparams"></a>
+<a id="fastregisterappparams"></a>
+### FastRegisterAppParams
+
+用于注册第三方窗口 App 参数的配置类。
+
+```java
+public class FastRegisterAppParams {
+    private String javascriptString;
+    private String kind;
+    private String url;
+    private Map<String, Object> appOptions;
+    private String variable;
+
+    public FastRegisterAppParams(String javascriptString, String kind, String variable, Map<String, Object> appOptions) {
+        this.javascriptString = javascriptString;
+        this.kind = kind;
+        this.appOptions = appOptions;
+        this.variable = variable;
+    }
+
+    public FastRegisterAppParams(String url, String kind, Map<String, Object> appOptions) {
+        this.url = url;
+        this.kind = kind;
+        this.appOptions = appOptions;
+    }
+
+    public String getJavascriptString() {
+        return javascriptString;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Map<String, Object> getAppOptions() {
+        return appOptions;
+    }
+
+    public String getVariable() {
+        return variable;
+    }
+}
+```
+
+`FastRegisterAppParams` 类提供两种注册方式：
+
+1. **本地脚本注册**：通过本地的 JavaScript 字符串注册（推荐方式，可靠性高）
+   - 使用 `FastRegisterAppParams(String javascriptString, String kind, String variable, Map<String, Object> appOptions)` 构造函数
+2. **远程包注册**：通过发布包的 URL 进行注册（可能因网络原因失败）
+   - 使用 `FastRegisterAppParams(String url, String kind, Map<String, Object> appOptions)` 构造函数
+
+`FastRegisterAppParams` 类包含以下属性：
+
+- `javascriptString`：String。本地 JS 脚本代码，用于本地脚本注册。
+- `kind`：String。注册的 App 名称，即 App 的类型名称。
+- `url`：String。远程注册包的 URL 地址，用于远程包注册。
+- `appOptions`：`Map<String, Object>`。初始化 App 实例时会被传入的参数。这段配置不会被同步到其他端，属于本地设置。常常用来设置 debug 的开关。
+- `variable`：String。挂载在 window 上的变量名，挂载后为 `window.variable`。
+
+<a id="fastuisettings"></a>
+## FastUiSettings 类
+
+`FastUiSettings` 类提供设置白板用户界面的方法。
+
+<a id="showroomcontroller"></a>
+### showRoomController
+
+```java
+public void showRoomController(ControllerId... ids)
+```
+
+展示白板用户界面上的控件。
+
+**参数**
+
+- `ids`：控件的标识符。详见 [ControllerId](#controllerId)。
+
+<a id="hideroomcontroller"></a>
+### hideRoomController
+
+```java
+public void hideRoomController(ControllerId... ids)
+```
+
+隐藏白板用户界面上的控件。
+
+**参数**
+
+- `ids`：控件的标识符。详见 [ControllerId](#controllerId)。
+
+<a id="controllerId"></a>
+<a id="controllerid"></a>
+### ControllerId
+
+白板用户界面上的控件，包含如下枚举值：
+
+- `RedoUndo`：重做和撤销按钮。
+- `ToolBox`：工具条。
+- `PageIndicator`：页面指示器。
+
+<a id="settoolsexpandappliances"></a>
+### setToolsExpandAppliances
+
+```java
+public static void setToolsExpandAppliances(List<List<FastAppliance>> toolsExpandAppliances)
+```
+
+设置展开模式下工具条包含的工具集。
+
+如果 Fastboard SDK 提供的默认工具条无法满足你的需求，你可以调用该方法自定义工具条包含的工具，并设置工具条为展开模式。你可以在该方法中传入二级工具列表，其中一级列表中的元素会在工具条上展开显示，二级列表中的元素会被折叠。
+
+成功调用 `setToolsExpandAppliances` 方法后，如果你需要切换工具条为折叠模式，你可以调用 [setToolboxExpand](#settoolboxexpand)。
+
+**注意**
+
+该方法需要在加入白板房间前调用。
+
+**参数**
+
+- `toolsExpandAppliances`：展开模式下工具条包含的工具。详见 [FastAppliance](#appliance)。
+
+**示例**
+
+```java
+ArrayList<List<FastAppliance>> config = new ArrayList<>();
+config.add(Arrays.asList(
+        FastAppliance.CLICKER,
+        FastAppliance.PENCIL,
+        FastAppliance.TEXT,
+        FastAppliance.SELECTOR,
+        FastAppliance.ERASER
+));
+config.add(Arrays.asList(FastAppliance.SELECTOR));
+config.add(Arrays.asList(FastAppliance.PENCIL));
+config.add(Arrays.asList(FastAppliance.TEXT));
+config.add(Arrays.asList(FastAppliance.ERASER));
+config.add(Arrays.asList(
+        FastAppliance.STRAIGHT,
+        FastAppliance.ARROW,
+        FastAppliance.RECTANGLE,
+        FastAppliance.ELLIPSE,
+        FastAppliance.PENTAGRAM,
+        FastAppliance.RHOMBUS,
+        FastAppliance.BUBBLE,
+        FastAppliance.TRIANGLE
+));
+config.add(Arrays.asList(FastAppliance.OTHER_CLEAR));
+
+FastUiSettings.setToolsExpandAppliances(config);
+```
+
+<a id="settoolscollapseappliances"></a>
+### setToolsCollapseAppliances
+
+```java
+public static void setToolsCollapseAppliances(List<FastAppliance> toolsCollapseAppliances)
+```
+
+设置折叠模式下工具条包含的工具集。
+
+如果 Fastboard SDK 提供的默认工具条无法满足你的需求，你可以调用该方法自定义工具条包含的工具，并设置工具条为折叠模式。你可以在该方法中传入一级工具列表，列表中的元素在工具条上默认折叠。
+
+成功调用 `setToolsCollapseAppliances` 方法后，如果需要切换工具条为展开模式，你可以调用 [setToolboxExpand](#settoolboxexpand)。
+
+**注意**
+
+该方法需要在加入白板房间前调用。
+
+**参数**
+
+- `toolsCollapseAppliances`：白板工具条包含的工具。详见 [FastAppliance](#appliance)。
+
+**示例**
+
+```java
+ArrayList<FastAppliance> collapseAppliances = new ArrayList<>();
+collapseAppliances.add(FastAppliance.PENCIL);
+collapseAppliances.add(FastAppliance.ERASER);
+collapseAppliances.add(FastAppliance.ARROW);
+collapseAppliances.add(FastAppliance.SELECTOR);
+collapseAppliances.add(FastAppliance.TEXT);
+collapseAppliances.add(FastAppliance.OTHER_CLEAR);
+
+FastUiSettings.setToolsCollapseAppliances(collapseAppliances);
+```
+
+<a id="settoolscolors"></a>
+### setToolsColors
+
+```java
+public static void setToolsColors(List<Integer> toolsColors)
+```
+
+设置白板工具使用的颜色。
+
+该方法设置使用白板工具绘制出的图形、线条或文字的颜色。
+
+**注意**
+
+该方法需要在加入白板房间前调用。
+
+**参数**
+
+- `toolsColors`：白板工具的颜色，RGB 格式，例如 `0x0000FF` 表示蓝色。
+
+<a id="settoolboxedgemargin"></a>
+### setToolboxEdgeMargin
+
+```java
+public void setToolboxEdgeMargin(int margin)
+```
+
+设置白板工具条与侧边的边距。
+
+边距的定义由 `setToolboxGravity` 中设置的工具条位置决定：
+
+- 工具条位于白板左边：边距指工具条左侧侧边与白板左侧侧边之间的距离。
+- 工具条位于白板右边：边距指工具条右侧侧边与白板右侧侧边之间的距离。
+
+**参数**
+
+- `margin`：int。工具条与白板侧边的距离，单位为 px。
+
+<a id="settoolboxgravity"></a>
+### setToolboxGravity
+
+```java
+public void setToolboxGravity(int gravity)
+```
+
+设置工具条在白板上的位置。
+
+**参数**
+
+- `gravity`：工具栏在白板上的位置：
+
+ - `Gravity.LEFT`：左边。
+ - `Gravity.RIGHT`：右边。
+
+<a id="settoolboxexpand"></a>
+<a id="settoolboxexpand"></a>
+### setToolboxExpand
+
+```java
+public void setToolboxExpand(boolean expand)
+```
+
+设置是否展开工具栏。
+
+工具栏的默认展示状态与设备有关，在平板上默认展开，在手机上默认折叠。你可以调用该方法，修改工具栏的展示状态。
+
+**参数**
+
+- `expand`：是否展开工具栏：
+  - `true`：展开。
+  - `false`：折叠。
+
+<a id="setstrokerange"></a>
+### setStrokeRange
+
+```java
+public void setStrokeRange(int min, int max)
+```
+
+设置工具箱中线条宽度滑块的范围。
+
+该方法配置工具箱扩展面板中线条宽度滑块的最小值和最大值。用户在使用铅笔、矩形、圆形等绘图工具时，可以在此范围内调整线条宽度。默认范围为 [1, 24]。
+
+:::warning[注意]
+- 线条宽度滑块将被限制在指定的范围内。
+- 如果当前线条宽度超出新范围，将被限制到新范围内。
+- 此设置影响所有支持线条宽度调整的绘图工具。
+:::
+
+**参数**
+
+- `min`：int。线条宽度的最小值（包含）。
+- `max`：int。线条宽度的最大值（包含）。
+
+<a id="fastlogger"></a>
+## FastLogger 类
+
+`FastLogger` 类提供一个灵活的白板运行日志记录工具，可以方便地记录 `debug`、`info`、`warn`、`error` 共四种不同级别的日志信息。`FastLogger` 类使用一个 `Logger` 接口，并提供了一个默认实现 `DefaultLogger` 来使用系统的 `Log` 类。
+
+<a id="setlogger"></a>
+### setLogger
+
+```java
+public static void setLogger(Logger logger)
+```
+
+自定义日志记录器。
+
+**参数**
+
+- `logger`：日志记录器实例。如需自定义日志记录器，你需要传入 `Logger` 接口的实现类，详见 [`Logger`](#logger)；传入 `null` 将使用系统默认的日志记录器。
+
+<a id="logger"></a>
+### Logger
+
+定义了日志记录器的规范，包含所有日志级别的记录方法。
+
+<a id="debug"></a>
+### debug
+
+```java
+static void debug(String msg)
+```
+
+记录 debug 级别的日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="info"></a>
+### info
+
+```java
+static void info(String msg)
+```
+
+记录 info 级别的日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="warn"></a>
+### warn
+
+```java
+static void warn(String msg)
+```
+
+记录 warn 级别的日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="error"></a>
+### error
+
+```java
+static void error(String msg)
+```
+
+记录 error 级别日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="result"></a>
+<a id="fastresult"></a>
+## FastResult
+
+方法调用结果。
+
+```java
+public interface FastResult<T> {
+  void onSuccess(T value);
+  void onError(Exception exception);
+}
+```
+
+`FastResult` 接口报告方法的调用结果，包含以下回调方法：
+
+- `onSuccess`：方法调用成功回调。
+- `onError`：发生错误回调。

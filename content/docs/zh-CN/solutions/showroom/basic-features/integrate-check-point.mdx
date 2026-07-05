@@ -1,0 +1,62 @@
+---
+title: "集成要点"
+---
+本文介绍实现秀场直播时的 RTC SDK 集成要点：
+
+1. SDK 初始化：
+   - 除非出现特殊情况，建议创建一个 `api.rtc` 实例，即创建单实例。
+   - 检查并确认 `api.rtcConfig` 中设置的字段是否正确，例如 `api.appI` 字段。
+
+2. 频道相关设置：
+   - 将频道配置为直播场景：使用 `setChannelProfile` 将频道配置为 `api.live`。
+   - 检查音频设置是否符合场景：使用 `setAudioProfile` 进行适当的音频配置。
+   - 检查音频场景设置是否符合场景：使用 `setAudioScenario` 进行适当的音频场景配置。
+
+3. 视频设置：
+   - 检查视频编码分辨率、帧率和码率设置：使用 `setVideoEncoderConfiguration` 进行适当的视频设置。
+
+4. 用户角色设置：
+   - 在直播场景下，SDK 默认将用户角色设置为观众，即 `api.audience`。
+   - 当你调用 `setClientRole` 切换主播和观众角色时，等待收到切换角色成功的回调后才算成功。`api.roleChange` 为直播场景下用户角色已切换回调。`api.roleFail` 为直播场景下切换用户角色失败回调。
+
+5. Token 使用和安全性：
+   - 进房前提前获取 Token。
+   - 观众可以使用通配 Token。
+   - 使用 `renewToken` 更新 Token。
+   - 关注 Token 相关的回调，如 Token 过期回调和 Token 即将过期回调。`api.request` 为 Token 已过期回调。`api.expire` 为 Token 将在 30 秒内过期回调。
+   - 对于敏感业务接口信息，加密以防止 Token 泄露。
+   - 建议在 Token 有效期前主动更新 Token。
+
+6. 预览和加入频道：
+   - 进房前进行本地视频预览，并使用 `setupLocalVideo` 初始化本地视图。
+   - 使用 `api.join` 加入频道，并推荐设置用户 ID 为 `Integer` 型，而非 `String` 型。
+   - 等待收到成功加入频道或成功重新加入频道回调后才算成功加入。`api.joinSuc` 为成功加入频道回调。`api.rejoin` 为成功重新加入频道回调。
+
+7. 远端用户视图和画面设置：
+   - 初始化远端用户视图：使用 `setupRemoteVideo` 初始化远端用户的视频视图。
+   - 注意镜像和画面适配设置，避免出现黑框或裁剪过多的情况。
+
+8. 防炸房与应对炸房：
+   - 参考[预防和应对炸房捣乱现象最佳实践](/doc/rtc//best-practice/prevent-stream-bombing)规避炸房风险。
+
+9. 销毁 RTC 引擎：
+   - 推荐在异步线程销毁 RTC 引擎，在退出应用程序或不再需要使用 RTC 服务时，使用 `destroy` 异步销毁 RTC 引擎。
+
+10. 关键回调：
+    - 监听一些重要的回调，如远端用户加入频道、离开频道、网络连接中断等：
+        - `api.joined`：远端用户（通信场景）/主播（直播场景）加入当前频道回调。
+        - `api.offline`：远端用户（通信场景）/主播（直播场景）离开当前频道回调。
+        - `api.lost`：网络连接中断，且 SDK 无法在 10 秒内连接服务器回调。
+        - `api.netState`：网络连接状态已改变回调。
+    - 根据业务需求，处理音频和视频发布状态改变的回调。
+        - `api.aState`：音频发布状态改变回调。
+        - `api.vState`：视频发布状态改变回调。
+
+11. 控制同时发流人数：
+    - 默认情况下，SDK 支持单个频道内同时发流的人数为 17。注意控制同时发流的人数。
+    - 如果需要调整同时发流人数限制，请[联系技术支持](https://agora-ticket.agora.io/)。
+
+12. 回调中的注意事项：
+    - 避免在回调中进行耗时操作，不要在回调中调用其他 RTC SDK API，以避免死锁等问题。
+
+如需了解本文提到的 API，请查看 [API 参考](/api-ref/rtc//API/rtc_api_overview)。

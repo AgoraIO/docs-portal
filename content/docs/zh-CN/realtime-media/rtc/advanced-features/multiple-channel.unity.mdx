@@ -1,0 +1,119 @@
+---
+title: "加入多频道"
+---
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `RtcConnection` 对象和 `IRtcEngineEx` 类实现多频道功能。`IRtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `IRtcEngineEx` 类中的 `JoinChannelEx` 并设置不同的 `RtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `JoinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 你可以通过每个具体回调中的 `connection` 参数得知该回调对应哪个频道的事件。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.unity)。
+
+## 实现方法
+
+本节介绍如何在已经加入一个频道的情况下，以主播身份加入第二个频道。
+
+1. 调用 `JoinChannelEx` 加入第二个频道。
+
+   ```csharp
+   ChannelMediaOptions options2 = new ChannelMediaOptions();
+   // 自动订阅远端的音频流
+   options2.autoSubscribeAudio.SetValue(true);
+   // 自动订阅远端的视频流
+   options2.autoSubscribeVideo.SetValue(true);
+   // 发布麦克风采集的音频流
+   options2.publishMicrophoneTrack.SetValue(true);
+   // 发布摄像头采集的视频流
+   options2.publishCameraTrack.SetValue(true);
+   // 设置用户角色为主播
+   options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+   // 加入第二个频道
+   // 请确保加入频道使用的用户 ID 是唯一的
+   ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, UID2), options2);
+   Debug.Log("JoinChannelEx returns: " + ret);
+   ```
+
+2. 监听 `OnUserJoined` 回调，并调用 `SetForUser` 设置远端用户视频渲染。
+
+    ```csharp
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+    {
+        Debug.Log(string.Format("OnUserJoined uid: ${0} elapsed: ${1}", uid, elapsed));
+        //创建远端用户视图
+        var videoSurface = MakeImageSurface(uid.ToString());
+        // 设置视频渲染
+        videoSurface.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+        // Texture 的宽高发生改变回调
+        videoSurface.OnTextureSizeModify += (int width, int height) =>
+        {
+            var transform = videoSurface.GetComponent<RectTransform>();
+            if (transform)
+            {
+                // 如果在 RawImage 中渲染，只需设置 RawImage 的尺寸
+                transform.sizeDelta = new Vector2(width / 2, height / 2);
+                transform.localScale = Vector3.one;
+             }
+             else
+             {
+                 // 如果在 MeshRenderer 中渲染，只需设置 MeshRenderer 的本地尺寸
+                 float scale = (float)height / (float)width;
+                 videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+              }
+              Debug.Log("OnTextureSizeModify: " + width + "  " + height);
+        }
+    }
+
+    private static VideoSurface MakeImageSurface(string goName)
+    {
+        GameObject go = new GameObject();
+        go.name = goName;
+        // to be renderered onto
+        go.AddComponent<RawImage>();
+        // make the object draggable
+        go.AddComponent<UIElementDrag>();
+        var canvas = GameObject.Find("VideoCanvas");
+        if (canvas != null)
+        {
+            go.transform.parent = canvas.transform;
+            Debug.Log("add video view");
+        }
+        else
+        {
+            Debug.Log("Canvas is null video view");
+         }
+
+         // 设置 transform 属性
+         go.transform.Rotate(0f, 0.0f, 180.0f);
+         go.transform.localPosition = Vector3.zero;
+         go.transform.localScale = new Vector3(2f, 3f, 1f);
+
+         // 添加 videoSurface 组件
+         var videoSurface = go.AddComponent<VideoSurface>();
+         return videoSurface;
+    }
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`JoinChannelEx`](/api-ref/rtc/unity/API/toc_channel#api_irtcengineex_joinchannelex)
+- [`OnUserJoined`](/api-ref/rtc/unity/API/toc_channel#callback_irtcengineeventhandler_onuserjoined)
+- [`SetForUser`](/api-ref/rtc/unity/API/toc_video_rendering#api_videosurface_setforuser)
+- [`OnTextureSizeModify`](/api-ref/rtc/unity/API/toc_video_rendering#OnTextureSizeModify)

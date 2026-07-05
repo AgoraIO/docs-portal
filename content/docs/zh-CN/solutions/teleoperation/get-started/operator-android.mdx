@@ -1,0 +1,143 @@
+---
+title: "操控端实现 (Android)"
+---
+声网平行操控 SDK 支持主流的 Linux、Android 设备端平台，Windows、Web、Linux、Android、iOS、macOS 操控端平台。
+
+本文介绍如何通过声网平行操控 SDK 在 Android 操控端实现主要功能。
+
+:::info[信息]
+如需体验其它操控端，请联系 sales@shengwang.cn。
+:::
+
+## 技术原理
+
+基于如下技术框架图，你可以结合你的实际业务进行开发。
+
+![操控端技术架构](/img/teleoperation/architecture.png)
+
+## 前提条件
+
+开始前，请确保满足如下条件：
+
+- 准备平行操控所需的 Android 开发环境如下：
+    - Android Studio 4.1 以上版本。
+    - Android API 级别 16 或以上。
+    - Android 4.1 或以上版本的移动设备。
+- 联系 sales@shengwang.cn 获取平行操控 Android SDK。
+- 参考[创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start.android#创建项目)为你的项目添加平行操控场景所需的网络及设备权限。
+
+## 实现流程
+
+### 接收音视频流
+
+接收 YUV 格式或已编码的视频数据，详细步骤请参考[实现音视频互动流程](/zh-CN/realtime-media/rtc/get-started/quick-start.android#实现流程)。
+
+### 收发控制信令
+
+按照如下步骤实现从操控端收发控制信令的逻辑：
+
+1. 创建并初始化 `RtmClient` 对象，并设置事件监听。
+
+    ```java
+    String app_id = getApplicationContext().getString(R.string.agora_app_id);
+
+    RtcEngineConfig config = new RtcEngineConfig();
+    config.mContext = getBaseContext();
+    config.mAppId = app_id;
+    config.mEventHandler = mRtcEventHandler;
+    RtcEngine mRtcEngine = RtcEngine.create(config);
+
+    // 创建 RtmClient
+    RtmClient mRtmClient = RtmClient.create();
+    // 配置 RtmClient
+    RtmConfig rtmConfig = new RtmConfig();
+    // userId 中仅支持传入内容为数值的字符串，例如 "1234567"
+    rtmConfig.mUserId = userId.toString();
+    rtmConfig.mUseStringUID = false;
+    // 设置事件监听程序
+    rtmConfig.mEventHandler = mRtmEventHandler;
+    rtmConfig.mAppId = getApplicationContext().getString(R.string.agora_app_id);
+    // 初始化 RtmClient
+    mRtmClient.initialize(rtmConfig);
+    ```
+
+2. 创建 Stream Channel 并加入频道。在使用 `StreamChannel` 类中的任何 API 之前，你需要先调用 `createStreamChannel` 创建 Stream Channel。
+
+    ```java
+    // 创建 Stream Channel
+    StreamChannel mStreamChannel = mRtmClient.createStreamChannel(channelName.toString());
+
+    // 加入频道
+    JoinChannelOptions options = new JoinChannelOptions();
+    options.token = getApplicationContext().getString(R.string.agora_app_id);
+    int errorCode = mStreamChannel.join(options);
+    ```
+
+3. 加入频道中的 Topic 并发布消息。成功加入 Topic 后，SDK 会自动将你注册为该 Topic 的消息发布者，你可以在该 Topic 中发送消息。成功发送后，SDK 会把该消息分发给该 Topic 的所有订阅者。
+
+    ```java
+    // 加入 Topic
+    JoinTopicOptions options = new JoinTopicOptions();
+    options.messageQos = RtmMessageQos.RTM_MESSAGE_QOS_ORDERED;
+    int errorCode = mStreamChannel.joinTopic(topicName.toString(), options);
+
+    // 在 Topic 中发布消息
+    String msg = "xxx";
+    byte[] message = msg.getBytes();
+    int errorCode = mStreamChannel.publishTopicMessage(topicName.toString(), message);
+    ```
+
+4. 订阅 Topic 及 Topic 中的消息发送者。
+
+    ```java
+    ArrayList<String> mSubscribeUserList = new ArrayList<>();
+    mSubscribeUserList.add("xxx");
+
+    TopicOptions options = new TopicOptions();
+    options.users = mSubscribeUserList;
+
+    int errorCode = mStreamChannel.subscribeTopic(topicName.toString(), options);
+    ```
+
+5. 通过 `onMessageEvent` 事件通知接收远端用户的消息。
+
+    ```java
+    // 继承 IRtmEventHandler 类
+    public class RtmEventHandler implements IRtmEventHandler {
+        @Override
+        // 监听消息事件
+        public void onMessageEvent(MessageEvent event) {
+            String message = new String(event.message);
+            logUtil.visualLog_CALLBACK("on message event, channel: " + event.channelName + ", channelType:" + event.channelType +
+                    ", topicName: " + event.topicName + ", publisher: " + event.publisher + ", message: " + message);
+        }
+    }
+    ```
+
+6. 退出并释放资源。
+
+    ```java
+    Editable topicName = this.mTopicName.getText();
+    int errorCode = mStreamChannel.leaveTopic(topicName.toString()); // 退出 Topic
+    int errorCode = mStreamChannel.leave(); // 退出频道
+    mStreamChannel.release(); // 销毁 Stream Channel
+    RtmClient.release(); // 销毁 RtmClient
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网在 SDK 包中提供了以下示例项目供你参考：
+
+```shell
+├── sdk  # 声网的 SDK 库文件和头文件
+└── samples    # 实时音视频示例代码
+```
+
+### API 参考
+
+你可以参考以下 API 文档：
+
+- [实时音视频 API](/api-ref/rtc-server-sdk/java/overview)
+- [实时控制信令 API](https://docs-preprod.agora.io/cn/rtm-2.x/api-overview-android?platform=Android)

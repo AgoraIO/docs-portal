@@ -1,0 +1,534 @@
+---
+title: "屏幕共享"
+---
+在互动直播或视频通话中，主播或视频通话用户可以通过声网 SDK 中的屏幕共享特性，将自己的屏幕内容以视频的方式分享给其他用户或观众观看。
+
+屏幕共享可以应用在以下场景中：
+
+| 场景     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| 在线教育 | 老师将自己的屏幕、教学课件、绘图软件或编程软件共享给学生，用于课堂示范 |
+| 游戏直播 | 主播共享自己的游戏画面给观众                                 |
+| 互动直播 | 主播共享自己的屏幕和观众互动                                 |
+| 视频会议 | 会议成员共享屏幕观看 PPT 或者文档                            |
+| 远程控制 | 被控端向主控端展示自己的桌面                                 |
+
+本文介绍如何使用声网 Flutter SDK 6.x 在 Android，iOS，macOS 和 Windows 平台实现屏幕共享。
+
+## 前提条件
+
+在实现屏幕共享前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.flutter)。
+
+## 注意事项
+
+<Tabs defaultValue="android" groupId="platforms" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- 在开启屏幕共享后，声网以屏幕共享视频流的分辨率作为计费标准。移动端屏幕共享流默认分辨率为 1280 × 720，你也可以根据你的业务需求进行调整。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+- 在开始屏幕共享前，调用 `setAudioScenario` 方法，并设置音频场景为 `audioScenarioGameStreaming` (高音质场景)，以提高屏幕共享时采集系统音频的成功率。
+- 因 Android 性能限制，屏幕共享不支持 Android TV。
+- 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
+- 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
+- 在 Android 9 及之后版本上，为避免 App 退后台时被系统终止，建议你在 `/app/Manifests/AndroidManifest.xml` 文件中添加前台服务权限：`android.permission.FOREGROUND_SERVICE`。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- 在开启屏幕共享后，声网以屏幕共享视频流的分辨率作为计费标准。移动端屏幕共享流默认分辨率为 1280 × 720，你也可以根据你的业务需求进行调整。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+- 在开始屏幕共享前，调用 `setAudioScenario` 方法，并设置音频场景为 `audioScenarioGameStreaming` (高音质场景)，以提高屏幕共享时采集系统音频的成功率。
+- 受系统限制，屏幕共享只支持 iOS 12.0 及以上版本。
+- 该功能对设备性能要求较高，声网推荐你使用 iPhone X 及以上设备。
+- 用户在 iOS 设备上开启屏幕共享后，因系统限制，音频路由会自动切换为听筒。
+    - 如果当前使用通话音量，则你可以手动切换音频路由，例如，你可以根据实际需求将音频路由切换成扬声器。
+    - 如果当前使用媒体音量，由于系统限制，你在这种场景下无法手动切换音频路由。如果你不了解使用的是通话还是媒体音量，请参考[如何区分媒体音量和通话音量](/faq/integration-issues/system-volume)。
+
+</TabsContent>
+
+<TabsContent value="macos">
+
+- 在开启屏幕共享后，声网以屏幕共享视频流的分辨率作为计费标准。PC 端屏幕共享流默认分辨率为 1920 × 1080，你也可以根据你的业务需求进行调整。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+- 如果要在屏幕共享时共享 4K 分辨率的超高清视频，你的设备需要满足一定要求，声网推荐的最低设备规格为：2021 年 M1 MacBook Pro 16 英寸。
+
+</TabsContent>
+
+<TabsContent value="windows">
+
+- 在开启屏幕共享后，声网以屏幕共享视频流的分辨率作为计费标准。PC 端屏幕共享流默认分辨率为 1920 × 1080，你也可以根据你的业务需求进行调整。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+- 如果要在屏幕共享时共享 4K 分辨率的超高清视频，你的设备需要满足一定要求，声网推荐的最低设备规格为：intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ。
+
+</TabsContent>
+</Tabs>
+
+## Android 平台
+
+### 技术原理
+
+根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
+
+- 在**加入频道前**调用 `startScreenCapture`，然后调用 `joinChannelEx` 加入频道并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`，即可开始屏幕共享。
+- 在**加入频道后**调用 `startScreenCapture`，然后调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`，即可开始屏幕共享。
+
+本文中的步骤以第一种时序为例。
+
+### 实现步骤
+
+#### 1 开启屏幕采集
+
+调用 `startScreenCapture` 开启屏幕采集，并根据你的应用场景进行参数设置：
+
+   - `captureVideo`：是否在屏幕共享时采集系统视频。
+   - `captureAudio`：是否在屏幕共享时采集系统音频。
+   - `captureSignalVolume`：采集的系统音量。
+   - `dimensions`：视频编码的分辨率。
+   - `frameRate`：视频编码帧率 (fps)。
+   - `bitrate`：视频编码码率 (Kbps)。
+   - `contentHint`：屏幕共享视频的内容类型。
+
+```dart
+await rtcEngine.startScreenCapture(
+    const ScreenCaptureParameters2(captureAudio: true, captureVideo: true));
+```
+
+#### 2 加入频道并发布屏幕共享流
+
+调用 `joinChannelEx` 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置 `publishScreenCaptureAudio` 为 `true`，在频道中发布屏幕采集的音频。
+- 设置 `publishScreenCaptureVideo` 为 `true`，在频道中发布屏幕采集的视频。
+
+```dart
+// 发布屏幕共享的画面和声音
+await _engine.joinChannelEx(
+    token: '',
+    connection: RtcConnection(
+        channelId: _controller.text, localUid: shareShareUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: false,
+    autoSubscribeAudio: false,
+    publishCameraTrack: false,
+    publishMicrophoneTrack: false,
+    // 在频道中发布屏幕采集的音频
+    publishScreenCaptureAudio: true,
+    // 在频道中发布屏幕采集的视频
+    publishScreenCaptureVideo: true,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+
+// 订阅远端音视频流，发布麦克风的音频、摄像头采集的视频
+await _engine.joinChannelEx(
+    token: '',
+    connection:
+        RtcConnection(channelId: _controller.text, localUid: localUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: true,
+    autoSubscribeAudio: true,
+    publishCameraTrack: true,
+    publishMicrophoneTrack: true,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+```
+
+:::warning[注意]
+如果你已经加入频道，则需要调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`。
+:::
+
+#### 3 停止屏幕共享
+
+调用 `stopScreenCapture`，在频道内停止屏幕共享。示例代码如下：
+
+```dart
+await _engine.stopScreenCapture();
+```
+
+## iOS 平台
+
+### 技术原理
+
+由于 Apple 不支持在 App 主进程采集屏幕，因此你需要为屏幕共享流单独创建一个 Extension，并在 Extension 中使用 iOS 原生的 ReplayKit 框架实现录制屏幕，然后将屏幕共享流发送给主进程、实现屏幕共享。详见下图：
+
+![iOS 屏幕共享原理图](https://web-cdn.agora.io/docs-files/1675750878809)
+
+根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
+
+- 在**加入频道前**调用 `startScreenCapture`，然后调用 `joinChannelEx` 加入频道并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`，即可开始屏幕共享。
+- 在**加入频道后**调用 `startScreenCapture`，然后调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`，即可开始屏幕共享。
+
+本文中的步骤以第一种时序为例。
+
+### 项目设置
+
+1. 前往你的项目文件夹，用 Xcode 打开 `ios/.xcodeproj`。
+
+2. 在 Xcode 菜单栏，点击 **File > New > Target...**, 在弹出的窗口中选择 **Broadcast Upload Extension**, 点击 **Next**。
+
+![在 Xcode 中创建 Broadcast Upload Extension](https://web-cdn.agora.io/docs-files/1669197671714)
+
+3. 在弹出的窗口中填写 **Product Name** 等信息，取消勾选 **Include UI Extension**，点击 **Finish**。Xcode 会自动创建该 Extension 的文件夹，其中包含 `SampleHandler.m` 文件。在本示例中，**Product Name** 命名为 **ScreenSharing**。
+
+![设置 Broadcast Upload Extension 的 Product Name](https://web-cdn.agora.io/docs-files/1669197908653)
+
+4. 在 **Target** 下选中刚创建的 Extension，点击 **General**，在 **Deployment Info** 下将 iOS 的版本设置为 12.0 或以上。
+
+![设置 Extension 的 Deployment Info](https://web-cdn.agora.io/docs-files/1669199079385)
+
+    :::warning[注意]
+    Broadcast Upload Extension 的内存使用限制为 50 MB，请确保屏幕共享的 Extension 内存使用不超过 50 MB。
+    :::
+
+5. 修改项目设置以实现屏幕共享的代码逻辑。根据实际业务需求选择以下两种方式其中之一即可：
+
+   - 如果你只需使用声网提供的 `AgoraReplayKitExtension.xcframework` 动态库中的功能，修改方式为：选中 **Target** 为刚刚创建的 Extension，在 **Info** 中将 **NSExtension > NSExtensionPrincipalClass** 所对应的 **Value** 从 **SampleHandler** 改为 **AgoraReplayKitHandler**。
+
+![将 NSExtensionPrincipalClass 设置为 AgoraReplayKitHandler](https://web-cdn.agora.io/docs-files/1669346575589)
+
+    - 如果你还需要自定义一些业务逻辑，可参考如下代码修改 `SampleHandler.m` 文件。
+
+        ```objc
+        #import "SampleHandler.h"
+
+        @implementation SampleHandler
+
+        - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+          // 用户请求开始广播
+        }
+
+        - (void)broadcastPaused {
+          // 用户请求暂停广播，屏幕共享暂停
+        }
+
+        - (void)broadcastResumed {
+          // 用户请求恢复广播，屏幕共享恢复
+        }
+
+        - (void)broadcastFinished {
+          // 用户请求停止广播
+        }
+
+        - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+
+            switch (sampleBufferType) {
+                case RPSampleBufferTypeVideo:
+                    break;
+                case RPSampleBufferTypeAudioApp:
+                    break;
+                case RPSampleBufferTypeAudioMic:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        @end
+        ```
+
+6. 在项目的 [`/ios/Podfile`](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/Podfile#L36-L40) 文件中添加如下内容：
+
+    ```ruby
+    # 此处的 target 应与你在 Xcode 中创建的 target 命名一致
+    target 'ScreenSharing' do
+      use_frameworks!
+      use_modular_headers!
+      inherit! :search_paths
+    end
+    ```
+
+    打开终端，在 `/项目根目录/ios` 路径下，执行 `pod install`。
+
+### 实现步骤
+
+#### 1 开始屏幕共享
+
+1. 调用 `startScreenCapture` 开启屏幕采集，并根据你的应用场景进行参数设置：
+
+   - `captureVideo`：是否在屏幕共享时采集系统视频。
+   - `captureAudio`：是否在屏幕共享时采集系统音频。
+   - `captureSignalVolume`：采集的系统音量。
+   - `dimensions`：视频编码的分辨率。
+   - `frameRate`：视频编码帧率 (fps)。
+   - `bitrate`：视频编码码率 (Kbps)。
+   - `contentHint`：屏幕共享视频的内容类型。
+
+    ```dart
+    await rtcEngine.startScreenCapture(
+        const ScreenCaptureParameters2(captureAudio: true, captureVideo: true));
+    ```
+
+2. 结合用户的手动操作，使 App 开启屏幕共享。有两种方式供你参考：
+
+   - 方式一：提示用户在 iOS 系统的控制中心长按**屏幕录制**按钮，并选择用你创建的 Extension 开启录制。
+   - 方式二：使用 Apple 在 iOS 12.0 中新增的 [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview)，使 App 界面弹出“开启屏幕共享”的按钮。提示用户通过点击该按钮开启录制。如果采用该方式，请参考以下代码修改 [`AppDelegate.m`](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/Runner/AppDelegate.m#L23-L44) 文件：
+
+    ```objc
+    FlutterMethodChannel* screensharingIOSChannel = [FlutterMethodChannel
+                                            methodChannelWithName:@"example_screensharing_ios"
+                                            binaryMessenger:controller.binaryMessenger];
+
+    [screensharingIOSChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
+        if (@available(iOS 12.0, *)) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSURL *url = [[NSBundle mainBundle] URLForResource:nil withExtension:@"appex" subdirectory:@"PlugIns"];
+                NSBundle *bundle = [NSBundle bundleWithURL:url];
+                if (bundle) {
+                    RPSystemBroadcastPickerView *picker = [[RPSystemBroadcastPickerView alloc] initWithFrame:CGRectMake(0, 0, 100, 200)];
+                    picker.showsMicrophoneButton = YES;
+                    picker.preferredExtension = bundle.bundleIdentifier;
+                    for (UIView *view in [picker subviews]) {
+                        if ([view isKindOfClass:UIButton.class]) {
+                            [((UIButton*)view) sendActionsForControlEvents:UIControlEventAllTouchEvents];
+                        }
+                    }
+                }
+            });
+        }
+    }];
+    ```
+
+#### 2 加入频道并发布屏幕共享流
+
+调用 `joinChannelEx` 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置 `publishScreenCaptureAudio` 为 `true`，在频道中发布屏幕采集的音频。
+- 设置 `publishScreenCaptureVideo` 为 `true`，在频道中发布屏幕采集的视频。
+
+```dart
+// 发布屏幕共享的画面和声音
+await _engine.joinChannelEx(
+    token: '',
+    connection: RtcConnection(
+        channelId: _controller.text, localUid: shareShareUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: false,
+    autoSubscribeAudio: false,
+    publishCameraTrack: false,
+    publishMicrophoneTrack: false,
+    // 在频道中发布屏幕采集的音频
+    publishScreenCaptureAudio: true,
+    // 在频道中发布屏幕采集的视频
+    publishScreenCaptureVideo: true,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+
+// 订阅远端音视频流，发布麦克风的音频、摄像头采集的视频
+await _engine.joinChannelEx(
+    token: '',
+    connection:
+        RtcConnection(channelId: _controller.text, localUid: localUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: true,
+    autoSubscribeAudio: true,
+    publishCameraTrack: true,
+    publishMicrophoneTrack: true,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+```
+
+:::warning[注意]
+如果你已经加入频道，则需要调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenCaptureVideo` 和 `publishScreenCaptureAudio` 为 `true`。
+:::
+
+#### 3 停止屏幕共享
+
+调用 `stopScreenCapture`，在频道内停止屏幕共享。示例代码如下：
+
+```dart
+await _engine.stopScreenCapture();
+```
+
+## macOS / Windows 平台
+
+### 技术原理
+
+声网目前在 macOS/Windows 平台上支持以下两种屏幕共享方案：
+
+- 通过 `displayId` 共享指定屏幕，或指定屏幕的部分区域。
+- 通过 `windowId` 共享指定窗口，或指定窗口的部分区域。
+
+根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
+
+- 在**加入频道前**调用 `startScreenCaptureByDisplayId` 或 `startScreenCaptureByWindowId`，然后调用 `joinChannelEx` 加入频道并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 `true`，即可开始屏幕共享。
+- 在**加入频道后**调用 `startScreenCaptureByDisplayId` 或 `startScreenCaptureByWindowId`，然后调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 `true`，即可开始屏幕共享。
+
+本文中的步骤以第一种时序为例。
+
+### 实现步骤
+
+#### 1 获取屏幕 ID 或窗口 ID
+
+调用 `getScreenCaptureSources` 获取可共享的屏幕和窗口的对象列表，列表中包含窗口 ID 和屏幕 ID 等信息，示例代码如下：
+
+```dart
+await rtcEngine.getScreenCaptureSources(
+    thumbSize: thumbSize, iconSize: iconSize, includeScreen: true);
+```
+
+#### 2 共享指定的屏幕或窗口
+
+调用 `startScreenCaptureByDisplayId` 共享指定屏幕，其中 `displayId` 设置为上一步获取到的屏幕 ID，示例代码如下：
+
+```dart
+await rtcEngine.startScreenCaptureByDisplayId(
+    displayId: sourceId!,
+    regionRect: const Rectangle(x: 0, y: 0, width: 0, height: 0),
+    captureParams: const ScreenCaptureParameters(
+        captureMouseCursor: true,
+        frameRate: 30,
+    ));
+```
+
+调用 `startScreenCaptureByWindowId` 共享指定窗口，其中 `windowId` 设置为上一步获取到的窗口 ID，示例代码如下：
+
+  ```dart
+  await rtcEngine.startScreenCaptureByWindowId(
+      windowId: sourceId!,
+      regionRect: const Rectangle(x: 0, y: 0, width: 0, height: 0),
+      captureParams: const ScreenCaptureParameters(
+          captureMouseCursor: true,
+          frameRate: 30,
+    ),
+  );
+  ```
+
+#### 3 加入频道并发布屏幕共享流
+
+调用 `joinChannelEx` 加入频道。在 `ChannelMediaOptions` 中将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设为 `true`，在频道中发布屏幕共享流。
+
+```dart
+// 发布屏幕共享的画面和声音
+await _engine.joinChannelEx(
+    token: '',
+    connection: RtcConnection(
+        channelId: _controller.text, localUid: shareShareUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: false,
+    autoSubscribeAudio: false,
+    // 发布屏幕采集的视频流
+    publishScreenTrack: true,
+    // 发布第二个屏幕采集的视频流
+    publishSecondaryScreenTrack: true,
+    publishCameraTrack: false,
+    publishMicrophoneTrack: false,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+
+// 订阅远端音视频流，发布麦克风的音频、摄像头采集的视频
+await _engine.joinChannelEx(
+    token: '',
+    connection:
+        RtcConnection(channelId: _controller.text, localUid: localUid),
+    options: const ChannelMediaOptions(
+    autoSubscribeVideo: true,
+    autoSubscribeAudio: true,
+    publishCameraTrack: true,
+    publishMicrophoneTrack: true,
+    clientRoleType: ClientRoleType.clientRoleBroadcaster,
+    ));
+```
+
+:::warning[注意]
+如果你已经加入频道，则需要调用 `updateChannelMediaOptionsEx` 更新频道媒体选项并设置 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 为 `true`。
+:::
+
+#### 4 停止屏幕共享
+
+调用 `stopScreenCapture`，在频道内停止屏幕共享。示例代码如下：
+
+```dart
+await _engine.stopScreenCapture();
+```
+
+## 参考信息
+
+### 功能介绍
+
+声网 SDK 的屏幕共享特性可提供以下功能，适用于各种场景下的屏幕共享。
+
+![](https://web-cdn.agora.io/docs-files/1680251438368)
+
+:::info[信息]
+屏幕共享功能在各平台的适用情况如下：
+
+- 桌面端（Windows 和 macOS）：支持上述所有屏幕共享功能。
+- 移动端（Android 和 iOS）：仅支持共享整个屏幕。
+:::
+
+#### 共享整个屏幕
+
+将你的整个屏幕进行共享，包括屏幕中的所有信息，该功能支持同时采集两块屏幕的信息并共享。
+
+#### 共享 App 窗口
+
+如果你不希望将整个屏幕内容分享给其他用户，可以只共享一个 App 窗口中的画面。
+
+#### 共享指定区域
+
+如果你只希望共享屏幕或 App 窗口中的一部分，可以在开启屏幕共享时设置一个共享区域，只有该区域内的画面会被分享。
+
+#### 高级功能
+
+除上述功能外，你还可以在开启屏幕共享时通过调整参数，实现以下高级共享功能：
+
+- 屏蔽指定 App 窗口：在共享屏幕时，如果你不希望暴露某个 App 窗口，可以选择将该 App 窗口屏蔽，则该窗口将不会出现在共享的屏幕中。
+- 描边：如果你需要勾勒出正在共享的范围，可以对指定的 App 窗口或屏幕进行描边，并自定义描边的宽度、颜色和透明度。
+- 前置指定 App 窗口：如果你同时共享了多个 App 窗口，可能会出现窗口之间互相遮挡的情况，你可以指定一个 App 窗口并将其前置，即可避免它被其他窗口遮挡。
+- 设置共享场景：SDK 会根据你设置的场景自动调节 QOE (Quality of Experience) 策略。
+  - 在共享文档、幻灯片、表格，或者远程控制时，你可以将共享场景设置为文档场景或远程控制场景，SDK 会优先保障画质，并降低接收端看共享视频的延时。
+  - 在共享游戏或电影、视频直播时，你可以将共享场景设置为游戏场景或视频场景，SDK 会优先保障流畅性。
+
+### 优势介绍
+
+声网提供的屏幕共享特性具备以下优势：
+
+**超高清画质体验**
+
+支持分辨率为 4K、帧率为 60 fps 的超高清视频。
+
+**多 App 支持**
+
+适配 WPS Office、Microsoft PowerPoint、Visual Studio Code、Adobe Photoshop、Windows Media Player 和 Scratch 等多款主流 App，方便用户在屏幕共享时直接共享指定 App，提升功能易用性。
+
+**多设备支持**
+
+支持多设备同时共享，兼容 Windows 8 系统、无独立显卡的设备、双显卡设备、外接屏幕设备等，满足各种场景下的设备使用需求。
+
+**多平台适配**
+
+支持 iOS、Android、macOS、Windows、Web、Unity、Flutter、React Native、Unreal Engine 等平台。
+
+**高安全保障**
+
+支持仅共享 App 和屏幕中的部分区域内容，并支持屏蔽指定 App 窗口，有效保障用户信息安全。
+
+### 示例项目
+
+声网在 [Flutter SDK](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK) 中提供屏幕共享的代码示例，你可以参考以下文件实现屏幕共享：
+
+- [screen_sharing.dart](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/lib/examples/advanced/screen_sharing/screen_sharing.dart)
+- [info.plist](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/ScreenSharing/Info.plist)
+- [SampleHandler.h](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/ScreenSharing/SampleHandler.h)
+- [SampleHandler.m](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/blob/main/example/ios/ScreenSharing/SampleHandler.m)
+
+### API 参考
+
+- Android, iOS
+  - [`startScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapture)
+  - [`stopScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_stopscreencapture)
+  - [`updateScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencapture)
+
+- Windows, macOS
+  - [`getScreenCaptureSources`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_getscreencapturesources)
+  - [`startScreenCaptureByDisplayId`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapturebydisplayid)
+  - [`startScreenCaptureByWindowId`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapturebywindowid)
+  - [`updateScreenCaptureParameters`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencaptureparameters)
+  - [`updateScreenCaptureRegion`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencaptureregion)
+  - [`setScreenCaptureContentHint`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_setscreencapturecontenthint)
+  - [`setScreenCaptureScenario`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_setscreencapturescenario)
+  - [`stopScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_stopscreencapture)

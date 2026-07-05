@@ -1,0 +1,107 @@
+---
+title: "原始视频数据"
+---
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+
+对于有自行处理视频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+
+:::warning[注意]
+受鸿蒙系统限制，你需要使用 C++ API 来实现原始视频数据的采集和处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.harmonyos)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，创建一个 `IVideoFrameObserver` 对象，并调用 `registerVideoFrameObserver` 方法注册视频观测器。
+
+    ```cpp
+    // 注册或取消视频观测器
+    napi_value OriginVideoData::Enable(napi_env env, napi_callback_info info) {
+        AG_INFO("OriginVideoData::Enable called");
+
+        size_t argc = 1;
+        napi_value args[1];
+        napi_value jsThis;
+        napi_get_cb_info(env, info, &argc, args, &jsThis, nullptr);
+        bool enable;
+        napi_get_value_bool(env, args[0], &enable);
+
+        OriginVideoData *obj;
+        // 通过 napi_unwrap 将 jsThis 之前绑定的 C++ 对象取出，并对其进行操作
+        assert(napi_unwrap(env, jsThis, reinterpret_cast<void **>(&obj)) == napi_ok);
+
+        int ret = -1;
+
+        agora::media::IMediaEngine *mediaEngine_ = nullptr;
+        obj->rtcEngine_->queryInterface(agora::rtc::AGORA_IID_MEDIA_ENGINE, (void **)&mediaEngine_);
+
+        if (enable) {
+            // 注册视频观测器
+            ret = mediaEngine_->registerVideoFrameObserver(obj);
+        } else {
+            // 取消注册视频观测器
+            ret = mediaEngine_->registerVideoFrameObserver(nullptr);
+        }
+
+        napi_value num;
+        assert(napi_create_int32(env, ret, &num) == napi_ok);
+        return num;
+    }
+    ```
+
+2. 通过 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调获取视频数据后，你可以根据场景需要自行进行处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+    ```cpp
+    // 通过 onCaptureVideoFrame 回调获取本地摄像头采集的原始视频数据，进行处理后再发送回 SDK
+    bool OriginVideoData::onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame &videoFrame) {
+        if (takeSnapshot_) {
+            uint8_t *buffer = videoFrame.yBuffer;
+            // 保存视频帧数据
+            SaveI420Buffer(buffer, videoFrame.width, videoFrame.height,
+                           "/data/storage/el2/base/haps/entry/files/capture.i420");
+            takeSnapshot_ = false;
+        }
+        return true;
+    }
+
+    // 通过 onRenderVideoFrame 回调获取获取远端发送的视频数据
+    bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId,
+                                                        rtc::uid_t remoteUid,
+                                                        VideoFrame &videoFrame) {
+        return true;
+    }
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="OriginVideoDataWrap.ets" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/OriginVideoDataWrap.ets" />
+  <Card title="origin_video_data.cpp" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/cpp/origin_video_data.cpp" />
+  <Card title="OriginVideoDataWrap.ets" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/OriginVideoDataWrap.ets" />
+  <Card title="origin_video_data.cpp" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/cpp/origin_video_data.cpp" />
+</Cards>
+
+### API 参考
+
+以下均为 C++ API：
+
+- [`registerVideoFrameObserver`](/api-ref/rtc/windows/API/toc_mediaplayer_observer#api_imediaengine_registervideoframeobserver)
+- [`onCaptureVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe)

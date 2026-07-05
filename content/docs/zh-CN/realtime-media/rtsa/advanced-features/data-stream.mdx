@@ -1,0 +1,132 @@
+---
+title: "发送和接收数据流 (Data Stream)"
+---
+在实时互动场景中，数据流可以用来向频道中其它用户以广播的方式发送数据消息，实现实时状态同步、发送控制信令等功能。
+
+自 v1.9.5 起，RTSA SDK 提供数据流功能。本文介绍如何在 RTC 频道中发送和接收数据流。
+
+## 实现步骤
+
+### 初始化并加入 RTC 频道
+
+调用 [`agora_rtc_init`](/api-ref/rtsa/c/agora__rtc__api_8h#a6187076d897f0b56cb20942368c15aaa) 初始化 SDK。然后调用 [`agora_rtc_create_connection`](/api-ref/rtsa/c/agora__rtc__api_8h#adef869ae47e2f1c194af611b57d06394) 和 [`agora_rtc_join_channel`](/api-ref/rtsa/c/agora__rtc__api_8h#a6c29ff27f04623526a164cf6e5dcd738) 加入 RTC 频道。
+
+```c
+// 设置 App ID
+const char *appid= "YOUR OWN APPID";
+// 注册相关回调
+agora_rtc_event_handler_t event_handler = {xxx};
+// 设置相关全局服务参数
+rtc_service_option_t service_opt = {xxx};
+int ret = 0;
+connection_id_t conn_id = 0;
+
+// 初始化
+ret = agora_rtc_init(appid, &event_handler, &service_opt);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+
+// 创建 Connection
+ret = agora_rtc_create_connection(&conn_id);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+
+// 加入频道
+rtc_channel_options_t channel_opt = {xxx};
+ret = agora_rtc_join_channel(conn_id, "channel-xxx", uid, token, &channel_opt);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+```
+
+### 创建数据流
+
+加入 RTC 频道后，调用 [`agora_rtc_create_data_stream`](/api-ref/rtsa/c/agora__rtc__api_8h#aa6b288b479c7048b4cceb85d995771ed) 创建数据流。接口签名如下：
+
+```c
+int agora_rtc_create_data_stream(connection_id_t conn_id, int* stream_id, bool reliable, bool ordered);
+```
+
+每个客户端最多可以创建 5 条数据流。创建数据流时，你需要设置该数据流是否可靠（`reliable`）和有序（`ordered`）。其中：
+
+- 可靠，指 SDK 提供有限度的可靠保证，在发送后的 5 秒内会有丢包检测和重传。
+- 有序，指 SDK 提供对接收到的乱序包进行排序后回调给用户；如果超过 5 秒没有收到某序号的包，会跳过。
+
+`reliable` 和 `ordered` 两个属性可能会有四种类型的组合。SDK 支持的取值组合如下：
+
+| `reliable` | `ordered` | 是否支持 | 说明 |
+| --- | --- | --- | --- |
+| `true` | `true` | ✔ | 可靠有序 |
+| `true` | `false` | ✘ | 可靠无序，没有意义，SDK 不允许创建 |
+| `false` | `true` | ✔ | 不可靠有序 |
+| `false` | `false` | ✔ | 不可靠无序 |
+
+```c
+// 创建数据流
+int stream_id = 0;
+// --创建可靠有序数据流
+ret = agora_rtc_create_data_stream(conn_id, &stream_id, true, true);
+// --创建不可靠有序数据流
+ret = agora_rtc_create_data_stream(conn_id, &stream_id, false, true);
+// --创建不可靠无序数据流
+ret = agora_rtc_create_data_stream(conn_id, &stream_id, false, false);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+```
+
+### 发送消息
+
+调用 [`agora_rtc_send_stream_message`](/api-ref/rtsa/c/agora__rtc__api_8h#aee89fa14447b4529d45275afe5b5a86f) 发送数据流。
+
+:::warning[注意]
+- 单个频道里，每秒最多发送 60 个数据包，每个数据包的大小不能超过 1 KB。
+- 频道内每个客户端最多可以同时拥有 5 个数据通道，每个数据通道每秒最多发送 6 KB 的数据流。所有数据通道共用的总发包码率限制为 30 Kbps。
+:::
+
+```c
+char data[100] = {xxx};
+ret = agora_rtc_send_stream_message(conn_id, stream_id, data, 100);
+if (ret != 0) {
+    printf("error info: %s", agora_rtc_err_2_str(ret));
+    return -1;
+}
+```
+
+### 接收消息
+
+接收到数据流后，SDK 会触发 [`on_stream_message`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a7c73b2bb0558e2b695d8838ee542c87a) 回调。你可以从该回调中获取具体的数据内容。
+
+```c
+static void __on_stream_message(connection_id_t conn_id, uint32_t uid, int stream_id, const char* data, size_t length, uint64_t sent_ts)
+{
+    printf("receive stream message conn_id=%u uid=%u stream_id=%u length=%zu\n", conn_id, uid, stream_id, length);
+}
+event_handler.on_stream_message = __on_stream_message;
+```
+
+## 开发注意事项
+
+SDK 对数据流的功能实现进行了如下限制：
+
+- 单个频道里，每秒最多发送 60 个数据包，每个数据包的大小不能超过 1 KB。
+- 频道内每个客户端最多可以同时拥有 5 个数据通道，每个数据通道每秒最多发送 6 KB 的数据流。所有数据通道共用的总发包码率限制为 30 Kbps。
+
+## 参考信息
+
+### 完整示例代码
+
+我们在 RTSA SDK 下载包中，提供了完整的发送和接收数据流的示例代码。你可以按照如下路径，在 `hello_stream_message.c` 文件中查看完整的实现逻辑。
+
+```shell
+├── agora_rtsa_sdk  # 声网的 SDK 库文件和头文件
+└── example  # 示例代码
+    └── hello_stream_message
+        └── hello_stream_message.c  #在单个频道中使用数据流功能
+```

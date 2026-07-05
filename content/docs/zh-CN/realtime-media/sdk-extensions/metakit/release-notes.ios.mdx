@@ -1,0 +1,49 @@
+---
+title: "发版说明"
+---
+## v2.2.0
+
+该版本于 2024 年 9 月 6 日发布。
+
+### 新增特性
+
+#### Sticker 挂件贴纸
+
+该版本新增了 Sticker 挂件贴纸功能。该功能使用面捕驱动能力，Sticker 会跟随人物的摆头等动作。SDK 提供了眼镜 (`material_sticker_glass`)、口罩 (`material_sticker_facemask`)、面纱 (`material_sticker_veil`)、龙头帽 (`material_sticker_dragonhat`) 的分包资源，你可以加载对应的场景资源，快速体验不同 Sticker 的效果。详见[设置 Sticker](/zh-CN/realtime-media/sdk-extensions/metakit/quick-start.ios#设置-animoji-和-sticker)。
+
+#### 人像边缘光线
+
+该版本在灯光特效中新增了人像边缘光线效果。如需体验该灯光效果，在加载场景资源时，指定分包资源为 `material_effect_ray`。详见[设置灯光特效](/zh-CN/realtime-media/sdk-extensions/metakit/quick-start.ios#设置灯光和背景特效)。
+
+#### 广告灯文字转图片
+
+该版本新增了广告灯的文字转图片功能。你可以在[设置广告灯特效](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#设置特效素材)时，通过 `text` 参数指定文字内容，并通过 `animation` 参数为文字添加动画效果，如跳动、波浪或摇摆，使文字在画面中以动态形式展示。
+
+### 改进
+
+本次更新在 `setExtensionPropertyWithVendor` 中新增了对 [`loadMaterial`](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#加载场景资源) 和 [`unloadMaterial`](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#卸载场景资源) 两个 `key` 的支持。
+
+- 使用 `loadMaterial` 加载场景资源时，你可以指定想要体验的分包资源路径，引擎会自动请求场景纹理并渲染场景。
+- 如需切换为其他场景，只需再次使用 `loadMaterial` 传入其他分包资源路径，引擎会自动切换至新场景。
+- 当你不再需要体验场景时，使用 `unloadMaterial` 卸载场景资源即可。
+
+这一改进显著提升了 MetaKit 插件的易用性，只需在加载时指定不同的分包资源路径，即可快速体验不同功能场景。
+
+### API 变更
+
+#### 新增
+
+- [`loadMaterial`](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#加载场景资源)
+- [`unloadMaterial`](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#卸载场景资源)
+
+## v2.1.0
+
+该版本于 2024 年 3 月 6 日正式发布。
+
+本次更新重点优化了 MetaKit 插件的性能表现，确保了更高效的运行和更佳的用户体验。
+
+## v2.0.0
+
+该版本于 2024 年 2 月 23 日发布，该版本为声网 MetaKit 插件的首个版本。
+
+该插件集成了多项 AI 技术，在音视频互动的场景下为用户提供多元化的视频增强功能。

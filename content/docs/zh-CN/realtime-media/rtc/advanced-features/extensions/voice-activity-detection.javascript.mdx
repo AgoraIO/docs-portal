@@ -1,0 +1,248 @@
+---
+title: "使用 VAD 插件 (Beta)"
+---
+VAD (Voice Activity Detection，语音活动检测) 插件可以与 Web SDK (v4.15.0 或以上) 搭配使用，用于检测音频中包含人声和背景音乐的概率。
+
+## 实现原理
+
+声网 Web SDK 的媒体传输管道包含采集、前处理、编码、传输、解码、后处理和播放等环节。在前处理阶段，插件可以对管道中的音视频数据进行处理，从而实现虚拟背景、降噪、美颜、语音活动检测等功能。
+
+![处理插件原理](https://web-cdn.agora.io/doc-cms/uploads/1728974154162-web-extension-update.png)
+
+## 前提条件
+
+使用 VAD 插件需要满足以下前提条件：
+
+- 使用最新版本的桌面端 Chrome（推荐）、Edge、Firefox 浏览器。
+  :::warning[注意]
+  VAD 插件仅支持 Safari 14.1 以上版本，但由于 Safari 自身性能原因，声网不建议在 Safari 上使用。
+  :::
+- 如需同时使用多个媒体处理插件，声网建议你使用 Intel Core i5 4 核或以上的处理器。同时开启多个插件后，如果其它正在运行的程序占用了较高的系统资源，你的 App 可能会出现音视频卡顿。
+- 已集成 v4.15.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../get-started/quick-start)文档。
+
+## 实现步骤
+
+按照以下步骤集成 VAD 插件并实现 VAD 功能。
+
+### 1. 集成插件
+
+通过 npm 将 VAD 插件 [agora-extension-vad](https://www.npmjs.com/package/agora-extension-vad) 集成到你的项目中。
+
+1. 运行以下命令安装 VAD 插件：
+
+    ```shell
+    npm install agora-extension-vad
+    ```
+
+2. 在你的 `.js` 文件中加入以下代码导入 VAD 模块：
+
+    ```typescript
+    import { VADExtension } from "agora-extension-vad";
+    ```
+
+### 2. 加载 Wasm 依赖
+
+VAD 插件依赖一些 [Wasm 文件](https://webassembly.org/)。为保证浏览器可以正常加载和运行这些文件，你需要完成以下步骤：
+
+1. 将 `node_modules/agora-extension-vad/wasm` 目录下的 Wasm 文件发布至 CDN 或者静态资源服务器中，并且处于同一个公共路径下。后续创建 `VADExtension` 对象时，需要传入上述公共路径的 URL，插件会动态加载这些依赖文件。
+
+    :::warning[注意]
+    - 如果 Wasm 文件的 Host URL 与网页应用的 Host URL 不一致，则需要开启访问文件域名的 CORS 策略。
+    - 不能把 Wasm 文件放在 HTTP 服务下，因为在 HTTPS 域名下加载 HTTP 资源会被浏览器安全策略禁止。
+    :::
+
+2. 如果启用了 CSP（Content Security Policy），由于 Chrome 和 Edge 默认禁止加载和运行 Wasm 文件、默认禁止加载 Blob 对象，你需要根据浏览器版本配置 CSP：
+    - 高于 Chrome 97 和 Edge 97 的版本（含 Chrome 97 和 Edge 97）：在 [`script-src`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) 选项中添加 `'wasm-unsafe-eval'` 和 `blob:`。 例如：
+
+        ```text
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'wasm-unsafe-eval' blob:">
+        ```
+
+    - 低于 Chrome 97 和 Edge 97 的版本：在 `script-src` 选项中添加 `'unsafe-eval'` 和 `blob:`。
+
+### 3. 注册插件
+
+调用 [`AgoraRTC.registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc.html#registerextensions) 方法并传入创建的 `VADExtension` 实例注册 VAD 插件。你还可以监听 Wasm 文件加载失败的事件。
+
+:::warning[注意]
+声网推荐你只创建一个 `VADExtension` 实例。
+:::
+
+```typescript
+import AgoraRTC from "agora-rtc-sdk-ng";
+import { VADExtension } from "agora-extension-vad";
+// 传入 Wasm 文件所在的公共路径以创建 VADExtension 实例，路径结尾不带 “/”
+const extension = new VADExtension({ assetsPath: "./wasm" });
+
+// 检查兼容性
+if (!extension.checkCompatibility()) {
+  return console.warn("vad plugin is not support!");
+}
+
+// 监听 Wasm 文件加载失败的事件
+extension.onloaderror = (error) => {
+  // 如果加载 VAD 失败，在此处理错误
+  console.error(error);
+};
+
+// 注册插件
+AgoraRTC.registerExtensions([extension]);
+```
+
+### 4. 开启插件
+
+按照以下步骤开启 VAD 插件：
+
+1. 调用 `createProcessor` 方法创建一个 `IVADProcessor` 实例。你可以设置插件为默认开启或关闭。如果不设置，插件将沿用上一次的状态。
+
+    ```typescript
+    // 创建 IVADProcessor 实例
+    const processor = extension.createProcessor();
+
+    // 设置插件为默认开启
+    // await processor.enable();
+
+    // 设置插件为默认关闭
+    // await processor.disable();
+
+    //（可选）监听处理器的过载事件以捕获过载信息
+    processor.on("overload", async () => {
+      console.log("overload!!!");
+      // 你可以选择关闭插件
+      // await processor.disable();
+      // 或者忽略过载状况，继续处理音频
+    });
+    ```
+
+2. 调用 SDK 的 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 方法并指定 [`processorDestination`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#processordestination) 属性，将插件注入音频处理管道。
+
+    ```typescript
+    // 创建音频轨道
+    const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    // 将插件注入音频处理管道
+    audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+    await processor.enable();
+    ```
+
+3. 如果没有设置插件为默认开启，还需要调用 `enable` 方法开启插件。
+
+    ```typescript
+    await processor.enable();
+    ```
+
+### 5. 获取检测结果
+
+在成功开启插件后，你可以通过监听 `result` 事件获取检测结果，并根据需要进行处理。
+
+```typescript
+// 监听 VAD 插件的检测结果，并进行相关处理
+processor.on("result", handleResult)
+
+function handleResult(result) {
+  //输出 `voiceProb`，表示某人正在说话的概率
+  console.info("voiceProb: ", result.voiceProb);
+  //输出 `musicProb`，表示当前在播放音乐的概率
+  console.info("musicProb: ", result.musicProb);
+}
+```
+
+:::info[信息]
+`voiceProb` 和 `musicProb` 是一个从 0 到 1 的浮点数，表示某人正在说话和当前在播放音乐的概率。
+:::
+
+### 6. 关闭插件
+
+需要停止使用 VAD 插件时，调用 `disable` 方法关闭插件。
+
+```typescript
+await processor.disable();
+```
+
+## API 参考
+
+本节提供 VAD 插件的 API 参考。
+
+### IVADExtension
+
+#### checkCompatibility
+
+```typescript
+checkCompatibility(): boolean;
+```
+
+检查当前浏览器是否支持 VAD 插件。该方法返回的结果仅供参考。
+
+#### createProcessor
+
+```typescript
+createProcessor(): IVADProcessor;
+```
+
+创建 `IVADProcessor` 实例。
+
+#### onloaderror
+
+```typescript
+onloaderror?: (error: Error) => void;
+```
+
+Wasm 依赖文件加载失败回调。
+
+### IVADProcessor
+
+#### kind
+
+```typescript
+get kind(): 'video' | 'audio';
+```
+
+Processor 的类型，分为视频和音频两种。
+
+#### enabled
+
+```typescript
+get enabled(): boolean;
+```
+
+插件是否启用：
+
+- true：已启用。
+- false：未启用。
+
+#### enable
+
+```typescript
+enable(): void | Promise<void>;
+```
+
+开启 VAD 功能。
+
+#### disable
+
+```typescript
+disable(): void | Promise<void>;
+```
+
+关闭 VAD 功能。
+
+#### onoverload
+
+```typescript
+on("overload", () => void);
+```
+
+### 类型定义
+
+#### VADExtensionOptions
+
+```typescript
+export interface VADExtensionOptions {
+  assetsPath: string
+}
+```
+
+VAD 插件初始化参数：
+
+- `assetsPath` ： VAD 插件依赖的 Wasm 文件的 URL 路径。路径结尾不要带“/”，例如 `./external`。
+
+插件会根据 `assetsPath` 拼接出 Wasm 文件的完整路径。如果路径错误导致 Wasm 文件加载失败，你会收到 [onloaderror](#onloaderror) 回调。

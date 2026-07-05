@@ -1,0 +1,118 @@
+---
+title: "预防和处理炸房捣乱现象"
+---
+炸房捣乱指用户恶意扰乱房间聊天秩序的现象，通常出现在语音聊天室、多人连麦直播等互动场景中。常见的炸房捣乱行为包括：
+
+- 截获 Token 非法加入频道，或利用 Token 有效期过长，反复加入频道。
+- 不断制造噪音或发送违规的音视频内容。
+- 劫持应用服务器向客户端下发的信令消息，扰乱客户端的麦位更新和房间管理。
+- 在网络中断重连时趁乱加入频道。
+
+本文介绍了预防及处理炸房捣乱行为的最佳实践方案，以帮助维护房间秩序并提高业务安全性。
+
+## 前提条件
+
+- 有效的声网开发者账号和声网控制台项目，详见[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)。
+- 已启用 Token 鉴权。你可以根据你的项目情况选择启用 Token 鉴权的方法：
+  - 新建项目：在控制台创建项目时，选择 App ID + Token 为鉴权机制。详见[管理鉴权方式](/zh-CN/introduction/user-guides/manage_authentication#使用-app-id-和-token-鉴权)。
+  - 已有项目：如果你在创建项目时选择了 App ID 为鉴权机制，可以升级到 App ID + Token 鉴权。
+- 已开通[连麦鉴权](/faq/integration-issues/token-cohost#3-开启连麦鉴权)功能。
+
+## 预防方案
+
+本节介绍预防炸房捣乱行为的方案。为尽可能杜绝此类行为的发生，声网建议你至少采取 Token 鉴权和连麦鉴权这两种预防措施。
+
+### 使用 Token 鉴权
+
+为保证通信安全，声网强烈建议使用 Token 鉴权。开启后，不仅能保证只有得到授权的用户才能加入频道，还能控制用户的发流权限。在使用 Token 鉴权前，你需要在自己的业务服务端部署并生成 Token，再由声网服务器对生成的 Token 进行校验。你可以参考 [Token 鉴权文档](/zh-CN/realtime-media/rtc/basic-features/token-authentication.rn)来进行部署和调试。
+
+参考下列方式来使用 Token 鉴权：
+
+**设置 Token 及权限有效期**
+
+在生成 Token 时，你可以通过下列两个参数来设置：
+
+- `tokenExpirationInSeconds`：设置 Token 的有效时间戳。Token 默认及最长有效时间为 24 小时。声网建议你在能满足业务需求的前提下，尽量将 Token 的有效期设置得短一些。
+- `privilegeExpirationInSeconds`：设置权限的有效时间戳。权限过期后，用户会被移出频道，非法用户将无法使用该 Token 反复登录频道。
+
+**定期更新 Token**
+
+Token 即将失效时，SDK 会触发 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/rn/API/toc_channel.html#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，提醒需要更新 Token。收到该回调时，你需要在 App 服务端生成新的 Token，然后调用 [`renewToken`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_renewtoken) 将新生成的 Token 传给 SDK。
+
+:::warning[注意]
+- 声网建议将 `tokenExpirationInSeconds` 和 `privilegeExpirationInSeconds` 的有效期设为一致。
+- 使用 Token 鉴权后，要注意防止 App ID 和 App 证书泄露。声网建议将 App ID 和 App 证书存放在 App 服务端，不要对外公开。如果疑似泄密，请及时[更换主要证书](/zh-CN/introduction/user-guides/manage_authentication#更换主要证书)。
+- 建议在频道内在线人数处于低峰时更新 App 证书，避免出现大规模的用户登录失败。
+:::
+
+### 使用连麦鉴权
+
+通常情况下，使用 Token 鉴权的安全性能满足大部分实时互动场景的需求。在此基础之上，声网还支持对用户在频道内的发流进行鉴权，即连麦鉴权。连麦鉴权尤其适用于观众需要频繁上下麦与主播互动的场景。
+
+使用连麦鉴权需要在生成 Token 时，通过 `role` 参数设置用户角色，并通过 `privilegeExpirationInSeconds` 设置所有权限的有效时间。针对不同的场景及用户角色，可参考下表来实现你的鉴权逻辑：
+
+  | 角色及场景 | 鉴权步骤 |
+  | --- | --- |
+  | 主播加入频道发流 | <Slot name="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-1-1" /> |
+  | 观众加入频道 | <Slot name="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-2-1" /> |
+  | 观众加入频道后上麦 | <Slot name="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-3-1" /> |
+
+  <Slot for="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-1-1">
+
+  1. 申请**具有发流权限**的 Token（`role` 设为 `kRolePublisher`）。
+  2. 调用 `setClientRole` 将角色设为主播。
+  3. 调用 `joinChannel` 传入具有发流权限的 Token 加入频道。
+
+  </Slot>
+
+  <Slot for="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-2-1">
+
+  1. 申请**不具有发流权限**的 Token（`role` 设为 `kRoleSubscriber`）。
+  2. 由于用户加入频道的角色默认为观众，因此直接调用 `joinChannel` 并传入 Token 加入频道即可。
+
+  </Slot>
+
+  <Slot for="prevent-stream-bombing-android-ios-macos-windows-electron-rn-flutter-unity-harmonyos-markdown-0-3-1">
+
+  1. 申请**不具有发流权限**的 Token（`role` 设为 `kRoleSubscriber`），调用 `joinChannel` 并传入 Token 加入频道。
+  2. 上麦前申请**具有发流权限**的 Token（`role` 设为 `kRolePublisher`）。
+  3. 调用 `renewToken` 将新的 Token 同步给声网服务器。
+  4. 调用 `setClientRole` 将角色切换为主播。
+
+  </Slot>
+
+:::info[信息]
+如果你的业务场景需要更精细化的发流权限控制，可参考[连麦鉴权文档](/faq/integration-issues/token-cohost#%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3)。
+:::
+
+使用连麦鉴权后，你还可以结合你的业务逻辑来校验用户的 ID 是否合法以及是否拥有发流权限。
+
+## 处理方案
+
+本节介绍炸房捣乱行为发生后的处理方案。声网建议你在采取下列措施前，已采取预防措施。
+
+### 定位非法用户
+
+在 App 服务端定期调用声网 RESTful API [`http://api.sd-rtn.com/dev/v1/channel/user/{appid}/{channelName}/{hosts_only}`](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询声网服务端的在线频道用户列表，与 App 服务端上维护的用户列表进行对比，找到非法用户。
+
+:::warning[注意]
+- RESTful API 的调用频率上限以及调用超出频率限制的处理方式见[调用频率限制](/faq/integration-issues/restful-api-call-frequency)。
+:::
+
+### 处理非法用户
+
+找到非法用户后，需要及时制止其炸房捣乱行为，尽快恢复房间秩序。你可以按照下列方法来制止捣乱行为：
+
+**停止发流**
+
+当有用户在上麦时传播不良内容，App 服务端可以向该用户的客户端下发消息，让其调用 [`muteLocalAudioStream`](/api-ref/rtc/rn/API/toc_publishnsubscribe#api_irtcengine_mutelocalaudiostream) 并将 `muted` 设为 `true` 来取消发布音频流。如果需要同时让非法用户停止发布音频、视频流，可以直接让其客户端调用 [`setClientRole`](/api-ref/rtc/rn/API/toc_channel#api_irtcengine_setclientrole) 将用户角色设为观众，取消其发流权限。
+
+**将非法用户踢出频道**
+
+如果非法用户反复出现捣乱行为，你可以在 App 服务端调用 [`http://api.sd-rtn.com/dev/v1/kicking-rule`](/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule)，在请求包体中的 `privileges` 参数设置为 `join_channel`，并设置 `cname` 和 `uid` 字段，将非法用户踢出频道。
+
+声网服务端根据 `cname` 和 `uid` 字段的填写方式进行踢人操作，具体规则如下：
+
+- 如果填写 `cname`，不填写 `uid`，则任何人都无法登录 App 中该 `cname` 对应的频道。
+- 如果填写 `uid`，不填写 `cname`，则该 `uid` 无法登录 App 中的任何频道。
+- 如果填写 `cname` 和 `uid`，则该 `uid` 无法登录 App 中该 `cname` 对应的频道。

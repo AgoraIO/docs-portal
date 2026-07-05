@@ -1,0 +1,133 @@
+---
+title: "媒体流加密"
+---
+媒体流加密是指通过由 App 开发者控制的唯一的密钥和[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))为 App 中的音视频流加密。声网提供媒体流加密功能以确保传输过程中数据的保密性，建议你根据实际的业务场景合理应用。
+
+本文介绍如何在你的 App 中添加声网内置媒体流加密。
+
+## 技术原理
+
+下图描述了启用媒体流加密后的数据传输流程。声网推荐使用 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并设置密钥和盐。
+
+![加密传输流程](/img/rtc/encryption.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.ios)。
+
+## 实现方法
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 根据以下步骤，手动为你的项目添加加密库：
+
+      1. 将 SDK 包中的 `AgoraRtcCryptoLoader.framework` 复制到你的项目文件夹中。
+      2. 打开 Xcode（此处以 Xcode 11.0 为例），进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
+      3. 点击 **+** 和 **Add Other...**，添加 `AgoraRtcCryptoLoader.framework`。
+      4. 为确保动态库的签名和 App 的签名一致，将动态库的 **Embed** 属性设置为 **Embed & Sign**。
+
+      :::warning[注意]
+      根据 Apple 的要求，App 的 **Extension** 不包含动态库。如果要将 SDK 集成到 **Extension** 里的动态库中，需要将文件状态改为 **Do Not Embed**。
+      :::
+
+      :::info[信息]
+      更多集成方式，详见[其他集成方式](#othermethods)。
+      :::
+
+   2. 在 `ViewController.swift` 文件中添加以下代码，导入 `AgoraRtcCryptoLoader` 库：
+
+      ```swift
+      import AgoraRtcCryptoLoader
+      ```
+
+   3. 从服务端获取 `String` 型的密钥和 Base64 编码的盐。
+
+   4. 将盐从 Base64 转换成 `uint8_t`。
+
+   5. 加入频道前，调用 [`enableEncryption`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_enableencryption)，设置 `AgoraEncryptionModeAES128GCM2` 或 `AgoraEncryptionModeAES256GCM2` 加密模式，并将密钥和盐传入 SDK。
+
+   :::warning[注意]
+   - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+   - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+   :::
+
+   以下示例代码展示了该逻辑的实现过程：
+
+   ```swift
+   func getEncryptionSaltFromServer() -> Data {
+      // 将 Base64 编码的盐转换成 uint8_t
+      return "EncryptionKdfSaltInBase64Strings".data(using: .utf8)!
+   }
+
+   // 创建一个 AgoraEncryptionConfig 实例
+   let config = AgoraEncryptionConfig()
+   // 将加密模式设置为 AgoraEncryptionModeAES128GCM2
+   config.encryptionMode = .AES128GCM2
+   // 从服务端获取 Base64 编码的盐
+   config.encryptionKdfSalt = getEncryptionKdfSaltBase64FromServer()
+   // 从服务端获取 String 型的密钥
+   config.encryptionKey = getEncryptionKeyFromServer()
+   let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
+   if ret != 0 {
+      self.showAlert(title: "Error", message: "enableEncryption call failed: \(ret), please check your params")
+   }
+   ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的媒体流加密示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="StreamEncryption" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption" />
+  <Card title="StreamEncryption" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption" />
+</Cards>
+
+<a id="othermethods"></a>
+### 通过 CocoaPods 集成加密库
+
+根据以下步骤，通过 CocoaPods 集成加密库：
+
+1. 安装 CocoaPods。安装指南请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+
+2. 在终端，打开项目路径，运行 `pod init` 命令，在项目文件夹中创建 `Podfile`。
+
+3. 打开 `Podfile`，删除所有内容后，输入以下内容。注意将 `Your App` 替换为你的 Target 名称，并将 `version` 替换成你需要集成的 SDK 版本。
+
+   ```ruby
+   # platform :ios, '9.0'
+   target 'Your App' do
+     pod 'AgoraRtcEngine_iOS_Crypto', '~> version
+   end
+   ```
+
+4. 回到终端，运行 `pod install` 命令，安装声网 SDK。SDK 安装成功后，终端会显示 `Pod installation complete!`，你可以在项目文件夹中看到 `xcworkspace` 文件。
+
+5. 打开 Xcode 中生成的 `xcworkspace` 文件。
+
+### 注意事项
+
+如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。

@@ -1,0 +1,41 @@
+# Single Document Content Fidelity Audit
+
+Generated: 2026-07-05T10:50:32.873Z
+Old source: `/Users/yangyixuan/Documents/GitHub/shengwang-doc-source/docs/meeting/get-started/configure-meeting.mdx`
+New source: `/private/tmp/docs-portal-migration-control-spec/content/docs/zh-CN/solutions/meeting/get-started/configure-meeting.mdx`
+Old URL: (not provided)
+New URL: (not provided)
+Projection: product=`meeting`, platform=`all`
+
+## Summary
+
+- Source records: 81
+- Target records: 81
+- Exact matches: 81
+- Missing: 0
+- Extra: 0
+- Changed: 0
+- Moved: 0
+- Unsupported: 0
+- Legacy residue: none
+- Unresolved differences: 0
+
+## Missing (0)
+
+- None
+
+## Extra (0)
+
+- None
+
+## Changed (0)
+
+- None
+
+## Moved (0)
+
+- None
+
+## Unsupported (0)
+
+- None

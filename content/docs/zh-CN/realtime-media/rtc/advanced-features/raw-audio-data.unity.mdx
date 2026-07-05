@@ -1,0 +1,118 @@
+---
+title: "原始音频数据"
+---
+本文介绍如何对采集到的原始音频数据进行前处理和后处理。
+
+## 技术原理
+
+音频传输过程中，我们可以对采集到的音频数据进行前处理和后处理，获取想要的播放效果。
+
+对于有自行处理音频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的音频信号进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的音频信号进行修改。
+
+下图展示使用原始音频数据的基础流程：
+
+![实现流程](/img/rtc/raw-audio-data.svg)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.unity)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始音频数据功能：
+
+1. 加入频道前，创建一个 `IAudioFrameObserver` 实例，并调用 `RegisterAudioFrameObserver` 方法注册音频观测器。如果要对音频进行处理并且回写数据，需要将 `mode` 设为 INTPTR。
+2. 根据需求调用 `SetRecordingAudioFrameParameters`、`SetPlaybackAudioFrameParameters` 或 `SetMixedAudioFrameParameters` 方法配置音频帧格式。
+3. 实现 `OnRecordAudioFrame`、`OnPlaybackAudioFrame`、`OnPlaybackAudioFrameBeforeMixing` 和 `OnMixedAudioFrame` 回调。以上回调会对音频帧进行采集和处理。
+
+```csharp
+// 注册音频观测器
+//如果你希望能对音频进行处理并且回写数据，需要将 mode 设为 INTPTR
+RtcEngine.RegisterAudioFrameObserver(new AudioFrameObserver(this),
+    AUDIO_FRAME_POSITION.AUDIO_FRAME_POSITION_PLAYBACK |
+    AUDIO_FRAME_POSITION.AUDIO_FRAME_POSITION_RECORD |
+    AUDIO_FRAME_POSITION.AUDIO_FRAME_POSITION_MIXED |
+    AUDIO_FRAME_POSITION.AUDIO_FRAME_POSITION_BEFORE_MIXING |
+    AUDIO_FRAME_POSITION.AUDIO_FRAME_POSITION_EAR_MONITORING,
+    OBSERVER_MODE.INTPTR);
+
+    int CHANNEL = 2;
+    int SAMPLE_RATE = 48000;
+    // 设置播放的原始音频数据格式
+    RtcEngine.SetPlaybackAudioFrameParameters(SAMPLE_RATE, CHANNEL, RAW_AUDIO_FRAME_OP_MODE_TYPE.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+    // 设置采集的原始音频数据格式
+    RtcEngine.SetRecordingAudioFrameParameters(SAMPLE_RATE, CHANNEL, RAW_AUDIO_FRAME_OP_MODE_TYPE.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, 1024);
+    // 设置采集和播放音频混音后的音频数据格式
+    RtcEngine.SetMixedAudioFrameParameters(SAMPLE_RATE, CHANNEL, 1024);
+
+internal class AudioFrameObserver : IAudioFrameObserver
+{   // 实现 OnRecordAudioFrame 回调
+    public override bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
+    {
+        ProcessAudioData(audioFrame);
+        return true;
+    }
+    // 实现 OnPlaybackAudioFrame 回调
+    public override bool OnPlaybackAudioFrame(string channelId, AudioFrame audioFrame)
+    {
+        ProcessAudioData(audioFrame);
+        return true;
+    }
+    // 实现 OnPlaybackAudioFrameBeforeMixing 回调
+    public override bool OnPlaybackAudioFrameBeforeMixing(string channelId,
+                                                        uint uid,
+                                                        AudioFrame audioFrame)
+    {
+        ProcessAudioData(audioFrame);
+        return true;
+    }
+    // 实现 OnMixedAudioFrame 回调
+    public override bool OnMixedAudioFrame(string channelId, AudioFrame audioFrame)
+    {
+        ProcessAudioData(audioFrame);
+        return true;
+    }
+
+    // 从 audioFrame.buffer 指针读取音频数据，对音频数据进行处理并将数据回写
+    public void ProcessAudioData(AudioFrame audioFrame)
+    {
+        long length = (long)audioFrame.bytesPerSample * audioFrame.channels * audioFrame.samplesPerChannel;
+        for (long i = 0; i < length; i += (long)audioFrame.bytesPerSample)
+        {
+            IntPtr pos = (IntPtr)(i + (long)audioFrame.buffer);
+            System.Runtime.InteropServices.Marshal.WriteByte(pos, 0);
+        }
+    }
+}
+```
+
+## 参考信息
+
+### 注意事项
+
+声网实时互动 SDK 提供的音频裸数据采用同步回调机制。当你需要对原始音频数据进行保存或回写等操作时，请考虑以下建议：
+
+- 为确保音频流的连续性，请不要阻塞 SDK 线程，建议不要直接在回调函数中处理数据。你可以先对接收的音频数据进行深拷贝，然后将复制的数据转移到另一个线程进行处理。
+
+- 如果你决定在回调函数内直接同步处理音频数据，请严格控制处理时长。例如，若回调函数每 10 毫秒触发一次，那么在回调内的处理时间必须小于 10 毫秒，防止造成音频流的延迟或中断。
+
+### 示例项目
+
+声网提供了开源的原始音频数据示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ProcessAudioRawData" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ProcessAudioRawData/ProcessAudioRawData.cs" />
+  <Card title="ProcessAudioRawData" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ProcessAudioRawData/ProcessAudioRawData.cs" />
+</Cards>
+
+### API 参考
+
+- [`RegisterAudioFrameObserver`](/api-ref/rtc/unity/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver)
+- [`SetRecordingAudioFrameParameters`](/api-ref/rtc/unity/API/toc_audio_raw#api_irtcengine_setrecordingaudioframeparameters)
+- [`SetPlaybackAudioFrameParameters`](/api-ref/rtc/unity/API/toc_audio_raw#api_irtcengine_setplaybackaudioframeparameters)
+- [`SetMixedAudioFrameParameters`](/api-ref/rtc/unity/API/toc_audio_raw#api_irtcengine_setmixedaudioframeparameters)
+- [`SetPlaybackAudioFrameBeforeMixingParameters`](/api-ref/rtc/unity/API/toc_audio_raw#api_irtcengine_setplaybackaudioframebeforemixingparameters)
+- [`OnRecordAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe)
+- [`OnPlaybackAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe)
+- [`OnPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [`OnMixedAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe)

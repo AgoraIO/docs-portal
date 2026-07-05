@@ -1,0 +1,726 @@
+---
+title: "在线美术教学 API"
+---
+声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。
+
+除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/ios/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/ios/toc-configuration/configuration)，实现实时消息相关功能
+
+- [互动白板 SDK](/api-ref/whiteboard/ios/fastboard-api)，实现在线课堂中的白板功能
+
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablebrightnesscorrection"></a>
+## 明暗校正
+### enableBrightnessCorrection
+
+```objc
+- (int)enableBrightnessCorrection:(BOOL)enabled
+                             mode:(AgoraBrightnessCorrectionMode)mode
+                       sourceType:(AgoraVideoSourceType)sourceType;
+```
+
+开启或关闭本地画面明暗校正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="correction-ios-macos-html-0-1-1" /> |
+| `mode` | <Slot name="correction-ios-macos-html-0-2-1" /> |
+| `sourceType` | <Slot name="correction-ios-macos-html-0-3-1" /> |
+
+<Slot for="correction-ios-macos-html-0-1-1">
+
+是否开启本地画面明暗校正：
+
+        - `YES`：开启。
+        - `NO`：不开启。
+
+</Slot>
+
+<Slot for="correction-ios-macos-html-0-2-1">
+
+明暗校正模式：
+
+        - `AgoraBrightnessCorrectionModeAuto(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `AgoraBrightnessCorrectionModeManual(1)`： 手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+<Slot for="correction-ios-macos-html-0-3-1">
+
+视频源类型：
+
+        - `AgoraVideoSourceTypeCamera(0)`：（默认）在第一个摄像头开启或关闭明暗校正。
+        - `AgoraVideoSourceTypeCameraSecondary(1)`：在第二个摄像头开启或关闭明暗校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applybrightnesscorrectiontoremote"></a>
+### applyBrightnessCorrectionToRemote
+
+```objc
+- (int)applyBrightnessCorrectionToRemote:(NSUInteger)uid
+                                  enable:(BOOL)enabled
+                                    mode:(AgoraBrightnessCorrectionMode)mode;
+```
+
+开启远端用户画面的明暗校正。远端用户需要在 `enableVideo` 前先调用 `addExtension` 和 `enableExtensionWithVendor`，才能成功接收远程开启明暗校正请求。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启明暗校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-1-2-1" /> |
+| `mode` | <Slot name="correction-ios-macos-html-1-3-1" /> |
+
+<Slot for="correction-ios-macos-html-1-2-1">
+
+是否开启远端用户画面明暗校正：
+
+        - `YES`：开启
+        - `NO`：不开启
+
+</Slot>
+
+<Slot for="correction-ios-macos-html-1-3-1">
+
+明暗校正模式：
+
+        - `AgoraBrightnessCorrectionModeAuto(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `AgoraBrightnessCorrectionModeManual(1)`：手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applybrightnesscorrectiontoremoteex"></a>
+### applyBrightnessCorrectionToRemoteEx
+
+```objc
+- (int)applyBrightnessCorrectionToRemoteEx:(NSUInteger)uid
+                                    enable:(BOOL)enabled
+                                      mode:(AgoraBrightnessCorrectionMode)mode
+                                connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（适用于多频道）开启对应 Connection 的远端用户画面的明暗校正。远端的用户需要在 `enableVideo` 前先调用 `addExtension` 和 `enableExtensionWithVendor` 才能成功接收远程开启明暗校正请求。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启明暗校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-2-2-1" /> |
+| `mode` | <Slot name="correction-ios-macos-html-2-3-1" /> |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+<Slot for="correction-ios-macos-html-2-2-1">
+
+是否开启远端用户画面明暗校正：
+
+        - `YES`：开启
+        - `NO`：不开启
+
+</Slot>
+
+<Slot for="correction-ios-macos-html-2-3-1">
+
+明暗校正模式：
+
+        - `AgoraBrightnessCorrectionModeAuto(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `AgoraBrightnessCorrectionModeManual(1)`：手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableremotetrapezoidcorrection"></a>
+## 透视校正
+### enableRemoteTrapezoidCorrection
+
+```objc
+- (int)enableRemoteTrapezoidCorrection:(NSUInteger)uid
+                                enable:(BOOL)enabled;
+```
+
+在本地启用或关闭远端用户在本地渲染画面的透视校正。远端用户自身的本地预览不会看到透视校正效果。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启透视校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-3-2-1" /> |
+
+<Slot for="correction-ios-macos-html-3-2-1">
+
+是否开启远端画面透视校正：
+
+        - `YES`：开启
+        - `NO`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableremotetrapezoidcorrectionex"></a>
+### enableRemoteTrapezoidCorrectionEx
+
+```objc
+- (int)enableRemoteTrapezoidCorrectionEx:(NSUInteger)uid
+                                  enable:(BOOL)enabled
+                              connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（适用于多频道）在本地启用或关闭远端用户在本地渲染画面的透视校正。远端用户自身的本地预览不会看到透视校正效果。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启透视校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-4-2-1" /> |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+<Slot for="correction-ios-macos-html-4-2-1">
+
+是否开启远端画面透视校正：
+
+        - `YES`：开启
+        - `NO`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablelocaltrapezoidcorrection"></a>
+### enableLocalTrapezoidCorrection
+
+```objc
+- (int)enableLocalTrapezoidCorrection:(BOOL)enabled
+                           sourceType:(AgoraVideoSourceType)sourceType;
+```
+
+开启或关闭本地画面的透视校正。本地设置透视校正后，远端就能看到梯形校正后的画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="correction-ios-macos-html-5-1-1" /> |
+| `sourceType` | <Slot name="correction-ios-macos-html-5-2-1" /> |
+
+<Slot for="correction-ios-macos-html-5-1-1">
+
+是否开启本地画面透视校正：
+
+        - `YES`：开启。
+        - `NO`：不开启。
+
+</Slot>
+
+<Slot for="correction-ios-macos-html-5-2-1">
+
+视频源类型：
+
+        - `AgoraVideoSourceTypeCamera(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `AgoraVideoSourceTypeCameraSecondary(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setlocaltrapezoidcorrectionoptions"></a>
+### setLocalTrapezoidCorrectionOptions
+
+```objc
+- (int)setLocalTrapezoidCorrectionOptions:(AgoraTrapezoidCorrectionOptions * _Nonnull)options
+                               sourceType:(AgoraVideoSourceType)sourceType;
+```
+
+配置本地透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `options` | 透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `sourceType` | <Slot name="correction-ios-macos-html-6-2-1" /> |
+
+<Slot for="correction-ios-macos-html-6-2-1">
+
+视频源类型：
+
+        - `AgoraVideoSourceTypeCamera(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `AgoraVideoSourceTypeCameraSecondary(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="getlocaltrapezoidcorrectionoptions"></a>
+### getLocalTrapezoidCorrectionOptions
+
+```objc
+- (AgoraTrapezoidCorrectionOptions *_Nullable)getLocalTrapezoidCorrectionOptions:(AgoraVideoSourceType)sourceType;
+```
+
+获取本地透视校正配置参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `sourceType` | <Slot name="correction-ios-macos-html-7-1-1" /> |
+
+<Slot for="correction-ios-macos-html-7-1-1">
+
+视频源类型：
+
+        - `AgoraVideoSourceTypeCamera(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `AgoraVideoSourceTypeCameraSecondary(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="settrapezoidcorrectionoptions"></a>
+### setRemoteTrapezoidCorrectionOptions
+
+```objc
+- (int)setRemoteTrapezoidCorrection:(NSUInteger)uid
+                            options:(AgoraTrapezoidCorrectionOptions * _Nonnull)options;
+```
+
+配置远端透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `options` | 透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="settrapezoidcorrectionoptionsex"></a>
+### setRemoteTrapezoidCorrectionOptionsEx
+
+```objc
+- (int)setRemoteTrapezoidCorrectionEx:(NSUInteger)uid
+                              options:(AgoraTrapezoidCorrectionOptions * _Nonnull)options
+                           connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（适用于多频道）配置远端透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `options` | 透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="getremmotetrapezoidcorrectionoptions"></a>
+### getRemoteTrapezoidCorrectionOptions
+
+```objc
+- (AgoraTrapezoidCorrectionOptions *_Nullable)getRemoteTrapezoidCorrectionOptions:(NSUInteger)uid;
+```
+
+获取远端透视校正配置参数。
+
+#### 参数
+
+| 参数    | 说明                                                |
+| :------ | :-------------------------------------------------- |
+| `uid`     | 远端用户 ID。                                      |
+
+#### 返回值
+
+透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="gettrapezoidcorrectionoptionsex"></a>
+### getRemoteTrapezoidCorrectionOptionsEx
+
+```objc
+- (AgoraTrapezoidCorrectionOptions *_Nullable)getRemoteTrapezoidCorrectionOptionsEx:(NSUInteger)uid
+                                                                         connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（适用于多频道）获取远端透视校正配置参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+#### 返回值
+
+透视校正配置参数。详见 [`AgoraTrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="applytrapezoidcorrectiontoremote"></a>
+### applyTrapezoidCorrectionToRemote
+
+```objc
+- (int)applyTrapezoidCorrectionToRemote:(NSUInteger)uid
+                                 enable:(BOOL)enabled;
+```
+
+将透视校正参数应用到远端用户在本地的预览画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-11-2-1" /> |
+
+<Slot for="correction-ios-macos-html-11-2-1">
+
+是否将透视校正参数应用到远端用户在本地的预览画面：
+
+        - `YES`：应用。
+        - `NO`：不应用。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applytrapezoidcorrectiontoremoteex"></a>
+### applyTrapezoidCorrectionToRemoteEx
+
+```objc
+- (int)applyTrapezoidCorrectionToRemoteEx:(NSUInteger)uid
+                                   enable:(BOOL)enabled
+                               connection:(AgoraRtcConnection * _Nonnull)connection;
+```
+
+（适用于多频道）将透视校正参数应用到远端用户在本地的预览画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `enabled` | <Slot name="correction-ios-macos-html-12-2-1" /> |
+| `connection` | Connection 信息。详见 [`AgoraRtcConnection`](/api-ref/rtc/ios/API/class_rtcconnection)。 |
+
+<Slot for="correction-ios-macos-html-12-2-1">
+
+是否将透视校正参数应用到远端用户在本地的预览画面：
+
+        - `YES`：应用。
+        - `NO`：不应用。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="ontrapezoidcorrectionfinished"></a>
+### trapezoidAutoCorrectionFinish
+
+```objc
+- (void)rtcEngine:(AgoraRtcEngineKit *_Nonnull)engine trapezoidAutoCorrectionFinish:(NSUInteger)uid
+                                                                             result:(AgoraTrapezoidAutoCorrectionResult)result
+                                                                           costTime:(NSUInteger)costTime
+                                                                          srcPoints:(NSArray<NSValue *> * _Nonnull)srcPoints
+                                                                          dstPoints:(NSArray<NSValue *> * _Nonnull)dstPoints;
+```
+
+自动透视校正完成时触发。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 开启自动透视校正的远端用户 ID。 |
+| `result` | <Slot name="correction-ios-macos-html-13-2-1" /> |
+| `costTime` | 透视校正花费的时间 (ms)。 |
+| `srcPoints` | 拖动起始点时的梯形四个顶点坐标。 |
+| `dstPoints` | 拖动结束点时的梯形四个顶点坐标。 |
+
+<Slot for="correction-ios-macos-html-13-2-1">
+
+自动透视校正结果：
+
+        - `RESULT_OK(0)`：成功。
+        - `RESULT_FAILED(-1)`：失败。
+
+</Slot>
+
+<a id="trapezoidcorrectionoptions"></a>
+## 数据类型
+### TrapezoidCorrectionOptions
+
+```objc
+struct TrapezoidCorrectionOptions {
+  enum {
+      POINT_ARRAY_LEN = 8,
+  };
+  struct Point {
+    float x;    // value in [0.0 - 1.0]
+    float y;    // value in [0.0 - 1.0]
+  };
+
+  TrapezoidCorrectionOptions():hasMultiPoints(false){}
+
+  void setDragSrcPoint(Point pt)
+  {
+    dragSrcPoint = pt;
+  }
+
+  void setDragDstPoint(Point pt)
+  {
+    dragDstPoint = pt;
+  }
+
+  void setDragFinished(int finished)
+  {
+    dragFinished = finished;
+  }
+
+  void setDragSrcPoints(Point topLeft, Point bottomLeft, Point topRight, Point bottomRight)
+  {
+    dragSrcPoints[0] = topLeft.x;
+    dragSrcPoints[1] = topLeft.y;
+    dragSrcPoints[2] = bottomLeft.x;
+    dragSrcPoints[3] = bottomLeft.y;
+    dragSrcPoints[4] = topRight.x;
+    dragSrcPoints[5] = topRight.y;
+    dragSrcPoints[6] = bottomRight.x;
+    dragSrcPoints[7] = bottomRight.y;
+    hasMultiPoints = true;
+  }
+
+  void setDragDstPoints(Point topLeft, Point bottomLeft, Point topRight, Point bottomRight)
+  {
+    dragDstPoints[0] = topLeft.x;
+    dragDstPoints[1] = topLeft.y;
+    dragDstPoints[2] = bottomLeft.x;
+    dragDstPoints[3] = bottomLeft.y;
+    dragDstPoints[4] = topRight.x;
+    dragDstPoints[5] = topRight.y;
+    dragDstPoints[6] = bottomRight.x;
+    dragDstPoints[7] = bottomRight.y;
+    hasMultiPoints = true;
+  }
+
+  void showAssistLine(int show)
+  {
+    assistLine = show;
+  }
+
+  void setAutoCorrect(int autoCorr)
+  {
+    autoCorrect = autoCorr;
+  }
+
+  void setMirror(int mirr)
+  {
+    mirror = mirr;
+  }
+
+  void setResetDragPoints(int reset)
+  {
+    resetDragPoints = reset;
+  }
+
+  Optional<Point> dragSrcPoint;
+  Optional<Point> dragDstPoint;
+  Optional<int> dragFinished;       //value: 0 or 1
+  float dragSrcPoints[POINT_ARRAY_LEN];
+  float dragDstPoints[POINT_ARRAY_LEN];
+  bool hasMultiPoints; // if true, indicates dragSrcPoints and dragDstPoints have valid values
+  Optional<int> assistLine;         //value: 0 or 1
+  Optional<int> autoCorrect;        //value: 0 or 1
+  Optional<int> mirror;             //value: 0 or 1, only set if not use sdk renderer, such as custom renderer
+  Optional<int> resetDragPoints;    //value: 0 or 1
+};
+```
+
+透视校正参数配置，包含以下成员：
+
+#### Point
+
+- `x`：x 坐标，根据屏幕宽度归一化为 [0.0~1.0] 的浮点数。
+- `y`：y 坐标，根据屏幕高度归一化为 [0.0~1.0] 的浮点数。
+
+#### setDragSrcPoint
+
+设置拖动起始点坐标。
+
+| 参数 | 说明                         |
+| :--- | :--------------------------- |
+| `pt`   | 拖动起始点坐标。详见 [`Point`](#point)。 |
+
+#### setDragDstPoint
+
+设置拖动终止点坐标。
+
+如果同时调用 `setDragSrcPoint`、`setDragDstPoint`、`setDragFinished` 和 `setDragSrcPoints`、`setDragDstPoints`，则 `setDragSrcPoints`、`setDragDstPoints` 的设置生效。
+
+| 参数 | 说明                         |
+| :--- | :--------------------------- |
+| `pt`   | 拖动终止点坐标。详见 [`Point`](#point)。 |
+
+#### setDragFinished
+
+设置该次拖动调整是否结束。
+
+| 参数 | 说明 |
+| --- | --- |
+| `finished` | <Slot name="correction-ios-macos-html-14-1-1" /> |
+
+<Slot for="correction-ios-macos-html-14-1-1">
+
+本次拖动调整是否结束：
+
+        - `0`：未结束。
+        - `1`：已结束。
+
+</Slot>
+
+#### setDragSrcPoints
+
+同时设置 4 个点的拖动起始点坐标。
+
+| 参数        | 说明                               |
+| :---------- | :--------------------------------- |
+| `topLeft`     | 左上角拖动起始点坐标。详见 [`Point`](#point)。 |
+| `bottomLeft`  | 左下角拖动起始点坐标。详见 [`Point`](#point)。 |
+| `topRight`    | 右上角拖动起始点坐标。详见 [`Point`](#point)。 |
+| `bottomRight` | 右下角拖动起始点坐标。详见 [`Point`](#point)。 |
+
+#### setDragDstPoints
+
+同时设置 4 个点的拖动终止点坐标。
+
+| 参数        | 说明                               |
+| :---------- | :--------------------------------- |
+| `topLeft`     | 左上角拖动终止点坐标。详见 [`Point`](#point)。 |
+| `bottomLeft`  | 左下角拖动终止点坐标。详见 [`Point`](#point)。 |
+| `topRight`    | 右上角拖动终止点坐标。详见 [`Point`](#point)。 |
+| `bottomRight` | 右下角拖动终止点坐标。详见 [`Point`](#point)。 |
+
+#### showAssistLine
+
+开启或关闭辅助线。初始值为关闭。
+
+| 参数 | 说明 |
+| --- | --- |
+| `show` | <Slot name="correction-ios-macos-html-15-1-1" /> |
+
+<Slot for="correction-ios-macos-html-15-1-1">
+
+开启或关闭辅助线：
+
+        - `0`：关闭。
+        - `1`：开启。
+
+</Slot>
+
+#### setAutoCorrect
+
+开启或关闭自动透视校正。初始值为关闭。
+
+| 参数 | 说明 |
+| --- | --- |
+| `autoCorr` | <Slot name="correction-ios-macos-html-16-1-1" /> |
+
+<Slot for="correction-ios-macos-html-16-1-1">
+
+开启或关闭自动透视校正：
+
+        - `0`：关闭。关闭之后，你需要手动设置拖动点坐标。
+        - `1`：开启。开启之后，SDK 会自动进行透视校正。你无法手动设置拖动点坐标。
+
+</Slot>
+
+#### setMirror
+
+启用或关闭镜像。初始值为关闭。
+
+只有使用自定义渲染功能并且自定义渲染开启水平镜像时，才需要启用镜像参数。
+
+| 参数 | 说明 |
+| --- | --- |
+| `mirr` | <Slot name="correction-ios-macos-html-17-1-1" /> |
+
+<Slot for="correction-ios-macos-html-17-1-1">
+
+开启或关闭镜像：
+
+        - `0`：关闭。
+        - `1`：开启。设置输入的点坐标与实际输入图像是水平镜像。
+
+</Slot>
+
+#### setResetDragPoints
+
+重置透视校正效果。初始值为不重置。
+
+| 参数 | 说明 |
+| --- | --- |
+| `reset` | <Slot name="correction-ios-macos-html-18-1-1" /> |
+
+<Slot for="correction-ios-macos-html-18-1-1">
+
+是否重置透视校正效果：
+
+        - `0`：不重置透视校正效果。
+        - `1`：重置透视校正效果。重置后，画面恢复为校正前的效果。
+
+</Slot>

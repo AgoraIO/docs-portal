@@ -1,0 +1,219 @@
+---
+title: "本地截图上传"
+---
+在实时互动场景下，声网 SDK 支持按照你设置的频率对频道内的视频流截图，并将图片上传至你指定的第三方云存储。
+
+本文介绍如何实现本地截图上传功能。
+
+:::info[信息]
+本地截图上传为收费服务，计费方式详见[本地截图上传计费](/zh-CN/realtime-media/rtc/billing/billing-strategy#本地截图上传)。
+:::
+
+## 技术原理
+
+调用 API 开启本地截图上传功能后，SDK 会根据你设置的频率对本地用户发送的视频进行截图和上传。截图完成后，声网云端服务器会以 HTTPS 请求的形式，向你的服务器发送回调通知，并将所有截图发送至你指定的第三方云存储。
+
+![本地截图上传技术原理](/img/rtc/content-inspect-tech.png)
+
+## 前提条件
+
+实现声网本地截图上传功能前，请确保已完成以下步骤：
+
+1. **开通本地截图上传服务**
+
+    登录[声网控制台](https://console.shengwang.cn/)，在左上角下拉框中选择想要开通本地截图上传服务的项目，然后在左侧菜单中选择**全部产品**-**扩展能力**-**媒体服务**-**本地截图上传**，进入**功能配置**，点击**状态**按钮，启用本地截图上传功能。
+
+![开启本地截图上传](/img/rtc/content-inspect-open-service.png)
+
+2. **配置第三方云存储**
+
+    在**功能配置**的**本地截图上传配置**中选择你使用的第三方云存储供应商，并进行配置：
+
+    :::info[信息]
+    目前声网本地截图上传服务仅支持使用 Amazon S3 和阿里云 OSS 作为储存截图的第三方云存储，如果你想使用其他第三方云存储供应商，请[联系技术支持](https://docportal.shengwang.cn/cn/Agora%20Platform/ticket?platform=All%20Platforms)。
+    :::
+
+<Tabs defaultValue="aws" groupId="operating-systems" persist>
+<TabsList>
+  <TabsTrigger value="aws">Amazon S3</TabsTrigger>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aws">
+
+![配置 AWS 存储](/img/rtc/content-inspect-aws.png)
+
+你需要填写以下内容：
+
+- **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
+- **存储**：第三方云存储供应商。请选择 AWS。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
+- **Secret Key**：String 类型，第三方云存储的 secret key。
+- **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
+  - 26 个小写英文字母 a-z
+  - 26 个大写英文字母 A-Z
+  - 10 个数字 0-9
+
+<Accordions>
+<Accordion title="填写示例">
+
+- 截图回调地址：`https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+- 存储：AWS
+- 区域：`cn-north-1`
+- accessKey：`12345678`
+- secretKey：`abcd123`
+- Bucket name：`test-artifacts`
+- End point：`s3.cn-north-1.amazonaws.com.cn`
+- Filename prefix：`test`
+
+</Accordion>
+</Accordions>
+
+</TabsContent>
+
+<TabsContent value="aliyun">
+
+![配置阿里云存储](/img/rtc/content-inspect-aliyun.png)
+
+- **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
+- **存储**：第三方云存储供应商。请选择阿里云。
+- **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
+- **Secret Key**：String 类型，第三方云存储的 secret key。
+- **Bucket name**：String 类型。第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
+- **End point**：指定 bucket 的访问域名 (Endpoint)。详见[阿里云官方文档](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX)。
+- **Filename prefix**：（选填）JSON Array 类型，由多个字符串组成的数组，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `["directory1","directory2"]`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现斜杠、下划线、括号等符号字符。以下为支持的字符集范围：
+  - 26 个小写英文字母 a-z
+  - 26 个大写英文字母 A-Z
+  - 10 个数字 0-9
+
+<Accordions>
+<Accordion title="填写示例">
+
+- 截图回调地址：`https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+- 存储：阿里云
+- accessKey：`12345678`
+- secretKey：`abcd123`
+- Bucket name：`test-artifacts`
+- End point：`oss-accelerate.aliyuncs.com`
+- Filename prefix：`test`
+
+</Accordion>
+</Accordions>
+
+</TabsContent>
+</Tabs>
+
+3. **集成 SDK**
+
+    已在你的项目中集成实时互动 SDK（包含本地截图上传动态库），加入频道并发布视频流。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.macos#集成-sdk)。
+
+## 实现本地截图上传
+
+调用 `enableContentInspect` 方法开启本地截图上传功能。成功开启本地截图上传功能后，SDK 会按照设定的频率进行截图，并上传截图至声网云端服务器。示例代码如下：
+
+```swift
+let inspectExtraConfig = AgoraContentInspectConfig()
+inspectExtraConfig.extraInfo = "YourExtraInfo"
+var modules = [AgoraContentInspectModule]()
+let module1 = AgoraContentInspectModule()
+// 功能模块的类型为本地截图上传
+module1.type = .supervise
+// 本地截图上传的频率为 2 秒一次
+module1.interval = 2
+modules.append(module1)
+inspectExtraConfig.modules = modules
+agoraKit.enableContentInspect(true, config:inspectExtraConfig)
+```
+
+## HTTP 通知回调
+
+截图成功并上传至声网云端服务器后，声网服务会以 HTTPS POST 请求的形式向你的应用服务器发送消息通知回调。数据格式为 JSON，字符编码为 UTF-8。
+
+收到消息通知后，你的应用服务器需要进行响应，响应的包体格式为 JSON。在以下任意一种情况下，声网服务都会认为通知失败：
+
+- 发送消息通知后，5 秒内没有收到你的服务器的响应。
+- 响应的 HTTP 状态码不是 `200`，或响应包体格式不是 JSON。
+
+声网服务会在第一次通知失败后立即重试，再次发送消息通知，一共会尝试三次通知。
+
+### 请求 Header
+
+| 字段名         | 值                               |
+| :------------- | :------------------------------- |
+| `Content-Type` | `application/json;charset=utf-8` |
+
+### 请求 Body
+
+请求 Body 为 JSON Object 类型，包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | String | 回调通知 ID，标识来自声网业务服务器的一次事件通知。 |
+| `callbackParam` | JSON Object | 在回调中自定义传入的字段，目前仅包括 `cname` 字段，即频道名。 |
+| `callbackData` | String | SDK 本地截图上传模块透传的字符串数据。 |
+| `checksum` | String | 由 `callbackAddr`、`code`、`object` 和 `requestId` 四个参数值计算出的 MD5 值，用于校验此次回调通知是否来自于本地截图上传服务。 |
+| `object` | String | <Slot name="content-inspect-ios-android-windows-macos-rn-electron-markdown-1-5-2" /> |
+| `code` | Number | 此次截图的状态码。`200` 表示截图完成。 |
+| `msg` | String | 此次截图的状态。`"Supervise complete"` 表示此次截图完成。 |
+| `channelName` | String | 此次被截图用户所属的频道名。与 `object.cname` 一致。 |
+| `userId` | String | 此次被截图用户的 user ID。与 `object.uid` 一致。 |
+| `timestamp` | Int | 此次截图 Unix 时间戳（毫秒）。UTC 时间，与 `object.utc` 一致。 |
+
+<Slot for="content-inspect-ios-android-windows-macos-rn-electron-markdown-1-5-2">
+
+截图文件的名称。该文件的命名规则为：`<OSS前缀>/<年月日>/<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.jpg`。文件名中各字段含义如下：
+
+- `<sid>`：截图 ID。该 ID 是一次截图的唯一标识。
+- `<cname>`：被截图用户所属的频道名。
+- `<uid>`：用户 ID。加入频道时设置的 user ID。
+- `<type>`: 文件类型，只支持 `video`。
+- `<utc>`：此次截图的 Unix 时间戳。UTC 时间，由年、月、日、小时、分钟、秒和毫秒组成。例如，`utc` 等于 `20190611073246073`，表示该切片文件的开始时间为 UTC 2019 年 6 月 11 日 7 点 32 分 46 秒 73 毫秒。
+
+</Slot>
+
+### 请求示例
+
+```json
+{
+    "requestId": "38f8e3cfdcXXXXXXXXX1ceba380d7e1a_1652693284_b5813fe2ae4fa5cdfe5abd8fef82526f",
+    "callbackParam": {
+        "cname": "httpClient463224"
+    },
+    "callbackData": "",
+    "checksum": "75ee988XXXXXXc2ad4ec2aef58f178fd8",
+    "object": "test/20201216/38f8e3cfdc474cd56fc1ceba380d7e1a_httpClient463224__uid_s_91__uid_e_video_20200413081128672.jpg",
+    "code": 200,
+    "msg": "Supervise complete",
+    "channelName": "httpClient463224",
+    "userId": "91",
+    "timestamp": 20190611073246070
+}
+```
+
+## 参考信息
+
+### API 参考
+
+[`enableContentInspect`](/api-ref/rtc/macos/API/toc_snapshot#api_irtcengine_enablecontentinspect)
+
+### 本地截图上传动态库
+
+本地截图上传动态库名称及集成后 App 增加的体积详见[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size.android.macos)。
+
+### HTTP 状态码
+
+应用服务器响应的 HTTP 状态码参考如下：
+
+| 状态码 | 描述                                                         |
+| :----- | :----------------------------------------------------------- |
+| `200`  | 请求成功。                                                   |
+| `201`  | 成功请求并创建了新的资源。                                   |
+| `206`  | 整个截图过程中没有用户发流，或部分截图文件没有上传到第三方云存储。 |
+| `400`  | 请求的语法错误（如参数错误），服务器无法理解。               |
+| `401`  | 未经授权的（App ID/Customer Certificate 匹配错误）。         |
+| `404`  | 服务器无法根据请求找到资源（网页）。                         |
+| `500`  | 服务器内部错误，无法完成请求。                               |
+| `504`  | 服务器内部错误。充当网关或代理的服务器未从远端服务器获取请求。 |

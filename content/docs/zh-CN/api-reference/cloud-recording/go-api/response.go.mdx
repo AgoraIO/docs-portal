@@ -1,0 +1,23 @@
+---
+title: "Response 类"
+---
+<a id="issuccess"></a>
+## IsSuccess
+
+```go
+func (b Response) IsSuccess() bool
+```
+
+判断云端录制 API 是否返回成功响应。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+:::warning[注意]
+如果响应成功，继续读取成功响应中的数据；否则，读取错误响应中的数据。
+:::
+
+#### 返回值
+
+返回 `true` 表示响应成功；返回 `false` 表示响应失败。

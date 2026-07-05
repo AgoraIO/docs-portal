@@ -1,0 +1,326 @@
+---
+title: "使用 Wwise 插件实现空间音频"
+---
+声网支持你通过 SDK 或 Wwise 插件实现空间音效，两种方案的选型详见[适用场景](/zh-CN/solutions/game-voice/overview/product-overview#适用场景)。本文介绍如何通过声网 Wwise 插件在你的 Unreal Engine 项目中实现空间音频。
+
+## Wwise 插件概述
+
+声网提供的 Wwise 插件主要用于数据流传输，可与声网 RTC SDK 结合使用，增强 RTC SDK 使用时的灵活性。
+
+| 声网插件名称              | 插件类别          | 插件用途                                        |
+| ------------------------- | ----------------- | ----------------------------------------------- |
+| AgoraAudioInputSource   | Wwise Source 插件 | 将 RTC SDK 采集的本地用户音频数据传输给 Wwise   |
+| AgoraReceiveSource      | Wwise Source 插件 | 将 RTC SDK 接收到的远端用户音频数据传输给 Wwise |
+| AgoraSendEffect         | Wwise Effect 插件 | 将用户音频数据发送给声网服务器                  |
+| AgoraAudioSessionEffect | Wwise Effect 插件 | 用于在总线上获取参考信号以进行回声消除          |
+
+声网 Wwise 插件当前支持如下架构：
+
+- Android：arm64-v8a、armeabi-v7a、x86、x86_64
+- iOS
+- macOS
+- Windows：vc160、vc170
+
+声网 Wwise 插件里已经注册了音频观测器对象（`IAudioObserverObserver`），因此使用该插件后，你将无法再注册额外的音频观测器对象。
+
+## 1. 准备 Wwise 环境
+
+1. 下载 [Audiokinetic Launcher](https://www.audiokinetic.com/zh/download)（也被称为 Wwise Launcher）。
+
+2. 在 Audiokinetic Launcher 中安装 Wwise，版本号为 2021.1.14.8108。如果你需要使用其他版本，可以[联系技术支持](https://ticket.shengwang.cn/)。
+
+## 2. 安装 Wwise 插件
+
+1. [下载](https://download.agora.io/sdk/release/AgoraAuthoringPlugin_Wwise2021_Win.zip)声网的 Wwise 插件。解压后会出现 `AgoraAuthoringPlugin_Win` 文件夹。
+2. 打开 Audiokinetic Launcher 软件，在 **Plug-ins** 页面，点击 **Add from archive**，选择 `AgoraAuthoringPlugin` 文件夹，点击 **Install** 完成安装。
+
+![安装插件](/img/game-voice/install-plugin.png)
+
+安装完成后，你会在 **Plug-ins** 页面看到 **AgoraWwiseRTCSDK** 插件。
+
+![复制 RTC SDK](/img/game-voice/wwise-copy-sdk.png)
+
+## 3. 集成 Wwise 至 UE 项目
+
+打开 Audiokinetic Launcher 软件，在 **Unreal-Engine** 页面，集成 Wwise 到你的 Unreal Engine 项目。
+
+<Accordions>
+<Accordion title="集成具体步骤">
+
+1. 点击 **Integrate Wwise in Project...** 按钮。
+
+![Integrate Wwise in Project](/img/game-voice/add-ue-to-wwise-1.png)
+
+2. 设置如下选项，再点击 **Integrate** 按钮：
+
+    - **Integration version**：选择 All，版本为 2021.1.14.8108。
+    - **Wwise SDK**：选择 SDK（版本号为 2021.1.14.8108）的安装路径。
+    - **Wwise Project**：选择 Wwise 项目文件的安装路径。
+
+![Integration Options](/img/game-voice/add-ue-to-wwise-2.png)
+
+</Accordion>
+</Accordions>
+
+## 4. 在 Wwise 项目中配置插件
+
+参考本节在 Wwise 项目中配置插件：
+
+1. 打开你[已安装的 Wwise 软件](#1-准备-wwise-环境)并进入你的 Wwise 项目。
+
+2. 在 **Master Audio Bus** 中添加 AgoraAudioSessionEffect 插件，用于获取参考信号以进行回声消除。
+
+![添加 AgoraAudioSessionEffect 步骤 1](/img/game-voice/add-session-effect-1.png)
+
+3. 在 **Actor-Mixer Hierarchy** 下的 **Default Work Unit** 中添加 AgoraAudioInputSource 插件，用于将本地用户音频数据传输给 Wwise。
+
+![添加 AgoraAudioInputSource 步骤 1](/img/game-voice/add-audio-input-1.png)
+
+    添加后，**Default Work Unit** 下会出现一个名为 **New Sound SFX** 的节点。为方便后续使用，建议节点改名，例如改成 Audio Input Source。
+
+4. 在 **Actor-Mixer Hierarchy** 下的 **Default Work Unit** 中添加 AgoraReceiveSource 插件，用于将远端用户音频数据传输给 Wwise。
+
+![添加 AgoraReceiveSource 步骤 1](/img/game-voice/add-audio-receive-1.png)
+
+    添加后，**Default Work Unit** 下会出现一个名为 **New Sound SFX** 的节点。为方便后续使用，建议节点改名，例如改成 Audio Receive Source。
+
+5. 在第 3 步添加的 **Audio Input Source** 节点中，添加 AgoraSendEffect 插件，用于将用户音频数据发送给声网服务器。
+
+![添加 AgoraSendEffect 步骤 1](/img/game-voice/add-send-effect-1.png)
+
+6. 为第 3、4 步添加的 Audio Input Source 和 Audio Receive Source 创建 Event，例如播放（Play）和停止（Stop）事件。
+
+   <Accordions>
+<Accordion title="以创建 Audio Input Source 的播放事件为例">
+
+![Input Source 的播放事件](/img/game-voice/add-play-event-to-input-source.png)
+
+</Accordion>
+</Accordions>
+
+    所有事件创建完成后，效果如下图：
+
+![所有事件](/img/game-voice/all-event.png)
+
+配置插件后，请注意当前插件暂不支持你在 Wwise 软件中进行音频调试播放。
+
+## 5. 在 UE 项目中使用插件
+
+本节介绍如何在 Unreal Engine 项目中使用 Wwise 插件。
+
+### 修改 UE 项目
+
+参考如下步骤修改你的 Unreal Engine 项目：
+
+1. 将项目中集成的声网 Unreal SDK 替换成[带 Wwise 模块的 Unreal SDK](https://download.agora.io/sdk/release/AgoraPlugin.zip)。Wwise 模块对应 SDK 中的 `AgoraWwiseCommHandler` 和 `WwiseHeaderFiles` 文件夹。
+
+    | 替换前 | 替换后 |
+| --- | --- |
+| <Slot name="spatial-audio-wwise-unreal-cpp-html-0-1-0" /> | <Slot name="spatial-audio-wwise-unreal-cpp-html-0-1-1" /> |
+
+<Slot for="spatial-audio-wwise-unreal-cpp-html-0-1-0">
+
+- SDK 来源：从[下载页](/zh-CN/solutions/game-voice/resources)获取
+
+        - SDK 文件夹名称：AgoraPlugin
+
+        - SDK 区别：不含 Wwise 模块
+
+</Slot>
+
+<Slot for="spatial-audio-wwise-unreal-cpp-html-0-1-1">
+
+- SDK 来源：从本节获取
+
+        - SDK 文件夹名称：AgoraPlugin
+
+        - SDK 区别：含有 Wwise 模块
+
+</Slot>
+
+2. 打开 Unreal Engine 项目，对 API 进行如下修改：
+
+    - 在初始化的步骤中，需要**添加**如下代码，以创建并初始化声网 RTC 引擎，以及初始化声网 Wwise 插件。
+
+        ```cpp
+        // 创建并初始化 RtcEngineProxy
+        RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngineEx();
+        int ret = RtcEngineProxy->initialize(RtcEngineContext);
+
+        // 初始化 Wwise 插件
+        // 将 RtcEngineProxy 的指针传给 AgoraWwiseCommHandler
+        // 创建并指定你的 Track ID，可以将 ID 填写为类似于 0、1、2 这样的整数
+        FAgoraWwiseCommHandlerAgoraInterface::InitAgoraWwisePlugin(RtcEngineProxy, m_SendTrackId);
+        ```
+
+    - 在销毁的步骤中，需要**添加**如下代码，以释放卸载声网 Wwise 插件并释放 RTC 引擎资源。
+
+        ```cpp
+        // 卸载 Wwise 插件
+        FAgoraWwiseCommHandlerAgoraInterface::UninitAgoraWwisePlugin();
+
+        if (RtcEngineProxy != nullptr) {
+            // 离开频道
+            RtcEngineProxy->leaveChannel();
+            // 注销事件
+            RtcEngineProxy->unregisterEventHandler(UserRtcEventHandlerEx.Get());
+            // 释放 RTC 引擎资源
+            RtcEngineProxy->release();
+            // 将 RtcEngineProxy 的指针设为空
+            RtcEngineProxy = nullptr;
+        }
+        ```
+
+    - **修改**加入频道的代码为如下：
+
+        ```cpp
+        RtcEngineProxy->setClientRole(CLIENT_ROLE_BROADCASTER);
+        RtcEngineProxy->enableAudio();
+
+        agora::rtc::ChannelMediaOptions ChannelMediaOptions;
+        ChannelMediaOptions.publishMicrophoneTrack = true;
+        ChannelMediaOptions.autoSubscribeAudio = true;
+        ChannelMediaOptions.autoSubscribeVideo = true;
+        ChannelMediaOptions.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+        ChannelMediaOptions.publishCustomAudioTrack = true;
+        ChannelMediaOptions.publishCustomAudioTrackId = m_SendTrackId;
+
+        LocalUID = GenLocalUID();
+
+        // 加入频道
+        int ret = RtcEngineProxy->joinChannel(TCHAR_TO_UTF8(*Token), TCHAR_TO_UTF8(*ChannelNameVal),
+                                              LocalUID, ChannelMediaOptions);
+        ```
+
+    - 在开麦（即频道内发布用户音频流）的步骤中，修改代码为如下：
+
+        ```cpp
+        FString ChannelName = "ChannelId";
+        agora::rtc::uid_t uid = 123;
+
+        // 开启本地音频模块
+        RtcEngineProxy->enableLocalAudio(true);
+
+        agora::rtc::ChannelMediaOptions Options;
+        // 发布麦克风采集到的音频
+        Options.publishMicrophoneTrack = true;
+        // 发布自定义音频
+        Options.publishCustomAudioTrack = true;
+        Options.publishCustomAudioTrackId = m_SendTrackId;
+        // 设置用户为主播角色，主播才有发布音频流的权限
+        Options.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+
+        agora::rtc::RtcConnection Connection;
+        std::string StdStrChannelName = TCHAR_TO_UTF8(*ChannelName);
+        Connection.channelId = StdStrChannelName.c_str();
+        Connection.localUid = uid;
+
+        // 频道内更新媒体选项
+        int ret = RtcEngineProxy->updateChannelMediaOptionsEx(Options, Connection);
+        ```
+
+    - 在闭麦（即频道内停止发布用户音频流）的步骤中，修改代码为如下：
+
+        ```cpp
+        FString ChannelName = "ChannelId";
+        agora::rtc::uid_t uid = 123;
+
+        // 关闭本地音频模块
+        RtcEngineProxy->enableLocalAudio(false);
+
+        agora::rtc::ChannelMediaOptions Options;
+        // 禁止发布麦克风采集到的音频
+        Options.publishMicrophoneTrack = false;
+        // 禁止发布自定义音频
+        Options.publishCustomAudioTrack = false;
+        Options.publishCustomAudioTrackId = m_SendTrackId;
+        Options.clientRoleType = CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+
+        agora::rtc::RtcConnection Connection;
+        std::string StdStrChannelName = TCHAR_TO_UTF8(*ChannelName);
+        Connection.channelId = StdStrChannelName.c_str();
+        Connection.localUid = uid;
+
+        // 频道内更新媒体选项
+        int ret = RtcEngineProxy->updateChannelMediaOptionsEx(Options, Connection);
+        ```
+
+### 插件使用注意事项
+
+如果你的 UE 项目会编译运行到如下平台，使用 Wwise 插件时你需注意如下：
+
+| 运行平台 | 注意事项 |
+| --- | --- |
+| iOS | <Slot name="spatial-audio-wwise-unreal-cpp-html-1-1-1" /> |
+| Windows | 声网 Unreal SDK 中 ThirdParty 目录下的 `AgoraWwiseRTCSDK.dll` 和 `AgoraWwiseRTCSDK.lib` 文件会复制到你的 UE 项目中 Wwise 的 ThirdParty 目录下。最终 SDK 和 UE 项目都会依赖 Wwise 的 ThirdParty 目录下这两个文件。 |
+
+<Slot for="spatial-audio-wwise-unreal-cpp-html-1-1-1">
+
+确保完成如下步骤，如果系统已自动完成，请跳过：
+
+    1. 将 Unreal SDK 中 `AgoraPlugin/Resources/WwiseHeaderFiles/*.h` 文件复制到 UE 项目中 `<project_name>/Plugins/Wwise/ThirdParty/include/AK/Plugin/*.h` 文件。
+
+    2. 打开 UE 项目中 `<project_name>/Plugins/Wwise/Source/WwiseSoundEngine/Public/Generated/AkiOSPlugins.h` 文件，添加对 `AgoraWwiseRTCSDKSourceFactory.h` 的引用，示例代码如下：
+
+        ```cpp
+        #if PLATFORM_IOS
+        #include <AK/Plugin/AkToneSourceFactory.h>
+        ...
+        // highlight-start
+        #include <AK/Plugin/AgoraWwiseRTCSDKSourceFactory.h>
+        // highlight-end
+        #endif
+        ```
+
+</Slot>
+
+### 插件日志路径
+
+- Android：`/storage/emulated/0/AgoraAudio/agora_wwise_log.txt`
+- iOS：`App Sandbox/agora_wwise_log.txt`
+- Windows：`C:\Users\<user_name>\AppData\Local\Agora\agora_wwise_log.txt`。如果你使用 UE4 和低于 C++17 的 C++ 语言开发，那么当前日志路径依赖于 Windows 的函数。如果遇到路径冲突或编译错误，你可以在 `AgoraCommLog.cpp` 文件中手动修改日志路径。
+
+### API 参考
+
+Unreal SDK 中 Wwise 模块提供如下 API，你可以按需调用：
+
+```cpp
+// 获取 Wwise 插件版本号
+static std::string GetAgoraWwiseVersion();
+
+// 初始化 Wwise 插件
+static int InitAgoraWwisePlugin(agora::rtc::IRtcEngine* AgoraRtcEngineInstance,
+                                int& OutDefaultCustomAudioTrackId);
+
+// 卸载 Wwise 插件
+static int UninitAgoraWwisePlugin();
+
+// 设置 ID 之间的映射关系
+// 将 Unreal SDK 中的频道 ID 和用户 ID 映射到 Wwise 的 Game Object ID
+static void AWPlugin_Receive_SetUidToGameObjectIDMapping(AkGameObjectID gameObjectID,
+                                                         const std::string& channelID,
+                                                         const rtc::uid_t& userID);
+
+// 获取 ID 之间的映射关系
+static bool AWPlugin_Receive_GetUidByGameObjectID(AkGameObjectID gameObjectID,
+                                                  std::string& channelID, rtc::uid_t& userID);
+
+// 清除 ID 之间的映射关系
+static bool AWPlugin_Receive_ClearReceiveOpenID(const std::string& channelID,
+                                                const rtc::uid_t& userID);
+```
+
+- `GetAgoraWwiseVersion`：获取 Wwise 插件版本号。
+- `InitAgoraWwisePlugin`：初始化 Wwise 插件。
+- `UninitAgoraWwisePlugin`：卸载 Wwise 插件。
+- `AWPlugin_Receive_SetUidToGameObjectIDMapping`：设置 ID 之间的映射关系。
+- `AWPlugin_Receive_GetUidByGameObjectID`：获取 ID 之间的映射关系。
+- `AWPlugin_Receive_ClearReceiveOpenID`：清除 ID 之间的映射关系。
+
+ID 之间的映射关系指将 Unreal SDK 中频道 ID、用户 ID 映射到 Wwise 的 Game Object ID 的关系。开发过程中，你无需管理 Unreal SDK 与 Wwise 之间的 ID 关系，因此不推荐你调用这些方法。你只需要将 SDK 中频道 ID、用户 ID 与 UE 项目中 **Actor** 进行绑定。绑定示例如下：
+
+![绑定 ID](/img/game-voice/id-mapping.png)
+
+## 6. 实现空间音频
+
+完成上述步骤后，你可以利用 Wwise 的基础功能构建空间音频效果，详见 [Wwise 官方社区博文](https://blog.audiokinetic.com/zh/building-spatial-audio-effects-using-wwise/)。

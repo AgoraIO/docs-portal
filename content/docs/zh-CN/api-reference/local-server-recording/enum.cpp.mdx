@@ -1,0 +1,496 @@
+---
+title: "枚举类"
+---
+<a id="channel_profile_type"></a>
+## CHANNEL_PROFILE_TYPE
+
+频道场景。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `CHANNEL_PROFILE_COMMUNICATION` | （0）：通信场景。优先保证通话流畅性，适用于一对一通话。 |
+| `CHANNEL_PROFILE_LIVE_BROADCASTING` | （1）：（默认）极速直播场景。优先支持频道中有大量观众的直播场景。 |
+| `CHANNEL_PROFILE_GAME` | （2）：游戏场景。该枚举值已废弃。 |
+| `CHANNEL_PROFILE_CLOUD_GAMING` | （3）：云游戏场景。该枚举值已废弃。 |
+| `CHANNEL_PROFILE_COMMUNICATION_1v1` | （4）：通信 1v1 场景。该枚举值已废弃。 |
+
+<a id="error_code_type"></a>
+## ERROR_CODE_TYPE
+
+错误码类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `ERR_OK` | （0）：没有错误发生。 |
+| `ERR_FAILED` | （1）：发生通用错误（无具体原因）。 |
+| `ERR_INVALID_ARGUMENT` | （2）：参数无效。例如，频道名包含非法字符。 |
+| `ERR_NOT_READY` | （3）：SDK 模块未就绪。可尝试以下操作：检查音频设备、检查应用完整性、重新初始化 RTC 引擎。 |
+| `ERR_NOT_SUPPORTED` | （4）：SDK 不支持该功能。 |
+| `ERR_REFUSED` | （5）：请求被拒绝。 |
+| `ERR_BUFFER_TOO_SMALL` | （6）：缓冲区大小不足，无法存储返回数据。 |
+| `ERR_NOT_INITIALIZED` | （7）：调用该方法前未初始化 SDK。 |
+| `ERR_INVALID_STATE` | （8）：状态无效。 |
+| `ERR_TIMEDOUT` | （10）：API 调用超时。部分 API 方法需等待 SDK 返回执行结果，若处理时间超过 10 秒，则返回该错误。 |
+| `ERR_JOIN_CHANNEL_REJECTED` | （17）：加入频道请求被拒绝。通常发生在用户已在频道中仍调用 [`joinChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#joinchannel) 方法时。 |
+| `ERR_LEAVE_CHANNEL_REJECTED` | （18）：离开频道请求被拒绝。通常发生在用户已离开频道仍调用 [`leaveChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#leavechannel) 方法时。 |
+| `ERR_ALREADY_IN_USE` | （19）：资源已被占用，无法重复使用。 |
+| `ERR_RESOURCE_LIMITED` | （22）：应用占用系统资源过多，SDK 无法分配资源。 |
+| `ERR_INVALID_APP_ID` | （101）：App ID 无效，通常是因为 App ID 的数据格式不正确。解决方案：请检查 App ID 的数据格式，确保使用正确的 App ID 初始化声网服务。 |
+| `ERR_INVALID_CHANNEL_NAME` | （102）：频道名无效。请尝试使用有效的频道名重新加入频道。 |
+| `ERR_NO_SERVER_RESOURCES` | （103）：在指定区域无法获取服务器资源。请在调用 [`initialize`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#initialize) 方法时尝试指定其他区域。 |
+| `ERR_TOKEN_EXPIRED` | <Slot name="enum-cpp-html-1-18-1" /> |
+| `ERR_INVALID_TOKEN` | <Slot name="enum-cpp-html-1-19-1" /> |
+| `ERR_DECRYPTION_FAILED` | （120）：媒体流解密失败。用户可能尝试使用错误的密码加入频道。请检查设置或尝试重新加入频道。 |
+| `ERR_INVALID_USER_ID` | （121）：用户 ID 无效。 |
+| `ERR_DATASTREAM_DECRYPTION_FAILED` | （122）：数据流解密失败。对端可能尝试使用错误的密码加入频道，或未启用数据流加密。 |
+| `ERR_CLIENT_IS_BANNED_BY_SERVER` | （123）：该客户端实例被服务器封禁。 |
+| `ERR_LICENSE_CREDENTIAL_INVALID` | （131）：License 凭证无效。 |
+| `ERR_INVALID_USER_ACCOUNT` | （134）：用户账号无效，通常是因为用户账号的数据格式不正确。 |
+| `ERR_LOAD_MEDIA_ENGINE` | （1001）：加载媒体引擎失败。 |
+| `ERR_ADM_GENERAL_ERROR` | （1005）：音频设备模块：发生通用错误（无具体原因）。请检查音频设备是否被其他 App 占用，或尝试重新加入频道。 |
+| `ERR_ADM_INIT_PLAYOUT` | （1008）：音频设备模块：初始化播放设备失败。 |
+| `ERR_ADM_START_PLAYOUT` | （1009）：音频设备模块：启动播放设备失败。 |
+| `ERR_ADM_STOP_PLAYOUT` | （1010）：音频设备模块：停止播放设备失败。 |
+| `ERR_ADM_INIT_RECORDING` | （1011）：音频设备模块：初始化录音设备失败。 |
+| `ERR_ADM_START_RECORDING` | （1012）：音频设备模块：启动录音设备失败。 |
+| `ERR_ADM_STOP_RECORDING` | （1013）：音频设备模块：停止录音设备失败。 |
+| `ERR_VDM_CAMERA_NOT_AUTHORIZED` | （1501）：视频设备模块：摄像头未授权。 |
+
+<Slot for="enum-cpp-html-1-18-1">
+
+（109）： Token 已过期，通常有以下原因：
+
+    - Token 授权超时： Token 生成后必须在 24 小时内使用，否则会超时失效；
+    - Token 权限过期：生成 Token 时设置的权限过期时间已到。例如设置为 7 天，则 Token 在使用后 7 天过期，届时无法访问声网服务，用户无法通话或被踢出频道。
+
+    解决方案：无论是 Token 授权超时还是权限过期，都需要在服务器上重新生成 Token，并尝试重新加入频道。
+
+</Slot>
+
+<Slot for="enum-cpp-html-1-19-1">
+
+（110）： Token 无效，通常有以下原因：
+
+    - 项目启用了 App 证书但加入频道时未提供 Token；
+    - 项目未启用 App 证书但尝试使用 Token 加入频道；
+    - 用于生成 Token 的 App ID、用户 ID 和频道名与加入频道时使用的不一致。
+
+    解决方案：加入频道前请检查项目是否启用了 App 证书，若启用则必须提供 Token，未启用则无需提供；使用 Token 加入频道时，请确保用于生成 Token 的 App ID 与初始化声网服务时使用的 App ID 一致，用户 ID 和频道名也需一致。
+
+</Slot>
+
+<a id="user_offline_reason_type"></a>
+## USER_OFFLINE_REASON_TYPE
+
+用户离线的原因。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `USER_OFFLINE_QUIT` | （0）：用户离开当前频道。 |
+| `USER_OFFLINE_DROPPED` | （1）：在一定时间内未收到数据包，SDK 超时，用户掉线。如果用户退出通话但未将消息传递给 SDK（由于信道不可靠），SDK 会认为用户掉线。 |
+| `USER_OFFLINE_BECOME_AUDIENCE` | （2）：用户将客户端角色从主播切换为观众。 |
+
+<a id="quality_type"></a>
+## QUALITY_TYPE
+
+网络质量类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `QUALITY_UNKNOWN` | （0）：网络质量未知。 |
+| `QUALITY_EXCELLENT` | （1）：网络质量极佳。 |
+| `QUALITY_GOOD` | （2）：网络质量较好，但码率可能略低于极佳。 |
+| `QUALITY_POOR` | （3）：通话质量轻微受损。 |
+| `QUALITY_BAD` | （4）：通话不流畅。 |
+| `QUALITY_VBAD` | （5）：几乎无法通话。 |
+| `QUALITY_DOWN` | （6）：完全无法通话。 |
+| `QUALITY_UNSUPPORTED` | （7）：（预留）无法检测网络质量。 |
+| `QUALITY_DETECTING` | （8）：正在检测网络质量。 |
+
+<a id="watermark_fit_mode"></a>
+## WATERMARK_FIT_MODE
+
+水印的适配模式。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `FIT_MODE_COVER_POSITION` | 使用你在 [`WatermarkOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkoptions) 中设置的 `positionInLandscapeMode` 和 `positionInPortraitMode` 值。[`WatermarkRatio`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkratio) 中的设置无效。 |
+| `FIT_MODE_USE_IMAGE_RATIO` | 使用你在 [`WatermarkRatio`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkratio) 中设置的值。[`WatermarkOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkoptions) 中的 `positionInLandscapeMode` 和 `positionInPortraitMode` 设置无效。 |
+
+<a id="video_stream_type"></a>
+## VIDEO_STREAM_TYPE
+
+视频流类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `VIDEO_STREAM_HIGH` | （0）：高质量视频流，分辨率和码率最高。 |
+| `VIDEO_STREAM_LOW` | （1）：低质量视频流，分辨率和码率最低。 |
+
+<a id="watermarksourcetype"></a>
+## WatermarkSourceType
+
+水印来源类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `LITERA` | （0）：水印来源为文本。 |
+| `TIMESTAMPS` | （1）：水印来源为时间戳。 |
+| `PICTURE` | （2）：水印来源为图片。 |
+
+<a id="audio_scenario_type"></a>
+## AUDIO_SCENARIO_TYPE
+
+音频场景。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AUDIO_SCENARIO_DEFAULT` | （0）：（默认）自动场景，SDK 会根据用户角色和音频路由选择合适的音频质量。 |
+| `AUDIO_SCENARIO_GAME_STREAMING` | （3）：直播游戏场景，需在扬声器中启用游戏音效，适用于高保真音乐播放。 |
+| `AUDIO_SCENARIO_CHATROOM` | （5）：聊天室场景，即使将客户端角色设置为观众仍需保持录音。通常也可通过静音 API 实现相同效果，此“非正交”行为用于保持 API 向后兼容。 |
+| `AUDIO_SCENARIO_CHORUS` | （7）：实时合唱场景，适用于网络良好且对超低延迟有要求的用户。 |
+| `AUDIO_SCENARIO_MEETING` | （8）：会议场景。 |
+| `AUDIO_SCENARIO_NUM` | （11）：枚举值总数。 |
+
+<a id="remote_audio_state"></a>
+## REMOTE_AUDIO_STATE
+
+远端音频状态。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `REMOTE_AUDIO_STATE_STOPPED` | （0）：远端音频处于默认状态。当出现 `REMOTE_AUDIO_REASON_LOCAL_MUTED(3)`、`REMOTE_AUDIO_REASON_REMOTE_MUTED(5)` 或 `REMOTE_AUDIO_REASON_REMOTE_OFFLINE(7)` 时，SDK 会报告该状态。 |
+| `REMOTE_AUDIO_STATE_STARTING` | （1）：已接收到首个远端音频数据包。 |
+| `REMOTE_AUDIO_STATE_DECODING` | （2）：远端音频流已解码并正常播放。当出现 `REMOTE_AUDIO_REASON_NETWORK_RECOVERY(2)`、`REMOTE_AUDIO_REASON_LOCAL_UNMUTED(4)` 或 `REMOTE_AUDIO_REASON_REMOTE_UNMUTED(6)` 时，SDK 会报告该状态。 |
+| `REMOTE_AUDIO_STATE_FROZEN` | （3）：远端音频卡顿。当出现 `REMOTE_AUDIO_REASON_NETWORK_CONGESTION(1)` 时，SDK 会报告该状态。 |
+| `REMOTE_AUDIO_STATE_FAILED` | （4）：远端音频启动失败。当出现 `REMOTE_AUDIO_REASON_INTERNAL(0)` 时，SDK 会报告该状态。 |
+
+<a id="remote_audio_state_reason"></a>
+## REMOTE_AUDIO_STATE_REASON
+
+远端音频状态变化的原因。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `REMOTE_AUDIO_REASON_INTERNAL` | （0）：远端视频状态发生变化时，SDK 报告该原因。 |
+| `REMOTE_AUDIO_REASON_NETWORK_CONGESTION` | （1）：网络拥塞导致音频状态变化。 |
+| `REMOTE_AUDIO_REASON_NETWORK_RECOVERY` | （2）：网络恢复导致音频状态变化。 |
+| `REMOTE_AUDIO_REASON_LOCAL_MUTED` | （3）：本地用户停止接收远端音频流或关闭音频模块。 |
+| `REMOTE_AUDIO_REASON_LOCAL_UNMUTED` | （4）：本地用户恢复接收远端音频流或开启音频模块。 |
+| `REMOTE_AUDIO_REASON_REMOTE_MUTED` | （5）：远端用户停止发送音频流或关闭音频模块。 |
+| `REMOTE_AUDIO_REASON_REMOTE_UNMUTED` | （6）：远端用户恢复发送音频流或开启音频模块。 |
+| `REMOTE_AUDIO_REASON_REMOTE_OFFLINE` | （7）：远端用户离开频道。 |
+| `REMOTE_AUDIO_REASON_NO_PACKET_RECEIVE` | （8）：本地用户未收到远端用户的任何音频数据包。 |
+| `REMOTE_AUDIO_REASON_LOCAL_PLAY_FAILED` | （9）：本地用户收到远端音频数据包但播放失败。 |
+
+<a id="remote_video_state"></a>
+## REMOTE_VIDEO_STATE
+
+远端视频的状态。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `REMOTE_VIDEO_STATE_STOPPED` | （0）：远端视频处于默认状态。当出现 `REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED (3)`、`REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED (5)`、`REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE (7)` 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK (8)` 时，SDK 会报告该状态。 |
+| `REMOTE_VIDEO_STATE_STARTING` | （1）：已接收到首个远端视频包。 |
+| `REMOTE_VIDEO_STATE_DECODING` | （2）：远端视频流已解码并正常播放。当出现 `REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY (2)`、`REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED (4)`、`REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED (6)` 或 `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY (9)` 时，SDK 会报告该状态。 |
+| `REMOTE_VIDEO_STATE_FROZEN` | （3）：远端视频卡顿，可能由于 `REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION (1)`。 |
+| `REMOTE_VIDEO_STATE_FAILED` | （4）：远端视频启动失败。当出现 `REMOTE_VIDEO_STATE_REASON_INTERNAL (0)` 时，SDK 会报告该状态。 |
+
+<a id="remote_video_state_reason"></a>
+## REMOTE_VIDEO_STATE_REASON
+
+远端视频状态变化的原因。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `REMOTE_VIDEO_STATE_REASON_INTERNAL` | （0）：远端视频状态发生变化时，SDK 上报该原因。 |
+| `REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION` | （1）：网络拥塞导致远端视频状态变化。 |
+| `REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY` | （2）：网络恢复导致远端视频状态变化。 |
+| `REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED` | （3）：本地用户停止接收远端视频流或关闭视频模块。 |
+| `REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED` | （4）：本地用户恢复接收远端视频流或开启视频模块。 |
+| `REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED` | （5）：远端用户停止发送视频流或关闭视频模块。 |
+| `REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED` | （6）：远端用户恢复发送视频流或开启视频模块。 |
+| `REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE` | （7）：远端用户离开频道。 |
+| `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK` | （8）：由于网络条件差，远端音视频流降级为纯音频流。 |
+| `REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY` | （9）：网络条件改善后，远端纯音频流恢复为音视频流。 |
+| `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT` | （13）：远端视频流的编码格式不被解码器支持。 |
+
+<a id="connection_changed_reason_type"></a>
+## CONNECTION_CHANGED_REASON_TYPE
+
+连接状态变化的原因。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `CONNECTION_CHANGED_CONNECTING` | （0）：SDK 正在连接服务器。 |
+| `CONNECTION_CHANGED_JOIN_SUCCESS` | （1）：SDK 成功加入频道。 |
+| `CONNECTION_CHANGED_INTERRUPTED` | （2）：SDK 与服务器的连接中断。 |
+| `CONNECTION_CHANGED_BANNED_BY_SERVER` | （3）：SDK 与服务器的连接被服务器禁止，通常发生在用户被踢出频道时。 |
+| `CONNECTION_CHANGED_JOIN_FAILED` | （4）：SDK 加入频道失败。若超过 20 分钟未能加入频道，将触发该错误并停止重连。 |
+| `CONNECTION_CHANGED_LEAVE_CHANNEL` | （5）：SDK 已离开频道。 |
+| `CONNECTION_CHANGED_INVALID_APP_ID` | （6）：连接失败，App ID 无效。 |
+| `CONNECTION_CHANGED_INVALID_CHANNEL_NAME` | （7）：连接失败，频道名无效。请使用有效的频道名重新加入频道。 |
+| `CONNECTION_CHANGED_INVALID_TOKEN` | （8）：连接失败， Token 无效。常见原因包括：项目在声网控制台启用了 App 证书，但加入频道时未使用 Token；调用 [`joinChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#joinchannel) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。 |
+| `CONNECTION_CHANGED_TOKEN_EXPIRED` | （9）：连接失败， Token 已过期。 |
+| `CONNECTION_CHANGED_REJECTED_BY_SERVER` | （10）：连接被服务器拒绝。常见原因包括：用户已在频道中仍调用 [`joinChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#joinchannel) 方法加入频道；或在通话前测试期间尝试加入频道，需在测试结束后再加入频道。 |
+| `CONNECTION_CHANGED_SETTING_PROXY_SERVER` | （11）：由于设置了代理服务器，连接状态变为重连中。 |
+| `CONNECTION_CHANGED_RENEW_TOKEN` | （12）：由于 Token 被更新，连接状态发生变化。 |
+| `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED` | （13）：客户端 IP 地址发生变化，可能由于网络类型、IP 地址或端口变化所致。 |
+| `CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT` | （14）：与声网边缘服务器的连接保活超时，连接状态变为 `CONNECTION_STATE_RECONNECTING`。 |
+| `CONNECTION_CHANGED_REJOIN_SUCCESS` | （15）：SDK 成功重新加入频道。 |
+| `CONNECTION_CHANGED_LOST` | （16）：SDK 与服务器的连接已丢失。 |
+| `CONNECTION_CHANGED_ECHO_TEST` | （17）：连接状态变化由回声测试引起。 |
+| `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER` | （18）：本地 IP 地址被更改。 |
+| `CONNECTION_CHANGED_SAME_UID_LOGIN` | （19）：连接失败，原因是在另一台设备上使用相同的 UID 加入了同一个频道。 |
+| `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` | （20）：连接失败，频道中主播数量过多。 |
+| `CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE` | （21）：连接失败，License 校验失败。 |
+| `CONNECTION_CHANGED_CERTIFICATION_VERYFY_FAILURE` | （22）：连接失败，证书验证失败。 |
+| `CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE` | （23）：连接失败，未授予流通道权限。 |
+| `CONNECTION_CHANGED_INCONSISTENT_APPID` | （24）：连接失败，加入频道时使用了不一致的 App ID。 |
+
+<a id="area_code"></a>
+## AREA_CODE
+
+连接区域。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AREA_CODE_CN` | （0x00000001）：中国大陆。 |
+| `AREA_CODE_NA` | （0x00000002）：北美地区。 |
+| `AREA_CODE_EU` | （0x00000004）：欧洲地区。 |
+| `AREA_CODE_AS` | （0x00000008）：亚洲（不包括中国大陆）。 |
+| `AREA_CODE_JP` | （0x00000010）：日本。 |
+| `AREA_CODE_IN` | （0x00000020）：印度。 |
+| `AREA_CODE_GLOB` | （0xFFFFFFFF）：（默认）全球。 |
+
+<a id="encryption_mode"></a>
+## ENCRYPTION_MODE
+
+内置加密模式。
+
+声网推荐使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式。这两种模式支持使用 salt，以提供更高的安全性。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AES_128_XTS` | （1）：128 位 AES 加密，XTS 模式。 |
+| `AES_128_ECB` | （2）：128 位 AES 加密，ECB 模式。 |
+| `AES_256_XTS` | （3）：256 位 AES 加密，XTS 模式。 |
+| `SM4_128_ECB` | （4）：128 位 SM4 加密，ECB 模式。 |
+| `AES_128_GCM` | （5）：128 位 AES 加密，GCM 模式。 |
+| `AES_256_GCM` | （6）：256 位 AES 加密，GCM 模式。 |
+| `AES_128_GCM2` | （7）：（默认）128 位 AES 加密，GCM 模式。该模式需设置 salt（`encryptionKdfSalt`）。 |
+| `AES_256_GCM2` | （8）：256 位 AES 加密，GCM 模式。该模式需设置 salt（`encryptionKdfSalt`）。 |
+| `MODE_END` | （9）：枚举结束标志。 |
+
+<a id="encryption_error_type"></a>
+## ENCRYPTION_ERROR_TYPE
+
+加密错误类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `ENCRYPTION_ERROR_INTERNAL_FAILURE` | （0）：因内部原因导致的加密错误。 |
+| `ENCRYPTION_ERROR_DECRYPTION_FAILURE` | （1）：媒体流解密失败。请确保接收端和发送端使用相同的加密模式和密钥。 |
+| `ENCRYPTION_ERROR_ENCRYPTION_FAILURE` | （2）：媒体流加密失败。 |
+| `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` | （3）：数据流解密失败。请确保接收端和发送端使用相同的加密模式和密钥。 |
+| `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` | （4）：数据流加密失败。 |
+
+<a id="local_proxy_mode"></a>
+## LOCAL_PROXY_MODE
+
+本地代理模式类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `ConnectivityFirst` | （0）：优先连接本地代理，若连接失败，则回退至 SD-RTN™。 |
+| `LocalOnly` | （1）：仅连接本地代理。 |
+
+<a id="video_codec_type"></a>
+## VIDEO_CODEC_TYPE
+
+视频编解码器类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `VIDEO_CODEC_NONE` | （0）：无视频编解码器类型。 |
+| `VIDEO_CODEC_VP8` | （1）：标准 VP8 视频编解码器。 |
+| `VIDEO_CODEC_H264` | （2）：标准 H.264 视频编解码器。 |
+| `VIDEO_CODEC_H265` | （3）：标准 H.265 视频编解码器。 |
+| `VIDEO_CODEC_GENERIC` | （6）：通用视频编解码器类型。用于传输原始视频数据，例如加密的视频帧。SDK 会在回调中返回此类型的视频帧，需由用户自行解码和渲染。 |
+| `VIDEO_CODEC_GENERIC_H264` | （7）：通用 H.264 视频编解码器。 |
+| `VIDEO_CODEC_AV1` | （12）：AV1 视频编解码器。 |
+| `VIDEO_CODEC_VP9` | （13）：VP9 视频编解码器。 |
+| `VIDEO_CODEC_GENERIC_JPEG` | （20）：通用 JPEG 视频编解码器。该类型计算资源消耗最少，适用于灵隼物联网云平台设备。 |
+
+<a id="video_source_type"></a>
+## VIDEO_SOURCE_TYPE
+
+视频源类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `VIDEO_SOURCE_CAMERA_PRIMARY` | （0）：主摄像头采集的视频。 |
+| `VIDEO_SOURCE_CAMERA` | （0）：主摄像头采集的视频。 |
+| `VIDEO_SOURCE_CAMERA_SECONDARY` | （1）：第二路摄像头采集的视频。 |
+| `VIDEO_SOURCE_SCREEN_PRIMARY` | （2）：主屏幕共享的视频。 |
+| `VIDEO_SOURCE_SCREEN` | （2）：主屏幕共享的视频。 |
+| `VIDEO_SOURCE_SCREEN_SECONDARY` | （3）：第二路屏幕共享的视频。 |
+| `VIDEO_SOURCE_CUSTOM` | （4）：自定义视频源。 |
+| `VIDEO_SOURCE_MEDIA_PLAYER` | （5）：媒体播放器共享的视频。 |
+| `VIDEO_SOURCE_RTC_IMAGE_PNG` | （6）：PNG 图像生成的视频。 |
+| `VIDEO_SOURCE_RTC_IMAGE_JPEG` | （7）：JPEG 图像生成的视频。 |
+| `VIDEO_SOURCE_RTC_IMAGE_GIF` | （8）：GIF 图像生成的视频。 |
+| `VIDEO_SOURCE_REMOTE` | （9）：从网络接收的远端视频。 |
+| `VIDEO_SOURCE_TRANSCODED` | （10）：合图后生成的视频。 |
+| `VIDEO_SOURCE_CAMERA_THIRD` | （11）：第三路摄像头采集的视频。 |
+| `VIDEO_SOURCE_CAMERA_FOURTH` | （12）：第四路摄像头采集的视频。 |
+| `VIDEO_SOURCE_SCREEN_THIRD` | （13）：第三路屏幕共享的视频。 |
+| `VIDEO_SOURCE_SCREEN_FOURTH` | （14）：第四路屏幕共享的视频。 |
+| `VIDEO_SOURCE_SPEECH_DRIVEN` | （15）：语音驱动生成的视频。 |
+| `VIDEO_SOURCE_UNKNOWN` | （100）：未知视频源。 |
+
+<a id="mediarecordercontainerformat"></a>
+## MediaRecorderContainerFormat
+
+录制文件的格式。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `FORMAT_MP4` | （1）：（默认）MP4 格式。 |
+
+<a id="mediarecorderstreamtype"></a>
+## MediaRecorderStreamType
+
+录制内容。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `STREAM_TYPE_AUDIO` | （0x01）：仅录制音频。 |
+| `STREAM_TYPE_VIDEO` | （0x02）：仅录制视频。 |
+| `STREAM_TYPE_BOTH` | （STREAM_TYPE_AUDIO \| STREAM_TYPE_VIDEO）：录制音频和视频（默认）。 |
+
+<a id="recorderstate"></a>
+## RecorderState
+
+当前录制状态。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `RECORDER_STATE_ERROR` | （-1）：录制过程中发生错误。详见 [`RecorderReasonCode`](/zh-CN/api-reference/local-server-recording/enum.cpp#recorderreasoncode)。 |
+| `RECORDER_STATE_START` | （2）：音视频录制已开始。 |
+| `RECORDER_STATE_STOP` | （3）：音视频录制已停止。 |
+
+<a id="recorderreasoncode"></a>
+## RecorderReasonCode
+
+状态变更的原因。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `RECORDER_REASON_NONE` | （0）：无错误发生。 |
+| `RECORDER_REASON_WRITE_FAILED` | （1）：SDK 无法将录制数据写入文件。 |
+| `RECORDER_REASON_NO_STREAM` | （2）：SDK 未检测到可录制的音视频流，或录制过程中音视频流中断超过 5 秒。 |
+| `RECORDER_REASON_OVER_MAX_DURATION` | （3）：录制时长超过上限。 |
+| `RECORDER_REASON_CONFIG_CHANGED` | （4）：录制配置发生变更。 |
+
+<a id="video_pixel_format"></a>
+## VIDEO_PIXEL_FORMAT
+
+视频像素格式。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `VIDEO_PIXEL_DEFAULT` | （0）：默认格式。 |
+| `VIDEO_PIXEL_I420` | （1）：I420 格式。 |
+| `VIDEO_PIXEL_BGRA` | （2）：BGRA 格式。 |
+| `VIDEO_PIXEL_NV21` | （3）：NV21 格式。 |
+| `VIDEO_PIXEL_RGBA` | （4）：RGBA 格式。 |
+| `VIDEO_PIXEL_NV12` | （8）：NV12 格式。 |
+| `VIDEO_TEXTURE_2D` | （10）：GL_TEXTURE_2D 格式。 |
+| `VIDEO_TEXTURE_OES` | （11）：GL_TEXTURE_OES 格式。 |
+| `VIDEO_CVPIXEL_NV12` | （12）：iOS 平台上 CVPixelBuffer 的 NV12 格式。 |
+| `VIDEO_CVPIXEL_I420` | （13）：iOS 平台上 CVPixelBuffer 的 I420 格式。 |
+| `VIDEO_CVPIXEL_BGRA` | （14）：iOS 平台上 CVPixelBuffer 的 BGRA 格式。 |
+| `VIDEO_CVPIXEL_P010` | （15）：iOS 平台上 CVPixelBuffer 的 P010 格式（10bit NV12）。 |
+| `VIDEO_PIXEL_I422` | （16）：I422 格式。 |
+| `VIDEO_TEXTURE_ID3D11TEXTURE2D` | （17）：ID3D11Texture2D 格式，仅支持 DXGI_FORMAT_B8G8R8A8_UNORM、DXGI_FORMAT_B8G8R8A8_TYPELESS 和 DXGI_FORMAT_NV12。 |
+| `VIDEO_PIXEL_I010` | （18）：I010 格式，10bit I420 数据。 |
+
+<a id="log_level"></a>
+## LOG_LEVEL
+
+日志级别。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `LOG_LEVEL_NONE` | （0x0000）：不输出任何日志。 |
+| `LOG_LEVEL_INFO` | （0x0001）：输出 INFO 级别的日志。 |
+| `LOG_LEVEL_WARN` | （0x0002）：输出 WARNING 级别的日志。 |
+| `LOG_LEVEL_ERROR` | （0x0004）：输出 ERROR 级别的日志。 |
+| `LOG_LEVEL_FATAL` | （0x0008）：输出 FATAL 级别的日志。 |
+| `LOG_LEVEL_API_CALL` | （0x0010）：输出 API 调用级别的日志。 |
+| `LOG_LEVEL_DEBUG` | （0x0020）：输出 INFO、WARNING、ERROR 和 FATAL 级别的日志。 |
+
+<a id="videoframecapturetype"></a>
+## VideoFrameCaptureType
+
+视频帧采集类型。
+
+#### 枚举值
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `VIDEO_FORMAT_ENCODED_FRAME_TYPE` | （0）：视频帧为发送端的原始编码格式，例如 H.264 或 H.265。 |
+| `VIDEO_FORMAT_YUV_FRAME_TYPE` | （1）：视频帧为 YUV 编码格式。 |
+| `VIDEO_FORMAT_JPG_FRAME_TYPE` | （2）：视频帧为 JPG 编码格式。 |
+| `VIDEO_FORMAT_JPG_FILE_TYPE` | （3）：视频帧为 JPG 文件格式。 |

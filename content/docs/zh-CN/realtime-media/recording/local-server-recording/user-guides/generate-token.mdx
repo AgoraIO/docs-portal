@@ -1,0 +1,454 @@
+---
+title: "使用 Token 鉴权"
+---
+鉴权是指在用户访问你的系统前，对用户权限进行校验，声网用 Token 对用户鉴权。Token 也称为动态密钥，是在加入频道时用于校验用户权限的一组字符串。当录制服务加入 RTC 频道时传入 Token，声网服务端会根据 Token 中的信息校验用户的权限。
+
+下图展示声网使用 Token 对录制服务端鉴权的流程：
+
+![token 流程](/img/recording/token-authentication.svg)
+
+## 前提条件
+
+开始前，请确保你的项目满足如下条件：
+
+- 有一个已开启 App 证书的声网项目，获取该项目的 App ID。
+- 参考[开始录制音视频](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording.cpp)在你的项目中集成录制 SDK 并实现基础的录制功能。
+
+## 实现 Token 鉴权
+
+### 生成 Token
+
+声网在 GitHub 上提供一个开源的 Token 生成器代码仓库 [AgoraDynamicKey](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)，支持使用 C++、Java、Golang 等多种语言来在你自己的服务器上生成 Token。
+
+以下列出的语言均基于 HMAC-SHA256 算法生成 Token。
+
+| 语言            | 核心方法                                                     | 示例代码                                                     |
+|:------|:----------------------------------------------------------- |:----------------------------------------------------------- |
+| C++     | [buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/RtcTokenBuilder2.h) | [RtcTokenBuilder2Sample.cpp](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/cpp/sample/RtcTokenBuilder2Sample.cpp) |
+| Golang      |[BuildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2/rtctokenbuilder.go) | [sample.go](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/go/sample/rtctokenbuilder2/sample.go) |
+| Java    |[buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/media/RtcTokenBuilder2.java) | [RtcTokenBuilder2Sample.java](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/sample/RtcTokenBuilder2Sample.java) |
+| Node.js |[buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/nodejs/src/RtcTokenBuilder2.js) | [RtcTokenBuilder2Sample.js](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/nodejs/sample/RtcTokenBuilder2Sample.js) |
+| PHP     |[buildTokenWithUid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/php/src/RtcTokenBuilder2.php) | [RtcTokenBuilder2Sample.php](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/php/sample/RtcTokenBuilder2Sample.php) |
+| Python  |[build_token_with_uid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python/src/RtcTokenBuilder2.py) | [RtcTokenBuilder2Sample.py](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/python/sample/RtcTokenBuilder2Sample.py) |
+| Python3 |[build_token_with_uid](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python3/src/RtcTokenBuilder2.py) | [RtcTokenBuilder2Sample.py](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey/python3/sample/RtcTokenBuilder2Sample.py) |
+
+以 C++ 为例，你可以通过 `privilege_expiration_in_seconds` 来统一设置所有权限的过期时间。
+
+示例代码如下：
+
+<Tabs defaultValue="cpp" groupId="token-sample-code" persist>
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="Golang">Golang</TabsTrigger>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="js">Node.js</TabsTrigger>
+  <TabsTrigger value="php">PHP</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="python3">Python3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cpp">
+
+```cpp
+#include <cstdlib>
+#include <iostream>
+
+#include "../src/RtcTokenBuilder2.h"
+
+using namespace agora::tools;
+
+int main(int argc, char const *argv[]) {
+    (void)argc;
+    (void)argv;
+
+    // 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+    const char *env_app_id = getenv("AGORA_APP_ID");
+    std::string app_id = env_app_id ? env_app_id : "";
+    // 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+    const char *env_app_certificate = getenv("AGORA_APP_CERTIFICATE");
+    std::string app_certificate = env_app_certificate ? env_app_certificate : "";
+    // 将 channelName 替换为需要加入的频道名
+    std::string channel_name = "channelName";
+    // 填入你实际的用户 ID
+    uint32_t uid = "uid";
+    // Token 的有效时间，单位秒
+    uint32_t token_expiration_in_seconds = 3600;
+    // 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+    uint32_t privilege_expiration_in_seconds = 3600;
+    std::string result;
+
+    std::cout << "App Id:" << app_id << std::endl;
+    std::cout << "App Certificate:" << app_certificate << std::endl;
+    if (app_id == "" || app_certificate == "") {
+        std::cout << "Need to set environment variable AGORA_APP_ID and "
+                     "AGORA_APP_CERTIFICATE"
+                  << std::endl;
+        return -1;
+    }
+    // 生成 Token
+    result = RtcTokenBuilder2::BuildTokenWithUid(
+        app_id, app_certificate, channel_name, uid, UserRole::kRolePublisher,
+        token_expiration_in_seconds, privilege_expiration_in_seconds);
+    std::cout << "Token With Int Uid:" << result << std::endl;
+
+    return 0;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="Golang">
+
+<a id="sample-code"></a>
+
+```go
+package main
+
+import (
+    "fmt"
+    "os"
+
+    rtctokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2"
+)
+
+func main() {
+    // 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+    appId := os.Getenv("AGORA_APP_ID")
+    // 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+    appCertificate := os.Getenv("AGORA_APP_CERTIFICATE")
+    // 将 channelName 替换为需要加入的频道名
+    channelName := "channelName"
+    // 填入你实际的用户 ID
+    uid := uint32(uid)
+    // Token 的有效时间，单位秒
+    tokenExpirationInSeconds := uint32(3600)
+    // 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+    privilegeExpirationInSeconds := uint32(3600)
+
+    fmt.Println("App Id:", appId)
+    fmt.Println("App Certificate:", appCertificate)
+    if appId == "" || appCertificate == "" {
+        fmt.Println("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+    }
+    // 生成 Token
+    result, err := rtctokenbuilder.BuildTokenWithUid(appId, appCertificate, channelName, uid, rtctokenbuilder.RolePublisher, tokenExpirationInSeconds, privilegeExpirationInSeconds)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Printf("Token with int uid: %s\n", result)
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="java">
+
+```java
+package io.agora.sample;
+
+import io.agora.media.RtcTokenBuilder2;
+import io.agora.media.RtcTokenBuilder2.Role;
+
+public class RtcTokenBuilder2Sample {
+    // 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+    static String appId = System.getenv("AGORA_APP_ID");
+    // 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+    static String appCertificate = System.getenv("AGORA_APP_CERTIFICATE");
+    // 将 channelName 替换为需要加入的频道名
+    static String channelName = "channelName";
+    // 填入你实际的用户 ID
+    static int uid = 2082341273;
+    // Token 的有效时间，单位秒
+    static int tokenExpirationInSeconds = 3600;
+    // 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+    static int privilegeExpirationInSeconds = 3600;
+
+    public static void main(String[] args) {
+        System.out.printf("App Id: %s\n", appId);
+        System.out.printf("App Certificate: %s\n", appCertificate);
+        if (appId == null || appId.isEmpty() || appCertificate == null || appCertificate.isEmpty()) {
+            System.out.printf("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE\n");
+            return;
+        }
+        // 生成 Token
+        RtcTokenBuilder2 token = new RtcTokenBuilder2();
+        String result = token.buildTokenWithUid(appId, appCertificate, channelName, uid, Role.ROLE_PUBLISHER, tokenExpirationInSeconds, privilegeExpirationInSeconds);
+        System.out.printf("Token with uid: %s\n", result);
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="js">
+
+```javascript
+const RtcTokenBuilder = require("../src/RtcTokenBuilder2").RtcTokenBuilder;
+const RtcRole = require("../src/RtcTokenBuilder2").Role;
+
+// 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+const appId = process.env.AGORA_APP_ID;
+// 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+const appCertificate = process.env.AGORA_APP_CERTIFICATE;
+// 将 channelName 替换为需要加入的频道名
+const channelName = "channelName";
+// 填入你实际的用户 ID
+const uid = "uid";
+// 设为具有发流权限
+const role = RtcRole.PUBLISHER;
+// Token 的有效时间，单位秒
+const tokenExpirationInSecond = 3600;
+// 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+const privilegeExpirationInSecond = 3600;
+
+console.log("App Id:", appId);
+console.log("App Certificate:", appCertificate);
+if (appId == undefined || appId == "" || appCertificate == undefined || appCertificate == "") {
+    console.log("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE");
+    process.exit(1);
+}
+
+// 生成 Token
+const tokenWithUid = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, uid, role, tokenExpirationInSecond, privilegeExpirationInSecond);
+console.log("Token with int uid:", tokenWithUid);
+```
+
+</TabsContent>
+
+<TabsContent value="php">
+
+```php
+<?php
+include("../src/RtcTokenBuilder2.php");
+
+// 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+$appId = getenv("AGORA_APP_ID");
+// 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+$appCertificate = getenv("AGORA_APP_CERTIFICATE");
+// 将 channelName 替换为需要加入的频道名
+$channelName = "channelName";
+// 填入你实际的用户 ID
+$uid = "uid";
+// Token 的有效时间，单位秒
+$tokenExpirationInSeconds = 3600;
+// 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+$privilegeExpirationInSeconds = 3600;
+
+echo "App Id: " . $appId . PHP_EOL;
+echo "App Certificate: " . $appCertificate . PHP_EOL;
+if ($appId == "" || $appCertificate == "") {
+    echo "Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE" . PHP_EOL;
+    exit;
+}
+// 生成 Token
+$token = RtcTokenBuilder2::buildTokenWithUid($appId, $appCertificate, $channelName, $uid, RtcTokenBuilder2::ROLE_PUBLISHER, $tokenExpirationInSeconds, $privilegeExpirationInSeconds);
+echo 'Token with int uid: ' . $token . PHP_EOL;
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```py
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.RtcTokenBuilder2 import *
+
+def main():
+    # 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+    app_id = os.environ.get("AGORA_APP_ID")
+    # 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+    app_certificate = os.environ.get("AGORA_APP_CERTIFICATE")
+    # 将 channel_name 替换为需要加入的频道名
+    channel_name = "channel_name"
+    # 填入你实际的用户 ID
+    uid = "uid"
+    # Token 的有效时间，单位秒
+    token_expiration_in_seconds = 3600
+    # 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+    privilege_expiration_in_seconds = 3600
+
+    print("App Id: %s" % app_id)
+    print("App Certificate: %s" % app_certificate)
+    if not app_id or not app_certificate:
+        print("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+    # 生成 Token
+    token = RtcTokenBuilder.build_token_with_uid(app_id, app_certificate, channel_name, uid, Role_Publisher,
+                                                 token_expiration_in_seconds, privilege_expiration_in_seconds)
+    print("Token with int uid: {}".format(token))
+
+if __name__ == "__main__":
+    main()
+```
+
+</TabsContent>
+
+<TabsContent value="python3">
+
+```py
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.RtcTokenBuilder2 import *
+
+def main():
+    # 获取环境变量 AGORA_APP_ID 的值。请确保你将该变量设为你在声网控制台获取的 App ID
+    app_id = os.environ.get("AGORA_APP_ID")
+    # 获取环境变量 AGORA_APP_CERTIFICATE 的值。请确保你将该变量设为你在声网控制台获取的 App 证书
+    app_certificate = os.environ.get("AGORA_APP_CERTIFICATE")
+    # 将 channel_name 替换为需要加入的频道名
+    channel_name = "channel_name"
+    # 填入你实际的用户 ID
+    uid = "uid"
+    # Token 的有效时间，单位秒
+    token_expiration_in_seconds = 3600
+    # 所有的权限的有效时间，单位秒，声网建议你将该参数和 Token 的有效时间设为一致
+    privilege_expiration_in_seconds = 3600
+
+    print("App Id: %s" % app_id)
+    print("App Certificate: %s" % app_certificate)
+    if not app_id or not app_certificate:
+        print("Need to set environment variable AGORA_APP_ID and AGORA_APP_CERTIFICATE")
+        return
+
+    # 生成 Token
+    token = RtcTokenBuilder.build_token_with_uid(app_id, app_certificate, channel_name, uid, Role_Publisher,
+                                                 token_expiration_in_seconds, privilege_expiration_in_seconds)
+    print("Token with int uid: {}".format(token))
+
+if __name__ == "__main__":
+    main()
+```
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+- 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/faq/integration-issues/generate-token)
+:::
+
+### 使用 Token
+
+在录制实例调用 `joinChannel` 加入实时音视频频道时，将服务器生成的 Token 作为参数进行传入。
+
+:::warning[注意]
+加入频道时使用的用户 ID 和频道名必须和生成 Token 时的用户 ID 和频道名一致。
+:::
+
+```cpp
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+```
+
+```java
+agoraMediaRtcRecorder.joinChannel(recorderConfig.getToken(),
+    recorderConfig.getChannelName(),
+    recorderConfig.getUserId());
+```
+
+### Token 过期处理
+
+使用 Token 加入频道后，在 Token 过期前 30 秒，SDK 会触发 `onTokenPrivilegeWillExpire` 回调；Token 过期后，SDK 会触发 `onTokenPrivilegeDidExpire` 回调。
+
+收到回调后，你需要重新在服务端生成新的 Token，然后调用 `renewToken` 将新的 Token 传给 SDK。
+
+## 部署与调试
+
+本节介绍如何在你的本地来快速部署一个 Token 生成器，部署成功之后你可以用生成的 Token 调试你的项目。
+
+### 方式一：通过 Docker 部署 Token 生成器
+
+参考以下步骤在本地部署一个基于 Docker 的 Token 生成器并申请 Token：
+
+:::warning[注意]
+在开始前，请确保你已安装 [Docker](https://www.docker.com/)。
+:::
+
+1. 打开终端，运行下列命令来启动 Token 生成器。将 `[YOUR_APP_ID]` 和 `[YOUR_APP_CERTIFICATE]` 替换为你在声网控制台获取的 App ID 和 App 证书。
+
+   ```shell
+   docker run -d -it -p 8080:8080 -e APP_ID=[YOUR_APP_ID] -e APP_CERTIFICATE=[YOUR_APP_CERTIFICATE] --name agora-token-service agoracn/token:0.1.2023053011
+   ```
+
+2. 运行下列命令来向你刚刚部署的 Token 生成器请求一个 Token：
+
+   ```shell
+   curl --location 'http://localhost:8080/token/generate' \
+   --header 'Content-Type: application/json' \
+   --data '{
+       "channelName": "channel_name_test",
+       "uid": "12345678",
+       "tokenExpireTs": 3600,
+       "privilegeExpireTs": 3600,
+       "serviceRtc": {
+           "enable": true,
+           "role": 1
+       }
+   }'
+   ```
+
+   请求成功后，你的终端会返回生成的 Token。
+
+### 方式二：本地手动部署 Token 生成器
+
+以 Golang 语言为例，你可以参考如下步骤来在你本地搭建并运行一个 Token 生成器来生成 Token：
+
+在开始前，请确保你的 [Golang](https://golang.org/dl/ ) 版本是 1.14 或以上版本。
+
+:::warning[注意]
+此示例仅用于演示，请勿用于生产环境中。
+:::
+
+1. 新建一个 `token-server` 文件夹，在该文件夹下创建一个 `server.go` 文件，将使用 Golang [生成 Token 的示例代码](#token-code)贴入到该文件中，将其中的 `appID` 和 `appCertificate` 替换为你的 App ID 和 App 证书。
+
+2. 打开终端，进入到 `token-server` 文件路径下，运行如下命令行来为你的 Token 生成器创建 `go.mod` 文件，该文件定义导入路径及依赖项：
+
+   ```go
+   $ go mod init sampleServer
+   ```
+
+3. 运行如下命令行安装依赖。你可以使用 Go 镜像进行加速，例如 [https://goproxy.cn](https://goproxy.cn/)。
+
+   ```go
+   $ go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/rtctokenbuilder2
+   ```
+
+4. 运行如下命令行启动 Token 生成器：
+
+   ```go
+   $ go run server.go
+   ```
+
+Token 生成器部署成功后，你的终端会返回根据你填入的 App ID 和 App 证书生成的 Token。
+
+你也可以直接前往声网控制台获取临时 Token 来调试你的项目，详见[获取临时 Token](/zh-CN/realtime-media/recording/local-server-recording/get-started/enable-service#获取临时-token)。
+
+## API 参考
+
+本节以 Golang 语言为例，介绍生成 Token 的核心方法。
+
+#### BuildTokenWithUid
+
+生成 Token 并设置过期时间。
+
+```go
+func BuildTokenWithUid(appId string, appCertificate string, channelName string, uid uint32, role Role, tokenExpire uint32, privilegeExpire uint32)
+```
+
+**参数**
+
+- `appId`：你在声网控制台创建项目时生成的 App ID。
+- `appCertificate`：你的项目的 App 证书。
+- `channelName`：频道名，长度在 64 个字节以内。
+- `uid`：录制服务加入频道时使用的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
+- `role`：用户权限，决定用户是否能在频道中发流。录制服务作为不发流的用户加入频道，因此设为 `kRoleSubscriber`(2)。
+- `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
+- `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。

@@ -1,0 +1,219 @@
+---
+title: "会议 SDK Swift API 参考"
+---
+本文介绍灵动会议为 iOS 平台提供的 Swift API 参考。
+
+<a id="fcruiscenecreator"></a>
+## FcrUISceneCreator
+
+场景创建者对象。该类用于创建场景（`FcrUIScene`）。
+
+<a id="init"></a>
+### init
+
+```swift
+@objc public init(config: FcrUISceneCreatorConfig)
+```
+
+创建场景创建者（`FcrUISceneCreator`）并设置相关配置。
+
+调用该方法创建对象后，才能调用 `FcrUISceneCreator` 的方法。
+
+**参数**
+
+- `config`：场景创建者配置对象，详见 [FcrUISceneCreatorConfig](#fcruiscenecreatorconfig)。
+
+<a id="launch"></a>
+### launch
+
+```swift
+@objc public func launch(config: FcrUISceneConfig,
+                         cancel: (() -> (Void))? = nil,
+                         success: ((FcrUISceneItem) -> (Void))? = nil,
+                         failure: FcrCoreFailureCompletion? = nil,
+                         parent: UIViewController)
+```
+
+启动场景。
+
+**参数**
+
+- `config`：场景配置。详见 [FcrUISceneConfig](#fcruisceneconfig)。
+- `cancel`：用于处理启动取消操作。设备检测时，如果取消加入会议房间，会触发该回调。
+- `success`：用于处理启动成功操作。
+- `failure`：用于处理启动失败操作。
+- `parent`：场景启动的交互节点，代表场景的父视图控制器。
+
+<a id="fcruisceneitem"></a>
+## FcrUISceneItem
+
+场景协议，用于展示和管理交互页面。
+
+<a id="exit"></a>
+### exit
+
+```swift
+func exit()
+```
+
+退出场景，并释放 `FcrUIScene` 对象和该对象持有的资源。
+
+调用该方法会触发 [onExited](#onexited) 回调。
+
+<a id="addobserver"></a>
+### addObserver
+
+```swift
+func addObserver(observer: FcrUISceneObserver)
+```
+
+添加场景观察者。
+
+**参数**
+
+- `observer`：场景观察者对象。详见 [FcrUISceneObserver](#fcruisceneobserver)。
+
+<a id="removeobserver"></a>
+### removeObserver
+
+```swift
+func removeObserver(observer: FcrUISceneObserver)
+```
+
+移除场景观察者。
+
+**参数**
+
+- `observer`：场景观察者对象。详见 [FcrUISceneObserver](#fcruisceneobserver)。
+
+<a id="fcruisceneobserver"></a>
+## FcrUISceneObserver
+
+场景观察者对象，可用于监听场景内的回调事件。
+
+<a id="onexited"></a>
+### onExited
+
+```swift
+func onExited(reason: FcrUIExitReason)
+```
+
+退出场景回调。
+
+成功加入场景后，退出场景时，会触发该回调。
+
+**参数**
+
+- `reason`：退出理由。详见 [FcrUIExitReason](#fcruiexitreason)。
+
+<a id="fcruiscenecreatorconfig"></a>
+## 类型定义
+### FcrUISceneCreatorConfig
+
+```swift
+@objc public class FcrUISceneCreatorConfig: NSObject {
+    @objc public let appId: String
+    @objc public let userId: String
+    @objc public var parameters: [String: Any]?
+
+    @objc public init(appId: String,
+                      userId: String)
+}
+```
+
+`FcrUISceneCreator` 的配置。
+
+**参数**
+
+- `appId`：项目的 App ID。详见[获取 App ID](/zh-CN/solutions/meeting/get-started/enable-service#获取-app-id)。
+- `userId`：用户 ID，是用户的**唯一标识符**。如果用户 ID 重复，会收到 [onExited](#onexited) 回调且报告退出原因为 `aborted(4)`。长度在 64 字符以内。支持的字符集范围（共 36 个字符）：
+    - 26 个小写英文字母 a-z
+    - 10 个数字 0-9
+- `parameters`：私有参数。
+
+<a id="fcruisceneconfig"></a>
+### FcrUISceneConfig
+
+```swift
+@objc public class FcrUISceneConfig: NSObject {
+    @objc public let roomId: String
+    @objc public let roomToken: String
+    @objc public let userName: String
+    @objc public let userRole: FcrUserRole
+    @objc public let inviteLink: String
+    @objc public let userProperties: [String: Any]?
+    @objc public let resource: FcrUIResource?
+
+    @objc public init(roomId: String,
+                      roomToken: String,
+                      userName: String,
+                      userRole: FcrUserRole,
+                      inviteLink: String,
+                      userProperties: [String: Any]?,
+                      resource: FcrUIResource?)
+}
+```
+
+`FcrUIScene` 的配置。
+
+**参数**
+
+- `roomId`：会议房间 ID。一般情况，长度在 64 字符以内；如果房间需要使用页面录制，长度在 50 字符以内。支持的字符集范围（共 88 个字符，空格不支持）：
+    - 26 个小写英文字母 a-z
+    - 26 个大写英文字母 A-Z
+    - 10 个数字 0-9
+    - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"&#123;"、"&#125;"、"|"、"~"、","
+- `roomToken`：用于鉴权的 Token。详见[控制台生成临时 Token](/zh-CN/solutions/meeting/get-started/enable-service#生成临时-token) 或[服务端生成正式 Token](/zh-CN/solutions/meeting/user-guides/generate-token)。
+
+    :::warning[注意]
+    临时 Token 仅适用于集成测试和体验。在生产环境中，请使用正式 Token 以确保安全。无论是临时 Token 还是正式 Token，有效期最长都是 24 小时，请尽快使用。
+    :::
+
+- `userName`：房间内显示的用户名。长度在 64 字符以内。无字符集限制。
+- `userRole`：房间内用户角色。详见 [FcrUserRole](#fcruserrole)。
+- `inviteLink`：房间链接。用于邀请用户加入会议房间的链接。
+- `userProperties`：（可选）房间内用户属性。通过将键值对传入该字段，你可以设置用户属性，作为用户标签。
+- `resource`：（可选）房间内资源文件。详见 [FcrUIResource](#fcruiresource)。通过修改该字段取值，你可以修改资源文件的链接。
+
+<a id="fcruiresource"></a>
+### FcrUIResource
+
+```swift
+@objc public class FcrUIResource: NSObject {
+    @objc let virtualBackgroundImages: [String]?
+    @objc let virtualBackgroundVideos: [String]?
+
+    @objc public init(virtualBackgroundImages: [String]?,
+                      virtualBackgroundVideos: [String]?)
+}
+```
+
+房间内资源文件，可用于设置虚拟背景图片和视频。
+
+**参数**
+
+- `virtualBackgroundImages`：虚拟背景图片 URL。支持以数组形式传入多个 URL，URL 可以是 HTTPS 在线地址或本地文件地址。
+- `virtualBackgroundVideos`：虚拟背景视频 URL。支持以数组形式传入多个 URL，URL 可以是 HTTPS 在线地址或本地文件地址。
+
+<a id="fcruiexitreason"></a>
+### FcrUIExitReason
+
+退出房间的原因。
+
+包含如下枚举值：
+
+- `leaveRoom(1)`：因用户自己离开房间而退出。
+- `closeRoom(2)`：因房间关闭而退出。
+- `kickedOut(3)`：因用户被被踢出房间而退出。
+- `aborted(4)`：异常原因。使用重复的用户 ID 时会收到该原因。
+
+<a id="fcruserrole"></a>
+### FcrUserRole
+
+房间内用户角色。
+
+包含如下枚举值：
+
+- `host(1)`：主持人。
+- `coHost(2)`：助理主持人。
+- `participant(3)`：参会人。即，除主持人和助理主持人外的所有用户。

@@ -1,0 +1,35 @@
+---
+title: "配额限制"
+---
+本页介绍灵动会议的配额限制。
+
+## 调用频率限制
+
+声网服务器限制你的 API 调用频率，超过调用频率限制时会返回状态码 `429 Too Many Requests`，表示请求过于频繁。
+
+下表展示灵动会议 API 限流说明：
+
+| 限制范围 | URI 规则 | 速率限制 | 说明 |
+| --- | --- | --- | --- |
+| 声网开发者账号（不是项目的 App ID） | `/{region}/conference/apps/{appId}/...` | 1000 次/秒 | 该调用频率限制适用于单个区域内所有灵动会议 RESTful API。不同区域的调用频率限制相互独立。 |
+| 单个房间 | `/{region}/conference/apps/{appId}/.../rooms/{roomUuid}/...` | 100 次/秒 | <Slot name="quota-restful-html-0-2-3" /> |
+
+<Slot for="quota-restful-html-0-2-3">
+
+该调用频率限制适用于与灵动会议房间相关的 RESTful API。相同区域下相同的 `appId` + `roomUuid` 共享调用速率限制。
+
+    具体适用 API 包含如下：
+
+    - [创建房间](/zh-CN/solutions/meeting/api/create-room.restful)
+    - [查询录制列表](/zh-CN/solutions/meeting/api/query-recording.restful)
+
+</Slot>
+
+建议参考如下方法优化灵动会议 RESTful API 调用速率：
+
+- **均匀分布请求**：将 RESTful API 请求均匀地分布到不同的时间窗口。例如，当你需要通过 `/{region}/conference/apps/{appId}/v1/rooms/{roomUuid}` 请求创建 1000 个房间时，你可以每秒创建 200 个房间，分 5 秒完成创建操作，从而避免超出全局调用上限。
+- **应用服务器中转**：在应用服务器（而非客户端）上调用灵动会议 RESTful API。例如，当你设置房间属性时，你需要避免在客户端直接操作，推荐你让客户端请求你的应用服务器，应用服务器定期汇总房间属性后再调用设置房间属性 RESTful API。
+
+## 提升配额
+
+如果你想提升配额，可以[联系技术支持](https://ticket.shengwang.cn/)。

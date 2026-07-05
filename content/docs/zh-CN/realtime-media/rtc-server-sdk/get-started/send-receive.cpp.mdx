@@ -1,0 +1,551 @@
+---
+title: "发送和接收媒体流"
+---
+本文介绍如何使用 RTC 服务端 SDK 向客户端发送媒体流并从客户端接收媒体流。
+
+## 前提条件
+
+你已经下载了最新的 RTC 服务端 SDK。详见[跑通示例项目](/zh-CN/realtime-media/rtc-server-sdk/get-started/run-example.cpp.cpp)。
+
+## 准备工作
+
+在发送和接收媒体流之前，你需要完成以下准备工作。
+
+### 1. 初始化 SDK
+
+首先，你需要在你的应用程序里调用 `createAgoraService` 和 `initialize` 进行全局初始化，创建并初始化 `IAgoraService` 对象。
+
+这个操作只需要进行一次，`IAgoraService` 对象的生命期和应用程序的生命期保持一致，只要应用程序没有退出，`IAgoraService` 可以一直存在。
+
+SDK 支持 `int` 型用户 ID 和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法，参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/advanced-features/string-uid)。
+
+```cpp
+// 创建 IAgoraService 对象
+auto service = createAgoraService();
+// 初始化 IAgoraService 对象
+agora::base::AgoraServiceConfiguration scfg;
+// 设置声网 App ID
+scfg.appId = appid;
+// 是否开启音频处理模块。本文设为开启。
+scfg.enableAudioProcessor = enableAudioProcessor;
+// 是否开启音频设备模块。此设置不适用于服务端。本文设为关闭。
+scfg.enableAudioDevice = enableAudioDevice;
+// 是否开启视频。本文设为开启。
+scfg.enableVideo = enableVideo;
+// 是否允许 String 型用户 ID（字符可以是数字、字母或特殊符号）。
+// 本文设为 false，使用 int 型用户 ID（即字符只能为数字）。
+scfg.useStringUid = enableuseStringUid;
+if (service->initialize(scfg) != agora::ERR_OK) {
+    return nullptr;
+}
+```
+
+### 2. 与 RTC 频道建立连接
+
+初始化后，根据以下步骤与声网 RTC 频道建立连接。
+
+1. 调用 `createRtcConnection` 方法创建 `IRtcConnection` 对象，用于与声网服务器建立连接。
+
+    ```cpp
+    // 创建 IRtcConnection 对象
+    agora::rtc::RtcConnectionConfiguration ccfg;
+    ccfg.autoSubscribeAudio = false;
+    ccfg.autoSubscribeVideo = false;
+    ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_BROADCASTER;
+    agora::agora_refptr<agora::rtc::IRtcConnection> connection = service->createRtcConnection(ccfg);
+    ```
+
+2. 调用 `registerObserver` 方法监听连接事件。示例代码中的 `SampleConnectionObserver` 继承了 `IRtcConnectionObserver` 类和 `INetworkObserver` 类。
+
+    ```cpp
+    // 调用 registerObserver 方法监听连接事件
+    auto connObserver = std::make_shared<SampleConnectionObserver>();
+    connection->registerObserver(connObserver.get());
+    ```
+
+3. 调用 `connect` 与声网频道建立连接。
+
+    ```cpp
+    // 调用 connect 与声网频道建立连接
+    if (connection->connect(options.appId.c_str(), options.channelId.c_str(),
+                            options.userId.c_str())) {
+        AG_LOG(ERROR, "Failed to connect to the channel!");
+        return -1;
+    }
+    ```
+
+## 向客户端发送媒体流
+
+参考以下步骤向客户端发送媒体流。
+
+### 1. 创建媒体流发送器
+
+你可以通过媒体节点工厂对象 `IMediaNodeFactory` 创建不同类型的媒体流发送器：
+
+- `IAudioPcmDataSender`：发送 PCM 格式的音频数据。
+- `IVideoFrameSender`：发送 YUV 格式的视频数据。
+- `IAudioEncodedFrameSender`：发送已编码的音频数据。
+- `IVideoEncodedImageSender`：发送已编码的视频数据。
+
+1. 创建 `IMediaNodeFactory` 媒体节点工厂对象。
+
+    ```cpp
+    // 创建媒体节点工厂对象
+    agora::agora_refptr<agora::rtc::IMediaNodeFactory> factory = service->createMediaNodeFactory();
+    if (!factory) {
+        AG_LOG(ERROR, "Failed to create media node factory!");
+    }
+    ```
+
+2. 根据你的需求，创建 `IAudioPcmDataSender` 对象、`IVideoFrameSender`对象、`IAudioEncodedFrameSender` 对象或 `IVideoEncodedImageSender` 对象，分别用于发送 PCM 格式的音频流、YUV 格式的视频流、已编码的音频流及已编码的视频流。
+
+    ```cpp
+    // 创建可发送 PCM 格式的音频数据的发送器
+    agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioPcmDataSender =
+        factory->createAudioPcmDataSender();
+    if (!audioPcmDataSender) {
+        AG_LOG(ERROR, "Failed to create audio data sender!");
+        return -1;
+    }
+
+    // 创建可发送 YUV 格式的视频数据的发送器
+    agora::agora_refptr<agora::rtc::IVideoFrameSender> videoFrameSender =
+        factory->createVideoFrameSender();
+    if (!videoFrameSender) {
+        AG_LOG(ERROR, "Failed to create video frame sender!");
+        return -1;
+    }
+
+    // 创建可发送已编码的音频数据的发送器
+    agora::agora_refptr<agora::rtc::IAudioEncodedFrameSender> audioFrameSender =
+        factory->createAudioEncodedFrameSender();
+    if (!audioFrameSender) {
+        AG_LOG(ERROR, "Failed to create audio encoded frame sender!");
+        return -1;
+    }
+
+    // 创建可发送已编码的视频数据的发送器
+    agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoEncodedFrameSender = factory->createVideoEncodedImageSender();
+    if (!videoEncodedFrameSender) {
+        AG_LOG(ERROR, "Failed to create encoded video frame sender!");
+        return -1;
+    }
+    ```
+
+3. 创建 `ILocalAudioTrack` 对象和 `ILocalVideoTrack` 对象，分别对应即将发布至频道内的本地音频轨道和本地视频轨道。对象中可以使用上一步创建的发送器。
+
+    ```cpp
+    // 创建自定义音频轨道（使用可发送 PCM 格式的音频数据的发送器）
+    agora::agora_refptr<agora::rtc::ILocalAudioTrack> customAudioTrack =
+        service->createCustomAudioTrack(audioPcmDataSender);
+    if (!customAudioTrack) {
+        AG_LOG(ERROR, "Failed to create audio track!");
+        return -1;
+    }
+
+    // 创建自定义音频轨道（使用可发送已编码的音频数据的发送器）
+    agora::agora_refptr<agora::rtc::ILocalAudioTrack> customAudioTrack = service->createCustomAudioTrack(audioFrameSender, agora::base::MIX_DISABLED);
+    if (!customAudioTrack) {
+        AG_LOG(ERROR, "Failed to create audio track!");
+        return -1;
+    }
+
+    // 创建自定义视频轨道（可发送 YUV 格式的视频数据的发送器）
+    agora::agora_refptr<agora::rtc::ILocalVideoTrack> customVideoTrack =
+        service->createCustomVideoTrack(videoFrameSender);
+    if (!customVideoTrack) {
+        AG_LOG(ERROR, "Failed to create video track!");
+        return -1;
+    }
+
+    // 创建自定义视频轨道（可发送已编码的视频数据的发送器）
+    agora::agora_refptr<agora::rtc::ILocalVideoTrack> customVideoTrack =
+        service->createCustomVideoTrack(videoEncodedFrameSender);
+    if (!customVideoTrack) {
+        AG_LOG(ERROR, "Failed to create video track!");
+        return -1;
+    }
+    ```
+
+### 2. 发送媒体流
+
+1. 通过 `ILocalUser` 对象的 publish 相关方法在声网 RTC 频道中发布上一步创建的本地音频轨道和视频轨道。
+
+    ```cpp
+    // 开启并发布音频轨道
+    customAudioTrack->setEnabled(true);
+    connection->getLocalUser()->publishAudio(customAudioTrack);
+    // 开启并发布视频轨道
+    customVideoTrack->setEnabled(true);
+    connection->getLocalUser()->publishVideo(customVideoTrack);
+    ```
+
+2. 开启发送线程，调用发送器的 send 方法发送音视频数据。
+
+    ```cpp
+    // 音频发送线程
+    std::thread sendAudioThread(SampleSendAudioTask, options, audioFrameSender, std::ref(exitFlag));
+    // 视频发送线程
+    std::thread sendVideoThread(SampleSendVideoH264Task, options, videoFrameSender,
+                                std::ref(exitFlag));
+
+    sendAudioThread.join();
+    sendVideoThread.join();
+    ```
+
+    本文以发送 PCM 音频数据为例进行介绍，`SampleSendAudioTask` 的实现如下：
+
+    ```cpp
+    static void SampleSendAudioTask(
+        const SampleOptions& options,
+        agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioFrameSender, bool& exitFlag) {
+        // 目前 SDK 仅支持一次发送 10 毫秒的 PCM 数据。因此 PCM 数据的发送间隔设为
+        // 10 毫秒。
+        PacerInfo pacer = {0, 10, std::chrono::steady_clock::now()};
+
+        while (!exitFlag) {
+            sendOnePcmFrame(options, audioFrameSender);
+            waitBeforeNextSend(pacer);  // sleep for a while before sending next frame
+        }
+    }
+    ```
+
+    `sendOnePcmFrame` 的实现如下。可以看到调用了发送器 `audioFrameSender` 的 `sendAudioPcmData` 方法发送 PCM 格式的音频数据。
+
+    ```cpp
+    static void sendOnePcmFrame(
+        const SampleOptions& options,
+        agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioFrameSender) {
+        static FILE* file = nullptr;
+        const char* fileName = options.audioFile.c_str();
+
+        // 根据一次发送的样本时长计算样本大小
+        int sampleSize = sizeof(int16_t) * options.audio.numOfChannels;
+        int samplesPer10ms = options.audio.sampleRate / 100;
+        int sendBytes = sampleSize * samplesPer10ms;
+
+        if (!file) {
+            if (!(file = fopen(fileName, "rb"))) {
+                AG_LOG(ERROR, "Failed to open audio file %s", fileName);
+                return;
+            }
+            AG_LOG(INFO, "Open audio file %s successfully", fileName);
+        }
+
+        uint8_t frameBuf[sendBytes];
+
+        if (fread(frameBuf, 1, sizeof(frameBuf), file) != sizeof(frameBuf)) {
+            if (feof(file)) {
+                fclose(file);
+                file = nullptr;
+                AG_LOG(INFO, "End of audio file");
+            } else {
+                AG_LOG(ERROR, "Error reading audio data: %s", std::strerror(errno));
+            }
+            return;
+        }
+        // 调用发送器 `audioFrameSender` 的 `sendAudioPcmData` 方法发送 PCM
+        // 格式的音频数据
+        if (audioFrameSender->sendAudioPcmData(
+                frameBuf, 0, samplesPer10ms, agora::rtc::TWO_BYTES_PER_SAMPLE,
+                options.audio.numOfChannels, options.audio.sampleRate) < 0) {
+            AG_LOG(ERROR, "Failed to send audio frame!");
+        }
+    }
+    ```
+
+    以发送 H.264 格式的编码视频为例，`SampleSendVideoH264Task` 的实现如下：
+
+    ```cpp
+    static void SampleSendVideoH264Task(
+        const SampleOptions& options,
+        agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoH264FrameSender,
+        bool& exitFlag) {
+        std::unique_ptr<HelperH264FileParser> h264FileParser(
+            new HelperH264FileParser(options.videoFile.c_str()));
+        h264FileParser->initialize();
+
+        // Calculate send interval based on frame rate. H264 frames are sent at this
+        // interval
+        PacerInfo pacer = {0, 1000 / options.video.frameRate, 0, std::chrono::steady_clock::now()};
+
+        while (!exitFlag) {
+            if (auto h264Frame = h264FileParser->getH264Frame()) {
+                sendOneH264Frame(options.video.frameRate, std::move(h264Frame), videoH264FrameSender);
+                waitBeforeNextSend(pacer);  // sleep for a while before sending next frame
+            }
+        };
+    }
+    ```
+
+    `sendOneH264Frame` 的实现如下，可以看到调用了发送器 `videoH264FrameSender` 的 `sendEncodedVideoImage` 方法发送 H.264 格式的编码视频数据。
+
+    :::info[信息]
+    编码视频数据的格式通过 `sendEncodedVideoImage` 方法的 `videoEncodedFrameInfo` 参数进行设置。
+    :::
+
+    ```cpp
+    static void sendOneH264Frame(
+        int frameRate, std::unique_ptr<HelperH264Frame> h264Frame,
+        agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoH264FrameSender) {
+        agora::rtc::EncodedVideoFrameInfo videoEncodedFrameInfo;
+        videoEncodedFrameInfo.rotation = agora::rtc::VIDEO_ORIENTATION_0;
+        videoEncodedFrameInfo.codecType = agora::rtc::VIDEO_CODEC_H264;
+        videoEncodedFrameInfo.framesPerSecond = frameRate;
+        videoEncodedFrameInfo.frameType =
+            (h264Frame.get()->isKeyFrame ? agora::rtc::VIDEO_FRAME_TYPE::VIDEO_FRAME_TYPE_KEY_FRAME
+                : agora::rtc::VIDEO_FRAME_TYPE::VIDEO_FRAME_TYPE_DELTA_FRAME);
+
+        videoH264FrameSender->sendEncodedVideoImage(
+            reinterpret_cast<uint8_t*>(h264Frame.get()->buffer.get()), h264Frame.get()->bufferLen, videoEncodedFrameInfo);
+    }
+    ```
+
+### 3. 断开连接并释放资源
+
+媒体流发送完成后，你可以通过以下步骤退出频道并断开与声网服务器的连接：
+
+:::warning[注意]
+你必须严格按照示例代码中的顺序释放相关资源。
+:::
+
+1. 调用 `unpublish` 相关方法取消发布音频流和视频流。
+
+    ```cpp
+    connection->getLocalUser()->unpublishAudio(customAudioTrack);
+    connection->getLocalUser()->unpublishVideo(customVideoTrack);
+    ```
+
+2. 调用 `unregisterObserver` 取消连接 observer。
+
+    ```cpp
+    connection->unregisterObserver(connObserver.get());
+    ```
+
+3. 调用 `disconnect` 断开与声网服务器的连接。
+
+    ```cpp
+    if (connection->disconnect()) {
+        AG_LOG(ERROR, "Failed to disconnect from声网channel!");
+        return -1;
+    }
+    AG_LOG(INFO, "Disconnected from声网channel successfully");
+    ```
+
+4. 释放已创建对象的资源。
+
+    ```cpp
+    connObserver.reset();
+    audioPcmDataSender = nullptr;
+    videoFrameSender = nullptr;
+    customAudioTrack = nullptr;
+    customVideoTrack = nullptr;
+    factory = nullptr;
+    connection = nullptr;
+    ```
+
+## 从客户端接收媒体流
+
+参考以下步骤从客户端接收媒体流。
+
+### 1. 注册音视频帧 observer
+
+实例化音视频帧 observer 对象，并通过 `ILocalUserObserver` 类的成员方法注册音视频帧 observer。成功注册 observer 后，SDK 会在捕捉到每个音频或视频帧时触发回调。你可以在回调中获得该音频或视频帧。
+
+示例中的 `SampleLocalUserObserver` 类包含  `IVideoEncodedFrameObserver`、`IAudioFrameObserverBase` 和 `IVideoFrameObserver2` 类的音视频帧 observer 对象作为成员，且继承了 `ILocalUserObserver` 类，可以使用其成员方法注册作为成员的音视频帧 observer 对象。
+
+```cpp
+// SampleLocalUserObserver 类继承了 ILocalUserObserver 类
+auto localUserObserver =
+    std::make_shared<SampleLocalUserObserver>(connection->getLocalUser());
+
+// PcmFrameObserver 类继承了 IAudioFrameObserver 类
+auto pcmFrameObserver = std::make_shared<PcmFrameObserver>(options.audioFile);
+
+if (connection->getLocalUser()->setPlaybackAudioFrameBeforeMixingParameters(
+        options.audio.numOfChannels, options.audio.sampleRate)) {
+    AG_LOG(ERROR, "Failed to set audio frame parameters!");
+    return -1;
+}
+// 实例化 IAudioFrameObserver 类
+localUserObserver->setAudioFrameObserver(pcmFrameObserver.get());
+
+// H264FrameReceiver 类继承了 IVideoEncodedImageReceiver 类
+auto h264FrameReceiver = std::make_shared<H264FrameReceiver>(options.videoFile);
+// 实例化 IVideoEncodedImageReceiver 类
+localUserObserver->setVideoEncodedImageReceiver(h264FrameReceiver.get());
+```
+
+`setAudioFrameObserver` 和 `setVideoEncodedImageReceiver` 是 `SampleLocalUserObserver` 的成员方法，用于实例化 `IAudioFrameObserver` 类和 `IVideoEncodedImageReceiver` 类。
+
+```cpp
+void setAudioFrameObserver(agora::media::IAudioFrameObserver* observer) {
+    audio_frame_observer_ = observer;
+}
+
+void setVideoEncodedImageReceiver(agora::rtc::IVideoEncodedImageReceiver* receiver) {
+    video_encoded_receiver_ = receiver;
+}
+```
+
+### 2. 接收媒体流
+
+下面的代码展示了如何接收已编码的视频、YUV 格式的视频和 PCM 格式的音频。
+
+```cpp
+// 通过 OnEncodedVideoImageReceived 回调接收已编码的视频并以文件形式输出
+class H264FrameReceiver : public agora::rtc::IVideoEncodedImageReceiver {
+   public:
+    H264FrameReceiver(const std::string& outputFilePath)
+        : outputFilePath_(outputFilePath),
+          h264File_(nullptr),
+          fileCount(0),
+          fileSize_(0) {}
+
+    bool OnEncodedVideoImageReceived(const uint8_t* imageBuffer, size_t length,
+                                     const agora::rtc::EncodedVideoFrameInfo& videoEncodedFrameInfo) override;
+
+   private:
+    std::string outputFilePath_;
+    FILE* h264File_;
+    int fileCount;
+    int fileSize_;
+};
+
+// 通过 onFrame 回调接收 YUV 格式的视频并以文件形式输出
+class YuvFrameObserver : public agora::rtc::IVideoFrameObserver2 {
+   public:
+    YuvFrameObserver(const std::string& outputFilePath)
+        : outputFilePath_(outputFilePath),
+          yuvFile_(nullptr),
+          fileCount(0),
+          fileSize_(0) {}
+
+    void onFrame(const char* channelId, agora::user_id_t remoteUid, const agora::media::base::VideoFrame* frame) override;
+
+    virtual ~YuvFrameObserver() = default;
+
+   private:
+    std::string outputFilePath_;
+    FILE* yuvFile_;
+    int fileCount;
+    int fileSize_;
+};
+
+// 通过 onPlaybackAudioFrameBeforeMixing 回调接收 PCM 格式的音频并以文件形式输出
+bool PcmFrameObserver::onPlaybackAudioFrameBeforeMixing(const char* channelId, agora::media::base::user_id_t userId, AudioFrame& audioFrame) {
+    // 创建文件保存收到的 PCM 音频数据
+    if (!pcmFile_) {
+        std::string fileName = (++fileCount > 1)
+                                   ? (outputFilePath_ + to_string(fileCount))
+                                   : outputFilePath_;
+        if (!(pcmFile_ = fopen(fileName.c_str(), "w"))) {
+            AG_LOG(ERROR, "Failed to create received audio file %s",
+                   fileName.c_str());
+            return false;
+        }
+        AG_LOG(INFO, "Created file %s to save received PCM samples",
+               fileName.c_str());
+    }
+
+    // 将 PCM 音频数据写入文件
+    size_t writeBytes =
+        audioFrame.samplesPerChannel * audioFrame.channels * sizeof(int16_t);
+    if (fwrite(audioFrame.buffer, 1, writeBytes, pcmFile_) != writeBytes) {
+        AG_LOG(ERROR, "Error writing decoded audio data: %s", std::strerror(errno));
+        return false;
+    }
+    fileSize_ += writeBytes;
+
+    if (fileSize_ >= DEFAULT_FILE_LIMIT) {
+        fclose(pcmFile_);
+        pcmFile_ = nullptr;
+        fileSize_ = 0;
+    }
+    return true;
+}
+```
+
+### 3. 断开连接并释放资源
+
+媒体流接收完成后，你可以通过以下步骤退出频道并断开与声网服务器的连接：
+
+:::warning[注意]
+你必须严格按照示例代码中的顺序释放相关资源。
+:::
+
+1. 调用 unregister 方法释放视频、音频 observer。
+
+    ```cpp
+    // 释放视频、音频 observer
+    local_user_->unregisterAudioFrameObserver(audio_frame_observer_);
+    local_user_->unregisterVideoFrameObserver(video_frame_observer_);
+    ```
+
+2. 调用 `disconnect` 与声网 RTC 频道断开连接。
+
+    ```cpp
+    // 与声网 RTC 频道断开连接
+    if (connection->disconnect()) {
+        AG_LOG(ERROR, "Failed to disconnect from声网channel!");
+        return -1;
+    }
+    AG_LOG(INFO, "Disconnected from声网channel successfully");
+    ```
+
+3. 销毁创建的相关对象。
+
+    ```cpp
+    // 销毁创建的相关对象
+    localUserObserver.reset();
+    pcmFrameObserver.reset();
+    h264FrameReceiver.reset();
+    connection = nullptr;
+    ```
+
+## 注销 `IAgoraService` 对象
+
+当你的服务端程序退出时，可以调用如下逻辑，注销整个 `IAgoraService` 对象。
+
+```cpp
+service->release();
+service = nullptr;
+```
+
+## 参考信息
+
+你可以在这里查看时序图、开发注意事项等信息。
+
+### API 参考
+
+你可以通过 [API 参考](/api-ref/rtc-server-sdk/cpp/overview) 获取详细的接口和参数信息。
+
+### API 时序图
+
+你可以通过 API 时序图了解 API 的调用时序。
+
+:::info[信息]
+下文各图中，虚线为对象的生命线，线上的矩形为激活框，表示在交互中该对象何时起作用。
+:::
+
+#### 发送 PCM 音频数据和 YUV 视频数据
+
+![发送 PCM 音频数据和视频数据时序图](https://web-cdn.agora.io/docs-files/1591688188083)
+
+#### 发送编码后音视频数据
+
+![发送编码后音视频数据时序图](https://web-cdn.agora.io/docs-files/1591688206240)
+
+#### 接收 PCM 音频数据和 YUV 视频数据
+
+![接收 PCM 音频数据和 YUV 视频数据时序图](https://web-cdn.agora.io/docs-files/1652417005647)
+
+#### 接收编码后视频数据和 PCM 音频数据
+
+![接收编码后视频数据和 PCM 音频数据](https://web-cdn.agora.io/docs-files/1591759192749)
+
+## 开发注意事项
+
+- 以上所有接口函数，如无特殊说明，都是异步调用，无需担心阻塞用户线程。
+- 在声网 RTC 客户端 SDK 和服务端 SDK 互通的场景中，请确保将客户端 SDK 的频道场景设置为 `LIVE_BROADCASTING`。
+- SDK 发送 AAC 格式的音频数据时，不支持 44.1 Kbps 的采样率。

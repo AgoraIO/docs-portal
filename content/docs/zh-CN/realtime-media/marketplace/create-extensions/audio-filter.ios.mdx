@@ -1,0 +1,341 @@
+---
+title: "开发音频插件"
+---
+本文展示如何使用声网 SDK 提供的 API 开发一个音频插件。
+
+开发音频插件需要使用以下接口：
+
+- `IAudioFilter`：实现音频数据的处理能力，包括接收、处理和返回处理完的音频帧。
+- `IExtensionProvider`：将音频数据的处理能力封装为插件。
+
+## 前提条件
+
+开发前，请确保你的开发环境满足以下要求：
+
+- Xcode 9.0 或以上版本。
+- iOS 9.0 或以上版本的设备。
+
+## 准备开发环境
+
+参考如下步骤将声网云市场的 API 添加到你的项目中：
+
+1. 下载[视频 SDK v4.x](/zh-CN/realtime-media/rtc/resources.ios)，然后解压下载的 SDK 包。
+2. 打开 **Xcode**，进入 **TARGETS** > **Project Name** > **General** > **Frameworks, Libraries, and Embedded Content** 菜单，点击 **+** > **Add Other...** > **Add Files**，将安装包中的 `/libs/AgoraRtcKit.framework` 文件添加至你的项目中。确保 **Embed** 属性设置为 **Do Not Embed**。
+
+## 开发音频插件
+
+### 实现插件
+
+音频插件通过 `IAudioFilter` 接口实现。该接口位于 `NGIAgoraMediaNode.h` 文件中。你需要实现 `IAudioFilter` 接口类的如下方法：
+
+- [`adaptAudioFrame`](#adaptaudioframe)
+- [`setEnabled`](#setenabled)
+- [`isEnabled`](#isenabled)
+- [`setProperty`](#setproperty)
+- [`getProperty`](#getproperty)
+- [`getName`](#getname)
+- [`getPreferredSampleRate`](#getpreferredsamplerate)（可选）
+- [`getPreferredChannelNumbers`](#getpreferredchannelnumbers)（可选）
+
+#### adaptAudioFrame
+
+处理音频帧。该方法是 `IAudioFilter` 类的核心方法。调用该方法后，SDK 处理 `inAudioFrame` 中的音频数据，然后通过 `adaptedFrame` 返回处理后的数据。该方法目前仅支持输入输出 PCM 格式的音频数据。
+
+```cpp
+virtual bool adaptAudioFrame(const media::base::AudioPcmFrame& inAudioFrame,
+                             media::base::AudioPcmFrame& adaptedFrame) = 0;
+```
+
+| 参数               | 描述                                                         |
+| :----------------- | :----------------------------------------------------------- |
+| `inAudioFrame`               | 输入参数。待处理的音频帧。 |
+| `adaptedFrame` | 输出参数。处理后的音频帧。 |
+
+#### setEnabled
+
+启用或关闭音频插件。
+
+```cpp
+virtual void setEnabled(bool enable) {}
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `enable` | <Slot name="audio-filter-android-ios-macos-windows-html-0-1-1" /> |
+
+<Slot for="audio-filter-android-ios-macos-windows-html-0-1-1">
+
+是否启用音频插件：
+
+        - true: 启用音频插件。
+        - false: (默认) 关闭音频插件。
+
+</Slot>
+
+#### isEnabled
+
+检查音频插件是否已启用。
+
+```cpp
+virtual bool isEnabled() { return true; }
+```
+
+**返回值**
+
+是否启用音频插件：
+
+- true: 启用音频插件。
+- false: (默认) 关闭音频插件。
+
+#### setProperty
+
+设置音频插件属性。App 开发者调用 `setExtensionPropertyWithVendor` 时，SDK 会调用该方法。你需要返回音频插件的属性。
+
+```cpp
+size_t setProperty(const char* key, const void* buf, size_t buf_size)
+```
+
+| 参数     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| `key`      | 插件属性的 `key`。                                             |
+| `buf`      | 插件属性 `key` 值对应的 buffer 地址，数据形式为 JSON 字符串。我们推荐使用第三方的 `nlohmann/json library` 开源库，帮助实现 C++ 的 struct 和 JSON 字符串之前的序列和反序列化。 |
+| `buf_size` | 插件属性 buffer 的内存大小。                                 |
+
+#### getProperty
+
+获取音频插件属性。App 开发者调用 `getProperty` 时，SDK 会调用该方法获取音频插件的属性。
+
+```cpp
+size_t getProperty(const char* key, char* property, size_t buf_size)
+```
+
+| 参数     | 描述                         |
+| :------- | :--------------------------- |
+| `key`      | 插件属性的 `key`。             |
+| `property` | 插件属性指针。               |
+| `buf_size` | 插件属性 buffer 的内存大小。 |
+
+#### getName
+
+查询插件的名称。你需要在该方法中返回使用的音频插件的名称。
+
+```cpp
+virtual const char * getName() const = 0;
+```
+
+#### getPreferredSampleRate
+
+查询音频插件需要的音频采样率。
+
+该方法为可选。如果你在该方法中返回一个指定的采样率，SDK 会将音频数据重采样成指定的采样率，然后传入音频插件。
+
+```cpp
+virtual int getPreferredSampleRate()  { return 0; };
+```
+
+#### getPreferredChannelNumbers
+
+查询音频插件需要的音频声道数。
+
+该方法为可选。如果你在该方法中返回一个指定的声道数，SDK 会将音频数据重采样成指定的声道数，然后传入音频插件。
+
+```cpp
+virtual int getPreferredChannelNumbers()  { return 0; };
+```
+
+#### 示例代码
+
+参考如下示例代码了解如何使用上述方法实现一个音频插件：
+
+```cpp
+// 在收到需要处理的音频数据后，调用 adaptAudioFrame 方法，对收到的音频数据进行处理。
+bool ExtensionAudioFilter::adaptAudioFrame(const media::base::AudioPcmFrame& inAudioPcmFrame,
+                                           media::base::AudioPcmFrame& adaptedPcmFrame) {
+    return audioProcess_->processFrame(inAudioPcmFrame, adaptedPcmFrame) == 0;
+}
+
+// 调用 setProperty 设置音频插件参数。
+int ExtensionAudioFilter::setProperty(const char* key, const void* buf, int buf_size) {
+    std::string str_volume = "100";
+    if (std::string(key) == "volume") {
+        str_volume = std::string(static_cast<const char*>(buf), buf_size);
+    }
+
+    int int volume_ = atoi(str_volume.c_str());
+    audioProcessor_->setVolume(int_volume_);
+    return ERR_OK;
+}
+
+// 调用 getProperty 查询音频插件参数。
+int ExtensionAudioFilter::getProperty(const char* key, void* buf, int buf_size) const override {return ERR_OK; }
+
+// 调用 setEnabled 开启音频插件。
+void ExtensionAudioFilter::setEnabled(bool enable) override { enabled_ = enable; }
+
+// 调用 isEnabled 查询音频插件开启状态。
+bool ExtensionAudioFilter::isEnabled() const override {return enabled_; }
+
+// 在 getName 的返回值中传入插件名称。
+const char* ExtensionAudioFilter::getName() const override { return "YourExtensionName"; }
+
+// （可选）在 getPreferredSampleRate 的返回值中指定音频插件需要的音频采样率。
+const char* ExtensionAudioFilter::getPreferredSampleRate() override { return 48000; }
+
+// （可选）在 getPreferredChannelNumbers 的返回值中指定音频插件需要的音频声道数。
+int ExtensionAudioFilter::getPreferredChannelNumbers() override { return 2; };
+```
+
+### 封装插件
+
+封装插件通过 `IExtensionProvider` 接口类实现。该接口类位于 `NGIAgoraExtensionProvider.h` 文件中。你需要先实现这个接口类，并实现如下方法：
+
+- [`setExtensionControl`](#setextensioncontrol)
+- [`enumerateExtensions`](#enumerateextensions)
+- [`createAudioFilter`](#createaudiofilter)
+
+`IExtensionProvider` 是插件动态库的提供者，由全局唯一的名字标识。每一个插件动态库可以提供一个或多个有不同功能的插件，如音频前处理插件库可以提供不同功能的音频插件（Audio filter）。每个插件是一个具体的 Extension 对象。
+
+#### setExtensionControl
+
+设置插件控制。
+
+```cpp
+virtual void setExtensionControl(IExtensionControl* control)
+```
+
+成功调用该方法后，你需要保存 SDK 在该方法中返回的 `IExtensionControl` 对象。该对象用于触发事件或日志，实现插件与 App 之间的交互。例如，如果你调用了 `IExtensionControl` 中的 `fireEvent` 方法：
+
+```cpp
+void ByteDanceProcessor::dataCallback(const char* data){
+    if (control_ != nullptr) {
+        control_->fireEvent(id_, "beauty", data);
+    }
+}
+```
+
+App 层在初始化 `AgoraRtcEngineKit` 时注册的 `AgoraMediaFilterEventDelegate` 实例会收到该信息，并在 App 层触发如下回调：
+
+```cpp
+- (void)onEvent:(NSString *)provider extension:(NSString *)extension key:(NSString *)key value:(NSString *)value {
+// 其中的 vendor 为注册插件时的 VENDOR_NAME，key/value 是插件消息的键值对
+...
+}
+```
+
+#### enumerateExtensions
+
+提供所有支持封装的插件的信息。SDK 在加载插件时，会调用该方法向插件发送回调。收到该回调后，你需要通过返回值提供所有支持封装的插件的信息。
+
+```cpp
+virtual void enumerateExtensions(ExtensionMetaInfo* extension_list,
+                                 int& extension_count) {
+    (void) extension_list;
+    extension_count = 0;
+}
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `extension_list` | <Slot name="audio-filter-android-ios-macos-windows-html-1-1-1" /> |
+| `extension_count` | 支持封装的插件的总数量。 |
+
+<Slot for="audio-filter-android-ios-macos-windows-html-1-1-1">
+
+插件的信息，包括插件类型和插件名称。
+
+      支持的音频插件类型有：
+
+      - `AUDIO_RECORDING_LOCAL_PLAYBACK_FILTER`（上行）
+      - `AUDIO_POST_PROCESSING_FILTER`（上行）
+      - `AUDIO_REMOTE_USER_PLAYBACK_FILTER`（上行）
+
+      插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
+
+      - 26 个小写字母 `a`~`z`
+      - 数字和下划线（不能是第一个或最后一个）
+      如果插件名不符合规则，会无法通过编译。
+
+</Slot>
+
+其中，插件的信息定义如下：
+
+```cpp
+// 插件类型指插件在音视频传输通道中的位置，分类如下：
+enum EXTENSION_TYPE {
+    // 已废弃，请改用 AUDIO_RECORDING_LOCAL_PLAYBACK_FILTER 或 AUDIO_POST_PROCESSING_FILTER
+    AUDIO_FILTER,
+    // 视频前处理插件
+    VIDEO_PRE_PROCESSING_FILTER,
+    // 视频后处理插件
+    VIDEO_POST_PROCESSING_FILTER,
+    // 预留参数
+    AUDIO_SINK,
+    // 预留参数
+    VIDEO_SINK,
+    // 用于处理本地采集（如耳返采集）的，用于本地播放的音频数据
+    AUDIO_RECORDING_LOCAL_PLAYBACK_FILTER = 10000,
+    // 经过 3A 算法后的本地音频数据后处理
+    AUDIO_POST_PROCESSING_FILTER = 10001,
+    // 用于对远端用户的音频数据进行处理
+    AUDIO_REMOTE_USER_PLAYBACK_FILTER = 10002,
+};
+
+// 插件的信息，包括插件类型和插件名称
+struct ExtensionMetaInfo {
+    EXTENSION_TYPE type;
+    const char* extension_name;
+};
+```
+
+如果你在 `enumerateExtensions` 方法中返回的插件类型为 `AUDIO_FILTER`，则在 App 开发者初始化 `RtcEngine` 并创建 `IExtensionProvider` 对象后，SDK 会调用 `createAudioFilter` 方法。
+
+#### createAudioFilter
+
+创建音频插件。SDK 调用该方法后，你需要返回 `IAudioFilter` 实例。
+
+```cpp
+virtual agora_refptr<IAudioFilter> createAudioFilter()
+```
+
+成功创建 `IAudioFilter` 实例后，音频插件会在合适的时机通过 `IAudioFilter` 类对输入的音频数据进行处理。
+
+#### 示例代码
+
+参考如下示例代码了解如何使用上述方法封装音频插件：
+
+```cpp
+void ExtensionProvider::enumerateExtensions(ExtensionMetaInfo* extension_list,
+                                            int& extension_count) {
+    extension_count = 1;
+    ExtensionMetaInfo i;
+    i.type = EXTENSION_TYPE::AUDIO_RECORDING_LOCAL_PLAYBACK_FILTER;
+    i.extension_name = "YourExtensionName";
+    extension_list[0] = i;
+}
+
+agora_refptr<agora::rtc::IAudioFilter> ExtensionAudioProvider::createAudioFilter() {
+    PRINTF_ERROR("ExtensionAudioProvider::createAudioFilter");
+    auto audioFilter = new agora::RefCountedObject<agora::extension::ExtensionAudioFilter>(audioProcessor_);
+    return audioFilter;
+}
+
+void ExtensionAudioProvider::setExtensionControl(rtc::IExtensionControl* control){
+    audioProcessor_->setExtensionControl(control);
+}
+```
+
+## 打包音频插件
+
+完成插件开发后，你需要对其进行注册、打包，并将最终的 `.framework` 或 `.xcframework` 文件，连同一个包含了插件名称、服务商名称和 Filter 名称的文件提交给声网进行验证。
+
+插件通过宏 `REGISTER_AGORA_EXTENSION_PROVIDER` 进行注册，该宏位于 `AgoraExtensionProviderEntry.h` 文件中。
+
+你需要在插件的入口使用这个宏。SDK 在加载插件时，该宏会自动向 SDK 注册你的插件。注意填入 `PROVIDER_NAME` 时不要填写标点符号。示例：
+
+```cpp
+REGISTER_AGORA_EXTENSION_PROVIDER(ByteDance, agora::extension::ExtensionProvider);
+```
+
+## 示例项目
+
+声网提供一个 iOS 插件开发的示例项目 [SimpleFilter](https://github.com/AgoraIO/API-Examples/tree/4.0.0-GA/iOS/SimpleFilter) 供你参考。

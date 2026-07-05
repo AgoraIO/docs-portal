@@ -1,0 +1,298 @@
+---
+title: "透视校正"
+---
+在线美术教学场景下，透视校正可以帮助老师将学生的视频进行失真矫正，自动将拍摄出来的梯形画纸调整成为长方形并使长宽比符合标准画纸比例。
+
+本文介绍如何使用声网提供的 API 在项目中实现透视校正功能。
+
+## 前提条件
+
+开始前请确保你已经集成了声网 RTC 教育特殊版 SDK 并实现了基本的音视频功能。详见[快速开始](/doc/rtc//get-started/quick-start)。
+
+## 实现方法
+
+透视校正 API 存在两种调用场景。教师可以帮助学生进行透视校正，学生也可以自行进行透视校正。
+
+### 教师帮助学生进行透视校正
+
+1. 教师端调用 `enableRemoteTrapezoidCorrection` 或 `enableRemoteTrapezoidCorrectionEx` 对指定的远端 uid 在教师端的渲染画面开启透视校正。这样教师可以看到校正后的学生画面。
+
+    ```java
+    // 对指定的远端用户开启透视校正功能
+    mRtcEngine.enableRemoteTrapezoidCorrection(uid, true);
+    ```
+
+    ```swift
+    // 对指定的远端用户开启透视校正功能
+    agoraKit.enableRemoteTrapezoidCorrection(uid, true)
+    ```
+
+    ```c++
+    // 对指定的远端 uid 开启透视校正功能
+    m_lpAgoraEngine->enableRemoteTrapezoidCorrection(uid, true);
+    ```
+
+2. 教师端根据透视校正的实际效果，调用 `setRemoteTrapezoidCorrectionOptions` 或 `setRemoteTrapezoidCorrectionOptionsEx` 设置透视校正选项，进行调整。
+
+    ```java
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    TrapezoidCorrectionOptions options = new TrapezoidCorrectionOptions();
+    // 开启自动校正
+    options.setAutoCorrect(1);
+    // 或者开启手动校正
+    options.setAutoCorrect(0);
+    // 根据轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)开始，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）结束。
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.85,0.15);
+    options.setDragFinished(0);
+    mRtcEngine.setRemoteTrapezoidCorrectionOptions(uid, options);
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.87,0.12);
+    options.setDragFinished(0);
+    mRtcEngine.setRemoteTrapezoidCorrectionOptions(uid, options);
+    // 拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.9,0.1);
+    options.setDragFinished(1);
+    mRtcEngine.setRemoteTrapezoidCorrectionOptions(uid, options);
+    ```
+
+    ```swift
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    let options = TrapezoidCorrectionOptions()
+    // 开启自动校正
+    options.setAutoCorrect(1)
+    // 或者开启手动校正
+    options.setAutoCorrect(0)
+    // 根据轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)开始，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）结束。
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.85,0.15)
+    options.setDragFinished(0)
+    agoraKit.setRemoteTrapezoidCorrectionOptions(uid, options)
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.87,0.12)
+    options.setDragFinished(0)
+    agoraKit.setRemoteTrapezoidCorrectionOptions(uid, options)
+    // 拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.9,0.1)
+    options.setDragFinished(1)
+    agoraKit.setRemoteTrapezoidCorrectionOptions(uid, options)
+    ```
+
+    ```c++
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    TrapezoidCorrectionOptions options;
+    // 开启自动校正
+    options.setAutoCorrect(1);
+    // 或者开启手动校正
+    options.setAutoCorrect(0);
+    // 根据鼠标轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)按下鼠标左键，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）抬起鼠标左键。
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.85,0.15);
+    options.setDragFinished(0);
+    m_lpAgoraEngine->setRemoteTrapezoidCorrectionOptions(uid, options);
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.87,0.12);
+    options.setDragFinished(0);
+    m_lpAgoraEngine->setRemoteTrapezoidCorrectionOptions(uid, options);
+    // 鼠标左键抬起拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.9,0.1);
+    options.setDragFinished(1);
+    m_lpAgoraEngine->setRemoteTrapezoidCorrectionOptions(uid, options);
+    ```
+
+3. （可选）教师端可调用 `applyTrapezoidCorrectionToRemote` 或 `applyTrapezoidCorrectionToRemoteEx` 将透视校正参数应用到远端 uid 的本地预览画面上。这样学生也能在本地预览中看到校正后的本地画面。
+
+    ```java
+    // 将透视校正参数应用到远端用户的本地画面上
+    mRtcEngine.applyTrapezoidCorrectionToRemote(uid, true);
+
+    // 在不需要远端本地预览进行透视校正时，关闭远端用户的本地画面梯形校正
+    mRtcEngine.applyTrapezoidCorrectionToRemote(uid, false);
+    ```
+
+    ```swift
+    // 将透视校正参数应用到远端用户的本地画面上
+    agoraKit.applyTrapezoidCorrectionToRemote(uid, true)
+
+    // 在不需要远端本地预览进行透视校正时，关闭远端用户的本地画面梯形校正
+    agoraKit.applyTrapezoidCorrectionToRemote(uid, false)
+    ```
+
+    ```c++
+    // 将透视校正参数应用到远端 uid 的本地画面上
+    m_lpAgoraEngine->applyTrapezoidCorrectionToRemote(uid, true);
+
+    // 在不需要远端本地预览进行透视校正时，关闭远端uid的本地画面梯形校正
+    m_lpAgoraEngine->applyTrapezoidCorrectionToRemote(uid, false);
+    ```
+
+4. （可选）教师端在调用 `applyTrapezoidCorrectionToRemote` 或 `applyTrapezoidCorrectionToRemoteEx` 前后，可以调用 `getRemoteTrapezoidCorrectionOptions` 或 `getRemoteTrapezoidCorrectionOptionsEx` 获取透视校正参数，用于保存记忆参数。
+
+    ```java
+    // 获取透视校正参数
+    mRtcEngine.getRemoteTrapezoidCorrectionOptions(uid, options);
+    ```
+
+    ```swift
+    // 获取透视校正参数
+    agoraKit.getRemoteTrapezoidCorrectionOptions(uid, options)
+    ```
+
+    ```c++
+    // 获取透视校正参数
+    m_lpAgoraEngine->getRemoteTrapezoidCorrectionOptions(uid, options);
+    ```
+
+5. 如果不再需要透视校正功能，教师端可调用 `enableRemoteTrapezoidCorrection` 或 `enableRemoteTrapezoidCorrectionEx` 关闭透视校正。
+
+    ```java
+    // 对指定的远端用户关闭透视校正功能
+    mRtcEngine.enableRemoteTrapezoidCorrection(uid, false);
+    ```
+
+    ```swift
+    // 对指定的远端用户关闭透视校正功能
+    agoraKit.enableRemoteTrapezoidCorrection(uid, false)
+    ```
+
+    ```c++
+    // 对指定的远端用户关闭透视校正功能
+    m_lpAgoraEngine->enableRemoteTrapezoidCorrection(uid, false);
+    ```
+
+### 学生自行进行透视校正
+
+1. 学生端调用 `enableLocalTrapezoidCorrection` 在本地开启透视校正。
+
+    ```java
+    // 在本地开启透视校正
+    mRtcEngine.enableLocalTrapezoidCorrection(true, VIDEO_SOURCE_CAMERA_PRIMARY);
+    ```
+
+    ```swift
+    // 在本地开启透视校正
+    agoraKit.enableLocalTrapezoidCorrection(true, AgoraVideoSourceType.camera)
+    ```
+
+    ```c++
+    // 在本地开启透视校正
+    m_lpAgoraEngine->enableLocalTrapezoidCorrection(true, VIDEO_SOURCE_CAMERA_PRIMARY);
+    ```
+
+2. 学生端根据透视校正的实际效果，调用 `setLocalTrapezoidCorrectionOptions` 设置透视校正选项，进行调整。本地设置梯形校正后，远端就能看到梯形校正后的画面。
+
+    ```java
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    TrapezoidCorrectionOptions options = new TrapezoidCorrectionOptions();
+    // 开启自动校正
+    options.setAutoCorrect(1);
+    // 或者开启手动校正
+    options.setAutoCorrect(0);
+    // 根据轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)开始，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）结束。
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.85,0.15);
+    options.setDragFinished(0);
+    mRtcEngine.setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.87,0.12);
+    options.setDragFinished(0);
+    mRtcEngine.setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    // 拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.9,0.1);
+    options.setDragFinished(1);
+    mRtcEngine.setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    ```
+
+    ```swift
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    let options = TrapezoidCorrectionOptions()
+    // 开启自动校正
+    options.setAutoCorrect(1)
+    // 或者开启手动校正
+    options.setAutoCorrect(0)
+    // 根据轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)开始，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）结束。
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.85,0.15)
+    options.setDragFinished(0)
+    agoraKit.setLocalTrapezoidCorrectionOptions(options, AgoraVideoSourceType.camera)
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.87,0.12)
+    options.setDragFinished(0)
+    agoraKit.setLocalTrapezoidCorrectionOptions(options, AgoraVideoSourceType.camera)
+    // 拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2)
+    options.setDragDstPoint(0.9,0.1)
+    options.setDragFinished(1)
+    agoraKit.setLocalTrapezoidCorrectionOptions(options, AgoraVideoSourceType.camera)
+    ```
+
+    ```c++
+    // 设置透视校正选项，可以在手动校正和自动校正模式之间切换
+    TrapezoidCorrectionOptions options;
+    // 开启自动校正
+    options.setAutoCorrect(1);
+    // 或者开启手动校正
+    options.setAutoCorrect(0);
+    // 根据鼠标轨迹设置拖动起始点和终止点坐标
+    // 例如：从(0.8，0.2)按下鼠标左键，拖动经过（0.85，0.15），（0.87，0.12），在（0.9，0.1）抬起鼠标左键。
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.85,0.15);
+    options.setDragFinished(0);
+    m_lpAgoraEngine->setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.87,0.12);
+    options.setDragFinished(0);
+    m_lpAgoraEngine->setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    // 鼠标左键抬起拖动结束时要设置 setDragFinished(1)
+    options.setDragSrcPoint(0.8,0.2);
+    options.setDragDstPoint(0.9,0.1);
+    options.setDragFinished(1);
+    m_lpAgoraEngine->setLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    ```
+
+3. （可选）学生端在调用 `setLocalTrapezoidCorrectionOptions` 前后，可以调用 `getLocalTrapezoidCorrectionOptions` 获取透视校正参数，用于保存记忆参数。
+
+    ```java
+    // 获取透视校正参数
+    mRtcEngine.getLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY);
+    ```
+
+    ```swift
+    // 获取透视校正参数
+    agoraKit.getLocalTrapezoidCorrectionOptions(options, AgoraVideoSourceType.camera)
+    ```
+
+    ```c++
+    // 获取透视校正参数
+    m_lpAgoraEngine->getLocalTrapezoidCorrectionOptions(options, VIDEO_SOURCE_CAMERA_PRIMARY)
+    ```
+
+4. 如果不再需要透视校正功能，教师端可调用 `enableLocalTrapezoidCorrection` 关闭透视校正。
+
+    ```java
+    // 对指定的远端用户关闭透视校正功能
+    mRtcEngine.enableLocalTrapezoidCorrection(false);
+    ```
+
+    ```swift
+    // 对指定的远端用户关闭透视校正功能
+    agoraKit.enableLocalTrapezoidCorrection(false)
+    ```
+
+    ```c++
+    // 对指定的远端用户关闭透视校正功能
+    m_lpAgoraEngine->enableLocalTrapezoidCorrection(false);
+    ```
+
+## API 参考
+
+你可以参考[在线美术教学 API 参考](/zh-CN/solutions/art-class/api/correction.android#透视校正)了解更多 API 使用信息。

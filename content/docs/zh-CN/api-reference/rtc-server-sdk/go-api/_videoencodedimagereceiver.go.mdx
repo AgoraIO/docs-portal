@@ -1,0 +1,30 @@
+---
+title: "VideoEncodedImageReceiver 类"
+---
+VideoEncodedImageReceiver
+
+<span className="index-desc-ivideoencodedimagereceiver">`VideoEncodedImageReceiver` 类。</span>
+
+<a id="onencodedvideoimagereceived"></a>
+## OnEncodedVideoFrame
+
+```go
+OnEncodedVideoFrame func(receiver *VideoEncodedImageReceiver, uid string, imageBuffer []byte,
+        frameInfo *EncodedVideoFrameInfo) bool
+```
+
+<span className="index-desc-onencodedvideoimagereceived">每次收到已编码视频帧时触发。</span>
+
+#### 参数
+
+| 参数                     | 描述                         |
+|--------------------------|------------------------------|
+| `receiver`               | [`VideoEncodedImageReceiver`] 类的实例。 |
+| `uid`                    | 远端用户的用户 ID。          |
+| `imageBuffer`            | 视频帧缓冲区。               |
+| `frameInfo`              | 已编码视频帧的信息。详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#encodedvideoframeinfo)。 |
+
+#### 返回值
+
+- `true`：接受已编码视频帧。
+- `false`：不接受已编码视频帧。

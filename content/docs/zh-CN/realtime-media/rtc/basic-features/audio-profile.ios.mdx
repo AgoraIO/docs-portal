@@ -1,0 +1,160 @@
+---
+title: "设置音频编码属性"
+---
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AgoraAudioProfileDefault` 编码属性和 `AgoraAudioScenarioHighDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `sharedEngineWithConfig(config.audioScenario)` | 在创建 `AgoraRtcEngineKit` 实例时，设置音频应用场景。默认值为 `AgoraAudioScenarioHighDefault`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.ios)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你项目的 `ViewController.swift` 文件中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .default
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .default
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 游戏开黑
+
+该场景主要要求传输人声、无杂音、节省码率。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .speechStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 剧本杀
+
+该场景主要要求声音表现力好，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighQuality
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighqQalityStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 双师课堂
+
+该场景主要要求高音质，呈现丰富的声音效果，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var audioScenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AgoraAudioScenarioGameStreaming`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality.android.ios)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### API 参考
+
+- [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)

@@ -1,0 +1,151 @@
+---
+title: "调整通话音量"
+---
+本文介绍如何设置音频采集和播放、以及耳返播放的音量。为了更好地理解这些操作，你需要先了解以下与通话音量相关的基础概念：
+
+- **采集**是指音频信号经由采集设备采集后，传输到发送端的过程。
+- **播放**是指音频信号从接收端传输到播放设备后，通过播放设备进行播放的过程。
+- **耳返**是指将采集到的音频信号实时回传并通过耳机播放的过程。
+
+## 技术原理
+
+声网 SDK 支持对 SDK 采集和播放的音频音量进行调整，以满足用户实际应用场景。例如，进行双人通话时，需要静音远端用户，可以通过调整播放音量的方法将音量设置为 0。下图展示了调整音量的工作流程：
+
+![调节通话音量](/img/rtc/volume.png)
+
+- ①：调用 `AdjustRecordingSignalVolume` 调节音频采集信号音量。
+- ②：调用 `SetInEarMonitoringVolume` 设置耳返音量。
+- ③：调用 `AdjustUserPlaybackSignalVolume` 调节本地播放的指定远端用户信号音量。
+- ④：调用 `AdjustPlaybackSignalVolume` 调节本地播放的所有远端用户信号音量。
+
+:::warning[注意]
+如果使用调整信号音量的方法将音量设置过大，在某些设备上可能会出现音频失真。
+:::
+
+## 前提条件
+
+在实现调整通话音量前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.unreal-blueprint)。
+
+## 实现方法
+
+### 调整播放音量
+
+本小节介绍如何调用 `AdjustPlaybackSignalVolume` 调整音频播放信号的音量。
+
+#### 1. 创建 UMG
+
+创建一个 **Slider** (滑块) 控件，命名为 **Slider_PlaybackSignalVolume**，供用户拖动音量条调节播放音量。在本示例中，设置最小值为 0 (静音)，最大值为 100 (原始音量)。如下图所示：
+
+![播放音量滑块控件示意图](/img/rtc/volume-playback-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Value Changed** 节点，分别连接 **Slider_PlaybackSignalVolume** 控件和 **OnPlaybackSignalVolumeValChanged** 回调。当用户拖动音量条调节音频播放信号时，会触发 **OnPlaybackSignalVolumeValChanged** 回调。如下图所示：
+
+![播放音量绑定事件示意图](/img/rtc/volume-playback-bind.png)
+
+#### 3. 实现回调函数
+
+创建 **OnPlaybackSignalVolumeValChanged** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  |:-------|:--------|:---------|
+  | `Value` | Float | 播放音量。 |
+
+触发该回调后，会获取并处理用户指定的播放音量、将该音量赋值给 **Adjust Playback Signal Volume** 的 **Volume** 参数，并调用 **Adjust Playback Signal Volume** 方法调节播放音量。如下图所示：
+
+![播放音量回调处理示意图](/img/rtc/volume-playback-callback.png)
+
+### 调整采集音量
+
+本小节介绍如何调用 `AdjustRecordingSignalVolume` 调整音频采集信号的音量。
+
+#### 1. 创建 UMG
+
+创建一个 **Slider** (滑块) 控件，命名为 **Slider_RecordingSignalVolume**，供用户滑动音量条调节采集音量。在本示例中，设置最小值为 0 (静音)，最大值为 100 (原始音量)。如下图所示：
+
+![采集音量滑块控件示意图](/img/rtc/volume-recording-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Value Changed** 节点，分别连接 **Slider_RecordingSignalVolume** 控件和 **OnRecordingSignalVolumeValChanged** 回调。当用户拖动音量条调节音频采集信号时，会触发 **OnRecordingSignalVolumeValChanged** 回调。如下图所示：
+
+![采集音量绑定事件示意图](/img/rtc/volume-recording-bind.png)
+
+#### 3. 实现 UI 事件
+
+创建 **OnRecordingSignalVolumeValChanged** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  |:-------|:--------|:---------|
+  | `Value` | Float | 采集音量。 |
+
+触发该回调后，会获取并处理用户指定的采集音量、将该音量赋值给 **Adjust Recording Signal Volume** 的 **Volume** 参数，并调用 **Adjust Recording Signal Volume** 方法调节采集音量。如下图所示：
+
+![采集音量回调处理示意图](/img/rtc/volume-recording-callback.png)
+
+### 获取用户音量（回调）
+
+在音频采集、混音、播放的整个过程中，你都可以通过 `FOnAudioVolumeIndication` 回调获取频道内瞬时音量最高的三个用户（即说话者）的用户 ID 及他们的音量，返回的 `uid` 为 0 表示本地用户。你需要调用 `EnableAudioVolumeIndication` 方法开启人声检测功能才能收到该回调。
+
+#### 1. 创建 UMG
+
+创建一个 **Button** (按钮) 控件，命名为 **Btn_EnableAudioIndication**，用户可以通过该按钮控制是否启用用户音量提示。如下图所示：
+
+![启用用户音量提示按钮示意图](/img/rtc/volume-indication-umg.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_EnableAudioIndication** 控件和 **OnVolumeIndicationClick** 回调。当用户按下按钮开启音量提示时，会触发 **OnVolumeIndicationClick** 回调。如下图所示：
+
+![用户音量提示绑定事件示意图](/img/rtc/volume-indication-bind.png)
+
+#### 3. 实现 UI 事件
+
+创建 **OnVolumeIndicationClick** 回调函数。触发该回调后，会调用 **Enable Audio Volume Indication** 方法启用用户音量提示。在本示例中，设置音量提示的时间间隔 (**Interval**) 为 200 毫秒、平滑系数 (**Smooth**) 为 3 并勾选 **Report Vad** 开启人声检测功能。如下图所示：
+
+![启用用户音量提示蓝图示意图](/img/rtc/volume-indication-callback.png)
+
+#### 4. 添加回调事件
+
+1. 创建 **OnAudioVolumeIndication** 回调函数，配置以下参数：
+
+    | 输入参数 | 数据类型 | 参数描述 |
+    |:-------|:--------|:---------|
+    | `speakers` | Structure | 用户音量信息，详见 [`FAudioVolumeInfo`](/api-ref/rtc/unreal-blueprint/API/class_audiovolumeinfo)。 |
+    | `totalVolume` | Integer | 混音后的总音量。 |
+
+2. 添加对 **OnAudioVolumeIndication** 回调的监听，如下图所示：
+
+![用户音量回调事件监听示意图](/img/rtc/volume-indication-event.png)
+
+3. 按指定的时间间隔触发 **OnAudioVolumeIndication** 回调时，打印监听到的用户音量信息。如下图所示：
+
+![用户音量回调日志示意图](/img/rtc/volume-indication-log.png)
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio" />
+</Cards>
+
+### 注意事项
+
+使用采集设备采集音频信号时，SDK 默认使用采集设备音量为 85。音量 0 代表静音，音量 255 代表设备的最大音量。如果 SDK 检测到采集设备音量在当前环境中过低，SDK 会自动提高采集设备音量。采集设备音量影响设备的全局音量。如果采集设备音量无法满足你的需求，你可以通过调节麦克风或声卡采集的信号幅度来调整采集音量。
+
+### 常见问题
+
+- [如何处理音量太小问题？](/faq/quality-issues/audio-low)
+
+### API 参考
+
+- [`AdjustPlaybackSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`AdjustRecordingSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`AdjustUserPlaybackSignalVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`AdjustAudioMixingPlayoutVolume`](/api-ref/rtc/unreal-blueprint/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`FOnAudioVolumeIndication`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication)

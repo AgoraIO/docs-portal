@@ -1,0 +1,91 @@
+---
+title: "特性列表"
+---
+本文提供 RTM 所具备的功能特性及对应 API 接口。
+
+## Setup
+
+| 功能 | API 接口 |
+| --- | --- |
+| 创建实例 | [`RtmClient create(RtmConfig config)`](/api-ref/rtm2/android/toc-configuration/configuration#create) |
+| 销毁实例 | [`RtmClient.release()`](/api-ref/rtm2/android/toc-configuration/configuration#release) |
+| Token 设置 | [`login`](/api-ref/rtm2/android/toc-configuration/configuration#login) 接口中的 `token` 参数 |
+| 端侧加密 | [`RtmEncryptionConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmEncryptionConfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmLogConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmLogConfig) 中的 `level` 参数 |
+| Proxy 设置 | [`RtmProxyConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmConfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`RtmPrivateConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 事件监听 | <Slot name="feature-list-android-html-0-10-1" /> |
+| 登录服务 | [`void login(String token, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-configuration/configuration#login) |
+| 登出服务 | [`void logout(ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-configuration/configuration#logout) |
+
+<Slot for="feature-list-android-html-0-10-1">
+
+- [`void addEventListener(RtmEventListener listener)`](/api-ref/rtm2/android/toc-configuration/configuration#添加监听)
+    - [`void removeEventListener(RtmEventListener listener)`](/api-ref/rtm2/android/toc-configuration/configuration#删除监听)
+
+</Slot>
+
+## Channel
+
+| 功能 | API 接口 |
+| --- | --- |
+| 订阅频道 | [`void subscribe(String channelName, SubscribeOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#subscribe) |
+| 取消订阅频道 | [`void unsubscribe(String channelName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#unsubscribe) |
+| 创建 Stream Channel | [`StreamChannel createStreamChannel(String channelName)`](/api-ref/rtm2/android/toc-channel/channel#createStreamChannel) |
+| 加入 Stream Channel | [`void join(JoinChannelOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#join) |
+| 离开 Stream Channel | [`void leave(ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.release()`](/api-ref/rtm2/android/toc-channel/channel#release) |
+
+## Topic
+
+| 功能 | API 接口 |
+| --- | --- |
+| 加入 Topic | [`void joinTopic(String topicName, JoinTopicOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#joinTopic) |
+| 发送 Topic 消息 | [`void publishTopicMessage(String topicName, String message, TopicMessageOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#publishTopicMessage) |
+| 离开 Topic | [`void leaveTopic(String topicName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#leaveTopic) |
+| 订阅 Topic | [`void subscribeTopic(String topicName, TopicOptions options, ResultCallback<SubscribeTopicResult> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#subscribeTopic) |
+| 取消订阅 Topic | [`void unsubscribeTopic(String topicName, TopicOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#unsubscribeTopic) |
+
+## Message
+
+| 功能 | API 接口 |
+| --- | --- |
+| 发送消息 | [`void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-message/message#publish) |
+
+## Presence
+
+| 功能 | API 接口 |
+| --- | --- |
+| 查询频道在线用户 | [`void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#whoNow) |
+| 查询用户所在频道 | [`void whereNow(String userId, ResultCallback<ArrayList<ChannelInfo>> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#whereNow) |
+| 设置用户临时状态 | [`void setState(String channelName, RtmChannelType channelType, Map<String, String> items, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#setState) |
+| 查询用户临时状态 | [`void getState(String channelName, RtmChannelType channelType, String userId, ResultCallback<UserState> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#getState) |
+| 删除用户临时状态 | [`void removeState(String channelName, RtmChannelType channelType, ArrayList<String> keys, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#removeState) |
+
+## Storage
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置频道属性 | [`void setChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#setChannelMetadata) |
+| 获取频道属性 | [`void getChannelMetadata(String channelName, RtmChannelType channelType, ResultCallback<Metadata> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#getChannelMetadata) |
+| 删除频道属性 | [`void removeChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#removeChannelMetadata) |
+| 更新频道属性 | [`void updateChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#updateChannelMetadata) |
+| 设置用户属性 | [`void setUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#setUserMetadata) |
+| 获取用户属性 | [`void getUserMetadata(String userId, ResultCallback<Metadata> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#getUserMetadata) |
+| 删除用户属性 | [`void removeUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#removeUserMetadata) |
+| 更新用户属性 | [`void updateUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#updateUserMetadata) |
+| 订阅用户属性 | [`void subscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#subscribeUserMetadata) |
+| 取消订阅用户属性 | [`void unsubscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#unsubscribeUserMetadata) |
+
+## Lock
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置锁 | [`void setLock(String channelName, RtmChannelType channelType, String lockName, long ttl, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#setLock) |
+| 获取锁 | [`void acquireLock(String channelName, RtmChannelType channelType, String lockName, boolean retry, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#acquireLock) |
+| 释放锁 | [`void releaseLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#releaseLock) |
+| 收回锁 | [`void revokeLock(String channelName, RtmChannelType channelType, String lockName, String owner, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#revokeLock) |
+| 查询锁 | [`void getLocks(String channelName, RtmChannelType channelType, ResultCallback<ArrayList<LockDetail>> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#getLocks) |
+| 删除锁 | [`void removeLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#removeLock) |

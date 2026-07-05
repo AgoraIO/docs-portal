@@ -1,0 +1,68 @@
+---
+title: "跑通 API 示例项目"
+---
+声网提供了开源的 SDK 示例项目，展示了各种基础和进阶的场景。本文以跑通视频通话示例项目为例，帮助你快速体验声网视频通话效果。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity" />
+</Cards>
+
+## 前提条件
+
+- 已下载 [Unity Hub](https://unity.com/download)。
+
+- Unity 2018.4.0 或以上版本。
+
+- 一个 Unity 项目，你可以参考 [Unity 官方文档](https://docs.unity3d.com/2018.2/Documentation/Manual/GettingStarted.html)来创建一个项目。
+
+- 操作系统与编译器要求：
+
+  | 开发平台 | 操作系统版本       | 编译器版本                          |
+  | :------- | :----------------- | :---------------------------------- |
+  | Android  | Android 4.1 或以上 | Android Studio 3.0 或以上           |
+  | iOS      | iOS 9.0 或以上     | Xcode 9.0 或以上                    |
+  | macOS    | macOS 10.10 或以上 | Xcode 9.0 或以上                    |
+  | Windows  | Windows 7 或以上   | Microsoft Visual Studio 2017 或以上 |
+
+- 计算机可以访问互联网。请确保你的网络环境未部署防火墙，否则可能无法正常使用声网服务。
+
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)从声网控制台获得以下信息：
+
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+  - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/resources.unity)页面，下载最新版的 Unity 视频 SDK，下载完成后你会看到一个 `.unitypackage` 文件。
+
+   :::info[信息]
+   你也可以直接将上文提到的 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity) 示例项目克隆到你的项目路径下，以获取示例项目。
+   :::
+
+2. 点击 `.unitypackage` 文件，会弹出一个 **Import Unity Package** 窗口，点击右下角的 **Import** 按钮把 Unity SDK 导入到你的 Unity 项目中。导入完成后，你可以在 **Project** 面板看到 `Agora-RTC-PLUGIN` 文件夹。
+
+   ![导入 Unity SDK 到项目的界面](https://web-cdn.agora.io/docs-files/1691052920319)
+
+### 配置示例项目
+
+在 `Agora-RTC-PLUGIN/API-Example/AppIdInput.asset` 中，填入你从声网控制台获取到的 App ID、临时 Token 和频道名。
+
+![在 AppIdInput.asset 中填写 App ID、临时 Token 和频道名的界面](https://web-cdn.agora.io/docs-files/1692327313057)
+
+### 编译并运行示例项目
+
+1. `API-Example` 文件夹下包含 `Basic` 和 `Advanced` 两个文件，分别包含了声网 Unity SDK 的基础和进阶场景的使用示例（如下图所示）。选择一个你想要尝试的场景，点击 **Play** 进行编译。
+
+![](https://web-cdn.agora.io/docs-files/1691054049527)
+
+2. 以视频通话为例，编译成功后你可以看到自己本地的视频预览。
+
+   ![本地视频预览效果](https://web-cdn.agora.io/docs-files/1690958780301)
+
+3. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保 App ID、临时 Token 和频道名与你配置示例项目时填入的一致）。当你们输入相同的频道名加入频道后，即可在同一频道中体验各种互动场景。
+
+   ![双端加入同一频道后的通话效果](https://web-cdn.agora.io/docs-files/1690958810176)

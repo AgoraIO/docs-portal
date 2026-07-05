@@ -1,0 +1,178 @@
+---
+title: "集成指引"
+---
+本文列出在线音乐教学场景方案的常见功能以及对应的声网产品和集成文档。
+
+## 课前准备
+
+### 课堂管理
+
+通过[声网频道管理服务](/doc/rtc/restful/channel-management/operations/get-user-property)查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
+
+### 课前设备和网络检测
+
+在线教育场景非常重视音视频的效果和稳定性，因此声网强烈建议教师端和学生端都进行课前检测，检测麦克风、摄像头等音视频设备能否正常工作，并检测网络状况是否满足要求，详见[通话前网络和设备检测](/doc/rtc//basic-features/lastmile-quality)。
+
+## 课堂互动
+
+### 实时音视频互动
+
+使用声网 RTC 4.0.0 教育特殊版 SDK 实现实时音视频互动功能。教师对学生讲课，学生就上课内容向老师提问，形成良好的互动式课堂氛围。
+
+声网 RTC 4.0.0 教育特殊版 SDK 作为一个分支版本，与[声网 RTC SDK](/doc/rtc/homepage) 功能大体相似，主要新增了一些为教育场景定制的功能。你可以[联系技术支持](https://ticket.shengwang.cn)获取声网 RTC 4.0.0 教育特殊版 SDK。对于绝大部分功能，你可以直接参考声网 RTC SDK 的官网文档：
+
+- [快速开始](/doc/rtc//get-started/quick-start)
+- [API 参考](/api-ref/rtc//API/rtc_api_overview)
+- [RTC GitHub 示例项目](https://github.com/AgoraIO/API-Examples/)
+
+### 实时消息互动
+
+使用声网云信令 SDK 实现实时消息互动功能。教师和学生在课堂中发送文字消息进行互动。详见：
+
+- [云信令 SDK 下载地址](https://docportal.shengwang.cn/cn/Real-time-Messaging/downloads?platform=All%20Platforms)
+- [云信令 GitHub 示例项目](https://github.com/AgoraIO/RTM)
+
+- [云信令 SDK 集成指引](https://docs.agora.io/cn/Real-time-Messaging/messaging_android?platform=Android)
+- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_ios?platform=iOS)
+- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=iOS)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_mac?platform=macOS)
+- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=macOS)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_cpp_windows?platform=Windows)
+- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=Windows)
+
+### 互动白板
+
+教师在白板上涂鸦、上传文件（PPT、Word 和 PDF）或播放视频，有助于提炼教学重点，帮助学生理解或记忆。学生也可使用白板与老师进行实时互动。详见：
+
+- [下载互动白板 SDK](/doc/whiteboard//whiteboard-sdk/resources-wb)
+- [开启和配置互动白板服务](/doc/whiteboard//whiteboard-sdk/get-started/enable-service)
+
+## 音频优化
+
+### 多人实时合唱
+
+结合[声网互动白板 SDK](/doc/whiteboard//whiteboard-sdk/resources-wb)、[实现歌词组件](/doc/online-ktv//implementation/lyrics-scoring#实现歌词组件) 实现多人实时合唱。延时低至 64 ms，最多 6 人参与实时合唱（旁听无限）。
+
+### 高音质
+
+声网支持 48 kHz 采样率、192 Kbps 码率高度还原音质效果，提供音乐教学场景专属音频属性，详见[设置音频编码属性](/doc/rtc//basic-features/audio-profile)。
+
+### 降噪模式
+
+在网络质量较差以及环境噪声较多的场景（如键盘、尖叫、啸叫声等）中，通常需要进行噪声减少和消除。声网 SDK 默认开启传统降噪模式，以消除大部分平稳噪声。
+
+### 3A 处理
+
+3A 即 AEC（回声消除）、ANS（自动噪声抑制）、AGC（自动增益控制），适合各种音频环境，如桌面端、移动端、录播教室、普通教室、教学点教室等，在音频交互、降噪等场景下提供更好的声音质量。
+
+### 播放音乐文件或氛围音
+
+在教学时播放本地 MP3、AAC、WAV 等格式的音乐文件作为人声的背景音乐，或者添加效果音，例如鼓掌、欢呼、口哨、嘘声、尖叫等，详见[音效文件播放](/api-ref/rtc//API/toc_audio_effect_file#api_irtcengine_geteffectsvolume)。
+
+### 空间塑造
+
+通过空间混响效果营造一定的空间氛围，让人声仿佛从特定的场地中传出，例如 KTV、演唱会、录音棚等，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+
+### 歌唱美声
+
+设置本地语音的歌唱美声效果，在保留歌声原有特点的前提下，根据男女声各自的特点美化歌声并添加混响效果，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+
+### 虚拟立体声
+
+虚拟立体声音效是将单声道的音轨渲染出立体声的效果，使远端用户可以听到有空间感的声音，适合音乐教学场景下的效果提升，详见[人声音效](/api-ref/rtc//API/toc_audio_effect#setAudioEffectPreset)。
+
+### 设备音输入
+
+将麦克风或 MIDI 输入的乐器声音在课堂中播放，可在课堂听到添加美声、美音、音效、混响后的声音效果，详见[音频采集](/api-ref/rtc//API/toc_audio_capture)。
+
+### 频谱输出
+
+可分别将播放端接收到的多路音量的大小以及数字音频信号在各频点的能量强度值进行采样，并进行图形化呈现，从而增加互动的趣味性，同时可根据输出的具体参数进行歌唱打分。详见[音频频谱](/api-ref/rtc//API/toc_audio_spectrum)。
+
+### 自定义音频采集和渲染
+
+声网 SDK 通常会启动默认的音频模块进行音频采集和渲染。当默认的音频模块无法满足开发需求，声网支持自定义音频采集，开发者可以对原始音频数据进行处理，进行自定义操作，例如外接非标设备和音频文件。详见[自定义音频采集和渲染](/api-ref/rtc//API/toc_audio_custom_capturenrendering)。
+
+## 视频优化
+
+### 鱼眼镜头的画面矫正和分离
+
+在乐器陪练场景中，你可以通过声网 SDK 对鱼眼镜头的画面进行矫正和分离处理，帮助教师在教学过程中更好地演示和纠正弹奏动作。详见[鱼眼镜头畸变矫正与分离显示](/zh-CN/solutions/online-music-class/advanced-features/fish-eye.android)。
+
+### 背景消除
+
+背景消除功能可以将背景虚化或设为纯色，用于保护隐私或改善教学体验。如需使用此功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+### 动态贴纸
+
+动态贴纸可以大大增加教学场景的交互性和趣味性。如需使用此功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+### 广角畸变控制
+
+在钢琴教学场景中，常用广角镜头拍摄和录制师生的弹琴动作。但是由于广角镜头光学特性会导致明显的畸变，声网提供畸变控制算法还原录制下来的弹琴动作。如需使用此功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+## 课后回顾
+
+### 录制
+
+使用声网录制服务将课堂内容录制下来，并生成回放链接，方便学生课后复习和学校评估教学质量。详见：
+
+- [云端录制](/zh-CN/realtime-media/recording/cloud-recording)（推荐）
+- [本地服务端录制](/zh-CN/realtime-media/recording/local-server-recording)
+
+### 高光时刻
+
+在上课过程中插入 SEI，录制回放时通过解析 SEI 实现快速定位或生成精彩集锦，可用于定位学生的互动过程、教师的重点内容等。如需使用此功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+## 问题调查和课堂质量监测
+
+### 课中网络质量监测
+
+声网建议在课堂中进行网络质量监测，并在 App 界面提示用户监测结果，告知用户本地和远端的网络质量，详见[通话中质量监测](/doc/rtc//basic-features/lastmile-quality)。
+
+### 水晶球
+
+通过声网提供的全周期通话质量监测、回溯和分析工具[水晶球](https://analytics-lab.agora.io/analytics/call/search)，及时发现问题、定位原因，并最终解决问题以提升终端用户体验。
+
+## 更多功能
+
+### 屏幕共享
+
+通过声网 RTC SDK 提供的 API，教师可将自己屏幕的内容分享给学生观看，提高教学效果。详见[屏幕共享](/doc/rtc//basic-features/screen-share)。
+
+### 双摄像头支持
+
+支持同时开启移动端设备前后摄像头和桌面设备外接摄像头，实现多视角演示，便于辅导操作细节。详见 [`VideoSourceType`](/api-ref/rtc//API/enum_videosourcetype)。
+
+### 客户端播放媒体文件
+
+教师可通过[媒体播放器 API](/api-ref/rtc//API/toc_mediaplayer_initialize) 在客户端播放本地或在线的媒体资源，将媒体资源同步分享给声网频道内的远端学生观看和收听。
+
+### 服务端播放在线媒体流
+
+开发者可通过[服务端输入在线媒体流服务](/zh-CN/realtime-media/media-pull)，将事先准备的音视频素材作为一个发送端输入正在进行的课堂，教师和学生可以一起观看该媒体流并实时互动。
+
+### 监课端
+
+监课端在在线教育场景中扮演的角色类似于现实中的助教，主要处理如下任务：
+
+- 处理紧急突发问题，确保课程正常完成。
+- 管理教室、课件、教师和学生等。
+
+你可以使用 RTC Web SDK，也可以使用 RTC Native SDK 实现监课端，把监课端想象成一个上课过程中只收流、不发流的特殊客户端。
+
+监课端也可应用于家长旁听等场景。
+
+### 实时美颜
+
+通过声网 RTC SDK 提供的 API 实现基础美颜功能，调整美白、磨皮、祛痘、红润效果等美颜参数，实现自然的美颜效果。详见[美颜 API](/api-ref/rtc//API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions)。
+
+### 实时审核（鉴黄）
+
+审核实时音视频涉黄、涉恐、涉暴等敏感内容。详见[视频审核](/zh-CN/realtime-media/marketplace/integrate-extensions/netease-yidun-video-moderation.android.android)。
+
+审核实时音视频涉黄、涉恐、涉暴等敏感内容。详见[视频审核](/zh-CN/realtime-media/marketplace/integrate-extensions/netease-yidun-video-moderation.android.ios)。

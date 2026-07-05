@@ -14,9 +14,9 @@ The migration workflow is mapping-table driven:
 
 | File | Purpose |
 | --- | --- |
-| `work-plan.md` | First file to read when taking over migration work. It contains the current phase plan, status vocabulary, and handoff checklist. |
-| `path-map.csv` | Source of truth for source path, target path, migration progress, audit progress, and audit result. |
-| `migration-ledger.csv` | Inventory-level migration ledger generated from the source audit. Use it for analysis, but update execution progress in `path-map.csv`. |
+| `work-plan.md` | First file to read when taking over migration work. It contains the current phase plan, status vocabulary, handoff checklist, and latest execution counts. |
+| `path-map.csv` | Source of truth for source path, target path, redirect status, migration progress, audit progress, and audit result. |
+| `migration-ledger.csv` | Inventory-level migration ledger generated from the source audit. It is synchronized from `path-map.csv` where rows can be matched, but execution progress is still owned by `path-map.csv`. |
 | `migration-audit-summary.md` | Snapshot of the initial source audit and major unresolved decision groups. |
 | `manual-decision-questions.csv` | P0 decisions that block path mapping or API/source strategy. |
 | `component-map.yaml` | Machine-readable legacy component and syntax conversion rules for the migration script. |
@@ -24,15 +24,39 @@ The migration workflow is mapping-table driven:
 | `shared-inventory.csv` | Shared snippet inventory and dependency risks. |
 | `api-inventory.csv` | API reference, generated HTML API, and OpenAPI inventory. |
 
+## Current Snapshot
+
+The full PR 617 redirect migration pass has been generated under `content/docs/zh-CN/**` and audited against the legacy source.
+
+| Metric | Count |
+| --- | ---: |
+| `path-map.csv` rows | 2574 |
+| `redirect_status=redirect` rows | 1859 |
+| Completed redirect migrations | 1859 |
+| Completed redirect audits | 1859 |
+| Audit pass | 1618 |
+| Audit differences | 241 |
+| Legacy residue | 0 |
+| Audit errors | 0 |
+
+| Non-redirect state in `path-map.csv` | Count |
+| --- | ---: |
+| `deferred` | 527 |
+| `dropped` | 86 |
+| `blocked` | 86 |
+| `not_required` | 12 |
+| `ready` | 4 |
+
 ## Progress Columns
 
 `path-map.csv` owns the execution state.
 
 | Column | Meaning |
 | --- | --- |
-| `migration_progress` | `not_started`, `in_progress`, `completed`, `blocked`, or `failed`. The migration script writes `completed` after it generates a mapped target. |
-| `audit_progress` | `not_started`, `pending`, `completed`, or `failed`. The migration script sets `pending` after migration completes; the audit script finishes it. |
-| `audit_result` | Empty before audit, then `pass`, `differences:N`, `legacy-residue:N`, or `error:MESSAGE`. |
+| `redirect_status` | Controls whether a row belongs to the current migration set. `redirect` rows are migrated; `ignore`, `defer`, and `no-redirect` are marked non-required or deferred. |
+| `migration_progress` | `not_started`, `in_progress`, `completed`, `blocked`, `failed`, `deferred`, `dropped`, `not_required`, or `ready`. The migration script writes `completed` after it generates a mapped redirect target. |
+| `audit_progress` | `not_started`, `pending`, `completed`, `failed`, or `not_required`. The migration script sets `pending` after migration completes; the audit script finishes it. |
+| `audit_result` | Empty before audit, then `pass`, `differences:N`, `legacy-residue:N`, `error:MESSAGE`, or `not_applicable`. |
 | `last_migration_report` | Most recent migration report path for the row. |
 | `last_audit_report` | Most recent audit report path for the row. |
 | `updated_at` | Last script update timestamp for the row. |

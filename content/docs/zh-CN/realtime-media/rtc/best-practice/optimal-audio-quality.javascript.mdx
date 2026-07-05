@@ -1,0 +1,49 @@
+---
+title: "高音质最佳实践"
+---
+本文适用于对音质体验要求较高的场景，包括但不限于 K 歌、播客和表演性质的语聊。你可以参考本文提供的实践方法，以实现清晰、高保真的音频效果。为了在 Web 端获得更优的音质体验，我们建议你使用耳机和声卡。
+
+## 设置音频编码属性
+
+你可以通过预设或自定义音频编码属性来提升音质体验。
+
+### 使用预设音频编码属性
+
+调用 [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createmicrophoneaudiotrack)，在 `encoderConfig` 中传入 SDK 内置的音频编码配置 `"high_quality_stereo"`，即 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+  encoderConfig: "high_quality_stereo"
+}).then(/**...**/);
+```
+
+### 自定义音频编码属性
+你可以使用以下代码示例自定义音频编码属性，包括设置 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+  encoderConfig: {
+    sampleRate: 48000,
+    stereo: true,
+    bitrate: 128,
+  },
+}).then(/**...**/);
+```
+
+## 排查声卡用户音质问题
+
+声网 SDK 默认开启 3A 音频处理功能，包括回声消除 (AEC)、降噪 (ANS) 和增益控制 (AGC)。然而，声卡设备通常已经内置了一些音频处理功能，如回声和噪声消除。在这种情况下，如果在应用层开启 3A 功能，可能会导致音频信号过度处理和不同算法之间互相干扰，从而影响音质。
+
+:::warning[注意]
+目前尚无可靠的自动化方法来判断用户是否佩戴耳机、使用声卡或者使用扬声器。如果你在佩戴耳机且使用声卡的情况下仍然遇到音质低下的问题，我们建议你关闭默认开启的 3A 功能。
+:::
+
+可以参考以下方法来关闭 3A 功能：
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+  AEC: false,  // 关闭回音消除
+  AGC: false,  // 关闭增益控制
+  ANS: false,  // 关闭降噪
+}).then(/**...**/);
+```

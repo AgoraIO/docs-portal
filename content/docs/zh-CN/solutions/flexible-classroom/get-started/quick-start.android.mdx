@@ -1,0 +1,99 @@
+---
+title: "跑通示例项目"
+---
+本文介绍如何获取灵动课堂 Android 端 GitHub 源码并运行项目，快速启动并体验灵动课堂。
+
+## 技术原理
+
+下图展示了启动灵动课堂的基本流程。
+
+![灵动课堂基本流程](/img/flexible-classroom/quick-start.png)
+
+当你的 App 客户端请求加入灵动课堂时：
+
+1. 你的 App 客户端向 App 服务端申请 Token。
+2. 你的 App 服务端使用声网 App ID、App 证书和用户 UUID 生成一个 Token，返回给 App 客户端。
+3. 你的 App 客户端调用 API 并传入用户 ID、房间 ID 和 Token 启动灵动课堂。灵动课堂云服务会根据你传入的房间 ID 为该课堂自动创建一个房间。
+
+:::warning[注意]
+示例项目中使用了临时 Token，仅适用于运行 App 模块快速测试。在正式环境中，为确保安全，你必须参考[使用 Token 鉴权文档](/zh-CN/solutions/flexible-classroom/basic-features/generate-token.android.android)，在服务端部署并生成 Token。生成的 Token 对应的 `userId` 需要和 `launch` 方法中传入的参数 `userUuid` 保持一致，否则生成的 Token 无效。
+:::
+
+<a id="prerequisites"></a>
+## 前提条件
+
+开始前，请确保满足如下要求：
+
+-   在声网控制台获取 [App ID](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-id) 和 [App 证书](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-证书)。
+-   在声网控制台[开通灵动课堂服务](/zh-CN/solutions/flexible-classroom/get-started/enable#开通灵动课堂服务)。
+-   一台 Android 设备。模拟机可能出现功能缺失或者性能问题，所以声网推荐使用真机。此外，灵动课堂 Android 端要求运行在 Android 5.0 或以上版本。
+
+## 开发环境
+
+在你的开发设备上运行灵动课堂，需要先安装 Git（用于下载源码）、Android Studio 和 Java Development Kit。
+
+你可参考以下步骤准备开发环境：
+
+1. 点击[链接](https://git-scm.com/downloads)前往下载 Git。
+2. 点击[链接](https://developer.android.com/studio)前往下载 Android Studio。要求 Android Studio 4.1 以上版本，建议使用最新版本。
+3. 点击[链接](https://www.oracle.com/java/technologies/javase-downloads.html)前往下载 Java Development Kit。
+
+## 获取源码
+
+灵动课堂 Android 端的源码位于 GitHub [CloudClass-Android](https://github.com/AgoraIO-Community/CloudClass-Android) 仓库，你可参考以下步骤获取源码：
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone https://github.com/AgoraIO-Community/CloudClass-Android.git
+    ```
+
+2. 运行以下命令进入 `CloudClass-Android` 目录并切换分支至指定版本。将 `{VERSION}` 替换为要切换的版本号：
+
+    ```shell
+    cd CloudClass-Android
+    ```
+
+    ```shell
+    git checkout release/{VERSION}
+    ```
+
+    例如要切换到 2.8.20 版本分支，执行以下命令：
+
+    ```shell
+    git checkout release/2.8.20
+    ```
+
+    声网建议你切换到最新发版分支。参考下图在 GitHub 仓库中查看最新发版分支：
+
+![查看发版分支](https://web-cdn.agora.io/docs-files/1675999719789)
+
+## 启动灵动课堂
+
+参照以下步骤启动灵动课堂：
+
+1. 在 Android Studio 中导入 CloudClass-Android 项目。
+
+![Android Studio 导入项目界面](https://web-cdn.agora.io/docs-files/1648635239823)
+
+   :::info[信息]
+   如果获取依赖包失败，可以通过 Android Studio gradle sync 拉取。
+   :::
+
+![Android Studio gradle sync](https://web-cdn.agora.io/docs-files/1681284574670)
+
+2. 将一部 Android 设备连接至电脑，点击 **Run**，运行项目。
+
+   运行成功后，你可以在 Android 设备上看到以下画面：
+
+![homepage](https://web-cdn.agora.io/docs-files/1681284643120)
+
+3. 输入房间名、用户名，选择一种班型，然后点击**加入**，即可进入灵动课堂，看到以下画面：
+
+![classroom](https://web-cdn.agora.io/docs-files/1681284665766)
+
+## 后续步骤
+
+现在你已经初步体验了灵动课堂的功能，接下来可将灵动课堂[集成](/zh-CN/solutions/flexible-classroom/get-started/integrate.android)到你自己的项目中。
+
+如果你想要升级灵动课堂代码的版本，参考[升级指南](/zh-CN/solutions/flexible-classroom/overview/migration.android)。

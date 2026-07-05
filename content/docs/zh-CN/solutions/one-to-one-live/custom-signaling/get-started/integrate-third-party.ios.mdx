@@ -1,0 +1,90 @@
+---
+title: "快速集成"
+---
+为满足已集成三方信令服务的 App 的需求，声网 1v1 私密房还提供自定义三方信令方案。本文介绍如何将声网 `CallAPI` 的源码和三方信令模块集成到你的项目中，并进行必要的项目设置。
+
+## 前提条件
+
+开始前，请确保满足如下前提条件：
+
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上。
+- 有效的苹果开发者账号。
+
+## 集成步骤
+
+### 1. 创建项目
+
+如果你没有 iOS 项目，参考如下步骤先创建一个。如果本地已有项目，可以跳过本步骤，直接参考 [2. 添加 CallAPI](#2-添加-callapi)。
+
+1. 参考 [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) 在 Xcode 中创建一个项目。
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+4. 在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加 1v1 私密房所需的录音和摄像头权限。
+
+   | key                                    | type   | value                               |
+   | -------------------------------------- | ------ | ----------------------------------- |
+   | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：`for 1v1`。 |
+   | Privacy - Camera Usage Description     | String | 使用摄像头的目的，例如：`for 1v1`。 |
+
+### 2. 添加依赖
+
+参考如下步骤将不含信令相关实现的 `CallAPI` 添加到项目中。
+
+1. 下载或克隆 [`CallAPI`](https://github.com/AgoraIO-Community/CallAPI/tree/main/iOS) 源码。
+2. 将 `iOS` 下的 `CallAPI` 文件夹和 `CallAPI.podspec` 文件拷贝到项目文件夹中，和 `Podfile` 文件同级。
+3. 在 `Podfile` 文件中添加如下行，将 `CallAPI` 添加到项目中。由于使用了第三方的信令管理类，你可以使用剪裁方式集成：
+
+   ```ruby
+   pod 'CallAPI/WithoutRTM', :path => 'CallAPI.podspec'
+   ```
+
+   :::warning[注意]
+   以该剪裁方式集成的 `CallAPI` 中不包含默认的 RTM 信令实现方案，你需要自行实现。
+   :::
+
+4. 打开 Terminal，执行如下命令，将 `CallAPI` 代码集成进你的项目中：
+
+   ```ruby
+   pod install
+   ```
+
+### 3.（可选）检查版本兼容性
+
+如果你的项目之前集成过声网的 RTC SDK，需要确保 SDK 的版本号与 `CallAPI` 兼容，即 RTC SDK 的版本号不低于 4.1.1.26。
+
+如果版本号与 `CallAPI` 不兼容，可以直接在 `CallAPI.podspec` 文件中修改对应的 SDK 版本：
+
+```swift
+s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.26'
+```
+
+### 4. 实现并集成自定义信令
+
+你需要将三方信令的相关功能进行封装，实现信令管理、登录登出、Token 续期等能力，然后添加进项目中。具体的封装方法可以参考[实现自定义信令](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/implement-custom-signaling.ios)。
+
+为便于体验和参考，声网提供了一个基于环信即时通讯 SDK 封装的 `CallEasemobSignalClient` 类，用于实现 1v1 私密房所需的能力。
+
+:::warning[注意]
+由于自定义的信令管理类基于三方信令 SDK 实现，且只实现了 `CallAPI`
+  需要的信令协议和消息收发功能，因此 `CallEasemobSignalClient`
+  仅供参考，不保证其可用性和完整性。
+:::
+
+参考如下步骤将 `CallEasemobSignalClient` 类导入到项目中：
+
+1. 在 `Podfile` 文件中添加如下行，添加 `CallEasemobSignalClient`：
+
+   ```shell
+   pod 'HyphenateChat'
+   ```
+
+2. 在 Terminal 中执行 `pod install`，将 `HyphenateChat` 集成进项目中。
+
+## 后续步骤
+
+完成集成后，根据业务需要参考如下文档，将相应的功能添加到你的项目中：
+
+- [实现自定义信令](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/implement-custom-signaling.ios)
+- [实现 1v1 私密房](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/start-one-to-one.ios)
+- [实现秀场转 1v1](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/showroom-to-one-to-one.ios)

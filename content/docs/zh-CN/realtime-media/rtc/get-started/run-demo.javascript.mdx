@@ -1,0 +1,104 @@
+---
+title: "跑通 API 示例项目"
+---
+声网提供了开源示例项目，演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="RTC Web 示例项目" href="https://gitee.com/agoraio-community/API-Examples-Web" />
+  <Card title="RTC Web 示例项目" href="https://github.com/AgoraIO/API-Examples-Web" />
+</Cards>
+
+本文介绍如何快速跑通 Web 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+开始前请确保开发环境满足如下要求：
+
+- Windows 或 macOS 计算机，并且：
+
+  - 下载声网 Web SDK [支持的浏览器](/zh-CN/realtime-media/rtc/overview/browser-compatibility.react.javascript)。声网强烈推荐使用[最新稳定版 Google Chrome 浏览器](https://www.google.com/chrome/)。
+
+  - 具备物理音视频采集设备。
+
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)以正常使用声网服务。
+
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+
+- 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+- 参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)在声网控制台完成注册登录、创建项目，并获取项目的 App ID 和 App 证书。
+
+## 操作步骤
+
+### 获取示例项目
+
+运行以下命令克隆仓库到本地：
+
+```shell
+# 从 Gitee 克隆
+git clone https://gitee.com/agoraio-community/API-Examples-Web.git
+
+# 从 GitHub 克隆
+# git clone https://github.com/AgoraIO/API-Examples-Web.git
+```
+
+### 配置示例项目
+
+1. 安装依赖项。使用命令行进入克隆下来的 `/API-Examples-Web` 路径，运行以下命令安装依赖项：
+
+    ```shell
+    npm install
+    ```
+
+2. 启动项目。继续在项目根目录下，运行以下命令启动示例项目：
+
+    ```shell
+    npm run dev
+    ```
+
+    执行完成后，终端会打印如下行：
+
+    ```shell
+    please visit: http://localhost:3001/index.html
+    ```
+
+    使用浏览器打开 `http://localhost:3001/index.html` 页面，你可以看到如下界面：
+
+![web demo 启动页](/img/rtc/run-web-demo.png)
+
+3. 在界面中填入你从控制台获取的 **App ID** 和 **App 证书**，然后点击**设置**，完成初始化设置。
+
+    :::info[信息]
+    如果项目开启了**允许仅 App ID 加入**，则 App 证书字段留空。
+    :::
+
+### 运行示例项目
+
+在左侧栏中选择你想体验的功能或场景，设置 **Channel**，即频道名，然后根据界面步骤指引，即可加入频道进行体验。
+
+![运行项目](/img/rtc/run-web-demo2.png)
+
+以体验**屏幕共享**为例，具体步骤如下：
+
+1. 从左侧栏中点击**进阶示例**下的**屏幕共享**。
+
+2. 在右侧的 **Channel** 区域填入频道名，如 `testchannel`。
+
+3. 点击 **Join as host** 以主播身份加入频道，然后选择你想要共享的标签页、窗口或屏幕。成功共享后，你会在 **local stream** 区域内看到自己共享的内容。
+
+4. 邀请一位朋友使用另一台设备运行该示例项目，输入相同的 App ID、App 证书和频道名，然后点击 **Join as audience** 以观众身份加入频道。加入频道后，你的朋友就可以在 **remote stream** 区域中看到你共享的标签页、窗口或屏幕。
+
+![web 屏幕共享示例](/img/rtc/run-web-demo3.png)
+
+## 示例项目源码路径
+
+Web API Example 项目中包含有丰富的功能模块，你可以参考如下路径查看源码：
+
+| 路径 | 描述 |
+| --- | --- |
+| `/src/example/basic` | 快速开始示例 |
+| `/src/example/advanced` | 进阶示例 |
+| `/src/example/plugin` | 插件示例 |
+| `/src/example/others` | 其他示例 |
+| `/src/example/framework/vue` | Vue 框架示例 |
+| `/src/example/framework/react` | React 框架示例 |

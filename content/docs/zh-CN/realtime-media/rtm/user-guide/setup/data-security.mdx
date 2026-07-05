@@ -1,0 +1,196 @@
+---
+title: "数据安全"
+---
+RTM 对用户的数据及隐私安全极为重视，传输层 TLS 加密和客户端 256 位 AES 加密可以为用户数据提供有效保护。此外，RTM 还通过了 GDPR，SOC2 Type II 等安全合规认证。
+
+RTM 在以下几个方面为用户应用提供安全保护：
+
+- **传输层加密**：用户客户端和服务器端与 RTM 服务器之间数据传输采用 TLS 加密。
+- **消息加密**：用户每一条消息都提供了端到端的 `enumv.aestwofivesix` 加密保护。
+- **Token 权限控制**：提供基于时间限制的访问权限控制策略，确保客户端在可控状态下访问 RTM 资源。
+
+## 传输层加密
+
+RTM 提供了基于 TLS 加密的传输层安全保护，此功能默认开启且不可关闭。
+
+## 端侧消息加密
+
+如果你的应用对数据安全具有高敏感度，或者你的应用需要符合 HIPAA 或 SOC2 Type II 等安全合规要求，就需要消息级别的加密。为了达到更高级别的信息安全性，我们推荐你将 TLS 加密和端到端 AES 加密结合使用。
+
+SDK 内置 `enumv.aestwofivesix` 加密算法，你只需要在初始化 RTM 实例的时候配置加密模式、加密密钥和盐，即可自动开通端到端加密和解密功能。此功能一旦开启，同一个 App ID 下，你在所有频道发送的消息都会被 SDK 自动加密和解密。示例代码如下：
+
+```csharp
+var cipherConfig = new RtmEncryptionConfig()
+cipherConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
+// 将 your_encryptionKey 替换为你使用的密钥
+cipherConfig.encryptionKey = "your_encryptionKey";
+// 将 your_salt 替换为你使用的盐
+cipherConfig.encryptionKdfSalt = "your_salt";
+
+RtmConfig config = new RtmConfig();
+config.encryptionConfig = cipherConfig;
+// 将 your_appId 替换为你使用的 App ID
+config.appId = "your_appId";
+// 将 your_userId 替换为你使用的 User ID
+config.userId = "your_userId";
+
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM client initialized successfully");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to: {2}", e.Status.Operation, e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+```javascript
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = {
+    // 设置端侧加密模式，可以是 `AES_256_GCM` 或者 `NONE`，默认值为 `NONE`，即不开启加密。
+    encryptionMode: "AES_256_GCM",
+    // 设置你的密钥。
+    cipherKey: "your_cipherKey",
+    // 设置 32 byte 的盐。
+    salt: new Uint8Array()
+}
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+```java
+RtmEncryptionConfig config = new RtmEncryptionConfig()
+// 设置端侧加密模式，可以是 `AES_256_GCM` 或者 `NONE`，默认值为 `NONE`，即不开启加密。
+config.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
+// 将 your_encryptionKey 替换为你使用的密钥
+config.encryptionKey = "your_encryptionKey";
+// 将 your_salt 替换为你使用的盐
+byte[] salt = your_salt;
+config.encryptionSalt = salt;
+
+RtmConfig rtmConfig = new RtmConfig();
+rtmConfig.encryptionConfig = config;
+// 将 your_appId 替换为你使用的 App ID
+rtmConfig.appId = "your_appId";
+// 将 your_userId 替换为你使用的 User ID
+rtmConfig.userId = "your_userId";
+mRtmClient = RtmClient.create(rtmConfig);
+```
+
+```swift
+do {
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let encryptionConfig = AgoraRtmEncryptionConfig()
+encryptionConfig.encryptionKey = "your_encryptionKey"
+encryptionConfig.encryptionMode = .aes256Gcm
+
+let saltValues: [UInt8] = [ /* your salt values */ ]
+let saltData = Data(bytes: saltValues, count: saltValues.count)
+
+encryptionConfig.encryptionSalt = saltData
+
+rtmConfig.encryptionConfig = encryptionConfig
+
+let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmEncryptionConfig* encryption_config = [[AgoraRtmEncryptionConfig alloc] init];
+// 将 your_encryptionKey 替换为你使用的密钥
+encryption_config.encryptionKey = @"your_encryptionKey";
+encryption_config.encryptionMode = AgoraRtmEncryptionAES256GCM;
+// 将 your salt values 替换为你使用的盐
+unsigned char bytes[32] = { /*your salt values */ };
+encryption_config.encryptionSalt = [NSData dataWithBytes:bytes length:32];
+rtm_cfg.encryptionConfig = encryption_config;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+uint8_t salt[32] = {1,2,3,4,5};
+cfg.encryptionConfig.encryptionKey = "your_key";
+cfg.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
+memcpy(cfg.encryptionConfig.encryptionSalt, salt, 32);
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+```
+
+```dart
+final userId = 'your_userId';
+final appId = 'your_appId';
+late RtmClient rtmClient;
+var encryptionConfig = RtmEncryptionConfig(
+    encryptionMode: RtmEncryptionMode.aes256Gcm,
+    encryptionKey: 'your_encryptionKey',
+    encryptionSalt: [your_encryptionSalt]);
+
+var rtmConfig = RtmConfig( encryptionConfig:encryptionConfig );
+
+try {
+    var (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+
+```
+
+```typescript
+import { RtmClient, RtmConfig, RtmEncryptionConfig, RtmEncryptionMode } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const encryptionConfig: RtmEncryptionConfig = {
+  encryptionMode: RtmEncryptionMode.AES_256_GCM,
+  encryptionKey: "your_encryptionKey",
+  encryptionSalt: new Uint8Array([/* your salt values */])
+};
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  encryptionConfig: encryptionConfig
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM client initialized successfully with encryption");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+一旦开启消息加密，你的消息会在传输的每一个环节中都受到保护。SDK 会在消息传输之前对其进行加密，并在被订阅的客户端接收时，以相同的加密模式、加密密钥和盐对其进行解密。此外，即使消息在 RTM 服务器中被暂时存储，它也会受到加密保护，任何人在没有密钥和盐的情况下都无法破解。
+
+需要注意的是，一旦通过配置 `encryptionMode` 参数开启了自动加解密的功能，同一个 App ID 下所有的应用都需要开启该功能，并且使用相同的加解密参数，否则会出现订阅者收到消息无法解密的问题。
+
+:::info[信息]
+有些情况下自动加解密可能会影响你的功能。例如，如果你使用移动推送通知，RTM 将无法读取消息负载中提供的移动推送密钥和值，因为它已被加密。在这种情况下，你只需要加密消息负载中的敏感数据，而将其他数据片段保留为明文。我们将会在后续版本中提供这样部分加密的功能。
+:::

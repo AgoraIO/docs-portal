@@ -1,13 +1,13 @@
 # Migration Audit Summary
 
-This summary makes the migration audit findings visible in PR review. It is derived from the CSV control tables in this folder and does not migrate any content pages.
+This summary makes the migration audit findings visible in PR review. It is derived from the CSV control tables in this folder and the generated migration/audit reports.
 
 ## Scope
 
 - Source repository: `/Users/yangyixuan/Documents/GitHub/shengwang-doc-source`
 - Target repository: current `docs-portal`
 - PR context: `AgoraIO/docs-portal#617`
-- Write scope: `docs/migration/**` only
+- Write scope: `content/docs/zh-CN/**`, `docs/migration/**`, and migration/audit script fixes
 
 ## Execution Model
 
@@ -33,6 +33,52 @@ Use `docs/migration/work-plan.md` as the handoff checklist for colleagues taking
 | OpenAPI sources | 23 |
 | High-risk ledger rows | 950 |
 | Blocked ledger rows | 618 |
+
+## PR 617 Migration Execution
+
+The full redirect migration pass has been generated into `content/docs/zh-CN/**`.
+
+| Metric | Count |
+| --- | ---: |
+| Path-map rows | 2574 |
+| Redirect rows selected by `redirect_status=redirect` | 1859 |
+| Completed redirect migrations | 1859 |
+| Completed redirect audits | 1859 |
+| Audit pass | 1618 |
+| Audit differences | 241 |
+| Legacy residue | 0 |
+| Audit errors | 0 |
+
+| Audit result | Count |
+| --- | ---: |
+| `pass` | 1618 |
+| `differences:1` | 126 |
+| `differences:2` | 57 |
+| `differences:3` | 29 |
+| `differences:4` | 17 |
+| `differences:5` | 2 |
+| `differences:6` | 2 |
+| `differences:7` | 8 |
+
+| Migration state in `path-map.csv` | Count |
+| --- | ---: |
+| `completed` | 1859 |
+| `deferred` | 527 |
+| `dropped` | 86 |
+| `blocked` | 86 |
+| `not_required` | 12 |
+| `ready` | 4 |
+
+| Source type for completed rows | Count |
+| --- | ---: |
+| `docs` | 1628 |
+| `docs-api-reference` | 231 |
+
+Detailed reports:
+
+- Migration report: `docs/migration/generated/full-redirect-pass-1/report.md`
+- Audit report: `docs/migration/generated/full-redirect-pass-1-audit/report.md`
+- Page list: `docs/migration/generated/full-redirect-pass-1-pages.txt`
 
 ## Legacy Component Coverage
 
@@ -112,6 +158,7 @@ The top 20 open manual decisions have been extracted to `manual-decision-questio
 ## Key Interpretation
 
 - Legacy JSX should not be preserved as compatibility components.
+- Standalone HTML migration lanes can be flat/direct migrations, but scattered HTML/JSX inside MDX still needs normalization to Markdown, directives, approved MDX blocks, or audit-equivalent syntax.
 - New-site equivalents are mostly target syntax or migration strategies, not same-name React components.
 - `classified` means a migration rule is clear enough to batch.
 - `needs_review` means the item needs a syntax-map, IA, shared-content, or API-lane decision before migration.

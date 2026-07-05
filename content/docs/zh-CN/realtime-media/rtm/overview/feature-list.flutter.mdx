@@ -1,0 +1,105 @@
+---
+title: "特性列表"
+---
+本文提供 RTM 所具备的功能特性及对应 API 接口。
+
+## Setup
+
+| 功能 | API 接口 |
+| --- | --- |
+| 创建实例 | [`Future<(RtmStatus, RtmClient)> RTM(...)`](/api-ref/rtm2/flutter/toc-configuration/configuration#create) |
+| 销毁实例 | [`Future<RtmStatus> release()`](/api-ref/rtm2/flutter/toc-configuration/configuration#release) |
+| Token 设置 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/api-ref/rtm2/flutter/toc-configuration/configuration#login) 接口中的 `token` 参数 |
+| 端侧加密 | [`RtmEncryptionConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmEncryptionConfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmLogConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmLogConfig) 中的 `level` 参数 |
+| Proxy 设置 | [`RtmProxyConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmConfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`RtmPrivateConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 事件监听 | <Slot name="feature-list-flutter-html-0-10-1" /> |
+| 登录服务 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/api-ref/rtm2/flutter/toc-configuration/configuration#login) |
+| 登出服务 | [`Future<(RtmStatus, LogoutResult?)> logout()`](/api-ref/rtm2/flutter/toc-configuration/configuration#logout) |
+
+<Slot for="feature-list-flutter-html-0-10-1">
+
+- [`rtmClient.addListener({...})`](/api-ref/rtm2/flutter/toc-configuration/configuration#添加监听)
+    - [`rtmClient.removeListener({...})`](/api-ref/rtm2/flutter/toc-configuration/configuration#删除监听)
+
+</Slot>
+
+## Channel
+
+| 功能 | API 接口 |
+| --- | --- |
+| 订阅频道 | [`Future<(RtmStatus, SubscribeResult?)> subscribe(...)`](/api-ref/rtm2/flutter/toc-channel/channel#subscribe) |
+| 取消订阅频道 | [`Future<(RtmStatus, UnsubscribeResult?)> unsubscribe(...)`](/api-ref/rtm2/flutter/toc-channel/channel#unsubscribe) |
+| 创建 Stream Channel | [`Future<(RtmStatus, StreamChannel?)> createStreamChannel(...)`](/api-ref/rtm2/flutter/toc-channel/channel#createStreamChannel) |
+| 加入 Stream Channel | [`Future<(RtmStatus, JoinResult?)> join(...)`](/api-ref/rtm2/flutter/toc-channel/channel#join) |
+| 离开 Stream Channel | [`Future<(RtmStatus, LeaveResult?)> leave()`](/api-ref/rtm2/flutter/toc-channel/channel#leave) |
+| 销毁 Stream Channel | [`Future<RtmStatus> release()`](/api-ref/rtm2/flutter/toc-channel/channel#release) |
+
+## Topic
+
+| 功能 | API 接口 |
+| --- | --- |
+| 加入 Topic | [`Future<(RtmStatus, JoinTopicResult?)> joinTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#joinTopic) |
+| 发送 Topic 消息 | <Slot name="feature-list-flutter-html-2-2-1" /> |
+| 离开 Topic | [`Future<(RtmStatus, LeaveTopicResult?)> leaveTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#leaveTopic) |
+| 订阅 Topic | [`Future<(RtmStatus, SubscribeTopicResult?)> subscribeTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#subscribeTopic) |
+| 取消订阅 Topic | [`Future<(RtmStatus, UnsubscribeTopicResult?)> unsubscribeTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#unsubscribeTopic) |
+
+<Slot for="feature-list-flutter-html-2-2-1">
+
+- [`Future<(RtmStatus, PublishTopicMessageResult?)> publishTextMessage(...)`](/api-ref/rtm2/flutter/toc-topic/topic#publishTopicMessage)
+    - [`Future<(RtmStatus, PublishTopicMessageResult?)> publishBinaryMessage(...)`](/api-ref/rtm2/flutter/toc-topic/topic#publishTopicMessage)
+
+</Slot>
+
+## Message
+
+| 功能 | API 接口 |
+| --- | --- |
+| 发送消息 | <Slot name="feature-list-flutter-html-3-1-1" /> |
+
+<Slot for="feature-list-flutter-html-3-1-1">
+
+- [`Future<(RtmStatus, PublishResult?)> publish(...)`](/api-ref/rtm2/flutter/toc-message/message#publish)
+    - [`Future<(RtmStatus, PublishResult?)> publishBinaryMessage(...)`](/api-ref/rtm2/flutter/toc-message/message#publish)
+
+</Slot>
+
+## Presence
+
+| 功能 | API 接口 |
+| --- | --- |
+| 查询频道在线用户 | [`Future<(RtmStatus, WhoNowResult?)> whoNow(...)`](/api-ref/rtm2/flutter/toc-presence/presence#whoNow) |
+| 查询用户所在频道 | [`Future<(RtmStatus, WhereNowResult?)> whereNow(...)`](/api-ref/rtm2/flutter/toc-presence/presence#whereNow) |
+| 设置用户临时状态 | [`Future<(RtmStatus, SetStateResult?)> setState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#setState) |
+| 查询用户临时状态 | [`Future<(RtmStatus, GetStateResult?)> getState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#getState) |
+| 删除用户临时状态 | [`Future<(RtmStatus, RemoveStateResult?)> removeState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#removeState) |
+
+## Storage
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置频道属性 | [`Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#setChannelMetadata) |
+| 获取频道属性 | [`Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#getChannelMetadata) |
+| 删除频道属性 | [`Future<(RtmStatus, RemoveChannelMetadataResult?)> removeChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#removeChannelMetadata) |
+| 更新频道属性 | [`Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#updateChannelMetadata) |
+| 设置用户属性 | [`Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#setUserMetadata) |
+| 获取用户属性 | [`Future<(RtmStatus, GetUserMetadataResult?)> getUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#getUserMetadata) |
+| 删除用户属性 | [`Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#removeUserMetadata) |
+| 更新用户属性 | [`Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#updateUserMetadata) |
+| 订阅用户属性 | [`Future<(RtmStatus, SubscribeUserMetadataResult?)> subscribeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#subscribeUserMetadata) |
+| 取消订阅用户属性 | [`Future<(RtmStatus, UnsubscribeUserMetadataResult?)> unsubscribeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#unsubscribeUserMetadata) |
+
+## Lock
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置锁 | [`Future<(RtmStatus, SetLockResult?)> setLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#setLock) |
+| 获取锁 | [`Future<(RtmStatus, AcquireLockResult?)> acquireLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#acquireLock) |
+| 释放锁 | [`Future<(RtmStatus, ReleaseLockResult?)> releaseLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#releaseLock) |
+| 收回锁 | [`Future<(RtmStatus, RevokeLockResult?)> revokeLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#revokeLock) |
+| 查询锁 | [`Future<(RtmStatus, GetLocksResult?)> getLocks(...)`](/api-ref/rtm2/flutter/toc-lock/lock#getLocks) |
+| 删除锁 | [`Future<(RtmStatus, RemoveLockResult?)> removeLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#removeLock) |

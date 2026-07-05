@@ -1,0 +1,1747 @@
+---
+title: "发版说明"
+---
+Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你可以使用 SDK 在网页浏览器中调用 API 建立连接，控制音视频通话和直播服务。本页提供**声网 Web SDK 4.x** 版本的发版说明。
+
+:::info[信息]
+本文仅适用于声网 Web SDK 4.x。这是基于 Web SDK 3.x 的全量重构版本，不向下兼容。声网已经停止维护 Web SDK 3.x 版本。建议你选择合适的时机，参考[迁移指南](/zh-CN/realtime-media/rtc/overview/migration-guide)从 3.x 及以下版本升级至 4.x 版本。
+:::
+
+### 已知问题和兼容性
+
+**浏览器兼容性说明**
+
+为保证最佳的用户体验，声网强烈推荐使用桌面端 Google Chrome 浏览器[官方最新版本](https://www.google.com/intl/zh-CN/chrome/)。详见 [Web SDK 的浏览器兼容性](/zh-CN/realtime-media/rtc/overview/browser-compatibility.react.javascript)。
+
+**Chrome 弃用和删除 Plan B 语义**
+
+根据 [Google 官方说明](https://www.chromestatus.com/feature/5823036655665152)，Chrome 浏览器计划弃用和删除 WebRTC 中的 Plan B 语义。该改动影响声网 Web SDK 如下版本的使用和体验。如你使用下述版本的 Web SDK，请尽快升级至最新版本。
+
+|          Web SDK 版本           | 影响范围                                                     |
+| :-----------------------------: | :----------------------------------------------------------- |
+| 2.5.0-2.9.0 和 3.0.0-3.6.1 | 在调用 `publish` 方法后再调用 `switchDevice` 方法，出现视频卡顿或无声问题。 |
+|           4.0.0-4.0.1           | `publish` 和 `subscribe` 方法不生效。                        |
+
+## v4.24.5
+
+该版本于 2026 年 6 月 24 日发布。
+
+### 升级必看
+
+#### 域名白名单变更
+
+自 v4.24.5 起，SDK 的域名白名单变更为：
+
+```
+*.agora.io
+*.edge.agora.io
+*.sd-rtn.com
+*.edge.sd-rtn.com
+*.rtnsvc.com
+*.edge.rtnsvc.com
+*.rtesvc.com
+*.edge.rtesvc.com
+```
+
+为确保你在有网络访问限制的环境中能够使用声网产品，如果你将 SDK 升级至 v4.24.5，请务必更新防火墙的域名白名单。
+
+### 新增特性
+
+#### AI 降噪支持背景人声消除
+
+该版本增强了 AI 降噪能力，支持背景人声消除。在嘈杂环境或多人发言场景下，该能力可以进一步突出目标人声，提升音频采集效果。
+
+### 改进
+
+#### 连通性与建连体验优化
+
+该版本优化了信令流程，提升了会话建立阶段的处理效率以及复杂网络环境下的连接成功率。
+
+#### 首帧与播放体验优化
+
+该版本优化了音视频溯源相关链路和抖动缓冲区处理策略，有助于缩短首帧时间，减少特定场景下的音视频卡顿现象。
+
+#### 订阅与自适应策略优化
+
+该版本优化了音频订阅流程，默认采用 presubscribe 模型，提升了订阅效率和播放稳定性；同时，在开启全链路反馈且使用保帧率模式时，为分辨率降档提供下限设置能力，便于更细粒度地平衡流畅度与画面清晰度。
+
+### 问题修复
+
+- 修复了部分场景下连接建立可能超时的问题，提升了连接稳定性。
+- 修复了 string UID 用户离开频道后立即重新加入时，远端可能重复收到 `user-joined` 回调的问题。
+- 修复了部分场景下 message 消息无法正常接收的问题。
+- 修复了 Native 端发送 H.265 和 Metadata 后，Web 端可能无法正常接收的问题。
+- 修复了 Safari 16.6 下部分场景本地画面可能黑屏或异常退出的问题。
+- 修复了首次调用 `client.publish(video)` 后，远端视频可能短暂卡顿的问题。
+- 修复了 npm 包中 TypeScript 类型定义文件缺失以及导出符号异常的问题。
+
+## v4.24.4
+
+该版本于 2026 年 5 月 27 日发布。
+
+### 改进
+
+针对弱网场景进行了内部优化，提高了登录成功率。
+
+## v4.24.3
+
+该版本于 2026 年 3 月 27 日发布。
+
+### 新增特性
+
+#### AI 降噪插件低延迟模式
+
+AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 升级至 v2.0.1 版本，新增低延迟模式和设置 WASM 模块的日志等级等特性，详见 [AI 降噪插件发版说明](/zh-CN/realtime-media/rtc/advanced-features/extensions/release.javascript#ai-降噪插件)。
+
+### 改进
+
+该版本进行了以下改进：
+
+- 该版本优化了 H.264 编码场景下的视频互动体验。
+- AI 画质插件升级至 v2.0.1 版本，优化了锐化算法，提升了部分场景下的视频体验。
+
+## v4.24.2
+
+该版本于 2025 年 12 月 12 日发布，修复了一个由于 Chrome 浏览器升级（自 Chrome 143 起）引入的兼容性问题。
+
+:::info[信息]
+Chrome 已于 2025 年 12 月 18 日修复了该问题。
+:::
+
+#### 问题表现
+
+A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新开始发布音频流时，会出现 `Session error code: ERROR_CONTENT` 的报错信息。
+
+由于这是浏览器侧破坏式的改动，该问题会影响**所有版本的 RTC Web SDK**。
+
+相关问题可参考 Chromium Bug Report：https://issues.chromium.org/issues/467468926 。
+
+#### 解决办法
+
+为避免该问题影响用户，我们在该版本 SDK 中进行了兼容性处理，确保在 Chrome 官方修复前，重新推流和重新订阅流程能够正常运行。同时，声网研发团队已将问题同步至 Chrome 团队。
+
+最新进展：Chrome 已于 2025 年 12 月 18 日修复该问题。
+
+## v4.24.1
+
+该版本于 2025 年 11 月 25 日发布。
+
+### 新增特性
+
+#### 通话前网络质量探测
+
+在通话前进行网络质量探测，可以有效帮助本地用户判断和预测上行网络质量是否良好。该版本新增 [`startLastmileProbeTest`](/api-ref/rtc/javascript/interfaces/iagorartc#startLastmileProbeTest) 接口，向用户反馈开始通话前上下行网络的丢包、网络抖动和往返时延数据。
+
+#### 双流模式
+
+该版本新增 [`setDualStreamMode`](/api-ref/rtc/javascript/interfaces/iagorartcclient#setDualStreamMode) 方法，扩展了订阅视频双流的实现方式。你可以通过将该方法的 `mode` 参数设为 `AUTO_SIMULCAST_MODE`，在发送端开启小流自适应模式（即默认不主动发送小流），然后通过以下步骤实现发送小流：
+
+- 接收端主播调用 `setRemoteVideoStreamType` 发起接收小流申请。
+- 发送端收到申请后自动切换为发送小流模式。
+
+此外，你还可以将 `mode` 参数设置为 `DISABLE_SIMULCAST_STREAM`（始终不发送小流）或 `ENABLE_SIMULCAST_STREAM`（始终发送小流）。
+
+该方法和已有的 `enableDualStream` 和 `disableDualStream` 之间的关系详见 [API 参考](/api-ref/rtc/javascript/interfaces/iagorartcclient#setDualStreamMode)。为确保集成逻辑清晰，我们建议你选取一套 API 进行集成。声网规划在后续版本中逐渐废弃 `enableDualStream` 和 `disableDualStream`。
+
+#### 水印插件 (BETA)
+
+该版本新增发布水印插件 (BETA) [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0，支持通过插件的方式向实时互动的视频流中添加图像水印。
+
+水印插件支持自定义水印的位置、大小、透明度等属性，可应用于本地和远端的视频轨道。相关集成和使用步骤可以参考[使用水印插件 (BETA)](/zh-CN/realtime-media/rtc/advanced-features/extensions/watermark.javascript)。
+
+#### 其他新增特性
+
+- 支持 H265 解码。支持的浏览器版本及使用限制详见 [API 参考](/api-ref/rtc/javascript/globals#sdk_codec)。
+
+### 改进
+
+#### 屏幕共享能力拓展
+
+该版本进一步拓展了屏幕共享的能力，在 `createScreenVideoTrack` 接口中通过如下参数，支持屏幕共享时共享音频等功能：
+
+- [`ScreenVideoTrackInitConfig`](/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig.html) 中新增 `windowAudio` 和 `monitorTypeSurfaces`，分别设置是否允许分享窗口音频和是否允许分享整个屏幕。
+- [`ScreenAudioTrackInitConfig`](/api-ref/rtc/javascript/globals.html#screenaudiotrackinitconfig) 中新增 `suppressLocalAudioPlayback` 和 `restrictOwnAudio`，设置是否允许本地播放和采集音频。
+
+:::info[信息]
+在有屏幕共享的连麦场景中，我们不建议分享系统或者窗口音频，否则可能会产生类似回声的问题。你可以通过将 `ScreenVideoTrackInitConfig` 中的 `windowAudio` 和 `systemAudio` 均设为 `false` 来停止共享音频。
+:::
+
+#### AI 画质插件升级
+
+该版本对 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) 的算法进行了升级，在减小插件体积、提升视频体验、扩展浏览器兼容性等方面均有改进。新版本的插件需要在支持 SIMD 的浏览器中才能正常运行。具体变更及改进点可以参考 [AI 画质插件发版说明](/zh-CN/realtime-media/rtc/advanced-features/extensions/release.javascript#ai-画质插件)。
+
+### 问题修复
+
+修复了 iOS 系统上，音频流销毁后，系统音量无法设置为 0 的问题。
+
+## v4.24.0
+
+该版本于 2025 年 7 月 31 日发布。
+
+### 新增特性
+
+#### 快速首帧出图
+
+为降低用户等待主播视频首帧渲染出图的时间，该版本在 `join` 方法中新增参数 `options`，用来设置加入频道选项。通过将 [`IJoinOptions`](/api-ref/rtc/javascript/interfaces/ijoinoptions.html) 中的 `autoSubscribe` 设为 `true`，可以设置用户加入频道时即自动订阅频道中主播的媒体流。
+
+在一对一、一对多等实时互动场景中，该功能可以有效降低首帧出图时间，提高互动体验。更多适用场景和最佳实践可以参考[频道秒开](/zh-CN/realtime-media/rtc/best-practice/preload.javascript)。参考最佳实践集成后，在 Windows 和 macOS 端 Chrome 浏览器上，首帧出图时间最低可降至 300 毫秒以内。
+
+:::warning[注意]
+如果设置自动订阅主播的媒体流，声网后台会在用户加入频道时就开始下发媒体流，并开始计费。
+:::
+
+### 改进
+
+#### 弱网传输体验优化
+
+该版本优化了带宽估计算法，实现音频优先传输。有效降低极限弱网下视频卡顿风险；同时提升了弱网环境下大小流的切换流畅度，切换更平滑；网络恢复后的连接响应也更加灵敏。
+
+#### 新的媒体建连策略
+
+该版本通过新的媒体建连策略，提升了在企业网络以及受限网络下 SDK 的重连和媒体登陆成功率。
+
+#### 网络质量评估更精确
+
+该版本在网络质量评估 [`NetworkQuality`](/api-ref/rtc/javascript/interfaces/networkquality) 的算法中，增加了可用宽带作为参考，可以更准确地体现出 SDK 是否受到限宽网络条件的影响。
+
+该改进需要通过私有参数开启，如果需要，可以联系[技术支持](https://tickets.shengwang.cn)。
+
+#### 其他改进
+
+- 优化了不同视频编码标准下的默认视频码率，通过合理分配网络上行码率，从而降低了弱网卡顿率。
+- 完善了设备在不支持 AV1 解码情况下的回退机制。
+- 改进了 Web 和 Web 互通、Web 和 Native 互通时 `rtc` 模式下，1v1 场景中的用户对话体验。
+
+### 问题修复
+
+- 修复了 Firefox 138+ 上因浏览器自身版本回退导致的接收端可能出现的黑屏问题。
+- 对 Safari 18.4 和 18.5 上因浏览器本身的问题导致的卡顿进行了兼容性修复。
+- 修复了分辨率过低时出现的编码失败的问题。
+- 修复了使用 Plan-B 场景下偶现的黑屏问题。
+
+## v4.23.4
+
+该版本于 2025 年 6 月 5 日发布。
+
+v4.23.4 进行了一些内部改进，修复了特定场景下调用 `setMute` 或 `setEnable` 方法时，可能出现无声的问题。如果你使用的是 v4.23.0 及之后版本的 SDK，我们建议你升级到该版本，以获得更好的用户体验。
+
+## v4.23.3
+
+该版本于 2025 年 4 月 30 日发布。
+
+v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/package/agora-extension-virtual-background)，包含如下改动：
+
+- 优化了内存及 CPU 开销。
+- 修复了特定分辨率时产生的黑屏问题。
+
+## v4.23.2
+
+该版本于 2025 年 3 月 5 日发布，主要包含以下改进：
+
+- 为支持[声网对话式 AI 引擎](/zh-CN/ai)作了一些内部改进。
+- 进一步缩小了包体积。
+
+## v4.23.1
+
+该版本于 2025 年 1 月 16 日发布，进行了一些内部改进。
+
+## v4.23.0
+
+该版本于 2024 年 12 月 19 日发布。
+
+### 升级必看
+
+为提升 SDK 可用性，该版本修改了 `RemoteVideoTrackStats` 中 [`freezeRate`](/api-ref/rtc/javascript/interfaces/remotevideotrackstats.html#freezerate) 的计算方式，由累计的平均卡顿率改为最近一秒的卡顿率。你可以使用该参数来判断视频是否存在瞬时卡顿。如果需要统计当前会话的累计平均卡顿率，可以使用 [`totalFreezeTime`](/api-ref/rtc/javascript/interfaces/remotevideotrackstats.html#totalfreezetime) / [`totalDuration`](/api-ref/rtc/javascript/interfaces/remotevideotrackstats.html#totalduration) 来进行计算。
+
+### 新增特性
+
+#### 本地媒体 PeerConnection 连接状态回调
+
+在某些受限网络条件下，为获取媒体连接的实时状态变化，该版本新增 [`"peerconnection-state-change"`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_peerconnection_state_change) 事件，用来获取 WebRTC [RTCPeerConnection](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection) 的连接状态。
+
+#### 默认共享当前页面
+
+为提升屏幕共享易用性，该版本在 `ScreenVideoTrackInitConfig` 中添加 [`preferCurrentTab`](/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig.html#prefercurrenttab) 参数，支持创建屏幕共享轨道时设置默认共享当前页面。
+
+### 改进
+
+#### 媒体重连策略改进
+
+该版本对媒体重连策略进行了改进，提升了弱网情况下 SDK 的重连和媒体登录成功率，对于部署了防火墙的企业网络提升尤为明显。如果希望应用该改进，请[联系技术支持](https://ticket.shengwang.cn/)开通。
+
+#### 升级虚拟背景算法
+
+该版本将虚拟背景算法升级到 2.0.0 版本。[虚拟背景插件 2.0.0](https://www.npmjs.com/package/agora-extension-virtual-background/v/2.0.0) 对人像算法进行全面升级，提供更加分明的人像边缘以及更加清晰稳定的视频画面。
+
+#### 优化包体积
+
+为进一步减小包体积，该版本将 ESM-bundle 格式包中的兼容 WebRTC 中的 Plan-B 功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/basic-features/tree-shaking.javascript)。
+
+#### 其他改进
+
+- 优化了复杂网络场景下的登录时长。
+- 优化了 VP9 的切层算法，能够降低延时、提升视频流畅度。
+
+  :::warning[注意]
+  Safari 浏览器不支持 VP9 SVC。
+  :::
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 特定场景下调用 `setMute` 和 `setEnable` 时可能出现黑屏。
+- 断网重连之后，偶现音视频流发送失败。
+- 128 人场景下，角色为观众（`audience`）的用户可以发流。
+
+### API 变更
+
+#### 新增
+
+- `AgoraRTC.on("peer-connection-state-change")`
+- `ScreenVideoTrackInitConfig` 中新增 `preferCurrentTab` 参数
+
+## v4.22.2
+
+该版本于 2024 年 10 月 28 日发布。
+
+### 新增特性
+
+#### 屏幕共享音频 3A 处理
+
+自该版本起，调用 `createScreenVideoTrack` 方法创建屏幕共享视频轨道时，`withAudio` 参数支持传入 `ScreenAudioTrackInitConfig`，用于自定义音频共享的初始化配置。你可以根据使用场景，按需启用 3A 处理（自动增益、回声消除和噪声抑制），以优化共享音频质量。详见 [API 文档](/api-ref/rtc/javascript/interfaces/iagorartc.html#createscreenvideotrack)。
+
+:::warning[注意]
+如果你的浏览器不支持共享音频，即使传入 `ScreenAudioTrackInitconfig` 也只会返回视频轨道。
+:::
+
+### API 变更
+
+#### 新增
+
+- `createScreenVideoTrack` 方法中的 `withAudio` 参数支持传入 `ScreenAudioTrackInitconfig`
+
+## v4.22.1
+
+该版本于 2024 年 9 月 19 日发布，进行了一些内部改进。
+
+## v4.22.0
+
+该版本于 2024 年 8 月 15 日发布。
+
+### 升级必看
+
+为进一步减小包体积，该版本将 ESM-bundle 格式包中的跨频道连麦、旁路推流、实时审核（鉴黄）等功能拆分成了独立的服务模块。用户可根据实际需求，手动导入进行集成。集成方式详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/basic-features/tree-shaking.javascript)。
+
+### 新增特性
+
+#### 适配 HarmonyOS NEXT
+
+经过测试确认，该版本 SDK 支持使用 HarmonyOS NEXT 华为浏览器实现音视频推拉流。具体兼容性说明，见[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/overview/browser-compatibility.react.javascript#移动端)。
+
+#### 优化频道秒开
+
+使用频道秒开功能时，为减少首帧渲染时间，我们建议在调用加入频道方法时立即下发主播的媒体流，详见[频道秒开](/zh-CN/realtime-media/rtc/best-practice/preload.javascript#22-进入频道)。该设置下，用户一加入频道就会产生拉流，从而产生计费，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy#基础服务)。
+
+#### 支持 AV1 编码 (Beta)
+
+SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `ClientConfig.codec` 为 `av1` 来启用该编码格式。与同等码率的 H.264 相比，AV1 编码效率提升超过 30%，并且提供更佳的视频画质。
+
+### 改进
+
+该版本有以下改进：
+
+- 优化了 VP9 编解码的 SVC（可伸缩视频编码）功能，进一步提升了视频质量和传输效率。
+- 优化了 VAD（语音活动检测），新增音乐检测功能，提升了人声检测的准确率。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了部分场景下 Safari 获取 `stats` 失败的问题。
+- 修复了部分场景下弱网码率设置不准的问题。
+
+### API 变更
+
+该版本新增以下 API:
+
+- `AgoraRTCClient.getRemoteAudioStats` 新增 `receivePacketsDiscarded` 返回字段
+- `ClientConfig.codec` 新增 `av1` 枚举值
+- ESM-bundle 格式包中的 `AgoraRTC` 新增 `use` 方法
+
+## v4.21.0
+
+该版本于 2024 年 6 月 3 日发布。
+
+### 升级必看
+
+该版本 SDK 引入视频质量控制模块 (Video Quality Control, VQC)。`ICameraVideoTrack` 默认开启 `"motion"`（流畅优先）模式，以保障在低带宽、高 CPU 占用的情形下视频的流畅性，进一步提升用户体验。你可以根据需求调用 [`setOptimizationMode`](/api-ref/rtc/javascript/interfaces/cameravideotrackinitconfig.html#optimizationmode) 方法来动态调整视频的传输模式。
+
+### 新增特性
+
+#### 预加载频道
+
+该版本新增 [`AgoraRTC.preload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#preload) 方法，支持角色为观众的用户在加入频道前预先加载一个或多个频道。该方法调用成功后可以减少观众加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的音视频体验。关于预加载频道的最佳实践，详见[频道秒开](/zh-CN/realtime-media/rtc/best-practice/preload.javascript)。
+
+### 改进
+
+该版本有以下改进：
+
+- 优化了带宽估计算法和发送端的弱网拥塞控制算法，从而有效降低了弱网条件下发送端的卡顿率。
+- 优化了 SDK 浏览器兼容性检测范围，解决了部分设备上浏览器兼容性检测不准确的问题。
+- 增加了对部分阿里系 App（如支付宝、钉钉等）的兼容，你可以直接在这些 App 中收发音视频流。
+- 为了优化 Safari 17.4 以下版本浏览器的用户体验，补充了视频质量自适应算法，提升了在网络带宽受限情况下的视频质量自适应能力，进一步确保视频流的流畅性。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 部分安卓设备上 `isPlaying` 返回的视频播放状态不准确。
+- 移动端 Safari 上，调用 `getLocalVideoStats` 方法返回的本地视频轨道的分辨率信息不准确；调用 `setLowStreamParameter` 设置的小流分辨率不生效。
+
+### API 变更
+
+该版本新增以下 API:
+
+- `AgoraRTC.preload`
+
+## v4.20.2
+
+该版本于 2024 年 3 月 20 日发布。
+
+该版本修复了在某些场景下调用 [`createCustomVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomvideotrack) 方法，出现采集的视频分辨率被浏览器修改的问题。
+
+## v4.20.1
+
+该版本于 2024 年 2 月 26 日发布。
+
+### 新增特性
+
+#### 发送 SEI 信息
+
+为了实现在 H.264 视频流中添加和发送 SEI 信息，该版本新增 `LocalVideoTrack.sendSeiData` 方法和 `RemoteVideoTrack.on("sei-received")` 事件。其中，SEI 信息包括动态面部捕捉数据、虚拟视频信息及数字水印等，该信息包的大小限制为 1 KB。在使用之前，你需要通过参数 `AgoraRTC.setParameter("ENABLE_VIDEO_SEI", true)` 启用该功能。
+
+:::warning[注意]
+- SEI 信息发送功能仅在 Chrome 87 及以上或 Safari 15.4 及以上版本支持。由于该功能的实现依赖于浏览器的支持情况，我们更推荐你使用 Native 端发送或接收 SEI 信息。
+- 由于浏览器基础组件冲突，SEI 信息发送不支持与[端到端媒体加密 (Beta)](/zh-CN/realtime-media/rtc/advanced-features/e2e-encryption.javascript) 功能同时开启。
+:::
+
+#### 监控接收端视频状态
+
+自该版本起，新增了 `"video-state-changed"` 事件来监控 Web 端视频卡顿和恢复状况，以便应用层及时采取相应的处理措施。详见 [API 文档](/api-ref/rtc/javascript/interfaces/iremotevideotrack.html#on)。
+
+#### 数据流加密
+
+为提升数据流传输的安全性，该版本在 `setEncryptionConfig` 方法中新增 `encryptDataStream`参数，用于开启数据流加密。详见[`AgoraRTCClient.setEncryptionConfig`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setencryptionconfig)。
+
+### 改进
+
+该版本有以下改进：
+
+- 优化了移动端音频发流体验，单路音频场景下减少了因为浏览器缺陷导致的电流声、无声问题。
+
+- 新增最低视频码率的默认设置，优化了视频码率设置。如果你在调用 `setEncoderConfiguration` 时没有设置 `bitrateMin` 的值，SDK 会根据已设置的分辨率和帧率为你设置一个合适的码率。该默认设置仅在 Chrome 和 Edge 上生效。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 单频道 128 位主播场景下，如果有用户在网络重连过程中离开频道，会导致本地用户订阅其他远端用户的音频流失败。
+
+### API 变更
+
+该版本新增以下 API:
+
+- `LocalVideoTrack.sendSeiData`
+- `RemoteVideoTrack.on("sei-received")`
+- `RemoteVideoTrack.on("video-state-changed")`
+- `AgoraRTCClient.setEncryptionConfig` 中新增 `encryptDataStream` 参数
+
+## v4.20.0
+
+该版本于 2023 年 12 月 8 日发布。
+
+### 升级必看
+
+在 4.20.0 之前的版本中，你可以在 Firefox 上调用 `IRemoteAudioTrack.setPlaybackDevice` 方法，但由于 Firefox 存在 [Bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1849108)，会出现回声问题。为保障体验，SDK 自 4.20.0 起进行了限制，在 Firefox 上调用该方法会抛出 `NOT_SUPPORTED` 错误。
+
+如果你使用了 `IRemoteAudioTrack.setPlaybackDevice` 方法，升级至该版本后请修改相关代码。
+
+### 新增特性
+
+在某些版本的 iOS 设备上，App 通话被微信通话或系统电话打断后有概率无法自动恢复。为解决这一问题，该版本新增 `"audio-context-state-changed"` 事件用于监听 App 通话是否被打断，并且新增 `resumeAudioContext` 方法用于恢复通话。使用方法详见 [API 文档](/api-ref/rtc/javascript/interfaces/iagorartc#resumeaudiocontext)。
+
+### 改进
+
+该版本有以下改进：
+
+- 缩短了使用 String 型 UID 加入频道的时间。
+- ChromeOS 平台上支持在共享整个屏幕和共享 Chrome 标签页时分享音频。
+
+### API 变更
+
+#### 新增
+
+- `resumeAudioContext`
+- `AgoraRTC.on("audio-context-state-changed")`
+
+## v4.19.3
+
+该版本于 2023 年 11 月 2 日发布。
+
+该版本修复了在低于 Safari 16 的版本上接收 H.264 编码视频流出现黑屏的问题：集成 4.19.2 版本 Web SDK 的客户端与集成声网 Native（包括 Android、iOS、Windows 和 macOS 平台）SDK 的客户端进行音视频通话时，如果 Native 客户端使用 H.264 编码发送视频流，低于 Safari 16 的 Web 客户端会出现黑屏。
+
+如果你集成了 4.19.2 版本的 SDK，声网推荐你尽快升级到 4.19.3 版本。
+
+## v4.19.2
+
+该版本于 2023 年 10 月 20 日发布。
+
+### 改进
+
+#### VP9 编解码
+
+测试结果显示，在码率相同的条件下，VP9 的画质可以达到 VP8 的两倍。该版本将 VP9 编解码由 Beta 发布转为正式发布，并且进行了以下优化：
+
+- 更新浏览器兼容性：桌面端和移动端均支持 Safari 16.0 及以上版本。
+- 在低版本的浏览器上支持自动回退到 VP8：只要频道内有一位用户的浏览器版本低于[兼容性表格](#vp9)列出的版本，该频道内所有以 VP9 编解码的视频都会回退到以 VP8 编解码。
+
+#### Safari 动态调整编码分辨率
+
+Safari 存在已知问题，不能在网络条件较差或者视频发送帧率下降时自动降低视频编码分辨率，因此可能导致视频画面模糊。为保障用户体验，该版本在视频属性预设值中新增 `"720p_auto"`，用于确保在 Safari 上能够动态调整视频编码分辨率。
+
+升级到该版本后，如果你当前使用的视频属性为 720p，声网推荐你改用 `"720p_auto"` 并且将编码格式设为 `"vp9"`，以取得最佳效果。
+
+### API 变更
+
+#### 新增
+
+- `VideoEncoderConfigurationPreset` 中新增 `"720p_auto"`
+
+## v4.19.1
+
+该版本于 2023 年 10 月 11 日发布。
+
+该版本修复了使用 Webpack 4.x 对 SDK 二次打包导致运行出错的问题。二次打包指将 SDK 集成到 App 后再对 App 进行打包。
+
+## v4.19.0
+
+该版本于 2023 年 9 月 22 日发布。
+
+:::warning[注意]
+在 App 中集成该版本的 SDK 后，使用 Webpack 4.x 对 App 打包会出现错误。你可以通过以下方式解决该问题：
+
+- 如果你需要使用 Webpack 4.x 打包 App，请将 SDK 升级到 4.19.1 版本。
+- 如果你想继续使用 4.19.0 版本的 SDK，声网推荐你使用 Webpack 5.x 或其它主流工具（比如 Vite）打包。
+:::
+
+### 升级必看
+
+#### 动态调整小流视频属性
+
+在 4.19.0 之前的版本中，你必须在 `publish`  之前调用 `setLowStreamParameter` 来设置小流视频属性。如果需要在发流后更改小流视频属性，则必须重新发布视频流，导致接收端的视频体验受到影响。
+
+为提升接收端的视频体验，自该版本起，你可以在 `publish` 之后调用 `setLowStreamParameter`，实现在发流后动态调整小流分辨率、码率和帧率。声网推荐你在升级至该版本后根据需要修改 `setLowStreamParameter` 的调用时序。例如在直播、视频会议等场景中，随着频道中的发流人数增加，你可以动态调整小流视频属性来减轻带宽压力。
+
+### 新增特性
+
+#### 端到端媒体加密 (Beta)
+
+在数据安全要求较高的场景下，除了使用[媒体流加密](/zh-CN/realtime-media/rtc/advanced-features/channel-encryption.javascript)功能，你还可以使用该版本新增的端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被其它第三方获取。如需开通端到端加密功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### Tree shaking（摇树优化）
+
+自该版本起，SDK 包支持 [Tree shaking](https://webpack.js.org/guides/tree-shaking/)，能够在构建过程中移除未引用的代码，从而减小集成 SDK 后的 App 体积。如需使用该功能，请确保通过 npm 集成 SDK 并且使用正确的导入 (`import`) 方式。详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/basic-features/tree-shaking.javascript)。
+
+#### 同一视频流两路显示
+
+该版本新增 `clone` 方法，用于复制当前的摄像头或屏幕共享视频轨道并设置显示参数。在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。例如，你可以将同一视频流以一路高分辨率、一路低分辨率同时展示在界面上。
+
+#### 切换前置和后置摄像头
+
+为方便在移动端切换摄像头，该版本在 `ICameraVideoTrack.setDevice` 方法中新增 `facingMode` 参数，用于指定使用手机的前置或后置摄像头。详见 [`ICameraVideoTrack.setDevice`](/api-ref/rtc/javascript/interfaces/icameravideotrack#setDevice)。
+
+#### AI 画质插件 (Beta)
+
+自该版本起，SDK 可以与 AI 画质插件搭配使用，在不改变分辨率的条件下智能提升视频画质，优化观看体验。详见[使用 AI 画质插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/super-clarity.javascript)。
+
+#### 第三方视频审核
+
+自该版本起，SDK 支持接入第三方视频审核服务。详见 [`setImageModeration`](/api-ref/rtc/javascript/interfaces/iagorartcclient#setImageModeration)。
+
+### 改进
+
+#### 优化自动模式
+
+在自动模式下，SDK 优先连接 SD-RTN™ ，如果连接失败，会自动切换到 TCP/TLS 443。为提高网络受限环境下的接入体验，该版本优化了 SDK 的自动模式，提升了连接速度和稳定性。由于优化后的自动模式不再使用代理，该版本废弃了  `AgoraRTCClient.on("join-fallback-to-proxy")` 回调。
+
+#### 其他改进
+
+该版本还有以下改进：
+
+- 缩短了首帧出图时间。如需启用，请[联系技术支持](https://ticket.shengwang.cn/)。
+- 在 `AgoraRTCClient.on("connection-state-change")` 回调报告的 SDK 断开连接原因中新增 token 过期导致用户离开频道，方便问题排查和调试。
+- 在本地音频轨道的质量信息中增加 `sendJitterMs` 和 `sendRttMs`，分别报告发送数据包的抖动 (ms) 和往返时延 (ms)。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 正常网络环境下，SDK 在加入频道后的前几秒内偶现对上行网络质量的误报，即返回 `NetworkQuality.uplinkNetworkQuality` 为 `5`。
+- SDK 统计的本地音频、视频丢包率以及远端音频、视频丢包率 （均为 `currentPacketLossRate` 属性） 不准确。
+- 在 Windows 设备的 Chrome 115 浏览器上，如果本地用户分享的屏幕画面保持静止并且画面上没有鼠标移动，屏幕共享流会停止发送。
+- 在订阅远端媒体流的过程中，如果远端用户重新发布音频流，本地用户接收到的音频偶现无声；如果远端用户重新发布视频流，本地用户接收到的视频偶现黑屏。
+- 调用 `IBufferSourceAudioTrack.close` 后内存没有及时释放。
+
+### API 变更
+
+#### 新增
+
+- `ICameraVideoTrack.clone` 和 `ILocalVideoTrack.clone` 方法
+- `setDevice` 中新增 `facingMode` 参数
+- `ConnectionDisconnectedReason` 枚举中新增 `TOKEN_EXPIRE`
+- `setImageModeration`
+- `AgoraRTCClient.on("image-moderation-connection-state-change")`
+- `ImageModerationConfiguration`
+- `ImageModerationConnectionState`
+- `LocalAudioTrackStats` 中新增 `sendJitterMs` 和 `sendRttMs`
+- `LocalVideoTrackStats` 中新增 `sendJitterMs` 和 `sendRttMs`
+- `getRTCRtpTransceiver`
+- `AgoraRTCClient.on("transceiver-updated")`
+
+#### 废弃
+
+- `AgoraRTCClient.on("join-fallback-to-proxy")`
+
+## v4.18.3
+
+该版本于 2023 年 9 月 20 日发布。
+
+该版本修复了 SDK 在 Safari 17 上音视频统计数据缺失的问题。
+
+## v4.18.2
+
+该版本于 2023 年 7 月 11 日发布。
+
+该版本修复了 SDK 加载完成后，在特定情况下触发麦克风和摄像头设备权限申请弹窗的问题。
+
+## v4.18.1
+
+该版本于 2023 年 7 月 7 日发布。
+
+### 改进
+
+#### 事件监听支持错误处理
+
+自该版本起，如果你在事件监听器 (`listener`) 中传入的回调函数在执行时发生错误，SDK 不会中断正常运行，而是捕获异常并在日志中输出错误信息。
+
+#### 优化异步方法的并发控制
+
+该版本优化了异步方法的并发控制。如果以下异步方法出现并发执行的情况，SDK 会按照方法被调用的顺序依次执行，保证一致性：
+
+- `join` 和 `leave`
+- `publish` 和 `unpublish`
+- `subscribe` 和 `unsubscribe`
+
+以 `publish` 和 `unpublish` 为例，如果你在调用 `publish` 之后立即调用 `unpublish`：
+
+- 在 4.18.1 之前， `unpublish` 有可能不生效，即仍然发布成功。
+- 自 4.18.1 起，实际结果与你的调用顺序保持一致，即不会发布成功。
+
+### 问题修复
+
+该版本修复了在不具备任何可用摄像头或麦克风的设备上，第一次插入外接摄像头或外接麦克风不会触发以下回调的问题：
+
+-  `onCameraChanged` 或 `AgoraRTC.on("camera-changed")`
+-  `onMicrophoneChanged` 或 `AgoraRTC.on("microphone-changed")`
+
+## v4.18.0
+
+该版本于 2023 年 6 月 21 日发布。
+
+### 新增特性
+
+#### 可伸缩视频编码 (Beta)
+
+自 v4.18.0 起，SDK 支持在使用 [VP9 编解码](#vp9)时开启 SVC（可伸缩视频编码）。SVC 功能可以根据用户的网络环境和设备性能自适应调节视频流的编码质量，保证所有用户的观看体验。
+
+如需开启 SVC 功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### 获取已编码数据 (Beta)
+
+自 v4.18.0 起，你可以获取到 SDK 已编码的音频和视频数据。如需开启该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### 提升网络受限环境下的连接体验 (Beta)
+
+ v4.18.0 支持新的媒体建连策略，可以优化在网络受限环境下的连接体验。如需开启该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### 倍速播放音频文件
+
+为方便在播放音效或音乐文件时调节当前文件的播放速度，v4.18.0 对 `IBufferSourceAudioTrack` 类做了以下修改：
+
+- 新增 `setAudioBufferPlaybackSpeed` 方法。在加入频道前和加入频道后，你都可以调用该方法。
+- 新增 `playbackSpeed` 属性，用于获取当前的播放速度。
+
+#### 自定义信令代理
+
+在使用声网混合云或私有化平台相关服务时，为方便你自定义 SDK 使用的信令代理服务器，v4.18.0 新增 `setProxyServer` 方法。
+
+#### 灵活监听 AgoraRTC 对象的事件
+
+自 v4.18.0 起，`IAgoraRTC` 类继承 [EventEmitter 类](/api-ref/rtc/javascript/classes/eventemitter.html)的所有方法，用于监听 `AgoraRTC` 对象的所有事件。
+
+以 `onCameraChanged` 为例：
+
+```javascript
+//  v4.18.0 以前的监听方式
+AgoraRTC.onCameraChanged = (info) => {
+  console.log("camera changed!", info.state, info.device);
+};
+// v4.18.0 及以上版本新支持的监听方式
+AgoraRTC.on("camera-changed", (info) => {
+  console.log("Camera changed!", info.state, info.device);
+});
+```
+
+你可以继续沿用以前的监听方式，但如果你需要更高的灵活性和可拓展性，声网推荐你在升级 SDK 后修改以下事件的监听方式：
+
+- `onAutoplayFailed`
+- `onCameraChanged`
+- `onMicrophoneChanged`
+- `onPlaybackDeviceChanged`
+- `onSecurityPolicyViolation`
+- `onAudioAutoplayFailed` （已废弃，请改用 `onAutoplayFailed`）
+
+### 改进
+
+#### 缩短加入频道耗时
+
+自 v4.18.0 起，SDK 默认开启 WebSocket 消息压缩，可以缩短用户在弱网环境下加入频道的耗时。
+
+#### 其他改进
+
+该版本还有以下改进：
+
+- 缩短了弱网环境下从视频小流切换到视频大流的耗时。
+- 升级了云代理服务以提升在不同网络环境下的稳定性。
+
+### 问题修复
+
+v4.18.0 修复了以下问题：
+
+- 开启消息通知服务后，移动端收到的主播离开频道事件通知（[`104 broadcaster leave channel`](/zh-CN/realtime-media/rtc/webhook/events#104-broadcaster-leave-channel)）可能出现延迟的问题。
+- 在部分旧版本浏览器上，观看使用 H.264 编码的视频流出现黑屏的问题。
+- SDK 和虚拟背景插件或美颜插件一起使用时，内存明显上涨的问题。
+- 调用 `renewToken` 方法生成新的 Token 后，SDK 在尝试重连时依然使用已过期的 Token 加入频道的问题。
+
+### API 变更
+
+#### 新增
+
+- `setProxyServer`
+- `IBufferSourceAudioTrack` 中新增 `setAudioBufferPlaybackSpeed` 方法和 `playbackSpeed` 属性
+- `IAgoraRTC` 类中新增以下继承自 `EventEmitter` 类的方法：
+  - `on`
+  - `off`
+  - `once`
+  - `getListeners`
+  - `removeAllListeners`
+
+    :::info[信息]
+    这些方法支持传入的事件名称如下：
+
+    - `"camera-changed"`
+    - `"microphone-changed"`
+    - `"playback-device-changed"`
+    - `"autoplay-failed"`
+    - `"security-policy-violation"`
+    :::
+
+## v4.17.2
+
+该版本于 2023 年 4 月 19 日发布。
+
+该版本修复了 `getCurrentFrameData` 方法返回值异常的问题。
+
+## v4.17.1
+
+该版本于 2023 年 4 月 19 日发布。
+
+### 升级必看
+
+:::warning[注意]
+在 Chrome 107 上进行屏幕共享时，默认不能共享当前标签页。如果你需要允许用户在 Chrome 107 及以上版本共享当前标签页，请尽快升级 SDK 至 4.17.1 或以上版本。
+:::
+
+为兼容 Chrome 107 的屏幕共享相关改动（详见[官方说明](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/)），该版本对 `createScreenVideoTrack` 方法中的 `config` 参数做了以下修改：
+
+- 废弃 `screenSourceType` 属性。如果你使用了该属性，升级到该版本后请改用新增的 `displaySurface` 属性。
+- 新增 `selfBrowserSurface`、`surfaceSwitching` 和 `systemAudio` 属性。
+
+以上属性的详细说明参考 [`ScreenVideoTrackInitConfig`](/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig.html)。
+
+### 改进
+
+#### 提高设置视频属性的灵活性
+
+该版本提高了对不同类型视频轨道设置视频属性的灵活性，具体包括：
+
+- 调用 `createCustomVideoTrack` 创建自定义视频轨道时，支持通过 `width`、`height`、`frameRate` 参数设置分辨率和帧率。
+- 创建屏幕共享视频轨道或者自定义视频轨道后，可以调用 `setEncoderConfiguration` 动态调整视频属性。在特定的 macOS Safari 版本上，对屏幕共享视频轨道调用该方法会导致一个已知问题，[查看问题详情](/zh-CN/realtime-media/rtc/overview/browser-compatibility.react.javascript#desktop-issues)。
+
+详细说明参考[设置视频属性](/zh-CN/realtime-media/rtc/basic-features/video-profile.javascript)。
+
+#### 其他改进
+
+该版本还有以下改进：
+
+- 缩短在 Safari 浏览器上调用 `createMicrophoneAudioTrack` 或 `createMicrophoneAndCameraTracks` 创建轨道的时间。
+- 当本地有两个 `AgoraRTCClient` 对象时，支持屏蔽其中一个 `AgoraRTCClient` 加入或离开频道、发布或取消发布的相关回调。以屏幕共享为例：Client A 用于发送屏幕共享视频轨道，Client B 用于发送摄像头视频轨道，开启屏蔽回调功能后，Client A 和 Client B 不会收到对方的以下回调：
+
+  - `AgoraRTCClient.on("user-published")`
+  - `AgoraRTCClient.on("user-joined")`
+  - `AgoraRTCClient.on("user-unpublished")`
+  - `AgoraRTCClient.on("user-left")`
+  - `AgoraRTCClient.on("published-user-list")`
+  - `AgoraRTCClient.on("user-info-update")`
+
+  如需开启该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+### API 变更
+
+#### 新增
+
+-  `ScreenVideoTrackInitConfig` 中的 `displaySurface`（替代 `screenSourceType`）、`selfBrowserSurface`、`surfaceSwitching` 和 `systemAudio` 属性
+-  `CustomVideoTrackInitConfig` 中的  `width`、`height`、`frameRate` 属性
+- `LocalVideoTrack.setEncoderConfiguration`
+
+## v4.17.0
+
+该版本于 2023 年 3 月 22 日发布。
+
+### 升级必看
+
+为进一步减小包体积，该版本移除了 SDK 内置的美颜模块，并且删除了 `setBeautyEffect`。如果你需要实现美颜功能，声网推荐你使用效果升级、性能更优的美颜插件。详见[使用美颜插件 (Beta) ](/zh-CN/realtime-media/rtc/advanced-features/extensions/image-enhancement.javascript)。
+
+### 新增特性
+
+#### 千人主播 (Beta)
+
+自 v4.17.0 起，单个频道可支持最多 1000 位主播同时在线并同时发布音视频流，观众人数无限制，每位主播或观众最多可同时订阅 50 位主播。
+
+如需启用该功能，请联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)。
+
+#### 本地合图 (Beta)
+
+自 v4.17.0 起，SDK 可以与合图插件搭配使用，在发送端将多路视频流以及图片合为一路视频流。你还可以同时使用合图插件和虚拟背景插件，实现人像画中画效果。详见[使用合图插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/video-compositing.javascript)。
+
+#### 动态切换本地视频流
+
+为方便灵活切换本地视频轨道，该版本新增 `ILocalVideoTrack.replaceTrack` 方法。
+
+以发布本地视频流后、从摄像头 1 采集切换到摄像头 2 采集为例：在 v4.17.0 之前，你需要先调用 `IAgoraRTCClient.unpublish` 取消发布当前轨道，再调用 `IAgoraRTCClient.publish` 发布新的轨道；自 v4.17.0 起，直接调用 `ILocalVideoTrack.replaceTrack` 即可。
+
+### 改进
+
+#### 优化重连机制
+
+自 v4.17.0 起，SDK 在断线重连时将默认展示断线之前的最后一帧视频画面，避免因为重连而出现黑屏。由于 Safari 自身限制，暂时无法在 Safari 浏览器上体验该优化。
+
+#### 其他改进
+
+该版本还有以下改进：
+
+- 提升了[水晶球](https://docs.agora.io/cn/Agora%20Analytics/aa_guide?platform=All%20Platforms)上 SDK 相关质量指标的准确性。
+- 缩短了加入频道所需的时间。由于 Firefox 自身限制，暂时无法在 Firefox 浏览器上体验该优化。
+
+### API 变更
+
+#### 新增
+
+- `ILocalVideoTrack.replaceTrack`
+
+#### 删除
+
+- `ILocalVideoTrack.setBeautyEffect`
+
+### 问题修复
+
+v4.17.0 修复了在 iOS 14.7 及以上版本的 Safari 浏览器上，反复订阅、取消订阅多路音频流可能导致听不到远端用户声音的问题。
+
+## v4.16.1
+
+该版本于 2023 年 2 月 8 日发布。
+
+该版本修复了使用 v4.16.0 版本的 SDK 时，水晶球统计的视频卡顿率异常升高的问题。
+
+## v4.16.0
+
+该版本于 2023 年 1 月 5 日发布。
+
+### 新增特性
+
+#### 混合云或私有化平台
+
+v4.16.0 新增 `setLocalAccessPointsV2` 方法，用于配置声网混合云或私有化平台的相关服务。你可以联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 了解和部署声网混合云或声网私有化平台。
+
+### 改进
+
+#### 兼容 Chrome 即将弃用的 RTCMediaStreamTrackStats
+
+Chrome 计划弃用 `RTCMediaStreamTrackStats`，详见[官方说明](https://groups.google.com/g/discuss-webrtc/c/9c8ZjberEcI)。该改动影响声网 Web SDK 返回的一部分本地和远端媒体质量信息，具体如下：
+
+| 媒体质量信息 | 受影响的值 |
+| --- | --- |
+| `LocalVideoTrackStats` | <Slot name="release-notes-javascript-html-0-1-1" /> |
+| `RemoteVideoTrackStats` | <Slot name="release-notes-javascript-html-0-2-1" /> |
+| `RemoteAudioTrackStats` | <Slot name="release-notes-javascript-html-0-3-1" /> |
+
+<Slot for="release-notes-javascript-html-0-1-1">
+
+- `sendFrameRate`
+      - `sendResolutionHeight`
+      - `sendResolutionWidth`
+
+</Slot>
+
+<Slot for="release-notes-javascript-html-0-2-1">
+
+- `receiveFrameRate`
+      - `receiveResolutionHeight`
+      - `receiveResolutionWidth`
+      - `renderFrameRate`
+      - `receiveDelay`
+
+</Slot>
+
+<Slot for="release-notes-javascript-html-0-3-1">
+
+- `receiveDelay`
+      - `receiveLevel`
+
+</Slot>
+
+为确保以上媒体质量信息在 Chrome 上的准确性，请尽快升级 SDK 至 4.16.0 或以上版本。
+
+#### 其他改进
+
+v4.16.0 还有以下改进：
+
+- 日志中支持打印 [HTMLMediaElement error 事件](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/error_event)的原因。
+- 减小 SDK 包体积。
+
+### 问题修复
+
+v4.16.0 修复了以下问题：
+
+- 修复在 SDK 断网重连过程中，无法进行其它媒体操作的问题。
+- 修复转发跨频道媒体流时， [`ChannelMediaRelayConfiguration.addDestChannelInfo`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html#adddestchannelinfo) 无法指定被转发媒体流在目标频道中 `uid` 为 0 的问题。
+- 修复 iOS 14.x 上的已知问题。
+
+### API 变更
+
+#### 新增
+
+- `IAgoraRTCClient.setLocalAccessPointsV2`
+
+## v4.15.1
+
+该版本于 2022 年 12 月 2 日发布。
+
+该版本修复了在 iOS 13.7 上接收的音频流无声的问题。
+
+<a id="415"></a>
+## v4.15.0
+该版本于 2022 年 11 月 10 日发布。
+
+### 升级必看
+
+#### 云代理服务默认采用 Force UDP 模式
+
+v4.15.0 将 `startProxyServer` 方法的  `mode`  参数默认值改为 `3`，即 Force UDP 云代理模式。在该模式下，SDK 始终通过 UDP 协议传输数据。详情参考[使用云代理服务](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)。
+
+### 新增特性
+
+#### 音强选流 (Beta)
+
+v4.15.0 新增音强选流功能。该功能开启后，声网服务器会根据音量大小对接收端已订阅的音频流进行筛选，选出 N 路音量最大的音频流传输至接收端。N 默认为 3 路。
+
+同时，声网还支持发流端自定义设置是否参与音强选流，不参与选流的音频流会直接和被选出的 N 路音频流一同传输至接收端。在大型会议等多人发流的场景下，开启音强选流功能可以帮助减轻接收端的下行带宽压力和系统资源消耗。
+
+:::warning[注意]
+如需开启音强选流功能或者自定义设置 N，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+<a id="vp9"></a>
+#### VP9 编解码 (Beta)
+
+自 v4.15.0 起，Web SDK 在以下版本的浏览器上支持 VP9 视频编解码：
+
+| 支持的浏览器版本 ① | Column 2 |
+| --- | --- |
+| 桌面端 | <Slot name="release-notes-javascript-html-1-1-1" /> |
+| Android 端 | <Slot name="release-notes-javascript-html-1-2-1" /> |
+| iOS 端 | Safari 16+ |
+
+<Slot for="release-notes-javascript-html-1-1-1">
+
+- Chrome 65+
+      - Firefox 69+
+      - Edge 79+
+      - Safari 16+
+
+</Slot>
+
+<Slot for="release-notes-javascript-html-1-2-1">
+
+- Chrome 68+
+      - 微信 v8.0.6 及以上
+      - 其它内嵌 WebView 的应用：WebView v65.0.3325.109 及以上
+
+</Slot>
+
+:::info[信息]
+① 为保证最佳的用户体验，声网建议使用上述浏览器的最新版本。
+:::
+
+如果与集成声网 Native 端（包括 Android、iOS、Windows 和 macOS 平台）音视频 SDK 的 App 通过 VP9 进行音视频通话，请确保使用 v4.0.0 或以上版本的 Native 端 SDK。
+
+#### 触发 CSP 规则回调
+
+v4.15.0 新增 `AgoraRTC.onSecurityPolicyViolation` 回调。当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
+
+### 改进
+
+SDK 有以下改进：
+
+- 优化了某些场景下 `AgoraRTCClient.on("network-quality")` 回调的准确性。
+- 缩短了切换 Wi-Fi 时音视频流的恢复时间。
+
+### API 变更
+
+#### 新增
+
+- `IAgoraRTC.onSecurityPolicyViolation`
+
+## v4.14.2
+
+该版本于 2022 年 10 月 27 日发布。
+
+该版本修复了在 iOS 14.x 上使用微信浏览器时，订阅的第一路音频流无声的问题。
+
+## v4.14.1
+
+该版本于 2022 年 10 月 24 日发布。
+
+### 问题修复
+
+v4.14.1 修复了以下问题：
+
+- 在 v17.x 版本的 Electron 上不能正常使用屏幕共享。解决方案详见 [Electron 屏幕共享](/zh-CN/realtime-media/rtc/basic-features/screen-share.javascript#electron-屏幕共享)。
+- 在桌面端 Safari 浏览器上如果禁用所有视频的自动播放，视频会不断尝试重新播放，导致卡顿。
+- 移动端浏览器切换到后台时，SDK 统计的视频卡顿率过高。
+- Android WebView 中视频开始播放前会展示 video 元素默认的 poster（灰色播放图标）。
+- SDK 断网重连后，跨频道媒体流转发失败。
+- 使用跨频道媒体流转发时，用户离开源频道后，SDK 仍然在发送心跳包。
+
+## v4.14.0
+
+该版本于 2022 年 8 月 31 日发布。
+
+### 升级必看
+
+#### getVolumeLevel 准确性优化
+
+自 v4.14.0 起，SDK 校准了 `getVolumeLevel` 返回的音量值，能更准确地反映音量大小关系。该方法返回的音量值取值范围依然为 [0,1]，其中 1 代表理论最大音量。如果你的业务场景依赖 `getVolumeLevel` 返回的音量值（比如根据音量值显示用户说话的图标），升级 SDK 后你需要关注对应场景中该音量值的变化。
+
+### 问题修复
+
+v4.14.0 修复了以下问题：
+
+- 接收 Opus 格式的立体声后，听不到立体声效果。
+- 在版本低于 Chrome 76 的浏览器上，调用 `getRemoteVideoStats` 获取的视频解码帧率`decodeFrameRate`为 0。
+- 在 iOS 14.1 和 14.2 的微信浏览器上，订阅的第一路音频流无声。
+- 调用 `LocalVideoTrack.setBeautyEffect` 开启美颜后，调用 `LocalVideoTrack.unpipe` 方法报错。
+- 特定场景下，Windows Chrome 103 及以上版本的浏览器上开启小流不生效。
+
+### API 变更
+
+#### 新增
+
+- `enableContentInspect`
+- `client.on("content_inspect_result")`
+
+## v4.13.0
+
+该版本于 2022 年 7 月 25 日发布。
+
+### 新增特性
+
+#### 媒体处理插件
+
+自 v4.13.0 起，SDK 支持对远端音视频轨道使用媒体处理插件（本地音视频轨道已经在 [v4.10.0](#410) 支持）。
+
+声网目前提供以下用于远端音频轨道的插件：
+
+| 插件| 说明 | 相关文档 |
+| :------------------ | :--------------------------------------------------------- | :----------------------------------------------------------- |
+| 空间音频插件 (Beta) | 用户语音根据位置变化而实时改变，支持声音模糊、空气衰减等效果，打造沉浸式体验。 | 联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 了解详情。 |
+
+### 改进
+
+#### AI 降噪和虚拟背景
+
+AI 降噪插件和虚拟背景插件由 Beta 发布转变为正式发布（v1.0.0）。
+
+相比之前的版本，v1.0.0 版本的 AI 降噪具有更好的人声保真度、更干净的噪声抑制，并新增了去混响 (Dereverberation) 能力。
+
+:::warning[注意]
+- 使用 AI 降噪插件和虚拟背景插件可能会产生费用。请与 [sales@shengwang.cn](mailto:sales@shengwang.cn) 沟通后再使用。
+- 如果当前提供的降噪效果不能满足你的场景，你可以联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)定制降噪效果。
+:::
+
+#### Token 过期回调
+
+v4.13.0 完善了 token 过期回调的触发逻辑。如果 token 在设备休眠或断网时过期，当设备恢复并尝试重连时，SDK 会触发 `token-privilege-did-expire` 事件。
+
+### API 变更
+
+#### 新增
+
+- `RemoteAudioTrack.pipe`
+- `RemoteAudioTrack.unpipe`
+- `RemoteVideoTrack.pipe`
+- `RemoteVideoTrack.unpipe`
+
+## v4.12.2
+
+该版本于 2022 年 7 月 7 日发布，优化了 SDK 的自动模式（在自动模式下，SDK 优先连接 SD-RTN™ ，如果连接失败，会自动切换到 TCP/TLS 443）。
+
+## v4.12.1
+
+该版本于 2022 年 6 月 27 日发布，修复了以下问题：
+
+- 在特定情况下，重连后订阅远端音视频流会失败。
+- 在 Firefox 浏览器上反复订阅、取消订阅多路视频流可能导致视频卡住。
+
+## v4.12.0
+
+该版本于 2022 年 6 月 15 日发布。
+
+### 改进
+
+#### 媒体处理插件
+
+媒体处理插件有以下改动：
+
+- 新增[美颜插件 (Beta) ](https://www.npmjs.com/package/agora-extension-beauty-effect)。美颜插件封装了 Web SDK 4.x 内置的美颜功能（通过 `setBeautyEffect`），并且升级了美颜算法。通过该插件可以调节对比度、亮度、平滑度等参数，实现美白、磨皮、红润肤色等美颜效果。详见[使用美颜插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/image-enhancement.javascript)。
+- [虚拟背景插件 (Beta) ](https://www.npmjs.com/package/agora-extension-virtual-background)自 v1.0.0-beta-3 起支持动态虚拟背景，可以将用户的背景设置为一段视频。详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/virtual-background.javascript)。
+
+### 问题修复
+
+v4.12.0 修复了在 Safari 上开启双流模式后，调用 `Track.setEnabled(false)`、`Track.close()` 等方法无法关闭摄像头指示灯的问题。
+
+## v4.11.1
+
+该版本于 2022 年 5 月 9 日发布，修复了以下问题：
+
+- Firefox 浏览器中订阅音频流可能导致无声。
+- iOS 12 Safari 浏览器以及 iOS 13 微信浏览器的兼容性问题。
+
+## v4.11.0
+
+该版本于 2022 年 4 月 1 日发布。
+
+### 升级必看
+
+自 v4.11.0 起，为保障连通性，SDK 默认使用自动模式。在自动模式下，SDK 优先连接 SD-RTN™ ，如果连接失败，会自动切换到 TCP/TLS 443。你可以通过 `client.on("join-fallback-to-proxy")` 回调监听 SDK 自动切换到 TCP/TLS 443 的事件。
+
+### 改进
+
+#### 频道能力提升
+
+自 v4.11.0 起，单个频道可支持最多 128 位主播同时在线并同时发布音视频流，观众人数无限制，每位主播或观众最多可同时订阅 50 位主播。
+
+如有需要，请联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)。
+
+### 问题修复
+
+v4.11.0 修复了以下问题：
+
+- Angular 依赖的 `zone.js` 导致 SDK 中的 `Promise.finally` 调用出错。
+- 在 Chrome 上发送双声道音频时不能开启 AEC。
+- SDK 在 Chrome 100 上获取的解码帧率和发送帧率数据不准确。
+- 开启双流模式后，调用 `unpublish` 时不传参数会导致调用失败。
+
+### API 变更
+
+#### 新增
+
+- `AgoraRTCClient.massSubscribe`
+- `AgoraRTCClient.massUnsubscribe`
+- `AgoraRTCClient.on('published-user-list')`
+- 错误码中新增：
+  - `ERR_TOO_MANY_BROADCASTERS`
+  - `ERR_TOO_MANY_SUBSCRIBERS`
+
+## v4.10.2
+
+该版本于 2022 年 3 月 24 日发布，修复了在特定场景下调用 `join` 会触发代理异常的问题。
+
+## v4.10.1
+
+该版本于 2022 年 3 月 17 日发布，在 `package.json` 中补充了对声网插件系统 `agora-rte-extension` 的 TypeScript 类型定义依赖。如果你使用 TypeScript 进行类型检查，建议将 Typescript 升级至 4.3.2 或以上版本。
+
+<a id="410"></a>
+## v4.10.0
+该版本于 2022 年 3 月 11 日发布。
+
+### 新增特性
+
+#### 支持媒体处理插件
+
+v4.10.0 支持在 SDK 内使用媒体处理插件。声网当前提供以下插件可与 Web SDK 搭配使用。如需了解如何使用插件，请查看相关文档。
+
+| 插件                | 说明                                               | 相关文档                                                     |
+| :------------------ | :------------------------------------------------- | :----------------------------------------------------------- |
+| 虚拟背景插件 (Beta) | 支持将用户的背景设为纯色、自定义图片或虚化。       | [使用虚拟背景插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/virtual-background.javascript) |
+| AI 降噪插件 (Beta)  | 支持降低上百种噪声，减少多人同时说话时的人声失真。 | [使用 AI 降噪插件](/zh-CN/realtime-media/rtc/advanced-features/extensions/noise-reduction.javascript) |
+
+### API 变更
+
+#### 新增
+
+- `AgoraRTC.registerExtensions`
+- `LocalAudioTrack.pipe`
+- `LocalAudioTrack.unpipe`
+- `LocalVideoTrack.pipe`
+- `LocalVideoTrack.unpipe`
+
+## v4.9.4
+
+该版本于 2022 年 3 月 16 日发布，修复了在 Chrome 隐身模式下的 iFrame 中加载 SDK 时访问 localStorage 报错的问题。
+
+## v4.9.3
+
+该版本于 2022 年 3 月 3 日发布，修复了一些内部问题。
+
+## v4.9.1
+
+该版本于 2022 年 2 月 24 日发布，修复了一些内部问题。
+
+## v4.9.0
+
+该版本于 2022 年 2 月 17 日发布。
+
+### 新增特性
+
+#### 指定所有远端用户的视频流类型
+
+v4.9.0 新增 `setRemoteDefaultVideoStreamType` 方法，用于发流端通过 `enableDualStream` 开启双流模式后，接收端指定所有远端用户的视频流类型。
+
+#### 云代理服务 Force TCP 模式
+
+v4.9.0 新增支持云代理服务 Force TCP 模式。该模式下，SDK 始终通过 TLS 443 传输数据。你可在调用 `startProxyServer` 时将 `mode` 设为 5 使用该模式。
+
+#### HTML `<video>` 标签可见性检测
+
+使用 Web SDK 时，你调用 `play` 后 SDK 会创建 HTML `<video>` 标签用于播放视频轨道。v4.8.0 新增以下方法和事件用于获取该 `<video>` 标签的可见性：
+
+- `localVideoTrack.on("video-element-visible-status")`
+- `remoteVideoTrack.on("video-element-visible-status")`
+- `localVideoTrack.getVideoElementVisibleStatus`
+- `remoteVideoTrack.getVideoElementVisibleStatus`
+
+当 `localTrack.isPlaying` 或 `remoteTrack.isPlaying` 为 `true `却看不到图像时，你可通过上述方法或事件获取 `<video>` 标签的可见性和不可见原因，排查问题。
+
+### 改进
+
+- 提升 `client.on("is-using-cloud-proxy")` 回调的准确性。
+- 如果你自定义了视频分辨率但是没有设置码率，SDK 会自动根据分辨率和帧率来计算并设置一个合理的码率，避免码率过高影响带宽。
+
+### 问题修复
+
+v4.9.0 修复了以下问题：
+
+- 调用 `play` 播放本地视频轨道、传入的参数是来自另一个窗口的元素时，SDK 会报错。
+- v4.8.0 与 Angular、zone.js 一起使用时，zone.js 修改了 promise 对象导致加入频道失败。
+- iOS 上的一些已知问题。
+
+### API 变更
+
+#### 新增
+
+- `setRemoteDefaultVideoStreamType`
+- `client.on("join-fallback-to-proxy")`
+- `localVideoTrack.on("video-element-visible-status")`
+- `remoteVideoTrack.on("video-element-visible-status")`
+- `localVideoTrack.getVideoElementVisibleStatus`
+- `remoteVideoTrack.getVideoElementVisibleStatus`
+
+## v4.8.2
+
+该版本于 2022 年 1 月 27 日发布，修复了 iOS 微信浏览器上锁屏后解锁可能会黑屏的问题。
+
+## v4.8.1
+
+该版本于 2022 年 1 月 6 日发布，修复了一个内部问题。
+
+## v4.8.0
+
+该版本于 2021 年 12 月 29 日发布。
+
+### 改进
+
+v4.8.0 进行了一些内部改进。
+
+### 问题修复
+
+v4.8.0 修复了以下问题：
+
+- iOS Safari 上以观众角色收流时，能听到主播的声音但 `client.on("volume-indicator")` 回调返回的音量可能为 0。
+- iOS Safari 上发流时，先调用 `setDevice` 再调用 `setEncoderConfiguration` 会报错。
+
+## v4.7.3
+
+该版本于 2021 年 11 月 17 日发布，规避了 iOS 15.1 中 Safari 浏览器上音视频通话被打断后无法恢复播放的问题。
+
+## v4.7.2
+
+该版本于 2021 年 10 月 14 日发布，有以下改动：
+
+- 规避了在某些场景下，iOS 15 中 Safari 浏览器上音视频通话被系统来电打断后，无法恢复音视频播放和发送的问题，详见[问题说明](https://bugs.webkit.org/show_bug.cgi?id=230537)。
+- 规避了在桌面端和移动端 Safari 15 浏览器上，使用 `videoTrack.play(element, {mirror: true})` 播放视频时可能出现黑屏的问题，详见[问题说明](https://bugs.webkit.org/show_bug.cgi?id=230532)。
+- 修复了在 Edge 浏览器上调用 `AgoraRTC.checkSystemRequirements()` 返回 `false` 的问题。
+
+## v4.7.1
+
+该版本于 2021 年 9 月 13 日发布，修复了在 Safari 11 和 iPad Chrome 浏览器上的一些问题。
+
+## v4.7.0
+
+该版本于 2021 年 9 月 1 日发布。
+
+### 升级必看
+
+自 v4.7.0 起，如果你启用媒体流加密，用户离开频道后，SDK 会自动关闭加密并重置加密设置。如需重新开启加密，你需要在用户再次加入频道前调用 `setEncryptionConfig` 方法。
+
+### 改进
+
+v4.7.0 进行了以下改进：
+
+- 优化了 Web SDK 在移动端浏览器上的体验。
+- 提升了 `getVolumeLevel` 方法获取到的音量的准确性。
+- 支持在 Safari 上开启双流模式。
+
+### 问题修复
+
+v4.7.0 修复了以下问题：
+
+- 调用 `LocalAudioTrack.setVolume` 调整本地音量后，本地用户无法感知到音量变化。
+- 设置日志等级为不打印日志时，SDK 仍会打印初始化的一些日志。
+- `LocalAudioTrack.setDevice` 返回的 Promise 可能一直处于 pending 状态。
+
+## v4.6.3
+
+该版本于 2021 年 8 月 10 日发布，修复了一个偶现问题：本地关闭标签页或浏览器后，远端没有立即收到 `user-left` 事件。
+
+## v4.6.2
+
+该版本于 2021 年 7 月 30 日发布，修复了 SDK 内部存在未销毁的 Media Player 的问题。由于 Chrome 92 新增了一个页面最多创建 75 个 Media Player 的限制，数次播放轨道后，SDK 内未销毁的 MediaPlayer 会导致当前页面无法继续播放。
+
+## v4.6.1
+
+该版本于 2021 年 7 月 21 日发布，修复了一个内部错误。
+
+## v4.6.0
+
+该版本于 2021 年 7 月 16 日发布。
+
+### 新增特性
+
+#### 极速直播
+
+Web SDK 自 v4.6.0 起支持极速直播。极速直播与互动直播的区别主要在于主播到观众的延时不同：
+
+- 互动直播中观众端延时级别为超低延时 400 毫秒到 800 毫秒。
+- 极速直播中观众端延时级别为低延时 1500 毫秒到 2000 毫秒。
+
+声网针对不同级别的观众端延时收取不同的费用。详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+
+你可通过以下两种方式实现低延时观众端：
+
+- 调用 `createClient` 创建客户端对象时，将 `role` 参数设为 `"audience"`（观众），将 `clientRoleOptions` 中的 `level` 参数设为 1（低延时）。
+- 调用 `setClientRole` 方法，将 `role` 参数设为 `"audience"`（观众），将 `clientRoleOptions` 中的 level 参数设为 1（低延时）。
+
+:::warning[注意]
+极速直播暂不支持 Firefox 浏览器。
+:::
+
+#### 本地轨道 Mute 状态管理
+
+v4.6.0 新增 `localTrack.setMuted` 方法用于暂停发送本地轨道的媒体数据。该方法与 `localTrack.setEnabled` 相比，主要有以下区别：
+
+- 调用 `localVideoTrack.setEnabled(false)` 停止发送视频后，SDK 会立刻关闭摄像头并停止采集视频，摄像头的指示灯会关闭。而 `localVideoTrack.setMuted` 不影响视频采集状态。
+- 调用` setEnabled(true)` 恢复发送较慢，调用 `setMuted(false)` 恢复发送较快。
+
+更多信息，参见 [setEnabled 和 setMuted 有什么区别？](/faq/integration-issues/diff-setenabled-setmuted)
+
+### 改进
+
+#### 自动播放失败回调
+
+为优化 iOS 上的视频自动播放处理机制，v4.6.0 废弃了原先的 `onAudioAutoplayFailed` 回调，新增 `onAutoplayFailed` 回调作为替代，用于提示音频或视频自动播放失败。在大部分浏览器中，播放纯视频不受到自动播放策略的限制，但是在低电量模式下的 iOS Safari 浏览器中以及开启过自定义自动播放限制的 iOS WKWebView 中（如 iOS 微信浏览器），纯视频的自动播放也会受到限制。
+
+### 问题修复
+
+v4.6.0 修复了以下问题：
+
+- 调用 `localAudioTrack.setVolume` 方法没有立即生效。
+- 一个页面中使用多个 client 时出现的异常问题。
+- SDK 没有检查 App ID 是否是大小为 1 到 256 字节的字符串。
+
+### API 变更
+
+#### 新增
+
+- `localTrack.setMuted`
+- `onAutoplayFailed`
+- `ClientConfig` 中新增 `clientRoleOptions` 参数
+- `setClientRole` 方法新增 `options` 参数
+
+#### 废弃
+
+- `onAudioAutoplayFailed`
+
+## v4.5.0
+
+该版本于 2021 年 5 月 25 日发布。
+
+### 新增特性
+
+#### 本地播放音频回声消除
+
+在多个用户同时播放一个媒体文件的场景中，例如一起看电影，如果用户 A 在 Chrome 浏览器上通过 [HTMLMediaElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement) 使用扬声器播放媒体文件，扬声器播放的声音会和人声一起被 SDK 采集，因此其他用户会听到自己本地播放的媒体音频以及用户 A 发送的媒体音频，从而产生回声。针对这种情况，v4.5.0 提供 `processExternalMediaAEC` 方法。你可以在调用 `processExternalMediaAEC` 方法时传入 HTMLMediaElement，对本地播放的媒体进行回声消除，提升音频体验。
+
+### 改进
+
+#### 媒体流加密
+
+为了加强密钥的安全性，v4.5.0 新增 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 加密模式，使用 PBKDF2 (Password-Based Key Derivation Function 2) 函数来派生密钥。调用 `setEncryptionConfig` 将加密模式设为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时，除了 `secret`，你还需要设置盐值 `salt`。`secret` 和 `salt` 的生成和设置方式详见[媒体流加密](/zh-CN/realtime-media/rtc/advanced-features/channel-encryption.javascript)。
+
+#### 屏幕共享视频属性预设值
+
+v4.5.0 在屏幕共享视频属性 `ScreenEncoderConfigurationPreset` 中新增以下预设值：
+
+- `"480p_3"`: 分辨率为 640 × 480，帧率为 15 fps。
+- `"720p_3"`: 分辨率为 1280 × 720，帧率为 15 fps。
+- `"1080p_3"`: 分辨率为 1920 × 1080，帧率为 15 fps。
+
+### 问题修复
+
+v4.5.0 修复了以下问题：
+
+- `OptimizationMode` 设置不生效。
+- 在 iOS 上使用 Web SDK 采集媒体流时，听到的对端的声音有杂声。
+- Firefox 上切换成小流后，`getRemoteVideoStats` 方法获取到的视频分辨率仍然是大流的分辨率。
+- Chrome 上调用 `remoteAudioTrack.setVolume` 修改音量后，暂停播放再恢复播放，音量修改失效。
+- Chrome 上 `localAudioTrack.setVolume` 没有生效。
+
+### API 变更
+
+#### 新增
+
+- `processExternalMediaAEC`
+- `ClientConfig` 中新增 `clientRoleOptions` 参数
+- `setClientRole` 方法新增 `options` 参数
+- `setEncryptionConfig` 新增 `salt` 参数
+- `EncryptionMode` 新增 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 属性
+- `setArea` 方法新增 `excludedArea` 参数
+
+## v4.4.0
+
+该版本于 2021 年 4 月 2 日发布。
+
+### 升级必看
+
+#### 域名白名单变更
+
+自 v4.4.0 起，SDK 的域名白名单变更为：
+
+```
+.agora.io
+.edge.agora.io
+.sd-rtn.com
+.edge.sd-rtn.com
+```
+
+为确保你在有网络访问限制的环境中能够使用声网产品，如果你将 SDK 升级至 v4.4.0，请务必更新防火墙的域名白名单。
+
+### 改进
+
+#### AES-GCM 加密模式
+
+在安全要求高的场景中，为保证数据的保密性、完整性和真实性，提高数据加密的计算效率，v4.4.0 在 `EncryptionMode` 中新增以下加密模式：
+
+- `"aes-128-gcm"`: 128 位 AES 加密，GCM 模式。
+- `"aes-256-gcm"`: 256 位 AES 加密，GCM 模式。
+
+开启加密功能后，同一频道内的所有用户都必须使用相同的加密模式和密钥，包括服务端用户（例如声网录制服务）。
+
+#### 云代理服务
+
+v4.4.0 新增 `client.on("is-using-cloud-proxy")` 事件，SDK 会在本地成功发布媒体流后触发该事件，提示当前媒体流是否经[云代理服务](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)转发。
+
+#### 错误码
+
+Windows 上禁用采集设备后进行媒体采集，SDK 抛出的错误由 `UNEXPECTED_ERROR` 调整为 `NOT_READABLE`。
+
+### 问题修复
+
+v4.4.0 修复了以下问题：
+
+- 远端音频轨道的 `"first-frame-decoded"` 事件没有触发。
+- `AgoraRTC.checkSystemRequirement` 的返回值不准确。
+- 网络存在多出口 IP 时，开启云代理后没有生效。
+
+### API 变更
+
+#### 新增
+
+- `client.on("is-using-cloud-proxy")`
+- `EncryptionMode` 新增 `"aes-128-gcm"` 和 `"aes-256-gcm"`
+
+## v4.3.0
+
+该版本于 2021 年 1 月 26 日发布。
+
+### 新增特性
+
+#### 云代理服务
+
+该版本优化了声网云代理架构，进一步加强了有网络访问限制的环境中 SDK 的连通性，同时支持限定访问区域。
+
+你可联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 或技术支持申请使用优化后的云代理服务，然后调用 `startProxyServer` 方法将 `mode` 参数设为 3 实现使用云代理服务。详见[使用云代理服务](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)。
+
+## v4.2.1
+
+该版本于 2020 年 12 月 23 日发布，修复了 `client.publish` 方法传入非法参数时错误说明抛出异常的问题。
+
+## v4.2.0
+
+该版本于 2020 年 12 月 1 日发布。
+
+### 新增特性
+
+#### 设置区域访问限制
+
+该版本新增 `AgoraRTC.setArea` 方法用于指定服务器的访问区域。指定访问区域之后，SDK 只会连接到指定区域内的声网服务器。支持的区域如下：
+
+- 中国
+- 北美
+- 欧洲
+- 亚洲（中国大陆除外）
+- 日本
+- 印度
+- 全球
+
+该功能为高级设置，适用于有访问安全限制的场景。
+
+#### 视频传输优化策略
+
+该版本新增 `localVideoTrack.setOptimizationMode` 方法用于设置视频传输优化模式，可设为：
+
+- `"balanced"`: 使用默认的传输优化模式。
+- `"detail"`: 清晰优先。
+- `"motion"`: 流畅优先。
+
+各个传输优化模式的介绍详见 API 参考。该方法适用于在视频通话、视频直播或屏幕共享过程中需要动态调整视频传输优化模式的场景。例如在屏幕共享过程中，如想要把屏幕共享内容从演示文稿切换为视频，可以调用此方法将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
+
+#### 远端用户网络质量
+
+该版本新增 `AgoraRTCClient.getRemoteNetworkQuality` 方法用于获取本地订阅的所有远端用户的上下行网络质量。
+
+#### 云代理
+
+该版本中 `AgoraRTCClient.startProxyServer` 方法的 `mode` 参数类型由 `boolean` 改成 `number`。
+
+### 改进
+
+- 音频或视频轨道被 `setEnabled` 方法禁用时，依然可以调用 `setDevice` 方法切换设备。
+
+- 调用 `AgoraRTCClient.setEncryptionConfig` 开启 SDK 内置加密功能后，当终端用户设置的密码为弱密码时，SDK 会在控制台打印警告信息，提醒用户设置强密码，即密码必须满足以下要求：
+  - 包含大写字母、小写字母、数字和特殊字符。
+  - 长度至少 8 位。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 本地的某一个视频轨道被禁用时，不能发布另一个视频轨道。
+- 开启双流模式后，发布视频轨道过程中，调用 `setEnabled(false)` 禁用该轨道，发布会失败且无法恢复。
+- 直播模式下观众尝试发布本地轨道失败后，切换成主播后也不能发布轨道。
+- 开启双流模式后，网络断开时偶现的 bug 导致重连后发布失败。
+- 取消发布一个本地摄像头视频轨道再发布本地屏幕共享轨道时，视频码率固定为 700 Kbps 左右，分辨率和帧率下降。
+- 由于 Safari 浏览器对于 WebAudio 的支持存在缺陷，在 Safari 浏览器上可能会出现 `BufferSourceAudioTrack` 的声音失真。
+- 第一次获取设备权限时不会触发媒体设备变更事件（`onMicrophoneChanged`、`onCameraChanged` 或 `onPlaybackDeviceChanged`），之后再有设备变更时才会触发设备变更事件。
+
+### API 变更
+
+#### 新增
+
+- `AgoraRTC.setArea`
+- `localVideoTrack.setOptimizationMode`
+- `AgoraRTCClient.getRemoteNetworkQuality`
+
+#### 更新
+
+- `AgoraRTCClient.startProxyServer` 方法的 `mode` 参数类型由 `boolean` 改成 `number`
+
+## v4.1.1
+
+该版本于 2020 年 10 月 27 日发布。该版本修复了以下问题：
+
+- 提升了 `event_network_quality` 回调的准确性。
+- Safari 上 SDK 无法找到视频采集设备时， `createCameraVideoTrack` 的调用无法结束。
+- 调用 `unsubscribe` 取消订阅某远端用户的一路未发布的轨道后，后续对该用户的订阅和取消订阅操作都失效。
+- 降低双流模式时频繁调用 `setEnabled` 方法启用和禁用视频轨道的消耗。
+- Safari 14 上调用 `client.getLocalVideoStats` 方法的偶现报错。
+
+## v4.1.0
+
+该版本于 2020 年 9 月 4 日发布。
+
+### 新增特性
+
+#### 客户端截图
+
+v4.1.0 新增 `getCurrentFrameData` 方法，用于获取当前渲染的视频帧数据。
+
+#### 音频播放设备管理
+
+v4.1.0 新增了以下方法和回调，用于音频播放设备的管理：
+
+- `setPlaybackDevice`: 用于设置音频播放设备，比如扬声器。该方法仅支持 Chrome 浏览器。
+- `getPlaybackDevices`: 用于获取可用的音频播放设备。
+- `onPlaybackDeviceChanged`: 用于提示有音频播放设备被添加或移除。
+
+### 改进
+
+- 全面支持基于 Chromium 内核的 Windows Edge 浏览器（80 及以上版本）。
+- 提升了 `network-quality` 事件的准确性。
+- 新增支持在 macOS 平台上共享 Chrome 标签页时分享标签页的音频。
+
+### 问题修复
+
+- Safari 上 `checkVideoTrackIsActive` 不准确。
+- 开启双流模式后断线重连可能失败。
+- 离开频道后调用 `setEnabled` 可能失败。
+- CDN 推流转码和非转码不能同时使用。
+- 断开连接后自动重新订阅可能失败，报错 `UNEXPECTED_RESPONSE: ERR_SUBSCRIBE_REQUEST_INVALID`。
+- 在同一个标签页中相同 UID 加入不同频道会失败。
+- 频繁加入离开频道可能导致的频道连接状态错误。
+
+### API 变更
+
+#### 新增
+
+- `AgoraRTC.getPlaybackDevices`
+- `AgoraRTC.onPlaybackDeviceChanged`
+- `Client.getLocalAudioStats`
+- `Client.getRemoteAudioStats`
+- `Client.getLocalVideoStats`
+- `Client.getRemoteVideoStats`
+- `LocalVideoTrack.getCurrentFrameData`
+- `RemoteVideoTrack.getCurrentFrameData`
+- `LocalAudioTrack.setPlaybackDevice`
+- `RemoteAudioTrack.setPlaybackDevice`
+
+#### 废弃
+
+  - 废弃了  `LocalTrack.getStats` 和 `RemoteTrack.getStats`，请使用 `Client.getLocalAudioStats` 等方法来获取本地和远端的媒体质量信息。
+
+## v4.0.1
+
+该版本于 2020 年 7 月 18 日发布，该版本修复了以下问题：
+
+- 修复 Chrome 70 下发布失败的问题。
+- 修复某些情况下离开频道发布操作没有被中止的问题。
+
+## v4.0.0
+
+该版本于 2020 年 7 月 15 日发布。
+
+### 升级必看
+
+v4.0.0 删除了 `setMute` 方法，新增 `setEnabled` 方法来实现启用或禁用本地轨道。这样做的好处在于：
+
+- 彻底移除 Mute 这一概念，避免混淆 Mute 状态和发布状态。
+  - 在 v4.0.0 之前的版本中，Mute 状态发生改变后 SDK 会触发 `Client.on("user-mute-updated")` 回调。
+  - 在 v4.0.0 版本中，`setEnabled` 不会引入额外的远端回调事件。如果该本地轨道已发布，`setEnabled(false)` 后远端会触发 `Client.on("user-unpublished")` 回调，`setEnabled(true)` 后远端会触发 `Client.on("user-published")` 回调。
+- `setMute(true)` 后，SDK 依然会发送黑帧和静音帧。对于视频轨道来说，Mute 后摄像头的指示灯并不会关闭，因而影响用户体验。而通过 `setEnabled(false)` 禁用本地视频轨道后，SDK 会立刻关闭摄像头并停止采集视频。
+
+:::info[信息]
+请注意，由于 `setEnabled` 涉及设备采集，所以是一个**异步方法**，通过 Promise 返回异步操作的结果。
+:::
+
+### 新增特性
+
+#### 视频编码策略
+
+v4.0.0 在 `CameraVideoTrackInitConfig`、`ScreenVideoTrackInitConfig` 和 `CustomVideoTrackInitConfig` 类中新增 `optimizationMode` 字段，支持在调用 `createCameraVideoTrack`、`createCustomVideoTrack` 和 `createScreenVideoTrack` 方法创建视频轨道时选择视频画面是清晰优先还是流畅优先：
+
+- 清晰优先：
+  - SDK 会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，视频编码器不会降低发送分辨率，但是可能会降低帧率。
+- 流畅优先：
+  - SDK 不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，视频编码器不会降低帧率，但是可能会降低发送分辨率。
+
+:::info[信息]
+通过 `createScreenVideoTrack` 创建的视频轨道默认设置为清晰优先。
+:::
+
+### 改进
+
+- 重新设计 `AgoraRTC.createScreenVideoTrack` 的 `withAudio` 参数，除了 `enable` 和 `disable` 外，还可设为 `auto`，根据浏览器是否支持决定是否分享音频，以满足更多屏幕共享音频的使用场景。
+- 不允许 `mediaType` 参数携带 `"all"`，只能为 `"video"` 或 `"audio"`，以避免代码的重复。这一改动涉及以下 API：
+  - `Client.subscribe` 方法中的 `mediaType` 参数不能设为 `"all"`，只能设为 `"audio"` 或 `"video"`。
+  - `Client.on("user-published")` 和 `Client.on("user-unpublished")` 回调的 `mediaType` 参数不再报告 `"all"`，只会报告 `"audio"` 或 `"video"`。
+
+### 问题修复
+
+v4.0.0 修复了以下问题：
+
+- 调用 `unpublish` 后远端会触发 `Client.on("user-left")` 回调。
+- 在 `"rtc"` 模式下进行屏幕共享发生周期性模糊。
+- 频繁发布和取消发布时偶现的发布失败。
+- `Client.on("network-quality")` 回调不准。
+
+### API 变更
+
+#### 新增
+
+- 新增 `Client.localTracks`，用于保存已发布的本地轨道对象列表。
+- 新增 `LocalTrack.setEnabled`，用于启用或禁用本地轨道。
+- `CameraVideoTrackInitConfig`、`ScreenVideoTrackInitConfig` 和 `CustomVideoTrackInitConfig` 类中新增 `optimizationMode` 字段，用于在创建视频轨道时设置视频画面是清晰优先还是流畅优先。
+
+#### 更新
+
+- `AgoraRTC.createScreenVideoTrack` 的 `withAudio` 参数新增支持设为 `auto`。
+- `Client.subscribe` 的 `mediaType` 参数不能设为 `"all"`。
+- `Client.on("user-published")` 和 `Client.on("user-unpublished")` 回调的 `mediaType` 参数不再报告 `"all"`。
+
+#### 废弃
+
+- 废弃了 `LocalAudioTrackStats.muteState` 属性。
+- 废弃了 `LocalVideoTrackStats.muteState` 属性。
+- 废弃了 `RemoteAudioTrackStats.muteState` 属性。
+- 废弃了 `RemoteVideoTrackStats.muteState` 属性。
+
+#### 删除
+
+- 删除了 `Client.on("user-mute-updated")` 回调。
+- 删除了 `LocalTrack.setMute` 方法。
+- 删除了 `AgoraRTCRemoteUser.audioMuted` 属性。
+- 删除了 `AgoraRTCRemoteUser.videoMuted` 属性。
+- 删除了 `LocalTrack.getUserId` 方法。

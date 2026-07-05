@@ -1,0 +1,788 @@
+---
+title: "在线美术教学 API"
+---
+声网为在线美术场景提供明暗校正和透视校正功能，本文提供相关的 API 参考。
+
+除了在线美术教学相关的 API，你还需要使用 RTC API 来实现实时音视频互动功能。你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview) 文档来了解详细的 RTC API 用法。
+
+:::info[信息]
+明暗校正和透视校正 API 仅存在于声网为在线美术教学解决方案提供的声网 RTC 教育特殊版 SDK 中。声网官网的视频 SDK v4.x 版本尚不支持该功能。你可以[提交工单](https://ticket.shengwang.cn)联系我们获取声网 RTC 4.0.0 教育特殊版 SDK。
+:::
+
+此外，你还可以参考如下 API 文档，在场景实现中添加相应的功能：
+
+- [RTM SDK](/api-ref/rtm2/android/toc-configuration/configuration)，实现实时消息相关功能
+- [互动白板 SDK](/api-ref/whiteboard/android/fastboard-api)，实现在线课堂中的白板功能
+- [云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)，为实时音视频和互动白板提供录制功能
+
+<a id="enablebrightnesscorrection"></a>
+## 明暗校正
+### enableBrightnessCorrection
+
+```java
+public int enableBrightnessCorrection(boolean enable, int mode, Constants.VideoSourceType sourceType)
+```
+
+开启或关闭本地画面明暗校正。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enable` | <Slot name="correction-android-html-0-1-1" /> |
+| `mode` | <Slot name="correction-android-html-0-2-1" /> |
+| `sourceType` | <Slot name="correction-android-html-0-3-1" /> |
+
+<Slot for="correction-android-html-0-1-1">
+
+是否开启本地画面明暗校正：
+
+        - `true`：开启。
+        - `false`：不开启。
+
+</Slot>
+
+<Slot for="correction-android-html-0-2-1">
+
+明暗校正模式：
+
+        - `BRIGHTNESS_CORRECTION_MODE_AUTO(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `BRIGHTNESS_CORRECTION_MODE_MANUAL(1)`： 手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+<Slot for="correction-android-html-0-3-1">
+
+视频源类型：
+
+        - `VIDEO_SOURCE_CAMERA_PRIMARY(0)`：（默认）在第一个摄像头开启或关闭明暗校正。
+        - `VIDEO_SOURCE_CAMERA_SECONDARY(1)`：在第二个摄像头开启或关闭明暗校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applybrightnesscorrectiontoremote"></a>
+### applyBrightnessCorrectionToRemote
+
+```java
+public abstract int applyBrightnessCorrectionToRemote(int uid, boolean enabled, int mode)
+```
+
+开启远端用户画面的明暗校正。远端用户需要在 `enableVideo` 前先调用 `addExtension` 和 `enableExtension`，才能成功接收远程开启明暗校正请求。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启明暗校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-1-2-1" /> |
+| `mode` | <Slot name="correction-android-html-1-3-1" /> |
+
+<Slot for="correction-android-html-1-2-1">
+
+是否开启远端用户画面明暗校正：
+
+        - `true`：开启
+        - `false`：不开启
+
+</Slot>
+
+<Slot for="correction-android-html-1-3-1">
+
+明暗校正模式：
+
+        - `BRIGHTNESS_CORRECTION_MODE_AUTO(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `BRIGHTNESS_CORRECTION_MODE_MANUAL(1)`：手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applybrightnesscorrectiontoremoteex"></a>
+### applyBrightnessCorrectionToRemoteEx
+
+```java
+public abstract int applyBrightnessCorrectionToRemoteEx(int uid, boolean enabled, int mode, RtcConnection connection)
+```
+
+（适用于多频道）开启对应 Connection 的远端用户画面的明暗校正。远端的用户需要在 `enableVideo` 前先调用 `addExtension` 和 `enableExtension` 才能成功接收远程开启明暗校正请求。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启明暗校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-2-2-1" /> |
+| `mode` | <Slot name="correction-android-html-2-3-1" /> |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+<Slot for="correction-android-html-2-2-1">
+
+是否开启远端用户画面明暗校正：
+
+        - `true`：开启
+        - `false`：不开启
+
+</Slot>
+
+<Slot for="correction-android-html-2-3-1">
+
+明暗校正模式：
+
+        - `BRIGHTNESS_CORRECTION_MODE_AUTO(0)`：自动模式，SDK 自动检测亮度，如果检测当前亮度正常，不会启动亮度校正。
+        - `BRIGHTNESS_CORRECTION_MODE_MANUAL(1)`：手动模式，SDK 启动亮度校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableremotetrapezoidcorrection"></a>
+## 透视校正
+### enableRemoteTrapezoidCorrection
+
+```java
+public abstract int enableRemoteTrapezoidCorrection(int uid, boolean enabled)
+```
+
+在本地启用或关闭远端用户在本地渲染画面的透视校正。远端用户自身的本地预览不会看到透视校正效果。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启透视校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-3-2-1" /> |
+
+<Slot for="correction-android-html-3-2-1">
+
+是否开启远端画面透视校正：
+
+        - `true`：开启
+        - `false`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableremotetrapezoidcorrectionex"></a>
+### enableRemoteTrapezoidCorrectionEx
+
+```java
+public abstract int enableRemoteTrapezoidCorrectionEx(int uid, boolean enabled, RtcConnection connection)
+```
+
+（适用于多频道）在本地启用或关闭远端用户在本地渲染画面的透视校正。远端用户自身的本地预览不会看到透视校正效果。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 需要开启透视校正的远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-4-2-1" /> |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+<Slot for="correction-android-html-4-2-1">
+
+是否开启远端画面透视校正：
+
+        - `true`：开启
+        - `false`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablelocaltrapezoidcorrection"></a>
+### enableLocalTrapezoidCorrection
+
+```java
+public abstract int enableLocalTrapezoidCorrection(boolean enabled, Constants.VideoSourceType sourceType)
+```
+
+开启或关闭本地画面的透视校正。本地设置透视校正后，远端就能看到梯形校正后的画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `enabled` | <Slot name="correction-android-html-5-1-1" /> |
+| `sourceType` | <Slot name="correction-android-html-5-2-1" /> |
+
+<Slot for="correction-android-html-5-1-1">
+
+是否开启本地画面透视校正：
+
+        - `true`：开启。
+        - `false`：不开启。
+
+</Slot>
+
+<Slot for="correction-android-html-5-2-1">
+
+视频源类型：
+
+        - `VIDEO_SOURCE_CAMERA_PRIMARY(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `VIDEO_SOURCE_CAMERA_SECONDARY(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setlocaltrapezoidcorrectionoptions"></a>
+### setLocalTrapezoidCorrectionOptions
+
+```java
+public abstract int setLocalTrapezoidCorrectionOptions(final TrapezoidCorrectionOptions options, Constants.VideoSourceType sourceType)
+```
+
+配置本地透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `sourceType` | <Slot name="correction-android-html-6-2-1" /> |
+
+<Slot for="correction-android-html-6-2-1">
+
+视频源类型：
+
+        - `VIDEO_SOURCE_CAMERA_PRIMARY(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `VIDEO_SOURCE_CAMERA_SECONDARY(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="getlocaltrapezoidcorrectionoptions"></a>
+### getLocalTrapezoidCorrectionOptions
+
+```java
+public abstract TrapezoidCorrectionOptions getLocalTrapezoidCorrectionOptions(Constants.VideoSourceType sourceType)
+```
+
+获取本地透视校正配置参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `sourceType` | <Slot name="correction-android-html-7-1-1" /> |
+
+<Slot for="correction-android-html-7-1-1">
+
+视频源类型：
+
+        - `VIDEO_SOURCE_CAMERA_PRIMARY(0)`：（默认）在第一个摄像头开启或关闭透视校正。
+        - `VIDEO_SOURCE_CAMERA_SECONDARY(1)`：在第二个摄像头开启或关闭透视校正。
+
+</Slot>
+
+#### 返回值
+
+透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="settrapezoidcorrectionoptions"></a>
+### setRemoteTrapezoidCorrectionOptions
+
+```java
+public abstract int setRemoteTrapezoidCorrectionOptions(int uid, final TrapezoidCorrectionOptions options)
+```
+
+配置远端透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="settrapezoidcorrectionoptionsex"></a>
+### setRemoteTrapezoidCorrectionOptionsEx
+
+```java
+public abstract int setRemoteTrapezoidCorrectionOptionsEx(int uid, final TrapezoidCorrectionOptions options, RtcConnection connection)
+```
+
+（适用于多频道）配置远端透视校正选项。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="getremmotetrapezoidcorrectionoptions"></a>
+### getRemoteTrapezoidCorrectionOptions
+
+```java
+public abstract TrapezoidCorrectionOptions getRemoteTrapezoidCorrectionOptions(int uid)
+```
+
+获取远端透视校正配置参数。
+
+#### 参数
+
+| 参数    | 说明                                                |
+| :------ | :-------------------------------------------------- |
+| `uid`     | 远端用户 ID。                                      |
+
+#### 返回值
+
+透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="gettrapezoidcorrectionoptionsex"></a>
+### getRemoteTrapezoidCorrectionOptionsEx
+
+```java
+public abstract TrapezoidCorrectionOptions getRemoteTrapezoidCorrectionOptionsEx(int uid, RtcConnection connection)
+```
+
+（适用于多频道）获取远端透视校正配置参数。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+#### 返回值
+
+透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。
+
+<a id="applytrapezoidcorrectiontoremote"></a>
+### applyTrapezoidCorrectionToRemote
+
+```java
+public abstract int applyTrapezoidCorrectionToRemote(int uid, boolean enabled)
+```
+
+将透视校正参数应用到远端用户在本地的预览画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-11-2-1" /> |
+
+<Slot for="correction-android-html-11-2-1">
+
+是否将透视校正参数应用到远端用户在本地的预览画面：
+
+        - `true`：应用。
+        - `false`：不应用。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="applytrapezoidcorrectiontoremoteex"></a>
+### applyTrapezoidCorrectionToRemoteEx
+
+```java
+public abstract int applyTrapezoidCorrectionToRemoteEx(int uid, boolean enabled, RtcConnection connection)
+```
+
+（适用于多频道）将透视校正参数应用到远端用户在本地的预览画面。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 远端用户 ID。 |
+| `enabled` | <Slot name="correction-android-html-12-2-1" /> |
+| `connection` | Connection 信息。详见 [`RtcConnection`](/api-ref/rtc/android/API/class_rtcconnection)。 |
+
+<Slot for="correction-android-html-12-2-1">
+
+是否将透视校正参数应用到远端用户在本地的预览画面：
+
+        - `true`：应用。
+        - `false`：不应用。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="ontrapezoidcorrectionfinished"></a>
+### onTrapezoidAutoCorrectionFinished
+
+```java
+public void onTrapezoidAutoCorrectionFinished(
+      int uid, int result, int costTime, PointF[] dragSrcPoints, PointF[] dragDstPoints) {}
+```
+
+自动透视校正完成时触发。
+
+#### 参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `uid` | 开启自动透视校正的远端用户 ID。 |
+| `result` | <Slot name="correction-android-html-13-2-1" /> |
+| `costTime` | 透视校正花费的时间 (ms)。 |
+| `dragSrcPoints` | 拖动起始点时的梯形四个顶点坐标。 |
+| `dragDstPoints` | 拖动结束点时的梯形四个顶点坐标。 |
+
+<Slot for="correction-android-html-13-2-1">
+
+自动透视校正结果：
+
+        - `RESULT_OK(0)`：成功。
+        - `RESULT_FAILED(-1)`：失败。
+
+</Slot>
+
+<a id="trapezoidcorrectionoptions"></a>
+## 数据类型
+### TrapezoidCorrectionOptions
+
+```java
+public class TrapezoidCorrectionOptions {
+  private PointF dragSrcPoint;
+  private PointF dragDstPoint;
+  private Integer dragFinished;
+  private Integer assistLine;
+  private Integer autoCorrect;
+  private Integer mirror;
+  private Integer resetDragPoints;
+
+  private List<Float> dragSrcPoints;
+  private List<Float> dragDstPoints;
+
+  @CalledByNative
+  public TrapezoidCorrectionOptions() {
+
+  }
+
+  @CalledByNative
+  public PointF makePointF(float x, float y) {
+    return new PointF(x, y);
+  }
+
+  @CalledByNative
+  public void setDragSrcPoint(PointF pt) {
+    dragSrcPoint = pt;
+  }
+
+  @CalledByNative
+  public void setDragDstPoint(PointF pt) {
+    dragDstPoint = pt;
+  }
+
+  @CalledByNative
+  public void setDragFinished(int finished) {
+    dragFinished = finished;
+  }
+
+  @CalledByNative
+  public void showAssistLine(int show) {
+    assistLine = show;
+  }
+
+  @CalledByNative
+  public void setAutoCorrect(int autoCorr) {
+    autoCorrect = autoCorr;
+  }
+
+  @CalledByNative
+  public void setMirror(int mirr) {
+    mirror = mirr;
+  }
+
+  @CalledByNative
+  public void setResetDragPoints(int reset) {
+    resetDragPoints = reset;
+  }
+
+  @CalledByNative
+  public void setDragSrcPoints(
+      PointF topLeft, PointF bottomLeft, PointF topRight, PointF bottomRight) {
+    if (dragSrcPoints == null)
+      dragSrcPoints = new ArrayList<>();
+
+    dragSrcPoints.clear();
+    dragSrcPoints.add(topLeft.x);
+    dragSrcPoints.add(topLeft.y);
+    dragSrcPoints.add(bottomLeft.x);
+    dragSrcPoints.add(bottomLeft.y);
+    dragSrcPoints.add(topRight.x);
+    dragSrcPoints.add(topRight.y);
+    dragSrcPoints.add(bottomRight.x);
+    dragSrcPoints.add(bottomRight.y);
+  }
+
+  @CalledByNative
+  public void setDragDstPoints(
+      PointF topLeft, PointF bottomLeft, PointF topRight, PointF bottomRight) {
+    if (dragDstPoints == null)
+      dragDstPoints = new ArrayList<>();
+
+    dragDstPoints.clear();
+    dragDstPoints.add(topLeft.x);
+    dragDstPoints.add(topLeft.y);
+    dragDstPoints.add(bottomLeft.x);
+    dragDstPoints.add(bottomLeft.y);
+    dragDstPoints.add(topRight.x);
+    dragDstPoints.add(topRight.y);
+    dragDstPoints.add(bottomRight.x);
+    dragDstPoints.add(bottomRight.y);
+  }
+
+  @CalledByNative
+  public final float[] getDragSrcPoint() {
+    return dragSrcPoint != null ? new float[] {dragSrcPoint.x, dragSrcPoint.y} : null;
+  }
+
+  @CalledByNative
+  public final float[] getDragDstPoint() {
+    return dragDstPoint != null ? new float[] {dragDstPoint.x, dragDstPoint.y} : null;
+  }
+
+  @CalledByNative
+  public final Integer getDragFinished() {
+    return dragFinished;
+  }
+
+  @CalledByNative
+  public final Integer getAssistLine() {
+    return assistLine;
+  }
+
+  @CalledByNative
+  public final Integer getAutoCorrect() {
+    return autoCorrect;
+  }
+
+  @CalledByNative
+  public final Integer getMirror() {
+    return mirror;
+  }
+
+  @CalledByNative
+  public final Integer getResetDragPoints() {
+    return resetDragPoints;
+  }
+
+  private float[] listToArray(List<Float> list) {
+    float[] ret = new float[list.size()];
+    int i = 0;
+    for (Float f : list) {
+      ret[i++] = f;
+    }
+    return ret;
+  }
+
+  @CalledByNative
+  public final float[] getDragSrcPoints() {
+    return dragSrcPoints == null ? null : listToArray(dragSrcPoints);
+  }
+
+  @CalledByNative
+  public final float[] getDragDstPoints() {
+    return dragDstPoints == null ? null : listToArray(dragDstPoints);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+
+    if (dragSrcPoint != null) {
+      sb.append("dragSrcPoint : ");
+      sb.append("x " + dragSrcPoint.x + " y " + dragSrcPoint.y);
+    }
+    if (dragDstPoint != null) {
+      sb.append("dragDstPoint : ");
+      sb.append("x " + dragDstPoint.x + " y " + dragDstPoint.y);
+    }
+    if (dragSrcPoints != null) {
+      sb.append("dragSrcPoints : ");
+      sb.append(dragSrcPoints.toString());
+    }
+    if (dragDstPoints != null) {
+      sb.append("dragDstPoints : ");
+      sb.append(dragDstPoints.toString());
+    }
+
+    return sb.toString();
+  }
+}
+```
+
+透视校正参数配置，包含以下成员：
+
+#### PointF
+
+- `x`：x 坐标，根据屏幕宽度归一化为 [0.0~1.0] 的浮点数。
+- `y`：y 坐标，根据屏幕高度归一化为 [0.0~1.0] 的浮点数。
+
+#### setDragSrcPoint
+
+设置拖动起始点坐标。
+
+| 参数 | 说明                         |
+| :--- | :--------------------------- |
+| pt   | 拖动起始点坐标。详见 [`PointF`](#pointf)。 |
+
+#### setDragDstPoint
+
+设置拖动终止点坐标。
+
+如果同时调用 `setDragSrcPoint`、`setDragDstPoint`、`setDragFinished` 和 `setDragSrcPoints`、`setDragDstPoints`，则 `setDragSrcPoints`、`setDragDstPoints` 的设置生效。
+
+| 参数 | 说明                         |
+| :--- | :--------------------------- |
+| pt   | 拖动终止点坐标。详见 [`PointF`](#pointf)。 |
+
+#### setDragFinished
+
+设置该次拖动调整是否结束。
+
+| 参数 | 说明 |
+| --- | --- |
+| `finished` | <Slot name="correction-android-html-14-1-1" /> |
+
+<Slot for="correction-android-html-14-1-1">
+
+本次拖动调整是否结束：
+
+        - `0`：未结束。
+        - `1`：已结束。
+
+</Slot>
+
+#### setDragSrcPoints
+
+同时设置 4 个点的拖动起始点坐标。
+
+| 参数        | 说明                               |
+| :---------- | :--------------------------------- |
+| `topLeft`     | 左上角拖动起始点坐标。详见 [`PointF`](#pointf)。 |
+| `bottomLeft`  | 左下角拖动起始点坐标。详见 [`PointF`](#pointf)。 |
+| `topRight`    | 右上角拖动起始点坐标。详见 [`PointF`](#pointf)。 |
+| `bottomRight` | 右下角拖动起始点坐标。详见 [`PointF`](#pointf)。 |
+
+#### setDragDstPoints
+
+同时设置 4 个点的拖动终止点坐标。
+
+| 参数        | 说明                               |
+| :---------- | :--------------------------------- |
+| `topLeft`     | 左上角拖动终止点坐标。详见 [`PointF`](#pointf)。 |
+| `bottomLeft`  | 左下角拖动终止点坐标。详见 [`PointF`](#pointf)。 |
+| `topRight`    | 右上角拖动终止点坐标。详见 [`PointF`](#pointf)。 |
+| `bottomRight` | 右下角拖动终止点坐标。详见 [`PointF`](#pointf)。 |
+
+#### showAssistLine
+
+开启或关闭辅助线。初始值为关闭。
+
+| 参数 | 说明 |
+| --- | --- |
+| `show` | <Slot name="correction-android-html-15-1-1" /> |
+
+<Slot for="correction-android-html-15-1-1">
+
+开启或关闭辅助线：
+
+        - `0`：关闭。
+        - `1`：开启。
+
+</Slot>
+
+#### setAutoCorrect
+
+开启或关闭自动透视校正。初始值为关闭。
+
+| 参数 | 说明 |
+| --- | --- |
+| `autoCorr` | <Slot name="correction-android-html-16-1-1" /> |
+
+<Slot for="correction-android-html-16-1-1">
+
+开启或关闭自动透视校正：
+
+        - `0`：关闭。关闭之后，你需要手动设置拖动点坐标。
+        - `1`：开启。开启之后，SDK 会自动进行透视校正。你无法手动设置拖动点坐标。
+
+</Slot>
+
+#### setMirror
+
+启用或关闭镜像。初始值为关闭。
+
+只有使用自定义渲染功能并且自定义渲染开启水平镜像时，才需要启用镜像参数。
+
+| 参数 | 说明 |
+| --- | --- |
+| `mirr` | <Slot name="correction-android-html-17-1-1" /> |
+
+<Slot for="correction-android-html-17-1-1">
+
+开启或关闭镜像：
+
+        - `0`：关闭。
+        - `1`：开启。设置输入的点坐标与实际输入图像是水平镜像。
+
+</Slot>
+
+#### setResetDragPoints
+
+重置透视校正效果。初始值为不重置。
+
+| 参数 | 说明 |
+| --- | --- |
+| `reset` | <Slot name="correction-android-html-18-1-1" /> |
+
+<Slot for="correction-android-html-18-1-1">
+
+是否重置透视校正效果：
+
+        - `0`：不重置透视校正效果。
+        - `1`：重置透视校正效果。重置后，画面恢复为校正前的效果。
+
+</Slot>

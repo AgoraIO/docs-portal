@@ -1,0 +1,363 @@
+---
+title: "Lock"
+---
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。
+
+:::info[信息]
+客户端 SDK 具备设置、删除、撤销锁的能力，我们建议你根据实际业务需求控制端侧对锁的操作权限。
+:::
+
+IRtmLock
+
+## setLock
+
+### 接口描述
+
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。
+
+配置成功后，频道中的所有用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_SET` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setLock` 方法：
+
+```cpp
+virtual void setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint32_t ttl, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | 必填 | - | 锁的名称。 |
+| `ttl` | uint32_t | 必填 | - | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED` 事件。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onSetLockResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | Lock 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtm_client->getLock()->setLock("channelName", RTM_CHANNEL_TYPE_MESSAGE, "lockName", 30, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSetLockResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const char *lockName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("set lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("set lock success\n");
+        }
+    }
+};
+```
+
+## acquireLock
+
+### 接口描述
+
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。
+
+成功获取锁后，频道中的其他用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_ACQUIRED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `acquireLock` 方法：
+
+```cpp
+virtual void acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, bool retry, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | 必填 | - | 锁的名称。 |
+| `retry` | bool | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onAcquireLockResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | Lock 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorDetails` | const char* | 错误详情。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getLock()->acquireLock("channelName", RTM_CHANNEL_TYPE_MESSAGE, "lockName", false, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onAcquireLockResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const char *lockName, RTM_ERROR_CODE errorCode, const char *errorDetails) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("acquire lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("acquire lock success\n");
+        }
+    }
+};
+```
+
+## releaseLock
+
+### 接口描述
+
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。
+
+成功释放后，频道中的其他用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `releaseLock` 方法：
+
+```cpp
+virtual void releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | 必填 | - | 锁的名称。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onReleaseLockResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | Lock 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getLock()->releaseLock("channelName", RTM_CHANNEL_TYPE_MESSAGE, "lockName", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onReleaseLockResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const char *lockName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("release lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("release lock success\n");
+        }
+    }
+};
+```
+
+## revokeLock
+
+### 接口描述
+
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。
+
+成功收回后，频道中的所有用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `revokeLock` 方法：
+
+```cpp
+virtual void revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, const char* owner, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | 必填 | - | 锁的名称。 |
+| `owner` | const char* | 必填 | - | 拥有锁的用户 ID。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onRevokeLockResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | Lock 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getLock()->revokeLock("channelName", RTM_CHANNEL_TYPE_MESSAGE, "lockName", "tony", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onRevokeLockResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const char *lockName, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("revoke lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("revoke lock success\n");
+        }
+    }
+};
+```
+
+## getLocks
+
+### 接口描述
+
+如果你需要查询频道中锁的数量、名称、使用者、过期时间等信息，在客户端调用 `getLocks` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getLocks` 方法：
+
+```cpp
+virtual void getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onGetLocksResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockDetailList` | `const LockDetail*` | Lock 详情。 |
+| `count` | const size_t | Lock 数量。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+`LockDetail` 数据类型包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `lockName` | const char* | Lock 的名称。 |
+| `owner` | const char* | 拥有锁的用户 ID。 |
+| `ttl` | uint32_t | 锁的过期时间。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED` 事件。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getLock()->getLocks("channelName", RTM_CHANNEL_TYPE_MESSAGE, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetLocksResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const LockDetail *lockDetailList, const size_t count, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("get lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("get lock success\n");
+            for (int i = 0 ; i < count; i++) {
+                printf("lock: %s owner: %s ttl: %d\n", lockDetailList[i].lockName, lockDetailList[i].owner, lockDetailList[i].ttl);
+            }
+        }
+    }
+};
+```
+
+## removeLock
+
+### 接口描述
+
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。
+
+成功删除锁后，频道中的所有用户会收到 `RTM_LOCK_EVENT_TYPE_LOCK_REMOVED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeLock` 方法：
+
+```cpp
+virtual void removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | 必填 | - | 锁的名称。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onRemoveLockResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `channelName` | const char* | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `lockName` | const char* | Lock 名称。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+uint64_t requestId;
+rtmClient->getLock()->removeLock("channelName", RTM_CHANNEL_TYPE_MESSAGE, "lockName", requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onRemoveLockResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, const char *lockName, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("remove lock failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("remove lock success\n");
+        }
+    }
+};
+```

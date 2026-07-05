@@ -1,0 +1,903 @@
+---
+title: "AIGCService API 参考"
+---
+AIGCService SDK 主要包含以下两大类：
+
+- [`AIGCService`](#aigcservice) 类：提供 AIGC 服务的核心类，包含实现 AIGC 场景各功能的核心方法。
+- [`AIGCServiceCallback`](#aigcservicecallback) 类：`AIGCService` 异步方法的事件回调类。
+
+本文提供 AIGCService SDK 的 API 参考。
+
+<a id="aigcservice"></a>
+<a id="create"></a>
+## AIGCService
+### create
+
+```java
+AIGCService create();
+```
+
+创建 `AIGCService` 实例。
+
+#### 返回值
+
+成功创建后，该方法会返回一个 `AIGCService` 实例。
+
+<a id="initialize"></a>
+### initialize
+
+```java
+void initialize(AIGCServiceConfig config);
+```
+
+初始化 `AIGCService`。
+
+该方法为异步操作。调用结果会在 [`onEventResult`](#oneventresult) 回调中返回。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| config | `AIGCService` 初始化参数。详见 [`AIGCServiceConfig`](#aigcserviceconfig)。|
+
+<a id="getroles"></a>
+### getRoles
+
+```java
+AIRole[] getRoles();
+```
+
+获取 SDK 支持的所有的 `AIRole` 数组。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+#### 返回值
+
+SDK 支持的 [`AIRole`](#airole) 数组。
+
+<a id="setrole"></a>
+### setRole
+
+```java
+void setRole(String roleId);
+```
+
+设置 SDK 使用的 `AIRole`。该方法设置即时生效。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roleId` | 标明 `AIRole` 的 ID。 |
+
+<a id="getcurrentrole"></a>
+### getCurrentRole
+
+```java
+AIRole getCurrentRole()
+```
+
+获取当前使用的 `AIRole`。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+#### 返回值
+
+当前使用的 `AIRole`。
+
+<a id="getservicevendors"></a>
+### getServiceVendors
+
+```java
+ServiceVendorGroup getServiceVendors();
+```
+
+获取所有 AI 服务商的信息。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+#### 返回值
+
+包含了所有 AI 服务商信息的 `ServiceVendorGroup` 对象，由多个 [`STTVendor`](#sttvendor)、[`LLMVendor`](#llmvendor) 和 [`TTSVendor`](#ttsvendor) 组成。
+
+<a id="setservicevendor"></a>
+### setServiceVendor
+
+```java
+int setServiceVendor(ServiceVendor vendor);
+```
+
+设置所使用的 AI 服务商。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `vendor` | 设置的服务商对象 `ServiceVendor`，包含 [`STTVendor`](#sttvendor)、[`LLMVendor`](#llmvendor) 和 [`TTSVendor`](#ttsvendor)。每种 Vendor 类型只支持设置一个服务商。|
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="start"></a>
+### start
+
+```java
+void start();
+```
+
+开启 AIGCService 服务。
+
+该方法为异步操作。调用结果会在 [`onEventResult`](#oneventresult) 回调中返回。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResult(INITIALIZE, SUCCESS)` 后调用。
+:::
+
+<a id="stop"></a>
+### stop
+
+```java
+void stop();
+```
+
+停止 AIGCService 服务。
+
+该方法为异步操作。调用结果会在 [`onEventResult`](#oneventresult) 回调中返回。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+:::
+
+<a id="pushspeechdialogue"></a>
+### pushSpeechDialogue
+
+```java
+int pushSpeechDialogue(byte[] data, Vad vad, boolean isLastFrame);
+```
+
+推送采集到的音频数据到 SDK。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `data` | 待推送的音频数据。 |
+| `vad` | 本地是否有人声。详见 [`Vad`](#vad)。 |
+| `isLastFrame` | <Slot name="aigcservice-android-html-0-3-1" /> |
+
+<Slot for="aigcservice-android-html-0-3-1">
+
+是否是最后一帧音频数据：
+
+        - `true`：是
+        - `false`：不是
+
+        该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `CONTROLLED` 时有效。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="pushtxtdialogue"></a>
+### pushTxtDialogue
+
+```java
+int pushTxtDialogue(String text, String roundId);
+```
+
+推送采集到的文本数据到 SDK 的 LLM 模块，用于 LLM 处理文本数据。
+
+该方法和 `pushMessagesToLLM` 均可用于推送文本数据到 LLM 模块，区别为该方法仅支持推送单条消息，`pushMessagesToLLM` 支持推送多条消息（消息及其上下文语境）。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+- 建议文本数据的长度不超过 1 KB。对高于 1 KB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `text` | 待推送的文本数据。 |
+| `roundId` | <Slot name="aigcservice-android-html-1-2-1" /> |
+
+<Slot for="aigcservice-android-html-1-2-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="pushmessagestollm"></a>
+### pushMessagesToLLM
+
+```java
+int pushMessagesToLLM(String messagesJsonArray, String extraInfoJson, String roundId);
+```
+
+推送请求数据的 JSON 数组和其他字段信息到 LLM 模块，用于 LLM 处理相应请求数据。
+
+该方法和 `pushTxtDialogue` 均可用于推送文本数据到 LLM 模块，区别为 `pushTxtDialogue` 仅支持推送单条消息，该方法支持推送多条消息（消息及其上下文语境）。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+- 建议 JSON 数据的长度不超过 1 KB。对高于 1 KB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `messagesJsonArray` | 请求数据的 JSON 数组。 |
+| `extraInfoJson` | 其他特定字段信息的 JSON。 |
+| `roundId` | <Slot name="aigcservice-android-html-2-3-1" /> |
+
+<Slot for="aigcservice-android-html-2-3-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="pushtxttotts"></a>
+### pushTxttoTTS
+
+```java
+int pushTxttoTTS(String text, String roundId);
+```
+
+推送采集到的文本数据到 SDK 的 TTS 模块，用于 TTS 播报文本。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+- 建议文本数据的长度不超过 1 KB。对高于 1 KB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `text` | 待推送的文本数据。 |
+| `roundId` | <Slot name="aigcservice-android-html-3-2-1" /> |
+
+<Slot for="aigcservice-android-html-3-2-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="interrupt"></a>
+### interrupt
+
+```java
+int interrupt(int mask);
+```
+
+中断指定服务。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `mask` | 服务类型的掩码值。详见 [`Constants`](#constants)。服务类型支持使用按位或运算符（\|）进行组合，例：`mask = Contstants.SERVICE_STT \| Constants.SERVICE_LLM` 代表同时中断 STT 和 LLM 服务。 |
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="setsttmode"></a>
+### setSTTMode
+
+```java
+int setSTTMode(STTMode mode);
+```
+
+设置 STT 服务的模式。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResult(START, SUCCESS)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `mode` | STT 服务模式。详见 [`STTMode`](#sttmode)。 |
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="setprompt"></a>
+### setPrompt
+
+```java
+int setPrompt(String prompt);
+```
+
+设置大语言模型的 Prompt 信息。
+
+:::warning[注意]
+该方法需要在成功 `init`，且收到 `onEventResult(INIT, SUCCESS)` 后，且 `start` 前调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `prompt` | Prompt 信息。|
+
+#### 返回值
+
+- 0：方法调用成功
+- 非 0：方法调用失败
+
+<a id="getversion"></a>
+### getVersion
+
+```java
+String getVersion();
+```
+
+获取 AIGCService SDK 的版本号。
+
+#### 返回值
+
+当前 SDK 的版本号。
+
+<a id="destroy"></a>
+### destroy
+
+```java
+void destroy();
+```
+
+销毁 `AIGCService` 实例。
+
+该方法为异步操作。调用结果会在 [`onEventResult`](#oneventresult) 回调中返回。
+
+<a id="aigcservicecallback"></a>
+<a id="oneventresult"></a>
+## AIGCServiceCallback
+### onEventResult
+
+```java
+void onEventResult(@NonNull ServiceEvent event, @NonNull ServiceCode code, @Nullable String msg);
+```
+
+AIGCService 实例事件回调。
+
+该回调在 SDK 调用 `initialize`、`start`、`stop`、`destroy` 后触发，报告对应方法的调用结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `event` | 该服务事件的类型，详见 [`ServiceEvent`](#serviceevent)。|
+| `code` | 该服务事件的结果，详见 [`ServiceCode`](#servicecode)。|
+| `msg` | 事件信息。该字串可能为空。|
+
+<a id="onspeech2textresult"></a>
+### onSpeech2TextResult
+
+```java
+HandleResult onSpeech2TextResult(String roundId, Data<String> result, boolean isRecognizedSpeech, ServiceCode code)
+```
+
+回调语音转文字 (STT) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-android-html-6-1-1" /> |
+| `result` | 语音识别出来的文字（UTF-8 字符集）。 该参数为读写模式。在 `isRecognizedSpeech` 为 `true` 时，如果 `result` 参数被修改，后续流程会用更新后的 `result` 当作后续流程的输入。 |
+| `isRecognizedSpeech` | <Slot name="aigcservice-android-html-6-3-1" /> |
+| `code` | STT 语音识别结果。详见 [`ServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-android-html-6-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+<Slot for="aigcservice-android-html-6-3-1">
+
+该回调返回的 `result` 是否是一个完整的句子：
+
+        - `true`：是
+        - `false`：不是
+
+</Slot>
+
+#### 返回值
+
+`HandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `CONTINUE(0)`：SDK 会继续处理后续流程
+- `DISCARD(1)`：SDK 会中断处理后续流程
+
+:::warning[注意]
+该规则仅在 `isRecognizedSpeech` 返回 `true` 下有效。
+:::
+
+<a id="onllmresult"></a>
+### onLLMResult
+
+```java
+HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd, int estimatedResponseTokens, ServiceCode code)
+```
+
+回调大语言模型 (LLM) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-android-html-7-1-1" /> |
+| `answer` | 大语言模型处理后的结果（UTF-8 字符集）。该参数为读写模式。如果 `answer` 参数被修改，后续流程会用更新后的 `answer` 当作后续流程的输入。 |
+| `isRoundEnd` | <Slot name="aigcservice-android-html-7-3-1" /> |
+| `estimatedResponseTokens` | 本轮 LLM 大模型处理返回内容大约消耗的 Token 数。该数值只是估算值，不作为计费标准，你可以用该值监测并限制 Token 的消耗。如果返回的 `token` 为 `0`，可忽略该值。 |
+| `code` | LLM 大模型处理结果。详见 [`ServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-android-html-7-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+<Slot for="aigcservice-android-html-7-3-1">
+
+本轮大语言模型返回结果是否结束：
+
+        - `true`：是。
+        - `false`：否。
+
+</Slot>
+
+#### 返回值
+
+`HandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `CONTINUE(0)`：SDK 会继续处理后续流程
+- `DISCARD(1)`：SDK 会中断处理后续流程
+
+<a id="ontext2speechresult"></a>
+### onText2SpeechResult
+
+```java
+HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int sampleRates, int channels, int bits, ServiceCode code)
+```
+
+回调文字转语音 (TTS) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-android-html-8-1-1" /> |
+| `voice` | 文字转语音处理后的语音数据。该参数为读写模式。如果 `voice` 参数被修改，后续流程会用更新后的 `voice` 参数值作为输入。 |
+| `sampleRates` | 语音数据 (PCM) 的采样率，单位为 Hz。 |
+| `channels` | 语音数据 (PCM) 的通道数。 |
+| `bits` | 语音数据 (PCM) 的位数。 |
+| `code` | TTS 文本转语音处理结果。详见 [`ServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-android-html-8-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+`HandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `CONTINUE(0)`：SDK 会继续处理后续流程
+- `DISCARD(1)`：SDK 会中断处理后续流程
+
+:::info[信息]
+该回调是目前最后一个业务流程，返回值 `CONTINUE` 和 `DISCARD` 效果一样，均不会影响后续业务。后续版本中我们可能会在该回调后添加其他业务。
+:::
+
+<a id="onspeechstatechange"></a>
+### onSpeechStateChange
+
+```java
+void onSpeechStateChange(SpeechState state);
+```
+
+识别语音开始和结束的状态。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `state` | 语音的状态，详见 [`SpeechState`](#speechstate)。 |
+
+<a id="aigcserviceconfig"></a>
+## 类型定义
+### AIGCServiceConfig
+
+```java
+pubic class AIGCServiceConfig {
+    public Context context;
+    public String appId;
+    public String rtmToken;
+    public int userId;
+    public AIGCServiceCallback callback;
+    public String userName;
+    public boolean enableMultiTurnShortTermMemory;
+    public int speechRecognitionFiltersLength;
+    public boolean enableLog;
+    public boolean enableSaveLogToFile;
+    public SceneMode input;
+    public SceneMode output;
+    public boolean enableChatIdleTip;
+    public String logFilePath;
+    public NoiseEnvironment noiseEnvironment;
+    public SpeechRecognitionCompletenessLevel speechRecognitionCompletenessLevel;
+}
+```
+
+`AIGCService` 的初始化配置。
+
+| 参数 | 描述 |
+| --- | --- |
+| `context` | Android 平台的 Context。 |
+| `appId` | 声网项目的 App ID。 |
+| `rtmToken` | 声网项目的 [RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.android.android)。 |
+| `userId` | 用户 ID。 |
+| `callback` | 服务回调。详见 [`AIGCServiceCallback`](#aigcservicecallback)。 |
+| `userName` | 用户名。 |
+| `enableMultiTurnShortTermMemory` | <Slot name="aigcservice-android-html-10-7-1" /> |
+| `speechRecognitionFiltersLength` | 过滤语音识别结果的字数长度。 |
+| `enableLog` | <Slot name="aigcservice-android-html-10-9-1" /> |
+| `enableSaveLogToFile` | <Slot name="aigcservice-android-html-10-10-1" /> |
+| `input` | 输入参数，详见 [`SceneMode`](#scenemode)。 |
+| `output` | 输出参数，详见 [`SceneMode`](#scenemode)。 |
+| `enableChatIdleTip` | <Slot name="aigcservice-android-html-10-13-1" /> |
+| `logFilePath` | 设置日志的存储路径。如果不设或设为空字串，SDK 会使用默认的存储路径。 |
+| `noiseEnvironment` | 设置噪音环境级别，详见 [`NoiseEnvironment`](#noiseenvironment)。SDK 会根据你的设置等级，相应地处理环境噪音对语音数据的影响。 |
+| `speechRecognitionCompletenessLevel` | 设置语音识别句子完整度级别，详见 [`SpeechRecognitionCompletenessLevel`](#speechrecognitioncompletenesslevel)。 |
+
+<Slot for="aigcservice-android-html-10-7-1">
+
+是否开启多轮短时记忆：
+
+        - `true`：是。开启后，后续流程的处理会结合上下文语境。
+        - `false`：否。
+
+        :::warning[注意]
+        该参数配置在调用 `pushMessagesToLLM` 时无效。
+        :::
+
+</Slot>
+
+<Slot for="aigcservice-android-html-10-9-1">
+
+是否开启日志输出到 IDE 的控制台：
+
+        - `true`：是。
+        - `false`：否。
+
+</Slot>
+
+<Slot for="aigcservice-android-html-10-10-1">
+
+是否保存日志到文件系统：
+
+        - `true`：是。
+        - `false`：否。
+
+        :::warning[注意]
+        该参数的设置只有在 `enableLog` 为 `true` 时才生效。
+        :::
+
+</Slot>
+
+<Slot for="aigcservice-android-html-10-13-1">
+
+是否开启闲时聊天提示信息：
+
+      - `true`：是。
+      - `false`：（默认）否。
+
+</Slot>
+
+<a id="airole"></a>
+### AIRole
+
+```java
+public class AIRole implements Serializable {
+    protected String roleId;
+    protected String roleName;
+    protected String gender;
+    protected String profession;
+    protected String description;
+}
+```
+
+AI 服务的属性。
+
+| 参数 | 描述 |
+| --- | --- |
+| `roleId` | AI 服务的 ID，是 AI 服务的唯一标识。|
+| `roleName` | AI 服务的名称。|
+| `gender` | AI 服务的性别：`"male"` 表示男性，`"female"` 表示女性。|
+| `profession` | AI 服务的职业。 |
+| `description` | AI 服务的简单介绍。|
+
+<a id="constants"></a>
+### Constants
+
+常量值。
+
+| 参数名 | 参数值 | 描述 |
+| --- | --- | --- |
+| `SERVICE_STT` | `0b0001` | STT 服务类型值。|
+| `SERVICE_LLM` | `0b0010` | LLM 服务类型值。|
+| `SERVICE_TTS` | `0b0100` | TTS 服务类型值。|
+
+<a id="scenemode"></a>
+### SceneMode
+
+```java
+public class SceneMode {
+    public Language language;
+    public int speechFrameBits;
+    public int speechFrameSampleRates;
+    public int speechFrameChannels;
+}
+```
+
+`AIGCServiceConfig` 中 `input` 和 `output` 参数的详细配置项。
+
+| 参数 | 描述 |
+| --- | --- |
+| `language` | 语言类型。详见 [`Language`](#language)。 |
+| `speechFrameSampleRates` | 语音数据 (PCM) 的采样率。SDK 仅支持 16000。 |
+| `speechFrameChannels` | 语音数据 (PCM) 的通道数。SDK 仅支持 1。 |
+| `speechFrameBits` | 语音数据 (PCM) 的位数。SDK 仅支持 16。 |
+
+<a id="sttvendor"></a>
+### STTVendor
+
+```java
+public class STTVendor extends BaseVendor {
+    private String id;
+    private String vendorName;
+}
+
+public class BaseVendor {
+    protected String accountInJson;
+}
+```
+
+语音转文字的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `id` | 语音转文字供应商的 ID。|
+| `vendorName` | 供应商名称。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="llmvendor"></a>
+### LLMVendor
+
+```java
+public class LLMVendor extends BaseVendor {
+    private String id;
+    private String vendorName;
+    private String model;
+}
+
+public class BaseVendor {
+    protected String accountInJson;
+}
+```
+
+大语言模型的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `id` | 大语言模型供应商的 ID。|
+| `vendorName` | 供应商名称。|
+| `model` | 模型参数。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="ttsvendor"></a>
+### TTSVendor
+
+```java
+public class TTSVendor extends BaseVendor {
+    private String id;
+
+    private String vendorName;
+
+    private String language;
+    private String voiceName;
+    private String voiceNameValue;
+    private String voiceNameStyle;
+}
+
+public class BaseVendor {
+    protected String accountInJson;
+}
+```
+
+文字转语音的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `id` | 文字转语音供应商的 ID。|
+| `vendorName` | 供应商名称。|
+| `language` | 所支持的语言。如果为空，则表示支持所有语言。|
+| `voiceName` | 发言人名称，仅用于标签上展示的名称。 |
+| `voiceNameValue` | 发言人名称参数值。|
+| `voiceNameStyle` | （可选）发言人风格参数值。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="serviceevent"></a>
+### ServiceEvent
+
+服务事件类型。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `IDLE` | `0` | 初始状态。 |
+| `INITIALIZE` | `1` | 初始化状态，对应调用 `initialize` 方法。 |
+| `START` | `2` | 启动状态，对应调用 `start` 方法。|
+| `STOP` | `3` | 停止服务状态，对应调用 `stop` 方法。 |
+| `DESTROY` | `4` | 销毁服务状态，对应调用 `destroy` 方法。|
+
+<a id="servicecode"></a>
+### ServiceCode
+
+服务事件结果。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `ERROR_GENERAL` | `-1` | 通用错误。|
+| `SUCCESS` | `0` | 成功。|
+| `INITALIZE_FAIL` | `1` | 初始化失败。|
+| `START_FAIL` | `2` | 启动失败。|
+| `ERROR_LLM_LENGTH_LIMIT` | `3` | 大模型返回长度超出限制。|
+| `ERROR_LLM_EXCEEDS_MAX_CAPACITY` | `4` | 输入或输出内容超出模型最大容量限制。|
+| `ERROR_LICENSE_EXPIRE` | `5` | License 过期。 |
+| `ERROR_INVALID_API_KEY` | `6` | 无效的 API Key。 |
+| `ERROR_INVALID_PARAMETER` | `7` | 无效参数。|
+| `ERROR_INVALID_STATE` | `8` | 无效状态。|
+| `ERROR_TIMEOUT` | `9` | 服务超时。|
+| `ERROR_CONTENT_MANAGEMENT_POLICY` | `10` | LLM 判定请求内容不合规，触发内容审核。 |
+
+<a id="vad"></a>
+### Vad
+
+本地是否有人声。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `UNKNOWN` | `-1` | 不确定。|
+| `MUTE` | `0`| 本地无人声。|
+| `NON_MUTE` | `1` | 本地有人声。 |
+
+<a id="language"></a>
+### Language
+
+语言类型。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `ZH_CN` | `zh-CN` | 中文。 |
+| `EN_US` | `en-US` | 英文。 |
+| `JA_JP` | `ja-JP` | 日文。 |
+| `FR_FR` | `fr-FR` | 法语。|
+| `DE_DE` | `de-DE` | 德语。 |
+| `ES_ES` | `es-ES` | 西班牙语。 |
+| `PT_BR` | `pt-BR` | 葡萄牙语（巴西）。 |
+| `PT_PT` | `pt-PT` | 葡萄牙语（葡萄牙）。 |
+| `TR_TR` | `tr-TR` | 土耳其语。 |
+| `AR_EG` | `ar-EG` | 阿拉伯语（埃及）。 |
+| `AR_SA` | `ar-SA` | 阿拉伯语（沙特阿拉伯）。 |
+
+<a id="noiseenvironment"></a>
+### NoiseEnvironment
+
+噪音环境级别。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `QUIET` | `0` | 周围环境噪音很少，比较安静。|
+| `NORMAL` | `1` | 周围环境噪音正常。|
+| `NOISE` | `2` | 周围环境噪音很强。|
+
+<a id="speechrecognitioncompletenesslevel"></a>
+### SpeechRecognitionCompletenessLevel
+
+语音识别句子的完整性级别。级别越高，则识别句子的完整性越好；相应地，语音识别的整体时间也会越长。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `LOW` | `0` | 低级别。|
+| `NORMAL` | `1` | 正常级别。|
+| `HIGH` | `2` | 高级别。|
+
+<a id="sttmode"></a>
+### STTMode
+
+STT 服务模式类型。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `FREESTYLE` | `0` | （默认）自由模式，适用于实时对话、实时语音识别。|
+| `CONTROLLED` | `1` | 受控模式，适用于单段语音输入。|
+
+<a id="speechstate"></a>
+### SpeechState
+
+语音的状态。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `START` | `0` | 语音开始。|
+| `END` | `1` | 语音结束。|

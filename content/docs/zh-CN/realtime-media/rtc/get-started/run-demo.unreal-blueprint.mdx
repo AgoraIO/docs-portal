@@ -1,0 +1,98 @@
+---
+title: "跑通 API 示例项目"
+---
+声网在 GitHub 上提供开源示例项目 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) 演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+本文介绍如何快速跑通 Unreal Blueprint 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
+- 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
+  | 开发平台 | 参考文档  | 备注    |
+  | :--- | :------ | :------------------------------ |
+  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.windows.unreal-blueprint)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
+    ```
+
+2. 声网实时互动 Unreal SDK 的 Blueprint 使用示例位于 `/Agora-Unreal-SDK-Blueprint-Example` 路径下，其中包含：
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic`     | 基础功能 API 示例。 |
+    | `/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Advance`   | 进阶功能 API 示例。 |
+
+### 配置示例项目
+
+参考以下步骤集成声网实时互动 Unreal SDK：
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/resources.unreal-cpp.unreal-blueprint)页面，下载最新版本的 Unreal 视频 SDK，并解压缩。
+2. 在 `/Agora-Unreal-SDK-Blueprint-Example` 路径下，创建名为 `Plugins` 的文件夹。
+3. 将 Unreal SDK 文件夹中的 `AgoraPlugin` 拷贝到 `Plugins` 中。
+
+### 编译并运行示例项目
+
+在 **Unreal Editor** 中，你可以在主关卡或任意子关卡中编译并运行示例项目。
+
+<Tabs defaultValue="mainlevel" groupId="operating-systems" persist>
+<TabsList>
+  <TabsTrigger value="mainlevel">主关卡</TabsTrigger>
+  <TabsTrigger value="sublevel">子关卡</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mainlevel">
+
+1. 在 Blueprint 使用示例的路径下，双击 `AgoraBPExample.uproject` 打开项目。
+
+2. 双击 **MainLevel**，然后点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 编译并运行示例项目。
+
+3. 以 Windows 为例，运行成功后，你会看到如下界面，在文本框中填入你从控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名。
+
+![运行界面](/img/rtc/unreal-bp-demo-main-level-01.png)
+
+4. 此时，你可以点击左侧按钮，从主关卡导航到 API 示例的子关卡体验指定场景。以 **BasicVideoCallScene** 为例，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](/img/rtc/unreal-bp-demo-main-level-02.png)
+
+5. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+
+<TabsContent value="sublevel">
+
+1. 在 Blueprint 使用示例的路径下，双击 `AgoraBPExample.uproject` 打开项目。
+
+2. 以 **BasicVideoCallScene** 为例，在 **Content Browser** 中双击子关卡，点击编辑器上方的 **Blueprints > Open Level Blueprint** 打开对应的关卡蓝图。
+
+![蓝图界面](/img/rtc/unreal-bp-demo-sub-level-01.png)
+
+3. 在 **Appid**、**ChannelId** 和 **Token** 变量的 **Default Value** 字段分别填入你项目的 App ID、频道名以及临时 Token。
+
+![配置 App ID、频道名和临时 Token 的界面](/img/rtc/unreal-bp-demo-sub-level-02.png)
+
+4. 点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 在子关卡编译并运行示例项目。
+
+5. 编译成功过后，你会看到如下界面，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](/img/rtc/unreal-bp-demo-main-level-02.png)
+
+6. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+</Tabs>

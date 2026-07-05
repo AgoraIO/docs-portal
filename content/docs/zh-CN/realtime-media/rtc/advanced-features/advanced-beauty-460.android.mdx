@@ -1,0 +1,418 @@
+---
+title: "高级美颜"
+---
+自 RTC SDK v4.6.0 起，SDK 对美颜功能进行了彻底重构，提供了全新的美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+
+本文介绍如何实现高级美颜功能。
+
+:::info[信息]
+- 当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+- 如果你的 SDK 版本小于 v4.6.0，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy.android)了解如何使用美颜 1.0 API。
+:::
+
+## 功能介绍
+
+### 核心功能
+
+美颜 2.0 提供了三大核心功能：
+
+- **美颜**：包含基础美颜（磨皮、美白、红润、锐化）、美型（瘦脸、大眼等脸部轮廓调整）、美肤（去眼袋、亮眼、白牙、去法令纹、去黑眼圈等）功能。
+- **风格妆**：包含美妆（口红、眼影、眉毛、卧蚕、修容等）和滤镜效果的组合模板。
+- **滤镜**：提供多种滤镜效果，如冷白、嫩白、原生等风格。
+
+### 关键概念
+
+- **视频特效对象 (VideoEffectObject)**：特效功能的核心管理对象。管理一个视频源（如主摄像头）的所有特效。你需要先创建此对象，然后通过它来添加、删除、配置特效节点。
+- **特效节点 (Node)**：代表一类特效处理单元。API 2.0 主要提供三种节点：
+    - **BEAUTY**：美颜节点。包含基础美颜、美型、美肤功能。
+    - **STYLE_MAKEUP**：风格妆节点。包含美妆和滤镜效果。此节点的滤镜效果优先级高于 `FILTER` 节点。
+    - **FILTER**：滤镜节点。仅包含滤镜效果。
+- **模板 (Template)**：一个预设的 JSON 配置文件，定义了某个节点所需的所有参数和资源路径。使用模板可以一键启用一套精心调校的效果组合，极大简化开发。
+- **素材包 (Bundle)**：一个包含所有特效所需资源（图片、配置文件等）的压缩包。你需要将此包解压到应用的本地存储中，并在创建 `VideoEffectObject` 对象时指定其路径。
+
+### 核心优势
+
+相比旧版 API，美颜 2.0 具备以下优势：
+
+- **简化集成**：通过预配置的模板，一键启用完整的美颜、风格妆、滤镜效果，无需手动设置大量参数。
+- **本地化部署**：美颜资源外置为本地 bundle 文件，消除网络下载依赖，提升可靠性和启动速度。
+- **灵活定制**：支持对各项效果参数进行实时、精细化的动态调整，提供保存和重置功能。
+- **统一管理**：通过 `IVideoEffectObject` 对象统一管理所有特效节点的生命周期和参数设置。
+
+## 前提条件
+
+在实现高级美颜功能前，请确保：
+
+- 已集成 RTC SDK v4.6.0 及以上版本。
+- 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
+- SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
+
+## 实现步骤
+
+本节介绍如何在你的项目中实现高级美颜功能。
+
+### 准备美颜素材包
+
+1. [联系技术支持](https://ticket.shengwang.cn)获取美颜素材包 `AgoraBeautyMaterial.bundle.zip`。
+2. 将素材包解压到应用程序可访问的本地目录（例如应用的 assets 目录或内部存储目录）。
+3. 确保应用拥有对该目录的读取权限。
+
+素材包解压后的目录结构如下：
+
+```shell
+AgoraBeautyMaterial.bundle
+├── beauty_material_functional/        # 全功能版素材包
+    ├── beauty_female/                     # 美颜模板：模板女
+    ├── beauty_male/                       # 美颜模板：模板男
+    ├── beauty_natural/                    # 美颜模板：模板自然
+    ├── stylemakeup_mature/                # 风格妆模板：学姐妆
+    ├── stylemakeup_youthful/              # 风格妆模板：学妹妆
+    ├── filter_warmcolor/                  # 滤镜模板：气质
+    ├── filter_bright/                     # 滤镜模板：气色
+    ├── filter_vibrant/                    # 滤镜模板：元气
+    ├── config.json                        # 根配置文件
+├── beauty_material_efficient         # 性能版素材包，结构同全功能版
+├── resource/                         # 资源文件夹
+```
+
+:::info[信息]
+素材包分为**性能版**(`beauty_material_efficient`)和**全功能版**(`beauty_material_functional`)，你可以根据需求从中选择一个：
+
+- **性能版**删除了部分子功能以提高整体美颜性能，适用于性能开销比较紧张的场景，例如目标用户的设备以低端机型为主。
+- **全功能版**包含所有功能，可实现更丰富的美颜效果。
+:::
+
+### 创建视频特效对象
+
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+
+```java
+// 假设 mRtcEngine 是已初始化的 RtcEngine 对象
+private IVideoEffectObject mVideoEffectObject;
+
+// 获取应用的内部存储目录
+File filesDir = getFilesDir();
+String bundlePath = filesDir.getAbsolutePath() + "/beauty_material_functional";
+
+mVideoEffectObject = mRtcEngine.createVideoEffectObject(bundlePath,
+                                                       Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+```
+
+### 实现美颜效果
+
+调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+
+```java
+// 启用美颜效果，使用默认模板
+int result = mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), "");
+if (result == 0) {
+    // 美颜效果启用成功
+}
+```
+
+你也可以使用特定的美颜模板：
+
+```java
+// 使用女性美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(),
+                                         "BeautyFemale");
+
+// 使用男性美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(),
+                                         "BeautyMale");
+
+// 使用自然美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(),
+                                         "BeautyNatural");
+```
+
+### 实现美妆和滤镜效果
+
+#### 启用美妆效果
+
+美妆效果通过风格妆节点实现，包含美妆和滤镜的组合效果：
+
+```java
+// 启用学姐妆模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue(),
+                                         "MatureMakeup");
+
+// 启用学妹妆模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue(),
+                                         "YouthfulMakeup");
+```
+
+#### 启用滤镜效果
+
+如果只需要滤镜效果，可以使用滤镜节点：
+
+```java
+// 启用气质滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(),
+                                         "WarmColor");
+
+// 启用气色滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(),
+                                         "Bright");
+
+// 启用元气滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(),
+                                         "Vibrant");
+```
+
+:::warning[注意]
+风格妆节点的滤镜优先级高于滤镜节点。如果要使用单独的滤镜效果，需要先移除风格妆节点。
+:::
+
+```java
+// 先移除风格妆节点，再启用滤镜节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue());
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(),
+                                         "WarmColor");
+```
+
+### 管理特效配置
+
+#### 移除特效节点
+
+使用 [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+
+```java
+// 移除美颜节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue());
+
+// 移除风格妆节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue());
+
+// 移除滤镜节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue());
+```
+
+#### 保存和重置配置
+
+使用 [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+
+```java
+// 保存当前美颜节点的所有参数
+mVideoEffectObject.performVideoEffectAction(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(),
+                                           IVideoEffectObject.VIDEO_EFFECT_ACTION.SAVE);
+
+// 将美颜节点的参数重置为默认值
+mVideoEffectObject.performVideoEffectAction(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(),
+                                           IVideoEffectObject.VIDEO_EFFECT_ACTION.RESET);
+```
+
+### （可选）自定义美颜参数
+
+如果预设模板中的美颜参数不满足你的需求，你可以参考[JSON 字段说明](#json-字段说明)了解参数结构，调用以下方法动态调整和获取美颜、风格妆和滤镜的各项参数：
+
+- setVideoEffectFloatParam
+- setVideoEffectBoolParam
+- setVideoEffectIntParam
+- getVideoEffectFloatParam
+- getVideoEffectBoolParam
+- getVideoEffectIntParam
+
+**设置浮点型参数（例：磨皮强度）**
+
+```java
+// 设置磨皮强度为 0.7
+mVideoEffectObject.setVideoEffectFloatParam("beauty_effect_option", "smoothness", 0.7f);
+```
+
+**设置布尔型参数（例：关闭美颜）**
+
+```java
+// 关闭美颜效果
+mVideoEffectObject.setVideoEffectBoolParam("beauty_effect_option", "enable", false);
+```
+
+**获取当前参数值**
+
+```java
+// 获取当前磨皮强度
+float currentSmoothness = mVideoEffectObject.getVideoEffectFloatParam("beauty_effect_option", "smoothness");
+```
+
+### 销毁视频特效对象
+
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+
+```java
+mRtcEngine.destroyVideoEffectObject(mVideoEffectObject);
+mVideoEffectObject = null;
+```
+
+## 开发注意事项
+
+在使用高级美颜功能时，请注意以下事项：
+
+- **生命周期管理**：确保视频特效对象的生命周期与对应的视频源保持一致，通常在开启视频流后创建，在关闭视频流前销毁。
+- **性能考量**：启用多个特效会增加设备功耗。在低端设备上，建议酌情关闭非必要的视频特效。
+- **节点优先级**：风格妆节点的滤镜效果优先于滤镜节点。若需单独使用滤镜，请确保未启用风格妆节点。
+- **错误处理**：务必检查关键 API（如 `createVideoEffectObject`、`addOrUpdateVideoEffect`）的返回值，确保操作成功。
+- **路径检查**：确保传递给 `createVideoEffectObject` 的素材包路径绝对正确且应用有权限访问。
+- **权限要求**：确保应用具有存储访问权限，以便读取美颜素材包。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="高级美颜示例" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
+  <Card title="高级美颜示例" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
+</Cards>
+
+### JSON 字段说明
+
+本节提供美颜、风格妆和滤镜效果的 JSON 示例和字段说明。
+
+:::info[信息]
+目前美颜 2.0 API 不支持对美型进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy.android#微调单个部位)。
+:::
+
+#### 美颜模板
+
+```json
+{
+    "beauty_effect_option": {
+        "enable": true,               // 美颜开关。false/true
+        "smoothness": 0.5,            // 磨皮。0.0 - 1.0
+        "lightness": 0.7,             // 美白。0.0 - 1.0
+        "redness": 0.5,               // 红润。0.0 - 1.0
+        "sharpness": 0.0,             // 锐化。0.0 - 1.0
+        "contrast_strength": 0.5      // 对比度。 0.0 - 1.0
+    },
+
+    "face_shape_beauty_option": {
+        "enable": true,               // 美型开关。false/true
+        "style": 0,                   // 风格。0男，1女，2自然
+        "intensity": 50               // 强度。0 - 100
+    },
+
+    "face_shape_area_option": [       // 美型单个部位参数设置，需要参考美颜 1.0 API 进行微调
+        {
+            "area": 100,
+            "strength": 50
+        },
+        {
+            "area": 200,
+            "strength": 50
+        },
+        {
+            "area": 302,
+            "strength": 10
+        },
+        {
+            "area": 304,
+            "strength": 50
+        },
+        {
+            "area": 305,
+            "strength": 50
+        },
+        {
+            "area": 306,
+            "strength": 30
+        },
+        {
+            "area": 400,
+            "strength": 20
+        },
+        {
+            "area": 402,
+            "strength": 30
+        }
+    ],
+
+    "face_buffing_option": {
+        "eye_pouch": 0.5,             // 去黑眼圈。0.0 - 1.0
+        "brighten_eye": 0.9,          // 亮眼。0.0 - 1.0
+        "nasolabial_fold": 0.7,       // 去法令纹。0.0 - 1.0
+        "whiten_teeth": 0.7           // 白牙。0.0 - 1.0
+    }
+}
+```
+
+:::info[信息]
+模板参数中，`face_buffing_option` 是美肤选项，没有单独的 `enable` 开关，依赖于 `beauty_effect_option` 中的 `enable` 开关。
+:::
+
+#### 风格妆模板
+
+```json
+{
+    "makeup_options": {
+        "enable_mu": true,                      // 美妆开关。false/true
+        "resPath": "../../resource",            // 图片资源路径。
+        "browStyle": 3,                         // 眉毛类型。与resource/eyebrow/中png名中的数字对应
+        "browColor": 1,                         // 眉毛颜色。1黑色，2深灰色
+        "browStrength": 1.0,                    // 眉毛强度。0.0 - 1.0
+        "lashStyle": 5,                         // 睫毛类型。
+        "lashColor": 1,                         // 睫毛颜色。
+        "lashStrength": 1.0,                    // 睫毛强度。
+        "shadowStyle": 6,                       // 眼影类型。
+        "shadowStrength": 1.0,                  // 眼影强度。
+        "blushStyle": 9,                        // 腮红类型。
+        "blushColor": 3,                        // 腮红颜色。1 - 5 可选
+        "blushStrength": 1.0,                   // 腮红强度。
+        "lipStyle": 6,                          // 唇彩类型。
+        "lipColor": 5,                          // 唇彩颜色。1 - 5 可选
+        "lipStrength": 1.0,                     // 唇彩强度。
+        "facialStyle": 2,                       // 修容类型。
+        "facialStrength": 1.0,                  // 修容强度。
+        "wocanStyle": 2,                        // 卧蚕类型。
+        "wocanStrength": 1.0                    // 卧蚕强度。
+    },
+
+    "filter_effect_option": {
+        "enable": true,                                 // 风格妆中滤镜功能开关。false/true
+        "path": "../../resource/filters/youthful.png",  // 滤镜素材路径。
+        "strength": 0.5                                 // 滤镜强度。
+    },
+
+    "style_makeup_option" : {
+        "styleIntensity" : 0.95                 // 总体妆容强度。0.0 - 1.0
+    }
+}
+```
+
+#### 滤镜模板
+
+```json
+{
+    "filter_effect_option": {
+        "enable": true,                                      // 滤镜开关。false/true
+        "path": "../../resource/filters/vibrant.png",        // 滤镜素材路径
+        "strength": 0.5                                      // 滤镜强度。
+    }
+}
+```
+
+### API 参考
+
+#### 视频特效对象管理
+
+- [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+
+#### 特效节点管理
+
+- [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+
+#### 参数设置与获取
+
+- [`setVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+
+#### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)

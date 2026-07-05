@@ -1,0 +1,852 @@
+---
+title: "使用网易易盾音频审核"
+---
+本文介绍如何在你的项目中使用网易易盾语音审核插件。
+
+## 技术原理
+
+通过[声网云端录制](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
+
+![语音审核流程](https://web-cdn.agora.io/docs-files/1669343507453)
+
+对单个频道进行语音审核的流程如下：
+
+1. 调用 `/acquire` 接口获取语音审核资源。
+2. 调用 `/start` 接口开启语音审核任务，并且选择一种审核模式：
+   - 单流模式：分开审核频道内每个 UID 的音频流。
+   - 合流模式：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
+3. （可选）调用 `/query` 接口查询该审核任务的状态。
+4. （可选）调用 `/update` 接口更新在频道内订阅的音频流。
+5. 调用 `/stop` 停止审核任务，释放审核资源。
+
+## 前提条件
+
+### 开通语音审核服务
+
+1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+
+2. [开通云端录制服务](/zh-CN/realtime-media/recording/cloud-recording/get-started/enable-service#开通云端录制服务)。
+
+   :::warning[注意]
+   第三方语音审核服务依赖于声网云端录制服务，除了第三方语音审核服务费用，还会产生声网云端录制费用。计费方式详见[云端录制计费说明](/zh-CN/realtime-media/recording/cloud-recording/overview/billing-strategy/billing)。
+   :::
+
+3. 联系声网技术支持，提供以下信息：
+   - 公司全称
+   - 邮箱：用于创建审核子账号，登陆审核控台查看用量等信息
+
+成功开通语音审核服务后，你可以使用邮箱登陆网易易盾控台，进行审核策略配置，获取审核权限信息（如 `SecretId`、`SecretKey` 等），后续调用接口时需要传入。
+
+### 通过 Basic HTTP 认证
+
+语音审核服务要求 Basic HTTP 认证。每次发送 HTTP 请求时，都必须在请求头部填入 `Authorization`字段。关于如何生成该字段的值，请参考 [HTTP 基本认证](/zh-CN/realtime-media/recording/cloud-recording/user-guides/http-basic-auth)。
+
+## 调用流程
+
+本节介绍使用网易易盾语音审核插件的基本流程。详细的 RESTful API 参数解释参见[API 参考](#api-参考)。
+
+### 1. 获取审核资源
+
+在开始审核前，必须先调用 `/acquire` 接口获取审核资源。
+
+例如，你可以使用命令行工具发送以下命令：
+
+```shell
+# 将 {appid} 替换为你的声网 App ID
+curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recording/acquire' \
+# 将 <Authorization> 替换为 Basic HTTP 认证生成的 Base64 编码凭证
+--header 'Authorization: Basic <Authorization>' \
+--header 'Content-Type: application/json' \
+# 将 <YourChannelName> 替换为需要审核的频道名称
+# 将 <YourInspectUID> 替换为审核服务的 UID（审核服务相当于频道中一个不发流的客户端）
+--data-raw '{
+    "cname": "<YourChannelName>",
+    "uid": "<YourInspectUID>",
+    "clientRequest": {}
+}'
+```
+
+设置 `uid` 参数时需要注意：
+
+- 审核服务相当于频道中一个不发流的客户端。请求包体中的 `uid` 参数用于标识这个不发流的客户端，不可与频道内的任何已有 UID 重复。例如，如果频道内已有两个用户，UID 分别为 123 和 456，则该请求包体中的 `uid` 不可为 `"123"` 或 `"456"`。
+- 审核服务不支持 String 用户 ID（User Account）。请确保频道内所有用户均使用整型 UID。`uid` 参数的字符串内容也必须为整型。
+
+调用该接口成功后，你会在响应包体中得到一个审核资源 ID（`resourceId`）。审核资源 ID 的时效为 5 分钟，你需要在 5 分钟内开启审核任务。
+
+### 2. 开启审核任务
+
+获取审核资源后，在 5 分钟内调用 `/start` 接口开启审核任务，此时审核服务作为一个不发流的客户端加入频道。一个审核资源 ID 只能开启一个审核任务。
+
+开启审核任务时，你需要选择审核模式：
+
+- 单流模式：分开审核频道内每个 UID 的音频流。单流模式适用于需要精准审核的场景。
+- 合流模式：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。合流模式的审核效率较高，成本较低，但无法准确定位用户。
+
+例如，你可以使用命令行工具发送以下命令，开启一个审核任务：
+
+<Tabs defaultValue="individual" groupId="recording-mode" persist>
+<TabsList>
+  <TabsTrigger value="individual">单流模式示例</TabsTrigger>
+  <TabsTrigger value="composite">合流模式示例</TabsTrigger>
+</TabsList>
+
+<TabsContent value="individual">
+
+以下示例中只包含了必填参数，你可以查看[开启审核任务](#start)来填写各项参数的值。
+
+```shell
+# 确保在 {mode} 中传入 individual 以使用单流模式
+curl --location --request POST  'https://api.agora.io/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start' \
+--header 'Authorization: Basic <Authorization>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "cname": "<YourChannelName>",
+    "uid": "<YourInspectUID>",
+    "clientRequest": {
+        "token": "<YourToken>",
+        "recordingConfig": {
+            "channelType": 0,
+            "streamTypes": 0
+        },
+        "extensionServiceConfig": {
+            "extensionServices": [
+                {
+                    "errorHandlePolicy": "error_abort",
+                    "serviceName": "yidun_voice_scan",
+                    "serviceParam": {
+                        "businessId": "e97a4b755dxxxx909eebd78be6",
+                        "callbackUrl": "http://103.229.213.112:8889/paas/yidun",
+                        "dataId": "17744xxxx669749",
+                        "extension": "{}",
+                        "nonce": 1804934882,
+                        "roomNo": "YJ",
+                        "secretId": "70fdb6d660xxx72a357e009bc",
+                        "signature": "377fcfb801xxxx1939af62157244",
+                        "signatureMethod": "md5",
+                        "timestamp": 1774497460,
+                        "version": "v4.1"
+                    },
+                }
+            ]
+        }
+    }
+}'
+```
+
+</TabsContent>
+
+<TabsContent value="composite">
+
+以下示例中只包含了必填参数，你可以查看[开启审核任务](#start)来填写各项参数的值。
+
+```shell
+# 确保在 {mode} 中传入 mix 以使用合流模式
+curl --location --request POST  'https://api.agora.io/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start' \
+--header 'Authorization: Basic <Authorization>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "cname": "<YourChannelName>",
+    "uid": "<YourInspectUID>",
+    "clientRequest": {
+        "token": "<YourToken>",
+        "recordingConfig": {
+            "channelType": 0,
+            "streamTypes": 0
+        },
+        "extensionServiceConfig": {
+            "extensionServices": [
+                {
+                    "errorHandlePolicy": "error_abort",
+                    "serviceName": "yidun_voice_scan",
+                    "serviceParam": {
+                        "businessId": "e97a4b755dxxxx909eebd78be6",
+                        "callbackUrl": "http://103.229.213.112:8889/paas/yidun",
+                        "dataId": "17744xxxx669749",
+                        "extension": "{}",
+                        "nonce": 1804934882,
+                        "roomNo": "YJ",
+                        "secretId": "70fdb6d660xxx72a357e009bc",
+                        "signature": "377fcfb801xxxx1939af62157244",
+                        "signatureMethod": "md5",
+                        "timestamp": 1774497460,
+                        "version": "v4.1"
+                    },
+                }
+            ]
+        }
+    }
+}'
+```
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果你需要在审核的同时录制音频流，在调用 `/start` 时可以通过 `recordingFileConfig` 配置录制文件格式，通过 `storageConfig` 配置第三方云存储。具体参数详见[开始云端录制 API](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)。
+
+开启录制音频流的功能后，你可以从 `/stop` 请求的响应包体中获取录制文件上传的状态和录制文件的信息。
+:::
+
+成功调用 `/start` 接口后，你会从响应包体中获得一个审核任务 ID（`sid`），用于标识该审核任务。
+
+### 3. 接收审核结果
+
+审核结果会以 HTTP 请求的形式直接发送到你在调用 `/start` 时通过 `callback` 设置的格式，指定回调地址 `callbackUrl` ，详见 `serviceParam`。默认情况下，只有在音频流中检测到违规内容时才会回调审核结果。
+
+:::info[信息]
+当频道空闲（无用户）超过预设时间（默认为 30 秒） 后，语音审核会自动停止。
+:::
+
+审核结果的回调参数解释详见[API 参考](#api-参考)。
+
+### 4. 停止审核
+
+审核结束后，调用 `/stop` 接口停止审核。
+
+例如，你可以使用命令行工具发送以下命令：
+
+```shell
+# 将 {resourceid} 替换为审核资源标识，即调用 /acquire 接口获取的 resource ID
+# 将 {sid} 替换为审核任务标识，即调用 /start 接口获取的 sid
+# 将 {mode} 替换为你使用的审核模式，即单流模式（individual）或合流模式（mix）
+curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop' \
+--header 'Authorization: Basic <Authorization>' \
+--header 'Content-Type: application/json' \
+```
+
+调用 `/stop` 接口成功后，如果需要再次开始审核，必须重新调用 `/acquire` 接口请求新的审核资源，即获取一个新的 `resourceId`。
+
+## API 参考
+
+### 调用说明
+
+以下说明适用于所有语音审核 RESTful API。
+
+#### 请求结构
+
+- 仅支持 HTTPS 协议。
+- 请求 Header 的 `Content-type` 为 `application/json;charset=utf-8`。
+- 请求 Header 的 `Authorization` 字段需要你自行生成，生成方法参考 [HTTP 基本认证](/zh-CN/realtime-media/recording/cloud-recording/user-guides/http-basic-auth)。
+
+#### 公共参数
+
+本节介绍语音审核 RESTful API 的公共参数。
+##### 公共请求参数
+
+每次请求都需要传入以下参数：
+
+| 参数 | 类型 | 描述 | 备注 |
+| --- | --- | --- | --- |
+| `appid` | String | 你的[声网 App ID](/zh-CN/realtime-media/marketplace/get-started/enable-service#获取-app-id)。必须使用待审核的频道所对应的 App ID。 | 路径参数 |
+| `cname` | String | 待审核的频道名。 | Body 参数 |
+| `uid` | String | <Slot name="audio-moderation-api-html-0-3-2" /> | Body 参数 |
+
+<Slot for="audio-moderation-api-html-0-3-2">
+
+标识语音审核服务（相当于频道内一个不发流的客户端）的用户 ID，例如`"527841"`。需满足以下条件：
+
+        - 取值范围 1 到 (232-1)，不可设置为 0。
+        - 不能与当前频道内的任何用户 ID 重复。
+        - 字段引号内为整型用户 ID，且频道内所有用户均使用整型用户 ID。
+
+</Slot>
+
+##### 公共响应参数
+
+每次发送请求后，响应 Header 中都会返回[响应状态码](#code)。
+
+#### 配额限制
+
+每秒钟的请求数限制（QPS）为 10 次。如需提高此限制，请[联系技术支持](https://agora-ticket.agora.io/)。
+
+### 获取审核资源
+
+#### 接口原型
+
+- 请求方法：POST
+
+- 请求 URL：`https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/acquire`
+
+#### 请求参数
+
+##### Body 参数
+
+除[公共参数](#公共参数)外，请求 Body 中还需要传入以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `clientRequest` | Object | <Slot name="audio-moderation-api-html-1-1-2" /> |
+
+<Slot for="audio-moderation-api-html-1-1-2">
+
+客户请求参数，使用语音审核时你需要设置该对象的 `resourceExpiredHour` 字段。
+
+        - `resourceExpiredHour` 为 Number 类型，单位为小时，用于设置语音审核 RESTful API 的调用时效，从成功开启审核任务并获得 `sid` （审核 ID）后开始计算。超时后，你将无法调用 `/query`、`/update` 和 `/stop` 接口。
+        - `resourceExpiredHour` 需大于等于 `1`， 且小于等于 `720`，默认值为 `72`。
+
+</Slot>
+
+#### 响应参数
+
+响应 Body 中包含以下字段：
+
+- `resourceId`：String 类型，审核资源 ID。一个审核资源 ID 只能用于开启一个审核任务。
+
+:::info[信息]
+- 调用该接口获取的 `resourceId` 时效为 5 分钟，你需要在 5 分钟内使用该 `resourceId` 调用 [`/start`](#start) 接口开启审核任务，如果超时则需要重新获取。
+- 如需开启多个审核任务，声网建议你按照先 `/acquire` 后 `/start` 的调用顺序逐个开启，请勿多次调用 `/acquire` 获取多个 `resourceId` 而导致资源过期。
+:::
+
+#### 示例
+
+**请求行**
+
+```shell
+POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.1
+```
+
+**请求 Body**
+
+```json
+{
+    "clientRequest": {
+        "resourceExpiredHour": 24
+    },
+    "cname": "httpClient463224",
+    "uid": "527841"
+}
+```
+
+**响应 Body**
+
+```json
+{
+    "resourceId": "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG"
+}
+```
+
+<a id="start"></a>
+### 开启审核任务
+#### 接口原型
+
+- 请求方法：POST
+
+- 请求 URL：`https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start`
+
+#### 请求参数
+
+##### 路径参数
+
+除[公共参数](#公共参数)外，请求 URL 中还包含以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
+| `mode` | String | <Slot name="audio-moderation-api-html-2-2-2" /> |
+
+<Slot for="audio-moderation-api-html-2-2-2">
+
+审核模式，支持以下模式：
+
+        - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
+        - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
+
+</Slot>
+
+##### Body 参数
+
+除[公共参数](#公共参数)外，请求 Body 中还需要传入以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `clientRequest` | Object | <Slot name="audio-moderation-api-html-3-1-2" /> |
+
+<Slot for="audio-moderation-api-html-3-1-2">
+
+特定的客户请求参数，对于该请求包含以下参数：
+
+        - `token`：String 类型，用于鉴权的 RTC Token。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.android)。
+        - `recordingConfig`：JSON Object 类型，声网频道内音频流订阅的详细设置，声网会将你订阅的音频流发送给第三方语音审核服务。详见 [recordingConfig 成员列表](#recordingConfig)。
+        - `extensionServiceConfig`：JSON Object 类型，第三方语音审核服务的详细设置。详见 [extensionServiceConfig 成员列表](#extensionServiceConfig)。
+
+</Slot>
+
+**recordingConfig 成员如下：** <a id="recordingConfig"></a>
+
+-   `channelType`：Number 类型，频道场景。频道场景必须与声网 RTC SDK 的设置一致，否则可能导致问题。
+    -   `0`：（默认）通信场景
+    -   `1`：直播场景
+-   `streamTypes`：Number 类型，订阅的媒体流类型。**使用语音审核时，你需要将其设置为 `0`，即仅订阅音频。**
+    -   `0`：仅订阅音频
+- `streamMode`：（选填）String 类型，单流模式下（`mode` 为 `individual`），媒体流的输出模式。
+  - `default`：默认模式。审核过程中音频转码。
+- `decryptionMode`：（选填）Number 类型，解密方案。如果频道设置了加密，该参数必须设置。解密方式必须与频道设置的加密方式一致。
+  - `0`：（默认）不加密。
+  - `1`：AES_128_XTS 加密模式。128 位 AES 加密，XTS 模式。
+  - `2`：AES_128_ECB 加密模式。128 位 AES 加密，ECB 模式。
+  - `3`：AES_256_XTS 加密模式。256 位 AES 加密，XTS 模式。
+  - `4`：SM4_128_ECB 加密模式。128 位 SM4 加密，ECB 模式。
+  - `5`：AES_128_GCM 加密模式。128 位 AES 加密，GCM 模式。
+  - `6`：AES_256_GCM 加密模式。256 位 AES 加密，GCM 模式。
+  - `7`：AES_128_GCM2 加密模式。128 位 AES 加密，GCM 模式。 相比于 AES_128_GCM 加密模式，AES_128_GCM2 加密模式安全性更高且需要设置密钥和盐。
+  - `8`：AES_256_GCM2 加密模式。256 位 AES 加密，GCM 模式。相比于 AES_256_GCM 加密模式，AES_256_GCM2 加密模式安全性更高且需要设置密钥和盐。
+- `secret`：（选填）String 类型，启用解密模式后，设置的解密密码。
+- `salt`：（选填）Base64 编码、32 位字节。启用解密模式后，设置解密的[盐](https://en.wikipedia.org/wiki/Salt_(cryptography))。如果 `decryptionMode` 为 7 或 8，则需要设置该值。
+-   `audioProfile`：（选填）Number 类型，设置输出音频的采样率，码率，编码模式和声道数。**目前仅适用于合流模式。**
+    -   `0`：（默认）48 kHz 采样率，音乐编码，单声道，编码码率约 48 Kbps
+    -   `1`：48 kHz 采样率，音乐编码，单声道，编码码率约 128 Kbps
+    -   `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps
+-   `maxIdleTime`：（选填）Number 类型，最长空闲频道时间。默认值为 30 秒，该值需大于等于 5，且小于等于 (232-1)。如果频道内无用户的状态持续超过该时间，审核服务会自动退出。
+    -   通信场景下，如果频道内有用户，但用户没有发流，不算作无用户状态。
+    -   直播场景下，如果频道内有观众但无主播，一旦无主播的状态超过 `maxIdleTime`，审核服务会自动退出。
+-   `subscribeAudioUids`：（选填）JSONArray 类型，由 UID 组成的数组，指定订阅哪几个 UID 的音频流。数组长度不得超过 32，不推荐使用空数组。
+-   `unSubscribeAudioUids`: （选填）JSONArray 类型，由 UID 组成的数组，指定不订阅哪几个 UID 的音频流。审核服务会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，不推荐使用空数组。`subscribeAudioUids` 和 `unSubscribeAudioUids` 不能同时设置。
+
+-   `subscribeUidGroup`: （选填）Number 类型，预估的订阅人数峰值。**在单流模式下，为必填参数**。举例来说，如果 `subscribeAudioUids` 为 `["100","101","102"]`，则订阅人数为 3 人，该参数需要设置为 `1`。
+    -   `0`: 1 到 2 人
+    -   `1`: 3 到 7 人
+    -   `2`: 8 到 12 人
+    -   `3`: 13 到 17 人
+
+**extensionServiceConfig 成员如下：** <a id="extensionServiceConfig"></a>
+
+-   `errorHandlePolicy`：（选填）String 类型，错误处理策略。目前仅可设为：
+
+    -   `"error_abort"`：（默认）当扩展服务发生错误后，订阅等其他服务均停止。
+-   `apiVersion`：（选填）String 类型，语音审核 RESTful API 的版本号，默认为 `"v1"`。
+
+-   `extensionServices`：JSONArray 类型，由每个扩展服务的设置组成的数组。使用语音审核时需要设置以下参数：
+
+    -   `serviceName`：String 类型，扩展服务的名称。可设为：
+        -   `yidun_voice_scan`：网易易盾音频审核。
+
+    -   `errorHandlePolicy`：（选填）String 类型。错误处理策略。目前仅可设为：
+
+        -   `"error_abort"`：（默认）当扩展服务发生错误后，订阅等其他服务均停止。
+
+    -   `streamTypes`：Number 类型，要审核的媒体流类型。使用语音审核时，你需要将其设置为 `0`，即仅审核音频。
+        -   `0`：仅订阅音频
+        -   `1`：仅订阅视频
+        -   `2`：（默认）订阅音频和视频
+
+    - `serviceParam`：JSON Object 类型，扩展服务的具体参数设置。当使用语音审核时，你需要设置以下字段：
+
+<Tabs defaultValue="netease" groupId="vendor" persist>
+<TabsList>
+  <TabsTrigger value="netease">网易易盾</TabsTrigger>
+</TabsList>
+
+<TabsContent value="netease">
+
+| 参数名称 | 类型 | 是否必选 | 最大长度 | 描述 |
+| --- | --- | --- | --- | --- |
+| secretId | String | 是 | 32 | 产品密钥 id，由易盾内容安全服务系统生成，可在智能审核后台-产品业务管理中获取，如有疑问可咨询策略经理引导获取，产品标识 |
+| businessId | String | 是 | 32 | 业务 id，由易盾内容安全服务系统生成，可在智能审核后台-产品业务管理中获取，如有疑问可咨询策略经理引导获取，业务标识 |
+| timestamp | Number | 是 | 13 | 请求当前 UNIX 时间戳，请注意服务器时间是否同步 |
+| nonce | Number | 是 | 11 | 随机整数，与 timestamp 联合起来，用于防止重放攻击 |
+| signatureMethod | String | 否 | 指定传参 | 指定签名算法，目前只支持 MD5 |
+| signature | String | 是 | 32 | 请求签名，用来验证此次请求的合法性。签名生成算法如下：1. 对 serviceParam 中的所有请求参数（不包括 signature 参数），按照参数名 ASCII 码表升序排序；2. 将排序好的参数名和参数值拼接成字符串，格式为：key1+value1+key2+value2…；3. 将 secretKey 拼接到上一步字符串末尾；4. 对拼接好的字符串使用 UTF-8 编码，进行 MD5 摘要计算，得到 32 位十六进制字符串即为 signature 值 |
+| version | String | 是 | 4 | 接口版本号，值为 v4.1 |
+| dataId | String | 是 | 128 | 上传数据唯一标识，能够根据该值定位到该条数据，如对数据结果有异议，可以发送该值给客户经理查询 |
+| roomNo | String | 是 | 128 | 主播房间号 |
+| callbackUrl | String | 是 | 512 | 离线结果回调通知到客户的 URL。主动回调数据接口超时时间设置为 2s，为了保证顺利接收数据，需保证接收接口性能稳定并且保证幂等性 |
+| callback | String | 否 | 1024 | 数据回调参数，调用方根据业务情况自行设计，当调用 callback 接口获取直播音频结果时，该接口会原样返回该字段，详细见直播音频离线检测结果获取。作为数据处理标识，因此该字段应该设计为能唯一定位到该次请求的数据结构，如对用户的昵称进行检测，dataId 可设为用户标识（用户 ID），用户修改多次，每次请求数据的 dataId 可能一致，但是 callback 参数可以设计成定位该次请求的数据结构，比如 callback 字段设计成 JSON，包含 dataId 和请求的时间戳等信息，当然如果不想做区分，也可以直接把 callback 设置成 dataId 的值 |
+| extension | String | 否 | 30000 | 自定义扩展参数，JSON 字符串格式。如：`{"keyName1":"value1","keyName2":"value2"}` |
+
+回调结果中包含 `clientInfo` 信息，其中包含 `cname` 和 `uid` 字段，可用于与审核频道以及发流端进行关联。
+
+</TabsContent>
+</Tabs>
+
+#### 响应参数
+
+响应 Body 中包含以下字段：
+
+- `cname`：String 类型，待审核的频道名。
+- `uid`：String 类型，字符串内容为审核服务在 RTC 频道内使用的 UID，用于标识该审核服务。
+- `resourceId`：String 类型，该审核任务使用的审核资源 ID。
+- `sid`：String 类型，该审核任务的唯一标识。
+
+#### 示例
+
+**请求行**
+
+```shell
+POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/mode/{mode}/start HTTPS/1.1
+```
+
+**请求 Body**
+
+以单流模式为例：
+
+```json tab="网易易盾示例" tabGroup="vendor"
+{
+    "clientRequest": {
+        "appsCollection": {
+            "combinationPolicy": "default"
+        },
+        "extensionServiceConfig": {
+            "extensionServices": [
+                {
+                    "errorHandlePolicy": "error_abort",
+                    "serviceName": "yidun_voice_scan",
+                    "serviceParam": {
+                        "businessId": "e97a4b755df46d25078a909eebd78be6",
+                        "callbackUrl": "http://103.229.213.112:8889/paas/yidun",
+                        "dataId": "1774497460376669749",
+                        "extension": "{}",
+                        "nonce": 1804934882,
+                        "roomNo": "YJ",
+                        "secretId": "70fdb6d660d522764a8f72a357e009bc",
+                        "signature": "377fcfb801114e150b1939af62157244",
+                        "signatureMethod": "md5",
+                        "timestamp": 1774497460,
+                        "version": "v4.1"
+                    }
+                }
+            ]
+        },
+        "recordingConfig": {
+            "channelType": 1,
+            "maxIdleTime": 100,
+            "streamMode": "default",
+            "streamTypes": 0,
+            "subscribeAudioUids": [
+                "#allstream#"
+            ],
+            "subscribeUidGroup": 0
+        }
+    },
+    "cname": "xxx",
+    "uid": "1774497460"
+}
+```
+
+**响应 Body**
+
+```json
+{
+    "cname": "httpClient463224",
+    "uid": "527841",
+    "resourceId": "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG",
+    "sid": "38f8e3cfdc474cd56fc1ceba380d7e1a"
+}
+```
+
+### 查询审核状态
+
+审核过程中，你可以调用 `/query` 接口查询审核状态。
+
+`/query` 请求仅在审核过程中有效。如果审核启动错误，或审核已结束，调用 `/query` 将返回 404。
+
+#### 接口原型
+
+- 请求方法：GET
+
+- 请求 URL：`https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query`
+
+#### 请求参数
+
+##### 路径参数
+
+除[公共参数](#公共参数)外，请求 URL 中还包含以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
+| `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
+| `mode` | String | <Slot name="audio-moderation-api-html-4-3-2" /> |
+
+<Slot for="audio-moderation-api-html-4-3-2">
+
+审核模式，支持以下模式：
+
+         - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
+         - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
+
+</Slot>
+
+#### 响应参数
+
+响应 Body 中包含以下字段：
+
+-   `resourceId`：String 类型，语音审核的审核资源 ID。
+-   `sid`：String 类型，通过 `/start` 请求获取的审核任务 ID。
+-   `serverResponse`：JSON Object 类型，服务器返回的具体信息。
+    -   `subServiceStatus`：JSON Object 类型，子模块的服务状态。
+        -   `recordingService`：String 类型，订阅模块的状态，具体取值详见[服务状态](#status)。
+        -   `mediaDistributeService`：String 类型，媒体分发模块的状态，具体取值详见[服务状态](#status)。该模块用于管理扩展服务，控制媒体流向各扩展服务的分发。
+    -   `extensionServiceState`：JSONArray 类型，由各个扩展服务的当前状态组成的数组。
+        -   `serviceName`：String 类型，扩展服务的名称：
+            -   `yidun_voice_scan`：网易易盾音频审核。
+        -   `streamState`：JSONArray 类型，该扩展服务的状态。当选择网易易盾音频审核时，返回以下参数：
+            -   `uid`：Number 类型，用户 UID，表示审核的是哪个用户的媒体流。合流模式下，`uid` 总为 `0`。
+            -   `streamType`：String 类型，审核的内容类型。`"audio"` 指纯音频。
+            -   `status`：审核的状态。
+                -   `"inProgress"`：审核正在进行中。
+                -   `"failed"`：审核发生错误。
+
+#### 示例
+
+**请求行**
+
+```shell
+GET https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/query HTTPS/1.1
+```
+
+**响应 Body**
+
+以单流模式为例：
+
+```json
+{
+    "resourceId": "Etkl6g-zSB7EpP-Da1zN67U-tt4soO0PZ0SW6nl1EGu8MSTU96ioRjKOO-3PgKb-TBNM_pEudbZ3Udy2wxOZRNgb3dpH__glt5_D-6ikPjkde3CfHeZtsa5fffoZjnfk865Q271HRmP--p8RZm0A-7S39HFBJIPtugfjyzocNzTTw2_xttK97rKU-B1wl1uurKmiRj4453L7ETNLeM6NKskNqYZ0holdfQs3ijC7WNNgdlWVeYTBKT83G6jC99eXKBnBqs-6Lu1_C9S9qprRIE7js-xgLLX3TIEwi69milO8b-I958yKyn6fLX3PNSNshZZUVUfIlqMPYbe7NtRXC-HRY2YM3xq0K-4-wPVPfCA",
+    "sid": "e36fb8add64933c71c315784b93ca5cb",
+    "serverResponse": {
+        "extensionServiceState": [
+            {
+                "serviceName": "yidun_voice_scan",
+                "streamState": [
+                    {
+                        "status": "inProgress",
+                        "streamType": "audio",
+                        "uid": "0"
+                    }
+                ]
+            }
+        ],
+        "subServiceStatus": {
+            "recordingService": "serviceInProgress",
+            "mediaDistributeService": "serviceInProgress"
+        }
+    }
+}
+```
+
+### 更新音频流订阅
+
+调用 `/start` 接口后，如果你需要更新语音审核的用户名单，可以调用 `/update` 接口更新声网频道内的音频流订阅名单。每次调用该接口都会覆盖原来的设置。
+
+#### 接口原型
+
+- 请求方法：POST
+
+- 请求 URL：`https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update`
+
+#### 请求参数
+
+##### 路径参数
+
+除[公共参数](#公共参数)外，请求 URL 中还包含以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
+| `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
+| `mode` | String | <Slot name="audio-moderation-api-html-5-3-2" /> |
+
+<Slot for="audio-moderation-api-html-5-3-2">
+
+审核模式，支持以下模式：
+
+        - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
+        - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
+
+</Slot>
+
+##### Body 参数
+
+除[公共参数](#公共参数)外，请求 Body 中还需要传入以下参数：
+
+| 参数            | 类型 | 描述                                                         |
+| :-------------- | :--- | :----------------------------------------------------------- |
+| `clientRequest` | Object | 客户请求参数，对于该请求仅包含 `streamSubscribe` 字段。该字段为 JSON Object 类型，用于更新音频流的订阅名单。 |
+
+`streamSubscribe` 包含以下成员：
+
+- `audioUidList`：（选填）JSON Object 类型。音频订阅名单。如果 `recordingConfig` 中的 `streamTypes` 为 `1` （只订阅视频），设置该参数会报错。
+  - `subscribeAudioUids`：（选填）JSONArray 类型，由 UID 组成的数组，指定订阅哪几个 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/realtime-media/recording/cloud-recording/api/reference#订阅名单设置)。
+  - `unSubscribeAudioUids`: （选填）JSONArray 类型，由 UID 组成的数组，指定不订阅哪几个 UID 的音频流。审核服务会订阅频道内除指定 UID 外所有 UID 的音频流。数组长度不得超过 32，数组不可为空。详见[订阅名单设置](/zh-CN/realtime-media/recording/cloud-recording/api/reference#订阅名单设置)。
+
+#### 响应参数
+
+响应 Body 中包含以下字段：
+
+-   `resourceId`：String 类型，语音审核的审核资源 ID。
+-   `sid`：String 类型，通过 `/start` 请求获取的审核任务 ID。
+
+#### 示例
+
+**请求行**
+
+```shell
+POST https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update HTTPS/1.1
+```
+
+**请求 Body**
+
+```json
+{
+    "uid": "527841",
+    "cname": "httpClient463224",
+    "clientRequest": {
+        "streamSubscribe": {
+            "audioUidList": {
+                "subscribeAudioUids": ["#allstream#"]
+            }
+        }
+    }
+}
+```
+
+**响应 Body**
+
+```json
+{
+    "resourceId": "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG",
+    "sid": "38f8e3cfdc474cd56fc1ceba380d7e1a"
+}
+```
+
+### 停止审核
+
+#### 接口原型
+
+- 请求方法：POST
+
+- 请求 URL：`https://api.sd-rtn.com/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop`
+
+#### 请求参数
+
+##### 路径参数
+
+除[公共参数](#公共参数)外，请求 URL 中还包含以下参数：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `resourceid` | String | 通过 `/acquire` 请求获取的审核资源 ID。 |
+| `sid` | String | 通过 `/start` 请求获取的审核任务 ID。 |
+| `mode` | String | <Slot name="audio-moderation-api-html-6-3-2" /> |
+
+<Slot for="audio-moderation-api-html-6-3-2">
+
+审核模式，支持以下模式：
+
+      - 单流模式（`individual`）：分开审核频道内每个 UID 的音频流。
+      - 合流模式（`mix`）：将频道内所有（或指定）UID 的音频流混合为一路流后进行审核。
+
+</Slot>
+
+##### Body 参数
+
+除[公共参数](#公共参数)外，请求 Body 中还需要传入以下参数：
+
+| 参数            | 类型 | 描述                                                         |
+| :-------------- | :--- | :----------------------------------------------------------- |
+| `clientRequest` | Object | 特定的客户请求参数，对于该接口无需填入任何内容，为一个空的 JSON Object。 |
+
+#### 响应参数
+
+响应 Body 中包含以下字段：
+
+- `resourceId`：String 类型，语音审核使用的审核资源 ID。
+- `sid`：String 类型，审核任务 ID。成功开始语音审核后，你会得到一个 `sid` ， 是该审核任务的唯一标识。
+
+#### 示例
+
+**请求行**
+
+```shell
+POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/stop HTTPS/1.1
+```
+
+**请求 Body**
+
+```json
+{
+    "cname": "httpClient463224",
+    "uid": "527841",
+    "clientRequest": {}
+}
+```
+
+**响应 Body**
+
+```json
+{
+    "sid": "38f8e3cfdc474cd56fc1ceba380d7e1a",
+    "resourceId": "JyvK8nXHuV1BE64GDkAaBGEscvtHW7v8BrQoRPCHxmeVxwY22-x-kv4GdPcjZeMzoCBUCOr9q-k6wBWMC7SaAkZ_4nO3JLqYwM1bL1n6wKnnD9EC9waxJboci9KUz2WZ4YJrmcJmA7xWkzs_L3AnNwdtcI1kr_u1cWFmi9BWAWAlNd7S7gfoGuH0tGi6CNaOomvr7-ILjPXdCYwgty1hwT6tbAuaW1eqR0kOYTO0Z1SobpBxu1czSFh1GbzGvTZG"
+}
+```
+
+### 审核结果回调
+
+语音审核结果会以 HTTP 请求的形式直接发送到你在 `extensionServiceConfig` 中设置的回调地址。回调参数详见[网易易盾音频审核接口文档](https://support.dun.163.com/documents/588434426518708224?docId=600817330300723200)。
+回调结果中包含 `clientInfo` 信息，其中包含 `cname` 和 `uid` 字段，可用于关联审核频道与发流端。
+
+### 错误码和状态码
+
+本文仅列出使用云端录制 RESTful API 过程中常见的错误码和状态码。如果遇到其他错误，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### 错误码
+
+-   `2`：参数不合法，请确保参数类型正确、大小写正确、必填的参数均已填写。
+-   `7`：审核已经在进行中 ，请勿用同一个 `resourceId` 重复 `/start` 请求。
+-   `8`：HTTP 请求 Header 字段错误，有以下几种情况：
+    -   `Content-type` 错误，请确保 `Content-type` 为 `application/json;charset=utf-8`。
+    -   请求 URL 中缺少 `cloud_recording` 字段。
+    -   使用了错误的 HTTP 方法。
+    -   请求 Body 不是合法的 JSON 格式。
+-   `49`：使用同一个审核资源 ID（`resourceId`） 和审核任务 ID（`sid`）重复 `/stop` 请求。
+-   `53`：审核已经在进行中。当采用相同参数再次调用 `/acquire` 获得新的 `resourceId` 并用于 `/start` 请求时，会发生该错误。如需发起多路审核，需要在 `/acquire` 方法中填入不同的 UID。
+-   `62`：调用 `/acquire` 请求时，如果出现该错误，表示你填入的 App ID 没有开通第三方语音审核服务，或者没有开通云录制服务。
+-   `65`：多为网络抖动引起。当调用 `/start` 收到该错误码时，需要使用同一 Resource ID 再次调用 `start`。建议使用退避策略重试两次，如第一次等待 3 秒后重试、第二次等待 6 秒后重试。
+- `109`：加入 RTC 频道的鉴权 Token 过期，你需要获取新的 Token。
+- `110`：加入 RTC 频道的鉴权 Token 错误，你需要确认你是否获取了正确的 Token。
+-   `432`：请求参数错误。请求参数不合法，或请求中的 App ID，频道名或用户 ID 与 Resource ID 不匹配。
+-   `433`：Resource ID 过期。获得 `resourceId` 后必须在 5 分钟内开始审核。请重新调用 `/acquire` 获取新的 `resourceId`。
+-   `435`：频道内没有用户加入，无审核对象。
+-   `501`：审核正在退出。该错误可能在调用了 `/stop` 接口后再调用 `/query` 时发生。
+-   `1001`：Resource ID 解密失败。请重新调用 `/acquire` 获取新的 Resource ID。
+-   `1003`：声网 App ID 或者审核任务 ID（`sid`）与审核资源 ID（`resourceId`） 不匹配。请确保在一个审核周期内声网 App ID、 `resourceId`、`sid` 一一对应。
+-   `1013`：频道名不合法。频道名必须为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）：
+    -   26 个小写英文字母 a-z
+    -   26 个大写英文字母 A-Z
+    -   10 个数字 0-9
+    -   空格
+    -   "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "\_", " {", "&#125;", "|", "~", ","
+- `"invalid appid"`：无效的声网 App ID。请确保声网 App ID 填写正确。如果你已经确认 App ID 填写正确，但仍出现该错误，请[联系技术支持](https://ticket.shengwang.cn/)。
+- `"no Route matched with those values"`：该错误可能由 HTTP 方法填写错误导致，例如将 `GET` 方法填写为 `POST`；也可能由请求 URL 填写错误导致。
+- `"Invalid authentication credentials"`：该错误可能由以下原因导致。如果你已经排除以下原因，但仍出现该错误，请[联系技术支持](https://ticket.shengwang.cn/)。
+  - 客户 ID 或客户密钥填写错误。
+  - App ID 没有开通第三方语音审核服务或开通云端录制服务。
+  - 请求 Header 的认证信息有误，如 `Authorization` 字段的值 `Basic <Authorization>` 缺少 `Basic`。
+  - 请求 Header 的格式不正确，如 `Content-type` 字段的值 `application/json;charset=utf-8` 大小写不正确或包含空格。
+
+<a id="code"></a>
+#### 响应状态码
+
+| 状态码 | 描述                                                         |
+| :----- | :----------------------------------------------------------- |
+| `200`    | 请求成功。                                                   |
+| `201`    | 录制已经在进行中 ，请勿用同一个 Resource ID 重复 `start` 请求。 |
+| `206`    | 整个录制过程中没有用户发流，或部分录制文件没有上传到第三方云存储，或录制进程还未结束。 |
+| `400`    | 请求的语法错误（如参数错误）。如果你填入的声网 App ID 没有开通第三方语音审核服务，也会返回 400。 |
+| `401`    | 未经授权的（客户 ID/客户密钥匹配错误）。                     |
+| `404`    | 服务器无法根据请求找到资源（网页）。                         |
+| `500`    | 服务器内部错误，无法完成请求。                               |
+| `504`    | 服务器内部错误。充当网关或代理的服务器未从远端服务器获取请求。 |
+
+<a id="status"></a>
+#### 服务状态
+
+| 状态                      | 描述                                                         |
+| :------------------------ | :----------------------------------------------------------- |
+| `"serviceIdle"`             | 子模块服务未开始。                                           |
+| `"serviceStarted"`          | 子模块服务已开始。                                           |
+| `"serviceReady"`            | 子模块服务已就绪。                                           |
+| `"serviceInProgress"`       | 子模块服务正在进行中。                                       |
+| `"serviceCompleted"`        | 审核内容已全部上传至语音审核。                               |
+| `"servicePartialCompleted"` | 审核内容部分上传至语音审核。                                 |
+| `"serviceValidationFailed"` | 语音审核验证失败。例如 `extensionServiceConfig` 中 `apiData` 填写错误。 |
+| `"serviceAbnormal"`         | 子模块状态异常。                                             |

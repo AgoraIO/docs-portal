@@ -1,0 +1,345 @@
+---
+title: "加入白板房间"
+---
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。
+
+本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+![互动白板快速开始流程图](/img/whiteboard/quick-start.svg)
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- Xcode 10.10+
+- iOS 9.0+
+- CocoaPods [最新版本](https://cocoapods.org/)。
+- 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+
+## 创建项目
+
+参考以下步骤在 Xcode 中创建一个 Single View App。
+
+<Tabs defaultValue="oc" groupId="create-project" persist>
+<TabsList>
+  <TabsTrigger value="oc">创建 Objective-C 项目</TabsTrigger>
+  <TabsTrigger value="swift">创建 Swift 项目</TabsTrigger>
+</TabsList>
+
+<TabsContent value="oc">
+
+创建一个 Objective-C 项目，项目设置如下：
+
+- **Product Name** 设为 `Whiteboard`。
+- **Organization Identifier** 设为 `agora`。
+- **Language** 选择 `Objective-C`。
+
+</TabsContent>
+
+<TabsContent value="swift">
+
+创建一个 Swift 项目，项目设置如下：
+
+- **Product Name** 设为 `Whiteboard`。
+- **Organization Identifier** 设为 `agora`。
+- **Language** 选择 `Swift`。
+- **User Interface** 选择 `Storyboard`。
+
+声网互动白板 SDK 使用 Objective-C 语言开发。要在 Swift 项目中使用 Objective-C 代码，你还需要在项目中创建一个 Objective-C 桥接文件，步骤如下：
+
+- 在项目中添加 `Whiteboard-Bridging_Header.h` 文件。
+- 在 `Whiteboard-Bridging_Header.h` 文件中添加如下行引用 `Whiteboard.h`:
+
+```objc
+#import <Whiteboard/Whiteboard.h>
+```
+
+</TabsContent>
+</Tabs>
+
+## 获取 SDK
+
+1. 在 Terminal 里进入项目所在路径。运行以下命令创建 `Podfile` 文件。项目路径下会出现一个 `Podfile` 文本文件。
+
+    ```shell
+    pod init
+    ```
+
+2. 在生成的 `Podfile` 文件中添加如下内容：
+
+    ```ruby
+    platform :ios, '10.0'
+    target 'Whiteboard' do
+        pod 'Whiteboard'
+    end
+    ```
+
+3. 运行以下命令安装 SDK：
+
+    ```shell
+    pod install
+    ```
+
+    安装完成后，你可以点击打开项目的 `Whiteboard.xcworkspace` 文件，对项目进行后续编辑。
+
+:::info[信息]
+对于中国大陆用户，如果在执行 `pod install` 命令时由于网络原因失败，可以使用 [TUNA 镜像源](https://mirrors.tuna.tsinghua.edu.cn/help/CocoaPods/)。
+:::
+
+## 实现步骤
+
+现在，我们已经将声网互动白板 SDK 集成到项目中了。接下来我们要调用声网互动白板 SDK 提供的核心 API 实现基础的白板功能。
+
+<a id="createroom"></a>
+### 1. 创建房间
+
+在 App 客户端加入互动白板房间前，你需要在 App 服务端调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  url: "https://api.netless.link/v5/rooms",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  method: "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  url: "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>",
+  headers: {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+    "region": "cn-hz",
+  },
+  body: JSON.stringify({ lifespan: 3600000, role: "admin" }),
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+### 3. 初始化 SDK 并加入房间
+
+编辑 `ViewController.m`，实现从添加 View、初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
+
+- `appIdentifier`：互动白板项目的唯一标识符。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `uuid`：房间的唯一标识符。详见[创建房间](#1-创建房间)。
+- `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
+- `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token)。
+- `region`：数据中心，必须和创建房间时设置的数据中心一致。
+
+```objc tab="Objective-C"
+// ViewController.m
+//  WhiteBoard
+#import "ViewController.h"
+#import <Whiteboard/Whiteboard.h>
+@interface ViewController ()
+@property(nonatomic, strong) WKWebViewConfiguration *config;
+@property(nonatomic, strong) WhiteBoardView *boardView;
+@property(nonatomic, strong) WhiteSDK *sdk;
+@property(nonatomic, strong) WhiteRoom *room;
+@property(nonatomic, strong) WhiteMemberState *memberState;
+@property(nonatomic, strong) WhiteRoomConfig *roomConfig;
+@property(nonatomic, strong) WhiteSdkConfiguration *sdkConfig;
+@property(nonatomic, weak, nullable) id<WhiteCommonCallbackDelegate> commonDelegate;
+@property(nonatomic, weak, nullable) id<WhiteRoomCallbackDelegate> roomCallbackDelegate;
+@end
+@implementation ViewController
+// 添加 View
+- (void)setupViews
+{
+    self.config = [[WKWebViewConfiguration alloc] init];
+    // // 在此项目中将白板 View 设为全屏
+    self.boardView = [[WhiteBoardView alloc] initWithFrame:(CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, self.view.bounds.size.height)) configuration:(self.config)];
+    [self.view addSubview:(self.boardView)];
+}
+// 初始化 SDK
+- (void)initSDK
+{ // 传入互动白板项目的 AppIdentifier
+    self.sdkConfig = [[WhiteSdkConfiguration alloc] initWithApp:@"Your AppIdentifier"];
+    // 设置数据中心为中国杭州
+    sdkConfig.region = WhiteRegionCN;
+    // 初始化 SDK
+    self.sdk = [[WhiteSDK alloc] initWithWhiteBoardView:self.boardView config:self.sdkConfig commonCallbackDelegate:self.commonDelegate];
+}
+// 加入房间
+- (void)joinRoom
+{ // 设置房间 UUID，用户 uid 和 Room Token。如果你使用 2.15.0 之前版本的 SDK，不需要传入 uid:@"用户 uid"。
+    self.roomConfig = [[WhiteRoomConfig alloc] initWithUuid:@"Your UUID" roomToken:@"Your room token" uid:@"用户 uid"];
+    // 设置白板工具
+    self.memberState = [[WhiteMemberState alloc] init];
+    self.memberState.currentApplianceName = AppliancePencil;
+    self.memberState.strokeColor = @[ @255, @0, @0 ];
+    // 加入房间
+    [self.sdk joinRoomWithConfig:self.roomConfig
+                       callbacks:self.roomCallbackDelegate
+               completionHandler:^(BOOL success, WhiteRoom *_Nonnull room, NSError *_Nonnull error) {
+                 if (success)
+                 {
+                     self.room = room;
+                     [self.room cleanScene:(NO)];
+                     [self.room setMemberState:(self.memberState)];
+                     NSLog(@"Successfully joined the room");
+                 }
+                 else
+                 {
+                     NSLog(@"Errors when joining room");
+                 }
+               }];
+}
+// 在 viewDidLoad 方法中依次进行 View 添加，SDK 初始化，加入房间操作
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setupViews];
+    [self initSDK];
+    [self joinRoom];
+}
+@end
+```
+
+```swift tab="Swift"
+// ViewController.swift
+//  Whiteboard
+import UIKit
+
+class ViewController: UIViewController {
+  var config: WKWebViewConfiguration?
+  var boardView: WhiteBoardView?
+  var roomConfig: WhiteRoomConfig?
+  var memberState: WhiteMemberState?
+  var room: WhiteRoom?
+  var sdk: WhiteSDK?
+  var sdkConfig: WhiteSdkConfiguration?
+  var commonDelegate: WhiteCommonCallbackDelegate?
+  var roomCallbackDelegate: WhiteRoomCallbackDelegate?
+  // 添加 View
+  func setupViews() {
+    self.config = WKWebViewConfiguration()
+    // 在此项目中将白板 View 设为全屏
+    self.boardView = WhiteBoardView(
+      frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height),
+      configuration: self.config!)
+    self.view.addSubview(self.boardView!)
+  }
+  // 初始化 SDK
+  func initSDK() {  // 传入互动白板项目的 AppIdentifier
+    self.sdkConfig = WhiteSdkConfiguration(app: "Your App Indentifier")
+    // 设置数据中心为中国杭州
+    sdkConfig.region = WhiteRegionCN
+    // 初始化 SDK
+    self.sdk = WhiteSDK(
+      whiteBoardView: self.boardView!, config: self.sdkConfig!,
+      commonCallbackDelegate: self.commonDelegate)
+  }
+  // 加入房间
+  func joinRoom() {
+    // 设置房间 UUID，用户 uid 和 Room Token。如果你使用 2.15.0 之前版本的 SDK，不需要传入 uid: "用户 uid"。
+    self.roomConfig = WhiteRoomConfig(
+      uuid: "Your uuid", roomToken: "Your room token", uid: "用户 uid")
+    // 设置白板工具
+    self.memberState = WhiteMemberState()
+    self.memberState?.currentApplianceName = WhiteApplianceNameKey.AppliancePencil
+    self.memberState?.strokeColor = [255, 0, 0]
+    // 加入房间
+    self.sdk!.joinRoom(
+      with: self.roomConfig!, callbacks: roomCallbackDelegate,
+      completionHandler: { (Success, room, error) in
+        if Success {
+          self.room = room
+          self.room!.setMemberState(self.memberState!)
+          NSLog("Successfully joined the room")
+        } else {
+          NSLog("Errors when joining room")
+        }
+      })
+  }
+  // 在 viewDidLoad 方法中依次进行 View 添加，SDK 初始化，加入房间操作
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.setupViews()
+    self.initSDK()
+    self.joinRoom()
+  }
+}
+```
+
+## 编译并运行项目
+
+在 Xcode 中编译并在模拟器或真机上运行项目。如果应用成功运行，你可以用鼠标在生成的页面上写写画画并看到笔迹。

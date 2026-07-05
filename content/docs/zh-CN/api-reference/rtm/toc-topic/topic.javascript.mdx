@@ -1,0 +1,387 @@
+---
+title: "Topic"
+---
+Topic 是 Stream Channel 中的数据流管理机制。用户可以在 Stream Channel 中利用此特性进行数据流的订阅、分发、事件通知等。
+
+:::info[信息]
+Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，需要先创建一个 `RTMStreamChannel` 对象实例。
+:::
+
+想要了解 Topic 的更多特性，可以查看：
+
+- [Topic](/zh-CN/realtime-media/rtm/user-guide/topic/topic-basic)
+
+RTMStreamChannel
+
+## joinTopic
+
+### 接口描述
+
+加入 Topic 的目的在于注册成为该 Topic 的消息发布者之一，从而让用户具备发送消息的能力。是否执行该操作都不影响该用户是否成为该 Topic 的订阅者。
+
+:::info[信息]
+- 当前 RTM 支持单客户端在同一个 Stream Channel 中同时加入 8 个 Topic。
+- 在执行此操作之前，用户需要首先创建 `RTMStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)。
+:::
+
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `REMOTE_JOIN` 类型的 `topic` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.javascript#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `joinTopic` 方法：
+
+```javascript
+joinTopic(
+    topicName: string,
+    options?: object
+): Promise<JoinTopicResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 | 描述         |
+| -------- | --- | ----- | --- | ----------- |
+| `topicName` | string |   必填   |   -    | Topic 名称。 |
+|  `options`  | object |   选填   |   -    | 预留参数。   |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await stChannel.joinTopic( "gesture", options);
+    console.log( result);
+} catch (status) {
+     console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `JoinTopicResponse` 类型数据：
+
+```javascript
+type JoinTopicResponse = {
+    timestamp: number,              // 预留字段
+    topicName: string                // 注册的 Topic 的名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.javascript)了解错误原因，并找到对应的解决方法。
+
+## publishTopicMessage
+
+### 接口描述
+
+`publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
+
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration.javascript)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publishTopicMessage` 方法：
+
+```javascript
+publishTopicMessage(
+    topicName: string,
+    message: string | Uint8Array,
+    options?: object
+): Promise<PublishTopicMessageResponse>;
+```
+
+|    参数     |  类型  |  是否必填  | 默认值 |     描述     |
+| -------- | --- | ------- | --- | --------- |
+| `topicName` | string |    必填    |   -    | Topic 名称。 |
+|  `message`  | string \| Uint8Array |  必填  |      -       | 消息负载。支持任意 string 类型和 Uint8Array 类型。
+|  `options`  | object |    选填    |   -    |  消息选项。  |
+
+`options` 包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 |                   描述                   |
+| --------- | --- | ----- | --- | ---------- |
+| `customType` | string |   选填   |   -    | 用户自定义字段。仅支持 string 型。 |
+
+### 接口方法
+
+示例 1：向指定频道发送 string 消息
+
+```javascript
+try{
+    const result = await stChannel.publishTopicMessage( "Gesture", JSON.stringify({such: "object"}) );
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+示例 2：向指定频道发送 Uint8Array 消息
+
+```javascript
+const str2ab = function(str) {
+    var buf = new ArrayBuffer(str.length * 2); // 每个字符占用 2 个字节
+    var bufView = new Uint16Array(buf);
+    for (var i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+}
+var Message=str2ab("hello world")
+try{
+    const result = await stChannel.publishTopicMessage( "Gesture",Message);
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `PublishTopicMessageResponse` 类型数据：
+
+```javascript
+type PublishTopicMessageResponse = {
+    timestamp: number,              // 预留字段
+    topicName: string                // 发送消息的 Topic 的名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.javascript)了解错误原因，并找到对应的解决方法。
+
+## leaveTopic
+
+### 接口描述
+
+当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
+
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `topic` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.javascript#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `leaveTopic` 方法：
+
+```javascript
+leaveTopic(topicName: string): Promise<LeaveTopicResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 |     描述     |
+| -------- | --- | ----- | --- | ---------- |
+| `topicName` | string |   必填   |   -    | Topic 名称。 |
+
+### 基本用法
+
+```javascript
+try{
+    const result = await stChannel.leaveTopic("gesture");
+    console.log(result);
+} catch (status) {
+     console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `LeaveTopicResponse` 类型数据：
+
+```javascript
+type LeaveTopicResponse = {
+    timestamp: number,              // 预留字段
+    topicName: string                // 发送消息的 Topic 的名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.javascript)了解错误原因，并找到对应的解决方法。
+
+## subscribeTopic
+
+### 接口描述
+
+加入频道后，你可以调用 `subscribeTopic` 方法订阅该频道中 Topic 的消息发布者。
+
+`subscribeTopic` 为增量方法。例如，第一次调用该方法时，订阅消息发布者列表为 `[UserA, UserB]`，第二次调用该方法时，订阅消息发布者列表为 `[UserB, UserC]`，则最后成功订阅的结果是 `[UserA, UserB, UserC]`。
+
+同一个用户在同一个频道中最多只能同时订阅 50 个 Topic，且每个 Topic 中最多只能订阅 64 个消息发布者。详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeTopic` 方法：
+
+```javascript
+subscribeTopic(
+    topicName: string,
+    options?: object
+): Promise<SubscribeTopicResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 |        描述        |
+| -------- | --- | ----- | --- | ---------------- |
+| `topicName` | string |   必填   |   -    |     Topic 名称。    |
+|  `options`  | object |   选填   |   -    | 订阅 Topic 选项。 |
+
+`options` 对象中包含以下属性：
+
+|  属性   |   类型   | 是否必填 | 默认值 |           描述            |
+| ---- | ----- | ----- | --- | ------- |
+| `users` | string[] |   选填   |   -    | 需要订阅的消息发布者（Publisher）的 `UserId` 列表，如果不设置，则默认随机订阅不超过 64 个用户。 |
+
+### 基本用法
+
+示例 1：订阅 Topic 中指定的消息发布者
+
+```javascript
+var UIDs = ["zhangsan","lisi","wangwu"]
+try{
+    const result = await rtm.subscribeTopic( "Gesture", { users:UIDs } );
+    console.log(result);
+} catch (status){
+    console.log( status);
+}
+```
+
+示例 2：随机订阅 Topic 中的 64 个消息发布者
+
+```javascript
+try{
+    const result = await stChannel.subscribeTopic("Gesture");
+    console.log(result);
+}catch(status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `SubscribeTopicResponse` 类型数据：
+
+```javascript
+type SubscribeTopicResponse = {
+    succeedUsers : string[],       // 订阅成功的用户列表
+    failedUsers : string[],        // 订阅失败的用户列表
+    failedDetails : [              // 订阅失败用户原因
+        {
+            user : string,         // 用户ID
+            errorCode : number,    // 错误码
+            reason : string        // 错误原因
+        },
+    ],
+    timestamp : number,            // 预留字段
+    topiclName : string            // 订阅 Topic 的名称
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.javascript)了解错误原因，并找到对应的解决方法。
+
+## unsubscribeTopic
+
+### 接口描述
+
+如果你对某个 Topic 不再感兴趣，或者不再需要订阅 Topic 中的一个或多个消息发布者，你可以调用 `unsubscribeTopic` 方法取消订阅该 Topic 或取消订阅该 Topic 中指定的消息发布者。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeTopic` 方法：
+
+```javascript
+unsubscribeTopic(
+    topicName: string,
+    options?: object
+): Promise<UnsubscribeTopicResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 |       描述       |
+| -------- | --- | ----- | --- | ----- |
+| `topicName` | string |   必填   |   -    |   Topic 名称。   |
+|  `options`  | object |   选填   |   -    | 取消订阅 Topic 选项。如果不设置，则取消对整个 Topic 的订阅。 |
+
+`options` 对象包含以下属性：
+
+|  属性   |   类型   | 是否必填 | 默认值 |   描述    |
+| ---- | ----- | ----- | --- | ------- |
+| `users` | string[] |   选填   |   -    | 需要取消订阅的消息发布者的用户 ID 列表。如果不设置，则取消对整个 Topic 的订阅。 |
+
+### 基本用法
+
+示例 1：取消订阅 Topic 中指定的消息发布者
+
+```javascript
+try{
+    const result = await rtm.unsubscribeTopic( "Gesture", { users:["Tony","Bo"] });
+    console.log("unsubscribe Topic success: ", result);
+} catch (status) {
+    console.log("unsubscribe Topic failed: ", result);
+}
+```
+
+示例 2：随机取消订阅 Topic 中的 64 个消息发布者
+
+```javascript
+try{
+    const result = await rtm.unsubscribeTopic("Gesture");
+    console.log("unsubscribe topic success: ", result);
+} catch (status) {
+    console.log("unsubscribe topic failed: ", result);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `UnsubscribeTopicResponse` 类型数据：
+
+```javascript
+type UnsubscribeTopicResponse = {
+    timestamp: number,              // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.javascript)了解错误原因，并找到对应的解决方法。

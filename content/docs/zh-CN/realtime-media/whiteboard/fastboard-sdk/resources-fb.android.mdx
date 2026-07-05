@@ -1,0 +1,52 @@
+---
+title: "下载"
+---
+本文提供获取 SDK 和 Demo 的方式。
+
+## 通过 Maven 集成 SDK
+
+参考以下步骤使用 Maven 在项目中集成 SDK：
+
+1. 在项目根目录的 `settings.gradle` 文件中添加 JitPack 仓库：
+
+    ```groovy
+    dependencyResolutionManagement {
+      repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+      repositories {
+          google()
+          mavenCentral()
+          maven { url 'https://jitpack.io' }
+      }
+    }
+    ```
+
+2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件的 `dependencies` 字段中添加如下行以添加 `Fastboard SDK` 依赖：
+
+   ```groovy
+   dependencies {
+    implementation 'com.github.netless-io:fastboard-android:1.6.2'
+   }
+   ```
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/release-notes-fb.android)。
+      - 如何使用 SDK 实现加入白板房间请参考[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb.android)。
+  :::
+
+  Fastboard SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种互动白板场景。
+
+  - SDK 名称：Fastboard SDK
+  - 开发者：上海声网科技有限公司
+  - Fastboard SDK 合规使用说明请参考 [Fastboard SDK 合规使用说明](/basics/security/fastboard-sdk)，个人信息处理规则请参考 [SDK 隐私政策](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+        - [Android](https://github.com/netless-io/fastboard-android/archive/refs/tags/1.6.2.zip)
+
+## 获取 Demo
+
+本节提供 Demo，你可以下载体验互动白板的最新功能。
+
+    - Web Demo

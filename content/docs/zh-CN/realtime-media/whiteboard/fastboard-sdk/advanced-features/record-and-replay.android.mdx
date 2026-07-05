@@ -1,0 +1,509 @@
+---
+title: "录制与回放"
+---
+声网 Fastboard SDK 提供录制与回放功能，支持将实时房间中的所有互动行为录制下来，并支持高质量回放。相较于传统的录屏模式，白板录制和回放具有以下优势：
+
+- **高效录制**：采用信令记录方式，相比传统录屏模式占用带宽更少、存储空间更小
+- **高质量回放**：回放时还原现场效果，画质清晰、动画流畅
+- **服务端录制**：录制在服务端自动进行，无需客户端额外处理
+- **灵活回放**：支持指定时间范围回放、播放控制、视角跟随等功能
+- **完整记录**：录制白板操作、自定义事件、视角变化、多窗口应用等所有互动行为
+- **音视频同步**：支持白板回放与音视频播放同步
+
+本文介绍如何开启白板录制功能以及如何使用 Fastboard SDK 实现白板内容回放。
+
+## 技术原理
+
+### 白板录制
+
+声网互动白板录制不是屏幕录制，而是记录信令与数据增量构成的私有二进制数据。录制过程完全在服务端进行，具有以下优势：
+
+- **自动录制**：只需在创建房间时开启录制功能，服务端会自动录制房间内的所有互动行为
+- **智能管理**：只有在房间活跃时才会生成录制信息，房间无活动时录制会自动停止
+- **数据紧凑**：录制生成的数据相比传统音视频格式更紧凑，占用存储空间更小
+- **多窗口支持**：完整记录 Fastboard 多窗口模式下的所有应用和操作
+
+### 白板回放
+
+Fastboard Android SDK 对回放功能提供了轻量级封装，通过 `FastReplay` 类简化了配置和使用流程。但核心回放逻辑仍由底层 **Whiteboard SDK** 的 `Player` 类提供。
+
+回放时，SDK 会依照录制的信令与数据增量还原现场，得到的效果和实时互动时一模一样。回放支持：
+
+- 指定时间范围回放
+- 播放、暂停、跳转等播放控制
+- 播放速度调节
+- 视角跟随和自由视角切换
+- 自定义事件和全局状态变化的回放
+- 多窗口应用的完整回放
+- 音视频与白板同步回放
+
+## 前提条件
+
+开始前，请确保：
+
+1. 已在项目中集成声网 Fastboard SDK。详见[快速开始](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb.android)。
+2. 已获取有效的 App Identifier 和 Room Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+3. 如需在业务服务器上创建房间，请参考[房间管理服务端 API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+
+## 实现录制功能
+
+### 开启录制
+
+要开启白板录制功能，需要在创建房间时设置 `isRecord: true` 参数。通过服务端 API [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)创建支持录制的房间。
+
+以下示例展示如何通过服务端 API 创建支持录制的房间：
+
+```java
+// 注意：建议在业务服务器上执行创建房间操作，不要在客户端执行
+String url = "https://api.netless.link/v5/rooms";
+
+OkHttpClient client = new OkHttpClient();
+
+JSONObject requestBody = new JSONObject();
+try {
+    requestBody.put("name", "我的 Fastboard 录制房间");
+    // highlight-start
+    requestBody.put("isRecord", true); // 开启录制功能
+    // highlight-end
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+
+RequestBody body = RequestBody.create(
+    MediaType.parse("application/json"),
+    requestBody.toString()
+);
+
+Request request = new Request.Builder()
+    .url(url)
+    .addHeader("token", "NETLESSSDK_YWs9xxxxxxM2MjRi") // 替换为你的 SDK Token
+    .addHeader("region", "cn-hz") // 替换为你的数据中心
+    .post(body)
+    .build();
+
+client.newCall(request).enqueue(new Callback() {
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String responseBody = response.body().string();
+            try {
+                JSONObject json = new JSONObject(responseBody);
+                String uuid = json.getString("uuid");
+                Log.i(TAG, "房间 UUID: " + uuid);
+                Log.i(TAG, "房间已开启录制功能");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onFailure(Call call, IOException e) {
+        Log.e(TAG, "创建房间失败: " + e.getMessage());
+    }
+});
+```
+
+:::warning[注意]
+- SDK Token 是重要的安全凭证，建议在业务服务器中使用，不要写死在客户端代码中。
+- 开启录制功能后，该房间内的所有互动行为都会被自动录制。
+:::
+
+### 录制内容
+
+开启录制功能后，以下内容会被自动录制：
+
+- 白板绘制操作（画笔、图形、文字等）
+- 场景切换和内容变化
+- 图片、音视频、课件（PPT、DOC）的展示和操作
+- 多窗口应用的所有操作和状态变化
+- 用户视角变化
+- 自定义事件（通过 `dispatchMagixEvent` 发送的事件）
+- 全局状态变化（`GlobalState` 的修改）
+
+## 实现回放功能
+
+由于 Fastboard Android SDK 不提供回放功能的封装，你需要直接使用底层 Whiteboard SDK 来实现回放功能。
+
+### 创建回放播放器
+
+使用 `WhiteSdk` 的 `createPlayer` 方法创建回放播放器。以下示例展示了完整的创建流程：
+
+```java
+import com.herewhite.sdk.WhiteSdk;
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.Player;
+import com.herewhite.sdk.PlayerConfiguration;
+import com.herewhite.sdk.PlayerListener;
+import com.herewhite.sdk.domain.PlayerPhase;
+import com.herewhite.sdk.domain.PlayerState;
+import com.herewhite.sdk.domain.SDKError;
+import com.herewhite.sdk.domain.Region;
+import com.herewhite.sdk.domain.WindowParams;
+import com.herewhite.sdk.domain.Promise;
+
+public class ReplayActivity extends AppCompatActivity implements PlayerListener {
+
+    private static final String TAG = "ReplayActivity";
+    private WhiteboardView whiteboardView;
+    private WhiteSdk whiteSdk;
+    private Player player;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_replay);
+
+        // 1. 创建白板视图
+        whiteboardView = findViewById(R.id.whiteboard_view);
+
+        // 2. 配置并初始化 WhiteSdk
+        initWhiteSdk();
+
+        // 3. 创建回放播放器
+        createReplayPlayer();
+    }
+
+    private void initWhiteSdk() {
+        // 配置 SDK
+        WhiteSdkConfiguration config = new WhiteSdkConfiguration("RMxxxAQ", true); // 替换为你的 App Identifier
+        config.setRegion(Region.cn); // 设置数据中心
+        config.setUseMultiViews(true); // 启用多窗口回放
+
+        // 初始化 WhiteSdk
+        whiteSdk = new WhiteSdk(whiteboardView, this, config);
+    }
+
+    private void createReplayPlayer() {
+        // 配置回放参数
+        PlayerConfiguration playerConfig = new PlayerConfiguration(
+            "a7xxx69",  // 房间 UUID
+            "NETLESSROOM_YWxxxjk"  // Room Token
+        );
+
+        // 设置回放时间范围
+        playerConfig.setBeginTimestamp(1609459200000L); // 回放开始时间（毫秒）
+        playerConfig.setDuration(45 * 60 * 1000L);      // 回放持续时间（毫秒）
+
+        // 配置多窗口参数（如果录制时使用了多窗口模式）
+        WindowParams windowParams = new WindowParams();
+        windowParams.setContainerSizeRatio(9f / 16f); // 设置窗口比例
+        playerConfig.setWindowParams(windowParams);
+
+        // 创建回放播放器
+        whiteSdk.createPlayer(playerConfig, this, new Promise<Player>() {
+            @Override
+            public void then(Player p) {
+                player = p;
+                Log.i(TAG, "回放播放器创建成功");
+
+                // 初始化播放位置并开始播放
+                player.seekToScheduleTime(0);
+                player.play();
+            }
+
+            @Override
+            public void catchEx(SDKError error) {
+                Log.e(TAG, "创建回放播放器失败: " + error.getMessage());
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            player.stop();
+        }
+    }
+
+    // 实现 PlayerListener 回调方法（见下文）
+}
+```
+
+### 播放器控制
+
+`Player` 提供了丰富的播放控制功能：
+
+```java
+// 播放控制
+player.play();     // 开始播放
+player.pause();    // 暂停播放
+player.stop();     // 停止播放
+
+// 跳转到指定位置（单位：毫秒，相对于回放开始时间）
+player.seekToScheduleTime(10 * 60 * 1000); // 跳转到第 10 分钟
+
+// 设置播放倍速
+player.setPlaybackSpeed(1.5); // 1.5 倍速播放
+player.setPlaybackSpeed(1.0); // 恢复正常速度
+
+// 获取播放状态信息（同步方法）
+PlayerPhase phase = player.getPlayerPhase();
+PlayerTimeInfo timeInfo = player.getPlayerTimeInfo();
+Log.i(TAG, "当前播放进度: " + timeInfo.getScheduleTime());
+Log.i(TAG, "回放总时长: " + timeInfo.getTimeDuration());
+Log.i(TAG, "播放状态: " + phase);
+
+// 设置观看模式
+player.setObserverMode(PlayerObserverMode.directory); // 跟随模式，跟随录制时的视角变化
+player.setObserverMode(PlayerObserverMode.freedom);   // 自由模式，可以自由调整视角
+```
+
+### 监听播放器状态变化
+
+通过实现 `PlayerListener` 接口来监听播放器状态的变化：
+
+```java
+public class ReplayActivity extends AppCompatActivity implements PlayerListener {
+
+    // ... 其他代码 ...
+
+    @Override
+    public void onPhaseChanged(PlayerPhase phase) {
+        // 播放状态变化回调
+        Log.i(TAG, "播放状态: " + phase);
+        switch (phase) {
+            case waitingFirstFrame:
+                Log.i(TAG, "等待首帧");
+                break;
+            case playing:
+                Log.i(TAG, "正在播放");
+                break;
+            case pause:
+                Log.i(TAG, "已暂停");
+                break;
+            case stopped:
+                Log.i(TAG, "已停止");
+                break;
+            case ended:
+                Log.i(TAG, "播放结束");
+                break;
+            case buffering:
+                Log.i(TAG, "正在缓冲");
+                break;
+        }
+    }
+
+    @Override
+    public void onLoadFirstFrame() {
+        // 首帧加载完成回调
+        Log.i(TAG, "首帧加载完成");
+    }
+
+    @Override
+    public void onPlayerStateChanged(PlayerState modifyState) {
+        // 播放器状态变化回调
+        // 可以在这里获取场景状态、全局状态等信息
+    }
+
+    @Override
+    public void onStoppedWithError(SDKError error) {
+        // 播放出错回调
+        Log.e(TAG, "播放出错: " + error.getMessage());
+    }
+
+    @Override
+    public void onScheduleTimeChanged(long time) {
+        // 播放进度变化回调（约每 500ms 回调一次）
+        Log.d(TAG, "当前播放进度: " + time + "ms");
+
+        // 更新 UI 显示播放进度
+        runOnUiThread(() -> {
+            int minutes = (int) (time / 60000);
+            int seconds = (int) ((time % 60000) / 1000);
+            // 更新进度显示
+        });
+    }
+
+    @Override
+    public void onSliceChanged(String slice) {
+        // 切片变化回调（一般不需要实现）
+    }
+
+    @Override
+    public void onCatchErrorWhenAppendFrame(SDKError error) {
+        // 追加帧错误回调
+        Log.e(TAG, "追加帧错误: " + error.getMessage());
+    }
+
+    @Override
+    public void onCatchErrorWhenRender(SDKError error) {
+        // 渲染错误回调
+        Log.e(TAG, "渲染错误: " + error.getMessage());
+    }
+}
+```
+
+### 同步 RTC 回放
+
+在实际应用场景中，你可能需要同时回放 RTC 录制的音视频和白板内容。你可以使用 `PlayerSyncManager` 类同时管理视频播放器和白板回放播放器，保证了播放状态的一致性，从而实现同步回放。
+
+以下示例展示如何使用 `PlayerSyncManager` 实现 RTC 音视频与白板的同步回放：
+
+```java
+import com.herewhite.sdk.combinePlayer.PlayerSyncManager;
+import com.herewhite.sdk.combinePlayer.NativePlayer;
+
+public class SyncReplayActivity extends AppCompatActivity implements PlayerListener {
+
+    private WhiteSdk whiteSdk;
+    private Player whitePlayer;
+    private PlayerSyncManager syncManager;
+    private NativePlayer mediaPlayer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sync_replay);
+
+        // 1. 创建原生媒体播放器（以 ExoPlayer 为例）
+        mediaPlayer = new WhiteExoPlayer(this);
+        ((WhiteExoPlayer) mediaPlayer).setVideoPath("https://example.com/video.m3u8");
+
+        // 2. 创建同步管理器
+        syncManager = new PlayerSyncManager(mediaPlayer, new PlayerSyncManager.Callbacks() {
+            @Override
+            public void startBuffering() {
+                Log.d(TAG, "开始缓冲");
+            }
+
+            @Override
+            public void endBuffering() {
+                Log.d(TAG, "缓冲结束");
+            }
+        });
+
+        // 3. 初始化 WhiteSdk 并创建白板回放
+        WhiteSdkConfiguration config = new WhiteSdkConfiguration("RMxxxAQ", true);
+        config.setRegion(Region.cn);
+        whiteSdk = new WhiteSdk(whiteboardView, this, config);
+
+        PlayerConfiguration playerConfig = new PlayerConfiguration("a7xxx69", "NETLESSROOM_YWxxxjk");
+        playerConfig.setBeginTimestamp(1609459200000L);
+        playerConfig.setDuration(45 * 60 * 1000L);
+
+        whiteSdk.createPlayer(playerConfig, this, new Promise<Player>() {
+            @Override
+            public void then(Player player) {
+                whitePlayer = player;
+
+                // 关联白板播放器到同步管理器
+                syncManager.setWhitePlayer(player);
+
+                // 开始同步播放
+                player.seekToScheduleTime(0);
+                syncManager.play();
+            }
+
+            @Override
+            public void catchEx(SDKError error) {
+                Log.e(TAG, "创建回放失败: " + error.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onPhaseChanged(PlayerPhase phase) {
+        // 重要！必须同步白板播放器的阶段变化
+        if (syncManager != null) {
+            syncManager.updateWhitePlayerPhase(phase);
+        }
+
+        Log.i(TAG, "播放状态: " + phase);
+    }
+
+    // 播放控制
+    private void play() {
+        if (syncManager != null) {
+            syncManager.play();
+        }
+    }
+
+    private void pause() {
+        if (syncManager != null) {
+            syncManager.pause();
+        }
+    }
+
+    private void seekTo(long time) {
+        if (syncManager != null) {
+            syncManager.seek(time);
+        }
+    }
+
+    private void setPlaybackSpeed(float speed) {
+        if (syncManager != null) {
+            syncManager.setPlaybackSpeed(speed);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (whitePlayer != null) {
+            whitePlayer.stop();
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+    }
+
+    // 实现其他 PlayerListener 方法...
+}
+```
+
+## 参考信息
+
+### 开发注意事项
+
+在使用 Fastboard 录制与回放功能时，需要注意以下几点：
+
+- **底层实现**：Fastboard Android SDK 不提供回放功能的封装，你需要直接使用底层 Whiteboard SDK 的 `Player` 类实现回放功能。
+- **多窗口回放**：如果录制时使用了多窗口模式，回放时需要在 SDK 配置和回放配置中都启用多窗口支持，并设置正确的窗口比例。
+- **录制延时**：录制内容不是实时生成的，新创建的房间可能需要等待一段时间才能获得录制内容。
+- **时间范围**：建议根据实际使用场景设置合适的回放时间范围，避免回放过长的无效内容。
+- **网络缓冲**：回放时可能需要网络缓冲，特别是跳转到较远时间点时。
+- **同步与异步方法**：
+  - 同步方法（如 `getPlayerPhase()`）返回本地缓存的值，可能不是最新值
+  - 异步方法（如 `getPhase(promise)`）返回从 JS 端获取的最新值
+  - 建议日常使用同步方法，调试时使用异步方法
+- **线程安全**：`PlayerListener` 的回调在子线程执行，UI 操作需要使用 `runOnUiThread()` 切换到主线程。
+- **状态同步**：使用 `PlayerSyncManager` 时，必须在 `onPhaseChanged` 回调中调用 `updateWhitePlayerPhase` 方法，否则无法正确同步状态。
+- **资源释放**：使用完毕后记得调用 `player.stop()` 释放播放器资源。
+
+### 检查房间是否可回放
+
+在创建回放前，可以先检查房间是否有可用的回放数据：
+
+```java
+whiteSdk.isPlayable(playerConfig, new Promise<Boolean>() {
+    @Override
+    public void then(Boolean isPlayable) {
+        if (isPlayable) {
+            // 可以创建回放
+            whiteSdk.createPlayer(playerConfig, listener, promise);
+        } else {
+            Log.w(TAG, "该房间没有可用的回放数据");
+        }
+    }
+
+    @Override
+    public void catchEx(SDKError error) {
+        Log.e(TAG, "检查回放状态失败: " + error.getMessage());
+    }
+});
+```
+
+### API 参考
+
+- [`Player.play`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#play) - 开始播放
+- [`Player.pause`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#pause) - 暂停播放
+- [`Player.seekToScheduleTime`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#seekToScheduleTime) - 跳转播放位置
+- [`Player.setPlaybackSpeed`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#setPlaybackSpeed) - 设置播放速度
+- [`Player.setObserverMode`](/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_player#setObserverMode) - 设置观看模式
+- [POST 创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)
+
+### 相关文档
+
+- [快速开始](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb.android)

@@ -1,0 +1,178 @@
+---
+title: "属性"
+---
+## 频道类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|    `MESSAGE`  | Message Channel         |
+|    `STREAM`  | Stream Channel       |
+|    `USER`  | User Channel       |
+
+## <a name="historychanneltype"/>历史消息频道类型
+
+| 属性值 | 描述 |
+| --- | --- |
+| `MESSAGE` | Message Channel 频道。|
+| `USER` | 私密频道。|
+
+## <a name="linkstate"/>SDK 连接状态类型
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `IDLE`  |        初始状态。                  |
+|   `CONNECTING`    |      正在连接。      |
+|   `CONNECTED`    |      已连接。      |
+|   `DISCONNECTED`    |      已断开连接。      |
+|   `SUSPENDED`    |      挂起状态。     |
+|   `FAILED`    |      连接失败。      |
+
+## <a name="linkstatechangereason"/>连接状态改变原因类型
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `UNKNOWN`  |        未知原因。                  |
+|   `LOGIN`    |      正在登录。      |
+|   `LOGIN_SUCCESS`    |      登录成功。      |
+|   `LOGIN_TIMEOUT`    |      登录超时。      |
+|   `LOGIN_NOT_AUTHORIZED`    |      登录未授权。      |
+|   `LOGIN_REJECTED`    |      登录被拒绝。      |
+|   `RELOGIN`    |      重新登录。      |
+|   `LOGOUT`    |      登出。      |
+|   `AUTO_RECONNECT`    |      自动重连。      |
+|   `RECONNECT_TIMEOUT`    |      重连超时。      |
+|   `RECONNECT_SUCCESS`    |      重连成功。      |
+|   `JOIN`    |      正在加入频道。      |
+|   `JOIN_SUCCESS`    |      加入频道成功。      |
+|   `JOIN_FAILED`    |      加入频道失败。      |
+|   `REJOIN`    |      重新加入频道。      |
+|   `LEAVE`    |      离开频道。      |
+|   `INVALID_TOKEN`    |      Token 无效。      |
+|   `TOKEN_EXPIRED`    |      Token 过期。      |
+|   `INCONSISTENT_APP_ID`    |     App ID 不一致。      |
+|   `INVALID_CHANNEL_NAME`    |      频道名无效。      |
+|   `INVALID_USER_ID`    |      用户 ID 无效。      |
+|   `NOT_INITIALIZED`    |      SDK 未初始化。      |
+|   `RTM_SERVICE_NOT_CONNECTED`    |     RTM 服务未连接。      |
+|   `CHANNEL_INSTANCE_EXCEED_LIMITATION`    |      频道实例超出限制。      |
+|   `OPERATION_RATE_EXCEED_LIMITATION`    |      操作频率超出限制。      |
+|   `CHANNEL_IN_ERROR_STATE`    |      频道处于错误状态。      |
+|   `PRESENCE_NOT_CONNECTED`    |      Presence 服务未连接。      |
+|   `SAME_UID_LOGIN`    |      使用相同用户 ID 登录。      |
+|   `KICKED_OUT_BY_SERVER`    |      被服务器踢出。      |
+|   `KEEP_ALIVE_TIMEOUT`    |      心跳超时。      |
+|   `CONNECTION_ERROR`    |      连接错误。      |
+|   `PRESENCE_NOT_READY`    |      Presence 服务未就绪。      |
+|   `NETWORK_CHANGE`    |      网络发生变化。      |
+|   `SERVICE_NOT_SUPPORTED`    |      服务不支持。      |
+|   `STREAM_CHANNEL_NOT_AVAILABLE`    |      Stream Channel 不存在。      |
+|   `STORAGE_NOT_AVAILABLE`    |      Storage 服务不可用。      |
+|   `LOCK_NOT_AVAILABLE`    |      Lock 服务不可用。      |
+|   `LOGIN_TOO_FREQUENT`  | 登录操作太频繁。|
+
+## 端侧加密模式
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `NONE`  |         不加密。                    |
+|   `AES_128_GCM`    |      128 位 AES 加密，GCM 模式。      |
+|   `AES_256_GCM`    |      256 位 AES 加密，GCM 模式。       |
+
+## Lock 事件类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        加入频道时 Lock 的快照信息。        |
+|   `SET`    |      已设置 Lock。 |
+|   `REMOVED`  |        已删除 Lock。       |
+|   `ACQUIRED`    |      已获取 Lock。 |
+|   `RELEASED`  |        已释放 Lock。        |
+|   `EXPIRED`    |      Lock 已过期。 |
+
+## 日志输出等级
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `debug`    |      输出所有日志。      |
+|   `info`    |      输出 `error`、`warn`、`info` 级别的日志。      |
+|   `warn`    |      输出 `error`、`warn` 级别的日志。        |
+|   `error`    |      输出 `error` 级别的日志。      |
+|   `none`  |        不输出任何日志。                     |
+
+## 消息类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|    `BINARY`  | 二进制类型。          |
+|    `STRING`  | 字符串类型。          |
+
+## Presence 事件类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        用户第一次加入频道会收到服务器推送的当前频道详情快照。                   |
+|   `INTERVAL`    |      当频道内人数达到设定之后频道内的事件通知将由实时通知转为定时通知。      |
+|   `REMOTE_JOIN`    |      远端用户加入频道。      |
+|   `REMOTE_LEAVE`  |        远端用户离开频道。                   |
+|   `REMOTE_TIMEOUT`    |      远端用户连接超时。      |
+|   `REMOTE_STATE_CHANGED`    |    远端用户的临时用户状态改变。      |
+|   `ERROR_OUT_OF_SERVICE`    |    用户加入频道时未启用 Presence。      |
+
+## 服务类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `MESSAGE`  |          基础服务，包含 Message Channel、User Channel、Presence、Storage 和 Lock 服务。                    |
+|   `STREAM`    |       Stream Channel 服务。      |
+
+:::info[信息]
+如需使用 RTM 的全部服务，你可以使用位操作同时设置两种服务类型。
+:::
+
+## Storage 事件类型
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+| `SNAPSHOT` | 用户第一次订阅 Channl Metadata 或 User Metadata，或加入频道时触发，本地用户会收到此类事件通知。 |
+|   `SET`    | 当调用 `setChannelMetadata` 或者 `setUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。 |
+|  `UPDATE`  | 当调用设置、更新或删除 Channel Metadata 或 User Metadata 的方法时会返回该类型事件。|
+|  `REMOVE`  | 当调用 `removeChannelMetadata` 或者 `removeUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。  |
+
+## Storage 类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `USER`  |        User Metadata 事件。         |
+|   `CHANNEL`    |      Channel Metadata 事件。 |
+
+## Topic 事件类型
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|   `SNAPSHOT`  |        加入频道时 Topic 的快照信息。                  |
+|   `REMOTE_JOIN`    |      远端用户加入 Topic。      |
+|   `REMOTE_LEAVE`    |      远端用户离开 Topic。      |
+
+## <a name="connectionreason"/>（已废弃）SDK 连接状态改变原因
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|    `CONNECTING`  | 建立网络连接中。         |
+|    `LOGIN_SUCCESS`  | SDK 登录 RTM 系统成功。         |
+|    `REJECTED_BY_SERVER`  | SDK 被服务器禁止连接。       |
+|    `LOST`  | SDK 和服务器失去连接。       |
+|    `INTERRUPTED`  | 网络连接中断。        |
+|    `LOGOUT`  | SDK 已退出 RTM 系统。        |
+|    `PRESENCE_NOT_READY`  |  Presence 服务未就绪。你需要重新调用 `login` 方法登录 RTM 系统并重新执行对 SDK 的所有操作。    |
+|    `SAME_UID_LOGIN`  | 使用相同的用户 ID 从不同的设备加入同一频道。     |
+|    `TOKEN_EXPIRED`  | 当前使用的 Token 过期，不再有效，需要重新在你的服务端申请生成 Token。  |
+
+## <a name="connectionstate"/>（已废弃）SDK 连接状态
+
+|       属性值      | 描述             |
+| --------- | ----- |
+|    `DISCONNECTED`  | SDK 已和服务器断开连接。         |
+|    `CONNECTING`  | SDK 正在连接服务器。         |
+|    `CONNECTED`  | SDK 已连上服务器。         |
+|    `RECONNECTING`  | SDK 和服务器断开连接，正在重新连接服务器。                     |
+|    `FAILED`  | SDK 无法连接服务器。           |

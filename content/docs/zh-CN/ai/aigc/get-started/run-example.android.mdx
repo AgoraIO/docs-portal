@@ -1,0 +1,81 @@
+---
+title: "跑通示例项目"
+---
+声网在 GitHub 为 AIGC 解决方案提供了一个可以跑通的 [AIGCService-Example](https://github.com/AgoraIO-Community/Agora-AIGCService-Example) 项目。你可以前往下载体验或查看源码。本文介绍如下获取并跑通该示例项目。
+
+## 前提条件
+
+开始前，请确保你的本地开发环境满足如下要求：
+
+- [Git](https://git-scm.com/downloads)。
+- [Java Development Kit](https://www.oracle.com/java/technologies/downloads/)。
+- Android API 级别 23 及以上。
+- Android 6.0 或以上版本的移动设备。声网推荐使用真机运行项目，部分模拟机可能存在功能缺失或者性能问题。
+- 参考[开通服务](/zh-CN/ai/aigc/get-started/enable-service)创建项目、获取 App ID、App 证书、临时 Token 并开通 AIGCService 服务。
+
+## 获取示例项目
+
+参考如下步骤获取示例项目：
+
+1. 运行以下命令行将项目仓库克隆到本地：
+
+   ```shell
+   git clone git@github.com:AgoraIO-Community/Agora-AIGCService-Example.git
+   ```
+
+2. 运行以下命令进入项目目录并切换到 `main` 分支：
+
+   ```shell
+   cd Agora-AIGCService-Example
+   git checkout main
+   ```
+
+## 配置示例项目
+
+### 集成 SDK 及依赖库
+
+跑通该示例项目需要分别集成 RTC SDK 和 AIGCService SDK。
+
+1. 在项目 `/app/build.gradle` 文件中集成 RTC SDK：
+
+   :::info[信息]
+   运行示例项目对 RTC SDK 的版本没有特殊要求。你可以根据实际情况集成对应的版本。查看[发版说明](/zh-CN/realtime-media/rtc/overview/release-notes.android)了解 RTC SDK 最新版本号。
+   :::
+
+   ```java
+   implementation 'io.agora.rtc:agora-special-full:4.2.2.1'
+   ```
+
+2. 联系 sales@shengwang.cn 获取 AIGCService SDK。将获取到的 `aar` 文件放入项目的 `/app/libs` 路径下，然后在 `/app/build.gradle` 文件中引入该文件：
+
+   ```java
+   implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+   ```
+
+### 设置 App ID 与 App 证书
+
+使用 **Android Studio** 打开 `Agora-AIGCService-Example/Android/Agora-AIGCService-Example` 项目，在 `Agora-AIGCService-Example/local.properties` 文件中，添加如下参数设置：
+
+```java
+APP_CERTIFICATE=Certificate
+APP_ID=AppId
+```
+
+其中：
+
+- `Certificate` 填入项目的 App 证书，详见[获取 App 证书](/zh-CN/ai/aigc/get-started/enable-service#获取-app-证书)
+- `AppId` 填入项目的 App ID，详见[获取 App ID](/zh-CN/ai/aigc/get-started/enable-service#获取-app-id)
+
+## 编译并运行示例项目
+
+参考如下步骤编译并运行 AIGCService-Example：
+
+1. 在 **Android Studio** 中，开启 Android 设备的**开发者选项**，打开 USB 调试，通过 USB 连接线将 Android 设备接入计算机，并在 Android 设备选项中勾选你的 Android 设备。
+
+2. 在 **Android Studio** 中，点击 **Sync Project with Gradle Files** 按钮，让项目与 Gradle 文件同步。
+
+3. 待同步成功后， 开始编译。
+
+4. 编译成功后，你的 Android 设备上会出现 Agora-AIGCService-Example 应用。
+
+5. 打开应用，体验 AIGCService 场景。

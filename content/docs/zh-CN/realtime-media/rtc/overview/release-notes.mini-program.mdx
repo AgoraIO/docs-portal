@@ -1,0 +1,354 @@
+---
+title: "发版说明"
+---
+本文提供声网小程序 SDK 的发版说明。
+
+自 2.5.3 版本起，你需要在小程序的开发设置里将如下域名添加至服务器域名。如果你从 2.4.6 及以下版本升级到 2.5.3 及以上版本，请添加如下域名至服务器域名并删除原域名：
+
+```shell
+- wss://miniapp.agoraio.cn
+- https://uap-ap-web-1.agora.io
+- https://uap-ap-web-2.agoraio.cn
+- https://uap-ap-web-3.agora.io
+- https://uap-ap-web-4.agoraio.cn
+- https://report-ad.agoralab.co
+- https://rest-argus-ad.agoralab.co
+- https://uni-webcollector.agora.io
+```
+
+具体步骤详见[配置服务器域名](/zh-CN/realtime-media/rtc/get-started/run-demo.mini-program#add-ip)。
+
+## v2.6.5
+
+该版本于 2024 年 8 月 21 日发布。
+
+### 新增特性
+
+该版本新增支持 IoT 场景下的加、解密功能。具体的参数设置及加解密类型详见 [API 参考](/api-ref/rtc/mini-program/classes/client.html#constructor)。
+
+## v2.6.4
+
+该版本于 2024 年 1 月 11 日发布。
+
+### 新增特性
+
+该版本新增了用户网络状态日志上报功能。
+
+### 问题修复
+
+该版本修复了反复调用 `join`/`leave` 方法导致的 Client 对象无法复用的问题。
+
+## v2.6.3
+
+该版本于 2023 年 12 月 22 日发布。
+
+该版本修复了断网情况下调用 `destroy` 方法导致的 Promise 不返回的问题。
+
+## v2.6.2
+
+该版本于 2023 年 8 月 29 日发布。
+
+该版本修复了收不到跨频道媒体流转发 `channel-media-relay-event` 和 `channel-media-relay-state` 事件的问题。
+
+## v2.6.1
+
+该版本于 2023 年 3 月 2 日发布。
+
+该版本修复了 WebSocket 连接 `onClose` 方法中 `err` 参数未定义错误。
+
+## v2.6.0
+
+该版本于 2023 年 2 月 8 日发布。
+
+### 新增特性
+
+#### 支持 Promise 形式调用
+
+该版本起，API 支持 Promise 形式的调用，提升异步代码的易用性。同时也支持原先的 callback 形式的调用。
+
+#### 重构日志模块
+
+该版本重构优化了日志模块，新增了日志上报功能，从此你无需自主保存 SDK 日志文件。详见 [Log API](/api-ref/rtc/mini-program/interfaces/log)。
+
+#### 支持更多 SDK 集成方式
+
+SDK 新增支持如下集成方式：
+
+- 支持以小程序原生 npm 方式集成 SDK。详见[通过 npm 集成](/zh-CN/realtime-media/rtc/get-started/quick-start.mini-program#integrate)。
+- 支持使用第三方小程序框架（如 [Taro](https://taro-docs.jd.com/docs)，[WePY](https://wepyjs.github.io/wepy-docs)）集成小程序 SDK。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 默认用户角色改为 `audience`（观众）。如有需要请调用 [`setRole`](/api-ref/rtc/mini-program/classes/client#setrole) 修改。
+- 包体积优化，从 190kb 左右降至 160kb 左右。
+
+## v2.5.7
+
+该版本于 2022 年 12 月 9 日发布。
+
+### 新增功能
+
+新增了事件监听和数据上报功能，加快问题定位和排查，提升了支持效率。
+
+### 改进
+
+完善了重连机制，更好地保障用户成功加入频道。
+
+## v2.5.6
+
+该版本于 2022 年 9 月 22 日发布。
+
+### 新增特性
+
+#### 支持 String 型用户 ID
+
+该版本新增支持 String 型的用户 ID，方便用户使用 App 账号直接加入声网频道。
+
+为保证通信质量，频道内所有用户需使用同一数据类型的用户 ID，即频道内的所有用户 ID 应同为 Int 型或同为 String 型。详见[如何使用 String 型用户 ID](/faq/integration-issues/string-uid)。
+
+#### 支持 G711 编码格式音频
+
+小程序 SDK 中，默认发送和接收 Opus 音频数据。对于收发 G711 编码格式音频的 IoT 设备（如 IPC、门铃、手表等），该版本支持双向互通。如需发送和接收 G711 音频数据，请联系 sales@shengwang.cn 开通，开通服务的邮件模板请参照[设置 RTC 小程序 SDK](/zh-CN/realtime-media/rtsa/best-practices/interoperate-rtc#设置-rtc-小程序-sdk)。
+
+### 改进
+
+为提升用户体验，该版本增加了 TypeScript 类型声明文件。
+
+### API 变更
+
+该版本新增如下 API：
+
+- `setAudioCodec`
+- 枚举类 `AudioCodec`
+- 枚举类 `StreamType`
+- 枚举类 `UidType`
+
+如下 API 在该版本进行了变更：
+
+- `join`
+- `rejoin`
+- `setRemoteVideoStreamType`
+
+## v2.5.5
+
+该版本于 2022 年 7 月 1 日发布。
+
+### 改进
+
+该版本优化了向声网数据中心上报数据的频次和逻辑，减少了上报请求对正常 http 请求通道的占用。
+
+## v2.5.4
+
+该版本于 2022 年 5 月 19 日发布。
+
+### 新增特性
+
+为帮助你在 App 服务端更好地管理频道内的用户，掌握频道内用户状态，该版本新增 `on(event: "client-banned")` 回调。当你在服务端踢除频道内的用户后，SDK 会触发该回调报告该用户被服务器禁止。
+
+### 改进
+
+该版本优化了弱网环境下音视频的卡顿和网络延迟，提升了视频流畅度。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 在纯语音直播场景下，集成了 Web SDK 的远端用户听到的声音出现卡顿且有杂音。
+- 在特定机型上，如 iPhone X、iPhone 12、小米 9，使用小程序加入频道后开启本地音频采集并将采集到的音频流发布到频道内，远端用户听到的声音出现卡顿且有电流声。
+- 在弱网情况下，偶现接收端看到视频画面出现马赛克方格。
+
+### API 变更
+
+该版本新增如下 API：
+
+- `on(event: "client-banned")`
+- `Client.join` 新增 `isAudioOnly` 参数
+- `Client.rejoin` 新增 `isAudioOnly` 参数
+
+## v2.5.3
+
+该版本于 2021 年 12 月 9 日发布。
+
+### 新增特性
+
+#### 媒体流订阅选项
+
+该版本在 `Client.subscribe` 方法中新增 `options` 参数，用于设置是否订阅音频流和视频流。
+该方法可以根据需要在通话中多次调用，在订阅音频和/或视频之间灵活切换。
+
+#### 设置订阅的视频流类型
+
+该版本新增 `setRemoteVideoStreamType` 方法，用于设置订阅的视频流类型。当远端用户发送视频双流（大流和小流）时，本地用户可以调用该方法选择订阅大流还是小流。如果不设置，则默认订阅大流。
+
+#### Token 过期回调
+
+为方便用户及时了解 Token 的时效，该版本新增如下回调：
+
+- `Client.on("token-privilege-will-expire")`：Token 即将过期回调。SDK 会提前 30 秒触发该回调，提醒 App 更新 Token。收到该回调时，你需要重新在服务端生成新的 Token， 然后调用 `renewToken` 将新生成的 Token 传给 SDK。
+
+- `Client.on("token-privilege-did-expire")`：Token 已过期回调。在 Token 过期后，SDK 会触发该回调。收到该回调时，你需要向服务端重新申请 Token，并调用 `join` 方法传入新的 Token 重新加入频道。
+
+#### 推流/拉流数据上报
+
+为方便向声网数据中心上报 live-pusher 或 live-player 组件报告的网络或推拉流状态，该版本新增如下方法：
+
+- `updatePusherNetStatus`：上报推流过程中的网络状态。
+- `updatePusherStateChange`：上报推流状态。
+- `updatePlayerNetStatus`：上报拉流过程中的网络状态。
+- `updatePlayerStateChange`：上报拉流状态。
+
+### API 变更
+
+该版本新增如下 API：
+
+- `subscribe` 中新增 `options` 参数
+- `setRemoteVideoStreamType`
+- `renewToken`
+- `Client.on("token-privilege-will-expire")`
+- `Client.on("token-privilege-did-expire")`
+- `updatePusherNetStatus`
+- `updatePusherStateChange`
+- `updatePlayerNetStatus`
+- `updatePlayerStateChange`
+
+## v2.4.6
+
+该版本于 2021 年 1 月 20 日发布。修复了 `wx.connectSocket is not a constructor` 报错问题。
+
+## v2.4.5
+
+该版本于 2020 年 9 月 21 日发布。
+
+### 新增功能
+
+为方便本地了解远端用户的媒体状态，该版本新增 `Client.on("mute-video")` 回调。当远端用户停止发送视频流时，SDK 会触发相应的回调。你还可以从该回调中得知停止发送的远端用户的 ID。
+
+## v2.4.4
+
+该版本于 2020 年 7 月 7 日发布。增加了对 QQ 小程序的兼容。
+
+## v2.4.3
+
+该版本于 2020 年 5 月 26 日发布。
+
+### 新增功能
+
+跨频道媒体流转发，指将主播的媒体流转发至其他频道，实现主播与其他频道的主播实时互动的场景。该版本新增如下方法，通过将源频道中的媒体流转发至目标频道，实现跨直播间连麦功能：
+
+- `startChannelMediaRelay`
+- `updateChannelMediaRelay`
+- `stopChannelMediaRelay`
+
+在跨频道媒体流转发过程中，SDK 会通过 `Client.on("channel-media-relay-state")` 和 `Client.on("channel-media-relay-event")` 回调报告媒体流转发的状态和事件。
+
+## v2.4.2
+
+该版本于 2019 年 12 月 31 日发布。
+
+### 新增功能
+
+为方便本地了解远端用户的媒体状态，该版本新增 `Client.on("mute-audio")`。当远端用户停止发送音频流时，SDK 会触发相应的回调。你还可以从该回调中得知停止发送的远端用户的 ID。
+
+## v2.4.1
+
+该版本于 2019 年 9 月 18 日发布。进行了一些内部优化。
+
+## v2.4.0
+
+该版本于 2019 年 4 月 30 日发布。新增特性和性能改进详见下文。
+
+### 新增功能
+
+为方便用户控制本地是否发流，该版本新增 [`Client.muteLocal`](/api-ref/rtc/mini-program/classes/client#mutelocal) 和 [`Client.unmuteLocal`](/api-ref/rtc/mini-program/classes/client#unmutelocal) 方法。用户可以使用该方法在小程序中实现不发送本地音视频流等功能。
+
+### 改进
+
+该版本针对直播下主播切换为观众的场景，对图像和声音的延迟进行了优化。声网实验室测试结果显示，延迟降低为之前的 20%。
+
+## v2.3.2
+
+该版本于 2019 年 1 月 3 日发布。新增特性及功能改进详见下文。
+
+### 新增功能
+
+为方便用户了解是否成功调用 [`Client.leave`](/api-ref/rtc/mini-program/classes/client#leave) 和 [`Client.destroy`](/api-ref/rtc/mini-program/classes/client#destroy) 方法，该版本分别在这两个方法中新增了方法调用成功或失败的回调函数。
+
+### 改进
+
+为提升 [`Client.setRole`](./) 方法的易用性，该版本优化了该方法的调用逻辑。用户在调用 [`Client.join`](/api-ref/rtc/mini-program/classes/client#join) 加入频道**前**或**后**均可以调用该方法，设置或改变用户角色。
+
+同时，该版本对 `broadcaster` 和 `audience` 两个角色的行为进行了更为严格的定义：
+
+- 用户角色为 `broadcaster` 时，可以调用 [`Client.publish`](/api-ref/rtc/mini-program/classes/client#publish) 和 [`Client.unpublish`](/api-ref/rtc/mini-program/classes/client#unpublish) 方法
+- 用户角色为 `audience` 时，不可以调用 `Client.publish` 和 `Client.unpublish` 方法
+
+## v1.1.3 BETA
+
+该版本于 2018 年 11 月 2 日发布。
+
+### 问题修复
+
+修复了偶现的反复加入频道失败的问题，提升了服务的稳定性。
+
+## v1.1.2 Beta
+
+该版本于 2018 年 10 月 22 日发布。新增特性与修复问题列表详见下文。
+
+### 新增功能
+
+为方便用户在通话或直播过程中，控制是否订阅远端音视频流，该版本新增如下接口：
+
+- `Client.mute`：停止接收远端音视频流
+- `Client.unmute`：继续接收远端音视频流
+
+通过使用这两个接口，用户可以选择停止或继续接收音频流、视频流还是音视频流。详细用法见[微信小程序 API 参考](/api-ref/rtc/mini-program/overview)。
+
+### 改进
+
+通过添加如下安全域名，实现高可用策略，提升小程序服务的稳定性：
+
+```shell
+https://miniapp-1.agoraio.cn
+https://miniapp-2.agoraio.cn
+https://miniapp-3.agoraio.cn
+https://miniapp-4.agoraio.cn
+```
+
+## v1.1.1 Beta
+
+该版本于 2018 年 8 月 8 日发布。
+
+### 新增功能
+
+为提升互通体验，该版本新增了 `setRole` 接口。当使用场景同时满足以下条件时，小程序 SDK 必须调用该接口将用户角色设置为观众：
+
+-   小程序 SDK 与 Native SDK 互通
+-   Native 端的频道场景为直播场景
+-   小程序端作为观众加入频道
+
+## v1.1.0 Beta
+
+该版本于 2018 年 7 月 27 日发布。包含如下功能：
+
+-   支持音视频通话及互通直播场景
+-   支持万人频道，小程序最多支持 7 个视频画面
+-   支持小程序 SDK 与 Native SDK、Web SDK 之间的双向互通。**提供业界最优质的小程序和 Web 互通体验。**
+
+由于小程序基于微信平台搭建，很多功能在实现中会有局限。目前已知的问题和局限如下所示：
+
+-   推荐 7 人及 7 人以下的音视频通话或直播场景。频道内人数越少，效果越好。
+-   推荐 8 人及 8 人以下的纯音频场景，但是功能上支持到 17 人，对网络要求非常高。频道内人数越少，效果越好。
+-   通信场景下，小概率出现远端视频窗口画面旋转的问题。
+-   纯音频场景下，如果用户一进频道就禁用麦克风，后加入的用户在你打开麦克风说话前可能无法感知频道内你的存在。
+
+经测试，如下为微信小程序的固有问题，有可能会随微信小程序的版本升级而得到解决：
+
+-   由于微信小程序使用 RTMP 协议，弱网情况下，可能会出现音视频快放、声音忽大忽小、偶有回声、推流中断、网络错误等现象。
+-   部分 iOS 手机会偶现编码失败，导致远端用户看到黑屏现象。
+-   部分 iOS 手机多人互通长时间会出现异常退出微信小程序以及微信崩溃问题。
+-   通信或直播过程中，个别手机上会出现摄像头画面卡住的问题。目前监测到该问题的手机有小米 5S。
+-   切到微信后台一段时间再返回小程序时，小概率出现问题。
+-   正常的音视频或纯语音场景下，不影响正常通话，但测试结论不推荐播放背景音乐，可能会出现声音卡顿、忽大忽小等不可控现象。
+-   iOS 手机系统为最新的 iOS 12.0 的用户使用微信小程序时，对方看到该用户的窗口必现花屏。

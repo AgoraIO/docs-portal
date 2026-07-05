@@ -1,0 +1,339 @@
+---
+title: "Lock"
+---
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。
+
+:::info[信息]
+客户端 SDK 具备设置、删除、撤销锁的能力，我们建议你根据实际业务需求控制端侧对锁的操作权限。
+:::
+
+RtmLock
+
+## setLock
+
+### 接口描述
+
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `SET` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.android#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setLock` 方法：
+
+```java
+void setLock(
+    String channelName,
+    RtmChannelType channelType,
+    String lockName,
+    long ttl,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `ttl` | long | 必填 | - | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RELEASED` 事件。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-0-5-4" /> |
+
+<Slot for="lock-android-html-0-5-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+long ttl = 30;
+rtmClient.getLock().setLock("my_channel", RtmChannelType.STREAM, "my_lock", ttl, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "set lock success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## acquireLock
+
+### 接口描述
+
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `ACQUIRED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.android#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `acquireLock` 方法：
+
+```java
+void acquireLock(
+    String channelName,
+    RtmChannelType channelType,
+    String lockName,
+    boolean retry,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `retry` | boolean | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-1-5-4" /> |
+
+<Slot for="lock-android-html-1-5-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+boolean retry = false;
+rtmClient.getLock().acquireLock("chat_room", RtmChannelType.STREAM, "my_lock", retry, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "acquire lock success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## releaseLock
+
+### 接口描述
+
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.android#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `releaseLock` 方法：
+
+```java
+void releaseLock(
+    String channelName,
+    RtmChannelType channelType,
+    String lockName,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-2-4-4" /> |
+
+<Slot for="lock-android-html-2-4-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+rtmClient.getLock().releaseLock("chat_room", RtmChannelType.STREAM, "my_lock", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "release lock success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## revokeLock
+
+### 接口描述
+
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `RELEASED` 类型的 `onLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.android#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `revokeLock` 方法：
+
+```java
+void revokeLock(
+    String channelName,
+    RtmChannelType channelType,
+    String lockName,
+    String owner,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `owner` | String | 必填 | - | 拥有锁的用户 ID。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-3-5-4" /> |
+
+<Slot for="lock-android-html-3-5-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+String lockOwner = "Tony";
+rtmClient.getLock().revokeLock("chat_room", RtmChannelType.STREAM, "my_lock", lockOwner, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "revoke lock(" + lockName + ") success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## getLocks
+
+### 接口描述
+
+如果你需要查询频道中锁的数量、名称、使用者、过期时间等信息，在客户端调用 `getLocks` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getLocks` 方法：
+
+```java
+void getLocks(
+    String channelName,
+    RtmChannelType channelType,
+    ResultCallback<ArrayList<LockDetail>> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `resultCallback` | `ResultCallback<ArrayList<LockDetail>>` | 必填 | - | <Slot name="lock-android-html-4-3-4" /> |
+
+<Slot for="lock-android-html-4-3-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法并返回 `LockDetail` 数据类型。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+`LockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `LockName`         |         String         | Lock 的名称。               |
+| `lockOwner`    | String  | 拥有锁的用户 ID。   |
+| `ttl`    | int | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RELEASED` 事件。      |
+
+### 基本用法
+
+```java
+rtmClient.getLock().getLocks("chat_room", RtmChannelType.STREAM, new ResultCallback<ArrayList<LockDetail>>() {
+    @Override
+    public void onSuccess(ArrayList<LockDetail> details) {
+        log(CALLBACK, "get channel locks success");
+
+        for (LockDetail detail : details) {
+            log(INFO, "lock name: " + detail.lockName + ", lock owner: " + detail.lockOwner + ", ttl: " + detail.ttl);
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## removeLock
+
+### 接口描述
+
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `REMOVED` 类型的 `onLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.android#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeLock` 方法：
+
+```java
+void removeLock(
+    String channelName,
+    RtmChannelType channelType,
+    String lockName,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.android#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-5-4-4" /> |
+
+<Slot for="lock-android-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+rtmClient.getLock().removeLock("chat_room", RtmChannelType.STREAM, "my_lock", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "remove lock success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```

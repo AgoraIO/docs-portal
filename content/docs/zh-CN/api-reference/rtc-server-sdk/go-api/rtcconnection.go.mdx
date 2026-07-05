@@ -1,0 +1,558 @@
+---
+title: "RtcConnection 类"
+---
+RtcConnection
+
+<span className="index-desc-rtcconnection">`RtcConnection` 类，用于管理 SDK 与 RTC 频道之间的连接。连接完成之后，你可以通过 `LocalUser` 对象在 RTC 频道中发送和接收媒体流。连接频道是异步操作，你可以通过 [`RtcConnectionObserver`](./irtcconnectionobserver) 对象监听连接状态变化和事件。`RtcConnection` 还可以监控频道中的远端用户是否加入或离开频道。</span>
+
+<a id="newrtcconnection"></a>
+## NewRtcConnection
+
+```go
+func NewRtcConnection(cfg *RtcConnectionConfig) *RtcConnection {
+    cCfg := CRtcConnectionConfig(cfg)
+    defer FreeCRtcConnectionConfig(cCfg)
+
+    ret := &RtcConnection{
+        cConnection: C.agora_rtc_conn_create(agoraService.service, cCfg),
+        handler:                     nil,
+        localUserObserver:           nil,
+        audioObserver:               nil,
+        videoObserver:               nil,
+        remoteVideoRWMutex:          &sync.RWMutex{},
+        remoteEncodedVideoReceivers: make(map[*VideoEncodedImageReceiver]*videoEncodedImageReceiverInner),
+    }
+    ret.localUser = &LocalUser{
+        connection: ret,
+        cLocalUser: C.agora_rtc_conn_get_local_user(ret.cConnection),
+    }
+    ret.parameter = &AgoraParameter{
+        cParameter: C.agora_rtc_conn_get_agora_parameter(ret.cConnection),
+    }
+    agoraService.connectionRWMutex.Lock()
+    agoraService.consByCCon[ret.cConnection] = ret
+    agoraService.consByCLocalUser[ret.localUser.cLocalUser] = ret
+    agoraService.connectionRWMutex.Unlock()
+    return ret
+}
+```
+
+<span className="index-desc-newrtcconnection">创建一个 RTC 连接对象。</span>
+
+#### 参数
+
+| 参数          | 描述                                                                 |
+|---------------|----------------------------------------------------------------------|
+| `cfg` | RTC 连接配置。详见 [`RtcConnectionConfig`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#rtcconnconfig)。    |
+
+#### 返回值
+
+- `RtcConnection` 对象: 方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="connect"></a>
+## Connect
+
+```go
+func (conn *RtcConnection) Connect(token string, channel string, uid string) int {
+    if conn.cConnection == nil {
+        return -1
+    }
+    conn.connInfo.ChannelId = channel
+    conn.connInfo.LocalUserId = uid
+    uidInt, _ := strconv.Atoi(uid)
+    conn.connInfo.InternalUid = uint(uidInt)
+    cChannel := C.CString(channel)
+    cToken := C.CString(token)
+    cUid := C.CString(uid)
+    defer C.free(unsafe.Pointer(cChannel))
+    defer C.free(unsafe.Pointer(cToken))
+    defer C.free(unsafe.Pointer(cUid))
+    return int(C.agora_rtc_conn_connect(conn.cConnection, cToken, cChannel, cUid))
+}
+```
+
+<span className="index-desc-connect">连接 RTC 频道。</span>
+
+方法成功时，连接状态由 `true` 变更为 `2`。
+
+根据连接是否成功，连接状态会变更为 `3` 或 `5`。SDK 会触发 [`OnConnected`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onconnected) 或 [`on_disconnected`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ondisconnected) 提醒连接状态变更。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `token` | RTC Token。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/windows/basic-features/token-authentication)。 |
+| `channel` | <Slot name="rtcconnection-go-html-0-2-1" /> |
+| `uid` | <Slot name="rtcconnection-go-html-0-3-1" /> |
+
+<Slot for="rtcconnection-go-html-0-2-1">
+
+频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
+
+    - 全部小写字母：a 到 z
+    - 全部大写字母：A 到 Z
+    - 全部阿拉伯数字：0 到 9
+    - 空格
+    - 标点符号和其他特殊符号：`!`、`#`、`$`、`%`、`&`、`(`、`)`、`+`、`-`、`:`、`;`、`<`、`=`、`.`、`>`、`?`、`@`、`[`、`]`、`^`、`_`、` {`、`}`、`|`、`~`、`,`
+
+</Slot>
+
+<Slot for="rtcconnection-go-html-0-3-1">
+
+本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 nil，SDK 在 `OnConnected` 回调中自动返回一个 user ID。你必须自行记录并管理此 ID。根据你在 [`Initialize`](/zh-CN/api-reference/rtc-server-sdk/go-api/agoraservice.go#initialize) 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
+
+    - int 型用户 ID 支持的字符集包括：
+      - 10 个数字 0-9
+    - String 型用户 ID 支持的字符集包括：
+      - 26 个小写英文字母 a-z
+      - 26 个大写英文字母 A-Z
+      - 10 个数字 0-9
+      - 空格
+      - `!`、`#`、`$`、`%`、`&`、`(`、`)`、`+`、`-`、`:`、`;`、`<`、`=`、`.`、`>`、`?`、`@`、`[`、`]`、`^`、`_`、` {`、`}`、`|`、`~`、`,`
+
+</Slot>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 参数无效。
+  - `-8`: 当前连接状态不是 `true`。
+
+<a id="disconnect"></a>
+## Disconnect
+
+```go
+func (conn *RtcConnection) Disconnect() int {
+    if conn.cConnection == nil {
+        return -1
+    }
+    return int(C.agora_rtc_conn_disconnect(conn.cConnection))
+}
+```
+
+<span className="index-desc-disconnect">与 RTC 频道断开连接。SDK 与频道断开连接时，连接状态变更为 `true`。你还可以通过 [`OnDisconnected`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ondisconnected) 回调得知。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="renewtoken"></a>
+## RenewToken
+
+```go
+func (conn *RtcConnection) RenewToken(token string) int {
+    if conn.cConnection == nil {
+        return -1
+    }
+    cToken := C.CString(token)
+    defer C.free(unsafe.Pointer(cToken))
+    return int(C.agora_rtc_conn_renew_token(conn.cConnection, cToken))
+}
+```
+
+<span className="index-desc-renewtoken">更新 Token。Token 会在一定时间后过期。当收到 [`OnTokenPrivilegeWillExpire`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ontokenprivilegewillexpire) 回调时，你必须从服务端生成一个新的 Token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。</span>
+
+#### 参数
+
+| 参数       | 描述   |
+|------------|------------|
+| `token`    | 新 Token。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="createdatastream"></a>
+## CreateDataStream
+
+```go
+func (conn *RtcConnection) CreateDataStream(reliable bool, ordered bool) (int, int) {
+  if conn.cConnection == nil {
+    return -1, -1
+  }
+  // int* stream_id, int reliable, int ordered
+  cStreamId := C.int(-1)
+  ret := int(C.agora_rtc_conn_create_data_stream(conn.cConnection, &cStreamId, CIntFromBool(reliable), CIntFromBool(ordered)))
+  return int(cStreamId), ret
+}
+```
+
+创建数据流。
+
+:::info[自从]
+v2.2.0 起新增。
+:::
+
+在 Connection 生命周期内，每个用户最多可以创建五条数据流。离开 Connection 时数据流会被销毁，如需使用需要重新创建数据流。
+
+将 `reliable` 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessageerror) 回调并获得相应报错信息。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `reliable` | <Slot name="rtcconnection-go-html-1-1-1" /> |
+| `ordered` | <Slot name="rtcconnection-go-html-1-2-1" /> |
+
+<Slot for="rtcconnection-go-html-1-1-1">
+
+是否保证数据可靠性，即接收方是否需要在数据发送后的 5 秒内接收：
+
+    - `true`: 是。SDK 提供有限度的可靠保证，在发送后的 5 秒内会有丢包检测和重传。
+    - `false`: 否。SDK 不做丢包检测和重传。
+
+    :::warning[注意]
+    SDK 仅支持将 `reliable` 和 `ordered` 同时设为 `true` 或 `false`。
+    :::
+
+</Slot>
+
+<Slot for="rtcconnection-go-html-1-2-1">
+
+是否保证接收方需要收到有序的数据流：
+
+    - `true`: 接收方按照发送方发送的顺序收到数据流。
+    - `false`: 接收方不保证按照发送方发送的顺序收到数据流。
+
+</Slot>
+
+#### 返回值
+
+- 创建的数据流的 ID：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="sendstreammessage"></a>
+## SendStreamMessage
+
+```go
+func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
+  if conn.cConnection == nil {
+    return -1
+  }
+  cMsg := C.CBytes(msg)
+  defer C.free(cMsg)
+  return int(C.agora_rtc_conn_send_stream_message(conn.cConnection, C.int(streamId), (*C.char)(cMsg), C.uint32_t(len(msg))))
+}
+```
+
+发送数据流消息。
+
+:::info[自从]
+v2.2.0 起新增。
+:::
+
+调用 [`createDataStream`](#createdatastream) 创建数据流后，你可以调用该方法向频道内所有用户发送数据流消息。
+
+:::warning[注意]
+SDK 对该方法的实现进行了如下限制：
+
+- 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
+- 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
+:::
+
+成功调用该方法后，远端会触发 [`OnStreamMessage`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessageerror) 回调。
+
+#### 参数
+
+| 参数 | 描述 |
+| ---- | ---- |
+| `streamId` | 数据流 ID，可以通过 [`CreateDataStream`](#createdatastream) 获取。 |
+| `msg` | 待发送的消息数据。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registerobserver"></a>
+## RegisterObserver
+
+```go
+func (conn *RtcConnection) RegisterObserver(handler *RtcConnectionObserver) int {
+    if conn.cConnection == nil || handler == nil {
+        return -1
+    }
+    conn.handler = handler
+    if conn.cHandler == nil {
+        conn.cHandler = CRtcConnectionObserver()
+        C.agora_rtc_conn_register_observer(conn.cConnection, conn.cHandler)
+    }
+    return 0
+}
+```
+
+<span className="index-desc-registerobserver">注册 RTC 连接 observer。</span>
+
+#### 参数
+
+| 参数           | 描述   |
+|----------------|------------|
+| `handler`| [`RtcConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go) 对象。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisterobserver"></a>
+## UnregisterObserver
+
+```go
+func (conn *RtcConnection) UnregisterObserver() int {
+    conn.handler = nil
+    return 0
+}
+```
+
+<span className="index-desc-unregisterobserver">销毁 RTC 连接 observer。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="createdatastream"></a>
+## CreateDataStream
+
+```go
+func (conn *RtcConnection) CreateDataStream(reliable bool, ordered bool) (int, int) {
+    if conn.cConnection == nil {
+        return -1, -1
+    }
+
+    cStreamId := C.int(-1)
+    ret := int(C.agora_rtc_conn_create_data_stream(conn.cConnection, &cStreamId, CIntFromBool(reliable), CIntFromBool(ordered)))
+    return int(cStreamId), ret
+}
+```
+
+创建数据流。
+
+每个用户在每个频道中最多只能创建 5 个数据流。
+
+:::warning[注意]
+- 声网不支持你将 `reliable` 设为 `true` 且 `ordered` 设为 `false`。
+- 当需要数据包立刻到达接收端时，不能将 `ordered` 参数设置为 `true`。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `reliable` | <Slot name="rtcconnection-go-html-2-1-1" /> |
+| `ordered` | <Slot name="rtcconnection-go-html-2-2-1" /> |
+
+<Slot for="rtcconnection-go-html-2-1-1">
+
+该数据流是否可靠：
+
+    - `true`: 接收方 5 秒内会收到发送方所发送的数据。
+    - `0`: 接收方不保证收到，就算数据丢失也不会报错。
+
+</Slot>
+
+<Slot for="rtcconnection-go-html-2-2-1">
+
+该数据流是否有序：
+
+    - `true`: 接收方会按照发送方发送的顺序收到数据包。
+    - `0`: 接收方不保证按照发送方发送的顺序收到数据包。
+
+</Slot>
+
+#### 返回值
+
+- `stream_id`：方法调用成功，返回数据流 ID。
+- `nil`：方法调用失败。
+
+<a id="enableencryption"></a>
+## EnableEncryption
+
+```go
+func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig);
+```
+
+开启加密功能。
+
+该方法需要在 [`Connect`](#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `enable` | <Slot name="rtcconnection-go-html-3-1-1" /> |
+| `config` | 具体的加密配置项：[`EncryptionConfig`](datatype#encryptionconfig)。 |
+
+<Slot for="rtcconnection-go-html-3-1-1">
+
+是否开启加密功能。
+
+    - `1`：开启
+    - `0`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="sendstreammessage"></a>
+## SendStreamMessage
+
+```go
+func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
+    if conn.cConnection == nil {
+        return -1
+    }
+    cMsg := C.CBytes(msg)
+    defer C.free(cMsg)
+    return int(C.agora_rtc_conn_send_stream_message(conn.cConnection, C.int(streamId), (*C.char)(cMsg), C.uint32_t(len(msg))))
+}
+```
+
+发送数据流消息。
+
+该方法发送数据流消息到频道内所有用户。SDK 对该方法的实现进行了如下限制：
+
+- 频道内每秒最多能发送 30 个包，且每个包最大为 1 KB。
+- 每个客户端每秒最多能发送 6 KB 数据。
+- 频道内每人最多能同时有 5 个数据通道。
+
+成功调用该方法后，远端会触发 [`on_stream_message`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+:::warning[注意]
+- 请确保在调用该方法前，已调用 [`create_data_stream`](#createdatastream) 创建了数据通道。
+- 直播场景下，该方法仅适用于主播用户。
+:::
+
+#### 参数
+
+| 参数        | 描述   |
+|-------------|------------|
+| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](#createdatastream) 获取。|
+| `data`      | 待发送的数据。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="getagoraparameter"></a>
+## GetAgoraParameter
+
+```go
+func (conn *RtcConnection) GetAgoraParameter() *AgoraParameter {
+    return conn.parameter
+}
+```
+
+<span className="index-desc-getagoraparameter">获取 `AgoraParameter` 对象。</span>
+
+#### 返回值
+
+- `AgoraParameter` 对象：方法调用成功。
+- `nil`：方法调用失败。
+
+<a id="getlocaluser"></a>
+## GetLocalUser
+
+```go
+func (conn *RtcConnection) GetLocalUser() *LocalUser {
+    return conn.localUser
+}
+```
+
+<span className="index-desc-getlocaluser">获取 `LocalUser` 对象。每个连接仅对应一个本地用户。</span>
+
+#### 返回值
+
+- `LocalUser` 对象：方法调用成功。
+- `nil`：方法调用失败。
+
+<a id="release"></a>
+## Release
+
+```go
+func (conn *RtcConnection) Release() {
+    if conn.cConnection == nil {
+        return
+    }
+    agoraService.connectionRWMutex.Lock()
+    delete(agoraService.consByCCon, conn.cConnection)
+    delete(agoraService.consByCLocalUser, conn.localUser.cLocalUser)
+    if conn.cVideoObserver != nil {
+        delete(agoraService.consByCVideoObserver, conn.cVideoObserver)
+    }
+    agoraService.connectionRWMutex.Unlock()
+
+    encodedVideoReceiversInners := make([]*videoEncodedImageReceiverInner, 0, 10)
+    conn.remoteVideoRWMutex.RLock()
+    for _, receiverInner := range conn.remoteEncodedVideoReceivers {
+        encodedVideoReceiversInners = append(encodedVideoReceiversInners, receiverInner)
+    }
+    conn.remoteVideoRWMutex.RUnlock()
+    agoraService.remoteVideoRWMutex.Lock()
+    for _, receiverInner := range encodedVideoReceiversInners {
+        delete(agoraService.remoteEncodedVideoReceivers, receiverInner.cReceiver)
+    }
+    agoraService.remoteVideoRWMutex.Unlock()
+
+    localUser := conn.localUser
+    if conn.cAudioObserver != nil {
+        C.agora_local_user_unregister_audio_frame_observer(localUser.cLocalUser)
+    }
+    if conn.cVideoObserver != nil {
+        C.agora_local_user_unregister_video_frame_observer(localUser.cLocalUser, conn.cVideoObserver)
+    }
+    if conn.cLocalUserObserver != nil {
+        C.agora_local_user_unregister_observer(localUser.cLocalUser)
+    }
+    if conn.cHandler != nil {
+        C.agora_rtc_conn_unregister_observer(conn.cConnection)
+    }
+    C.agora_rtc_conn_destroy(conn.cConnection)
+
+    conn.remoteVideoRWMutex.Lock()
+    conn.remoteEncodedVideoReceivers = make(map[*VideoEncodedImageReceiver]*videoEncodedImageReceiverInner)
+    conn.remoteVideoRWMutex.Unlock()
+
+    for _, receiverInner := range encodedVideoReceiversInners {
+        receiverInner.release()
+    }
+    encodedVideoReceiversInners = nil
+
+    conn.cConnection = nil
+    if conn.cAudioObserver != nil {
+        FreeCAudioFrameObserver(conn.cAudioObserver)
+        conn.cAudioObserver = nil
+    }
+    if conn.cVideoObserver != nil {
+        FreeCVideoFrameObserver(conn.cVideoObserver)
+        conn.cVideoObserver = nil
+    }
+    if conn.cLocalUserObserver != nil {
+        FreeCLocalUserObserver(conn.cLocalUserObserver)
+        conn.cLocalUserObserver = nil
+    }
+    if conn.cHandler != nil {
+        FreeCRtcConnectionObserver(conn.cHandler)
+        conn.cHandler = nil
+    }
+    conn.parameter = nil
+    conn.localUser = nil
+    localUser.connection = nil
+    localUser.cLocalUser = nil
+    localUser = nil
+    conn.handler = nil
+    conn.localUserObserver = nil
+    conn.audioObserver = nil
+    conn.videoObserver = nil
+}
+```
+
+<span className="index-desc-release">释放 RTC 连接。</span>

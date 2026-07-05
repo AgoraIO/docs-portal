@@ -1,0 +1,136 @@
+---
+title: "使用说明"
+---
+本文介绍如何在你的 Web 项目中集成和使用讯飞语音实时转写及翻译（多语种）插件（以下简称“讯飞转写及翻译插件”）。
+
+## 前提条件
+
+- Windows 或 macOS 计算机，需满足以下要求：
+  - 下载桌面端 Chrome 90 或以上版本。
+  - 具备物理音视频采集设备。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)以正常使用声网服务。
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+- 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+## 集成和调用流程
+
+### 1. 集成 SDK 和插件
+
+开始前，你需要在项目中分别集成声网 Web SDK 和讯飞转写及翻译插件。
+
+#### 1.1 集成声网 Web SDK
+
+讯飞转写及翻译插件需要与声网 Web SDK 4.x（v4.10.0 或以上）搭配使用。参考以下文档集成 Web SDK 并实现基础的语音通话：
+
+<Cards>
+  <Card title="实现语音通话" href="/zh-CN/realtime-media/rtc/get-started/quick-start.javascript" />
+</Cards>
+
+#### 1.2 购买和激活插件
+
+在声网控制台[购买和激活](/zh-CN/realtime-media/marketplace/get-started/enable-service#购买和激活插件)讯飞转写及翻译插件。购买成功后，你会收到由讯飞提供的 `appKey` 和 `appSecret`，后续使用插件时需要用到。
+
+#### 1.3 集成插件
+
+通过 npm 将讯飞转写及翻译插件集成到你的项目中。
+
+1. 运行以下命令安装插件：
+
+    ```shell
+    npm install hyrt
+    ```
+
+2. 在你的 `.js` 文件中加入以下代码导入插件模块：
+
+    ```javascript
+    import { HySimpleAudioExtension } from 'hyrt'
+    ```
+
+### 2. 配置反向代理
+
+如果需要使用插件的翻译功能，你需要配置反向代理以解决翻译跨域问题。
+
+以 Nginx 为例：
+
+```nginx
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   D:\\proj\\test-plugin;
+        index  index.html index.htm;
+    }
+
+    # 示例如下
+    location /v2/its {
+        proxy_http_version 1.1;
+        proxy_pass https://itrans.xfyun.cn/v2/its;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host 'itrans.xfyun.cn'; # 固定请求头中的Host
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 300;
+        proxy_send_timeout 300;
+    }
+}
+```
+
+### 3. 启用插件
+
+启用插件的示例代码如下：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng"
+import { HySimpleAudioExtension } from 'hyrt'
+
+// 创建 extension 实例
+const audioExtension = new HySimpleAudioExtension();
+// 注册插件
+AgoraRTC.registerExtensions([audioExtension]);
+// 创建 processor 实例
+const processor = audioExtension.createProcessor();
+// 通过麦克风采集的音频创建音频轨道
+const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+// 将讯飞插件注入声网的音频处理管道，并从扬声器输出
+audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+// 设置识别参数
+processor.setOptions(common, ist, its, callback)
+// 启用插件
+processor.enable()
+// 停止插件
+setTimeout(() => { processor.disable() }, 60000)
+```
+
+`setOptions` 方法中的参数设置详见[插件独有 API](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr-api.javascript)。你可以使用 `setOptions` 方法中的 `callback` 参数来处理识别结果，示例如下：
+
+```javascript
+function callback(r) {
+    if (r.key === 'ist_result') {
+        let sn = r.value.data.result.sn
+        let ws = r.value.data.result.ws
+        let words = ''
+        for (let index = 0; index < ws.length; index++) {
+            const element = ws[index];
+            words += element.cw[0].w
+        }
+        console.log(`sn: ${sn}, words: ${words}`)
+    } else if (r.key === 'its_result') {
+        let sn = r.value.ist_sn
+        let trans_result = r.value.data.result.trans_result
+        console.log(`sn: ${sn}, [${trans_result.src}] => [${trans_result.dst}]`)
+    } else if (r.key === 'error') {
+        console.log(r.key, r.value)
+    } else if (r.key === 'end') {
+        console.log('识别结束')
+    }
+}
+```
+
+<a id="api"></a>
+## API 参考
+
+- 声网 Web SDK 的插件相关方法：
+  - [`AgoraRTC.registerExtensions`](#/api-ref/rtc/javascript/interfaces/iagorartc#registerExtensions)
+  - [`IMicrophoneAudioTrack.pipe`](#/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack#pipe)
+- [插件独有 API](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr-api.javascript)

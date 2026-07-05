@@ -1,0 +1,27 @@
+---
+title: "AudioFrameObserver 类"
+---
+AudioFrameObserver
+
+<a id="onplaybackaudioframebeforemixing"></a>
+## OnPlaybackAudioFrameBeforeMixing
+
+```go
+OnPlaybackAudioFrameBeforeMixing  func(localUser *LocalUser, channelId string, uid string, frame *AudioFrame) bool
+```
+
+<span className="index-desc-onplaybackaudioframebeforemixing">获得播放声音混音前的数据。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `localUser`        | [`LocalUser`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go) 类。    |
+| `channelId` | 频道名称。             |
+| `uid` | 远端用户的用户 ID。             |
+| `frame`| 音频原始数据。详见 [`AudioFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audioframe)         |
+
+#### 返回值
+
+- `true`：音频帧数据有效，数据会被发送。
+- `false`：音频帧数据无效，数据会被舍弃。

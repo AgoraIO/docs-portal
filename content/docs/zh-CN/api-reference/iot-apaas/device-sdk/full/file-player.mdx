@@ -1,0 +1,175 @@
+---
+title: "agora_iot_file_player.h"
+---
+本页提供声网灵隼设备端 SDK 的 `agora_iot_file_player.h` 文件的 API 参考。
+
+<a id="agoraiotfileplayerinit"></a>
+## 函数
+### agora_iot_file_player_init
+
+```c
+int agora_iot_file_player_init(char *slave_server_url, const char *appid);
+```
+
+初始化文件播放器。
+
+使用文件播放器前，你需要调用该方法初始化文件播放器。
+
+#### 参数
+
+| 参数                    | 描述                                                         |
+| :---------------------- | :----------------------------------------------------------- |
+| [in] `slave_server_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Slave Server URL** 处获取。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| [in] `appid`            | 你的声网 App ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotfileplayerdeinit"></a>
+### agora_iot_file_player_deinit
+
+```c
+void agora_iot_file_player_deinit(void);
+```
+
+释放文件播放器的资源。
+
+<a id="agoraiotfileplayerstart"></a>
+### agora_iot_file_player_start
+
+```c
+file_player_handle_t agora_iot_file_player_start(agora_iot_file_player_callback_t callback,
+                                                 const char *channel_name);
+```
+
+创建本地回放频道。
+
+如果多个用户需要同时查看不同的视频文件，你可以多次调用该方法创建多个本地回放频道。
+
+如需销毁本地回放频道，调用 [agora_iot_file_player_stop](#agoraiotfileplayerstop) 方法。
+
+#### 参数
+
+| 参数                | 描述                                                        |
+| :------------------ | :---------------------------------------------------------- |
+| [in] `callback`     | 注册本地回放事件。详见 [agora_iot_file_player_callback_t](#agoraiotfileplayercallbackt)。 |
+| [in] `channel_name` | 本地回放频道名称。                                          |
+
+#### 返回
+
+`file_player_handle_t`：文件播放器句柄。
+
+<a id="agoraiotfileplayerstop"></a>
+### agora_iot_file_player_stop
+
+```c
+int agora_iot_file_player_stop(file_player_handle_t handle);
+```
+
+销毁本地回放频道。
+
+成功销毁本地回放频道时，SDK 会触发 [cb_stop_push_frame](#cbstoppushframe) 回调。
+
+#### 参数
+
+| 参数          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| [in] `handle` | 文件播放器句柄。你可以通过 [agora_iot_file_player_start](#agoraiotfileplayerstart) 获取。|
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotfileplayerpushvideoframe"></a>
+### agora_iot_file_player_push_video_frame
+
+```c
+int agora_iot_file_player_push_video_frame(file_player_handle_t handle, ago_video_frame_t *frame);
+```
+
+发送视频帧到本地回放频道。
+
+当 SDK 触发 [cb_start_push_frame](#cbstartpushframe) 回调时，你可以调用该方法把视频帧发送到本地回放频道。
+
+:::info[信息]
+相邻两个视频帧的发送间隔需等于帧率，否则视频帧的播放速度会受发送频率影响。
+:::
+
+#### 参数
+
+| 参数          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| [in] `handle` | 文件播放器句柄。你可以通过 [agora_iot_file_player_start](#agoraiotfileplayerstart) 获取。 |
+| [in] `frame`  | 待发送的视频帧信息，详见 [ago_video_frame_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoaudioframet)。          |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotfileplayerpushaudioframe"></a>
+### agora_iot_file_player_push_audio_frame
+
+```c
+int agora_iot_file_player_push_audio_frame(file_player_handle_t handle, ago_audio_frame_t *frame);
+```
+
+发送音频帧到本地回放频道。
+
+当 SDK 触发 [cb_start_push_frame](#cbstartpushframe) 回调时，你可以调用该方法把音频帧发送到本地回放频道。
+
+:::info[信息]
+仅支持发送单声道、采样率 16000 Hz、大小为 16 bit 的 PCM 数据，数据发送间隔为 20 ms。
+:::
+
+#### 参数
+
+| 参数          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| [in] `handle` | 文件播放器句柄。你可以通过 [agora_iot_file_player_start](#agoraiotfileplayerstart) 获取。 |
+| [in] `frame`  | 待发送的音频帧信息，详见 [ago_audio_frame_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoaudioframet)。          |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotfileplayercallbackt"></a>
+## 类型定义
+### agora_iot_file_player_callback_t
+
+```c
+typedef struct agora_iot_file_player_callback
+{
+  void (*cb_start_push_frame)(const char *channel_name);
+  void (*cb_stop_push_frame)(const char *channel_name);
+} agora_iot_file_player_callback_t;
+```
+
+本地回放相关回调。
+
+<a id="cbstartpushframe"></a>
+#### cb_start_push_frame
+
+调用 [agora_iot_file_player_start](#agoraiotfileplayerstart) 成功创建本地回放频道时，SDK 会触发该回调。此时，你可以调用 [agora_iot_file_player_push_audio_frame](#agoraiotfileplayerpushaudioframe) 或 [agora_iot_file_player_push_video_frame](#agoraiotfileplayerpushvideoframe) 方法发送音频或视频数据到本地回放频道。
+
+**参数**
+
+| 参数          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| `channel_name` | 本地回放的频道名称。通过该参数，你可以在业务逻辑中实现在客户端同时观看不同的视频回放文件。 |
+
+<a id="cb_stop_push_frame"></a>
+<a id="cbstoppushframe"></a>
+#### cb_stop_push_frame
+
+调用 [agora_iot_file_player_stop](#agoraiotfileplayerstop) 成功销毁本地回放频道时，SDK 会触发该回调。此时，你需要停止调用 [agora_iot_file_player_push_audio_frame](#agoraiotfileplayerpushaudioframe) 或 [agora_iot_file_player_push_video_frame](#agoraiotfileplayerpushvideoframe) 方法。
+
+**参数**
+
+| 参数          | 描述                                                         |
+| :------------ | :----------------------------------------------------------- |
+| `channel_name` | 本地回放的频道名称。通过该参数，你可以在业务逻辑中实现在客户端同时观看不同的视频回放文件。 |

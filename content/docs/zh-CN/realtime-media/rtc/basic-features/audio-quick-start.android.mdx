@@ -1,0 +1,594 @@
+---
+title: "实现纯语音互动"
+---
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/overview/key-concept.android.android)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- Android Studio 4.1 以上版本。
+- Android API 级别 16 或以上。
+- 两台运行 Android 4.1 或以上版本的移动设备。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.android)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+本小节介绍如何创建项目并为项目添加体验实时音频互动所需的权限。
+
+1. (可选) 创建新项目。详见 [Create a project](https://developer.android.com/studio/projects/create-project)。
+
+    1. 打开 **Android Studio**，选择 **New Project**。
+    2. 选择 **Phone and Tablet > Empty Views Activity**，点击 **Next**。
+    3. 设置项目名称和存储路径，选择语言为 **Java**，点击 **Finish** 创建 Android 项目。
+
+        :::warning[注意]
+        创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻，待同步成功后再进行下一步操作。
+        :::
+
+2. 添加网络及设备权限。
+
+    打开 `/app/src/main/AndroidManifest.xml` 文件，在 `</application>` 后面添加如下权限：
+
+    ```xml
+    <!--必要权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--可选权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <!-- 对于 Android 12.0 及以上且集成 v4.1.0 以下 SDK 的设备，还需要添加以下权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- 对于 Android 12.0 及以上设备，还需要添加以下权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    ```
+
+3. 防止代码混淆。
+
+    打开 `/app/proguard-rules.pro` 文件，添加如下行以防止声网 SDK 的代码被混淆：
+
+    ```java
+    -keep class io.agora.**{*;}
+    -dontwarn io.agora.**
+    ```
+
+## 集成 SDK
+
+你可以选用以下任一方式集成声网实时互动 SDK。
+
+<Tabs defaultValue="maven" groupId="integrate-sdk" persist>
+<TabsList>
+  <TabsTrigger value="maven">通过 Maven Central 集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+1. 打开项目根目录下的 `settings.gradle` 文件，添加 Maven Central 依赖 (如果已有可忽略)：
+
+    ```groovy
+    repositories {
+        ...
+        mavenCentral()
+        ...
+    }
+    ```
+
+    :::warning[注意]
+    如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+    :::
+
+2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/overview/release-notes.android)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
+
+    ```groovy
+    ...
+    dependencies {
+        ...
+        // 对于 4.6.0 及之后的版本
+        // x.y.z 替换为具体的 SDK 版本号，如：4.6.1
+        implementation 'cn.shengwang.rtc:voice-sdk:x.y.z'
+
+        // 对于 4.6.0 之前的版本
+        // x.y.z 替换为具体的 SDK 版本号，如：4.5.2
+        implementation 'io.agora.rtc:voice-sdk:x.y.z'
+    }
+    ```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+1. 在[下载](/zh-CN/realtime-media/rtc/resources.android)页面下载最新版本的 Android 实时互动 SDK，并解压。
+
+2. 打开解压文件，将以下文件或子文件夹复制到你的项目路径中。
+
+    | 文件或子文件夹                        | 项目路径                 |
+    | :------------------------------------ | :----------------------- |
+    | `agora-rtc-sdk.jar` 文件              | `/app/libs/`             |
+    | `arm64-v8a` 文件夹                      | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹                  | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹                          | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹                       | `/app/src/main/jniLibs/` |
+    | `high_level_api` 中的`include` 文件夹 | `/app/src/main/jniLibs/` |
+
+   :::warning[注意]
+   自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `libaosl.so` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `libaosl.so` 库。4.6.0 RTC SDK `libaosl.so` 库版本为 1.3.0。
+   :::
+
+3. 在 **Android Studio** 的左侧导航栏上选择 `Project Files/app/libs/agora-rtc-sdk.jar` 文件，右键单击，在下拉菜单中选择 `add as a library`。
+
+</TabsContent>
+</Tabs>
+
+## 创建用户界面
+
+复制以下代码到 `/app/src/main/res/layout/activity_main.xml` 文件中替换原有内容，即可快速创建实时音频互动场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical|start"
+            android:text="Welcome to the Agora Voice Call channel."/>
+
+    </FrameLayout>
+</RelativeLayout>
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本小节介绍如何实现一个实时音频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音频互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `/app/src/main/java/com/example/<projectname>/MainActivity.java` 文件中替换 `package com.example.<projectname>` 后的全部内容，即可快速体验实时互动基础功能。
+
+:::info[信息]
+在 `appId`、`token` 和 `channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现实时音频互动示例代码">
+
+```java
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+
+public class MainActivity extends AppCompatActivity {
+
+    // 填写声网控制台中获取的 App ID
+    private String appId = "<#Your App ID#>";
+    // 填写频道名
+    private String channelName = "<#Your channel name#>";
+    // 填写声网控制台中生成的临时 Token
+    private String token = "<#Your Token#>";
+
+    private RtcEngine mRtcEngine;
+
+    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+        // 成功加入频道回调
+        @Override
+        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onJoinChannelSuccess(channel, uid, elapsed);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "Join channel success", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        // 远端用户或主播加入当前频道回调
+        @Override
+        public void onUserJoined(int uid, int elapsed) {
+            super.onUserJoined(uid, elapsed);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "User joined: " + uid, Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        // 远端用户或主播离开当前频道回调
+        @Override
+        public void onUserOffline(int uid, int reason) {
+            super.onUserOffline(uid, reason);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "User offline: " + uid, Toast.LENGTH_SHORT).show();
+            });
+        }
+    };
+
+    private void initializeAndJoinChannel() {
+        try {
+            // 创建 RtcEngineConfig 对象，并进行配置
+            RtcEngineConfig config = new RtcEngineConfig();
+            config.mContext = getBaseContext();
+            config.mAppId = appId;
+            config.mEventHandler = mRtcEventHandler;
+            // 创建并初始化 RtcEngine
+            mRtcEngine = RtcEngine.create(config);
+        } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+        }
+
+        // 创建 ChannelMediaOptions 对象，并进行配置
+        ChannelMediaOptions options = new ChannelMediaOptions();
+        // 设置用户角色为 BROADCASTER (主播) 或 AUDIENCE (观众)
+        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+        // 设置频道场景为 BROADCASTING (直播场景)
+        options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // 发布麦克风采集的音频
+        options.publishMicrophoneTrack = true;
+        // 自动订阅所有音频流
+        options.autoSubscribeAudio = true;
+        // 使用临时 Token 和频道名加入频道，uid 为 0 表示引擎内部随机生成用户名
+        // 成功后会触发 onJoinChannelSuccess 回调
+        mRtcEngine.joinChannel(token, channelName, 0, options);
+    }
+
+    private static final int PERMISSION_REQ_ID = 22;
+
+    // 获取体验实时音频互动所需的权限
+    private String[] getRequiredPermissions(){
+        // 判断 targetSDKVersion 31 及以上时所需的权限
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO, // 录音权限
+                    Manifest.permission.READ_PHONE_STATE, // 读取电话状态权限
+                    Manifest.permission.BLUETOOTH_CONNECT // 蓝牙连接权限
+            };
+        } else {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+            };
+        }
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // 如果已经授权，则初始化 RtcEngine 并加入频道
+        if (checkPermissions()) {
+            initializeAndJoinChannel();
+        } else {
+            ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+        }
+    }
+
+    // 系统权限申请回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (checkPermissions()) {
+            initializeAndJoinChannel();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mRtcEngine != null) {
+            // 离开频道
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+            // 销毁引擎
+            RtcEngine.destroy();
+        }
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 处理权限请求
+
+本小节介绍如何导入 Android 相关的类并获取实时音频互动所需的权限。
+
+1. 导入 Android 相关的类
+
+    ```java
+    import android.Manifest;
+    import android.content.pm.PackageManager;
+    import android.os.Bundle;
+    import android.widget.Toast;
+
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.app.ActivityCompat;
+    import androidx.core.content.ContextCompat;
+    ```
+
+2. 获取 Android 权限
+
+    启动应用程序时，检查是否已在 App 中授予了实现实时互动所需的权限。
+
+    ```java
+    private static final int PERMISSION_REQ_ID = 22;
+
+    // 获取体验实时音频互动所需的权限
+    private String[] getRequiredPermissions(){
+        // 判断 targetSDKVersion 31 及以上时所需的权限
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO, // 录音权限
+                    Manifest.permission.READ_PHONE_STATE, // 读取电话状态权限
+                    Manifest.permission.BLUETOOTH_CONNECT // 蓝牙连接权限
+            };
+        } else {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+            };
+        }
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    ```
+
+### 导入声网相关的类
+
+导入声网 RTC SDK 相关的类和接口：
+
+```java
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+```
+
+### 定义 App ID 和 Token
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```java
+// 填写声网控制台中获取的 App ID
+private String appId = "<#Your App ID#>";
+// 填写频道名
+private String channelName = "<#Your channel name#>";
+// 填写声网控制台中生成的临时 Token
+private String token = "<#Your Token#>";
+```
+
+### 初始化引擎
+
+调用 `create` [2/2] 方法初始化 `RtcEngine`。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```java
+private RtcEngine mRtcEngine;
+
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+    ...
+};
+
+// 创建 RtcEngineConfig 对象，并进行配置
+RtcEngineConfig config = new RtcEngineConfig();
+config.mContext = getBaseContext();
+config.mAppId = appId;
+config.mEventHandler = mRtcEventHandler;
+// 创建并初始化 RtcEngine
+mRtcEngine = RtcEngine.create(config);
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` [2/2] 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置频道场景为 `BROADCASTING` (直播场景) 并设置用户角色设置为 `BROADCASTER` (主播) 或 `AUDIENCE` (观众)。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频。
+- 将 `autoSubscribeAudio` 设置为 `true`，自动订阅所有音频流。
+
+```java
+// 创建 ChannelMediaOptions 对象，并进行配置
+ChannelMediaOptions options = new ChannelMediaOptions();
+// 设置用户角色为 BROADCASTER (主播) 或 AUDIENCE (观众)
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+// 设置频道场景为 BROADCASTING (直播场景)
+options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 发布麦克风采集的音频
+options.publishMicrophoneTrack = true;
+// 自动订阅所有音频流
+options.autoSubscribeAudio = true;
+// 使用临时 Token 和频道名加入频道，uid 为 0 表示引擎内部随机生成用户名
+// 成功后会触发 onJoinChannelSuccess 回调
+mRtcEngine.joinChannel(token, channelName, 0, options);
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示如何实现 `onJoinChannelSuccess`、 `onUserJoined` 和 `onUserOffline` 回调。
+
+```java
+// 成功加入频道回调
+@Override
+public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+    super.onJoinChannelSuccess(channel, uid, elapsed);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "Join channel success", Toast.LENGTH_SHORT).show();
+    });
+}
+
+// 远端用户或主播加入当前频道回调
+@Override
+public void onUserJoined(int uid, int elapsed) {
+    super.onUserJoined(uid, elapsed);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "User joined: " + uid, Toast.LENGTH_SHORT).show();
+    });
+}
+
+// 远端用户或主播离开当前频道回调
+@Override
+public void onUserOffline(int uid, int reason) {
+    super.onUserOffline(uid, reason);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "User offline: " + uid, Toast.LENGTH_SHORT).show();
+    });
+}
+```
+
+### 开始音频互动
+
+在 `onCreate` 中调用一系列方法加载界面布局、检查 App 是否获取实时互动所需权限，并加入频道开始音频互动。
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    // 如果已经授权，则初始化 RtcEngine 并加入频道
+    if (checkPermissions()) {
+        initializeAndJoinChannel();
+    } else {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+    }
+}
+```
+
+### 结束音频互动
+
+按照以下步骤结束音频互动：
+
+1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
+2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+
+   :::warning[注意]
+   - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+      - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+   :::
+
+    ```java
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mRtcEngine != null) {
+            // 离开频道
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+            // 销毁引擎
+            RtcEngine.destroy();
+        }
+    }
+    ```
+
+## 调试 App
+
+按照以下步骤测试纯语音互动 App：
+
+1. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+2. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。
+
+3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) (**Run 'app'**) 开始编译。片刻后，App 便会安装到你的 Android 设备上。
+
+4. 启动 App，授予录音权限。
+
+5. 使用第二台 Android 设备，重复以上步骤，在该设备上安装 App、打开 App 加入频道，观察测试结果，双方可以听到彼此的声音。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.android)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/basic-features/channel-connection.android)

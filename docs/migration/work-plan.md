@@ -1,6 +1,6 @@
 # Migration Work Plan
 
-Last updated: 2026-07-03
+Last updated: 2026-07-05
 
 Goal: migrate all content from `shengwang-doc-source` into `docs-portal`, then audit each completed migration against its legacy source.
 
@@ -9,9 +9,9 @@ Goal: migrate all content from `shengwang-doc-source` into `docs-portal`, then a
 Every colleague taking over migration work should do this first:
 
 1. Read this file.
-2. Filter `path-map.csv` for rows where `migration_progress` is not `completed`.
-3. Resolve rows with `status=blocked` through `manual-decision-questions.csv` before assigning migration work.
-4. Pick a small batch of rows with source and target paths present.
+2. Filter `path-map.csv` by `redirect_status`. Rows with `redirect_status=redirect` are the required migration set for the current PR.
+3. Resolve rows with `migration_progress=blocked`, `deferred`, `dropped`, or `ready` through `manual-decision-questions.csv` or an explicit owner decision before assigning migration work.
+4. Pick rows with source and target paths present.
 5. Run the migration script for those rows.
 6. Confirm the script updated `migration_progress=completed` and `audit_progress=pending`.
 7. Run the audit script against completed rows.
@@ -20,7 +20,7 @@ Every colleague taking over migration work should do this first:
 
 ## Current Snapshot
 
-The current control tables are an initial migration inventory, not a completed migration batch.
+The current control tables include the completed full redirect migration pass for PR 617.
 
 | Area | Current state |
 | --- | --- |
@@ -30,11 +30,32 @@ The current control tables are an initial migration inventory, not a completed m
 | Migration script | `scripts/migrate-legacy-docs.mjs` |
 | Audit script | `scripts/audit-single-doc-fidelity.mjs` |
 | Ledger rows | 2408 rows |
-| Path-map rows | 2335 rows |
-| Ledger status | 1790 `needs_review`, 618 `blocked` |
-| Path-map status | 1738 `needs_review`, 597 `blocked` |
+| Path-map rows | 2574 rows |
+| Redirect migration rows | 1859 rows |
+| Redirect migration progress | 1859 `completed` |
+| Redirect audit progress | 1859 `completed` |
+| Redirect audit result | 1618 `pass`, 241 `differences:N`, 0 `legacy-residue:N`, 0 `error:MESSAGE` |
+| Non-redirect rows | 715 rows marked `not_required`, `deferred`, `dropped`, `blocked`, or `ready` according to `redirect_status` and mapping state |
 | High-risk rows | 950 |
-| Current execution progress | rows default to `migration_progress=not_started` and `audit_progress=not_started` until scripts update them |
+| Current execution progress | all `redirect_status=redirect` rows have generated targets under `content/docs/zh-CN/**`; remaining work is audit-difference cleanup and spot check |
+
+## Current Execution Counts
+
+`path-map.csv` remains the source of truth. `migration-ledger.csv` has also been synchronized where rows could be matched to the path map.
+
+| Table | Rows | Completed migrations | Completed audits | Pass | Differences | Legacy residue | Errors |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `path-map.csv` | 2574 | 1859 | 1859 | 1618 | 241 | 0 | 0 |
+| `migration-ledger.csv` | 2408 | 1506 | 1506 | 1316 | 190 | 0 | 0 |
+
+| `path-map.csv` migration state | Count |
+| --- | ---: |
+| `completed` | 1859 |
+| `deferred` | 527 |
+| `dropped` | 86 |
+| `blocked` | 86 |
+| `not_required` | 12 |
+| `ready` | 4 |
 
 ## Progress Vocabulary
 
@@ -42,9 +63,9 @@ The current control tables are an initial migration inventory, not a completed m
 
 | Field | Values | Owner |
 | --- | --- | --- |
-| `migration_progress` | `not_started`, `in_progress`, `completed`, `blocked`, `failed` | Migration owner or migration script |
-| `audit_progress` | `not_started`, `pending`, `completed`, `failed` | Audit owner or audit script |
-| `audit_result` | empty, `pass`, `differences:N`, `legacy-residue:N`, `error:MESSAGE` | Audit script |
+| `migration_progress` | `not_started`, `in_progress`, `completed`, `blocked`, `failed`, `deferred`, `dropped`, `not_required`, `ready` | Migration owner or migration script |
+| `audit_progress` | `not_started`, `pending`, `completed`, `failed`, `not_required` | Audit owner or audit script |
+| `audit_result` | empty, `pass`, `differences:N`, `legacy-residue:N`, `error:MESSAGE`, `not_applicable` | Audit script |
 
 Do not use the older `status` column as the execution state. It describes mapping readiness or review risk. Execution state lives in `migration_progress`, `audit_progress`, and `audit_result`.
 
@@ -53,11 +74,11 @@ Do not use the older `status` column as the execution state. It describes mappin
 | Phase | Status | Exit criteria | Next action |
 | --- | --- | --- | --- |
 | 0. Control table setup | Complete | `path-map.csv` has migration and audit progress columns; scripts can write them. | Start P0 decision cleanup and a small pilot batch. |
-| 1. P0 decision cleanup | Not started | Top blockers in `manual-decision-questions.csv` have owners and decisions. | Start with Q01-Q05 because they unblock the largest groups and API lanes. |
-| 2. Pilot migration batch | Not started | A small mapped batch has `migration_progress=completed`. | Pick low-risk `migrate_page_after_syntax_and_ia_review` rows with non-empty targets. |
-| 3. Pilot audit batch | Not started | The pilot batch has `audit_progress=completed` and either `audit_result=pass` or tracked fixes. | Run the audit script with `--limit` first. |
-| 4. Scale batch migration | Not started | Batch owners can repeat migrate -> audit -> fix without reading chat history. | Use component and shared inventories to group similar rows. |
-| 5. Final acceptance | Not started | No remaining required rows are `not_started`, `pending`, `failed`, unresolved `differences:N`, or `legacy-residue:N`. | Run repository verification and produce final migration summary. |
+| 1. P0 decision cleanup | Partially complete | Non-redirect rows have explicit non-required/deferred/dropped states or are blocked/ready for owner review. | Resolve the 86 blocked rows and 4 ready rows when those lanes are in scope. |
+| 2. Pilot migration batch | Complete | A mapped batch has `migration_progress=completed`. | Superseded by the full redirect migration pass. |
+| 3. Pilot audit batch | Complete | The pilot batch has `audit_progress=completed` and either `audit_result=pass` or tracked fixes. | Superseded by the full redirect audit pass. |
+| 4. Scale batch migration | Complete for redirect rows | All `redirect_status=redirect` rows have generated targets. | Work through the 241 remaining `differences:N` rows by reusable migration/audit fixes. |
+| 5. Final acceptance | In progress | No remaining required rows are `not_started`, `pending`, `failed`, unresolved `differences:N`, or `legacy-residue:N`. | Clear the 241 audit differences, run repository verification, and do human spot checks. |
 
 ## Batch Operating Rules
 
@@ -73,11 +94,11 @@ Do not use the older `status` column as the execution state. It describes mappin
 
 | Priority | Work | Why it matters | Source of detail |
 | --- | --- | --- | --- |
-| P0 | Resolve FAQ target IA | Blocks 110 rows. | `manual-decision-questions.csv` Q01 |
-| P0 | Resolve Flexible Classroom target IA | Blocks 66 rows. | `manual-decision-questions.csv` Q02 |
-| P0 | Resolve one-to-one live target IA | Blocks 48 rows. | `manual-decision-questions.csv` Q03 |
-| P0 | Resolve multi-usecase target IA | Blocks 42 rows. | `manual-decision-questions.csv` Q04 |
-| P0 | Confirm generated HTML API strategy | Blocks API conversion and support assets. | `manual-decision-questions.csv` Q05 and Q10 |
+| P0 | Clear remaining audit differences | 241 completed redirect rows still have `audit_result=differences:N`. | `docs/migration/generated/full-redirect-pass-1-audit/report.md` and per-row audit reports |
+| P0 | Spot check passed migration rows | 1618 rows have scripted `pass` and need reviewer sampling before final acceptance. | `docs/migration/path-map.csv` |
+| P1 | Resolve blocked non-redirect rows | 86 rows remain blocked outside the redirect migration set. | `manual-decision-questions.csv` and `blocked_reason` |
+| P1 | Resolve ready non-redirect rows | 4 rows are marked `ready` but are outside the completed redirect pass. | `docs/migration/path-map.csv` |
+| P2 | Decide deferred rows | 527 rows are explicitly deferred by redirect/mapping status. | `redirect_status=defer` |
 
 ## Command Recipes
 

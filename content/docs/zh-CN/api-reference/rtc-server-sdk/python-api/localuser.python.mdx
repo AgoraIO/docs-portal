@@ -1,0 +1,480 @@
+---
+title: "LocalUser 类"
+---
+LocalUser
+
+<span className="index-desc-localuser">`LocalUser` 类。定义了本地用户的行为和状态。每个 RTC 连接都有自己的用户。你可以通过 [`get_local_user`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#getlocaluser) 获取本地用户。每个用户有两种角色：主播（能发送和接收音视频流）和观众（只能接收音视频流）。</span>
+
+<a id="setuserrole"></a>
+## set_user_role
+
+```python
+def set_user_role(self, role)
+```
+
+<span className="index-desc-setuserrole">设置用户角色。你可以在用户连接频道前或连接频道后调用该方法。</span>
+
+:::warning[注意]
+如果 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 中的 `token` 与 `role` 参数设置的角色不同，连接会失败。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `role` | 用户角色。详见 [`ClientRoleType`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#clientroletype)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="setaudioencoderconfiguration"></a>
+## set_audio_encoder_configuration
+
+```python
+def set_audio_encoder_configuration(self, config)
+```
+
+<span className="index-desc-setaudioencoderconfiguration">设置音频编码。SDK 会将配置应用于全部发送的音频轨道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `config` | 音频编码配置。详见 [`AudioEncoderConfiguration`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#audioencoderconfiguration)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="publishaudio"></a>
+## publish_audio
+
+```python
+def publish_audio(self, agora_local_audio_track:LocalAudioTrack)
+```
+
+<span className="index-desc-publishaudio">将本地音频轨道发送到频道。默认情况下，所有发布的音频轨道都会进行混音。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_audio_track` | 需要发布的本地音频轨道。详见 [`LocalAudioTrack`](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-5`: 如果本地用户的角色不是主播，会返回此错误。
+
+<a id="unpublishaudio"></a>
+## unpublish_audio
+
+```python
+def unpublish_audio(self, agora_local_audio_track:LocalAudioTrack)
+```
+
+<span className="index-desc-unpublishaudio">停止将本地音频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_audio_track` | 需要停止发布的本地音频轨道。详见 [`LocalAudioTrack`](/zh-CN/api-reference/rtc-server-sdk/python-api/localaudiotrack.python)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="publishvideo"></a>
+## publish_video
+
+```python
+def publish_video(self, agora_local_video_track:LocalVideoTrack)
+```
+
+<span className="index-desc-publishvideo">将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_video_track` | 需要发布的本地视频轨道。详见 [`LocalVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/python-api/localvideotrack.python)。  |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unpublishvideo"></a>
+## unpublish_video
+
+```python
+def unpublish_video(self, agora_local_video_track:LocalVideoTrack)
+```
+
+<span className="index-desc-unpublishvideo">停止将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_video_track` | 需要停止发布的本地视频轨道。详见 [`LocalVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/python-api/localvideotrack.python)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="subscribeaudio"></a>
+## subscribe_audio
+
+```python
+def subscribe_audio(self, user_id)
+```
+
+<span className="index-desc-subscribeaudio">订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 如果用户不存在或 `user_id` 无效时会返回该错误。
+
+<a id="subscribeallaudio"></a>
+## subscribe_all_audio
+
+```python
+def subscribe_all_audio(self)
+```
+
+<span className="index-desc-subscribeallaudio">订阅频道中全部远端用户发送的音频流。该方法会自动订阅频道中后续加入的用户发送的音频流。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unsubscribeaudio"></a>
+## unsubscribe_audio
+
+```python
+def unsubscribe_audio(self, user_id)
+```
+
+<span className="index-desc-unsubscribeaudio">停止订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 如果用户不存在或 `user_id` 无效时会返回该错误。
+
+<a id="unsubscribeallaudio"></a>
+## unsubscribe_all_audio
+
+```python
+def unsubscribe_all_audio(self)
+```
+
+<span className="index-desc-unsubscribeallaudio">停止订阅频道中全部远端用户发送的音频流。该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [`subscribe_audio`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#subscribeaudio) 或 [`subscribe_all_audio`](subscribeallaudio) 才能恢复订阅音频。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="setplaybackaudioframebeforemixingparameters"></a>
+## set_playback_audio_frame_before_mixing_parameters
+
+```python
+def set_playback_audio_frame_before_mixing_parameters(self, channels, sample_rate_hz)
+```
+
+<span className="index-desc-setplaybackaudioframebeforemixingparameters">设置 [`on_playback_audio_frame_before_mixing`](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python#onplaybackaudioframebeforemixing) 报告的音频数据格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sample_rate_hz` | 音频数据采样率，可设置为 8000、 16000、32000、 44100 或 48000。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registeraudioframeobserver"></a>
+## register_audio_frame_observer
+
+```python
+def register_audio_frame_observer(self, observer:IAudioFrameObserver)
+```
+
+<span className="index-desc-registeraudioframeobserver">注册音频帧观测器。你必须实现 [`IAudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python) 类并根据需求注册回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | `IAudioFrameObserver` 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisteraudioframeobserver"></a>
+## unregister_audio_frame_observer
+
+```python
+def unregister_audio_frame_observer(self)
+```
+
+<span className="index-desc-unregisteraudioframeobserver">销毁 [`IAudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/iaudioframeobserver.python) 对象。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registervideoencodedframeobserver"></a>
+## register_video_encoded_frame_observer
+
+```python
+def register_video_encoded_frame_observer(self, agora_video_encoded_frame_observer:IVideoEncodedFrameObserver)
+```
+
+<span className="index-desc-registervideoencodedframeobserver">注册已编码视频帧观测器。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_video_encoded_frame_observer` | 已编码视频帧观测器。详见 [`IVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoencodedframeobserver.python)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregistervideoencodedframeobserver"></a>
+## unregister_video_encoded_frame_observer
+
+```python
+def unregister_video_encoded_frame_observer(self)
+```
+
+<span className="index-desc-unregistervideoencodedframeobserver">注销已编码视频帧观测器。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="subscribevideo"></a>
+## subscribe_video
+
+```python
+def subscribe_video(self, user_id, options:VideoSubscriptionOptions)
+```
+
+<span className="index-desc-subscribevideo">订阅频道中指定远端用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的用户 ID。 |
+| `options` | 订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videosubscriptionoptions) |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`：如果用户不存在或 `user_id` 无效时会返回该错误。
+
+<a id="subscribeallvideo"></a>
+## subscribe_all_video
+
+```python
+def subscribe_all_video(self, options:VideoSubscriptionOptions)
+```
+
+<span className="index-desc-subscribeallvideo">订阅频道中全部远端用户发送的视频流。该方法会自动订阅频道中后续加入的用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `options` | 订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videosubscriptionoptions) |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unsubscribevideo"></a>
+## unsubscribe_video
+
+```python
+def unsubscribe_video(self, user_id)
+```
+
+<span className="index-desc-unsubscribevideo">停止订阅频道中指定远端用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`：如果用户不存在或 `user_id` 无效时会返回该错误。
+
+<a id="unsubscribeallvideo"></a>
+## unsubscribe_all_video
+
+```python
+def unsubscribe_all_video(self)
+```
+
+<span className="index-desc-unsubscribeallvideo">停止订阅频道中全部远端用户发送的视频流。该方法会自动取消订阅频道中后续加入的用户发送的视频流。你必须调用 [`subscribe_video`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#subscribevideo) 或 [`subscribe_all_video`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#subscribeallvideo) 才能恢复订阅。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registerlocaluserobserver"></a>
+## register_local_user_observer
+
+```python
+def register_local_user_observer(self, observer:ILocalUserObserver)
+```
+
+<span className="index-desc-registerlocaluserobserver">注册本地用户观测器。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | [`ILocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python) 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisterlocaluserobserver"></a>
+## unregister_local_user_observer
+
+```python
+def unregister_local_user_observer(self)
+```
+
+<span className="index-desc-unregisterlocaluserobserver">销毁本地用户观测器。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registervideoframeobserver"></a>
+## register_video_frame_observer
+
+```python
+def register_video_frame_observer(self, agora_video_frame_observer2:IVideoFrameObserver)
+```
+
+<span className="index-desc-registervideoframeobserver">注册 [`IVideoFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoframeobserver.python) 对象。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_video_frame_observer2` | `IVideoFrameObserver` 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregistervideoframeobserver"></a>
+## unregister_video_frame_observer
+
+```python
+def unregister_video_frame_observer(self, agora_video_frame_observer2)
+```
+
+<span className="index-desc-unregistervideoframeobserver">销毁 [`IVideoFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/ivideoframeobserver.python) 对象。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="getrtcconnection"></a>
+## get_rtc_connection
+
+```python
+def get_rtc_connection(self)
+```
+
+<span className="index-desc-getrtcconnection">获取 `RtcConnection` 对象。</span>
+
+#### 返回值
+
+- `RtcConnection` 对象：方法调用成功。
+- `None`：方法调用失败。
+
+<a id="release"></a>
+## release
+
+```python
+def release(self)
+```
+
+<span className="index-desc-release">释放 `LocalUser` 对象的所有资源。</span>
+
+<a id="sendaudiometadata"></a>
+## send_audio_metadata
+
+```python
+def send_audio_meta_data(self, data)
+```
+
+发送音频 Metadata 数据。
+
+成功调用该方法后，远端会触发 [`on_audio_metadata_received`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onaudiometadatareceived) 回调，远端用户可以在该回调中获取接收到的音频 Metadata 数据。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `data` | 音频 Metadata 数据。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

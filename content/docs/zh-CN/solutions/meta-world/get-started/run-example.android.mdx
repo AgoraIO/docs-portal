@@ -1,0 +1,105 @@
+---
+title: "跑通示例项目"
+---
+声网在 GitHub 上提供一个开源的 [MetaWorld](https://github.com/AgoraIO-Community/Agora-MetaWorld/tree/dev_metasdk1.0) 示例项目供你参考。
+
+MetaWorld 包含元语聊和元直播场景：
+
+- 在元语聊场景中，用户可以在 3D 场景中自由走动，与其他用户或 NPC 进行语音聊天，开始 K 歌等。
+- 在元直播场景中，用户可以在 3D 场景中直播。声网面部捕捉插件使用户可以通过模拟脸部表情的 Avatar 形象进行直播，增加直播趣味性。
+- 在融合元语聊和元直播的场景中，用户可以进行在元语聊和元直播场景中支持的所有操作。
+
+本文介绍如何快速跑通该示例项目，体验效果。
+
+## 前提条件
+
+开始前请确保你的开发环境满足如下要求：
+
+- [Git](https://git-scm.com/downloads)
+- [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)
+- [Android Studio](https://developer.android.com/studio/) 4.1 及以上
+- Android API 级别 22 及以上
+- Android 设备，版本 Android 5.1 及以上
+
+  :::info[信息]
+  声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+  :::
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.android)以正常使用声网服务
+- 参考[开通服务](/zh-CN/solutions/meta-world/get-started/enable-service)注册并登录[声网控制台](http://console.shengwang.cn)，创建声网项目，获取项目的 App ID、App 证书
+- 联系 sales@shengwang.cn 并提供你的声网项目的 App ID，开通声网内容中心的权限，并获取声网面部捕捉插件的 App ID 和 Certificate
+
+## 获取示例项目
+
+参考如下步骤获取 MetaWorld 示例项目：
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Community/Agora-MetaWorld.git
+    ```
+
+2. 运行以下命令切换到 `dev_metasdk1.0` 分支：
+
+    ```shell
+    git checkout dev_metasdk1.0
+    ```
+
+## 配置示例项目
+
+参考如下步骤配置示例项目。
+
+### 集成 SDK 和依赖库
+
+声网 Meta SDK 是基于声网 RTC SDK 4.0.1 版开发的元系列特殊版 SDK。参考如下步骤获取并将 SDK 集成到你的项目中：
+
+1. 联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 获取 Meta SDK，下载并解压。
+
+2. 打开解压的 SDK，将以下文件或子文件夹复制到你的项目路径中。
+
+    | 文件或子文件夹             | 项目路径     |
+    |:-------------------------|:-----------|
+    | `agora-rtc-sdk.jar` 文件	| `/app/libs/` |
+    | `AgoraMetaKit.aar` 文件 	| `/app/libs/` |
+    | `face_capture.jar` 文件   | `/app/libs/` |
+    | `FaceCapture.aar` 文件    | `/app/libs/` |
+    | `metakit.jar` 文件        | `/app/libs/` |
+    | `arm64-v8a` 文件夹      	| `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹	    | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹           | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹	            | `/app/src/main/jniLibs/` |
+
+### 设置 ID 和证书
+
+运行示例项目前，你需要在 `./Agora-MetaWorld/Android/local.properties` 文件中添加并设置如下参数：
+
+```java
+APP_CERTIFICATE="<#Certificate#>"
+APP_ID="<#AppId#>"
+FACE_CAP_APP_ID="<#Face Capture App Id#>"
+FACE_CAP_APP_KEY="<#Face Capture Certificate#>"
+```
+
+其中：
+
+- `<#Certificate#>` 填入你在控制台获取到的声网项目的 App 证书。
+- `<#AppId#>` 填入你在控制台获取到的声网项目的 App ID。
+- `<#Face Capture App Id#>` 和 `<#Face Capture Certificate#>` 为声网面部捕捉插件相关，需要联系 sales@shengwang.cn 获取。
+
+## 编译并运行示例项目
+
+参考如下步骤在 Android Studio 中编译并运行项目：
+
+![Android Studio 运行示意](https://web-cdn.agora.io/docs-files/1687670439946)
+
+1. 用 Android Studio 打开 `Agora-MetaWorld/Android` 文件夹。
+
+2. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+3. 在 Android Studio 中，点击 **Sync Project with Gradle Files** 按钮，以让项目与 Gradle 文件同步。
+
+4. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) 开始编译。
+
+5. 编译成功后，你的 Android 设备上会出现 **AgoraMetaExample** App。
+
+6. 打开 App，体验 MetaWorld 场景。登录后默认进入融合元语聊和元直播的场景，点击右上角的 ![](https://web-cdn.agora.io/docs-files/1687670859690) 即可切换至元直播场景。

@@ -1,0 +1,532 @@
+---
+title: "迁移指南"
+---
+自 2023 年 6 月起，声网针对市场及行业需求，先后推出了 RTM v2（以下简称 v2）系列版本。此系列版本在功能、性能、体验上都有创新性提升：
+
+- **功能覆盖**：该版本通过引入 `Channel`、`Message`、`Topic`、`Presence`、`Storage` 和 `Lock` 等功能模块，能覆盖更多业务场景，你可以把更多的精力集中在自己的业务创新上。
+
+- **性能提升**：我们在新版本中重构了后台架构，通过优化网络连接进一步提升性能，提供长时间低延迟、高可靠、大并发、易扩展的实时网络接入能力，让你无需为业务质量担忧。
+
+- **体验优化**：我们重新设计并简化了 API 接口，支持业界最流行的 Async/Await 编程模式；优化了包括用户指南、API 参考在内的所有文档，提供了更全面的示例程序，支持开发者低成本学习使用 SDK，快速完成集成，提高开发效率。
+
+本文提供 RTM v1 和 v2 的主要区别及相关示例代码，从而帮助用户顺利地从 v1 迁移到 v2。
+
+## 开通服务
+
+开通 v2 和 v1 的步骤相同：
+
+1. 注册并登录声网控制台
+2. 创建声网项目
+3. 进入功能配置，开通 RTM 服务
+4. 获取开发所需参数，例如 App ID
+
+如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)。
+
+## 集成 SDK
+
+v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者都支持 CDN 和 npm 两种集成方式。
+
+<Tabs defaultValue="cdn">
+<TabsList>
+  <TabsTrigger value="cdn">使用 CDN</TabsTrigger>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cdn">
+
+- v1 的引用方式：
+
+  ```javascript showLineNumbers
+  // 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
+  // 将 x.y.z 替换为具体的 SDK 版本号，如 1.5.1
+  <script src="your_path_to_sdk/agora-rtm-sdk.x.y.z.js"></script>
+  ```
+
+- v2 的引用方式：
+
+  ```javascript showLineNumbers
+  // 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
+  // 将 x.y.z 替换为具体的 SDK 版本号，如 2.1.9
+  <script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
+  ```
+
+</TabsContent>
+
+<TabsContent value="npm">
+
+- v1 的用法：
+
+  ```javascript showLineNumbers
+  // 1. 在终端通过 npm 包管理器安装 SDK
+  npm install agora-rtm-sdk
+  // 2. 在你的 app.js 中导入
+  import AgoraRTM from 'agora-rtm-sdk';
+  ```
+
+- v2 的用法：
+
+  ```javascript showLineNumbers
+  // 1. 在终端通过 npm 包管理器安装 SDK
+  npm install agora-rtm
+  // 2. 在你的 app.js 中导入
+  import AgoraRTM from 'agora-rtm';
+  ```
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `agora-rtm-sdk`。
+:::
+
+## 初始化实例
+
+相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/api-ref/rtm2/javascript/toc-configuration/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/error-codes.javascript)文档，你也可以快速找到解决方法。
+
+:::info[信息]
+RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic#合法字符)。
+:::
+
+- v1 的示例代码如下：
+
+    ```javascript
+    let options = {
+      uid: "",
+      token: ""
+    }
+    // 填入你从控制台获得的 App ID
+    const appID = "<Your app ID>";
+    // 填入你的用户 ID
+    options.uid = "<Your uid>";
+    // 填入你的 Token
+    options.token = "<Your token>";
+    // 初始化客户端实例
+    const rtm = AgoraRTM.createInstance(appID);
+    ```
+
+- v2 的示例代码如下：
+
+    ```javascript
+    // 初始化客户端实例
+    const { RTM } = AgoraRTM;
+    // 填入你从控制台获得的 App ID
+    const appId = "your_appId";
+    // 填入你的用户 ID
+    const userId = "your_userId";
+
+    try {
+      const rtm = new RTM(appId, userId);
+    } catch (status) {
+      console.log(status);
+    }
+    ```
+
+## 登录服务
+
+v2 采用了标准的 Async/Await 模式，支持异步编程。v2 登录服务的方法和 v1 有区别，如下所示：
+
+- v1 的示例代码如下：
+
+    ```javascript
+    await rtm.login(options)
+    ```
+
+- v2 的示例代码如下：
+
+    ```javascript
+    const token = 'your_token'
+    try {
+      const result = await rtm.login({ token });
+      console.log(result);
+    } catch (status) {
+      console.log(status);
+    }
+    ```
+
+## 事件通知
+
+相比于 v1，v2 重新设计了系统事件通知方式和 API 接口，对事件通知类型进行了更详细的分类和聚合，对事件通知的负载数据结构进行了优化。
+
+v2 的事件通知类型有 8 种，如下所示：
+
+| 事件类型                         | 描述                                                                                               |
+|--------------| ---------- |
+| <code className="index-api-onmessageevent" id=message>message</code>             | <span class="index-desc-onmessageevent">消息事件通知：接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。</span>                                                     |
+| <code className="index-api-onpresenceevent" id=presence>presence</code>            | <span class="index-desc-onpresenceevent">用户出席与自定义状态变更事件通知（简称 Presence 事件通知）：接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。</span>                                  |
+| <code className="index-api-ontopicevent" id=topic>topic</code>               | <span class="index-desc-ontopicevent">Topic 变更事件通知：接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。</span>                                                   |
+| <code className="index-api-onstorageevent" id=storage>storage</code>             | <span class="index-desc-onstorageevent">频道属性和用户属性事件通知：接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。</span>  |
+| <code className="index-api-onlockevent" id=lock>lock</code>                | <span class="index-desc-onlockevent">锁变更事件通知：接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。</span>                                      |
+| <code className="index-api-onconnection" id=status>status</code>    | <span class="index-desc-onconnection">网络连接状态变更事件通知：接收客户端网络连接状态变更的事件通知。</span>                                                                     |
+| `linkState`     | 接收客户端网络连接状态变更的事件通知，包含变更前后的连接状态、服务类型、导致变更的操作类型、变更原因、频道列表等信息。                                                                                                        |
+| <code className="index-api-ontokenwillexpire" id=tokenPrivilegeWillExpire>tokenPrivilegeWillExpire</code> | <span class="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                                                                             |
+
+关于事件通知的更多信息及负载数据结构见[事件监听](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听)。
+
+以监听 `message` 事件通知为例，示例代码如下：
+
+- v1：
+
+    ```javascript
+    let channel = rtm.createChannel("demoChannel")；
+    channel.on('ChannelMessage', function (message, memberId) {
+      console.log(memberId + ": " + message.text);
+    })
+    ```
+
+- v2：
+
+    ```javascript
+    rtm.addEventListener("message", event => {
+      const channelType = event.channelType;
+      const channelName = event.channelName;
+      const topic = event.topicName;
+      const messageType = event.messageType;
+      const customType = event.customType;
+      const publisher = event.publisher;
+      const message = event.message;
+      const timestamp = event.timestamp;
+    });
+    ```
+
+从上面的示例代码可以看出以下显著区别：
+
+- v1 的消息事件通知绑定在具体的 `channel` 实例上，用户需要先调用 `createChannel()` 方法创建 `channel` 实例，然后才能调用 `channel.on()` 方法绑定事件通知处理程序，并且多个频道要实现绑定多次。而 v2 的消息事件通知绑定在客户端实例上，是全局设置，调用 `addEventListener()` 方法注册回调程序，只需要绑定一次，就可以监听所有订阅的频道或 Topic。
+
+- v1 的消息事件通知负载数据结构包含的信息相对较少，而 v2 的消息事件通知负载数据结构包含了更多的信息，可以帮助你更好地实现自己的业务。
+
+## 频道消息
+
+在 1.x 中，发送频道消息的步骤如下：
+
+1. 创建一个频道实例
+
+2. 加入频道
+
+3. 发送频道消息
+
+这种设计会有个弊端，你无法实现发送消息而不收到消息。因为发送消息和接收消息没有解耦。v2 采用了基于 Pub/Sub 的新设计，将频道消息的发送和接收解耦：你无需加入频道即可向指定频道发送消息，你只需订阅指定频道即可接收该频道中的消息，两种操作互不影响。
+
+- v1 的示例代码如下：
+
+    ```javascript
+    let channel = rtm.createChannel("demoChannel");
+    await channel.join();
+    let payload = "Hello World!";
+    await channel.sendMessage({ text: payload }).then(() => {
+      console.log("Channel message:" + payload + " from " + channel.channelId);
+    }
+    ```
+
+- v2 的示例代码如下：
+
+    ```javascript
+    // 发送频道消息
+    const payload = "Hello World!";
+    try {
+      const result = await rtm.publish("demoChannel", payload, { channelType: 'MESSAGE' });
+      console.log(result);
+    } catch (status) {
+      console.log(status);
+    }
+
+    // 订阅频道
+    try {
+      const result = await rtm.subscribe("chat_room");
+      console.log(result);
+    } catch (status) {
+      console.log(status);
+    }
+    ```
+
+## 点对点消息
+
+v1 版本中的点对点消息 API 用于向指定的用户发送消息，例如，你如果向用户 ID 为 `Tony` 的用户发送消息，你可以按照如下方式实现：
+
+```javascript
+// v1
+rtm
+  .sendMessageToPeer(
+    { text: "test peer message" }, // 一个 RtmMessage 实例
+    "PeerId", // 远端用户的用户 ID
+  )
+  .then((sendResult) => {
+    if (sendResult.hasPeerReceived) {
+      // 你需自行实现远端用户收到消息事件的逻辑
+    } else {
+      // 你需自行实现服务器已收到消息、远端用户未收到消息的逻辑
+    }
+  })
+  .catch((error) => {
+    // 你需自行实现点对点消息发送失败的逻辑
+  });
+```
+
+自 2.2.0 版本起，我们对点对点消息进行了调整，将其定义为用户频道（User Channel）：通过 `publish` 方法发送消息，通过 `message` 事件通知接收消息。这一新方法的实现效果与 v1 版本中的点对点消息功能完全一致，你可以按以下方式实现：
+
+```javascript
+// v2
+// 适用于 2.2.0 及之后版本
+rtm
+  .publish(
+    "test peer message",
+    "PeerId", // 远端用户的用户 ID
+    { channelType: "USER" },
+  )
+  .then((sendResult) => {
+    // 你需自行实现远端用户收到消息事件的逻辑
+  })
+  .catch((error) => {
+    // 你需自行实现点对点消息发送失败的逻辑
+  });
+```
+
+当然，你也可以通过 Message Channel 来实现收件箱功能。只不过这种方式，发送方无法收到送达回执。
+
+```javascript
+// v2
+// 1. 订阅自己的收件箱
+const result = await rtm.subscribe("inbox_Tony");
+// 消息内容
+const payload = JSON.stringify(
+  {
+    type: "PrivateMessage",
+    message: "This is a message",
+    sender: "Tony",
+  }
+);
+try {
+  // 2. 向用户 ID 为 Lily 的用户发送私密消息，这条消息只有 Lily 能收到
+  const result = await rtm.publish("inbox_Lily", payload, { channelType: 'MESSAGE' });
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+## 图片与文件消息
+
+出于对用户数据和隐私保护合规性、成本优化的考虑，RTM 自 1.5.0 版本起不再直接支持传输图片和文件消息，相关的 API 也已经下架。你可以结合 RTM 和第三方对象存储服务（例如 Amazon S3 或者阿里云 OSS）来构建图片与文件消息功能，在获得极佳的实时消息传输体验的同时，还能实现更灵活的技术构建方案，例如，实现 CDN 静态资源加速、图片文本审核等业务需求。以下示例代码向你展示如何使用 v2 和 Amazon S3 对象存储服务实现图片和文件消息的构建和发送：
+
+```javascript
+const sendFileMessageAsync = async () => {
+  try {
+    // 使用 document-picker 组件选取设备上的需要上传的文件
+    const result = await DocumentPicker.getDocumentAsync({
+      // 可以选择任何类型的文件
+      type: "*/*",
+    });
+
+    if (result.canceled === false) {
+      const file = result.assets[0].file;
+      if (file) {
+        const uploadParams = {
+          // 填写你在 Amazon S3 上的 bucket 名称
+          Bucket: "your-awsbucket",
+          // 文件在 Amazon S3 上的键
+          Key: file.name,
+          Body: file,
+          ContentType: file.type,
+        };
+        // 上传文件到 S3 上
+        s3.upload(uploadParams, (err, data) => {
+          if (err) {
+            console.error("Error uploading file:", err);
+          } else {
+            console.log("File uploaded successfully. S3 URL:", data.Location);
+            // 文件上传成功后，自定义 RTM 文件消息负载结构
+            const imageMessagePayload = {
+              // 文件类型，接收方可以根据此字段解析消息包结构
+              type: "File",
+              // 你在 Amazon S3 上的 bucket 名称，接收方需要此字段来下载文件
+              bucket: uploadParams.Bucket,
+              // 文件在 Amazon S3 存储的 Key，接收方需要此字段来下载文件
+              key: uploadParams.Key,
+              // 文件类型
+              contentType: uploadParams.ContentType,
+              // 文件 URL 地址
+              url: data.Location,
+              // 发送方的用户 ID
+              sender: userId,
+            };
+            // 使用 RTM v2 发送文件消息负载
+            rtm.publish(channelName, JSON.stringify(imageMessagePayload), {
+              customType: "File",
+              channelType: "MESSAGE",
+            });
+          }
+        });
+      }
+    } else {
+      console.log("Document pick cancelled");
+    }
+  } catch (err) {
+    console.error("Error picking document:", err);
+  }
+};
+```
+
+:::info[信息]
+使用 Amazon S3 实现静态文件存储时，你需要进入 Amazon S3 控制台，然后设置正确的用户权限和访问策略。详见[访问控制最佳实践](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/access-control-best-practices.html)。
+:::
+
+## 用户出席与自定义状态
+
+在 v1 中，你可以订阅或查询多个用户的在线状态、查询频道人数或频道在线成员列表等。v2 不仅保留了这些能力，还在 v1 的基础上进行了升级和扩展，新设计了 Presence 模块。Presence 模块提供监控用户上线、下线及用户临时状态变更的能力，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道
+- 自定义临时用户状态及其变更
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+你可以调用 `whoNow` 方法，实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+```javascript
+// v2
+const options = {
+  includeUserId : true,
+  includeState : true,
+  page : "yourBookMark"
+}
+try{
+  const result = await rtm.presence.whoNow( "chat_room", "MESSAGE", options );
+  console.log(result);
+} catch(status){
+  console.log(status);
+}
+```
+
+你可以调用 `whereNow` 方法，实时获取指定用户所在频道的列表。
+
+```javascript
+// v2
+try{
+  const result = await rtm.presence.whereNow( "Tony" );
+  console.log(result);
+} catch(status){
+  console.log(status);
+}
+```
+
+为满足业务场景对用户状态的设置需求，v2 提供了设置临时用户状态的能力，你可以通过 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+```javascript
+// v2
+var newState = { "mood":"pumped", "isTyping":false};
+
+try{
+  const result = await rtm.Presence.setState("chat_room", "MESSAGE", newState);
+  console.log(result);
+} catch(status){
+  console.log(status);
+}
+```
+
+你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `REMOTE_STATE_CHANGED` 类型的 `presence` 事件通知。具体用法见[临时用户状态
+](/zh-CN/realtime-media/rtm/user-guide/presence/temporary-user-state)。
+
+在 v2 中，实时监听频道中用户加入、离开、超时掉线或临时状态变更通知会更加方便，你只需实现如下步骤：
+
+1. 实现 Presence 事件监听程序
+
+2. 加入频道时，开启 `withPresence` 开关
+
+```javascript
+// v2
+// 1. 实现 Presence 事件监听程序
+rtm.addEventListener("presence", event => {
+  const action = event.eventType;
+  const channelType = event.channelType;
+  const channelName = event.channelName;
+  const publisher = event.publisher;
+  const states = event.stateChanged;
+  const interval = event.interval;
+  const snapshot = event.snapshot;
+  // 你的实现代码
+});
+// 2. 订阅频道时，开启 withPresence 开关
+const options ={ withPresence : true };
+try {
+  const result = await rtm.subscribe("chat_room", options);
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/user-guide/presence/event#事件通知模式)。
+
+## 用户属性与频道属性
+
+基于 v1 的用户属性和频道属性功能，v2 新增了版本控制和锁控制等能力，并优化了 API 接口形式，让功能的使用更加简单。v2 中把用户属性和频道属性挂载在 Storage 模块下，以设置频道属性为例，示例代码如下：
+
+```javascript
+// v2
+const properties = {
+  key : "Quantity",
+  value : "20"
+};
+
+const announcement = {
+  key : "Announcement",
+  value : "Welcome to our shop!"
+};
+
+const price = {
+  key : "T-shirt",
+  value : "100"
+};
+
+const data = [properties, announcement, price];
+const options = { addTimeStamp : true, addUserId : true };
+
+try {
+  const result = await rtm.storage.setChannelMetadata("channel1", "MESSAGE", data, options);
+  console.log(JSON.stringify(result));
+} catch (status) {
+  console.log(JSON.stringify(status));
+}
+```
+
+如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/user-guide/storage/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/user-guide/storage/user-metadata)。
+
+v2 通过 `storage` 类型的事件通知将频道属性和用户属性分发给用户，监听 `storage` 事件通知的步骤如下：
+
+1. 实现 Storage 事件监听程序
+
+2. 加入频道时，开启 `withMetadata` 开关
+
+```javascript
+// v2
+// 1. 实现 Storage 事件监听程序
+rtm.addEventListener("storage", event => {
+  const channelType = event.channelType;
+  const channelName = event.channelName;
+  const publisher = event.publisher;
+  const storageType = event.storageType;
+  const action = event.eventType;
+  const data = event.data;
+  // 你的实现代码
+});
+//  2. 加入频道时，开启 withMetadata 开关
+const options ={ withMetadata : false };
+try {
+  const result = await rtm.subscribe("chat_room", options);
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+## 访问区域限定
+
+RTM 支持限定访问区域功能，以适应不同国家或地区的法律法规。开启限定访问区域功能后，不论用户在哪个区域使用你的 App，SDK 都只会访问指定区域的声网服务器。v1 实现访问区域限定的代码如下：
+
+```javascript
+AgoraRTM.setArea({ areaCodes: ["GLOBAL"], excludedArea: "CHINA" })
+```
+
+v2 同样支持限定访问区域功能，且用法完全一致。
+
+## 其他新特性
+
+除上述版本之间的功能差异之外，v2 还额外增加了很多被广泛验证和使用的新功能，你可以根据项目的需要选择和使用，相信革新版本的 v2 一定可以帮助你快速接入实时互动领域。v2 所具备的功能特性见[特性列表](/zh-CN/realtime-media/rtm/overview/feature-list.javascript)。

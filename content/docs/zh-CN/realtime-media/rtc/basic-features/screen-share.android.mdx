@@ -1,0 +1,340 @@
+---
+title: "屏幕共享"
+---
+在互动直播或视频通话中，主播或视频通话用户可以通过声网 SDK 中的屏幕共享特性，将自己的屏幕内容以视频的方式分享给其他用户或观众观看。
+
+屏幕共享可以应用在以下场景中：
+
+| 场景     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| 在线教育 | 老师将自己的屏幕、教学课件、绘图软件或编程软件共享给学生，用于课堂示范 |
+| 游戏直播 | 主播共享自己的游戏画面给观众                                 |
+| 互动直播 | 主播共享自己的屏幕和观众互动                                 |
+| 视频会议 | 会议成员共享屏幕观看 PPT 或者文档                            |
+| 远程控制 | 被控端向主控端展示自己的桌面                                 |
+
+## 技术原理
+
+根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
+
+- 在加入频道前调用 `startScreenCapture`，然后调用 `joinChannel` [2/2] 加入频道并设置 `publishScreenCaptureVideo` 为 `true`，即可开始屏幕共享。
+- 在加入频道后调用 `startScreenCapture`，然后调用 `updateChannelMediaOptions` 更新频道媒体选项并设置 `publishScreenCaptureVideo` 为 `true`，即可开始屏幕共享。
+
+## 注意事项
+
+- 在开启屏幕共享后，声网以屏幕共享视频流的分辨率作为计费标准。默认分辨率为 1280 × 720，你也可以根据你的业务需求进行调整。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+- 因 Android 性能限制，屏幕共享不支持 Android TV。
+- 因 Android 系统限制，使用华为手机进行屏幕共享时，为避免崩溃，请不要在共享过程中调节屏幕共享流的视频编码分辨率。
+- 因 Android 系统限制，部分小米手机不支持屏幕共享时采集系统音频。
+- 在 Android 9 及之后版本上，为避免 App 退后台时被系统终止，建议你在 `/app/Manifests/AndroidManifest.xml` 文件中添加前台服务权限：`android.permission.FOREGROUND_SERVICE`。
+- 在某些 Android 设备上，如果通过 `FLAG_SECURE` 属性设置禁止截屏和录屏，此时屏幕共享采集到的画面会是黑屏。但请注意，此属性的行为在不同设备厂商和系统版本间存在差异，部分机型可能不会严格遵循该限制，仍然允许屏幕内容被捕获。建议在多种设备上测试你的应用，以确保屏幕共享功能的兼容性。
+
+## 前提条件
+
+- 在 Android 平台上，请确保用户已授予 App 屏幕采集权限。
+- 在实现屏幕共享前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
+- 受系统限制，采集屏幕仅适用于 Android API 级别为 21 及以上，即 Android 5 及以上，否则在调用 `startScreenCapture` 时，SDK 会报告错误码 `ERR_SCREEN_CAPTURE_PERMISSION_DENIED`(16) 和 `ERR_SCREEN_CAPTURE_SYSTEM_NOT_SUPPORTED`(2)。
+- 受系统限制，采集系统音频仅适用于 Android API 级别为 29 及以上，即 Android 10 及以上，否则在调用 `startScreenCapture` 时，SDK 会报告错误码 `ERR_SCREEN_CAPTURE_SYSTEM_AUDIO_NOT_SUPPORTED`(3)。
+
+## 集成屏幕共享插件
+
+声网 SDK 的屏幕共享通过插件实现，你可以通过 Maven Central 自动集成，或者手动导入 aar 文件集成屏幕共享插件。
+
+<Tabs defaultValue="auto" groupId="integrate-sdk" persist>
+<TabsList>
+  <TabsTrigger value="auto">自动集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="auto">
+
+通过 Maven Central 集成 SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中 `dependencies` 的 `implementation` 字段添加依赖。
+
+```java
+dependencies {
+// 请使用具体的 SDK 版本号替换下面代码中的 x.y.z，可通过发版说明获取最新版本号
+def agora_sdk_version = "x.y.z"
+// 下述代码中包含 $，因此你必须使用 ""，不能使用 ''
+
+// 集成方案 1
+implementation "io.agora.rtc:full-rtc-basic:${agora_sdk_version}"
+implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
+implementation "io.agora.rtc:screen-capture:${agora_sdk_version}"
+
+// 集成方案 2
+implementation "io.agora.rtc:full-sdk:${agora_sdk_version}"
+implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
+...
+}
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+1. 拷贝 SDK 中的 `AgoraScreenShareExtension.aar` 文件到 `/app/libs/` 目录下。
+
+2. 在 `/app/build.gradle` 文件的 `dependencies` 节点中添加如下行，以支持导入 aar 格式的文件。
+
+   ```java
+   implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
+   ```
+
+3. 确保项目 `jniLibs` 文件夹下已存在 `libagora_screen_capture_extension.so` 文件。如果该文件不存在，需要从 SDK 文件夹中手动拷贝。
+4. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中，增加以下代码，用于指定 JNI 库的位置。
+
+   ```java
+   android {
+     // ...
+     sourceSets {
+       main {
+         jniLibs.srcDirs = ['src/main/jniLibs']
+       }
+     }
+   }
+   ```
+
+</TabsContent>
+</Tabs>
+
+## 实现屏幕共享
+
+本节介绍如何使用 Android SDK 实现屏幕共享，API 调用时序如下图所示。
+
+![流程图](/img/rtc/screen-share/screen-share-process-mobile.svg)
+
+开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
+
+- 在加入频道前调用 `startScreenCapture`，然后调用 `joinChannel`[2/2] 加入频道并设置 `publishScreenCaptureVideo` 为 `true`，即可开始屏幕共享。
+- 在加入频道后调用 `startScreenCapture`，然后调用 `updateChannelMediaOptions` 设置 `publishScreenCaptureVideo` 为 `true`，即可开始屏幕共享。
+
+本文中的流程图和步骤均以第一种方案为例。
+
+### 配置权限
+
+自 Android 9 版本起，Android 系统对于后台 App 访问用户数据进行了限制。自 Android 14 版本起，如果 App 的 `targetSdkVersion` 设置为 34 或更高，必须正确声明前台服务类型，否则应用在后台时屏幕共享等功能会受到影响。详见[为什么部分 Android 版本 App 锁屏或切后台音视频采集或播放（渲染）无效？](https://doc.shengwang.cn/faq/quality-issues/android-background#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)。
+
+为确保屏幕共享在应用后台时能正常运行，你需要正确集成前台服务。如果没有正确配置，可能会导致以下问题：
+
+- 屏幕共享中无法采集音频。
+- 应用在后台时屏幕共享有概率会自动被系统关闭。
+
+**1. 添加权限和配置服务**
+
+在 `app/src/main/AndroidManifest.xml` 文件中添加权限并指定前台服务类型。
+
+```xml
+<manifest ...>
+    <!-- 声明前台服务权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!--
+      如果你的 targetSdkVersion 为 34 或更高，
+      则必须根据你的业务场景添加以下一种或多种前台服务类型。
+    -->
+    <!-- 后台屏幕共享权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <!-- 后台麦克风采集权限 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <!-- 后台媒体播放权限，用于采集应用内置音源 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+</manifest>
+```
+
+**2. 打开通知权限**
+
+在系统设置的应用信息页中，为你的 App 打开通知权限。
+
+### （可选）设置音频场景
+
+调用 `setAudioScenario` 方法，并设置音频场景为 `AUDIO_SCENARIO_GAME_STREAMING`（高音质场景），以提高屏幕共享时采集系统音频的成功率。
+
+### 开启屏幕采集
+
+1. （可选）如果你具备自行申请 MediaProjection 的开发能力，可调用 `setExternalMediaProjection` 方法设置外部 MediaProjection 采集屏幕视频流以取代 SDK 申请的 MediaProjection。
+
+   ```java
+   // 获取 MediaProjectionManager
+   MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) getContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+   private MediaProjection[] mediaProjection = new MediaProjection[1];
+   private final ActivityResultLauncher<Intent> mediaProjectionLauncher = registerForActivityResult(
+           new ActivityResultContracts.StartActivityForResult(), result -> {
+               if (result.getResultCode() == Activity.RESULT_OK) {
+                   try {
+                       // 获取申请到的 MediaProjection
+                       mediaProjection[0] = mediaProjectionManager
+                               .getMediaProjection(result.getResultCode(), result.getData());
+                       // 设置外部 MediaProjection，需要在 startScreenCapture 之前调用
+                       engine.setExternalMediaProjection(mediaProjection[0]);
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               }
+           }
+   )
+
+   // 请求屏幕捕获
+   private void requestScreenCapture() {
+       Intent intent = mediaProjectionManager.createScreenCaptureIntent();
+       mediaProjectionLauncher.launch(intent);
+   }
+   ```
+
+1. 调用 `startScreenCapture` 开启屏幕采集，并根据你的应用场景进行参数设置：
+      - `captureVideo`：是否在屏幕共享时采集系统视频。
+      - `captureAudio`：是否在屏幕共享时采集系统音频。
+      - `captureSignalVolume`：采集的系统音量。
+      - `width`：视频编码分辨率中的宽 (px)。
+      - `height`：视频编码分辨率中的高 (px)。
+      - `frameRate`：视频编码帧率 (fps)。
+      - `bitrate`：视频编码码率 (Kbps)。
+      - `contentHint`：屏幕共享视频的内容类型。
+
+  ```java
+  // 设置屏幕采集的参数
+  screenCaptureParameters.captureVideo = true;
+  screenCaptureParameters.videoCaptureParameters.width = 720;
+  screenCaptureParameters.videoCaptureParameters.height = (int) (720 * 1.0f / metrics.widthPixels * metrics.heightPixels);
+  screenCaptureParameters.videoCaptureParameters.framerate = DEFAULT_SHARE_FRAME_RATE;
+  screenCaptureParameters.captureAudio = screenAudio.isChecked();
+  screenCaptureParameters.audioCaptureParameters.captureSignalVolume = screenAudioVolume.getProgress();
+  engine.startScreenCapture(screenCaptureParameters);
+  ```
+
+### 加入频道并发布屏幕共享视频流
+
+调用 `joinChannel`[2/2] 方法加入频道，通过设置 `options` 参数，将屏幕采集到的视频流发布到频道中。
+
+```java
+ChannelMediaOptions options = new ChannelMediaOptions();
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+options.autoSubscribeVideo = true;
+options.autoSubscribeAudio = true;
+// 不发布摄像头采集的视频
+options.publishCameraTrack = false;
+// 不发布麦克风采集的视频
+options.publishMicrophoneTrack = false;
+// 在频道中发布屏幕采集的视频
+options.publishScreenCaptureVideo = true;
+// 在频道中发布屏幕采集的音频
+options.publishScreenCaptureAudio = true;
+// 使用以上 options 中的设置作为频道媒体选项，加入频道
+int res = engine.joinChannel(accessToken, channelId, 0, options);
+```
+
+### （可选）设置屏幕共享场景
+
+调用 `setScreenCaptureScenario` 方法设置屏幕共享场景，按照实际使用场景，将 `screenScenario` 设置为以下任意一种：
+
+- `SCREEN_SCENARIO_DOCUMENT`(1)：文档场景
+- `SCREEN_SCENARIO_GAMING`(2)：游戏场景
+- `SCREEN_SCENARIO_VIDEO`(3)：视频场景
+
+示例代码如下：
+
+```java
+engine.setScreenCaptureScenario(Constants.SCREEN_SCENARIO_VIDEO);
+```
+
+### （可选）更新屏幕共享
+如果你要更新屏幕共享的参数，调用 `updateScreenCaptureParameters`，修改屏幕共享的参数。例如：视频编码分辨率、帧率、码率。
+
+```java
+ScreenCaptureParameters screenCaptureParameters = new ScreenCaptureParameters();
+
+// 设置新的屏幕共享参数
+screenCaptureParameters.captureVideo = true;
+screenCaptureParameters.videoCaptureParameters.width = 1280;
+screenCaptureParameters.videoCaptureParameters.height = 720;
+screenCaptureParameters.videoCaptureParameters.framerate = 30;
+
+// 更新屏幕共享参数
+engine.updateScreenCaptureParameters(screenCaptureParameters);
+```
+
+### 停止屏幕共享
+
+调用 `stopScreenCapture`，在频道内停止屏幕共享。示例代码如下：
+
+```java
+engine.stopScreenCapture();
+```
+
+## 参考信息
+
+### 功能介绍
+
+声网 SDK 的屏幕共享特性可提供以下功能，适用于各种场景下的屏幕共享。
+
+![](https://web-cdn.agora.io/docs-files/1680251438368)
+
+:::info[信息]
+屏幕共享功能在各平台的适用情况如下：
+
+- 桌面端（Windows 和 macOS）：支持上述所有屏幕共享功能。
+- 移动端（Android 和 iOS）：仅支持共享整个屏幕。
+:::
+
+#### 共享整个屏幕
+
+将你的整个屏幕进行共享，包括屏幕中的所有信息，该功能支持同时采集两块屏幕的信息并共享。
+
+#### 共享 App 窗口
+
+如果你不希望将整个屏幕内容分享给其他用户，可以只共享一个 App 窗口中的画面。
+
+#### 共享指定区域
+
+如果你只希望共享屏幕或 App 窗口中的一部分，可以在开启屏幕共享时设置一个共享区域，只有该区域内的画面会被分享。
+
+#### 高级功能
+
+除上述功能外，你还可以在开启屏幕共享时通过调整参数，实现以下高级共享功能：
+
+- 屏蔽指定 App 窗口：在共享屏幕时，如果你不希望暴露某个 App 窗口，可以选择将该 App 窗口屏蔽，则该窗口将不会出现在共享的屏幕中。
+- 描边：如果你需要勾勒出正在共享的范围，可以对指定的 App 窗口或屏幕进行描边，并自定义描边的宽度、颜色和透明度。
+- 前置指定 App 窗口：如果你同时共享了多个 App 窗口，可能会出现窗口之间互相遮挡的情况，你可以指定一个 App 窗口并将其前置，即可避免它被其他窗口遮挡。
+- 设置共享场景：SDK 会根据你设置的场景自动调节 QOE (Quality of Experience) 策略。
+  - 在共享文档、幻灯片、表格，或者远程控制时，你可以将共享场景设置为文档场景或远程控制场景，SDK 会优先保障画质，并降低接收端看共享视频的延时。
+  - 在共享游戏或电影、视频直播时，你可以将共享场景设置为游戏场景或视频场景，SDK 会优先保障流畅性。
+
+### 优势介绍
+
+声网提供的屏幕共享特性具备以下优势：
+
+**超高清画质体验**
+
+支持分辨率为 4K、帧率为 60 fps 的超高清视频。
+
+**多 App 支持**
+
+适配 WPS Office、Microsoft PowerPoint、Visual Studio Code、Adobe Photoshop、Windows Media Player 和 Scratch 等多款主流 App，方便用户在屏幕共享时直接共享指定 App，提升功能易用性。
+
+**多设备支持**
+
+支持多设备同时共享，兼容 Windows 8 系统、无独立显卡的设备、双显卡设备、外接屏幕设备等，满足各种场景下的设备使用需求。
+
+**多平台适配**
+
+支持 iOS、Android、macOS、Windows、Web、Unity、Flutter、React Native、Unreal Engine 等平台。
+
+**高安全保障**
+
+支持仅共享 App 和屏幕中的部分区域内容，并支持屏蔽指定 App 窗口，有效保障用户信息安全。
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ScreenSharing" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ScreenSharing.java" />
+  <Card title="ScreenSharing" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ScreenSharing.java" />
+</Cards>
+
+### API 参考
+
+- [`startScreenCapture`](/api-ref/rtc/android/API/toc_screencapture#startScreenCapture)
+- [`updateScreenCaptureParameters`](/api-ref/rtc/android/API/toc_screencapture#updateScreenCaptureParameters)
+- [`stopScreenCapture`](/api-ref/rtc/android/API/toc_screencapture#stopScreenCapture)
+- [`setScreenCaptureScenario`](/api-ref/rtc/android/API/toc_screencapture#setScreenCaptureScenario)
+- [`setExternalMediaProjection`](/api-ref/rtc/android/API/toc_screencapture#api_irtcengine_setexternalmediaprojection)

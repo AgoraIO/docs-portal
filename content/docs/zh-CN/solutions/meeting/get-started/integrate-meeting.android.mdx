@@ -1,0 +1,121 @@
+---
+title: "集成灵动会议"
+---
+本文介绍如何将灵动会议集成到你的 Android 项目中。
+
+## 前提条件
+
+开始前，请确保满足以下前提条件：
+
+- `Android Studio Jellyfish | 2023.3.1 Patch 1` 或以上版本。
+- Android 手机，版本 Android 7.0 或以上。
+- Gradle 8.1.1 或以上版本。
+- JDK 17 或以上版本。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- 已[开通灵动会议服务](/zh-CN/solutions/meeting/get-started/enable-service)。
+
+## （可选）创建项目
+
+如需创建一个新的 Android 项目来集成灵动会议，你可以在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
+
+:::warning[注意]
+创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻至同步成功后再进行下一步操作。
+:::
+
+## 通过 Maven 集成依赖
+
+1. 在 `<your_app>/settings.gradle` 文件中，添加以下引用：
+
+    ```groovy
+    buildscript {
+        repositories {
+            mavenCentral()
+            maven { url 'https://jitpack.io' }
+        }
+    }
+    ```
+
+2. 在 `<your_app>/app/build.gradle` 文件中，添加依赖：
+
+    ```groovy
+    dependencies {
+        implementation "io.github.agora-apaas:FcrUIScene:3.1.0"
+    }
+    ```
+
+    :::warning[注意]
+    通过 Maven 集成时，如果遇到依赖库冲突，可以通过 `exclude` 关键字排除依赖包，或者修改项目所依赖的版本来解决冲突。
+    :::
+
+## （可选）防止代码混淆
+
+在 `<your_app>/app/proguard-rules.pro` 文件中添加如下行，以防止声网 SDK 的代码被混淆：
+
+```kotlin
+-keep class io.agora.** {*;}
+-keep class cn.shengwang.** {*;}
+```
+
+## 动态申请权限
+
+灵动会议需要你动态申请如下权限：
+
+- 摄像头权限：`Manifest.permission.CAMERA`
+- 麦克风权限：`Manifest.permission.RECORD_AUDIO`
+
+## 启动灵动会议
+
+本节介绍如何调用客户端 API 启动灵动会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/solutions/meeting/api/create-room.restful) 创建了房间。
+
+1. 在 `Application` 的 `onCreate` 方法中，添加如下代码初始化 SDK：
+
+    ```kotlin
+    FcrSDKInitUtils.initSDK(this)
+    ```
+
+2. 调用 [`init`](/api-ref/meeting/android/client-api#init) 和 [`launch`](/api-ref/meeting/android/client-api#launch) 初始化和启动灵动会议。
+
+    ```kotlin
+    val creatorConfig = FcrUISceneCreatorConfig(appId, userId)
+    val sceneConfig = FcrUISceneConfig(roomId, roomToken, userName, userRole, inviteLink)
+
+    FcrUISceneCreator.init(creatorConfig)
+    FcrUISceneCreator.launch(activity, sceneConfig)
+    ```
+
+    填写参数时可参考 [`FcrUISceneCreatorConfig`](/api-ref/meeting/android/client-api#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/api-ref/meeting/android/client-api#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `appId` | String | 项目的 App ID。详见[获取 App ID](/zh-CN/solutions/meeting/get-started/enable-service#获取-app-id)。 |
+| `userId` | String | <Slot name="integrate-meeting-android-html-0-2-2" /> |
+| `roomToken` | String | <Slot name="integrate-meeting-android-html-0-3-2" /> |
+
+<Slot for="integrate-meeting-android-html-0-2-2">
+
+用户 ID，是用户的**唯一标识符**，不可重复取值。长度在 64 字符以内。支持的字符集范围（共 36 个字符）：
+
+        - 26 个小写英文字母 a~z
+        - 10 个数字 0-9
+
+</Slot>
+
+<Slot for="integrate-meeting-android-html-0-3-2">
+
+用于鉴权的 Token。详见[控制台生成临时 Token](/zh-CN/solutions/meeting/get-started/enable-service#生成临时-token) 或[服务端生成正式 Token](/zh-CN/solutions/meeting/user-guides/generate-token)。
+
+        :::warning[注意]
+        临时 Token 仅适用于集成测试和体验。在生产环境中，请使用正式 Token 以确保安全。无论是临时 Token 还是正式 Token，有效期最长都是 24 小时，请尽快使用。
+        :::
+
+</Slot>
+
+3. （可选）如需主动退出会议，调用 [`exit`](/api-ref/meeting/android/client-api#exit) 退出灵动会议。
+
+    ```kotlin
+    FcrUISceneCreator.exit()
+    ```
+
+## 日志文件路径
+
+灵动会议默认的日志文件在 `sdcard/Android/obb/{your_app_package_name}/FcrCore/logs/` 目录下。

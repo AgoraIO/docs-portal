@@ -1,0 +1,1428 @@
+---
+title: "结构体"
+---
+<a id="baseresponse"></a>
+## BaseResponse
+
+```go
+type BaseResponse struct {
+  RawResponse *http.Response
+  RawBody []byte
+  HttpStatusCode int
+}
+```
+
+调用 HTTP API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `RawResponse` | `Response` | （可选）HTTP 原始响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `RawBody` | `[]byte` | 原始响应体。 |
+| `HttpStatusCode` | `int` | HTTP 状态码。 |
+
+<a id="logger"></a>
+## Logger
+
+```go
+type Logger interface {
+  Debug(ctx Context, module string, v ...interface{})
+  Debugf(ctx Context, module string, format string, v ...interface{})
+  Error(ctx Context, module string, v ...interface{})
+  Errorf(ctx Context, module string, format string, v ...interface{})
+  Info(ctx Context, module string, v ...interface{})
+  Infof(ctx Context, module string, format string, v ...interface{})
+  Warn(ctx Context, module string, v ...interface{})
+  Warnf(ctx Context, module string, format string, v ...interface{})
+  Level() Level
+  SetLevel(level Level)
+}
+```
+
+日志接口，实现该接口以输出日志到日志组件。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | （必填）上下文信息，详见 `Context`。 |
+| `module` | `string` | （必填）日志所属模块名称。 |
+| `v` | `...interface{}` | 可变参数，表示可以接受零个或多个 interface{} 的参数。 |
+| `format` | `string` | 格式化字符串，用于格式化日志内容。 |
+| `level` | `Level` | 日志级别，详见 [`Level`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.go#level)。 |
+
+<a id="config"></a>
+## Config
+
+```go
+type Config struct {
+  AppID string
+  HttpTimeout time.Duration
+  Credential auth.Credential
+  DomainArea domain.Area
+  Logger log.Logger
+  ServiceRegion ServiceRegion
+}
+```
+
+对话式 AI 引擎 REST Client 的配置项。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `AppID` | `string` | 声网 AppID。 |
+| `HttpTimeout` | `time.Duration` | HTTP 请求的超时时间。 |
+| `Credential` | `auth.Credential` | 用于访问声网服务的凭证。支持的凭证类型包括：[`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential.go)，详见 `auth.NewBasicAuthCredential`。 |
+| `DomainArea` | `domain.Area` | REST Client 的域名区域，详见 `domain.Area`。 |
+| `Logger` | `log.Logger` | REST Client 的日志记录器。你可以在项目中实现 `log.Logger` 接口，将 REST Client 日志输出到你的日志组件；也可以使用默认日志组件，详见 `log.NewDefaultLogger`。 |
+| `ServiceRegion` | `ServiceRegion` | 服务版本，详见 [`ServiceRegion`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.go#serviceregion)。 |
+
+<a id="joinpropertiesadvancedfeaturesbody"></a>
+## JoinPropertiesAdvancedFeaturesBody
+
+```go
+type JoinPropertiesAdvancedFeaturesBody struct {
+  EnableAIVad *bool `json:"enable_aivad,omitempty"`
+  EnableRtm *bool `json:"enable_rtm,omitempty"`
+  EnableMLLM *bool `json:"enable_mllm,omitempty"`
+}
+```
+
+智能体加入 RTC 频道时的高级功能配置。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `EnableAIVad` | `bool` | <Slot name="struct-go-html-3-1-2" /> |
+| `EnableRtm` | `bool` | <Slot name="struct-go-html-3-2-2" /> |
+| `EnableMLLM` | `bool` | <Slot name="struct-go-html-3-3-2" /> |
+
+<Slot for="struct-go-html-3-1-2">
+
+（可选）是否启用平滑打断（AIVAD）。启用后，你可以随时打断 AI 并快速响应，实现自然过渡和流畅对话。
+
+    - true：启用。
+    - false：禁用（默认）。
+
+</Slot>
+
+<Slot for="struct-go-html-3-2-2">
+
+（可选）是否启用 Real-time Messaging（RTM）模块。启用后，智能体可以使用 RTM 提供的能力实现一些高级功能。
+
+    - true：启用。
+    - false：禁用（默认）。
+
+</Slot>
+
+<Slot for="struct-go-html-3-3-2">
+
+是否启用多模态大语言模型（Multimodal Large Language Model）。
+
+    - `true`：启用。
+    - `false`：禁用（默认）。
+
+    启用该功能将自动禁用 ASR、LLM 和 TTS。当你将该参数设置为 `true` 时，`enable_aivad` 也会被禁用。
+
+</Slot>
+
+<a id="ttsminimaxvendorparams"></a>
+## TTSMinimaxVendorParams
+
+```go
+type TTSMinimaxVendorParams struct {
+  GroupId      string                            `json:"group_id"`
+  Key          string                            `json:"key"`
+  Model        string                            `json:"model"`
+  VoiceSetting *TTSMinimaxVendorVoiceSettingParam `json:"voice_setting"`
+  AudioSetting *TTSMinimaxVendorAudioSettingParam `json:"audio_setting"`
+  PronunciationDict *PronunciationDictParam      `json:"pronunciation_dict"`
+  TimberWeights []TimberWeightsParam             `json:"timber_weights"`
+}
+```
+
+智能体加入 RTC 频道时用于文本转语音（TTS）模块的 `Minimax` 供应商参数。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+详见 https://platform.minimaxi.com/document/T2A%20V2。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `GroupId` | `string` |  |
+| `Key` | `string` |  |
+| `Model` | `string` |  |
+| `VoiceSetting` | `*TTSMinimaxVendorVoiceSettingParam` | （可选）语音设置参数，详见 `TTSMinimaxVendorVoiceSettingParam`。 |
+| `AudioSetting` | `*TTSMinimaxVendorAudioSettingParam` | （可选）音频设置参数，详见 `TTSMinimaxVendorAudioSettingParam`。 |
+| `PronunciationDict` | `*PronunciationDictParam` | （可选）发音词典配置，详见 `PronunciationDictParam`。 |
+| `TimberWeights` | `[]TimberWeightsParam` | （可选）音色权重配置，详见 `TimberWeightsParam`。 |
+
+<a id="ttstencentvendorparams"></a>
+## TTSTencentVendorParams
+
+```go
+type TTSTencentVendorParams struct {
+  AppId            string `json:"app_id"`
+  SecretId         string `json:"secret_id"`
+  SecretKey        string `json:"secret_key"`
+  VoiceType        int    `json:"voice_type"`
+  Volume           int    `json:"volume"`
+  Speed            int    `json:"speed"`
+  EmotionCategory  string `json:"emotion_category"`
+  EmotionIntensity int    `json:"emotion_intensity"`
+}
+```
+
+`Text-to-Speech (TTS)` 模块中 Tencent 供应商的参数配置，用于智能体加入 RTC 频道时。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+详见 https://cloud.tencent.com/document/product/1073/94308。
+
+<a id="ttsbytedancevendorparams"></a>
+## TTSBytedanceVendorParams
+
+```go
+type TTSBytedanceVendorParams struct {
+Token       string  `json:"token"`
+AppId       string  `json:"app_id"`
+Cluster     string  `json:"cluster"`
+VoiceType   string  `json:"voice_type"`
+SpeedRatio  float32 `json:"speed_ratio"`
+VolumeRatio float32 `json:"volume_ratio"`
+PitchRatio  float32 `json:"pitch_ratio"`
+Emotion     string  `json:"emotion"`
+}
+```
+
+智能体加入 RTC 频道时使用的字节跳动语音合成（TTS）模块厂商参数。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+详见 https://www.volcengine.com/docs/6561/79823。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Token` | `string` | 用于鉴权的临时 Token。 |
+| `AppId` | `string` | 字节跳动控制台中创建应用时生成的 App ID。 |
+| `Cluster` | `string` | 接入的集群信息。 |
+| `VoiceType` | `string` | 使用的语音类型。 |
+| `SpeedRatio` | `float32` | 语速调节参数。 |
+| `VolumeRatio` | `float32` | 音量调节参数。 |
+| `PitchRatio` | `float32` | 音调调节参数。 |
+| `Emotion` | `string` | 语音的情感类型。 |
+
+<a id="joinpropertiesttsbody"></a>
+## JoinPropertiesTTSBody
+
+```go
+type JoinPropertiesTTSBody struct {
+  Vendor TTSVendor `json:"vendor"`
+  Params TTSVendorParamsInterface `json:"params"`
+  SkipPatterns []int `json:"skip_patterns,omitempty"`
+}
+```
+
+智能体加入 RTC 频道时的文本转语音（TTS）模块配置。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Vendor` | `TTSVendor` | TTS 服务商，详见 [`TTSVendor`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.go#ttsvendor)。 |
+| `Params` | `TTSVendorParamsInterface` | TTS 供应商参数，详见 [`TTSMinimaxVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#ttsminimaxvendorparams)、[`TTSTencentVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#ttstencentvendorparams)、[`TTSBytedanceVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#ttsbytedancevendorparams) 和 [`TTSMicrosoftVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#ttsmicrosoftvendorparams)。 |
+| `SkipPatterns` | `[]int` | <Slot name="struct-go-html-6-3-2" /> |
+
+<Slot for="struct-go-html-6-3-2">
+
+控制 TTS 模块在朗读大语言模型（LLM）响应文本时是否跳过括号内容。启用此功能可防止智能体朗读结构性提示信息，如语气标记、动作描述和系统提示，从而营造更自然沉浸的听觉体验。
+
+    通过指定一个或多个值启用此功能：
+
+    - `1`：跳过中文圆括号（），Unicode 为 \uFF08 和 \uFF09。
+    - `2`：跳过中文方括号【】，Unicode 为 \u3010 和 \u3011。
+    - `3`：跳过英文圆括号 ()，Unicode 为 \u0028 和 \u0029。
+    - `4`：跳过英文方括号 []，Unicode 为 \u005B 和 \u005D。
+    - `5`：跳过英文花括号 {}，Unicode 为 \u007B 和 \u007D。
+
+</Slot>
+
+<a id="joinpropertiescustomllmbody"></a>
+## JoinPropertiesCustomLLMBody
+
+```go
+type JoinPropertiesCustomLLMBody struct {
+  Url string `json:"url"`
+  APIKey string `json:"api_key"`
+  SystemMessages []map[string]any `json:"system_messages"`
+  Params map[string]any `json:"params"`
+  MaxHistory *int `json:"max_history,omitempty"`
+  GreetingMessage string `json:"greeting_message,omitempty"`
+  InputModalities []string `json:"input_modalities,omitempty"`
+  OutputModalities []string `json:"output_modalities,omitempty"`
+  FailureMessage string `json:"failure_message,omitempty"`
+  SilenceMessage *string `json:"silence_message,omitempty"`
+  Vendor string `json:"vendor,omitempty"`
+  Style string `json:"style,omitempty"`
+}
+```
+
+智能体加入 RTC 频道时的自定义语言模型（LLM）配置。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Url` | `string` | （必填）LLM 回调地址，必须兼容 OpenAI 协议。 |
+| `APIKey` | `string` | （必填）用于验证的 LLM API 密钥。默认值为空，请确保在生产环境中启用 API 密钥。 |
+| `SystemMessages` | `[]map[string]any` | （可选）附加在每次 LLM 调用开头的一组预定义信息，用于控制 LLM 输出。可以包含角色设定、提示词和回答示例，必须兼容 OpenAI 协议。 |
+| `Params` | `map[string]any` | （可选）在 LLM 消息体中传输的附加信息，例如所用模型、最大 token 限制等。不同的 LLM 服务商支持的配置不同，详见其各自的 LLM 文档。 |
+| `MaxHistory` | `*int` | （可选）缓存于语言模型中的短期记忆条目数量。默认值为 32。传入 0 表示不缓存短期记忆，智能体和订阅用户将分别记录条目。 |
+| `GreetingMessage` | `string` | （可选）智能体问候语。如果填写，当 remote_rtc_uids 列表中没有用户时，智能体会自动向第一个加入频道的订阅用户发送问候语。 |
+| `InputModalities` | `[]string` | <Slot name="struct-go-html-7-7-2" /> |
+| `OutputModalities` | `[]string` | <Slot name="struct-go-html-7-8-2" /> |
+| `FailureMessage` | `string` | （可选）智能体失败提示语。如果填写，当 LLM 调用失败时将通过 TTS 模块返回该提示语。 |
+| `SilenceMessage` | `*string` | <Slot name="struct-go-html-7-10-2" /> |
+| `Vendor` | `string` | <Slot name="struct-go-html-7-11-2" /> |
+| `Style` | `string` | <Slot name="struct-go-html-7-12-2" /> |
+
+<Slot for="struct-go-html-7-7-2">
+
+（可选）LLM 的输入模态：
+
+    - ["text"]：仅文本（默认）。
+    - ["text", "image"]：文本和图像，要求所选 LLM 支持视觉模态输入。
+
+</Slot>
+
+<Slot for="struct-go-html-7-8-2">
+
+（可选）LLM 的输出模态：
+
+    - ["text"]：仅文本（默认），输出文本将由 TTS 模块转换为语音并发布到 RTC 频道。
+    - ["audio"]：仅音频，音频将直接发布到 RTC 频道。
+    - ["text", "audio"]：文本和音频，可自定义处理 LLM 输出的逻辑。
+
+</Slot>
+
+<Slot for="struct-go-html-7-10-2">
+
+（可选）智能体静默提示消息。当智能体创建完成且有用户加入频道后，若其处于非监听、思考或说话状态的持续时间达到设定值，将触发该提示消息，并重新计算静默时间。当 `silence_timeout` 设置为 0 时，该参数将被忽略。
+
+    :::warning[注意]
+    该字段自 v0.11.0 版本废弃，请改用 `Parameters.SilenceConfig`。
+    :::
+
+</Slot>
+
+<Slot for="struct-go-html-7-11-2">
+
+（可选）语言模型提供方，支持以下设置：
+
+    - `custom`：自定义语言模型提供方。设置为该选项时，智能体在请求中除 `role` 和 `content` 外还会包含以下字段：
+    - `turn_id`：每轮对话的唯一标识，从 0 开始递增，每次用户与智能体交互对应一个 `turn_id`。
+    - `timestamp`：请求的时间戳，单位为毫秒。
+    - `aliyun`：阿里云语言模型提供方（仅限中国大陆服务区域）。
+    - `bytedance`：字节跳动语言模型提供方（仅限中国大陆服务区域）。
+    - `deepseek`：DeepSeek 语言模型提供方（仅限中国大陆服务区域）。
+    - `tencent`：腾讯语言模型提供方（仅限中国大陆服务区域）。
+
+</Slot>
+
+<Slot for="struct-go-html-7-12-2">
+
+（可选）用于对话补全的请求风格，仅适用于全球服务区域。支持以下选项：
+
+    - `openai`：OpenAI 风格（默认）。
+    - `gemini`：Gemini 风格。
+    - `anthropic`：Anthropic 风格。
+    - `dify`：Dify 风格。
+
+</Slot>
+
+<a id="joinpropertiesvadbody"></a>
+## JoinPropertiesVadBody
+
+```go
+type JoinPropertiesVadBody struct {
+  InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
+  PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
+  SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
+  Threshold *float64 `json:"threshold,omitempty"`
+}
+```
+
+智能体加入 RTC 频道时的语音活动检测（VAD）配置。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+<a id="joinpropertiesasrbody"></a>
+## JoinPropertiesAsrBody
+
+```go
+type JoinPropertiesAsrBody struct {
+  Language string `json:"language,omitempty"`
+  Vendor ASRVendor `json:"vendor,omitempty"`
+  Params ASRVendorParamsInterface `json:"params,omitempty"`
+}
+```
+
+智能体加入 RTC 频道时的自动语音识别（ASR）配置。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Language` | `string` | <Slot name="struct-go-html-8-1-2" /> |
+| `Vendor` | `ASRVendor` | ASR 供应商，详见 [`ASRVendor`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.go#asrvendor)。 |
+| `Params` | `ASRVendorParamsInterface` | ASR 供应商参数说明，详见 `ASRVendorTencentParams`、`ASRVendorMicrosoftParams`。 |
+
+<Slot for="struct-go-html-8-1-2">
+
+（可选）用户与智能体交互时使用的语言。
+
+    - zh-CN：中文（支持中英文混合）（默认）。
+    - en-US：英文。
+
+</Slot>
+
+<a id="joinpropertiesreqbody"></a>
+## JoinPropertiesReqBody
+
+```go
+type JoinPropertiesReqBody struct {
+  Token string `json:"token"`
+  Channel string `json:"channel"`
+  AgentRtcUId string `json:"agent_rtc_uid"`
+  RemoteRtcUIds []string `json:"remote_rtc_uids"`
+  EnableStringUId *bool `json:"enable_string_uid,omitempty"`
+  IdleTimeout *int `json:"idle_timeout,omitempty"`
+  SilenceTimeout *int `json:"silence_timeout,omitempty"`
+  AgentRtmUId *string `json:"agent_rtm_uid,omitempty"`
+  AdvancedFeatures *JoinPropertiesAdvancedFeaturesBody `json:"advanced_features,omitempty"`
+  LLM *JoinPropertiesCustomLLMBody `json:"llm,omitempty"`
+  MLLM *JoinPropertiesMLLMBody `json:"mllm,omitempty"`
+  TTS *JoinPropertiesTTSBody `json:"tts,omitempty"`
+  Vad *JoinPropertiesVadBody `json:"vad,omitempty"`
+  Asr *JoinPropertiesAsrBody `json:"asr,omitempty"`
+  TurnDetection *TurnDetectionBody `json:"turn_detection,omitempty"`
+  Parameters *Parameters `json:"parameters,omitempty"`
+}
+```
+
+调用对话式 AI 引擎 [`Join`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#join) API 的请求体。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Token` | `string` | （可选）用于加入 RTC 频道的 Token，即用于身份验证的动态密钥。如果项目启用了 App 证书，请务必在此字段中传入项目的动态密钥。 |
+| `Channel` | `string` | （必填）智能体加入的 RTC 频道名称。 |
+| `AgentRtcUId` | `string` | （必填）智能体在 RTC 频道中的用户 ID。填写 "0" 表示随机分配，但需要相应修改 Token。 |
+| `RemoteRtcUIds` | `[]string` | （必填）智能体在 RTC 频道中订阅的用户 ID 列表，仅订阅的用户可以与智能体交互。传入 "*" 表示订阅频道中的所有用户。 |
+| `EnableStringUId` | `*bool` | <Slot name="struct-go-html-9-5-2" /> |
+| `IdleTimeout` | `*int` | （可选）RTC 频道的最大空闲时间（单位：秒）。当检测到 `remote_rtc_uids` 中指定的所有用户都已离开频道后，开始计为空闲时间。如果超过设置的最大值，频道中的智能体将自动停止并退出频道。若设置为 0，智能体将不会自动停止，需手动退出。 |
+| `SilenceTimeout` | `*int` | <Slot name="struct-go-html-9-7-2" /> |
+| `AgentRtmUId` | `*string` | <Slot name="struct-go-html-9-8-2" /> |
+| `AdvancedFeatures` | `*JoinPropertiesAdvancedFeaturesBody` | （可选）高级功能配置，详见 [`JoinPropertiesAdvancedFeaturesBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiesadvancedfeaturesbody)。 |
+| `LLM` | `*JoinPropertiesCustomLLMBody` | （必填）自定义语言模型（LLM）配置，详见 [`JoinPropertiesCustomLLMBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiescustomllmbody)。 |
+| `MLLM` | `*JoinPropertiesMLLMBody` | （可选）用于实时音频和文本处理的多模态大语言模型（MLLM）配置，详见 [`JoinPropertiesMLLMBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiesmllmbody)。 |
+| `TTS` | `*JoinPropertiesTTSBody` | （必填）文本转语音（TTS）模块配置，详见 [`JoinPropertiesTTSBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiesttsbody)。 |
+| `Vad` | `*JoinPropertiesVadBody` | <Slot name="struct-go-html-9-13-2" /> |
+| `Asr` | `*JoinPropertiesAsrBody` | （可选）自动语音识别（ASR）配置，详见 [`JoinPropertiesAsrBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiesasrbody)。 |
+| `TurnDetection` | `*TurnDetectionBody` | （可选）对话轮次检测设置，详见 [`TurnDetectionBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#turndetectionbody)。 |
+| `Parameters` | `*Parameters` | （可选）智能体参数配置，详见 [`Parameters`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#parameters)。 |
+
+<Slot for="struct-go-html-9-5-2">
+
+（可选）是否启用字符串 UID。
+
+    - true：启用字符串 UID。
+    - false：禁用字符串 UID（默认）。
+
+</Slot>
+
+<Slot for="struct-go-html-9-7-2">
+
+（可选）智能体的最大静默时间（单位：秒），取值范围为 [0,60]。当智能体创建完成且有用户加入频道后，若其处于非监听、非思考、非说话状态的持续时间达到设定值，将触发上报 `llm.silence_message` 中的静默提示消息，并重新计算静默时间。
+
+    - `0`（默认）：不启用该功能。
+    - `(0,60]`：必须同时设置 `llm.silence_message` 才能启用该功能。
+
+    :::warning[注意]
+    该字段自 v0.11.0 版本废弃，请改用 `Parameters.SilenceConfig`。
+    :::
+
+</Slot>
+
+<Slot for="struct-go-html-9-8-2">
+
+（可选）RTM 频道中智能体的用户 ID，仅在 `advanced_features.enable_rtm` 为 `true` 时有效。
+
+    :::warning[注意]
+    该字段自 v0.11.0 版本废弃，请改用 `AgentRtcUId`。
+    :::
+
+</Slot>
+
+<Slot for="struct-go-html-9-13-2">
+
+（可选）语音活动检测（VAD）配置，详见 [`JoinPropertiesVadBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinpropertiesvadbody)。
+
+    :::warning[注意]
+    该字段自 v0.12.0 版本废弃，请改用 `TurnDetection`。
+    :::
+
+</Slot>
+
+<a id="ttsmicrosoftvendorparams"></a>
+## TTSMicrosoftVendorParams
+
+```go
+type TTSMicrosoftVendorParams struct {
+  Key string `json:"key"`
+  Region string `json:"region"`
+  VoiceName string `json:"voice_name"`
+  Speed float32 `json:"speed"`
+  Volume float32 `json:"volume"`
+  SampleRate int `json:"sample_rate"`
+}
+```
+
+Text-to-Speech（TTS）模块中 Microsoft 供应商的参数。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Key` | `string` | 用于身份验证的 API 密钥。 |
+| `Region` | `string` | 托管语音服务的 Azure 区域。 |
+| `VoiceName` | `string` | （可选）用于语音合成的语音标识符。 |
+| `Speed` | `float32` | （可选）语速，适用于单词或句子级别，取值范围为原始语速的 0.5 到 2.0 倍。 |
+| `Volume` | `float32` | （可选）音量，取值范围为 0.0 到 100.0，其中 0.0 表示最小音量，100.0 表示最大音量。例如，75 表示音量为最大值的 75%。默认值为 100。 |
+| `SampleRate` | `int` | （可选）音频采样率，单位为 Hz。默认值为 24000。 |
+
+<a id="ttsvendorparamsinterface"></a>
+## TTSVendorParamsInterface
+
+```go
+type TTSVendorParamsInterface interface {
+  VendorParam()
+  GetVendorType() TTSVendor
+}
+```
+
+TTS 供应商参数接口。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `VendorParam` | `func` | 将该类型标记为有效的 TTS 供应商参数。 |
+| `GetVendorType` | `func` | 返回用于校验的供应商类型标识符。 |
+
+<a id="asrfengmingvendorparam"></a>
+## ASRFengmingVendorParam
+
+```go
+type ASRFengmingVendorParam struct{}
+```
+
+智能体加入 RTC 频道时使用的自动语音识别（ASR）凤鸣厂商参数。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+<a id="asrtencentvendorparam"></a>
+## ASRTencentVendorParam
+
+```go
+type ASRTencentVendorParam struct {
+  SecretId        string `json:"secret_id"`
+  AppId           string `json:"app_id"`
+  SecretKey       string `json:"secret_key"`
+  EngineModelType string `json:"engine_model_type"`
+  VoiceId         string `json:"voice_id"`
+}
+```
+
+智能体加入 RTC 频道时使用的 Tencent 自动语音识别（ASR）厂商参数。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+<a id="asrmicrosoftvendorparam"></a>
+## ASRMicrosoftVendorParam
+
+```go
+type ASRMicrosoftVendorParam struct {
+  Key        string   `json:"key"`
+  Region     string   `json:"region"`
+  Language   string   `json:"language"`
+  PhraseList []string `json:"phrase_list"`
+}
+```
+
+Microsoft 自动语音识别（ASR）厂商参数。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+<a id="joinpropertiesmllmbody"></a>
+## JoinPropertiesMLLMBody
+
+```go
+type JoinPropertiesMLLMBody struct {
+  Url string `json:"url"`
+  APIKey string `json:"api_key"`
+  Messages []map[string]any `json:"messages"`
+  Params map[string]any `json:"params"`
+  MaxHistory *int `json:"max_history,omitempty"`
+  InputModalities []string `json:"input_modalities,omitempty"`
+  OutputModalities []string `json:"output_modalities,omitempty"`
+  GreetingMessage string `json:"greeting_message,omitempty"`
+  Vendor string `json:"vendor,omitempty"`
+  Style string `json:"style,omitempty"`
+}
+```
+
+多模态语言模型配置。
+
+:::info[信息]
+自 v0.12.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Url` | `string` | （必填）用于 OpenAI Realtime API 的 WebSocket 地址。 |
+| `APIKey` | `string` | （必填）用于身份验证的 API 密钥。 |
+| `Messages` | `[]map[string]any` | （可选）用于短期记忆管理的对话项数组。结构与 OpenAI Realtime API 中 item.content 相同，详见：https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/create。 |
+| `Params` | `map[string]any` | <Slot name="struct-go-html-12-4-2" /> |
+| `MaxHistory` | `*int` | （可选）要保留的对话历史消息数量。不能超过模型的上下文窗口。默认值为 32。 |
+| `InputModalities` | `[]string` | <Slot name="struct-go-html-12-6-2" /> |
+| `OutputModalities` | `[]string` | 输出参数，表示输出格式选项，例如 ["text", "audio"] 表示同时返回文本和语音响应。 |
+| `GreetingMessage` | `string` | （可选）用户加入频道时，智能体最初说出的消息。 |
+| `Vendor` | `string` | （可选）多模态语言模型提供商标识。设置为 "openai" 表示使用 OpenAI Realtime API。 |
+| `Style` | `string` | （可选）API 请求样式。设置为 "openai" 表示使用 OpenAI Realtime API 格式。 |
+
+<Slot for="struct-go-html-12-4-2">
+
+（可选）额外的多模态语言模型配置参数。
+
+    - 模态设置将被 `input_modalities` 和 `output_modalities` 覆盖。
+    - 轮次检测设置将被 `mllm` 外部的 `turn_detection` 配置覆盖。
+
+</Slot>
+
+<Slot for="struct-go-html-12-6-2">
+
+（可选）多模态语言模型的输入模态。
+
+    - ["audio"]：仅音频（默认）。
+    - ["audio", "text"]：音频和文本。
+
+</Slot>
+
+<a id="turndetectionbody"></a>
+## TurnDetectionBody
+
+```go
+type TurnDetectionBody struct {
+  Type string `json:"type"`
+  InterruptMode string `json:"interrupt_mode,omitempty"`
+  InterruptDurationMs *int `json:"interrupt_duration_ms,omitempty"`
+  PrefixPaddingMs *int `json:"prefix_padding_ms,omitempty"`
+  SilenceDurationMs *int `json:"silence_duration_ms,omitempty"`
+  Threshold *float64 `json:"threshold,omitempty"`
+  CreateResponse *bool `json:"create_response,omitempty"`
+  InterruptResponse *bool `json:"interrupt_response,omitempty"`
+  Eagerness *string `json:"eagerness,omitempty"`
+}
+```
+
+配置会话轮次检测的参数。
+
+:::info[信息]
+自 v0.11.0 版本新增。
+:::
+
+<a id="fixedparams"></a>
+## FixedParams
+
+```go
+type FixedParams struct {
+  SilenceConfig *SilenceConfig `json:"silence_config,omitempty"`
+  DataChannel *string `json:"data_channel,omitempty"`
+  EnableMetrics bool `json:"enable_metrics,omitempty"`
+  EnableErrorMessage bool `json:"enable_error_message,omitempty"`
+}
+```
+
+固定参数配置。
+
+:::info[信息]
+自 v0.11.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `SilenceConfig` | `SilenceConfig` | （可选）智能体的静默配置，详见 [`SilenceConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#silenceconfig)。 |
+| `DataChannel` | `string` | <Slot name="struct-go-html-13-2-2" /> |
+| `EnableMetrics` | `bool` | <Slot name="struct-go-html-13-3-2" /> |
+| `EnableErrorMessage` | `bool` | <Slot name="struct-go-html-13-4-2" /> |
+
+<Slot for="struct-go-html-13-2-2">
+
+（可选）智能体数据传输通道：
+
+    - "rtm"：使用 RTM 传输。该配置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
+    - "datastream"：使用 RTC 数据流传输（默认）。
+
+</Slot>
+
+<Slot for="struct-go-html-13-3-2">
+
+（可选）是否接收智能体性能数据：
+
+    - `true`：接收智能体性能数据。
+    - `false`：（默认）不接收智能体性能数据。
+
+    该设置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
+
+</Slot>
+
+<Slot for="struct-go-html-13-4-2">
+
+（可选）是否接收智能体错误事件：
+
+    - `true`：接收智能体错误事件。
+    - `false`：（默认）不接收智能体错误事件。
+
+    该设置仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
+
+</Slot>
+
+<a id="silenceconfig"></a>
+## SilenceConfig
+
+```go
+type SilenceConfig struct {
+  TimeoutMs *int `json:"timeout_ms,omitempty"`
+  Action *string `json:"action,omitempty"`
+  Content *string `json:"content,omitempty"`
+}
+```
+
+配置智能体的静默行为。
+
+:::info[信息]
+自 v0.11.0 版本新增。
+:::
+
+<a id="parameters"></a>
+## Parameters
+
+```go
+type Parameters struct {
+  ExtraParams map[string]any
+  FixedParams *FixedParams
+}
+```
+
+智能体参数配置。
+
+:::info[信息]
+自 v0.11.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ExtraParams` | `map[string]any` | 用于灵活键值对的额外参数。 |
+| `FixedParams` | `FixedParams` | 类型安全的固定参数，详见 [`FixedParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#fixedparams)。 |
+
+<a id="listoption"></a>
+## ListOption
+
+```go
+type ListOption func(*ListOptions)
+```
+
+用于查询智能体列表的过滤条件类型。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `*ListOptions` | `ListOptions` |  |
+
+<a id="updatereqbody"></a>
+## UpdateReqBody
+
+```go
+type UpdateReqBody struct {
+  Token string `json:"token"`
+  LLM *UpdateLLMBody `json:"llm,omitempty"`
+}
+```
+
+调用对话式 AI 引擎的 [`Update`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#update) API 时使用的请求体。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Token` | `string` | 用于身份验证的动态密钥（Token）。如果项目启用了 App 证书，必须在此字段中传入项目的动态密钥。 |
+| `LLM` | `UpdateLLMBody` | （可选）用于配置智能体的 LLM 设置，详见 [`UpdateLLMBody`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#updatellmbody)。 |
+
+<a id="updatellmbody"></a>
+## UpdateLLMBody
+
+```go
+type UpdateLLMBody struct {
+  SystemMessages []map[string]any `json:"system_messages,omitempty"`
+  Params map[string]any `json:"params,omitempty"`
+}
+```
+
+智能体的 LLM 配置。
+
+:::info[信息]
+自 v0.11.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `SystemMessages` | `[]map[string]any` | （可选）附加在每次 LLM 调用开头的一组预定义信息，用于控制 LLM 输出。可以包含角色设置、提示词和回答示例，必须兼容 OpenAI 协议。 |
+| `Params` | `map[string]any` | （可选）在 LLM 消息体中传输的附加信息，例如所使用的模型、最大 Token 限制等。不同的 LLM 供应商支持不同的配置，详见各自的 LLM 文档。 |
+
+<a id="errresponse"></a>
+## ErrResponse
+
+```go
+type ErrResponse struct {
+  Detail string `json:"detail"`
+  Reason string `json:"reason"`
+}
+```
+
+调用对话式 AI 引擎 API 返回的错误响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Detail` | `string` | 错误详情。 |
+| `Reason` | `string` | 错误原因。 |
+
+<a id="response"></a>
+## Response
+
+```go
+type Response struct {
+  *agora.BaseResponse
+  ErrResponse ErrResponse
+}
+```
+
+调用对话式 AI 引擎 API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `*agora.BaseResponse` | `BaseResponse` | HTTP 基础响应，详见 [`BaseResponse`](/zh-CN/api-reference/conversational-ai/client-toolkit/baseresponse.go)。 |
+| `ErrResponse` | `ErrResponse` | 错误响应，详见 [`ErrResponse`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#errresponse)。 |
+
+<a id="joinsuccessresp"></a>
+## JoinSuccessResp
+
+```go
+type JoinSuccessResp struct {
+  AgentId string `json:"agent_id"`
+  CreateTs int `json:"create_ts"`
+  Status string `json:"status"`
+}
+```
+
+调用 [`Join`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#join) API 返回的成功响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `AgentId` | `string` | 智能体的唯一标识。 |
+| `CreateTs` | `int` | 智能体的创建时间戳。 |
+| `Status` | `string` | <Slot name="struct-go-html-20-3-2" /> |
+
+<Slot for="struct-go-html-20-3-2">
+
+智能体的运行状态：
+
+    - `IDLE (0)`：智能体处于空闲状态。
+    - `STARTING (1)`：智能体正在启动。
+    - `RUNNING (2)`：智能体正在运行。
+    - `STOPPING (3)`：智能体正在停止。
+    - `STOPPED (4)`：智能体已停止。
+    - `RECOVERING (5)`：智能体正在恢复。
+    - `FAILED (6)`：智能体运行失败。
+
+</Slot>
+
+<a id="joinresp"></a>
+## JoinResp
+
+```go
+type JoinResp struct {
+  Response
+  SuccessResp JoinSuccessResp
+}
+```
+
+调用 [`Join`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#join) API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessResp` | `JoinSuccessResp` | 成功响应，详见 [`JoinSuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#joinsuccessresp)。 |
+
+<a id="leaveresp"></a>
+## LeaveResp
+
+```go
+type LeaveResp struct {
+  Response
+}
+```
+
+调用 [`Leave`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#leave) API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+
+<a id="listsuccessresp"></a>
+## ListSuccessResp
+
+```go
+type ListSuccessResp struct {
+  Data struct {
+    Count int `json:"count"`
+    List []struct {
+      StartTs int64 `json:"start_ts"`
+      Status string `json:"status"`
+      AgentId string `json:"agent_id"`
+    } `json:"list"`
+  } `json:"data"`
+  Meta struct {
+    Cursor string `json:"cursor"`
+    Total int `json:"total"`
+  } `json:"meta"`
+  Status string `json:"status"`
+}
+```
+
+调用 [`List`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#list) API 的成功响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Data` | `struct` | 智能体数据信息。 |
+| `Count` | `int` | 本次返回的智能体数量。 |
+| `List` | `[]struct` | 符合条件的智能体列表。 |
+| `StartTs` | `int64` | 智能体的创建时间戳。 |
+| `Status` | `string` | <Slot name="struct-go-html-23-5-2" /> |
+| `AgentId` | `string` | 智能体的唯一标识符。 |
+| `Meta` | `struct` | 返回列表的元信息。 |
+| `Cursor` | `string` | 分页游标。 |
+| `Total` | `int` | 符合查询条件的智能体总数。 |
+| `Status` | `string` | 请求状态。 |
+
+<Slot for="struct-go-html-23-5-2">
+
+智能体运行状态：
+
+    - `IDLE (0)`：智能体处于空闲状态。
+    - `STARTING (1)`：智能体正在启动。
+    - `RUNNING (2)`：智能体正在运行。
+    - `STOPPING (3)`：智能体正在停止。
+    - `STOPPED (4)`：智能体已完成退出。
+    - `RECOVERING (5)`：智能体正在恢复中。
+    - `FAILED (6)`：智能体执行失败。
+
+</Slot>
+
+<a id="listresp"></a>
+## ListResp
+
+```go
+type ListResp struct {
+  Response
+  SuccessRes ListSuccessResp
+}
+```
+
+调用 [`List`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#list) API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 调用智能对话引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessRes` | `ListSuccessResp` | 成功响应，详见 [`ListSuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listsuccessresp)。 |
+
+<a id="querysuccessresp"></a>
+## QuerySuccessResp
+
+```go
+type QuerySuccessResp struct {
+  Message string `json:"message"`
+  StartTs int64 `json:"start_ts"`
+  StopTs int64 `json:"stop_ts"`
+  AgentId string `json:"agent_id"`
+  Status string `json:"status"`
+}
+```
+
+调用 [`Query`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#query) API 返回的成功响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Message` | `string` | 请求信息。 |
+| `StartTs` | `int64` | 智能体的创建时间戳。 |
+| `StopTs` | `int64` | 智能体的停止时间戳。 |
+| `AgentId` | `string` | 智能体的唯一标识符。 |
+| `Status` | `string` | <Slot name="struct-go-html-25-5-2" /> |
+
+<Slot for="struct-go-html-25-5-2">
+
+智能体的运行状态：
+
+    - `IDLE (0)`：智能体处于空闲状态。
+    - `STARTING (1)`：智能体正在启动。
+    - `RUNNING (2)`：智能体正在运行。
+    - `STOPPING (3)`：智能体正在停止。
+    - `STOPPED (4)`：智能体已停止。
+    - `RECOVERING (5)`：智能体正在恢复。
+    - `FAILED (6)`：智能体运行失败。
+
+</Slot>
+
+<a id="queryresp"></a>
+## QueryResp
+
+```go
+type QueryResp struct {
+  Response
+  SuccessRes QuerySuccessResp
+}
+```
+
+调用对话式 AI 引擎的 [`Query`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#query) API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | （必填）由对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessRes` | `QuerySuccessResp` | （必填）成功响应，详见 [`QuerySuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#querysuccessresp)。 |
+
+<a id="updatesuccessresp"></a>
+## UpdateSuccessResp
+
+```go
+type UpdateSuccessResp struct {
+  AgentId string `json:"agent_id"`
+  CreateTs int `json:"create_ts"`
+  State string `json:"state"`
+}
+```
+
+调用 [`Update`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#update) API 返回的成功响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `AgentId` | `string` | 智能体的唯一标识。 |
+| `CreateTs` | `int` | 智能体的创建时间戳。 |
+| `State` | `string` | <Slot name="struct-go-html-27-3-2" /> |
+
+<Slot for="struct-go-html-27-3-2">
+
+智能体的运行状态：
+
+    - `IDLE (0)`：智能体处于空闲状态。
+    - `STARTING (1)`：智能体正在启动。
+    - `RUNNING (2)`：智能体正在运行。
+    - `STOPPING (3)`：智能体正在停止。
+    - `STOPPED (4)`：智能体已停止。
+    - `RECOVERING (5)`：智能体正在恢复。
+    - `FAILED (6)`：智能体运行失败。
+
+</Slot>
+
+<a id="updateresp"></a>
+## UpdateResp
+
+```go
+type UpdateResp struct {
+  Response
+  SuccessResp UpdateSuccessResp
+}
+```
+
+调用 [`Update`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#update) API 返回的响应。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessResp` | `UpdateSuccessResp` | 成功响应，详见 [`UpdateSuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#updatesuccessresp)。 |
+
+<a id="speakbody"></a>
+## SpeakBody
+
+```go
+type SpeakBody struct {
+  Text *string `json:"text"`
+  Priority *string `json:"priority,omitempty"`
+  Interruptable *bool `json:"interrupt,omitempty"`
+}
+```
+
+[`Speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#speak) API 的请求体。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Text` | `string` | 要播报的文本内容，最大长度为 512 字节。 |
+| `Priority` | `string` | <Slot name="struct-go-html-29-2-2" /> |
+| `Interruptable` | `bool` | <Slot name="struct-go-html-29-3-2" /> |
+
+<Slot for="struct-go-html-29-2-2">
+
+语音播报行为的优先级，支持以下取值：
+
+    - `"INTERRUPT"`（默认）：高优先级，中断并播报。智能体将终止当前交互并直接播报该消息。
+    - `"APPEND"`：中等优先级，追加播报。智能体将在当前交互完成后播报该消息。
+    - `"IGNORE"`：低优先级，空闲时播报。如果智能体当前正在交互，则会直接忽略并丢弃该消息；仅当智能体处于非交互状态时才会播报该消息。
+
+</Slot>
+
+<Slot for="struct-go-html-29-3-2">
+
+是否允许用户说话来打断智能体的播报：
+
+    - `true`（默认）：允许。
+    - `false`：不允许。
+
+</Slot>
+
+<a id="historyresp"></a>
+## HistoryResp
+
+```go
+type HistoryResp struct {
+  Response
+  SuccessRes HistorySuccessResp
+}
+```
+
+调用 `History` API 返回的响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 由对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessRes` | `HistorySuccessResp` | 成功响应，详见 [`HistorySuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#historysuccessresp)。 |
+
+<a id="historysuccessresp"></a>
+## HistorySuccessResp
+
+```go
+type HistorySuccessResp struct {
+  StartTs int64 `json:"start_ts"`
+  AgentId string `json:"agent_id"`
+  Status string `json:"status"`
+  Contents []HistoryContent `json:"contents"`
+}
+```
+
+调用 History API 返回的成功响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `StartTs` | `int64` | 智能体的创建时间戳。 |
+| `AgentId` | `string` | 智能体的唯一标识符。 |
+| `Status` | `string` | 仅返回智能体的运行状态。 |
+| `Contents` | `[]HistoryContent` | 智能体的短期记忆内容，详见 [`HistoryContent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#historycontent)。 |
+
+<a id="historycontent"></a>
+## HistoryContent
+
+```go
+type HistoryContent struct {
+  Role string `json:"role"`
+  Content string `json:"content"`
+}
+```
+
+智能体的短期记忆内容。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Role` | `string` | <Slot name="struct-go-html-32-1-2" /> |
+| `Content` | `string` | 消息的内容。 |
+
+<Slot for="struct-go-html-32-1-2">
+
+发送消息的角色：
+
+    - user：用户。
+    - assistant：智能体。
+
+</Slot>
+
+<a id="interruptresp"></a>
+## InterruptResp
+
+```go
+type InterruptResp struct {
+  Response
+  SuccessRes InterruptSuccessResp
+}
+```
+
+调用 [`Interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#interrupt) API 返回的响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessRes` | `InterruptSuccessResp` | 成功响应，详见 [`InterruptSuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#interruptsuccessresp)。 |
+
+<a id="interruptsuccessresp"></a>
+## InterruptSuccessResp
+
+```go
+type InterruptSuccessResp struct {
+  Channel string `json:"channel"`
+  AgentId string `json:"agent_id"`
+  StartTs int64 `json:"start_ts"`
+}
+```
+
+调用中断对话式 AI 引擎的 API 后返回的成功响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Channel` | `string` | 智能体所属的频道场景名称。 |
+| `AgentId` | `string` | 智能体的唯一标识符。 |
+| `StartTs` | `int64` | 智能体的启动时间戳。 |
+
+<a id="speakresp"></a>
+## SpeakResp
+
+```go
+type SpeakResp struct {
+  Response
+  SuccessRes SpeakSuccessResp
+}
+```
+
+调用 [`Speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#speak) API 返回的响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Response` | `Response` | 对话式 AI 引擎 API 返回的响应，详见 [`Response`](/zh-CN/api-reference/conversational-ai/client-toolkit/response.go)。 |
+| `SuccessRes` | `SpeakSuccessResp` | 成功响应，详见 [`SpeakSuccessResp`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#speaksuccessresp)。 |
+
+<a id="speaksuccessresp"></a>
+## SpeakSuccessResp
+
+```go
+type SpeakSuccessResp struct {
+  Channel string `json:"channel"`
+  AgentId string `json:"agent_id"`
+  StartTs int64 `json:"start_ts"`
+}
+```
+
+调用 [`Speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/client.go#speak) API 返回的成功响应。
+
+:::info[信息]
+自 v0.9.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `Channel` | `string` | 智能体的频道名。 |
+| `AgentId` | `string` | 智能体的唯一标识符。 |
+| `StartTs` | `int64` | 智能体的启动时间戳。 |

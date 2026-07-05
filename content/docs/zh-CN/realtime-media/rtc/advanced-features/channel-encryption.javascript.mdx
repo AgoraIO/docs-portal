@@ -1,0 +1,106 @@
+---
+title: "媒体流加密"
+---
+在实时音视频互动过程中，开发者需要对媒体流加密，从而保障用户的数据安全。声网提供媒体流加密功能，你可以调用 API 选择加密模式并设置密钥和盐。
+
+下图描述了启用媒体流加密功能后的数据传输流程：
+
+![加密传输流程](https://web-cdn.agora.io/doc-cms/uploads/1728355317054-Web-channel-encryption.png)
+
+## 实现方法
+
+本节介绍如何使用 Web SDK 的媒体流加密功能。
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start.javascript)文档在你的项目中实现基本的实时音视频互动功能。
+
+在加入频道前，调用 [`AgoraRTCClient.setEncryptionConfig`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setencryptionconfig) 方法选择加密模式。声网支持以下加密模式：
+
+- `"aes-128-xts"`: 128 位 AES 加密，XTS 模式。
+- `"aes-256-xts"`: 256 位 AES 加密，XTS 模式。
+- `"aes-128-gcm"`: 128 位 AES 加密，GCM 模式。
+- `"aes-256-gcm"`: 256 位 AES 加密，GCM 模式。
+- `"aes-128-ecb"`: 128 位 AES 加密，ECB 模式。
+- `"sm4-128-ecb"`: 128 位 SM4 加密，ECB 模式。
+- `"aes-128-gcm2"`: 128 位 AES 加密，GCM 模式，加盐。仅适用于 Web SDK v4.5.0 及之后版本。
+- `"aes-256-gcm2"`: 256 位 AES 加密，GCM 模式，加盐。仅适用于 Web SDK v4.5.0 及之后版本。
+
+如果你选择除 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 之外的加密模式，只需设置密钥。为加强安全性，声网建议将加密模式设为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"`，并设置密钥和盐。
+
+参考以下步骤分别生成并设置密钥和盐。
+
+:::warning[注意]
+同一频道内所有用户必须使用相同的加密模式、密钥和盐值。
+:::
+
+### 生成并设置密钥
+
+1. 参考以下命令在服务端通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+    ```shell
+    # 随机生成一个密钥
+    openssl rand -hex 16
+    # 示例输出
+    9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+    ```
+
+2. Web 客户端从服务端获取 Hex 编码的密钥，并在调用 `setEncryptionConfig` 时传入 SDK。
+
+### 生成并设置盐
+
+1. 参考以下命令在服务端通过 OpenSSL 生成 Base64 编码、32 字节的盐。你也可以参考声网在 GitHub 上提供的 [C++ 示例代码](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/sample/RtcChannelEncryptionSaltSample.cpp)在服务端生成 byte array 型的盐，然后转换成 Base64 编码。
+
+   ```shell
+   # Generate a random salt (32 bytes) in the Base64 format
+   openssl rand -base64 32
+   X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+   ```
+
+2. Web 客户端从服务端获取 Base64 编码的盐。
+
+3. Web 客户端将盐从 Base64 转换成 Uint8Array，并在调用 `setEncryptionConfig` 时传入 SDK。
+
+## 示例代码
+
+以下示例代码中的 `client` 是指通过 `AgoraRTC.createClient` 创建的本地客户端对象。
+
+```javascript
+// 声明一个工具函数，用于将 Base64 转换成 Uint8Array
+function base64ToUint8Array(base64Str: string): Uint8Array {
+  const raw = window.atob(base64Str);
+  const result = new Uint8Array(new ArrayBuffer(raw.length));
+
+  for (let i = 0; i < raw.length; i += 1) {
+    result[i] = raw.charCodeAt(i);
+  }
+
+  return result;
+}
+
+// 声明一个工具函数，用于将 Hex 转换成 ASCII
+function hex2ascii(hexx) {
+    const hex = hexx.toString();//force conversion
+    let str = '';
+    for (let i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
+async function getSecretAndSalt() {
+// 假设 getSecretAndSaltFromServer 返回从服务器拿到的密钥和盐值 ["dba643c8ba6b6dc738df43d9fd624293b4b12d87a60f518253bd10ba98c48453", "X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw="]
+  let [secret, salt] = await getSecretAndSaltFromServer();
+  salt = base64ToUint8Array(salt);
+  secret = hex2ascii(secret);
+  return [secret, salt];
+}
+
+let [secret, salt] = await getSecretAndSalt();
+
+// 设置加密方案为 aes-256-gcm2，并传入 secret 和 salt
+client.setEncryptionConfig("aes-256-gcm2", secret, salt);
+```
+
+## 开发注意事项
+
+- 请确保在调用 `AgoraRTCClient.join` 加入频道之前设置加密。
+- 通信和直播场景均支持媒体流加密功能。但是在直播场景下，声网不支持将加密后的媒体流推到 CDN 上。
+- 如需使用媒体流加密功能，请确保接收端和发送端使用相同的加密模式，否则会出现未定义行为，例如音频无声或视频黑屏。

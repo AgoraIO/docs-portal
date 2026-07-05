@@ -1,0 +1,430 @@
+---
+title: "实现纯语音互动"
+---
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/overview/key-concept.android.flutter)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.flutter)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+根据你选用的 IDE 不同，创建 Flutter 项目有多种方式，详见 [Create the app](https://docs.flutter.dev/get-started/test-drive?tab=vscode#create-app)。在本文中，以在终端中运行 `flutter create` 命令创建 Flutter 项目为例。
+
+  ```shell
+  # 将 <Project Name> 替换为项目名
+  flutter create <Project Name>
+  ```
+
+## 集成 SDK
+
+1. 打开 `pubspec.yaml` 文件，添加以下依赖：
+
+    - 添加 `agora_rtc_engine` 依赖项，集成声网 Flutter SDK。关于 `agora_rtc_engine` 的最新版本可以查询 [https://pub.dev/packages/agora_rtc_engine](https://pub.dev/packages/agora_rtc_engine)
+    - 添加 `permission_handler` 依赖项，安装权限处理插件。
+
+    ```yaml
+    environment:
+      sdk: ">=2.12.0 <3.0.0"
+    # 依赖项
+    dependencies:
+      flutter:
+        sdk: flutter
+      # The following adds the Cupertino Icons font to your application.
+      # Use with the CupertinoIcons class for iOS style icons.
+      cupertino_icons: ^0.1.3
+      # 声网 Flutter SDK 依赖项，请使用最新版本的 agora_rtc_engine
+      agora_rtc_engine: ^6.0.0
+      #  权限处理插件依赖项
+      permission_handler: ^8.3.0
+    ```
+
+2. 添加依赖并保存文件后，打开终端，在项目路径下执行以下命令获取并安装依赖：
+
+    ```shell
+    flutter pub get
+    ```
+
+## 创建用户界面
+
+复制以下代码即可快速创建实时音频互动场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```dart
+// 构建 UI
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Agora Voice Call',
+    home: Scaffold(
+      appBar: AppBar(
+        title: Text('Agora Voice Call'),
+      ),
+      body: Center(
+        child: Text('Have a voice call!'),
+      ),
+    ),
+  );
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本小节介绍如何实现一个实时音频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音频互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现实时音频互动基本流程的完整代码以供参考。复制以下代码替换 `/lib/main.dart` 文件的全部内容，即可快速体验实时音频互动基础功能。
+
+:::info[信息]
+将 `<-- Insert App Id -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现实时音频互动示例代码">
+
+```dart
+import 'dart:async';
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+void main() => runApp(MyApp());
+
+// 填写声网控制台中获取的 App ID
+const appId = "<-- Insert App Id -->";
+// 填写声网控制台中生成的临时 Token
+const token = "<-- Insert Token -->";
+// 填写频道名
+const channel = "<-- Insert Channel Name -->";
+
+// 应用类
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+// 应用状态类
+class _MyAppState extends State<MyApp> {
+  int? _remoteUid;
+  bool _localUserJoined = false;
+  late RtcEngine _engine;
+
+  @override
+  void initState() {
+    super.initState();
+    initAgora();
+  }
+
+  // 初始化应用
+  Future<void> initAgora() async {
+    // 获取权限
+    await [Permission.microphone].request();
+
+    // 创建 RtcEngine
+    _engine = await createAgoraRtcEngine();
+
+    // 初始化 RtcEngine，设置频道场景为 channelProfileLiveBroadcasting（直播场景）
+    await _engine.initialize(const RtcEngineContext(
+      appId: appId,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
+
+    // 添加回调事件
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        // 成功加入频道回调
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          debugPrint("local user ${connection.localUid} joined");
+          setState(() {
+            _localUserJoined = true;
+          });
+        },
+        // 远端用户或主播加入当前频道回调
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          debugPrint("remote user $remoteUid joined");
+          setState(() {
+            _remoteUid = remoteUid;
+          });
+        },
+        // 远端用户或主播离开当前频道回调
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          debugPrint("remote user $remoteUid left channel");
+          setState(() {
+            _remoteUid = null;
+          });
+        },
+      ),
+    );
+
+    // 加入频道
+    await _engine.joinChannel(
+      token: token,
+      channelId: channel,
+      options: const ChannelMediaOptions(
+        // 自动订阅所有音频流
+        autoSubscribeAudio: true,
+        // 发布麦克风采集的音频
+        publishMicrophoneTrack: true,
+        // 设置用户角色为 clientRoleBroadcaster（主播）或 clientRoleAudience（观众）
+        clientRoleType: ClientRoleType.clientRoleBroadcaster),
+      uid: 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dispose();
+  }
+
+  Future<void> _dispose() async {
+    await _engine.leaveChannel(); // 离开频道
+    await _engine.release(); // 释放资源
+  }
+
+  // 构建 UI
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Agora Voice Call',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Agora Voice Call'),
+        ),
+        body: Center(
+          child: Text('Have a voice call!'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 导入 package
+
+导入构建 App 所需的 package。
+
+```dart
+import 'dart:async';
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+```
+
+### 定义 App ID 和 Token
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```dart
+// 填写声网控制台中获取的 App ID
+const appId = "<-- Insert App Id -->";
+// 填写声网控制台中生成的临时 Token
+const token = "<-- Insert Token -->";
+// 填写频道名
+const channel = "<-- Insert Channel Name -->";
+```
+
+### 处理权限请求
+
+获取体验实时音频所需的麦克风权限。
+
+```dart
+await [Permission.microphone].request();
+```
+
+:::info[信息]
+如果你的目标平台是 iOS 或 macOS，需要在 [`Info.plist`](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6) 中添加实时互动所需的麦克风权限声明，`key` 为 `Privacy - Microphone Usage Description`，`value` 填写使用目的，如：for a voice call。
+:::
+
+### 初始化引擎
+
+调用 `createAgoraRtcEngine` 方法创建一个 `RtcEngine` 对象，然后调用 `initialize` 初始化引擎并设置频道场景为 `channelProfileLiveBroadcasting`（直播场景）。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```dart
+// 创建 RtcEngine
+_engine = await createAgoraRtcEngine();
+
+// 初始化 RtcEngine，设置频道场景为 channelProfileLiveBroadcasting（直播场景）
+await _engine.initialize(const RtcEngineContext(
+  appId: appId,
+  channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+));
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置用户角色为 `clientRoleBroadcaster`（主播）或 `clientRoleAudience`（观众）。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频。
+- 将 `autoSubscribeAudio` 设置为 `true`，自动订阅所有音频流。
+
+```dart
+await _engine.joinChannel(
+  // 使用临时 Token 和频道名加入频道
+  token: token,
+  channelId: channel,
+  options: const ChannelMediaOptions(
+    // 自动订阅所有音频流
+    autoSubscribeAudio: true,
+    // 发布麦克风采集的音频
+    publishMicrophoneTrack: true,
+    // 设置用户角色为 clientRoleBroadcaster（主播）或 clientRoleAudience（观众）
+    clientRoleType: ClientRoleType.clientRoleBroadcaster),
+  // uid 为 0 表示引擎内部随机生成用户名
+  uid: 0,
+);
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示如何调用 `registerEventHandler` 添加并实现 `onJoinChannelSuccess`、 `onUserJoined` 和 `onUserOffline` 回调。
+
+```dart
+// 添加回调事件
+_engine.registerEventHandler(
+  RtcEngineEventHandler(
+    // 成功加入频道回调
+    onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+      debugPrint("local user ${connection.localUid} joined");
+      setState(() {
+        _localUserJoined = true;
+      });
+    },
+    // 远端用户或主播加入当前频道回调
+    onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+      debugPrint("remote user $remoteUid joined");
+      setState(() {
+        _remoteUid = remoteUid;
+      });
+    },
+    // 远端用户或主播离开当前频道回调
+    onUserOffline: (RtcConnection connection, int remoteUid,
+        UserOfflineReasonType reason) {
+      debugPrint("remote user $remoteUid left channel");
+      setState(() {
+        _remoteUid = null;
+      });
+    },
+  ),
+);
+```
+
+### 开始音频互动
+
+在 `initState()` 方法中初始化声网音频功能并开始实时音频互动。
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initAgora();
+}
+```
+
+### 结束音频互动
+
+按照以下步骤结束音频互动：
+
+1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
+2. 调用 `release` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+    :::warning[注意]
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    :::
+
+```dart
+Future<void> _dispose() async {
+  await _engine.leaveChannel(); // 离开频道
+  await _engine.release(); // 释放资源
+}
+```
+
+## 调试 App
+
+按照以下步骤测试语音 App：
+
+  1. 将目标设备连接到电脑。
+
+  2. 打开终端，在项目路径下执行以下命令在目标设备上运行示例项目：
+
+      ```shell
+      flutter run
+      ```
+
+  3. 启动 App，授予麦克风权限。
+
+  4. 使用第二台设备，重复以上步骤，在该设备上安装 App、打开 App 加入频道，观察测试结果，双方可以听到彼此的声音。
+
+## 后续步骤
+
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.flutter)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/basic-features/ls-quick-start.flutter)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="join_channel_audio.dart" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+  <Card title="join_channel_audio.dart" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+</Cards>
+
+### 常见问题
+
+- [如何解决 Flutter 上 iOS release 包初始化时报 symbol not found 的问题？](/faq/integration-issues/flutter-ios-build)
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+- [编译 Xcode 项目时遇到无法打开 framework 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/basic-features/channel-connection.flutter)

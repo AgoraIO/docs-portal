@@ -1,0 +1,148 @@
+---
+title: "区域访问限制"
+---
+为适应不同国家或地区的法律法规，声网支持限定访问区域功能。开启限定访问区域功能后，不论用户在哪个区域使用你的 app，SDK 都只会访问指定区域的声网服务器。
+
+例如你指定了北美为访问区域，假设有两位用户分别从北美和中国连接声网服务器：
+
+| 指定访问区域 | App 用户所在区域 | SDK 实际访问区域 | 连接后的用户体验 |
+| --- | --- | --- | --- |
+| 北美 | 北美 | 北美 | 正常 |
+| 北美 | 中国 | 北美 | <Slot name="set-region-markdown-0-2-3" /> |
+
+<Slot for="set-region-markdown-0-2-3">
+
+可能受到较大影响。由于指定区域与 app 用户所在区域之间存在跨区域公共互联网，公共互联网网络质量较差会导致音视频体验受到影响。如果指定区域的服务器都不可用，SDK 会直接报错。
+
+</Slot>
+
+:::info[信息]
+- 如果指定区域的服务器都不可用，SDK 会直接报错。
+- 区域访问限制是 SDK 的高级设置功能，声网建议你仅在有访问安全限制的场景使用。
+:::
+
+## 实现方法
+
+服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
+
+你需要在调用 `initialize` 方法初始化 `IAgoraService` 实例时，通过设置 `AgoraServiceConfiguration` 中的 `areaCode` 参数来指定访问区域。
+
+- `AREA_CODE_GLOB`: （默认）全球。
+- `AREA_CODE_CN`: 中国大陆。
+- `AREA_CODE_NA`: 北美。
+- `AREA_CODE_EU`: 欧洲。
+- `AREA_CODE_AS`: 除中国大陆以外的亚洲区域。
+- `AREA_CODE_JP`: 日本。
+- `AREA_CODE_IN`: 印度。
+
+区域码支持位操作。
+
+## 示例代码
+
+```cpp
+// 创建 IAgoraService 实例
+auto service = createAgoraService();
+
+agora::base::AgoraServiceConfiguration scfg;
+scfg.enableAudioProcessor = true;
+scfg.enableAudioDevice = false;
+scfg.enableVideo = true;
+scfg.useStringUid = false;
+
+// 指定仅访问北美的服务器
+scfg.areaCode = agora::rtc::AREA_CODE_NA;
+
+// 初始化 IAgoraService 实例
+service->initialize(scfg);
+```
+
+服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
+
+你需要在调用 `initialize` 方法初始化 `IAgoraService` 实例时，通过设置 `AgoraServiceConfiguration` 中的 `areaCode` 参数来指定访问区域。
+
+- `0xFFFFFFFF`: （默认）全球。
+- `0x00000001`: 中国大陆。
+- `0x00000002`: 北美。
+- `0x00000004`: 欧洲。
+- `0x00000008`: 除中国大陆以外的亚洲区域。
+- `0x00000010`: 日本。
+- `0x00000020`: 印度。
+
+区域码支持位操作。
+
+## 示例代码
+
+```java
+// Creates an AgoraService object
+AgoraService service = new AgoraService();
+if (null == service) {
+    System.out.printf("createAndInitAgoraService fail\n");
+    return;
+}
+AgoraServiceConfig config = new AgoraServiceConfig();
+// Disables the audio device module (Normally we do not directly connect audio capture or playback devices to a server)
+config.setEnableAudioDevice(0);
+// Enables the audio processing module
+config.setEnableAudioProcessor(1);
+// Whether to enable video
+config.setEnableVideo(0);
+// Specify North America as the region for connection
+config.setAreaCode(0x00000002);
+int ret = service.initialize(config);
+```
+
+服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
+
+你需要在调用 `initialize` 方法初始化 `AgoraService` 实例时，通过设置 `AgoraServiceConfig` 中的 `area_code` 参数来指定访问区域。
+
+- `AREA_CODE_GLOB`: （默认）全球。
+- `AREA_CODE_CN`: 中国大陆。
+- `AREA_CODE_NA`: 北美。
+- `AREA_CODE_EU`: 欧洲。
+- `AREA_CODE_AS`: 除中国大陆以外的亚洲区域。
+- `AREA_CODE_JP`: 日本。
+- `AREA_CODE_IN`: 印度。
+
+区域码支持位操作。
+
+## 示例代码
+
+```python
+# 创建 AgoraService 实例
+agora_service = AgoraService()
+
+# 指定仅访问北美的服务器
+config = AgoraServiceConfig()
+config.appid = appid
+config.area_code = AreaCode.AREA_CODE_NA.value
+
+# 初始化 AgoraService 实例
+agora_service.initialize(config)
+```
+
+服务端 SDK 支持限定区域访问。一旦指定了访问区域，音视频和消息数据将不会访问指定区域以外的服务器。
+
+你需要在调用 `initialize` 方法初始化 `agoraservice` 包时，通过设置 `AgoraServiceConfig` 中的 `AreaCode` 参数来指定访问区域。
+
+- `AreaCodeGlob`: （默认）全球。
+- `AreaCodeCN`: 中国大陆。
+- `AreaCodeNA`: 北美。
+- `AreaCodeEU`: 欧洲。
+- `AreaCodeAS`: 除中国大陆以外的亚洲区域。
+- `AreaCodeJP`: 日本。
+- `AreaCodeIN`: 印度。
+
+区域码支持位操作。
+
+## 示例代码
+
+```go
+svcCfg := agoraservice.NewAgoraServiceConfig()
+svcCfg.AppId = appid
+
+// 指定仅访问北美的服务器
+svcCfg.AreaCode = agoraservice.AreaCodeNA
+
+// 初始化 `agoraservice` 包
+agoraservice.Initialize(svcCfg)
+```

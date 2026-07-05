@@ -1,0 +1,901 @@
+---
+title: "Storage"
+---
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据。
+
+RtmStorage
+
+## setChannelMetadata
+
+### 接口描述
+
+`setChannelMetadata` 方法可以为频道（Message Channel 或 Stream Channel）设置 Channel Metadata。一个频道只能有一组 Metadata，但每组 Metadata 可以有一个或多个 Metadata Item。如果多次调用该方法，SDK 会依次检索 Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 Channel Metadata 或 Metadata Item 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setChannelMetadata` 方法：
+
+```dart
+Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(
+    String channelName,
+    RtmChannelType channelType,
+    List<MetadataItem> metadata,
+    {
+        int majorRevision = -1,
+        bool recordTs = false,
+        bool recordUserId = false,
+        String lockName = ''
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
+| `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-0-4-4" /> |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+| `lockName` | String | 选填 | '' | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+
+<Slot for="storage-flutter-html-0-4-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Apple',
+  value: '100',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Banana',
+  value: '200',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+    "myChannel",
+    RtmChannelType.message,
+    metadata,
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true,
+    lockName: "myLock"
+)
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, SetChannelMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `SetChannelMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class SetChannelMetadataResult {
+      final String channelName;                         // 当前操作的频道
+      final RtmChannelType channelType;                 // 当前操作频道类型
+  }
+  ```
+
+## getChannelMetadata
+
+### 接口描述
+
+`getChannelMetadata` 方法可以获取指定频道的 Metadata。
+
+### 接口方法
+
+你可以通过以下方式调用 `getChannelMetadata` 方法：
+
+```dart
+Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(
+    String channelName,
+    RtmChannelType channelType
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+
+### 接口方法
+
+```dart
+var (status,response) = await rtmClient.getStorage.getChannelMetadata(
+    "myChannel",
+    RtmChannelType.message,
+)
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, GetChannelMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `GetChannelMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class GetChannelMetadataResult {
+      final String channelName;                         // 当前操作的频道
+      final RtmChannelType channelType;                 // 当前操作频道类型
+      final Metadata data;                              // Metadata 数据
+  }
+  ```
+
+## removeChannelMetadata
+
+### 接口描述
+
+`removeChannelMetadata` 方法可以删除 Channel Metadata 或 Channel Metadata Item 数组。
+
+删除时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
+
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeChannelMetadata` 方法：
+
+```dart
+Future<(RtmStatus, RemoveChannelMetadataResult?) removeChannelMetadata(
+    String channelName,
+    RtmChannelType channelType,
+    {
+        int majorRevision = -1,
+        List<MetadataItem> metadata = const [],
+        bool recordTs = false,
+        bool recordUserId = false,
+        String lockName = ''
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-2-3-4" /> |
+| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `lockName` | String | 选填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-flutter-html-2-3-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 接口方法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Apple',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Banana',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+    "myChannel",
+    RtmChannelType.message,
+    metadata,
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true,
+    lockName: "myLock"
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, RemoveChannelMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `RemoveChannelMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class RemoveChannelMetadataResult {
+      final String channelName;                         // 当前操作的频道
+      final RtmChannelType channelType;                 // 当前操作频道类型
+  }
+  ```
+
+## updateChannelMetadata
+
+### 接口描述
+
+`updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
+
+成功更新后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateChannelMetadata` 方法：
+
+```dart
+Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(
+    String channelName,
+    RtmChannelType channelType,
+    List<MetadataItem> metadata = const [],
+    {
+      int majorRevision = -1,
+      bool recordTs = false,
+      bool recordUserId = false,
+      String lockName = ''
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-3-4-4" /> |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+| `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
+
+<Slot for="storage-flutter-html-3-4-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Apple',
+  value: '330',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Banana',
+  value: '480',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.updateChannelMetadata(
+    "myChannel",
+    RtmChannelType.message,
+    metadata,
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true,
+    lockName: "myLock"
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  UpdateChannelMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` UpdateChannelMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class UpdateChannelMetadataResult {
+      final String channelName;                         // 当前操作的频道
+      final RtmChannelType channelType;                 // 当前操作频道类型
+  }
+  ```
+
+## setUserMetadata
+
+### 接口描述
+
+`setUserMetadata` 方法可以设置 User Metadata。如果多次调用该方法时，SDK 会依次检索 User Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
+
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过设置 `majorRevision` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 User Metadata 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性为 `-1` 时，本次调用不开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 User Metadata 或 Metadata Item 不存在，则会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 User Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(
+    String userId,
+    List<MetadataItem> metadata,
+    {
+        int majorRevision = -1,
+        bool recordTs = false,
+        bool recordUserId = false
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-4-3-4" /> |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-flutter-html-4-3-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Name',
+  value: 'Tony',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Mute',
+  value: 'true',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.setUserMetadata(
+    "Tony",
+    metadata,
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  SetUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` SetUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class SetUserMetadataResult {
+      final String userId;                         // 当前操作的用户 ID
+  }
+  ```
+
+## getUserMetadata
+
+### 接口描述
+
+`getUserMetadata` 方法可以获取指定用户的 Metadata 和 User Metadata Item。
+
+### 接口方法
+
+你可以通过以下方式调用 `getUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, GetUserMetadataResult?)> getUserMetadata(String userId);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.getStorage.getUserMetadata( "Tony" );
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  GetUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` GetUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class GetUserMetadataResult {
+      final String userId;                        // 当前操作的用户 ID
+      final Metadata data;                        // 用户 Metadata 数据
+  }
+  ```
+
+## removeUserMetadata
+
+### 接口描述
+
+`removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
+
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(
+    String userId,
+    {
+        int majorRevision = -1,
+        List<MetadataItem> metadata = const [],
+        bool recordTs = false,
+        bool recordUserId = false
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-6-2-4" /> |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-flutter-html-6-2-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Name',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Mute',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.removeUserMetadata(
+    "Tony",
+    metadata: metadata
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  RemoveUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` RemoveUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class RemoveUserMetadataResult {
+      final String userId;                        // 当前操作的用户 ID
+  }
+  ```
+
+## updateUserMetadata
+
+### 接口描述
+
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(
+    String userId,
+    List<MetadataItem> metadata,
+    {
+        int majorRevision = -1,
+        bool recordTs = false,
+        bool recordUserId = false
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `majorRevision` | int | 选填 | - | <Slot name="storage-flutter-html-7-3-4" /> |
+| `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
+| `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
+
+<Slot for="storage-flutter-html-7-3-4">
+
+版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var item1 = MetadataItem(
+  key: 'Name',
+  value: 'Sara',
+  revision: 174298200
+);
+
+var item2 = MetadataItem(
+  key: 'Mute',
+  value: 'false',
+  revision: 174298100
+);
+
+var metadata = [item1,item2];
+
+var (status,response) = await rtmClient.getStorage.updateUserMetadata(
+    "Sara",
+    metadata,
+    majorRevision: 174298222,
+    recordTs: true,
+    recordUserId: true
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,UpdateUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `UpdateUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class UpdateUserMetadataResult {
+      final String userId;                        // 当前操作的用户 ID
+  }
+  ```
+
+## subscribeUserMetadata
+
+### 接口描述
+
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `user` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, SubscribeUserMetadataResult?)> subscribeUserMetadata(String userId);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.getStorage.subscribeUserMetadata( "Sara");
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  SubscribeUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` SubscribeUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class SubscribeUserMetadataResult {
+      final String userId;                        // 当前操作的用户 ID
+  }
+  ```
+
+## unsubscribeUserMetadata
+
+### 接口描述
+
+如果你不需要接收某个用户 User Metadata 的变更通知，调用 `unsubscribeUserMetadata` 方法取消订阅。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeUserMetadata` 方法：
+
+```dart
+Future<(RtmStatus, UnsubscribeUserMetadataResult?)> unsubscribeUserMetadata(String userId);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.getStorage.unsubscribeUserMetadata( "Sara");
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus,  UnsubscribeUserMetadataResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 ` UnsubscribeUserMetadataResult` 类型的数据，定义如下：
+
+  ```dart
+  class UnsubscribeUserMetadataResult {
+      final String userId;                        // 当前操作的用户 ID
+  }
+  ```
+
+## MetadataItem
+
+设置和管理 Metadata Item 的数据结构。包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | String | 选填 | - | 键。 |
+| `value` | String | 选填 | - | 值。 |
+| `authorUserId` | String | 选填 | - | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | int | 选填 | `-1` | <Slot name="storage-flutter-html-10-4-4" /> |
+| `updateTs` | int | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-flutter-html-10-4-4">
+
+- 在读取操作时作为真实版本号返回。
+      - 在写入操作时作为版本控制开关：
+        -  `-1`: 关闭版本校验。
+        - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>

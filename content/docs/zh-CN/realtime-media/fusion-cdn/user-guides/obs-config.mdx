@@ -1,0 +1,48 @@
+---
+title: "推流软件配置"
+---
+声网推荐使用以下任意一种推流软件向融合 CDN 直播服务推流：
+
+- [OBS](https://obsproject.com) (Open Broadcaster Software)，支持 macOS、Windows 及 Linux 平台。
+- [XSplit Broadcaster](https://www.xsplit.com/broadcaster)，支持 Windows 平台。
+
+本文以使用 OBS 推流为例，介绍推流软件的相关配置。
+
+## 前提条件
+
+开始之前，请确保满足以下条件：
+
+- 已安装 OBS。
+- 推流域名和播流域名已配置完成。你可以参考[配置服务](/zh-CN/realtime-media/fusion-cdn/get-started/quick-start#配置服务)在声网控制台配置，也可以[调用域名管理 RESTful API](/doc/fusion-cdn/restful/streaming/operations/post-v1-projects-appid-fls-domains) 配置。
+
+## 设置推流服务
+
+参考以下步骤设置推流服务：
+
+1. 获取推流 URL，详见[拼接直播 URL](/zh-CN/realtime-media/fusion-cdn/user-guides/streaming-url)。
+2. 打开 OBS，在右下角的控件菜单中点击**设置**，打开设置窗口。
+
+![open obs setting](https://web-cdn.agora.io/docs-files/1637227546202)
+
+3. 在设置窗口的左侧导航栏点击**推流**，服务类型选择**自定义...**。
+4. 根据推流 URL 填写服务器和串流密钥。假设推流 URL 为 `rtmp://push.agora.io/live/test?ts=1635004800&sign=95b0a9970c593819`，则设置如下：
+   - 服务器：`rtmp://push.agora.io/live`
+   - 串流密钥：`test?ts=1635004800&sign=95b0a9970c593819`
+
+![obs example setting](https://web-cdn.agora.io/docs-files/1637227399558)
+
+5. 点击**确定**，保存设置。
+
+## 推流编码参数配置
+
+下表列出声网推荐的推流编码参数配置供你参考：
+
+| 编码参数       | 推荐配置                                                     |
+| :------------- | :----------------------------------------------------------- |
+| 视频编码格式   | H.264                                        |
+| 视频编码器   | x264                                           |
+| 音频编码格式   | AAC                                                          |
+| 码率（比特率） | 根据视频的分辨率和帧率进行设置，可以参考声网视频码率参考表中的[直播码率](/zh-CN/realtime-media/rtc/basic-features/video-profile.android#视频属性参考) |
+| 关键帧间隔     | 2 秒                                                         |
+
+其他编码参数建议使用默认值，或者咨询[技术支持](https://ticket.shengwang.cn/)。

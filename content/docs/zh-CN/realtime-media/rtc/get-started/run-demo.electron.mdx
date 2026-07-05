@@ -1,0 +1,67 @@
+---
+title: "跑通 API 示例项目"
+---
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/example" />
+</Cards>
+
+本文介绍如何快速跑通 Electron 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Node.js](https://nodejs.org/en/download/) 14 或更高版本
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- Python 3.11.x
+- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.electron.electron)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 从以下两种方式中任选一种获取示例项目：
+    - 前往[下载](/zh-CN/realtime-media/rtc/resources.electron)页面，下载最新版的 Electron 视频 SDK。
+    - 运行以下命令将 Electron SDK 克隆至本地。
+
+        ```shell
+        git clone git@github.com:AgoraIO-Extensions/Electron-SDK.git
+        ```
+
+2. Electron SDK 的 API 使用示例位于 `/example/` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/example/src/renderer/examples/basic`      | 基础功能。 |
+    | `/example/src/renderer/examples/advanced`   | 进阶功能。 |
+    | `/example/src/renderer/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+
+### 配置示例项目
+
+切换至 `/example` 目录下，运行以下命令集成 SDK 并安装依赖项：
+
+```shell
+yarn
+```
+
+### 运行示例项目
+
+1. 在 `/example/` 目录使用以下命令运行 Electron 示例项目。
+
+    ```shell
+    yarn start
+    ```
+
+2. 以 Windows 为例，运行完成后，你的电脑上会弹出以下应用。
+
+![Electron Demo](/img/rtc/electron-run-demo.png)
+
+3. 在 **Setting** 页面填入你从控制台获取的 App ID、临时 Token 和生成临时 Token 时指定的频道名，之后点击 **Save** 保存设置。
+
+4. 你可以在左侧目录任意选择你想体验的功能或场景。以 **Basic** 中的 **JoinChannelVideo** 为例，点击 **join channel** 加入频道。
+
+4. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。

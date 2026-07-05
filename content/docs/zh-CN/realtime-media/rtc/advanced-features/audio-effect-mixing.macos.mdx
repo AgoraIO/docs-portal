@@ -1,0 +1,293 @@
+---
+title: "播放音效或音乐文件"
+---
+在游戏或 K 歌等实时音视频场景中，为烘托气氛、增添趣味性，用户通常需要播放音效或音乐文件。
+
+本文介绍如何在你的项目中实现播放音效或音乐文件功能。
+
+## 技术原理
+
+声网提供了以下 API， 帮助你实现播放音效或音乐文件：
+
+- 音效 API：播放持续时间短的氛围音，例如掌声、欢呼声、打斗声、枪击声等，通常可以同时播放**多个音效文件**。
+- 音乐 API：播放比较长的音乐文件，例如，在唱歌时播放伴奏，在聊天时播放背景音乐。同一时间，**只能播放一个音乐文件**。
+
+:::warning[注意]
+如果使用 `startAudioMixing` 等音乐 API 播放时长较短的音效文件、或使用 `playEffect` 等音效 API 播放时长较长的音乐文件可能会播放失败。
+:::
+
+这些方法主要包括如下功能：
+
+| 功能 | 音效 API | 音乐 API |
+| --- | --- | --- |
+| 播放或停止播放特定的音频文件 | <Slot name="audio-effect-mixing-ios-macos-markdown-0-1-1" /> | <Slot name="audio-effect-mixing-ios-macos-markdown-0-1-2" /> |
+| 暂停或恢复播放音频文件 | <Slot name="audio-effect-mixing-ios-macos-markdown-0-2-1" /> | <Slot name="audio-effect-mixing-ios-macos-markdown-0-2-2" /> |
+| 获取和调整音频文件的播放位置和音量 | <Slot name="audio-effect-mixing-ios-macos-markdown-0-3-1" /> | <Slot name="audio-effect-mixing-ios-macos-markdown-0-3-2" /> |
+| 报告音频文件的播放状态 | `rtcEngineDidAudioEffectFinish` | `audioMixingStateChanged` |
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-1-1">
+
+- `preloadEffect`
+- `unloadEffect`
+- `playEffect`
+- `stopEffect`
+- `stopAllEffects`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-1-2">
+
+- `startAudioMixing`
+- `stopAudioMixing`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-2-1">
+
+- `pauseEffect`
+- `pauseAllEffects`
+- `resumeEffect`
+- `resumeAllEffects`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-2-2">
+
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-3-1">
+
+- `setEffectPosition`
+- `getEffectCurrentPosition`
+- `getEffectsVolume`
+- `setEffectsVolume`
+- `setVolumeOfEffect`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-ios-macos-markdown-0-3-2">
+
+- `getAudioMixingCurrentPosition`
+- `setAudioMixingPosition`
+- `getAudioMixingPublishVolume`
+- `adjustAudioMixingPublishVolume`
+- `getAudioMixingPlayoutVolume`
+- `adjustAudioMixingPlayoutVolume`
+
+</Slot>
+
+## 前提条件
+
+在进行操作之前，请确保你已满足以下条件：
+
+- 项目已经实现了基本的[实时音视频功能](/zh-CN/realtime-media/rtc/get-started/quick-start.macos)
+
+- 了解 [Best Practices for Audio](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/MultimediaPG/UsingAudio/UsingAudio.html#//apple_ref/doc/uid/TP40009767-CH2-SW28)。
+
+## 实现播放音频文件
+
+本节介绍如何调用音效 API 和音乐混音 API，在你的项目中播放音效和音乐混音文件。
+
+### 播放音效
+
+加入频道前，调用 `preloadEffect` 方法预加载音效文件。加入频道后，调用 `playEffect` 方法播放指定音效文件。多次调用 `playEffect`，设置多个音效 ID，同时播放多个音效文件。音效播放结束后，SDK 触发 `rtcEngineDidAudioEffectFinish` 回调。
+
+在你的声网项目中，打开管理音效播放的文件并添加如下代码：
+
+```objc tab="Objective-C" tabGroup="audio-effect"
+// 设置音效 ID，作为识别音效文件的唯一标识
+int EFFECT_ID = 1;
+// 指定音效文件的路径
+NSString *filePath = "your filepath";
+// 如果要反复播放音效，你需要将音效文件预加载至内存。如果音效文件体积较大，请勿预加载
+// 你只能预加载本地音效文件
+[agoraKit preloadEffect: EFFECT_ID filePath: filePath];
+
+// 设置音效循环播放的次数。-1 表示无限循环
+int loopCount = -1;
+// 设置音效的音调。1 表示原始音调
+double pitch = 1;
+// 设置音效的空间位置。0.0 表示音效出现在正前方
+double pan = 1;
+// 设置音效音量。100 表示原始音量
+double gain = 100.0;
+// 设置是否将音效发布至远端
+BOOL publish = true;
+// 调用 playEffect 播放指定的音效文件
+// 多次调用 playEffect，设置多个音效 ID，同时播放多个音效文件
+[agoraKit playEffect: EFFECT_ID filePath: filePath loopCount: loopCount pitch: pitch pan: pan gain: gain publish: publish];
+
+// 暂停或恢复播放音效文件
+[agoraKit pauseEffect: EFFECT_ID];
+[agoraKit resumeEffect: EFFECT_ID];
+
+// 设置指定的本地音效文件的播放位置
+[agoraKit setEffectPosition: EFFECT_ID pos: 500];
+
+// 设置所有音效文件的播放音量
+[agoraKit setEffectsVolume: volume: 50.0];
+// 设置指定音效文件的播放音量
+[agoraKit setVolumeOfEffect: EFFECT_ID volume: 50.0];
+
+// 卸载预加载的音效文件
+[agoraKit unloadEffect: EFFECT_ID];
+// 暂停播放所有音效文件
+[agoraKit stopAllEffects];
+
+// 当音效文件播放结束后触发该回调
+- (void)rtcEngineDidAudioEffectFinish:(AgoraRtcEngineKit* _Nonnull)engine soundId:(NSInteger)soundId;
+```
+
+```swift tab="Swift" tabGroup="audio-effect"
+// 设置音效 ID，作为识别音效文件的唯一标识
+let EFFECT_ID:Int32 = 1
+// 指定音效文件的路径
+let filePath = "your filepath"
+// 如果要反复播放音效，你需要将音效文件预加载至内存。如果音效文件体积较大，请勿预加载
+// 你只能预加载本地音效文件
+agoraKit.preloadEffect(EFFECT_ID, filePath: filePath)
+
+// 设置音效循环播放的次数。-1 表示无限循环
+let loopCount = -1
+// 设置音效的音调。1 表示原始音调
+let pitch = 1
+// 设置音效的空间位置。0.0 表示音效出现在正前方
+let pan = 1
+// 设置音效音量。100 表示原始音量
+let gain = 100.0
+// 设置是否将音效发布至远端
+let publish = true
+// 调用 playEffect 播放指定的音效文件
+// 多次调用 playEffect，设置多个音效 ID，同时播放多个音效文件
+agoraKit.playEffect(EFFECT_ID, filePath: filePath, loopCount: Int32(loopCount), pitch: pitch, pan: pan, gain: gain, publish: publish)
+
+// 暂停或恢复播放音效文件
+agoraKit.pauseEffect(EFFECT_ID)
+agoraKit.resumeEffect(EFFECT_ID)
+
+// 设置指定的本地音效文件的播放位置
+agoraKit.setEffectPosition(EFFECT_ID, pos: 500)
+
+// 设置所有音效文件的播放音量
+agoraKit.setEffectsVolume(volume: 50.0)
+// 设置指定音效文件的播放音量
+agoraKit.setVolumeOfEffect(EFFECT_ID, volume: 50.0)
+
+// 卸载预加载的音效文件
+agoraKit.unloadEffect(EFFECT_ID)
+// 暂停播放所有音效文件
+agoraKit.stopAllEffects()
+
+// 当音效文件播放结束后触发该回调
+func rtcEngineDidAudioEffectFinish(_engine: AgoraRtcEngineKit soundId: soundId)
+```
+
+### 播放音乐
+
+入频道之前或之后，调用 `startAudioMixing` 方法播放音乐文件。成功调用该方法后，音乐混音状态发生变化时，SDK 触发 `audioMixingStateChanged` 回调。该回调也报告音乐混音状态变化的原因。
+
+你还可以通过下列方法实现播放控制：
+
+- `pauseAudioMixing`：暂停播放。
+- `resumeAudioMixing`：恢复播放。
+- `stopAudioMixing`：停止播放。
+- `setAudioMixingPosition`：设置当前音乐文件的播放位置。
+- `adjustAudioMixingPlayoutVolume`：调节当前音乐文件在本地的播放音量。
+- `adjustAudioMixingPublishVolume`：调节当前音乐文件在远端的播放音量。
+
+在你的声网项目中，打开管理音效播放的文件夹添加以下代码：
+
+```objc tab="Objective-C" tabGroup="play"
+// 指定本地或在线音乐文件的路径
+NSString *filePath = @"your file path";
+// 设置是否只在本地播放音乐文件。No 表示本地用户和远端用户都能听到音乐
+BOOL loopback = NO;
+// 音乐文件循环播放的次数 1 表示仅播放一次
+NSInteger cycle = 1;
+// 设置音乐文件的起始播放位置
+NSInteger startPos = 0;
+// 调用 startAudioMixing 方法播放音乐文件
+[agoraKit startAudioMixing: filePath loopback: loopback cycle: cycle startPos: startPos];
+
+// 当音乐文件播放状态发生改变时触发该回调
+// 在收到 localAudioMixingStateDidChanged 回调后，声网建议调用其他音乐混音 API，如 pauseAudioMixing 或 getAudioMixingDuration
+- (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine audioMixingStateChanged:(AgoraAudioMixingStateType)state reasonCode:(AgoraAudioMixingReasonCode)reasonCode;
+
+// 暂停或恢复播放音乐文件
+[agoraKit pauseAudioMixing];
+[agoraKit resumeAudioMixing];
+
+// 获取当前音乐文件的总时长
+[agoraKit getAudioMixingDuration];
+// 设置当前音乐文件的播放位置。500 表示从音乐文件的第 500 ms 开始播放
+[agoraKit setAudioMixingPosition: pos: 500];
+
+// 调节当前音乐文件在远端的播放音量
+[agoraKit adjustAudioMixingPublishVolume: volume: 50];
+// 调节当前音乐文件在本地的播放音量
+[agoraKit adjustAudioMixingPlayoutVolume: volume: 50];
+```
+
+```swift tab="Swift" tabGroup="play"
+// 指定本地或在线音乐文件的路径
+let filePath = "your file path"
+// 设置是否只在本地播放音乐文件。false 表示本地用户和远端用户都可以听见音乐文件
+let loopback = false
+// 音乐文件循环播放的次数 1 表示仅播放一次
+let cycle = 1
+// 设置音乐文件播放的起始位置
+let startPos = 0
+// 调用 startAudioMixing 方法播放音乐文件
+agoraKit.startAudioMixing(filePath, loopback: loopback, cycle: cycle, startPos: startPos)
+
+// 当音乐文件播放状态发生改变时触发该回调
+// 在收到 localAudioMixingStateDidChanged 回调后，声网建议调用其他音乐混音 API，如 pauseAudioMixing 或 getAudioMixingDuration
+func rtcEngine(_ engine: AgoraRtcEngineKit,
+               audioMixingStateChanged state: AgoraAudioMixingStateType,
+               reasonCode: AgoraAudioMixingReasonCode) {
+}
+
+// 暂停或恢复播放音乐文件
+agoraKit.pauseAudioMixing()
+agoraKit.resumeAudioMixing()
+
+// 获取当前音乐文件的总时长
+agoraKit.getAudioMixingDuration()
+// 设置当前音乐文件的播放位置。500 表示从音乐文件的第 500 ms 开始播放
+agoraKit.setAudioMixingPosition(pos: 500)
+
+// 调节当前音乐文件在远端的播放音量
+agoraKit.adjustAudioMixingPublishVolume(volume: 50)
+// 调节当前音乐文件在本地的播放音量
+agoraKit.adjustAudioMixingPlayoutVolume(volume: 50)
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供如下开源的示例项目。你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="AudioMixing" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/AudioMixing" />
+  <Card title="AudioMixing" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/AudioMixing" />
+</Cards>
+
+### API 参考
+
+- [`preloadEffect`](/api-ref/rtc/macos/API/toc_audio_effect_file#api_irtcengine_preloadeffect)
+- [`playEffect`](/api-ref/rtc/macos/API/toc_audio_effect_file#api_irtcengine_playeffect3)
+- [`rtcEngineDidAudioEffectFinished`](/api-ref/rtc/macos/API/toc_audio_effect_file#callback_irtcengineeventhandler_onaudioeffectfinished)
+- [`startAudioMixing`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_startaudiomixing2)
+- [`audioMixingStateChanged`](/api-ref/rtc/macos/API/toc_audio_mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)
+- [`pauseAudioMixing`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_pauseaudiomixing)
+- [`resumeAudioMixing`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_resumeaudiomixing)
+- [`stopAudioMixing`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_stopaudiomixing)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`adjustAudioMixingPublishVolume`](/api-ref/rtc/macos/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingpublishvolume)
+
+### 相关文档
+[为什么通过系统音量无法调节背景音乐？](/faq/integration-issues/adjust-music-volume)

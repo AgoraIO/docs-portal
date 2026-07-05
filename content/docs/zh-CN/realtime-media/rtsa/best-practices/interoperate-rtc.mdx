@@ -1,0 +1,451 @@
+---
+title: "与 RTC SDK 互通音视频数据"
+---
+如果你的业务场景中既需要高质量的音视频传输，又需要易集成、低内存占用以及低功耗的特性，例如智能摄像头、智能门铃场景，声网推荐你同时使用 [RTC SDK](/doc/rtc/homepage)（v4.x）和 RTSA SDK。
+
+下表展示 RTSA SDK 与 RTC SDK（v4.x）互通时支持的数据格式：
+
+| SDK 类型 | RTSA SDK |
+| --- | --- |
+| RTC Native/第三方框架 SDK（v4.x）/RTC 服务端 SDK | <Slot name="interoperate-rtc-html-0-1-1" /> |
+| RTC Web SDK（v4.x） | <Slot name="interoperate-rtc-html-0-2-1" /> |
+| RTC 小程序 SDK | <Slot name="interoperate-rtc-html-0-3-1" /> |
+
+<Slot for="interoperate-rtc-html-0-1-1">
+
+- 音频：G722、G711、Opus、AAC
+    - 视频：H.264、JPEG
+
+</Slot>
+
+<Slot for="interoperate-rtc-html-0-2-1">
+
+- 音频：G722、G711、Opus
+    - 视频：H.264
+
+</Slot>
+
+<Slot for="interoperate-rtc-html-0-3-1">
+
+- 音频：G711、Opus
+    - 视频：H.264、JPEG
+
+</Slot>
+
+发送端和接收端只有设置的数据格式一致且符合上表，才可以实现互通。与 RTC SDK 互通时，RTSA SDK 的内置音频编解码器仅支持发送和接收单声道数据。声网建议你使用 16 kHz 采样率采集数据，以获得更好的播放效果。如果你采集的是双声道音频，需要先转化为单声道再进行编码。对于不同的音频编码格式，RTSA SDK 支持的采样率详见 [API 参考](/api-ref/rtsa/c/overview)。
+
+本文介绍如何在 SDK 中设置音视频数据格式。
+
+## 设置 RTSA SDK
+
+### 音频
+
+RTSA SDK 仅支持单声道音频数据，数据发送间隔为 20 ms。
+
+- 如需发送和接收 AAC 音频数据，操作如下：
+  调用 `agora_rtc_send_audio_data` 方法发送音频数据时，设置 `audio_frame_info_t.data_type` 为 `AUDIO_DATA_TYPE_AACLC` 或 `AUDIO_DATA_TYPE_HEAAC` 数据类型，及对应的数据大小。AAC 音频数据的大小需用户自行解析。
+
+- 如需发送和接收 Opus、G722、G711 音频数据，操作如下：
+
+   1. 调用 `agora_rtc_join_channel` 方法加入 RTC 频道时，设置 `rtc_channel_options_t.audio_codec_opt.audio_codec_type` 为 `AUDIO_CODEC_TYPE_OPUS`、`AUDIO_CODEC_TYPE_G722`、`AUDIO_CODEC_TYPE_G711A` 或 `AUDIO_CODEC_TYPE_G711U` 编码格式，及对应的采样率。
+   2. 调用 `agora_rtc_send_audio_data` 方法发送音频数据时，设置 `audio_frame_info_t.data_type` 为 `AUDIO_DATA_TYPE_PCM` 数据类型，及对应的数据大小。
+
+- 如需发送和接收 AAC 音频数据，操作如下：
+  调用 `sendAudioData` 方法发送音频数据时，设置 `AudioFrameInfo.dataType` 为 `AUDIO_DATA_TYPE_AACLC` 或 `AUDIO_DATA_TYPE_HEAAC` 数据类型，及对应的数据大小。AAC 音频数据的大小需用户自行解析。
+
+- 如需发送和接收 Opus、G722、G711 音频数据，操作如下：
+
+   1. 调用 `joinChannel` 方法加入 RTC 频道时，设置 `ChannelOptions.AudioCodecOption.audioCodecType` 为 `AUDIO_CODEC_TYPE_OPUS`、`AUDIO_CODEC_TYPE_G722`、`AUDIO_CODEC_TYPE_G711A` 或 `AUDIO_CODEC_TYPE_G711U` 编码格式，及对应的采样率。
+   2. 调用 `sendAudioData` 方法发送音频数据时，设置 `AudioFrameInfo.dataType` 为 `AUDIO_DATA_TYPE_PCM` 数据类型，及对应的数据大小。
+
+下表展示了 Opus、G722、G711 音频数据推荐的采样率及对应的数据大小。
+
+| 音频格式 | 采样率（Hz） | 音频数据大小（Byte） |
+| :------- | :----------- | :------------------- |
+| G711     | 8000         | 320                  |
+| G722     | 16000        | 640                  |
+| OPUS     | 16000        | 640                  |
+| OPUS     | 48000        | 1920                 |
+
+### 视频
+
+在 RTSA SDK 中，默认发送和接收 H.264 视频数据。
+
+如需发送和接收 JPEG 视频数据，调用 `agora_rtc_send_video_data` 方法发送视频数据时，设置 `video_frame_info_t.data_type` 为 `VIDEO_DATA_TYPE_GENERIC_JPEG`。
+
+如需发送和接收 JPEG 视频数据，调用 `sendVideoData` 方法发送视频数据时，设置 `VideoFrameInfo.dataType` 为 `VIDEO_DATA_TYPE_GENERIC_JPEG`。
+
+## 设置 RTC Native/第三方框架 SDK（v4.x）/RTC 服务端 SDK
+
+### 音频
+
+在 RTC Native/第三方框架 SDK（v4.x）/RTC 服务端 SDK 中，默认发送和接收 Opus 或 AAC 音频数据。
+
+如需发送和接收 G722 或 G711 音频数据，调用如下方法：
+
+RTC Android SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`mRtcEngine.setAudioProfile(6)` 或者 `mRtcEngine.setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`mRtcEngine.setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`mRtcEngine.setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC iOS/macOS SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`agoraKit.setAudioProfile(6)` 或者 `agoraKit.setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`agoraKit.setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`agoraKit.setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC Windows SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`m_rtcEngine->setAudioProfile(6)` 或者 `agora::base::AParameter apm(m_rtcEngine);` `apm->setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`agora::base::AParameter apm(m_rtcEngine);` `apm->m_rtcEngine->setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`agora::base::AParameter apm(m_rtcEngine);` `apm->m_rtcEngine->setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC Electron SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`RtcEngine.SetAudioProfile(6)` 或者 `RtcEngine.SetParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`this.rtcEngine?.setParameters("{\"rtc.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`this.rtcEngine?.setParameters("{\"rtc.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC Unity SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`RtcEngine.SetAudioProfile(6)` 或者 `RtcEngine.SetParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`RtcEngine.SetParameters("{\"rtc.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`RtcEngine.SetParameters("{\"rtc.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC Flutter SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`await _engine.setAudioProfile(profile: AudioProfileType.audioProfileIot)` 或者 `await _engine.setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`await _engine.setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`await _engine.setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC React Native SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`await _engine.current?.setAudioProfile(6)` 或者 `await _engine.current?.setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`await _engine.current?.setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`await _engine.current?.setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC 服务端 C++ SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC 服务端 Java SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`agoraParameter.setParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`agoraParameter.setParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`agoraParameter.setParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC 服务端 Python SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+RTC 服务端 Go SDK：
+
+<Tabs defaultValue="g722" groupId="data-type" persist>
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="g711-pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="g711-pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+
+<TabsContent value="g722">
+
+`conneciton.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":9}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcma">
+
+`conneciton.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":8}")`
+
+</TabsContent>
+
+<TabsContent value="g711-pcmu">
+
+`conneciton.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":0}")`
+
+</TabsContent>
+</Tabs>
+
+### 视频
+
+在 RTC Native/第三方框架 SDK（v4.x）/RTC 服务端 SDK 中，默认发送和接收 H.264 视频数据。
+
+如需发送和接收 JPEG 视频数据，调用如下方法：
+
+- RTC Android SDK: `mRtcEngine.setParameters("{\"engine.video.codec_type\": \"20\"}")`
+- RTC iOS/macOS SDK: `agoraKit.setParameters("{\"engine.video.codec_type\": \"20\"}")`
+- RTC Windows SDK:
+  `agora::base::AParameter apm(m_rtcEngine);`
+  `apm->setParameters("{\"engine.video.codec_type\": \"20\"}")`
+
+- RTC Electron SDK: `this.engine.setParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC Unity SDK: `RtcEngine.SetParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC Flutter SDK: `await _engine.setParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC React Native SDK: `this.engine.setParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC 服务端 C++ SDK: `connection->getAgoraParameter()->setParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC 服务端 Java SDK: `agoraParameter.setParameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC 服务端 Python SDK: `connection.get_agora_parameter.set_parameters("{\"engine.video.codec_type\": \"20\"}");`
+- RTC 服务端 Go SDK: `conneciton.GetAgoraParameter.SetParameters("{\"engine.video.codec_type\": \"20\"}");`
+
+## 设置 RTC Web SDK（v4.x）
+
+### 音频
+
+在 RTC Web SDK（v4.x）中，默认发送和接收 Opus 音频数据。
+
+:::warning[注意]
+仅 4.9.0 或更高版本的 RTC Web SDK 支持设置音频编码格式。
+:::
+
+如需发送和接收 G722、G711 音频数据，调用如下方法：
+
+  - G711 (PCMA)：`AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "pcma"})`
+  - G711 (PCMU)：`AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "pcmu"})`
+  - G722：`AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "g722"})`
+
+### 视频
+
+在 RTC Web SDK（v4.x）中，默认发送和接收 VP8 视频数据。你需要在调用 `createClient` 创建客户端对象时，设置视频数据格式为 `"h264"`。
+
+## 设置 RTC 小程序 SDK
+
+在 RTC 小程序 SDK 中，默认发送和接收 Opus 音频数据、H.264 视频数据。如需接收 JPEG 视频数据或发送和接收 G711 音频数据，联系 sales@shengwang.cn 开通。
+
+:::info[信息]
+RTC 小程序 SDK 不支持发送 JPEG 视频数据。
+:::
+
+开通服务的邮件模板如下：
+
+- 标题：小程序 IoT 服务开通
+- 正文：
+  - 公司名：你在使用声网服务时登记的公司名。
+  - App ID：需要开通服务的项目的 App ID。
+  - 服务需求：需要开通的服务，例如 G711 音频数据互通。
+  - 联系电话：联系人手机号。
+  - 联系邮箱：联系人邮箱地址。

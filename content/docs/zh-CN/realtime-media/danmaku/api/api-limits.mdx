@@ -1,0 +1,24 @@
+---
+title: "调用限制"
+---
+本文介绍调用弹幕玩法 RESTful API 时的限制。
+
+## 移动端开播
+
+| RESTful API          | 调用频率限制                 |
+| -------------------- | ---------------------------- |
+| [获取云游戏列表](./../danmaku/operations/get-cloud-game-list)       | 单个 `appid` 不超过 10 次/秒 |
+| [获取云游戏详情](./../danmaku/operations/get-cloud-game-detail)       | 单个 `appid` 不超过 10 次/秒 |
+| [启动云游戏服务](./../danmaku/operations/start-cloud-game)       | 单个 `appid` 不超过 10 次/秒 |
+| [关闭云游戏服务](./../danmaku/operations/stop-cloud-game)       | 单个 `appid` 不超过 10 次/秒 |
+| [查询云游戏任务状态](./../danmaku/operations/get-cloud-game-status)   | 单个 `taskid` 不超过 5 次/秒 |
+| [更新云游戏推流 Token](./../danmaku/operations/renew-cloud-game-token) | 单个 `taskid` 不超过 5 次/秒 |
+| [推送直播间消息](./../danmaku/operations/push-message)       | 单个直播间不超过 200 次/秒   |
+
+## PC 端开播
+
+| RESTful API    | 调用频率限制                 |
+| -------------- | ---------------------------- |
+| [启动云游戏服务](./../danmaku/operations/start-pc-game)   | 单个 `appid` 不超过 10 次/秒 |
+| [关闭云游戏服务](./../danmaku/operations/stop-pc-game)   | 单个 `appid` 不超过 10 次/秒 |
+| [推送直播间消息](./../danmaku/operations/push-message) | 单个直播间不超过 200 次/秒   |

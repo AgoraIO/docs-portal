@@ -1,0 +1,66 @@
+---
+title: "VideoEncodedImageSender 类"
+---
+VideoEncodedImageSender
+
+<span className="index-desc-videoencodedimagesender">`VideoEncodedImageSender` 类</span>
+
+<a id="newvideoencodedimagesender"></a>
+## NewVideoEncodedImageSender
+
+```go
+func (mediaNodeFactory *MediaNodeFactory) NewVideoEncodedImageSender() *VideoEncodedImageSender {
+    sender := C.agora_media_node_factory_create_video_encoded_image_sender(mediaNodeFactory.cFactory)
+    if sender == nil {
+        return nil
+    }
+    return &VideoEncodedImageSender{
+        cSender: sender,
+    }
+}
+```
+
+<span className="index-desc-newvideoencodedimagesender">创建一个已编码视频数据发送模块。该方法创建一个 `VideoEncodedImageSender` 对象，可用于 [`NewCustomVideoTrackEncoded`](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#newcustomvideotrackencoded) 方法。</span>
+
+#### 返回值
+
+- `VideoEncodedImageSender` 对象：方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="sendencodedvideoimage"></a>
+## SendEncodedVideoImage
+
+```go
+func (sender *VideoEncodedImageSender) SendEncodedVideoImage(payload []byte, frameInfo *EncodedVideoFrameInfo) int {
+    cData := C.CBytes(payload)
+    defer C.free(cData)
+    cFrameInfo := &C.struct__encoded_video_frame_info{
+        codec_type:        C.int(frameInfo.CodecType),
+        width:             C.int(frameInfo.Width),
+        height:            C.int(frameInfo.Height),
+        frames_per_second: C.int(frameInfo.FramesPerSecond),
+        frame_type:        C.int(frameInfo.FrameType),
+        rotation:          C.int(frameInfo.Rotation),
+        track_id:          C.int(frameInfo.TrackId),
+        capture_time_ms:   C.int64_t(frameInfo.CaptureTimeMs),
+        decode_time_ms:    C.int64_t(frameInfo.DecodeTimeMs),
+        uid:               C.uint(frameInfo.Uid),
+        stream_type:       C.int(frameInfo.StreamType),
+    }
+    return int(C.agora_video_encoded_image_sender_send(sender.cSender, (*C.uint8_t)(cData), C.uint32_t(len(payload)), cFrameInfo))
+}
+```
+
+<span className="index-desc-sendencodedvideoimage">将已编码的视频帧发送到视频轨道。</span>
+
+#### 参数
+
+| 参数         | 描述                                                                                       |
+|--------------|--------------------------------------------------------------------------------------------|
+| `payload`    | 视频缓冲区。                                                                             |
+| `frameInfo`  | 已编码视频帧信息：详见 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#encodedvideoframeinfo)。                   |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

@@ -1,0 +1,793 @@
+---
+title: "RESTful API 参考"
+---
+声网灵隼提供 RESTful API，帮助你实现云存储、对接第三方账户系统等功能。你可以在自己的业务服务器中通过 RESTful API 与声网灵隼云平台进行云云对接。
+
+## 基本信息
+
+本节介绍所有声网灵隼 RESTful API 的基本信息。
+
+### 域名
+
+所有请求都发送给域名：`api.sd-rtn.com`。
+
+为保障 REST 服务的高可用，避免因区域网络故障造成的服务不可用，声网提供切换域名的方案。详见[切换域名](#switchdomain)。
+
+### 数据格式
+
+所有 HTTP 请求头部的 `Content-Type` 类型为 `application/json`。所有请求和响应内容的格式均为 JSON。所有的请求 URL 和请求包体内容都区分大小写。
+
+### 认证方式
+
+参考如下步骤进行认证：
+
+1. 联系 sales@shengwang.cn 进行授权。
+2. 通过 POST 方法获取声网灵隼 Token。
+3. 在需要的时候，将声网灵隼 Token 填入你的业务服务器、设备端或客户端项目。
+
+<a id="token"></a>
+## 授权
+### 获取声网灵隼 Token（POST）
+
+获取声网灵隼 Token。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：
+  - 中国大陆：`https://api.sd-rtn.com/agoralink/cn/api/oauth/rest-token`
+  - 北美：`https://api.agora.io/agoralink/na/api/oauth/rest-token`
+
+#### 请求参数
+
+Body 参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `grant_type` | String | <Slot name="restful-html-0-1-2" /> |
+| `username` | String | （密码模式下必填，其他模式下选填）用户名。 |
+| `password` | String | （密码模式下必填，其他模式下选填）密码。 |
+| `scope` | String | （必填）作用域。仅支持填写 `read`。 |
+| `client_id` | String | （必填）客户 ID。 |
+| `client_secret` | String | （必填）客户密钥。 |
+
+<Slot for="restful-html-0-1-2">
+
+（必填）授权类型。支持如下值：
+
+    - `password`：密码模式。
+    - `client_credentials`：客户端模式。
+    - `refresh_token`：刷新 Token 模式。
+
+</Slot>
+
+#### 请求示例
+
+```json
+{
+  "grant_type": "password",
+  "username": "qwXXXXX11",
+  "password": "1XXXXXXX1",
+  "scope": "read",
+  "client_id": "111bXXXXXXXXXXXXXXX22",
+  "client_secret": "1CXXXXXXXXXXXXXXXXXXXI91"
+}
+```
+
+#### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | 状态码。`0` 表示成功。 |
+| `msg` | String | 状态描述。 |
+| `timestamp` | Number | 响应时间戳（ms）。 |
+| `data` | Object | <Slot name="restful-html-1-4-2" /> |
+| `success` | Boolean | <Slot name="restful-html-1-5-2" /> |
+
+<Slot for="restful-html-1-4-2">
+
+授权数据：
+
+    - `access_token`：String 型。声网灵隼 Token。
+    - `token_type`：String 型。Token 类型。仅支持返回 `bearer`。
+    - `refresh_token`：String 型。更新后的 Token。
+    - `expires_in`：Integer 型。声网灵隼 Token 的过期时间（s）。
+    - `scope`：String 型。作用域。仅支持返回 `read`。
+
+</Slot>
+
+<Slot for="restful-html-1-5-2">
+
+是否成功响应：
+
+    - `true`：成功。
+    - `false`：失败。
+
+</Slot>
+
+#### 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "SUCCESS",
+  "timestamp": 1652449735368,
+  "data": {
+    "access_token": "yoXXXXXXXXXXXXXXk",
+    "token_type": "bearer",
+    "refresh_token": "08XXXXXXXXXXXXXXXXdk",
+    "expires_in": 31969,
+    "scope": "read"
+  },
+  "success": true
+}
+```
+
+## 告警事件云存储
+
+### 查询所有云存储套餐（POST）
+
+查询声网灵隼当前支持的所有云存储套餐的信息。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：
+  - 中国大陆：`https://api.sd-rtn.com/agoralink/cn/api/cloud-recorder/cloud-record-package/v1/getAll`
+  - 北美：`https://api.agora.io/agoralink/na/api/cloud-recorder/cloud-record-package/v1/getAll`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `header` | Object | <Slot name="restful-html-2-1-2" /> |
+
+<Slot for="restful-html-2-1-2">
+
+请求包体：
+
+    - `traceId`：（必填）String 型。请求 ID，声网推荐使用 UUID。
+    - `timestamp`：（必填）Long 型。请求时间戳（ms）。
+
+</Slot>
+
+#### 请求示例
+
+```json
+{
+    "header": {
+        "traceId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "timestamp": 1667377173954
+    }
+}
+```
+
+#### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | 状态码。0 表示成功。 |
+| `msg` | String | 状态描述。 |
+| `timestamp` | Number | 响应时间戳（ms）。 |
+| `data` | Object Array | <Slot name="restful-html-3-4-2" /> |
+| success | Boolean | <Slot name="restful-html-3-5-2" /> |
+
+<Slot for="restful-html-3-4-2">
+
+云存储套餐数据：
+
+      - `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
+      - `packageName`：String 型。云存储套餐名。
+      - `packageType`：String 型。云存储套餐类型：
+        - `YEAR`：包年，365 天。
+        - `MONTH`：包月，30 天。
+      - `lifeCycle`：String 型。云存储文件的存储周期：
+        - `ONE`：1 天
+        - `THREE`：3 天
+        - `SEVEN`：7 天
+        - `FOURTEEN`：14 天
+        - `THIRTY`：30 天
+      - `bucket`：String 型。云存储的 bucket。
+      - `preDir`：String 型。云存储文件目录的前缀。
+      - `deleted`：Boolean 型。云存储文件是否已删除：
+        - ` true`：已删除。
+        - `false`：未删除。
+      - `createdBy`：Integer 型。告警设备的 ID。
+      - `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
+      - `changedTime`：Number 型。设备最后更新的时间戳（ms）。
+
+</Slot>
+
+<Slot for="restful-html-3-5-2">
+
+是否成功响应：
+
+    - `true`：成功。
+    - `false`：失败。
+
+</Slot>
+
+#### 响应示例
+
+```json
+{
+    "code": 0,
+    "msg": "SUCCESS",
+    "timestamp": 1667377173954,
+    "data": [
+        {
+            "cloudRecordPackageId": 1,
+            "packageName": "包年365-1天",
+            "packageType": "YEAR",
+            "lifeCycle": "ONE",
+            "bucket": "XXXXXXX",
+            "preDir": "iot-one",
+            "deleted": false,
+            "createdBy": 1,
+            "createdTime": 1659597359000,
+            "changedTime": 1662111196000
+        },
+        {
+            "cloudRecordPackageId": 2,
+            "packageName": "包年365-3天",
+            "packageType": "YEAR",
+            "lifeCycle": "THREE",
+            "bucket": "XXXXXXX",
+            "preDir": "iot-three",
+            "deleted": false,
+            "createdBy": 1,
+            "createdTime": 1659597359000,
+            "changedTime": 1662111198000
+        },
+        ......
+    ],
+    "success": true
+}
+```
+
+### 根据 ID 查询云存储套餐（POST）
+
+根据云存储套餐的 ID 查询云存储套餐信息。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：
+  - 中国大陆：`https://api.sd-rtn.com/agoralink/cn/api/cloud-recorder/cloud-record-package/v1/getById`
+  - 北美：`https://api.agora.io/agoralink/na/api/cloud-recorder/cloud-record-package/v1/getById`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `header` | Object | <Slot name="restful-html-4-1-2" /> |
+| `payload` | Integer | （必填）云存储套餐的 ID。 |
+
+<Slot for="restful-html-4-1-2">
+
+请求包体：
+
+    - traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
+    - timestamp：（必填）Long 型。请求时间戳（ms）。
+
+</Slot>
+
+#### 请求示例
+
+```json
+{
+    "header": {
+        "traceId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "timestamp": 126930958
+    },
+    "payload": 5
+}
+```
+
+#### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | 状态码。`0` 表示成功。 |
+| `msg` | String | 状态描述。 |
+| `timestamp` | Number | 响应时间戳（ms）。 |
+| `data` | Object Array | <Slot name="restful-html-5-4-2" /> |
+| `success` | Boolean | <Slot name="restful-html-5-5-2" /> |
+
+<Slot for="restful-html-5-4-2">
+
+云存储套餐数据：
+
+      - `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
+      - `packageName`：String 型。云存储套餐名。
+      - `packageType`：String 型。云存储套餐类型：
+        - `YEAR`：包年，365 天。
+        - `MONTH`：包月，30 天。
+      - `lifeCycle`：String 型。云存储文件的存储周期：
+        - `ONE`：1 天
+        - `THREE`：3 天
+        - `SEVEN`：7 天
+        - `FOURTEEN`：14 天
+        - `THIRTY`：30 天
+      - `bucket`：String 型。云存储的 bucket。
+      -  `preDir`：String 型。云存储文件目录的前缀。
+      - `deleted`：Boolean 型。云存储文件是否已删除：
+        - ` true`：已删除。
+        - `false`：未删除。
+      - `createdBy`：Integer 型。告警设备的 ID。
+      - `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
+      - `changedTime`：Number 型。设备最后更新的时间戳（ms）。
+
+</Slot>
+
+<Slot for="restful-html-5-5-2">
+
+是否成功响应：
+
+    - `true`：成功。
+    - `false`：失败。
+
+</Slot>
+
+#### 响应示例
+
+```json
+{
+    "code": 0,
+    "msg": "SUCCESS",
+    "timestamp": 1667377173954,
+    "data":{
+        "cloudRecordPackageId": 1,
+        "packageName": "包年365-1天",
+        "packageType": "YEAR",
+        "lifeCycle": "ONE",
+        "bucket": "XXXXXXX",
+        "preDir": "iot-one",
+        "deleted": false,
+        "createdBy": 1,
+        "createdTime": 1659597359000,
+        "changedTime": 1662111196000
+    }
+    "success": true
+}
+```
+
+### 开通云存储套餐（POST）
+
+开通云存储套餐。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：
+  - 中国大陆：`https://api.sd-rtn.com/agoralink/cn/api/cloud-recorder/cloud-record-order/v1/open`
+  - 北美：`https://api.agora.io/agoralink/na/api/cloud-recorder/cloud-record-order/v1/open`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `header` | Object | <Slot name="restful-html-6-1-2" /> |
+| `payload` | Object | <Slot name="restful-html-6-2-2" /> |
+
+<Slot for="restful-html-6-1-2">
+
+请求包体：
+
+    - traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
+    - timestamp：（必填）Long 型。请求时间戳（ms）。
+
+</Slot>
+
+<Slot for="restful-html-6-2-2">
+
+云存储套餐信息：
+
+    - `appId`：（必填）String 型。声网灵隼项目的 App ID。
+    - `userId`：（必填）String 型。用户 ID。
+    - `deviceId`：（必填）String 型。设备 ID。
+    - `paymentOrderId`：（必填）String 型。支付订单号。请确保该参数的唯一性。
+    - `cloudRecordPackageId`：（必填）Integer 型。云存储套餐的 ID。
+    - `orderNumber`：（必填）Integer 型。订购套餐的数量。用户实际可以使用云存储服务的天数 = 订购套餐的数量 × 订购套餐对应的天数。
+
+</Slot>
+
+#### 请求示例
+
+```json
+{
+    "header": {
+        "traceId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "timestamp": 126930958
+    },
+    "payload":{
+        "appId": "d0XXXXXXXXXXXXXXX6",
+        "userId": "1XXXXXXXXXXXXXXXXXXXXXXXXXx1",
+        "deviceId": "1XXXXXXXXXXXXXXXXXXXXXXXX1",
+        "paymentOrderId": "pXXXXXXXXXXXXXXX6",
+        "cloudRecordPackageId": 2,
+        "orderNumber": 4,
+    }
+}
+```
+
+#### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | 状态码。0 表示成功。 |
+| `msg` | String | 状态描述。 |
+| `timestamp` | Number | 响应时间戳（ms）。 |
+| `data` | String | 成功开通的云存储套餐的 ID。 |
+| `success` | Boolean | <Slot name="restful-html-7-5-2" /> |
+
+<Slot for="restful-html-7-5-2">
+
+是否成功响应：
+
+    - `true`：成功。
+    - `false`：失败。
+
+</Slot>
+
+#### 响应示例
+
+```json
+{
+    "code": 0,
+    "msg": "SUCCESS",
+    "timestamp": 1660274059546,
+    "data": "bXXXXXXXXXXXXXXXXXXXXXXXX5",
+    "success": true
+}
+```
+
+## 对接自研或第三方账户系统
+
+### 第三方账号注册/备案（POST）
+
+注册并备案第三方账号。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：`https://api.sd-rtn.com/agoralink/cn/api/oauth/third-party/register`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数                | 类型   | 描述                    |
+| ------------------- | ------ | ----------------------- |
+| `projectId`         | String | 必填。你的声网 Project ID。详见[配置开发参数](./get-started/enable-service#8. 配置开发参数)。 |
+| `thirdPartyAccount` | String | 必填。你使用的第三方用户账号。    |
+
+#### 请求示例
+
+```json
+{
+   "projectId": "1254",
+    "thirdPartyAccount": "xiaobai6"
+}
+```
+
+#### 响应参数
+
+**响应参数（200）**
+
+| 参数          | 类型    | 描述                                             |
+| ------------- | ------- | ------------------------------------------------ |
+| `code`        | Number  | 返回状态码，0 表示请求成功，其他状态码均为失败。 |
+| `msg`         | String  | 请求结果描述。                                   |
+| `timestamp`   | Number  | Unix 时间戳（ms）。                              |
+| `data.userId` | String  | 用户 ID。                                        |
+| `data.token`  | String  | 第三方账号认证令牌。                             |
+| `success`     | Boolean | 请求是否成功。                                   |
+
+**响应参数（201）**
+
+| 参数        | 类型    | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `code`      | Number  | 返回状态码，0 表示请求成功，其他状态码均为失败。 |
+| `msg`       | String  | 请求结果描述。                                   |
+| `timestamp` | Number  | Unix 时间戳（ms）。                              |
+| `success`   | Boolean | 请求是否成功。                                   |
+
+#### 响应示例
+
+```json tab="响应码 200" tabGroup="code"
+{
+  "code": 0,
+  "msg": "SUCCESS",
+  "timestamp": 1659002297891,
+  "data": {
+    "userId": "100000000000000000_712573185701490688",
+    "token": "uwmgZAQvxxxxxxxxxxxx53qrjUnWgapzQoYV46"
+  },
+  "success": true
+}
+```
+
+```json tab="响应码 201" tabGroup="code"
+{
+  "code": 400,
+  "msg": "invalid_grant",
+  "timestamp": 1652450193251,
+  "success": false
+}
+```
+
+### 第三方账号登录（POST）
+
+登录第三方账号。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：`https://api.sd-rtn.com/agoralink/cn/api/oauth/third-party/login`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数                | 类型   | 描述        |
+| ------------------- | ------ | ----------- |
+| `clientId`          | String | 必填。客户端 ID。你需要联系 sales@shengwang.cn 获取该参数。            |
+| `clientSecret`      | String | 必填。客户端秘钥。你需要联系 sales@shengwang.cn 获取该参数。                       |
+| `projectId`         | String | 必填。你的声网 Project ID。详见[配置开发参数](./get-started/enable-service#8. 配置开发参数)。 |
+| `thirdPartyAccount` | String | 必填。第三方用户账号。                            |
+| `token`             | String | 必填。认证令牌，在第三方账号注册时通过 `data.token` 参数返回。    |
+
+#### 请求示例
+
+```json
+{
+  "clientId": "959815xxxxxxxxx0f40aad5",
+  "clientSecret": "MRbRz1kxxxxxxxxYMZSYc1Ue06v",
+  "projectId": "1254",
+  "thirdPartyAccount": "xiaobai6",
+    "token": "bZN2Zxmdr7BxxxxxxxxxxxyhHiiMP5OG9vTBIqA"
+}
+```
+
+#### 响应参数
+
+**响应参数（200）**
+
+| 参数                                   | 类型    | 描述                                                                   |
+| -------------------------------------- | ------- | ---------------------------------------------------------------------- |
+| `code`                                 | Number  | 返回状态码，0 表示请求成功，其他状态码均为失败。                       |
+| `msg`                                  | String  | 请求结果描述。                                                         |
+| `timestamp`                            | Number  | Unix 时间戳（ms）。                                                    |
+| `data.lsToken.access_token`            | String  | 认证令牌。                                                             |
+| `data.lsToken.token_type`              | String  | 认证令牌类型。                                                         |
+| `data.lsToken.refresh_token`           | String  | 刷新认证令牌。                                                         |
+| `data.lsToken.expires_in`              | String  | 刷新认证令牌有效期。                                                   |
+| `data.lsToken.scope`                   | String  | 令牌范围。                                                             |
+| `data.gyToken.endpoint`                | String  | IoT 平台节点。                                                         |
+| `data.gyToken.pool.identifier`         | String  | AWS 用户身份唯一认证码。                                               |
+| `data.gyToken.pool.identityId`         | String  | AWS 用户身份 ID。用于手机设备进行 MQTT on Websocket 连接的 Client ID。 |
+| `data.gyToken.pool.identityPoolId`     | String  | AWS 用户身份池标识。                                                   |
+| `data.gyToken.pool.token`              | String  | AWS 用户身份凭证。                                                     |
+| `data.gyToken.expiration`              | String  | granwin_token 过期时间。                                               |
+| `data.gyToken.granwin_token`           | String  | 接口会话 token。                                                       |
+| `data.gyToken.proof.accessKeyId`       | String  | IoT 临时账号凭证。                                                     |
+| `data.gyToken.proof.secretKey`         | String  | IoT 临时密钥。                                                         |
+| `data.gyToken.proof.sessionToken`      | String  | IoT 临时 Token。                                                       |
+| `data.gyToken.proof.sessionExpiration` | String  | 过期 Unix 时间戳（ms）。                                               |
+| `data.gyToken.region`                  | String  | AWS 节点。                                                             |
+| `data.gyToken.account`                 | String  | app 用户名。                                                           |
+| `success`                              | Boolean | 请求是否成功。                                                         |
+
+#### 响应示例
+
+```json tab="响应码 200" tabGroup="code"
+{
+  "code": 0,
+  "msg": "SUCCESS",
+  "timestamp": 1659002329462,
+  "data": {
+    "lsToken": {
+      "access_token": "NpKnxxxxxxxxxx-sFQiBbI",
+      "token_type": "bearer",
+      "refresh_token": "Rv4hnY2xxxxxxxxsoQ45vU",
+      "expires_in": 43199,
+      "scope": "read"
+    },
+    "gyToken": {
+      "endpoint": "axxxxxxxxx85d.ats.iot.cn-north-1.amazonaws.com.cn",
+      "pool": {
+        "identifier": "100000000000000000_680a87117509885c39698b37577ed2e0_712573185701490688",
+        "identityId": "cn-north-1:b8xxxxxxxxx47a3-9aaa-974135e0da67",
+        "identityPoolId": "cn-north-1:a6e5e0xxxxxxxx7d940",
+        "token": "eyJraWQiOiJjbi1xxxxxxxxxxxxxxxx3aFNJGkBEM8xNk2hM9IAIFdV6FebIvOYbw"
+      },
+      "expiration": 7200,
+      "granwin_token": "granwin_aws_user_info_hash:_7200_xxxxxxxxxxx36296101",
+      "proof": {
+        "accessKeyId": "ASIA2xxxxxxxxxMPY",
+        "secretKey": "esWgtxxxxxxxxxxxZ0TVx",
+        "sessionToken": "FwoDYXdzENL//////////wEaDPMINGMxxxxxxxxxxxxxxxxxxxtqX4Wu3w==",
+        "sessionExpiration": 1659005928000
+      },
+      "region": "cn-north-1",
+      "account": "680axxxxxxxxxxx77ed2e0"
+    }
+  },
+  "success": true
+}
+```
+
+```json tab="响应码 201" tabGroup="code"
+{
+  "code": 999999,
+  "msg": "The user not exists. projectId={1254}, thirdPartyAccount={xiaobai1233}",
+  "timestamp": 1659003562090,
+  "success": false
+}
+```
+
+### 第三方账号注销（POST）
+
+注销第三方账号。
+
+#### 接口原型
+
+- 方法：`POST`
+- 接入点：`https://api.sd-rtn.com/agoralink/cn/api/oauth/third-party/removeAccount`
+
+#### HTTP Header
+
+| 参数            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| `Authorization` | 声网灵隼 Token。详见[获取声网灵隼 Token（POST）](#token)。 |
+
+#### 请求参数
+
+Body 参数
+
+| 参数                | 类型   | 描述          |
+| ------------------- | ------ | ------- |
+| `projectId`         | String | 必填。你的声网 Project ID。详见[配置开发参数](./get-started/enable-service#8. 配置开发参数)。 |
+| `thirdPartyAccount` | String | 必填。第三方用户账号。         |
+| `token`             | String | 必填。认证令牌，在第三方账号注册时通过 `data.token` 参数返回。   |
+
+#### 请求示例
+
+```json
+{
+  "projectId": "1254",
+  "thirdPartyAccount": "hei1",
+    "token": "o70nfa9f5zhsxxxxxxxxxxxxQzJQZokVs4Vg"
+}
+```
+
+#### 响应参数
+
+<Tabs defaultValue="200" groupId="code" persist>
+<TabsList>
+  <TabsTrigger value="200">响应码 200</TabsTrigger>
+  <TabsTrigger value="201">响应码 201</TabsTrigger>
+</TabsList>
+
+<TabsContent value="200">
+
+| 参数        | 类型    | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `code`      | Number  | 返回状态码，0 表示请求成功，其他状态码均为失败。 |
+| `msg`       | String  | 请求结果描述。                                   |
+| `timestamp` | Number  | Unix 时间戳（ms）。                              |
+| `success`   | Boolean | 请求是否成功。                                   |
+
+</TabsContent>
+
+<TabsContent value="201">
+
+| 参数        | 类型    | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `code`      | Number  | 返回状态码，0 表示请求成功，其他状态码均为失败。 |
+| `msg`       | String  | 请求结果描述。                                   |
+| `timestamp` | Number  | Unix 时间戳（ms）。                              |
+| `success`   | Boolean | 请求是否成功。                                   |
+
+</TabsContent>
+</Tabs>
+
+#### 响应示例
+
+```json tab="响应码 200" tabGroup="code"
+{
+  "code": 0,
+  "msg": "SUCCESS",
+  "timestamp": 1660036204632,
+  "success": true
+}
+```
+
+```json tab="响应码 201" tabGroup="code"
+{
+  "code": 999999,
+  "msg": "The user not exists. projectId={1254}, thirdPartyAccount={xiaobai1233}",
+  "timestamp": 1659003562090,
+  "success": false
+}
+```
+
+<a id="switchdomain"></a>
+## 切换域名
+
+为保障 REST 服务的高可用，避免因区域网络故障造成的服务不可用，声网提供切换域名的方案。
+
+### 切换域名操作
+
+1. 根据你的业务服务器所在地设置主域名：
+   - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 api.sd-rtn.com。
+   - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 api.agora.io。
+2. 当使用主域名发起 RESTful API 请求失败时，使用该域名重试一次。
+3. 如果步骤 2 的重试依然失败，使用备用的主域名重试：
+   - 如果当前设置的主域名为 api.sd-rtn.com，备用的主域名指 api.agora.io。
+   - 如果当前设置的主域名为 api.agora.io，备用的主域名指 api.sd-rtn.com。
+4. 如果步骤 3 的重试依然失败，使用与当前解析区域相邻的区域域名重试。
+   举例说明：假设你的业务服务器位于欧洲，你设置主域名为 api.agora.io，而且业务服务器解析主域名解析到德国。德国位于欧洲中部 api-eu-central-1.agora.io，查域名信息表可知，相邻区域为欧洲西部 api-eu-west-1.agora.io 或 api-eu-west-1.sd-rtn.com。因此，出现网络故障且步骤 2、3 的重试失败时，请使用 api-eu-west-1.agora.io 或 api-eu-west-1.sd-rtn.com 域名重试。
+
+### 注意事项
+
+- 如果是网络问题而非 DNS 解析域名问题导致的请求失败，声网建议你跳过步骤 3，直接进行步骤 4。
+- 切换至区域域名前，请确保你使用的业务（例如，云端录制、云信令、频道管理等 REST 服务）在该区域有部署服务。
+
+### 域名信息
+
+| 主域名 | 区域域名 | 地理区域 |
+| --- | --- | --- |
+| api.sd-rtn.com | api-us-west-1.sd-rtn.com | 美国西部 |
+|  | api-us-east-1.sd-rtn.com | 美国东部 |
+|  | api-ap-southeast-1.sd-rtn.com | 亚太东南 |
+|  | api-ap-northeast-1.sd-rtn.com | 亚太东北 |
+|  | api-eu-west-1.sd-rtn.com | 欧洲西部 |
+|  | api-eu-central-1.sd-rtn.com | 欧洲中部 |
+|  | api-cn-east-1.sd-rtn.com | 中国华东 |
+|  | api-cn-north-1.sd-rtn.com | 中国华北 |
+| api.agora.io | api-us-west-1.agora.io | 美国西部 |
+|  | api-us-east-1.agora.io | 美国东部 |
+|  | api-ap-southeast-1.agora.io | 亚太东南 |
+|  | api-ap-northeast-1.agora.io | 亚太东北 |
+|  | api-eu-west-1.agora.io | 欧洲西部 |
+|  | api-eu-central-1.agora.io | 欧洲中部 |
+|  | api-cn-east-1.agora.io | 中国华东 |
+|  | api-cn-north-1.agora.io | 中国华北 |

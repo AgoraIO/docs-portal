@@ -1,0 +1,185 @@
+---
+title: "基本概念"
+---
+本文介绍使用互动白板服务前需要了解的基本概念。
+
+![互动白板基本概念](/img/whiteboard/concepts.png)
+
+## 声网控制台
+
+声网提供给开发者管理声网各项服务的工具。控制台提供直观的界面，方便开发者在使用声网各项服务时进行充值、查询、管理等操作，详见[开启和配置互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)。控制台-项目配置-白板服务配置中可以获取 [AppIdentifier](#appidentifier)、[AK 和 SK](#ak-和-sk)，以及直接生成 [SDK Token](#sdk-token-1)。
+
+### AppIdentifier
+
+项目的唯一标识，也可以称为 App ID。初始化白板 SDK 时需要传入 AppIdentifier。
+
+### AK 和 SK
+
+访问密钥对，用于生成互动白板 Token。
+
+### SDK Token
+
+声网控制台生成的 SDK Token（动态密钥），一般用于项目测试。在生产环境中，你需要[调用服务端 API](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-teams) 或使用[示例代码](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)在自己的 App 服务端生成 SDK Token。
+
+## Token
+
+声网互动白板 Token 按照级别由高至低分为 **SDK Token**、**Room Token** 和 **Task Token**，每个级别的 Token 均可设置 `admin`、`writer` 或 `reader` 角色。Token 的级别越高，包含的权限越多。
+
+三种 Token 均可通过以下两种方式生成：
+
+1. 使用示例代码在 App 服务端生成 Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+2. 调用互动白板服务端 API 生成 Token，详见[生成 SDK Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-teams)、[生成 Room Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid) 和[生成 Task Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-tasks-uuid)。
+
+### SDK Token
+
+SDK Token 与特定的互动白板项目绑定，是级别最高的 Token。持有 SDK Token 的用户可操作绑定项目下的所有房间和文档转换任务。不同角色的 SDK Token 具有的权限如下：
+
+| 权限 | admin（管理员） | writer（读写） | reader（只读） |
+| --- | --- | --- | --- |
+| 创建房间 | ✔ | ✔ | ✘ |
+| 以互动模式加入房间 | ✔ | ✔ | ✘ |
+| 以只读模式加入房间 | ✘ | ✘ | ✔ |
+| 获取房间列表 | ✔ | ✔ | ✘ |
+| 获取房间信息 | ✔ | ✔ | ✘ |
+| 封禁房间 | ✔ | ✘ | ✘ |
+| 对指定场景进行截图 | ✔ | ✔ | ✘ |
+| 对场景组下的所有场景进行截图 | ✔ | ✔ | ✘ |
+| 获取房间的场景地址列表 | ✔ | ✔ | ✘ |
+| 插入新场景 | ✔ | ✔ | ✘ |
+| 场景跳转 | ✔ | ✔ | ✘ |
+| 发起文档转换任务 | ✔ | ✔ | ✘ |
+| <Slot name="concepts-markdown-0-13-0" /> | ✔ | ✔ | ✔ |
+| <Slot name="concepts-markdown-0-14-0" /> | ✔ | ✔ | ✔ |
+
+<Slot for="concepts-markdown-0-13-0">
+
+生成同等或以下角色的 Room Token
+（例如，admin 角色的 SDK Token 可以生成
+ `admin`、`writer` 或 `reader` 角色的 Room Token）
+
+</Slot>
+
+<Slot for="concepts-markdown-0-14-0">
+
+生成同等或以下角色的 Task Token
+（例如，admin 角色的 SDK Token 可以生成
+ `admin`、`writer` 或 `reader` 角色的 Task Token）
+
+</Slot>
+
+:::warning[注意]
+SDK Token 的权限级别很高，如果泄漏，会危害你的业务安全。因此，声网建议：
+
+- 不要将 SDK Token 暴露给客户端、存入数据库或写入配置文件，而是在需要时从业务服务端签出 SDK Token。
+- 不要签出永不过期的 SDK Token，而是根据业务需要，设置 SDK Token 的有效时长。
+:::
+
+### Room Token
+
+Room Token 与特定互动白板项目下的特定房间绑定。持有 Room Token 的用户可操作绑定的房间。不同角色的 Room Token 具有的权限如下：
+
+| 权限                         | admin（管理员） | writer（读写） | reader（只读） |
+| :--------------------------- | :-------------- | :------------- | :------------- |
+| 以[互动模式](#互动模式)加入特定房间       |  ✔               |  ✔             |✘               |
+| 以[订阅模式](#订阅模式)加入特定房间       | ✘                | ✘              |  ✔              |
+| 获取特定房间信息             |  ✔             |  ✔              | ✘               |
+| 封禁特定房间                 |  ✔              | ✘               | ✘               |
+| 对指定场景进行截图           |  ✔           |  ✔              | ✘               |
+| 对场景组下的所有场景进行截图 | ✔              |  ✔              | ✘               |
+| 获取特定房间的场景地址列表   |  ✔              |  ✔             | ✘              |
+| 在特定房间内插入新场景       |  ✔               | ✔              | ✘               |
+| 特定房间内的场景跳转         | ✔              |  ✔              | ✘               |
+
+### Task Token
+
+Task Token 与特定项目下的特定文档转换任务绑定。持有 Task Token 的用户可操作绑定的文档转换任务。不同角色的 Task Token 具有的权限如下：
+
+| 权限                       | admin（管理员）              | writer（读写）               | reader（只读）               |
+| :------------------------- | :--------------------------- | :--------------------------- | :--------------------------- |
+| 查询特定文档转换任务的进度 | ✔ | ✔ | ✔ |
+
+## UUID
+
+### 房间 UUID
+
+互动白板房间的唯一标识符。调用[创建房间](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-rooms)成功后会返回房间 UUID。
+
+### Task UUID
+
+文档转换任务的唯一标识符。调用[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)成功后会返回 Task UUID。
+
+## 互动模式
+
+以互动模式加入白板房间的用户具有读写权限，可以对白板进行编辑。持有 `writer` 或 `admin` 角色 Room Token 的用户能够以互动模式加入房间。
+
+## 订阅模式
+
+以订阅模式加入白板房间的用户具有只读权限，只能观看白板内容。持有 `reader` 角色 Room Token 的用户能够以订阅模式加入房间。
+
+:::info[信息]
+在用户数量较多的房间中，限制房间中处于互动模式的用户数量可以有效提高白板房间连接的稳定性和房间可承载人数上限。
+:::
+
+## 文档转换
+
+声网互动白板提供文档转换服务，支持将 PPT、PPTX、DOC、DOCX 和 PDF 格式的文件转换成静态图片，将 PPT 和 PPTX 的文件转换为动态 HTML 网页，转换后的图片或网页可作为演示资料在互动白板中展示。详见[使用文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/advanced-features/convert-files)。
+
+### 静态文档转换
+
+将 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG 或 JPEG 格式的静态图片。转换后的文件不保留源文件的动画效果。
+
+### 动态文档转换
+
+将用 Microsoft Office 编辑的 PPT 和 PPTX 格式的文件，转换成 HTML 网页。转换后的文件会保留源文件里的动画效果。
+
+## 多窗口模式
+
+多窗口模式是互动白板的一种展示方式，支持在一个白板页面上同时展示多个窗口。这些窗口将悬浮于主白板页面上，各自展示不同的内容，你可以自由拖动、最大化、最小化这些窗口。
+
+互动白板 Fastboard SDK 默认开启多窗口模式；Whiteboard SDK 可通过集成 [`window-manager`](https://github.com/netless-io/window-manager) 实现多窗口模式。
+
+## 小窗应用
+
+在多窗口模式下，互动白板支持以新建窗口的方式插入 PPT 或白板插件，它们统称为小窗应用。
+
+![互动白板多窗口模式和小窗应用](/img/whiteboard/multiwindow.png)
+
+## 场景
+
+当进入白板房间时，看到的是一个向四周无限延伸的页面，即**场景**。在场景上可以写字、绘画、插入图片，并展示动态幻灯片。声网互动白板房间内可以插入多场景，并支持场景的移动和切换。为构建多场景的互动白板应用，你需要了解场景的结构、标识、支持展示的内容，以及新增、删除和修改规则。
+
+### 场景结构
+
+声网互动白板房间内包含场景目录和场景，并呈现树状结构。新创建的声网互动白板房间包含一个根目录和一个默认的初始场景。通过白板 SDK 提供的 API，你可以在房间内插入多个场景目录或场景。场景目录下可以包含子场景目录或场景。房间内无法展示某个场景目录，但可以展示某个特定的场景，且同一时刻，只能展示一个场景。
+
+![声网互动白板房间内场景结构示意图](https://web-cdn.agora.io/docs-files/1632282546264)
+
+### 场景标识
+
+声网互动白板房间内的每个场景和场景目录都有唯一的路径作为其标识，用字符串表示。场景或场景目录的路径为其直接父节点路径加上场景或场景目录的名称，必须以 `/` 开头，并用 `/` 分隔层级。
+
+你需要特别注意以下几点：
+
+- 根目录的路径为 `/`，默认的初始场景路径为 `/init`。
+- 同一个场景目录中的场景和子目录不能重名。
+- 由于 `/` 是场景目录的分隔符，场景名称不能包含 `/`。
+
+例如，在根目录中插入名为 `Math` 的场景目录，该场景目录下包含场景 `ClassA` 和 `ClassB`，则新增场景目录和场景的路径如下：
+
+- `/Math`
+- `/Math/ClassA`
+- `/Math/ClassB`
+
+场景目录中的场景是有顺序的，以索引号标识，场景的索引号从 0 开始。通过指定场景索引号，可以切换至特定场景或在特定位置插入新场景。
+
+### 场景内容
+
+在互动白板场景上，除了可以使用白板工具输入文字、绘制图形外，还可以展示以下格式的图片或网页：
+
+- PNG、JPG/JPEG、WEBP 格式的静态图片。
+- 由 PPT、PPTX、DOC、DOCX、PDF 格式的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。你可以自行转换，也可以使用声网互动白板的静态文档转换服务。
+- 由 PPTX 格式的源文件转换成的 HTML 网页。你必须使用声网互动白板的动态文档转换服务进行转换。
+
+### 场景管理
+
+通过调用 API，你可以新增、删除和移动场景，详见[管理场景](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/manage-scene.javascript)。

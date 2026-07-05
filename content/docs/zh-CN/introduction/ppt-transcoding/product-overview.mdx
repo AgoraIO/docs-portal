@@ -1,0 +1,75 @@
+---
+title: "服务概述"
+---
+声网 PPT 转码服务是声网提供的文档转换解决方案，包括部署在声网服务端的文档转换服务和用于在 App 中渲染转换后文档的 [`@netless/slide`](https://www.npmjs.com/package/@netless/slide) 两部分，支持将 PPT、PPTX、DOC、DOCX 和 PDF 格式的文件转换成静态图片，将 PPT 和 PPTX 的文件转换为动态 HTML 网页并保留动画效果和音视频，转换后的图片或网页可作为演示资料在任何设备上展示和播放。
+
+:::info[体验 Demo]
+点击[在线体验](https://canvas-conversion-demo.netless.group/index.html#/) 即可体验 PPT 转码服务的核心功能。
+:::
+
+<video controls width="100%" height="auto" src="https://web-cdn.agora.io/doc-shengwang/img/docs/ppt-overview.mp4"></video>
+
+## 功能概述
+
+PPT 转码支持**静态文档转换**和**动态文档转换**两种转换服务，并提供 `@netless/slide` SDK 用于渲染转换后的文档。
+
+### 静态文档转换
+
+静态文档转换是指将 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG 或 JPEG 格式的静态图片。转换后的文件不保留源文件的动画效果。
+
+使用静态文档转换服务，你需要注意：
+
+- 源文件最好在 50 页以内，超过 100 页可能会出现转换超时。
+- 源文件内包含的图片分辨率越高，转换速度越慢。
+- 在 PPT、PPTX、DOC、DOCX、PDF 格式的源文件中，PDF 文件的转换结果最为准确。如果转换后的文件样式过于不准确，可以将源文件转成 PDF 格式后重新转换。
+- 本功能基于 [Aspose](https://www.aspose.app/) 实现，因此声网目前无法及时响应定制化需求。建议你在使用前先做充分测试；如果不符合预期，可使用第三方转换服务。
+- 暂不支持资源包功能，但资源路径固定，用户可以自行下载。
+
+### 动态文档转换
+
+动态文档转换是指将用 Microsoft Office 编辑的 PPT 和 PPTX 格式的文件，转换成 HTML 网页。转换后的文件会保留源文件里的动画效果。
+
+使用动态文档转换服务，你需要注意：
+
+- 转换后文档中的动画和视频基于 WebGL 技术渲染，你需要确保你的浏览器支持 WebGL。
+- 暂不支持 WPS 格式的文件转换。即使将 WPS 转成 PPTX 后再进行文件转换，也不能保证成功解析。
+- 暂不支持资源包功能，但资源路径固定，用户可以自行下载。
+- 如果转换结果出现了字体缺失现象，可以使用 SDK 中的自定义字体功能，或者[联系技术支持](https://ticket.shengwang.cn)。
+- 由于 PPT 格式本身的问题，PPT 文件仍然需要在后端转换为 PPTX 进行解析，该过程仍有一定的失败率，建议直接使用 PPTX 格式的文档。
+
+### 渲染转换后文档
+
+声网提供 [`@netless/slide`](https://www.npmjs.com/package/@netless/slide) SDK 用于渲染转换后的文档，并提供接口用于同步事件、RTC 混音和错误处理等。点击[示例项目](https://github.com/netless-io/netless-slide-demo) 即刻体验 `@netless/slide` 的渲染效果。
+
+:::info[关于多端同步]
+`@netless/slide` 是纯净的转换后文档渲染依赖，你需要自行编写事件同步、状态保存以实现多端同步的效果，适用于单独渲染 PPT 的场景。如果你需要结合白板展示 PPT 并实现多端同步，声网同时提供两种适用于声网互动白板的同步方案：
+
+- 互动白板 [Fastboard SDK](/doc/whiteboard/javascript/overview/product-overview#sdk-%E6%AF%94%E8%BE%83%E4%B8%8E%E9%80%89%E6%8B%A9) 是多窗口场景下的文档渲染方案。
+- [@netless/projector-plugin](https://github.com/netless-io/projector-plugin) 是适用于互动白板 [Whiteboard SDK](/doc/whiteboard/javascript/overview/product-overview#sdk-%E6%AF%94%E8%BE%83%E4%B8%8E%E9%80%89%E6%8B%A9) 的文档渲染插件，在单窗口场景下工作。
+:::
+
+## 产品优势
+
+**专业的 PowerPoint 转换器**
+
+将 PPT、PPTX 转换成 HTML，保留课件中的动画效果，可在任何设备上展示和播放。
+
+**效果好**
+
+采用 WebGL 渲染技术，能够完美再现演示文稿中复杂的动画和艺术效果，确保转换后的幻灯片在网络上共享时保持原有的质量和视觉吸引力。
+
+**速度快**
+
+常规 100 MB 以内的课件平均可在 30 秒内完成转换。
+
+**可迭代**
+
+转换引擎完全自研，声网有能力处理和解决转换过程中可能出现的任何相关问题，确保转换结果准确无误。
+
+**门槛低**
+
+支持 API 快速接入，随用随付，每月前 1000 张图片免费。
+
+**可拓展**
+
+可搭配[声网互动白板](/doc/whiteboard/javascript/landing-page)一起使用，轻松实现多端课件切页、画笔笔迹同步等功能。

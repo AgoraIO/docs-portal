@@ -1,0 +1,564 @@
+---
+title: "LocalUser 类"
+---
+LocalUser
+
+<span className="index-desc-localuser">`LocalUser` 类。定义了本地用户的行为和状态。每个 RTC 连接都有自己的用户。你可以通过 [`GetLocalUser`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#getlocaluser) 获取本地用户。每个用户有两种角色：主播（能发送和接收音视频流）和观众（只能接收音视频流）。</span>
+
+<a id="setuserrole"></a>
+## SetUserRole
+
+```go
+func (localUser *LocalUser) SetUserRole(role int) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    C.agora_local_user_set_user_role(localUser.cLocalUser, C.int(role))
+    return 0
+}
+```
+
+<span className="index-desc-setuserrole">设置用户角色。你可以在用户连接频道前或连接频道后调用该方法。</span>
+:::warning[注意]
+如果 [`Connect`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#connect) 中的 `token` 与 `role` 参数设置的角色不同，连接会失败。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `role` | 用户角色。详见 [`ClientRole`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#clientrole)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="setaudioencoderconfiguration"></a>
+## SetAudioEncoderConfiguration
+
+```go
+func (localUser *LocalUser) SetAudioEncoderConfiguration(config *AudioEncoderConfiguration) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cConfig := C.struct__audio_encoder_config{}
+    cConfig.audio_profile = C.int(AudioProfileDefault)
+    if config != nil {
+        cConfig.audio_profile = C.int(config.AudioProfile)
+    }
+    return int(C.agora_local_user_set_audio_encoder_config(localUser.cLocalUser, &cConfig))
+}
+```
+
+<span className="index-desc-setaudioencoderconfiguration">设置音频编码。SDK 会将配置应用于全部发送的音频轨道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `config` | 音频编码配置。详见 [`AudioEncoderConfiguration`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audioencoderconfiguration)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="publishaudio"></a>
+## PublishAudio
+
+```go
+func (localUser *LocalUser) PublishAudio(track *LocalAudioTrack) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_publish_audio(localUser.cLocalUser, track.cTrack))
+}
+```
+
+<span className="index-desc-publishaudio">将本地音频轨道发送到频道。默认情况下，所有发布的音频轨道都会进行混音。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `track` | 需要发布的本地音频轨道。详见 [`LocalAudioTrack`](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-5`: 如果本地用户的角色不是主播，会返回此错误。
+
+<a id="unpublishaudio"></a>
+## UnpublishAudio
+
+```go
+func (localUser *LocalUser) UnpublishAudio(track *LocalAudioTrack) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_unpublish_audio(localUser.cLocalUser, track.cTrack))
+}
+```
+
+<span className="index-desc-unpublishaudio">停止将本地音频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `track` | 需要停止发布的本地音频轨道。详见 [`LocalAudioTrack`](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="publishvideo"></a>
+## PublishVideo
+
+```go
+func (localUser *LocalUser) PublishVideo(track *LocalVideoTrack) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_publish_video(localUser.cLocalUser, track.cTrack))
+}
+```
+
+<span className="index-desc-publishvideo">将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `track` | 需要发布的本地视频轨道。详见 [`LocalVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go)。  |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unpublishvideo"></a>
+## UnpublishVideo
+
+```go
+func (localUser *LocalUser) UnpublishVideo(track *LocalVideoTrack) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_unpublish_video(localUser.cLocalUser, track.cTrack))
+}
+```
+
+<span className="index-desc-unpublishvideo">停止将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `track` | 需要停止发布的本地视频轨道。详见 [`LocalVideoTrack`](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="subscribeaudio"></a>
+## SubscribeAudio
+
+```go
+func (localUser *LocalUser) SubscribeAudio(uid string) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cUid := C.CString(uid)
+    defer C.free(unsafe.Pointer(cUid))
+    return int(C.agora_local_user_subscribe_audio(localUser.cLocalUser, cUid))
+}
+```
+
+<span className="index-desc-subscribeaudio">订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 如果用户不存在或 `uid` 无效时会返回该错误。
+
+<a id="subscribeallaudio"></a>
+## SubscribeAllAudio
+
+```go
+func (localUser *LocalUser) SubscribeAllAudio() int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_subscribe_all_audio(localUser.cLocalUser))
+}
+```
+
+<span className="index-desc-subscribeallaudio">订阅频道中全部远端用户发送的音频流。该方法会自动订阅频道中后续加入的用户发送的音频流。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unsubscribeaudio"></a>
+## UnsubscribeAudio
+
+```go
+func (localUser *LocalUser) UnsubscribeAudio(uid string) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cUid := C.CString(uid)
+    defer C.free(unsafe.Pointer(cUid))
+    return int(C.agora_local_user_unsubscribe_audio(localUser.cLocalUser, cUid))
+}
+```
+
+<span className="index-desc-unsubscribeaudio">停止订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 如果用户不存在或 `uid` 无效时会返回该错误。
+
+<a id="unsubscribeallaudio"></a>
+## UnsubscribeAllAudio
+
+```go
+func (localUser *LocalUser) UnsubscribeAllAudio() int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_unsubscribe_all_audio(localUser.cLocalUser))
+}
+```
+
+<span className="index-desc-unsubscribeallaudio">停止订阅频道中全部远端用户发送的音频流。该方法会自动取消订阅频道中后续加入的用户发送的音频流。你必须调用 [`subscribe_audio`](#subscribeaudio) 或 [`subscribe_all_audio`](#subscribeallaudio) 才能恢复订阅音频。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="setplaybackaudioframeparameters"></a>
+## SetPlaybackAudioFrameBeforeMixingParameters
+
+```go
+func (localUser *LocalUser) SetPlaybackAudioFrameBeforeMixingParameters(channels int, sampleRate int) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_set_playback_audio_frame_before_mixing_parameters(localUser.cLocalUser, C.uint(channels), C.uint(sampleRate)))
+}
+```
+
+<span className="index-desc-setplaybackaudioframeparameters">设置播放的音频格式。该方法设置 [`OnPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc-server-sdk/go-api/audioframeobserver.go#onplaybackaudioframebeforemixing) 回调数据的格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sampleRate` | 音频数据采样率，可设置为 8000、 16000、32000、 44100 或 48000。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registeraudioframeobserver"></a>
+## RegisterAudioFrameObserver
+
+```go
+func (localUser *LocalUser) RegisterAudioFrameObserver(observer *AudioFrameObserver) int {
+    return localUser.connection.registerAudioFrameObserver(observer)
+}
+```
+
+<span className="index-desc-registeraudioframeobserver">注册音频帧观测器。你必须实现 [`AudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/audioframeobserver.go) 类并根据需求注册回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | `AudioFrameObserver` 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisteraudioframeobserver"></a>
+## UnregisterAudioFrameObserver
+
+```go
+func (localUser *LocalUser) UnregisterAudioFrameObserver() int {
+    return localUser.connection.unregisterAudioFrameObserver()
+}
+```
+
+<span className="index-desc-unregisteraudioframeobserver">销毁 [`AudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/audioframeobserver.go) 对象。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="subscribevideo"></a>
+## SubscribeVideo
+
+```go
+func (localUser *LocalUser) SubscribeVideo(uid string, options *VideoSubscriptionOptions) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cUid := C.CString(uid)
+    defer C.free(unsafe.Pointer(cUid))
+    cOptions := C.video_subscription_options{}
+    po := &cOptions
+    if options != nil {
+        cOptions._type = C.int(options.StreamType)
+        cOptions.encoded_frame_only = C.int(0)
+        if options.EncodedFrameOnly {
+            cOptions.encoded_frame_only = C.int(1)
+        }
+    } else {
+        po = nil
+    }
+    return int(C.agora_local_user_subscribe_video(localUser.cLocalUser, cUid, po))
+}
+```
+
+<span className="index-desc-subscribevideo">订阅频道中指定远端用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。 |
+| `options` | 订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videosubscriptionoptions) |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`：如果用户不存在或 `uid` 无效时会返回该错误。
+
+<a id="subscribeallvideo"></a>
+## SubscribeAllVideo
+
+```go
+func (localUser *LocalUser) SubscribeAllVideo(options *VideoSubscriptionOptions) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cOptions := C.video_subscription_options{}
+    po := &cOptions
+    if options != nil {
+        cOptions._type = C.int(options.StreamType)
+        cOptions.encoded_frame_only = C.int(0)
+        if options.EncodedFrameOnly {
+            cOptions.encoded_frame_only = C.int(1)
+        }
+    } else {
+        po = nil
+    }
+    return int(C.agora_local_user_subscribe_all_video(localUser.cLocalUser, po))
+}
+```
+
+<span className="index-desc-subscribeallvideo">订阅频道中全部远端用户发送的视频流。该方法会自动订阅频道中后续加入的用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `options` | 订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videosubscriptionoptions) |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unsubscribevideo"></a>
+## UnsubscribeVideo
+
+```go
+func (localUser *LocalUser) UnsubscribeVideo(uid string) int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    cUid := C.CString(uid)
+    defer C.free(unsafe.Pointer(cUid))
+    return int(C.agora_local_user_unsubscribe_video(localUser.cLocalUser, cUid))
+}
+```
+
+<span className="index-desc-unsubscribevideo">停止订阅频道中指定远端用户发送的视频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `uid` | 远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`：如果用户不存在或 `uid` 无效时会返回该错误。
+
+<a id="unsubscribeallvideo"></a>
+## UnsubscribeAllVideo
+
+```go
+func (localUser *LocalUser) UnsubscribeAllVideo() int {
+    if localUser.cLocalUser == nil {
+        return -1
+    }
+    return int(C.agora_local_user_unsubscribe_all_video(localUser.cLocalUser))
+}
+```
+
+<span className="index-desc-unsubscribeallvideo">停止订阅频道中全部远端用户发送的视频流。该方法会自动取消订阅频道中后续加入的用户发送的视频流。你必须调用 [`SubscribeVideo`](#subscribevideo) 或 [`SubscribeAllVideo`](#subscribeallvideo) 才能恢复订阅。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registerlocaluserobserver"></a>
+## RegisterLocalUserObserver
+
+```go
+func (localUser *LocalUser) RegisterLocalUserObserver(observer *LocalUserObserver) int {
+    return localUser.connection.registerLocalUserObserver(observer)
+}
+```
+
+<span className="index-desc-registerlocaluserobserver">注册本地用户观测器。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | [`LocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go) 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisterlocaluserobserver"></a>
+## UnregisterLocalUserObserver
+
+```go
+func (localUser *LocalUser) UnregisterLocalUserObserver() int {
+    return localUser.connection.unregisterLocalUserObserver()
+}
+```
+
+<span className="index-desc-unregisterlocaluserobserver">销毁本地用户观测器。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registervideoframeobserver"></a>
+## RegisterVideoFrameObserver
+
+```go
+func (localUser *LocalUser) RegisterVideoFrameObserver(observer *VideoFrameObserver) int {
+    return localUser.connection.registerVideoFrameObserver(observer)
+}
+```
+
+<span className="index-desc-registervideoframeobserver">注册 [`VideoFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframeobserver.go) 对象。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | `VideoFrameObserver` 类。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregistervideoframeobserver"></a>
+## UnregisterVideoFrameObserver
+
+```go
+func (localUser *LocalUser) UnregisterVideoFrameObserver() int {
+    return localUser.connection.unregisterVideoFrameObserver()
+}
+```
+
+<span className="index-desc-unregistervideoframeobserver">销毁 [`VideoFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframeobserver.go) 对象。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="getrtcconnection"></a>
+## GetRtcConnection
+
+```go
+func (localUser *LocalUser) GetRtcConnection() *RtcConnection {
+    return localUser.connection
+}
+```
+
+<span className="index-desc-getrtcconnection">获取 `RtcConnection` 对象。</span>
+
+#### 返回值
+
+- `RtcConnection` 对象：方法调用成功。
+- `nil`：方法调用失败。
+
+<a id="sendaudiometadata"></a>
+## SendAudioMetadata
+
+```go
+func (localUser *LocalUser) SendAudioMetaData(metaData []byte) int {
+  if localUser.cLocalUser == nil {
+    return -1
+  }
+```
+
+发送音频 Metadata 数据。
+
+成功调用该方法后，远端会触发 [`OnAudioMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onaudiometadatareceived) 回调，远端用户可以在该回调中获取接收到的音频 Metadata 数据。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `metaData` | 音频 Metadata 数据。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

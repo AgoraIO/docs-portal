@@ -1,0 +1,71 @@
+---
+title: "处理浏览器的自动播放策略"
+---
+浏览器为了防止网页在用户非自愿的情况下主动播放声音，对网页上的自动播放 (Autoplay) 功能做了限制：浏览器在**没有用户交互操作（点击、触摸等）之前不允许有声音的媒体播放**。这个限制是出于用户体验的考虑，因为通常情况下用户访问网页后突然自动播放音频可能是违背用户意愿的。
+
+在大部分浏览器中，纯视频不受到自动播放策略的限制，但是在低电量模式下的 iOS Safari 浏览器中以及开启自定义自动播放限制的 iOS WKWebView 中（如 iOS 微信浏览器），纯视频的自动播放也会受到限制。
+
+在使用声网 Web SDK 时，如果在发生用户交互之前调用 `play` 播放音频或视频，浏览器的 Autoplay 限制可能导致用户听不到声音或看不到视频。
+
+本文介绍使用声网 Web SDK 时处理 Autoplay 限制的两种方案：
+
+- 自动播放失败时解除 Autoplay 限制：监听 `onAutoplayFailed` 回调，通过回调在页面上显示一个按钮引导用户点击，从而解除浏览器的音频或视频自动播放限制。
+- 在产品设计中确保在调用 `play` 之前用户已经和页面发生了交互。
+
+:::info[信息]
+无论使用何种方案，只要浏览器启用了自动播放策略，都需要用户至少进行一次交互操作才能播放。随着用户使用某个页面的次数变多，浏览器会在这个页面上默认关闭自动播放策略，此时不需要任何交互也可以播放了，但是我们无法通过 JavaScript 去感知浏览器这个行为。
+:::
+
+## 自动播放失败时解除 Autoplay 限制
+
+监听 `onAutoplayFailed` 回调，在音频或视频轨道自动播放失败时提示和引导用户与页面发生交互来恢复播放。
+
+以下示例代码演示了当检测到音频或视频轨道自动播放失败后的处理：在页面上动态显示一个按钮让用户点击。
+
+:::warning[注意]
+如果短时间内多个音视频轨道对象都调用了 `play` 但是自动播放失败，在用户通过手势点击恢复播放之前，`onAutoplayFailed` 回调只会触发一次。
+:::
+
+```javascript
+AgoraRTC.onAutoplayFailed = () => {
+  const btn = document.createElement("button");
+  btn.innerText = "Click me to resume the audio/video playback";
+  btn.onClick = () => {
+    btn.remove();
+  };
+  document.body.append(btn);
+}
+```
+
+## 确保调用 play 前用户产生交互行为
+
+### 桌面端
+
+简单来说，只要确保在调用 `play` 之前用户和页面发生过交互行为即可。
+
+对于桌面端的浏览器，这个方案可以处理大部分 Autoplay 限制，但是在 iOS Safari/WebView 上，自动播放策略会更为严格。
+
+### iOS Safari/WebView
+
+iOS Safari 只允许通过用户交互来**触发**有声媒体的播放，而不是在用户交互后就打开 Autoplay 限制。
+
+如果你的应用需要兼容 iOS Safari/WebView，我们推荐对 iOS Safari/WebView 做特殊处理。
+
+- 为每个远端用户在播放界面上通过图标显示当前用户被静音，引导用户点击。
+- 当本地用户点击某个远端用户的音频播放按钮时，在按钮的点击/触摸事件的回调中播放这个用户的音频轨道，同时更改静音图标。
+
+```html
+<div id="user1-audio">已静音</div>
+```
+
+```javascript
+document.getElementById("user1-audio").onClick = (e) => {
+  if (user1.audioTrack.isPlaying) {
+    user1.audioTrack.stop();
+    e.target.innerHTML = "已静音";
+    return;
+  }
+  user1.audioTrack.play();
+  e.target.innerHTML = "播放中";
+};
+```

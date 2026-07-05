@@ -1,0 +1,358 @@
+---
+title: "实现语聊房"
+---
+本文介绍如何实现语聊房，包含登录系统、初始化引擎、创建房间、麦位管理、退出房间。
+
+## 示例项目
+
+声网在 `agora-ent-scenarios` 仓库中提供实现语聊房的源代码供你参考。
+
+<Cards>
+  <Card title="agora-ent-scenarios" href="https://github.com/AgoraIO-Usecase/agora-ent-scenarios/tree/main/Android/scenes/voice" />
+</Cards>
+
+## 业务流程
+
+本节展示语聊房中常见的业务流程。
+
+### 进出房间
+
+下图展示创建、进入、退出房间的流程。
+
+![进出房间流程](/img/chatroom/flow1-enter-room.svg)
+
+### 房主邀请听众上麦
+
+下图展示房主邀请听众上麦的流程。在这个流程中，房主发起上麦邀请。如果听众接受邀请，房主会收到通知并修改麦位信息，让听众上麦。听众随后发布自己的音频流。
+
+![房主邀请听众上麦流程](/img/chatroom/flow2-host-invite.svg)
+
+### 听众申请上麦
+
+下图展示听众向房主申请上麦的流程。在这个流程中，听众主动发起上麦申请，如果房主接受申请，房主修改麦位信息以让听众上麦。听众收到上麦消息后，发布自己的音频流。
+
+![听众申请上麦流程](/img/chatroom/flow3-audience-request.svg)
+
+## 准备开发环境
+
+### 前提条件
+
+开始前，请确保你的开发环境满足如下要求：
+
+- [Android Studio](https://developer.android.com/studio/) 3.5 及以上。
+- Android 手机，版本 Android 5.0（API Level 21）及以上。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- 参考[开通服务](/zh-CN/solutions/chatroom/sdk/get-started/enable-service)创建声网开发者账号和声网项目，并获取项目的 App ID 和临时 Token，以及登录即时通讯系统所需的用户名 (ID) 和 Token。
+
+### 集成 SDK
+
+声动语聊用到声网实时互动 (RTC) SDK 和即时通讯 (IM) SDK。本节介绍如何在 Android Studio 创建项目并集成这两个 SDK：
+
+1. 如需创建新项目，在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
+
+   :::info[信息]
+   创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻至同步成功后再进行下一步操作。
+   :::
+
+2. 使用 Maven Central 将声网 RTC SDK 和 IM SDK 集成到你的项目中。
+
+   1. 在 `/Gradle Scripts/build.gradle(Project: <projectname>)` 文件中添加如下代码，添加 Maven Central 依赖：
+
+        ```groovy
+        buildscript {
+            repositories {
+                ...
+                mavenCentral()
+            }
+            ...
+        }
+        allprojects {
+            repositories {
+                ...
+                mavenCentral()
+            }
+        }
+        ```
+
+        :::info[信息]
+        如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+        :::
+
+   2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将声网 RTC SDK 和 IM SDK 集成到你的 Android 项目中：
+
+      ```groovy
+      ...
+      dependencies {
+          ...
+          // x.y.z，请填写具体的 SDK 版本号，如：4.0.0 或 4.1.0-1
+          // 通过实时互动产品发版说明获取最新版本号
+          implementation 'io.agora.rtc:full-sdk:x.y.z'
+          // 指定 IM SDK 1.1.0 版
+          implementation 'io.agora.rtc:chat-sdk:1.1.0'
+      }
+      ```
+
+3. 添加网络及设备权限。
+
+   在 `/app/Manifests/AndroidManifest.xml` 文件中，在 `</application>` 后面添加如下权限：
+
+   ```xml
+   <uses-permission android:name="android.permission.INTERNET"/>
+   <uses-permission android:name="android.permission.CAMERA"/>
+   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+   <uses-permission android:name="android.permission.BLUETOOTH"/>
+   <!-- 对于 Android 12.0 及以上且集成 v4.1.0 以下声网 RTC SDK 的设备，还需要添加以下权限 -->
+   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+   <!-- 对于 Android 12.0 及以上设备，还需要添加以下权限 -->
+   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+   <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+   ```
+
+4. 在 `/Gradle Scripts/proguard-rules.pro` 文件中添加如下行，以防止声网 SDK 的代码被混淆：
+
+   ```kotlin
+   -keep class io.agora.**{*;}
+   -dontwarn javax.**
+   -dontwarn com.google.devtools.build.android.**
+   ```
+
+## 实现语聊房
+
+你需要声网 RTC SDK、IM SDK 和云服务 (Service) 共同搭建语聊房场景。其中：
+
+- 实时互动 RTC SDK 承担实时音频的业务。
+- 即时通讯 IM SDK 实现房间内的信令通信。
+- 云服务 (Service) 实现了房间列表的存储和房间生命周期的管理。
+
+本节会详细介绍如何调用声网云服务（`voiceServiceProtocol`）、IM SDK 和 RTC SDK 的 API 完成登录即时通讯系统、获取房间列表、创建房间、进入房间、加入 RTC 房间、离开 RTC 房间等关键逻辑。完整的调用时序可以参考 [API 时序图](#api-时序图)。
+
+:::warning[注意]
+声网云服务为内部自研服务，暂不对外提供。你可以调用声网云服务的 API 用于测试，但是对于正式环境，声网建议你参考文档自行实现相似的一套服务。如需协助，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+### 1. 获取房间列表
+
+调用声网云服务中 `voiceServiceProtocol` 类的 `fetchRoomList` 方法获取房间列表。获取到房间列表后刷新 UI 并将房间列表展示在界面上。
+
+```kotlin
+voiceServiceProtocol.fetchRoomList(page, completion = { error, result ->
+    ...
+})
+```
+
+### 2. 登录即时通讯系统
+
+参考如下步骤登录即时通讯 (IM) 系统：
+
+1. 根据[前提条件](#前提条件)开启声网即时通讯服务，并获取登录即时通讯系统所需的用户名 (ID) 和 Token。
+2. 调用声网即时通讯 (IM) SDK 中 `ChatClient` 类的 [`loginWithToken`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_client.html#ac2b19ffdcd879b5f239baacbaa09423b) 方法并传入即时通讯服务的用户名和 Token 以登录即时通讯系统。
+
+```kotlin
+public void login(String uid,String token,CallBack callBack){
+    ChatClient.getInstance().loginWithToken(uid, token, new CallBack() {
+        @Override
+        public void onSuccess() {
+            ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    callBack.onSuccess();
+                }
+            });
+            LogTools.d("ChatroomConfigManager","Login success");
+        }
+
+        @Override
+        public void onError(int code, String msg) {
+            ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                @Override
+                public void run() {
+                    callBack.onError(code,msg);
+                }
+            });
+            LogTools.e("ChatroomConfigManager", "Login onError code:" + code + " desc: " + msg);
+        }
+    });
+}
+```
+
+### 3. 初始化 `RtcEngine`
+
+参考如下步骤初始化 `RtcEngine`：
+
+1. 根据[开通服务](/zh-CN/solutions/chatroom/sdk/get-started/enable-service)在声网控制台创建声网项目后，复制界面的 App ID。
+2. 调用声网 RTC SDK 中的 [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) 方法创建并初始化 `RtcEngine`。
+
+```kotlin
+// 初始化配置
+val config = RtcEngineConfig()
+// 设置 App ID
+config.mAppId = "YourAppId"
+// 创建 RtcEngine 实例
+val rtcEngine = RtcEngineEx.create(config) as RtcEngineEx
+```
+
+### 4. 创建并进入房间
+
+参考如下步骤创建并进入房间：
+
+1. 调用 `voiceServiceProtocol` 对象中的 `createRoom` 方法创建一个房间。
+
+    ```kotlin
+    val voiceCreateRoomModel = VoiceCreateRoomModel(
+        roomName = roomName,
+        soundEffect = soundEffect,
+        isPrivate = !TextUtils.isEmpty(password),
+        password = password ?: "",
+        roomType = roomType
+    )
+    voiceServiceProtocol.createRoom(voiceCreateRoomModel, completion = { error, result ->
+        when (error) {
+            VoiceServiceProtocol.ERR_OK -> {
+                callBack.onSuccess(createLiveData(result))
+            }
+            VoiceServiceProtocol.ERR_ROOM_NAME_INCORRECT -> {
+                callBack.onError(error, "")
+            }
+            else -> {
+                callBack.onError(error, "")
+            }
+        }
+    })
+    ```
+
+2. 调用 `voiceServiceProtocol` 对象的 `joinRoom` 方法进入房间。
+
+    ```kotlin
+    voiceServiceProtocol.joinRoom(roomId, completion = { error, result ->
+        when (error) {
+            VoiceServiceProtocol.ERR_OK -> {
+                callBack.onSuccess(createLiveData(result))
+            }
+            VoiceServiceProtocol.ERR_ROOM_UNAVAILABLE -> {
+                callBack.onError(error, "room is not existent")
+            }
+            else -> {
+                callBack.onError(error, "")
+            }
+        }
+    })
+    ```
+
+3. 语聊房里需要有消息聊天和语音聊天，因此你还需进行如下操作：
+
+    - 调用声网 IM SDK 中 `joinChatRoom` 实现房间内的消息互动。方法中的参数含义和取值请参考 [`joinChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a895dbd6d0217ba08bcf2dbb6cf441591)。
+
+        ```kotlin
+        // 实现房间内的消息互动
+        public void joinRoom(String chatroomId, ValueCallBack<ChatRoom> callBack){
+            ChatClient.getInstance().chatroomManager()
+                    .joinChatRoom(chatroomId, new ValueCallBack<ChatRoom>() {
+                        @Override
+                        public void onSuccess(ChatRoom value) {
+                            ThreadManager.getInstance().runOnMainThreadDelay(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callBack.onSuccess(value);
+                                }
+                            },200);
+                        }
+
+                        @Override
+                        public void onError(int error, String errorMsg) {
+                            ThreadManager.getInstance().runOnMainThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callBack.onError(error,errorMsg);
+                                }
+                            });
+                        }
+                    });
+        }
+        ```
+
+    - 调用声网 RTC SDK 中 `RtcEngine` 类的 `joinChannel` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2)。在这一步里需要填写声网 RTC Token。你可以使用[开通服务](/zh-CN/solutions/chatroom/sdk/get-started/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.android)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
+
+      你还可以调用 [`setChannelProfile`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)、[`setParameters`](/api-ref/rtc/android/API/toc_network#api_irtcengine_setparameters) 为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）配置语聊房的推荐音效参数。
+
+        ```kotlin
+        // 实现房间内的语音互动
+        rtcEngine?.apply {
+            when (soundEffect) {
+                // 在线 K 歌房和泛娱乐社交场景下推荐设置
+                ConfigConstants.SoundSelection.Social_Chat,
+                ConfigConstants.SoundSelection.Karaoke -> {
+                    // 设置频道属性为直播
+                    setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+                    // 设置 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps
+                    setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+                    // 设置为高音质场景
+                    setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+                }
+                // 1 对 1 游戏陪玩通话场景下推荐
+                ConfigConstants.SoundSelection.Gaming_Buddy -> {
+                    // 设置频道属性为通信
+                    setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
+                }
+                else -> {
+                    // 专业音频直播场景下推荐设置
+                    // 设置频道属性为直播
+                    setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING)
+                    // 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps
+                    setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY)
+                    // 设置为高音质场景
+                    setAudioScenario(Constants.AUDIO_SCENARIO_GAME_STREAMING)
+                    // 设置私有参数以获得好的实时音频互动体验
+                    setParameters("{\"che.audio.custom_payload_type\":73}")
+                    setParameters("{\"che.audio.custom_bitrate\":128000}")
+                    setParameters("{\"che.audio.input_channels\":2}")
+                }
+            }
+        }
+        // 加入 RTC 频道
+        // 此处的 Token 为声网 RTC Token
+        val status = rtcEngine?.joinChannel(VoiceBuddyFactory.get().getVoiceBuddy().rtcToken(), channelId, "", rtcUid)
+        ```
+
+### 5. 麦位管理
+
+具体步骤详见[麦位管理](/zh-CN/solutions/chatroom/sdk/user-guides/mic-seat-management.android)。
+
+### 6. 退出房间
+
+参考如下步骤退出并销毁语聊房。
+
+1. 调用 `voiceServiceProtocol` 对象的 `leaveRoom` 方法离开房间。
+
+    ```kotlin
+    voiceServiceProtocol.leaveRoom(roomId, isRoomOwnerLeave, completion = { error, result ->
+        ...
+    })
+    ```
+
+2. 调用 `RtcEngine` 类的 [`leaveChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_leavechannel) 方法离开 RTC 频道。
+
+    ```kotlin
+    rtcEngine?.leaveChannel()
+    ```
+
+3. 调用 [`leaveChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html#a4f2c430782206971480c73a49311b1437) 离开聊天室，调用 [`asyncDestroyChatRoom`](https://docs-preprod.agora.io/cn/agora-chat/API%20Reference/im_java/v1.1.0/classio_1_1agora_1_1chat_1_1_chat_room_manager.html?transId=194274c0-bee4-11ed-b167-a39cc89dc96e#a0d50d2e34d9992fc3f8ea1c82e2db1a) 销毁聊天室。调用 [`destroy`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_release) 销毁 RTC 引擎。
+
+    ```kotlin
+    ChatroomIMManager.getInstance().leaveChatRoom(roomKitBean.chatroomId)
+    ChatroomIMManager.getInstance().asyncDestroyChatRoom(roomKitBean.chatroomId, object :
+        CallBack {
+        override fun onSuccess() {}
+        override fun onError(code: Int, error: String?) {}
+    })
+    RtcEngineEx.destroy()
+    rtcEngine = null
+    ```
+
+### API 时序图
+
+如下时序图展示了如何登录即时通讯系统、获取房间列表、创建房间、进入房间、加入 RTC 频道、麦位管理、退出房间、离开 RTC 频道。
+
+![API 时序](/img/chatroom/integ-and.svg)

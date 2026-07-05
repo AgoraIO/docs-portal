@@ -1,0 +1,135 @@
+---
+title: "跑通 API 示例项目"
+---
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/example" />
+</Cards>
+
+本文介绍如何快速跑通 React Native 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+<Tabs defaultValue="android" groupId="preq" persist>
+<TabsList>
+  <TabsTrigger value="android">目标平台为 Android</TabsTrigger>
+  <TabsTrigger value="ios">目标平台为 iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- macOS、Windows 或 Linux 操作系统
+- Node 16 或以上
+- [Java Development Kit (JDK)](https://openjdk.org/projects/jdk/11/) 11 或以上
+- 最新版本的 Android Studio
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- Android 5.0 或以上设备
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.electron.rn)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- macOS 操作系统
+- Node 16 或以上
+- Xcode
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 1.12 及以上版本
+- iOS 12.4 或以上设备
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.electron.rn)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+</Tabs>
+
+关于搭建开发环境的更多注意事项，详见[搭建开发环境](https://reactnative.dev/docs/environment-setup)。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 从以下两种方式中任选一种获取示例项目：
+    - 前往[下载](/zh-CN/realtime-media/rtc/resources.rn)页面，下载最新版的 React Native 视频 SDK。
+    - 运行以下命令将 React Native SDK 克隆至本地。
+
+        ```shell
+        git clone git@github.com:AgoraIO-Extensions/react-native-agora.git
+        ```
+
+2. React Native SDK 的 API 使用示例位于 `/example/` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/example/src/examples/basic`      | 基础功能。 |
+    | `/example/src/examples/advanced`   | 进阶功能。 |
+    | `/example/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+
+### 配置示例项目
+
+1. 安装依赖项
+
+    在项目根目录下，运行以下命令集成 SDK 并安装依赖项：
+
+    ```shell
+    yarn
+    ```
+
+    :::warning[注意]
+    由于 `react-native-agora` 项目依赖于 Yarn 工作区，你无法使用 npm 安装依赖。
+    :::
+
+2. 设置 App ID 和临时 Token
+
+    打开 `/example/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
+
+    ```typescript
+    // 填入 App ID
+    let localAppId = '';
+    try {
+    localAppId = require('./appID').default;
+    console.log('appID', localAppId);
+    } catch (error) {
+    console.warn(error);
+    }
+
+    const config = {
+    appId: localAppId,
+    // 填入临时 Token
+    token: '',
+    // 填入生成临时 Token 时使用的频道名
+    channelId: 'testdcg',
+    uid: 0,
+    logFilePath: '',
+    };
+
+    export default config;
+    ```
+
+### 运行示例项目
+
+1. 在项目根目录使用以下命令运行 React Native 示例项目。
+
+    ```shell
+    // 目标平台为 Android
+    yarn example android
+
+    // 目标平台为 iOS
+    yarn example ios
+    ```
+
+2. 以 Android 为例，运行完成后，你的电脑上会弹出以下应用。
+
+![React Native Demo](/img/rtc/rn-run-demo1.png)
+
+3. 你可以任意选择你想体验的功能或场景。以 **Basic** 中的 **JoinChannelVideo** 为例，点击 **join channel** 加入频道。
+
+![React Native Demo](/img/rtc/rn-run-demo2.png)
+
+4. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。

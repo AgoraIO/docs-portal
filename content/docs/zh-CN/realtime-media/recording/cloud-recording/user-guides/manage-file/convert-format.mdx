@@ -1,0 +1,327 @@
+---
+title: "转换录制文件格式"
+---
+完成云端录制后，你可以根据场景需要，使用声网提供的转码脚本将 M3U8/TS/WebM 等原始录制文件合并并转换为 M4A/MP4 格式。本文介绍如何在不同录制模式下使用该脚本进行格式转换，并结合常见使用场景与示例，帮助你快速获得所需的音视频文件。
+
+## 前提条件
+
+### 环境准备
+
+转码服务器推荐使用以下系统：
+
+- Linux AMD64（x86_64）
+- Ubuntu24+
+- Python 3.12+
+
+### 录制文件准备
+
+- 确保已通过声网云端录制 RESTful API 生成录制文件（组成与命名详情参考[录制文件组成](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files#录制文件组成及命名规则)）。任何一个录制文件的缺失都将导致转码失败。
+- 确保生成的录制文件的存储路径可访问。
+
+## 脚本获取
+
+下载[声网音视频格式转换脚本](https://download.agora.io/ardsdk/release/rtsc-convert_tool.v3.16.1.6-202601140232-release-prod.tar.gz)压缩包并解压，**解压后进入脚本所在目录再执行**。建议使用工具包内自带的 FFmpeg、ffprobe 与 transcoder，避免兼容性问题。
+
+**压缩包内文件说明**：
+
+| 文件 | 用途 |
+|------|------|
+| `convert_v2.py` | 转码入口脚本。根据 `--dir` 等参数扫描录制文件并调用同目录下的 `ffmpeg`、`ffprobe`、`transcoder`，实现合并转换与转码。 |
+| `ffmpeg` | 音视频处理可执行文件。用于流复制、封装及最终编码输出。 |
+| `ffprobe` | 媒体信息探测可执行文件。用于读取宽高、帧率、声道等，供脚本与 ffmpeg 使用。 |
+| `transcoder` | 转码可执行文件。由脚本调用，完成录制文件的转码与合流，输出再由 ffmpeg 处理为最终文件。 |
+
+:::warning[注意]
+若在 Windows 或非 Linux AMD64 环境下，脚本会报错退出。
+:::
+
+## 使用脚本转换录制文件
+
+进入脚本所在目录后，脚本默认按**单流录制**模式扫描并转码目录中的文件。仅在默认单流录制模式下，只需指定录制文件所在目录即可完成转码。**必填参数**仅有一个：
+
+- `--dir <目录>`：存放本次录制生成的 M3U8/TS/WebM 等文件的目录。脚本会扫描该目录，按**单流录制**自动识别并依次转码，输出格式根据源文件自动判断（有音有视输出 MP4，仅音输出 M4A，仅视频输出 MP4）。
+
+转换合流录制或页面录制文件时，还需显式设置 `--recording_mode mix` 或 `--recording_mode web`。
+
+**最简示例**（使用默认配置，仅传必填参数）：
+
+```shell
+cd /path/to/解压后的脚本目录
+python3 convert_v2.py --dir /path/to/recordings
+```
+
+以上命令会转码 `--dir` 指定目录下的所有录制文件，输出文件会生成在录制文件所在目录。若需只转指定用户 ID（UID）、仅输出音频/视频、或指定分辨率等，可增加 `--uid`、`--avtype`、`--recording_mode` 等参数。各参数含义与可选值见[脚本参数说明](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/convert-format#脚本参数说明)。
+
+## 常见使用场景和示例
+
+### 转换单流录制文件
+
+单流模式下，会话中的每个用户（UID）的音频和视频分开录制，对应不同的 M3U8/TS/WebM 及切片文件。你可以使用声网音视频格式转换脚本，合并每个 UID 的音频文件和视频文件。
+
+**使用场景与示例**
+
+<Tabs defaultValue="all_uid">
+<TabsList>
+  <TabsTrigger value="all_uid">转码整场录制（默认配置）</TabsTrigger>
+  <TabsTrigger value="single_uid">只转码指定用户的录制</TabsTrigger>
+  <TabsTrigger value="av_type">仅输出音频 / 视频</TabsTrigger>
+  <TabsTrigger value="ha_individual">合并异常情况下的录制</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all_uid">
+
+**适用于**
+需要把目录下所有用户的录制都转成 M4A/MP4 时； 有音有视输出 MP4，仅音输出 M4A。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings
+```
+
+</TabsContent>
+
+<TabsContent value="single_uid">
+
+**适用于**
+只需转码其中一位用户的音视频时（脚本每次仅支持一个 UID）。若需转码多名指定用户，需多次执行命令，每次传入不同的 `--uid`。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --uid 123456
+```
+
+</TabsContent>
+
+<TabsContent value="av_type">
+
+**适用于**
+只需要音频文件（M4A）或只需要视频文件（MP4）时（不需要音画合一）。如做会议记录、语音归档。
+
+**示例：**
+
+```sh
+# 仅音频
+python3 convert_v2.py --dir /path/to/recordings --avtype audio_only
+
+# 仅视频
+python3 convert_v2.py --dir /path/to/recordings --avtype video_only
+```
+
+</TabsContent>
+
+<TabsContent value="ha_individual">
+
+**适用于**
+录制过程中因[服务器断网或进程被杀](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files#服务器断网或进程被杀)触发高可用机制后，目录中会同时存在原 M3U8/TS 与带 `bak<n>` 前缀的恢复文件；需将同一录制的原文件与恢复文件合并为一个 MP4 时。会按同一次录制会话**相同 UID、SID 与 cname** 自动识别并合并。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings
+```
+
+</TabsContent>
+</Tabs>
+
+### 转换合流录制文件
+
+合流模式下，录制结果为一个 M3U8 文件及多个 TS 文件，包含整场录制的音视频数据。你可以使用声网音视频格式转换脚本，合并每个 UID 的音频文件和视频文件。使用脚本时需将 `--recording_mode` 设为 `mix`。
+
+**使用场景与示例**
+
+<Tabs defaultValue="all_uid">
+<TabsList>
+  <TabsTrigger value="all_uid">将整场合流录制转为 MP4</TabsTrigger>
+  <TabsTrigger value="single_uid">仅导出整场音频或视频</TabsTrigger>
+  <TabsTrigger value="av_type">指定输出视频分辨率</TabsTrigger>
+  <TabsTrigger value="ha_web">合并异常情况下的录制</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all_uid">
+
+**适用于**
+将整场合流录制一次性转为可直接播放的文件，有音有视输出 MP4，仅音输出 M4A。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode mix
+```
+
+</TabsContent>
+
+<TabsContent value="single_uid">
+
+**适用于**
+只需要音频文件（M4A）或只需要视频文件（MP4）时（不需要音画合一）。如做会议记录、语音归档。
+
+**示例：**
+
+```sh
+# 仅音频
+python3 convert_v2.py --dir /path/to/recordings --recording_mode mix --avtype audio_only
+
+# 仅视频
+python3 convert_v2.py --dir /path/to/recordings --recording_mode mix --avtype video_only
+```
+
+</TabsContent>
+
+<TabsContent value="av_type">
+
+**适用于**
+需要统一输出视频规格（例如固定为 1280 × 720），以便后续分发、存档或播放的场景。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode mix --width 1280 --height 720
+```
+
+</TabsContent>
+
+<TabsContent value="ha_web">
+
+**适用于**
+录制过程中因[服务器断网或进程被杀](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files#服务器断网或进程被杀)触发高可用机制后，目录中会同时存在原 M3U8/TS 与带 `bak<n>` 前缀的恢复文件；需将同一录制的原文件与恢复文件合并为一个 MP4 时。脚本会按**相同 SID 与 cname** 自动识别并合并。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode mix
+```
+
+</TabsContent>
+</Tabs>
+
+### 转换页面录制文件
+
+页面录制模式下，对于网页的页面内容与音频（整页画面、白板、课件等）录制结果为一个 M3U8 文件及多个 TS 文件，包含整场页面录制的音视频数据。你可以使用声网音视频格式转换脚本，合并每个 UID 的音频文件和视频文件。使用脚本时需将 `--recording_mode` 设为 `web`。
+
+**使用场景与示例**
+
+<Tabs defaultValue="all_uid">
+<TabsList>
+  <TabsTrigger value="all_uid">将整场页面录制转为 MP4</TabsTrigger>
+  <TabsTrigger value="single_uid">仅导出整场音频或视频</TabsTrigger>
+  <TabsTrigger value="av_type">指定输出视频分辨率</TabsTrigger>
+  <TabsTrigger value="ha_web">合并异常情况下的录制</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all_uid">
+
+**适用于**
+将整场页面录制一次性转为可直接播放的文件，有音有视输出 MP4，仅音输出 M4A。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode web
+```
+
+</TabsContent>
+
+<TabsContent value="single_uid">
+
+**适用于**
+只需要音频文件（M4A）或只需要视频文件（MP4）时（不需要音画合一）。如做会议记录、语音归档。
+
+**示例：**
+
+```sh
+# 仅音频
+python3 convert_v2.py --dir /path/to/recordings --recording_mode web --avtype audio_only
+
+# 仅视频
+python3 convert_v2.py --dir /path/to/recordings --recording_mode web --avtype video_only
+```
+
+</TabsContent>
+
+<TabsContent value="av_type">
+
+**适用于**
+需要统一输出视频规格（例如固定为 1280 × 720），以便后续分发、存档或播放的场景。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode web --width 1280 --height 720
+```
+
+</TabsContent>
+
+<TabsContent value="ha_web">
+
+**适用于**
+录制过程中因[服务器断网或进程被杀](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files#服务器断网或进程被杀)触发高可用机制后，目录中会同时存在原 M3U8/TS 与带 `bak<n>` 前缀的恢复文件；需将同一录制的原文件与恢复文件合并为一个 MP4 时。脚本会按**相同 SID 与 cname** 自动识别并合并。
+
+**示例：**
+
+```sh
+python3 convert_v2.py --dir /path/to/recordings --recording_mode web
+```
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+### 脚本参数说明
+
+有关各参数的解释如下表所示。
+
+| 参数 | 描述 | 是否必填 |
+| --- | --- | --- |
+| `--dir <目录>` | 存放录制文件的目录（建议使用绝对路径）。若目录中有多场录制的文件，脚本会按任务依次转码。 | 是 |
+| `--recording_mode {individual,mix,web}` | <Slot name="convert-format-markdown-1-2-1" /> | 否 |
+| `--uid <uid>` | 仅转码指定用户 ID（UID）的录制文件，且只支持一个 UID；不指定则处理目录下所有 UID。**仅单流模式有效**。 | 否 |
+| `--avtype {auto,audio_only,video_only,audio_video}` | <Slot name="convert-format-markdown-1-4-1" /> | 否 |
+| `--width <像素>` | 转码视频宽度，不指定则使用源宽度。与 `--height` 同时使用时，分辨率需在 **120×120 ～ 1920×1080** 范围内。 | 否 |
+| `--height <像素>` | 转码视频高度，不指定则使用源高度。 | 否 |
+| `--video_bitrate <kbps>` | 视频码率（kbps），不指定则使用源码率。取值范围 50～6300。 | 否 |
+| `--video_framerate <fps>` | 视频帧率（fps），不指定则使用源帧率。取值范围 5～60。 | 否 |
+| `--fill_strategy {black_frame,duplicate_prev}` | <Slot name="convert-format-markdown-1-9-1" /> | 否 |
+
+<Slot for="convert-format-markdown-1-2-1">
+
+录制模式：
+
+- `individual`：（默认）单流录制
+- `mix`：合流录制
+- `web`：页面录制
+
+</Slot>
+
+<Slot for="convert-format-markdown-1-4-1">
+
+输出音视频类型：
+
+- `auto`：（默认）根据源文件自动判断（有音有视则输出音视频合并的（MP4）文件名带 _av 后缀，仅音则输出 M4A，仅视频则输出 MP4）
+- `audio_only`：仅输出音频文件（M4A）
+- `video_only`：仅输出视频文件（MP4）
+- `audio_video`：输出音视频合并的（MP4））
+
+</Slot>
+
+<Slot for="convert-format-markdown-1-9-1">
+
+视频填充策略：
+
+- `duplicate_prev`: （默认）复制上一帧
+- `black_frame`: 黑帧填充
+
+</Slot>
+
+### 输出文件名说明
+
+- **单流模式**：按 UID 命名
+  - `<UID>_0_merge.mp4`：仅视频
+  - `<UID>_0_merge.m4a`：仅音频
+  - `<UID>_0_merge_av.mp4`：音视频合并
+- **合流/页面录制模式**：按 SID 命名（SID 即录制 ID）
+  - `<SID>_0_merge.mp4`：仅视频
+  - `<SID>_0_merge.m4a`：仅音频
+  - `<SID>_0_merge_av.mp4`：音视频合并

@@ -1,0 +1,70 @@
+---
+title: "AudioPcmDataSender 类"
+---
+AudioPcmDataSender
+
+<span className="index-desc-audiopcmdatasender">`AudioPcmDataSender` 类。</span>
+
+<a id="newaudiopcmdatasender"></a>
+## NewAudioPcmDataSender
+
+```go
+func (mediaNodeFactory *MediaNodeFactory) NewAudioPcmDataSender() *AudioPcmDataSender {
+    sender := C.agora_media_node_factory_create_audio_pcm_data_sender(mediaNodeFactory.cFactory)
+    if sender == nil {
+        return nil
+    }
+    return &AudioPcmDataSender{
+        cSender: sender,
+    }
+}
+```
+
+<span className="index-desc-newaudiopcmdatasender">创建一个 PCM 数据发送模块。该方法创建一个 `AudioPcmDataSender` 对象，可用于 [`NewCustomAudioTrackPcm`](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#newcustomaudiotrackpcm) 方法。</span>
+
+#### 返回值
+
+- `AudioPcmDataSender` 对象：方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="sendaudiopcmdata"></a>
+## SendAudioPcmData
+
+```go
+func (sender *AudioPcmDataSender) SendAudioPcmData(frame *AudioFrame) int {
+    cData := C.CBytes(frame.Buffer)
+    defer C.free(cData)
+    return int(C.agora_audio_pcm_data_sender_send(sender.cSender, cData,
+        C.uint(frame.RenderTimeMs), C.uint(frame.SamplesPerChannel),
+        C.uint(frame.BytesPerSample), C.uint(frame.Channels),
+        C.uint(frame.SamplesPerSec)))
+}
+```
+
+<span className="index-desc-sendaudiopcmdata">将 PCM 格式的音频数据发送到本地音频轨道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `frame` | [`AudioFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#audioframe) 对象，包含需要发送的 PCM 音频数据。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="release"></a>
+## Release
+
+```go
+func (sender *AudioPcmDataSender) Release() {
+    if sender.cSender == nil {
+        return
+    }
+    C.agora_audio_pcm_data_sender_destroy(sender.cSender)
+    sender.cSender = nil
+}
+```
+
+<span className="index-desc-release">释放 `AudioPcmDataSender` 对象。</span>

@@ -1,0 +1,541 @@
+---
+title: "集成灵动课堂"
+---
+:::warning[注意]
+云课堂场景包含在 FcrUIScene 内，若需集成云课堂场景 UI，请参考 [FcrUIScene](/zh-CN/solutions/flexible-classroom/get-started/integrate-new.javascript)。
+:::
+
+本文详细介绍如何将灵动课堂集成到你自己的 Web 项目中。
+
+## 技术原理
+
+灵动课堂代码包含以下包：
+
+```shell
+├── packages
+│   ├── agora-classroom-sdk  # 在线教育场景 SDK
+│   │   ├── lib
+│   │   │   └── externals  # 存放 RTC 相关插件如美颜/降噪
+│   │   ├── src
+│   │   │   ├── infra
+│   │   │   │   ├── api  # SDK 入口
+│   │   │   │   ├── capabilities  # UI 相关目录。
+│   │   │   │   │   ├── containers  # UI 功能组件，与 UI Store 结合成为 UI 业务组件。
+│   │   │   │   │   └── scenarios  # UI 场景。场景是由多个业务组件组合而成。
+│   │   │   │   ├── configs  # 默认的颜色和主题配置
+│   │   │   │   ├── stores  # UI Store 目录。UI Store 负责为 UI 组件提供业务逻辑封装。
+│   │   │   └── ui-kit  # 通用 UI 组件
+│   ├── agora-demo-app  # 灵动课堂demo app，提供在线课堂的课前、课中、课后等场景化代码示例
+│   │   ├── electron  # electron 相关代码
+│   │   ├── src
+│   │   │   ├── api  # 和后台数据交互接口
+│   │   │   ├── components  # 业务组件
+│   │   │   ├── layout  # 业务布局
+│   │   │   ├── pages  # 页面
+│   │   │   ├── router  # 路由
+│   │   │   ├── stores  # 公共数据
+│   ├── agora-plugin-gallery  # 独立插件库，继承 AgoraWidgetBase 类并实现 AgoraWidgetLifecycle 接口，包含互动白板、IM 聊天、答题器、投票器、计时器等插件。
+│   │   └── src
+│   │       ├── common  # widget 公用逻辑，主要包含承载 widget 的 modal 组件。
+│   │       ├── components  # widget 通用 UI 组件
+│   │       └── gallery
+│   │           ├── answer  # 答题器 widget
+│   │           ├── counter  # 计时器 widget
+│   │           ├── hx-chat  # 聊天 widget
+│   │           ├── im  # im通用能力的封装，为聊天 widget 提供统一接口。
+│   │           ├── stream-media  # 视频流播放器
+│   │           ├── vote  # 投票 widget
+│   │           ├── watermark  # 水印 widget
+│   │           ├── webview  # webview widget，包含通用 webview 和 Youtube 同步播放器。
+│   │           └── whiteboard  # 白板 widget
+│   ├── agora-proctor-sdk  # 在线监考场景 SDK
+│   │   ├── src
+│   │   │   ├── infra
+│   │   │   │   ├── api  # SDK 入口
+│   │   │   │   ├── capabilities
+│   │   │   │   │   ├── components  # 通用 UI 组件
+│   │   │   │   │   ├── containers  # UI 功能组件，与 UI Store 结合成为 UI 业务组件。
+│   │   │   │   │   └── scenarios  # UI 场景。场景是由多个业务组件组合而成。
+│   │   │   │   └── stores  # UI Store 目录。UI Store 负责为 UI 组件提供业务逻辑封装。
+│   ├── agora-common-libs  # 通用工具类库，包含 ThemeProvider、I18nProvider等 全局通用工具。
+│   ├── agora-edu-core  # 提供灵动课堂中教育和监考场景的上行 API 调用和下行数据结构封装。
+│   └── agora-rte-sdk  # 提供跨端 RTC 适配能力以及教室内事件回调与数据结构封装。
+```
+
+## 集成教育场景下灵动课堂
+
+灵动课堂 Web 端支持多种集成方式。根据是否需要自定义课堂 UI，你可选择不同的集成方式：
+
+- 如果你直接使用灵动课堂的默认 UI，无需修改灵动课堂的代码，则可选择 [npm](https://www.npmjs.com/package/agora-classroom-sdk) 或 CDN 集成。
+- 如果你想要基于灵动课堂的默认 UI 进行修改，则可选择通过 [GitHub 源码](https://github.com/AgoraIO-Community/flexible-classroom-desktop)集成。
+
+:::warning[注意]
+由于灵动课堂代码仓库使用了 Git Submodule 来管理子模块，因此需使用 Git Clone 命令拉取代码，直接下载 ZIP 的源码包中不包含仓库的元数据，会导致后续执行安装脚本失败。
+:::
+
+### 使用默认 UI 的方式集成
+
+如果你直接使用灵动课堂的默认 UI，无需修改灵动课堂的代码，则可选择 npm 或 CDN 集成。
+
+<Tabs defaultValue="npm" groupId="integrate" persist>
+<TabsList>
+  <TabsTrigger value="npm">npm 集成</TabsTrigger>
+  <TabsTrigger value="cdn">CDN 集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+1. 在终端运行以下安装命令：
+
+        ```shell
+        npm install agora-classroom-sdk agora-plugin-gallery
+        ```
+
+    2. 在项目的 JavaScript 代码中引入 `AgoraEduSDK` 模块和插件模块：
+
+        ```javascript
+        import {AgoraEduSDK} from 'agora-classroom-sdk'
+        import {
+          AgoraSelector,
+          AgoraCountdown,
+          AgoraHXChatWidget,
+          FcrStreamMediaPlayerWidget,
+          AgoraPolling,
+          FcrWatermarkWidget,
+          FcrWebviewWidget,
+          FcrBoardWidget
+        } from 'agora-plugin-gallery/classroom'
+        ```
+
+    3. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/api-ref/flexible-classroom/javascript/classroom-sdk#config) 和 [AgoraEduSDK.launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法启动课堂。
+
+    :::warning[注意]
+    灵动课堂依赖项 `agora-electron-sdk` 包含原生 Node.js 模块，不建议使用 webpack 等构建工具二次编译，否则可能出现 Node.js 模块找不到的错误。建议在项目配置里将这两个库设置为外部依赖，例如添加 webpack 配置，参考以下示例：
+
+        ```javascript
+        externals: {
+            'agora-electron-sdk': 'commonjs2 agora-electron-sdk'
+        }
+        ```
+
+    :::
+
+</TabsContent>
+
+<TabsContent value="cdn">
+
+1. 在项目的 HTML 文件中添加以下代码：
+
+    ```html
+    <!-- 请把 X.Y.Z 替换为灵动课堂版本号，例如 2.9.40。
+    你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@X.Y.Z.bundle.js"></script>
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@X.Y.Z.bundle.js"></script>
+    ```
+
+2. 在项目的 JavaScript 代码中调用 [AgoraEduSDK.config](/api-ref/flexible-classroom/javascript/classroom-sdk#config) 和 [AgoraEduSDK.launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法启动课堂。
+
+</TabsContent>
+</Tabs>
+
+#### 示例代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 引入 SDK， 2.9.40 为示例版本号，你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@2.9.40.bundle.js"></script>
+    <!-- 引入 Widget，2.9.40 为示例版本号，你可以通过发版说明或 GitHub 仓库分支查看最新版本号。（2.9.0 之前版本的 Widget 与 SDK 一起打包，无需引入此库） -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@2.9.40.bundle.js"></script>
+  </head>
+
+  <body>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+      // 配置 SDK。
+      // 把 Your App ID 替换为你的 App ID。
+      AgoraEduSDK.config({
+        appId: "Your App ID",
+        region: "NA",
+      });
+      // 启动在线课堂。
+      const unmount = AgoraEduSDK.launch(document.querySelector("#root"), {
+        userUuid: "user id",
+        userName: "user name",
+        roomUuid: "room id",
+        roleType: 1, // 用户角色：1 为老师，2 为学生。
+        roomType: 0, // 房间类型：0 为一对一，2 为大班课，4 为小班课。
+        roomName: "room name",
+        pretest: true, // 是否开启课前设备检测。
+        rtmToken: "rtm token", // 测试环境下，你可以使用临时 RTM Token；生产或安全环境下，强烈建议你使用服务器生成的 RTM Token。
+        language: "zh", // 课堂界面的语言。如需界面为英文，设为 'en' 即可。
+        duration: 60 * 30, // 课程时间，单位为秒。
+        recordUrl:
+          "https://solutions-apaas.agora.io/apaas/record/dev/2.8.0/record_page.html",
+        courseWareList: [],
+        virtualBackgroundImages: [], // 虚拟背景图片资源列表
+        webrtcExtensionBaseUrl: "https://solutions-apaas.agora.io/static", // WebRTC 插件部署地址
+        uiMode: "light", // 设置课堂界面为明亮模式。如需界面为暗黑模式，设为 'dark' 即可。
+        widgets: {
+          popupQuiz: AgoraSelector, // 答题器组件
+          countdownTimer: AgoraCountdown, // 倒计时组件
+          easemobIM: AgoraHXChatWidget, // IM 组件
+          mediaPlayer: FcrStreamMediaPlayerWidget, // 视频同步播放器组件
+          poll: AgoraPolling, // 投票器组件
+          watermark: FcrWatermarkWidget, // 水印组件
+          webView: FcrWebviewWidget, // 内嵌浏览器组件
+          netlessBoard: FcrBoardWidget, // 互动白板组件
+        },
+        listener: (evt, args) => {},
+      });
+    </script>
+  </body>
+</html>
+```
+
+示例代码中需要传入 `rtmToken`。你可以使用[临时 Token](/zh-CN/solutions/flexible-classroom/get-started/enable#生成临时-token)，也可以参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/basic-features/generate-token.android.javascript)从服务器生成 Token。
+
+:::warning[注意]
+声网提供的客户端临时 Token 生成器仅适用于 App 的快速测试。在正式环境中，为确保安全，你必须参考[使用 Token 鉴权文档](/zh-CN/solutions/flexible-classroom/basic-features/generate-token.android.javascript)，在服务端部署并生成 Token。生成的 Token 中传入的 `userId` 需要与 `launch` 方法中传入的参数 `userUuid` 保持一致，否则该 Token 无效。
+:::
+
+其他参数取值详见 [LaunchOption 说明](/api-ref/flexible-classroom/javascript/classroom-sdk#launchoption)。
+
+:::info[信息]
+调用 `launch` 函数会返回一个 `unmount` 函数。当你的 App 路由变更导致页面卸载时，需要调用这个 `unmount` 方法来断开房间连接，回收资源。
+:::
+
+### 使用自定义 UI 的方式集成
+
+如果你想要基于灵动课堂的默认 UI 进行修改，则参考以下步骤集成灵动课堂的 GitHub 源码：
+
+:::info[信息]
+开始前请确保你的设备上已准备好[开发环境](/zh-CN/solutions/flexible-classroom/get-started/quick-start.javascript#dev-env)。
+:::
+
+1. 运行以下命令克隆仓库到本地：
+
+   ```shell
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+2. 运行以下命令进入 `flexible-classroom-desktop` 目录并切换分支至指定版本。将 `{VERSION}` 替换为要切换的版本号：
+
+   ```shell
+   cd flexible-classroom-desktop
+   ```
+
+   ```shell
+   git checkout release/{VERSION}
+   ```
+
+   例如要切换到 2.9.0 版本分支，执行以下命令：
+
+   ```shell
+   git checkout release/2.9.0
+   ```
+
+   声网建议你切换到最新发版分支。参考下图在 GitHub 仓库中查看最新发版分支：
+
+![查看发版分支](https://web-cdn.agora.io/docs-files/1670835651476)
+
+3. 成功拉取代码后，根据你的实际需求，参考[自定义课堂 UI 文档](/zh-CN/solutions/flexible-classroom/advanced-features/custom-ui.javascript.javascript)修改代码。
+
+4. 修改完代码后，按照以下步骤进行调试：
+
+   1. 运行以下命令安装项目依赖：
+
+      ```shell
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+      如遇安装依赖超时，请切换到淘宝镜像源或其他可用镜像源。
+
+      ```shell
+      # 切换到淘宝镜像
+      yarn config set registry https://registry.npmmirror.com/
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+   2. 通过以下命令以开发模式运行项目。
+
+      ```shell
+      yarn dev:classroom
+      ```
+
+5. 完成开发后，通过以下命令打包 SDK JS 文件：
+
+   1. 运行以下命令打包 SDK 代码包：
+
+      ```shell
+      yarn pack:classroom:sdk
+      ```
+
+   2. 运行以下命令打包 SDK 插件包。
+
+      ```shell
+      yarn pack:classroom:plugin
+      ```
+
+   :::info[信息]
+   打包完成的 SDK JS 文件会输出至 `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js`，插件包 JS 文件会输出至 `packages/agora-plugin-gallery/lib/edu_widget.bundle.js`。
+   :::
+
+## 集成监考场景下灵动课堂
+
+灵动课堂 Web 端支持多种集成方式。根据是否需要修改课堂 UI，你可选择不同的集成方式：
+
+- 如果你直接使用灵动课堂的默认 UI，无需修改灵动课堂的代码，则可选择 [npm](https://www.npmjs.com/package/agora-proctor-sdk) 或 CDN 集成。
+- 如果你想要基于灵动课堂的默认 UI 进行修改，则可选择通过 [GitHub 源码](https://github.com/AgoraIO-Community/flexible-classroom-desktop)集成。
+
+### 使用默认 UI 的方式集成
+
+如果你直接使用灵动课堂的默认 UI，无需修改灵动课堂的代码，则可选择 npm 或 CDN 集成。
+
+<Tabs defaultValue="npm" groupId="integrate" persist>
+<TabsList>
+  <TabsTrigger value="npm">npm 集成</TabsTrigger>
+  <TabsTrigger value="cdn">CDN 集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+1. 运行安装命令：
+
+    ```shell
+    npm install agora-proctor-sdk agora-plugin-gallery
+    ```
+
+2. 在项目的 JavaScript 代码中引入 `AgoraProctorSDK` 模块和插件模块：
+
+    ```shell
+    import { AgoraProctorSDK } from 'agora-proctor-sdk'
+    import {
+      FcrWebviewWidget
+    } from 'agora-plugin-gallery/proctor'
+    ```
+
+3. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/api-ref/flexible-classroom/javascript/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/api-ref/flexible-classroom/javascript/proctor-sdk#launch) 方法启动课堂。
+
+</TabsContent>
+
+<TabsContent value="cdn">
+
+1. 在项目的 HTML 文件中添加以下代码：
+
+    ```html
+    <!-- 请把 X.Y.Z 替换为灵动课堂版本号，例如 1.0.40。
+    你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@X.Y.Z.bundle.js"></script>
+    ```
+
+2. 在项目的 JavaScript 代码中调用 [AgoraProctorSDK.config](/api-ref/flexible-classroom/javascript/proctor-sdk#config) 和 [AgoraProctorSDK.launch](/api-ref/flexible-classroom/javascript/proctor-sdk#launch) 方法启动课堂。
+
+</TabsContent>
+</Tabs>
+
+#### 示例代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 引入 SDK，1.0.40 为示例版本号。你可以通过发版说明或 GitHub 仓库分支查看最新版本号。 -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@1.0.40.bundle.js"></script>
+    <!-- 引入 Widget，1.0.40 为示例版本号，你可以通过发版说明或 GitHub 仓库分支查看最新版本号。（1.0.5 之前版本的 Widget 与 SDK 一起打包，无需引入此库） -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_widget@1.0.40.bundle.js"></script>
+  </head>
+
+  <body>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+      // 配置 SDK。
+      // 把 Your App ID 替换为你的 App ID。
+      AgoraProctorSDK.config({
+        appId: "Your App ID",
+        region: "NA",
+      });
+      // 启动在线监考。
+      const unmount = AgoraProctorSDK.launch(document.querySelector("#root"), {
+        userUuid: "user id", // 请参考下文描述填写 userUuid。
+        userName: "user name",
+        roomUuid: "room id",
+        roleType: 1, // 用户角色：1 为老师，2 为学生。
+        roomType: 6, // 房间类型：监考场景的房间类型固定为 6。
+        roomName: "room name",
+        pretest: true, // 是否开启课前设备检测。
+        rtmToken: "rtm token", // 测试环境下，你可以使用临时 RTM Token；生产或安全环境下，强烈建议你使用服务器生成的 RTM Token。
+        language: "zh", // 课堂界面的语言。如需界面为英文，设为 'en' 即可。
+        duration: 60 * 30, // 课程时间，单位为秒。
+        courseWareList: [],
+        widgets: {
+          webView: FcrWebviewWidget, // 内嵌浏览器组件
+        },
+        listener: (evt, args) => {},
+      });
+    </script>
+  </body>
+</html>
+```
+
+:::info[信息]
+调用 `launch` 函数会返回一个 `unmount` 函数。当你的 App 路由变更导致页面卸载时，需要调用这个 `unmount` 方法来断开房间连接，回收资源。
+:::
+
+<a id="main-sub-device"></a>
+示例代码中 `userUuid` 的填写方式：在线监考时，学生需要使用主、副设备接入考试。比如，主设备为 Web 端，用于采集学生视频，并分享学生答题时的屏幕画面；副设备为 Android 或 iOS 设备，用于拍摄学生答题的身姿。监考老师通过三种视角的视频观察学生答题，防止作弊。你需要在不同设备上以 `${用户id}-${设备类型（main/sub）}` 的规则填写 `userUuid`。比如，对学生小明，在 Web 端集成代码 `AgoraProctorSDK.launch` 方法的 `userUuid` 参数中传入 `'xiaoming-main'`，在 Android 或 iOS 端对应的 `userUuid` 参数中传入 `'xiaoming-sub'`。灵动课堂会将 `xiaoming-main` 和 `xiaoming-sub` 识别为用户小明的主、副设备，然后合并主、副设备的视频画面，最终将合并后的视频画面渲染在老师的监考视频窗口中。
+
+示例代码中 `rtmToken` 的填写方式：你可以使用[临时 Token](/zh-CN/solutions/flexible-classroom/get-started/enable#生成临时-token)，也可以参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/basic-features/generate-token.android.javascript)从服务器生成 Token。
+
+:::warning[注意]
+声网提供的客户端临时 Token 生成器仅适用于 App 的快速测试。在正式环境中，为确保安全，你必须参考[使用 Token 鉴权文档](/zh-CN/solutions/flexible-classroom/basic-features/generate-token.android.javascript)，在服务端部署并生成 Token。生成的 Token 中传入的 `userId` 需要与 `launch` 方法中传入的参数 `userUuid` 保持一致，否则该 Token 无效。
+:::
+
+### 使用自定义 UI 的方式集成
+
+如果你想要基于灵动课堂的默认 UI 进行修改，则参考以下步骤集成灵动课堂的 GitHub 源码：
+
+:::info[信息]
+开始前请确保你的设备上已准备好[开发环境](/zh-CN/solutions/flexible-classroom/get-started/quick-start.javascript#dev-env)。
+:::
+
+1. 运行以下命令克隆仓库到本地：
+
+   ```shell
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+2. 运行以下命令进入 `flexible-classroom-desktop` 目录并切换分支至指定版本。将 `{VERSION}` 替换为要切换的版本号：
+
+   ```shell
+   cd flexible-classroom-desktop
+   ```
+
+   ```shell
+   git checkout release/{VERSION}
+   ```
+
+   例如要切换到 2.9.0 版本分支，执行以下命令：
+
+   ```shell
+   git checkout release/2.9.0
+   ```
+
+   声网建议你切换到最新发版分支。参考下图在 GitHub 仓库中查看最新发版分支：
+
+![查看发版分支](https://web-cdn.agora.io/docs-files/1670835651476)
+
+3. 成功拉取代码后，根据你的实际需求，参考[自定义课堂 UI 文档](/zh-CN/solutions/flexible-classroom/advanced-features/custom-ui.javascript.javascript)修改代码。
+
+4. 修改完代码后，按照以下步骤进行调试：
+
+   1. 运行以下命令安装项目依赖：
+
+      ```shell
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+      如遇安装依赖超时，请切换到淘宝镜像源或其他可用镜像源。
+
+      ```shell
+      # 切换到淘宝镜像
+      yarn config set registry https://registry.npmmirror.com/
+      # 安装项目依赖
+      yarn install:packages
+      ```
+
+   2. 通过以下命令以开发模式运行项目。
+
+      ```shell
+      yarn dev:proctor
+      ```
+
+5. 完成开发后，通过以下命令打包 SDK JS 文件：
+
+   1. 运行以下命令打包 SDK 代码包：
+
+      ```shell
+      yarn pack:proctor:sdk
+      ```
+
+   2. 运行以下命令打包 SDK 插件包。
+
+      ```shell
+      yarn pack:proctor:plugin
+      ```
+
+   :::info[信息]
+   打包完成的 SDK JS 文件会输出至 `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js`，插件包 JS 文件会输出至 `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js`。
+   :::
+
+### 设置考卷链接
+
+在线考试开始后，考生会在本地通过 `Widget` 创建的 Webview 窗口加载考卷。考卷的链接通过房间属性（`roomProperties`）中的 `examinationUrl` 字段设置。你可以参考如下方式设置考卷链接：
+
+- 在创建考试房间时设置考卷：调用灵动课堂 RESTful API 的[创建课堂](/zh-CN/solutions/flexible-classroom/api/api-classroom.restful#创建课堂)接口创建课堂，并在请求包体的 `roomProperties` 字段中设置 `examinationUrl` 字段。
+
+  ```json
+  {
+    "roomName": "jasoncai61734",
+    "roomType": 4,
+    "roomProperties": {
+      "schedule": {
+        "startTime": 1655452800000,
+        "duration": 600,
+        "closeDelay": 0
+      },
+      // 设置本场考试的考卷链接
+      "examinationUrl": "your examination url"
+    }
+  }
+  ```
+
+- 创建考试房间后设置考卷：创建房间后，调用灵动课堂 RESTful API 的[更新课堂属性](/zh-CN/solutions/flexible-classroom/api/api-classroom.restful#更新课堂自定义属性)接口，并在请求包体的 `roomProperties` 字段中设置 `examinationUrl` 字段。
+
+  ```json
+  {
+    "properties": {
+      // 设置本场考试的考卷链接
+      "examinationUrl": "your examination url"
+    },
+    "cause": {}
+  }
+  ```
+
+##  常见问题
+
+### Linux 系统下安装 agora-electron-sdk 模块失败
+
+如果你在 Linux 系统下安装 `agora-electron-sdk` 模块失败，是由于目前使用的 `agora-electron-sdk` 不支持 Linux 操作系统，可参考以下步骤解决：
+
+1. 修改项目根目录下 `package.json` 中的 `agora_electron` 配置参数，指定 `platform` 为 `win32`：
+
+   ```json
+   "agora_electron": {
+     "electron_version": "12.0.0",
+     "prebuilt": true,
+     "platform": "win32"
+   }
+   ```
+
+2. 重新执行依赖安装步骤。

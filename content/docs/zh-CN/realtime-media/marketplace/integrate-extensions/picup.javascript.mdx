@@ -1,0 +1,131 @@
+---
+title: "使用说明"
+---
+本文介绍如何在你的 Web 项目中集成和使用皮卡智能 AI 虚拟背景插件。
+
+## 前提条件
+
+- Windows 或 macOS 计算机，需满足以下要求：
+  - 下载桌面端 Chrome 90 或以上版本。
+  - 具备物理音视频采集设备。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.javascript)以正常使用声网服务。
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+- 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+## 集成和调用流程
+
+### 1. 集成 SDK 和插件
+
+开始前，你需要在项目中分别集成声网视频 SDK 和皮卡智能 AI 虚拟背景插件。
+
+#### 1.1 集成声网视频 SDK
+
+皮卡智能 AI 虚拟背景插件需要与声网 Web SDK 4.x（v4.10.0 或以上）搭配使用。参考以下文档集成 Web SDK 并实现基础的视频通话：
+
+<Cards>
+  <Card title="实现视频通话" href="/zh-CN/realtime-media/rtc/get-started/quick-start.javascript" />
+</Cards>
+
+#### 1.2 购买和激活插件
+
+在声网控制台[购买和激活](/zh-CN/realtime-media/marketplace/get-started/enable-service#购买和激活插件)皮卡智能 AI 虚拟背景插件，保存好获取到的 `appKey` 和 `appSecret`，后续注册插件时需要用到。
+
+#### 1.3 集成插件
+
+参考以下步骤集成插件：
+
+通过 npm 将皮卡智能 AI 虚拟背景插件集成到你的项目中。
+
+1. 运行以下命令安装插件：
+
+    ```shell
+    npm install video-cutout-web
+    ```
+
+2. 在你的 `.ts` 文件中加入以下代码导入插件模块：
+
+    ```typescript
+    import { VideoCutoutWebExtension } from 'video-cutout-web';
+    ```
+
+### 2. 注册插件
+
+参考以下步骤注册插件：
+
+1. 指定使用的背景，创建 `VideoCutoutWebExtension` 实例。你需要传入购买和激活插件时获取的 `appKey` 和 `appSecret`。
+
+   ```typescript
+   // 使用一张图片作为背景，请注意图片跨域问题
+   // let background = "https://deeplor.oss-cn-hangzhou.aliyuncs.com/videosdk/bg/architecture-5082700_1280.jpg";
+
+   // 使用模糊背景
+   let background = "";
+
+   // 传入从声网控制台获取的 appKey 和 appSecret，创建 VideoCutoutWebExtension 实例
+   const videoExtension = new VideoCutoutWebExtension(background, appKey: string = '', appSecret: string = '');
+   ```
+
+2. 调用 `AgoraRTC.registerExtensions` 并传入创建的 `VideoCutoutWebExtension` 实例。
+
+   ```typescript
+   AgoraRTC.registerExtensions([videoExtension]);
+   ```
+
+### 3. 开启虚拟背景
+
+参考以下步骤开启虚拟背景：
+
+1. 调用 `AgoraRTC.createMicrophoneAndCameraTracks` 创建本地摄像头视频轨道:
+
+   ```typescript
+   const [microphoneTrack, cameraTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+   ```
+
+2. 调用 `videoExtension.createProcessor` 创建 `processor` 实例:
+
+   ```typescript
+   const videoProcessor = videoExtension.createProcessor();
+   ```
+
+3. 调用 `cameraTrack.pipe` 方法并指定 `cameraTrack.processorDestination` 属性，将插件注入到 SDK 的摄像头数据流处理管道：
+
+   ```typescript
+   cameraTrack.pipe(videoProcessor).pipe(cameraTrack.processorDestination);
+   ```
+
+## 示例代码
+
+下面列出了一段实现插件功能的完整代码以供参考。
+
+```typescript
+import { VideoCutoutWebExtension } from 'video-cutout-web';
+
+// 使用一张图片作为背景，请注意图片跨域问题
+// let background = "https://deeplor.oss-cn-hangzhou.aliyuncs.com/videosdk/bg/architecture-5082700_1280.jpg";
+
+// 使用模糊背景
+let background = "";
+
+// 创建 VideoCutoutWebExtension 实例
+const videoExtension = new VideoCutoutWebExtension(background, appKey: string = '', appSecret: string = '');
+
+// 注册插件
+AgoraRTC.registerExtensions([videoExtension]);
+
+// 创建摄像头轨道
+const [microphoneTrack, cameraTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+
+// 创建 processor
+const videoProcessor = videoExtension.createProcessor();
+
+// 将插件注入摄像头数据流处理管道
+cameraTrack.pipe(videoProcessor).pipe(cameraTrack.processorDestination);
+```
+
+<a id="api"></a>
+## API 参考
+
+声网 Web SDK 的插件相关方法：
+
+  - [`AgoraRTC.registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc#registerExtensions)
+  - [`ICameraVideoTrack.pipe`](/api-ref/rtc/javascript/interfaces/icameravideotrack#pipe)

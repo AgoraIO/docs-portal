@@ -1,0 +1,269 @@
+---
+title: "大合唱"
+---
+本文介绍如何实现大合唱场景。在此之前，请确保你已参考[实现文档](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios)集成 KTV API。
+
+## 方案介绍
+
+大合唱指有 50 到 100 人参与合唱的场景。在此场景下存在三种角色：
+
+- **合唱中的领唱者**：领唱者在**演唱频道**通过两个用户 ID 分别发布音乐流、麦克风采集的音频流。KTV API 模块内部控制音乐播放器播放音乐，同步领唱的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。
+- **合唱中的伴唱**：如有人加入合唱，则其成为合唱中的伴唱。伴唱需要加入**演唱频道**，加载并播放歌曲，发布麦克风采集的音频流和音乐流。KTV API 模块内部控制音乐播放器播放音乐，同步领唱的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。
+- **听众**：加入听众频道，加载歌词。KTV API 模块内部控制听众订阅演唱者的人声和音乐的音频合流，并同步演唱者的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。大合唱场景下，听众人数较多，通常不建议听众上麦聊天。
+
+## 前提条件
+
+- 在实现大合唱场景前，请先参考[实现文档](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios)集成 KTV API。
+- 开通云端合流服务及音强选流功能，详情请联系[技术支持](https://ticket.shengwang.cn)。
+
+## 领唱实现
+
+本节介绍领唱实现的具体步骤。
+
+### 1. 加入频道
+
+调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+
+```objc
+// 加入频道
+[self.rtcKit joinChannelByToken:<YOUR TOKEN>
+                      channelId:<YOUR CHANNEL NAME>
+                           info:nil
+                            uid:<YOUR UID>
+                   mediaOptions:mediaOption
+                    joinSuccess:nil];
+```
+
+:::warning[注意]
+用户调用 `joinChannel` 默认加入听众频道，切换用户角色为领唱后，KTV API 模块内部会自动退出听众频道然后加入演唱频道来发布人声和音乐流。
+:::
+
+### 2. 加载及播放歌曲
+
+调用 `loadMusic` 加载歌曲。在调用该方法后需调用 `switchSingerRole` 将用户角色设为领唱（`LeadSinger`），然后调用 `startSing` 才可以播放歌曲。
+
+:::warning[注意]
+如需加载声网提供的版权音乐，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/get-music.ios)。
+:::
+
+```objc
+KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
+// 同时加载歌曲和歌词
+songConfig.songIdentifier = songIdentifier;
+songConfig.mode = KTVLoadMusicModeLoadMusicAndLrc;
+songConfig.mainSingerUid = mainSingerUid;
+// 歌曲加载失败的原因
+- (void)onMusicLoadFailWithSongCode:(NSInteger)songCode
+                             reason:(enum KTVLoadSongFailReason)reason {
+}
+// 歌曲加载成功的回调，在此回调内调用 switchSingerRole 切换角色，调用 startSing
+// 开始播放歌曲
+- (void)onMusicLoadSuccessWithSongCode:(NSInteger)songCode
+                              lyricUrl:(NSString *_Nonnull)lyricUrl {
+    // 切换角色
+    [weakSelf.ktvApi
+        switchSingerRoleWithNewRole:KTVSingRoleLeadSinger
+                  onSwitchRoleState:^(KTVSwitchRoleState state,
+                                      KTVSwitchRoleFailReason reason){
+                      // 切换角色状态回调
+                  }];
+    // 开始播放歌曲
+    [weakSelf.ktvApi startSingWithSongCode:songCode startPos:0];
+}
+
+[self.ktvApi loadMusicWithSongCode:songCode
+                            config:songConfig
+          onMusicLoadStateListener:self];
+
+// 歌曲加载进度回调
+- (void)
+    onMusicLoadProgressWithSongCode:(NSInteger)songCode
+                            percent:(NSInteger)percent
+                             status:(AgoraMusicContentCenterPreloadStatus)status
+                                msg:(NSString *)msg
+                           lyricUrl:(NSString *)lyricUrl {
+}
+```
+
+### 3. 切换角色
+
+在大合唱场景中，没有独唱者角色。用户切换成领唱者角色时，会自动退出听众频道然后加入演唱频道。从领唱切换成听众角色时，会自动退出演唱频道，加入听众频道。
+
+```objc
+// 歌曲结束后，将角色切换为听众
+[weakSelf.ktvApi switchSingerRoleWithNewRole:KTVSingRoleAudience
+                           onSwitchRoleState:^(KTVSwitchRoleState state,
+                                               KTVSwitchRoleFailReason reason){
+                               // 切换角色状态回调
+                           }];
+```
+
+### 4. 开关麦克风
+
+调用 [`muteMic`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api.ios#mutemic) 方法在成为领唱角色后开关麦克风。
+
+```objc
+[self.ktvApi muteMicWithMuteStatus: true/false];
+```
+
+## 伴唱实现
+
+本节介绍伴唱的实现步骤。
+
+### 1. 加入频道
+
+调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+
+```objc
+// 加入频道
+[self.rtcKit joinChannelByToken:<YOUR TOKEN>
+                      channelId:<YOUR CHANNEL NAME>
+                           info:nil
+                            uid:<YOUR UID>
+                   mediaOptions:mediaOption
+                    joinSuccess:nil];
+```
+
+:::warning[注意]
+用户调用 `joinChannel` 默认加入听众频道，切换用户角色为伴唱后，KTV API 模块内部会自动退出听众频道然后加入演唱频道来发布人声和音乐流。
+:::
+
+### 2. 加载歌曲
+
+听众加入合唱成为伴唱前，需调用 `loadMusic` 加载歌曲。歌曲加载完成后，调用 `switchSingerRole` 将用户角色设为伴唱（`CoSinger`），切换成功后会自动退出听众频道然后加入演唱频道，并校准领唱的播放进度。
+
+```objc
+
+KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
+// 同时加载歌曲和歌词
+songConfig.songIdentifier = songIdentifier;
+songConfig.mode = KTVLoadMusicModeLoadMusicAndLrc;
+songConfig.mainSingerUid = mainSingerUid;
+// 歌曲加载失败的原因
+- (void)onMusicLoadFailWithSongCode:(NSInteger)songCode
+                             reason:(enum KTVLoadSongFailReason)reason {
+}
+// 歌曲加载成功的回调，在此回调内调用 switchSingerRole 切换角色，调用 startSing
+// 开始播放歌曲
+- (void)onMusicLoadSuccessWithSongCode:(NSInteger)songCode
+                              lyricUrl:(NSString *_Nonnull)lyricUrl {
+    // 切换角色
+    [weakSelf.ktvApi
+        switchSingerRoleWithNewRole:KTVSingRoleCoSinger
+                  // 切换角色状态回调
+                  onSwitchRoleState:^(KTVSwitchRoleState state,
+                                      KTVSwitchRoleFailReason reason){
+                  }];
+}
+
+[self.ktvApi loadMusicWithSongCode:songCode
+                            config:songConfig
+          onMusicLoadStateListener:self];
+
+// 歌曲加载进度回调
+- (void)
+    onMusicLoadProgressWithSongCode:(NSInteger)songCode
+                            percent:(NSInteger)percent
+                             status:(AgoraMusicContentCenterPreloadStatus)status
+                                msg:(NSString *)msg
+                           lyricUrl:(NSString *)lyricUrl {
+}
+```
+
+### 3. 切换角色
+
+当歌曲结束或伴唱想要中途退出合唱时，调用 `switchSingerRole` 将用户角色切换为听众，切换成听众角色时，会自动退出演唱频道，加入听众频道。
+
+```objc
+// 歌曲结束后，将角色切换为听众
+[weakSelf.ktvApi switchSingerRoleWithNewRole:KTVSingRoleAudience
+                           onSwitchRoleState:^(KTVSwitchRoleState state,
+                                               KTVSwitchRoleFailReason reason){
+                           }];
+```
+
+### 4. 开关麦克风
+
+调用 [`muteMic`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api.ios#mutemic) 方法在成为伴唱角色后开关麦克风。
+
+```objc
+[self.ktvApi muteMicWithMuteStatus: true/false];
+```
+
+## 听众实现
+
+本节介绍听众的实现步骤。
+
+### 1. 加入频道
+
+调用 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。为保证高音质，声网推荐你在加入频道前调用 [`setAudioProfile`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2) 将音频编码属性设为 `AgoraAudioProfileMusicHighQuality`，将音频场景设为 `AgoraAudioScenarioGameStreaming`。
+
+```objc
+// 加入频道
+[self.rtcKit joinChannelByToken:<YOUR TOKEN>
+                        channelId:<YOUR CHANNEL NAME>
+                             info:nil
+                              uid:<YOUR UID>
+                     mediaOptions:mediaOption
+                     joinSuccess:nil];
+```
+
+### 2. 加载歌词
+
+调用 `loadMusic` 加载歌词。听众加入频道后，默认订阅演唱者人声和音乐混合的音频流。
+
+```objc
+
+KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
+// 同时加载歌曲和歌词
+songConfig.songIdentifier = songIdentifier;
+songConfig.mode = KTVLoadMusicModeLoadLrc;
+songConfig.mainSingerUid = mainSingerUid;
+// 歌曲加载失败的原因
+- (void)onMusicLoadFailWithSongCode:(NSInteger)songCode
+                             reason:(enum KTVLoadSongFailReason)reason {
+}
+// 歌曲加载成功的回调，在此回调内调用 switchSingerRole 切换角色，调用 startSing
+// 开始播放歌曲
+- (void)onMusicLoadSuccessWithSongCode:(NSInteger)songCode
+                              lyricUrl:(NSString *_Nonnull)lyricUrl {
+    // 切换角色
+    [weakSelf.ktvApi
+        switchSingerRoleWithNewRole:KTVSingRoleCoSinger
+                  // 切换角色状态回调
+                  onSwitchRoleState:^(KTVSwitchRoleState state,
+                                      KTVSwitchRoleFailReason reason){
+                  }];
+}
+
+[self.ktvApi loadMusicWithSongCode:songCode
+                            config:songConfig
+          onMusicLoadStateListener:self];
+
+// 歌曲加载进度回调
+- (void)
+    onMusicLoadProgressWithSongCode:(NSInteger)songCode
+                            percent:(NSInteger)percent
+                             status:(AgoraMusicContentCenterPreloadStatus)status
+                                msg:(NSString *)msg
+                           lyricUrl:(NSString *)lyricUrl {
+}
+```
+
+:::info[信息]
+大合唱场景下由于听众人数较多，为确保房间内的秩序和听感体验，不建议听众上麦聊天。
+:::
+
+![合唱时序图](/img/online-ktv/chorus.ios.svg)
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api.ios)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/rtc-api.ios)
+
+## 相关文档
+
+- [快速实现](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi.ios)
+- [小合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus.ios)

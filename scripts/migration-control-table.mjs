@@ -118,6 +118,12 @@ export async function updateMigrationProgressInPathMap({
   const table = ensureControlProgressColumns(
     await readControlTable(pathMapPath),
   );
+  const bySourceAndTargetPath = new Map(
+    results.map((result) => [
+      auditResultKey(result.sourcePath, result.targetPath),
+      result,
+    ]),
+  );
   const bySourcePath = groupBy(results, (result) => result.sourcePath);
   const relativeReportPath = toRepoRelativePath({
     filePath: reportPath,
@@ -126,7 +132,29 @@ export async function updateMigrationProgressInPathMap({
   let updatedRows = 0;
 
   for (const row of table.rows) {
-    const rowResults = bySourcePath.get(row.source_path);
+    if (!isRedirectContentRow(row)) {
+      row.migration_progress ||= initialMigrationProgressForRedirectStatus(
+        row.redirect_status,
+      );
+      row.audit_progress ||= initialAuditProgressForRedirectStatus(
+        row.redirect_status,
+      );
+      row.audit_result ||= initialAuditResultForRedirectStatus(
+        row.redirect_status,
+      );
+      continue;
+    }
+
+    const exactResult = bySourceAndTargetPath.get(
+      auditResultKey(row.source_path, row.target_path),
+    );
+    const rowResults =
+      exactResult !== undefined
+        ? [exactResult]
+        : !row.target_path
+          ? bySourcePath.get(row.source_path)
+          : null;
+
     if (!rowResults?.length) {
       row.migration_progress ||= 'not_started';
       row.audit_progress ||= 'not_started';
@@ -164,13 +192,20 @@ export async function updateAuditProgressInPathMap({
   const table = ensureControlProgressColumns(
     await readControlTable(pathMapPath),
   );
-  const bySourcePath = new Map(
-    results.map((result) => [result.sourcePath, result]),
+  const bySourceAndTargetPath = new Map(
+    results.map((result) => [
+      auditResultKey(result.sourcePath, result.targetPath),
+      result,
+    ]),
   );
+  const bySourcePath = groupBy(results, (result) => result.sourcePath);
   let updatedRows = 0;
 
   for (const row of table.rows) {
-    const result = bySourcePath.get(row.source_path);
+    const result =
+      bySourceAndTargetPath.get(
+        auditResultKey(row.source_path, row.target_path),
+      ) ?? (!row.target_path ? bySourcePath.get(row.source_path)?.[0] : null);
     if (!result) {
       row.migration_progress ||= 'not_started';
       row.audit_progress ||= 'not_started';
@@ -203,11 +238,19 @@ export async function updateAuditProgressInPathMap({
   return { pathMapPath, updatedRows };
 }
 
+function auditResultKey(sourcePath, targetPath) {
+  return `${sourcePath ?? ''}\u0000${targetPath ?? ''}`;
+}
+
 export function selectRowsReadyForAudit(
   table,
   { includeAudited = false } = {},
 ) {
   return table.rows.filter((row) => {
+    if (!isRedirectContentRow(row)) {
+      return false;
+    }
+
     if (row.migration_progress !== 'completed') {
       return false;
     }
@@ -218,6 +261,50 @@ export function selectRowsReadyForAudit(
 
     return row.audit_progress !== 'completed';
   });
+}
+
+export function isRedirectContentRow(row) {
+  return !row.redirect_status || row.redirect_status === 'redirect';
+}
+
+export function initialMigrationProgressForRedirectStatus(redirectStatus) {
+  if (redirectStatus === 'no-redirect') {
+    return 'not_required';
+  }
+
+  if (redirectStatus === 'defer') {
+    return 'deferred';
+  }
+
+  if (redirectStatus === 'ignore') {
+    return 'dropped';
+  }
+
+  return 'not_started';
+}
+
+export function initialAuditProgressForRedirectStatus(redirectStatus) {
+  if (
+    redirectStatus === 'no-redirect' ||
+    redirectStatus === 'defer' ||
+    redirectStatus === 'ignore'
+  ) {
+    return 'not_required';
+  }
+
+  return 'not_started';
+}
+
+export function initialAuditResultForRedirectStatus(redirectStatus) {
+  if (
+    redirectStatus === 'no-redirect' ||
+    redirectStatus === 'defer' ||
+    redirectStatus === 'ignore'
+  ) {
+    return 'not_applicable';
+  }
+
+  return '';
 }
 
 function normalizePendingAuditProgress(currentValue) {

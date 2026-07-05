@@ -1,0 +1,125 @@
+---
+title: "如何调用 API"
+---
+本文介绍互动白板 RESTful API 的构成，并引导你如何正确地调用 API。
+
+## 前提条件
+
+在调用 RESTful API 之前，你需要参考[开启和配置互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)完成以下准备工作：
+
+- 创建一个开启了互动白板服务的声网项目。
+- 获取访问密钥 Access Key (AK) 和私有访问密钥 Secret Access Key (SK)。
+- 如需调用文档转换和截图服务端 API，确保已在控制台开启对应服务。
+
+## 配置 URL
+
+以[生成 SDK Token](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-teams)的请求 URL 示例如下：
+
+```text
+https://api.netless.link/v5/tokens/teams
+```
+
+其中：
+
+- `https`：通信协议。声网使用 HTTPS 协议。
+
+- `api.netless.link`：互动白板服务端域名。
+
+- `v5/tokens/teams`：资源路径。
+  - `v1/projects`：API 版本和资源名。
+  - `teams`：指定调用的接口，此处为生成 SDK Token 的接口。
+
+以上示例仅作参考，你可以参照要调用的 API 的文档，在代码源文件或调试应用中先选择调用方法（如 GET、POST、PUT、PATCH、DELETE），然后根据 API 文档来配置实际的请求 URL。请求 URL 需要区分大小写。
+
+## 发送请求
+
+请求包括请求 Header 和请求 Body 两部分。在配置完 URL 后，你需要设置请求 Header 和 Body 信息，然后向服务器发送请求。
+
+以下是[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)的请求示例：
+
+```shell
+curl --request POST \
+  --url https://api.netless.link/v5/projector/tasks \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --header 'region: cn-hz' \
+  --header 'token: NETLESSSDK_XXXXXXXXXXXXXXXX' \
+  --data '{
+  "resource": "https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx",
+  "type": "dynamic",
+  "preview": true,
+  "webhookEndpoint": "https://example.com/agoracallback",
+  "webhookRetry": 3,
+  "imageCompressionLevel": 0
+}'
+```
+
+以上示例仅作参考，你可以参照要调用的 API 的文档，配置实际的请求 Header 和 Body 信息。
+
+### 请求 Header
+
+请求 Header 包含了处理请求所需要的信息，比如：
+
+- `Accept`：告知服务器，客户端可以处理哪些类型的响应，如 `application/json`。
+- `Content-Type`：指定请求体的类型为 `application/json`。
+- `X-Request-ID`：本次请求的 UUID（通用唯一识别码）。
+
+### 请求 Body（可选）
+
+请求 Body 包含了要发送给服务器的数据。例如，发起一个文档转换任务，你需要在请求 Body 中包含待转换的源文件 URL、转换任务类型、是否需要生成预览图等。详情可参考具体 API 文档的参数描述。请求 Body 需要区分大小写。
+
+## 接收响应
+
+在发送请求后，声网服务器会对你的请求进行响应。响应包括响应状态码、响应 Header 和响应 Body。
+
+### 响应状态码
+
+响应的 HTTP 状态码分为两种情况，详情可参考[响应状态码](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/response-code)。
+
+- 如果返回的 HTTP 状态码为 200 或 201，表示请求成功。
+- 如果 HTTP 状态码不为 200 或 201，参考响应状态码排查问题。
+
+### 响应 Header（可选）
+
+响应 Header 指明了响应的标识，以区分不同请求所收到的响应。常见的响应 Header 包括：
+
+- `X-Request-ID`，本次请求的 UUID（通用唯一识别码）。
+
+### 响应 Body
+
+响应 Body 包含了服务器返回的数据。例如，查询转换任务进度的响应 Body 包含转换任务的 UUID、状态、类型、进度百分比等信息。具体信息以每个 API 的返回值为准。
+
+以下是[查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)的响应示例：
+
+```json
+{
+  "uuid": "2fdxxxx7e",
+  "status": "Finished",
+  "type": "dynamic",
+  "convertedPercentage": 100,
+  "prefix": "https://xxxx.com/dynamicConvert",
+  "pageCount": 10,
+  "previews": {
+    "1": "https://xxxx.xx.xx/1.png",
+    "2": "https://xxxx.xx.xx/2.png"
+  },
+  "note": "https://xxx.xx.xx/note.json",
+  "images": {
+    "1": {
+      "width": 720,
+      "height": 1080,
+      "url": "https://xxxx.xx.xx/1.xxx"
+    },
+    "2": {
+      "width": 720,
+      "height": 1080,
+      "url": "https://xxxx.xx.xx/2.xxx"
+    }
+  },
+  "errorCode": "20xxxxx",
+  "errorMessage": "xxx"
+}
+```
+
+## 错误处理
+当你遇到问题时，可以使用开发者工具查看请求和响应，结合[响应状态码](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/response-code)进行排查。如未能解决问题，可联系[技术支持](https://ticket.shengwang.cn)。

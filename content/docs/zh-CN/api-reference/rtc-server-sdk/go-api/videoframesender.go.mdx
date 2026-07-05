@@ -1,0 +1,85 @@
+---
+title: "VideoFrameSender 类"
+---
+VideoFrameSender
+
+<span className="index-desc-videoframesender">`VideoFrameSender` 类</span>
+
+<a id="newvideoframesender"></a>
+## NewVideoFrameSender
+
+```go
+func (mediaNodeFactory *MediaNodeFactory) NewVideoFrameSender() *VideoFrameSender {
+    sender := C.agora_media_node_factory_create_video_frame_sender(mediaNodeFactory.cFactory)
+    if sender == nil {
+        return nil
+    }
+    return &VideoFrameSender{
+        cSender: sender,
+    }
+}
+```
+
+<span className="index-desc-newvideoframesender">创建一个原始视频数据发送模块。该方法创建一个 `VideoFrameSender` 对象，可用于 [`NewCustomVideoTrackFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go#newcustomvideotrackframe) 方法。</span>
+
+#### 返回值
+
+- `VideoFrameSender` 对象：方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="sendvideoframe"></a>
+## SendVideoFrame
+
+```go
+func (sender *VideoFrameSender) SendVideoFrame(frame *ExternalVideoFrame) int {
+    cData := C.CBytes(frame.Buffer)
+    defer C.free(cData)
+    cFrame := C.struct__external_video_frame{}
+    C.memset(unsafe.Pointer(&cFrame), 0, C.sizeof_struct__external_video_frame)
+    cFrame._type = C.int(frame.Type)
+    cFrame.format = C.int(frame.Format)
+    cFrame.buffer = cData
+    cFrame.stride = C.int(frame.Stride)
+    cFrame.height = C.int(frame.Height)
+    cFrame.crop_left = C.int(frame.CropLeft)
+    cFrame.crop_top = C.int(frame.CropTop)
+    cFrame.crop_right = C.int(frame.CropRight)
+    cFrame.crop_bottom = C.int(frame.CropBottom)
+    cFrame.rotation = C.int(frame.Rotation)
+    cFrame.timestamp = C.longlong(frame.Timestamp)
+    if frame.MetadataBuffer != nil {
+        metadata := C.CBytes(frame.MetadataBuffer)
+        defer C.free(metadata)
+        cFrame.metadata_buffer = (*C.uint8_t)(metadata)
+        cFrame.metadata_size = C.int(len(frame.MetadataBuffer))
+    }
+    if frame.AlphaBuffer != nil {
+      alpha, alphaPinner := unsafeCBytes(frame.AlphaBuffer)
+      defer alphaPinner.Unpin()
+      cFrame.alpha_buffer = (*C.uint8_t)(alpha)
+    }
+    if frame.FillAlphaBuffer {
+      cFrame.fill_alpha_buffer = C.uint8_t(1)
+    }
+    cFrame.alpha_mode = C.int(frame.AlphaMode)
+    // fill color space: for go,the default value of struct 's member is zero value!
+    cFrame.color_space.matrix_id = C.int(frame.ColorSpace.MatrixId)
+    cFrame.color_space.primaries_id = C.int(frame.ColorSpace.PrimariesId)
+    cFrame.color_space.transfer_id = C.int(frame.ColorSpace.TransferId)
+    cFrame.color_space.range_id = C.int(frame.ColorSpace.RangeId)
+    return int(C.agora_video_frame_sender_send(sender.cSender, &cFrame))
+}
+```
+
+<span className="index-desc-sendvideoframe">将 YUV 格式的视频帧发送到视频轨道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `frame` | 需要发送的视频帧，详见 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#externalvideoframe)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

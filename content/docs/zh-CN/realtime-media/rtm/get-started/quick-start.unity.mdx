@@ -1,0 +1,1240 @@
+---
+title: "实现收发消息"
+---
+本文将指导你如何利用 RTM SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
+
+## 准备工作
+
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
+
+- [Unity Hub](https://unity.com/download) 任意版本
+
+- Unity 2018.4.0 或以上版本
+
+- 操作系统与编译器要求：
+
+  | 开发平台 |    操作系统版本    |             编译器版本              |
+  | ------ | ---------------- | ----- |
+  | Android  | Android 4.1 或以上 |      Android Studio 3.0 或以上      |
+  |   iOS    |   iOS 11.0 或以上   |          Xcode 9.0 或以上           |
+  |  macOS   | macOS 10.10 或以上 |          Xcode 9.0 或以上           |
+  | Windows  |  Windows 7 或以上  | Microsoft Visual Studio 2017 或以上 |
+
+## 获取 SDK
+
+[点击此处](https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip)下载最新版本的 Unity SDK，并在你的项目中导入它。
+
+## 导入 SDK
+
+1. 打开 Unity Hub，点击 **New Project** 新建一个 Unity 3D 项目。
+
+2. 点击顶部菜单栏的 **Assets** 菜单，依次选择 **Import Package**、**Custom Package** 向项目中导入你刚刚获取的 RTM Unity Package。
+
+## 初始化 RTM
+
+调用 RTM SDK 的任何 API 之前，需要先初始化一个 `IRtmClient` 对象实例。参考如下步骤创建用户界面、初始化一个 `IRtmClient` 对象实例并添加项目脚本：
+
+:::tip[初始化配置]
+初始化 RTM 的时候可以通过配置某些参数改变 `IRtmClient` 其后续行为，例如配置事件监听函数、端侧消息加密等。详见[初始配置](/api-ref/rtm2/unity/toc-configuration/configuration)。
+:::
+
+1. 我们为你提供了一个简单的示例项目，其中进行了简易的 UI 界面设计以便于验证功能特性。UI 界面及组件架构如下图所示：
+
+![示例项目的 UI 界面及组件结构](/img/rtm2/rtm2ui.png)
+
+   ```json showLineNumbers
+   SampleScene
+
+   - Main Camera
+   - Canvas
+    - Image                          // 窗口背景
+    - Txt1                           // 文本标签，文本内容为 Send string message to message channel
+    - InputField1                    // 消息输入框
+    - Btn1                           // 发送消息按钮
+    - Txt2                           // 文本标签，文本内容为 Send binary message to stream channel
+    - Btn2                           // 创建 Stream Channel 按钮
+    - Btn3                           // 加入 Stream Channel 按钮
+    - Btn4                           // 加入 Topic 按钮
+    - Btn5                           // 订阅 Topic 中的消息发布者按钮
+    - InputField2                    // 消息输入框
+    - Btn6                           // 发送消息按钮
+    - Btn7                           // 释放 Stream Channel 按钮
+    - Btn8                           // 离开 Stream Channel 按钮
+    - Btn9                           // 离开 Topic 按钮
+    - Btn10                          // 取消订阅 Topic 中的消息发布者按钮
+    - Pannel                          // 信息输出面板
+        - Txt3                        // 信息输出文字
+   - EventSystem
+   ```
+
+2. 在 Unity 编辑器中，选择顶部菜单栏的 **Assets** 菜单，依次点击 **Create**、**C# Script** 为项目新建脚本，名为 **HelloWorld.cs**。
+
+3. 在 **HelloWorld.cs** 脚本中添加以下代码作为程序模版。你会发现此程序并不完整，不用紧张，我们在后续步骤中将一步步指导你补充完善代码。
+
+   ```csharp showLineNumbers title="Assets/Hello_world.cs"
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.UI;
+    using Agora.Rtm;
+
+    public class HelloWorld : MonoBehaviour
+    {
+        [SerializeField]
+        private string appId = "your_appId";
+        // Get an App ID from console portal
+        private string userId = "your_userId";
+        // Change the user ID by yourself
+
+        private string msChannelName = "SeeYou";
+        private string stChannelName = "Greeting";
+        private string topicName = "Hello_world";
+
+        private IRtmClient rtmClient;
+        private IStreamChannel streamChannel;
+
+        public void Awake()
+        {
+            Initialize();
+        }
+
+        // Initialize the RTM
+        public async void Initialize()
+        {
+            // Initialize the RTM Client
+
+            // Add listener
+            if (rtmClient != null)
+            {
+                // Add message event listener
+                rtmClient.OnMessageEvent += OnMessageEvent;
+                // Add the presence event listener
+                rtmClient.OnPresenceEvent += OnPresenceEvent;
+                // Add the connection state change listener
+                rtmClient.OnConnectionStateChanged += OnConnectionStateChanged;
+                // Log in to the RTM server
+
+                // Subscribe to a Message Channel
+
+            }
+        }
+
+        private void ChangeComponentView(string[] componentsList, string viewType)
+        {
+            for (int i = 0; i < componentsList.Length; i++)
+            {
+                if (viewType == "ACTIVATE")
+                GameObject.Find(componentsList[i]).GetComponent<Button>().interactable = true;
+                else if (viewType == "INACTIVATE")
+                GameObject.Find(componentsList[i]).GetComponent<Button>().interactable = false;
+            }
+        }
+
+        private void ShowMessage(string msg)
+        {
+            GameObject.Find("Txt3").GetComponent<Text>().text += "\n" + msg;
+        }
+
+        // Implement the event listener handler
+
+        // OnClick event handler for Btn1
+        public async void PublishStringMessage()
+        {
+            // Publish string messages to Message Channel
+
+        }
+
+        // OnClick event handler for Btn6
+        public async void PublishBinaryMessage()
+        {
+            // Publish binary messages to a Stream Channel
+
+        }
+
+        // Onclick event handler for Btn2
+        public void CreateStChannel()
+        {
+            string[] activeComponentsList = { "Btn3", "Btn7" };
+            string[] inactiveComponentList = { "Btn2", "Btn4", "Btn5", "Btn6", "Btn8", "Btn9", "Btn10" };
+            // Create a Stream Channel
+
+        }
+
+        // Onclick event handler for Btn3
+        public async void JoinStChannel()
+        {
+            string[] activeComponentsList = { "Btn4", "Btn5", "Btn8" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn9", "Btn10", "Btn7" };
+            // Join a Stream Channel
+
+        }
+
+        // Onclick event handler for Btn4
+        public async void JoinTopic()
+        {
+            string[] activeComponentsList = { "Btn6", "Btn8", "Btn9" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn4", "Btn7" };
+            // Join a topic
+
+        }
+
+        // Onclick event handler for Btn5
+        public async void SubscribeTopic()
+        {
+            string[] activeComponentsList = { "Btn8", "Btn10" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn5", "Btn7" };
+            // Subscribe a publisher from a topic
+
+        }
+
+        // Onclick event handler for Btn7
+        public async void ReleaseStChannel()
+        {
+            string[] activeComponentsList = { "Btn2" };
+            string[] inactiveComponentList = { "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "Btn10" };
+            // Release a Stream Channel
+
+        }
+
+        // Onclick event handler for Btn8
+        public async void LeaveStChannel()
+        {
+            string[] activeComponentsList = { "Btn3", "Btn7" };
+            string[] inactiveComponentList = { "Btn2", "Btn4", "Btn5", "Btn6", "Btn8", "Btn9", "Btn10" };
+            // Leave a Stream Channel
+
+        }
+
+        // Onclick event handler for Btn9
+        public async void LeaveTopic()
+        {
+            string[] activeComponentsList = { "Btn4", "Btn8" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn7", "Btn9" };
+            // Leave a topic
+
+        }
+
+        // Onclick event handler for Btn10
+        public async void UnsubscribeTopic()
+        {
+            string[] activeComponentsList = { "Btn5", "Btn8" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn7", "Btn10" };
+            // Unsubscribe a publisher from a topic
+
+        }
+
+        private async void OnDestroy()
+        {
+            string[] activeComponentsList = { "Btn4", "Btn5", "Btn8" };
+            string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn9", "Btn10", "Btn7" };
+            // Dispose a Stream Channel
+            if (rtmClient != null && streamChannel != null)
+            {
+                var result = await streamChannel.LeaveAsync();
+                var status = result.Status;
+                var response = result.Response;
+                if (status.Error)
+                {
+                    ShowMessage(string.Format("{0} is failed", status.Operation));
+                    ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+                }
+                else
+                {
+                    ShowMessage("Dispose Channel Success!");
+                    ChangeComponentView(activeComponentsList, "ACTIVATE");
+                    ChangeComponentView(inactiveComponentList, "INACTIVATE");
+                }
+                var status2 = streamChannel.Dispose();
+            }
+
+            if (rtmClient != null)
+            {
+                var result = await rtmClient.UnsubscribeAsync(msChannelName);
+                var status2 = result.Status;
+                var response2 = result.Response;
+                if (status3.Error)
+                {
+                    Debug.Log(string.Format("{0} is failed", status3.Operation));
+                    Debug.Log(string.Format("The error code is {0}, because of: {1}", status3.ErrorCode, status3.Reason));
+                }
+                else
+                {
+                    Debug.Log("Unsubscribe Channel Success!");
+                }
+                var status4 = rtmClient.Dispose();
+                Debug.Log("Dispose rtmClient Success!");
+                rtmClient = null;
+            }
+        }
+    }
+   ```
+
+## 消息格式
+
+收发信息是 RTM 基础的能力之一，基于 RTM 实时网络，你在全球任何地方发送的信息都可以在 100 毫秒内安全可靠的送到到接收端。用户可以给一个人发送消息或一次性给成千上万人广播消息。
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。所有类型的频道中均支持字符串格式和二进制格式消息负载。
+
+字符串类型消息格式：
+
+```csharp
+string message = "This is a string message";
+```
+
+二进制类型消息格式：
+
+```csharp
+byte[] message = System.Text.Encoding.Default.GetBytes("This message will be converted to binary");
+```
+
+根据你的应用场景需要，你可以选择字符串类型消息格式或者二进制类型消息格式，收到消息后通过 `MessageEvent` 中 `messageType` 字段加以区分。
+
+你也可以使用 `JSON` 或 `Protobuf` 等方式来构建你的负载结构以便于简化业务逻辑，此部分内容可以参考[消息负载序列化](/zh-CN/realtime-media/rtm/user-guide/message/serialized)。但请记住在把消息负载转交给 RTM 发送前，需要对消息负载进行序列化。
+
+## 初始化 RTM
+在 **HelloWorld.cs** 中调用 `CreateAgoraRtmClient` 方法初始化 `IRtmClient`。你需要提供如下信息：
+
+     - 从控制台获取的 App ID（`appId`）。
+     - 你需要定义用户 ID（`userId`），并保证其全局唯一性。
+
+将以下代码添加到程序中，并将程序模版中的 `"your_appId"`、`"your_userId"` 替换成你的 `appId` 和 `userId`。
+
+``` csharp showLineNumbers
+// Paste the following code snippet below "Initialize RTM Client" comment
+
+if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(appId))
+{
+    ShowMessage("We need a userId and appId to initialize!");
+    return;
+}
+RtmLogConfig logConfig = new RtmLogConfig();
+// Set the log file path.
+logConfig.filePath = "myFilePath";
+// Set the file size of the agora.log file.
+logConfig.fileSizeInKB = 512;
+// Set the log report level
+logConfig.level = RTM_LOG_LEVEL.INFO;
+RtmConfig config = new RtmConfig();
+config.appId = appId;
+config.userId = userId;
+config.logConfig = logConfig;
+// Create the RTM Client
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    ShowMessage("RTM Client Initialize Sucessfull");
+    // Inactive unnecessary components
+    string[] activeComponentsList = { "Btn2" };
+    string[] inactiveComponentList = { "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "Btn10" };
+    ChangeComponentView(activeComponentsList, "ACTIVATE");
+    ChangeComponentView(inactiveComponentList, "INACTIVATE");
+}
+catch (RTMException e)
+{
+    ShowMessage(string.Format("{0} is failed", e.Status.Operation));
+    ShowMessage(string.Format("The error code is {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+## 添加事件监听
+
+事件监听程序帮助你实现频道中消息、事件到达后的处理逻辑，添加以下代码到你的程序中以显示收到的消息或事件通知：
+
+``` csharp showLineNumbers
+// Paste the following code snippet below "Implement the event listener handler" comment
+
+// Implement the connection state change event handler
+private void OnConnectionStateChanged(string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason)
+{
+    ShowMessage(string.Format("Channel:{0} connection state have changed to:{1} because of {2}", channelName, state, reason));
+}
+
+// Implement the presence event handler
+private void OnPresenceEvent(PresenceEvent eve)
+{
+    var channelName = eve.channelName;
+    var channelType = eve.channelType;
+    var eventType = eve.type;
+    var publisher = eve.publisher;
+    var stateItems = eve.stateItems;
+    var interval = eve.interval;
+    var snapshot = eve.snapshot;
+    Debug.Log(string.Format("The Event : {0} Happend", eventType));
+    switch (eventType)
+    {
+        case RTM_PRESENCE_EVENT_TYPE.SNAPSHOT:
+            ShowMessage(string.Format("You have sub or join channel:{0} channe type is:{1}", channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.INTERVAL:
+            ShowMessage(string.Format("The channel:{0} channe type is:{1} is now in interval mode!", channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.REMOTE_JOIN:
+            ShowMessage(string.Format("User:{0} sub or join channel:{1} channe type is:{2}", publisher, channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.REMOTE_LEAVE:
+            ShowMessage(string.Format("User:{0} unsub or leave channel:{1} channe type is:{2}", publisher, channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.REMOTE_TIMEOUT:
+            ShowMessage(string.Format("User:{0} timeout from channel:{1} channe type is:{2}", publisher, channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.REMOTE_STATE_CHANGED:
+            ShowMessage(string.Format("User:{0} state change in channel:{1} channe type is:{2}", publisher, channelName, channelType));
+            break;
+        case RTM_PRESENCE_EVENT_TYPE.ERROR_OUT_OF_SERVICE:
+            ShowMessage(string.Format("User:{0} joined channel without presence service:{1} channe type is:{2}", publisher, channelName, channelType));
+            break;
+    }
+}
+
+// Implement the message event handler
+private void OnMessageEvent(MessageEvent eve)
+{
+    var channelName = eve.channelName;
+    var channelType = eve.channelType;
+    var topic = eve.channelTopic;
+    var publisher = eve.publisher;
+    var messageType = eve.messageType;
+    var customType = eve.customType;
+    var message = eve.message;
+
+    if (messageType == RTM_MESSAGE_TYPE.STRING)
+    {
+        var stMessage = message.GetData<string>();
+        ShowMessage(string.Format("You have recieved a string type message: {0} from: {1} in channel:{2}", stMessage, publisher, channelName));
+        ShowMessage(string.Format("The channel type is {0}"), channelType);
+    }
+    else
+    {
+        var biMessage = message.GetData<byte[]>();
+        ShowMessage(string.Format("You have recieved a binary type message: {0},from: {1} in channel:{2}", System.BitConverter.ToString(biMessage), publisher, channelName));
+        ShowMessage(string.Format("The channel type is {0}", channelType));
+    }
+}
+```
+
+## 登录服务
+
+我们需要执行登录操作以建立与 RTM 服务器的连接，然后才能调用 SDK 的其他 API。调用 `LoginAsync` 方法并传入 `token` 参数以验证身份。
+
+将以下代码添加到 **HelloWorld.cs** 中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Log in to the RTM server" comment
+var result = await rtmClient.LoginAsync(appId);
+var status = result.Status;
+var response = result.Response;
+if (status.Error)
+{
+    ShowMessage(string.Format("{0} is failed", status.Operation));
+    ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+}
+else
+{
+    ShowMessage("Login Successfully");
+}
+```
+
+:::info[信息]
+你需要在登录时传入 Token。在测试阶段，为快速验证功能，我们建议你在创建声网项目时将鉴权模式设置为调试模式，然后在登录时只需传入项目的 App ID。
+:::
+
+## Message Channel 中收发消息
+
+调用 `PublishAsync` 方法向 Message Channel 发送消息后，RTM 会把该消息分发给该频道的所有订阅者，以下代码演示如何发送 String 类型的消息，将此代码片段添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Publish string messages to a message channel" comment
+var message = GameObject.Find("InputField1").GetComponent<InputField>().text;
+if (rtmClient != null)
+{
+    PublishOptions options = new PublishOptions()
+    {
+        channelType = RTM_CHANNEL_TYPE.MESSAGE,
+        customType = "PlainText"
+    };
+    var result = await rtmClient.PublishAsync(msChannelName, message, options);
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed, The error code is {1}", status.Operation, status.ErrorCode));
+    }
+    else
+    {
+        ShowMessage("Publish Message Success!");
+    }
+}
+```
+
+调用 `SubscribeAsync` 方法订阅此频道以接收此频道中的消息。将以下代码添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Subscribe to a Message Channel" comment
+SubscribeOptions options = new SubscribeOptions()
+{
+    withMessage = true,
+    withPresence = true
+};
+var result2 = await rtmClient.SubscribeAsync(msChannelName, options);
+var status2 = result2.Status;
+var response2 = result2.Response;
+if (status2.Error)
+{
+    ShowMessage(string.Format("{0} is failed", status2.Operation));
+    ShowMessage(string.Format("The error code is {0}, due to: {1}", status2.ErrorCode, status2.Reason));
+}
+else
+{
+    ShowMessage(string.Format("Subscribe channel success! at Channel:{0}", response2.ChannelName));
+}
+```
+
+成功订阅后，你可以通过之前监听的 `OnMessageEvent` 事件通知接收消息。
+
+## Stream Channel 中收发消息
+
+在 Stream Channel 中的消息需要依赖 Topic 功能，你需要依次完成以下步骤：
+
+### 创建 Stream Channel
+
+调用 Stream Channel 的所有方法前，你需要创建频道并获得 `IStreamChannel` 对象实例。将以下代码添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Create a Stream Channel" comment
+if (rtmClient != null)
+{
+    streamChannel = rtmClient.CreateStreamChannel(stChannelName);
+    ShowMessage("Create Stream Channel:" + stChannelName + "Success !");
+    // Disable unnecessary components
+    ChangeComponentView(activeComponentsList, "ACTIVATE");
+    ChangeComponentView(inactiveComponentList, "INACTIVATE");
+}
+```
+
+### 加入 Stream Channel
+
+加入 Stream Channel 才可以在后续进行发布和订阅消息的操作。调用 `JoinAsync` 方法并在 `options` 中传入 `token` 参数以验证身份。
+
+:::info[信息]
+当前项目在创建的时候选择的是调试模式以便于快速验证功能，所以可以用 `appId` 代替 `token` 执行加入频道操作。
+:::
+
+在 **HelloWorld.cs** 中添加如下代码：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Join a Stream Channel" comment
+if (streamChannel != null)
+{
+    JoinChannelOptions options = new JoinChannelOptions();
+    options.withPresence = true;
+    options.token = appId;
+
+    var result = await streamChannel.JoinAsync(options);
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed", status.Operation));
+        ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+    }
+    else
+    {
+        ShowMessage(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+        ChangeComponentView(activeComponentsList, "ACTIVATE");
+        ChangeComponentView(inactiveComponentList, "INACTIVATE");
+    }
+}
+```
+
+### 加入 Topic
+
+调用 `JoinTopicAsync` 方法会将你注册成为 Topic 的消息发布者之一，以便于你后续向该 Topic 发送消息。将以下代码添加到频道中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Join a topic" comment
+if (streamChannel != null)
+{
+    JoinTopicOptions options = new JoinTopicOptions();
+    options.qos = RTM_MESSAGE_QOS.ORDERED;
+    options.syncWithMedia = false;
+
+    var result = await streamChannel.JoinTopicAsync(topicName, options);
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed", status.Operation));
+        ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+    }
+    else
+    {
+        ShowMessage(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+        ChangeComponentView(activeComponentsList, "ACTIVATE");
+        ChangeComponentView(inactiveComponentList, "INACTIVATE");
+    }
+}
+```
+
+### 在 Topic 中发布消息
+
+成功注册为 Topic 的发布者后，你就可以调用 `PublishTopicMessageAsync` 方法在 Topic 中发送消息了，RTM 会把此消息分发给该 Topic 的所有订阅者。以下示例向你展示如何发送 Binary 类型消息：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Publish binary messages to a Stream Channel" comment
+var message = GameObject.Find("InputField2").GetComponent<InputField>().text;
+byte[] byteMsg = System.Text.Encoding.Default.GetBytes(message);
+if (streamChannel != null)
+{
+    TopicMessageOptions options = new TopicMessageOptions();
+    options.customType = "PlainBinary";
+    options.sendTs = 0;
+    var result = await streamChannel.PublishTopicMessageAsync(topicName, byteMsg, options);
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed", status.Operation));
+        ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+    }
+    else
+    {
+        ShowMessage("Publish Binary Message Success!");
+    }
+}
+```
+
+### 订阅 Topic 中的发布者
+
+你可以通过调用 `SubscribeTopicAsync` 方法订阅某个 Topic 中的一位或多位消息发布者以便于接收他们发送的消息。单个客户端在单个 Topic 中最多只能订阅 64 个消息发布者，详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。
+
+将以下代码添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Subscribe a publisher from a topic" comment
+List<string> userList = new List<string>();
+userList.Add("Tony");
+TopicOptions options = new TopicOptions();
+options.users = userList.ToArray();
+
+var result = await streamChannel.SubscribeTopicAsync(topicName, options);
+var status = result.Status;
+var response = result.Response;
+if (status.Error)
+{
+    ShowMessage(string.Format("{0} is failed", status.Operation));
+    ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+}
+else
+{
+    ShowMessage(string.Format("User:{0} Subscribe Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+    ChangeComponentView(activeComponentsList, "ACTIVATE");
+    ChangeComponentView(inactiveComponentList, "INACTIVATE");
+}
+```
+
+成功订阅后，你可以通过之前监听的 `OnMessageEvent` 事件通知接收消息。
+
+### 取消订阅 Topic 中发布者
+
+如果你不再需要接收某 Topic 中某一位发布者的消息，调用 `UnsubscribeTopicAsync` 方法取消对他的订阅。如需取消订阅整个 Topic，在 `topicOptions` 中不填 `users` 参数即可。
+
+将以下代码添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Unsubscribe a publisher from a topic" comment
+List<string> userList = new List<string>();
+userList.Add("Tony");
+
+TopicOptions options = new TopicOptions();
+options.users = userList.ToArray();
+
+var result = await streamChannel.UnsubscribeTopicAsync(topicName, options);
+var status = result.Status;
+var response = result.Response;
+if (rstatus.Error)
+{
+    ShowMessage(string.Format("{0} is failed", status.Operation));
+    ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+}
+else
+{
+    ShowMessage(string.Format("Unsubscribe Topic Success!"));
+    ChangeComponentView(activeComponentsList, "ACTIVATE");
+    ChangeComponentView(inactiveComponentList, "INACTIVATE");
+}
+```
+
+### 离开 Topic
+
+如果你不再需要在某 Topic 中发布消息，调用 `LeaveTopicAsync` 方法取消成为该 Topic 的消息发布者。
+
+:::info[信息]
+离开 Topic 不会影响你的订阅操作，你依旧可以从你订阅的 Topic 中接收消息。
+:::
+
+将以下代码添加到程序中：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Leave a topic" comment
+if (streamChannel != null)
+{
+    var result = await streamChannel.LeaveTopicAsync(topicName);
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed", status.Operation));
+        ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+    }
+    else
+    {
+        ShowMessage(string.Format("User:{0} Leave Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+        ChangeComponentView(activeComponentsList, "ACTIVATE");
+        ChangeComponentView(inactiveComponentList, "INACTIVATE");
+    }
+}
+```
+
+### 退出频道
+
+当你不再关心此频道中的动态，即不再发送和接收消息，可以调用 `LeaveTopicAsync` 方法离开该频道。
+
+将以下代码添加到程序中：
+
+```csharp
+// Paste the following code snippet below "Release a Stream Channel" comment
+if (rtmClient != null && streamChannel != null)
+{
+    var result = await streamChannel.LeaveAsync();
+    var status = result.Status;
+    var response = result.Response;
+    if (status.Error)
+    {
+        ShowMessage(string.Format("{0} is failed", status.Operation));
+        ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+    }
+    else
+    {
+        ShowMessage("Leave Channel Success!");
+        ChangeComponentView(activeComponentsList, "ACTIVATE");
+        ChangeComponentView(inactiveComponentList, "INACTIVATE");
+    }
+}
+```
+
+### 销毁频道
+
+如果你不再需要某个 Stream Channel，你可以调用 `Dispose` 方法销毁该频道以释放资源。
+
+在 **HelloWorld.cs** 中添加如下代码：
+
+```csharp showLineNumbers
+// Paste the following code snippet below "Dispose a Stream Channel" comment
+var result1 = streamChannel.Dispose();
+```
+
+## 组合到一起
+
+经过上述步骤，你的 **HelloWorld.cs** 文件中的代码应该如下所示：
+
+```csharp showLineNumbers
+
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Agora.Rtm;
+
+public class HelloWorld : MonoBehaviour
+{
+    [SerializeField]
+    private string appId = "your_appId";
+    // Get an App ID from console portal
+    private string userId = "your_userId";
+    // Change the user ID by yourself
+    private string msChannelName = "SeeYou";
+    private string stChannelName = "Greeting";
+    private string topicName = "Hello_world";
+    private IRtmClient rtmClient;
+    private IStreamChannel streamChannel;
+    public void Awake()
+    {
+        Initialize();
+    }
+    // Initialize RTM
+    public async void Initialize()
+    {
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(appId))
+        {
+            ShowMessage("We need a userId and appId to initialize!");
+            return;
+        }
+        RtmLogConfig logConfig = new RtmLogConfig();
+        // Set log file path
+        logConfig.filePath = "myFilePath";
+        // Set the file size of the agore.log file
+        logConfig.fileSizeInKB = 512;
+        // Set the log report level
+        logConfig.level = RTM_LOG_LEVEL.INFO;
+        RtmConfig config = new RtmConfig();
+        config.appId = appId;
+        config.userId = userId;
+        config.logConfig = logConfig;
+        // Create the RTM Client
+        try
+        {
+            rtmClient = RtmClient.CreateAgoraRtmClient(config);
+            ShowMessage("RTM Client Initialize Sucessfull");
+            // Inactive unnecessary components
+            string[] activeComponentsList = { "Btn2" };
+            string[] inactiveComponentList = { "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "Btn10" };
+            ChangeComponentView(activeComponentsList, "ACTIVATE");
+            ChangeComponentView(inactiveComponentList, "INACTIVATE");
+        }
+        catch (RTMException e)
+        {
+            ShowMessage(string.Format("{0} is failed", e.Status.Operation));
+            ShowMessage(string.Format("The error code is {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+        }
+        // Add listener
+        if (rtmClient != null)
+        {
+            // Add the message event listener
+            rtmClient.OnMessageEvent += OnMessageEvent;
+            // Add the presence event listener
+            rtmClient.OnPresenceEvent += OnPresenceEvent;
+            // Add the connection state change listener
+            rtmClient.OnConnectionStateChanged += OnConnectionStateChanged;
+            // Log in to the RTM server
+            var result = await rtmClient.LoginAsync(appId);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+                Debug.Log(string.Format("Login failed"));
+            }
+            else
+            {
+                ShowMessage("Login Successfully");
+            }
+            //Subscribe to a Message Channel
+            SubscribeOptions options = new SubscribeOptions()
+            {
+                withMessage = true,
+                withPresence = true
+            };
+            var result2 = await rtmClient.SubscribeAsync(msChannelName, options);
+            var status2 = result2.Status;
+            var response2 = result2.Response;
+            if (status2.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status2.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status2.ErrorCode, status2.Reason));
+            }
+            else
+            {
+                ShowMessage(string.Format("Subscribe channel success! at Channel:{0}", response2.ChannelName));
+            }
+        }
+    }
+    private void ChangeComponentView(string[] componentsList, string viewType)
+    {
+        for (int i = 0; i < componentsList.Length; i++)
+        {
+            if (viewType == "ACTIVATE")
+                GameObject.Find(componentsList[i]).GetComponent<Button>().interactable = true;
+            else if (viewType == "INACTIVATE")
+                GameObject.Find(componentsList[i]).GetComponent<Button>().interactable = false;
+        }
+    }
+    private void ShowMessage(string msg)
+    {
+        GameObject.Find("Txt3").GetComponent<Text>().text += "\n" + msg;
+    }
+    // Implement the event listener handler
+    // Implement the connection state change event handler
+    private void OnConnectionStateChanged(string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason)
+    {
+        ShowMessage(string.Format("Channel:{0} connection state have changed to:{1} because of {2}", channelName, state, reason));
+    }
+    // Implement the presence event handler
+    private void OnPresenceEvent(PresenceEvent eve)
+    {
+        var channelName = eve.channelName;
+        var channelType = eve.channelType;
+        var eventType = eve.type;
+        var publisher = eve.publisher;
+        var stateItems = eve.stateItems;
+        var interval = eve.interval;
+        var snapshot = eve.snapshot;
+        Debug.Log(string.Format("The Event : {0} Happend", eventType));
+        switch (eventType)
+        {
+            case RTM_PRESENCE_EVENT_TYPE.SNAPSHOT:
+                ShowMessage(string.Format("You have sub or join channel:{0} channe type is:{1}", channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.INTERVAL:
+                ShowMessage(string.Format("The channel:{0} channe type is:{1} is now in interval mode!", channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.REMOTE_JOIN:
+                ShowMessage(string.Format("User:{0} sub or join channel:{1} channe type is:{2}", publisher, channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.REMOTE_LEAVE:
+                ShowMessage(string.Format("User:{0} unsub or leave channel:{1} channe type is:{2}", publisher, channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.REMOTE_TIMEOUT:
+                ShowMessage(string.Format("User:{0} timeout from channel:{1} channe type is:{2}", publisher, channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.REMOTE_STATE_CHANGED:
+                ShowMessage(string.Format("User:{0} state change in channel:{1} channe type is:{2}", publisher, channelName, channelType));
+                break;
+            case RTM_PRESENCE_EVENT_TYPE.ERROR_OUT_OF_SERVICE:
+                ShowMessage(string.Format("User:{0} joined channel without presence service:{1} channe type is:{2}", publisher, channelName, channelType));
+                break;
+        }
+    }
+    // Implement the message event handler
+    private void OnMessageEvent(MessageEvent eve)
+    {
+        var channelName = eve.channelName;
+        var channelType = eve.channelType;
+        var topic = eve.channelTopic;
+        var publisher = eve.publisher;
+        var messageType = eve.messageType;
+        var customType = eve.customType;
+        var message = eve.message;
+        if (messageType == RTM_MESSAGE_TYPE.STRING)
+        {
+            var stMessage = message.GetData<string>();
+            ShowMessage(string.Format("You have recieved a string type message: {0} from: {1} in channel:{2}", stMessage, publisher, channelName));
+            ShowMessage(string.Format("The channel type is {0}", channelType));
+        }
+        else
+        {
+            var biMessage = message.GetData<byte[]>();
+            ShowMessage(string.Format("You have recieved a binary type message: {0},from: {1} in channel:{2}", System.BitConverter.ToString(biMessage), publisher, channelName));
+            ShowMessage(string.Format("The channel type is {0}", channelType));
+        }
+    }
+    // OnClick Event Handler for Btn1
+    public async void PublishStringMessage()
+    {
+        // Publish string messages to a message channel
+        var message = GameObject.Find("InputField1").GetComponent<InputField>().text;
+        if (rtmClient != null)
+        {
+            PublishOptions options = new PublishOptions()
+            {
+                channelType = RTM_CHANNEL_TYPE.MESSAGE,
+                customType = "PlainText"
+            };
+            var result = await rtmClient.PublishAsync(msChannelName, message, options);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed, The error code is {1}", status.Operation, status.ErrorCode));
+            }
+            else
+            {
+                ShowMessage("Publish Message Success!");
+            }
+        }
+    }
+    // OnClick Event Handler for Btn6
+    public async void PublishBinaryMessage()
+    {
+        // Publish Binary Messahe to Stream Channel
+        var message = GameObject.Find("InputField2").GetComponent<InputField>().text;
+        byte[] byteMsg = System.Text.Encoding.Default.GetBytes(message);
+        if (streamChannel != null)
+        {
+            TopicMessageOptions options = new TopicMessageOptions();
+            options.customType = "PlainBinary";
+            options.sendTs = 0;
+            var result = await streamChannel.PublishTopicMessageAsync(topicName, byteMsg, options);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage("Publish Binary Message Success!");
+            }
+        }
+    }
+    // Onclick event handler for Btn2
+    public void CreateStChannel()
+    {
+        string[] activeComponentsList = { "Btn3", "Btn7" };
+        string[] inactiveComponentList = { "Btn2", "Btn4", "Btn5", "Btn6", "Btn8", "Btn9", "Btn10" };
+        // Create a Stream Channel
+        if (rtmClient != null)
+        {
+            streamChannel = rtmClient.CreateStreamChannel(stChannelName);
+            ShowMessage("Create Stream Channel:" + stChannelName + "Success !");
+            // Disable unnecessary components
+            ChangeComponentView(activeComponentsList, "ACTIVATE");
+            ChangeComponentView(inactiveComponentList, "INACTIVATE");
+        }
+    }
+    // Onclick event handler for Btn3
+    public async void JoinStChannel()
+    {
+        string[] activeComponentsList = { "Btn4", "Btn5", "Btn8" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn9", "Btn10", "Btn7" };
+        // Join a Stream Channel
+        if (streamChannel != null)
+        {
+            JoinChannelOptions options = new JoinChannelOptions();
+            options.withPresence = true;
+            options.token = appId;
+            var result = await streamChannel.JoinAsync(options);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+        }
+    }
+    // Onclick event handler for Btn4
+    public async void JoinTopic()
+    {
+        string[] activeComponentsList = { "Btn6", "Btn8", "Btn9" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn4", "Btn7" };
+        // Join a topic
+        if (streamChannel != null)
+        {
+            JoinTopicOptions options = new JoinTopicOptions();
+            options.qos = RTM_MESSAGE_QOS.ORDERED;
+            options.syncWithMedia = false;
+            var result = await streamChannel.JoinTopicAsync(topicName, options);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+        }
+    }
+    // Onclick event handler for Btn5
+    public async void SubscribeTopic()
+    {
+        string[] activeComponentsList = { "Btn8", "Btn10" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn5", "Btn7" };
+        // Subscribe a publisher from a topic
+        List<string> userList = new List<string>();
+        userList.Add("Tony");
+        TopicOptions options = new TopicOptions();
+        options.users = userList.ToArray();
+        var result = await streamChannel.SubscribeTopicAsync(topicName, options);
+        var status = result.Status;
+        var response = result.Response;
+        if (status.Error)
+        {
+            ShowMessage(string.Format("{0} is failed", status.Operation));
+            ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+        }
+        else
+        {
+            ShowMessage(string.Format("User:{0} Subscribe Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+            ChangeComponentView(activeComponentsList, "ACTIVATE");
+            ChangeComponentView(inactiveComponentList, "INACTIVATE");
+        }
+    }
+    // Onclick event handler for Btn7
+    public async void ReleaseStChannel()
+    {
+        string[] activeComponentsList = { "Btn2" };
+        string[] inactiveComponentList = { "Btn3", "Btn4", "Btn5", "Btn6", "Btn7", "Btn8", "Btn9", "Btn10" };
+        // Release a Stream Channel
+        if (rtmClient != null && streamChannel != null)
+        {
+            var result = await streamChannel.LeaveAsync();
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage("Dispose Channel Success!");
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+            var status1 = streamChannel.Dispose();
+        }
+    }
+    // Onclick event handler for Btn8
+    public async void LeaveStChannel()
+    {
+        string[] activeComponentsList = { "Btn3", "Btn7" };
+        string[] inactiveComponentList = { "Btn2", "Btn4", "Btn5", "Btn6", "Btn8", "Btn9", "Btn10" };
+        // Leave a Stream Channel
+        if (streamChannel != null)
+        {
+            var result = await streamChannel.LeaveAsync();
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage(string.Format("User:{0} Leave stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+        }
+    }
+    // Onclick event handler for Btn9
+    public async void LeaveTopic()
+    {
+        string[] activeComponentsList = { "Btn4", "Btn8" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn7", "Btn9" };
+        // Leave a topic
+        if (streamChannel != null)
+        {
+            var result = await streamChannel.LeaveTopicAsync(topicName);
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage(string.Format("User:{0} Leave Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+        }
+    }
+    // Onclick event handler for Btn10
+    public async void UnsubscribeTopic()
+    {
+        string[] activeComponentsList = { "Btn5", "Btn8" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn7", "Btn10" };
+        // Unsubscribe a publisher from a topic
+        List<string> userList = new List<string>();
+        userList.Add("Tony");
+        TopicOptions options = new TopicOptions();
+        options.users = userList.ToArray();
+        var result = await streamChannel.UnsubscribeTopicAsync(topicName, options);
+        var status = result.Status;
+        var response = result.Response;
+        if (status.Error)
+        {
+            ShowMessage(string.Format("{0} is failed", status.Operation));
+            ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+        }
+        else
+        {
+            ShowMessage(string.Format("Unsubscribe Topic Success!"));
+            ChangeComponentView(activeComponentsList, "ACTIVATE");
+            ChangeComponentView(inactiveComponentList, "INACTIVATE");
+        }
+    }
+    private async void OnDestroy()
+    {
+        string[] activeComponentsList = { "Btn4", "Btn5", "Btn8" };
+        string[] inactiveComponentList = { "Btn2", "Btn3", "Btn6", "Btn9", "Btn10", "Btn7" };
+        // Dispose a Stream Channel
+        if (rtmClient != null && streamChannel != null)
+        {
+            var result = await streamChannel.LeaveAsync();
+            var status = result.Status;
+            var response = result.Response;
+            if (status.Error)
+            {
+                ShowMessage(string.Format("{0} is failed", status.Operation));
+                ShowMessage(string.Format("The error code is {0}, due to: {1}", status.ErrorCode, status.Reason));
+            }
+            else
+            {
+                ShowMessage("Dispose Channel Success!");
+                ChangeComponentView(activeComponentsList, "ACTIVATE");
+                ChangeComponentView(inactiveComponentList, "INACTIVATE");
+            }
+            var status1 = streamChannel.Dispose();
+        }
+        if (rtmClient != null)
+        {
+            var result = await rtmClient.UnsubscribeAsync(msChannelName);
+            var status2 = result.Status;
+            var response2 = result.Response;
+            if (status2.Error)
+            {
+                Debug.Log(string.Format("{0} is failed", status2.Operation));
+                Debug.Log(string.Format("The error code is {0}, because of: {1}", status2.ErrorCode, status2.Reason));
+            }
+            else
+            {
+                Debug.Log("Unsubscribe Channel Success!");
+            }
+            var status3 = rtmClient.Dispose();
+            Debug.Log("Dispose rtmClient Success!");
+            rtmClient = null;
+        }
+    }
+}
+```
+
+现在，你可以开始运行你的程序：
+
+1. 保存项目。
+2. 在 Unity Editor 中将代码中定义的事件处理函数分别挂载到不同的 Button 组件上。
+3. 复制项目，以相同的 `appId`、不同的 `userId` 再运行一个实例，验证功能。
+4. 同时运行上面的两个项目。
+3. 在其中的一个项目中的 **Send string messasge to message channel** 下方的输入框中输入消息，然后点击 **Send Message**，在另外一个项目中观察是否收到消息。
+4. 在其中的一个项目中的 **Send binary messasge to stream channel** 下方依次点击 **Create Stream Channel**、**Join Stream Channel**、**Join Topic**、**Sub Topic Publisher** 按钮，你将激活发送文本的输入框和按钮。在输入框中输入消息，并点击 **Send Message** 按钮，在另外一个项目中观察是否收到消息。
+
+至此，你已经成功集成并正确使用了 RTM 服务。
+
+## 贯穿始终
+
+相比于介绍如何写出代码，声网更愿意帮助你掌握上述程序编写的过程和逻辑。完成以上程序经历了以下几个过程：
+
+1. 设置并初始化 RTM 对象。
+2. 添加 `OnMessageEvent`、`OnPresenceEvent` 和 `OnConnectionStateChanged` 事件监听函数。
+3. 对于 Message Channel：
+    - 订阅了一个频道。
+    - 往频道中发送了字符串消息。
+4. 对于 Stream Channel：
+    - 创建了一个名为 `Greeting` 的频道。
+    - 加入了该频道。
+    - 加入了一个名叫 `Hello_world` 的 Topic。
+    - 订阅了该 Topic 中名为 `Tony` 的消息发布者（我自己）。
+    - 向该 Topic 发送了一条二进制消息。
+    - 取消订阅了该 Topic 中名为 `Tony` 的消息发布者（我自己）。
+    - 离开了该 Topic。
+    - 退出了该频道。
+    - 销毁了该频道。
+
+## 下一步
+
+现在，你已经学会了如何使用 RTM SDK 来实现 Message Channel 和 Stream Channel 的收发消息功能。下一步，你可以通过 SDK 的 [API 参考](/api-ref/rtm2/unity/toc-configuration/configuration)了解更多功能的使用方法。

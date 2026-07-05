@@ -7,6 +7,7 @@ import {
   expandPlatformTargetPath,
   findLegacyResidue,
   getOutputPlatformsForSourcePath,
+  getOutputTargetsForSourcePath,
   inferContextFromSourcePath,
   loadComponentMap,
   migrateLegacyBatch,
@@ -51,6 +52,9 @@ describe('migrate-legacy-docs helpers', () => {
 <PlatformFilter platformList={['ios','macos']}>
 <li>Xcode 12.0 或以上版本。</li>
 </PlatformFilter>
+<PlatformFilter platformList={'ios','macos'}>
+<li>Metal 支持。</li>
+</PlatformFilter>
 <PlatformFilter platformList={['android']}>
 <li>Android Studio 4.1 以上版本。</li>
 </PlatformFilter>
@@ -59,7 +63,52 @@ describe('migrate-legacy-docs helpers', () => {
     );
 
     expect(migrated).toContain('- Xcode 12.0 或以上版本。');
+    expect(migrated).toContain('- Metal 支持。');
     expect(migrated).not.toContain('Android Studio');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites block PlatformFilter content to platform blocks for multi-platform targets', () => {
+    const state = createState(
+      'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      [
+        "<PlatformFilter platformList={['android']}>",
+        '',
+        'Android 内容。',
+        '',
+        '</PlatformFilter>',
+        '',
+        "<PlatformFilter platformList={['ios']}>",
+        '',
+        'iOS 内容。',
+        '',
+        '</PlatformFilter>',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain('<PlatformStructured platform="android">');
+    expect(migrated).toContain('Android 内容。');
+    expect(migrated).toContain('<PlatformStructured platform="ios">');
+    expect(migrated).toContain('iOS 内容。');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites inline PlatformFilter content to inline platform spans for multi-platform targets', () => {
+    const state = createState(
+      'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      "- 通过 <PlatformFilter platformList={['android']}>Android 回调</PlatformFilter><PlatformFilter platformList={['ios']}>iOS 返回值</PlatformFilter>获取结果。",
+      state,
+    );
+
+    expect(migrated).toContain('<PlatformInline platform="android">');
+    expect(migrated).toContain('Android 回调');
+    expect(migrated).toContain('<PlatformInline platform="ios">');
+    expect(migrated).toContain('iOS 返回值');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -206,6 +255,120 @@ engine.joinChannel(token)
       '```kotlin tab="Kotlin" tabGroup="language"\nengine.joinChannel(token)',
     );
     expect(migrated).not.toContain('<Tabs');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites lowercase API heading HTML to Markdown headings', () => {
+    const state = createState();
+    const migrated = transformLegacyMdx(
+      '<h3 className="anchor index-api-login" id="login">login</h3>',
+      state,
+    );
+
+    expect(migrated).toContain('<a id="login"></a>');
+    expect(migrated).toContain('### login');
+    expect(migrated).not.toContain('<h3');
+  });
+
+  it('keeps same-line heading suffixes without swallowing following sections', () => {
+    const state = createState('docs-api-reference/iot-apaas/client-api/call.android.mdx');
+    const migrated = transformLegacyMdx(
+      [
+        '<H3 className="anchor" id="initparam">InitParam</H3> 类',
+        '',
+        'Iot SDK 初始化参数。',
+        '',
+        '<H3 className="anchor" id="audioeffectid">AudioEffectId</H3>',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain('### InitParam 类');
+    expect(migrated).toContain('Iot SDK 初始化参数。');
+    expect(migrated).toContain('### AudioEffectId');
+    expect(migrated).not.toContain('</H3>');
+  });
+
+  it('rewrites legacy card components to Markdown links and strips layout wrappers', () => {
+    const state = createState();
+    const migrated = transformLegacyMdx(
+      `
+<ProductOverview links={links1} img="/img/banner.png">
+  <Row gutter={[24, 24]}>
+    <Col span={8}>
+      <LinkCard href="/doc/rtc/android/quick-start">快速开始</LinkCard>
+    </Col>
+    <Col span={8}>
+      <HotArticleCard title="最佳实践" href="/doc/rtc/android/best-practice" />
+    </Col>
+  </Row>
+</ProductOverview>
+`,
+      state,
+    );
+
+    expect(migrated).toContain('- [快速开始](');
+    expect(migrated).toContain('- [最佳实践](');
+    expect(migrated).not.toContain('<ProductOverview');
+    expect(migrated).not.toContain('<Row');
+    expect(migrated).not.toContain('<Col');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites legacy landing list panels to Markdown lists', () => {
+    const state = createState('docs/art-class/landing-page.mdx');
+    const migrated = transformLegacyMdx(
+      `
+<Row>
+  <Col>
+    <ListPanelAV2 img="/img/art.png" title="PaaS 方案" desc="集成不同功能的 SDK" links={[{ type: 'secondary', title: '方案介绍', href: './overview/product-overview' }]}>
+      <ListItem type="check">分别集成 RTC、RTM、白板和云端录制</ListItem>
+      <ListItem type="check">支持超过 20 个平台和框架</ListItem>
+    </ListPanelAV2>
+  </Col>
+</Row>
+`,
+      state,
+    );
+
+    expect(migrated).toContain('![PaaS 方案](/img/art.png)');
+    expect(migrated).toContain('- **PaaS 方案**：集成不同功能的 SDK');
+    expect(migrated).toContain('  - 分别集成 RTC、RTM、白板和云端录制');
+    expect(migrated).toContain('  - [方案介绍](');
+    expect(migrated).not.toContain('ListPanelAV2');
+    expect(migrated).not.toContain('ListItem');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites quick guides, link lists, and image galleries', () => {
+    const state = createState('docs/rtm2/landing-page.mdx');
+    const migrated = transformLegacyMdx(
+      `
+<QuickGuide img="/img/watch.png" href={[{title:"场景介绍", href:"./overview/product-overview"}]}>
+  智能手表场景化解决方案。
+</QuickGuide>
+
+<LinkList title="首次集成 RTM" href={[{title:"开通服务", href:"./get-started/enable-service"}]}>
+  如果你首次集成 RTM，请查看以下文档。
+</LinkList>
+
+<ImageGallery
+  list={[
+    { img: '/img/rtm2/usecase/metaverse.png', text: '元宇宙' },
+  ]}
+/>
+`,
+      state,
+    );
+
+    expect(migrated).toContain('![guide](/img/watch.png)');
+    expect(migrated).toContain('- [场景介绍](');
+    expect(migrated).toContain('### 首次集成 RTM');
+    expect(migrated).toContain('- [开通服务](');
+    expect(migrated).toContain('![元宇宙](/img/rtm2/usecase/metaverse.png)');
+    expect(migrated).not.toContain('QuickGuide');
+    expect(migrated).not.toContain('LinkList');
+    expect(migrated).not.toContain('ImageGallery');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -487,6 +650,22 @@ public class MyScoringView extends ScoringView {
     );
   });
 
+  it('keeps inline legacy Image components inside prose on one line', () => {
+    const state = createState('docs/rtc/get-started/run-demo.android.mdx');
+    const migrated = transformLegacyMdx(
+      '3. 在 Android Studio 中，点击 <Image src="https://web-cdn.agora.io/docs-files/1689672727614" width="25" inline/> (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+      state,
+    );
+
+    expect(migrated).toContain(
+      '3. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。',
+    );
+    expect(migrated).not.toContain('点击\n![]');
+    expect(state.issues).toContain(
+      'needs-image-width-review:https://web-cdn.agora.io/docs-files/1689672727614:25',
+    );
+  });
+
   it('does not strip import lines inside code fences', () => {
     expect(
       stripImportExport(`
@@ -498,6 +677,14 @@ import Cocoa
 \`\`\`
 `),
     ).toContain('import AgoraRtcKit');
+  });
+
+  it('strips CRLF shared imports before migration', () => {
+    expect(
+      stripImportExport(
+        "import Advanced from '@doc-shared/rtc/billing-advanced.mdx'\r\n正文\r\n",
+      ),
+    ).toBe('正文\n');
   });
 
   it('maps old dynamic platform links through the path map', () => {
@@ -632,6 +819,56 @@ import Cocoa
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('rewrites legacy Image components inside markdown table cells to table slots', () => {
+    const state = createState('docs/multi-usecase/non-scenario-based/resources.mdx');
+    const migrated = transformLegacyMdx(
+      [
+        '| Demo 名称 | Demo 下载二维码 |',
+        '| --- | --- |',
+        '| [声动互娱](https://apps.apple.com/cn/app/声动互娱-声网泛娱乐全场景应用/id1537528920) | <Image src="https://web-cdn.agora.io/docs-files/1685428598975" alt="声动 iOS" width="35%" /> |',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| [声动互娱](https://apps.apple.com/cn/app/声动互娱-声网泛娱乐全场景应用/id1537528920) | <Slot name="resources-markdown-0-1-1" /> |',
+    );
+    expect(migrated).toContain('<Slot for="resources-markdown-0-1-1">');
+    expect(migrated).toContain(
+      '![声动 iOS](https://web-cdn.agora.io/docs-files/1685428598975)',
+    );
+    expect(migrated).not.toContain('|\n![声动 iOS]');
+    expect(state.issues).toContain('normalized-table-slot');
+    expect(state.issues).toContain(
+      'needs-image-width-review:https://web-cdn.agora.io/docs-files/1685428598975:35%',
+    );
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites multiline table cells expanded from shared snippets to table slots', () => {
+    const state = createState('docs-api-reference/flexible-classroom/classroom-sdk.android.mdx');
+    const migrated = transformLegacyMdx(
+      [
+        '| 属性 | 描述 |',
+        '| :--- | :--- |',
+        '| `userName` | 用户名，用于课堂内显示，长度在 64 字节以内。以下为支持的字符集范围（共 89 个字符）:',
+        '- 26 个小写英文字母 a-Z',
+        '- `|` |',
+        '| `roleType` | 用户在课堂中的角色。 |',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| `userName` | <Slot name="classroom-sdk-android-markdown-0-1-1" /> |',
+    );
+    expect(migrated).toContain('用户名，用于课堂内显示');
+    expect(migrated).toContain('- `|`');
+    expect(migrated).toContain('| `roleType` | 用户在课堂中的角色。 |');
+    expect(migrated).not.toContain('| `userName` | 用户名，用于课堂内显示');
+    expect(state.issues).toContain('normalized-table-slot');
+  });
+
   it('rewrites API category tables with list cells to Markdown lists', () => {
     const state = createState('docs/rtc/overview/migration-guide.electron.mdx');
     const migrated = transformLegacyMdx(
@@ -721,6 +958,28 @@ import Cocoa
       '- `REJECTED`：一般有以下原因：\n\n  - 重复加入频道。\n  - 回声测试未结束。',
     );
     expect(migrated).not.toContain('</li>');
+  });
+
+  it('keeps direct admonitions mixed into legacy HTML lists', () => {
+    const state = createState('docs/rtc/get-started/quick-start.android.mdx');
+    const migrated = transformLegacyMdx(
+      [
+        '<ul>',
+        '<li>一个有效的声网账号以及声网项目。</li>',
+        '<Admonition type="caution" title="注意">',
+        '临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。',
+        '</Admonition>',
+        '</ul>',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain('- 一个有效的声网账号以及声网项目。');
+    expect(migrated).toContain(':::warning[注意]');
+    expect(migrated).toContain(
+      '临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。',
+    );
+    expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
   it('rewrites legacy heading components to Markdown headings with stable anchors', () => {
@@ -856,6 +1115,66 @@ export const FaceCapture = [
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('rewrites legacy admonitions inside table cells to table slots', () => {
+    const state = createState(
+      'docs-api-reference/one-to-one-live/call-api.android.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      `<Table>
+  <Tr><Td>枚举名</Td><Td>枚举值</Td><Td>描述</Td></Tr>
+  <Tr>
+    <Td>\`RtmLost\`</Td>
+    <Td>\`16\`</Td>
+    <Td>
+      <Admonition type="danger" title="已删除">
+      你可以通过信令管理的实现处理相关的异常。
+      </Admonition>
+    </Td>
+  </Tr>
+</Table>`,
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| `RtmLost` | `16` | <Slot name="call-api-android-html-0-1-2" /> |',
+    );
+    expect(migrated).toContain(
+      '<Slot for="call-api-android-html-0-1-2">',
+    );
+    expect(migrated).toContain(':::error[已删除]');
+    expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
+    expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
+    expect(state.issues).toContain('normalized-html-table');
+    expect(state.issues).toContain('normalized-table-slot');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites inline legacy admonitions inside markdown table cells to table slots', () => {
+    const state = createState(
+      'docs-api-reference/one-to-one-live/call-api.android.mdx',
+    );
+    const migrated = transformLegacyMdx(
+      [
+        '| 枚举名 | 枚举值 | 描述 |',
+        '| --- | --- | --- |',
+        '| `RtmLost` | `16` | <Admonition type="danger" title="已删除">你可以通过信令管理的实现处理相关的异常。</Admonition> |',
+      ].join('\n'),
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| `RtmLost` | `16` | <Slot name="call-api-android-markdown-0-1-2" /> |',
+    );
+    expect(migrated).toContain(
+      '<Slot for="call-api-android-markdown-0-1-2">',
+    );
+    expect(migrated).toContain(':::error[已删除]');
+    expect(migrated).toContain('你可以通过信令管理的实现处理相关的异常。');
+    expect(migrated).not.toContain('| `RtmLost` | `16` | :::error');
+    expect(state.issues).toContain('normalized-table-slot');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
   it('escapes quoted MDX punctuation inside table slot text', () => {
     const state = createState('docs/meeting/api/create-room.restful.mdx');
     const migrated = transformLegacyMdx(
@@ -877,6 +1196,43 @@ export const FaceCapture = [
     expect(migrated).not.toContain('">"');
     expect(state.issues).toContain('escaped-mdx-quoted-literal:<');
     expect(state.issues).toContain('escaped-mdx-quoted-literal:{');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('normalizes malformed legacy table tags and strips Text components in cells', () => {
+    const state = createState('docs-api-reference/rtm2/error-codes.rn.mdx');
+    const migrated = transformLegacyMdx(
+      `<Table>
+  <Tr><Td>错误码</Td><Td>错误信息</Td><Td>描述</Td></Tr>
+  <Tr>
+    <Td>\`-15001\`</ Td>
+    <Td><Text color="green">historyOperationFailed</Text></Td>
+    <Td>历史消息的操作失败。</Td>
+  </Tr>
+</Table>`,
+      state,
+    );
+
+    expect(migrated).toContain(
+      '| `-15001` | historyOperationFailed | 历史消息的操作失败。 |',
+    );
+    expect(migrated).not.toContain('</ Td>');
+    expect(migrated).not.toContain('<Text');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('rewrites inline legacy admonitions and bare generic type literals', () => {
+    const state = createState('docs-api-reference/one-to-one-live/call-api.android.mdx');
+    const migrated = transformLegacyMdx(
+      "变成呼叫中。 <Admonition type=\"danger\" title=\"已删除\">对应事件变更为：`LocalVideoCall`</Admonition>\n\n- `appOptions`：Map<String, Object>。初始化参数。\n| `files` | {'Array<Object>'} | 文件列表 |",
+      state,
+    );
+
+    expect(migrated).toContain(':::error[已删除]');
+    expect(migrated).toContain('对应事件变更为：`LocalVideoCall`');
+    expect(migrated).toContain('`Map<String, Object>`');
+    expect(migrated).toContain('`Array<Object>`');
+    expect(migrated).not.toContain('<Admonition');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
@@ -1128,8 +1484,246 @@ falsePositivePatterns:
           'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.macos.md',
       }),
     ).toBe(
-      'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+      'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.md',
     );
+  });
+
+  it('keeps redirect-exact-target rows on the mapped target path', () => {
+    const pathMap = new Map([
+      [
+        'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+        {
+          decisionRefs: 'needs-platform-expansion|redirect-exact-target',
+          sourcePath:
+            'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+          targetPath:
+            'content/docs/zh-CN/solutions/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+        },
+      ],
+    ]);
+
+    expect(
+      getOutputPlatformsForSourcePath({
+        pathMap,
+        sourcePath:
+          'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+      }),
+    ).toEqual([undefined]);
+    expect(
+      getOutputTargetsForSourcePath({
+        pathMap,
+        sourcePath:
+          'docs/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+      }),
+    ).toEqual([
+      {
+        platform: undefined,
+        targetPath:
+          'content/docs/zh-CN/solutions/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx',
+      },
+    ]);
+  });
+
+  it('keeps duplicate path-map source rows as separate target outputs', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-duplicate-targets-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath =
+      'docs/rtc/advanced-features/custom-audio-source.ios.macos.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/rtc/advanced-features'), {
+      recursive: true,
+    });
+    await mkdir(path.join(repoRoot, 'docs/migration'), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 自定义音频采集
+---
+
+<PlatformFilter platformList={['ios']}>
+iOS 内容。
+</PlatformFilter>
+
+<PlatformFilter platformList={['macos']}>
+macOS 内容。
+</PlatformFilter>
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx,migrate_page_after_syntax_and_ia_review,needs_review,low,yes,,,ready-native`,
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.macos.mdx,migrate_page_after_syntax_and_ia_review,needs_review,low,yes,,,ready-native`,
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/component-map.yaml'),
+      '',
+      'utf8',
+    );
+
+    const pathMap = new Map([
+      [
+        sourcePath,
+        {
+          sourcePath,
+          targetPath:
+            'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+          targetPaths: [
+            'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+            'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.macos.mdx',
+          ],
+        },
+      ],
+    ]);
+    expect(getOutputTargetsForSourcePath({ pathMap, sourcePath })).toEqual([
+      {
+        platform: 'ios',
+        targetPath:
+          'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+      },
+      {
+        platform: 'macos',
+        targetPath:
+          'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.macos.mdx',
+      },
+    ]);
+
+    const report = await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const ios = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+      ),
+      'utf8',
+    );
+    const macos = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.macos.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(
+      report.results
+        .map((result: { targetPath: string }) => result.targetPath)
+        .sort(),
+    ).toEqual([
+      'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.ios.mdx',
+      'content/docs/zh-CN/realtime-media/rtc/advanced-features/custom-audio-source.macos.mdx',
+    ]);
+    expect(ios).toContain('iOS 内容。');
+    expect(ios).not.toContain('macOS 内容。');
+    expect(macos).toContain('macOS 内容。');
+    expect(macos).not.toContain('iOS 内容。');
+  });
+
+  it('evaluates static prop conditionals in expanded shared components', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-prop-conditional-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/showroom/advanced-features/audio-scenario.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/showroom/advanced-features'), {
+      recursive: true,
+    });
+    await mkdir(path.join(sourceRoot, 'docs/shared/showroom'), {
+      recursive: true,
+    });
+    await mkdir(path.join(repoRoot, 'docs/migration'), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(sourceRoot, 'docs/shared/showroom/show.mdx'),
+      ['```kotlin', 'showScenario()', '```'].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, 'docs/shared/showroom/chat.mdx'),
+      ['```kotlin', 'chatScenario()', '```'].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, 'docs/shared/showroom/audio-scenario.mdx'),
+      [
+        "import Show from '@doc-shared/showroom/show.mdx';",
+        "import Chat from '@doc-shared/showroom/chat.mdx';",
+        '',
+        '{props.ag_product_label}中，配置音频体验。',
+        '',
+        '{props.type === "show" && <Show/> }',
+        '',
+        '{props.type === "chat" && <Chat/> }',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      [
+        '---',
+        'title: 音频体验',
+        '---',
+        '',
+        "import Audio from '@doc-shared/showroom/audio-scenario.mdx';",
+        '',
+        '<Audio ag_product_label={frontMatter.ag_product_label} type="chat" />',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/solutions/showroom/advanced-features/audio-scenario.mdx,migrate_page_after_syntax_and_ia_review,needs_review,low,yes,,,ready-native`,
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/component-map.yaml'),
+      '',
+      'utf8',
+    );
+
+    await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const migrated = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/solutions/showroom/advanced-features/audio-scenario.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(migrated).toContain('showroom中，配置音频体验。');
+    expect(migrated).toContain('chatScenario()');
+    expect(migrated).not.toContain('showScenario()');
+    expect(migrated).not.toContain('props.type');
   });
 
   it('writes split platform outputs with only the matching PlatformFilter content', async () => {
@@ -1337,6 +1931,135 @@ import SDKDownload from '@shared/rtm2/_sdkdownload.mdx'
     expect(migrated).not.toContain('\n   </Tabs>');
   });
 
+  it('resolves namespace shared platform maps without emitting export objects', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-namespace-map-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/rtm2/overview/release-notes.android.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/rtm2/overview'), {
+      recursive: true,
+    });
+    await mkdir(path.join(sourceRoot, 'shared/rtm2'), { recursive: true });
+    await mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await writeFile(
+      path.join(sourceRoot, 'shared/rtm2/_error-codes.mdx'),
+      `export const rtmrenewtokentimeout = {
+  android: "RENEW_TOKEN_TIMEOUT",
+  ios: "AgoraRtmErrorRenewTokenTimeout",
+};
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 发版说明
+---
+
+import * as code from '@shared/rtm2/_error-codes.mdx'
+
+为反馈更新 Token 操作的结果，该版本新增错误码 <code>{code.rtmrenewtokentimeout[frontMatter.ag_platform]}</code> (10026)。
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtm/overview/release-notes.android.mdx,migrate_page_after_syntax_and_ia_review,needs_review,medium,partial,,,`,
+      ].join('\n'),
+      'utf8',
+    );
+
+    await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const migrated = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/rtm/overview/release-notes.android.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(migrated).toContain('`RENEW_TOKEN_TIMEOUT`');
+    expect(migrated).not.toContain('android:');
+    expect(migrated).not.toContain('export const');
+    expect(migrated).not.toContain('frontMatter.');
+  });
+
+  it('keeps stable namespace names for all-platform shared maps', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-namespace-all-platform-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/rtm2/user-guide/presence/event.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/rtm2/user-guide/presence'), {
+      recursive: true,
+    });
+    await mkdir(path.join(sourceRoot, 'shared/rtm2'), { recursive: true });
+    await mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await writeFile(
+      path.join(sourceRoot, 'shared/rtm2/_enumv.mdx'),
+      `export const presencetype = {
+  android: "RtmPresenceType",
+  ios: "AgoraRtmPresenceType",
+};
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 事件通知
+---
+
+import * as enumv from '@shared/rtm2/_enumv.mdx'
+
+<code>{enumv.presencetype[frontMatter.ag_platform]}</code>
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtm/user-guide/presence/event.mdx,migrate_page_after_syntax_and_ia_review,needs_review,medium,partial,,,`,
+      ].join('\n'),
+      'utf8',
+    );
+
+    await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const migrated = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/rtm/user-guide/presence/event.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(migrated).toContain('`enumv.presencetype`');
+    expect(migrated).not.toContain('``');
+    expect(migrated).not.toContain('frontMatter.');
+  });
+
   it('expands shared component props and legacy HTML helpers statically', async () => {
     const tempRoot = await mkdtemp(
       path.join(os.tmpdir(), 'legacy-docs-shared-props-'),
@@ -1430,6 +2153,80 @@ syntaxPatterns:
     expect(report.results[0].issues).not.toContain(
       'legacy-residue:legacy-props-var',
     );
+  });
+
+  it('does not replace shared components whose names only share a prefix', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-shared-prefix-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/marketplace/integrate-extensions/moderation.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/marketplace/integrate-extensions'), {
+      recursive: true,
+    });
+    await mkdir(path.join(sourceRoot, 'docs/shared/marketplace'), {
+      recursive: true,
+    });
+    await mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await writeFile(
+      path.join(sourceRoot, 'docs/shared/marketplace/video.mdx'),
+      '视频审核正文。\n',
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, 'docs/shared/marketplace/video-faq.mdx'),
+      '视频审核 FAQ。\n',
+      'utf8',
+    );
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 视频审核
+---
+
+import Video from '@doc-shared/marketplace/video.mdx';
+import VideoFaq from '@doc-shared/marketplace/video-faq.mdx';
+
+<Video />
+
+<VideoFaq />
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/marketplace/integrate-extensions/moderation.mdx,migrate_page_after_syntax_and_ia_review,needs_review,medium,partial,,,`,
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/component-map.yaml'),
+      '',
+      'utf8',
+    );
+
+    await migrateLegacyBatch({
+      outDir: 'out',
+      pages: [sourcePath],
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const migrated = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/marketplace/integrate-extensions/moderation.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(migrated.match(/视频审核正文。/g)).toHaveLength(1);
+    expect(migrated).toContain('视频审核 FAQ。');
   });
 
   it('reports unresolved legacy links and image references without rewriting them', async () => {
@@ -1526,7 +2323,7 @@ title: 实现 PPT 转码
     expect(reportMarkdown).not.toContain('/img/conversion-ppt/code.svg');
   });
 
-  it('uses an MDX extension even when transformed content is Markdown-only', async () => {
+  it('preserves a mapped Markdown target extension', async () => {
     const tempRoot = await mkdtemp(
       path.join(os.tmpdir(), 'legacy-docs-mdx-output-'),
     );
@@ -1576,13 +2373,13 @@ title: 普通指南
     const migrated = await readFile(
       path.join(
         repoRoot,
-        'out/content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.mdx',
+        'out/content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.md',
       ),
       'utf8',
     );
 
     expect(result.targetPath).toBe(
-      'content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.mdx',
+      'content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.md',
     );
     expect(migrated).toContain('这是一段普通 Markdown。');
   });
@@ -1637,6 +2434,66 @@ title: 未映射指南
 
     expect(report.results[0].targetPath).toBe('');
     expect(migrated).toContain('普通内容。');
+  });
+
+  it('accepts a newline-delimited pages file for large batches', async () => {
+    const tempRoot = await mkdtemp(
+      path.join(os.tmpdir(), 'legacy-docs-pages-file-'),
+    );
+    const repoRoot = path.join(tempRoot, 'repo');
+    const sourceRoot = path.join(tempRoot, 'source');
+    const sourcePath = 'docs/rtc/basic-features/plain-guide.mdx';
+
+    await mkdir(path.join(sourceRoot, 'docs/rtc/basic-features'), {
+      recursive: true,
+    });
+    await mkdir(path.join(repoRoot, 'docs/migration'), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(sourceRoot, sourcePath),
+      `---
+title: 普通指南
+---
+
+来自 pages file 的内容。
+`,
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/path-map.csv'),
+      [
+        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+        `${sourcePath},content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.mdx,migrate_page_after_syntax_and_ia_review,needs_review,low,yes,,,ready-native`,
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    await writeFile(
+      path.join(repoRoot, 'docs/migration/component-map.yaml'),
+      '',
+      'utf8',
+    );
+    await writeFile(path.join(repoRoot, 'pages.txt'), `${sourcePath}\n`, 'utf8');
+
+    const report = await migrateLegacyBatch({
+      outDir: 'out',
+      pagesFile: 'pages.txt',
+      pathMap: 'docs/migration/path-map.csv',
+      repoRoot,
+      sampleCount: 0,
+      sourceRoot,
+    });
+    const migrated = await readFile(
+      path.join(
+        repoRoot,
+        'out/content/docs/zh-CN/realtime-media/rtc/basic-features/plain-guide.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(report.results).toHaveLength(1);
+    expect(migrated).toContain('来自 pages file 的内容。');
   });
 
   it('marks mapped path-map rows as migrated and ready for audit', async () => {

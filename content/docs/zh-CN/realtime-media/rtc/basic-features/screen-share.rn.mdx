@@ -1,0 +1,242 @@
+---
+title: "屏幕共享"
+---
+在互动直播或视频通话中，主播或视频通话用户可以通过声网 SDK 中的屏幕共享特性，将自己的屏幕内容以视频的方式分享给其他用户或观众观看。
+
+屏幕共享可以应用在以下场景中：
+
+| 场景     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| 在线教育 | 老师将自己的屏幕、教学课件、绘图软件或编程软件共享给学生，用于课堂示范 |
+| 游戏直播 | 主播共享自己的游戏画面给观众                                 |
+| 互动直播 | 主播共享自己的屏幕和观众互动                                 |
+| 视频会议 | 会议成员共享屏幕观看 PPT 或者文档                            |
+| 远程控制 | 被控端向主控端展示自己的桌面                                 |
+
+## 前提条件
+
+在实现屏幕共享前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.rn)。
+
+## Android 平台
+
+在 Android 平台实现屏幕共享时，只需要调用 `startScreenCapture` 开启屏幕共享。你可以参考[屏幕共享示例项目](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ScreenShare/ScreenShare.tsx)实现屏幕共享。
+
+## iOS 平台
+
+:::warning[注意]
+- 受系统限制，屏幕共享只支持 iOS 12.0 或之后的系统。
+- 该功能对设备性能要求较高，声网推荐你在 iPhone X 及之后机型上使用。
+:::
+
+### 技术原理
+
+由于 Apple 不支持在 App 主进程采集屏幕，因此你需要为屏幕共享流单独创建一个 Extension，并在 Extension 中使用 iOS 原生的 ReplayKit 框架实现录制屏幕，然后将屏幕共享流发送给主进程、实现屏幕共享。详见下图：
+
+![img](https://web-cdn.agora.io/docs-files/1675750878809)
+
+### 实现步骤
+
+1. 前往你的项目文件夹，用 Xcode 打开 `ios/.xcodeproj` 文件夹。
+
+2. 创建一个 Broadcast Upload Extension 用于开启屏幕共享的进程：
+
+   a. 在 Xcode 点击 **File > New > Target...**, 在弹出的窗口中选择 **Broadcast Upload Extension**, 点击 **Next**。
+
+      ![img](https://web-cdn.agora.io/docs-files/1606368184836)
+
+   b. 在弹出的窗口中填写 **Product Name** 等信息，取消勾选 **Include UI Extension**，点击 **Finish**。Xcode 会自动创建该 Extension 的文件夹，其中包含 `SampleHandler.h` 文件。
+
+   c. 在 **Target** 下选中刚创建的 Extension，点 **General**，在 **Deployment Info** 下将 iOS 的版本设置为 12.0 或之后。
+
+      ![img](https://web-cdn.agora.io/docs-files/1652254668249)
+
+   d. 修改项目设置以实现屏幕共享的代码逻辑。根据实际业务需求选择以下两种方式其中之一即可：
+
+      - 如果你只需使用声网提供的 `AgoraReplayKitExtension.xcframework` 中的功能，可选中 `Target` 为刚刚创建的 Extension，在 **Info** 中将 **NSExtension > NSExtensionPrincipalClass** 所对应的 **Value** 从 **SampleHandler** 改为 **AgoraReplayKitHandler**。
+
+        ![img](https://web-cdn.agora.io/docs-files/1648112619203)
+
+      - 如果你还需要自定义一些业务逻辑，可参考如下代码修改 `SampleHandler.h` 文件：
+
+        ```objc
+          // Objective-C
+          #import "SampleHandler.h"
+          #import "AgoraReplayKitExt.h"
+          #import <sys/time.h>
+
+          @interface SampleHandler ()<AgoraReplayKitExtDelegate>
+
+          @end
+
+          @implementation SampleHandler
+
+          - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+              // 用户请求开始广播
+              [[AgoraReplayKitExt shareInstance] start:self];
+
+          }
+
+          - (void)broadcastPaused {
+              // 用户请求暂停广播，屏幕共享暂停
+              NSLog(@"broadcastPaused");
+              [[AgoraReplayKitExt shareInstance] pause];
+          }
+
+          - (void)broadcastResumed {
+              // 用户请求恢复广播，屏幕共享恢复
+              NSLog(@"broadcastResumed");
+              [[AgoraReplayKitExt shareInstance] resume];
+
+          }
+
+          - (void)broadcastFinished {
+              // 用户请求停止广播
+              NSLog(@"broadcastFinished");
+              [[AgoraReplayKitExt shareInstance] stop];
+
+          }
+
+          - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+              [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
+          }
+
+          #pragma mark - AgoraReplayKitExtDelegate
+
+          - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
+              switch (reason) {
+                  case AgoraReplayKitExtReasonInitiativeStop:
+                      {
+          //                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Host app stop srceen capture"};
+          //                NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:userInfo];
+          //                [self finishBroadcastWithError:error];
+                          NSLog(@"AgoraReplayKitExtReasonInitiativeStop");
+                      }
+                      break;
+                  case AgoraReplayKitExtReasonConnectFail:
+                      {
+          //                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Connect host app fail need startScreenCapture in host app"};
+          //                NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:userInfo];
+          //                [self finishBroadcastWithError:error];
+                          NSLog(@"AgoraReplayKitExReasonConnectFail");
+                      }
+                      break;
+
+                  case AgoraReplayKitExtReasonDisconnect:
+                      {
+          //                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"disconnect with host app"};
+          //                NSError *error = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:userInfo];
+          //               [self finishBroadcastWithError:error];
+                          NSLog(@"AgoraReplayKitExReasonDisconnect");
+                      }
+                      break;
+                  default:
+                      break;
+              }
+          }
+
+          @end
+        ```
+
+3. 调用 `startScreenCapture`，并结合用户的手动操作，使 App 开启屏幕共享。有两种方式供你参考：
+
+   - 方式一：使用 Apple 在 iOS 12.0 中新增的 [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview)，使 App 界面弹出“开启屏幕共享”的按钮。提示用户通过点击该按钮开启录制。
+
+   - 方式二：提示用户在 iOS 系统的控制中心长按**屏幕录制**按钮，并选择用你创建的 Extension 开启录制。
+
+   :::warning[注意]
+   方式一是 React Native SDK 的默认方式，但 `RPSystemBroadcastPickerView` 存在一些使用限制并可能在之后版本的 iOS 系统中失效。如果失效，请改用方式二。
+   :::
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="react-native-agora" href="https://github.com/AgoraIO-Extensions/react-native-agora" />
+  <Card title="屏幕共享示例项目" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ScreenShare/ScreenShare.tsx" />
+</Cards>
+
+### 开发注意事项
+
+- 如果你使用 CocoaPods，则需要在 `Podfile` 文件中添加如下内容，为你的屏幕共享 Extension 添加依赖。注意将 `ScreenSharing` 替换为你的屏幕共享 Extension 的 Target 名称。
+
+    ```ruby
+    target 'ScreenSharing' do
+        # 将 version 修改为与 node_modules/react-native-agora/react-native-agora.podspec 文件中的 SDK 依赖版本一致
+        pod 'AgoraRtcEngine_iOS', 'version'
+    end
+    ```
+
+- Broadcast Upload Extension 的内存使用限制为 50 MB，请确保屏幕共享的 Extension 内存使用不超过 50 MB。
+
+## 参考信息
+
+### 功能介绍
+
+声网 SDK 的屏幕共享特性可提供以下功能，适用于各种场景下的屏幕共享。
+
+![](https://web-cdn.agora.io/docs-files/1680251438368)
+
+:::info[信息]
+屏幕共享功能在各平台的适用情况如下：
+
+- 桌面端（Windows 和 macOS）：支持上述所有屏幕共享功能。
+- 移动端（Android 和 iOS）：仅支持共享整个屏幕。
+:::
+
+#### 共享整个屏幕
+
+将你的整个屏幕进行共享，包括屏幕中的所有信息，该功能支持同时采集两块屏幕的信息并共享。
+
+#### 共享 App 窗口
+
+如果你不希望将整个屏幕内容分享给其他用户，可以只共享一个 App 窗口中的画面。
+
+#### 共享指定区域
+
+如果你只希望共享屏幕或 App 窗口中的一部分，可以在开启屏幕共享时设置一个共享区域，只有该区域内的画面会被分享。
+
+#### 高级功能
+
+除上述功能外，你还可以在开启屏幕共享时通过调整参数，实现以下高级共享功能：
+
+- 屏蔽指定 App 窗口：在共享屏幕时，如果你不希望暴露某个 App 窗口，可以选择将该 App 窗口屏蔽，则该窗口将不会出现在共享的屏幕中。
+- 描边：如果你需要勾勒出正在共享的范围，可以对指定的 App 窗口或屏幕进行描边，并自定义描边的宽度、颜色和透明度。
+- 前置指定 App 窗口：如果你同时共享了多个 App 窗口，可能会出现窗口之间互相遮挡的情况，你可以指定一个 App 窗口并将其前置，即可避免它被其他窗口遮挡。
+- 设置共享场景：SDK 会根据你设置的场景自动调节 QOE (Quality of Experience) 策略。
+  - 在共享文档、幻灯片、表格，或者远程控制时，你可以将共享场景设置为文档场景或远程控制场景，SDK 会优先保障画质，并降低接收端看共享视频的延时。
+  - 在共享游戏或电影、视频直播时，你可以将共享场景设置为游戏场景或视频场景，SDK 会优先保障流畅性。
+
+### 优势介绍
+
+声网提供的屏幕共享特性具备以下优势：
+
+**超高清画质体验**
+
+支持分辨率为 4K、帧率为 60 fps 的超高清视频。
+
+**多 App 支持**
+
+适配 WPS Office、Microsoft PowerPoint、Visual Studio Code、Adobe Photoshop、Windows Media Player 和 Scratch 等多款主流 App，方便用户在屏幕共享时直接共享指定 App，提升功能易用性。
+
+**多设备支持**
+
+支持多设备同时共享，兼容 Windows 8 系统、无独立显卡的设备、双显卡设备、外接屏幕设备等，满足各种场景下的设备使用需求。
+
+**多平台适配**
+
+支持 iOS、Android、macOS、Windows、Web、Unity、Flutter、React Native、Unreal Engine 等平台。
+
+**高安全保障**
+
+支持仅共享 App 和屏幕中的部分区域内容，并支持屏蔽指定 App 窗口，有效保障用户信息安全。
+
+### 注意事项
+
+屏幕共享流的视频单价以你在 `ScreenCaptureParameters` 中设置的视频分辨率为准。如果你没有在 `ScreenCaptureParameters` 中传入 `dimensions`，声网会以移动端默认分辨率 1280 × 720，即 921,600 作为计费标准。详见[如何确定屏幕共享视频流的分辨率？](/zh-CN/realtime-media/rtc/billing/billing-faq#screencapture)
+
+### API 参考
+
+  - [`startScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_startscreencapture)
+  - [`stopScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_stopscreencapture)
+  - [`updateScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_updatescreencapture)

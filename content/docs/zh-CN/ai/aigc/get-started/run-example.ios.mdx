@@ -1,0 +1,68 @@
+---
+title: "跑通示例项目"
+---
+声网在 GitHub 为 AIGC 解决方案提供了一个可以跑通的 [AIGCService-Example](https://github.com/AgoraIO-Community/Agora-AIGCService-Example) 项目。你可以前往下载体验或查看源码。本文介绍如下获取并跑通该示例项目。
+
+## 前提条件
+
+开始前，请确保你的本地开发环境满足如下要求：
+
+- [Xcode](https://developer.apple.com/xcode/) 13 或以上版本。
+- 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装。
+- iOS 10 或以上版本的移动设备。声网推荐使用真机运行项目，部分模拟机可能存在功能缺失或者性能问题。
+- 参考[开通服务](/zh-CN/ai/aigc/get-started/enable-service)创建项目、获取 App ID、App 证书、临时 Token 并开通 AIGCService 服务。
+
+## 获取示例项目
+
+参考如下步骤获取示例项目：
+
+1. 运行以下命令行将项目仓库克隆到本地：
+
+   ```shell
+   git clone git@github.com:AgoraIO-Community/Agora-AIGCService-Example.git
+   ```
+
+2. 运行以下命令进入项目目录并切换到 `main` 分支：
+
+   ```shell
+   cd Agora-AIGCService-Example
+   git checkout main
+   ```
+
+## 配置示例项目
+
+### 集成 SDK 及依赖库
+
+示例项目中的 `podfile` 文件中已经对依赖库进行了指定，因此你无需指定。
+
+### 设置 App ID 与 App 证书
+
+打开示例项目中的 `./Agora-AIGCService-Example/iOS/AIGCService-Example/Config.swift` 文件，并设置如下参数：
+
+```swift
+static let appId = "你的 appId"
+static let certificate = "你的证书"
+```
+
+其中：
+
+- `你的 appId` 填入项目的 App ID，详见[获取 App ID](/zh-CN/ai/aigc/get-started/enable-service#获取-app-id)
+- `你的证书` 填入项目的 App 证书，详见[获取 App 证书](/zh-CN/ai/aigc/get-started/enable-service#获取-app-证书)
+
+## 编译并运行示例项目
+
+参考如下步骤编译并运行 AIGCService-Example：
+
+1. 在 `./Agora-AIGCService-Example/iOS/AIGCService-Example` 目录下，执行如下命令行：
+
+   ```shell
+   pod install
+   ```
+
+2. 双击打开 `AIGC-Examples.xcworkspace`。
+
+3. 在项目 **TARGETS** 下的 **Signing & Capabilities** 界面勾选 **Automatically manage signing**，然后在 Target 下配置你的苹果开发者账号和 **Bundle Identifier**。
+
+4. 将 iOS 设备连接至计算机，然后在 **Xcode** 中点击 **Build** 运行项目。运行成功后，你的 iOS 设备上会出现 Agora-AIGCService-Example 应用。
+
+5. 打开应用，体验 AIGCService 场景。

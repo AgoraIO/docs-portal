@@ -1,0 +1,1874 @@
+---
+title: "发版说明"
+---
+### 已知问题和局限性
+
+**AirPods Pro 蓝牙连接问题**
+
+由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
+
+## v4.6.2
+
+该版本于 2026 年 1 月 16 日发布。
+
+:::warning[注意]
+- 通过 CocoaPods 集成并升级至 v4.6.0 及以上版本时，除更新版本号外，还需将 Pod 名称从 `AgoraRtcEngine_iOS` 修改为 `ShengwangRtcEngine_iOS`。
+- 自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。
+- 4.6.2 RTC SDK `aosl.xcframework` 库版本为 1.3.5。
+:::
+
+### 升级必看
+
+#### 支持自定义编码帧率
+
+为支持更灵活的视频编码帧率设置，该版本将 `AgoraVideoEncoderConfiguration` 中 `frameRate` 参数的数据类型由枚举类型改成了 `Int`。在实际集成时，你可以参考原有 [`AgoraVideoFrameRate`](/api-ref/rtc/ios/API/enum_framerate) 枚举中的取值进行设置。
+
+#### Lite 和 Voice 包中去除音频频谱功能
+
+为进一步优化 SDK 包体积，该版本将音频频谱（Audio Spectrum）功能从 Lite 和 Voice SDK 包中移除。如果你需要使用音频频谱功能，请集成完整 (Full) 包。
+
+#### 关闭自动切换微距
+
+摄像头自适应切换微距可能会导致视频画面跳变。为避免该问题，该版本关闭了摄像头微距的自动切换功能。你仍可以根据业务或场景需要，通过私有参数设置手动切换摄像头微距。如有需要，可以[联系技术支持](https://ticket.shengwang.cn)。
+
+#### 其他
+
+- 为保证整体解码兼容性，相关解码器插件已内置在 SDK 中。
+- 从该版本起，SDK 默认不再支持 armv7 架构。如需支持该架构，可以[联系技术支持](https://ticket.shengwang.cn)。
+
+### 新增特性
+
+#### 支持多任务采集
+
+从 iOS 16 起，系统支持多任务处理，允许用户在多个 App 之间并行使用。常见的多任务模式包括[分屏显示 (Split views)](https://developer.apple.com/design/human-interface-guidelines/split-views)、[滑动叠放 (Slide over)](https://support.apple.com/en-gu/guide/ipad/ipadfe7c65e9/16.0/ipados/16.0)、[画中画 (Picture in picture)](https://support.apple.com/zh-cn/guide/iphone/iphcc3587b5d/ios) 和[台前调度 (Stage manager)](https://support.apple.com/zh-cn/guide/ipad/ipad1240f36f/ipados) 等。
+
+从 v4.6.2 起，SDK 适配 iOS 的相机多任务采集能力，支持在多任务场景下持续进行音视频采集。在实时音视频互动场景中，启用该能力后，可支持例如视频通话过程中同时查阅资料、互动教学中分屏展示课件、直播过程中同时管理商品后台等业务场景。
+
+在实际集成过程中，你需要先为 App 开启相机多任务采集能力，才能在多任务场景下正常使用相关功能。具体配置步骤请参考[如何开启 iOS 多任务相机采集](/faq/integration-issues/multitasking)。
+
+经声网实验室测试，该功能支持的机型和系统版本如下：
+
+| 设备型号 | 芯片 | OS | 分屏显示 | 滑动叠放 | 画中画 | 台前调度 |
+| --- | --- | --- | --- | --- | --- | --- |
+| iPad Air 2 | A8X | iPadOS 14.7.1 | - | ✔ | - | - |
+| iPad Pro (10.5-inch) | A10X | iPadOS 15.0 | ✔ | ✔ | ✔ | ✔ |
+| iPad mini 第五代 | A12 | iPadOS 17.5.1 | ✔ | ✔ | ✔ | ✔ |
+| iPad Pro (11-inch) 第二代 | A12Z | iPadOS 18.4.1 | ✔ | ✔ | ✔ | ✔ |
+| iPad Pro (11-inch) 第三代 | M1 | iPadOS 17.6.1 | ✔ | ✔ | ✔ | ✔ |
+| iPhone 11 | A13 | iOS 16.1.1 | - | - | ✔ | - |
+
+#### Media Player 支持获取音频缓冲延迟
+
+为解决 K 歌场景中可能会出现的主唱与伴唱伴奏不同步的问题，该版本在 Media Player 模块中新增 [`getAudioBufferDelay`](/api-ref/rtc/ios/API/toc_mediaplayer_info#api_imediaplayer_getaudiobufferdelay) 方法，用于获取播放媒体文件时毫秒级的音频缓冲延迟。
+
+### 改进
+
+#### playEffect 支持无缝切换
+
+该版本新增支持音效文件的无缝切换。对于同一个音效文件，如果先调用 `preloadEffect` 再调用 `playEffect`，在播放完成或通过 `stopEffect` 停止播放后，SDK 不会关闭该音效文件。当再次调用 `playEffect` 时，SDK 会直接复用已加载的文件进行播放，从而实现循环播放和无缝切换。该能力同样适用于多频道场景。
+
+#### networkQuality 准确性提升
+
+该版本提升了 `networkQuality` 回调中网络质量评估的准确性，使回调数据更贴近用户的主观体验。
+
+#### onPlaybackAudioFrame 支持 24k 采样率的音频帧
+
+该版本在 `onPlaybackAudioFrame` 中新增支持采样率为 **24000 Hz** 的音频数据。在调用 [`setPlaybackAudioFrameParameters`](/api-ref/rtc/ios/API/toc_audio_raw#api_irtcengine_setplaybackaudioframeparameters) 设置播放音频数据格式时，可以将 `sampleRate` 设为 `24000`。
+
+#### onEncodedVideoFrameReceived 回调支持获取频道 ID
+
+该版本在 `onEncodedVideoFrameReceived` 回调中新增 `channelId` 参数，方便你在获取编码后视频数据时识别其所属频道。
+
+#### 其他
+
+- 新增错误码 `AgoraErrorCodePcmSendFormat (200)` 和 `AgoraErrorCodePcmSendBufferOverflow (201)`，用于报告 PCM 数据发送相关错误。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 美颜功能在部分场景下不生效。
+- 当在子线程调用 `leaveChannel` 和 `destroy` 时，并同时发生 UI 方向切换时，可能导致 App 崩溃。
+- 在 iOS 26 部分设备上，用户以主播身份在音频 Scenario 为 `AgoraAudioScenarioChatRoom` 的情况下加入频道，调用 `enableLocalAudio` 关闭本地音频采集后，无法调整通话音量。
+- 在硬件异常的情况下切换视频分辨率时，偶现视频编码无输出帧，导致画面卡住的问题。
+
+## v4.6.0
+
+该版本于 2025 年 8 月 18 日发布。
+
+:::warning[注意]
+- 通过 CocoaPods 集成并升级至 v4.6.0 及以上版本时，除更新版本号外，还需将 Pod 名称从 `AgoraRtcEngine_iOS` 修改为 `ShengwangRtcEngine_iOS`。
+- 自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。
+- 4.6.0 RTC SDK `aosl.xcframework` 库版本为 1.3.0。你可以在 `Info.plist` 中查看库的版本信息。
+:::
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，包括 SDK 的行为变更、API 的废弃及删除，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+
+各版本废弃及删除的 API 信息。详见 [API 下架说明](https://doc.shengwang.cn/api-ref/rtc/ios/API/rtc_api_sunset)。
+
+#### 直推 CDN 相关接口废弃
+
+   该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](https://doc.shengwang.cn/doc/media-push/restful/landing-page)。
+
+   - [`setDirectCdnStreamingAudioConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
+   - [`setDirectCdnStreamingVideoConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
+   - [`startDirectCdnStreaming:publishUrl:mediaOptions:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
+   - [`stopDirectCdnStreaming`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
+   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/ios/API/class_directcdnstreamingmediaoptions)
+   - [`AgoraDirectCdnStreamingStats`](/api-ref/rtc/ios/API/class_directcdnstreamingstats)
+   - [`AgoraDirectCdnStreamingState`](/api-ref/rtc/ios/API/enum_directcdnstreamingstate)
+   - [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/ios/API/enum_directcdnstreamingreason)
+
+#### 虚拟节拍器接口废弃
+
+   该版本废弃虚拟节拍器功能的相关接口，并会在后续版本中删除。
+
+   - [`startRhythmPlayer:sound2:config:`](/api-ref/rtc/ios/API/toc_rhythmplayer#api_irtcengine_startrhythmplayer)
+   - [`configRhythmPlayer:`](/api-ref/rtc/ios/API/toc_rhythmplayer#api_irtcengine_configrhythmplayer)
+   - [`rtcEngine:didRhythmPlayerStateChanged:reason:`](/api-ref/rtc/ios/API/toc_rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged)
+
+#### 水印接口废弃
+
+   该版本废弃水印功能的相关接口，推荐使用该版本新增的水印接口。
+
+   - [`addVideoWatermark:options:`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengine_addvideowatermark2)
+   - [`addVideoWatermarkEx:options:connection:`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengineex_addvideowatermarkex)
+
+#### 冗余接口删除
+
+   该版本删除了下列冗余接口及参数：
+
+   - `setLocalPublishFallbackOption`
+   - `didLocalPublishFallbackToAudioOnly`
+   - `downlinkNetworkInfoUpdate`
+   - `wlAccStats`
+   - `wlAccMessage`
+   - `enableWirelessAccelerate`
+   - `AgoraWlAccReason`
+   - `AgoraWlAccAction`
+   - `AgoraWlAccStats`
+   - [`AgoraRtcRemoteVideoStats`](/api-ref/rtc/ios/API/class_remotevideostats) 中删除 `receivedFrameRate`
+
+#### 美妆功能实现变更
+
+   受美颜重构的影响，自 v4.6.0 起，不再支持调用 [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/ios/API/toc_extension#api_irtcengine_setextensionproperty) 启用美妆功能，改用 `STYLE_MAKEUP` 节点实现。
+
+#### 默认日志路径修正
+
+该版本将默认日志路径由 `AppSandbox/Library/documents/agorasdk.log` 修正为 `AppSandbox/Library/caches/agorasdk.log`。如果你是由 v4.3.1 及之后的版本升级到 v4.6.0，请改用修正后的路径查找日志。
+
+#### 新增域名白名单
+
+如果你由之前的版本升级到 v4.6.0 且使用了域名白名单功能（`AgoraRtcEngineConfig` 下的 `domainLimit` 为 `YES`），请在白名单中添加以下域名，以确保互通顺畅：
+
+- `*.rtnsvc.com`
+- `*.realtimemesh.com`
+
+### 新增特性
+
+#### 多路分辨率视频流
+
+   该版本新增多路分辨率视频流（Adaptive Bitrate Video Streaming，简称 ABR）功能，支持对同一视频源设置同时发送多路不同分辨率的视频流，并支持多频道场景。接收端通过自动/手动订阅目标分辨率的视频流。
+
+   启用 ABR 后，你可以配置不同分辨率的视频流（最多四层分辨率，一个最高分辨率的主流和三层其他较低分辨率的视频流），并设置视频流的分辨率、码率、是否启用分层推流回退等选项来灵活控制流的发布。启用分层推流回退后，SDK 会在弱网环境下自动回退到低分辨率的视频流，确保流畅的观看体验。订阅端可根据实际需求选择想要接收的视频流。适用于会议场景、大班课、互动直播等多终端、多网络环境，可显著提升弱网下的观看体验。
+
+   具体实现方法以及和视频双流的对比可以参考进阶功能[发布多路视频流 (ABR)](/zh-CN/realtime-media/rtc/advanced-features/simulcast.ios.ios)。
+
+#### 多路径网络传输
+
+   该版本新增多路径传输功能，适用于终端支持多网卡传输(比如 5G， Wi-Fi，LAN)的设备，可以有效降低甚至消除弱网带来的体验回退，适用于弱网环境、对传输稳定性要求高的实时音视频通信场景，如车载、IoT、火车、高速公路等复杂网络环境。通过在 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中设置 `enableMultipath` 为 `YES`，可开启多路径传输能力。支持两种传输模式（[`AgoraMultipathMode`](/api-ref/rtc/ios/API/enum_multipathmode)）：
+
+- 动态模式：（默认）根据网络状况动态选择最佳路径进行传输，适用于流量敏感、对体验要求比较高的场景，如会议、教育等。动态模式下，你可以通过 `preferMultipathType` 指定首选的网络传输路径（如优先 Wi-Fi 或移动网络）。
+- 全冗余模式：数据会在所有可用网络路径上同时传输，适用于流量不敏感，对体验有极致要求的场景，如户外采播、平行操控等。该模式会产生额外费用，如需使用请[联系技术支持](https://ticket.shengwang.cn/)。
+
+上下行还可分别通过 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的 `uplinkMultipathMode`、`downlinkMultipathMode` 配置。启用后，SDK 会通过回调 [`rtcEngine:multiPathStats:`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onmultipathstats) 实时上报各路径的传输统计信息，包括每一个传输路径的流量消耗，便于开发者监控和优化网络表现。
+
+#### 视频质量评分
+
+   该版本在 [`AgoraRtcRemoteVideoStats`](/api-ref/rtc/ios/API/class_remotevideostats) 中新增 `mosValue` 成员，报告声网实时视频 MOS（平均主观意见分）评估系统对接收到的远端视频流的质量评分。评分共有 5 个档次，5 分表示视频画质优秀，画面清晰无噪点，1 分表示视频画质极差，画面严重模糊。你可以通过该参数实时观测远端视频流的主观画质表现，便于动态调整视频参数、优化用户体验，或用于质量监控和告警等场景。如需启用该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+#### 支持添加多个水印
+
+   该版本废弃了 [`addVideoWatermark:options:`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengine_addvideowatermark2) 和 [`addVideoWatermarkEx:options:connection:`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengineex_addvideowatermarkex) 方法，新增 [`addVideoWatermarkWithConfig`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengine_addvideowatermark3) 和 [`addVideoWatermarkEx3`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengineex_addvideowatermarkex1) 方法，支持通过水印 ID 来给视频添加多个水印，并可对水印进行排序。如果你需要移除指定水印，可调用 [`removeVideoWatermark`](/api-ref/rtc/ios/API/toc_watermark#api_irtcengine_removevideowatermark) 方法。
+
+#### 异步销毁引擎
+
+   该版本新增 `destroy:` 方法，用于销毁 RTC 引擎，且支持通过参数配置以同步或异步方式销毁引擎。异步销毁引擎时，SDK 会触发 `engineReleasedBlock` 回调块。
+
+#### 美颜功能拓展
+
+   新增白牙、去法令纹、去黑眼圈、亮眼等美肤功能；美妆特效新增卧蚕和面部高光；美型功能从 11 个增加到 29 个。
+
+#### Token 更新结果回调
+
+   该版本新增 [`rtcEngine:renewTokenResult:code:`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调及 `RENEW_TOKEN_ERROR_CODE` 错误码。当调用 `renewToken:` 方法更新 Token 后，SDK 会通过 [`rtcEngine:renewTokenResult:code:`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调通知 Token 更新的结果，并通过 `RENEW_TOKEN_ERROR_CODE` 返回详细的错误码，开发者可在回调中根据错误码及时处理 Token 更新失败的场景。
+
+#### 其他
+
+   - 新增 [`setPlaybackAudioFrameBeforeMixingParametersWithSampleRate`](/api-ref/rtc/ios/API/toc_audio_raw#api_irtcengine_setplaybackaudioframebeforemixingparameters1) 方法用于设置 [`onPlaybackAudioFrameBeforeMixing:channelId:uid:`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中返回的音频帧格式，包括采样率、声道数以及每次回调的数据采样点数。调用此方法后，SDK 会按照设定的参数返回混音前的原始音频数据，便于开发者进行自定义处理或分析。
+   - 新增 `preloadEffectEx` 方法，用于将指定音效文件预加载到指定频道，支持本地或在线音效文件，便于后续快速播放，适合多频道场景。
+   - 新增 [`playEffectEx:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/api-ref/rtc/ios/API/toc_audio_effect_file#api_irtcengineex_playeffectex) 方法，用于在指定频道播放音效文件，支持设置循环次数、音调、空间位置、音量、是否发布到频道及播放起始位置等参数，满足丰富的音效播放需求。
+   - 本地截图上传功能支持通过 [`AgoraContentInspectModule`](/api-ref/rtc/ios/API/class_contentinspectmodule) 中新增的 `position` 成员设置截图的视频观测位置，从而实现对原始视频数据或效果处理前后的视频流进行截图并上传。
+   - 为了提升用户使用绿幕或蓝幕开启虚拟背景功能时，人像分割的准确性和稳定性，该版本在 [`AgoraSegmentationProperty`](/api-ref/rtc/ios/API/class_segmentationproperty) 中新增 `screenColorType` 属性，支持指定背景幕布的颜色为绿色、蓝色或自动识别。
+
+### 改进
+
+#### 美颜重构
+
+   该版本对美颜功能进行了彻底重构和升级，不仅拓展了美颜功能，提升了美颜效果和性能，还解决了美颜参数配置复杂、集成成本高、美颜资源依赖网络易失效等痛点。主要改进包括：
+
+   - **API 大幅简化**：将过去版本中的基础美颜、美型、美妆、滤镜功能整合为 `AgoraVideoEffectNodeBeauty`、`AgoraVideoEffectNodeStyleMakeup`、`AgoraVideoEffectNodeFilter` 三个核心节点 (node)，通过 [`AgoraVideoEffectObject`](/api-ref/rtc/ios/API/rtc_interface_class#class_ivideoeffectobject) 统一管理生命周期和参数设置，减少频繁 API 调用带来的性能负担。
+   - **预设模板开箱即用**：提供多套预设风格模板（如“自然美颜”、“学姐妆”、“冷白滤镜”），大幅简化集成流程，无需手动调试数十项参数。
+   - **美颜参数动态控制**：该版本新增实时获取美颜参数的能力，开发者可通过 key-value 方式动态读取或修改任意细粒度参数（如磨皮强度、口红类型）。同时支持：调用预设模板快速启用风格效果、保存主播自定义参数配置、随时重置参数至默认状态，极大提升了业务层状态同步的灵活性和开发效率。
+   - **美颜资源外置**：该版本通过美颜资源外置化设计，将所有美颜资源（特效、滤镜、妆容）均打包为本地 bundle 文件，彻底消除因网络下载失败导致美颜失效的风险。
+
+#### 其他改进
+
+   - 在与 Web 端互通时，新增对 g711 和 g722 音频编解码器的支持，进一步提升了跨平台音频播放的兼容性和清晰度。
+   - 优化了屏幕共享文档场景下的共享视频清晰度。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 调用 [`open:startPos:`](/api-ref/rtc/ios/API/toc_mediaplayer_open#api_imediaplayer_open) 打开在线音效文件后，调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/api-ref/rtc/ios/API/toc_audio_effect_file#api_irtcengine_playeffect3) 开始播放，当调用 [`seekToPosition:`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_seek) 指定播放位置后，音效文件会从头开始播放。
+- 在媒体音量模式下，主播在频道中发布麦克风采集的音频流，同时调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/api-ref/rtc/ios/API/toc_audio_effect_file#api_irtcengine_playeffect3) 播放音效文件、调用 [`startAudioMixing:loopback:cycle:startPos:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 播放音乐文件，偶现回声。
+- 在 [`setExternalVideoSource:useTexture:sourceType:`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_imediaengine_setexternalvideosource) 之后调用 [`setMediaMetadataDelegate:withType:`](/api-ref/rtc/ios/API/toc_metadata_observer#api_irtcengine_registermediametadataobserver) 注册媒体 metadata 观测器，SDK 没有触发 metadata 观测器的回调。
+- 偶现的崩溃问题。
+- 调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_joinchannelex) 加入频道，然后调用 [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发，下麦、退出频道后重新加入频道开始连麦，偶现 [`rtcEngine:channelMediaRelayStateDidChange:error:`](/api-ref/rtc/ios/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `state` 为 `AgoraChannelMediaRelayStateFailure`，[`code`](/api-ref/rtc/ios/API/toc_rte_player#api_error_code) 为 `AgoraChannelMediaRelayErrorServerErrorResponse`。
+
+## v4.5.2
+
+该版本于 2025 年 4 月 22 日发布。
+
+:::warning[注意]
+- 自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。
+- 4.5.2 RTC SDK `aosl.xcframework` 库版本为 1.2.13。你可以在 `Info.plist` 中查看库的版本信息。
+:::
+
+### 改进
+
+#### URL 拉流播放
+
+   该版本进一步拓展了 URL 拉流播放的功能，支持播放 CDN URL 和本地媒体资源文件，同时可以设置从指定位置开始播放、调节播放速度、设置播放音量、在播放过程中切换播放源等，详见 [观众端 URL 拉流](https://doc.shengwang.cn/doc/rtc/ios/best-practice/playing-url)。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 开启导唱功能播放多音轨歌曲时，调用 [`setAudioPitch:`](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_setaudiopitch) 方法调整歌曲音调后出现杂音。
+- 主播端调用 [`createCustomAudioTrack:config:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_createcustomaudiotrack) 创建自定义音频采集轨道并将 `trackType` 设为 `AUDIO_TRACK_DIRECT`，调用 [`pushExternalAudioFrameRawData:samples:sampleRate:channels:trackId:timestamp:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushaudioframe2) 将自采集音频推送到频道内，然后调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/api-ref/rtc/ios/API/toc_audio_effect_file#api_irtcengine_playeffect3) 播放音效，频道内的观众听主播的音频有杂音。
+- 集成了 SDK 的 App 在音视频互动过程中偶现主线程阻塞导致的 UI 卡顿。
+- 调用 [`openWithMediaSource:`](/api-ref/rtc/ios/API/toc_mediaplayer_open#api_imediaplayer_openwithmediasource) 并通过 `source` 参数将 `isLiveSource` 设为 `YES` 并播放纯视频流，播放失败。
+- 调用 [`enableVirtualBackground:backData:segData:`](/api-ref/rtc/ios/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground) 开启虚拟背景功能，手机横竖屏旋转后，虚拟背景图像变大变模糊。
+- 发送端传输多声道编码音频时，接收端偶现杂音。
+- App 集成媒体播放器场景下，先后两次调用 open 打开不同媒体资源，第二次打开时，媒体播放器信息变化回调 [`AgoraRtcMediaPlayer:infoUpdated:`](/api-ref/rtc/ios/API/toc_mediaplayer_observer#callback_imediaplayersourceobserver_onplayerinfoupdated) 返回第一次媒体资源的信息，不符合预期。
+- 调用 [`enableAudioVolumeIndication:smooth:reportVad:`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication) 启用用户音量提示本地发流用户和远端用户音量相关信息，用户音量提示回调 [`rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 返回的本地用户音量为 0。
+- App 调用 [`enableVideoImageSource:options:`](/api-ref/rtc/ios/API/toc_image_source#api_irtcengine_enablevideoimagesource) 启用垫片推流功能，偶现发送端推流成功但是 [`rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 返回当前的发布状态不是 `PUB_STATE_PUBLISHED`，不符合预期。
+- 多频道场景下，App 在调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_joinchannelex) 成功前调用 [`setupRemoteVideoEx:connection:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengineex_setupremotevideoex) 初始化远端用户视图，偶现远端用户视图首帧图像显示延时大。
+- App 退出时偶现崩溃。
+
+## v4.5.1
+
+该版本于 2025 年 3 月 5 日发布。
+
+:::warning[注意]
+- 自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。
+- 4.5.1 RTC SDK `aosl.xcframework` 库版本为 1.2.13。你可以在 `Info.plist` 中查看库的版本信息。
+:::
+
+### 新增特性
+
+#### AI 对话场景
+
+   该版本新增了专为与[声网对话式 AI 引擎](https://doc.shengwang.cn/doc/convoai/restful/landing-page)创建的智能体互动设计的 `AgoraAudioScenarioAiClient` 音频场景。该场景根据 AI 智能体生成语音的特点，针对优化了音频传输算法，能够在弱网环境下（例如 80% 丢包率）稳定传输语音数据，确保对话的连续性和可靠性，适应多样化的复杂网络条件。
+
+### 改进
+
+该版本优化了特定机型上 SDK 初始化的耗时。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 同时加入两个及以上的频道，连续调用 [`takeSnapshotEx:uid:filePath:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengineex_takesnapshotex) 分别对频道中的本地视频流进行截图，在先调用的频道截图会失败。
+- 使用媒体播放器时，调用 [`pause`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_pause) 暂停播放后，调用 [`seekToPosition:`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_seek) 定位到指定播放位置、然后调用 [`play`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_play) 继续播放，播放时会先从暂停播放的位置播放，然后再从新的位置播放。
+- 使用媒体播放器时，调用 [`switchSrc:syncPts:`](/api-ref/rtc/ios/API/toc_mediaplayer_open#api_imediaplayer_switchsrc) 切换媒体资源后，调用 [`getPlaySrc`](/api-ref/rtc/ios/API/toc_mediaplayer_info#api_imediaplayer_getplaysrc)获取当前正在播放的媒体资源的路径没有变化。
+- 在推送 i420 格式的视频帧到频道内时，使用 CVPixelBuffer 会导致崩溃。
+- 调用 [`setupLocalVideo:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 设置两个视图（view），然后调用 [`enableFaceDetection:`](/api-ref/rtc/ios/API/toc_face_detection#api_irtcengine_enablefacedetection) 开启人脸检测，后传入的视图中无法检测到人脸信息。
+- 屏幕共享场景下，接收端用户看到的共享图像出现绿线。
+- 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
+- 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
+
+## v4.5.0
+
+该版本于 2024 年 11 月 26 日发布。
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，涉及 SDK 的行为变更、API 的改名或删除，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+
+:::warning[注意]
+自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。4.5.0 RTC SDK `aosl.xcframework` 库版本为 1.2.13。你可以在 `Info.plist` 中查看库的版本信息。
+:::
+
+#### 强效视频降噪实现变更
+
+   该版本调整了强效视频降噪的实现方式，在 [`AgoraVideoDenoiserLevel`](/api-ref/rtc/ios/API/enum_videodenoiserlevel) 中删除了 `AgoraVideoDenoiserLevelStrength`，改为调用 [`setVideoDenoiserOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setvideodenoiseroptions) 启用视频降噪后，调用 [`setBeautyEffectOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions) 方法启用美颜磨皮功能，二者搭配使用以获得更好的视频降噪效果。实现强效降噪时，推荐磨皮参数设置详见 [`setVideoDenoiserOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setvideodenoiseroptions)。
+
+   此外，受该调整影响，实现画质优先的暗光增强效果时，需要先开启视频降噪并采用特定设置，详见 [`setLowlightEnhanceOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setlowlightenhanceoptions)。
+
+#### 视频编码偏好变更
+
+   为提升用户的视频互动体验，该版本优化了视频编码时的默认偏好：
+
+   - 在 [`AgoraCompressionPreference`](/api-ref/rtc/ios/API/enum_compressionpreference) 枚举类中新增 `AgoraCompressionAuto` (-1) 枚举，并替代原有的 `AgoraCompressionQuality` (1) 作为默认值。在该模式下，SDK 会根据你设置的视频场景，自动选择 `AgoraCompressionLowLatency` 或 `AgoraCompressionQuality`，以获得最佳的用户体验。
+   - 在 [`AgoraDegradationPreference`](/api-ref/rtc/ios/API/enum_degradationpreference) 枚举类中新增 `AgoraDegradationMaintainAuto` (-1) 枚举，并替代原有的 `AgoraDegradationMaintainQuality` (1) 作为默认值。在该模式下，SDK 会根据你设置的视频场景，自动选择 `AgoraDegradationMaintainFramerate`、`AgoraDegradationBalanced` 或 `AgoraDegradationMaintainResolution`，以获得最优的综合质量体验 (QoE)。
+
+### 新增特性
+
+#### 高级美颜
+
+   该版本新增以下两种高级美颜功能：
+
+   - 美型：调用 [`setFaceShapeBeautyOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions) 方法，可对人脸各部位进行修饰，你可以使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，并微调整体的修饰力度。如果预设的美型效果不能满足你的需求，你可以调用 [`setFaceShapeAreaOptions:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions) 方法设置美型部位选项，对人脸的各个部位单独微调，实现更加精细的美型效果。
+   - 美妆：调用 [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/ios/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定参数，可实现眼影、美瞳、眼线、美眉、唇彩、腮红等美妆特效。
+
+   有关美型和美妆的实现步骤，详见[实现高级美颜](https://doc.shengwang.cn/doc/rtc/ios/advanced-features/advanced-beauty)。
+
+   :::info[信息]
+   目前，高级美颜功能为**限时免费**，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+   :::
+
+#### 秀场直播场景
+
+   该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/ios/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplicationLiveShowScenario`(3)（秀场直播），你可以调用 [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)，此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+#### 限制视频渲染帧率
+
+   该版本新增 [`setLocalRenderTargetFps`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setlocalrendertargetfps) 和 [`setRemoteRenderTargetFps`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setremoterendertargetfps) 方法，支持设置视频在本地和远端渲染时的最大帧率，SDK 进行视频渲染的实际帧率会尽量接近该值。
+
+   在对视频渲染帧率要求不高的场景（例如：屏幕共享、在线教育）或者远端使用中低端设备的场景下，你可以通过这一组方法限制视频渲染帧率，从而减小 CPU 消耗、提升系统性能。
+
+#### URL 拉流播放
+
+   URL 拉流播放功能主要用于直播场景，观众端可以直接通过 [`openWithUrl:startTime:cb:`](/api-ref/rtc/ios/API/toc_rte_player#api_player_openwithurl) 打开特定的 URL 来播放实时媒体流，无需显示调用加入频道、订阅等 API，极大简化了观众端观看直播流的 API 调用。
+
+   在播放的过程中，观众端可以通过 [`setAbrSubscriptionLayer:error:`](/api-ref/rtc/ios/API/toc_rte_player#api_playerconfig_setabrsubscriptionlayer) 设置订阅视频大小流，并可以在大小流之间实现平滑切换。如果对视频体验有更高要求，可以联系[联系技术支持](https://ticket.shengwang.cn/)开通 ABR（Adaptive Bitrate，自适应码率）功能。启用该功能后，可以自定义不同层级的视频流分辨率，观众可以实现不同分辨率视频流的平滑切换。
+
+   当网络情况不稳定时，观众端可以调用 [`setAbrFallbackLayer:error:`](/api-ref/rtc/ios/API/toc_rte_player#api_playerconfig_setabrfallbacklayer) 来设置订阅的视频流的回退选项。SDK 会以你指定的最低质量层级对应的视频流分辨率为下限，在此范围内根据网络状况动态调整分辨率。实现细节详见[观众端 URL 拉流](/zh-CN/realtime-media/rtc/best-practice/playing-url)。
+
+#### 滤镜效果
+
+   该版本新增 [`setFilterEffectOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfiltereffectoptions) 方法，你可以在 **config** 参数中传入指定格式的立方体贴图文件 (.cube)，从而实现美白、鲜艳、冷色、黑白等自定义滤镜效果。此外，SDK 提供了一个内置的 `built_in_whiten_filter.cube` 文件，用于快速实现美白滤镜效果。
+
+#### 本地音频合流
+
+   该版本新增本地音频合流功能，你可以调用 [`startLocalAudioMixer`](/api-ref/rtc/ios/API/toc_audiomixer#api_irtcengine_startlocalaudiomixer) 方法，将本地麦克风采集的音频流、媒体播放器中的音频流、声卡采集的音频流、远端音频流等合并为一路音频流，你可以将合并后的音频流发布到频道中。不再需要音频合流时，你可以调用 [`stopLocalAudioMixer`](/api-ref/rtc/ios/API/toc_audiomixer#api_irtcengine_stoplocalaudiomixer) 方法停止本地音频合流；在合流过程中，可以调用 [`updateLocalAudioMixerConfiguration`](/api-ref/rtc/ios/API/toc_audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration) 方法更新正在合流的音频流配置。
+
+   该功能的使用场景示例如下：
+
+   - 结合本地合图功能一起使用，可将合图视频流相关的音频流同步采集和发布。
+   - 在直播场景下，用户接收频道内的音频流，在本地进行多路音频流合流后转发到其他频道。
+   - 在教育场景下，老师可将跟学生连麦互动的音频在本地进行合流，然后将合并的音频流转发到其他频道。
+
+#### 色彩空间设置
+
+   该版本在 [`AgoraOutputVideoFrame`](/api-ref/rtc/ios/API/class_videoframe) 和 [`AgoraVideoFrame`](/api-ref/rtc/ios/API/class_externalvideoframe) 中新增了 **colorSpace**，你可以通过该参数设置视频帧的色彩空间属性。默认情况下，色彩空间采用 Full Range 和 BT.709 标准配置，你可以根据自采集或自渲染的需求灵活调整，进一步提升视频处理的定制化能力。
+
+#### 其他
+
+### 改进
+
+#### 虚拟背景算法优化
+
+   该版本升级了虚拟背景的算法，分割人像主体部分与背景时更加准确，背景无露出，人像身体轮廓无缺块，手指细节辨识显著提高。同时，人像与背景的边缘更加稳定，减少了连续视频帧中人像边缘的跳变和闪烁现象。
+
+#### 录制本地预览视频
+
+   该版本在 [`AgoraRecorderStreamInfo`](/api-ref/rtc/ios/API/class_recorderstreaminfo) 中新增 **type** 成员。当调用 [`createMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_createmediarecorder) 时，可通过该成员指定录制的视频流类型为本地预览视频流，并在 [`AgoraMediaRecorderConfiguration`](/api-ref/rtc/ios/API/class_mediarecorderconfiguration) 中设置录制预览视频的高、宽、帧率、采样率等参数，之后调用 [`startRecording:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_startrecording) 即可开始录制本地预览的视频。
+
+#### 指定视频观测位置截图
+
+   该版本新增 [`takeSnapshotWithConfig:config:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengine_takesnapshot2) 和 [`takeSnapshotExWithConfig:uid:config:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengineex_takesnapshotex2) 方法，你可以在调用该方法时通过 **config** 参数，在指定的视频观测点进行截图，比如：编码前、编码后或渲染前的数据，以实现更加灵活的截图效果。
+
+#### 自定义音频采集改进
+
+   该版本在 [`AgoraAudioTrackConfig`](/api-ref/rtc/ios/API/class_audiotrackconfig) 中新增了 `enableAudioProcessing` 成员参数，用于控制是否对 `AUDIO_TRACK_DIRECT` 类型的自定义音频采集轨道启用 3A 音频处理。该参数默认值为 `NO`，即不启用音频处理，用户可以按需开启，此项改动提升了自定义音频处理的灵活性。
+
+#### 其他改进
+
+   - 通过拼接视频帧和 Alpha 数据实现 Alpha 透明特效的应用场景下，提升了接收端的渲染性能，有效减少卡顿和延迟。
+   - 优化了调用 [`queryDeviceScore`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_querydevicescore) 获取设备评分等级的设计逻辑，提升了等级评分结果的准确性。
+   - 频道内调用 [`enableLocalAudio:`](/api-ref/rtc/ios/API/toc_audio_capture#api_irtcengine_enablelocalaudio) 关闭本地采集后，支持通过手机静音侧键把 App 播放的背景音效设置为静音状态。
+   - 调用 [`switchSrc:syncPts:`](/api-ref/rtc/ios/API/toc_mediaplayer_open#api_imediaplayer_switchsrc) 切换不同分辨率的直播流或点播流时，可以实现平滑且无感知的切换效果，并在切换失败时新增自动重试机制。SDK 会在切换失败后自动重试 3 次，如果依旧失败，会通过 [`AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:`](/api-ref/rtc/ios/API/toc_mediaplayer_observer#callback_imediaplayersourceobserver_onplayerevent) 回调报告 `AgoraMediaPlayerEventSwitchError` 事件，表示媒体资源切换时发生错误。
+   - 调用 [`setPlaybackSpeed:`](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_setplaybackspeed) 设置音频文件的播放速度时，最低支持 0.3 倍速播放。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 当发送端视频源类型为 JPEG 格式时，偶现接收端帧率低于预期。
+- 音视频互动过程中，偶现接收端听发送端没有声音。
+- 音视频互动过程中，如果发送端设备的系统版本为 iOS 17，偶现接收端听不到来自发送端的声音。
+- 直播场景下，观众端因切换网络导致断开连接，重新连接直播间花费的时间长于预期。
+- App 启动后使用媒体播放器播放在线媒体资源，播放无声。
+- 音视频互动过程中被系统其他 App 打断后恢复，偶现音频采集无声。
+- 调用 [`startAudioMixing:loopback:cycle:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_startaudiomixing) 后，立即调用 [`pauseAudioMixing`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
+
+## v4.4.0
+
+该版本于 2024 年 8 月 5 日发布。
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，包括 SDK 的行为变更、API 的改名或删除，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+
+   :::info[信息]
+   自 v4.4.0 起，RTC SDK 提供 API 下架说明，包含各版本废弃及删除的 API 信息。详见 [API 下架说明](/api-ref/rtc/ios/API/rtc_api_sunset)。
+   :::
+
+1. 为区分不同插件回调中的上下文信息，该版本将原有的插件相关回调删除并新增可标识插件上下文信息的对应回调（见下表），你可以通过各回调中的 [`AgoraExtensionContext`](/api-ref/rtc/ios/API/class_extensioncontext) 了解插件的名称、使用该插件的用户 ID、和提供插件的服务商名等信息。
+
+   | 原有回调             | 现有回调                        |
+   | -------------------- | ------------------------------- |
+   | `onEvent`            | [`onEventWithContext:key:value:`](/api-ref/rtc/ios/API/toc_extension#callback_irtcengineeventhandler_onextensioneventwithcontext)   |
+   | `onExtensionStarted` | [`onExtensionStartedWithContext:`](/api-ref/rtc/ios/API/toc_extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) |
+   | `onExtensionStopped` | [`onExtensionStoppedWithContext:`](/api-ref/rtc/ios/API/toc_extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext) |
+   | `onExtensionError`   | [`onExtensionErrorWithContext:error:message:`](/api-ref/rtc/ios/API/toc_extension#callback_irtcengineeventhandler_onextensionerrorwithcontext)   |
+
+2. 在 v4.4.0 之前，当你的用户角色为观众时，调用 [`setAudioScenario:`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario) 将音频场景设为聊天室场景（`AgoraAudioScenarioChatRoom`）会显示麦克风采集状态。自 v4.4.0 起，SDK 通过 iOS 原生的 API 控制麦克风开关，因此观众角色在聊天室场景下不会再显示麦克风采集状态。
+
+3. 该版本将 `receiveMetadata` 回调改名为 [`didMetadataReceived:`](/api-ref/rtc/ios/API/toc_metadata_observer#callback_imetadataobserver_onmetadatareceived)，并删除了回调中的 `data`、`timeStamp` 参数，你可以通过新增的 `metadata` 参数来获取 Metadata 的相关信息，包括 `timeStamp`（发送数据的时间戳）、`uid`（用户 ID）、`channelId`（源频道名称）等。
+
+### 新增特性
+
+#### Lite SDK
+
+   自该版本起，声网推出 Lite 版 SDK，该 SDK 中仅包含音视频基础能力、对高阶音视频处理的功能进行部分裁剪，可有效减少集成 SDK 后的 App 体积。
+
+   - Lite SDK 支持手动集成或三方仓库集成，详见[下载](/zh-CN/realtime-media/rtc/resources.ios)和[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start.ios#集成-sdk)。
+   - Lite SDK 包含的动态库信息详见[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size.android.ios)。
+   - Lite SDK 支持的 API 清单详见 [Lite SDK API 列表](/api-ref/rtc/ios/API/rtc_lite_api)。
+   - 使用 Lite SDK 播放媒体文件时的限制和注意事项详见 [RTC SDK 支持播放哪些格式的音频文件？](/faq/general-product-inquiry/audio-format)
+
+   :::warning[注意]
+   Lite SDK 默认无法与 [RTC 小程序 SDK](/zh-CN/realtime-media/rtc) 互通。如果需要与小程序互通，请[联系技术支持](https://tickets.shengwang.cn)。
+   :::
+
+#### Alpha 透明特效
+
+   该版本新增 Alpha 透明特效功能，支持在 SDK 采集和自定义采集视频的场景下，在发送端发布视频帧的 Alpha 通道、在接收端对 Alpha 通道进行渲染处理，实现透明礼物特效、接收端自定义主播背景等：
+
+   - [`AgoraOutputVideoFrame`](/api-ref/rtc/ios/API/class_videoframe) 和 [`AgoraVideoFrame`](/api-ref/rtc/ios/API/class_externalvideoframe) 中新增 `alphaBuffer`：设置 Alpha 通道数据。
+   - [`AgoraVideoFrame`](/api-ref/rtc/ios/API/class_externalvideoframe) 中新增 `fillAlphaBuffer`：对于 BGRA 或 RGBA 格式的视频数据，设置是否自动提取 Alpha 通道数据并填入到 `alphaBuffer` 中。
+   - [`AgoraOutputVideoFrame`](/api-ref/rtc/ios/API/class_videoframe) 和 [`AgoraVideoFrame`](/api-ref/rtc/ios/API/class_externalvideoframe) 中新增 `alphaStitchMode`：设置 `alphaBuffer` 和视频帧拼接的相对位置。
+
+   另外，[`AgoraAdvancedVideoOptions`](/api-ref/rtc/ios/API/class_advanceoptions) 中新增成员 `encodeAlpha`，用于设置是否将 Alpha 信息编码并发送到远端。SDK 默认不对 Alpha 信息进行编码发送；如果需要对 Alpha 信息编码发送至远端（例如开启了虚拟背景功能），请显式调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，并将 `encodeAlpha` 设置为 `YES`。
+
+   :::info[信息]
+   如需了解在各场景下实现 Alpha 特效的最佳实践，详见[实现 Alpha 透明特效](https://doc.shengwang.cn/doc/rtc/ios/best-practice/alpha-effect)。
+   :::
+
+#### AI 调音器
+
+   该版本新增 AI 调音器功能，可以实现类似物理声卡对音质和音色的提升。你可以通过调用 [`enableVoiceAITuner:type:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_enablevoiceaituner) 方法并传入 [`AgoraVoiceAITunerType`](/api-ref/rtc/ios/API/enum_voiceaitunertype) 枚举中支持的音效类型来启用 AI 调音器功能，实现大叔音、萝莉音、烟嗓歌声等声音效果。
+
+#### 版权音乐优化
+
+   - 该版本在 [`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 类下新增 [`setPlayMode:`](/api-ref/rtc/ios/API/toc_drm#api_imusicplayer_setplaymode) 方法，用于设置音乐资源的播放模式。在在线 K 歌房等场景下，你可以根据需求启用伴唱、原唱或导唱模式。
+   - 该版本在 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 类下新增 [`destroyMusicPlayer:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_destroymusicplayer) 方法，用于销毁音乐播放器并释放相应的资源。
+
+#### 1v1 视频通话场景
+
+该版本在 [`AgoraApplicationScenarioType`](/api-ref/rtc/ios/API/enum_videoapplicationscenariotype) 类下新增枚举 `AgoraApplication1V1Scenario`（1v1 视频通话）。你可以调用 [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario) 将视频业务场景设置为 1v1 视频通话，针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
+
+### 改进
+
+#### 人脸区域美颜
+
+   为了避免磨皮美颜程度较高时丢失非脸部区域的细节，该版本改进了磨皮美颜效果的实现算法。磨皮美颜现在会识别人脸的各个部位，应用在除嘴巴、眼睛和眉毛之外的人脸皮肤区域，且支持最多同时对两张人脸磨皮。
+
+#### 其他改进
+
+   该版本还进行了如下改进：
+
+   - 优化了传输策略，调用 [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 不再对传输链路的安全性产生影响。
+   - 废弃了 [`AgoraClientRoleChangeFailedReason`](/api-ref/rtc/ios/API/enum_clientrolechangefailedreason) 中的冗余枚举值 `AgoraClientRoleChangeFailedRequestTimeout`、`AgoraClientRoleChangeFailedConnectionFailed`。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 在实时互动过程中，当多个远端同时加入频道时 App 偶现崩溃。
+- App 切后台一段时间、然后返回前台时，远端视频画面偶现卡住或花屏。
+- 发送端调用 [`startDirectCdnStreaming:publishUrl:mediaOptions:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming) 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。
+- 调用 [`pushExternalAudioFrameRawData:samples:sampleRate:channels:trackId:timestamp:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushaudioframe2) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
+
+## v4.3.2
+
+该版本于 2024 年 6 月 4 日发布。
+
+### 升级必看
+
+该版本修改了播放版权音乐的行为，当调用  [`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 中的 [`play`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_play) 方法播放版权音乐媒体文件时，存在以下行为变更：
+
+- v4.3.2 以前版本：SDK 默认播放当前音频文件的第一个音轨。
+- v4.3.2： SDK 默认播放伴奏。
+
+### 改进
+
+1. 提升了 [`setRemoteSubscribeFallbackOption:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setremotesubscribefallbackoption) 方法的易用性，取消了调用时序要求，即：在加入频道前后，均可调用 [`setRemoteSubscribeFallbackOption:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setremotesubscribefallbackoption) 动态切换弱网环境下的音视频流回退选项。
+2. 媒体播放器支持播放带有 Alpha 通道的 MP4 文件。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- App 长时间切后台再返回前台时，远端视频画面卡住或花屏。
+- 部分 iPad 设备上的本地预览画面旋转 90°，不符合预期。
+- 音视频互动过程中偶现视频流畅度不佳。
+- 接收端 App 解码后的视频分辨率为奇数时偶现 App 崩溃。
+- 远端用户离开频道时偶现崩溃。
+- 调用 [`startAudioMixing:loopback:cycle:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_startaudiomixing) 播放音乐文件，音乐文件播放结束后偶现无法触发 [`rtcEngine:audioMixingStateChanged:reasonCode:`](/api-ref/rtc/ios/API/toc_audio_mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)(AgoraAudioMixingStateTypeStopped,AgoraAudioMixingReasonAllLoopsCompleted) 回调报告音乐文件播放完毕。
+- 调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/api-ref/rtc/ios/API/toc_audio_effect_file#api_irtcengine_playeffect3) 播放时长不足 1 秒的音效文件并设置不循环播放（ [`loopCount`](/api-ref/rtc/ios/API/toc_rte_player#api_playerconfig_getloopcount) 为 0 ）时，出现无声。
+- 使用媒体播放器播放视频，暂停播放后恢复播放，偶现短暂无声。
+
+<a id="v4.3.1"></a>
+## v4.3.1
+
+该版本于 2024 年 4 月 29 日发布。
+
+### 新增特性
+
+#### 隐私清单文件
+
+   为满足 Apple 对于 App 发布的安全合规要求，SDK 自该版本起新增隐私清单文件 `PrivacyInfo.xcprivacy`，其中包含 SDK 中需要访问或使用用户数据的 API 调用说明和 SDK 采集的数据类型说明。
+
+   :::info[信息]
+   如果你需要将集成 v4.3.1 之前的 SDK 版本的 App 发布到苹果应用商店，则需要在 Xcode 工程中手动添加 `PrivacyInfo.xcprivacy` 文件。详见[如何在 App 中增加隐私清单？](https://doc.shengwang.cn/faq/other-issues/privacyinfo)
+   :::
+
+#### 人像锁定
+
+   为提升在线会议、秀场、在线教育等场景中的主播演讲效果，该版本新增 [`enableCameraCenterStage:`](/api-ref/rtc/ios/API/toc_center_stage#api_irtcengine_enablecameracenterstage) 方法开启人像锁定功能。该功能可确保主播无论移动与否，始终位于画面中心，以取得良好的演讲效果。
+
+   在开启人像锁定前，建议你先调用 [`isCameraCenterStageSupported`](/api-ref/rtc/ios/API/toc_center_stage#api_irtcengine_iscameracenterstagesupported) 查询当前设备性能是否支持该功能。支持的设备清单可参考 [`API 文档`](/api-ref/rtc/ios/API/toc_center_stage#api_irtcengine_enablecameracenterstage)。
+
+#### 摄像头防抖
+
+   为改善在移动拍摄、暗光环境拍摄、手持拍摄等场景下的视频画面稳定性，该版本新增摄像头防抖功能。你可以调用 [`setCameraStabilizationMode:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_setcamerastabilizationmode) 开启该功能并设置适合的防抖模式，以获得更加稳定、清晰的视频画面。
+
+#### 摄像头广角和超广角
+
+   为了让用户捕捉到更宽阔的视野和更完整的画面内容，该版本新增了对广角和超广角摄像头的支持。你可以先调用 [`queryCameraFocalLengthCapability`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_querycamerafocallengthcapability) 查询设备支持的焦距能力，然后调用 [`setCameraCapturerConfiguration:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_setcameracapturerconfiguration) 并将 `cameraFocalLengthType` 设置为支持的焦距类型，包括广角、超广角等。
+
+#### 数据流加密
+
+   该版本在 [`AgoraEncryptionConfig`](/api-ref/rtc/ios/API/class_encryptionconfig) 中新增 `datastreamEncryptionEnabled` 成员用于启用数据流加密。你可以在调用 [`enableEncryption:encryptionConfig:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_enableencryption) 开启加密时来进行设置。如果在数据流加密或解密的过程中遇到问题导致失败，你可以通过新增的 `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE` 和 `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE` 枚举得知。
+
+#### 本地视频渲染
+
+   该版本在 [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中新增如下成员，以支持更多本地渲染功能。
+
+   - `enableAlphaMask`：可以通过该成员设置接收端是否开启 Alpha 遮罩渲染。Alpha 遮罩渲染功能可以创建具有透明效果的图像或提取视频中的人像。
+
+#### 视频小流自适应配置
+
+   该版本新增视频小流的自适应配置功能，当你调用 [`setDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode2) 在发送端设置双流模式并设置视频小流时，SDK 的默认行为如下所示：
+
+   - 将视频小流的默认编码分辨率设为原始视频编码分辨率的 50%。
+   - 视频小流的码率根据视频分辨率和帧率自动匹配，无需指定。
+
+#### 其他
+
+   - 新增 [`enableEncryptionEx:encryptionConfig:connection:`](/api-ref/rtc/ios/API/toc_network#api_irtcengineex_enableencryptionex) 方法，用于多频道场景下开启媒体流或数据流加密。
+   - 新增 [`setAudioMixingPlaybackSpeed:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_setaudiomixingplaybackspeed) 方法，用于设置音乐文件的播放速度。
+   - 新增 [`getCallIdEx:`](/api-ref/rtc/ios/API/toc_network#api_irtcengineex_getcallidex) 方法，用于多频道场景下获取通话 ID。
+
+### 改进
+
+#### 虚拟背景算法优化
+
+   为了提高纯色背景下开启虚拟背景时人像分割的精确度和稳定性，该版本优化了绿幕分割算法：
+
+   - 支持识别任意纯色背景，不再局限于绿幕。
+   - 对背景颜色的识别更加准确，并且在分割人像时露出的背景更少。
+   - 分割后的人像边缘（尤其是手指边缘）更加稳定，显著减少边缘的画面闪动现象。
+
+#### 音频自采集优化
+
+   为提升音频自采集的灵活性，该版本废弃 [`pushExternalAudioFrameSampleBuffer:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer) 并新增 [`pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)。相比废弃方法，新增方法中增加了 `sampleRate`、`channels`、`trackId` 参数，支持你通过自定义音频轨道将外部 CMSampleBuffer 音频数据推送到频道内，并支持设置外部音频源的采样率和声道数。
+
+#### 降低耳返的 CPU 消耗
+
+   该版本在 [`AgoraEarMonitoringFilterType`](/api-ref/rtc/ios/API/enum_earmonitoringfiltertype) 中新增 `AgoraEarMonitoringFilterReusePostProcessingFilter`(1&lt;&lt;15) 枚举。针对复杂的音效处理场景，你可以指定该选项，复用发送端音效处理后的 Audio filter，从而降低 CPU 的消耗。需要注意的是该选项会导致耳返延迟增加，适用于对耳返延迟不敏感的使用场景。
+
+#### 其他改进
+
+   该版本还进行了如下改进：
+
+   - 优化了非屏幕共享场景的视频编解码策略，节省系统性能开销。
+   - 提升了原始视频帧观测器在处理视频时的稳定性。
+   - 优化了媒体播放器对 WebM 格式视频的处理能力，支持渲染 Alpha 通道。
+   - 在 [`AgoraAudioEffectPreset`](/api-ref/rtc/ios/API/enum_audioeffectpreset) 中新增 `AgoraAudioEffectPresetRoomAcousticsChorus`（合唱音效），可使人声在合唱场景下更具空间立体感。
+   - 在 [`AgoraRtcRemoteAudioStats`](/api-ref/rtc/ios/API/class_remoteaudiostats) 中新增 `e2eDelay`，用于报告从发送端采集音频起，到接收端开始播放音频时的延时。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 使用媒体播放器播放包含 SEI 数据的媒体流时，SEI 数据的输出与视频渲染不同步。
+- 当发送端用户的网络环境恶化（例如弱网）时，接收端偶现视频流畅度降低、卡顿增加。
+
+### API 变更
+
+#### 新增
+
+- [`enableCameraCenterStage:`](/api-ref/rtc/ios/API/toc_center_stage#api_irtcengine_enablecameracenterstage)
+- [`isCameraCenterStageSupported`](/api-ref/rtc/ios/API/toc_center_stage#api_irtcengine_iscameracenterstagesupported)
+- [`setCameraStabilizationMode:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_setcamerastabilizationmode)
+- [`AgoraCameraStabilizationMode`](/api-ref/rtc/ios/API/enum_camerastabilizationmode)
+- [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中新增 `enableAlphaMask`
+- [`AgoraEncryptionConfig`](/api-ref/rtc/ios/API/class_encryptionconfig) 中新增 `datastreamEncryptionEnabled`
+- [`AgoraEncryptionErrorType`](/api-ref/rtc/ios/API/enum_encryptionerrortype) 中新增如下枚举：
+
+  - `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE`
+  - `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE`
+
+- [`AgoraRtcRemoteAudioStats`](/api-ref/rtc/ios/API/class_remoteaudiostats) 新增 `e2eDelay`
+- [`AgoraErrorCode`](/api-ref/rtc/ios/API/enum_errorcodetype) 新增 `AgoraErrorCodeDatastreamDecryptionFailed`
+- [`AgoraAudioEffectPreset`](/api-ref/rtc/ios/API/enum_audioeffectpreset) 新增 `AgoraAudioEffectPresetRoomAcousticsChorus`
+- [`getCallIdEx:`](/api-ref/rtc/ios/API/toc_network#api_irtcengineex_getcallidex)
+- [`enableEncryptionEx:encryptionConfig:connection:`](/api-ref/rtc/ios/API/toc_network#api_irtcengineex_enableencryptionex)
+- [`setAudioMixingPlaybackSpeed:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_irtcengine_setaudiomixingplaybackspeed)
+- [`queryCameraFocalLengthCapability`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_querycamerafocallengthcapability)
+- [`AgoraFocalLengthInfo`](/api-ref/rtc/ios/API/class_focallengthinfo)
+- [`AgoraFocalLength`](/api-ref/rtc/ios/API/enum_camerafocallengthtype)
+- [`AgoraCameraCapturerConfiguration`](/api-ref/rtc/ios/API/class_cameracapturerconfiguration) 新增成员 `cameraFocalLengthType`
+- [`AgoraEarMonitoringFilterType`](/api-ref/rtc/ios/API/enum_earmonitoringfiltertype) 新增枚举 `AgoraEarMonitoringFilterBuiltInAudioFilters`(1&lt;&lt;15)
+- [`pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)
+
+#### 废弃
+
+- [`pushExternalAudioFrameSampleBuffer:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer)
+
+## v4.3.0
+
+该版本于 2024 年 2 月 22 日发布。
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，涉及一些 API 的改名、删除或行为变更，为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+
+#### 回调中的参数改名
+
+   为了使一些回调中的参数以及枚举类中的枚举命名更加便于理解，该版本进行了如下修改，请在升级到该版本后修改回调中的参数设置。
+
+| 回调 | 原有参数名 | 现有参数名 |
+| --- | --- | --- |
+| [`rtcEngine:localAudioStateChanged:reason:`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
+| [`rtcEngine:localVideoStateChangedOfState:reason:sourceType:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | `error` | `reason` |
+| [`onDirectCdnStreamingStateChanged:reason:message:`](/api-ref/rtc/ios/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| [`onMusicChartsResult:result:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | `errorCode` | `reason` |
+| [`onPreLoadEvent:songCode:percent:lyricUrl:state:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onpreloadevent) | <Slot name="release-notes-ios-html-1-5-1" /> | <Slot name="release-notes-ios-html-1-5-2" /> |
+| [`onMusicCollectionResult:result:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | `errorCode` | `reason` |
+| [`onLyricResult:songCode:lyricUrl:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onlyricresult) | `errorCode` | `reason` |
+| [`onSongSimpleInfoResult:songCode:simpleInfo:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | `errorCode` | `reason` |
+| [`AgoraRtcMediaPlayer:didChangedToState:reason:`](/api-ref/rtc/ios/API/toc_mediaplayer_observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) | `error` | `reason` |
+| [`rtcEngine:rtmpStreamingChangedToState:state:reason:`](/api-ref/rtc/ios/API/toc_media_push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | `errCode` | `reason` |
+
+<Slot for="release-notes-ios-html-1-5-1">
+
+- `status`
+      - `state`
+
+</Slot>
+
+<Slot for="release-notes-ios-html-1-5-2">
+
+- `errorCode`
+      - `reason`
+
+</Slot>
+
+   | 原有枚举类                           | 现有枚举类                           |
+   | ------------------------------------ | ------------------------------------ |
+   | `AgoraAudioLocalError`              | [`AgoraAudioLocalReason`](/api-ref/rtc/ios/API/enum_localaudiostreamreason)              |
+   | `AgoraLocalVideoStreamError`        | [`AgoraLocalVideoStreamReason`](/api-ref/rtc/ios/API/enum_localvideostreamreason)        |
+   | `AgoraDirectCdnStreamingError`      | [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/ios/API/enum_directcdnstreamingreason)      |
+   | `AgoraMediaPlayerError`             | [`AgoraMediaPlayerReason`](/api-ref/rtc/ios/API/enum_mediaplayerreason)             |
+   | `AgoraRtmpStreamingError`           | [`AgoraRtmpStreamingReason`](/api-ref/rtc/ios/API/enum_rtmpstreampublishreason)           |
+   | `AgoraMusicContentCenterStatusCode` | [`AgoraMusicContentCenterStateReason`](/api-ref/rtc/ios/API/enum_musiccontentcenterstatereason) |
+
+   :::info[信息]
+   有关具体枚举的改名详见 [API 变更](#apichange)。
+   :::
+
+#### 跨频道媒体流转发
+
+   为提升接口易用性，该版本删除了部分跨频道媒体流转发的方法和回调，请改用下表中列出的替代选项：
+
+| 已删除的方法和回调 | 替代的方法和回调 |
+| --- | --- |
+| <Slot name="release-notes-ios-html-2-1-0" /> | [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay) |
+| <Slot name="release-notes-ios-html-2-2-0" /> | [`startOrUpdateChannelMediaRelayEx:connection:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_startorupdatechannelmediarelayex) |
+| `didReceiveChannelMediaRelayEvent` | [`rtcEngine:channelMediaRelayStateDidChange:error:`](/api-ref/rtc/ios/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) |
+
+<Slot for="release-notes-ios-html-2-1-0">
+
+- `startChannelMediaRelay`
+      - `updateChannelMediaRelay`
+
+</Slot>
+
+<Slot for="release-notes-ios-html-2-2-0">
+
+- `startChannelMediaRelayEx`
+      - `updateChannelMediaRelayEx`
+
+</Slot>
+
+#### 视频自采集
+
+   该版本起，[`pushExternalVideoFrame:videoTrackId:`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_imediaengine_pushvideoframe) 从 [`AgoraRtcEngineKitEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 接口类迁移到 [`AgoraRtcEngineKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengine) 接口类。
+
+#### 音频路由
+
+   该版本起，[`AgoraAudioOutputRouting`](/api-ref/rtc/ios/API/enum_audioroute) 中的 `AgoraAudioOutputRoutingBluetooth` 更名为 `AgoraAudioOutputRoutingBluetoothDeviceHfp`，表示音频路由为使用 HFP 协议的蓝牙设备，新增 `AgoraAudioOutputRoutingBluetoothDeviceA2dp`(10) 表示音频路由为使用 A2DP 协议的蓝牙设备。
+
+#### 本地视频状态改变原因
+
+   该版本对 [`AgoraLocalVideoStreamReason`](/api-ref/rtc/ios/API/enum_localvideostreamreason) 枚举类中的枚举进行了如下修改：
+
+   - `AgoraLocalVideoStreamErrorEncodeFailure` 的枚举名变更为 `AgoraLocalVideoStreamReasonCodecNotSupport`。
+
+#### 日志加密行为变更
+
+  出于安全性和性能考虑，自该版本起，SDK 对日志进行加密，并且不再支持通过控制台打印明文日志。针对不同的需求，请参考以下解决方案：
+
+  - 如果需要得知 API 的调用情况，请查看 API 的日志并自行打印 SDK 回调日志。
+  - 如有其他特殊需求，请[联系技术支持](https://ticket.shengwang.cn/)并附上对应的加密日志。
+
+### 新增特性
+
+#### 接收端自定义合图布局
+
+   为支持接收端自定义多路合图流的布局，该版本新增了 [`rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) 回调。当接收端收到合图服务器发送的频道内合图视频流时，该回调会被触发，上报合图视频流的布局信息、以及合图流中每一路子视频流的布局信息。接收端可以在调用 [`setupRemoteVideo:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setupremotevideo) 方法时，为合图视频流中的子视频流（通过 `subviewUid` 区分）设置单独的 `view` 进行渲染，从而达到自定义视频布局的效果。
+
+   当合图视频流中的子视频流布局发生变化时，该回调也会被触发，实时上报最新的布局信息。
+
+   通过该特性，接收端可以灵活调整本地的视图布局。当在多人视频场景下应用时，接收端只需接收并解码一路合图视频流，可以有效降低接收端解码多路视频时的 CPU 占用率和网络带宽。
+
+  :::info[信息]
+  关于该特性在多主播场景下的最佳实践，详见[多主播场景下的视频体验优化](/zh-CN/realtime-media/rtc/best-practice/custom-layout.android.ios)。
+  :::
+
+#### 多视图本地预览
+
+   该版本支持在本地预览同时预览多个画面、且画面中显示的视频分别处于视频链路上的不同观测位置。使用方式举例如下：
+
+   1. 调用 [`setupLocalVideo:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 设置第一个视图：在 [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中设置 `position` 参数为 `AgoraVideoModulePositionPostCaptureOrigin`（该枚举为该版本新增），对应本地采集视频之后、前处理之前的位置，此处观测到的视频不具备前处理的效果。
+   2. 调用 [`setupLocalVideo:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 设置第二个视图：在 [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中设置 `position` 参数为 `AgoraVideoModulePositionPostCapture`，此处观测到的视频具备视频前处理的效果。
+   3. 观察本地预览效果：视图一为真人原始视频；视图二为经过视频前处理的虚拟人像（包括美颜、虚拟背景、水印本地预览）效果。
+
+#### 查询设备评分等级
+
+   该版本新增 [`queryDeviceScore`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_querydevicescore) 方法，用于查询设备的评分等级，以保证用户设置的参数不会超出其设备能力。例如，在高清或超高清视频场景下，可以先调用该方法查询设备的等级评分，如果返回的评分较低（比如低于 60），则需要适当调低视频分辨率，以避免影响视频体验。不同业务场景要求的最低设备评分等级不同，具体评分推荐请[联系技术支持](https://agora-ticket.agora.io/)。
+
+#### 本地播放及发布至远端的音轨控制
+
+   该版本新增 [`selectMultiAudioTrack:publishTrackIndex:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_imediaplayer_selectmultiaudiotrack) 方法，支持分别设置本地播放和发送至远端的音轨。在 K 歌等场景下，主播可以根据需求选择在本地播放一路音轨（如原声），然后发送另一路音轨至远端（如伴奏）以提升听众体验。 使用该功能前，需要通过 [`openWithMediaSource:`](/api-ref/rtc/ios/API/toc_mediaplayer_open#api_imediaplayer_openwithmediasource) 打开媒体文件，并通过 [`AgoraMediaSource`](/api-ref/rtc/ios/API/class_mediasource) 中新增的 `enableMultiAudioTrack` 成员来开启音轨控制。
+
+#### 音频采集及播放设备测试
+
+   该版本新增下列方法，用于在加入频道前测试音频采集或播放设备能否正常工作：
+
+   - [`startRecordingDeviceTest:`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_startrecordingdevicetest)：用于测试本地音频采集设备（如外放设备）能否正常工作。调用该方法后，SDK 会按设置的时间间隔触发相关回调报告采集设备的音量信息。测试完毕后，你需要调用新增的 [`stopRecordingDeviceTest`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_stoprecordingdevicetest) 方法停止测试。
+   - [`startPlaybackDeviceTest:`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)：用于在加入频道前测试音频播放设备能否正常工作。你可以通过 `testAudioFilePath` 参数指定需要播放的音频文件，测试者如果能听到声音，说明播放设备能正常工作。测试完毕后，你需要调用新增的 [`stopPlaybackDeviceTest`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest) 方法停止测试。
+
+#### 其他
+
+   该版本通过了如下 API 的测试验证，可以应用于全系列 RTC 4.x SDK。
+
+   - [`setRemoteSubscribeFallbackOption:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setremotesubscribefallbackoption)：设置弱网环境下订阅的音视频流回退选项。
+   - [`rtcEngine:didRemoteSubscribeFallbackToAudioOnly:byUid:`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly)：订阅流已回退为音频流或恢复为音视频流回调。
+   - [`setPlayerOption:value:`](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_setplayeroption) 和 [`setPlayerOptionString:value:`](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_setplayeroption2)：设置媒体播放器选项，用于提供技术预览或特别定制功能。
+   - [`enableCustomAudioLocalPlayback:enabled:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_enablecustomaudiolocalplayback)：设置是否在本地播放外部音频源。
+
+### 改进
+
+#### 耳返音量提升
+
+   该版本为用户提供更灵活的耳返音频调整选项，支持调用 [`setInEarMonitoringVolume:`](/api-ref/rtc/ios/API/toc_audio_capture#api_irtcengine_setinearmonitoringvolume) 将耳返音量设置为原始音量的 4 倍。
+
+#### 空间音频易用性提升
+
+   - 该版本优化了 [`setZones:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setzones) 方法的设计，支持将 `zones` 参数设置为 `NULL`，表示清除所有隔声区域。
+   - 自该版本起，在调用 [`AgoraLocalSpatialAudioKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_ilocalspatialaudioengine) 中的方法之前，无需先取消订阅频道内所有远端用户的音频流。
+   - 该版本新增 [`updateSelfTransform:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ilocalspatialaudioengine_updateselftransform) 方法，用于将位置向量传递到 iOS 原生的 SceneKit 或 RealityKit 等框架中直接进行渲染。
+
+#### 本地音频状态回调优化
+
+   该版本在 [`AgoraAudioLocalReason`](/api-ref/rtc/ios/API/enum_localaudiostreamreason) 中增加了如下枚举，用户可通过 [`rtcEngine:localAudioStateChanged:reason:`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调了解更多本地音频状态改变的原因：
+
+   - `AgoraAudioLocalReasonInterrupted`：本地音频采集被系统来电、Siri、闹钟中断。如需恢复本地音频采集，请用户中止电话、Siri、闹钟。
+
+#### 视频前处理方法优化
+
+   该版本对以下 5 个视频前处理方法新增了带 `souceType` 参数的重载方法，支持通过传入 `sourceType` 来指定视频前处理特效应用的媒体源类型（例如应用在自定义的视频采集媒体源上）：
+
+   - [`setBeautyEffectOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions2)
+   - [`setLowlightEnhanceOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setlowlightenhanceoptions2)
+   - [`setVideoDenoiserOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setvideodenoiseroptions2)
+   - [`setColorEnhanceOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setcolorenhanceoptions2)
+   - [`enableVirtualBackground:backData:segData:sourceType:`](/api-ref/rtc/ios/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2)
+
+#### 其他改进
+
+   该版本还进行了如下改进：
+
+   - 优化视频模块的算法、减小视频传输时对带宽的要求，在网络环境保持不变的情况下，为用户提供了更好的视频体验。
+   - 该版本优化了 SDK 的域名解析策略，提高了复杂网络环境下调用 [`setLocalAccessPoint:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setlocalaccesspoint) 解析域名时的稳定性。
+   - 传入含透明背景的图片作为虚拟背景的自定义背景图时，支持自定义图片透明背景的填充色。
+   - [`AgoraRtcLocalAudioStats`](/api-ref/rtc/ios/API/class_localaudiostats) 新增 `earMonitorDelay` 和 `aecEstimatedDelay` 成员，分别用于报告耳返延迟和回声消除 (Acoustic Echo Cancellation, AEC) 延迟。
+   - 新增 [`AgoraRtcMediaPlayer:cacheStats:`](/api-ref/rtc/ios/API/toc_mediaplayer_cache#callback_imediaplayersourceobserver_onplayercachestats) 回调，当媒体资源开始缓存后，SDK 会每秒触发一次该回调，报告当前缓存的媒体资源的相关数据。
+   - 新增 [`AgoraRtcMediaPlayer:playbackStats:`](/api-ref/rtc/ios/API/toc_mediaplayer_info#callback_imediaplayersourceobserver_onplayerplaybackstats) 回调，当媒体资源开始播放后，SDK 会每秒触发一次该回调，报告媒体当前播放的媒体资源的相关信息。你可以通过 [`AgoraMediaPlayerPlaybackStats`](/api-ref/rtc/ios/API/class_playerplaybackstats) 来获取当前音、视频的码率等信息。
+   - [`AgoraMusicContentCenterStateReason`](/api-ref/rtc/ios/API/enum_musiccontentcenterstatereason) 中新增状态码 `AgoraMusicContentCenterStateReasonErrorHttpInternalError` 表示 HTTP 内部发生错误，请稍后重试。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 当同时共享两路屏幕共享视频流时，[`rtcEngine:localVideoStats:sourceType:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostats) 回调上报的 `captureFrameRate` 为 0，不符合预期。
+
+<a id="apichange"></a>
+### API 变更
+
+#### 新增
+
+- [`rtcEngine:didTranscodedStreamLayoutInfoUpdatedWithUserId:videoLayoutInfo:`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo)
+- `AgoraVideoLayoutInfo`
+- [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 新增 `subviewUid` 和 `uid` 成员
+- [`updateSelfTransform:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ilocalspatialaudioengine_updateselftransform)
+- [`AgoraAudioLocalReason`](/api-ref/rtc/ios/API/enum_localaudiostreamreason) 中新增以下枚举
+  - `AgoraAudioLocalReasonInterrupted`
+- [`enableCustomAudioLocalPlayback:enabled:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_irtcengine_enablecustomaudiolocalplayback)
+- [`queryDeviceScore`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_querydevicescore)
+- [`AgoraMediaSourceType`](/api-ref/rtc/ios/API/enum_mediasourcetype) 中新增 `AgoraMediaSourceTypeCustomVideo` 枚举
+- [`setBeautyEffectOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions2)
+- [`setLowlightEnhanceOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setlowlightenhanceoptions2)
+- [`setVideoDenoiserOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setvideodenoiseroptions2)
+- [`setColorEnhanceOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setcolorenhanceoptions2)
+- [`enableVirtualBackground:backData:segData:sourceType:`](/api-ref/rtc/ios/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2)
+- [`AgoraAudioOutputRouting`](/api-ref/rtc/ios/API/enum_audioroute) 中新增 `AgoraAudioOutputRoutingBluetoothDeviceA2dp` 枚举
+- [`AgoraRtcLocalAudioStats`](/api-ref/rtc/ios/API/class_localaudiostats) 新增 `earMonitorDelay` 和 `aecEstimatedDelay` 成员
+- [`selectMultiAudioTrack:publishTrackIndex:`](/api-ref/rtc/ios/API/toc_audio_mixing#api_imediaplayer_selectmultiaudiotrack)
+- [`AgoraRtcMediaPlayer:cacheStats:`](/api-ref/rtc/ios/API/toc_mediaplayer_cache#callback_imediaplayersourceobserver_onplayercachestats)
+- [`AgoraRtcMediaPlayer:playbackStats:`](/api-ref/rtc/ios/API/toc_mediaplayer_info#callback_imediaplayersourceobserver_onplayerplaybackstats)
+- [`AgoraMediaPlayerPlaybackStats`](/api-ref/rtc/ios/API/class_playerplaybackstats)
+- [`AgoraMusicContentCenterStateReason`](/api-ref/rtc/ios/API/enum_musiccontentcenterstatereason) 中新增 `AgoraMusicContentCenterStateReasonErrorHttpInternalError`
+- [`startPlaybackDeviceTest:`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`stopPlaybackDeviceTest`](/api-ref/rtc/ios/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest)
+
+#### 修改
+
+- [`pushExternalVideoFrame:videoTrackId:`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_imediaengine_pushvideoframe) 从 [`AgoraRtcEngineKitEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 接口类迁移到 [`AgoraRtcEngineKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengine) 接口类
+- `AgoraAudioOutputRoutingBluetooth` 枚举名变更为 `AgoraAudioOutputRoutingBluetoothDeviceHfp`
+- 以下枚举名中的 `Error` 字段全部修改为 `Reason`：
+  - `AgoraAudioLocalErrorOK`
+  - `AgoraAudioLocalErrorFailure`
+  - `AgoraAudioLocalErrorDeviceNoPermission`
+  - `AgoraAudioLocalErrorDeviceBusy`
+  - `AgoraAudioLocalErrorRecordFailure`
+  - `AgoraAudioLocalErrorEncodeFailure`
+  - `AgoraLocalVideoStreamErrorOK`
+  - `AgoraLocalVideoStreamErrorFailure`
+  - `AgoraLocalVideoStreamErrorDeviceNoPermission`
+  - `AgoraLocalVideoStreamErrorDeviceBusy`
+  - `AgoraLocalVideoStreamErrorCaptureFailure`
+  - `AgoraLocalVideoStreamErrorCodecNotSupport`
+  - `AgoraLocalVideoStreamErrorCaptureInBackGround`
+  - `AgoraLocalVideoStreamErrorCaptureMultipleForegroundApps`
+  - `AgoraLocalVideoStreamErrorCaptureNoDeviceFound`
+  - `AgoraLocalVideoStreamErrorCaptureDeviceDisconnected`
+  - `AgoraLocalVideoStreamErrorCaptureDeviceInvalidId`
+  - `AgoraDirectCdnStreamingErrorOK`
+  - `AgoraDirectCdnStreamingErrorFailed`
+  - `AgoraDirectCdnStreamingErrorAudioPublication`
+  - `AgoraDirectCdnStreamingErrorVideoPublication`
+  - `AgoraDirectCdnStreamingErrorNetConnect`
+  - `AgoraDirectCdnStreamingErrorBadName`
+  - `AgoraMediaPlayerErrorNone`
+  - `AgoraMediaPlayerErrorInvalidArguments`
+  - `AgoraMediaPlayerErrorInternal`
+  - `AgoraMediaPlayerErrorNoSource`
+  - `AgoraMediaPlayerErrorInvalidMediaSource`
+  - `AgoraMediaPlayerErrorUnknowStreamType`
+  - `AgoraMediaPlayerErrorObjNotInitialized`
+  - `AgoraMediaPlayerErrorCodecNotSupported`
+  - `AgoraMediaPlayerErrorVideoRenderFailed`
+  - `AgoraMediaPlayerErrorInvalidState`
+  - `AgoraMediaPlayerErrorUrlNotFound`
+  - `AgoraMediaPlayerErrorInvalidConnectState`
+  - `AgoraMediaPlayerErrorSrcBufferUnderflow`
+  - `AgoraMediaPlayerErrorInterrupted`
+  - `AgoraMediaPlayerErrorNotSupported`
+  - `AgoraMediaPlayerErrorTokenExpired`
+  - `AgoraMediaPlayerErrorUnknown`
+  - `AgoraRtmpStreamingErrorOK`
+  - `AgoraRtmpStreamingErrorInvalidParameters`
+  - `AgoraRtmpStreamingErrorEncryptedStreamNotAllowed`
+  - `AgoraRtmpStreamingErrorConnectionTimeout`
+  - `AgoraRtmpStreamingErrorInternalServerError`
+  - `AgoraRtmpStreamingErrorRtmpServerError`
+  - `AgoraRtmpStreamingErrorTooOften`
+  - `AgoraRtmpStreamingErrorReachLimit`
+  - `AgoraRtmpStreamingErrorNotAuthorized`
+  - `AgoraRtmpStreamingErrorStreamNotFound`
+  - `AgoraRtmpStreamingErrorFormatNotSupported`
+  - `AgoraRtmpStreamingErrorNotBroadcaster`
+  - `AgoraRtmpStreamingErrorTranscodingNoMixStream`
+  - `AgoraRtmpStreamingErrorNetDown`
+  - `AgoraRtmpStreamingErrorInvalidPrivilege`
+  - `AgoraRtmpStreamingErrorUnpublishOK`
+- `AgoraMusicContentCenterStatusCode` 修改为 [`AgoraMusicContentCenterStateReason`](/api-ref/rtc/ios/API/enum_musiccontentcenterstatereason)，其中的枚举名的 `StatusErr` 字段全部修改为 `Reason`：
+  - `AgoraMusicContentCenterStateReasonErrorGateway`
+  - `AgoraMusicContentCenterStateReasonErrorPermissionAndResource`
+  - `AgoraMusicContentCenterStateReasonErrorInternalDataParse`
+  - `AgoraMusicContentCenterStateReasonErrorMusicLoading`
+  - `AgoraMusicContentCenterStateReasonErrorMusicDecryption`
+- `AgoraMusicContentCenterStatusCodeError` 修改为 `AgoraMusicContentCenterStateReasonError`
+
+#### 删除
+
+- `startChannelMediaRelay`
+- `updateChannelMediaRelay`
+- `startChannelMediaRelayEx`
+- `updateChannelMediaRelayEx`
+- `didReceiveChannelMediaRelayEvent`
+- `AgoraChannelMediaRelayEvent`
+
+## v4.2.6
+
+该版本于 2023 年 11 月 16 日发布。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 使用 iOS 16 版本或以上设备在加入频道前连接了蓝牙耳机，在加入频道后的音频路由不符合预期：音频从扬声器播放、而非蓝牙耳机。
+- 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
+
+## v4.2.3
+
+该版本于 2023 年 10 月 12 日发布。
+
+### 新增特性
+
+#### 本地截图上传更新
+
+为方便接入声网云市场提供的第三方视频审核服务，该版本有以下改动：
+
+- [`AgoraContentInspectType`](/api-ref/rtc/ios/API/enum_contentinspecttype) 中新增 `AgoraContentInspectTypeImageModeration` 枚举值，代表使用声网云市场视频审核插件对视频截图并上传。
+- [`AgoraContentInspectConfig`](/api-ref/rtc/ios/API/class_contentinspectconfig) 中新增的 `serverConfig` 可选参数用于云市场视频审核相关服务端配置，配置后可同时接入多个云市场审核插件并实现灵活控制插件开关等功能，详情请[联系技术支持](https://agora-ticket.agora.io/)。
+
+此外，该版本还新增了 [`enableContentInspectEx:config:connection:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengineex_enablecontentinspectex) 方法，支持同时对多条视频流截图并上传。
+
+#### 进阶功能查询
+
+该版本新增了 [`isFeatureAvailableOnDevice:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_isfeatureavailableondevice) 方法，用于查询设备能力是否满足虚拟背景、美颜等进阶功能的使用要求。
+
+在使用进阶功能前，你可以根据查询结果判断当前设备是否支持这些功能，从而避免在低端设备上开启进阶功能导致性能下降或功能不可用的问题。你可以根据该方法的返回值，决定是否显示或启用相应的功能按钮，或者在设备能力不足时，为用户提示相应信息。
+
+此外，自该版本起，调用 `enableVirtualBackground` 和 `setBeautyEffectOptions` 时，SDK 会自动对当前设备能力进行检查，并在设备能力不足时，通过返回错误码 `-4` 表示该设备不支持开启该功能。
+
+### 改进
+
+#### SDK 任务处理调度优化
+
+   该版本对 SDK 内部任务的调度机制进行了优化，具体表现在以下方面：
+
+   - 远端及本地的首帧出图与出声速度提升了 10% 到 20%。
+   - API 的调用耗时和响应耗时缩短了 5% 到 50%。
+   - SDK 的并行处理能力有明显提升，在较低端的设备上也能体验到较高的视频质量 (720P，24 fps)；并且在高分辨率和高帧率视频场景下的图像处理更加稳定。
+   - SDK 的稳定性进一步增强，在各种特定场景下崩溃率有明显下降。
+
+#### 优化虚拟背景内存占用
+
+该版本升级了虚拟背景算法，降低了虚拟背景功能的内存占用。相比之前的版本，在低端机上使用虚拟背景功能时 App 运行占用的内存降低了约 4% 到 10%（具体数值取决于设备型号和平台）。
+
+#### 其他改进
+
+该版本还进行了如下改进：
+
+- 当调用 [`setPlaybackSpeed:`](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_setplaybackspeed) 设置音频文件的播放速度时，传入非法参数后会返回错误码 `-2`，表示方法中设置了无效的参数，需要重新设置参数。
+- 优化了 Token 解析时的逻辑，避免传入非法 Token 后 App 发生崩溃。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 本地系统时间不正确时，偶现加入频道失败。
+- 调用 `playEffect` 使用相同的 `soundId` 播放两个不同的音效文件，偶现第一个音效文件播放完毕后会重复播放。
+- 合唱场景下，调用 [`preloadWithSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload) 加载音乐，偶现加载失败。
+- 当本地系统时间不准确时，歌曲榜单加载失败。
+- 调用一次 [`takeSnapshotEx:uid:filePath:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengineex_takesnapshotex) 获取视频截图会收到多次 [`rtcEngine:snapshotTaken:filePath:width:height:errCode:`](/api-ref/rtc/ios/API/toc_snapshot#callback_irtcengineeventhandler_onsnapshottaken) 视频截图结果回调。
+
+### API 变更
+
+#### 新增
+
+- [`enableContentInspectEx:config:connection:`](/api-ref/rtc/ios/API/toc_snapshot#api_irtcengineex_enablecontentinspectex)
+- [`AgoraContentInspectType`](/api-ref/rtc/ios/API/enum_contentinspecttype) 新增 `AgoraContentInspectTypeImageModeration`
+- [`AgoraContentInspectConfig`](/api-ref/rtc/ios/API/class_contentinspectconfig) 中新增 `serverConfig` 可选参数
+- [`isFeatureAvailableOnDevice:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_isfeatureavailableondevice)
+- [`AgoraFeatureType`](/api-ref/rtc/ios/API/enum_featuretype)
+
+## v4.2.2
+
+该版本于 2023 年 7 月 27 日发布。
+
+### 升级必看
+
+该版本废弃了 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 类下的 [`preloadWithSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload) 方法并新增 [`preloadWithSongCode:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload2) 方法。如果你使用了 [`preloadWithSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload) 方法实现预加载音乐资源，请在升级到该版本后更新 App 代码。
+
+### 新增特性
+
+#### 通配 Token
+
+   该版本新增通配 Token。生成 Token 时，在用户 ID 不为 0 的情况下，声网支持你将频道名设为通配符，从而生成可以加入任何频道的通配 Token。在需要频繁切换频道及多频道场景下，使用通配 Token 可以避免 Token 的重复配置，有助于提升开发效率，减少你的 Token 服务端的压力。详见[使用通配 Token](/zh-CN/realtime-media/rtc/best-practice/wildcard-token.android.ios)。
+
+   :::warning[注意]
+   声网 4.x RTC SDK 均支持使用通配 Token。
+   :::
+
+#### 预加载频道
+
+   该版本新增 [`preloadChannelByToken:channelId:uid:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel) 和 [`preloadChannelByTokenWithUserAccount:channelId:userAccount:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannelwithuseraccount) 方法，支持角色为观众的用户在加入频道前预先加载一个或多个频道。该方法调用成功后可以减少观众加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的音视频体验。
+
+   在同时预加载多个频道时，为避免观众在切换不同频道时需多次申请 Token 从而导致切换频道时间增长，因此声网推荐使用通配 Token 来减少你的业务服务端获取 Token 导致的耗时，进一步加快切换频道的速度，详见[使用通配 Token](/zh-CN/realtime-media/rtc/best-practice/wildcard-token.android.ios)。
+
+#### 自定义视频画布背景颜色
+
+   该版本在 [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中增加了 `backgroundColor` 成员，支持你在设置本地或远端视频显示属性时，自定义视频画布的背景颜色。
+
+#### 指定视频源进行预览
+
+   为支持用户选择不同类型的视频源进行本地视频预览，该版本新增 [`startPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview2) 和 [`stopPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_stoppreview2) 方法。你可以调用 [`startPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview2) 并设置 `sourceType` 指定待预览的视频源类型；然后调用 [`stopPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_stoppreview2) 关闭视频预览。
+
+   :::warning[注意]
+   该方法中设置的视频源类型需要跟 `setupLocalVideo` 中 `AgoraRtcVideoCanvas` 的视频源类型一致。
+   :::
+
+#### 支持仅播放副歌片段
+
+   该版本新增 [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode) 方法，如果你仅需要播放某一音乐资源的副歌片段，在播放前你需要调用该方法来为该副歌片段创建一个内部歌曲编号，作为该资源的唯一标识。你可以查看[在线 K 歌房文档](https://docportal.shengwang.cn/cn/online-ktv/landing-page?platform=Android)了解更多 K 歌场景方案。
+
+### 改进
+
+#### 摄像头采集效果提升
+
+   该版本从以下几个方面提升了摄像头采集效果：
+
+   - 支持摄像头采集曝光调节
+
+      新增 [`isCameraExposureSupported`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_iscameraexposuresupported) 和 [`setCameraExposureFactor:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_setcameraexposurefactor) 方法，用于查询当前设备是否支持曝光调节和设置摄像头的曝光增益。
+
+   - 优化默认摄像头选择
+
+      自该版本起，SDK 的默认摄像头选择对齐 iOS 系统相机行为。如果设备拥有多个后置摄像头，则在视频采集时可以获得更好的拍摄视野、变焦能力、低光性能和深度感应，从而提高视频采集的质量。
+
+#### 虚拟背景算法升级
+
+   该版本升级了虚拟背景的人像分割算法，全面提升了人像分割的准确度、人像边缘与虚拟背景间的平滑度以及人物移动时边缘的贴合度，同时优化了虚拟背景在会议、办公、居家等场景下，以及逆光、弱光等条件下的人物边缘精度。
+
+#### 跨频道连麦优化
+
+   该版本将跨频道连麦时媒体流转发的目标频道增加至 6 个，在调用 [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay) 和 [`startOrUpdateChannelMediaRelayEx:connection:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_startorupdatechannelmediarelayex) 时，你可以指定最多 6 个目标频道。
+
+#### 视频编解码查询能力增强
+
+   为提升设备编解码能力查询功能，该版本在 `CodecCapAgoraVideoCodecCapInfoInfo` 中新增 `codecLevels` 成员。当成功调用 [`queryCodecCapability`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_querycodeccapability) 后，可通过 `codecLevels` 得知当前设备对于 H.264 和 H.265 格式的视频的硬件和软件解码能力等级。
+
+#### 其他改进
+
+- 在屏幕共享场景下，SDK 根据共享的场景自动调节发送端的帧率。尤其是在共享文档场景下，避免发送端的视频码率超出预期的情况，以提高传输效率、减小网络负担。
+- 为帮助用户了解更多类型的远端视频状态改变的原因，[`rtcEngine:remoteVideoStateChangedOfUid:state:reason:elapsed:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调中新增了 `AgoraVideoRemoteReasonCodecNotSupport` 枚举，表示本地的视频解码器不支持对收到的远端视频流进行解码。
+- 版权音乐新增 [`getSongSimpleInfoWithSongCode:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getsongsimpleinfo) 方法，可用于获取某一指定歌曲的详细信息，你可以通过触发的 [`onSongSimpleInfoResult:songCode:simpleInfo:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) 回调来获取歌曲信息。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 网络异常导致频道连接断开后，频道连接恢复较慢。
+- 在屏幕共享场景下，部分机型偶现屏幕共享画面出图延迟高于预期。
+- 自采集场景下，`setBeautyEffectOptions`、`setLowlightEnhanceOptions`、`setVideoDenoiserOptions` 和 `setColorEnhanceOptions` 无法自动加载插件。
+
+### API 变更
+
+#### 新增
+
+- [`startPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview2)
+- [`stopPreview:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_stoppreview2)
+- [`setCameraExposureFactor:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_setcameraexposurefactor)
+- [`isCameraExposureSupported`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_iscameraexposuresupported)
+- [`preloadChannelByToken:channelId:uid:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel)
+- [`preloadChannelByTokenWithUserAccount:channelId:userAccount:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannelwithuseraccount)
+- [`updatePreloadChannelToken:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatepreloadchanneltoken)
+- [`getSongSimpleInfoWithSongCode:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getsongsimpleinfo)
+- [`onSongSimpleInfoResult:songCode:simpleInfo:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult)
+- [`getInternalSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getinternalsongcode)
+- [`preloadWithSongCode:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload2)
+- [`onLyricResult:songCode:lyricUrl:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onlyricresult) 中增加 `songCode`
+- [`onPreLoadEvent:songCode:percent:lyricUrl:state:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onpreloadevent) 中增加 `requestId`
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中增加下列成员：
+  - `publishThirdCameraTrack`
+  - `publishFourthCameraTrack`
+  - `publishThirdScreenTrack`
+  - `publishFourthScreenTrack`
+- [`AgoraVideoCodecCapLevels`](/api-ref/rtc/ios/API/class_codeccaplevels)
+- [`AgoraVideoCodecCapabilityLevel`](/api-ref/rtc/ios/API/enum_videocodeccapabilitylevel)
+- [`AgoraRtcVideoCanvas`](/api-ref/rtc/ios/API/class_videocanvas) 中增加 `backgroundColor` 成员
+- `CodecCapAgoraVideoCodecCapInfoInfo` 中增加 `codecLevels` 成员
+- [`AgoraVideoRemoteReason`](/api-ref/rtc/ios/API/enum_remotevideostatereason) 中增加 `AgoraVideoRemoteReasonCodecNotSupport` 枚举
+
+#### 废弃
+
+- [`preloadWithSongCode:jsonOption:`](/api-ref/rtc/ios/API/toc_drm#api_imusicontentcenter_preload)
+
+## v4.2.1
+
+该版本于 2023 年 6 月 21 日发布。
+
+### 改进
+
+该版本改进了网络传输策略，提升了音视频交互的流畅度。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- SDK 不兼容部分旧版本 AccessToken 导致无法加入频道。
+- 发送端调用 [`setAINSMode:mode:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setainsmode) 开启 AI 降噪功能后，接收端用户偶现回声。
+- 使用媒体播放器播放媒体文件时出现短暂杂音。
+- 调用 [`destroyMediaPlayer:`](/api-ref/rtc/ios/API/toc_mediaplayer_initialize#api_irtcengine_destroymediaplayer) 销毁媒体播放器时偶现崩溃。
+
+## v4.2.0
+
+该版本于 2023 年 5 月 24 日发布。
+
+### 升级必看
+
+该版本对部分功能的实现方式进行了优化，请在升级到该版本后更新 App 代码。
+
+#### 视频采集
+
+原有用于摄像头采集的方法已删除，请改用下表中列出的替代方法，并通过设置 `sourceType` 来指定视频源。
+
+| 已删除方法                                               | 替代方法                 |
+| :------------------------------------------------------- | :----------------------- |
+| `startSecondaryCameraCapture` | [`startCameraCapture:config:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_startcameracapture)     |
+| `stopSecondaryCameraCapture`   | [`stopCameraCapture:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_stopcameracapture)      |
+
+#### 视频数据获取
+
+- [`onCaptureVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [`onPreEncodeVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调中新增了 `sourceType` 参数，用于表示具体的视频源类型。
+- 以下回调已删除，请通过 [`onPreEncodeVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 和 [`onCaptureVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 中的 `sourceType` 参数得知视频源类型。
+  - `onScreenCaptureVideoFrame`
+  - `onPreEncodeScreenVideoFrame`
+
+#### 媒体发布选项
+
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的 `publishCustomAudioTrackEnableAec` 已删除，请改用 `publishCustomAudioTrack`。
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的成员 `publishTrancodedVideoTrack` 变更为 `publishTranscodedVideoTrack`.
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的成员 `publishCustomAudioSourceId` 变更为 `publishCustomAudioTrackId`。
+
+#### 音视频录制
+
+- 删除 `sharedMediaRecorderWithRtcEngine` 方法，可通过该版本新增的 [`createMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_createmediarecorder) 方法来创建录制对象。
+- 删除 [`startRecording:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_startrecording) 、[`stopRecording`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_stoprecording)、[`setMediaRecorderDelegate:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_setmediarecorderobserver) 中的 `connection` 参数。
+- 删除 [`AgoraMediaRecorder`](/api-ref/rtc/ios/API/rtc_interface_class#class_imediarecorder) 类中的 `destroy` 方法，你可直接调用该版本新增的 [`destroyMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_destroymediarecorder) 方法来销毁录制对象以释放资源。
+
+#### 其他兼容性变更
+
+- `didApiCallExecute` 已删除，请改用相关频道和媒体的事件通知得知 API 的执行结果。
+- [`enableDualStreamMode:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode) 和 [`enableDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode3) 已废弃，请改用 [`setDualStreamMode:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode) 和 [`setDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode2)。
+- `startChannelMediaRelay`、`updateChannelMediaRelay`、`startChannelMediaRelayEx` 和 `updateChannelMediaRelayEx` 已废弃，请改用 [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay) 和 [`startOrUpdateChannelMediaRelayEx:connection:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_startorupdatechannelmediarelayex)。
+
+### 新增特性
+
+#### AI 降噪
+
+该版本新增 AI 降噪功能。开启该功能后，SDK 会智能识别和消除背景噪音，无论是在嘈杂的公共场所，还是在需要保持低延迟的实时竞技场景，都能够确保声音传输的清晰度，为用户提供更高质量的音频体验。你可以通过该版本新增的 [`setAINSMode:mode:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setainsmode) 方法开启 AI 降噪，并根据实际场景，将降噪模式设置为均衡模式、强降噪模式或低延时模式。
+
+#### 增强虚拟背景
+
+为了增加实时视频通话的趣味性、保护用户隐私，该版本增强了虚拟背景功能。你可以在调用 `enableVirtualBackground` 方法时，将自定义背景设置为更多类型：
+
+- 将背景处理为 Alpha 信息，不作替换，仅分割人像和背景，可结合本地合图功能实现人像画中画效果。
+- 将背景替换为多种格式的本地视频。
+
+#### 视频场景化设置
+
+该版本新增 [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario) 方法用于设置视频业务场景，SDK 会根据不同场景自动启用最佳实践策略，调整关键性能指标，进而优化视频质量，提升用户体验。无论是正式的商务会议还是轻松的在线聚会，该功能都能确保视频质量满足需求。目前，该特性主要为实时视频会议场景提供了以下针对性的优化：
+
+- 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
+- 实时监测接收端大小流的订阅人数，根据订阅人数动态调节大流配置、动态开启和关闭小流，以节省上行带宽和消耗。
+
+#### 本地录制远端音视频 (Beta)
+
+该版本新增本地录制远端音视频功能。本地用户可以录制远端用户的音频视频流，便于将来回放、分析或分享，适用于在线教育、企业培训、在线会议等多类场景。为更准确报告录制状态，该版本在 [`mediaRecorder:stateDidChanged:uid:state:reason:`](/api-ref/rtc/ios/API/toc_recording#callback_imediarecorderobserver_onrecorderstatechanged) 、[`mediaRecorder:informationDidUpdated:uid:info:`](/api-ref/rtc/ios/API/toc_recording#callback_imediarecorderobserver_onrecorderinfoupdated) 中新增 `channelId` 和 `uid` 参数，用于表示录制的音视频流的具体信息，并新增 [`createMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_createmediarecorder) 方法，用于创建本地或远端的录制对象。
+
+你可以通过如下方法体验本地录制远端音视频功能：
+
+- [`createMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_createmediarecorder)：创建录制对象。如需同时录制本地和远端的音视频，可以多次调用该方法创建多个录制对象。
+- [`setMediaRecorderDelegate:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_setmediarecorderobserver)：设置录制回调对象。
+- [`startRecording:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_startrecording)：开始录制。
+- [`stopRecording`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_stoprecording)：停止录制。
+- [`destroyMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_destroymediarecorder)：销毁录制对象。
+
+#### 本地合图
+
+该版本新增本地合图功能，用户可以调用 [`startLocalVideoTranscoder:`](/api-ref/rtc/ios/API/toc_local_transcoder#api_irtcengine_startlocalvideotranscoder) 方法，在本地将多路视频流（例如：摄像头采集的视频、屏幕共享流、视频文件、图片等）混合和渲染，以实现自定义布局和效果。通过这项功能，你可以轻松创建个性化的视频显示效果，满足各种场景需求，如远程会议、直播、在线教育场景，同时支持人像画中画等功能。
+
+另外，SDK 还提供了[`updateLocalTranscoderConfiguration:`](/api-ref/rtc/ios/API/toc_local_transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 方法和 [`rtcEngine:didLocalVideoTranscoderErrorWithStream:errorCode:`](/api-ref/rtc/ios/API/toc_local_transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调。当你在开启本地合图后，可以调用 [`updateLocalTranscoderConfiguration:`](/api-ref/rtc/ios/API/toc_local_transcoder#api_irtcengine_updatelocaltranscoderconfiguration) 更新合图的配置；当你在开启本地合图或者更新本地合图配置失败时，可通过 [`rtcEngine:didLocalVideoTranscoderErrorWithStream:errorCode:`](/api-ref/rtc/ios/API/toc_local_transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) 回调得知合图失败的原因。
+
+:::warning[注意]
+本地合图对 CPU 的消耗较高，声网建议你在性能较高的设备上开启该功能。
+:::
+
+#### 多端同步
+
+在实时合唱的场景中，可能会出现网络原因导致各接收端下行链路不一致的情况，该版本新增 [`getNtpWallTimeInMs`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getntpwalltimeinms) 方法获取当前的 NTP (网络时间协议) 时间，用于对齐多个接收端的歌词和音乐，实现合唱同步、歌词进度同步等，为用户提供更佳的协同体验。
+
+### 改进
+
+#### 优化变声
+
+该版本新增了 [`setLocalVoiceFormant:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoiceformant) 方法，用于设置共振峰比率以改变语音的音色。该方法还可以和 [`setLocalVoicePitch:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setlocalvoicepitch) 方法一起使用，同时调节音调和音色，实现更多样化的变声效果。
+
+#### 增强屏幕共享
+
+该版本新增 [`queryScreenCaptureCapability`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_queryscreencapturecapability) 方法，用于查询当前设备的屏幕捕获能力。如果你想在屏幕共享时启用高帧率（如 60 fps）、但不确定设备是否支持时，可以调用该方法、然后从返回值中得知设备支持的最高帧率是否满足需求。
+
+该版本新增 [`setScreenCaptureScenario:`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_setscreencapturescenario) 方法，用于设置屏幕共享的场景类型，SDK 会根据场景类型自动调整共享画面的的流畅度和清晰度。
+
+#### 提升音视频同步能力
+
+针对自定义视频和音频采集场景，该版本新增 [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms) 方法用于获取当前的 Monotonic Time，将该值传入视频帧和音频帧的时间戳，可以精确控制音视频时序，确保音视频同步。
+
+#### 优化多路摄像头采集
+
+该版本新增 [`startCameraCapture:config:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_startcameracapture) 方法，通过多次调用并指定 `sourceType` 参数可以同时开启多路摄像头采集的视频流，用于本地合图或多频道发布。适用于如远程医疗、远程教育等连接多个摄像头的场景。
+
+#### 优化版权音乐
+
+针对在线 K 歌房场景，改版本新增 [`getCaches`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getcaches) 和 [`removeCacheWithSongCode:`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_removecache) 方法，用于获取、删除音乐资源缓存，并新增状态码和错误码，可方便用户排查问题。
+
+#### 优化跨频道连麦
+
+该版本新增 [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay) 和 [`startOrUpdateChannelMediaRelayEx:connection:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_startorupdatechannelmediarelayex) 方法，通过一个方法实现开始跨频道转发和更新转发的目标频道，提升了接口易用性；同时，优化内部交互次数，有效降低调用了延迟。在降低开发难度的同时，为开发者提供更顺畅的使用体验。
+
+#### 多路音频自采集
+
+为更好地满足音频自采集的场景需求，该版本新增了 [`createCustomAudioTrack:config:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_createcustomaudiotrack) 和 [`destroyCustomAudioTrack:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_destroycustomaudiotrack) 方法用于创建和销毁自定义音频轨道，并提供了两种音频轨道类型供用户选择，进一步提升了自采集音频处理的灵活性和易用性：
+
+- 可混音的音频轨道：支持将多路外部音频源混合发布到同一频道中，适用于多路音频源的自采集场景。
+- 非混音的音频轨道：仅支持将一路外部音频源发布到单个频道中，适用于实时低延迟的自采集场景。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 当快速切换身份角色时，观众端听不到声音。
+- 跨频道连麦时 [`rtcEngine:firstRemoteVideoFrameOfUid:size:elapsed:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调偶现丢失。
+- 接收端主动订阅大流但是异常接收小流。
+- 由于 [`rtcEngine:remoteAudioStateChangedOfUid:state:reason:elapsed:`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调异常造成客户端状态异常。
+
+### API 变更
+
+#### 新增
+
+- [`startCameraCapture:config:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_startcameracapture)
+- [`stopCameraCapture:`](/api-ref/rtc/ios/API/toc_camera_capture#api_irtcengine_stopcameracapture)
+- [`startOrUpdateChannelMediaRelay:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_startorupdatechannelmediarelay)
+- [`startOrUpdateChannelMediaRelayEx:connection:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_startorupdatechannelmediarelayex)
+- [`getNtpWallTimeInMs`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getntpwalltimeinms)
+- [`setVideoScenario:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoscenario)
+- [`getCurrentMonotonicTimeInMs`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getcurrentmonotonictimeinms)
+- [`rtcEngine:didLocalVideoTranscoderErrorWithStream:errorCode:`](/api-ref/rtc/ios/API/toc_local_transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror)
+- [`startLocalVideoTranscoder:`](/api-ref/rtc/ios/API/toc_local_transcoder#api_irtcengine_startlocalvideotranscoder)
+- [`updateLocalTranscoderConfiguration:`](/api-ref/rtc/ios/API/toc_local_transcoder#api_irtcengine_updatelocaltranscoderconfiguration)
+- [`queryScreenCaptureCapability`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_queryscreencapturecapability)
+- [`setScreenCaptureScenario:`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_setscreencapturescenario)
+- [`setAINSMode:mode:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setainsmode)
+- [`createCustomAudioTrack:config:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_createcustomaudiotrack)
+- [`destroyCustomAudioTrack:`](/api-ref/rtc/ios/API/toc_audio_custom_capturenrendering#api_imediaengine_destroycustomaudiotrack)
+- [`createMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_createmediarecorder)
+- [`destroyMediaRecorder:`](/api-ref/rtc/ios/API/toc_recording#api_irtcengine_destroymediarecorder)
+- [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter)
+  - `removeCache`
+  - [`getCaches`](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_getcaches)
+- `AudioTrackConfig`
+- [`AgoraMusicCacheInfo`](/api-ref/rtc/ios/API/class_musiccacheinfo)
+- [`AgoraRecorderStreamInfo`](/api-ref/rtc/ios/API/class_recorderstreaminfo)
+- [`AUDIO_AINS_MODE`](/api-ref/rtc/ios/API/enum_audioainsmode)
+- [`AgoraAudioTrackType`](/api-ref/rtc/ios/API/enum_audiotracktype)
+- [`AgoraMusicCacheStatusType`](/api-ref/rtc/ios/API/enum_musiccachestatustype)
+- [`AgoraApplicationScenarioType`](/api-ref/rtc/ios/API/enum_videoapplicationscenariotype)
+- [`AgoraScreenCaptureFrameRateCapability`](/api-ref/rtc/ios/API/enum_screencaptureframeratecapability)
+- [`AgoraRtcEngineConfig`](/api-ref/rtc/ios/API/class_rtcengineconfig) 中新增 `domainLimit` 和 `autoRegisterAgoraExtensions` 属性
+- [`mediaRecorder:stateDidChanged:uid:state:reason:`](/api-ref/rtc/ios/API/toc_recording#callback_imediarecorderobserver_onrecorderstatechanged)、[`mediaRecorder:informationDidUpdated:uid:info:`](/api-ref/rtc/ios/API/toc_recording#callback_imediarecorderobserver_onrecorderinfoupdated) 中新增 `channelId` 和 `uid` 参数
+- [`onCaptureVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [`onPreEncodeVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 中增加 `sourceType` 参数
+- [`AgoraVirtualBackgroundSourceType`](/api-ref/rtc/ios/API/enum_backgroundsourcetype) 中新增 `AgoraVirtualBackgroundNone` 和 `AgoraVirtualBackgroundVideo`
+- [`AgoraMusicContentCenterPreloadStatus`](/api-ref/rtc/ios/API/enum_preloadstate) 中增加 `AgoraMusicContentCenterPreloadStatusRemoveCache`
+- `AgoraMusicContentCenterStatusCode` 中增加如下枚举：
+    - `AgoraMusicContentCenterStatusCodeErrorGateway`
+    - `AgoraMusicContentCenterStatusCodeErrorPermissionAndResource`
+    - `AgoraMusicContentCenterStatusCodeErrorInternalDataParse`
+    - `AgoraMusicContentCenterStatusCodeErrorMusicLoadin`
+    - `AgoraMusicContentCenterStatusCodeErrorMusicDecryption`
+- [`AgoraMusicContentCenterConfig`](/api-ref/rtc/ios/API/class_musiccontentcenterconfiguration) 中新增 `maxCacheSize`
+
+#### 修改
+
+- [`onMusicChartsResult:result:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 中的 `status` 修改为 `errorCode`
+- [`onMusicCollectionResult:result:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 中的 `status` 修改为 `errorCode`
+- [`onLyricResult:songCode:lyricUrl:reason:`](/api-ref/rtc/ios/API/toc_drm#callback_imusiccontentcentereventhandler_onlyricresult) 中的 `status` 修改为 `errorCode`
+- `onPreLoadEvent `中的 `msg` 修改为 `errorCode`
+
+#### 废弃
+
+- [`enableDualStreamMode:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode)
+- [`enableDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode3)
+- `startChannelMediaRelay`
+- `startChannelMediaRelayEx`
+- `updateChannelMediaRelay`
+- `updateChannelMediaRelayEx`
+- `didReceiveChannelMediaRelayEvent`
+- `AgoraChannelMediaRelayEvent`
+
+#### 删除
+
+- `startSecondaryCameraCapture`
+- `stopSecondaryCameraCapture`
+- `didApiCallExecute`
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的 ` publishCustomAudioTrackEnableAec`
+- `sharedMediaRecorderWithRtcEngine`
+- [`AgoraMediaRecorder`](/api-ref/rtc/ios/API/rtc_interface_class#class_imediarecorder) 类中的 `destroy`
+- [`startRecording:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_startrecording)、[`stopRecording`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_stoprecording)、[`setMediaRecorderDelegate:`](/api-ref/rtc/ios/API/toc_recording#api_imediarecorder_setmediarecorderobserver) 中删除 `connection` 参数
+- `onScreenCaptureVideoFrame`
+- `onPreEncodeScreenVideoFrame`
+
+## v4.1.1
+
+该版本于 2023 年 2 月 8 日发布。
+
+### 升级必看
+
+#### 默认分辨率
+
+自该版本起，SDK 对视频编码的算法进行了优化，将默认的视频编码分辨率从 640 × 360 提升为 960 × 540，以适应设备性能和网络带宽的提升，在各种音视频互动场景下，为用户提供全链路的高清体验。
+
+如果你想自定义视频编码分辨率，可调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法，重新设置视频编码参数配置中的视频编码分辨率。
+
+<div class="note">由于默认分辨率的提升，会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。</div>
+
+#### 设置远端视频流的订阅选项
+
+该版本起，`setRemoteVideo` 更名为 [`setRemoteVideoSubscriptionOptions:options:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions)；`setRemoteVideoEx` 更名为 [`setRemoteVideoSubscriptionOptionsEx:options:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex)。如果你将 SDK 升级至该版本或更高版本，请在调用处同步修改以上两个方法的名称。
+
+### 新增特性
+
+#### 快速出图出声
+
+该版本新增 [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 方法，用于开启音视频帧的加速渲染模式，可加快用户加入频道后的首帧出图与出声速度。
+
+#### 视频渲染数据打点
+
+该版本新增 [`startMediaRenderingTracing`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 和 [`startMediaRenderingTracingEx:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex) 方法，SDK 以调用该方法的时刻作为起点，开始跟踪频道内视频帧的渲染状态，并通过 [`rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告相关事件的信息。
+
+声网推荐你将该方法和 App 中的 UI 设置（按钮、滑动条等）结合使用。例如：在终端用户点击“加入频道”按钮的时刻调用该方法进行打点，然后通过 [`rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调获取视频帧渲染过程中的指标，从而方便开发者针对指标进行专项优化，以提高出图效率。
+
+### 改进
+
+#### 视频观测器
+
+自该版本起，SDK 对 [`onRenderVideoFrame:uid:channelId:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调进行了优化，在不同的视频处理模式下返回值的意义不同：
+
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadOnly` 时，返回值无实际含义。
+- 当视频处理模式为 `AgoraVideoFrameProcessModeReadWrite` 时，返回 `YES` 代表设置 SDK 接收视频帧；返回 `NO` 代表设置 SDK 丢弃视频帧。
+
+#### 超分辨率
+
+该版本提升了超分辨率的性能表现。为提升超分辨率易用性，该版本删除了 `enableRemoteSuperResolution`，超分辨率纳入画质增强线上策略的一部分，无需单独设置即可体验。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 使用媒体播放器播放采样率超过 48 kHz 的音频时，播放失败。
+- 当频道内有多路视频流时，调用部分视频增强插件相关 API 偶现失败。
+- 客户端主动退出频道时未向服务端发起请求，导致服务端判定为退出频道超时。
+
+### API 变更
+
+#### 新增
+
+- [`enableInstantMediaRendering`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering)
+- [`startMediaRenderingTracing`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
+- [`startMediaRenderingTracingEx:`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex)
+- [`rtcEngine:videoRenderingTracingResultOfUid:currentEvent:tracingInfo:`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+- [`AgoraMediaTraceEvent`](/api-ref/rtc/ios/API/enum_mediatraceevent)
+- [`AgoraVideoRenderingTracingInfo`](/api-ref/rtc/ios/API/class_videorenderingtracinginfo)
+
+#### 修改
+
+- `setRemoteVideo` 更名为 [`setRemoteVideoSubscriptionOptions:options:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions)
+- `setRemoteVideoEx` 更名为 [`setRemoteVideoSubscriptionOptionsEx:options:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex)
+
+#### 删除
+
+- `enableRemoteSuperResolution`
+- [`AgoraRtcRemoteVideoStats`](/api-ref/rtc/ios/API/class_remotevideostats) 中删除 `superResolutionType`
+
+## v4.1.0
+
+该版本于 2022 年 12 月 19 日发布。
+
+### 新增特性
+
+#### 多路摄像头
+
+该版本新增多路摄像头视频采集功能，你可以通过调用 [`enableMultiCamera:config:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_enablemulticamera) 开启多路摄像头采集模式，再调用 `startSecondaryCameraCapture` 通过第二个摄像头采集视频，然后将采集到的视频发布到多频道中。
+
+如需停止多路摄像头采集，需要先调用 `stopSecondaryCameraCapture` 停止第二个摄像头采集，然后调用 [`enableMultiCamera:config:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_enablemulticamera) 并将 `enabled` 设置为 `NO`。
+
+#### 版权音乐
+
+为解决直播、语聊房、在线 K 歌房等场景下歌曲的应用版权问题，该版本新增版权音乐相关 API。你可以通过调用 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 、[`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 、[`AgoraMusicContentCenterEventDelegate`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcentereventhandler) 类下的相关 API 实现在实时互动场景中播放版权音乐以及相关功能，例如检索音乐资源、获取音乐榜单及榜单详情、预加载及播放音乐资源、下载歌词及海报等功能。你还可以参考[在线 K 歌房](https://docs.agora.io/cn/online-ktv/ktv_overview?platform=iOS)来体验搭配了演唱评分、美声音效等一系列功能的线上 K 歌场景化解决方案。
+
+#### 耳机均衡器
+
+该版本新增 [`setHeadphoneEQParameters:highGain:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_irtcengine_setheadphoneeqparameters) 方法，用于调节耳机均衡器的低频和高频参数，主要应用于空间音频场景。如果在调用 [`setHeadphoneEQPreset:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_irtcengine_setheadphoneeqpreset) 后仍未达到预期的耳机均衡效果，你可以调用该方法进行调节。
+
+#### 编码视频帧观测器
+
+该版本在 [`AgoraRtcEngineKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengine) 及 [`AgoraRtcEngineKitEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 中新增 `setRemoteVideo` 方法，当你调用 `setEncodedVideoFrameDelegate` 方法为编码后的视频注册视频帧观测器时，SDK 默认订阅编码后的视频帧。如果你想要修改订阅选项，可以调用该新增的方法进行设置。
+
+有关更多注册视频观测器和订阅选项的介绍，详见 [API 参考](/api-ref/rtc/ios/API/toc_channel#api_imediaengine_registervideoencodedframeobserver)。
+
+#### MPUDP (MultiPath UDP)
+
+自该版本起，SDK 支持 MPUDP 协议，在 UDP 协议的基础上，允许连接并使用多个路径来最大化信道资源的使用。你可以同时在移动端和桌面端使用不同的物理网卡并将其聚合，达到有效对抗网络抖动、提升传输质量的效果。
+
+:::info[信息]
+如果你希望体验该功能，请联系 sales@shengwang.cn。
+:::
+
+#### 摄像头采集选项
+
+该版本在 [`AgoraCameraCapturerConfiguration`](/api-ref/rtc/ios/API/class_cameracapturerconfiguration) 中增加了 `followEncodeDimensionRatio` 成员，你可以在使用摄像头采集视频时，通过该成员设置是否跟随 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 中已经设置的视频宽高比。
+
+#### 多频道管理
+
+该版本增加了一系列多频道相关的方法，你可以通过调用这些方法，实现对多频道中音视频流的管理。
+
+- 新增 [`muteLocalAudioStreamEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex) 和 [`muteLocalVideoStreamEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_mutelocalvideostreamex) 方法，分别用于取消或恢复发布本地音频流和视频流。
+- 新增 [`muteAllRemoteAudioStreamsEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex) 和 [`muteAllRemoteVideoStreamsEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex) 方法，分别用于取消或恢复订阅所有远端用户的音频流和视频流。
+- 新增 [`startRtmpStreamWithoutTranscodingEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_startrtmpstreamwithouttranscodingex)、[`startRtmpStreamWithTranscodingEx:transcoding:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_startrtmpstreamwithtranscodingex)、[`updateRtmpTranscodingEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_updatertmptranscodingex) 和 [`stopRtmpStreamEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_stoprtmpstreamex) 方法，用于实现多频道场景下的旁路推流。
+- 新增 `startChannelMediaRelayEx`、`updateChannelMediaRelayEx`、[`pauseAllChannelMediaRelayEx:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_pauseallchannelmediarelayex)、[`resumeAllChannelMediaRelayEx:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_resumeallchannelmediarelayex) 和 `stopChannelMediaRelayEx` 方法，用于实现多频道场景下的跨频道媒体流转发。
+- 新增 [`leaveChannelEx:options:leaveChannelBlock:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_leavechannelex2) 方法，相较于 [`leaveChannelEx:leaveChannelBlock:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_leavechannelex) 方法新增了 `options` 参数，用于在多频道场景下离开频道时，选择是否停止麦克风采集。
+
+#### 视频编码偏好
+
+一般场景下，声网默认的视频编码配置能满足需求。对于特定场景，该版本在 [`AgoraVideoEncoderConfiguration`](/api-ref/rtc/ios/API/class_videoencoderconfiguration) 中新增 `advancedVideoOptions` 成员，用于视频编码属性的进阶设置：
+
+- `compressionPreference`：视频编码的压缩偏好设置，用于选择视频的低延时或高质量偏好。
+- `encodingPreference`：视频编码器偏好设置，用于选择视频的自适应偏好、软件编码偏好或硬件编码偏好。
+
+#### 日志上传
+
+使用声网私有媒体服务器的场景下，为支持用户在调用 [`setLocalAccessPoint:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setlocalaccesspoint) 方法时的进阶设置，该版本在 [`AgoraLocalAccessPointConfiguration`](/api-ref/rtc/ios/API/class_Localaccesspointconfiguration) 中新增 `advancedConfig` 成员参数，该参数支持如下设置：
+
+ `logUploadServer`：默认情况下，SDK 会将日志上传至声网的日志服务器。你可以通过该参数自定义日志上传的服务器。
+
+#### 用户角色切换
+
+为方便用户分辨切换后的用户角色属于互动直播还是极速直播，该版本在 [`rtcEngine:didClientRoleChanged:newRole:newRoleOptions:`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onclientrolechanged) 回调中新增 `newRoleOptions` 参数，该参数取值如下：
+
+- `AgoraAudienceLatencyLevelLowLatency`(1): 低延时，属于极速直播。
+- `AgoraAudienceLatencyLevelUltraLowLatency`(2): 超低延时，属于互动直播。
+
+### 改进
+
+#### CDN 推流
+
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats:`](/api-ref/rtc/ios/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+
+#### 跨频道媒体流转发
+
+该版本对 `updateChannelMediaRelay` 方法做了如下优化：
+
+- 4.1.0 版本前：如果服务器内部原因导致目标频道更新失败，SDK 返回错误码 `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8)，你需要重新调用 `updateChannelMediaRelay` 方法。
+- 4.1.0 版本及之后：如果服务器内部原因导致目标频道更新失败，SDK 会重新尝试更新直到目标频道更新成功。
+
+#### AIAEC
+
+该版本基于 AI 方法重构了AEC 算法，相比传统 AEC 算法，新的算法可以在较恶劣的回信比 (echo-to-signal) 条件下保存完整、清晰、流畅的近端人声，显著提高系统的回声消除和双讲性能，带给用户更舒适的通话和直播体验。适用于会议、语聊、K 歌等场景。
+
+#### 虚拟背景
+
+该版本对虚拟背景算法做了如下优化：
+
+- 在处理虚拟背景的边界时更加细腻，抠图精细程度达到发丝级别。
+- 在人像静止或移动时都能确保虚拟背景的稳定性，有效解决背景闪烁、超出画面范围的问题。
+- 支持更多应用场景，无论在黑夜、白天、室内、室外等各种环境下都能获得良好的虚拟背景效果。
+- 支持识别多种姿态，包括半身静态、身体晃动、手部摆动，并支持精细识别手指动作，在不同手势下均能达到良好的虚拟背景效果。
+
+#### 其他改进
+
+- 降低了推送外部音频源时的上行延迟。
+- 提升了会议场景 (`AgoraAudioScenarioMeeting`) 默认参数配置下的回声消除性能。
+- 提升了 SDK 视频渲染的流畅度。
+- 增强对不同网络协议栈的识别能力，在多种运营商网络场景下提升 SDK 的接入能力。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 调用 `startAudioMixing` 播放 `ipod-library://item` 路径的音乐文件失败。
+- 在直播场景下，主播在扬声器和听筒之间进行切换后，观众听主播的声音会听到滋啦杂声。
+- 同时通过 [`onRecordAudioFrame:channelId:`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 和 [`onCaptureVideoFrame:sourceType:`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调分别获取的音频和视频数据时间戳不同。
+- 调用 `getExtensionPropertyWithVendor` 失败，返回空字符串。
+- 当以观众身份进入一个已播放较长时间的直播间，首帧出图时间缩短。
+
+### API 变更
+
+#### 新增
+
+- [`enableMultiCamera:config:`](/api-ref/rtc/ios/API/toc_video_device#api_irtcengine_enablemulticamera)
+- `startSecondaryCameraCapture`
+- `stopSecondaryCameraCapture`
+- [`setHeadphoneEQParameters:highGain:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_irtcengine_setheadphoneeqparameters)
+- `setRemoteVideo`
+- [`AgoraVideoSubscriptionOptions`](/api-ref/rtc/ios/API/class_videosubscriptionoptions)
+- [`muteLocalAudioStreamEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex)
+- [`muteLocalVideoStreamEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_mutelocalvideostreamex)
+- [`muteAllRemoteAudioStreamsEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex)
+- [`muteAllRemoteVideoStreamsEx:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex)
+- [`startRtmpStreamWithoutTranscodingEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_startrtmpstreamwithouttranscodingex)
+- [`startRtmpStreamWithTranscodingEx:transcoding:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_startrtmpstreamwithtranscodingex)
+- [`updateRtmpTranscodingEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_updatertmptranscodingex)
+- [`stopRtmpStreamEx:connection:`](/api-ref/rtc/ios/API/toc_media_push#api_irtcengineex_stoprtmpstreamex)
+- `startChannelMediaRelayEx`
+- `updateChannelMediaRelayEx`
+- [`pauseAllChannelMediaRelayEx:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_pauseallchannelmediarelayex)
+- [`resumeAllChannelMediaRelayEx:`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengineex_resumeallchannelmediarelayex)
+- `stopChannelMediaRelayEx`
+- [`AgoraCameraCapturerConfiguration`](/api-ref/rtc/ios/API/class_cameracapturerconfiguration) 中增加 `followEncodeDimensionRatio`
+- [`AgoraRtcLocalVideoStats`](/api-ref/rtc/ios/API/class_localvideostats) 中增加 `hwEncoderAccelerating`
+- [`leaveChannelEx:options:leaveChannelBlock:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_leavechannelex2)
+- [`AgoraVideoEncoderConfiguration`](/api-ref/rtc/ios/API/class_videoencoderconfiguration) 中增加 `advancedVideoOptions` 成员
+- [`AgoraLocalAccessPointConfiguration`](/api-ref/rtc/ios/API/class_Localaccesspointconfiguration) 中增加 `advancedConfig` 成员
+- [`rtcEngine:didClientRoleChanged:newRole:newRoleOptions:`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onclientrolechanged) 中增加 `newRoleOptions`
+- [`adjustUserPlaybackSignalVolumeEx:volume:connection:`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengineex_adjustuserplaybacksignalvolumeex)
+- [`enableAudioVolumeIndicationEx:smooth:reportVad:connection:`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengineex_enableaudiovolumeindicationex)
+- [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcenter) 接口类及其中方法
+- [`AgoraMusicPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusicplayer) 协议及其中方法
+- [`AgoraMusicContentCenterEventDelegate`](/api-ref/rtc/ios/API/rtc_interface_class#class_imusiccontentcentereventhandler) 接口类及其中回调
+- [`AgoraMusic`](/api-ref/rtc/ios/API/class_music) 类
+- [`AgoraMusicChartInfo`](/api-ref/rtc/ios/API/class_musicchartinfo) 类
+- [`AgoraMusicContentCenterConfig`](/api-ref/rtc/ios/API/class_musiccontentcenterconfiguration) 类
+- [`AgoraClimaxSegment`](/api-ref/rtc/ios/API/class_climaxsegment) 类
+- [`AgoraMusicCollection`](/api-ref/rtc/ios/API/class_musiccollection) 类
+- [`AgoraMusicContentCenterPreloadStatus`](/api-ref/rtc/ios/API/enum_preloadstate)
+- `AgoraMusicContentCenterStatusCode`
+
+#### 废弃
+
+- `didApiCallExecute`，改用具体方法触发的回调。
+
+#### 删除
+
+- 删除了 [`AgoraLiveTranscoding`](/api-ref/rtc/ios/API/class_livetranscoding) 类中的废弃成员参数 `backgroundImage` 和 `watermark`
+- `didReceiveChannelMediaRelayEvent` 中删除 `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8)
+
+## v4.0.1
+
+该版本于 2022 年 9 月 29 日发布。
+
+### 升级必看
+
+如果你已经使用了以下类或方法，请在升级到该版本后重新调用方法并更新参数设置。
+
+1. 为提高代码易用性，该版本将以下类中 `Optional` 类型的参数变更为 `Bool`、`Int` 等基本数据类型：
+   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/ios/API/class_directcdnstreamingmediaoptions) 中 `publishCameraTrack`、`publishMicrophoneTrack`、`publishCustomAudioTrack`、`publishCustomVideoTrack`、`publishMediaPlayerAudioTrack` 的参数类型由 `Optional` 变为 `Bool` 型。
+   - [`AgoraMediaSource`](/api-ref/rtc/ios/API/class_mediasource) 中的 `isAgoraSource` 和 `isLiveSource` 由 `Optional` 型变为 `Bool` 型。
+   - [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的所有参数类型由 `Optional` 变为 `Bool` 型或 `Int` 型。
+2. [`destroyCustomVideoTrack:`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_irtcengine_destroycustomvideotrack) 方法中的 `position` 参数变更为 `trackid`。
+3. 删除了 `enableDualStreamMode:sourceType:streamConfig:` 和 `enableDualStreamModeEx:sourceType:streamConfig:connection:` 中的 `sourceType` 参数以及 [`enableDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode3) 方法，因为 SDK 支持对自定义采集或 SDK 采集的各种视频源开启双流模式，不再需要指定视频源类型。
+
+### 新增特性
+
+#### 耳返
+
+该版本新增 [`getEarMonitoringAudioParams`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams) 回调，用于设置耳返音频数据格式，你可以使用自己的音效处理模块对耳返音频数据进行前处理，实现自定义音效。调用 [`setAudioFrameDelegate:`](/api-ref/rtc/ios/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，在 [`getEarMonitoringAudioParams`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams) 回调的返回值中设置耳返音频数据格式，SDK 会根据该回调的返回值计算采样间隔，并根据该采样间隔触发 [`onEarMonitoringAudioFrame:`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+
+#### 本地网络连接类型
+
+为方便用户在任何阶段知悉本地网络的连接类型，该版本新增 [`getNetworkType`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getnetworktype) 方法。你可以通过该方法获取正在使用的网络连接的类型，包括 UNKNOWN、DISCONNECTED、LAN、WIFI、2G、3G、4G、5G。当本地网络连接类型发生改变时，SDK 会触发 `networkTypeChangedToType` 回调，报告当前的网络连接类型。
+
+#### 音强选流
+
+该版本新增音强选流功能。该功能开启后，声网服务器会根据音量大小对音频流进行筛选，选出 N 路音量最大的音频流并传输至接收端。N 默认为 3 路，如需自定义设置 N，请联系技术支持。
+
+同时，声网还支持发流端自定义设置是否参与音强选流，不参与选流的音频流会直接和被选出的 N 路音频流一同传输至接收端。在大型会议等多人发流的场景下，开启音强选流功能可以帮助减轻接收端的下行带宽压力和系统资源消耗，详见[音强选流](/zh-CN/realtime-media/rtc/advanced-features/audio-stream-filter.ios.ios)。
+
+:::info[信息]
+如需开启该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+#### 双流模式
+
+该版本对双流模式做了优化，在加入频道前后均可调用 `enableDualStreamMode` 和 `enableDualStreamModeEx。`
+
+扩展了订阅视频小流的实现方式，SDK 默认在发送端开启小流 auto 模式（即：默认不主动发送小流），可通过以下步骤开启发送小流：
+
+1. 接收端主播调用 `setRemoteVideoStreamType` 或 [`setRemoteDefaultVideoStreamType:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 发起接收小流申请。
+2. 发送端收到申请后自动切换为发送小流模式。
+
+如果你想修改上述发送端的默认行为，可以调用 [`setDualStreamMode:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode) 或 [`setDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode2) 方法，将 `mode` 参数设置为 `AgoraDisableSimulcastStream` （始终不发送小流）或 `AgoraEnableSimulcastStream` （始终发送小流）。
+
+#### 空间音频
+
+该版本新增了如下适用于空间音频场景的特性，在虚拟互动场景下可以有效提升用户的临场感体验。
+
+- 隔声区域：你可以通过调用 [`setZones:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setzones) 设置隔声区域和声音衰减系数。当音源（可以为用户或媒体播放器）跟听声者分属于音障区域内部和外部时，会体验到类似真实环境中声音在遇到建筑隔断时的衰减效果。你也可以通过调用 [`setPlayerAttenuation:playerId:forceSet:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setplayerattenuation) 和 [`setRemoteAudioAttenuation:userId:forceSet:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) 方法分别针对媒体播放器和用户设置声音衰减属性，并指定是否使用该设置强制覆盖 [`setZones:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setzones) 中的声音衰减系数。
+- 多普勒音效：你可以通过设置 `SpatialAudioParams` 中的 `enable_doppler` 参数开启多普勒音效，在声源和接收方发生高速相对位移的情况下（比如赛车游戏场景），接收方会体验到明显的音调变化。
+- 耳机均衡器：你可以通过调用 [`setHeadphoneEQPreset:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_irtcengine_setheadphoneeqpreset) 方法使用预设的耳机均衡效果，以改善耳机的听感。
+
+### 改进
+
+#### 视频信息发生改变回调
+
+该版本优化了 `videoSizeChangedOfUid` 的触发逻辑，当单独调用 [`startPreview`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview) 时，也可触发该回调并上报本地视频大小发生改变。
+
+#### 屏幕共享
+
+为提升各平台屏幕共享的一致性，自该版本起删除了 `AgoraLocalVideoStreamErrorExtensionCaptureStarted`、`AgoraLocalVideoStreamErrorExtensionCaptureStoped`、`AgoraLocalVideoStreamErrorExtensionCaptureDisconnected` 枚举，改用 [`rtcEngine:localVideoStateChangedOfState:reason:sourceType:`](/api-ref/rtc/ios/API/toc_video_basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中 `sourceType` 为 `AgoraVideoSourceTypeScreen` 时的 `state` 参数表示屏幕共享的状态。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 在频道内调用 [`setVideoEncoderConfigurationEx:connection:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengineex_setvideoencoderconfigurationex) 将视频的分辨率调高时，偶现失效。
+- 使用媒体播放器播放视频，先调用 [`play`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_play) 再调用 [`pause`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_pause) 暂停播放后，调用 [`seek`](/api-ref/rtc/ios/API/toc_rte_player#api_player_seek) 指定一个新的播放位置，偶现视频画面依然是暂停播放时的画面；调用 [`resume`](/api-ref/rtc/ios/API/toc_mediaplayer_control#api_imediaplayer_resume) 恢复播放后，偶现视频画面出现快进。
+
+### API 变更
+
+#### 新增
+
+- [`getEarMonitoringAudioParams`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_getearmonitoringaudioparams)
+- [`getNetworkType`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getnetworktype)
+- [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中新增 `isAudioFilterable`
+- [`setDualStreamMode:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode)
+- [`setDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setdualstreammode2)
+- [`setDualStreamModeEx:streamConfig:connection:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengineex_setdualstreammodeex)
+- [`AgoraSimulcastStreamMode`](/api-ref/rtc/ios/API/enum_simulcaststreammode)
+- [`setZones:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setzones)
+- [`setPlayerAttenuation:playerId:forceSet:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_setplayerattenuation)
+- [`setRemoteAudioAttenuation:userId:forceSet:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ilocalspatialaudioengine_setremoteaudioattenuation)
+- `muteRemoteAudioStream:mute:`
+- `SpatialAudioParams`
+- [`setHeadphoneEQPreset:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_irtcengine_setheadphoneeqpreset)
+- [`AgoraHeadphoneEQPreset`](/api-ref/rtc/ios/API/enum_headphoneequalizerpreset)
+
+#### 修改
+
+- `enableDualStreamMode:sourceType:streamConfig:`
+- `enableDualStreamModeEx:sourceType:streamConfig:connection:`
+
+#### 废弃
+
+- `startEchoTestWithInterval:interval:successBlock:`
+
+#### 删除
+
+- [`enableDualStreamMode:streamConfig:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_enabledualstreammode3)
+- `AgoraLocalVideoStreamErrorExtensionCaptureStarted`
+- `AgoraLocalVideoStreamErrorExtensionCaptureStoped`
+- `AgoraLocalVideoStreamErrorExtensionCaptureDisconnected`
+
+## v4.0.0
+
+该版本于 2022 年 8 月 3 日发布。
+
+### 升级必看
+
+v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.0 不兼容。升级 SDK 后，你需要结合实际业务场景更新 App 代码，详见[迁移指南](/zh-CN/realtime-media/rtc/overview/migration-guide)。
+
+- 多频道
+- 媒体流发布控制
+- 自定义视频采集与渲染（Media IO 方式）
+- 警告码
+
+### 新增特性
+
+#### 多路媒体流
+
+该版本通过设置 [`AgoraRtcEngineKitEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 和 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 实现一个 [`AgoraRtcEngineKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengine) 实例同时采集多组音视频流并发布到远端：
+
+调用 `joinChannelByToken` 加入首个频道后，多次调用 `joinChannelExByToken` 加入多个频道，通过不同的用户 ID (`localUid`) 和 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 设置发布指定的流到不同的频道。
+
+支持通过设置 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的 `publishSecondaryCameraTrack` 和 `publishSecondaryScreenTrack` 同时发布多路摄像头采集或者屏幕共享的视频流。
+
+同时，该版本支持通过 [`createCustomVideoTrack`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack) 方法实现自定义视频采集。你可以参考如下步骤，体验同时发布多路自定义采集视频流：
+
+1. 创建自采集视频轨道：调用 [`createCustomVideoTrack`](/api-ref/rtc/ios/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建一个自定义视频轨道，并获得视频轨道 ID。
+
+2. 设置频道中待发布的自采集视频轨道：在每个频道的 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中，将 `customVideoTrackId` 参数设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 `YES`。
+
+3. 推送外部视频源：调用 `pushExternalVideoFrame`，并将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在多个频道中发布对应的自定义视频源。
+
+结合多频道能力，你还可以体验如下功能：
+
+- 将多组音视频流通过不同的用户 ID (`uid`) 发布到远端。
+- 将多路音频流混音后通过一个用户 ID (`uid`) 发布到远端。
+- 将多组视频频流通过不同的用户 ID (`uid`) 发布到远端。
+- 将多路视频流合图后通过一个用户 ID (`uid`) 发布到远端。
+
+#### 全高清和超高清分辨率
+
+为提升视频互动体验，SDK 对视频采集、编码、解码、渲染全流程做出了优化，自该版本起支持全高清 (FHD) 和超高清 (UHD) 视频分辨率。你可以在调用 [`setVideoEncoderConfiguration:`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 方法时，将 `dimensions` 参数设置为 1920 × 1080 或更高的分辨率。如果你的设备不支持高分辨率，SDK 支持自动回退到适合的分辨率。
+
+:::info[信息]
+- 超高清分辨率（4K，60 fps）目前为 Beta 功能，且对设备性能和网络带宽有一定要求，如需体验该功能，请[联系技术支持](https://ticket.shengwang.cn/)。
+- 高分辨率通常需要更高的性能消耗，为避免设备性能不足导致体验下降，声网建议你在性能较好的设备上开启全高清和超高清视频分辨率。
+- 高分辨率可能会影响集合分辨率从而导致费用变更。详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+:::
+
+#### 内置媒体播放器
+
+为减少 SDK 包体积、集成时间，以及简化 API 的调用步骤，该版本支持内置媒体播放器。调用 [`createMediaPlayerWithDelegate:`](/api-ref/rtc/ios/API/toc_mediaplayer_initialize#api_irtcengine_createmediaplayer) 创建媒体播放器后，你可以通过 [`AgoraRtcMediaPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imediaplayer) 类的一系列方法体验内置媒体播放器的各类功能：
+
+- 自动播放本地、在线、自定义的媒体资源。
+- 预先加载待播放的媒体资源。
+- 根据网络情况切换媒体资源的播放线路。
+- 将媒体播放器的音视频流推送到任意频道、分享给远端用户。
+- 实时缓存媒体资源文件，该功能开启后，播放器会预先缓存当前正在播放的媒体文件的部分数据到本地，可提高播放流畅度，帮助节省网络流量。
+
+#### 新版 AI 降噪
+
+自该版本起，SDK 支持新版 AI 降噪（相对于 v3.7.0 中的基础 AI 降噪）功能。相比原版 AI 降噪，新版 AI 降噪具有更好的人声保真度、更干净的噪声抑制，并新增了去混响 (Dereverberation) 能力。
+
+:::info[信息]
+如果你希望体验新版 AI 降噪，请联系 sales@shengwang.cn。
+:::
+
+#### 超高音质
+
+为还原音频的细节、提升音频的清晰度，该版本在 [`AgoraVoiceBeautifierPreset`](/api-ref/rtc/ios/API/enum_voicebeautifierpreset) 中新增 `AgoraVoiceBeautifierUltraHighQuality`。在语聊、歌唱等以人声为主的场景中，你可以调用 [`setVoiceBeautifierPreset:`](/api-ref/rtc/ios/API/toc_audio_effect#api_irtcengine_setvoicebeautifierpreset) 并使用该枚举体验超高音质。
+
+#### 空间音频
+
+:::info[信息]
+空间音频功能当前处于实验阶段，请联系 sales@shengwang.cn 开通空间音频功能，如果需要技术支持，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+该版本提供本地直角坐标系计算方案实现空间音频：
+
+- 该方案使用 [`AgoraLocalSpatialAudioKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_ilocalspatialaudioengine) 类实现空间音频，通过 SDK 计算远端用户的空间坐标。你需要分别调用 [`updateSelfPosition:axisForward:axisRight:axisUp:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_updateselfposition) 和 [`updateRemotePosition:positionInfo:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ilocalspatialaudioengine_updateremoteposition) 更新本地和远端用户的空间坐标，本地用户才能听到远端用户的空间音频。
+ ![](https://web-cdn.agora.io/docs-files/1646815686507)
+
+- 该方案通过 SDK 计算媒体播放器的空间坐标。你需要在 [`AgoraLocalSpatialAudioKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_ilocalspatialaudioengine) 类中分别调用 [`updateSelfPosition:axisForward:axisRight:axisUp:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_updateselfposition) 和 [`updatePlayerPositionInfo:positionInfo:`](/api-ref/rtc/ios/API/toc_spatial_audio#api_ibasespatialaudioengine_updateplayerpositioninfo) 更新本地用户和媒体播放器的空间坐标，本地用户才能听到媒体播放器的空间音频。
+ ![](https://web-cdn.agora.io/docs-files/1646815708012)
+
+#### 实时合唱
+
+ 该版本为实时合唱赋予了如下能力：
+
+- 支持两人及两人以上合唱。
+- 每位歌手相互独立。一位歌手出现问题或退出合唱，其他歌手还可以继续合唱。
+- 极低延时体验。每位歌手可以实时听到彼此的歌声，观众也可以实时听到每位歌手。
+
+该版本在 [`AgoraAudioScenario`](/api-ref/rtc/ios/API/enum_audioscenariotype) 中新增 `AgoraAudioScenarioChorus` 枚举设置极低延时。使用该枚举后，在网络条件良好的情况下，用户可以体验到极低延时的实时合唱。
+
+#### 云市场插件
+
+为在声网 SDK 的基础上增强实时音视频互动性，该版本支持[声网云市场](https://www.agora.io/cn/marketplace)插件的一站式解决方案：
+
+- 方便集成：只需执行简单统一的 API 即可实现模块化功能的集成，将实时互动模块集成效率提高约 95%。
+- 可扩展性设计：模块化和可扩展的 SDK 设计风格赋予了声网 SDK 良好的可扩展性，更有利于开发者基于声网云市场插件生态快速搭建好用的实时互动应用。
+- 打造生态系统：可容纳众多开发者的实时音视频 App 社区，提供多种扩展组合。添加并开启云市场插件后，开发者可以实现更为丰富的实时音视频互动功能。
+- 助力服务商：支持服务商将技术产品以插件的形式与声网 SDK 做技术上的融合，在声网云市场中展示并售卖，与声网一起共建开发者的实时互动生态系统。如何开发和发布插件详见[云市场-开发插件](/zh-CN/realtime-media/marketplace#如何使用和开发插件)。
+
+#### 增强的频道管理
+
+为满足各类业务场景对频道管理的需求，该版本在 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中新增了如下功能：
+
+- 设置或切换多种音视频源的发布
+- 设置或切换频道场景、用户角色
+- 设置或切换订阅视频的大小流类型
+- 控制音频发布时延
+
+在调用 `joinChannelByToken` 或 `joinChannelExByToken` 时设置 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions)，明确媒体流发布和订阅行为，例如，是否发布摄像头采集或者屏幕共享的视频流，是否要主动订阅远端用户的音视频流。加入频道后，调用 [`updateChannelWithMediaOptions:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions) 随时更新 [`AgoraRtcChannelMediaOptions`](/api-ref/rtc/ios/API/class_channelmediaoptions) 中的设置，例如，切换发布的音视频源。
+
+#### 屏幕共享
+
+该版本优化了开启屏幕共享的逻辑，你可以根据实际场景选择不同的方式开启屏幕共享：
+
+- 在加入频道前调用 [`startScreenCapture:`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_startscreencapture)，然后调用 [`joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) 加入频道并设置 `publishScreenCaptureVideo` 为 `YES`，即可开始屏幕共享。
+- 在加入频道后调用 [`startScreenCapture:`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_startscreencapture)，然后调用 `updateChannelMediaOptions` 设置 `publishScreenCaptureVideo` 为 `YES`，即可开始屏幕共享。
+
+#### 设置音视频流订阅黑/白名单
+
+该版本新增音视频流订阅黑/白名单功能，支持灵活订阅频道内发流用户的音视频流。你可以通过以下 API 来将指定用户的用户 ID 加入到相应的音视频黑白名单中，从而实现订阅/不订阅指定用户的音频或视频流。在多频道场景下，你可以通 [`AgoraRtcEngineKitEx`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengineex) 类下的同名方法来实现该功能。
+
+- `setSubscribeAudioBlacklist`：设置音频订阅黑名单。
+- `setSubscribeAudioWhitelist`：设置音频订阅白名单。
+- `setSubscribeVideoBlacklist`：设置视频订阅黑名单。
+- `setSubscribeVideoWhitelist`：设置视频订阅白名单。
+
+如果某个用户同时在音频或视频订阅的黑、白名单中，只有黑名单会生效。
+
+#### 设置音频场景
+
+为方便用户灵活修改音频场景，该版本新增 [`setAudioScenario:`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario) 方法，支持你根据业务需求设置音频场景。例如，如果你在频道内想将音频场景从自动场景 (`AgoraAudioScenarioDefault`) 切换为高音质场景 (`AgoraAudioScenarioGameStreaming`)，你可以调用该方法。
+
+#### 设置本地代理
+
+该本版新增 [`setLocalAccessPoint:`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setlocalaccesspoint) 方法，用于在成功部署声网混合云、私有化平台后，指定 Local Access Point 来设置本地代理。你可以联系 sales@shengwang.cn 了解和部署声网混合云或声网私有化平台。
+
+#### 垫片推流
+
+该版本新增垫片推流功能，支持你在发流时使用本地 png 格式的图片来替代当前发布的视频流画面进行推流。你可以通过 [`enableVideoImageSource:options:`](/api-ref/rtc/ios/API/toc_image_source#api_irtcengine_enablevideoimagesource) 来开启该功能，并通过 `options` 参数自定义垫片图片；在你关闭垫片功能之后，远端用户看到的依旧是当前你发布的视频流画面。
+
+### 改进
+
+#### 快速切换频道
+
+该版本通过 `leaveChannel` 和 `joinChannelByToken` 切换频道即可实现和 v3.7.0 中 `switchChannelByToken` 一样的切换速度，无需额外调用 `switchChannelByToken` 方法。
+
+#### 推送外部视频帧
+
+该版本新增支持推送 I422 格式的外部视频帧，你可以通过 `pushExternalVideoFrame` 方法将 I422 格式的外部视频帧推送至 SDK。
+
+#### 本地人声音调
+
+该版本在 [`rtcEngine:reportAudioVolumeIndicationOfSpeakers:totalVolume:`](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) 的 [`AgoraRtcAudioVolumeInfo`](/api-ref/rtc/ios/API/class_audiovolumeinfo) 中新增 `voicePitch` 参数。你可以通过 `voicePitch` 获取本地用户的人声音调，从而实现唱歌评分等业务功能。
+
+#### 设备权限管理
+
+该版本新增 [`rtcEngine:permissionError:`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onpermissionerror) 方法，当获取音频采集设备或摄像头权限开启失败时自动上报，用户可根据该回调的提示开启相应的设备权限。
+
+#### 本地视频预览
+
+该版本优化了 [`startPreview`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview) 方法的调用逻辑。如果你需要开启本地视频预览，你可以直接通过 [`startPreview`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_startpreview) 方法来开启视频预览，无调用时序要求。
+
+#### 订阅视频流
+
+你可以通过 [`setRemoteDefaultVideoStreamType:`](/api-ref/rtc/ios/API/toc_publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。

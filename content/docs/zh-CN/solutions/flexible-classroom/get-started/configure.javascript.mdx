@@ -1,0 +1,231 @@
+---
+title: "配置灵动课堂"
+---
+本文介绍如何在声网控制台配置灵动课堂中的互动白板、实时录制和实时消息功能。
+
+:::info[信息]
+阅读本文前，请确保你已在声网控制台[开通灵动课堂服务](/zh-CN/solutions/flexible-classroom/get-started/enable)。
+:::
+
+## 配置白板功能
+
+如需在灵动课堂中上传 PPT、Word、PDF 等课件并在课堂白板上展示，你需要在声网控制台配置灵动课堂中的互动白板功能。
+
+### 前提条件
+
+互动白板功能使用第三方云存储服务储存在课堂中上传的文件。因此，使用互动白板功能前，请确保你已开通第三方云存储服务。声网当前支持[阿里云 OSS](https://www.aliyun.com/product/oss)、[Amazon S3](https://aws.amazon.com/cn/s3/?nc2=h_m1)、[华为云 OSS](https://support.huaweicloud.com/qs-obs/obs_qs_0003.html) 和[腾讯云 OSS](https://cloud.tencent.com/document/product/436/44352)。
+
+### 操作步骤
+
+在**灵动课堂配置**页面，找到白板模块，如下图所示：
+
+![灵动课堂配置页面](https://web-cdn.agora.io/docs-files/1673418335384)
+
+你需要进行以下操作：
+
+1. 配置第三方云存储信息，用于存储课堂中上传的文件。
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+  <TabsTrigger value="other">华为云 OSS 或腾讯云 OSS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+如果你使用阿里云 OSS，填写以下信息：
+
+- `region`: 阿里云 OSS 中创建 Bucket 时指定的数据中心所在区域，例如 `oss-cn-shanghai`。
+- `endpoint`: OSS 访问域名。例如: `oss-cn-shanghai.aliyuncs.com`。
+- `bucket`: 阿里云 OSS 中的 Bucket 名称，例如 `agora-whiteboard`。
+- `folder`: 阿里云 OSS 中的资源存放路径，例如 `whiteboard`。
+- `accessKey`: 阿里云 OSS 提供的访问密钥中的 Access Key，用于识别访问者的身份。
+- `secretKey`: 阿里云 OSS 提供的访问密钥中的 Secret Key，用于验证签名的密钥。
+
+:::info[信息]
+对于如何获取上述信息，请查看[阿里云官方文档](https://www.alibabacloud.com/help/zh/object-storage-service/latest/description#concept-whm-jcq-tdb)。
+:::
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+如果你使用 Amazon S3，填写以下信息：
+
+- `region`: String 型，Amazon S3 中创建 Bucket 时指定的数据中心所在区域。
+- `endpoint`: String 型，Amazon S3 的访问域名。
+- `bucket`: String 型，Amazon S3 中的 Bucket 名称。
+- `folder`: String 型，Amazon S3 中的资源存放路径，例如 `agora-whiteboard`。
+- `accessKey`: String 型，Amazon S3 提供的访问密钥中的 Access Key，用于识别访问者的身份。
+- `secretKey`: String 型，Amazon S3 提供的访问密钥中的 Secret Key，用于验证签名的密钥。
+
+:::info[信息]
+对于如何获取上述信息，请查看 [Amazon S3 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
+:::
+
+</TabsContent>
+
+<TabsContent value="other">
+
+如果使用华为云 OSS 或者腾讯云 OSS，参考阿里云 OSS 或 Amazon S3 填写相应的字段即可。
+
+</TabsContent>
+</Tabs>
+
+2. 如果你需要在课堂里使用 PPT、DOC、PDF 等格式的课件，你还需要点击**进阶服务**下方的**前往配置**，来为灵动课堂开启并配置文档转网页、文档转图片、截图服务。操作步骤详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+
+4. 为保证最佳白板课件访问体验，我们推荐使用 CDN 加速 OSS 资源访问，以提升资源加载速度。具体操作步骤可以参考[阿里云 OSS CDN 加速文档](https://help.aliyun.com/zh/oss/user-guide/use-cdn-to-accelerate-access-to-oss?spm=a2c4g.11186623.0.0.3b7047dcNnoHQq)，并将文档转换的外链域名参数设置成 CDN 加速域名。
+
+![参数配置示例](/img/flexible-classroom/whiteboard-config.png)
+
+## 配置录制功能
+
+灵动课堂中默认录制行为是：使用[合流录制模式](/zh-CN/realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite)且只录制老师的音视频，录制文件会存储在声网的阿里云 OSS 账号中。
+
+如需修改上述行为，你可在声网控制台**灵动课堂配置**页面找到云录制模块，分别传入 JSON 对象进行配置：
+
+![灵动课堂配置页面中的云录制模块](https://web-cdn.agora.io/docs-files/1641291167789)
+
+:::warning[注意]
+录制配置可以选择**默认**，存储配置必须选择**自定义**，否则录制无法存储到你的 OSS 账号中。
+:::
+
+### 录制配置
+
+传入 `recordingConfig` JSON 对象。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `recordingConfig` 的介绍。
+
+`recordingConfig` JSON 对象示例：
+
+```json
+{
+    "maxIdleTime": 30,
+    "streamTypes": 2,
+    "channelType": 0
+}
+```
+
+### 录制文件存储配置
+
+传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
+
+  - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/solutions/flexible-classroom/api/api-recording.restful#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
+  - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/faq/integration-issues/class-dynamic)。
+
+`storageConfig` JSON 对象示例：
+
+```json
+{
+    "vendor": 2,
+    "region": 3,
+    "bucket": "xxxxx",
+    "accessKey": "xxxxxxf",
+    "secretKey": "xxxxx",
+    "endpoint": "https://agora-recording.oss-cn-shanghai.aliyuncs.com",
+    "fileNamePrefix": [
+        "scenario",
+        "recording"
+    ]
+}
+```
+
+## 配置环信 IM
+
+灵动课堂集成了环信 IM SDK 实现实时消息功能。因此，如需使用灵动课堂中的实时消息功能，你需要进行以下操作：
+
+1. 注册[环信即时通讯云](https://console.easemob.com/user/register)。
+2. 在环信开发者管理后台创建应用，参考[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)。
+3. 在环信开发者管理后台获取以下信息后填写在声网控制台**灵动课堂配置**页面中。
+
+![灵动课堂配置页面中的环信 IM 模块](https://web-cdn.agora.io/docs-files/1641291229597)
+
+   - `apiHost`:（必填）环信 REST API 访问地址，例如 a1.easemob.com 或 a1.easecdn.com，你可在环信开发者管理后台获取。
+   - `orgName`:（必填）企业的唯一标识，你在环信开发者管理后台注册账号时填写的企业 ID。
+   - `appName`:（必填）企业下 App 的唯一标识，你在环信开发者管理后台创建应用时填写的应用名称。
+   - `superAdmin`:（必填）超级管理员用户名前缀。**只支持数字或字母，不支持特殊字符，aPaaS 会以 `${superAdmin}-${timestamp}` 作为超级管理员创建 IM 房间。**
+   - `appKey`:（必填）App 的唯一标识，由环信开发者管理后台基于 `${org_name}#${app_name}` 的规则生成。
+   - `clientId`:（必填）开发者 Client ID，由环信开发者管理后台生成。
+   - `clientSecret`:（必填）开发者密钥，由环信开发者管理后台生成。
+
+   你可参考下图获取这些信息。
+
+![环信控制台信息获取示例一](https://web-cdn.agora.io/docs-files/1631178001176)
+
+![环信控制台信息获取示例二](https://web-cdn.agora.io/docs-files/1631178086130)
+
+   :::info[信息]
+   环信控制台中，应用的服务类型默认为“免费社区版”，只能创建 100 个用户，仅用于体验与集成目的。若有生产环境需求，需联系 sales@shengwang.cn 开通企业版。
+   :::
+
+## 注意事项
+
+为确保声网可以访问你的云存储空间，你的云存储账号中必须进行以下配置：
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+- 读写权限设为**公共读**：
+
+![阿里云 OSS 读写权限配置示意图](https://web-cdn.agora.io/docs-files/1620299427757)
+
+- 跨域规则配置：
+    - 来源和允许 Headers 根据你的实际情况配置即可。
+    - 暴露 Headers 必须严格参照下图填写。
+
+![阿里云 OSS 跨域规则中暴露 Headers 的配置示意图](/img/flexible-classroom/aliyun-config.png)
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+- Bucket policy
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1622700880591",
+      "Statement": [
+        {
+          "Sid": "Stmt1622700872941",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws-cn:s3:::agora-adc-artifacts/*"
+        }
+      ]
+    }
+    ```
+
+- Cross-origin resource sharing
+
+    ```json
+    [
+      {
+        "AllowedHeaders": [
+          "*"
+        ],
+        "AllowedMethods": [
+          "PUT",
+          "GET"
+        ],
+        "AllowedOrigins": [
+          "*"
+        ],
+        "ExposeHeaders": []
+      }
+    ]
+    ```
+
+</TabsContent>
+</Tabs>
+
+如果使用阿里云 OSS，需要在你的阿里云存储账号中增加 **oss:PutObject** 授权操作，否则上传课件会报 403 错误。设置参考以下截图。更多信息详见[阿里云文档 Bucket Policy](https://help.aliyun.com/document_detail/430203.html)。
+
+![阿里云 OSS Bucket Policy 配置示例](https://web-cdn.agora.io/docs-files/1680084220648)

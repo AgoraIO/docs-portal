@@ -1,0 +1,263 @@
+---
+title: "使用说明"
+---
+本文介绍如何在你的项目中集成和使用讯飞语音实时转写及翻译（多语种）插件（以下简称“讯飞转写及翻译插件”）。
+
+## 技术原理
+
+讯飞转写及翻译插件的工作流程如下：
+
+1. 设置源语种和目标语种。
+2. 声网 SDK 通过麦克风来流式录音。
+3. 音频传递给讯飞转写及翻译插件。
+4. 插件把音频上传给语音转写服务，并下载语音转写结果。
+5. 解析语音转写结果，得到语音转写文本。
+6. 把语音转写文本上传给文本翻译服务，并下载文本翻译结果。
+7. 解析文本翻译结果，得到文本翻译文本。
+
+## 前提条件
+
+Windows 开发环境需满足以下要求：
+
+- Microsoft Visual Studio 2017 或以上版本。
+- Windows 7 或以上版本的设备。
+
+## 示例项目
+
+讯飞转写及翻译插件提供了示例项目，你可以前往克隆或下载并进行体验。
+
+| 平台    | 语言        | 示例代码                                                     |
+| ------- | ----------- | ------------------------------------------------------------ |
+| Android | Java        | [点击下载](https://download.agora.io/marketplace/release/AgoraWithHyAndroid.zip) |
+| iOS     | Objective-C |[点击下载](https://download.agora.io/marketplace/release/AgoraWithHyIos.zip) |
+| Windows | C++         | [点击下载](https://download.agora.io/marketplace/release/AgoraWithHyWin.zip) |
+
+### 运行步骤
+
+参考以下步骤快速跑通示例项目：
+
+1. 在 Microsoft Visual Studio 中打开 `AgoraWithHyWin/AgoraWithHyWin.sln`，并且安装 MFC 组件。
+2. 打开头文件筛选器中的 `AgoraWithHyWinDlg.h` 文件，将 `#YOUR APP ID#` 替换为你的声网 App ID。获取 App ID 请参考[开通服务](/zh-CN/realtime-media/marketplace/get-started/enable-service)。
+
+    ```cpp
+    #define AGORA_APP_ID "#YOUR APP ID#"
+    ```
+
+3. 打开头文件筛选器中的 `HyUtil.h` 文件，填入以下参数：
+
+    ```cpp
+    /** 在声网控制台购买插件后、由讯飞提供的 APPID */
+    #define EXTENSION_APP_ID ""
+    /** 在声网控制台购买插件后、由讯飞提供的 APIKey */
+    #define EXTENSION_API_KEY ""
+    /** 在声网控制台购买插件后、由讯飞提供的 APISecret */
+    #define EXTENSION_API_SECRET ""
+    ```
+
+4. 运行项目。
+
+### 预期效果
+运行成功后，示例项目会安装到你的设备上。
+
+1. 启动 App，你可以在界面上看到**中译英**下拉控件，**start**、**flush**、**stop** 按钮，以及 **tip**、**ist_text**、**its_text** 文本视图。
+2. 可以单击**中译英**下拉控件选择参数。
+3. 单击 **start** 按钮启动倾听。
+4. 对着麦克风说话，语音转写文本会显示在 **ist_text** 文本视图中，文本翻译文本会显示在 **its_text** 文本视图中。
+5. 单击 **flush** 按钮结束音频获取结果，或单击 **stop** 按钮停止倾听。
+6. **tip** 文本视图会显示 **onEnd**。
+
+## 集成和调用流程
+
+### 1. 集成 SDK 和插件
+
+开始前，你需要在项目中分别集成声网音频 SDK 和讯飞转写及翻译插件。
+
+#### 1.1 集成声网音频 SDK
+
+讯飞转写及翻译插件需要与[声网音频 SDK v4.x](/doc/rtc/homepage) 搭配使用。参考以下文档集成音频 SDK v4.x 并实现基础的语音通话：
+
+<Cards>
+  <Card title="实现语音通话" href="/zh-CN/realtime-media/rtc/basic-features/audio-quick-start.windows" />
+</Cards>
+
+<a id="buy"></a>
+#### 1.2 购买和激活插件
+
+你需要进入[声网控制台 > 云市场](https://console.shengwang.cn/marketplace/list/all)页面，按照提示购买讯飞转写及翻译插件。购买成功后，你会收到由讯飞提供的 APPID、APIKey 和 APISecret，后续启动倾听时需要用到。
+
+<a id="integration"></a>
+#### 1.3 集成插件
+
+参考以下步骤集成插件：
+
+1. [点击下载](https://download.agora.io/marketplace/release/Agora_Marketplace_Hy_v1002_Extension_for_Win_v4.1.0.zip)**讯飞语音实时转写及翻译（多语种）**的 Windows 插件包。
+
+2. 解压文件夹，将所有 `.dll` 文件保存到项目生成的 `.exe` 文件所在的目录下。若要保存到其他目录，需要在调用 `loadExtensionProvider` 时传入对应的路径。
+
+#### 1.4 升级插件
+
+声网云市场推荐你在更新插件版本前使用数据库工具（如 SQLite）实现插件版本管理，从而确保插件版本与对应的资源包版本一致。因为当插件版本和资源包版本未对齐时，会出现 App 闪退、崩溃等现象。
+
+以下是用 SQLite 来进行插件版本管理的示例：
+
+  1. 使用 SQLite 数据库自行维护插件包和资源包的版本信息。
+  2. 每次项目初始化时，自动检测当前项目使用的资源包版本：
+      - 如果无记录文件或记录的资源包版本为旧，则更新资源。成功更新后，回写最新资源包版本信息到 SQLite。
+      - 如果记录的资源包版本与当前匹配，则正常实现业务。
+
+如果你的项目已经集成过声网云市场提供的第三方插件，并需要更新插件，可以参考以下步骤来保证更新后的可用性。
+
+以下升级流程以**相芯美颜特效**插件为例：
+
+  1. 参考[集成插件](#13-集成插件-)章节下载所需平台最新版本的插件包和资源包。
+
+  2. 删除项目内旧版本的插件包及其资源包后，再将新版插件和资源包放入对应位置。或者直接在对应目录下用新版插件和资源包替换旧版。
+
+  3. 删除设备上用老版本插件和资源包编译的 App，重新编译你的项目并运行。
+
+:::warning[注意]
+编译 App 时，系统会优先使用连接设备上存在的资源包。请务必在删除旧版本应用程序后再进行编译和运行，否则可能会出现插件版本与资源包不匹配的情况，从而导致各种意外问题。
+:::
+
+### 2. 初始化
+
+集成插件后，你需要先初始化插件，步骤如下：
+
+1. 初始化 `IRtcEngine` 前，在 `RtcEngineContext` 实例中设置插件事件回调 `IRtcEngineEventHandler`。
+
+    ```cpp
+    class CAgoraWithHyWinEventHandler: public agora::rtc::IRtcEngineEventHandler{
+        public:
+            // 插件事件回调。
+            virtual void onExtensionEvent(const char * provider, const char * extension, const char * ky, const char * value) override {
+            }
+
+        private: HWND m_hMsgHanlder = NULL;
+        HyUtil * mHyUtilPtr = NULL;
+    };
+
+    m_rtcEngine = createAgoraRtcEngine();
+    CAgoraWithHyWinEventHandler m_eventHandler;
+    agora::rtc::RtcEngineContext context;
+    ······
+    context.eventHandler = &m_eventHandler;
+    ······
+    ret = m_rtcEngine->initialize(context);
+    ```
+
+2. 调用 `loadExtensionProvider`，将插件添加到 SDK 中。
+
+    ```cpp
+    ret = m_rtcEngine->loadExtensionProvider("libagora-hy.dll");
+    ```
+
+3. 在加入频道前，调用 `enableExtension` 开启插件。
+
+    ```cpp
+    ret = m_rtcEngine->enableExtension(EXTENSION_PROVIDER_NAME, EXTENSION_AUDIO_FILTER_NAME, true);
+    ```
+
+4. 设置插件日志等级，需要在 `enableVideo` 和 `enableAudio` 之前调用。
+
+    ```cpp
+    m_rtcEngine->setExtensionProviderProperty(EXTENSION_PROVIDER_NAME, "log_lvl", "8");
+    ```
+
+### 3. 启动倾听
+
+空闲时可调用，调用后会进入会话。会话最长 5 小时。
+
+```cpp
+int HyUtil::start(ParamWrap param) {
+    mParser.clear();
+    Json::Value root;
+    // 公共对象。必选。
+    Json::Value common; {
+        // 应用标识。必选。对应在声网控制台购买插件后、由讯飞提供的 APPID。
+        common["app_id"] = EXTENSION_APP_ID;
+        // API key。必选。对应在声网控制台购买插件后、由讯飞提供的 APIKey。
+        common["api_key"] = EXTENSION_API_KEY;
+        // API secret。必选。对应在声网控制台购买插件后、由讯飞提供的 APISecret。
+        common["api_secret"] = EXTENSION_API_SECRET;
+    }
+    root["common"] = common;
+    // 语音转写对象。必选。
+    Json::Value ist; {
+        // URI。必选。
+        ist["uri"] = EXTENSION_API_IST_URI;
+        // 请求对象。必选。
+        Json::Value req; {
+            Json::Value business; {
+                // 语种。必选。
+                business["language"] = param.mIstLanguage;
+                // 口音。必选。
+                business["accent"] = param.mIstAccent;
+                // 领域。必选。
+                business["domain"] = param.mIstDomain;
+                // 语言类型
+                // 值类型：int
+                // 值范围：
+                // 1：中英文模式，中文英文均可识别；
+                // 3：英文模式，只识别出英文
+                // 值默认：1
+                business["language_type"] = param.mIstLanguageType;
+                // 动态修正
+                business["dwa"] = param.mIstDwa;
+            }
+            req["business"] = business;
+        }
+        ist["req"] = req;
+    }
+    root["ist"] = ist;
+    // 文本翻译对象。
+    Json::Value its; {
+        // URI。必选。
+        its["uri"] = EXTENSION_API_ITS_URI;
+        // 请求对象。必选。
+        Json::Value req; {
+            // 业务对象。必选。
+            Json::Value business; {
+                // 源语种。必选。
+                business["from"] = param.mItsFrom;
+                // 目标语种。必选。
+                business["to"] = param.mItsTo;
+            }
+            req["business"] = business;
+        }
+        its["req"] = req;
+    }
+    root["its"] = its;
+    string val = root.toStyledString();
+    int errCode = m_rtcEngine->setExtensionProperty(EXTENSION_PROVIDER_NAME, EXTENSION_AUDIO_FILTER_NAME, "start_listening", val.c_str());
+    return errCode;
+}
+```
+
+### 4. 结束音频获取结果
+
+会话时可调用，调用后会先处理完音频和结果，再进入空闲，回调 `"end"`。
+
+```cpp
+int HyUtil::flush() {
+    return m_rtcEngine->setExtensionProperty(EXTENSION_PROVIDER_NAME, EXTENSION_AUDIO_FILTER_NAME, "flush_listening", "{}");
+}
+```
+
+讯飞转写及翻译插件会通过 `onEvent` 回调返回语音转写和文本翻译结果。识别结果的含义详见 [onEvent 回调的 key](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr-api.android.windows#回调-key-)。
+
+### 5. 停止倾听
+
+会话时可调用，调用后会先丢弃音频和结果，再进入空闲，回调 `"end"`。
+
+```cpp
+int HyUtil::stop() {
+    return m_rtcEngine->setExtensionProperty(EXTENSION_PROVIDER_NAME, EXTENSION_AUDIO_FILTER_NAME, "stop_listening", "{}");
+}
+```
+
+<a id="ref"></a>
+## 参考信息
+### API 参考
+
+- [声网 SDK 的插件相关方法和回调](/api-ref/rtc/windows/API/toc_extension)
+- [插件的 key-value 说明](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr-api.android.windows)

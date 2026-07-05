@@ -1,0 +1,76 @@
+---
+title: "原始视频数据"
+---
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+声网 SDK 运用 `AgoraVideoFrameDelegate` 类来提供原始视频数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+使用原始视频数据功能会增加资源消耗，可能会影响设备性能。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.macos)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，调用 `setVideoFrameDelegate` 注册视频观测器对象。
+2. 实现 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调。以上回调会对视频帧进行采集和处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+```swift
+class RawVideoDataMain: BaseViewController {
+    var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
+    var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: false)
+
+     @IBOutlet weak var container: AGEVideoContainer!
+    // 定义 agoraKit 变量
+    var agoraKit: AgoraRtcEngineKit!
+
+       ...
+     // 初始化 agoraKit，并注册相应回调
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+    // 调用 setVideoFrameDelegate 注册视频观测器对象
+    agoraKit.setVideoFrameDelegate (self)
+
+       ...
+
+    // 在当前类下，实现 AgoraVideoFrameDelegate 协议的 extension
+    extension RawVideoDataMain: AgoraVideoFrameDelegate {
+
+        // 实现 onCaptureVideoFrame 回调
+        func onCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onScreenCaptureVideoFrame 回调
+        func onScreenCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onRenderVideoFrame 回调
+        func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+               return true;
+        }
+```
+
+## 参考信息
+
+### 示例项目
+
+<Cards>
+  <Card title="RawVideoData" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/RawVideoData" />
+</Cards>
+
+### API 参考
+
+- [`setVideoFrameDelegate`](/api-ref/rtc/ios/API/toc_video_raw#api_imediaengine_registervideoframeobserver)
+- [`onCaptureVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe)

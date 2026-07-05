@@ -1,0 +1,80 @@
+---
+title: "RemoteVideoTrack 类"
+---
+RemoteVideoTrack
+
+<span className="index-desc-remotevideotrack">`RemoteVideoTrack` 类。</span>
+
+<a id="registervideoencodedimagereceiver"></a>
+## RegisterVideoEncodedImageReceiver
+
+```go
+func (track *RemoteVideoTrack) RegisterVideoEncodedImageReceiver(receiver *VideoEncodedImageReceiver) int {
+    if track.cRemoteVideoTrack == nil {
+        return -1
+    }
+    receiverInner := newVideoEncodedImageReceiverInner(receiver)
+    if receiverInner == nil {
+        return -1
+    }
+    track.conn.remoteVideoRWMutex.Lock()
+    track.conn.remoteEncodedVideoReceivers[receiver] = receiverInner
+    track.conn.remoteVideoRWMutex.Unlock()
+    agoraService.remoteVideoRWMutex.Lock()
+    agoraService.remoteEncodedVideoReceivers[receiverInner.cReceiver] = receiverInner
+    agoraService.remoteVideoRWMutex.Unlock()
+    return int(C.agora_remote_video_track_register_video_encoded_image_receiver(track.cRemoteVideoTrack, receiverInner.cReceiver))
+}
+```
+
+<span className="index-desc-registervideoencodedimagereceiver">注册 [`VideoEncodedImageReceiver`](./videoencodedimagereceiver) 对象。 注册成功之后，SDK 在收到已编码视频帧时触发 [`OnEncodedVideoFrame`](./videoencodedimagereceiver#onencodedvideoframe) 回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `receiver` | `VideoEncodedImageReceiver` 对象。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregistervideoencodedimagereceiver"></a>
+## UnregisterVideoEncodedImageReceiver
+
+```go
+func (track *RemoteVideoTrack) UnregisterVideoEncodedImageReceiver(receiver *VideoEncodedImageReceiver) int {
+    if track.cRemoteVideoTrack == nil {
+        return -1
+    }
+    track.conn.remoteVideoRWMutex.RLock()
+    receiverInner, ok := track.conn.remoteEncodedVideoReceivers[receiver]
+    track.conn.remoteVideoRWMutex.RUnlock()
+    if !ok {
+        return -1
+    }
+    ret := int(C.agora_remote_video_track_unregister_video_encoded_image_receiver(track.cRemoteVideoTrack, receiverInner.cReceiver))
+    agoraService.remoteVideoRWMutex.Lock()
+    delete(agoraService.remoteEncodedVideoReceivers, receiverInner.cReceiver)
+    agoraService.remoteVideoRWMutex.Unlock()
+    track.conn.remoteVideoRWMutex.Lock()
+    delete(track.conn.remoteEncodedVideoReceivers, receiver)
+    track.conn.remoteVideoRWMutex.Unlock()
+    receiverInner.release()
+    return ret
+}
+```
+
+<span className="index-desc-unregistervideoencodedimagereceiver">销毁 [`VideoEncodedImageReceiver`](./videoencodedimagereceiver) 对象。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `receiver` | `VideoEncodedImageReceiver` 对象。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

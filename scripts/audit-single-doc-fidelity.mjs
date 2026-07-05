@@ -44,6 +44,36 @@ const ALLOWED_TARGET_MDX_COMPONENTS = new Set([
   'TabsList',
   'TabsTrigger',
 ]);
+const CODE_LANG_ALIASES = new Map([
+  ['http', 'text'],
+  ['js', 'javascript'],
+  ['objectivec', 'objc'],
+  ['obj-c', 'objc'],
+  ['shell', 'bash'],
+]);
+const PRODUCT_LABELS = new Map([
+  ['aigc', 'AIGC'],
+  ['art-class', '灵动课堂'],
+  ['marketplace', '云市场'],
+  ['online-music-class', '在线音乐课堂'],
+  ['recording', '本地服务端录制'],
+]);
+const PLATFORM_LABELS = new Map([
+  ['android', 'Android'],
+  ['electron', 'Electron'],
+  ['flutter', 'Flutter'],
+  ['harmonyos', 'HarmonyOS'],
+  ['ios', 'iOS'],
+  ['javascript', 'Web'],
+  ['macos', 'macOS'],
+  ['react-native', 'React Native'],
+  ['rn', 'React Native'],
+  ['unity', 'Unity'],
+  ['unreal', 'Unreal'],
+  ['wechat', '微信小程序'],
+  ['windows', 'Windows'],
+]);
+const JSX_ATTRS_PATTERN = String.raw`(?:[^"'>{}]|"[^"]*"|'[^']*'|\{[^}]*\})*`;
 const KNOWN_STRUCTURAL_COMPONENTS = new Set([
   'Accordion',
   'Accordions',
@@ -65,6 +95,17 @@ const KNOWN_STRUCTURAL_COMPONENTS = new Set([
   'TabsTrigger',
 ]);
 
+/**
+ * @param {{
+ *   oldPath: string;
+ *   newPath: string;
+ *   oldUrl?: string | null;
+ *   newUrl?: string | null;
+ *   platform?: string | null;
+ *   product?: string | null;
+ *   sourceRoot?: string | null;
+ * }} options
+ */
 export function auditSingleDocContentFidelity({
   oldPath,
   newPath,
@@ -76,12 +117,16 @@ export function auditSingleDocContentFidelity({
 }) {
   const resolvedOldPath = path.resolve(oldPath);
   const resolvedNewPath = path.resolve(newPath);
+  const resolvedPortalPath = resolveMarkdownFile(resolvedNewPath);
+  if (!resolvedPortalPath) {
+    throw new Error(`Unable to resolve portal source file: ${resolvedNewPath}`);
+  }
   const projection = {
     platform: platform ?? null,
     product: product ?? null,
   };
   const targetRawContent = stripFrontmatter(
-    fs.readFileSync(resolvedNewPath, 'utf8'),
+    fs.readFileSync(resolvedPortalPath, 'utf8'),
   );
   const legacyResidue = detectLegacyResidue(targetRawContent);
   const oldContent = loadLegacyContent({
@@ -94,7 +139,7 @@ export function auditSingleDocContentFidelity({
     variables: DEFAULT_VARIABLES,
   });
   const newContent = loadPortalContent({
-    currentFile: resolvedNewPath,
+    currentFile: resolvedPortalPath,
     projection,
     seen: new Set(),
   });
@@ -216,7 +261,7 @@ export function loadLegacyContent({
   });
 
   for (const importEntry of imports) {
-    if (!importEntry.localName || !/^[A-Z]/.test(importEntry.localName)) {
+    if (!importEntry.localName) {
       continue;
     }
 
@@ -227,6 +272,20 @@ export function loadLegacyContent({
     });
 
     if (!importedPath) {
+      continue;
+    }
+
+    if (importEntry.namespace) {
+      expanded = replaceNamespaceLookups(
+        expanded,
+        importEntry.localName,
+        parseExportedObjectMaps(fs.readFileSync(importedPath, 'utf8')),
+        projection,
+      );
+      continue;
+    }
+
+    if (!/^[A-Z]/.test(importEntry.localName)) {
       continue;
     }
 
@@ -242,6 +301,7 @@ export function loadLegacyContent({
       expanded,
       importEntry.localName,
       importedContent,
+      projection,
     );
   }
 
@@ -249,12 +309,50 @@ export function loadLegacyContent({
     attrName: 'platform',
     projectionValue: projection.platform,
   });
+  expanded = filterOrStripWrapper(expanded, 'PlatformFilter', {
+    attrName: 'platformList',
+    projectionValue: projection.platform,
+  });
   expanded = filterOrStripWrapper(expanded, 'ProductWrapper', {
     attrName: 'product',
     projectionValue: projection.product,
   });
 
-  return expandVariables(expanded, variables);
+  return expandVariables(
+    expandRuntimeVariablesForAudit(expanded, projection),
+    variables,
+  );
+}
+
+function expandRuntimeVariablesForAudit(content, projection) {
+  const product = projection.product ?? '';
+  const platform = projection.platform ?? '';
+  const productLabel = getProductLabel(product);
+  const platformLabel = getPlatformLabel(platform);
+
+  return content
+    .replace(/\$\{props\.ag_platform\}/g, platform)
+    .replace(/\$\{props\.ag_product\}/g, product)
+    .replace(/\$\{frontMatter\.ag_platform\}/g, platform)
+    .replace(/\$\{frontMatter\.ag_platform_label\}/g, platformLabel)
+    .replace(/\$\{frontMatter\.ag_product_label\}/g, productLabel)
+    .replace(/\$\{frontMatter\.ag_product\}/g, product)
+    .replace(/\{frontMatter\.ag_platform\}/g, platform)
+    .replace(/\{frontMatter\.ag_platform_label\}/g, platformLabel)
+    .replace(/\{frontMatter\.ag_product_label\}/g, productLabel)
+    .replace(/\{frontMatter\.ag_product\}/g, product)
+    .replace(/\bfrontMatter\.ag_platform\b/g, platform)
+    .replace(/\bfrontMatter\.ag_platform_label\b/g, platformLabel)
+    .replace(/\bfrontMatter\.ag_product_label\b/g, productLabel)
+    .replace(/\bfrontMatter\.ag_product\b/g, product);
+}
+
+function getProductLabel(product) {
+  return PRODUCT_LABELS.get(product) ?? product;
+}
+
+function getPlatformLabel(platform) {
+  return PLATFORM_LABELS.get(platform) ?? platform;
 }
 
 export function loadPortalContent({ currentFile, projection, seen }) {
@@ -282,6 +380,7 @@ export function loadPortalContent({ currentFile, projection, seen }) {
         seen,
       }),
   });
+  content = inlineSlotDefinitions(content);
   content = filterOrStripWrapper(content, 'PlatformStructured', {
     attrName: 'platform',
     projectionValue: projection.platform,
@@ -292,6 +391,26 @@ export function loadPortalContent({ currentFile, projection, seen }) {
   });
 
   return content;
+}
+
+function inlineSlotDefinitions(content) {
+  const slots = new Map();
+  const slotPattern =
+    /<Slot\b[^>]*\bfor=(['"])(?<name>[\s\S]*?)\1[^>]*>(?<body>[\s\S]*?)<\/Slot>/g;
+
+  for (const match of content.matchAll(slotPattern)) {
+    slots.set(match.groups.name, match.groups.body);
+  }
+
+  return content
+    .replace(
+      /<Slot\b[^>]*\bname=(['"])(?<name>[\s\S]*?)\1[^>]*\/>/g,
+      (_match, _quote, _name, _offset, _source, groups) => {
+        const body = slots.get(groups.name);
+        return body ? ` ${normalizeText(body).replace(/\|/g, '\\|')} ` : '';
+      },
+    )
+    .replace(slotPattern, '');
 }
 
 function expandIncludeTags({ content, currentFile, loader }) {
@@ -313,16 +432,40 @@ function expandIncludeTags({ content, currentFile, loader }) {
 
 function removeImports(content) {
   const imports = [];
-  const withoutImports = content.replace(
-    /^import\s+(.+?)\s+from\s+['"]([^'"]+)['"];?\s*$/gm,
-    (_match, importClause, source) => {
+  const lines = content.split('\n');
+  let inCodeFence = false;
+  const withoutImports = lines
+    .map((line) => {
+      if (/^ {0,3}(`{3,}|~{3,})/.test(line)) {
+        inCodeFence = !inCodeFence;
+        return line;
+      }
+
+      if (inCodeFence) {
+        return line;
+      }
+
+      const importMatch = line.match(
+        /^import\s+(.+?)\s+from\s+['"]([^'"]+)['"];?\s*$/,
+      );
+
+      if (!importMatch) {
+        return line;
+      }
+
+      const normalizedImportClause = importMatch[1].trim();
+      const namespaceMatch = normalizedImportClause.match(
+        /^\*\s+as\s+([A-Za-z0-9_]+)$/,
+      );
       imports.push({
-        localName: getDefaultImportName(importClause.trim()),
-        source,
+        localName:
+          namespaceMatch?.[1] ?? getDefaultImportName(normalizedImportClause),
+        namespace: Boolean(namespaceMatch),
+        source: importMatch[2],
       });
       return '';
-    },
-  );
+    })
+    .join('\n');
 
   return {
     content: withoutImports,
@@ -338,10 +481,72 @@ function getDefaultImportName(importClause) {
   return importClause.split(',')[0]?.trim() || null;
 }
 
+function parseExportedObjectMaps(content) {
+  const maps = new Map();
+  const exportPattern =
+    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\{([\s\S]*?)^\s*}\s*;?\s*$/gm;
+  let exportMatch = exportPattern.exec(content);
+
+  while (exportMatch) {
+    const values = new Map();
+    const propertyPattern =
+      /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
+    let propertyMatch = propertyPattern.exec(exportMatch[2]);
+
+    while (propertyMatch) {
+      values.set(
+        propertyMatch[1],
+        (
+          propertyMatch[2] ??
+          propertyMatch[3] ??
+          propertyMatch[4] ??
+          propertyMatch[5] ??
+          ''
+        ).trim(),
+      );
+      propertyMatch = propertyPattern.exec(exportMatch[2]);
+    }
+
+    maps.set(exportMatch[1], values);
+    exportMatch = exportPattern.exec(content);
+  }
+
+  return maps;
+}
+
+function replaceNamespaceLookups(content, namespaceName, maps, projection) {
+  if (maps.size === 0) {
+    return content;
+  }
+
+  const escaped = escapeRegExp(namespaceName);
+  const platform = projection.platform ?? '';
+  return content.replace(
+    new RegExp(
+      String.raw`\{${escaped}\.([A-Za-z0-9_]+)\s*\[\s*frontMatter\.ag_platform\s*]\s*}`,
+      'g',
+    ),
+    (match, exportName) => {
+      const exportMap = maps.get(exportName);
+      if (!exportMap) {
+        return match;
+      }
+
+      if (!platform) {
+        return `${namespaceName}.${exportName}`;
+      }
+
+      return exportMap.get(platform) ?? '';
+    },
+  );
+}
+
 function resolveImportSource({ currentFile, source, sourceRoot }) {
   if (source.startsWith('@docs/shared/')) {
-    return resolveMarkdownFile(
-      path.join(sourceRoot, 'shared', source.slice('@docs/shared/'.length)),
+    const relativePath = source.slice('@docs/shared/'.length);
+    return (
+      resolveMarkdownFile(path.join(sourceRoot, 'docs/shared', relativePath)) ??
+      resolveMarkdownFile(path.join(sourceRoot, 'shared', relativePath))
     );
   }
 
@@ -352,8 +557,21 @@ function resolveImportSource({ currentFile, source, sourceRoot }) {
   }
 
   if (source.startsWith('@doc-shared/')) {
+    const relativePath = source.slice('@doc-shared/'.length);
+    return (
+      resolveMarkdownFile(path.join(sourceRoot, 'docs/shared', relativePath)) ??
+      resolveMarkdownFile(path.join(sourceRoot, 'shared', relativePath))
+    );
+  }
+
+  if (source.startsWith('@api-shared/')) {
     return resolveMarkdownFile(
-      path.join(sourceRoot, 'shared', source.slice('@doc-shared/'.length)),
+      path.join(
+        sourceRoot,
+        'docs-api-reference',
+        'shared',
+        source.slice('@api-shared/'.length),
+      ),
     );
   }
 
@@ -365,13 +583,19 @@ function resolveImportSource({ currentFile, source, sourceRoot }) {
 }
 
 function resolveMarkdownFile(candidatePath) {
+  const extension = path.extname(candidatePath).toLowerCase();
+  const withoutExtension = extension
+    ? candidatePath.slice(0, -extension.length)
+    : candidatePath;
   const candidates = [
     candidatePath,
+    extension === '.md' ? `${withoutExtension}.mdx` : null,
+    extension === '.mdx' ? `${withoutExtension}.md` : null,
     `${candidatePath}.mdx`,
     `${candidatePath}.md`,
     path.join(candidatePath, 'index.mdx'),
     path.join(candidatePath, 'index.md'),
-  ];
+  ].filter(Boolean);
 
   return candidates.find(
     (filePath) =>
@@ -381,12 +605,130 @@ function resolveMarkdownFile(candidatePath) {
   );
 }
 
-function replaceComponentUsage(content, componentName, replacement) {
+function replaceComponentUsage(content, componentName, replacement, projection) {
   const escaped = escapeRegExp(componentName);
-  const selfClosing = new RegExp(`<${escaped}\\s*\\/?>`, 'g');
-  const paired = new RegExp(`<${escaped}\\b[^>]*>\\s*<\\/${escaped}>`, 'g');
+  const paired = new RegExp(
+    `<${escaped}\\b(?<attrs>${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/${escaped}\\s*>`,
+    'g',
+  );
+  const selfClosing = new RegExp(
+    `<${escaped}\\b(?<attrs>${JSX_ATTRS_PATTERN})\\s*\\/>`,
+    'g',
+  );
+  const bare = new RegExp(`<${escaped}\\s*>`, 'g');
+  const renderReplacement = (...args) => {
+    const groups = args.at(-1);
+    return applyComponentProps(
+      replacement,
+      parseStaticProps(groups?.attrs ?? '', projection),
+    );
+  };
 
-  return content.replace(paired, replacement).replace(selfClosing, replacement);
+  return content
+    .replace(paired, renderReplacement)
+    .replace(selfClosing, renderReplacement)
+    .replace(bare, () => replacement);
+}
+
+function parseStaticProps(attrs, projection) {
+  const props = new Map();
+  const pattern =
+    /\b([A-Za-z0-9_]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|\{\s*"([^"]*)"\s*\}|\{\s*'([^']*)'\s*\}|\{\s*`([^`]*)`\s*\})/g;
+  let match = pattern.exec(attrs);
+
+  while (match) {
+    props.set(
+      match[1],
+      match[2] ?? match[3] ?? match[4] ?? match[5] ?? match[6] ?? '',
+    );
+    match = pattern.exec(attrs);
+  }
+
+  const expressionPattern =
+    /\b([A-Za-z0-9_]+)\s*=\s*\{\s*(?:frontMatter|props)\.([A-Za-z0-9_]+)\s*\}/g;
+  let expressionMatch = expressionPattern.exec(attrs);
+
+  while (expressionMatch) {
+    props.set(
+      expressionMatch[1],
+      getRuntimePropValueForAudit(expressionMatch[2], projection) ?? '',
+    );
+    expressionMatch = expressionPattern.exec(attrs);
+  }
+
+  return props;
+}
+
+function applyComponentProps(replacement, props) {
+  return evaluateStaticPropConditionalsForAudit(
+    renderHtmlProps(replacement, props),
+    props,
+  ).replace(
+    /\{?props\.([A-Za-z0-9_]+)\}?/g,
+    (_, name) => props.get(name) ?? '',
+  );
+}
+
+function evaluateStaticPropConditionalsForAudit(value, props) {
+  return value.replace(
+    /\{\s*props\.([A-Za-z0-9_]+)\s*={2,3}\s*(['"])(.*?)\2\s*&&\s*([\s\S]*?)\s*}\s*(?=\n\s*(?:\{props\.|#{1,6}\s)|\s*$)/g,
+    (match, propName, _quote, expectedValue, body) => {
+      const actualValue = props.get(propName);
+      if (actualValue == null) {
+        return match;
+      }
+
+      return actualValue === expectedValue ? `\n${body.trim()}\n` : '';
+    },
+  );
+}
+
+function getRuntimePropValueForAudit(name, projection) {
+  if (name === 'ag_platform') {
+    return projection.platform ?? '';
+  }
+
+  if (name === 'ag_platform_label') {
+    return getPlatformLabel(projection.platform ?? '');
+  }
+
+  if (name === 'ag_product') {
+    return projection.product ?? '';
+  }
+
+  if (name === 'ag_product_label') {
+    return getProductLabel(projection.product ?? '');
+  }
+
+  return '';
+}
+
+function renderHtmlProps(content, props) {
+  const selfClosing = new RegExp(
+    `<HTML\\b(?<attrs>${JSX_ATTRS_PATTERN})\\s*\\/>`,
+    'g',
+  );
+  const paired = new RegExp(
+    `<HTML\\b(?<attrs>${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/HTML\\s*>`,
+    'g',
+  );
+  const replaceHtml = (...args) => {
+    const groups = args.at(-1);
+    return readHtmlPropValue(groups?.attrs ?? '', props) ?? '';
+  };
+
+  return content.replace(selfClosing, replaceHtml).replace(paired, replaceHtml);
+}
+
+function readHtmlPropValue(attrs, props) {
+  const propsExpression = /\bhtml\s*=\s*\{\s*props\.([A-Za-z0-9_]+)\s*}/.exec(
+    attrs,
+  );
+  if (propsExpression) {
+    return props.get(propsExpression[1]) ?? '';
+  }
+
+  return readAttribute(`<HTML ${attrs}>`, 'html');
 }
 
 function filterOrStripWrapper(content, componentName, options) {
@@ -400,6 +742,10 @@ function filterOrStripWrapper(content, componentName, options) {
   for (const match of content.matchAll(openPattern)) {
     const openTag = match[0];
     const openIndex = match.index ?? 0;
+    if (openIndex < cursor) {
+      continue;
+    }
+
     const close = findMatchingComponentClose({
       componentName,
       content,
@@ -411,7 +757,11 @@ function filterOrStripWrapper(content, componentName, options) {
     }
 
     result += content.slice(cursor, openIndex);
-    const inner = content.slice(openIndex + openTag.length, close.start);
+    const inner = filterOrStripWrapper(
+      content.slice(openIndex + openTag.length, close.start),
+      componentName,
+      options,
+    );
     const shouldKeep =
       !options.projectionValue ||
       shouldKeepProjectionTag(openTag, {
@@ -502,6 +852,75 @@ function parseListAttribute(raw) {
     .filter(Boolean);
 }
 
+function readObjectArrayAttribute(attrs, name) {
+  const expression = readBalancedExpressionAttribute(attrs, name);
+  if (!expression) {
+    return [];
+  }
+
+  return [...expression.matchAll(/\{([^{}]*)\}/g)]
+    .map((match) => parseObjectLiteralProperties(match[1]))
+    .filter((item) => Object.keys(item).length > 0);
+}
+
+function readBalancedExpressionAttribute(attrs, name) {
+  const pattern = new RegExp(`\\b${escapeRegExp(name)}\\s*=\\s*\\{`, 'g');
+  const match = pattern.exec(attrs);
+  if (!match) {
+    return null;
+  }
+
+  const start = pattern.lastIndex - 1;
+  let depth = 0;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = start; index < attrs.length; index += 1) {
+    const char = attrs[index];
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === quote) {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+      continue;
+    }
+
+    if (char === '{') {
+      depth += 1;
+    } else if (char === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        return attrs.slice(start + 1, index);
+      }
+    }
+  }
+
+  return null;
+}
+
+function parseObjectLiteralProperties(raw) {
+  const props = {};
+  const pattern =
+    /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([A-Za-z0-9_./:#?&=%-]+))/g;
+  let match = pattern.exec(raw);
+
+  while (match) {
+    props[match[1]] = match[2] ?? match[3] ?? match[4] ?? match[5] ?? '';
+    match = pattern.exec(raw);
+  }
+
+  return props;
+}
+
 function expandVariables(content, variables) {
   return content.replace(
     /<(?<component>Vg|Vpd|Vpl)\b(?<attrs>[^>]*)\/>/g,
@@ -538,7 +957,7 @@ export function createContentFidelityRecords({ content, location, side }) {
     const raw = paragraphLines.join(' ');
     const value = normalizeText(raw);
 
-    if (value) {
+    if (value && value !== '-') {
       records.push(
         createRecord({
           kind: 'paragraph',
@@ -587,12 +1006,35 @@ export function createContentFidelityRecords({ content, location, side }) {
       continue;
     }
 
-    const fenceMatch = line.match(/^ {0,3}(`{3,}|~{3,})([A-Za-z0-9_-]*)/);
+    const fenceMatch = line.match(/^ {0,3}(`{3,}|~{3,})([^\n]*)/);
     if (fenceMatch) {
       flushParagraph(lineNumber);
+      const fenceInfo = parseCodeFenceInfo(fenceMatch[2] ?? '');
+      if (
+        fenceInfo.tab &&
+        !isFenceTabDuplicatedByFirstCodeComment({
+          fence: fenceMatch[1],
+          lines,
+          startIndex: index + 1,
+          tab: fenceInfo.tab,
+        })
+      ) {
+        records.push(
+          createRecord({
+            kind: 'tab',
+            line: lineNumber,
+            location,
+            raw: line,
+            records,
+            section: currentSection(),
+            side,
+            value: normalizeText(fenceInfo.tab),
+          }),
+        );
+      }
       inCode = true;
       codeFence = fenceMatch[1];
-      codeLanguage = fenceMatch[2] || 'text';
+      codeLanguage = normalizeCodeLanguage(fenceInfo.language || 'text');
       codeStartLine = lineNumber;
       codeLines = [];
       continue;
@@ -682,18 +1124,24 @@ export function createContentFidelityRecords({ content, location, side }) {
       continue;
     }
 
-    if (/^\|.+\|$/.test(trimmed)) {
+    if (isMarkdownTableRow(trimmed)) {
+      if (isMarkdownTableSeparator(trimmed)) {
+        continue;
+      }
+
+      const collected = collectMarkdownTableRow(lines, index);
+      index = collected.nextIndex - 1;
       flushParagraph(lineNumber);
       records.push(
         createRecord({
           kind: 'table-row',
           line: lineNumber,
           location,
-          raw: trimmed,
+          raw: collected.row,
           records,
           section: currentSection(),
           side,
-          value: normalizeTableRow(trimmed),
+          value: normalizeTableRow(collected.row),
         }),
       );
       continue;
@@ -751,6 +1199,13 @@ export function createContentFidelityRecords({ content, location, side }) {
 
 function normalizeMdxSyntax(content) {
   let normalized = content.replace(/\r\n?/g, '\n');
+  normalized = normalized.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+  const tableHeaders = parseExportedTableHeaders(normalized);
+  normalized = normalizeMalformedLegacyTags(normalized);
+  normalized = normalizeLegacyHeadingComponents(normalized);
+  normalized = normalizeLegacyInlineComponents(normalized);
+  normalized = normalizeLegacyLandingComponents(normalized);
+  normalized = normalizeLegacyCardComponents(normalized);
 
   normalized = normalized.replace(
     /<Link\b([^>]*)>([\s\S]*?)<\/Link>/g,
@@ -767,6 +1222,11 @@ function normalizeMdxSyntax(content) {
     const src = readAttribute(`<Image ${attrs}>`, 'src') ?? '#';
     return `![${alt}](${src})`;
   });
+  normalized = normalized.replace(
+    /<HTML\b[^>]*>([\s\S]*?)<\/HTML>/g,
+    (_match, body) => body,
+  );
+  normalized = normalized.replace(/<HTML\b[^>]*\/>/g, '');
   normalized = normalized.replace(/<Admonition\b([^>]*)>/g, (_match, attrs) => {
     const type = readAttribute(`<Admonition ${attrs}>`, 'type') ?? 'note';
     const title = readAttribute(`<Admonition ${attrs}>`, 'title');
@@ -775,6 +1235,9 @@ function normalizeMdxSyntax(content) {
       : `:::${mapAdmonitionType(type)}`;
   });
   normalized = normalized.replace(/<\/Admonition>/g, ':::');
+  normalized = normalizeLegacyJsxTables(normalized, tableHeaders);
+  normalized = normalizeLegacyHtmlTables(normalized);
+  normalized = normalizeCategorizedApiMarkdownTables(normalized);
   normalized = normalized.replace(
     /<CodeBlock\b([^>]*)>\s*\{`([\s\S]*?)`}\s*<\/CodeBlock>/g,
     (_match, attrs, code) => {
@@ -824,6 +1287,7 @@ function normalizeMdxSyntax(content) {
     },
   );
   normalized = normalized.replace(/<\/?details>/g, '');
+  normalized = stripExportConstBlocks(normalized);
   normalized = normalized.replace(/^export\s+const\s+.+$/gm, '');
   normalized = normalized.replace(
     /<\/?(PlatformStructured|PlatformInline)\b[^>]*>/g,
@@ -833,8 +1297,576 @@ function normalizeMdxSyntax(content) {
     /<\/?(ProductWrapper|PlatformWrapper)\b[^>]*>/g,
     '',
   );
+  normalized = normalizeIndentedCodeFences(normalized);
 
   return normalized;
+}
+
+function normalizeIndentedCodeFences(content) {
+  const lines = content.split('\n');
+  const output = [];
+  let inFence = false;
+  let fenceMarker = '';
+  let fenceIndent = '';
+
+  for (const line of lines) {
+    if (!inFence) {
+      const open = line.match(/^([ \t]{4,})(`{3,}|~{3,})(.*)$/);
+      if (open) {
+        inFence = true;
+        fenceIndent = open[1];
+        fenceMarker = open[2];
+        output.push(`${open[2]}${open[3]}`);
+        continue;
+      }
+
+      output.push(line);
+      continue;
+    }
+
+    const unindented = line.startsWith(fenceIndent)
+      ? line.slice(fenceIndent.length)
+      : line.replace(/^[ \t]{1,4}/, '');
+    output.push(unindented);
+
+    if (unindented.trimStart().startsWith(fenceMarker)) {
+      inFence = false;
+      fenceMarker = '';
+      fenceIndent = '';
+    }
+  }
+
+  return output.join('\n');
+}
+
+function normalizeMalformedLegacyTags(content) {
+  return content
+    .replace(/<\s+(\/?)\s*(Table|Tr|Td|Th)\b/gi, '<$1$2')
+    .replace(/<\/\s+(Table|Tr|Td|Th)\s*>/gi, '</$1>')
+    .replace(/<\s*(\/?)\s*(Table|Tr|Td|Th)\s+>/gi, '<$1$2>');
+}
+
+function normalizeLegacyHeadingComponents(content) {
+  return content
+    .replace(
+      /^([ \t]*)<H([1-6])\b[^>]*>([^\n]*?)<\/H\2>([^\n]*)$/gm,
+      (_match, indent, level, body, suffix) =>
+        `${indent}${'#'.repeat(Number(level))} ${normalizeText(`${body}${suffix ?? ''}`)}`,
+    )
+    .replace(
+      /^([ \t]*)<h([1-6])\b[^>]*>([^\n]*?)<\/h\2>([^\n]*)$/gm,
+      (_match, indent, level, body, suffix) =>
+        `${indent}${'#'.repeat(Number(level))} ${normalizeText(`${body}${suffix ?? ''}`)}`,
+    );
+}
+
+function normalizeLegacyInlineComponents(content) {
+  return content
+    .replace(/<Text\b[^>]*>([\s\S]*?)<\/Text>/g, '$1')
+    .replace(/<String\b[^>]*>([\s\S]*?)<\/String>/g, '$1')
+    .replace(/<Object\b[^>]*>([\s\S]*?)<\/Object>/g, '$1');
+}
+
+function normalizeLegacyLandingComponents(content) {
+  let normalized = content;
+
+  normalized = normalized.replace(
+    /<(?<name>ListPanelAV2|ListPanel)\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/\k<name>>/g,
+    (_match, _name, _attrs, _body, _offset, _source, groups) =>
+      renderLegacyPanelForAudit(groups.attrs, groups.body),
+  );
+
+  normalized = normalized.replace(
+    /<LinkList\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/LinkList>/g,
+    (_match, _attrs, _body, _offset, _source, groups) =>
+      renderLegacyLinkListForAudit(groups.attrs, groups.body),
+  );
+
+  normalized = normalized.replace(
+    /<QuickGuide\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/QuickGuide>/g,
+    (_match, _attrs, _body, _offset, _source, groups) =>
+      renderLegacyQuickGuideForAudit(groups.attrs, groups.body),
+  );
+
+  normalized = normalized.replace(
+    /<QuickGuide\b(?<attrs>[^>]*)\/>/g,
+    (_match, _attrs, _offset, _source, groups) =>
+      renderLegacyQuickGuideForAudit(groups.attrs, ''),
+  );
+
+  normalized = normalized.replace(
+    /<ImageGallery\b(?<attrs>[\s\S]*?)\/>/g,
+    (_match, _attrs, _offset, _source, groups) =>
+      renderImageGalleryForAudit(readObjectArrayAttribute(groups.attrs, 'list')),
+  );
+
+  return normalized.replace(
+    /^[ \t]*<ListItem\b[^>]*>([\s\S]*?)<\/ListItem>[ \t]*$/gm,
+    (_match, body) => `- ${normalizeText(body)}`,
+  );
+}
+
+function normalizeLegacyCardComponents(content) {
+  const cardNames =
+    'Card|LinkBlock|LinkCardV2|LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard';
+  let normalized = content;
+
+  normalized = normalized.replace(
+    /<VersionSection\b([^>]*)>([\s\S]*?)<\/VersionSection>/g,
+    (_match, attrs, body) => {
+      const version = readAttribute(`<x ${attrs}>`, 'version') ?? normalizeText(body);
+      return `\n## ${version}\n\n${body.trim()}\n`;
+    },
+  );
+  normalized = normalized.replace(
+    /<VersionTitle\b[^>]*>([\s\S]*?)<\/VersionTitle>/g,
+    (_match, body) => `\n### ${normalizeText(body)}\n`,
+  );
+  normalized = normalized.replace(
+    /<ListTitle\b[^>]*>([\s\S]*?)<\/ListTitle>/g,
+    (_match, body) => `\n#### ${normalizeText(body)}\n`,
+  );
+  normalized = normalized.replace(
+    /<ProductOverview\b[^>]*>([\s\S]*?)<\/ProductOverview>/g,
+    (_match, body) => `\n${body.trim()}\n`,
+  );
+  normalized = normalized.replace(
+    new RegExp(`<(?<name>${cardNames})\\b(?<attrs>[\\s\\S]*?)>(?<body>[\\s\\S]*?)<\\/\\k<name>>`, 'g'),
+    (_match, _name, _attrs, _body, _offset, _source, groups) =>
+      renderCardForAudit(groups.attrs, groups.body),
+  );
+  normalized = normalized.replace(
+    new RegExp(`<(?<name>${cardNames})\\b(?<attrs>[\\s\\S]*?)\\/>`, 'g'),
+    (_match, _name, _attrs, _offset, _source, groups) =>
+      renderCardForAudit(groups.attrs, ''),
+  );
+
+  return normalized
+    .replace(/<\/?(?:Row|Col|Cards|Detail)\b[^>]*>/g, '')
+    .replace(/<\/ProductOverview>/g, '');
+}
+
+function renderCardForAudit(attrs, body = '') {
+  const title =
+    readAttribute(`<x ${attrs}>`, 'title') ||
+    readAttribute(`<x ${attrs}>`, 'text') ||
+    normalizeText(body) ||
+    readAttribute(`<x ${attrs}>`, 'href') ||
+    readAttribute(`<x ${attrs}>`, 'link') ||
+    '#';
+  const href =
+    readAttribute(`<x ${attrs}>`, 'href') ?? readAttribute(`<x ${attrs}>`, 'link');
+
+  return href ? `\n- [${title}](${href})\n` : `\n- ${title}\n`;
+}
+
+function renderLegacyPanelForAudit(attrs, body) {
+  const title = readAttribute(`<x ${attrs}>`, 'title') ?? '';
+  const description =
+    readAttribute(`<x ${attrs}>`, 'desc') ??
+    readAttribute(`<x ${attrs}>`, 'description');
+  const image =
+    readAttribute(`<x ${attrs}>`, 'img') ?? readAttribute(`<x ${attrs}>`, 'image');
+  const links = readObjectArrayAttribute(attrs, 'links').length
+    ? readObjectArrayAttribute(attrs, 'links')
+    : readObjectArrayAttribute(attrs, 'href');
+  const items = [...body.matchAll(/<ListItem\b[^>]*>([\s\S]*?)<\/ListItem>/g)]
+    .map((match) => normalizeText(match[1]))
+    .filter(Boolean);
+  const lines = [];
+
+  if (image) {
+    lines.push(`![${title || 'image'}](${image})`, '');
+  }
+
+  if (title && description) {
+    lines.push(`- **${title}**：${description}`);
+  } else if (title || description) {
+    lines.push(`- ${title || description}`);
+  }
+
+  lines.push(...items.map((item) => `  - ${item}`));
+  lines.push(...links.map((link) => `  - [${link.title ?? link.href}](${link.href ?? '#'})`));
+
+  return `\n${lines.join('\n')}\n`;
+}
+
+function renderLegacyLinkListForAudit(attrs, body) {
+  const title = readAttribute(`<x ${attrs}>`, 'title') ?? '';
+  const links = readObjectArrayAttribute(attrs, 'href').length
+    ? readObjectArrayAttribute(attrs, 'href')
+    : readObjectArrayAttribute(attrs, 'links');
+  return [
+    title ? `### ${title}` : '',
+    body.trim(),
+    ...links.map((link) => `- [${link.title ?? link.href}](${link.href ?? '#'})`),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function renderLegacyQuickGuideForAudit(attrs, body) {
+  const image =
+    readAttribute(`<x ${attrs}>`, 'img') ?? readAttribute(`<x ${attrs}>`, 'image');
+  const title = readAttribute(`<x ${attrs}>`, 'title') ?? '';
+  const links = readObjectArrayAttribute(attrs, 'href').length
+    ? readObjectArrayAttribute(attrs, 'href')
+    : readObjectArrayAttribute(attrs, 'links');
+  return [
+    image ? `![${title || 'guide'}](${image})` : '',
+    body.trim(),
+    ...links.map((link) => `- [${link.title ?? link.href}](${link.href ?? '#'})`),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function renderImageGalleryForAudit(items) {
+  return items
+    .map((item) => {
+      const title = item.text ?? item.title ?? item.alt ?? 'image';
+      const image = item.img ?? item.src ?? item.image;
+      return image ? `![${title}](${image})\n\n- ${title}` : `- ${title}`;
+    })
+    .join('\n\n');
+}
+
+function normalizeLegacyJsxTables(content, tableHeaders = new Map()) {
+  return content.replace(
+      /<Table\b([^>]*)>([\s\S]*?)<\/Table>/g,
+      (_match, attrs, body) => {
+        const headerName = readAttribute(`<Table ${attrs}>`, 'header')?.trim();
+        const header = headerName ? tableHeaders.get(headerName) : null;
+        const rows = [
+          ...body.matchAll(/<Tr\b[^>]*>([\s\S]*?)<\/Tr>/g),
+        ].map((rowMatch) => {
+          const cells = [
+            ...rowMatch[1].matchAll(/<Td\b[^>]*>([\s\S]*?)<\/Td>/g),
+          ].map((cellMatch) => normalizeText(cellMatch[1]).replace(/\|/g, '\\|'));
+          return cells.length > 0 ? `| ${cells.join(' | ')} |` : '';
+        });
+        return [...(header ? [`| ${header.join(' | ')} |`] : []), ...rows]
+          .filter(Boolean)
+          .join('\n');
+      },
+    );
+}
+
+function normalizeLegacyHtmlTables(content) {
+  return content.replace(/<table\b[^>]*>([\s\S]*?)<\/table>/gi, (match, body) => {
+    const rawRows = [...body.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(
+      (rowMatch) => {
+        const cells = [
+          ...rowMatch[1].matchAll(/<t([hd])\b([^>]*)>([\s\S]*?)<\/t\1>/gi),
+        ];
+
+        return cells.map((cellMatch) => ({
+          colspan: readNumericAttribute(cellMatch[2], 'colspan'),
+          kind: cellMatch[1].toLowerCase(),
+          raw: cellMatch[3],
+          rowspan: readNumericAttribute(cellMatch[2], 'rowspan'),
+        }));
+      },
+    );
+    const rows = expandHtmlTableSpans(rawRows).filter((row) => row.length > 0);
+
+    if (rows.length === 0) {
+      return match;
+    }
+
+    return rows
+      .map((row) => {
+        const cells = row.map((cell) =>
+          normalizeText(cell.raw).replace(/\|/g, '\\|'),
+        );
+        return `| ${cells.join(' | ')} |`;
+      })
+      .join('\n');
+  });
+}
+
+function normalizeCategorizedApiMarkdownTables(content) {
+  const lines = content.split('\n');
+  const output = [];
+  let index = 0;
+  let inCodeFence = false;
+
+  while (index < lines.length) {
+    const line = lines[index];
+
+    if (/^ {0,3}(`{3,}|~{3,})/.test(line)) {
+      inCodeFence = !inCodeFence;
+      output.push(line);
+      index += 1;
+      continue;
+    }
+
+    if (
+      !inCodeFence &&
+      isMarkdownTableRow(line) &&
+      isMarkdownTableSeparator(lines[index + 1] ?? '')
+    ) {
+      const tableLines = [line, lines[index + 1]];
+      index += 2;
+
+      while (index < lines.length && isMarkdownTableRow(lines[index])) {
+        const collected = collectMarkdownTableRow(lines, index);
+        tableLines.push(collected.row);
+        index = collected.nextIndex;
+      }
+
+      const rendered = renderCategorizedApiTableForAudit(tableLines);
+      output.push(rendered ?? tableLines.join('\n'));
+      continue;
+    }
+
+    output.push(line);
+    index += 1;
+  }
+
+  return output.join('\n');
+}
+
+function renderCategorizedApiTableForAudit(lines) {
+  const header = splitMarkdownTableRow(lines[0]);
+  const bodyRows = lines.slice(2).map((line) => splitMarkdownTableRow(line));
+
+  if (
+    header.length !== 2 ||
+    bodyRows.some((row) => row.length > 2) ||
+    !isApiListHeader(header[0]) ||
+    !isCategoryHeader(header[1]) ||
+    !bodyRows.some((row) => hasHtmlList(row[0] ?? '')) ||
+    bodyRows.some((row) => hasHtmlList(row[1] ?? ''))
+  ) {
+    return null;
+  }
+
+  const items = [];
+
+  for (const row of bodyRows) {
+    const apiCell = row[0] ?? '';
+    const category = normalizeText(row[1] ?? '');
+
+    if (!apiCell.trim() || !category) {
+      return null;
+    }
+
+    const apiListItems = extractInlineHtmlListItems(apiCell);
+    if (apiListItems.length > 0) {
+      items.push(
+        [`- ${category}：`, ...apiListItems.map((item) => `  - ${item}`)].join(
+          '\n',
+        ),
+      );
+      continue;
+    }
+
+    const api = normalizeText(apiCell);
+    if (!api) {
+      return null;
+    }
+    items.push(`- ${category}：${api}`);
+  }
+
+  return items.join('\n');
+}
+
+function isApiListHeader(value = '') {
+  return /^(?:api|apis|接口|方法|函数)$/.test(normalizeText(value).toLowerCase());
+}
+
+function isCategoryHeader(value = '') {
+  return /(?:类型|分类|类别|type|category|kind)/.test(
+    normalizeText(value).toLowerCase(),
+  );
+}
+
+function hasHtmlList(value = '') {
+  return /<\s*(?:ul|ol|li)\b/i.test(value);
+}
+
+function extractInlineHtmlListItems(value = '') {
+  return [...value.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)]
+    .map((match) => normalizeText(match[1]))
+    .filter(Boolean);
+}
+
+function readNumericAttribute(attrs, attrName) {
+  const value = readAttribute(`<x ${attrs}>`, attrName);
+  const parsed = Number.parseInt(value ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
+function expandHtmlTableSpans(rows) {
+  const pendingRowspans = new Map();
+  const expandedRows = [];
+
+  for (const row of rows) {
+    const expanded = [];
+    let columnIndex = 0;
+
+    const fillPending = () => {
+      while (pendingRowspans.has(columnIndex)) {
+        const pending = pendingRowspans.get(columnIndex);
+        expanded[columnIndex] = {
+          kind: pending.kind,
+          raw: '',
+        };
+        pending.remaining -= 1;
+        if (pending.remaining <= 0) {
+          pendingRowspans.delete(columnIndex);
+        }
+        columnIndex += 1;
+      }
+    };
+
+    for (const cell of row) {
+      fillPending();
+
+      for (let offset = 0; offset < cell.colspan; offset += 1) {
+        const targetColumn = columnIndex + offset;
+        expanded[targetColumn] = {
+          kind: cell.kind,
+          raw: offset === 0 || cell.kind === 'h' ? cell.raw : '',
+        };
+
+        if (cell.rowspan > 1) {
+          pendingRowspans.set(targetColumn, {
+            kind: cell.kind,
+            remaining: cell.rowspan - 1,
+          });
+        }
+      }
+
+      columnIndex += cell.colspan;
+    }
+
+    const maxPendingColumn = Math.max(-1, ...pendingRowspans.keys());
+    while (columnIndex <= maxPendingColumn) {
+      if (pendingRowspans.has(columnIndex)) {
+        fillPending();
+      } else {
+        expanded[columnIndex] = {
+          kind: 'd',
+          raw: '',
+        };
+        columnIndex += 1;
+      }
+    }
+
+    expandedRows.push(expanded);
+  }
+
+  return expandedRows;
+}
+
+function parseExportedTableHeaders(content) {
+  const tableHeaders = new Map();
+  const exportPattern =
+    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\[([\s\S]*?)^\s*]\s*;?\s*$/gm;
+  let exportMatch = exportPattern.exec(content);
+
+  while (exportMatch) {
+    const labels = [];
+    const labelPattern = /\blabel\s*:\s*['"]([^'"]+)['"]/g;
+    let labelMatch = labelPattern.exec(exportMatch[2]);
+
+    while (labelMatch) {
+      labels.push(labelMatch[1]);
+      labelMatch = labelPattern.exec(exportMatch[2]);
+    }
+
+    if (labels.length > 0) {
+      tableHeaders.set(exportMatch[1], labels);
+    }
+
+    exportMatch = exportPattern.exec(content);
+  }
+
+  return tableHeaders;
+}
+
+function stripExportConstBlocks(content) {
+  return content
+    .replace(
+      /^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\[[\s\S]*?^\s*]\s*;?\s*$/gm,
+      '',
+    )
+    .replace(
+      /^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\{[\s\S]*?^\s*}\s*;?\s*$/gm,
+      '',
+    );
+}
+
+function isMarkdownTableSeparator(row) {
+  return splitMarkdownTableRow(row)
+    .filter(Boolean)
+    .every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
+function isMarkdownTableRow(line = '') {
+  const trimmed = line.trim();
+  return trimmed.startsWith('|') && trimmed.includes('|', 1);
+}
+
+function collectMarkdownTableRow(lines, startIndex) {
+  const rowParts = [lines[startIndex]];
+  let index = startIndex + 1;
+
+  if (isCompleteMarkdownTableRow(lines[startIndex])) {
+    return {
+      nextIndex: index,
+      row: rowParts.join('\n'),
+    };
+  }
+
+  while (index < lines.length) {
+    const line = lines[index];
+    const nextLine = lines[index + 1] ?? '';
+
+    if (isMarkdownTableRow(line)) {
+      break;
+    }
+
+    if (!isMarkdownTableContinuationLine(line, nextLine)) {
+      break;
+    }
+
+    rowParts.push(line);
+    index += 1;
+
+    if (isCompleteMarkdownTableRow(line)) {
+      break;
+    }
+  }
+
+  return {
+    nextIndex: index,
+    row: rowParts.join('\n'),
+  };
+}
+
+function isCompleteMarkdownTableRow(line = '') {
+  return line.trim().endsWith('|');
+}
+
+function isMarkdownTableContinuationLine(line = '', nextLine = '') {
+  const trimmed = line.trim();
+
+  if (!trimmed) {
+    return /^[-*+]\s+|\d+\.\s+/.test(nextLine.trim());
+  }
+
+  return (
+    /^[-*+]\s+|\d+\.\s+/.test(trimmed) ||
+    /^<\/?(?:ul|ol|li|p|Admonition|Detail|Tabs|TabItem|Table|table|Slot)\b/i.test(
+      trimmed,
+    ) ||
+    /^:::+/.test(trimmed) ||
+    /^ {2,}\S/.test(line) ||
+    (trimmed.endsWith('|') && !isMarkdownTableRow(line))
+  );
 }
 
 function mapAdmonitionType(type) {
@@ -844,6 +1876,10 @@ function mapAdmonitionType(type) {
 
   if (type === 'danger') {
     return 'error';
+  }
+
+  if (type === 'deprecated') {
+    return 'note';
   }
 
   return type || 'note';
@@ -885,12 +1921,17 @@ export function compareRecords({ sourceRecords, targetRecords }) {
   }
 
   const exactMatches = [];
-  const unmatchedSource = [];
+  let unmatchedSource = [];
   const matchedTargetIds = new Set();
 
   for (const sourceRecord of sourceRecords) {
     const bucket = targetBuckets.get(recordKey(sourceRecord)) ?? [];
-    const targetRecord = bucket.shift();
+    const targetRecord = takeExactTarget({
+      bucket,
+      matchedTargetIds,
+      sourceRecord,
+      targetRecords,
+    });
 
     if (targetRecord) {
       exactMatches.push({
@@ -904,9 +1945,56 @@ export function compareRecords({ sourceRecords, targetRecords }) {
     unmatchedSource.push(sourceRecord);
   }
 
-  const unmatchedTarget = targetRecords.filter(
+  let unmatchedTarget = targetRecords.filter(
     (record) => !matchedTargetIds.has(recordId(record)),
   );
+  const aggregatedListMatches = detectAggregatedListMatches({
+    sourceRecords: unmatchedSource,
+    targetRecords: unmatchedTarget,
+  });
+  const aggregatedSourceIds = new Set();
+
+  for (const match of aggregatedListMatches) {
+    exactMatches.push({
+      source: match.source,
+      target: match.targets[0],
+    });
+    aggregatedSourceIds.add(recordId(match.source));
+    for (const target of match.targets) {
+      matchedTargetIds.add(recordId(target));
+    }
+  }
+
+  if (aggregatedListMatches.length > 0) {
+    unmatchedSource = unmatchedSource.filter(
+      (record) => !aggregatedSourceIds.has(recordId(record)),
+    );
+    unmatchedTarget = unmatchedTarget.filter(
+      (record) => !matchedTargetIds.has(recordId(record)),
+    );
+  }
+
+  const equivalentTextKindMatches = detectEquivalentTextKindMatches({
+    sourceRecords: unmatchedSource,
+    targetRecords: unmatchedTarget,
+  });
+  const equivalentSourceIds = new Set();
+
+  for (const match of equivalentTextKindMatches) {
+    exactMatches.push(match);
+    equivalentSourceIds.add(recordId(match.source));
+    matchedTargetIds.add(recordId(match.target));
+  }
+
+  if (equivalentTextKindMatches.length > 0) {
+    unmatchedSource = unmatchedSource.filter(
+      (record) => !equivalentSourceIds.has(recordId(record)),
+    );
+    unmatchedTarget = unmatchedTarget.filter(
+      (record) => !matchedTargetIds.has(recordId(record)),
+    );
+  }
+
   const changed = [];
   const changedSourceIds = new Set();
   const changedTargetIds = new Set();
@@ -947,10 +2035,17 @@ export function compareRecords({ sourceRecords, targetRecords }) {
   const extra = unresolvedTarget
     .filter((record) => record.kind !== 'unsupported')
     .map(summarizeRecord);
-  const moved = detectMovedRecords(exactMatches).map((match) => ({
-    source: summarizeRecord(match.source),
-    target: summarizeRecord(match.target),
-  }));
+  const moved = detectMovedRecords(
+    exactMatches.filter(
+      (match) =>
+        match.source.kind !== 'tab' &&
+        match.target.kind !== 'tab' &&
+        !isSyntheticTextKindMatch(match),
+    ),
+  ).map((match) => ({
+      source: summarizeRecord(match.source),
+      target: summarizeRecord(match.target),
+    }));
 
   return {
     findings: {
@@ -964,6 +2059,197 @@ export function compareRecords({ sourceRecords, targetRecords }) {
       exact: exactMatches.length,
     },
   };
+}
+
+function detectEquivalentTextKindMatches({ sourceRecords, targetRecords }) {
+  const matches = [];
+  const usedTargetIds = new Set();
+  const targetBuckets = new Map();
+
+  for (const target of targetRecords) {
+    if (!isTextEquivalentKind(target.kind)) {
+      continue;
+    }
+
+    const key = textEquivalentKey(target);
+    targetBuckets.set(key, [...(targetBuckets.get(key) ?? []), target]);
+  }
+
+  for (const source of sourceRecords) {
+    if (!isTextEquivalentKind(source.kind)) {
+      continue;
+    }
+
+    const bucket = targetBuckets.get(textEquivalentKey(source)) ?? [];
+    const target = bucket.find(
+      (candidate) =>
+        candidate.kind !== source.kind &&
+        !usedTargetIds.has(recordId(candidate)),
+    );
+
+    if (!target) {
+      continue;
+    }
+
+    matches.push({ source, target });
+    usedTargetIds.add(recordId(target));
+  }
+
+  return matches;
+}
+
+function isSyntheticTextKindMatch(match) {
+  return (
+    match.source.kind !== match.target.kind &&
+    isTextEquivalentKind(match.source.kind) &&
+    isTextEquivalentKind(match.target.kind) &&
+    match.source.section === match.target.section &&
+    match.source.value === match.target.value
+  );
+}
+
+function takeExactTarget({
+  bucket,
+  matchedTargetIds,
+  sourceRecord,
+  targetRecords,
+}) {
+  const sameSectionIndex = bucket.findIndex(
+    (target) =>
+      target.section === sourceRecord.section &&
+      !matchedTargetIds.has(recordId(target)),
+  );
+
+  if (sameSectionIndex !== -1) {
+    return bucket.splice(sameSectionIndex, 1)[0];
+  }
+
+  if (
+    hasSameSectionTextEquivalentCandidate({
+      matchedTargetIds,
+      sourceRecord,
+      targetRecords,
+    })
+  ) {
+    return null;
+  }
+
+  while (bucket.length > 0) {
+    const target = bucket.shift();
+    if (!matchedTargetIds.has(recordId(target))) {
+      return target;
+    }
+  }
+
+  return null;
+}
+
+function hasSameSectionTextEquivalentCandidate({
+  matchedTargetIds,
+  sourceRecord,
+  targetRecords,
+}) {
+  if (!isTextEquivalentKind(sourceRecord.kind)) {
+    return false;
+  }
+
+  return targetRecords.some(
+    (target) =>
+      !matchedTargetIds.has(recordId(target)) &&
+      target.section === sourceRecord.section &&
+      target.value === sourceRecord.value &&
+      target.kind !== sourceRecord.kind &&
+      isTextEquivalentKind(target.kind),
+  );
+}
+
+function isTextEquivalentKind(kind) {
+  return kind === 'paragraph' || kind === 'list-item';
+}
+
+function textEquivalentKey(record) {
+  return `${record.section}\0${record.value}`;
+}
+
+function detectAggregatedListMatches({ sourceRecords, targetRecords }) {
+  const matches = [];
+  const usedTargetIds = new Set();
+
+  for (const source of sourceRecords) {
+    if (source.kind !== 'paragraph' || !isHtmlListParagraph(source)) {
+      continue;
+    }
+
+    const match = findAggregatedListMatch({
+      source,
+      targetRecords,
+      usedTargetIds,
+    });
+
+    if (!match) {
+      continue;
+    }
+
+    matches.push(match);
+    for (const target of match.targets) {
+      usedTargetIds.add(recordId(target));
+    }
+  }
+
+  return matches;
+}
+
+function isHtmlListParagraph(record) {
+  return /<\/?(?:ul|ol|li)\b/i.test(record.raw);
+}
+
+function findAggregatedListMatch({ source, targetRecords, usedTargetIds }) {
+  for (let startIndex = 0; startIndex < targetRecords.length; startIndex += 1) {
+    const first = targetRecords[startIndex];
+    if (
+      !isAggregateTextKind(first.kind) ||
+      first.section !== source.section ||
+      usedTargetIds.has(recordId(first))
+    ) {
+      continue;
+    }
+
+    const targets = [];
+    let hasListItem = false;
+    for (let index = startIndex; index < targetRecords.length; index += 1) {
+      const target = targetRecords[index];
+      if (
+        !isAggregateTextKind(target.kind) ||
+        target.section !== source.section ||
+        usedTargetIds.has(recordId(target))
+      ) {
+        break;
+      }
+
+      targets.push(target);
+      hasListItem = hasListItem || target.kind === 'list-item';
+      const aggregate = normalizeText(
+        targets.map((record) => record.value).join(' '),
+      );
+
+      if (hasListItem && aggregate === source.value) {
+        return {
+          source,
+          targets: [...targets],
+        };
+      }
+
+      if (aggregate.length > source.value.length + 20) {
+        break;
+      }
+    }
+  }
+
+  return null;
+}
+
+function isAggregateTextKind(kind) {
+  return kind === 'paragraph' || kind === 'list-item';
 }
 
 function findBestChangedCandidate({ sourceRecord, targetRecords }) {
@@ -1081,24 +2367,264 @@ function longestIncreasingSubsequenceIndexes(values) {
 }
 
 function normalizeTableRow(row) {
-  return row
-    .split('|')
-    .map((cell) => normalizeText(cell))
+  return splitMarkdownTableRow(row)
+    .map((cell) => normalizeTableCellText(cell))
     .filter(Boolean)
     .join(' | ');
 }
 
+function normalizeTableCellText(cell) {
+  const withoutListMarkers = normalizeText(cell)
+    .replace(/(^|[\s:：。；，])[-*+]\s+(?=\S)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return normalizeCjkSpacing(withoutListMarkers);
+}
+
+function splitMarkdownTableRow(row) {
+  const trimmed = row.trim().replace(/^\|/, '').replace(/\|$/, '');
+  const cells = [];
+  let cell = '';
+  let escaped = false;
+  let inCodeSpan = false;
+
+  for (const char of trimmed) {
+    if (escaped) {
+      cell += char;
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escaped = true;
+      cell += char;
+      continue;
+    }
+
+    if (char === '`') {
+      inCodeSpan = !inCodeSpan;
+      cell += char;
+      continue;
+    }
+
+    if (char === '|') {
+      if (inCodeSpan) {
+        cell += char;
+        continue;
+      }
+
+      cells.push(cell.trim());
+      cell = '';
+      continue;
+    }
+
+    cell += char;
+  }
+
+  cells.push(cell.trim());
+  return cells;
+}
+
+function normalizeCodeLanguage(language) {
+  const normalized = String(language || 'text').toLowerCase();
+  return CODE_LANG_ALIASES.get(normalized) ?? normalized;
+}
+
+function parseCodeFenceInfo(info) {
+  const trimmed = info.trim();
+  const language = trimmed.split(/\s+/)[0] ?? '';
+  const tab =
+    /\btab\s*=\s*(['"])(.*?)\1/.exec(trimmed)?.[2] ??
+    /\btab\s*=\s*([^\s"']+)/.exec(trimmed)?.[1] ??
+    null;
+
+  return { language, tab };
+}
+
+function isFenceTabDuplicatedByFirstCodeComment({
+  fence,
+  lines,
+  startIndex,
+  tab,
+}) {
+  for (let index = startIndex; index < lines.length; index += 1) {
+    const trimmed = lines[index].trim();
+
+    if (trimmed.startsWith(fence)) {
+      return false;
+    }
+
+    if (!trimmed) {
+      continue;
+    }
+
+    const commentLabel = readLeadingCommentLabel(trimmed);
+    return commentLabel
+      ? normalizeText(commentLabel) === normalizeText(tab)
+      : false;
+  }
+
+  return false;
+}
+
+function readLeadingCommentLabel(line) {
+  return (
+    /^\/\/\s*(.+)$/.exec(line)?.[1] ??
+    /^#\s*(.+)$/.exec(line)?.[1] ??
+    /^--\s*(.+)$/.exec(line)?.[1] ??
+    /^\/\*\s*(.*?)\s*\*\/$/.exec(line)?.[1] ??
+    /^<!--\s*(.*?)\s*-->$/.exec(line)?.[1] ??
+    null
+  );
+}
+
 function normalizeText(value) {
-  return normalizePlainText(value).replace(/\s+/g, ' ').trim();
+  return normalizeCjkSpacing(normalizePlainText(value).replace(/\s+/g, ' '));
 }
 
 function normalizePlainText(value) {
-  return value
+  const withEntities = value
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&#0*123;|&lcub;/gi, '{')
+    .replace(/&#0*125;|&rcub;/gi, '}')
+    .replace(/&#0*124;/g, '|');
+  const genericSafe = withEntities.replace(
+    /\b([A-Z][A-Za-z0-9_.$]*)<([A-Z][^<>\n/]*)>/g,
+    (_match, name, params) => `${name}‹${params}›`,
+  );
+
+  return stripMarkdownLinks(
+    genericSafe
     .replace(/<[^>]+>/g, ' ')
-    .replace(/!\[([^\]]*)]\([^)]+\)/g, '$1')
-    .replace(/\[([^\]]+)]\([^)]+\)/g, '$1')
+      .replace(/!\[([^\]]*)]\([^)]+\)/g, '$1'),
+  )
+    .replace(/\\\|/g, '|')
+    .replace(/\s*:::\s*/g, ':::')
     .replace(/[`*_{}[\]]/g, '')
-    .replace(/&nbsp;/g, ' ');
+    .replace(/‹/g, '<')
+    .replace(/›/g, '>');
+}
+
+function stripMarkdownLinks(value) {
+  let output = '';
+  let index = 0;
+
+  while (index < value.length) {
+    if (value[index] !== '[' || value[index - 1] === '!') {
+      output += value[index] ?? '';
+      index += 1;
+      continue;
+    }
+
+    const closeBracket = findClosingMarkdownBracket(value, index);
+    if (closeBracket === -1 || value[closeBracket + 1] !== '(') {
+      output += value[index];
+      index += 1;
+      continue;
+    }
+
+    const closeParen = findClosingMarkdownDestination(value, closeBracket + 1);
+    if (closeParen === -1) {
+      output += value[index];
+      index += 1;
+      continue;
+    }
+
+    output += stripMarkdownLinks(value.slice(index + 1, closeBracket));
+    index = closeParen + 1;
+  }
+
+  return output;
+}
+
+function findClosingMarkdownBracket(value, openIndex) {
+  let depth = 0;
+  let escaped = false;
+
+  for (let index = openIndex; index < value.length; index += 1) {
+    const char = value[index];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escaped = true;
+      continue;
+    }
+
+    if (char === '[') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        return index;
+      }
+    }
+  }
+
+  return -1;
+}
+
+function findClosingMarkdownDestination(value, openIndex) {
+  let depth = 0;
+  let escaped = false;
+
+  for (let index = openIndex; index < value.length; index += 1) {
+    const char = value[index];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escaped = true;
+      continue;
+    }
+
+    if (char === '(') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ')') {
+      depth -= 1;
+      if (depth === 0) {
+        return index;
+      }
+    }
+  }
+
+  return -1;
+}
+
+function normalizeCjkSpacing(value) {
+  return value
+    .trim()
+    .replace(/([\p{Script=Han}])\s+([\p{Script=Han}])/gu, '$1$2')
+    .replace(/([\p{Script=Han}])\s+([①-⑳])/gu, '$1$2')
+    .replace(/\s+([:：])/gu, '$1')
+    .replace(/([:：])\s+/gu, '$1')
+    .replace(/（\s*\|\s*）/gu, '（|）')
+    .replace(/\s+([，。！？；：、）】》])/gu, '$1')
+    .replace(/\s+([（【《])/gu, '$1')
+    .replace(/([，。！？；：、])\s+([\p{Script=Han}A-Za-z0-9（【《])/gu, '$1$2')
+    .replace(/([（【《])\s+/gu, '$1')
+    .replace(/\(\s+([A-Za-z0-9_.#-]+)\s+\)/gu, '($1)')
+    .replace(/\b([a-z][A-Za-z0-9_]*)\s+(\d+\/\d+)\b/gu, '$1$2')
+    .replace(/([A-Za-z0-9])\s+([，。！？；：、])/gu, '$1$2')
+    .replace(/\s+[-*+]$/gu, '');
 }
 
 function normalizeCalloutValue(type, title) {
@@ -1125,6 +2651,7 @@ function normalizeCode(value) {
     .map((line) => line.slice(Math.min(commonIndent, leadingSpaces(line))))
     .map((line) => line.trim())
     .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 
@@ -1187,7 +2714,7 @@ function recordId(record) {
 }
 
 function stripFrontmatter(content) {
-  return content.replace(/^---\n[\s\S]*?\n---\n?/, '');
+  return content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
 }
 
 function stripMarkdownCode(content) {
@@ -1263,6 +2790,17 @@ export function renderMarkdownReport(report) {
   return `${lines.join('\n')}\n`;
 }
 
+/**
+ * @param {{
+ *   includeAudited?: boolean;
+ *   limit?: number;
+ *   outDir?: string;
+ *   pathMap?: string;
+ *   repoRoot?: string;
+ *   sourceRoot?: string;
+ *   targetRoot?: string;
+ * }} [options]
+ */
 export async function auditCompletedMigrationRows({
   includeAudited = false,
   limit = 0,
@@ -1293,13 +2831,16 @@ export async function auditCompletedMigrationRows({
   for (const row of selectedRows) {
     const sourcePath = row.source_path;
     const targetPath = row.target_path;
-    const reportPrefix = path.join(resolvedOutDir, safeReportStem(sourcePath));
+    const reportPrefix = path.join(
+      resolvedOutDir,
+      safeReportStem(`${sourcePath}__to__${targetPath}`),
+    );
 
     try {
       const report = auditSingleDocContentFidelity({
         oldPath: path.resolve(sourceRoot, sourcePath),
         newPath: path.resolve(targetRoot, targetPath),
-        platform: inferPlatformFromSourcePath(sourcePath),
+        platform: inferPlatformForAudit({ sourcePath, targetPath }),
         product: inferProductFromSourcePath(sourcePath),
         sourceRoot,
       });
@@ -1548,6 +3089,24 @@ function inferPlatformFromSourcePath(sourcePath) {
   const fileName = path.basename(sourcePath).replace(/\.(md|mdx)$/i, '');
   const suffixes = fileName.split('.').slice(1);
   return suffixes.find((suffix) => !/^\d/.test(suffix)) ?? null;
+}
+
+function inferPlatformForAudit({ sourcePath, targetPath }) {
+  const sourcePlatforms = inferPlatformsFromPath(sourcePath);
+  const targetPlatforms = inferPlatformsFromPath(targetPath);
+  return (
+    targetPlatforms.find((platform) => sourcePlatforms.includes(platform)) ??
+    sourcePlatforms[0] ??
+    null
+  );
+}
+
+function inferPlatformsFromPath(filePath) {
+  const fileName = path.basename(filePath).replace(/\.(md|mdx)$/i, '');
+  return fileName
+    .split('.')
+    .slice(1)
+    .filter((suffix) => !/^\d/.test(suffix));
 }
 
 function parseArgs(args) {

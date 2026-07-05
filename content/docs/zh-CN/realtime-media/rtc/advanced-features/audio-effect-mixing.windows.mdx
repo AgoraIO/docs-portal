@@ -1,0 +1,358 @@
+---
+title: "播放音效或音乐文件"
+---
+在游戏或 K 歌等实时音视频场景中，为烘托气氛、增添趣味性，用户通常需要播放音效或音乐文件。
+
+本文介绍如何在你的项目中实现播放音效或音乐文件功能。
+
+## 技术原理
+
+声网提供了以下 API，帮助你实现播放音效或音乐文件：
+
+- 音效 API：播放持续时间短的氛围音，例如掌声、欢呼声、打斗声、枪击声等，通常可以同时播放**多个音效文件**。
+- 音乐 API：播放比较长的音乐文件，例如，在唱歌时播放伴奏，在聊天时播放背景音乐。同一时间，**只能播放一个音乐文件**。
+
+:::warning[注意]
+如果使用 `startAudioMixing` 等音乐 API 播放时长较短的音效文件，或使用 `playEffect` 等音效 API 播放时长较长的音乐文件，可能会播放失败。
+:::
+
+这些方法主要包括如下功能：
+
+| 功能 | 音效 API | 音乐 API |
+| --- | --- | --- |
+| 播放或停止播放特定的音频文件 | <Slot name="audio-effect-mixing-windows-markdown-0-1-1" /> | <Slot name="audio-effect-mixing-windows-markdown-0-1-2" /> |
+| 暂停或恢复播放音频文件 | <Slot name="audio-effect-mixing-windows-markdown-0-2-1" /> | <Slot name="audio-effect-mixing-windows-markdown-0-2-2" /> |
+| 获取和调整音频文件的播放位置和音量 | <Slot name="audio-effect-mixing-windows-markdown-0-3-1" /> | <Slot name="audio-effect-mixing-windows-markdown-0-3-2" /> |
+| 报告音频文件的播放状态 | `onAudioEffectFinished` | `onAudioMixingStateChanged` |
+
+<Slot for="audio-effect-mixing-windows-markdown-0-1-1">
+
+- `preloadEffect`
+- `unloadEffect`
+- `playEffect`
+- `stopEffect`
+- `stopAllEffects`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-windows-markdown-0-1-2">
+
+- `startAudioMixing`
+- `stopAudioMixing`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-windows-markdown-0-2-1">
+
+- `pauseEffect`
+- `pauseAllEffects`
+- `resumeEffect`
+- `resumeAllEffects`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-windows-markdown-0-2-2">
+
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-windows-markdown-0-3-1">
+
+- `setEffectPosition`
+- `getEffectCurrentPosition`
+- `getEffectsVolume`
+- `setEffectsVolume`
+- `setVolumeOfEffect`
+
+</Slot>
+
+<Slot for="audio-effect-mixing-windows-markdown-0-3-2">
+
+- `getAudioMixingCurrentPosition`
+- `setAudioMixingPosition`
+- `getAudioMixingPublishVolume`
+- `adjustAudioMixingPublishVolume`
+- `getAudioMixingPlayoutVolume`
+- `adjustAudioMixingPlayoutVolume`
+
+</Slot>
+
+## 前提条件
+
+在进行操作之前，请确保你已满足以下条件：
+
+- 项目已经实现了基本的[实时音视频功能](/zh-CN/realtime-media/rtc/get-started/quick-start.windows)。
+- 了解 [Media Foundation 中支持的媒体格式](https://docs.microsoft.com/zh-cn/windows/desktop/medfound/supported-media-formats-in-media-foundation)。
+
+## 实现播放音频文件
+
+本节介绍如何调用音效 API 和音乐混音 API，在你的项目中播放音效和音乐混音文件。
+
+### 播放音效
+
+加入频道前，调用 `preloadEffect` 方法预加载音效文件。加入频道后，调用 `playEffect` 方法播放指定音效文件。多次调用 `playEffect`，设置多个音效 ID，同时播放多个音效文件。音效播放结束后，SDK 触发 `onAudioEffectFinished` 回调。
+
+在你的声网项目中，打开管理音效播放的文件并添加如下代码：
+
+```cpp
+void CAgoraEffectDlg::OnBnClickedButtonPreload()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    std::string strPath = cs2utf8(strEffect);
+    // 预加载音效文件
+    m_rtcEngine->preloadEffect(m_mapEffect[strEffect], strPath.c_str());
+    CString strInfo;
+    strInfo.Format(_T("preload effect :path:%s"), strEffect);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonUnloadEffect()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    // 释放预加载的音效文件
+    m_rtcEngine->unloadEffect(m_mapEffect[strEffect]);
+    CString strInfo;
+    strInfo.Format(_T("unload effect :path:%s"), strEffect);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonPauseEffect()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    // 暂停播放指定音效文件
+    m_rtcEngine->pauseEffect(m_mapEffect[strEffect]);
+
+    CString strInfo;
+    strInfo.Format(_T("pause effect :path:%s"), strEffect);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonResumeEffect()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    // 恢复播放指定音效文件
+    int ret = m_rtcEngine->resumeEffect(m_mapEffect[strEffect]);
+
+    CString strInfo;
+    strInfo.Format(_T("resume effect ret:%d :path:%s"),ret, strEffect);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonPlayEffect()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    std::string strFile = cs2utf8(strEffect);
+    CString strLoops;
+    m_edtLoops.GetWindowText(strLoops);
+    int loops = _ttol(strLoops);
+    if (loops == 0) {
+        m_edtLoops.SetWindowText(_T("1"));
+        loops = 1;
+    }
+    CString strPitch;
+    m_edtPitch.GetWindowText(strPitch);
+    double pitch = _ttof(strPitch);
+
+    CString strGain;
+    m_edtGain.GetWindowText(strGain);
+    int gain = _ttol(strGain);
+
+    CString strPan;
+    m_cmbPan.GetWindowText(strPan);
+    double pan = _ttof(strPan);
+
+    BOOL publish = m_chkPublish.GetCheck();
+    // 播放音效文件
+    int ret = m_rtcEngine->playEffect(m_mapEffect[strEffect], strFile.c_str(), loops, pitch, pan, gain, publish);
+
+    CString strInfo;
+    strInfo.Format(_T("play effect :path:%s, ret:%d"), strEffect, ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+    strInfo.Format(_T("loops:%d,pitch:%.1f,pan:%.0f,gain:%d,publish:%d"),
+        loops, pitch, pan, gain, publish);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonStopEffect()
+{
+    if (m_cmbEffect.GetCurSel() < 0)
+    {
+        return;
+    }
+    CString strEffect;
+    m_cmbEffect.GetWindowText(strEffect);
+    // 停止播放指定音效文件
+    m_rtcEngine->stopEffect(m_mapEffect[strEffect]);
+
+    CString strInfo;
+    strInfo.Format(_T("stop effect :path:%s"), strEffect);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonPauseAllEffect()
+{
+    if (!m_pauseAll)
+    {
+        // 暂停播放所有音效文件
+        m_rtcEngine->pauseAllEffects();
+        CString strInfo;
+        strInfo.Format(_T("pause All Effects"));
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+        m_btnPauseAll.SetWindowText(AudioEffectCtrlResumeEffect);
+    }
+    else {
+        // 恢复播放所有音效文件
+        m_rtcEngine->resumeAllEffects();
+        CString strInfo;
+        strInfo.Format(_T("resume All Effects"));
+        m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+        m_btnPauseAll.SetWindowText(AudioEffectCtrlPauseAllEffect);
+    }
+    m_pauseAll = !m_pauseAll;
+}
+
+void CAgoraEffectDlg::OnBnClickedButtonStopAllEffect2()
+{
+    // 停止播放所有音效文件
+    m_rtcEngine->stopAllEffects();
+    CString strInfo;
+    strInfo.Format(_T("stop All Effects"));
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+```
+
+### 播放音乐
+
+加入频道之前或之后，调用 `startAudioMixing` 方法播放音乐文件。成功调用该方法后，音乐混音状态发生变化时，SDK 触发 `onAudioMixingStateChanged` 回调。该回调也报告音乐混音状态变化的原因。
+你还可以通过下列方法实现播放控制：
+
+- `pauseAudioMixing`：暂停播放。
+- `resumeAudioMixing`：恢复播放。
+- `stopAudioMixing`：停止播放。
+- `adjustAudioMixingPlayoutVolume`：调节当前音乐文件在本地的播放音量。
+- `adjustAudioMixingPublishVolume`：调节当前音乐文件在远端的播放音量。
+
+在你的声网项目中，打开管理音乐播放的文件，并添加以下代码：
+
+```cpp
+void CAgoraAudioMixingDlg::OnBnClickedButtonMixingStart()
+{
+    CString audioUrl = GetExePath() + _T("\\ID_MUSIC_01.m4a");
+    // 开始播放音乐文件
+    int ret = m_rtcEngine->startAudioMixing(cs2utf8(audioUrl).c_str(), false, -1);
+
+    CString strInfo;
+    strInfo.Format(_T("startAudioMixing path:%s, ret:%d"), audioUrl.AllocSysString(), ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+// 监听 onAudioMixingStateChanged 回调
+void CAudioMixingEventHandler::onAudioMixingStateChanged(AUDIO_MIXING_STATE_TYPE state, AUDIO_MIXING_REASON_TYPE reason)
+{
+    if (m_hMsgHanlder) {
+        PAudioMixingState stateChanged = new AudioMixingState;
+        stateChanged->error = reason;
+        stateChanged->state = state;
+        ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_REMOTE_AUDIO_MIXING_STATE_CHANED), (WPARAM)stateChanged, 0);
+    }
+}
+
+void CAgoraAudioMixingDlg::OnBnClickedButtonMixingPause()
+{   // 暂停播放
+    int ret = m_rtcEngine->pauseAudioMixing();
+
+    CString strInfo;
+    strInfo.Format(_T("pauseAudioMixing ret:%d"), ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraAudioMixingDlg::OnBnClickedButtonMixingResume()
+{   // 恢复播放
+    int ret = m_rtcEngine->resumeAudioMixing();
+
+    CString strInfo;
+    strInfo.Format(_T("resumeAudioMixing ret:%d"), ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraAudioMixingDlg::OnBnClickedButtonMixingStop()
+{   // 停止播放
+    int ret = m_rtcEngine->stopAudioMixing();
+
+    CString strInfo;
+    strInfo.Format(_T("stopAudioMixing ret:%d"), ret);
+    m_lstInfo.InsertString(m_lstInfo.GetCount(), strInfo);
+}
+
+void CAgoraAudioMixingDlg::OnNMCustomdrawSliderMixingPlayoutVolume(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+    int pos = m_sldMixingPlayoutVolume.GetPos();
+    // 调节当前音乐文件在本地的播放音量
+    int ret = m_rtcEngine->adjustAudioMixingPlayoutVolume(pos);
+    *pResult = 0;
+}
+
+void CAgoraAudioMixingDlg::OnNMCustomdrawSliderMixingPublishVolume(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+    int pos = m_sldMixingPublishVolume.GetPos();
+    // 调节当前音乐文件在远端的播放音量
+    int ret = m_rtcEngine->adjustAudioMixingPublishVolume(pos);
+    *pResult = 0;
+}
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供如下开源的示例项目。你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="AudioEffect" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioEffect" />
+  <Card title="AudioMixing" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioMixing" />
+</Cards>
+
+### API 参考
+
+- [`preloadEffect`](/api-ref/rtc/windows/API/toc_audio_effect_file#api_irtcengine_preloadeffect)
+- [`playEffect`](/api-ref/rtc/windows/API/toc_audio_effect_file#api_irtcengine_playeffect3)
+- [`onAudioEffectFinished`](/api-ref/rtc/windows/API/toc_audio_effect_file#callback_irtcengineeventhandler_onaudioeffectfinished)
+- [`startAudioMixing`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_startaudiomixing2)
+- [`onAudioMixingStateChanged`](/api-ref/rtc/windows/API/toc_audio_mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)
+- [`pauseAudioMixing`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_pauseaudiomixing)
+- [`resumeAudioMixing`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_resumeaudiomixing)
+- [`stopAudioMixing`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_stopaudiomixing)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`adjustAudioMixingPublishVolume`](/api-ref/rtc/windows/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingpublishvolume)
+
+### 相关文档
+[为什么通过系统音量无法调节背景音乐？](/faq/integration-issues/adjust-music-volume)

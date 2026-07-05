@@ -1,0 +1,941 @@
+---
+title: "AgoraAIGCService API 参考"
+---
+AgoraAIGCService SDK 主要包含以下两大类：
+
+- [`AgoraAIGCService`](#aigcservice) 类：提供 AIGC 服务的核心类，包含实现 AIGC 场景各功能的核心方法。
+- [`AgoraAIGCServiceDelegate`](#aigcservicecallback) 类：`AgoraAIGCService` 异步方法的事件回调类。
+
+本文提供 AgoraAIGCService SDK 的 API 参考。
+
+<a id="aigcservice"></a>
+<a id="create"></a>
+## AgoraAIGCService
+### create
+
+```objc
++ (instancetype)create;
+```
+
+创建 `AgoraAIGCService` 实例。
+
+#### 返回值
+
+成功创建后，该方法会返回一个 `AgoraAIGCService` 实例。
+
+<a id="initialize"></a>
+### initialize
+
+```objc
+- (void)initialize:(AgoraAIGCConfigure *)config;
+```
+
+初始化 `AgoraAIGCService`。
+
+该方法为异步操作。调用结果会在 [`onEventResultWithEvent`](#oneventresult) 回调中返回。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| config | `AgoraAIGC` 初始化参数。详见 [`AgoraAIGCConfigure`](#aigcserviceconfig)。|
+
+<a id="getroles"></a>
+### getRoles
+
+```objc
+- (NSArray <AgoraAIGCAIRole *>* _Nullable)getRoles;
+```
+
+获取 SDK 支持的所有的 `AgoraAIGCAIRole` 数组。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+#### 返回值
+
+SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
+
+<a id="setrole"></a>
+### setRoleWithId
+
+```objc
+- (void)setRoleWithId:(NSString *)roleId;
+```
+
+设置 SDK 使用的 `AgoraAIGCAIRole`。该方法设置即时生效。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roleId` | 标明 `AgoraAIGCAIRole` 的 ID。 |
+
+<a id="getcurrentrole"></a>
+### getCurrentRole
+
+```objc
+(AgoraAIGCAIRole * _Nullable)getCurrentRole;
+```
+
+获取当前使用的 `AgoraAIGCAIRole`。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+#### 返回值
+
+当前使用的 `AgoraAIGCAIRole`。
+
+<a id="getservicevendors"></a>
+### getServiceVendors
+
+```objc
+- (AgoraAIGCServiceVendorGroup * _Nullable)getServiceVendors;
+```
+
+获取所有 AI 服务商的信息。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+#### 返回值
+
+包含了所有 AI 服务商信息的 `AgoraAIGCServiceVendorGroup` 对象，由多个 [`AgoraAIGCSTTVendor`](#sttvendor)、[`AgoraAIGCLLMVendor`](#llmvendor) 和 [`AgoraAIGCTTSVendor`](#ttsvendor) 组成。
+
+<a id="setservicevendor"></a>
+### setServiceVendor
+
+```objc
+- (AgoraAIGCServiceCode)setServiceVendor:(AgoraAIGCServiceVendor *)vendor;
+```
+
+设置所使用的 AI 服务商。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `vendor` | 设置的服务商对象 `AgoraAIGCServiceVendor`，包含 [`AgoraAIGCSTTVendor`](#sttvendor)、[`AgoraAIGCLLMVendor`](#llmvendor) 和 [`AgoraTTSVendor`](#ttsvendor)。每种类型只支持设置一个服务商。|
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="start"></a>
+### start
+
+```objc
+- (void)start;
+```
+
+开启 AgoraAIGCService 服务。
+
+该方法为异步操作。调用结果会在 [`onEventResultWithEvent`](#oneventresult) 回调中返回。
+
+:::warning[注意]
+该方法需要在成功调用 `initialize`，且收到 `onEventResultWithEvent(Initialize, Success)` 后调用。
+:::
+
+<a id="stop"></a>
+### stop
+
+```objc
+- (void)stop;
+```
+
+停止 AgoraAIGCService 服务。
+
+该方法为异步操作。调用结果会在 [`onEventResultWithEvent`](#oneventresult) 回调中返回。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+:::
+
+<a id="pushspeechdialogue"></a>
+### pushSpeechDialogueWithData
+
+```objc
+- (AgoraAIGCServiceCode)pushSpeechDialogueWithData:(NSData *)data
+                                               vad:(AgoraAIGCVad)vad
+                                       isLastFrame:(BOOL)isLastFrame;
+```
+
+推送采集到的音频数据到 SDK。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `data` | 待推送的音频数据。 |
+| `vad` | 本地是否有人声。详见 [`AgoraAIGCVad`](#vad)。 |
+| `isLastFrame` | <Slot name="aigcservice-ios-html-0-3-1" /> |
+
+<Slot for="aigcservice-ios-html-0-3-1">
+
+是否是最后一帧音频数据：
+
+        - `true`：是
+        - `false`：不是
+
+    该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `AgoraAIGCServiceSTTModeControlled` 时有效。
+
+</Slot>
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="pushtxtdialogue"></a>
+### pushTxtDialogue
+
+```objc
+- (AgoraAIGCServiceCode)pushTxtDialogue:(NSString *)text roundId:(NSString * _Nullable)roundId;
+```
+
+推送采集到的文本数据到 SDK 的 LLM 模块，用于 LLM 处理文本数据。
+
+该方法和 `pushMessagesToLlm` 均可用于推送文本数据到 LLM 模块，区别为该方法仅支持推送单条消息，`pushMessagesToLlm` 支持推送多条消息（消息及其上下文语境）。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+- 建议文本数据的长度不超过 1 KB。对高于 1 KB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `text` | 待推送的文本数据。 |
+| `roundId` | <Slot name="aigcservice-ios-html-1-2-1" /> |
+
+<Slot for="aigcservice-ios-html-1-2-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="pushmessagestollm"></a>
+### pushMessagesToLlm
+
+```objc
+- (AgoraAIGCServiceCode)pushMessagesToLlm:(NSString *)messagesJsonArray
+                            extraInfoJson:(NSString * _Nullable)extraInfoJson
+                                  roundId:(NSString * _Nullable)roundId;
+```
+
+推送请求数据的 JSON 数组和其他字段信息到 LLM 模块，用于 LLM 处理相应请求数据。
+
+该方法和 `pushTxtDialogue` 均可用于推送文本数据到 LLM 模块，区别为 `pushTxtDialogue` 仅支持推送单条消息，该方法支持推送多条消息（消息及其上下文语境）。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+- 建议 JSON 数据的长度不超过 1 KB。对高于 1 KB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `messagesJsonArray` | 请求数据的 JSON 数组。 |
+| `extraInfoJson` | 其他特定字段信息的 JSON。 |
+| `roundId` | <Slot name="aigcservice-ios-html-2-3-1" /> |
+
+<Slot for="aigcservice-ios-html-2-3-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="pushtxttotts"></a>
+### pushTxtToTTS
+
+```objc
+- (AgoraAIGCServiceCode)pushTxtToTTS:(NSString *)text roundId:(NSString * _Nullable)roundId;
+```
+
+推送采集到的文本数据到 SDK 的 TTS 模块，用于 TTS 播报文本。
+
+:::warning[注意]
+- 该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+- 建议文本数据的长度不超过 1 KB。对高于 1 KBB 的数据我们不保证能正确处理。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `text` | 待推送的文本数据。 |
+| `roundId` | <Slot name="aigcservice-ios-html-3-2-1" /> |
+
+<Slot for="aigcservice-ios-html-3-2-1">
+
+请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="interrupt"></a>
+### interrupt
+
+```objc
+- (void)interrupt:(AgoraAIGCServiceInterruptMask)mask;
+```
+
+中断指定服务。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+:::
+
+#### 参数
+
+| 参数   | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| `mask` | 服务类型的掩码值。详见 [`AgoraAIGCServiceInterruptMask`](#AgoraAIGCServiceInterruptMask)。服务类型支持使用按位或运算符（|）进行组合，例：`mask = AgoraAIGCServiceInterruptMaskSTT \|  AgoraAIGCServiceInterruptMaskLLM` 代表同时中断 STT 和 LLM 服务。 |
+
+<a id="setsttmode"></a>
+### setSTTMode
+
+```objc
+- (AgoraAIGCServiceCode)setSTTMode:(AgoraAIGCServiceSTTMode)mode;
+```
+
+设置 STT 服务的模式。
+
+:::warning[注意]
+该方法需要在成功调用 `start`，且收到 `onEventResultWithEvent(Start, Success)` 后调用。
+:::
+
+#### 参数
+
+| 参数   | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| `mode` | STT 服务模式。详见 [`AgoraAIGCServiceSTTMode`](#AgoraAIGCServiceSTTMode)。 |
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="setprompt"></a>
+### setPrompt
+
+```obc
+- (AgoraAIGCServiceCode)setPrompt:(NSString *)prompt;
+```
+
+设置大语言模型的 Prompt 信息。
+
+:::warning[注意]
+该方法需要在成功 `init`，且收到 `onEventResultWithEvent(Initialize, Success)` 后，且 `start` 前调用。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `prompt` | Prompt 信息。|
+
+#### 返回值
+
+该方法调用的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。
+
+<a id="getversion"></a>
+### getSdkVersion
+
+```objc
++ (NSString *)getSdkVersion;
+```
+
+获取 AIGCService SDK 的版本号。
+
+#### 返回值
+
+当前 SDK 的版本号。
+
+<a id="destroy"></a>
+### destroy
+
+```objc
++ (void)destory;
+```
+
+销毁 `AgoraAIGCService` 实例。
+
+该方法为异步操作。调用结果会在 [`onEventResultWithEvent`](#oneventresult) 回调中返回。
+
+<a id="aigcservicecallback"></a>
+<a id="oneventresult"></a>
+## AgoraAIGCServiceDelegate
+### onEventResultWithEvent
+
+```objc
+- (void)onEventResultWithEvent:(AgoraAIGCServiceEvent)event
+                          code:(AgoraAIGCServiceCode)code
+                       message:(NSString * _Nullable)message;
+```
+
+AIGCService 实例事件回调。
+
+该回调在 SDK 调用 `initialize`、`start`、`stop`、`destroy` 后触发，报告对应方法的调用结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `event` | 该服务事件的类型，详见 [`AgoraAIGCServiceEvent`](#serviceevent)。|
+| `code` | 该服务事件的结果，详见 [`AgoraAIGCServiceCode`](#servicecode)。|
+| `message` | 事件信息。该字串可能为空。|
+
+<a id="onspeech2textresult"></a>
+### onSpeech2TextWithRoundId
+
+```objc
+- (AgoraAIGCHandleResult)onSpeech2TextWithRoundId:(NSString *)roundId
+                                           result:(NSString *)result
+                                 recognizedSpeech:(BOOL)recognizedSpeech
+                                             code:(AgoraAIGCServiceCode)code;
+```
+
+报告语音转文字 (STT) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-ios-html-4-1-1" /> |
+| `result` | 语音识别出来的文字（UTF-8 字符集）。该参数为只读模式。 |
+| `recognizedSpeech` | <Slot name="aigcservice-ios-html-4-3-1" /> |
+| `code` | STT 语音识别结果。详见 [`AgoraAIGCServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-ios-html-4-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+<Slot for="aigcservice-ios-html-4-3-1">
+
+该回调返回的 `result` 是否是一个完整的句子：
+
+        - `YES`：是
+        - `NO`：不是
+
+</Slot>
+
+#### 返回值
+
+`AgoraAIGCHandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `AgoraAIGCHandleResultContinue`：SDK 会继续处理后续流程
+- `AgoraAIGCHandleResultDiscard`：SDK 会中断处理后续流程
+
+:::warning[注意]
+该规则仅在 `recognizedSpeech` 返回 `YES` 下有效。
+:::
+
+<a id="onllmresult"></a>
+### onLLMResultWithRoundId
+
+```objc
+- (AgoraAIGCHandleResult)onLLMResultWithRoundId:(NSString *)roundId
+                                         answer:(NSString *)answer
+                                     isRoundEnd:(BOOL)isRoundEnd
+                        estimatedResponseTokens:(NSUInteger)tokens
+                                           code:(AgoraAIGCServiceCode)code;
+```
+
+回调大语言模型 (LLM) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-ios-html-5-1-1" /> |
+| `answer` | 大语言模型处理后的结果（UTF-8 字符集）。该参数为只读模式。 |
+| `isRoundEnd` | <Slot name="aigcservice-ios-html-5-3-1" /> |
+| `tokens` | 本轮 LLM 大模型处理返回内容大约消耗的 Token 数。该数值只是估算值，不作为计费标准，你可以利用该值监测并限制 Token 的消耗。如果返回的 `token` 为 `0`，可忽略该值。 |
+| `code` | LLM 大模型处理结果。详见 [`AgoraAIGCServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-ios-html-5-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+<Slot for="aigcservice-ios-html-5-3-1">
+
+本轮大语言模型返回结果是否结束：
+
+        - `YES`：是。
+        - `NO`：否。
+
+</Slot>
+
+#### 返回值
+
+`AgoraAIGCHandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `AgoraAIGCHandleResultContinue`：SDK 会继续处理后续流程
+- `AgoraAIGCHandleResultDiscard`：SDK 会中断处理后续流程
+
+<a id="ontext2speechresult"></a>
+### onText2SpeechResultWithRoundId
+
+```objc
+- (AgoraAIGCHandleResult)onText2SpeechResultWithRoundId:(NSString *)roundId
+                                             voice:(NSData *)voice
+                                       sampleRates:(NSInteger)sampleRates
+                                          channels:(NSInteger)channels
+                                              bits:(NSInteger)bits
+                                              code:(AgoraAIGCServiceCode)code;
+```
+
+回调文字转语音 (TTS) 处理后的结果。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `roundId` | <Slot name="aigcservice-ios-html-6-1-1" /> |
+| `voice` | 文字转语音处理后的语音数据。该参数为读写模式。如果 `voice` 参数被修改，后续流程会用更新后的 `voice` 参数值作为输入。 |
+| `sampleRates` | 语音数据 (PCM) 的采样率，单位为 Hz。 |
+| `channels` | 语音数据 (PCM) 的通道数。 |
+| `bits` | 语音数据 (PCM) 的位数。 |
+| `code` | TTS 文本转语音处理结果。详见 [`AgoraAIGCServiceCode`](#servicecode)。 |
+
+<Slot for="aigcservice-ios-html-6-1-1">
+
+请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
+
+        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+
+</Slot>
+
+#### 返回值
+
+`AgoraAIGCHandleResult`，该回调的处理结果类型。你需要设置该返回值：
+
+- `AgoraAIGCHandleResultContinue`：SDK 会继续处理后续流程
+- `AgoraAIGCHandleResultDiscard`：SDK 会中断处理后续流程
+
+:::info[信息]
+该回调是目前最后一个业务流程，返回值 `Continue` 和 `Discard` 效果一样，均不会影响后续业务。后续版本中我们可能会在该回调后添加其他业务。
+:::
+
+<a id="onspeechstatechange"></a>
+### onSpeechStateChange
+
+```objc
+- (void)onSpeechStateChange:(AgoraAIGCServiceSpeechState)state;
+```
+
+识别语音开始和结束的状态。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `state` | 语音的状态。详见 [`AgoraAIGCServiceSpeechState`](#AgoraAIGCServiceSpeechState)。 |
+
+<a id="aigcserviceconfig"></a>
+## 类型定义
+### AgoraAIGCConfigure
+
+```objc
+@interface AgoraAIGCConfigure : NSObject
+@property (nonatomic, copy, readonly)NSString *appId;
+@property (nonatomic, copy, readonly)NSString *rtmToken;
+@property (nonatomic, copy, readonly)NSString *userId;
+@property (nonatomic, assign, readonly)BOOL enableMultiTurnShortTermMemory;
+@property (nonatomic, assign, readonly)NSUInteger speechRecognitionFiltersLength;
+@property (nonatomic, strong, readonly)AgoraAIGCSceneMode *input;
+@property (nonatomic, strong, readonly)AgoraAIGCSceneMode *output;
+@property (nonatomic, assign, readonly)BOOL enableLog;
+@property (nonatomic, assign, readonly)BOOL enableSaveLogToFile;
+@property (nonatomic, copy, readonly, nullable)NSString *logFilePath;
+@property (nonatomic, copy, readonly)NSString *userName;
+@property (nonatomic, assign, readonly)BOOL enableChatIdleTip;
+@property (nonatomic, assign, readonly) AgoraNoiseEnvironment noiseEnvironment;
+@property (nonatomic, assign, readonly) AgoraSpeechRecognitionCompletenessLevel speechRecognitionCompletenessLevel;
+
+- (instancetype)initWithAppId:(NSString *)appId
+                     rtmToken:(NSString *)rtmToken
+                       userId:(NSString *)userId
+enableMultiTurnShortTermMemory:(BOOL)enableMultiTurnShortTermMemory
+speechRecognitionFiltersLength:(NSUInteger)speechRecognitionFiltersLength
+                        input:(AgoraAIGCSceneMode *)input
+                       output:(AgoraAIGCSceneMode *)output
+                    enableLog:(BOOL)enableLog
+          enableSaveLogToFile:(BOOL)enableSaveLogToFile
+                  logFilePath:(NSString *)logFilePath
+                     userName:(NSString *)userName;
+            enableChatIdleTip:(BOOL)enableChatIdleTip;
+             noiseEnvironment:(AgoraNoiseEnvironment)noiseEnvironment
+speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)speechRecognitionCompletenessLevel;
+- (instancetype)init __attribute__((unavailable("Use initWithAppId instead")));
+- (NSString *)description;
+@end
+```
+
+`AgoraAIGCConfigure` 的初始化配置。
+
+| 参数 | 描述 |
+| --- | --- |
+| `appId` | 声网项目的 App ID。 |
+| `rtmToken` | 声网项目的 [RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.android.ios)。 |
+| `userId` | 用户 ID。 |
+| `enableMultiTurnShortTermMemory` | <Slot name="aigcservice-ios-html-8-4-1" /> |
+| `speechRecognitionFiltersLength` | 过滤语音识别结果的字数长度。 |
+| `input` | 输入参数，详见 [`AgoraAIGCSceneMode`](#scenemode)。 |
+| `output` | 输出参数，详见 [`AgoraAIGCSceneMode`](#scenemode)。 |
+| `enableLog` | <Slot name="aigcservice-ios-html-8-8-1" /> |
+| `enableSaveLogToFile` | <Slot name="aigcservice-ios-html-8-9-1" /> |
+| `logFilePath` | 设置 Log 的存储路径。如果不设或设为空字串，SDK 会使用默认的存储路径。 |
+| `userName` | 用户名。 |
+| `enableChatIdleTip` | <Slot name="aigcservice-ios-html-8-12-1" /> |
+| `noiseEnvironment` | 设置噪音环境级别，详见 [`AgoraNoiseEnvironment`](#noiseenvironment)。SDK会根据你的设置等级，相应地处理环境噪音对语音数据的影响。 |
+| `speechRecognitionCompletenessLevel` | 设置语音识别句子完整度级别，详见 [`AgoraSpeechRecognitionCompletenessLevel`](#speechrecognitioncompletenesslevel)。 |
+
+<Slot for="aigcservice-ios-html-8-4-1">
+
+是否开启多轮短时记忆：
+
+        - `YES`：是。开启后，后续流程的处理会结合上下文语境。
+        - `NO`：否。
+
+        :::warning[注意]
+        该参数配置在调用 `pushMessagesToLlm` 时无效。
+        :::
+
+</Slot>
+
+<Slot for="aigcservice-ios-html-8-8-1">
+
+是否开启日志输出到 IDE 的控制台：
+
+        - `YES`：是。
+        - `NO`：否。
+
+</Slot>
+
+<Slot for="aigcservice-ios-html-8-9-1">
+
+是否保存日志到文件系统：
+
+        - `YES`：是。
+        - `NO`：否。
+
+        :::warning[注意]
+        该参数的设置只有在 `enableLog` 为 `YES` 时才生效。
+        :::
+
+</Slot>
+
+<Slot for="aigcservice-ios-html-8-12-1">
+
+是否开启闲时聊天提示信息：
+
+      - `YES`：是。
+      - `NO`：（默认）否。
+
+</Slot>
+
+<a id="airole"></a>
+### AgoraAIGCAIRole
+
+```objc
+@interface AgoraAIGCAIRole : NSObject
+@property (nonatomic, copy, readonly)NSString *roleId;
+@property (nonatomic, copy, readonly)NSString *roleName;
+/// means description
+@property (nonatomic, copy, readonly)NSString *desc;
+@property (nonatomic, copy, readonly)NSString *profession;
+/// ["male","female"]
+@property (nonatomic, copy, readonly)NSString *gender;
+
+- (instancetype)initWithRoleId:(NSString *)roleId
+                      roleName:(NSString *)roleName
+                          desc:(NSString *)desc
+                    profession:(NSString *)profession
+                        gender:(NSString *)gender;
+@end
+```
+
+AI 服务的属性。
+
+| 参数 | 描述 |
+| --- | --- |
+| `roleId` | AI 服务的 ID，是 AI 服务的唯一标识。|
+| `roleName` | AI 服务的名称。|
+| `desc` | AI 服务的简单介绍。|
+| `profession` | AI 服务的职业。 |
+| `gender` | AI 服务的性别：`"male"` 表示男性，`"female"` 表示女性。|
+
+<a id="scenemode"></a>
+### AgoraAIGCSceneMode
+
+```objc
+@interface AgoraAIGCSceneMode : NSObject
+@property (nonatomic, assign, readonly)AgoraAIGCLanguage language;
+@property (nonatomic, assign, readonly)NSUInteger speechFrameBits;
+@property (nonatomic, assign, readonly)NSUInteger speechFrameSampleRates;
+@property (nonatomic, assign, readonly)NSUInteger speechFrameChannels;
+
+- (instancetype)initWithLanguage:(AgoraAIGCLanguage)language
+                 speechFrameBits:(NSUInteger)speechFrameBits
+          speechFrameSampleRates:(NSUInteger)speechFrameSampleRates
+             speechFrameChannels:(NSUInteger)speechFrameChannels;
+- (instancetype)init __attribute__((unavailable("Use initWithLanguage instead")));
+@end
+```
+
+`AgoraAIGCConfigure` 中 `input` 和 `output` 参数的详细配置项。
+
+| 参数 | 描述 |
+| --- | --- |
+| `language` | 语言类型，详见 [`AgoraAIGCLanguage`](#language)。 |
+| `speechFrameBits` | 语音数据 (PCM) 的位数。SDK 仅支持 16。 |
+| `speechFrameSampleRates` | 语音数据 (PCM) 的采样率。SDK 仅支持 16000。 |
+| `speechFrameChannels` | 语音数据 (PCM) 的通道数。SDK 仅支持 1。 |
+
+<a id="sttvendor"></a>
+### AgoraAIGCSTTVendor
+
+```objc
+@interface AgoraAIGCSTTVendor : AgoraAIGCBaseVendor
+@property (nonatomic, copy, readonly)NSString *Id;
+@property (nonatomic, copy, readonly)NSString *vendorName;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson Id:(NSString *)Id vendorName:(NSString *)vendorName;
+- (instancetype)init __attribute__((unavailable("Use initWithAccountInJson:Id:vendorName instead")));
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson __attribute__((unavailable("Use initWithAccountInJson:Id:vendorName instead")));
+@end
+
+@interface AgoraAIGCBaseVendor : NSObject
+@property (nonatomic, copy, nullable, readonly)NSString *accountInJson;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson;
+@end
+```
+
+语音转文字的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `Id` | 语音转文字供应商的 ID。|
+| `vendorName` | 供应商名称。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="llmvendor"></a>
+### AgoraAIGCLLMVendor
+
+```objc
+@interface AgoraAIGCLLMVendor : AgoraAIGCBaseVendor
+@property (nonatomic, copy, readonly)NSString *Id;
+@property (nonatomic, copy, readonly)NSString *vendorName;
+@property (nonatomic, copy, readonly)NSString *model;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson
+                                    Id:(NSString *)Id
+                            vendorName:(NSString *)vendorName
+                                 model:(NSString *)model;
+- (instancetype)init __attribute__((unavailable("Use initWithAccountInJson:Id:vendorName:model instead")));
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson __attribute__((unavailable("Use initWithAccountInJson:Id:vendorName:model instead")));
+@end
+
+@interface AgoraAIGCBaseVendor : NSObject
+@property (nonatomic, copy, nullable, readonly)NSString *accountInJson;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson;
+@end
+```
+
+大语言模型的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `Id` | 大语言模型供应商的 ID。|
+| `vendorName` | 供应商名称。|
+| `model` | 模型参数。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="ttsvendor"></a>
+### AgoraAIGCTTSVendor
+
+```objc
+@interface AgoraAIGCTTSVendor : AgoraAIGCBaseVendor
+@property (nonatomic, copy, readonly)NSString *Id;
+@property (nonatomic, copy, readonly)NSString *language;
+@property (nonatomic, copy, readonly)NSString *voiceName;
+@property (nonatomic, copy, readonly)NSString *voiceNameValue;
+@property (nonatomic, copy, readonly)NSString *vendorName;
+@property (nonatomic, copy, readonly)NSString *voiceStyle;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson
+                                    Id:(NSString *)Id
+                              language:(NSString *)language
+                             voiceName:(NSString *)voiceName
+                        voiceNameValue:(NSString *)voiceNameValue
+                            vendorName:(NSString *)vendorName
+                            voiceStyle:(NSString *)voiceStyle;
+- (instancetype)init __attribute__((unavailable("Use initWithAccountInJson instead")));
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson __attribute__((unavailable("Use initWithAccountInJson:Id:language:voiceName:voiceNameValue:vendorName:voiceStyle instead")));
+@end
+
+@interface AgoraAIGCBaseVendor : NSObject
+@property (nonatomic, copy, nullable, readonly)NSString *accountInJson;
+- (instancetype)initWithAccountInJson:(NSString * _Nullable)accountInJson;
+@end
+```
+
+文字转语音的供应商信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `Id` | 文字转语音供应商的 ID。|
+| `language` | 所支持的语言。如果为空，则表示支持所有语言。|
+| `voiceName` | 发言人名称，仅用于标签上展示的名称。 |
+| `voiceNameValue` | 发言人名称参数值。|
+| `vendorName` | 供应商名称。|
+| `voiceStyle` | （选填）发言人风格参数值。|
+| `accountInJson` | 供应商自有的账号信息。若使用该字段，联系 sales@shengwang.cn 了解字段的 JSON 格式。|
+
+<a id="serviceevent"></a>
+### AgoraAIGCServiceEvent
+
+服务事件类型。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraAIGCServiceEventIdle` | `0` | 初始状态。 |
+| `AgoraAIGCServiceEventInitialize` | `1` | 初始化状态，对应调用 `initialize` 方法。 |
+| `AgoraAIGCServiceEventStart` | `2` | 启动状态，对应调用 `start` 方法。|
+| `AgoraAIGCServiceEventStop` | `3` | 停止服务状态，对应调用 `stop` 方法。 |
+| `AgoraAIGCServiceEventDestory` | `4` | 销毁服务状态，对应调用 `destroy` 方法。|
+
+<a id="servicecode"></a>
+### AgoraAIGCServiceCode
+
+服务事件结果。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraAIGCServiceCodeErrorGeneral` | `-1` | 通用错误。|
+| `AgoraAIGCServiceCodeSuccess` | `0` | 成功。|
+| `AgoraAIGCServiceCodeInitializeFail` | `1` | 初始化失败。|
+| `AgoraAIGCServiceCodeStartFail` | `2` | 启动失败。|
+| `AgoraAIGCServiceCodeLicenseExpire` | `5` |  License 过期。    |
+| `AgoraAIGCServiceCodeTimeout` | `9` |   服务超时。   |
+| `AgoraAIGCServiceCodeContentManagementPolicy` | `10` |  LLM 判定请求内容不合规，触发内容审核。    |
+
+<a id="vad"></a>
+### AgoraAIGCVad
+
+本地是否有人声。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraAIGCVadUnknow` | `-1` | 不确定。|
+| `AgoraAIGCVadMute` | `0`| 本地无人声。|
+| `AgoraAIGCVadNonMute` | `1` | 本地有人声。 |
+
+<a id="language"></a>
+### AgoraAIGCLanguage
+
+语言类型。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraAIGCLanguageZH_CN` | `0` | 中文。 |
+| `AgoraAIGCLanguageEN_US` | `1` | 英文。 |
+
+<a id="noiseenvironment"></a>
+### AgoraNoiseEnvironment
+
+噪音环境级别。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraNoiseEnvironmentQuiet` | `0` | 周围环境噪音很少，比较安静。|
+| `AgoraNoiseEnvironmentNormal` | `1` | 周围环境噪音正常。|
+| `AgoraNoiseEnvironmentNoise` | `2` | 周围环境噪音很强。|
+
+<a id="speechrecognitioncompletenesslevel"></a>
+### AgoraSpeechRecognitionCompletenessLevel
+
+语音识别句子的完整性级别。级别越高，则识别句子的完整性越好；相应地，语音识别的整体时间也会越长。
+
+| 枚举名 | 枚举值 | 描述 |
+| --- | --- | --- |
+| `AgoraSpeechRecognitionCompletenessLevelLow` | `0` | 低级别。|
+| `AgoraSpeechRecognitionCompletenessLevelNormal` | `1` | 正常级别。|
+| `AgoraSpeechRecognitionCompletenessLevelHigh` | `2` | 高级别。|
+
+<a id="constants"></a>
+### AgoraAIGCServiceInterruptMask
+
+服务类型的掩码值。
+
+| 枚举名                                | 枚举值   | 描述          |
+| ------------------------------------- | -------- | ------------- |
+| `AgoraAIGCServiceInterruptMaskSTT`    | `0b0001` | STT 服务类型值。 |
+| `AgoraAIGCServiceInterruptMaskLLM`    | `0b0010` | LLM 服务类型值。 |
+| `AgoraAIGCServiceInterruptMaskTTS` | `0b0100` | TTS 服务类型值。 |
+
+<a id="sttmode"></a>
+### AgoraAIGCServiceSTTMode
+
+STT 服务模式类型。
+
+| 枚举名                              | 枚举值 | 描述                                   |
+| ----------------------------------- | ------ | -------------------------------------- |
+| `AgoraAIGCServiceSTTModeFreeStyle`  | `0`    | （默认）自由模式，适用于实时对话、实时语音识别。 |
+| `AgoraAIGCServiceSTTModeControlled` | `1`    | 受控模式，适用于单段语音输入。     |
+
+<a id="speechstate"></a>
+### AgoraAIGCServiceSpeechState
+
+语音的状态
+
+| 枚举名                                  | 枚举值 | 描述                   |
+| --------------------------------------- | ------ | ---------------------- |
+| `AgoraAIGCServiceSpeechStateStateStart` | `0`    | 语音开始。 |
+| `AgoraAIGCServiceSpeechStateStateEnd`   | `1`    | 语音结束。 |

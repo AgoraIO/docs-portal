@@ -1,0 +1,521 @@
+---
+title: "使用 MetaKit 插件"
+---
+本文介绍如何在你的项目中集成 MetaKit 插件，体验虚拟人、Animoji、Sticker、灯光特效和背景特效功能模块。
+
+## 前提条件
+
+在集成 MetaKit 插件前，请确保开发环境满足以下要求：
+
+- 已集成 4.3.x 版本的实时互动 SDK，并确保你已在 App 中实现了基本的实时音视频功能，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.ios)。
+    :::warning[注意]
+    - 通过 CocoaPods 集成时，打开 `Podfile`，指定 `pod 'AgoraRtcEngine_Special_iOS', 'x.y.z'`，`x.y.z` 替换为具体的 SDK 版本号。
+        - MetaKit 插件需要用到实时互动 SDK 的面部捕捉插件 (`AgoraFaceCaptureExtension.xcframework`) 和虚拟背景插件 (`AgoraVideoSegmentationExtension.xcframework`)，你可以按需删除不需要的插件以[减小 App 体积](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size.android.ios#删除不需要的插件)。
+    :::
+- Xcode 13.0 及以上版本。
+- iOS 14.0 及以上版本的真机设备，设备的前置摄像头与麦克风功能正常。
+- Apple 开发者账号。
+- 已安装 CocoaPods，详见 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall.ios.ios)以正常使用声网服务。
+
+## 集成 MetaKit 插件
+
+在体验 MetaKit 插件前，请参考以下步骤配置你的项目。
+
+### 添加 MetaKit 插件依赖
+
+请参考以下步骤获取并集成 MetaKit 插件：
+
+1. 进入[下载](/zh-CN/realtime-media/sdk-extensions/metakit/resources)页面，下载并解压 MetaKit iOS 插件。
+
+2. 打开文件夹，解压 `Libraries.zip`，将解压后的文件复制到对应的项目路径中。
+
+    | 库                                  | 集成路径            |
+    |:------------------------------------|:-------------------|
+    | `AgoraMetaKitExtension.xcframework` | `/SDKExtension/`       |
+    | `AgoraMetaKit.xcframework`          | `/SDKExtension/`       |
+
+    :::warning[注意]
+    声网提供 XCFramework 格式的插件支持 `arm64` 架构，但不支持 `armv7` 架构。
+    :::
+
+3. 用 Xcode 打开项目，[添加对应动态库的依赖](https://help.apple.com/xcode/mac/current/#/dev51a648b07)，确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
+
+![](/img/sdk-extension/ios-quick-start01.png)
+
+### 配置 MetaKit 资源
+
+1. 打开 MetaKit iOS 插件的文件夹，`/assets/` 路径下包含不同场景及功能所需的 Bundle 文件资源。功能模块、用途说明和资源大小见下表：
+
+    | 功能模块 | 用途说明 | 资源大小 |
+| --- | --- | --- |
+| 虚拟人 | 虚拟人模型分包资源 (`material_avatar_xxx`)，包含虚拟人形象 `girl`、`boy` 和 `huamulan`。可使用面捕驱动、捏脸、换装等能力。 | <Slot name="quick-start-ios-html-0-1-2" /> |
+| Animoji | Animoji 模型分包资源 (`material_animoji_xxx`)，包含 Animoji 形象 `dog`、`girlhead` 和 `arkit`。可使用面捕驱动能力。 | <Slot name="quick-start-ios-html-0-2-2" /> |
+| Sticker | Sticker 模型分包资源 (`material_sticker_xxx`)，包含 Sticker 挂件 `glass`、`facemask`、`dragonhat` 和 `veil`。可使用面捕驱动能力。 | <Slot name="quick-start-ios-html-0-3-2" /> |
+| 背景特效 | 背景特效分包资源 (`material_bgeffect_xxx`)，包含 `360`（360 全景背景）和 `3d`（3D 背景）。 | <Slot name="quick-start-ios-html-0-4-2" /> |
+| 灯光特效 | 灯光特效分包资源 (`material_effect_xxx`)，包含 3D 打光、广告灯、氛围灯、极光特效、人像边缘火焰、人像边缘光线和屏幕波纹。 | <Slot name="quick-start-ios-html-0-5-2" /> |
+
+<Slot for="quick-start-ios-html-0-1-2">
+
+- `material_avatar_girl`: 17.7 MB
+            - `material_avatar_boy`: 5.4 MB（不支持换装）
+            - `material_avatar_huamulan`: 5.3 MB（不支持捏脸换装）
+
+</Slot>
+
+<Slot for="quick-start-ios-html-0-2-2">
+
+- `material_animoji_dog`: 3.3 MB
+            - `material_animoji_girlhead`: 4.2 MB
+            - `material_animoji_arkit`: 2 MB
+
+</Slot>
+
+<Slot for="quick-start-ios-html-0-3-2">
+
+- `material_sticker_glass`: 2.5 MB
+            - `material_sticker_facemask`: 1.9 MB
+            - `material_sticker_dragonhat`: 2.4 MB
+            - `material_sticker_veil`: 2.6 MB
+
+</Slot>
+
+<Slot for="quick-start-ios-html-0-4-2">
+
+- `material_bgeffect_360`: 3.1 MB
+            - `material_bgeffect_3d`: 5.6 MB
+
+</Slot>
+
+<Slot for="quick-start-ios-html-0-5-2">
+
+- `material_effect_3dlight`: 1.9 MB
+            - `material_effect_advertiselight`: 8.2 MB
+            - `material_effect_envlight`: 1.9 MB
+            - `material_effect_aura`: 2 MB
+            - `material_effect_purpleflame`: 2 MB
+            - `material_effect_ray`: 1.9 MB
+            - `material_effect_wave`: 1.9 MB
+
+</Slot>
+
+2. 每个单包资源 (`material_xxx`) 代表一种场景效果。将多个你想体验的单包资源 (`material_xxx`) 平行放置在一个根目录下，[加载场景资源](#加载场景资源)时，将资源目录的绝对路径设置给 MetaKit。例如，体验女孩虚拟形象和人像边缘火焰特效，步骤如下：
+    1. 将 `material_avatar_girl` 和 `material_effect_purpleflame` 合成一个资源目录（如下图所示）。准备好资源目录后，将其放置在移动设备 SD 卡的目录下，如 `/sdcard/metaAssets/`。
+    2. `loadMaterial` 时，将路径设置为 `/sdcard/metaAssets/material_avatar_girl`，体验女孩虚拟人场景。
+    3. 再次 `loadMaterial`，将路径指定为 `/sdcard/metaAssets/material_effect_purpleflame`，切换为人像边缘火焰。
+
+![](/img/sdk-extension/assets.png)
+
+    :::warning[注意]
+    业务层需自行确保下载解压后资源的完备性。如果目录不正确或有 Bundle 文件丢失的情况，加载时会出现异常。
+    :::
+
+### 添加 iOS 设备权限
+
+打开项目的 `Info.plist` 文件，编辑属性列表，添加体验 MetaKit 插件所需的麦克风和摄像头权限。
+
+| 权限                                     | 说明                    |
+|:-----------------------------------------|:-----------------------|
+| `Privacy - Microphone Usage Description` | 使用音频功能。           |
+| `Privacy - Camera Usage Description`     | 表情驱动、背景分割等功能需要访问摄像头以做 AI 推理。 |
+
+## 体验 MetaKit 插件
+
+项目配置完成后，请参照以下步骤体验 MetaKit 插件的各个功能模块。
+
+### 监听插件事件回调
+
+1. 调用 `sharedEngineWithConfig` 初始化 `AgoraRtcEngineKit` 时，你需要在 `AgoraRtcEngineConfig` 中创建插件的事件回调接口类 `AgoraMediaFilterEventDelegate`，并注册 `onEvent` 等插件事件回调。
+
+    ```swift
+    let config = AgoraRtcEngineConfig()
+    config.appId = appID
+    config.eventDelegate = self
+    // 创建并初始化 AgoraRtcEngineKit
+    agoraEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+    // 创建插件的事件回调接口类，注册 onEvent 等插件事件回调
+    extension ViewController: AgoraMediaFilterEventDelegate {
+        func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
+        }
+
+        func onExtensionStarted(_ provider: String?, extension: String?) {
+        }
+
+        func onExtensionStopped(_ provider: String?, extension: String?) {
+        }
+
+        func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
+        }
+    }
+    ```
+
+2. 在回调中指定 `provider` 为 `agora_video_filters_metakit`，`extension` 为 `metakit`，即筛选来自 MetaKit 插件的事件。`onEvent` 会透传引擎状态，如 `unityLoadFinish`（Unity 环境加载完成）和 `materialLoaded`（场景视图加载完成）等。
+
+    :::warning[注意]
+    - 下列代码注释中介绍了每个引擎状态的含义和时序，请确保在收到确切的引擎状态后，执行对应的操作，以免出现不必要的时序问题。
+        - 引擎状态的回调不在主线程执行。如果需要在收到回调后执行其他重要操作，请使用 `dispatch_async` 将这些任务切换到主线程，以避免线程问题。
+    :::
+
+    ```swift
+    func onEvent(_ provider: String?, extension: String?, key: String?, value: String?) {
+        guard let provider = provider, let extension = extension, provider == "agora_video_filters_metakit", extension == "metakit" else {
+            return
+        }
+
+        guard let status = key else {
+            return
+        }
+
+        switch status {
+        case "initializeFinish":
+            // 引擎初始化完成
+            // 如有 initialize 操作，请在最后调用 destroy 销毁引擎，确保引擎的正常生命周期，减少对性能和内存的影响
+            break;
+        case "unityLoadFinish":
+            // Unity 环境加载完成
+            // 收到此状态后，可以调用 loadMaterial 加载场景资源
+            break;
+        case "materialLoaded":
+            // 加载场景资源成功
+            // 收到此状态后，可以根据场景进一步执行捏脸换装、特效参数设置等操作
+            // 如不再需要体验场景，调用 unloadMaterial 卸载场景资源
+            DispatchQueue.main.async {
+          // 回调不是主线程抛过来的，请在 dispatch 后执行操作
+      }
+            break;
+        case "materialUnLoaded":
+            // 卸载场景资源完成
+            // 收到此状态后，不可再次加载场景资源，仅可调用 destroy 执行引擎销毁操作
+            break;
+        default:
+            break
+        }
+    }
+
+    func onExtensionError(_ provider: String?, extension: String?, error: Int32, message: String?) {
+        if provider == "agora_video_filters_metakit" && extension == "metakit" {
+            print("[MetaKit] onExtensionError, Code: \(error), Message: \(message ?? "")")
+        }
+    }
+    ```
+
+### 启用插件
+
+启用面部捕捉插件、虚拟背景插件和 MetaKit 插件。
+
+:::warning[注意]
+在启用 MetaKit 插件前，你需要先启用面部捕捉插件和虚拟背景插件。
+:::
+
+1. 启用面部捕捉插件。
+    1. 调用 `registerExtensionWithVendor` 和 `enableExtensionWithVendor` 注册并启用面部捕捉插件，传入对应的插件服务商名称 (`agora_video_filters_face_capture`) 和插件名称 (`face_capture`)。
+    2. 调用 `setExtensionPropertyWithVendor` 认证和授权面部捕捉插件的 AI 模块，其中 `key` 为 `authentication_information`，`value` 包含公司名称 (`company_id`) 和面捕证书 (`license`)。
+
+    :::warning[注意]
+    公司名称和面捕证书需要联系 sales@shengwang.cn 获取。
+    :::
+
+    ```swift
+    // 注册面部捕捉插件
+    agoraEngine?.registerExtension(withVendor: "agora_video_filters_face_capture", extension: "face_capture", sourceType: AgoraMediaSourceType.primaryCamera)
+    // 启用面部捕捉插件
+    agoraEngine?.enableExtension(withVendor: "agora_video_filters_face_capture", extension: "face_capture", enabled: true)
+    // 授权面部捕捉插件
+    agoraEngine?.setExtensionPropertyWithVendor("agora_video_filters_face_capture",
+                                                extension: "face_capture",
+                                                key: "authentication_information",
+                                                value: "{\"company_id\":\"agoraDemo\", \"license\":\"xxxxxxxxxx"}",
+                                                sourceType: AgoraMediaSourceType.primaryCamera)
+    ```
+
+2. 启用虚拟背景插件。
+    1. 调用 `setParameters` 设置 `"rtc.video.seg_before_exts"` 为 `true`，确保虚拟背景插件优先于 MetaKit 插件执行。
+    2. 调用 `enableVirtualBackground` 开启虚拟背景，其中：
+        - 指定背景填充 (`backgroundSourceType`) 为  `AgoraVirtualBackgroundNone`，将背景处理为 alpha 信息，即分割人像和背景。
+        - 指定分割模式 (`modelType`) 为 `SegModelAgoraAi`，即选择适用于全部场景的背景处理。
+
+    ```swift
+    // 确保虚拟背景插件优先于 MetaKit 插件执行
+    agoraKit.setParameters("{\"rtc.video.seg_before_exts\":true}")
+
+    let bg_src = AgoraVirtualBackgroundSource()
+    // 将背景处理为 alpha 信息，分割人像和背景
+    bg_src.backgroundSourceType = .none
+    let seg_prop = AgoraSegmentationProperty()
+    seg_prop.greenCapacity = 0
+    // 选择适用于全部场景的背景处理
+    seg_prop.modelType = .agoraAi
+    // 启用虚拟背景插件
+    agoraEngine?.enableVirtualBackground(true, backData: bg_src, segData: seg_prop)
+    ```
+
+3. 启用 MetaKit 插件。
+    调用 `registerExtensionWithVendor` 和 `enableExtensionWithVendor` 注册并启用 MetaKit 插件，传入对应的插件服务商名称 (`agora_video_filters_metakit`) 和插件名称 (`metakit`)。
+
+    ```swift
+    // 注册 MetaKit 插件
+    agoraEngine?.registerExtension(withVendor: "agora_video_filters_metakit", extension: "metakit", sourceType: AgoraMediaSourceType.primaryCamera)
+    // 启用 MetaKit 插件
+    agoraEngine?.enableExtension(withVendor: "agora_video_filters_metakit", extension: "metakit", enabled: true)
+    ```
+
+### 初始化插件
+
+调用 `setExtensionPropertyWithVendor` 初始化 MetaKit 插件，其中 `key` 为 `initialize`，`value` 为空。
+
+```swift
+agoraEngine?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit", key:"initialize", value:"{}")
+```
+
+### 创建渲染视图
+
+当 `onEvent` 回调捕获到 `unityLoadFinish` 事件时，代表 Unity 环境已加载完成。此时，调用 `createSceneView` 创建一个 SceneView 用于显示 MetaKit 插件的渲染画面。
+
+```swift
+let metakit: MetaKitEngine = MetaKitEngine.sharedInstance()
+var frame = CGRect(x: 0, y: 0, width: 360, height: 640);
+// 1. sceneView 为原生 iOS UIView，如果需要展示在 UI 上，可自行添加到父 view 上
+// 2. 如果想要铺满渲染画面，sceneView 的 frame 尽量确保和素材的比例是对等的（默认 9:16）
+// 否则画面会按等比例适应，画面居中，上下左右留白
+let sceneView = metakit.createSceneView(frame)
+```
+
+### 加载场景资源
+
+创建好视图后，加载场景资源并渲染到该视图上。此时，可以调用 `setExtensionPropertyWithVendor` 加载 MetaKit 场景资源，其中 `key` 为 `loadMaterial`，`value` 包含场景信息。
+
+:::info[信息]
+- 下文中虚拟人、Animoji、Sticker、灯光特效和背景特效的资源加载均类似此步骤 (`key` 为 `loadMaterial`)，区别仅在于加载的资源包不同 (`value` 中指定的资源包路径不同)。
+- 资源加载操作 (`loadMaterial`) 可以多次执行，无需在每次加载后执行卸载操作 (`unloadMaterial`) 。例如：在调用 `loadMaterial(pathA)` 后，如需切换为其他场景资源，可以再次调用 `loadMaterial(pathB)`、`loadMaterial(pathC)` 等，每次加载会全量覆盖之前的场景，最后再执行 `unloadMaterial()` 卸载场景资源即可。
+:::
+
+```swift
+let address = unsafeBitCast(avatarView!, to: Int64.self)
+// path 为 Unity 的资源包目录，请提前下载并解压好
+// view 为上文创建的 SceneView 的地址句柄
+let dict = ["path": path, "view": String(address)]
+let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                              key:"loadMaterial",
+                                              value:dictInfo ?? "")
+```
+
+当 `onEvent` 回调捕获到 `materialLoaded` 事件时，代表场景资源已加载完成。接下来，你可以体验虚拟人、Animoji、Sticker、灯光特效和背景特效功能模块。
+
+### 设置虚拟人
+
+1. 调用 `setExtensionPropertyWithVendor` 添加一个虚拟人场景，其中 `key` 为 `loadMaterial`，`value` 为素材的配置信息。 你想选用哪个虚拟人形象，请指定对应的资源名 (`material_avatar_xxx`)，例如：女孩虚拟人形象的资源名为 `material_avatar_girl`。
+
+    :::info[信息]
+    除 `girl`、`boy` 和 `huamulan` 三个插件中已有的虚拟形象外，声网 MetaKit 插件提供开放的美术生态，支持**一键导入**按声网的美术标准制作的虚拟人模型，为用户提供更灵活的创作和集成选项。[联系声网技术支持](https://ticket.shengwang.cn/)使用该功能。
+    :::
+
+    ```swift
+    let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+
+    let dict = ["path": path_to_material_avatar_girl, "view": String(address)]
+    let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+    let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+    self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                                key:"loadMaterial",
+                                                value:dictInfo ?? "")
+    ```
+
+    当 `onEvent` 回调捕获到 `materialLoaded` 事件时，代表场景视图已添加完成，视图中会展示一个 Blendshape 驱动的虚拟人形象，捕捉你的面部表情并作出对应的神态变化，跟随你的摆头等动作。
+
+2. 对虚拟人进行捏脸操作，支持以下两种方式：
+
+    - （推荐）方式一：加载虚拟人时，直接应用整套捏脸效果。只需要在 `loadMaterial` 时指定资源为 `material_package_faceshape`，即可加载虚拟人形象及整套捏脸数据。
+    - 方式二：加载虚拟人后，动态按部位对虚拟人进行捏脸操作。调用 `setExtensionPropertyWithVendor`，其中 `key` 为 `updateFace`，`value` 支持传入多组捏脸部位的资源 ID 及其对应的调节幅度。详见[捏脸资源](/zh-CN/realtime-media/sdk-extensions/metakit/face)。
+
+    ```swift
+    let parts = [
+        // key 为捏脸部位的资源 ID
+        // value 为对应的捏脸幅度，取值范围为 [0,100]，默认值为 50
+        ["key": "C_updown_2", "value": 20],
+        ["key": "EB_thickness", "value": 40],
+        ["key": "E_width_1", "value": 60],
+        ["key": "N_width_1", "value": 80]
+    ]
+
+    let dict = ["value": parts]
+    let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+    let str = String(data: data!, encoding: String.Encoding.utf8)
+
+    // 根据 JSON 配置进行捏脸操作
+    agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                            key:"updateFace",
+                                            value:str!)
+    ```
+
+3. 对虚拟人进行换装操作，支持以下两种方式：
+
+    - （推荐）方式一：在加载虚拟人时，直接应用整套换装效果。在 `loadMaterial` 时指定资源为 `material_package_dress2` 或 `material_package_dress3`，即可加载虚拟人形象及整套换装效果。
+    - 方式二：在加载虚拟人后，动态按部位对虚拟人进行换装操作。调用 `setExtensionPropertyWithVendor`，其中 `key` 为 `updateDress`，`value` 支持传入由多个换装部位的资源 ID 组成的 Int 数组。详见[换装资源](/zh-CN/realtime-media/sdk-extensions/metakit/dress)。
+
+    ```swift
+    // id 设置为多个资源 ID 组成的 Int 数组
+    let dict = ["id": [10002, 10102, 10402, 12102, 12501, 14102, 15002]]
+    let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+    let str = String(data: data!, encoding: String.Encoding.utf8)
+    // 根据 JSON 配置进行换装操作
+    agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                            key:"updateDress",
+                                            value:str!)
+    ```
+
+    此外，MetaKit 插件还支持切换虚拟人的形象和视角，详见[虚拟人 key-value 说明](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#虚拟人)。
+
+### 设置 Animoji 和 Sticker
+
+<Tabs defaultValue="animoji">
+<TabsList>
+  <TabsTrigger value="animoji">Animoji</TabsTrigger>
+  <TabsTrigger value="sticker">Sticker</TabsTrigger>
+</TabsList>
+
+<TabsContent value="animoji">
+
+调用 `setExtensionPropertyWithVendor` 添加一个 Animoji 场景，其中 `key` 为 `loadMaterial`，`value` 为素材的配置信息。你想选用哪个 Animoji 效果，请指定对应的资源名 (`material_animoji_xxx`)，例如：狗狗头套 Anomoji 的资源名为 `material_animoji_dog`。
+
+:::info[信息]
+除 `dog`、`girlhead` 和 `arkit` 三个插件中已有的 Animoji 外，声网 MetaKit 插件提供开放的美术生态，支持**一键导入**按声网的美术标准制作的 Animoji 形象，为用户提供更灵活的创作和集成选项。[联系声网技术支持](https://ticket.shengwang.cn/)使用该功能。
+:::
+
+```swift
+let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+let dict = ["path": path_to_material_animoji_dog, "view": String(address)]
+let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                            key:"loadMaterial",
+                                            value:dictInfo ?? "")
+```
+
+当 `onEvent` 回调捕获到 `materialLoaded` 事件时，代表场景视图已添加完成。此时，画面中会出现一个遮住人脸的狗狗头套，捕捉你的面部表情并作出对应的神态变化，跟随你的摆头等动作。此外，MetaKit 插件支持你切换 Animoji 形象并调节 Animoji 形象的渲染等级，详见 [Animoji key-value 说明](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#animoji)。
+
+</TabsContent>
+
+<TabsContent value="sticker">
+
+调用 `setExtensionPropertyWithVendor` 添加一个 Sticker 场景视图，其中 `key` 为 `loadMaterial`，`value` 为素材的配置信息。你想选用哪个 Sticker 效果，请指定对应的资源名 (`material_sticker_xxx`)，例如：眼镜贴纸的资源名为 `material_sticker_glass`。
+
+:::info[信息]
+除 `veil`、`glass`、`facemask` 和 `dragonhat` 四个插件中已有的 Sticker 外，声网 MetaKit 插件提供开放的美术生态，支持**一键导入**按声网的美术标准制作的 Sticker 形象，为用户提供更灵活的创作和集成选项。[联系声网技术支持](https://ticket.shengwang.cn/)使用该功能。
+:::
+
+```swift
+let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+let dict = ["path": path_to_material_sticker_glass, "view": String(address)]
+let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                            key:"loadMaterial",
+                                            value:dictInfo ?? "")
+```
+
+当 `onEvent` 回调捕获到 `materialLoaded` 事件时，代表场景视图已添加完成。此时，视图中会展示一个遮住人眼的眼镜贴纸，跟随你的摆头等动作。
+
+</TabsContent>
+</Tabs>
+
+### 设置灯光和背景特效
+
+<Tabs defaultValue="light">
+<TabsList>
+  <TabsTrigger value="light">灯光特效</TabsTrigger>
+  <TabsTrigger value="background">背景特效</TabsTrigger>
+</TabsList>
+
+<TabsContent value="light">
+
+1. 调用 `setExtensionPropertyWithVendor` 添加一个灯光特效场景，其中 `key` 为 `loadMaterial`，`value` 为素材的配置信息。你想选用哪个灯光特效，请指定对应的资源名 (`material_effect_xxx`)，例如：3D 打光的资源名为 `material_effect_3dlight`。成功设置该特效后，画面中会有一盏 3D 灯光从斜方来回扫过。
+
+    ```swift
+    let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+
+    let dict = ["path": path_to_material_effect_3dlight, "view": String(address)]
+    let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+    let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+    self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                                key:"loadMaterial",
+                                                value:dictInfo ?? "")
+    ```
+
+2. 调用 `setExtensionPropertyWithVendor` 调节灯光特效的参数，其中 `key` 为 `setEffectVideo`，`value` 中包含一系列灯光素材的配置参数。MetaKit 插件提供 3D 打光、屏幕波纹、极光特效、人像边缘火焰等灯光特效，并支持对灯光效果的颜色、强度、范围等参数进行精细化配置，详见[灯光特效 key-value 说明](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#灯光特效)。
+
+    ```swift
+    let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+    let light_dict = ["id": 1001, "param": ["intensity": 2.0, "scale": 0.3] as [String : Any], "enable": true] as [String : Any]
+    let light_data = try? JSONSerialization.data(withJSONObject: light_dict, options: [])
+    let light_info = String(data: light_data!, encoding: String.Encoding.utf8)
+
+    agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                         key:"setEffectVideo",
+                                         value:light_info!)
+    ```
+
+</TabsContent>
+
+<TabsContent value="background">
+
+调用 `setExtensionPropertyWithVendor` 添加一个背景特效场景，其中 `key` 为 `loadMaterial`，`value` 为素材的配置信息。你想选用哪个背景特效，请指定对应的资源名 (`material_bgeffect_xxx`)，例如：360 全景背景素材的资源名为 `material_bgeffect_360`。
+
+```swift
+let address = unsafeBitCast(sceneView!, to: Int64.self) // 获取视图的地址句柄
+
+let dict = ["path": path_to_bgeffect, "view": String(address)]
+let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+let dictInfo = String(data: data!, encoding: String.Encoding.utf8)
+
+self.agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                            key:"loadMaterial",
+                                            value:dictInfo ?? "")
+```
+
+成功设置该特效后，可以观察到视频画面背景变为 360 全景，转动手机能体验到全景效果。此外，MetaKit 插件还支持 2D 背景和 3D 背景，如需将背景替换为指定资源或开启陀螺仪效果，详见[背景特效 key-value 说明](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref#背景特效)。
+
+</TabsContent>
+</Tabs>
+
+### 开启视图输出
+
+调用 `setExtensionPropertyWithVendor` 开启视图输出，其中 `key` 为 `enableSceneVideo`，`value` 中将 `enable` 设置为 `true` 开启场景视图的画面捕获。开启视图输出后，本地视图的渲染效果会传输到远端，加入频道的观众也能看到渲染效果。
+
+```swift
+let address = unsafeBitCast(sceneView!, to: Int64.self)
+let value = enable ? 1 : 0
+agoraKit?.setExtensionPropertyWithVendor("agora_video_filters_metakit",
+                                        extension: extension_name,
+                                        key:"enableSceneVideo",
+                                        value:"{\"view\":\"\(address)\",\"enable\":\(value)}")
+```
+
+### 释放资源
+
+停止使用插件时，可以参照以下示例代码卸载场景资源、移除场景视图并销毁引擎。
+
+```swift
+// 1. 卸载场景资源
+agoraEngine?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                                key:"unloadMaterial", value:"{}")
+
+// 2. 移除视图
+sceneView?.removeFromSuperview()
+metakit.removeSceneView(sceneView?)
+
+// 3. 收到 materialUnLoaded 后，执行销毁引擎
+agoraEngine?.setExtensionPropertyWithVendor("agora_video_filters_metakit", extension: "metakit",
+                                                key:"destroy", value:"{}")
+```
+
+## 相关文档
+
+- [插件相关 API 参考](/api-ref/rtc/ios/API/toc_extension)
+- [key-value 说明](/zh-CN/realtime-media/sdk-extensions/metakit/api-ref)

@@ -1,0 +1,392 @@
+---
+title: "实现音视频互动"
+---
+本文介绍如何使用声网 RTC React SDK 提供的组件和 Hooks，通过少量代码从 0 开始实现一个简单的实时互动 App，适用于视频通话场景。
+
+## 前提条件
+
+开始之前你需要满足以下前提条件：
+
+- 创建一个声网项目，并获取 App ID、频道名和临时 Token，详见[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)。
+- 了解 [React 基础知识](https://react.dev/learn)。
+
+## 立即体验
+
+在 [CodeSandbox](https://codesandbox.io/s/github/AgoraIO/quickstart-examples/tree/main/rtc/react-quickstart) 上，只需简单几步就能立即体验完整代码的运行效果。
+
+<iframe src="https://codesandbox.io/embed/github/AgoraIO/quickstart-examples/tree/main/rtc/react-quickstart?codemirror=1&fontsize=14&hidenavigation=1&theme=dark&hidedevtools=1&module=/src/index.js"
+  style={{ width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden' }}
+  title="agora-rtc-react-quickstart"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+具体步骤：
+
+1. 填入你获取的 App ID、频道名、临时 Token。
+2. 点击 **Join Channel** 按钮。你可以在视频画面中看到自己。
+3. 请一位朋友在浏览器中打开相同的页面链接，重复步骤 1 和 2 并确保填入和你相同的 App ID、频道名和临时 Token。成功加入频道后，你们可以看到和听到对方。
+4. 点击左下角的麦克风和摄像头按钮即可关闭或打开对应设备，点击右下角的挂断按钮即可结束通话。
+
+你还可以直接修改左侧编辑器的代码，在右侧实时预览运行效果。
+
+:::info[信息]
+如果 CodeSandbox 访问速度较慢，请尝试更改你的网络配置。
+:::
+
+## 实现步骤
+
+本节将分步骤介绍如何实现一个简单的视频通话 App。
+
+### 安装依赖
+
+```shell
+npm install agora-rtc-react
+```
+
+### 初始化 SDK
+
+首先调用 Web SDK 提供的 [createClient](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 方法创建 `client` 对象，用于 `<AgoraRTCProvider />` 组件。
+
+然后使用 `<AgoraRTCProvider />` 组件包裹 `<App />` 组件，方便后续使用状态和操作相关的 Hooks。
+
+```jsx showLineNumbers title="/src/index.js"
+import React, { StrictMode }  from 'react';
+import { createRoot } from "react-dom/client";
+import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
+import App from "./App";
+
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+// highlight-next-line
+// 视频通话场景下，将 mode 设为 "rtc"
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+root.render(
+  <StrictMode>
+    // highlight-start
+    <AgoraRTCProvider client={client}>
+      <App />
+    </AgoraRTCProvider>
+    // highlight-end
+  </StrictMode>
+);
+```
+
+### 加入频道
+
+在 `<App />` 组件中，我们再创建一个 `<Basics />` 组件，实现音视频通话的逻辑。
+
+首先使用 `useJoin` 这个 Hook 来加入频道，其中传入的 `joinOptions` 包含以下字段，获取方式详见[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)：
+
+- `appid`：标识你在声网控制台创建的项目。
+- `channel`：标识用户所在的频道。频道是用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- `token`：在加入频道时用于校验用户权限的一组字符串。快速开始阶段可以使用临时 Token。
+
+这些字段将通过表单的形式向用户收集。收集到字段后，还需要提供一个按钮给用户点击，表示准备好加入频道。
+
+```jsx showLineNumbers title="/src/App.js"
+import {
+  LocalUser,
+  RemoteUser,
+  useIsConnected,
+  useJoin,
+  useLocalMicrophoneTrack,
+  useLocalCameraTrack,
+  usePublish,
+  useRemoteUsers,
+} from "agora-rtc-react";
+import React, { useState } from "react";
+
+import "./styles.css";
+import logo from "./logo.png";
+export const Basics = () => {
+  // 定义状态变量
+  const [calling, setCalling] = useState(false); // 是否正在呼叫
+  const [appId, setAppId] = useState(""); // 存储 App ID 的状态
+  const [channel, setChannel] = useState(""); // 存储频道名的状态
+  const [token, setToken] = useState(""); // 存储 Token 的状态
+
+  // 使用 App ID、频道名和 Token 加入频道，是否加入频道取决于 calling 的状态
+  useJoin({appid: appId, channel: channel, token: token ? token : null}, calling);
+
+  return (
+    <>
+      <div className="room">
+          <div className="join-room">
+            <img alt="agora-logo" className="logo" src={logo} />
+            <input
+              onChange={e => setAppId(e.target.value)}
+              placeholder="<Your App ID>"
+              value={appId}
+            />
+            <input
+              onChange={e => setChannel(e.target.value)}
+              placeholder="<Your channel Name>"
+              value={channel}
+            />
+            <input
+              onChange={e => setToken(e.target.value)}
+              placeholder="<Your token>"
+              value={token}
+            />
+
+            <button
+              className={`join-channel ${!appId || !channel ? "disabled" : ""}`}
+              disabled={!appId || !channel}
+              onClick={() => setCalling(true)}
+            >
+              <span>Join Channel</span>
+            </button>
+          </div>
+      </div>
+    </>
+  );
+};
+
+export default Basics;
+```
+
+接下来可以给 `<Basics />` 组件添加 CSS 样式。示例项目中使用 [styles.css](https://codesandbox.io/s/github/guoxianzhe/quickstart-examples/tree/react/rtc/react-quickstart?file=/src/styles.css)，加入频道界面的效果如下：
+
+![](/img/video-call/react/quickstart-join.png)
+
+现在 App 已经实现了用户加入频道的功能和界面，但用户无法听到和看到对方，还不能进行通话。
+
+### 渲染本地和远端的音视频
+
+为了让用户能互相看到和听到对方，App 需要渲染本地用户和远端用户的音视频。
+
+渲染本地用户音视频的步骤如下：
+
+1. 使用 `useLocalMicrophoneTrack` 和 `useLocalCameraTrack` 创建麦克风音频轨道和摄像头视频轨道。
+2. 使用 `usePublish` 发布本地用户的音频和视频轨道。
+3. 使用 `<LocalUser />` 组件渲染本地用户的音频和视频。
+
+渲染远端用户音视频的步骤如下：
+
+1. 使用 `useRemoteUsers` 获取所有远端用户。
+2. 使用 `<RemoteUser />` 组件渲染每一位远端用户的音频和视频。
+
+此外，你还可以在界面上提供以下按钮：
+
+- 打开/关闭麦克风。
+- 打开/关闭摄像头。
+- 结束通话。
+
+```jsx showLineNumbers title="/src/App.js"
+export const Basics = () => {
+  const [calling, setCalling] = useState(false);
+  const [appId, setAppId] = useState("");
+  const [channel, setChannel] = useState("");
+  const [token, setToken] = useState("");
+
+  useJoin({appid: appId, channel: channel, token: token ? token : null}, calling);
+
+  // highlight-start
+  // 本地用户
+  const [micOn, setMic] = useState(true);
+  const [cameraOn, setCamera] = useState(true);
+  const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
+  const { localCameraTrack } = useLocalCameraTrack(cameraOn);
+  usePublish([localMicrophoneTrack, localCameraTrack]);
+
+  // 远端用户
+  const remoteUsers = useRemoteUsers();
+  // highlight-end
+
+  return (
+    <>
+      // highlight-start
+      <div className="room">
+          <div className="user-list">
+            <div className="user">
+              <LocalUser
+                audioTrack={localMicrophoneTrack}
+                cameraOn={cameraOn}
+                micOn={micOn}
+                videoTrack={localCameraTrack}
+                cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+              >
+                <samp className="user-name">You</samp>
+              </LocalUser>
+            </div>
+            {remoteUsers.map((user) => (
+              <div className="user" key={user.uid}>
+                <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
+                  <samp className="user-name">{user.uid}</samp>
+                </RemoteUser>
+              </div>
+            ))}
+          </div>
+      </div>
+        <div className="control">
+          <div className="left-control">
+            <button className="btn" onClick={() => setMic(a => !a)}>
+              <i className={`i-microphone ${!micOn ? "off" : ""}`} />
+            </button>
+            <button className="btn" onClick={() => setCamera(a => !a)}>
+              <i className={`i-camera ${!cameraOn ? "off" : ""}`} />
+            </button>
+          </div>
+          <button
+            className={`btn btn-phone ${calling ? "btn-phone-active" : ""}`}
+            onClick={() => setCalling(a => !a)}
+          >
+            {calling ? <i className="i-phone-hangup" /> : <i className="i-mdi-phone" />}
+          </button>
+        </div>
+        // highlight-end
+    </>
+  );
+};
+
+export default Basics;
+```
+
+最终的通话界面如下：
+
+![](/img/video-call/react/quickstart-in-call.png)
+
+### 根据连接状态更新 UI
+
+现在 App 已经具备加入频道界面和通话界面，但两个界面之间无法切换。
+
+我们需要使用 `useIsConnected` 获取用户的连接状态，并且根据连接状态更新 App 界面：
+
+- 在加入频道界面点击加入频道后，如果用户连接成功，App 显示通话界面。
+- 在通话界面点击退出通话后，如果连接成功断开，App 显示加入频道界面。
+
+```jsx showLineNumbers title="/src/App.js"
+export const Basics = () => {
+  const [calling, setCalling] = useState(false);
+  // highlight-next-line
+  const isConnected = useIsConnected(); // 存储用户的连接状态
+  const [appId, setAppId] = useState("");
+  const [channel, setChannel] = useState("");
+  const [token, setToken] = useState("");
+
+  useJoin({appid: appId, channel: channel, token: token ? token : null}, calling);
+
+  const [micOn, setMic] = useState(true);
+  const [cameraOn, setCamera] = useState(true);
+  const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
+  const { localCameraTrack } = useLocalCameraTrack(cameraOn);
+  usePublish([localMicrophoneTrack, localCameraTrack]);
+
+  const remoteUsers = useRemoteUsers();
+
+  return (
+    <>
+      <div className="room">
+        // highlight-next-line
+        {isConnected ? (
+          <div className="user-list">
+            <div className="user">
+              <LocalUser
+                audioTrack={localMicrophoneTrack}
+                cameraOn={cameraOn}
+                micOn={micOn}
+                videoTrack={localCameraTrack}
+                cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+              >
+                <samp className="user-name">You</samp>
+              </LocalUser>
+            </div>
+            {remoteUsers.map((user) => (
+              <div className="user" key={user.uid}>
+                <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
+                  <samp className="user-name">{user.uid}</samp>
+                </RemoteUser>
+              </div>
+            ))}
+          </div>
+        // highlight-next-line
+        ) : (
+          <div className="join-room">
+            <img alt="agora-logo" className="logo" src={agoraLogo} />
+            <input
+              onChange={e => setAppId(e.target.value)}
+              placeholder="<Your App ID>"
+              value={appId}
+            />
+            <input
+              onChange={e => setChannel(e.target.value)}
+              placeholder="<Your channel Name>"
+              value={channel}
+            />
+            <input
+              onChange={e => setToken(e.target.value)}
+              placeholder="<Your token>"
+              value={token}
+            />
+
+            <button
+              className={`join-channel ${!appId || !channel ? "disabled" : ""}`}
+              disabled={!appId || !channel}
+              onClick={() => setCalling(true)}
+            >
+              <span>Join Channel</span>
+            </button>
+          </div>
+        // highlight-next-line
+        )}
+      </div>
+      // highlight-next-line
+      {isConnected && (
+        <div className="control">
+          <div className="left-control">
+            <button className="btn" onClick={() => setMic(a => !a)}>
+              <i className={`i-microphone ${!micOn ? "off" : ""}`} />
+            </button>
+            <button className="btn" onClick={() => setCamera(a => !a)}>
+              <i className={`i-camera ${!cameraOn ? "off" : ""}`} />
+            </button>
+          </div>
+          <button
+            className={`btn btn-phone ${calling ? "btn-phone-active" : ""}`}
+            onClick={() => setCalling(a => !a)}
+          >
+            {calling ? <i className="i-phone-hangup" /> : <i className="i-mdi-phone" />}
+          </button>
+        </div>
+      // highlight-next-line
+      )}
+    </>
+  );
+};
+
+export default Basics;
+```
+
+### 离开频道
+
+当用户点击离开频道按钮、关闭浏览器窗口或刷新浏览器标签页时，由于触发了 React 组件的销毁，`useJoin` 会执行离开频道的操作。你不需要额外调用 API。
+
+## 后续步骤
+
+在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication.javascript)。
+
+## 参考信息
+
+### 示例项目
+
+声网在 GitHub 上提供一个开源的示例项目供你参考，包括 React SDK 提供的每个组件和 Hook 以及部分进阶功能的效果展示。
+
+<Cards>
+  <Card title="agora-rtc-react" href="https://github.com/AgoraIO-Extensions/agora-rtc-react" />
+</Cards>
+
+### 集成 SDK 的其他方法
+
+除了通过 npm 集成 React SDK，你也可以在 HTML 文件中添加如下代码，使用 CDN 方法获取 SDK：
+
+```html
+<!-- 必须按照以下顺序依次引入 -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+<!-- 如果以上依赖库都已经通过 npm 集成，只需要添加这一行 -->
+<script src="https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js"></script>
+```

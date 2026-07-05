@@ -1,0 +1,87 @@
+---
+title: "下载"
+---
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 Maven Central 集成 SDK
+
+打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。
+
+```groovy tab="视频 SDK" tabGroup="integrate-sdk"
+...
+dependencies {
+    ...
+    // 集成 Full SDK
+    implementation 'cn.shengwang.rtc:full-sdk:4.6.3'
+    // 集成 Lite SDK
+    implementation 'cn.shengwang.rtc:lite-sdk:4.6.3'
+}
+```
+
+```groovy tab="音频 SDK" tabGroup="integrate-sdk"
+...
+dependencies {
+    ...
+    // 集成音频 SDK
+    implementation 'cn.shengwang.rtc:voice-sdk:4.6.3'
+}
+```
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/overview/release-notes.android)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start.android)。
+      - 集成 SDK 后增加的实际包体积数据会根据集成的动态库的不同而有所差异，本页提供的数据仅供参考。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Android Full](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip)
+
+    - [Android Lite](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_LITE.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Android](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_VOICE.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取 Demo
+
+本节提供 Demo，你可以下载体验 RTC SDK 的最新功能。
+
+    - 声网实验室
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android" />
+</Cards>

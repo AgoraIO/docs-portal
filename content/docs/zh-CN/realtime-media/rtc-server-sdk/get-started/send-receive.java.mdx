@@ -1,0 +1,463 @@
+---
+title: "发送和接收媒体流"
+---
+本文介绍如何使用 RTC 服务端 SDK 向客户端发送媒体流并从客户端接收媒体流。
+
+## 前提条件
+
+你已经下载了最新的 RTC 服务端 SDK。详见[跑通示例项目](/zh-CN/realtime-media/rtc-server-sdk/get-started/run-example.cpp.java)。
+
+## 准备工作
+
+在发送和接收媒体流之前，你需要完成以下准备工作。
+
+### 1. 初始化 SDK
+
+首先，你需要在应用程序中创建 `AgoraService` 对象，并调用 `initialize` 方法进行全局初始化。
+
+这个操作只需要进行一次，`AgoraService` 对象的生命期和应用程序的生命期保持一致，只要应用程序没有退出，`AgoraService` 可以一直存在。
+
+SDK 支持 `int` 型和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法请参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/advanced-features/string-uid)。
+
+```java
+// Import SDK, AgoraService, and AgoraServiceConfig classes for initialization
+import io.agora.rtc.SDK;
+import io.agora.rtc.AgoraService;
+import io.agora.rtc.AgoraServiceConfig;
+
+// Creates an AgoraService object
+AgoraService service = new AgoraService();
+// Initializes the AgoraServiceConfig object
+AgoraServiceConfig config = new AgoraServiceConfig();
+// Enables the audio processing module
+config.setEnableAudioProcessor(1);
+// Disables the audio device module (Normally we do not directly connect audio capture or playback devices to a server)
+config.setEnableAudioDevice(0);
+// Enables video
+config.setEnableVideo(1);
+// Sets声网 App ID
+config.setAppId(appid);
+// Initializes the SDK
+service.initialize(config);
+```
+
+### 2. 与 RTC 频道建立连接
+
+初始化后，根据以下步骤与声网 RTC 频道建立连接。
+
+1. 调用 `agoraRtcConnCreate` 方法创建 `AgoraRtcConn` 对象，用于与声网服务器建立连接。
+
+    ```java
+    AgoraRtcConn conn = service.agoraRtcConnCreate(new RtcConnConfig());
+    ```
+
+2. 调用 `registerObserver` 方法监听连接事件。
+
+    ```java
+    conn.registerObserver(new DefaultRtcConnObserver());
+    ```
+
+3. 调用 `connect` 与声网频道建立连接。
+
+    ```java
+    conn.connect(token, "test_channel", "1");
+    ```
+
+## 向客户端发送媒体流
+
+参考以下步骤向客户端发送媒体流。
+
+### 1. 创建媒体流发送器
+
+你可以通过媒体节点工厂对象 `AgoraMediaNodeFactory` 创建不同类型的媒体流发送器：
+
+- `AgoraAudioPcmDataSender`：发送 PCM 格式的音频数据。
+- `AgoraVideoFrameSender`：发送 YUV 格式的视频数据。
+- `AgoraAudioEncodedFrameSender`：发送已编码的音频数据。
+- `AgoraVideoEncodedImageSender`：发送已编码的视频数据。
+
+1. 创建 `AgoraMediaNodeFactory` 媒体节点工厂对象。
+
+    ```java
+    AgoraMediaNodeFactory factory = service.createMediaNodeFactory();
+    ```
+
+2. 根据你的需求，创建 `AgoraAudioPcmDataSender` 对象、`AgoraVideoFrameSender`对象、`AgoraAudioEncodedFrameSender` 对象或 `AgoraVideoEncodedImageSender` 对象，分别用于发送 PCM 格式的音频流、YUV 格式的视频流、已编码的音频流及已编码的视频流。
+
+    ```java
+    // Creates a sender for PCM audio
+    AgoraAudioPcmDataSender audioFrameSender = factory.createAudioPcmDataSender();
+
+    // Creates a sender for YUV video
+    AgoraVideoFrameSender videoFrameSender = factory.createVideoFrameSender();
+
+    // Creates a sender for encoded audio
+    AgoraAudioEncodedFrameSender audioFrameSender = factory.createAudioEncodedFrameSender();
+
+    // Creates a sender for encoded video
+    AgoraVideoEncodedImageSender imageSender = factory.createVideoEncodedImageSender();
+    ```
+
+3. 创建 `AgoraLocalAudioTrack` 对象和 `AgoraLocalVideoTrack` 对象，分别对应即将发布至频道内的本地音频轨道和本地视频轨道。对象中可以使用上一步创建的发送器。
+
+    ```java
+    // Creates a custom audio track that uses a PCM audio stream sender
+    customAudioTrack = service.createCustomAudioTrackPcm(audioFrameSender);
+
+    // Creates a custom audio track that uses an encoded audio stream sender
+    customAudioTrack = service.createCustomAudioTrackEncoded(audioFrameSender,0);
+
+    // Creates a custom video track that uses a YUV video stream sender
+    customVideoTrack = service.createCustomVideoTrackFrame(videoFrameSender);
+
+    // Creates a custom video track that uses encoded video stream sender
+    customVideoTrack = service.createCustomVideoTrackEncoded(videoFrameSender, option);
+    ```
+
+### 2. 发送媒体流
+
+1. 通过 `AgoraLocalUser` 对象的 publish 相关方法在声网 RTC 频道中发布上一步创建的本地音频轨道和视频轨道。
+
+    ```java
+    // Enables and publishes audio and video track
+    customAudioTrack.setEnabled(1);
+    customVideoTrack.setEnabled(1);
+    conn.getLocalUser().publishAudio(customAudioTrack);
+    conn.getLocalUser().publishVideo(customVideoTrack);
+    ```
+
+2. 开启发送线程，调用发送器的 send 方法发送音视频数据。
+
+    ```java
+    pcmSender = new PcmSender(audioFile,audioFrameSender,numOfChannels,sampleRate);
+    h264Sender = new H264Sender(videoFile,1000/fps,0,0,videoFrameSender);
+
+    pcmSender.start();
+    h264Sender.start();
+    ```
+
+    本文以发送 PCM 音频数据为例进行介绍，`PcmSender` 的实现如下：
+
+    ```java
+    // audio thread
+    // send audio data every 10 ms;
+    class PcmSender extends FileSender {
+        private AgoraAudioPcmDataSender audioFrameSender;
+        private static final int INTERVAL = 10; //ms
+        private int channels;
+        private int samplerate;
+        private int bufferSize = 0;
+        private byte[] buffer;
+        public PcmSender(String filepath, AgoraAudioPcmDataSender sender,int channels,int samplerate){
+            super(filepath, INTERVAL);
+            audioFrameSender = sender;
+            this.channels = channels;
+            this.samplerate = samplerate;
+            this.bufferSize = channels * samplerate * 2 * INTERVAL /1000;
+            this.buffer = new byte[this.bufferSize];
+        }
+
+        // sendOneFrame calls the send method of audioFrameSender to send PCM data
+        @Override
+        public void sendOneFrame(byte[] data) {
+            if(data == null) return;
+            AudioFrame audioFrame = new AudioFrame();
+            audioFrame.setBuffer(ByteBuffer.wrap(data));
+            audioFrame.setSamplesPerChannel(sampleRate/(1000/INTERVAL));
+            audioFrame.setBytesPerSample(2);
+            audioFrame.setChannels(1);
+            audioFrame.setSamplesPerSec(samplerate);
+            int ret = audioFrameSender.sendAudioPcmData(audioFrame);
+        }
+
+        @Override
+        public byte[] readOneFrame(FileInputStream fos) {
+            if(fos != null ){
+                try {
+                    int size = fos.read(buffer,0,bufferSize);
+                    if( size <= 0){
+                        reset();
+                        return null;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return buffer;
+        }
+    }
+    ```
+
+    以发送 H.264 格式的编码视频为例，`H264Sender` 的实现如下：
+
+    ```java
+    class H264Sender extends FileSender {
+        private AgoraVideoEncodedImageSender imageSender;
+        private H264Reader h264Reader;
+        private int lastFrameType = 0;
+        private int height;
+        private int width;
+        private int fps;
+        public H264Sender(String path,int interval, int height,int width, AgoraVideoEncodedImageSender videoEncodedImageSender){
+            super(path,interval,false);
+            this.imageSender = videoEncodedImageSender;
+            this.h264Reader = new H264Reader(path);
+            this.height = height;
+            this.width = width;
+            this.fps = 1000/interval;
+        }
+
+        // sendOneH264Frame calls the send method of imageSender to send H.264 data.
+        public void sendOneFrame(byte[] data) {
+            if(data == null) return;
+            EncodedVideoFrameInfo info = new EncodedVideoFrameInfo();
+            info.setFrameType(lastFrameType);
+            info.setWidth(width);
+            info.setHeight(height);
+            info.setCodecType(Constants.VIDEO_CODEC_H264);
+            info.setFramesPerSecond(fps);
+            info.setRotation(0);
+            imageSender.sendEncodedVideoImage(data,info);
+        }
+
+        @Override
+        public byte[] readOneFrame(FileInputStream fos) {
+            int retry = 0;
+            H264Reader.H264Frame frame =  h264Reader.readNextFrame();
+            while ( frame == null && retry < 4){
+                h264Reader.reset();
+                frame = h264Reader.readNextFrame();
+                retry ++;
+            }
+            if( frame != null ) {
+                lastFrameType = frame.frameType;
+                return frame.data;
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public void release() {
+            super.release();
+            h264Reader.close();
+        }
+    }
+    ```
+
+    编码视频数据的格式通过 `send` 方法的 `info` 参数进行设置。
+
+### 3. 断开连接并释放资源
+
+媒体流发送完成后，你可以通过以下步骤退出频道并断开与声网服务器的连接：
+
+1. 调用 `unpublish` 相关方法取消发布音频流和视频流。
+
+    ```java
+    if(conn != null) {
+        conn.getLocalUser().unpublishAudio(customAudioTrack);
+        conn.getLocalUser().unpublishVideo(customVideoTrack);
+    }
+    ```
+
+2. 调用 `unregisterObserver` 取消连接 observer。
+
+    ```java
+    conn.unregisterObserver();
+    ```
+
+3. 调用 `disconnect` 断开与声网服务器的连接。
+
+    ```java
+    int ret = conn.disconnect();
+    ```
+
+4. 释放已创建对象的资源。
+
+    ```java
+    conn.destroy();
+    ```
+
+## 从客户端接收媒体流
+
+参考以下步骤从客户端接收媒体流。
+
+### 1. 注册音视频帧 observer
+
+实例化音视频帧 observer 对象，并通过 `AgoraLocalUser` 类的成员方法注册音视频帧 observer。成功注册 observer 后，SDK 会在捕捉到每个音频或视频帧时触发回调。你可以在回调中获得该音频或视频帧。
+
+```java
+// 监听pcm
+int ret = conn.getLocalUser().setPlaybackAudioFrameBeforeMixingParameters(numOfChannels, sampleRate);
+conn.getLocalUser().registerAudioFrameObserver(audioFrameObserver, enableVad, new AgoraAudioVadConfigV2());
+
+// 监听编码音频
+conn.getLocalUser().registerAudioEncodedFrameObserver(audioEncodedFrameObserver);
+
+// 监听yuv
+conn.getLocalUser().registerVideoFrameObserver(videoFrameObserver);
+
+// 监听编码视频
+conn.getLocalUser().registerVideoEncodedFrameObserver(videoEncodedFrameObserver);
+```
+
+### 2. 接收媒体流
+
+下面的代码展示了如何接收已编码的视频、YUV 格式的视频和 PCM 格式的音频。
+
+```java
+// Receives PCM audio by using the onPlaybackAudioFrameBeforeMixing callback
+public static class PcmFrameObserver extends FileWriter implements IAudioFrameObserver {
+    public PcmFrameObserver(String outputFilePath) {
+        super(outputFilePath);
+    }
+
+    @Override
+    public int onPlaybackAudioFrame(AgoraLocalUser agoraLocalUser, String channelId, AudioFrame frame) {
+        System.out.println("onPlaybackAudioFrame success");
+        return 1;
+    }
+
+    @Override
+    public int onMixedAudioFrame(AgoraLocalUser agoraLocalUser, String channelId, AudioFrame frame) {
+        System.out.println("onMixedAudioFrame success");
+        return 1;
+    }
+
+    @Override
+    public int onPlaybackAudioFrameBeforeMixing(AgoraLocalUser agoraLocalUser, String channelId, String userId,
+            AudioFrame frame, VadProcessResult vadResult) {
+        System.out.println("onPlaybackAudioFrameBeforeMixing success");
+        writeData(frame.getBuffer(), frame.getBuffer().remaining());
+        return 1;
+    }
+}
+
+// Receives encoded audio by using the onEncodedAudioFrameReceived callback
+class AudioEncodedFrameObserver extends FileWriter implements IAudioEncodedFrameObserver {
+
+    public AudioEncodedFrameObserver(String path) {
+        super(path);
+    }
+
+    @Override
+    public int onEncodedAudioFrameReceived(String remoteUserId, ByteBuffer buffer,
+            EncodedAudioFrameReceiverInfo info) {
+        System.out.println("onEncodedAudioFrameReceived success");
+        return 1;
+    }
+}
+
+// Receives YUV video by using the onFrame callback
+class YuvFrameObserver extends FileWriter implements IVideoFrameObserver2 {
+
+    public YuvFrameObserver(String path) {
+        super(path);
+    }
+
+    @Override
+    public void onFrame(AgoraVideoFrameObserver2 agoraVideoFrameObserver2, String channelId, String remoteUserId,
+            VideoFrame frame) {
+        System.out.println("onFrame success  ");
+        writeData(frame.getYBuffer(), frame.getYBuffer().remaining());
+        writeData(frame.getUBuffer(), frame.getUBuffer().remaining());
+        writeData(frame.getVBuffer(), frame.getVBuffer().remaining());
+        return;
+    }
+}
+
+// Receives encoded video by using the onEncodedVideoFrame callback
+class H264FrameReceiver extends FileWriter implements IVideoEncodedFrameObserver {
+
+    public H264FrameReceiver(String path) {
+        super(path);
+    }
+
+    @Override
+    public int onEncodedVideoFrame(AgoraVideoEncodedFrameObserver observer, int userId,
+            ByteBuffer buffer, EncodedVideoFrameInfo info) {
+        System.out.println("onEncodedVideoFrame success  " + info.getFrameType());
+        writeData(buffer.array(), buffer.remaining());
+        return 1;
+    }
+}
+```
+
+### 3. 断开连接并释放资源
+
+媒体流接收完成后，你可以通过以下步骤退出频道并断开与声网服务器的连接：
+
+:::warning[注意]
+你必须严格按照示例代码中的顺序释放相关资源。
+:::
+
+1. 释放视频、音频相关资源。
+
+    ```java
+    conn.getLocalUser().unpublishAudio(customAudioTrack);
+    customAudioTrack.destroy();
+
+    audioFrameSender.destroy();
+    audioEncodedFrameSender.destroy();
+
+    conn.getLocalUser().unpublishVideo(customEncodedVideoTrack);
+    customEncodedVideoTrack.destroy();
+
+    videoFrameSender.destroy();
+    customEncodedImageSender.destroy();
+
+    conn.getLocalUser().unregisterAudioFrameObserver();
+    conn.getLocalUser().unregisterAudioEncodedFrameObserver(audioEncodedFrameObserver);
+    conn.getLocalUser().unregisterVideoFrameObserver(videoFrameObserver);
+    videoFrameObserver.destroy();
+    conn.getLocalUser().unregisterVideoEncodedFrameObserver(videoEncodedFrameObserver);
+    videoEncodedFrameObserver.destroy();
+    ```
+
+2. 调用 `disconnect` 与声网 RTC 频道断开连接。
+
+    ```java
+    // Disconnect from the声网channel
+    int ret = conn.disconnect();
+    if (ret != 0) {
+        System.out.printf("conn.disconnect fail ret=%d\n", ret);
+    }
+    ```
+
+3. 销毁创建的相关对象。
+
+    ```java
+    // Releases the created objects.
+    conn.destroy();
+    ```
+
+## 注销 AgoraService 对象
+
+当你的服务端程序退出时，可以调用如下逻辑，注销整个 `AgoraService` 对象。
+
+```java
+// Destroy声网 Service
+service.destroy();
+```
+
+## 开发注意事项
+
+- 以上所有接口函数，如无特殊说明，都是异步调用，无需担心阻塞用户线程。
+- 在声网 RTC 客户端 SDK 和服务端 SDK 互通的场景中，请确保将客户端 SDK 的频道场景设置为 `LIVE_BROADCASTING`。
+- SDK 发送 AAC 格式的音频数据时，不支持 44.1 kHz 的采样率。
+
+## 参考信息
+
+你可以在这里查看时序图、开发注意事项等信息。
+
+### API 参考
+
+你可以通过 [API 参考](/api-ref/rtc-server-sdk/java/overview) 获取详细的接口和参数信息。
+
+### 示例项目
+
+声网提供了开源的服务端示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Agora-Java-Server-SDK" href="https://github.com/AgoraIO-Extensions/Agora-Java-Server-SDK" />
+</Cards>

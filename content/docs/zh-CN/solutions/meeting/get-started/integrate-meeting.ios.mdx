@@ -1,0 +1,237 @@
+---
+title: "集成灵动会议"
+---
+本文介绍如何将灵动会议集成到你的 iOS 项目中。
+
+## 前提条件
+
+开始前，请确保满足以下前提条件：
+
+- Xcode 12.0 或以上版本。
+- 有效的 Apple 开发者账号。
+- iOS 设备，版本 11.0 或以上。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- 已[开通灵动会议服务](/zh-CN/solutions/meeting/get-started/enable-service)。
+
+## （可选）创建项目
+
+如需创建一个新的 iOS 项目来集成灵动会议，你可以参考如下步骤在 Xcode 创建项目：
+
+1. [创建一个新的项目](https://help.apple.com/xcode/mac/current/#/dev07db0e578)，**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
+
+    :::warning[注意]
+    如果你没有添加过开发团队信息，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示登入 Apple ID，点击 **Next**，完成后即可选择你的 Apple 账户作为开发团队。
+    :::
+
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。
+
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+
+4. 在 **General** 标签页中设置 **Minimum Deployments** 为 iOS 11.0。
+
+## 通过 CocoaPods 集成依赖
+
+1. 开始前，确保你已安装 CocoaPods。如果尚未安装，可参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装操作。
+
+    在终端输入以下命令检查 CocoaPods 是否安装成功：
+
+    ```shell
+    pod --version
+    ```
+
+    如果安装成功，终端会打印出版本信息，例如 `1.11.3`。
+
+2. 在终端里进入项目文件夹（即 `*.xcodeproj` 文件所在目录），并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+
+3. 打开 `Podfile` 文件，修改文件为如下内容，以引用灵动会议所依赖的库：
+
+    ```ruby
+    platform :ios, '11.0'
+    use_frameworks!
+
+    target 'YourTargetName' do
+        # highlight-start
+        pod 'FcrUIScene', '3.1.0'
+        pod "AgoraRtm_OC_Special", '2.2.1.1'
+        # highlight-end
+    end
+    ```
+
+4. 在终端里进入项目文件夹，运行如下命令安装依赖。
+
+    ```shell
+    pod install
+    ```
+
+    以灵动会议 v3.1.0 为例，安装过程中终端会打印如下信息：
+
+    ```shell
+    Analyzing dependencies
+    Downloading dependencies
+    Installing FcrUIScene (3.1.0)
+    Installing FcrCore (3.1.0)
+    Generating Pods project
+    Integrating client project
+    ```
+
+## 添加设备权限
+
+为确保灵动会议能正常使用，你需要添加必要的设备权限。在 Xcode 项目导航栏中打开 `Info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
+
+| key                                         | type   | value                                           |
+| ------------------------------------------- | ------ | ----------------------------------------------- |
+| Privacy - Camera Usage Description          | String | 填写使用相机的目的           |
+| Privacy - Microphone Usage Description      | String | 填写使用麦克风的目的 |
+| Privacy - Photo Library Additions Usage Description | String | 填写访问和添加照片或视频到图库的目的 |
+| Privacy - Photo Library Usage Description   | String | 填写访问图库的目的     |
+
+## 启动灵动会议
+
+本节介绍如何调用客户端 API 启动灵动会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/solutions/meeting/api/create-room.restful) 创建了房间。
+
+1. 创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/api-ref/meeting/ios/client-api#launch) 启动灵动会议。
+
+```swift tab="Swift" tabGroup="language"
+import FcrUIScene
+
+let config = FcrUISceneCreatorConfig(appId: appId,
+                                     userId: userId)
+
+let creator = FcrUISceneCreator(config: config)
+
+let sceneConfig = FcrUISceneConfig(roomId: roomId,
+                                   roomToken: token,
+                                   userName: userName,
+                                   userRole: userRole,
+                                   inviteLink: inviteLink,
+                                   userProperties: nil,
+                                   resource: resource)
+
+creator.launch(config: sceneConfig,
+               cancel: {
+                   print("cancel")
+               }, success: { scene in
+                   print("success")
+               }, failure: { error in
+                   print("failure")
+               }, parent: viewController)
+```
+
+```objc tab="Objective-C" tabGroup="language"
+#import <FcrUIScene/FcrUIScene-Swift.h>
+
+FcrUISceneCreatorConfig *config = [[FcrUISceneCreatorConfig alloc] initWithAppId:appId
+                                                                          userId:userId];
+
+FcrUISceneConfig *sceneConfig = [[FcrUISceneConfig alloc] initWithRoomId:roomId
+                                                               roomToken:roomToken
+                                                                userName:userName
+                                                                userRole:userRole
+                                                              inviteLink:inviteLink
+                                                          userProperties:nil
+                                                                resource:resource];
+
+[creator launchWithConfig:sceneConfig
+                   cancel:^{
+                       NSLog(@"cancel");
+                   } success:^(id<FcrUISceneItem> _Nonnull scene) {
+                       NSLog(@"success");
+                   } failure:^(AgoraError * _Nonnull error) {
+                       NSLog(@"failure");
+                   } parent:viewController];
+```
+
+    填写参数时可参考 [`FcrUISceneCreatorConfig`](/api-ref/meeting/ios/client-api#fcruiscenecreatorconfig) 和 [`FcrUISceneConfig`](/api-ref/meeting/ios/client-api#fcruisceneconfig) 的 API 文档。需关注的核心参数如下：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `appId` | String | 项目的 App ID。详见[获取 App ID](/zh-CN/solutions/meeting/get-started/enable-service#获取-app-id)。 |
+| `userId` | String | <Slot name="integrate-meeting-ios-html-0-2-2" /> |
+| `roomToken` | String | <Slot name="integrate-meeting-ios-html-0-3-2" /> |
+
+<Slot for="integrate-meeting-ios-html-0-2-2">
+
+用户 ID，是用户的**唯一标识符**，不可重复取值。长度在 64 字符以内。支持的字符集范围（共 36 个字符）：
+
+        - 26 个小写英文字母 a~z
+        - 10 个数字 0-9
+
+</Slot>
+
+<Slot for="integrate-meeting-ios-html-0-3-2">
+
+用于鉴权的 Token。详见[控制台生成临时 Token](/zh-CN/solutions/meeting/get-started/enable-service#生成临时-token) 或[服务端生成正式 Token](/zh-CN/solutions/meeting/user-guides/generate-token)。
+
+        :::warning[注意]
+        临时 Token 仅适用于集成测试和体验。在生产环境中，请使用正式 Token 以确保安全。无论是临时 Token 还是正式 Token，有效期最长都是 24 小时，请尽快使用。
+        :::
+
+</Slot>
+
+2. （可选）如需主动退出会议，调用 [`exit`](/api-ref/meeting/ios/client-api#exit) 退出灵动会议。
+
+```swift tab="Swift" tabGroup="language"
+// 退出会议
+scene.exit()
+
+// 释放 FcrUISceneCreator 与 FcrUIScene 对象
+// ...
+```
+
+```objc tab="Objective-C" tabGroup="language"
+// 退出会议
+[scene exit];
+
+// 释放 FcrUISceneCreator 与 FcrUIScene 对象
+// ...
+```
+
+## 日志文件路径
+
+灵动会议默认的日志文件在 `App Sandbox/Library/Caches/AgoraLog/` 目录下。
+
+## 开发注意事项
+
+在 Xcode 14.0 及更高版本中，如果遇到以下问题，可以在你的 `Podfile` 中添加代码来解决：
+
+- Bundle 需要签名：例如 `FcrUIScene-FcrUIScene` 的 Bundle 在构建时需要进行签名。
+- Pod 引用的库版本过低：引用的库不满足项目所需的最低 iOS 版本要求（11.0），导致兼容性问题。
+- 启用 bitcode 支持导致错误：启用 bitcode 支持可能导致构建错误或其他兼容性问题，因此需要关闭 bitcode 支持。
+- 依赖库中会多导入一个 `aosl.xcframework`：目前通过 `pre_install` 移除重复导入的 `aosl.xcframework`。
+
+`Podfile` 中添加的代码示例如下：
+
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+
+      # 针对 Xcode 14 及以上版本，禁用对 Bundle 类型目标的签名，以避免构建错误
+      if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
+        config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      end
+
+      # 确保 iOS 部署版本至少为 11.0，以避免兼容性问题
+      deployment = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+      if deployment.to_f < 11.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      end
+
+      # 关闭 bitcode 支持
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
+end
+
+pre_install do |installer|
+  # 移除重复导入的 aosl.xcframework
+  pods_root = installer.sandbox.root
+  duplicated_frameworks = Dir.glob("#{pods_root}/**/aosl.xcframework")
+
+  if duplicated_frameworks.size > 1
+    duplicated_frameworks.drop(1).each do |framework_path|
+      FileUtils.rm_rf(framework_path)
+    end
+  end
+end
+```

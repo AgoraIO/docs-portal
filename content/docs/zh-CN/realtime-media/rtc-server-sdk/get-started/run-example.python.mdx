@@ -1,0 +1,175 @@
+---
+title: "跑通示例项目"
+---
+声网提供开源示例项目演示 Python SDK 的 API 使用示例，以帮助开发者更好地理解和运用 SDK 的功能。本文以跑通发送和接收 PCM 音频数据的示例项目为例，帮助你快速体验音频通话效果。
+
+## 前提条件
+
+在体验功能以前，请按照以下要求准备开发环境：
+
+- 已下载 PyCharm 或 Visual Studio Code
+- Python 3.10 或以上版本
+- 服务器接入公网，有公网 IP。服务器允许访问 `.agora.io` 以及 `.agoralab.co` 域名。
+- 操作系统与硬件环境需满足下列要求：
+
+    | 开发平台 | 操作系统版本 | CPU 架构 | 设备性能 |
+    | --- | --- | --- | --- |
+    | Linux | <Slot name="run-example-python-markdown-0-1-1" /> | x86-64 | <Slot name="run-example-python-markdown-0-1-3" /> |
+
+    <Slot for="run-example-python-markdown-0-1-1">
+
+    - Ubuntu 18.04 LTS 或以上
+    - CentOS 7.0 或以上
+
+    </Slot>
+
+    <Slot for="run-example-python-markdown-0-1-3">
+
+    - CPU：8 核，1.8 GHz 主频
+    - 内存：2 GB 或以上，推荐 4 GB 或以上
+
+    </Slot>
+
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/get-started/enable-service)从声网控制台获得 App ID。
+
+## 操作步骤
+
+### 获取示例项目
+
+声网在 GitHub 中提供了可运行的示例项目。在终端中运行如下命令克隆到本地：
+
+```bash
+git clone git@github.com:AgoraIO-Extensions/Agora-Python-Server-SDK.git
+```
+
+成功克隆后，你可以在 `Agora-Python-Server-SDK` 的如下路径中找到示例项目。本文以 `example_audio_pcm_send` 和 `example_audio_pcm_receive` 示例项目为例，介绍如何跑通示例项目。
+
+```bash
+.
+└── agora_rtc
+    └── examples
+        ├── common  # 通用组件
+        │   ├── __init__.py
+        │   ├── audio_consumer.py
+        │   ├── example_base.py
+        │   ├── pacer.py
+        │   ├── parse_args.py
+        │   ├── path_utils.py
+        │   ├── push_audio_encoded_file.py
+        │   ├── push_audio_pcm_file.py
+        │   ├── push_video_encoded_file.py
+        │   └── push_video_yuv_file.py
+        ├── example_agora_parameter.py  # 设置私有参数
+        ├── example_audio_encoded_receive.py  # 接收已编码音频数据
+        ├── example_audio_encoded_send.py  # 发送已编码音频数据
+        ├── example_audio_pcm_loopback.py  # 回环测试
+        ├── example_audio_pcm_receive.py  # 接收原始音频数据
+        ├── example_audio_pcm_receive_and_send.py  # 收发原始音频数据
+        ├── example_audio_pcm_send.py  # 发送原始音频数据
+        ├── example_pcm_yuv_receive.py  # 接收原始视频和原始音频数据
+        ├── example_pcm_yuv_send.py  # 发送原始视频和原始音频数据
+        ├── example_pcm_yuv_send_receive.py  # 收发原始视频和原始音频数据
+        ├── example_stream_message_receive.py  # 接收流消息
+        ├── example_stream_message_send.py  # 发送流消息
+        ├── example_video_encoded_receive.py  # 接收已编码视频数据
+        ├── example_video_encoded_send.py  # 发送已编码视频数据
+        ├── example_video_yuv_receive.py  # 接收 YUV 视频数据
+        ├── example_video_yuv_send.py  # 发送 YUV 视频数据
+        └── observer  # 设置事件监听
+            ├── audio_frame_observer.py
+            ├── connection_observer.py
+            ├── local_user_observer.py
+            ├── video_encoded_frame_observer.py
+            └── video_frame_observer.py
+```
+
+### 运行服务端发流示例项目
+
+本节以 `example_audio_pcm_send` 示例项目为例，演示服务端发流效果。操作步骤如下：
+
+ 1. 在终端中，运行如下命令跑通 `example_audio_pcm_send` 示例项目，发送 PCM 音频数据。你需要对示例代码进行如下修改：
+    - 在 `appId` 参数中填写你声网项目的 App ID。
+    - 在 `channelId` 参数中填写你的频道名，本节以 `test_example` 为例。
+    - 在 `userId` 参数中填写你的用户 ID，本节以 `6` 为例。
+    - 在 `audioFile` 参数中填写音频数据文件的存放路径，本节以 `./test_data/demo.pcm` 为例。为方便测试，声网提供了[测试数据](https://download.agora.io/demo/test/test_data_202408221437.zip)，你可以下载并解压至 `Agora-Python-Server-SDK` 路径下使用。
+    - 在 `sampleRate` 参数中填写采样率，本节以 `16000` 为例。
+    - 在 `numOfChannels` 参数中填写声道数，本节以 `1` 为例。
+
+    ```bash
+    python agora_rtc/examples/example_audio_pcm_send.py --appId=0a****************************99 --channelId=test_example --userId=6 --audioFile=./test_data/demo.pcm --sampleRate=16000 --numOfChannels=1
+    ```
+
+2. 成功连接频道后，终端会输出如下内容：
+
+    ```
+    INFO:common.parse_args:Parsed arguments:Namespace(appId='0a****************************99', token=None, channelId='test_example', connectionNumber='1', userId='6', audioFile='./test_data/demo.pcm', lowdelay=False, videoFile=None, sampleRate=16000, numOfChannels=1, fps=None, width=None, height=None, bitrate=None, message=None, hours='0', mode=1, value=0)
+    INFO:common.example_base:------channel_id: test_example, uid: 6
+    INFO:common.example_base:connect_and_release: 0, auto_subscribe_audio: 0
+    INFO:observer.connection_observer:on_connecting, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x103c173d0>, local_user_id=0, state=2, internal_uid=0 ,reason=0
+    INFO:observer.connection_observer:on_connected, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x103c173d0>, local_user_id=3997884694, state=3, internal_uid=0 ,reason=1
+    ```
+
+3. 成功发送 PCM 音频数据后，终端会输出如下内容：
+
+    ```bash
+    INFO:common.push_audio_pcm_file:send pcm: count,ret=1, 0, 3200, 0.1
+    INFO:common.push_audio_pcm_file:send pcm: count,ret=2, 0, 3200, 0.1
+    ...
+    ```
+
+你也可以使用声网实时互动 [Web Demo](https://webdemo-global.agora.io/index.html) 在浏览器中模拟一个客户端接收 PCM 音频数据：
+
+   1. 打开 Web Demo，完成**初始化设置**，App ID 需和你在步骤 1 中填入的 App ID 一致。
+   2. 进入**基础语音通话**页面，在 **Channel** 填入与步骤 2 相同的频道名，依次点击 **Create Client**、**Join Channel**。
+   3. 成功加入频道后，当频道中有发流用户时，Web Demo 会在 **Step4 Subscribe & Play** 下方的输入框中自动填充发流用户的用户 ID，点击 **Subscribe & Play** 按钮订阅发流用户。
+
+      :::warning[注意]
+      体验 Demo 时，你需要先在 Web 端完成加入频道，然后再在服务端运行示例项目连接频道并发流。否则，**Step4 Subscribe & Play** 下方的输入框不会自动填充用户 ID，Web 端无法成功订阅服务端。
+      :::
+
+   4. 成功订阅后，你可以听到音频，并且在 Web Demo 的 **Remote Stream:** 下方会显示成功订阅的用户 ID。
+
+### 运行服务端收流示例项目
+
+本节以 `example_audio_pcm_receive` 示例项目为例，演示服务端收流效果。操作步骤如下：
+
+1. 在终端中，运行如下命令跑通 `example_audio_pcm_receive` 示例项目，接收 PCM 音频数据。你需要对示例代码进行如下修改：
+    - 在 `appId` 参数中填写你声网项目的 App ID。
+    - 在 `channelId` 参数中填写你的频道名，本节以 `test_example` 为例。
+    - 在 `userId` 参数中填写你的用户 ID，本节以 `8` 为例。
+    - 在 `sampleRate` 参数中填写采样率，本节以 `16000` 为例。
+    - 在 `numOfChannels` 参数中填写声道数，本节以 `1` 为例。
+
+    ```bash
+    python agora_rtc/examples/example_audio_pcm_receive.py --appId=0a****************************99 --channelId=test_example --userId=8 --sampleRate=16000 --numOfChannels=1
+    ```
+
+2. 成功连接频道后，终端会输出如下内容：
+
+    ```bash
+    INFO:common.parse_args:Parsed arguments:Namespace(appId='0a****************************99', audioFile=None, bitrate=None, channelId='test_example', connectionNumber='1', fps=None, height=None, hours='0', lowdelay=False, message=None, numOfChannels=1, sampleRate=16000, token=None, userId='8', videoFile=None, width=None)
+    INFO:common.example_base:------channel_id: test_example, uid: 8
+    INFO:observer.connection_observer:on_connecting, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, local_user_id=6, state=2, internal_uid=0 ,reason=0
+    # 成功连接频道
+    INFO:observer.connection_observer:on_connected, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, local_user_id=6, state=3, internal_uid=0 ,reason=1
+    ```
+
+3. 使用声网实时互动 [Web Demo](https://webdemo-global.agora.io/index.html) 在浏览器中模拟一个发送端发送 PCM 音频数据。打开 Web Demo，完成**初始化设置**，App ID 需和你在步骤 1 中填入的 App ID 一致。
+4. 在 Web Demo 中进入**基础语音通话**页面，在 **Channel** 填入与步骤 2 相同的频道名，依次点击 **Create Client**、**Join Channel**。成功加入频道后，服务端会输出如下内容：
+
+    ```bash
+    INFO:observer.connection_observer:on_user_joined, agora_rtc_conn=<agora.rtc.rtc_connection.RTCConnection object at 0x7f419d81f4a8>, user_id=45
+    INFO:observer.local_user_observer:on_user_info_updated, user_id=45, msg=0,val=1
+    INFO:observer.local_user_observer:on_user_info_updated, user_id=45, msg=4,val=1
+    ```
+
+5. 在 Web Demo 中点击**Create Track & Publish** 发流。Web 端成功发流后，服务端会输出如下内容，表示成功接收音频数据：
+
+    ```bash
+    INFO:observer.audio_frame_observer:on_playback_audio_frame_before_mixing, channelId=test_dys1, uid=45, type=0, samples_per_sec=16000, samples_per_channel=160, bytes_per_sample=2, channels=1, len=320
+    INFO:observer.audio_frame_observer:on_playback_audio_frame_before_mixing, file_path=/home/agora/Documents/Agora-Python-Server-SDK-dev-2.0/logs/audio_frame_observer/2024_09_27_17_46_37/test_dys1_45.pcm, len=320
+    ```
+
+    :::warning[注意]
+    体验 Demo 时，你需要先在服务端完成连接频道，然后再在 Web 端运行示例项目加入频道并发流。否则，服务端无法成功接收 Web 端的音频流。
+    :::

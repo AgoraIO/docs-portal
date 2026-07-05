@@ -1,0 +1,113 @@
+---
+title: "常见问题"
+---
+本文介绍跟计费相关的常见问题以及解决方案。
+
+## 套餐包相关
+
+<Accordions>
+<Accordion title="Q：当我购买了付费版套餐包后，还能享受每月 1 万分钟免费时长么？">
+
+**A**：不能。
+
+每款付费版套餐包内均已包括声网赠送的时长，且套餐包级别越高、赠送的时长越多。因此，不再享受每月 1 万分钟免费时长。详见[套餐内订阅费用](/zh-CN/realtime-media/rtc/billing/billing-strategy#套餐内订阅费用)。
+
+</Accordion>
+</Accordions>
+
+## 计费单价相关
+
+<Accordions>
+<Accordion title="Q：如果用户在频道内没有任何发布或订阅音视频流的行为，会产生费用吗？">
+
+**A**：会产生音频订阅费用。
+
+- 在频道内发布音视频流的行为不会产生费用。
+- 即使用户在频道内未主动订阅音视频流，也会产生音频时长用量，从而产生音频订阅费用。
+
+</Accordion>
+</Accordions>
+
+## 时长用量相关
+
+<Accordions>
+<Accordion title="Q：账单中的时长用量是怎么算出来的？">
+
+**A**：声网以秒为单位统计用量，然后将秒转换为分钟进行计费。在每月底结算整月用量时，声网会把当月产生的音频和各类型的视频用量（单位为秒）分别相加，然后除以 60，分别得出音频分钟数和各类型的视频分钟数，最后**向上**取整。
+
+例如一个月产生了 59 秒的音频时长用量，则音频用量数据计为 1 分钟；如果产生了 61 秒的视频时长用量，则视频用量数据计为 2 分钟。月用量误差在 1 分钟内。
+
+</Accordion>
+
+<Accordion title="Q：我能在账单中查看某位用户的时长用量么？">
+
+不能。你在账单中看到的用量是你声网开发者账号下所有项目中所有用户的音视频时长用量总和。如需获取单个用户的用量，你可以使用 SDK 报告的如下统计数据：
+
+- Android：[`onRtcStats`](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `totalDuration` 属性。
+- iOS：[`reportRtcStats`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+- Windows：[`onRtcStats`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+- macOS: [`reportRtcStats`](/api-ref/rtc/macos/API/toc_channel#callback_irtcengineeventhandler_onrtcstats) 回调的 `duration` 属性。
+
+如果客户端在弱网环境下断开连接，则声网 RTC SDK 计算出来的通话时长可能不准确。你可以使用声网 RTM SDK 或其他信令系统来实现心跳机制，并获得客户端的断开时长，然后在声网 RTC SDK 获得的通话时长中减去客户端断开连接的时长，从而计算用户的通话时长。
+
+</Accordion>
+</Accordions>
+
+## 视频分辨率相关
+
+<Accordions>
+<Accordion title="Q：为什么所有用户订阅的都是 360 × 640 的视频流，我的单价却被定在超高清档？">
+
+**A**：视频档位基于集合分辨率而定，即对你订阅的流的分辨率进行求和。所以，你订阅的视频流越多，你的集合分辨率越有可能超过 1,280 x 720 的超清档。
+
+</Accordion>
+
+<Accordion title="Q：双流模式下的视频流分辨率怎么计算？">
+
+双流模式下，用户的分辨率计算方式如下：
+
+- 如果订阅的是大流，则用户的集合分辨率根据发送端设置的大流分辨率计算。
+- 如果订阅的是小流，则用户的集合分辨率根据用户实际收到的分辨率计算。
+- 如果订阅的是大流，但因为弱网情况下接收了小流，则用户的集合分辨率按照实际收到的小流分辨率计算。
+
+</Accordion>
+</Accordions>
+
+<a id="screencapture"></a>
+<Accordions>
+<Accordion title="Q：如何确定屏幕共享视频流的分辨率？">
+
+**A**：屏幕共享视频流的分辨率以你在以下类中设置的视频分辨率为准，如果你未设置分辨率，则以默认分辨率为计费标准。
+
+| 平台    | Class                                                        | 默认分辨率  |
+| ------- | ------------------------------------------------------------ | ----------- |
+| Android | [`ScreenCaptureParameters`](/api-ref/rtc/android/API/class_screencaptureparameters2) | 1280 × 720  |
+| iOS     | [`AgoraScreenCaptureParameters2`](/api-ref/rtc/ios/API/class_screencaptureparameters2) | 1280 × 720  |
+| Windows | [`ScreenCaptureParameters`](/api-ref/rtc/windows/API/class_screencaptureparameters) | 1920 x 1080 |
+| macOS   | [`AgoraScreenCaptureParameters`](/api-ref/rtc/macos/API/class_screencaptureparameters) | 1920 x 1080 |
+| Web     | [`ScreenVideoTrackInitConfig.encoderConfig`](/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig.html#encoderconfig) | 1920 × 1080 |
+
+  :::warning[注意]
+  在 Web 端，由于设备和浏览器的限制，部分浏览器对设置的屏幕属性不一定能全部适配。当浏览器不支持用户设置的分辨率时，计量计费会以实际采集的分辨率为准。
+  :::
+
+</Accordion>
+
+<Accordion title="Q：什么是分辨率校准？">
+
+**A**：计算集合分辨率时，我们会将分辨率为 225,280（640 × 352）的视频流按分辨率 230,400（640 × 360）计算。
+
+</Accordion>
+</Accordions>
+
+## 欠费相关
+
+<Accordions>
+<Accordion title="Q：我的账号欠费被冻结了怎么办？">
+
+**A**：在发现账号被冻结后，你需要及时充值。一旦账号余额大于等于最低余额要求，你的账号会即刻解冻。
+
+为避免账号欠费从而引起线上的业务受到影响，建议你注意查收声网发送的扣费邮件、充值提醒邮件和账号冻结预警邮件。详见[什么是账单、结算与账户冻结？](/faq/account-and-billing/billing-account#账单结算)。
+
+</Accordion>
+</Accordions>

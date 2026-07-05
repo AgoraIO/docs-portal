@@ -1,0 +1,599 @@
+---
+title: "Lock"
+---
+临界资源一次只能供一个进程使用，如果不同的进程之间共享了某个临界资源，则各进程需要采取互斥的方式来防止彼此干扰。RTM 提供一整套 Lock 的方案，通过控制分布式系统的不同进程，你可以解决用户在访问共享资源时的竞争问题。
+
+:::info[信息]
+客户端 SDK 具备设置、删除、撤销锁的能力，我们建议你根据实际业务需求控制端侧对锁的操作权限。
+:::
+
+AgoraRtmLock
+
+## setLock
+
+### 接口描述
+
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `lockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setLock` 方法：
+
+```swift
+setLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    ttl: Int32
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    ttl: Int32,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `ttl` | Int32 | 选填 | `10` | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `lockReleased` 事件。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-0-5-4" /> |
+
+<Slot for="lock-swift-html-0-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Lock for 1 hour
+let ttl: Int32 = 3600
+
+let (response, error) = await rtmClient.setLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    ttl: ttl)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to set lock with error: \(errorInfo.reason)")
+} else if let setLockResponse = response {
+    // Handle success
+    print("Lock set successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while setting the lock.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Lock for 1 hour
+let ttl: Int32 = 3600
+
+rtmClient.setLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    ttl: ttl
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to set lock with error: \(errorInfo.reason)")
+    } else if let setLockResponse = response {
+        // Handle success
+        print("Lock set successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while setting the lock.")
+    }
+}
+```
+
+## acquireLock
+
+### 接口描述
+
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `lockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `acquireLock` 方法：
+
+```swift
+acquireLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    retry: Bool
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+acquireLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    retry: Bool,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `retry` | Bool | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-1-5-4" /> |
+
+<Slot for="lock-swift-html-1-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Whether to retry acquiring the lock if it fails
+let retry = true
+
+let (response, error) = await rtmClient.acquireLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    retry: retry
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to acquire lock with error: \(errorInfo.reason)")
+} else if let acquireLockResponse = response {
+    // Handle success
+    print("Lock acquired successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while acquiring the lock.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+// Whether to retry acquiring the lock if it fails
+let retry = true
+
+rtmClient.acquireLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    retry: retry
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to acquire lock with error: \(errorInfo.reason)")
+    } else if let acquireLockResponse = response {
+        // Handle success
+        print("Lock acquired successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while acquiring the lock.")
+    }
+}
+```
+
+## releaseLock
+
+### 接口描述
+
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `releaseLock` 方法：
+
+```swift
+releaseLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+releaseLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-2-4-4" /> |
+
+<Slot for="lock-swift-html-2-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+let (response, error) = await rtmClient.releaseLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to acquire lock with error: \(errorInfo.reason)")
+} else if let acquireLockResponse = response {
+    // Handle success
+    print("Lock released successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while releasing the lock.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+rtmClient.releaseLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to acquire lock with error: \(errorInfo.reason)")
+    } else if let acquireLockResponse = response {
+        // Handle success
+        print("Lock released successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while releasing the lock.")
+    }
+}
+```
+
+## revokeLock
+
+### 接口描述
+
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
+
+### 接口方法
+
+你可以通过以下方式调用 `revokeLock` 方法：
+
+```swift
+revokeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    userId: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+revokeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    userId: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `userId` | String | 必填 | - | 拥有锁的用户 ID。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-3-5-4" /> |
+
+<Slot for="lock-swift-html-3-5-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+let userId = "user123" // The ID of the user who holds the lock
+let (response, error) = await rtmClient.revokeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    userId: userId
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to revoke lock with error: \(errorInfo.reason)")
+} else if let revokeLockResponse = response {
+    // Handle success
+    print("Lock revoked successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while revoking the lock.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+let userId = "user123" // The ID of the user who holds the lock
+rtmClient.revokeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName,
+    userId: userId
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to revoke lock with error: \(errorInfo.reason)")
+    } else if let revokeLockResponse = response {
+        // Handle success
+        print("Lock revoked successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while revoking the lock.")
+    }
+}
+```
+
+## getLocks
+
+### 接口描述
+
+如果你需要查询频道中锁的数量、名称、使用者、过期时间等信息，在客户端调用 `getLocks` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getLocks` 方法：
+
+```swift
+getLocks(
+    channelName: String,
+    channelType: AgoraRtmChannelType
+)   async -> (AgoraRtmGetLocksResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getLocks(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    completion completionBlock: AgoraRtmGetLocksBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `completion` | `AgoraRtmGetLocksBlock` | 选填 | - | <Slot name="lock-swift-html-4-3-4" /> |
+
+<Slot for="lock-swift-html-4-3-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetLocksResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmGetLocksResponse` 数据类型包含以下属性：
+
+| 属性             | 类型      | 描述         |
+| --------------- | ---------------- | ------------ |
+| `lockDetailList` | `[AgoraRtmLockDetail]` | 锁详情数组。 |
+
+`AgoraRtmLockDetail` 数据类型包含以下属性：
+
+| 属性       | 类型     | 描述    |
+| --------- | ------- | ------ |
+| `LockName` | String | Lock 的名称。        |
+| `owner`    | String | 拥有锁的用户 ID。    |
+| `ttl`      | Int32      | 锁的过期时间。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `lockReleased` 事件。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let (response, error) = await rtmClient.getLocks(
+    channelName: channelName,
+    channelType: channelType
+)
+if let errorInfo = error {
+    // Handle error
+    print("Failed to get locks with error: \(errorInfo.reason)")
+} else if let getLocksResponse = response {
+    // Handle success
+    print("Locks retrieved successfully.")
+    print("Locks: \(getLocksResponse.locks)")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while retrieving the locks.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+rtmClient.getLocks(
+    channelName: channelName,
+    channelType: channelType
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to get locks with error: \(errorInfo.reason)")
+    } else if let getLocksResponse = response {
+        // Handle success
+        print("Locks retrieved successfully.")
+        print("Locks: \(getLocksResponse.locks)")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while retrieving the locks.")
+    }
+}
+```
+
+## removeLock
+
+### 接口描述
+
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `lockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeLock` 方法：
+
+```swift
+removeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+
+```
+
+```swift
+removeLock(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    lockName: String,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `lockName` | String | 必填 | - | 锁的名称。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-5-4-4" /> |
+
+<Slot for="lock-swift-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+let (response, error) = await rtmClient.removeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+)
+
+if let errorInfo = error {
+    // Handle error
+    print("Failed to remove lock with error: \(errorInfo.reason)")
+} else if let removeLockResponse = response {
+    // Handle success
+    print("Lock removed successfully.")
+} else {
+    // Handle unknown error
+    print("Unknown error occurred while removing the lock.")
+}
+```
+
+```swift tab="callback"
+// callback
+let channelName = "exampleChannel"
+let channelType: AgoraRtmChannelType = .message
+let lockName = "myLock"
+
+rtmClient.removeLock(
+    channelName: channelName,
+    channelType: channelType,
+    lockName: lockName
+) { (response, error) in
+    if let errorInfo = error {
+        // Handle error
+        print("Failed to remove lock with error: \(errorInfo.reason)")
+    } else if let removeLockResponse = response {
+        // Handle success
+        print("Lock removed successfully.")
+    } else {
+        // Handle unknown error
+        print("Unknown error occurred while removing the lock.")
+    }
+}
+```

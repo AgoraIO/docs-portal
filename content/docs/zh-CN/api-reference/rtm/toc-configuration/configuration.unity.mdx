@@ -1,0 +1,621 @@
+---
+title: "初始配置"
+---
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+在初始化 RTM 客户端实例之前，你需要首先在代码中引入 RTM Unity SDK:
+
+1. 下载最新 RTM Uinty SDK。
+2. 在你的 Unity 项目中依次点击 **Assets** > **Import Package** > **Custom Package**，导入 SDK。
+3. 在你的代码中添加以下代码行：
+
+  ```csharp
+  using Agora.Rtm;
+  ```
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/user-guide/setup/application-setup)
+
+## CreateAgoraRtmClient
+
+### 接口描述
+
+创建并初始化 RTM 客户端实例，初始化实例的时候你需要提供 `appId` 和 `userId` 等参数，你可以在声网控制台创建项目并获得 App ID。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `CreateAgoraRtmClient` 方法：
+
+```csharp
+IRtmClient CreateAgoraRtmClient(RtmConfig config);
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述    |
+| ------ | --------- | ------ | ---- | ----------------- |
+| `config` | `RtmConfig` |   必填   |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。 |
+
+### 基本用法
+
+```cs
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation, e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+### 返回值
+
+返回一个 `IRtmClient` 类型的 Client 实例，用于后续调用 RTM 其他 API。
+
+## RtmConfig
+
+### 接口描述
+
+`RtmConfig` 实例用来设置 RTM Client 的配置参数，这些配置参数会在整个 RTM Client 的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RtmConfig` 实例：
+
+```csharp
+new RtmConfig()
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | string | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
+| `userId` | string | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `RTM_AREA_CODE` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RTM_AREA_CODE`](/zh-CN/api-reference/rtm/enumv.unity#areacode)。 |
+| `presenceTimeout` | UInt32 | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [10,300]。 |
+| `useStringUserId` | Bool | 选填 | `true` | <Slot name="configuration-unity-html-0-5-4" /> |
+| `RtmLogConfig` | `RtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `RtmProxyConfig` | 选填 | - | 如需使用 RTM 的 Proxy 功能，则需配置此参数。 |
+| `encryptionConfig` | `RtmEncryptionConfig` | 选填 | - | 如需使用 RTM 端侧加密功能，则需配置此参数。 |
+
+<Slot for="configuration-unity-html-0-5-4">
+
+是否使用 String 类型的用户 ID：
+
+    - `true`: 使用 String 类型的用户 ID。
+    - `false`: 使用 Uint 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 Uint 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+    请确保你在 RTC 频道和 RTM 频道使用的 User ID 同为 String 型或同为 Int 型。
+
+</Slot>
+
+#### RtmLogConfig
+
+`RtmLogConfig` 实例用来设置和存储本地日志文件 `agora.log`。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`RtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | string | 选填 | - | 日志和存储路径。 |
+| `fileSizeInKB` | uint | 选填 | `1024` | <Slot name="configuration-unity-html-1-2-4" /> |
+| `level` | `RTM_LOG_LEVEL` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RTM_LOG_LEVEL`](/zh-CN/api-reference/rtm/enumv.unity#loglevel)。 |
+
+<Slot for="configuration-unity-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### RtmProxyConfig
+
+`RtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`RtmProxyConfig` 包含以下属性：
+
+| 属性  | 类型             |  是否必填  |  默认值  | 描述  |
+|-----------|----------------|--------|-------| ----------- |
+| `proxyType` | `RTM_PROXY_TYPE` |  选填  | `NONE` | Proxy 协议类型。详见 [`RTM_PROXY_TYPE`](/zh-CN/api-reference/rtm/enumv.unity#proxytype)。 |
+| `server`    | string           |  选填  | -             | Proxy 服务器域名或 IP 地址。                |
+| `port`      | UInt16              |  选填  | -             | Proxy 监听端口。   |
+| `account`   | string           |  选填  | -            | Proxy 登录账号。   |
+| `password`  | string           |  选填  | -            | Proxy 登录密码。   |
+
+#### RtmEncryptionConfig
+
+`RtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`RtmEncryptionConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述      |
+|-----|-------|--------|------------| ------ |
+| `encryptionMode`    | `RTM_ENCRYPTION_MODE` |  选填  |`NONE` | 加密方式。详见 [`RTM_ENCRYPTION_MODE`](/zh-CN/api-reference/rtm/enumv.unity#encryptionmode)。 |
+| `encryptionKey`     | string                |  选填  |     -      | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。              |
+| `encryptionKdfSalt` | byte[32]              |  选填  | `null`     | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。  |
+
+### 基本用法
+
+```csharp
+// Create an RtmConfig instance
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+
+// Create a LogConfig instance.
+LogConfig logConfig = new LogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set agore.log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+// initialize logconfig
+config.logConfig = logConfig;
+
+// Create an RtmProxyConfig instance.
+RtmProxyConfig proxyConfig = new RtmProxyConfig()
+// set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// set your Proxy Server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "Tony";
+// set your proxy password
+proxyConfig.password = "my_password"
+// initialize proxyConfig
+config.proxy = proxyConfig;
+
+// Create an RtmEncryptionConfig instance.
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig()
+// set encryption Mode as RTM_ENCRYPTION_MODE_AES_128_GCM.
+encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_128_GCM;
+// set your cipherKey, you must keep your cipherKey safety.
+encryptionConfig.encryptionKey = "your_cerpherKey";
+// set your Salt.
+encryptionConfig.encryptionKdfSalt = "yourSalt";
+// when you set the config.encryptionConfig  parameter. the end-to-end encryption will be turned on automatically
+config.encryptionConfig = encryptionConfig;
+
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation, e.Status.ErrorCode, e.Status.Reason));
+}
+
+```
+
+### 返回值
+
+返回一个 `RtmConfig` 实例。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+IRtmClient
+
+RTM 总共有 7 种事件通知类型，如下表所示：
+
+| 事件类型           | 描述      |
+| ------ | ----- |
+|     <code className="index-group-item-irtmclient index-api-onmessageevent" id=OnMessageEvent>OnMessageEvent</code>      | <span class="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#MessageEvent)。</span>      |
+|    <code className="index-group-item-irtmclient index-api-onpresenceevent" id=OnPresenceEvent>OnPresenceEvent</code>    | <span class="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#PresenceEvent)。</span>      |
+|        <code className="index-group-item-irtmclient index-api-ontopicevent" id=OnTopicEvent>OnTopicEvent</code>         | <span class="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span>             |
+|     <code className="index-group-item-irtmclient index-api-onstorageevent" id=OnStorageEvent>OnStorageEvent</code>      | <span class="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span>       |
+|          <code className="index-group-item-irtmclient index-api-onlockevent" id=OnLockEvent>OnLockEvent</code>          | <span class="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span>              |
+|        <code className="index-group-item-irtmclient index-api-onconnection" id=OnConnectionStateChanged>OnConnectionStateChanged</code>         | <span class="index-desc-onconnection">接收客户端网路连接状态变更的事件通知。详见 [`RTM_CONNECTION_STATE`](/zh-CN/api-reference/rtm/enumv.unity#connectionstate) 和 [`RTM_CONNECTION_CHANGE_REASON`](/zh-CN/api-reference/rtm/enumv.unity#connectionreason)。</span> |
+| <code className="index-group-item-irtmclient index-api-ontokenwillexpire" id=OnTokenPrivilegeWillExpire>OnTokenPrivilegeWillExpire</code> | <span class="index-desc-ontokenwillexpire">接收客户端 token 将要过期的事件通知。</span>                 |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以通过以下方式来监听事件通知：
+
+```csharp
+// add message event listener
+rtmClient.OnMessageEvent += ( MessageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var topic = event.channelTopic;
+    var publisher = event.publiser;
+    var messageType = event.messageType;
+    var message = event.message;
+    var customType = event.customType;
+    Debug.Log(string.Format("Received Message {0} from userId:{1} at channel:{2} with channel type of {3}. ", message, publisher, channelName, channelType));
+    if (message != null)
+    {
+        // your logic
+    }
+};
+
+// add presence event listener
+rtmClient.OnPresenceEvent += ( PresenceEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var publisher = event.publiser;
+    var stateItems = event.stateItems;
+    var interval = event.interval;
+    var snapshot = event.snapshot;
+    Debug.Log(string.Format("Received presence Event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+}
+
+// add topic event listener
+rtmClient.OnTopicEvent += ( TopicEvent event ) =>
+{
+    var channelName = event.channelName;
+    var eventType = event.type;
+    var publisher = event.publisher;
+    var topicInfos = event.topicInfos;
+    Debug.Log(string.Format("Received topic event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+    if (topicInfos != null)
+    {
+        // your logic
+    }
+}
+
+// add storage event listener
+rtmClient.OnStorageEvent += ( StorageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.eventType;
+    var category = event.target;
+    var data = event.data;
+    Debug.Log(string.Format("Received storage event {0} at channel:{1} with channel type of {2}. ", category, channelName, channelType));
+    if (data != null)
+    {
+        // your logic
+    }
+}
+
+// add lock event listener
+rtmClient.OnLockEvent += ( LockEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var LockDetail = event.lockDetailList;
+    Debug.Log(string.Format("Received lock event {0} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+    if( LockDetail != null )
+    {
+        // your logic
+    }
+}
+
+// add OnConnectionStateChanged event listener
+rtmClient.OnConnectionStateChanged += ( string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason ) =>
+{
+    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason);
+}
+
+// add OnTokenPrivilegeWillExpire event listener
+rtmClient.OnTokenPrivilegeWillExpire += ( string channelName ) =>
+{
+    Debug.Log(string.Format("OnTokenPrivilegeWillExpire channelName {0}", channelName));
+}
+```
+
+#### MessageEvent
+
+消息事件通知。
+
+`MessageEvent` 包含以下属性：
+
+|      属性      |     类型      | 描述    |
+| ------------ | ---------------- | --------- |
+| `channelType`  |                    `RTM_CHANNEL_TYPE`                     | 频道类型。                    |
+| `messageType`  | `RTM_MESSAGE_TYPE` | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv.unity#messagetype)。 |
+| `channelName`  |    string     | 频道名称。                    |
+| `channelTopic` |    string     | Topic 名称。                  |
+|   `message`    |                       `IRtmMessage`                       | 消息负载。  |
+|  `publisher`   |    string     | 消息发布者 ID。               |
+|  `customType`  |    string     | 用户自定义字段。              |
+
+#### PresenceEvent
+
+Presence 事件通知。
+
+`PresenceEvent` 包含以下属性：
+
+|     属性      |      类型      | 描述       |
+| ----------- | ---| ------- |
+|    `type`     | `RTM_PRESENCE_EVENT_TYPE` | Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#presencetype)。 |
+| `channelType` |                     `RTM_CHANNEL_TYPE`                     | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/unity/enumv#channeltype)。 |
+| `channelName` |     string     | 事件发生的频道名称。                    |
+|  `publisher`  |     string     | 触发此事件的用户 ID。                |
+| `stateItems`  |  `StateItem[]`  | 标识用户临时状态的键值对。         |
+|  `interval`   |  `IntervalInfo`   | Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。    |
+|  `snapshot`   |    `SnapshotInfo`   | 当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。        |
+
+`IntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `joinUserList`         |         string[]        | 在上一个周期内加入频道的用户列表。    |
+| `leaveUserList` | string[] | 在上一个周期内离开频道的用户列表。 |
+| `timeoutUserList` | string[] | 在上一个周期内加入频道超时的用户列表。 |
+| `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`SnapshotInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `userStateList` | `UserState[]` | 用户第一次加入频道时的快照信息，包含用户 ID 和状态键值对。 |
+
+#### TopicEvent
+
+Topic 事件通知。
+
+`TopicEvent` 包含以下属性：
+
+|     属性      |    类型     | 描述                  |
+| --------- | ------ | --------- |
+|    `type`     | `RTM_TOPIC_EVENT_TYPE` | Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#topictype)。 |
+| `channelName` |   string    | 事件发生的频道名称。            |
+|  `publisher`  |   string    | 触发此事件的用户 ID。             |
+| `topicInfos`  |                      `TopicInfo[]`                      | Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。          |
+
+`TopicInfo[]` 中包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `topic`            | string    |  Topic 名称。  |
+| `publishers`            | `PublisherInfo[]`                |  消息发布者数组。   |
+
+`PublisherInfo[]` 中包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `publisherUserId`            | string    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | string                |  消息发布者的元数据。   |
+
+#### StorageEvent
+
+Storage 事件通知。
+
+`StorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述           |
+|-----|------| ---------- |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。   |
+| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_TYPE`](/api-ref/rtm2/unity/enumv#storagetype)。  |
+| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#storageeventtype)。  |
+| `target`              | string                |  用户 ID 或频道名称。   |
+| `data`            | `RtmMetadata`               |   Metadata Item 数组。   |
+
+#### LockEvent
+
+Lock 事件通知。
+
+`LockEvent` 包含以下属性：
+
+|       属性       |    类型    | 描述   |
+| -------------- | ------------- | -------- |
+|  `channelType`   |                   `RTM_CHANNEL_TYPE`                   | 频道类型。                   |
+|   `eventType`    | `RTM_LOCK_EVENT_TYPE` | Lock 事件类型。详见 [`RTM_LOCK_EVENT_TYPE`](/zh-CN/api-reference/rtm/enumv.unity#locktype)。 |
+|  `channelName`   |   string   | 频道名称。                   |
+| `lockDetailList` |                     `LockDetail[]`                     | Lock 的详情。                |
+
+`LockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `lockName`         |         string         | Lock 的名称。               |
+| `owner`    | string  | 拥有锁的用户 ID。   |
+| `ttl`    | uint | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `OnLockEvent` 事件通知的用户会收到 `RELEASED` 事件。      |
+
+<a id="删除监听"></a>
+### 删除监听
+
+如果你不再需要使用事件处理程序，声网推荐你注销监听过的事件，从而避免内存泄漏、错误或异常。
+
+```csharp
+private void AddEventsListener()
+{
+    rtmClient.OnMessageEvent += OnMessageEvent;
+    rtmClient.OnPresenceEvent += OnPresenceEvent;
+    rtmClient.OnTopicEvent += OnTopicEvent;
+    rtmClient.OnStorageEvent += OnStorageEvent;
+    rtmClient.OnLockEvent += OnLockEvent;
+    rtmClient.OnConnectionStateChanged += OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire += OnTokenPrivilegeWillExpire;
+}
+
+private void RemoveEventsListener()
+{
+    rtmClient.OnMessageEvent -= OnMessageEvent;
+    rtmClient.OnPresenceEvent -= OnPresenceEvent;
+    rtmClient.OnTopicEvent -= OnTopicEvent;
+    rtmClient.OnStorageEvent -= OnStorageEvent;
+    rtmClient.OnLockEvent -= OnLockEvent;
+    rtmClient.OnConnectionStateChanged -= OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire -= OnTokenPrivilegeWillExpire;
+}
+
+private void OnMessageEvent( MessageEvent Event)
+{
+    // your logic
+ };
+
+private void OnPresenceEvent( PresenceEvent Event)
+{
+    // your logic
+};
+
+private void OnTopicEvent( TopicEvent Event)
+{
+    // your logic
+};
+
+...
+```
+
+## LoginAsync
+
+### 接口描述
+
+创建并初始化 `IRtmClient` 实例之后，你需要执行 `LoginAsync` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```csharp
+RtmResult<LoginResult> LoginAsync(string token);
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | <Slot name="configuration-unity-html-2-1-4" /> |
+
+<Slot for="configuration-unity-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.unity)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```csharp
+var ( status,response ) = await rtmClient.LoginAsync(token);
+if (status.Error)
+{
+   Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+   Debug.Log("Login Successfully")
+}
+```
+
+### 返回值
+
+`LoginAsync` 操作会返回一个 `RtmResult<LoginResult>` 类型的数据结构，里面包含：
+
+|    属性    |      类型      | 描述     |
+| -------- | ----------------- | ---------- |
+|  `Status`  |  `RtmStatus`  | 返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态       |
+| `Response` | `LoginResult` | 返回一个 `LoginResult` 类型的数据结构，其中包含本次操作的执行结果 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.android.unity)了解错误原因，并找到对应的解决方法。
+
+## LogoutAsync
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```csharp
+RtmResult<LogoutResult> LogoutAsync();
+```
+
+### 基本用法
+
+```csharp
+var (status,response) = await rtmClient.LogoutAsync();
+```
+
+### 返回值
+
+`LogoutAsync` 操作会返回一个 `RtmStatus` 数据结构。
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.android.unity)了解错误原因，并找到对应的解决方法。
+
+## Dispose
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `IRtmClient` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`Dispose` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `IRtmClient` 实例：
+
+```csharp
+RtmStatus Dispose();
+```
+
+### 基本用法
+
+```csharp
+var status = Dispose();
+```
+
+### 返回值
+
+`Dispose` 操作会返回一个 `RtmStatus` 数据结构：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.android.unity)了解错误原因，并找到对应的解决方法。

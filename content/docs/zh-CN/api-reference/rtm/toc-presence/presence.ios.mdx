@@ -1,0 +1,310 @@
+---
+title: "Presence"
+---
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+Presence 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+AgoraRtmPresence
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```objc
+-(void) whoNow: (NSString * _Nonnull) channelName
+   channelType: (AgoraRtmChannelType)channelType
+       options: (AgoraRtmPresenceOptions* _Nullable)options
+    completion: (AgoraRtmWhoNowBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.ios#channeltype)。 |
+| `options` | `AgoraRtmPresenceOptions` | 选填 | - | 查询附加选项。 |
+| `completion` | `AgoraRtmWhoNowBlock` | 选填 | - | <Slot name="presence-ios-html-0-4-4" /> |
+
+<Slot for="presence-ios-html-0-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhoNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceOptions` 数据类型包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| ------------- | ---- | ----- | ---- | --------------- |
+| `includeUserId` | BOOL |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includeState`  | BOOL |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | NSString  |   必填   |    -    | 页码书签。你可以在返回值中查看是否还有下一页。 |
+
+`AgoraRtmWhoNowResponse` 数据类型包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `totalOccupancy` | int | `userStateList` 列表长度。当 `AgoraRtmPresenceOptions` 中的 `includeUserId` 和 `includeState` 属性都设置为 `false` 时，此值表示频道当前总在线人数。 |
+| `userStateList` | `NSArray<AgoraRtmUserState *>` | 频道在线用户及其临时状态信息列表。 |
+| `nextPage` | NSString | <Slot name="presence-ios-html-1-3-2" /> |
+
+<Slot for="presence-ios-html-1-3-2">
+
+下一页书签。通过该属性可以确认是否有下一页：
+
+    - 值为空表示没有下一页。
+    - 值不为空表示有下一页。你可以将该值填写在 `whoNow` 的 `page` 属性中，从而查询下一页结果。
+
+</Slot>
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `userId`         |  NSString  |  用户 ID。     |
+| `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
+
+### 接口方法
+
+```objc
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+presence_opt.includeState = false;
+presence_opt.includeUserId = false;
+
+[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whoNow success!!");
+        int user_count = response.totalOccupancy;
+    } else {
+        NSLog(@"whoNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```objc
+-(void) whereNow: (NSString * _Nonnull) userId
+      completion: (AgoraRtmWhereNowBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | NSString | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmWhereNowBlock` | 选填 | - | <Slot name="presence-ios-html-2-2-4" /> |
+
+<Slot for="presence-ios-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhereNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmWhereNowResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `totalChannel`         |  int  |  用户所在频道个数。     |
+| `channels`         |    `NSArray<AgoraRtmChannelInfo *>`      | 用户所在频道信息类表，其中包含频道名和频道类型。        |
+
+`AgoraRtmChannelInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `channelName`     | NSString |  频道名称。         |
+| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.ios#channeltype)。 |
+
+### 基本用法
+
+```objc
+[[rtm getPresence] whereNow:@"userId" completion:^(AgoraRtmWhereNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whereNow success!!");
+        int channel_count = response.totalChannel;
+        NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
+    } else {
+        NSLog(@"whereNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `AgoraRtmPresenceEventTypeRemoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```objc
+-(void) setState: (NSString * _Nonnull) channelName
+     channelType: (AgoraRtmChannelType)channelType
+           items: (NSArray<AgoraRtmStateItem *> * _Nonnull) items
+      completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.ios#channeltype)。 |
+| `items` | NSDictionary | 必填 | - | 用户状态，类型为 `StateItem` 数组。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-ios-html-3-4-4" /> |
+
+<Slot for="presence-ios-html-3-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 接口方法
+
+```objc
+NSDictionary *states = @{@"key1": @"value1", @"key2": @"value2"};
+
+[[rtm getPresence] setState:@"your_channel" channelType:AgoraRtmChannelTypeMessage items:states completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setState success!!");
+    } else {
+        NSLog(@"setState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```objc
+-(void) getState: (NSString * _Nonnull) channelName
+     channelType: (AgoraRtmChannelType)channelType
+          userId: (NSString * _Nonnull) userId
+      completion: (AgoraRtmPresenceGetStateBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.ios#channeltype)。 |
+| `userId` | NSString | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmPresenceGetStateBlock` | 选填 | - | <Slot name="presence-ios-html-4-4-4" /> |
+
+<Slot for="presence-ios-html-4-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmPresenceGetStateResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceGetStateResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `state`         |    `AgoraRtmUserState`      | 频道在线用户及其临时状态信息列表。        |
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `userId`         |  NSString  |  用户 ID。     |
+| `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
+
+### 基本用法
+
+```objc
+[[rtm getPresence] getState:@"your_channel" channelType:AgoraRtmChannelTypeMessage userId:@"userid" completion:^(AgoraRtmPresenceGetStateResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getState success!!");
+        AgoraRtmUserState* state = response.state;
+    } else {
+        NSLog(@"getState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `AgoraRtmPresenceEventTypeRemoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.ios#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```objc
+-(void) removeState:(NSString * _Nonnull)channelName
+        channelType:(AgoraRtmChannelType)channelType
+               keys:(NSArray<NSString *> * _Nonnull)keys
+         completion:(AgoraRtmOperationBlock _Nullable)completionBlock
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | NSString | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.ios#channeltype)。 |
+| `keys` | `NSArray<NSString *>` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-ios-html-5-4-4" /> |
+
+<Slot for="presence-ios-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+NSArray<NSString*>* keys = @[@"key1", @"key2"];
+[[rtm getPresence] removeState:@"your_channel" channelType:AgoraRtmChannelTypeMessage keys:keys completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeState success!!");
+    } else {
+        NSLog(@"removeState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```

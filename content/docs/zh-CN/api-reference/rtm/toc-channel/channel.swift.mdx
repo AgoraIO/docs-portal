@@ -1,0 +1,384 @@
+---
+title: "频道"
+---
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成三种类型以匹配不同的应用场景：
+
+- Message Channel：遵循行业标准的 Pub/Sub （发布/订阅）模式，频道无需提前创建，订阅频道即可在频道内收发消息。频道内的发布者和订阅者数量没有上限。
+- User Channel：基于 Pub/Sub （发布/订阅）模式的点对点消息收发。用户无需订阅频道操作，可以直接指定用户 ID 发送消息，接收消息也只需监听 `didReceiveMessageEvent` 事件。
+- Stream Channel：遵循行业类似观察者模式的 Room （房间）概念，用户需要创建并加入频道才能在频道内收发消息。频道中允许创建不同的 Topic，消息通过 Topic 进行组织和管理。
+
+想要了解 Message Channel 和 Stream Channel 的更多用法及适用场景，可以查看：
+
+- [频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)
+
+AgoraRtmClientKit
+
+## subscribe
+
+### 接口描述
+
+RTM 提供消息、状态、事件变更等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)章节。
+
+通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteJoinChannel` 类型的 `didReceivePresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Message Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribe` 方法：
+
+```swift
+subscribe(
+    channelName: String,
+    option subscribeOption: AgoraRtmSubscribeOptions?
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+subscribe(
+    channelName: String,
+    option subscribeOption: AgoraRtmSubscribeOptions?,
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `subscribeOption` | `AgoraRtmSubscribeOptions` | 选填 | - | 订阅频道选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="channel-swift-html-0-3-4" /> |
+
+<Slot for="channel-swift-html-0-3-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmSubscribeOptions` 包含以下属性：
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `features` | `AgoraRtmSubscribeChannelFeature` | 选填 | `[.message,.presence]` | 订阅频道时设置的事件通知类型，你可以通过位操作同时设置多种事件通知。默认设置消息和 Presence 事件通知。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let subscribeOptions = AgoraRtmSubscribeOptions()
+subscribeOptions.features = [.presence, .message, .metadata]
+
+let (response, error) = await rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions)
+if let error = error {
+    print("Failed to subscribe with error: \(error.reason)")
+} else {
+    print("Successfully subscribed to the channel.")
+}
+```
+
+```swift tab="callback"
+// callback
+let subscribeOptions = AgoraRtmSubscribeOptions()
+subscribeOptions.features = [.presence, .message, .metadata]
+
+rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions) { response, error in
+    if let errorInfo = error {
+        print("Subscription failed with error: \(errorInfo.reason)")
+    } else let SubscribeResponse = response {
+        print("Subscription to \(SubscribeResponse.channelName) successful!")
+    }
+}
+```
+
+## unsubscribe
+
+### 接口描述
+
+如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Message Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribe` 方法：
+
+```swift
+unsubscribe(_ channelName: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+unsubscribe(_ channelName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="channel-swift-html-2-2-4" /> |
+
+<Slot for="channel-swift-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift
+// async-await
+let (response, error) = await rtmClient.unsubscribe("exampleChannel")
+if let error = error {
+    // 处理错误情况
+    print("Failed to unsubscribe with error: \(error.reason)")
+} else if let response = response {
+    // 处理成功情况
+    print("Unsubscribed from channel successfully.")
+} else {
+    // 处理未知错误
+    print("Unknown error occurred while unsubscribing.")
+}
+
+// callback
+rtmClient.unsubscribe("exampleChannel") { response, error in
+    if let errorInfo = error {
+        print("Unsubscribe failed with error: \(errorInfo.localizedDescription)")
+    } else let unsubscribeResponse = response {
+        print("Successfully unsubscribed from \(unsubscribeResponse.channelName).")
+    }
+}
+```
+
+## createStreamChannel
+
+### 接口描述
+
+在使用 Stream Channel 之前，你需要先调用 `createStreamChannel` 方法创建 `AgoraRtmStreamChannel` 实例。成功创建实例后，你可以调用其相关方法，例如：加入频道、离开频道、发送 Topic 消息、订阅 Topic 消息等。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `createStreamChannel` 方法：
+
+```swift
+createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel
+```
+
+| 参数          | 类型     | 是否必填 | 默认值 | 描述                   |
+| ------------ | ------- | ------- | ----- | -------- |
+| `channelName` | String | 必填     | -      | 频道名称。             |
+| `error`       | `NSError`  | 必填     | -      | （输出参数）错误描述。 |
+
+### 基本用法
+
+```swift
+do {
+    let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
+    print("Stream channel created successfully: \(streamChannel)")
+    // You can now use the streamChannel instance
+} catch {
+    print("Failed to create stream channel: \(error)")
+}
+```
+
+### 返回值
+
+- 方法调用成功，返回一个 `AgoraRtmStreamChannel` 实例，用以在后续调用 Stream Channel 的其他 API。
+- `nil`：方法调用失败。
+
+AgoraRtmStreamChannel
+
+## join
+
+### 接口描述
+
+成功创建 Stream Channel 后，你可以调用 `join` 方法加入 Stream Channel。
+
+加入频道后，你才能进行频道相关操作。此时，订阅该频道并添加事件监听的用户会收到如下事件通知：
+
+- 本地用户：
+  - `snapshot` 类型的 `didReceivePresenceEvent` 事件通知。
+  - `snapshot` 类型的 `didReceiveTopicEvent` 事件通知。
+- 远端用户：`remoteJoinChannel` 类型的 `didReceivePresenceEvent` 事件通知。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `join` 方法：
+
+```swift
+join(_ option: AgoraRtmJoinChannelOption) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `option` | `AgoraRtmJoinChannelOption` | 必填 | - | 加入频道选项。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="channel-swift-html-3-2-4" /> |
+
+<Slot for="channel-swift-html-3-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmJoinChannelOption` 包含以下属性：
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 选填 | - | <Slot name="channel-swift-html-4-1-4" /> |
+| `features` | `AgoraRtmJoinChannelFeature` | 选填 | `[.message,.presence]` | 加入频道时设置的事件通知类型，你可以通过位操作同时设置多种事件通知。默认设置 Presence 事件通知。 |
+
+<Slot for="channel-swift-html-4-1-4">
+
+加入 Stream Channel 的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTC 临时 Token](/zh-CN/realtime-media/rtc/get-started/enable-service#获取临时-token) 或 Token 服务器生成的 [RTC 正式 Token](/zh-CN/realtime-media/rtc/basic-features/token-authentication.ios.ios)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTC 和 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+
+let joinOptions = AgoraRtmJoinChannelOption()
+joinOptions.token = 'your_token'
+joinOptions.features = [.message, .presence]
+
+let (response, error) = await streamChannel.join(joinOptions)
+if let errorInfo = error {
+    print("Failed to join the channel with error: \(errorInfo.reason)")
+} else if let joinResponse = response {
+    print("Successfully joined the channel. Response: \(joinResponse)")
+} else {
+    print("Join operation completed with no response or error.")
+}
+```
+
+```swift tab="callback"
+// callback
+let joinOptions = AgoraRtmJoinChannelOption();
+joinOptions.token = "your_token"
+joinOptions.features = [.presence, .presence]
+streamChannel.join(joinOptions, completion: { (res, error) in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("succes ")
+    }
+    })
+```
+
+## leave
+
+### 接口描述
+
+如果你不再需要待在某个频道中，你可以调用 `leave` 方法离开该频道。离开后你将不再会接收到此频道中的任何消息、状态及事件通知，你在该频道中创建的 Topic 发布者的角色及你与所有 Topic 的订阅关系都将自动解除。如果想再次恢复之前的发布者角色和订阅关系，你需要调用 `join` 方法再次进入该频道并自行调用 `joinTopic` 和 `subscribeTopic` 方法进行设置。
+
+成功离开频道后，频道中的远端用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `leave` 方法：
+
+```swift
+leave() async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+leave(_ completionBlock: AgoraRtmOperationBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="channel-swift-html-5-1-4" /> |
+
+<Slot for="channel-swift-html-5-1-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+//  async-await
+let (response, error) = await streamChannel.leave()
+if let errorInfo = error {
+    print("Failed to leave the channel with error: \(errorInfo.localizedDescription)")
+} else if let commonResponse = response {
+    print("Successfully left the channel. Response: \(commonResponse)")
+} else {
+    print("Leave operation completed with no response or error.")
+}
+```
+
+```swift tab="callback"
+// callback
+streamChannel.leave({ res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+## destroy
+
+### 接口描述
+
+如果你不再需要某个频道，你可以调用 `destroy` 方法销毁对应的 Stream Channel 实例以释放资源。调用 `destroy` 方法销毁 Stream Channel 实例不会销毁该频道，后续可通过再次调用 `createStreamChannel` 和 `join` 重新加入该频道。
+
+:::info[信息]
+- 该方法仅适用于 Stream Channel。如果不先调用 `leave` 离开频道而直接调用 `destroy` 销毁频道实例，SDK 会自动调用 `leave` 并触发对应的事件。
+- `destroy` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `destroy` 方法：
+
+```swift
+destroy() -> AgoraRtmErrorCode
+```
+
+### 基本用法
+
+```swift
+streamChannel.destroy()
+```
+
+### 返回值
+
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/error-codes.android.ios)。

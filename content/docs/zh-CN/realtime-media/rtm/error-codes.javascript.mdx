@@ -1,0 +1,294 @@
+---
+title: "错误排查"
+---
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RTMConfig` 中的 `LogConfig` 来开启日志输出并设置日志信息等级，之后即可在浏览器的控制台中查看日志信息。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const rtmConfig = { logLevel : 'debug' };
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+`logLevel` 字段可以设置为 `debug`、`info`、`warn`、`error`、`none` 五个等级之一，其中 `debug` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `info`。
+:::
+
+## 开启日志上传
+
+当你遇到在本地调试无法解决的错误时，可以联系声网技术支持协助你排查问题。此时，你需要开启日志上传功能，声网技术支持会根据你的日志信息来定位错误原因。你需要在初始化 RTM 实例的时候通过设置 `rtmConfig` 参数中的 `logUpload` 参数开启日志上传功能。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const rtmConfig = {
+    logLevel : "debug",
+    logUpload : true
+    };
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+:::info[信息]
+为避免产生不必要的存储计费，你需要在故障解决后及时关闭日志上传功能。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+RTM JavaScript SDK 支持并推荐你使用 Async/Await 编程模式，以便在业务中处理 JavaScript 异步操作。在调用 RTM JavaScript API 时，如果发生错误，SDK 会抛出一个 `ErrorInfo` 类型的错误对象，你需要使用 `try...catch` 捕获该对象。`ErrorInfo` 包含以下属性：
+
+```javascript showLineNumbers
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+如果 API 调用失败，则 SDK 会通过 `ErrorInfo` 的 `errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `RTM_ERROR_OK` | 正确调用。 |
+| `-10002` | `RTM_ERROR_NOT_LOGIN` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `RTM_ERROR_INVALID_APP_ID` | <Slot name="error-codes-javascript-html-0-3-2" /> |
+| `-10005` | `RTM_ERROR_INVALID_TOKEN` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `RTM_ERROR_INVALID_USER_ID` | <Slot name="error-codes-javascript-html-0-5-2" /> |
+| `-10008` | `RTM_ERROR_INVALID_CHANNEL_NAME` | <Slot name="error-codes-javascript-html-0-6-2" /> |
+| `-10009` | `RTM_ERROR_TOKEN_EXPIRED` | Token 过期失效。你需要先调用 `logout` 方法登出 RTM 系统，然后使用新的 Token 创建 RTM 实例，再调用 `login` 方法重新登录 RTM 系统。 |
+| `-10010` | `RTM_ERROR_LOGIN_NO_SERVER_RESOURCES` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `RTM_ERROR_LOGIN_TIMEOUT` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/user-guide/setup/application-setup#防火墙白名单设置)。 |
+| `-10012` | `RTM_ERROR_LOGIN_REJECTED` | <Slot name="error-codes-javascript-html-0-10-2" /> |
+| `-10013` | `RTM_ERROR_LOGIN_ABORTED` | <Slot name="error-codes-javascript-html-0-11-2" /> |
+| `-10015` | `RTM_ERROR_LOGIN_NOT_AUTHORIZED` | <Slot name="error-codes-javascript-html-0-12-2" /> |
+| `-10017` | `RTM_ERROR_DUPLICATE_OPERATION` | 重复操作。 |
+| `-10018` | `RTM_ERROR_INSTANCE_ALREADY_RELEASED` | 重复释放 `rtm` 实例或 `RTMStreamChannel` 实例。 |
+| `-10019` | `RTM_ERROR_INVALID_CHANNEL_TYPE` | <Slot name="error-codes-javascript-html-0-15-2" /> |
+| `-10020` | `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-javascript-html-0-16-2" /> |
+| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `RTM_ERROR_SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `ServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-javascript-html-0-19-2" /> |
+| `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-javascript-html-0-22-2" /> |
+| `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-javascript-html-0-23-2" /> |
+| `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
+| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。 |
+| `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | <Slot name="error-codes-javascript-html-0-27-2" /> |
+| `-11008` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-javascript-html-0-28-2" /> |
+| `-11009` | `RTM_ERROR_CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `RTM_ERROR_CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | <Slot name="error-codes-javascript-html-0-30-2" /> |
+| `-11012` | `RTM_ERROR_CHANNEL_NOT_AVAILABLE` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `RTM_ERROR_CHANNEL_TOPIC_NOT_SUBSCRIBED` | 未订阅该 Topic。 |
+| `-11014` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_LIMITATION` | Topic 数量超出限制。 |
+| `-11015` | `RTM_ERROR_CHANNEL_JOIN_TOPIC_FAILED` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `RTM_ERROR_CHANNEL_TOPIC_NOT_JOINED` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `RTM_ERROR_CHANNEL_TOPIC_NOT_EXIST` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_META` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TIMEOUT` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TOO_FREQUENT` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `RTM_ERROR_CHANNEL_SUBSCRIBE_FAILED` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11023` | `RTM_ERROR_CHANNEL_ENCRYPT_MESSAGE_FAILED` | <Slot name="error-codes-javascript-html-0-41-2" /> |
+| `-11024` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_FAILED` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | 消息发布超时。检查连接是否断开。 |
+| `-11028` | `RTM_ERROR_CHANNEL_LEAVE_FAILED` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-javascript-html-0-47-2" /> |
+| `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
+| `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
+| `-12004` | `RTM_ERROR_STORAGE_INVALID_ARGUMENT` | 无效参数。 |
+| `-12005` | `RTM_ERROR_STORAGE_INVALID_REVISION` | 无效 Revision 参数。 |
+| `-12006` | `RTM_ERROR_STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata 长度溢出。 |
+| `-12007` | `RTM_ERROR_STORAGE_INVALID_LOCK_NAME` | 无效 Lock 名称。 |
+| `-12008` | `RTM_ERROR_STORAGE_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-12009` | `RTM_ERROR_STORAGE_INVALID_KEY` | 无效 Metadata 键。 |
+| `-12010` | `RTM_ERROR_STORAGE_INVALID_VALUE` | 无效 Metadata 值。 |
+| `-12011` | `RTM_ERROR_STORAGE_KEY_LENGTH_OVERFLOW` | Metadata 键长度溢出。 |
+| `-12012` | `RTM_ERROR_STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata 值长度溢出。 |
+| `-12014` | `RTM_ERROR_STORAGE_OUTDATED_REVISION` | 过时的 Revision 参数。 |
+| `-12015` | `RTM_ERROR_STORAGE_NOT_SUBSCRIBE` | 未订阅该频道。 |
+| `-12017` | `RTM_ERROR_STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `RTM_ERROR_STORAGE_OPERATION_TIMEOUT` | Storage 操作超时。 |
+| `-12019` | `RTM_ERROR_STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
+| `-13001` | `RTM_ERROR_PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
+| `-13003` | `RTM_ERROR_PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
+| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。 |
+| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。 |
+| `-13006` | `RTM_ERROR_PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
+| `-13008` | `RTM_ERROR_PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
+| `-13010` | `RTM_ERROR_PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
+| `-13009` | `RTM_ERROR_PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | 状态值长度溢出 |
+| `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
+| `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock 操作失败。 |
+| `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
+| `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
+| `-14004` | `RTM_ERROR_LOCK_ALREADY_EXIST` | Lock 已存在。 |
+| `-14005` | `RTM_ERROR_LOCK_INVALID_NAME` | 无效 Lock 名。 |
+| `-14006` | `RTM_ERROR_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-14007` | `RTM_ERROR_LOCK_ACQUIRE_FAILED` | 获取该 Lock 失败。 |
+| `-14008` | `RTM_ERROR_LOCK_NOT_EXIST` | 该 Lock 不存在。 |
+| `-14009` | `RTM_ERROR_LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
+| `-15001` | `RTM_ERROR_HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
+| `-15003` | `RTM_ERROR_HISTORY_OPERATION_TIMEOUT` | 历史消息操作过时。 |
+| `-15005` | `RTM_ERROR_HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-javascript-html-0-3-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-5-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-6-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-10-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-11-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-12-2">
+
+没有 RTM 服务权限。可能的原因有：
+
+    - 未在控制台启用 RTM 服务。
+    - 服务已欠费。
+    - 账号被封停。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-15-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+    - `USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-16-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为 String 型。
+    - 检查生成的加密盐是否为 Uint8Array 型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-19-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-22-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-23-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-27-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-28-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-30-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-41-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-47-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。

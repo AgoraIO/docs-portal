@@ -1,0 +1,79 @@
+---
+title: "AudioEncodedFrameSender 类"
+---
+AudioEncodedFrameSender
+
+<span className="index-desc-audioencodedframesender">`AudioEncodedFrameSender` 类</span>
+
+<a id="newaudioencodedframesender"></a>
+## NewAudioEncodedFrameSender
+
+```go
+func (mediaNodeFactory *MediaNodeFactory) NewAudioEncodedFrameSender() *AudioEncodedFrameSender {
+    sender := C.agora_media_node_factory_create_audio_encoded_frame_sender(mediaNodeFactory.cFactory)
+    if sender == nil {
+        return nil
+    }
+    return &AudioEncodedFrameSender{
+        cSender: sender,
+    }
+}
+```
+
+<span className="index-desc-newaudioencodedframesender">创建一个已编码音频数据发送模块。该方法创建一个 `AudioEncodedFrameSender` 对象，可用于 [`NewCustomAudioTrackEncoded`](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#newcustomaudiotrackencoded) 方法。</span>
+
+#### 返回值
+
+- `AudioEncodedFrameSender` 对象：方法调用成功。
+- `nil`: 方法调用失败。
+
+<a id="sendencodedaudioframe"></a>
+## SendEncodedAudioFrame
+
+```go
+func (sender *AudioEncodedFrameSender) SendEncodedAudioFrame(payload []byte, frameInfo *EncodedAudioFrameInfo) int {
+    cData := C.CBytes(payload)
+    defer C.free(cData)
+    cFrameInfo := &C.struct__encoded_audio_frame_info{
+        speech:              CIntFromBool(frameInfo.Speech),
+        codec:               C.int(frameInfo.Codec),
+        sample_rate_hz:      C.int(frameInfo.SampleRateHz),
+        samples_per_channel: C.int(frameInfo.SamplesPerChannel),
+        send_even_if_empty:  CIntFromBool(frameInfo.SendEvenIfEmpty),
+        number_of_channels:  C.int(frameInfo.NumberOfChannels),
+    }
+
+    return int(C.agora_audio_encoded_frame_sender_send(
+        sender.cSender, (*C.uint8_t)(cData),
+        C.uint32_t(len(payload)), cFrameInfo))
+}
+```
+
+<span className="index-desc-sendencodedaudioframe">将已编码的音频帧发送到本地音频轨道。</span>
+
+#### 参数
+
+| 参数              | 描述                                                                 |
+|------------------|----------------------------------------------------------------------|
+| `payload`   | 要发送的编码音频数据。                                               |
+| `frameInfo` | 音频帧信息，详见 [`EncodedAudioFrameInfo`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#encodedaudioframeinfo)。   |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="release"></a>
+## Release
+
+```go
+func (sender *AudioEncodedFrameSender) Release() {
+    if sender.cSender == nil {
+        return
+    }
+    C.agora_audio_encoded_frame_sender_destroy(sender.cSender)
+    sender.cSender = nil
+}
+```
+
+<span className="index-desc-release">释放 `AudioEncodedFrameSender` 对象。</span>

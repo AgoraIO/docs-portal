@@ -1,0 +1,337 @@
+---
+title: "Presence"
+---
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+**Presence** 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+RtmPresence
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```dart
+Future<(RtmStatus, WhoNowResult?) whoNow(
+    String channelName,
+    RtmChannelType channelType,
+    {
+        bool includeUserId = true,
+        bool includeState = false,
+        String? page = ''
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `includeUserId` | bool | 选填 | `true` | 返回结果中是否包含在线成员的`userId`。 |
+| `includeState` | bool | 选填 | `false` | 返回结果中是否包含在线用户的临时状态数据。 |
+| `page` | String | 选填 | - | 页码书签。如果不填写，则 SDK 默认返回第一页结果。你可以在返回值中查看是否还有下一页。 |
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.getPresence.whoNow(
+    "myChannel",
+    RtmChannelType.message,
+    includeUserId:true,
+    includeState:true,
+    page:"myBookMark"
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, WhoNowResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `WhoNowResult` 类型的数据，定义如下：
+
+  ```dart
+  class WhoNowResult {
+      final List<UserState> userStateList;              // 用户临时状态列表
+      final int count;                                  // 用户临时状态列表长度
+      final String nextPage;                            // 下一页数据的书签
+  }
+  ```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```dart
+Future<(RtmStatus, WhereNowResult?)> whereNow(String userId);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.getPresence.whereNow("Tony");
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, WhereNowResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `WhereNowResult` 类型的数据，定义如下：
+
+  ```dart
+  class WhereNowResult {
+      final List<ChannelInfo> channels;                     // 频道信息列表
+      final int count;                                      // 用户临时状态列表长度
+  }
+  ```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户主动离开频道，状态会消失。如果需要在重新加入频道时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `remoteStateChanged` 类型的 `presence` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```dart
+Future<(RtmStatus, SetStateResult?) setState(
+    String channelName,
+    RtmChannelType channelType,
+    Map<String, String> state
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `state` | `Map<String, String>` | 必填 | - | 用户状态键值对。 |
+
+### 基本用法
+
+```dart
+var states = {"Name":"Tony","Mode":"Happy"};
+var (status,response) = await rtmClient.getPresence.setState(
+    "myChannel",
+    RtmChannelType.message,
+    states
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, SetStateResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `SetStateResult` 类型的数据，当前不包含任何字段。
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```dart
+Future<(RtmStatus, GetStateResult?)> getState(
+    String channelName,
+    RtmChannelType channelType,
+    String userId
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `userId` | String | 必填 | - | 用户 ID。 |
+
+### 基本用法
+
+```dart
+var (state,response) = await rtmClient.getPresence.getState(
+    "myChannel",
+    RtmChannelType.message,
+    "Tony"
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, GetStateResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `GetStateResult` 类型的数据，其中字段定义如下。
+
+  ```dart
+  class GetStateResult {
+      final UserState state;            // 用户临时状态数据
+  }
+  ```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `presence` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.flutter#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```dart
+Future<(RtmStatus, RemoveStateResult?)> removeState(
+    String channelName,
+    RtmChannelType channelType,
+    {
+        List<String> states = const []
+    }
+);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.flutter#channeltype)。 |
+| `states` | `List<String>` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
+
+### 基本用法
+
+```dart
+var states = ["Mode","Position"]
+var (status,response) = await rtmClient.getPresence().removeState(
+    "channelName",
+    RtmChannelType.message,
+    states
+);
+
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, RemoveStateResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes.flutter)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `RemoveStateResult` 类型的数据，当前不包含任何字段。

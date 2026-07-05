@@ -1,0 +1,839 @@
+---
+title: "IRTCConnectionObserver 类"
+---
+IRTCConnectionObserver
+
+<span className="index-desc-irtcconnectionobserver">`IRTCConnectionObserver` 类，用于监听 SDK 的连接状态。</span>
+
+<a id="onconnected"></a>
+## on_connected
+
+```python
+def on_connected(self, agora_rtc_conn, conn_info, reason):
+    pass
+```
+
+<span className="index-desc-onconnected">SDK 与频道的连接状态变更为 `3` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-0-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-0-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="ondisconnected"></a>
+## on_disconnected
+
+```python
+def on_disconnected(self, agora_rtc_conn, conn_info, reason):
+    pass
+```
+
+<span className="index-desc-ondisconnected">SDK 与频道的连接状态变更为 `1` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-1-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-1-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onconnecting"></a>
+## on_connecting
+
+```python
+def on_connecting(self, agora_rtc_conn, conn_info, reason):
+    pass
+```
+
+<span className="index-desc-onconnecting">SDK 与频道的连接状态变更为 `2` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-2-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-2-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onreconnecting"></a>
+## on_reconnecting
+
+```python
+def on_reconnecting(self, agora_rtc_conn, conn_info, reason):
+    pass
+```
+
+<span className="index-desc-onreconnecting">SDK 与频道的连接状态变更为 `4` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-3-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-3-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onreconnected"></a>
+## on_reconnected
+
+```python
+def on_reconnected(self, agora_rtc_conn, conn_info, reason):
+    pass
+```
+
+<span className="index-desc-onreconnected">SDK 与频道的连接状态变更为 `3` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-4-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-4-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onconnectionlost"></a>
+## on_connection_lost
+
+```python
+def on_connection_lost(self, agora_rtc_conn, conn_info):
+    pass
+```
+
+<span className="index-desc-onconnectionlost">SDK 与频道断开连接时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+
+<a id="onlastmilequality"></a>
+## on_lastmile_quality
+
+```python
+def on_lastmile_quality(self, agora_rtc_conn, quality):
+    pass
+```
+
+<span className="index-desc-onlastmilequality">报告 last-mile 网络质量。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `quality` | <Slot name="rtcconnectionobserver-backup-python-html-6-2-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-6-2-1">
+
+Last mile 网络质量：
+
+    - `0`: 质量未知。
+    - `1`: 质量极好。
+    - `2`: 用户主观感觉和极好差不多，但码率可能略低于极好。
+    - `3`: 用户主观感受有瑕疵但不影响沟通。
+    - `4`: 勉强能沟通但不顺畅。
+    - `5`: 网络质量非常差，基本不能沟通。
+    - `6`: 网络连接断开，完全无法沟通。
+
+</Slot>
+
+<a id="onlastmileproberesult"></a>
+## on_lastmile_probe_result
+
+```python
+def on_lastmile_probe_result(self, agora_rtc_conn, result):
+    pass
+```
+
+<span className="index-desc-onlastmileproberesult">通话前网络上下行 Last mile 质量探测报告回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `result` | 上下行 Last mile 质量探测结果。详见 [`LastmileProbeResult`](#lastmileproberesult)。 |
+
+<a id="ontokenprivilegewillexpire"></a>
+## on_token_privilege_will_expire
+
+```python
+def on_token_privilege_will_expire(self, agora_rtc_conn, token):
+    pass
+```
+
+<span className="index-desc-ontokenprivilegewillexpire">Token 服务将在 30s 内过期回调。</span>
+
+在通话过程中如果 Token 即将失效，SDK 会提前 30 秒触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [`renew_token`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#renewtoken) 将新生成的 Token 传给 SDK。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `token` | 即将过期的 Token。 |
+
+<a id="ontokenprivilegedidexpire"></a>
+## on_token_privilege_did_expire
+
+```python
+def on_token_privilege_did_expire(self, agora_rtc_conn):
+    pass
+```
+
+<span className="index-desc-ontokenprivilegedidexpire">Token 已过期回调。</span>
+
+在通话过程中如果 Token 已失效，SDK 会触发该回调，提醒 app 更新 Token。
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 重新连接频道。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+
+<a id="onconnectionfailure"></a>
+## on_connection_failure
+
+```python
+def on_connection_failure(self, agora_rtc_conn, info, reason):
+    pass
+```
+
+<span className="index-desc-onconnectionfailure">SDK 与频道的连接状态变更为 `5` 时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `conn_info` | 连接信息。详见 [`RTCConnInfo`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#rtcconninfo)。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-7-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-7-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="onuserjoined"></a>
+## on_user_joined
+
+```python
+def on_user_joined(self, agora_rtc_conn, user_id):
+    pass
+```
+
+<span className="index-desc-onuserjoined">远端用户加入频道时触发。你可以通过该回调获取远端用户的 ID。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `user_id` | 远端用户的用户 ID。 |
+
+<a id="onuserleft"></a>
+## on_user_left
+
+```python
+def on_user_left(self, agora_rtc_conn, user_id, reason):
+    pass
+```
+
+<span className="index-desc-onuserleft">远端用户离开频道时触发。你可以通过 `reason` 参数获取用户离开频道的原因。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `user_id` | 远端用户的用户 ID。 |
+| `reason` | <Slot name="rtcconnectionobserver-backup-python-html-8-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-8-3-1">
+
+连接状态变更原因：
+
+    - `0`: 建立网络连接中。
+    - `1`: 成功加入频道。
+    - `2`: 网络连接中断。
+    - `3`: 网络连接被服务器禁止。
+    - `4`: 加入频道失败。
+    - `5`: 离开频道。
+    - `6`: 不是有效的 APP ID。请更换有效的 APP ID 重新加入频道。
+    - `7`: 不是有效的频道名。请更换有效的频道名重新加入频道。
+    - `8`: 生成的 Token 无效。一般有以下原因：
+      - 在控制台上启用了 App Certificate，但加入频道未使用 Token。当启用了 App Certificate，必须使用 Token。
+      - 在调用 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 加入频道时指定的 uid 与生成 Token 时传入的 uid 不一致。
+    - `9`: 生成的 Token 无效。
+    - `10`: 此用户被服务器禁止。
+    - `11`: 由于设置了代理服务器，SDK 尝试重连。
+    - `12`: 更新 Token 引起网络连接状态改变。
+    - `13`: 客户端 IP 地址变更，可能是由于网络类型，或网络运营商的 IP 或端口发生改变引起。
+    - `14`: SDK 和服务器连接保活超时，进入自动重连状态。
+    - `15`: 重新加入频道成功。
+    - `16`: SDK 和服务器失去连接。
+    - `17`: 连接状态变化由回声测试引起。
+    - `18`: 用户更改了本地 IP 地址。
+
+</Slot>
+
+<a id="ontransportstats"></a>
+## on_transport_stats
+
+```python
+def on_transport_stats(self, agora_rtc_conn, stats):
+    pass
+```
+
+<span className="index-desc-ontransportstats">报告连接的传输统计信息。当连接状态为 `3` 时，SDK 每两秒触发一次回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `stats` | 连接统计信息。详见 [`RTCStats`](#rtcstats)。 |
+
+<a id="onchangerolesuccess"></a>
+## on_change_role_success
+
+```python
+def on_change_role_success(self, agora_rtc_conn, old_role, new_role):
+    pass
+```
+
+<span className="index-desc-onchangerolesuccess">本地用户角色变更时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `old_role` | <Slot name="rtcconnectionobserver-backup-python-html-9-2-1" /> |
+| `new_role` | <Slot name="rtcconnectionobserver-backup-python-html-9-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-9-2-1">
+
+本地用户变更前的角色：
+
+    - `1`: 主播。主播可以同时发送和接收媒体流。
+    - `2`: 观众。观众只能接收媒体流。
+
+</Slot>
+
+<Slot for="rtcconnectionobserver-backup-python-html-9-3-1">
+
+本地用户变更后的角色：
+
+    - `1`: 主播。主播可以同时发送和接收媒体流。
+    - `2`: 观众。观众只能接收媒体流。
+
+</Slot>
+
+<a id="onchangerolefailure"></a>
+## on_change_role_failure
+
+```python
+def on_change_role_failure(self, agora_rtc_conn, reason, cur_role):
+    pass
+```
+
+<span className="index-desc-onchangerolefailure">本地用户角色切换失败时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `reason` | 切换失败原因。 |
+| `cur_role` | <Slot name="rtcconnectionobserver-backup-python-html-10-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-10-3-1">
+
+本地用户当前的角色：
+
+    - `1`: 主播。主播可以同时发送和接收媒体流。
+    - `2`: 观众。观众只能接收媒体流。
+
+</Slot>
+
+<a id="onusernetworkquality"></a>
+## on_user_network_quality
+
+```python
+def on_user_network_quality(self, agora_rtc_conn, uid, tx_quality, rx_quality):
+    pass
+```
+
+<span className="index-desc-onusernetworkquality">通话中每个用户的网络上下行 Last mile 质量报告回调。</span>
+
+该回调描述每个用户在通话中的 Last mile 网络状态，其中 Last mile 是指设备到声网边缘服务器的网络状态。
+
+该回调每 2 秒触发一次。如果远端有多个用户，该回调每 2 秒会被触发多次。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `uid` | 远端用户的用户 ID。 |
+| `tx_quality` | <Slot name="rtcconnectionobserver-backup-python-html-11-3-1" /> |
+| `rx_quality` | <Slot name="rtcconnectionobserver-backup-python-html-11-4-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-11-3-1">
+
+上行网络质量：
+
+    - `0`: 质量未知。
+    - `1`: 质量极好。
+    - `2`: 用户主观感觉和极好差不多，但码率可能略低于极好。
+    - `3`: 用户主观感受有瑕疵但不影响沟通。
+    - `4`: 勉强能沟通但不顺畅。
+    - `5`: 网络质量非常差，基本不能沟通。
+    - `6`: 网络连接断开，完全无法沟通。
+
+</Slot>
+
+<Slot for="rtcconnectionobserver-backup-python-html-11-4-1">
+
+下行网络质量：
+
+    - `0`: 质量未知。
+    - `1`: 质量极好。
+    - `2`: 用户主观感觉和极好差不多，但码率可能略低于极好。
+    - `3`: 用户主观感受有瑕疵但不影响沟通。
+    - `4`: 勉强能沟通但不顺畅。
+    - `5`: 网络质量非常差，基本不能沟通。
+    - `6`: 网络连接断开，完全无法沟通。
+
+</Slot>
+
+<a id="onnetworktypechanged"></a>
+## on_network_type_changed
+
+```python
+def on_network_type_changed(self, agora_rtc_conn, network_type):
+    pass
+```
+
+<span className="index-desc-onnetworktypechanged">本地网络类型发生改变回调。</span>
+
+本地网络连接类型发生改变时，SDK 会触发该回调，并在回调中明确当前的网络连接类型。 你可以通过该回调获取正在使用的网络类型；当连接中断时，该回调能辨别引起中断的原因是网络切换还是网络条件不好。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `network_type` | <Slot name="rtcconnectionobserver-backup-python-html-12-2-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-12-2-1">
+
+网络连接类型：
+
+    - `-1`: 网络连接类型未知。
+    - `0`: 网络连接已断开。
+    - `1`: 网络类型为 LAN。
+    - `2`: 网络类型为 Wi-Fi(包含热点）。
+    - `3`: 网络类型为 2G 移动网络。
+    - `4`: 网络类型为 3G 移动网络。
+    - `5`: 网络类型为 4G 移动网络。
+
+</Slot>
+
+<a id="onapicallexecuted"></a>
+## on_api_call_executed
+
+```python
+def on_api_call_executed(self, agora_rtc_conn, error, api_type, api_param):
+    pass
+```
+
+<span className="index-desc-onapicallexecuted">API 方法已执行回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|------------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `error` | 当方法调用失败时 SDK 返回的错误码。如果该方法调用成功，SDK 会返回 `0`。 |
+| `api_type` | SDK 执行的 API 方法。 |
+| `api_param` | SDK 调用 API 的结果。 |
+
+<a id="onchannelmediarelaystatechanged"></a>
+## on_channel_media_relay_state_changed
+
+```python
+def on_channel_media_(self, agora_rtc_conn, state, code):
+    pass
+```
+
+<span className="index-desc-onchannelmediarelaystatechanged">跨频道媒体流转发状态发生改变回调。当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `state` | <Slot name="rtcconnectionobserver-backup-python-html-13-2-1" /> |
+| `code` | <Slot name="rtcconnectionobserver-backup-python-html-13-3-1" /> |
+
+<Slot for="rtcconnectionobserver-backup-python-html-13-2-1">
+
+跨频道媒体流转发状态：
+
+    - `0`: SDK 正在初始化。
+    - `1`: SDK 尝试跨频道。
+    - `2`: 源频道主播成功加入目标频道。
+    - `3`: 发生异常，详见 `code` 中提示的错误信息。
+
+</Slot>
+
+<Slot for="rtcconnectionobserver-backup-python-html-13-3-1">
+
+错误码：
+
+    - `0`: 一切正常。
+    - `1`: 服务器回应出错。
+    - `2`: 服务器无回应。你可以调用 `disconnect` 方法离开频道。
+    - `3`: SDK 无法获取服务，可能是因为服务器资源有限导致。
+    - `4`: 服务器加入源频道失败。
+    - `5`: 服务器加入目标频道失败。
+    - `6`: 服务器未收到源频道发送的数据。
+    - `7`: 源频道发送数据失败。
+    - `8`: SDK 因网络质量不佳与服务器断开。你可以调用 `disconnect` 方法离开当前频道。
+    - `9`: 服务器内部出错。
+    - `10`: 源频道的 Token 已过期。
+    - `11`: 目标频道的 Token 已过期。
+
+</Slot>
+
+<a id="onencryptionerror"></a>
+## on_encryption_error
+
+```python
+def on_encryption_error(self, agora_rtc_conn, error_type):
+    pass
+```
+
+<span className="index-desc-onencryptionerror">内置加密出错回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `agora_rtc_conn` | RTC 连接对象。详见 [`RtcConnection`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python)。 |
+| `error_type` | 加密错误类型。 |
+
+<a id="lastmileproberesult"></a>
+## 类型定义
+### LastmileProbeResult
+
+```python
+class LastmileProbeResult(ctypes.Structure):
+    _fields_ = [
+        ("state", ctypes.c_int),
+        ("uplink_report", LastmileProbeOneWayResult),
+        ("downlink_report", LastmileProbeOneWayResult),
+        ("rtt", ctypes.c_uint)
+    ]
+```
+
+<span className="index-desc-lastmileproberesult">上下行 Last mile 网络质量探测结果。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `state` | <Slot name="rtcconnectionobserver-backup-python-html-14-1-1" /> |
+| `uplink_report` | 上行网络质量报告。详见 [`LastmileProbeOneWayResult`](#lastmileprobeonewayresult)。 |
+| `downlink_report` | 下行网络质量报告。详见 `LastmileProbeOneWayResult`。 |
+| `rtt` | 往返时延（毫秒）。 |
+
+<Slot for="rtcconnectionobserver-backup-python-html-14-1-1">
+
+Last mile 质量探测结果的状态：
+
+    - `1`: 表示本次 Last mile 质量探测的结果是完整的。
+    - `2`: 表示本次 Last mile 质量探测未进行带宽预测，因此结果不完整。一个可能的原因是测试资源暂时受限。
+    - `3`: 未进行 Last mile 质量探测。一个可能的原因是网络连接中断。
+
+</Slot>
+
+<a id="lastmileprobeonewayresult"></a>
+### LastmileProbeOneWayResult
+
+```python
+class LastmileProbeOneWayResult(ctypes.Structure):
+    _fields_ = [
+        ("packet_loss_rate", ctypes.c_uint),
+        ("jitter", ctypes.c_uint),
+        ("available_bandwidth", ctypes.c_uint)
+    ]
+```
+
+<span className="index-desc-lastmileprobeonewayresult">上行或下行 Last mile 网络质量探测结果。</span>
+
+#### 参数
+
+| 参数         | 描述        |
+|--------------|----------|
+| `packet_loss_rate`  | 丢包率。  |
+| `jitter`  | 网络抖动（毫秒）。  |
+| `available_bandwidth`  | 可用网络带宽预估 (bps)。  |
+
+<a id="rtcstats"></a>
+### RtcStats
+
+```python
+class RTCStats(ctypes.Structure):
+    _fields_ = [
+        ("connection_id", ctypes.c_uint),
+        ("duration", ctypes.c_uint),
+        ("tx_bytes", ctypes.c_uint),
+        ("rx_bytes", ctypes.c_uint),
+        ("tx_audio_bytes", ctypes.c_uint),
+        ("tx_video_bytes", ctypes.c_uint),
+        ("rx_audio_bytes", ctypes.c_uint),
+        ("rx_video_bytes", ctypes.c_uint),
+        ("tx_k_bit_rate", ctypes.c_ushort),
+        ("rx_k_bit_rate", ctypes.c_ushort),
+        ("rx_audio_k_bit_rate", ctypes.c_ushort),
+        ("tx_audio_k_bit_rate", ctypes.c_ushort),
+        ("rx_video_k_bit_rate", ctypes.c_ushort),
+        ("tx_video_k_bit_rate", ctypes.c_ushort),
+        ("lastmile_delay", ctypes.c_ushort),
+        ("user_count", ctypes.c_uint),
+        ("cpu_app_usage", ctypes.c_double),
+        ("cpu_total_usage", ctypes.c_double),
+        ("gateway_rtt", ctypes.c_int),
+        ("memory_app_usage_ratio", ctypes.c_double),
+        ("memory_total_usage_ratio", ctypes.c_double),
+        ("memory_app_usage_in_kbytes", ctypes.c_int),
+        ("connect_time_ms", ctypes.c_int),
+        ("first_audio_packet_duration", ctypes.c_int),
+        ("first_video_packet_duration", ctypes.c_int),
+        ("first_video_key_frame_packet_duration", ctypes.c_int),
+        ("packets_before_first_key_frame_packet", ctypes.c_int),
+        ("first_audio_packet_duration_after_unmute", ctypes.c_int),
+        ("first_video_packet_duration_after_unmute", ctypes.c_int),
+        ("first_video_key_frame_packet_duration_after_unmute", ctypes.c_int),
+        ("first_video_key_frame_decoded_duration_after_unmute", ctypes.c_int),
+        ("first_video_key_frame_rendered_duration_after_unmute", ctypes.c_int),
+        ("tx_packet_loss_rate", ctypes.c_int),
+        ("rx_packet_loss_rate", ctypes.c_int)
+    ]
+```
+
+<span className="index-desc-rtcstats">通话相关的统计信息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `duration` | 本地用户通话时长（秒）。累计值。 |
+| `tx_bytes` | 发送字节数 (bytes)。 |
+| `rx_bytes` | 接收字节数 (bytes)。 |
+| `tx_audio_bytes` | 发送音频字节数 (bytes)，累计值。 |
+| `tx_video_bytes` | 发送视频字节数 (bytes)，累计值。 |
+| `rx_audio_bytes` | 接收音频字节数 (bytes)，累计值。 |
+| `rx_video_bytes` | 接收视频字节数 (bytes)，累计值。 |
+| `tx_k_bit_rate` | 发送码率 (Kbps)。 |
+| `rx_k_bit_rate` | 接收码率 (Kbps)。 |
+| `rx_audio_k_bit_rate` | 音频接收码率 (Kbps)。 |
+| `tx_audio_k_bit_rate` | 音频包的发送码率 (Kbps)。 |
+| `rx_video_k_bit_rate` | 视频接收码率 (Kbps)。 |
+| `tx_video_k_bit_rate` | 视频发送码率 (Kbps)。 |
+| `lastmile_delay` | 客户端-接入服务器延时（毫秒）。 |
+| `user_count` | 当前频道内的用户人数。 |
+| `cpu_app_usage` | 当前 App 的 CPU 使用率 (%)。 |
+| `cpu_total_usage` | 当前系统的 CPU 使用率 (%)。在多核环境中，该成员指多核 CPU 的平均使用率。计算方式为 100 - 任务管理中显示的系统空闲进程 CPU ()。 |
+| `gateway_rtt` | 客户端到本地路由器的往返时延 (ms)。 |
+| `memory_app_usage_ratio` | 当前 App 的内存占比 (%)。 |
+| `memory_total_usage_ratio` | 当前系统的内存占比 (%)。 |
+| `memory_app_usage_in_kbytes` | 当前 App 的内存大小 (KB)。 |
+| `connect_time_ms` | 从 SDK 开始连接声网频道经过的时间（毫秒）。 |
+| `first_audio_packet_duration` | 从 SDK 开始连接声网频道到接收到第一个音频包的时间（毫秒）。 |
+| `first_video_packet_duration` | 从 SDK 开始连接声网频道到接收到第一个视频包的时间（毫秒）。 |
+| `first_video_key_frame_packet_duration` | 从 SDK 开始连接声网频道到接收到第一个视频关键帧的时间（毫秒）。 |
+| `packets_before_first_key_frame_packet` | 在收到第一个视频关键帧之前收到的视频包数量。 |
+| `first_audio_packet_duration_after_unmute` | 从最后一次恢复发送音频到接收到第一个音频包的时间（毫秒）。 |
+| `first_video_packet_duration_after_unmute` | 从最后一次恢复发送视频到接收到第一个视频包的时间（毫秒）。 |
+| `first_video_key_frame_packet_duration_after_unmute` | 从最后一次恢复发送视频到接收到第一个视频关键帧的时间（毫秒）。 |
+| `first_video_key_frame_decoded_duration_after_unmute` | 从最后一次恢复发送视频到接收到第一个视频关键帧解码的时间（毫秒）。 |
+| `first_video_key_frame_rendered_duration_after_unmute` | 从最后一次恢复发送视频到接收到第一个视频帧关键帧渲染的时间（毫秒）。 |
+| `tx_packet_loss_rate` | 发送端的丢包率。 |
+| `rx_packet_loss_rate` | 接收端的丢包率。 |

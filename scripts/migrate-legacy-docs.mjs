@@ -5,6 +5,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import {
+  isRedirectContentRow,
   readControlTable,
   updateMigrationProgressInPathMap,
 } from './migration-control-table.mjs';
@@ -43,6 +44,21 @@ const PRODUCT_LABELS = new Map([
   ['marketplace', '云市场'],
   ['online-music-class', '在线音乐课堂'],
   ['recording', '本地服务端录制'],
+]);
+const PLATFORM_LABELS = new Map([
+  ['android', 'Android'],
+  ['electron', 'Electron'],
+  ['flutter', 'Flutter'],
+  ['harmonyos', 'HarmonyOS'],
+  ['ios', 'iOS'],
+  ['javascript', 'Web'],
+  ['macos', 'macOS'],
+  ['react-native', 'React Native'],
+  ['rn', 'React Native'],
+  ['unity', 'Unity'],
+  ['unreal', 'Unreal'],
+  ['wechat', '微信小程序'],
+  ['windows', 'Windows'],
 ]);
 const ALLOWED_MDX_TAGS = new Set([
   'Accordion',
@@ -93,8 +109,14 @@ export async function migrateLegacyBatch(options = {}) {
   );
   const pathMap = await loadPathMap(pathMapPath);
   const componentMap = await loadComponentMap(componentMapPath);
+  const includePages = options.pagesFile
+    ? unique([
+        ...(options.pages ?? []),
+        ...(await loadPagesFile(path.resolve(repoRoot, options.pagesFile))),
+      ])
+    : (options.pages ?? DEFAULT_SAMPLE_PAGES);
   const samplePages = await selectPages({
-    includePages: options.pages ?? DEFAULT_SAMPLE_PAGES,
+    includePages,
     pathMap,
     sampleCount: options.sampleCount ?? 0,
     sampleSeed: options.sampleSeed ?? 'rtc-migration-sample',
@@ -121,7 +143,7 @@ export async function migrateLegacyBatch(options = {}) {
         : path.join(
             outDir,
             'unmapped',
-            normalizeMdxTargetPath(result.sourcePath),
+            normalizeUnmappedTargetPath(result.sourcePath),
           );
       await fs.mkdir(path.dirname(targetPath), { recursive: true });
       await fs.writeFile(targetPath, result.content, 'utf8');
@@ -165,17 +187,18 @@ export async function migrateLegacyPages({
   sourcePath,
   sourceRoot,
 }) {
-  const platforms = getOutputPlatformsForSourcePath({ pathMap, sourcePath });
+  const outputs = getOutputTargetsForSourcePath({ pathMap, sourcePath });
   const results = [];
 
-  for (const platform of platforms) {
+  for (const output of outputs) {
     results.push(
       await migrateLegacyPage({
         componentMap,
         pathMap,
-        platform,
+        platform: output.platform,
         sourcePath,
         sourceRoot,
+        targetPath: output.targetPath,
       }),
     );
   }
@@ -189,6 +212,7 @@ export async function migrateLegacyPage({
   platform,
   sourcePath,
   sourceRoot,
+  targetPath,
 }) {
   const absoluteSourcePath = path.join(sourceRoot, sourcePath);
   const raw = await fs.readFile(absoluteSourcePath, 'utf8');
@@ -221,11 +245,13 @@ export async function migrateLegacyPage({
     ...residue.map((item) => `legacy-residue:${item}`),
     ...referenceReviewIssues(referenceReview),
   ]);
-  const targetPath = getOutputTargetPath({
-    pathMap,
-    platform,
-    sourcePath,
-  });
+  const outputTargetPath =
+    targetPath ??
+    getOutputTargetPath({
+      pathMap,
+      platform,
+      sourcePath,
+    });
 
   return {
     content,
@@ -238,7 +264,7 @@ export async function migrateLegacyPage({
     sharedDependencies: [...state.sharedDependencies],
     status: issues.length > 0 ? 'needs_review' : 'converted',
     syntaxPatternUsage: summarizeSignalMap(state.syntaxPatternUsage),
-    targetPath,
+    targetPath: outputTargetPath,
   };
 }
 
@@ -263,6 +289,14 @@ export function getOutputPlatformsForSourcePath({ pathMap, sourcePath }) {
   const context = inferContextFromSourcePath(sourcePath);
   const entry = pathMap.get(sourcePath);
 
+  if (entry?.isRedirectContent === false) {
+    return [];
+  }
+
+  if (entry?.decisionRefs?.includes('redirect-exact-target')) {
+    return [undefined];
+  }
+
   if (
     context.platforms.length > 1 &&
     (entry?.decisionRefs?.includes('needs-platform-expansion') ?? true)
@@ -273,6 +307,34 @@ export function getOutputPlatformsForSourcePath({ pathMap, sourcePath }) {
   return [undefined];
 }
 
+export function getOutputTargetsForSourcePath({ pathMap, sourcePath }) {
+  const entry = pathMap.get(sourcePath);
+  if (entry?.isRedirectContent === false) {
+    return [];
+  }
+
+  const targetPaths = unique(
+    (entry?.targetPaths?.length
+      ? entry.targetPaths
+      : [entry?.targetPath ?? '']
+    ).map(normalizeMdxTargetPath),
+  );
+
+  if (targetPaths.length > 1) {
+    return targetPaths.map((targetPath) => ({
+      platform: inferPlatformFromTargetPath({ sourcePath, targetPath }),
+      targetPath,
+    }));
+  }
+
+  return getOutputPlatformsForSourcePath({ pathMap, sourcePath }).map(
+    (platform) => ({
+      platform,
+      targetPath: getOutputTargetPath({ pathMap, platform, sourcePath }),
+    }),
+  );
+}
+
 function getOutputTargetPath({ pathMap, platform, sourcePath }) {
   const targetPath = pathMap.get(sourcePath)?.targetPath ?? '';
   const expandedTargetPath = expandPlatformTargetPath({
@@ -281,6 +343,26 @@ function getOutputTargetPath({ pathMap, platform, sourcePath }) {
     targetPath,
   });
   return normalizeMdxTargetPath(expandedTargetPath);
+}
+
+function inferPlatformFromTargetPath({ sourcePath, targetPath }) {
+  const sourcePlatforms = inferContextFromSourcePath(sourcePath).platforms;
+  if (sourcePlatforms.length === 0 || !targetPath) {
+    return undefined;
+  }
+
+  const targetStem = path.posix
+    .basename(targetPath)
+    .replace(/\.(md|mdx)$/i, '');
+  const targetSuffixes = targetStem
+    .split('.')
+    .slice(1)
+    .filter((suffix) => !/^\d/.test(suffix));
+
+  return (
+    targetSuffixes.find((suffix) => sourcePlatforms.includes(suffix)) ??
+    (sourcePlatforms.length === 1 ? sourcePlatforms[0] : undefined)
+  );
 }
 
 export function expandPlatformTargetPath({ platform, sourcePath, targetPath }) {
@@ -299,10 +381,10 @@ export function expandPlatformTargetPath({ platform, sourcePath, targetPath }) {
   const platformSuffix = `.${context.platforms.join('.')}`;
 
   if (withoutExtension.endsWith(platformSuffix)) {
-    return `${withoutExtension.slice(0, -platformSuffix.length)}.${platform}.mdx`;
+    return `${withoutExtension.slice(0, -platformSuffix.length)}.${platform}${extension}`;
   }
 
-  return `${withoutExtension}.${platform}.mdx`;
+  return `${withoutExtension}.${platform}${extension}`;
 }
 
 function normalizeMdxTargetPath(targetPath) {
@@ -315,11 +397,20 @@ function normalizeMdxTargetPath(targetPath) {
     return `${targetPath}.mdx`;
   }
 
-  if (extension.toLowerCase() === '.mdx') {
+  if (extension.toLowerCase() === '.mdx' || extension.toLowerCase() === '.md') {
     return targetPath;
   }
 
   return `${targetPath.slice(0, -extension.length)}.mdx`;
+}
+
+function normalizeUnmappedTargetPath(sourcePath) {
+  const extension = path.posix.extname(sourcePath);
+  if (!extension) {
+    return `${sourcePath}.mdx`;
+  }
+
+  return `${sourcePath.slice(0, -extension.length)}.mdx`;
 }
 
 export function transformLegacyMdx(body, state) {
@@ -337,22 +428,27 @@ export function transformLegacyMdx(body, state) {
     value = transformAnchors(value);
     value = transformHeadingComponents(value);
     value = transformReleaseNoteComponents(value, state);
+    value = transformLegacyInlineComponents(value, state);
+    value = normalizeMalformedLegacyTags(value);
     value = transformCodeFenceMetadata(value, state);
     value = transformCodeBlockComponent(value);
     value = transformLinkTooltips(value, state);
     value = transformLinkCards(value, state);
-    value = transformImages(value, state);
-    value = transformRawHtmlImages(value, state);
+    value = transformLegacyLandingComponents(value, state);
     value = transformTabs(value);
+    value = transformRemainingTabItems(value, state);
     value = transformAdjacentCodeFenceTabs(value, state);
-    value = transformAdmonitions(value);
-    value = transformDetails(value);
     value = transformHtmlTables(value, state);
     value = transformMarkdownTableSlots(value, state);
+    value = transformImages(value, state);
+    value = transformRawHtmlImages(value, state);
+    value = transformAdmonitions(value);
+    value = transformDetails(value);
     value = transformHtmlLists(value);
     value = transformInlineHtml(value);
     value = transformHiddenIndexSpans(value, state);
     value = transformAngleBracketLiterals(value, state);
+    value = transformGenericTypeLiterals(value, state);
     value = escapeMdxQuotedTextLiterals(value, state);
     value = escapeMdxTextOperators(value, state);
     value = rewriteMarkdownLinks(value, state);
@@ -363,7 +459,7 @@ export function transformLegacyMdx(body, state) {
 }
 
 export function transformAdmonitions(value) {
-  return value.replace(
+  const blockConverted = value.replace(
     /^([ \t]*)<Admonition(?=[^>]*>)([^>]*)>\s*\n?([\s\S]*?)\n?[ \t]*<\/Admonition>/gm,
     (_, indent, attrs = '', body) => {
       const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
@@ -374,6 +470,17 @@ export function transformAdmonitions(value) {
         `:::${type}${label}\n${normalizedBody}\n:::`,
         indent.length,
       );
+    },
+  );
+
+  return blockConverted.replace(
+    /<Admonition(?=[^>]*>)([^>]*)>\s*([\s\S]*?)\s*<\/Admonition>/g,
+    (_match, attrs = '', body) => {
+      const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
+      const title = readAttribute(attrs, 'title');
+      const label = title ? `[${title}]` : '';
+      const normalizedBody = trimCommonIndent(transformHtmlLists(body)).trim();
+      return `\n\n:::${type}${label}\n${normalizedBody}\n:::\n\n`;
     },
   );
 }
@@ -571,13 +678,23 @@ async function expandLegacyFile({
       toPosix(path.relative(state.sourceRoot, resolved)),
     );
     const replacementRaw = await fs.readFile(resolved, 'utf8');
+    if (imported.namespace) {
+      body = replaceNamespaceLookups(
+        body,
+        imported.alias,
+        parseExportedObjectMaps(replacementRaw),
+        state,
+      );
+      continue;
+    }
+
     const replacement = await expandLegacyFile({
       absolutePath: resolved,
       raw: replacementRaw,
       state,
       visited,
     });
-    body = replaceComponentUsage(body, imported.alias, replacement.body.trim());
+    body = replaceComponentUsage(body, imported.alias, replacement.body.trim(), state);
   }
 
   return {
@@ -587,6 +704,7 @@ async function expandLegacyFile({
 }
 
 function parseFrontmatter(content) {
+  content = content.replace(/\r\n?/g, '\n');
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\s*/);
   if (!match) {
     return {
@@ -625,18 +743,97 @@ function serializeFrontmatter(frontmatter) {
 function parseImports(content) {
   const imports = [];
   const importPattern =
-    /^import\s+(?:\*\s+as\s+)?([A-Za-z0-9_]+)\s+from\s+['"](.+?)['"];?\s*$/gm;
+    /^import\s+(.+?)\s+from\s+['"](.+?)['"];?\s*$/gm;
   let match = importPattern.exec(content);
 
   while (match) {
+    const importClause = match[1].trim();
+    const namespaceMatch = importClause.match(/^\*\s+as\s+([A-Za-z0-9_]+)$/);
+    const defaultMatch = importClause.match(/^([A-Za-z0-9_]+)/);
+    const alias = namespaceMatch?.[1] ?? defaultMatch?.[1] ?? null;
+
+    if (!alias) {
+      match = importPattern.exec(content);
+      continue;
+    }
+
     imports.push({
-      alias: match[1],
+      alias,
+      namespace: Boolean(namespaceMatch),
       specifier: match[2],
     });
     match = importPattern.exec(content);
   }
 
   return imports;
+}
+
+function parseExportedObjectMaps(content) {
+  const maps = new Map();
+  const exportPattern =
+    /^export\s+const\s+([A-Za-z0-9_]+)\s*=\s*\{([\s\S]*?)^\s*}\s*;?\s*$/gm;
+  let exportMatch = exportPattern.exec(content);
+
+  while (exportMatch) {
+    const values = new Map();
+    const propertyPattern =
+      /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
+    let propertyMatch = propertyPattern.exec(exportMatch[2]);
+
+    while (propertyMatch) {
+      values.set(
+        propertyMatch[1],
+        (
+          propertyMatch[2] ??
+          propertyMatch[3] ??
+          propertyMatch[4] ??
+          propertyMatch[5] ??
+          ''
+        ).trim(),
+      );
+      propertyMatch = propertyPattern.exec(exportMatch[2]);
+    }
+
+    maps.set(exportMatch[1], values);
+    exportMatch = exportPattern.exec(content);
+  }
+
+  return maps;
+}
+
+function replaceNamespaceLookups(content, namespaceName, maps, state) {
+  if (maps.size === 0) {
+    return content;
+  }
+
+  const escaped = escapeRegExp(namespaceName);
+  const platform = state.context.platform ?? '';
+  return content.replace(
+    new RegExp(
+      String.raw`\{${escaped}\.([A-Za-z0-9_]+)\s*\[\s*frontMatter\.ag_platform\s*]\s*}`,
+      'g',
+    ),
+    (match, exportName) => {
+      const exportMap = maps.get(exportName);
+      if (!exportMap) {
+        return match;
+      }
+
+      if (!platform) {
+        return `${namespaceName}.${exportName}`;
+      }
+
+      const platformValue = exportMap.get(platform);
+      if (platformValue === undefined) {
+        state.issues.push(
+          `unresolved-namespace-lookup:${namespaceName}.${exportName}.${platform}`,
+        );
+        return '';
+      }
+
+      return platformValue;
+    },
+  );
 }
 
 function parseExportedLinkLists(content) {
@@ -696,10 +893,11 @@ function parseExportedTableHeaders(content) {
 }
 
 export function stripImportExport(content) {
-  const lines = content.split('\n');
+  const lines = content.replace(/\r\n?/g, '\n').split('\n');
   let inCodeFence = false;
   let skippingExportBlock = false;
   let exportBlockDepth = 0;
+  let countExportBlockDepth = countSquareBrackets;
 
   return lines
     .filter((line) => {
@@ -713,16 +911,27 @@ export function stripImportExport(content) {
       }
 
       if (skippingExportBlock) {
-        exportBlockDepth += countSquareBrackets(line);
+        exportBlockDepth += countExportBlockDepth(line);
         if (exportBlockDepth <= 0) {
           skippingExportBlock = false;
           exportBlockDepth = 0;
+          countExportBlockDepth = countSquareBrackets;
         }
         return false;
       }
 
       if (/^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\[/.test(line)) {
+        countExportBlockDepth = countSquareBrackets;
         exportBlockDepth = countSquareBrackets(line);
+        if (exportBlockDepth > 0) {
+          skippingExportBlock = true;
+        }
+        return false;
+      }
+
+      if (/^export\s+const\s+[A-Za-z0-9_]+\s*=\s*\{/.test(line)) {
+        countExportBlockDepth = countCurlyBraces;
+        exportBlockDepth = countCurlyBraces(line);
         if (exportBlockDepth > 0) {
           skippingExportBlock = true;
         }
@@ -797,26 +1006,27 @@ async function findExistingFile(candidate) {
 
 const JSX_ATTRS_PATTERN = String.raw`(?:[^"'>{}]|"[^"]*"|'[^']*'|\{[^}]*\})*`;
 
-function replaceComponentUsage(content, componentName, replacement) {
+function replaceComponentUsage(content, componentName, replacement, state) {
   const escaped = escapeRegExp(componentName);
+  const nameBoundary = String.raw`(?=[\s>/])`;
   const pairedBlock = new RegExp(
-    `^[ \\t]*<${escaped}(${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/${escaped}\\s*>[ \\t]*$`,
+    `^[ \\t]*<${escaped}${nameBoundary}(${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/${escaped}\\s*>[ \\t]*$`,
     'gm',
   );
   const selfClosingBlock = new RegExp(
-    `^[ \\t]*<${escaped}(${JSX_ATTRS_PATTERN})\\s*\\/>[ \\t]*$`,
+    `^[ \\t]*<${escaped}${nameBoundary}(${JSX_ATTRS_PATTERN})\\s*\\/>[ \\t]*$`,
     'gm',
   );
   const paired = new RegExp(
-    `<${escaped}(${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/${escaped}\\s*>`,
+    `<${escaped}${nameBoundary}(${JSX_ATTRS_PATTERN})>[\\s\\S]*?<\\/${escaped}\\s*>`,
     'g',
   );
   const selfClosing = new RegExp(
-    `<${escaped}(${JSX_ATTRS_PATTERN})\\s*\\/>`,
+    `<${escaped}${nameBoundary}(${JSX_ATTRS_PATTERN})\\s*\\/>`,
     'g',
   );
   const renderReplacement = (_, attrs = '') =>
-    applyComponentProps(replacement, parseStaticProps(attrs));
+    applyComponentProps(replacement, parseStaticProps(attrs, state));
 
   return content
     .replace(pairedBlock, renderReplacement)
@@ -825,7 +1035,7 @@ function replaceComponentUsage(content, componentName, replacement) {
     .replace(selfClosing, renderReplacement);
 }
 
-function parseStaticProps(attrs) {
+function parseStaticProps(attrs, state) {
   const props = new Map();
   const pattern =
     /\b([A-Za-z0-9_]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|\{\s*"([^"]*)"\s*\}|\{\s*'([^']*)'\s*\}|\{\s*`([^`]*)`\s*\})/g;
@@ -839,13 +1049,39 @@ function parseStaticProps(attrs) {
     match = pattern.exec(attrs);
   }
 
+  const expressionPattern =
+    /\b([A-Za-z0-9_]+)\s*=\s*\{\s*(?:frontMatter|props)\.([A-Za-z0-9_]+)\s*\}/g;
+  let expressionMatch = expressionPattern.exec(attrs);
+
+  while (expressionMatch) {
+    props.set(expressionMatch[1], getRuntimePropValue(expressionMatch[2], state) ?? '');
+    expressionMatch = expressionPattern.exec(attrs);
+  }
+
   return props;
 }
 
 function applyComponentProps(replacement, props) {
-  return transformHtmlComponent(replacement, { props }).replace(
+  return evaluateStaticPropConditionals(
+    transformHtmlComponent(replacement, { props }),
+    props,
+  ).replace(
     /\{?props\.([A-Za-z0-9_]+)\}?/g,
     (_, name) => props.get(name) ?? '',
+  );
+}
+
+function evaluateStaticPropConditionals(value, props) {
+  return value.replace(
+    /\{\s*props\.([A-Za-z0-9_]+)\s*={2,3}\s*(['"])(.*?)\2\s*&&\s*([\s\S]*?)\s*}\s*(?=\n\s*(?:\{props\.|#{1,6}\s)|\s*$)/g,
+    (match, propName, _quote, expectedValue, body) => {
+      const actualValue = props.get(propName);
+      if (actualValue == null) {
+        return match;
+      }
+
+      return actualValue === expectedValue ? `\n${body.trim()}\n` : '';
+    },
   );
 }
 
@@ -877,7 +1113,7 @@ function transformProductWrapper(value, state) {
 function transformPlatformFilter(value, state) {
   return value.replace(
     /<PlatformFilter([^>]*)>([\s\S]*?)<\/PlatformFilter\s*>/g,
-    (_, attrs, body) => {
+    (match, attrs, body, offset, source) => {
       const platforms = readListLikeAttribute(attrs, 'platformList');
       const contextPlatforms = state.context.platforms.length
         ? state.context.platforms
@@ -888,26 +1124,57 @@ function transformPlatformFilter(value, state) {
         return body;
       }
 
-      return platforms.some((platform) => contextPlatforms.includes(platform))
-        ? body
-        : '';
+      const selectedPlatforms = platforms.filter((platform) =>
+        contextPlatforms.includes(platform),
+      );
+
+      if (selectedPlatforms.length === 0) {
+        return '';
+      }
+
+      if (contextPlatforms.length <= 1) {
+        return body;
+      }
+
+      const wrapper = isWholeLineMatch({ match, offset, source })
+        ? 'PlatformStructured'
+        : 'PlatformInline';
+      return selectedPlatforms
+        .map(
+          (platform) =>
+            `<${wrapper} platform="${platform}">\n${body.trim()}\n</${wrapper}>`,
+        )
+        .join('\n\n');
     },
   );
+}
+
+function isWholeLineMatch({ match, offset, source }) {
+  const lineStart = source.lastIndexOf('\n', offset) + 1;
+  const nextLineStart = source.indexOf('\n', offset + match.length);
+  const lineEnd = nextLineStart === -1 ? source.length : nextLineStart;
+  const before = source.slice(lineStart, offset).trim();
+  const after = source.slice(offset + match.length, lineEnd).trim();
+  return !before && !after;
 }
 
 function transformRuntimeVariables(value, state) {
   const { platform, product } = state.context;
   const productLabel = getProductLabel(product);
+  const platformLabel = getPlatformLabel(platform);
   return value
     .replace(/\$\{props\.ag_platform\}/g, platform)
     .replace(/\$\{props\.ag_product\}/g, product)
     .replace(/\$\{frontMatter\.ag_platform\}/g, platform)
+    .replace(/\$\{frontMatter\.ag_platform_label\}/g, platformLabel)
     .replace(/\$\{frontMatter\.ag_product_label\}/g, productLabel)
     .replace(/\$\{frontMatter\.ag_product\}/g, product)
     .replace(/\{frontMatter\.ag_platform\}/g, platform)
+    .replace(/\{frontMatter\.ag_platform_label\}/g, platformLabel)
     .replace(/\{frontMatter\.ag_product_label\}/g, productLabel)
     .replace(/\{frontMatter\.ag_product\}/g, product)
     .replace(/\bfrontMatter\.ag_platform\b/g, JSON.stringify(platform))
+    .replace(/\bfrontMatter\.ag_platform_label\b/g, JSON.stringify(platformLabel))
     .replace(/\bfrontMatter\.ag_product_label\b/g, JSON.stringify(productLabel))
     .replace(/\bfrontMatter\.ag_product\b/g, JSON.stringify(product))
     .replace(
@@ -924,9 +1191,21 @@ function getProductLabel(product) {
   return PRODUCT_LABELS.get(product) ?? product;
 }
 
+function getPlatformLabel(platform) {
+  if (!platform) {
+    return '';
+  }
+
+  return PLATFORM_LABELS.get(platform) ?? platform;
+}
+
 function getRuntimePropValue(name, state) {
   if (name === 'ag_platform') {
     return state.context.platform;
+  }
+
+  if (name === 'ag_platform_label') {
+    return getPlatformLabel(state.context.platform);
   }
 
   if (name === 'ag_product') {
@@ -1033,17 +1312,29 @@ function renderAnchoredHeading(hashes, title, id) {
 }
 
 function transformHeadingComponents(value) {
-  return value.replace(
-    /^([ \t]*)<H([1-6])\b([^>]*)>([\s\S]*?)<\/H\2>[ \t]*$/gm,
-    (_, indent, level, attrs, body) => {
+  return value
+    .replace(
+    /^([ \t]*)<H([1-6])\b([^>]*)>([^\n]*?)<\/H\2>([^\n]*)$/gm,
+    (_, indent, level, attrs, body, suffix) => {
       const id = readAttribute(attrs, 'id');
-      const title = collapseInline(body);
+      const title = collapseInline(`${body}${suffix ?? ''}`);
       const heading = `${'#'.repeat(Number(level))} ${title}`;
       return id
         ? `${indent}<a id="${id}"></a>\n${indent}${heading}`
         : `${indent}${heading}`;
     },
-  );
+    )
+    .replace(
+      /^([ \t]*)<h([1-6])\b([^>]*)>([^\n]*?)<\/h\2>([^\n]*)$/gm,
+      (_, indent, level, attrs, body, suffix) => {
+        const id = readAttribute(attrs, 'id');
+        const title = collapseInline(`${body}${suffix ?? ''}`);
+        const heading = `${'#'.repeat(Number(level))} ${title}`;
+        return id
+          ? `${indent}<a id="${id}"></a>\n${indent}${heading}`
+          : `${indent}${heading}`;
+      },
+    );
 }
 
 function transformReleaseNoteComponents(value, state) {
@@ -1073,6 +1364,36 @@ function transformReleaseNoteComponents(value, state) {
   );
 
   return output;
+}
+
+function transformLegacyInlineComponents(value, state) {
+  let output = value.replace(
+    /<Text\b[^>]*>([\s\S]*?)<\/Text>/g,
+    (_match, body) => {
+      state.issues.push('normalized-text-component');
+      return collapseInline(body);
+    },
+  );
+
+  output = output.replace(
+    /<String\b[^>]*>([\s\S]*?)<\/String>/g,
+    (_match, body) => collapseInline(body),
+  );
+  output = output.replace(
+    /<Object\b[^>]*>([\s\S]*?)<\/Object>/g,
+    (_match, body) => collapseInline(body),
+  );
+
+  return output;
+}
+
+function normalizeMalformedLegacyTags(value) {
+  return replaceOutsideCode(value, (text) =>
+    text
+      .replace(/<\s+(\/?)\s*(Table|Tr|Td|Th)\b/gi, '<$1$2')
+      .replace(/<\/\s+(Table|Tr|Td|Th)\s*>/gi, '</$1>')
+      .replace(/<\s*(\/?)\s*(Table|Tr|Td|Th)\s+>/gi, '<$1$2>'),
+  );
 }
 
 function transformCodeFenceMetadata(value, state) {
@@ -1152,9 +1473,206 @@ function transformLinkCards(value, state) {
     return renderCardsBlock([legacyLinkCardFromAttrs(attrs, state)]);
   });
 
+  output = output.replace(
+    /<(?<name>LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard)\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/\k<name>>/g,
+    (match, _name, _attrs, _body, _offset, _source, groups) => {
+      const card = legacyLinkCardFromAttrs(groups.attrs, state);
+      const bodyTitle = collapseInline(groups.body);
+      state.issues.push('normalized-link-cards');
+      return renderMarkdownLinkCard({
+        ...card,
+        title: card.title === card.href && bodyTitle ? bodyTitle : card.title,
+      });
+    },
+  );
+
+  output = output.replace(
+    /<(?<name>LinkCard|DocLinkCard|HotArticleCard|RecommendCard|QuickStartCard|InstantExperienceCard|SDKDownloadCard|PlatformGuideCard|LinkCardA|LinkCardB|LinkCardC|DownloadCard)\b(?<attrs>[^>]*)\/>/g,
+    (match, _name, _attrs, _offset, _source, groups) => {
+      state.issues.push('normalized-link-cards');
+      return renderMarkdownLinkCard(legacyLinkCardFromAttrs(groups.attrs, state));
+    },
+  );
+
   return output
-    .replace(/<\/?(?:Col)\b[^>]*>/g, '')
+    .replace(/<ProductOverview\b[^>]*>/g, '')
+    .replace(/<\/ProductOverview>/g, '')
+    .replace(/<\/?(?:Row|Col)\b[^>]*>/g, '')
     .replace(/<\/Cards>\s*\n\s*<Cards>/g, '');
+}
+
+function transformLegacyLandingComponents(value, state) {
+  let output = value;
+
+  output = output.replace(
+    /<(?<name>ListPanelAV2|ListPanel)\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/\k<name>>/g,
+    (_match, _name, _attrs, _body, _offset, _source, groups) => {
+      state.issues.push('normalized-landing-list-panel');
+      return renderLegacyPanel(groups.attrs, groups.body, state);
+    },
+  );
+
+  output = output.replace(
+    /<LinkList\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/LinkList>/g,
+    (_match, _attrs, _body, _offset, _source, groups) => {
+      state.issues.push('normalized-link-list');
+      return renderLegacyLinkList(groups.attrs, groups.body, state);
+    },
+  );
+
+  output = output.replace(
+    /<QuickGuide\b(?<attrs>[^>]*)>(?<body>[\s\S]*?)<\/QuickGuide>/g,
+    (_match, _attrs, _body, _offset, _source, groups) => {
+      state.issues.push('normalized-quick-guide');
+      return renderLegacyQuickGuide(groups.attrs, groups.body, state);
+    },
+  );
+
+  output = output.replace(
+    /<QuickGuide\b(?<attrs>[^>]*)\/>/g,
+    (_match, _attrs, _offset, _source, groups) => {
+      state.issues.push('normalized-quick-guide');
+      return renderLegacyQuickGuide(groups.attrs, '', state);
+    },
+  );
+
+  output = output.replace(
+    /<ImageGallery\b(?<attrs>[\s\S]*?)\/>/g,
+    (_match, _attrs, _offset, _source, groups) => {
+      const items = readObjectArrayAttribute(groups.attrs, 'list', state);
+      if (items.length === 0) {
+        return '';
+      }
+
+      state.issues.push('normalized-image-gallery');
+      return renderImageGalleryItems(items);
+    },
+  );
+
+  output = transformListItems(output, state);
+
+  return output;
+}
+
+function renderLegacyPanel(attrs, body, state) {
+  const title = readAttribute(attrs, 'title') ?? '';
+  const description =
+    readAttribute(attrs, 'desc') ?? readAttribute(attrs, 'description');
+  const image = readAttribute(attrs, 'img') ?? readAttribute(attrs, 'image');
+  const linkAttr = readObjectArrayAttribute(attrs, 'links', state);
+  const links = linkAttr.length
+    ? linkAttr
+    : readObjectArrayAttribute(attrs, 'href', state);
+  const items = extractListItemTexts(body);
+  const fallbackBody = transformListItems(trimCommonIndent(body), state).trim();
+  const lines = [];
+
+  if (image) {
+    lines.push(`![${title || 'image'}](${image})`, '');
+  }
+
+  if (title || description) {
+    lines.push(renderStrongListItem(title, description));
+  }
+
+  if (items.length > 0) {
+    lines.push(...items.map((item) => `  - ${item}`));
+  } else if (fallbackBody) {
+    lines.push(...fallbackBody.split('\n').map((line) => `  ${line}`));
+  }
+
+  for (const link of links) {
+    lines.push(`  - ${renderMarkdownLinkCard(link).replace(/^- /, '')}`);
+  }
+
+  return `\n${lines.filter((line, index) => line || lines[index - 1]).join('\n')}\n`;
+}
+
+function renderLegacyLinkList(attrs, body, state) {
+  const title = readAttribute(attrs, 'title') ?? '';
+  const hrefAttr = readObjectArrayAttribute(attrs, 'href', state);
+  const links = hrefAttr.length
+    ? hrefAttr
+    : readObjectArrayAttribute(attrs, 'links', state);
+  const content = trimCommonIndent(body).trim();
+  const lines = [];
+
+  if (title) {
+    lines.push(`### ${title}`);
+  }
+
+  if (content) {
+    lines.push('', content);
+  }
+
+  if (links.length) {
+    lines.push('', ...links.map((link) => renderMarkdownLinkCard(link)));
+  }
+
+  return `\n${lines.join('\n')}\n`;
+}
+
+function renderLegacyQuickGuide(attrs, body, state) {
+  const image = readAttribute(attrs, 'img') ?? readAttribute(attrs, 'image');
+  const title = readAttribute(attrs, 'title') ?? '';
+  const hrefAttr = readObjectArrayAttribute(attrs, 'href', state);
+  const links = hrefAttr.length
+    ? hrefAttr
+    : readObjectArrayAttribute(attrs, 'links', state);
+  const content = trimCommonIndent(body).trim();
+  const lines = [];
+
+  if (image) {
+    lines.push(`![${title || 'guide'}](${image})`);
+  }
+
+  if (content) {
+    lines.push('', content);
+  }
+
+  if (links.length) {
+    lines.push('', ...links.map((link) => renderMarkdownLinkCard(link)));
+  }
+
+  return `\n${lines.join('\n')}\n`;
+}
+
+function renderImageGalleryItems(items) {
+  return items
+    .map((item) => {
+      const title = item.text ?? item.title ?? item.alt ?? 'image';
+      const image = item.img ?? item.src ?? item.image;
+      return image ? `![${title}](${image})\n\n- ${title}` : `- ${title}`;
+    })
+    .join('\n\n');
+}
+
+function transformListItems(value, state) {
+  return value.replace(
+    /^[ \t]*<ListItem\b[^>]*>([\s\S]*?)<\/ListItem>[ \t]*$/gm,
+    (_match, body) => {
+      state.issues.push('normalized-list-item');
+      return `- ${collapseInline(body)}`;
+    },
+  );
+}
+
+function extractListItemTexts(body) {
+  return [...body.matchAll(/<ListItem\b[^>]*>([\s\S]*?)<\/ListItem>/g)]
+    .map((match) => collapseInline(match[1]))
+    .filter(Boolean);
+}
+
+function renderStrongListItem(title, description) {
+  if (title && description) {
+    return `- **${title}**：${description}`;
+  }
+
+  if (title) {
+    return `- **${title}**`;
+  }
+
+  return `- ${description}`;
 }
 
 function parseLegacyLinkCards(value, state) {
@@ -1178,6 +1696,13 @@ function renderCardsBlock(cards) {
   return ['<Cards>', ...cards.map((card) => renderCard(card)), '</Cards>'].join(
     '\n',
   );
+}
+
+function renderMarkdownLinkCard(card) {
+  const title = card.title || card.href;
+  return card.href && card.href !== '#'
+    ? `- [${title}](${card.href})`
+    : `- ${title}`;
 }
 
 function renderCard(card) {
@@ -1205,9 +1730,14 @@ function transformImages(value, state) {
     const src = readAttribute(attrs, 'src') ?? '';
     const alt = readAttribute(attrs, 'alt') ?? '';
     const width = readAttribute(attrs, 'width');
+    const inline = hasBooleanAttribute(attrs, 'inline');
 
     if (width) {
       state.issues.push(`needs-image-width-review:${src}:${width}`);
+    }
+
+    if (inline) {
+      return `![${alt}](${src})`;
     }
 
     return `\n![${alt}](${src})\n`;
@@ -1225,8 +1755,16 @@ function transformRawHtmlImages(value, state) {
     }
 
     state.issues.push('normalized-raw-img');
+    if (hasBooleanAttribute(attrs, 'inline')) {
+      return `![${alt}](${src})`;
+    }
+
     return `\n![${alt}](${src})\n`;
   });
+}
+
+function hasBooleanAttribute(attrs, name) {
+  return new RegExp(`(?:^|\\s)${escapeRegExp(name)}(?:\\s|=|$)`).test(attrs);
 }
 
 function transformTabs(value) {
@@ -1282,6 +1820,18 @@ function transformTabs(value) {
         contents,
         '</Tabs>',
       ].join('\n');
+    },
+  );
+}
+
+function transformRemainingTabItems(value, state) {
+  return value.replace(
+    /<TabItem\b([^>]*)>([\s\S]*?)<\/TabItem>/g,
+    (_match, attrs, body) => {
+      const title =
+        readAttribute(attrs, 'label') ?? readAttribute(attrs, 'value') ?? 'Tab';
+      state.issues.push('normalized-tab-item-fallback');
+      return `\n#### ${title}\n\n${trimCommonIndent(body).trim()}\n`;
     },
   );
 }
@@ -1676,8 +2226,9 @@ function transformMarkdownTableSlots(value, state) {
       index += 2;
 
       while (index < lines.length && isMarkdownTableRow(lines[index])) {
-        tableLines.push(lines[index]);
-        index += 1;
+        const collected = collectMarkdownTableRow(lines, index);
+        tableLines.push(collected.row);
+        index = collected.nextIndex;
       }
 
       const rendered = renderMarkdownTableWithSlots({
@@ -1883,6 +2434,67 @@ function isMarkdownTableRow(line = '') {
   return trimmed.startsWith('|') && trimmed.includes('|', 1);
 }
 
+function collectMarkdownTableRow(lines, startIndex) {
+  const rowParts = [lines[startIndex]];
+  let index = startIndex + 1;
+
+  if (isCompleteMarkdownTableRow(lines[startIndex])) {
+    return {
+      nextIndex: index,
+      row: rowParts.join('\n'),
+    };
+  }
+
+  while (index < lines.length) {
+    const line = lines[index];
+    const nextLine = lines[index + 1] ?? '';
+
+    if (isMarkdownTableRow(line)) {
+      break;
+    }
+
+    if (!isMarkdownTableContinuationLine(line, nextLine)) {
+      break;
+    }
+
+    rowParts.push(line);
+    index += 1;
+
+    if (isCompleteMarkdownTableRow(line)) {
+      break;
+    }
+  }
+
+  return {
+    nextIndex: index,
+    row: rowParts.join('\n'),
+  };
+}
+
+function isCompleteMarkdownTableRow(line = '') {
+  return line.trim().endsWith('|');
+}
+
+function isMarkdownTableContinuationLine(line = '', nextLine = '') {
+  const trimmed = line.trim();
+  const nextTrimmed = nextLine.trim();
+
+  if (!trimmed) {
+    return isListItemLine(nextLine);
+  }
+
+  return (
+    isListItemLine(line) ||
+    /^<\/?(?:ul|ol|li|p|Admonition|Detail|Tabs|TabItem|Table|table|Slot)\b/i.test(
+      trimmed,
+    ) ||
+    /^:::+/.test(trimmed) ||
+    /^ {2,}\S/.test(line) ||
+    (trimmed.endsWith('|') && !isMarkdownTableRow(line)) ||
+    (!nextTrimmed && trimmed.endsWith('|'))
+  );
+}
+
 function isMarkdownTableSeparator(line = '') {
   if (!isMarkdownTableRow(line)) {
     return false;
@@ -1899,6 +2511,7 @@ function splitMarkdownTableRow(line) {
   const cells = [];
   let cell = '';
   let escaping = false;
+  let codeSpanTicks = 0;
 
   for (const char of inner) {
     if (escaping) {
@@ -1913,7 +2526,18 @@ function splitMarkdownTableRow(line) {
       continue;
     }
 
+    if (char === '`') {
+      codeSpanTicks = codeSpanTicks ? 0 : 1;
+      cell += char;
+      continue;
+    }
+
     if (char === '|') {
+      if (codeSpanTicks) {
+        cell += char;
+        continue;
+      }
+
       cells.push(cell.trim());
       cell = '';
       continue;
@@ -1928,8 +2552,9 @@ function splitMarkdownTableRow(line) {
 
 function isComplexTableCell(value = '') {
   return (
-    /<\s*(?:ul|ol|p|pre|Admonition|Detail|Tabs|Table|table)\b/i.test(value) ||
+    /<\s*(?:ul|ol|p|pre|img|Image|Admonition|Detail|Tabs|Table|table)\b/i.test(value) ||
     /<br\s*\/?>/i.test(value) ||
+    /(^|\n)\s*:::+/.test(value) ||
     /```/.test(value) ||
     /(^|\n)\s*(?:[-*]|\d+\.)\s+/.test(value.trim())
   );
@@ -2078,11 +2703,12 @@ function findMatchingList(value, openStart) {
 }
 
 function renderHtmlList(inner, { depth, ordered }) {
-  const items = extractHtmlListItems(inner);
+  const itemNodes = extractHtmlListItemNodes(inner);
+  const items = itemNodes.map((item) => item.content);
   const indent = '  '.repeat(depth);
   const childIndent = '  '.repeat(depth + 1);
 
-  return items
+  const renderedItems = items
     .map((item, index) => {
       const marker = ordered ? `${index + 1}.` : '-';
       const markerPrefix = `${indent}${marker} `;
@@ -2120,6 +2746,12 @@ function renderHtmlList(inner, { depth, ordered }) {
     })
     .filter(Boolean)
     .join('\n');
+  const remainder = extractHtmlListRemainder(inner, itemNodes);
+  const renderedRemainder = trimCommonIndent(
+    transformInlineHtml(replaceHtmlLists(remainder, depth)),
+  ).trim();
+
+  return [renderedItems, renderedRemainder].filter(Boolean).join('\n\n');
 }
 
 function transformInlineHtml(value) {
@@ -2216,6 +2848,26 @@ function transformAngleBracketLiterals(value, state) {
 
     return output;
   });
+}
+
+function transformGenericTypeLiterals(value, state) {
+  return replaceOutsideCode(value, (text) =>
+    text
+      .replace(
+        /\{\s*(['"])([A-Z][A-Za-z0-9_.$]*\s*<[^'"}\n]+>)\1\s*\}/g,
+        (_match, _quote, typeName) => {
+          state.issues.push(`escaped-generic-type-literal:${typeName}`);
+          return `\`${typeName.replace(/\s+/g, ' ')}\``;
+        },
+      )
+      .replace(
+        /\b([A-Z][A-Za-z0-9_.$]*(?:\s*<\s*[A-Z][A-Za-z0-9_.$]*(?:\s*,\s*[A-Z][A-Za-z0-9_.$]*)*\s*>)+)(?=[\s,.;:，。；：）)'"}]|$)/g,
+        (match) => {
+        state.issues.push(`escaped-generic-type-literal:${match}`);
+        return `\`${match.replace(/\s+/g, ' ')}\``;
+        },
+      ),
+  );
 }
 
 function escapeMdxQuotedTextLiterals(value, state) {
@@ -2333,10 +2985,11 @@ function routeFromTargetPath(targetPath) {
   return withoutPrefix.replace(/\.(md|mdx)$/i, '').replace(/\/index$/i, '');
 }
 
-function extractHtmlListItems(items) {
+function extractHtmlListItemNodes(items) {
   const output = [];
   const tagPattern = /<\/?li\b[^>]*>/gi;
   let depth = 0;
+  let itemOpenStart = -1;
   let itemStart = -1;
   let match = tagPattern.exec(items);
 
@@ -2345,6 +2998,7 @@ function extractHtmlListItems(items) {
 
     if (!isClose) {
       if (depth === 0) {
+        itemOpenStart = match.index;
         itemStart = tagPattern.lastIndex;
       }
       depth += 1;
@@ -2354,7 +3008,12 @@ function extractHtmlListItems(items) {
 
     depth -= 1;
     if (depth === 0 && itemStart >= 0) {
-      output.push(items.slice(itemStart, match.index).trim());
+      output.push({
+        content: items.slice(itemStart, match.index).trim(),
+        end: tagPattern.lastIndex,
+        start: itemOpenStart,
+      });
+      itemOpenStart = -1;
       itemStart = -1;
     }
 
@@ -2362,6 +3021,23 @@ function extractHtmlListItems(items) {
   }
 
   return output;
+}
+
+function extractHtmlListRemainder(inner, itemNodes) {
+  if (itemNodes.length === 0) {
+    return inner;
+  }
+
+  let output = '';
+  let cursor = 0;
+
+  for (const item of itemNodes) {
+    output += inner.slice(cursor, item.start);
+    cursor = item.end;
+  }
+
+  output += inner.slice(cursor);
+  return output.trim();
 }
 
 function mapAdmonitionType(type) {
@@ -2410,11 +3086,89 @@ function readListLikeAttribute(attrs, name) {
     `\\b${escapeRegExp(name)}\\s*=\\s*(?:\\{\\s*\\[([^\\]]*)\\]\\s*\\}|\\[([^\\]]*)\\]|"([^"]*)"|'([^']*)')`,
   );
   const match = attrs.match(pattern);
-  const raw = match?.[1] ?? match?.[2] ?? match?.[3] ?? match?.[4] ?? '';
+  const raw =
+    match?.[1] ??
+    match?.[2] ??
+    match?.[3] ??
+    match?.[4] ??
+    readBalancedExpressionAttribute(attrs, name) ??
+    '';
   return raw
     .split(',')
     .map((item) => item.replace(/[[\]{}'"\s]/g, ''))
     .filter(Boolean);
+}
+
+function readObjectArrayAttribute(attrs, name, state) {
+  const expression = readBalancedExpressionAttribute(attrs, name);
+  if (!expression) {
+    return [];
+  }
+
+  return [...expression.matchAll(/\{([^{}]*)\}/g)]
+    .map((match) => parseObjectLiteralProperties(match[1], state))
+    .filter((item) => Object.keys(item).length > 0);
+}
+
+function readBalancedExpressionAttribute(attrs, name) {
+  const pattern = new RegExp(`\\b${escapeRegExp(name)}\\s*=\\s*\\{`, 'g');
+  const match = pattern.exec(attrs);
+  if (!match) {
+    return null;
+  }
+
+  const start = pattern.lastIndex - 1;
+  let depth = 0;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = start; index < attrs.length; index += 1) {
+    const char = attrs[index];
+
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === quote) {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      quote = char;
+      continue;
+    }
+
+    if (char === '{') {
+      depth += 1;
+    } else if (char === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        return attrs.slice(start + 1, index);
+      }
+    }
+  }
+
+  return null;
+}
+
+function parseObjectLiteralProperties(raw, state) {
+  const props = {};
+  const pattern =
+    /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([A-Za-z0-9_./:#?&=%-]+))/g;
+  let match = pattern.exec(raw);
+
+  while (match) {
+    const key = match[1];
+    const value = match[2] ?? match[3] ?? match[4] ?? match[5] ?? '';
+    props[key] =
+      key === 'href' && value ? normalizeHref(value, state) : value;
+    match = pattern.exec(raw);
+  }
+
+  return props;
 }
 
 export async function loadComponentMap(componentMapPath) {
@@ -2525,14 +3279,25 @@ function parseSimpleYaml(raw) {
 
     const key = trimmed.slice(0, separatorIndex).trim();
     const rest = trimmed.slice(separatorIndex + 1).trim();
-    const value =
-      rest === ''
+    const blockScalar = rest.match(/^[>|][+-]?$/);
+    const value = blockScalar
+      ? parseYamlBlockScalar({
+          folded: rest.startsWith('>'),
+          lines,
+          parentIndent: indent,
+          startIndex: index + 1,
+        })
+      : rest === ''
         ? nextYamlValueContainer(lines, index + 1, indent)
         : parseYamlScalar(rest);
 
-    parent[key] = value;
+    if (blockScalar) {
+      index = value.endIndex;
+    }
 
-    if (value && typeof value === 'object') {
+    parent[key] = blockScalar ? value.value : value;
+
+    if (!blockScalar && value && typeof value === 'object') {
       stack.push({
         container: value,
         indent,
@@ -2541,6 +3306,37 @@ function parseSimpleYaml(raw) {
   }
 
   return root;
+}
+
+function parseYamlBlockScalar({ folded, lines, parentIndent, startIndex }) {
+  const blockLines = [];
+  let blockIndent = null;
+  let index = startIndex;
+
+  for (; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    const indent = line.match(/^\s*/)?.[0].length ?? 0;
+
+    if (trimmed && indent <= parentIndent) {
+      break;
+    }
+
+    if (trimmed && blockIndent === null) {
+      blockIndent = indent;
+    }
+
+    blockLines.push(line.slice(Math.min(blockIndent ?? indent, indent)));
+  }
+
+  const normalized = folded
+    ? blockLines.join('\n').replace(/\n+/g, ' ').trim()
+    : blockLines.join('\n').trimEnd();
+
+  return {
+    endIndex: index - 1,
+    value: normalized,
+  };
 }
 
 function nextYamlValueContainer(lines, startIndex, parentIndent) {
@@ -2769,6 +3565,19 @@ async function loadPathMap(pathMapPath) {
     if (!sourcePath) {
       continue;
     }
+    const isRedirectContent = isRedirectContentRow(row);
+    const existing = pathMap.get(sourcePath);
+    if (existing) {
+      if (
+        isRedirectContent &&
+        row.target_path &&
+        !existing.targetPaths.includes(row.target_path)
+      ) {
+        existing.targetPaths.push(row.target_path);
+      }
+      continue;
+    }
+
     pathMap.set(sourcePath, {
       auditProgress: row.audit_progress ?? '',
       auditResult: row.audit_result ?? '',
@@ -2781,13 +3590,25 @@ async function loadPathMap(pathMapPath) {
       migrationProgress: row.migration_progress ?? '',
       nextStep: row.next_step ?? '',
       risk: row.risk ?? '',
+      redirectStatus: row.redirect_status ?? '',
       sourcePath,
+      sourceType: row.source_type ?? '',
       status: row.status ?? '',
-      targetPath: row.target_path ?? '',
+      isRedirectContent,
+      targetPath: isRedirectContent ? (row.target_path ?? '') : '',
+      targetPaths: isRedirectContent && row.target_path ? [row.target_path] : [],
     });
   }
 
   return pathMap;
+}
+
+async function loadPagesFile(pagesFilePath) {
+  const raw = await fs.readFile(pagesFilePath, 'utf8');
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'));
 }
 
 async function selectPages({
@@ -3262,6 +4083,18 @@ function countSquareBrackets(value) {
   return count;
 }
 
+function countCurlyBraces(value) {
+  let count = 0;
+  for (const char of value) {
+    if (char === '{') {
+      count += 1;
+    } else if (char === '}') {
+      count -= 1;
+    }
+  }
+  return count;
+}
+
 async function resolveSourceRoot(sourceRoot) {
   if (sourceRoot) {
     return path.resolve(sourceRoot);
@@ -3329,6 +4162,16 @@ function parseArgs(argv) {
 
     if (arg.startsWith('--path-map=')) {
       options.pathMap = arg.slice('--path-map='.length);
+      continue;
+    }
+
+    if (arg === '--pages-file') {
+      options.pagesFile = argv[++index];
+      continue;
+    }
+
+    if (arg.startsWith('--pages-file=')) {
+      options.pagesFile = arg.slice('--pages-file='.length);
       continue;
     }
 

@@ -1,0 +1,508 @@
+---
+title: "接收 Webhook 事件"
+---
+Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送数据。声网的消息通知服务使用 Webhook 向你推送特定事件的通知，当你订阅的事件发生时，声网业务服务器会将事件消息发送给声网消息通知服务器，然后声网消息通知服务器会通过 HTTPS POST 请求将事件通知投递给你的服务器。
+
+![消息通知服务](https://web-cdn.agora.io/doc-cms/uploads/1727074548122-Webhook.png)
+
+## 适用场景
+
+声网消息通知服务具有低延时、高并发、稳定可靠的特点。对于对话式 AI 引擎，在智能体高并发的场景下，通过消息通知服务可以在业务层维护一个实时同步的智能体状态机，实现以下功能：
+
+- 实时监听智能体加入或离开频道事件。
+- 实时监听智能体错误事件。
+
+## 前提条件
+
+开始之前，请确保你满足以下条件：
+
+- 有效的声网开发者账号和声网控制台项目。详见[开通服务](/zh-CN/ai/get-started/enable-service)。
+- 满足以下条件的服务器：
+  - 支持 HTTPS 协议。为提高安全性，声网消息通知服务不再支持 HTTP 服务器地址。
+  - （推荐）支持 HTTPS 连接重用，即 keep-alive 模式，以降低消息投递延时。声网建议进行如下设置：
+    - `MaxKeepAliveRequests`：大于等于 100。
+    - `KeepAliveTimeout`：大于等于 10 秒。
+
+## 开通消息通知服务
+
+使用消息通知服务前，你需要在声网控制台自助开通并填写配置信息。
+
+### 1. 启用并配置服务
+
+参考以下步骤开通并配置消息通知服务：
+
+1. 登录[声网控制台](https://console.shengwang.cn/)，点击左侧导航栏的**全部产品**，选择**对话式 AI 引擎**。
+
+2. 在产品页面，点击进入 **Webhook** 页签。
+
+3. 在配置区域点击**新增事件**，然后在**新建 Webhook** 弹出框中填入以下信息，最后点击**保存**。
+   - **消息接收区域**：你的消息通知接收服务器所在的区域。声网会根据你提供的区域就近接入声网节点服务器。
+   - **消息接收 URL**：接收消息通知的 HTTPS 服务器地址。
+   - **订阅事件**：需要订阅的事件。详见[对话式 AI 引擎事件类型](/zh-CN/ai/webhook/ncs-events)。如需配置 QPS（每秒请求数）较高的事件，请确保你的服务器有足够的处理能力。建议一次选择所有需要订阅的事件，以避免多次配置和健康检查。
+   - **IP 白名单**：如果你的消息接收服务器受防火墙限制，请勾选该选项，并按照以下步骤将声网消息通知服务器的 IP 地址全部添加到防火墙白名单。
+
+      <Accordions>
+<Accordion title="获取 IP 地址并添加到防火墙白名单">
+
+如果你的服务器受防火墙限制，你需要调用 RESTful API [查询消息通知服务器 IP](/doc/rtc/restful/channel-management/operations/get-v2-ncs-ip)，将获取到的所有 IP 地址都添加到防火墙白名单。
+
+声网可能会调整消息通知服务器的 IP 地址，因此强烈推荐你至少每 24 小时进行一次查询并自动更新防火墙配置，否则可能会影响你接收通知。
+
+ ```java
+ import java.io.IOException;
+ import java.net.URI;
+ import java.net.http.HttpClient;
+ import java.net.http.HttpRequest;
+ import java.net.http.HttpResponse;
+ import java.util.Base64;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.TimeUnit;
+
+ public class Base64Encoding {
+
+     public static void main(String[] args) throws IOException {
+
+         // 客户 ID
+         // 需要设置环境变量 AGORA_CUSTOMER_KEY
+         final String customerKey = System.getenv("AGORA_CUSTOMER_KEY");
+         // 客户密钥
+         // 需要设置环境变量 AGORA_CUSTOMER_SECRET
+         final String customerSecret = System.getenv("AGORA_CUSTOMER_SECRET");
+
+         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+         // 拼接客户 ID 和客户密钥并使用 base64 编码
+         String plainCredentials = customerKey + ":" + customerSecret;
+         String base64Credentials = new String(Base64.getEncoder().encode(plainCredentials.getBytes()));
+         // 创建 authorization header
+         String authorizationHeader = "Basic " + base64Credentials;
+
+         // 创建 HTTP 请求对象
+         HttpRequest request = HttpRequest.newBuilder()
+             .uri(URI.create("https://api.agora.io/v2/ncs/ip"))
+             .GET()
+             .header("Authorization", authorizationHeader)
+             .header("Content-Type", "application/json")
+             .build();
+
+         // highlight-start
+         // 使用 executor 安排任务，每 24 小时运行一次
+         executor.scheduleAtFixedRate(() -> {
+             try {
+                 HttpClient client = HttpClient.newHttpClient();
+                 // 发送 HTTP 请求
+                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                 System.out.println(response.body());
+         } catch (IOException | InterruptedException e) {
+                 e.printStackTrace();
+         }
+     }, 0, 24, TimeUnit.HOURS);
+     // highlight-end
+ }
+ }
+ ```
+
+</Accordion>
+</Accordions>
+
+完成功能配置后，声网会对你的配置进行健康检查。
+
+### 2. 完成健康检查
+
+:::warning[注意]
+健康检查为开通消息通知服务必需步骤，只有通过检查才算开通成功。
+:::
+
+健康检查的步骤如下：
+
+1. 声网会根据你订阅的事件生成对应的测试事件，并向你的服务器发送事件回调。在测试事件回调中，`channelName` 为 `test_webhook`，`uid` 为 `12121212`。
+2. 接收到每个测试事件回调后，你的服务器需要在 10 秒内对声网消息服务器作出响应，响应状态码必须为 200，响应包体格式为 JSON，包体内容不作要求。示例代码如下：
+
+    ```javascript
+    const express = require('express');
+    const app = express();
+    const bodyParser = require('body-parser');
+
+    // 使用 body-parser 中间件解析请求体
+    app.use(bodyParser.json());
+
+    // 处理接收到的 POST 请求
+    app.post('/', express.json({ type: 'application/json' }), (req, res) => {
+        const event = request.body;
+        // 5 秒后发送响应
+        setTimeout(() => {
+            res.status(200).json({message: 'Success'});
+        }, 5000);
+        // 发送响应后，再执行耗时较长的任务
+    });
+    ```
+
+3. 如果健康检查失败，请根据声网控制台的提示进行错误排查。常见的错误包括：
+    - 请求超时：你的服务器没有在 10 秒内返回 200。请检查你的服务器是否及时对事件回调作出正确的响应。如果响应正确，请联系[技术支持](https://ticket.shengwang.cn/)确认声网消息通知服务器到你的服务器之间的网络连接是否正常。
+    - 证书错误：HTTPS 证书错误。请检查证书是否正确。如果你的服务器受防火墙限制，请检查是否已将声网消息通知服务器的 IP 地址全部添加到防火墙白名单。
+    - 域名不可达：域名不合法，无法解析到目标 IP 地址。请检查你的服务器部署是否正确。
+    - 响应错误：你的服务器返回的响应状态码不为 200，具体的状态码和描述详见控制台提示。
+4. 健康检查成功后，点击**保存配置**。
+
+配置通过审核后，消息通知服务的状态会显示**已启用**。
+
+## 接收消息通知回调
+
+成功开通声网消息通知服务后，当订阅的频道事件发生时，声网消息服务器会以 HTTPS POST 请求的形式向你的服务器发送消息通知回调。详见[对话式 AI 引擎事件类型](/zh-CN/ai/webhook/ncs-events)。
+
+### 响应要求
+
+接收到消息通知回调后，你的服务器需要在 10 秒内对声网消息服务器作出响应。响应包体格式为 JSON，包体内容不作要求。
+
+声网消息服务器发送通知后的 10 秒内，如果没有收到你的服务器的响应或响应状态码不是 200，会认为消息通知失败。失败后，声网消息通知服务器会立即重新发送消息通知，投递间隔随着重试次数的上升逐渐增加，直到重试三次后停止投递。
+
+### 验证签名
+
+为提高声网消息服务器和你的服务器之间的通信安全，你可以通过签名机制进行身份验证，确保接收到的请求来自声网。
+
+当声网向你的服务器发送消息通知回调时，会使用密钥通过 HMAC/SHA1 和 HMAC/SHA256 算法生成签名值，并分别添加在 HTTPS 请求 Header 的 `Agora-Signature` 和 `Agora-Signature-V2` 字段中。
+
+参考以下步骤进行签名验证：
+
+1. 获取密钥：配置声网消息通知服务时，声网会生成一个密钥。在控制台左侧导航栏的**全部产品**下选择**对话式 AI 引擎**，进入 **Webhook** 页签点击复制按钮即可获取该密钥。
+
+![复制 Webhook 密钥](/img/convoai/webhook-key.png)
+
+2. 收到回调后，使用密钥和请求包体里的参数，选用 HMAC/SHA1 或 HMAC/SHA256 算法计算签名值。
+
+3. 将你计算出的签名与请求 Header 中对应的字段进行对比：
+
+   - 如果你选用 HMAC/SHA1 算法：将计算值与 `Agora-Signature` 字段对比。二者完全相同则说明该请求是由声网发送的。
+   - 如果你选用 HMAC/SHA256 算法：将计算值与 `Agora-Signature-V2` 字段对比。二者完全相同则说明该请求是由声网发送的。
+
+声网提供多种语言的验证签名示例代码供你参考。
+
+<Accordions>
+<Accordion title="Python 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Dictionary`。
+:::
+
+```python
+#!/usr/bin/env python2
+# !-*- coding: utf-8 -*-
+import hashlib
+import hmac
+# 拿到消息通知的 raw request body 并对其计算签名
+request_body = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
+secret = 'secret'
+signature2 = hmac.new(secret, request_body, hashlib.sha256).hexdigest()
+print(signature2) # de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Dictionary`。
+:::
+
+```python
+#!/usr/bin/env python2
+# !-*- coding: utf-8 -*-
+import hashlib
+import hmac
+# 拿到消息通知的 raw request body 并对其计算签名
+request_body = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
+secret = 'secret'
+signature = hmac.new(secret, request_body, hashlib.sha1).hexdigest()
+print(signature) # 5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="Node.js 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `requestBody` 是反序列化之前的 binary byte array，不是反序列化之后的 `Object`。
+:::
+
+```javascript
+const crypto = require('crypto')
+// 拿到消息通知的 raw request body 并对其计算签名
+const requestBody = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
+const secret = 'secret'
+const signature2 = crypto.createHmac('sha256', secret).update(requestBody, 'utf8').digest('hex')
+console.log(signature2) // de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `requestBody` 是反序列化之前的 binary byte array，不是反序列化之后的 `Object`。
+:::
+
+```javascript
+const crypto = require('crypto')
+// 拿到消息通知的 raw request body 并对其计算签名
+const requestBody = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
+const secret = 'secret'
+const signature = crypto.createHmac('sha1', secret).update(requestBody, 'utf8').digest('hex')
+console.log(signature) // 5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="Java 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Object`。
+:::
+
+```java
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+public class HmacSha {
+    // 将加密后的字节数组转换成字符串
+    public static String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if (hex.length() < 2) {
+                sb.append(0);
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+    // HMAC/SHA256 加密，返回加密后的字符串
+    public static String hmacSha256(String message, String secret) {
+        try {
+            SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(
+                        "utf-8"), "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(signingKey);
+            byte[] rawHmac = mac.doFinal(message.getBytes("utf-8"));
+            return bytesToHex(rawHmac);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        // 拿到消息通知的 raw request body 并对其计算签名
+        String request_body = "{\"eventType\":10,\"noticeId\":\"4eb720f0-8da7-11e9-a43e-53f411c2761f\",\"notifyMs\":1560408533119,\"payload\":{\"a\":\"1\",\"b\":2},\"productId\":1}";
+        String secret = "secret";
+        System.out.println(hmacSha256(request_body, secret)); //de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Object`。
+:::
+
+```java
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+public class HmacSha {
+    // 将加密后的字节数组转换成字符串
+    public static String bytesToHex(byte[] bytes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String hex = Integer.toHexString(bytes[i] & 0xFF);
+            if (hex.length() < 2) {
+                sb.append(0);
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+    // HMAC/SHA1 加密，返回加密后的字符串
+    public static String hmacSha1(String message, String secret) {
+        try {
+            SecretKeySpec signingKey = new SecretKeySpec(secret.getBytes(
+                        "utf-8"), "HmacSHA1");
+            Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(signingKey);
+            byte[] rawHmac = mac.doFinal(message.getBytes("utf-8"));
+            return bytesToHex(rawHmac);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void main(String[] args) {
+        // 拿到消息通知的 raw request body 并对其计算签名
+        String request_body = "{\"eventType\":10,\"noticeId\":\"4eb720f0-8da7-11e9-a43e-53f411c2761f\",\"notifyMs\":1560408533119,\"payload\":{\"a\":\"1\",\"b\":2},\"productId\":1}";
+        String secret = "secret";
+        System.out.println(hmacSha1(request_body, secret)); //5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+
+<Accordion title="PHP 示例">
+
+```php tab="HMAC/SHA256" tabGroup="signature"
+<?php
+function assertEqual($expect, $actual)
+{
+    if ($expect != $actual) {
+        echo("\n assert failed");
+        echo("\n  expect:\n    " . $expect);
+        echo("\n  actual:\n    " . $actual);
+        echo("\n");
+    } else {
+        echo("assert ok\n");
+        echo("\n");
+    }
+}
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+$request_body = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}';
+$secret = 'secret';
+// 请求 header 中 Agora-Signature-V2 的值
+$sha256 = 'de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24';
+$res2 = (hash_hmac('sha256', $request_body, $secret));
+assertEqual($res2, $sha256);
+?>
+```
+
+```php tab="HMAC/SHA1" tabGroup="signature"
+<?php
+function assertEqual($expect, $actual)
+{
+    if ($expect != $actual) {
+        echo("\n assert failed");
+        echo("\n  expect:\n    " . $expect);
+        echo("\n  actual:\n    " . $actual);
+        echo("\n");
+    } else {
+        echo("assert ok\n");
+        echo("\n");
+    }
+}
+// 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
+$request_body = '{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}';
+$secret = 'secret';
+// 请求 header 中 Agora-Signature 的值
+$sha1 = '5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1';
+$res1 = (hash_hmac('sha1', $request_body, $secret));
+assertEqual($res1, $sha1);
+?>
+```
+
+</Accordion>
+
+<Accordion title="Go 示例">
+
+<Tabs defaultValue="256" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="256">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Dictionary`。
+:::
+
+```go
+package main
+import (
+  "crypto/hmac"
+  "crypto/sha256"
+  "encoding/hex"
+  "fmt"
+)
+func main() {
+  // 拿到消息通知的 raw request body 并对其计算签名
+  request_body := `{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}`
+  secret := "secret"
+  fmt.Println(calcSignatureV2(secret, request_body)) // de96da5acf03b0021ac3b4fa2225e7ae6f3533a30d50bb02c08ea4fa748bda24
+}
+func calcSignatureV2(secret, payload string) string {
+  mac := hmac.New(sha256.New, []byte(secret))
+  mac.Write([]byte(payload))
+  return hex.EncodeToString(mac.Sum(nil))
+}
+```
+
+</TabsContent>
+
+<TabsContent value="1">
+
+:::warning[注意]
+如下代码中的 `request_body` 是反序列化之前的 binary byte array，不是反序列化之后的 `Dictionary`。
+:::
+
+```go
+package main
+import (
+  "crypto/hmac"
+  "crypto/sha1"
+  "encoding/hex"
+  "fmt"
+)
+func main() {
+  // 拿到消息通知的 raw request body 并对其计算签名
+  request_body := `{"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}`
+  secret := "secret"
+  fmt.Println(calcSignatureV1(secret, request_body))  // 5a3bb6a6d9fad2ea9ae3fb707a14c9d7f3136df1
+}
+func calcSignatureV1(secret, payload string) string {
+  mac := hmac.New(sha1.New, []byte(secret))
+  mac.Write([]byte(payload))
+  return hex.EncodeToString(mac.Sum(nil))
+}
+```
+
+</TabsContent>
+</Tabs>
+
+</Accordion>
+</Accordions>
+
+## 开发注意事项
+
+- 声网消息通知服务不保证消息通知完全按照事件发生的顺序到达，你的服务器需要能处理乱序消息。
+- 为提高消息服务的可靠性，每次事件可能会有不止一次消息通知，你的服务器需要能处理重复消息。

@@ -1,0 +1,89 @@
+---
+title: "特性列表"
+---
+本文提供 RTM 所具备的功能特性及对应 API 接口。
+
+## Setup
+
+| 功能 | API 接口 |
+| --- | --- |
+| 创建实例 | [`new RTM()`](/api-ref/rtm2/javascript/toc-configuration/configuration#Init) |
+| Token 设置 | [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) 中的 `token` 参数 |
+| 端侧加密 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `encryptionMode`、`cipherKey`、`salt` 参数 |
+| Presence 超时设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `presenceTimeout` 参数 |
+| 日志上传 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `logUpload` 参数 |
+| 日志等级设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `logLevel` 参数 |
+| Cloud Proxy 设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `cloudProxy` 参数 |
+| 私有化部署设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `privateConfig` 参数 |
+| 事件监听 | <Slot name="feature-list-javascript-html-0-9-1" /> |
+| 登录服务 | [`rtm.login(...): Promise<LoginResponse>;`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) |
+| 登出服务 | [`rtm.logout(): Promise<LogoutResponse>;`](/api-ref/rtm2/javascript/toc-configuration/configuration#logout) |
+
+<Slot for="feature-list-javascript-html-0-9-1">
+
+- [`rtm.addEventListener("event", event => {});`](/api-ref/rtm2/javascript/toc-configuration/configuration#添加监听)
+    - [`rtm.removeEventListener("event", statusHandler);`](/api-ref/rtm2/javascript/toc-configuration/configuration#删除监听)
+
+</Slot>
+
+## Channel
+
+| 功能 | API 接口 |
+| --- | --- |
+| 订阅频道 | [`rtm.subscribe(...): Promise<SubscribeResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe) |
+| 取消订阅频道 | [`rtm.unsubscribe(...): Promise<UnsubscribeResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#unsubscribe) |
+| 创建 Stream Channel | [`rtm.createStreamChannel(...): RTMStreamChannel;`](/api-ref/rtm2/javascript/toc-channel/channel#createStreamChannel) |
+| 加入 Stream Channel | [`streamChannel.join(...): Promise<JoinChannelResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#join) |
+| 离开 Stream Channel | [`streamChannel.leave(...): Promise<LeaveChannelResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#leave) |
+
+## Topic
+
+| 功能 | API 接口 |
+| --- | --- |
+| 加入 Topic | [`streamChannel.joinTopic(...): Promise<JoinTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#joinTopic) |
+| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(...): Promise<PublishTopicMessageResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#publishTopicMessage) |
+| 离开 Topic | [`streamChannel.leaveTopic(...): Promise<LeaveTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#leaveTopic) |
+| 订阅 Topic | [`streamChannel.subscribeTopic(...): Promise<SubscribeTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#subscribeTopic) |
+| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(...): Promise<UnsubscribeTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#unsubscribeTopic) |
+
+## Message
+
+| 功能 | API 接口 |
+| --- | --- |
+| 发送消息 | [`rtm.publish(...): Promise<PublishResponse>;`](/api-ref/rtm2/javascript/toc-message/message#publish) |
+
+## Presence
+
+| 功能 | API 接口 |
+| --- | --- |
+| 查询频道在线用户 | [`rtm.presence.whoNow(...): Promise<WhoNowResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#whoNow) |
+| 查询用户所在频道 | [`rtm.presence.whereNow(...): Promise<WhereNowResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#whereNow) |
+| 设置用户临时状态 | [`rtm.presence.setState(...): Promise<SetStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#setState) |
+| 查询用户临时状态 | [`rtm.presence.getState(...): Promise<GetStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#getState) |
+| 删除用户临时状态 | [`rtm.presence.removeState(...): Promise<RemoveStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#removeState) |
+
+## Storage
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置频道属性 | [`rtm.storage.setChannelMetadata(...): Promise<SetChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#setChannelMetadata) |
+| 获取频道属性 | [`rtm.storage.getChannelMetadata(...): Promise<GetChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#getChannelMetadata) |
+| 删除频道属性 | [`rtm.storage.removeChannelMetadata(...): Promise<RemoveChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#removeChannelMetadata) |
+| 更新频道属性 | [`rtm.storage.updateChannelMetadata(...): Promise<UpdateChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#updateChannelMetadata) |
+| 设置用户属性 | [`rtm.storage.setUserMetadata(...): Promise<SetUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#setUserMetadata) |
+| 获取用户属性 | [`rtm.storage.getUserMetadata(...): Promise<GetUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#getUserMetadata) |
+| 删除用户属性 | [`rtm.storage.removeUserMetadata(...): Promise<RemoveUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#removeUserMetadata) |
+| 更新用户属性 | [`rtm.storage.updateUserMetadata(...): Promise<UpdateUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#updateUserMetadata) |
+| 订阅用户属性 | [`rtm.storage.subscribeUserMetadata(...): Promise<SubscribeUserMetaResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#subscribeUserMetadata) |
+| 取消订阅用户属性 | [`rtm.storage.unsubscribeUserMetadata(...): Promise<UnsubscribeUserMetaResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#unsubscribeUserMetadata) |
+
+## Lock
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置锁 | [`rtm.lock.setLock(...): Promise<SetLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#setLock) |
+| 获取锁 | [`rtm.lock.acquireLock(...): Promise<AcquireLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#acquireLock) |
+| 释放锁 | [`rtm.lock.releaseLock(...): Promise<ReleaseLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#releaseLock) |
+| 收回锁 | [`rtm.lock.revokeLock(...): Promise<RevokeLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#revokeLock) |
+| 查询锁 | [`rtm.lock.getLock(...): Promise<GetLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#getLock) |
+| 删除锁 | [`rtm.lock.removeLock(...): Promise<RemoveLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#removeLock) |
