@@ -32,11 +32,17 @@ const artifactPath = path.join(
 let records;
 try {
   records = JSON.parse(await readFile(artifactPath, 'utf8'));
-} catch {
-  console.error(
-    `Algolia records artifact not found at ${artifactPath}. ` +
-      'Run the build first (bun run docs:static-payload) before syncing.',
-  );
+} catch (error) {
+  if (error?.code === 'ENOENT') {
+    console.error(
+      `Algolia records artifact not found at ${artifactPath}. ` +
+        'Run the build first (bun run docs:static-payload) before syncing.',
+    );
+  } else {
+    console.error(
+      `Failed to read Algolia records artifact at ${artifactPath}: ${error?.message ?? error}`,
+    );
+  }
   process.exit(1);
 }
 
