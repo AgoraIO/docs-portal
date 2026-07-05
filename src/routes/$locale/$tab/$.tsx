@@ -1,4 +1,5 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
@@ -17,6 +18,7 @@ import {
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import { recordRecentPage } from '@/lib/recently-viewed';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -141,6 +143,19 @@ function Page() {
     toc,
     title,
   } = Route.useLoaderData();
+
+  // Remember this page so the search dialog can offer it under "Recent". Keyed
+  // on the resolved title so a client-side navigation to another page re-records.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !title) {
+      return;
+    }
+    recordRecentPage({
+      description,
+      title,
+      url: window.location.pathname,
+    });
+  }, [description, title]);
 
   return (
     <DocsContent

@@ -23,6 +23,8 @@ const enCommon = {
     searchDescription: 'Search tabs and pages in the current docs portal.',
     searchPlaceholder: 'Search docs, APIs, guides...',
     searchEmpty: 'No matching pages found.',
+    searchRecent: 'Recent',
+    searchPrompt: 'Search docs, APIs, and guides.',
     searchUnavailable: 'Search index unavailable.',
     searchLoading: 'Searching...',
     searchAllPlatforms: 'All platforms',

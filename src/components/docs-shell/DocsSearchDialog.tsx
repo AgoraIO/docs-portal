@@ -20,8 +20,9 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { ProductScope, TabSummary } from '@/lib/docs-tree';
+import type { ProductScope } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -32,12 +33,21 @@ import {
   type PlatformKey,
   platformRegistry,
 } from '@/lib/platforms/registry';
+import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
 const SEARCH_DEBOUNCE_MS = 200;
+
+// First-open cascade: how many leading rows animate, and the per-row offset.
+// Capped so a long list never feels slow to appear.
+const STAGGER_MAX = 6;
+const STAGGER_STEP_MS = 30;
+
+// How many recently-viewed pages the empty state shows.
+const RECENT_VISIBLE = 6;
 
 type PagesState =
   | {
@@ -56,13 +66,11 @@ export function DocsSearchDialog({
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
   productScopes = [],
-  tabs,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   productScopes?: ProductScope[];
-  tabs: TabSummary[];
 }) {
   const { i18n } = useTranslation('common');
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -77,6 +85,12 @@ export function DocsSearchDialog({
   // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
   // so the footer can describe the active result without a focus-based tooltip.
   const [activeValue, setActiveValue] = useState<string | null>(null);
+  // The first batch of rows shown right after opening cascades in. Typing
+  // disarms it so results render instantly on every keystroke (no typing lag).
+  const [staggerArmed, setStaggerArmed] = useState(false);
+  // Recently-viewed pages shown (before any query) as a starting point. Loaded
+  // from localStorage each time the dialog opens.
+  const [recentPages, setRecentPages] = useState<RecentPage[]>([]);
   const scopeFilter =
     productScopes.find((scope) => scope.id === scopeId)?.filter ?? undefined;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
@@ -91,8 +105,14 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
-  const searchClient = useMemo(
-    () =>
+  // Count of in-flight search requests. fumadocs' `isLoading` flips off the
+  // moment ANY request settles — including a superseded one whose result it then
+  // discards — which briefly reads as "settled with no results" mid-typing and
+  // flashes the empty message. Tracking every request keeps us "busy" until the
+  // latest one actually resolves.
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const searchClient = useMemo(() => {
+    const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
         ? createAlgoliaDocsClient({
             appId: algoliaAppId,
@@ -102,17 +122,27 @@ export function DocsSearchDialog({
             scopeFilter,
             searchApiKey: algoliaSearchApiKey,
           })
-        : createLocalDocsClient(pages),
-    [
-      algoliaAppId,
-      algoliaIndexName,
-      algoliaSearchApiKey,
-      pages,
-      platformFilter,
-      scopeFilter,
-      searchLocale,
-    ],
-  );
+        : createLocalDocsClient(pages);
+    return {
+      ...base,
+      async search(query: string) {
+        setPendingRequests((count) => count + 1);
+        try {
+          return await base.search(query);
+        } finally {
+          setPendingRequests((count) => count - 1);
+        }
+      },
+    };
+  }, [
+    algoliaAppId,
+    algoliaIndexName,
+    algoliaSearchApiKey,
+    pages,
+    platformFilter,
+    scopeFilter,
+    searchLocale,
+  ]);
   const searchDeps = useMemo(
     () =>
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -148,7 +178,7 @@ export function DocsSearchDialog({
   );
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
-  const showFallbackPages = !algoliaConfig && !search.trim();
+  const hasQuery = search.trim() !== '';
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
@@ -175,7 +205,14 @@ export function DocsSearchDialog({
       setDebouncePending(false);
     }
   }, [isLoading]);
-  const isBusy = isLoading || debouncePending;
+  // Once the user starts typing, the cascade would replay on every keystroke and
+  // read as lag, so disarm it as soon as there's a query.
+  useEffect(() => {
+    if (search.trim() !== '') {
+      setStaggerArmed(false);
+    }
+  }, [search]);
+  const isBusy = isLoading || debouncePending || pendingRequests > 0;
   const platformOptions = useMemo(
     () =>
       ([...Object.keys(platformRegistry)] as PlatformKey[]).sort(
@@ -224,9 +261,26 @@ export function DocsSearchDialog({
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
       setOpen(nextOpen);
+      // Re-arm the cascade each time the dialog opens; clear it on close.
+      setStaggerArmed(nextOpen);
+
+      if (nextOpen) {
+        // Refresh the recent list from storage on each open, dropping the page
+        // the user is currently on (offering it back to them makes no sense).
+        const currentPath =
+          typeof window === 'undefined' ? '' : window.location.pathname;
+        setRecentPages(
+          getRecentPages()
+            .filter((page) => page.url !== currentPath)
+            .slice(0, RECENT_VISIBLE),
+        );
+      }
 
       if (!nextOpen) {
         setActiveValue(null);
+        // Reset the query on close so reopening lands on the recent list / prompt
+        // rather than the previous search's (possibly empty) results.
+        setSearch('');
       }
 
       if (algoliaConfig || !nextOpen || pages.length > 0) {
@@ -254,7 +308,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale],
+    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -282,34 +336,37 @@ export function DocsSearchDialog({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleOpenChange, mode]);
 
-  const tabEntries = filterTabs(tabs, search);
-  const resultEntries: RenderedSearchEntry[] = isSearchUnavailable
-    ? []
-    : showFallbackPages
-      ? pages.map(localSearchEntryToRenderedEntry)
+  // Results only appear once there's a query — the empty state is the recent
+  // list (or a prompt). Section tabs are navigation, not search results, so
+  // they no longer appear here; their landing pages surface as normal results.
+  const resultEntries: RenderedSearchEntry[] =
+    !hasQuery || isSearchUnavailable
+      ? []
       : normalizedSearchResults.map(searchResultToEntry);
+  const showRecent = !hasQuery && recentPages.length > 0;
+  // Nothing typed and no history yet → a plain prompt instead of fake results.
+  const showPrompt = !hasQuery && recentPages.length === 0;
   // Only show the loading skeleton when there's nothing else to show. While a
   // re-query is in flight the previous results stay visible, so the skeleton
   // must not render on top of them.
-  const showSkeleton =
-    isBusy && tabEntries.length === 0 && resultEntries.length === 0;
+  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
 
-  // One detail record per rendered item, in render order (tabs first, then
-  // results). `value` matches the cmdk item value set on each CommandItem below.
-  const detailEntries: DetailEntry[] = [
-    ...tabEntries.map((tab) => ({
-      path: [],
-      primary: tab.description,
-      title: tab.title,
-      value: tab.url,
-    })),
-    ...resultEntries.map((page) => ({
-      path: page.path,
-      primary: page.description,
-      title: page.title,
-      value: page.id ?? page.url,
-    })),
-  ];
+  // One detail record per rendered item, in render order. `value` matches the
+  // cmdk item value set on each CommandItem below. The empty state lists recent
+  // pages; an active query lists results.
+  const detailEntries: DetailEntry[] = hasQuery
+    ? resultEntries.map((page) => ({
+        path: page.path,
+        primary: page.description,
+        title: page.title,
+        value: page.id ?? page.url,
+      }))
+    : recentPages.map((page) => ({
+        path: [],
+        primary: page.description,
+        title: page.title,
+        value: page.url,
+      }));
 
   // cmdk emits the active item's (trimmed) value via onValueChange. Our values
   // are URLs/ids with no case or whitespace variance, so a direct match is
@@ -319,6 +376,17 @@ export function DocsSearchDialog({
   const activeDetail =
     detailEntries.find((entry) => entry.value === activeValue) ??
     detailEntries[0];
+
+  // Per-row cascade props for the first-open stagger. `position` is the row's
+  // index across the whole list (tabs first, then results); only the first
+  // STAGGER_MAX rows animate, each offset by STAGGER_STEP_MS.
+  const staggerProps = (position: number) =>
+    staggerArmed && position < STAGGER_MAX
+      ? {
+          className: 'search-result-enter',
+          style: { animationDelay: `${position * STAGGER_STEP_MS}ms` },
+        }
+      : { className: undefined, style: undefined };
 
   return (
     <>
@@ -345,11 +413,12 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="max-w-2xl overflow-hidden border-border p-0"
+        className="docs-search-dialog max-w-2xl overflow-hidden border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
         open={open}
+        overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
         title={t('docs.search')}
         value={activeValue ?? ''}
@@ -391,74 +460,106 @@ export function DocsSearchDialog({
                 </div>
               ))}
             </div>
-          ) : (
+          ) : hasQuery ? (
+            // Only render cmdk's empty slot during an active search. Rendering it
+            // in the prompt/recent state adds an empty padded block that throws
+            // off the prompt's vertical balance.
             <CommandEmpty>
               {isSearchUnavailable
                 ? t('docs.searchUnavailable')
-                : search.trim() !== '' && normalizedSearchResults.length === 0
+                : normalizedSearchResults.length === 0
                   ? t('docs.searchEmpty')
                   : null}
             </CommandEmpty>
-          )}
-          <CommandGroup>
-            {tabEntries.map((tab) => (
-              <CommandItem
-                key={tab.url}
-                onSelect={() => void handleSelect(tab.url)}
-                value={tab.url}
-              >
-                <div className="flex flex-col gap-1">
-                  <span>{tab.title}</span>
-                  {tab.description ? (
-                    <span className="text-xs text-muted-foreground">
-                      {tab.description}
-                    </span>
-                  ) : null}
+          ) : null}
+          {showPrompt ? (
+            <div
+              className="px-4 py-8 text-center text-sm text-muted-foreground"
+              data-testid="search-prompt"
+            >
+              {t('docs.searchPrompt')}
+            </div>
+          ) : null}
+          {showRecent ? (
+            <CommandGroup heading={t('docs.searchRecent')}>
+              {recentPages.map((page, index) => {
+                const stagger = staggerProps(index);
+                return (
+                  <CommandItem
+                    className={cn('items-start', stagger.className)}
+                    key={page.url}
+                    onSelect={() => void handleSelect(page.url)}
+                    style={stagger.style}
+                    value={page.url}
+                  >
+                    <div className="min-w-0 flex-1 space-y-1.5">
+                      <span className="line-clamp-1 font-medium">
+                        {page.title}
+                      </span>
+                      {page.description ? (
+                        <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                          {page.description}
+                        </div>
+                      ) : null}
+                    </div>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          ) : null}
+          {hasQuery ? (
+            <CommandGroup>
+              {isSearchUnavailable ? (
+                <div className="px-2 py-3 text-sm text-muted-foreground">
+                  {t('docs.searchUnavailable')}
                 </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          <CommandGroup>
-            {isSearchUnavailable ? (
-              <div className="px-2 py-3 text-sm text-muted-foreground">
-                {t('docs.searchUnavailable')}
-              </div>
-            ) : (
-              resultEntries.map((page) => (
-                <CommandItem
-                  aria-label={page.external ? `${page.title} (opens in new tab)` : undefined}
-                  className="items-start"
-                  key={page.id ?? page.url}
-                  onSelect={() => void handleSelect(page.url, page.external)}
-                  value={page.id ?? page.url}
-                >
-                  <div className="min-w-0 flex-1 space-y-1.5">
-                    <HighlightedText
-                      className="line-clamp-1 font-medium"
-                      value={page.title}
-                    />
-                    {page.path.length > 0 ? (
-                      <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                        {page.path.join(' › ')}
+              ) : (
+                resultEntries.map((page, index) => {
+                  const stagger = staggerProps(index);
+                  return (
+                    <CommandItem
+                      aria-label={
+                        page.external
+                          ? `${page.title} (opens in new tab)`
+                          : undefined
+                      }
+                      className={cn('items-start', stagger.className)}
+                      key={page.id ?? page.url}
+                      onSelect={() =>
+                        void handleSelect(page.url, page.external)
+                      }
+                      style={stagger.style}
+                      value={page.id ?? page.url}
+                    >
+                      <div className="min-w-0 flex-1 space-y-1.5">
+                        <HighlightedText
+                          className="line-clamp-1 font-medium"
+                          value={page.title}
+                        />
+                        {page.path.length > 0 ? (
+                          <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                            {page.path.join(' › ')}
+                          </div>
+                        ) : null}
+                        {page.context.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {page.context.map((item) => (
+                              <span
+                                className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                key={`${page.id ?? page.url}:${item}`}
+                              >
+                                <HighlightedText value={item} />
+                              </span>
+                            ))}
+                          </div>
+                        ) : null}
                       </div>
-                    ) : null}
-                    {page.context.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {page.context.map((item) => (
-                          <span
-                            className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                            key={`${page.id ?? page.url}:${item}`}
-                          >
-                            <HighlightedText value={item} />
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                </CommandItem>
-              ))
-            )}
-          </CommandGroup>
+                    </CommandItem>
+                  );
+                })
+              )}
+            </CommandGroup>
+          ) : null}
         </CommandList>
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
@@ -496,17 +597,6 @@ type DetailEntry = {
   title: string;
   value: string;
 };
-
-function localSearchEntryToRenderedEntry(
-  entry: SearchEntry,
-): RenderedSearchEntry {
-  return {
-    ...entry,
-    context: [],
-    id: entry.url,
-    path: [],
-  };
-}
 
 function searchResultToEntry(result: {
   breadcrumbs?: unknown[];
@@ -666,20 +756,6 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
-}
-
-function filterTabs(tabs: TabSummary[], query: string) {
-  const normalizedQuery = query.trim().toLowerCase();
-
-  if (!normalizedQuery) {
-    return tabs;
-  }
-
-  return tabs.filter((tab) =>
-    `${tab.title}\n${tab.description ?? ''}\n${tab.url}`
-      .toLowerCase()
-      .includes(normalizedQuery),
-  );
 }
 
 function createLocalDocsClient(pages: SearchEntry[]) {

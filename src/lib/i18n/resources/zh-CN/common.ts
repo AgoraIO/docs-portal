@@ -23,6 +23,8 @@ const zhCnCommon = {
     searchDescription: '搜索当前文档门户中的 tabs 和页面。',
     searchPlaceholder: '搜索文档、API、指南...',
     searchEmpty: '没有找到匹配页面。',
+    searchRecent: '最近浏览',
+    searchPrompt: '搜索文档、API 和指南。',
     searchUnavailable: '搜索索引不可用。',
     searchLoading: '正在搜索...',
     searchAllPlatforms: '全部平台',
