@@ -129,7 +129,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/best-practices/audio-setup.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/audio-setup.mdx':
-    '2026-06-29T08:40:22.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/best-practices/cloud-recording.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/cloud-recording.mdx':
@@ -146,7 +146,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/best-practices/optimize-latency.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/optimize-latency.mdx':
-    '2026-06-30T12:51:35.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/best-practices/record-agent-conversation.mdx':
     '2026-06-30T13:06:15.000Z',
   'content/docs/en/ai/best-practices/regional-restrictions.md':
@@ -171,7 +171,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/custom-model-integration/build-server-client.mdx':
     '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-llm.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/build/custom-model-integration/managed-mode.mdx':
     '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/build/custom-model-integration/meta.json':
@@ -222,7 +222,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/filler-words.mdx':
     '2026-06-30T04:09:37.000Z',
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
-    '2026-06-30T04:09:37.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
     '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx':
@@ -230,7 +230,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/short-term-memory.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/short-term-memory.mdx': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/start-stop-agent.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-06-30T10:41:09.000Z',
+  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/build/transcripts.md': '2026-06-26T08:32:37.000Z',
   'content/docs/en/ai/build/transcripts.mdx': '2026-06-30T07:00:49.000Z',
   'content/docs/en/ai/build/webhooks.md': '2026-05-19T10:33:06.000Z',
@@ -330,7 +330,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/device-kit/reference/enable-services.md':
     '2026-06-27T03:50:05.000Z',
   'content/docs/en/ai/device-kit/reference/enable-services.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/device-kit/reference/meta.json':
     '2026-07-03T14:28:36.000Z',
   'content/docs/en/ai/device-kit/reference/pricing.md':
@@ -402,17 +402,17 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/mobile-client.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models-voice-and-context.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/amazon.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/asr/amazon.mdx': '2026-06-25T15:09:45.000Z',
+  'content/docs/en/ai/models/asr/amazon.mdx': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/models/asr/ares.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/ares.mdx': '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/models/asr/assembly-ai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/assembly-ai.mdx': '2026-06-27T03:57:33.000Z',
   'content/docs/en/ai/models/asr/deepgram.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/asr/deepgram.mdx': '2026-07-01T14:02:18.000Z',
+  'content/docs/en/ai/models/asr/deepgram.mdx': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/models/asr/google.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/google.mdx': '2026-06-27T03:57:33.000Z',
   'content/docs/en/ai/models/asr/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/asr/meta.json': '2026-06-27T03:57:33.000Z',
+  'content/docs/en/ai/models/asr/meta.json': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/models/asr/microsoft.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/microsoft.mdx': '2026-06-27T03:57:33.000Z',
   'content/docs/en/ai/models/asr/openai.md': '2026-05-19T10:33:06.000Z',
@@ -536,7 +536,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/event-types.mdx': '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/reference/meta.json': '2026-07-03T14:28:36.000Z',
   'content/docs/en/ai/reference/openai-realtime-integration.md':
-    '2026-06-26T10:45:38.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/reference/pricing.mdx': '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/reference/release-notes.mdx': '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/reference/ten-agent/create-asr-extension.mdx':
@@ -546,7 +546,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-06-29T15:19:33.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -557,7 +557,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/start-with-agent-studio.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/studio/build/customize-agent.md':
     '2026-06-30T07:00:49.000Z',
-  'content/docs/en/ai/studio/build/integrations.md': '2026-06-30T07:00:49.000Z',
+  'content/docs/en/ai/studio/build/integrations.md': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/studio/build/meta.json': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/studio/build/prompt-design.md':
     '2026-05-19T10:33:06.000Z',
@@ -567,17 +567,17 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/studio/build/test-agent.md': '2026-06-30T07:00:49.000Z',
   'content/docs/en/ai/studio/deploy/campaign.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/studio/deploy/campaign.mdx': '2026-06-30T07:00:49.000Z',
+  'content/docs/en/ai/studio/deploy/campaign.mdx': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/studio/deploy/connect-agent.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/studio/deploy/connect-agent.mdx':
-    '2026-06-30T12:51:35.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/studio/deploy/deploy-agent.md':
-    '2026-06-30T07:00:49.000Z',
-  'content/docs/en/ai/studio/deploy/import.md': '2026-06-30T07:00:49.000Z',
+    '2026-07-06T10:42:17.000Z',
+  'content/docs/en/ai/studio/deploy/import.md': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/studio/deploy/inbound.md': '2026-06-27T01:25:00.000Z',
   'content/docs/en/ai/studio/deploy/meta.json': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/studio/deploy/sip-trunk.md': '2026-06-30T07:00:49.000Z',
+  'content/docs/en/ai/studio/deploy/sip-trunk.md': '2026-07-06T10:42:17.000Z',
   'content/docs/en/ai/studio/index.md': '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/studio/meta.json': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/studio/observe/analytics.md': '2026-06-27T01:25:00.000Z',
@@ -3731,7 +3731,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/reference/pricing.mdx':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes/android/index.mdx':
     '2026-06-24T07:15:37.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes/ios/index.mdx':
@@ -4773,7 +4773,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/reference/pricing.mdx':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/release-notes.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/security.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/service-limits.md':
@@ -6508,7 +6508,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/reference/pricing.test.ts':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/video/reference/release-notes.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/realtime-media/video/reference/security.mdx':
     '2026-07-01T06:11:45.000Z',
   'content/docs/en/realtime-media/video/reference/service-limits.mdx':
@@ -6761,7 +6761,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/voice/reference/pricing.test.ts':
     '2026-06-29T11:58:21.000Z',
   'content/docs/en/realtime-media/voice/reference/release-notes.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-07-06T10:42:17.000Z',
   'content/docs/en/realtime-media/voice/reference/security.md':
     '2026-07-01T06:11:45.000Z',
   'content/docs/en/realtime-media/voice/reference/service-limits.md':
