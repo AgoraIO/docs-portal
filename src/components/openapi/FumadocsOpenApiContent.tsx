@@ -1451,28 +1451,28 @@ function OpenApiSchemaRowItem({
       id={anchorId}
       style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
     >
-      <div className="flex min-w-0 flex-wrap items-center gap-2">
-        {expandable ? (
-          <button
-            aria-expanded={expanded}
-            aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
-            className="flex min-w-0 items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
-            onClick={() => onExpandedChange(!expanded)}
-            type="button"
-          >
-            <span aria-hidden="true" className={chevronClass}>
-              ▶
-            </span>
-            {nameCode}
-          </button>
-        ) : (
-          <>
-            <span aria-hidden="true" className="w-3 select-none text-xs">
-              &nbsp;
-            </span>
-            {nameCode}
-          </>
-        )}
+      <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
+        <span
+          aria-hidden={!expandable}
+          className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
+        >
+          {expandable ? (
+            <button
+              aria-expanded={expanded}
+              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
+              className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+              onClick={() => onExpandedChange(!expanded)}
+              type="button"
+            >
+              <span aria-hidden="true" className={chevronClass}>
+                ▶
+              </span>
+            </button>
+          ) : null}
+        </span>
+        <span className="openapi-schema-property-name-column min-w-0">
+          {nameCode}
+        </span>
         <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
         <OpenApiSchemaRequiredBadge required={row.required} />
         <span className="font-mono text-fd-muted-foreground text-xs">

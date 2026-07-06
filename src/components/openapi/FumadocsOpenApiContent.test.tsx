@@ -2111,6 +2111,54 @@ describe('FumadocsOpenApiContent', () => {
     expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
   });
 
+  it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
+    const tree = await renderNestedSchema();
+    const nameField = tree.getByText('name');
+    const nameHeading = nameField.closest(
+      '.openapi-schema-property-heading',
+    ) as HTMLElement;
+    const [gutter, nameColumn] = Array.from(nameHeading.children);
+
+    expect(nameHeading.textContent).not.toContain('\u00a0');
+    expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
+    expect(gutter.textContent).toBe('');
+    expect(gutter.querySelector('button')).toBeNull();
+    expect(nameColumn).toHaveClass('openapi-schema-property-name-column');
+    expect(nameColumn).toContainElement(nameField);
+  });
+
+  it('uses the same gutter and name column structure for expandable and leaf schema rows at the same depth', async () => {
+    const tree = await renderNestedSchema();
+
+    const getSchemaRowColumns = (name: string) => {
+      const field = tree.getByText(name);
+      const heading = field.closest(
+        '.openapi-schema-property-heading',
+      ) as HTMLElement;
+      const [gutter, nameColumn] = Array.from(heading.children);
+
+      return { field, gutter, heading, nameColumn };
+    };
+
+    const leafRow = getSchemaRowColumns('name');
+    const expandableRow = getSchemaRowColumns('config');
+
+    for (const row of [leafRow, expandableRow]) {
+      expect(row.gutter).toHaveClass('openapi-schema-property-control-gutter');
+      expect(row.nameColumn).toHaveClass('openapi-schema-property-name-column');
+      expect(row.nameColumn).toContainElement(row.field);
+      expect(row.heading.firstElementChild).toBe(row.gutter);
+      expect(row.gutter.nextElementSibling).toBe(row.nameColumn);
+    }
+
+    expect(
+      within(expandableRow.gutter as HTMLElement).getByRole('button', {
+        name: 'Expand config properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(leafRow.gutter.querySelector('button')).toBeNull();
+  });
+
   it('expands and collapses every nested field with the schema-wide control', async () => {
     const tree = await renderNestedSchema();
 
