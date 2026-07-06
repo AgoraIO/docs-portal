@@ -1,0 +1,943 @@
+---
+title: "上传课件"
+---
+
+<PlatformStructured platform="android">
+
+## 功能概述
+
+在教学场景中，教师通常会借助于一些课件，以文字、图形和动画的方式将自己想要表达的内容直观、形象地展示给学生。灵动课堂支持在上课过程中展示课件，支持的资源格式包括 PPT、PPTX、DOC、DOCX、PDF、MP3、MP4、PNG、JPG、GIF。
+
+课件可分为以下两类：
+
+- 公共资源：公共资源一般指教育机构上传和管理公共的课件资源，以供老师上课使用，个人无法编辑修改。
+- 个人资源：个人资源一般指老师在客户端自行上传和管理个人的课件资源。
+
+课件必须经过转换才能在灵动课堂的白板上使用。灵动课堂不保存你的课件资源，所有课件均保存在你自己的第三方云存储中。
+
+## 课前上传课件
+
+如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
+
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/get-started/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)。
+3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+
+   白板资源转换服务返回的查询结果：
+
+   ```json
+   {
+     "uuid": "xxxxxxxxxxx",
+     "type": "static",
+     "status": "Finished",
+     "convertedPercentage": 100,
+     "pageCount": 2,
+     "images": {
+       "1": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/1.png"
+       },
+       "2": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/2.png"
+       }
+     }
+   }
+   ```
+
+   转换为：
+
+   ```typescript
+   courseWareList: [
+     {
+       // 在云盘展示的文件名称
+       resourceName: xxxxxxx,
+       // 一个唯一ID
+       resourceUuid: xxxxxxxxx,
+       // 文件名后缀
+       ext: "pdf",
+       // 白板转换后的资源可留空
+       url: "",
+       // 文件大小，单位为字节
+       size: 0,
+       // 文件最后更新时间，单位为毫秒
+       updateTime: xxxxxxxx,
+       // 此处传入白板资源转换任务ID
+       taskUuid: "xxxxxxxxx",
+       // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+       conversion: {
+         type: "static",
+         preview: true,
+         scale: 2,
+         outputFormat: "png",
+       },
+       // 任务转换进度，需要带入如下结构数据
+       taskProgress: {
+         prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+         // 总页数，取白板转换结果中 pageCount 字段
+         totalPageSize: 2,
+         // 总页数，取白板转换结果中 pageCount 字段
+         convertedPageSize: 2,
+         // 转换进度，取白板转换结果中 convertedPercentage 字段
+         convertedPercentage: 100,
+         // 留空数组
+         convertedFileList: [],
+         // 转换进度，取白板转换结果中 status 字段
+         currentStep: "Finished",
+         // 静态课件需要的数据结构
+         images: [
+           {
+             // images 对象中的 Key
+             name: "1",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/1.png",
+           },
+           {
+             name: "2",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/2.png",
+           },
+         ],
+       },
+     },
+   ];
+   ```
+
+   `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
+
+5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+
+    ```json
+    courseWareList: [
+      {
+        // 在云盘展示的文件名称
+        resourceName: xxxxxxx,
+        // 一个唯一ID
+        resourceUuid: xxxxxxxxx,
+        // 文件名后缀
+        ext: 'pptx',
+        // 白板转换后的资源可留空
+        url: '',
+        // 文件大小，单位为字节
+        size: 0,
+        // 文件最后更新时间，单位为毫秒
+        updateTime: xxxxxxxx,
+        // 此处传入白板资源转换任务ID
+        taskUuid: 'xxxxxxxxx',
+        // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+        conversion: {
+          type: 'dynamic',
+          preview: true,
+          scale: 2,
+          outputFormat: 'png',
+        },
+        // 任务转换进度，需要带入如下结构数据
+        taskProgress: {
+          prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+          // 总页数，取白板转换结果中 pageCount 字段
+          totalPageSize: 2,
+          // 总页数，取白板转换结果中 pageCount 字段
+          convertedPageSize: 2,
+          // 转换进度，取白板转换结果中 convertedPercentage 字段
+          convertedPercentage: 100,
+          // 留空数组
+          convertedFileList: [],
+          // 转换进度，取白板转换结果中 status 字段
+          currentStep: 'Finished',
+          // 静态课件需要的数据结构，动态课件传空数组
+          images: []
+        },
+      },
+    ],
+    ```
+
+## 课中上传课件
+
+对于课中上传课件，你只需进行以下操作：
+
+如下图所示，老师登录灵动课堂，进入教室，点击工具栏中的**云盘**，点击**上传资源**即可上传资源。
+
+![老师在云盘中上传资源的界面](https://web-cdn.agora.io/docs-files/1663238905768)
+
+如下图所示，你可以删除已上传的资源。
+
+![删除已上传资源的界面](https://web-cdn.agora.io/docs-files/1663238920126)
+
+## 注意事项
+
+为确保声网可以访问你的云存储空间，你的云存储账号中必须进行以下配置：
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+- 读写权限设为**公共读**：
+
+![阿里云 OSS 读写权限配置示意图](https://web-cdn.agora.io/docs-files/1620299427757)
+
+- 跨域规则配置：
+    - 来源和允许 Headers 根据你的实际情况配置即可。
+    - 暴露 Headers 必须严格参照下图填写。
+
+![阿里云 OSS 跨域规则中暴露 Headers 的配置示意图](/img/flexible-classroom/aliyun-config.png)
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+- Bucket policy
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1622700880591",
+      "Statement": [
+        {
+          "Sid": "Stmt1622700872941",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws-cn:s3:::agora-adc-artifacts/*"
+        }
+      ]
+    }
+    ```
+
+- Cross-origin resource sharing
+
+    ```json
+    [
+      {
+        "AllowedHeaders": [
+          "*"
+        ],
+        "AllowedMethods": [
+          "PUT",
+          "GET"
+        ],
+        "AllowedOrigins": [
+          "*"
+        ],
+        "ExposeHeaders": []
+      }
+    ]
+    ```
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## 功能概述
+
+在教学场景中，教师通常会借助于一些课件，以文字、图形和动画的方式将自己想要表达的内容直观、形象地展示给学生。灵动课堂支持在上课过程中展示课件，支持的资源格式包括 PPT、PPTX、DOC、DOCX、PDF、MP3、MP4、PNG、JPG、GIF。
+
+课件可分为以下两类：
+
+- 公共资源：公共资源一般指教育机构上传和管理公共的课件资源，以供老师上课使用，个人无法编辑修改。
+- 个人资源：个人资源一般指老师在客户端自行上传和管理个人的课件资源。
+
+课件必须经过转换才能在灵动课堂的白板上使用。灵动课堂不保存你的课件资源，所有课件均保存在你自己的第三方云存储中。
+
+## 课前上传课件
+
+如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
+
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/get-started/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)。
+3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+
+   白板资源转换服务返回的查询结果：
+
+   ```json
+   {
+     "uuid": "xxxxxxxxxxx",
+     "type": "static",
+     "status": "Finished",
+     "convertedPercentage": 100,
+     "pageCount": 2,
+     "images": {
+       "1": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/1.png"
+       },
+       "2": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/2.png"
+       }
+     }
+   }
+   ```
+
+   转换为：
+
+   ```typescript
+   courseWareList: [
+     {
+       // 在云盘展示的文件名称
+       resourceName: xxxxxxx,
+       // 一个唯一ID
+       resourceUuid: xxxxxxxxx,
+       // 文件名后缀
+       ext: "pdf",
+       // 白板转换后的资源可留空
+       url: "",
+       // 文件大小，单位为字节
+       size: 0,
+       // 文件最后更新时间，单位为毫秒
+       updateTime: xxxxxxxx,
+       // 此处传入白板资源转换任务ID
+       taskUuid: "xxxxxxxxx",
+       // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+       conversion: {
+         type: "static",
+         preview: true,
+         scale: 2,
+         outputFormat: "png",
+       },
+       // 任务转换进度，需要带入如下结构数据
+       taskProgress: {
+         prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+         // 总页数，取白板转换结果中 pageCount 字段
+         totalPageSize: 2,
+         // 总页数，取白板转换结果中 pageCount 字段
+         convertedPageSize: 2,
+         // 转换进度，取白板转换结果中 convertedPercentage 字段
+         convertedPercentage: 100,
+         // 留空数组
+         convertedFileList: [],
+         // 转换进度，取白板转换结果中 status 字段
+         currentStep: "Finished",
+         // 静态课件需要的数据结构
+         images: [
+           {
+             // images 对象中的 Key
+             name: "1",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/1.png",
+           },
+           {
+             name: "2",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/2.png",
+           },
+         ],
+       },
+     },
+   ];
+   ```
+
+   `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
+
+5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+
+    ```json
+    courseWareList: [
+      {
+        // 在云盘展示的文件名称
+        resourceName: xxxxxxx,
+        // 一个唯一ID
+        resourceUuid: xxxxxxxxx,
+        // 文件名后缀
+        ext: 'pptx',
+        // 白板转换后的资源可留空
+        url: '',
+        // 文件大小，单位为字节
+        size: 0,
+        // 文件最后更新时间，单位为毫秒
+        updateTime: xxxxxxxx,
+        // 此处传入白板资源转换任务ID
+        taskUuid: 'xxxxxxxxx',
+        // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+        conversion: {
+          type: 'dynamic',
+          preview: true,
+          scale: 2,
+          outputFormat: 'png',
+        },
+        // 任务转换进度，需要带入如下结构数据
+        taskProgress: {
+          prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+          // 总页数，取白板转换结果中 pageCount 字段
+          totalPageSize: 2,
+          // 总页数，取白板转换结果中 pageCount 字段
+          convertedPageSize: 2,
+          // 转换进度，取白板转换结果中 convertedPercentage 字段
+          convertedPercentage: 100,
+          // 留空数组
+          convertedFileList: [],
+          // 转换进度，取白板转换结果中 status 字段
+          currentStep: 'Finished',
+          // 静态课件需要的数据结构，动态课件传空数组
+          images: []
+        },
+      },
+    ],
+    ```
+
+## 课中上传课件
+
+对于课中上传课件，你只需进行以下操作：
+
+如下图所示，老师登录灵动课堂，进入教室，点击工具栏中的**云盘**，点击**上传资源**即可上传资源。
+
+![老师在云盘中上传资源的界面](https://web-cdn.agora.io/docs-files/1663238905768)
+
+如下图所示，你可以删除已上传的资源。
+
+![删除已上传资源的界面](https://web-cdn.agora.io/docs-files/1663238920126)
+
+## 注意事项
+
+为确保声网可以访问你的云存储空间，你的云存储账号中必须进行以下配置：
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+- 读写权限设为**公共读**：
+
+![阿里云 OSS 读写权限配置示意图](https://web-cdn.agora.io/docs-files/1620299427757)
+
+- 跨域规则配置：
+    - 来源和允许 Headers 根据你的实际情况配置即可。
+    - 暴露 Headers 必须严格参照下图填写。
+
+![阿里云 OSS 跨域规则中暴露 Headers 的配置示意图](/img/flexible-classroom/aliyun-config.png)
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+- Bucket policy
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1622700880591",
+      "Statement": [
+        {
+          "Sid": "Stmt1622700872941",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws-cn:s3:::agora-adc-artifacts/*"
+        }
+      ]
+    }
+    ```
+
+- Cross-origin resource sharing
+
+    ```json
+    [
+      {
+        "AllowedHeaders": [
+          "*"
+        ],
+        "AllowedMethods": [
+          "PUT",
+          "GET"
+        ],
+        "AllowedOrigins": [
+          "*"
+        ],
+        "ExposeHeaders": []
+      }
+    ]
+    ```
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+## 功能概述
+
+在教学场景中，教师通常会借助于一些课件，以文字、图形和动画的方式将自己想要表达的内容直观、形象地展示给学生。灵动课堂支持在上课过程中展示课件，支持的资源格式包括 PPT、PPTX、DOC、DOCX、PDF、MP3、MP4、PNG、JPG、GIF。
+
+课件可分为以下两类：
+
+- 公共资源：公共资源一般指教育机构上传和管理公共的课件资源，以供老师上课使用，个人无法编辑修改。
+- 个人资源：个人资源一般指老师在客户端自行上传和管理个人的课件资源。
+
+课件必须经过转换才能在灵动课堂的白板上使用。灵动课堂不保存你的课件资源，所有课件均保存在你自己的第三方云存储中。
+
+## 课前上传课件
+
+如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
+
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/get-started/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)。
+3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+
+   白板资源转换服务返回的查询结果：
+
+   ```json
+   {
+     "uuid": "xxxxxxxxxxx",
+     "type": "static",
+     "status": "Finished",
+     "convertedPercentage": 100,
+     "pageCount": 2,
+     "images": {
+       "1": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/1.png"
+       },
+       "2": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/2.png"
+       }
+     }
+   }
+   ```
+
+   转换为：
+
+   ```typescript
+   courseWareList: [
+     {
+       // 在云盘展示的文件名称
+       resourceName: xxxxxxx,
+       // 一个唯一ID
+       resourceUuid: xxxxxxxxx,
+       // 文件名后缀
+       ext: "pdf",
+       // 白板转换后的资源可留空
+       url: "",
+       // 文件大小，单位为字节
+       size: 0,
+       // 文件最后更新时间，单位为毫秒
+       updateTime: xxxxxxxx,
+       // 此处传入白板资源转换任务ID
+       taskUuid: "xxxxxxxxx",
+       // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+       conversion: {
+         type: "static",
+         preview: true,
+         scale: 2,
+         outputFormat: "png",
+       },
+       // 任务转换进度，需要带入如下结构数据
+       taskProgress: {
+         prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+         // 总页数，取白板转换结果中 pageCount 字段
+         totalPageSize: 2,
+         // 总页数，取白板转换结果中 pageCount 字段
+         convertedPageSize: 2,
+         // 转换进度，取白板转换结果中 convertedPercentage 字段
+         convertedPercentage: 100,
+         // 留空数组
+         convertedFileList: [],
+         // 转换进度，取白板转换结果中 status 字段
+         currentStep: "Finished",
+         // 静态课件需要的数据结构
+         images: [
+           {
+             // images 对象中的 Key
+             name: "1",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/1.png",
+           },
+           {
+             name: "2",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/2.png",
+           },
+         ],
+       },
+     },
+   ];
+   ```
+
+   `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
+
+5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+
+    ```json
+    courseWareList: [
+      {
+        // 在云盘展示的文件名称
+        resourceName: xxxxxxx,
+        // 一个唯一ID
+        resourceUuid: xxxxxxxxx,
+        // 文件名后缀
+        ext: 'pptx',
+        // 白板转换后的资源可留空
+        url: '',
+        // 文件大小，单位为字节
+        size: 0,
+        // 文件最后更新时间，单位为毫秒
+        updateTime: xxxxxxxx,
+        // 此处传入白板资源转换任务ID
+        taskUuid: 'xxxxxxxxx',
+        // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+        conversion: {
+          type: 'dynamic',
+          preview: true,
+          scale: 2,
+          outputFormat: 'png',
+        },
+        // 任务转换进度，需要带入如下结构数据
+        taskProgress: {
+          prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+          // 总页数，取白板转换结果中 pageCount 字段
+          totalPageSize: 2,
+          // 总页数，取白板转换结果中 pageCount 字段
+          convertedPageSize: 2,
+          // 转换进度，取白板转换结果中 convertedPercentage 字段
+          convertedPercentage: 100,
+          // 留空数组
+          convertedFileList: [],
+          // 转换进度，取白板转换结果中 status 字段
+          currentStep: 'Finished',
+          // 静态课件需要的数据结构，动态课件传空数组
+          images: []
+        },
+      },
+    ],
+    ```
+
+## 课中上传课件
+
+对于课中上传课件，你只需进行以下操作：
+
+如下图所示，老师登录灵动课堂，进入教室，点击工具栏中的**云盘**，点击**上传资源**即可上传资源。
+
+![老师在云盘中上传资源的界面](https://web-cdn.agora.io/docs-files/1663238905768)
+
+如下图所示，你可以删除已上传的资源。
+
+![删除已上传资源的界面](https://web-cdn.agora.io/docs-files/1663238920126)
+
+## 注意事项
+
+为确保声网可以访问你的云存储空间，你的云存储账号中必须进行以下配置：
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+- 读写权限设为**公共读**：
+
+![阿里云 OSS 读写权限配置示意图](https://web-cdn.agora.io/docs-files/1620299427757)
+
+- 跨域规则配置：
+    - 来源和允许 Headers 根据你的实际情况配置即可。
+    - 暴露 Headers 必须严格参照下图填写。
+
+![阿里云 OSS 跨域规则中暴露 Headers 的配置示意图](/img/flexible-classroom/aliyun-config.png)
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+- Bucket policy
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1622700880591",
+      "Statement": [
+        {
+          "Sid": "Stmt1622700872941",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws-cn:s3:::agora-adc-artifacts/*"
+        }
+      ]
+    }
+    ```
+
+- Cross-origin resource sharing
+
+    ```json
+    [
+      {
+        "AllowedHeaders": [
+          "*"
+        ],
+        "AllowedMethods": [
+          "PUT",
+          "GET"
+        ],
+        "AllowedOrigins": [
+          "*"
+        ],
+        "ExposeHeaders": []
+      }
+    ]
+    ```
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+## 功能概述
+
+在教学场景中，教师通常会借助于一些课件，以文字、图形和动画的方式将自己想要表达的内容直观、形象地展示给学生。灵动课堂支持在上课过程中展示课件，支持的资源格式包括 PPT、PPTX、DOC、DOCX、PDF、MP3、MP4、PNG、JPG、GIF。
+
+课件可分为以下两类：
+
+- 公共资源：公共资源一般指教育机构上传和管理公共的课件资源，以供老师上课使用，个人无法编辑修改。
+- 个人资源：个人资源一般指老师在客户端自行上传和管理个人的课件资源。
+
+课件必须经过转换才能在灵动课堂的白板上使用。灵动课堂不保存你的课件资源，所有课件均保存在你自己的第三方云存储中。
+
+## 课前上传课件
+
+如果你想在课前将课件上传至第三方云存储或者你自己的服务器，然后在灵动课堂内以公共资源显示该课件，可参考以下步骤：
+
+1. 在声网控制台配置灵动课堂中的互动白板功能，用于存储在课堂中上传的资源。详见[配置白板功能文档](/zh-CN/solutions/flexible-classroom/get-started/configure#%E9%85%8D%E7%BD%AE%E7%99%BD%E6%9D%BF%E5%8A%9F%E8%83%BD)。
+2. 在声网控制台开启互动白板文档转换服务并添加存储配置，用于存储转换后的资源。详见[开启互动白板配套服务文档](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)。
+3. 在你的 App 服务端调用 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks) 向声网互动白板服务发起文档转换请求。声网互动白板服务会将转换后的文件上传至你在声网控制台中配置的第三方云存储。
+4. 在你的 App 服务端轮询 [RESTful API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 向声网互动白板服务获取转换任务进度。根据转换资源类型的不同可分为两种 `static` 和 `dynamic`，分别对应静态资源和动态资源。其中，`static` 类型的资源转换成功后，需要先转换结构再传入 launch 方法内。
+
+   白板资源转换服务返回的查询结果：
+
+   ```json
+   {
+     "uuid": "xxxxxxxxxxx",
+     "type": "static",
+     "status": "Finished",
+     "convertedPercentage": 100,
+     "pageCount": 2,
+     "images": {
+       "1": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/1.png"
+       },
+       "2": {
+         "width": 1700,
+         "height": 952,
+         "url": "https://convertcdn.netless.link/staticConvert/xxx/2.png"
+       }
+     }
+   }
+   ```
+
+   转换为：
+
+   ```typescript
+   courseWareList: [
+     {
+       // 在云盘展示的文件名称
+       resourceName: xxxxxxx,
+       // 一个唯一ID
+       resourceUuid: xxxxxxxxx,
+       // 文件名后缀
+       ext: "pdf",
+       // 白板转换后的资源可留空
+       url: "",
+       // 文件大小，单位为字节
+       size: 0,
+       // 文件最后更新时间，单位为毫秒
+       updateTime: xxxxxxxx,
+       // 此处传入白板资源转换任务ID
+       taskUuid: "xxxxxxxxx",
+       // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+       conversion: {
+         type: "static",
+         preview: true,
+         scale: 2,
+         outputFormat: "png",
+       },
+       // 任务转换进度，需要带入如下结构数据
+       taskProgress: {
+         prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+         // 总页数，取白板转换结果中 pageCount 字段
+         totalPageSize: 2,
+         // 总页数，取白板转换结果中 pageCount 字段
+         convertedPageSize: 2,
+         // 转换进度，取白板转换结果中 convertedPercentage 字段
+         convertedPercentage: 100,
+         // 留空数组
+         convertedFileList: [],
+         // 转换进度，取白板转换结果中 status 字段
+         currentStep: "Finished",
+         // 静态课件需要的数据结构
+         images: [
+           {
+             // images 对象中的 Key
+             name: "1",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/1.png",
+           },
+           {
+             name: "2",
+             width: 1700,
+             height: 952,
+             url: "https://convertcdn.netless.link/staticConvert/xxx/2.png",
+           },
+         ],
+       },
+     },
+   ];
+   ```
+
+   `dynamic` 类型的资源无需对 images 做额外处理，通过以下方式传入 `courseWareList` 即可。
+
+5. 在你的客户端调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 时通过 [courseWareList](/api-ref/flexible-classroom/javascript/classroom-sdk#coursewarelist) 参数传入课件列表，就可以在课堂内看到课件了。
+
+    ```json
+    courseWareList: [
+      {
+        // 在云盘展示的文件名称
+        resourceName: xxxxxxx,
+        // 一个唯一ID
+        resourceUuid: xxxxxxxxx,
+        // 文件名后缀
+        ext: 'pptx',
+        // 白板转换后的资源可留空
+        url: '',
+        // 文件大小，单位为字节
+        size: 0,
+        // 文件最后更新时间，单位为毫秒
+        updateTime: xxxxxxxx,
+        // 此处传入白板资源转换任务ID
+        taskUuid: 'xxxxxxxxx',
+        // 此处需要传入你调用白板API发起白板资源转换任务时的传递的参数
+        conversion: {
+          type: 'dynamic',
+          preview: true,
+          scale: 2,
+          outputFormat: 'png',
+        },
+        // 任务转换进度，需要带入如下结构数据
+        taskProgress: {
+          prefix: "", // 转换后的资源前缀，取白板转换结果中的 prefix 如果有的话
+          // 总页数，取白板转换结果中 pageCount 字段
+          totalPageSize: 2,
+          // 总页数，取白板转换结果中 pageCount 字段
+          convertedPageSize: 2,
+          // 转换进度，取白板转换结果中 convertedPercentage 字段
+          convertedPercentage: 100,
+          // 留空数组
+          convertedFileList: [],
+          // 转换进度，取白板转换结果中 status 字段
+          currentStep: 'Finished',
+          // 静态课件需要的数据结构，动态课件传空数组
+          images: []
+        },
+      },
+    ],
+    ```
+
+## 课中上传课件
+
+对于课中上传课件，你只需进行以下操作：
+
+如下图所示，老师登录灵动课堂，进入教室，点击工具栏中的**云盘**，点击**上传资源**即可上传资源。
+
+![老师在云盘中上传资源的界面](https://web-cdn.agora.io/docs-files/1663238905768)
+
+如下图所示，你可以删除已上传的资源。
+
+![删除已上传资源的界面](https://web-cdn.agora.io/docs-files/1663238920126)
+
+## 注意事项
+
+为确保声网可以访问你的云存储空间，你的云存储账号中必须进行以下配置：
+
+<Tabs defaultValue="aliyun" groupId="oss" persist>
+<TabsList>
+  <TabsTrigger value="aliyun">阿里云 OSS</TabsTrigger>
+  <TabsTrigger value="amazon">Amazon S3</TabsTrigger>
+</TabsList>
+
+<TabsContent value="aliyun">
+
+- 读写权限设为**公共读**：
+
+![阿里云 OSS 读写权限配置示意图](https://web-cdn.agora.io/docs-files/1620299427757)
+
+- 跨域规则配置：
+    - 来源和允许 Headers 根据你的实际情况配置即可。
+    - 暴露 Headers 必须严格参照下图填写。
+
+![阿里云 OSS 跨域规则中暴露 Headers 的配置示意图](/img/flexible-classroom/aliyun-config.png)
+
+</TabsContent>
+
+<TabsContent value="amazon">
+
+- Bucket policy
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Id": "Policy1622700880591",
+      "Statement": [
+        {
+          "Sid": "Stmt1622700872941",
+          "Effect": "Allow",
+          "Principal": "*",
+          "Action": "s3:GetObject",
+          "Resource": "arn:aws-cn:s3:::agora-adc-artifacts/*"
+        }
+      ]
+    }
+    ```
+
+- Cross-origin resource sharing
+
+    ```json
+    [
+      {
+        "AllowedHeaders": [
+          "*"
+        ],
+        "AllowedMethods": [
+          "PUT",
+          "GET"
+        ],
+        "AllowedOrigins": [
+          "*"
+        ],
+        "ExposeHeaders": []
+      }
+    ]
+    ```
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>

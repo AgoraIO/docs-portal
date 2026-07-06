@@ -1,0 +1,44 @@
+---
+title: "编写插件说明文档"
+---
+App 开发者购买插件后，需要参考插件说明文档在 App 中实现插件的各项功能。App 开发者可以通过以下方式查看插件说明文档：
+
+- 在声网控制台查看：进入[声网控制台 > 云市场](https://console.shengwang.cn/marketplace/list/all)页面，选择需要查看的插件即可：
+
+![控制台插件说明页](https://web-cdn.agora.io/docs-files/1679973310768)
+
+- 在声网文档中心查看：进入[云市场 > 使用插件](/zh-CN/realtime-media/marketplace/overview/product-overview)即可。
+
+插件说明文档包括以下两篇：
+
+- 使用说明：分步骤介绍如何获取插件、集成插件、调用插件相关接口、运行示例项目。
+- 接口说明：详细介绍每个 API 的功能及参数。
+
+将插件提交给声网审核时，你需要一并提供插件说明文档。本文提供可直接编辑的模板（Markdown 格式），方便你快速写出清晰详尽的插件说明文档。
+
+| 平台 | 模板（Markdown） | 模板效果（HTML） |
+| --- | --- | --- |
+| iOS、Android、macOS、Windows、Flutter | [点击下载](https://web-cdn.agora.io/docs-files/1703155787339) | <Slot name="doc-template-html-0-1-2" /> |
+| Web | 参考示例文档编写 | <Slot name="doc-template-html-0-2-2" /> |
+| RESTful | 参考示例文档编写 | <Slot name="doc-template-html-0-3-2" /> |
+
+<Slot for="doc-template-html-0-1-2">
+
+- [使用说明示例文档](/zh-CN/realtime-media/marketplace/integrate-extensions/faceunity-ar)
+      - [接口说明示例文档](/zh-CN/realtime-media/marketplace/integrate-extensions/faceunity-ar-api)
+
+</Slot>
+
+<Slot for="doc-template-html-0-2-2">
+
+- [使用说明示例文档](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr)
+      - [接口说明示例文档](/zh-CN/realtime-media/marketplace/integrate-extensions/iflytek-asr-api)
+
+</Slot>
+
+<Slot for="doc-template-html-0-3-2">
+
+- [使用说明示例文档](/doc/marketplace/android/integrate-extensions/shumei-audio-moderation)
+      - [接口说明示例文档](/zh-CN/realtime-media/marketplace/integrate-extensions/audio-moderation-api)
+
+</Slot>

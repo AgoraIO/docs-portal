@@ -1,0 +1,1939 @@
+---
+title: "通话前检测"
+---
+
+<PlatformStructured platform="android">
+
+在视频会议、在线教育、互动直播等对通信质量要求高的场景下，进行通话前检测可以帮助提前识别并排查问题，保证实时互动体验。
+
+## 功能介绍
+
+通话前检测通常可以从**设备质量检测**和**网络质量探测**两个角度开展。
+
+- **设备质量检测**：包括检测本地麦克风、扬声器以及摄像头是否能正常工作。
+- **网络质量探测**：可以向用户反馈上下行 last mile 网络的带宽、丢包、网络抖动和往返时延数据，从而判断当前网络状态是否良好。其中，**last mile** 指的是声网边缘服务器和终端用户设备之间通信的“最后一公里”，last mile 网络质量影响用户发送和接收音视频的流畅度和清晰度。
+
+## 前提条件
+
+在进行通话前检测之前，请确保你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现步骤
+
+参考以下步骤在 App 中实现通话前检测。
+
+### 设备质量检测
+
+设备质量检测的基本流程如下：
+
+![设备质量检测流程图](/img/rtc/echotest.svg)
+
+SDK 提供了 `startEchoTest`[3/3] 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
+
+1. 在加入频道前，调用 `startEchoTest`[3/3]，并在 `EchoTestConfiguration` 中配置测试的对象、频道名和返回测试结果的时间间隔。
+2. 开始测试后，用户需发出声音或面对摄像头，音频或视频默认会在约 2 秒后播放出来。如果音频播放正常，则表示系统音频设备和用户上下行网络均正常；如果视频播放正常，则表示系统视频设备和用户上下行网络均正常。
+3. 获得测试结果后，调用 `stopEchoTest` 停止测试，然后再调用 `joinChannel` 加入频道。
+
+:::warning[注意]
+目前，使用 `startEchoTest`[3/3] 同时测试音频设备和视频设备可能导致测试结果出现短暂的音画不同步。
+:::
+
+请参考以下代码实现设备检测：
+
+```java
+// 测试音频设备
+if (v.getId() == R.id.btn_audio) {
+// 创建 EchoTestConfiguration 实例
+    EchoTestConfiguration config = new EchoTestConfiguration();
+    // 关闭视频设备测试
+    config.enableVideo = false;
+    // 开启音频设备测试
+    config.enableAudio = true;
+    // 设置返回测试结果的时间间隔
+    config.intervalInSeconds = MAX_COUNT_DOWN;
+    // 标识每个测试的频道名
+    config.channelId = "AudioEchoTest" + (new Random().nextInt(1000) + 10000);
+    // 开始测试
+    engine.startEchoTest(config);
+
+// 测试视频设备
+} else if (v.getId() == R.id.btn_video) {
+    // 创建 EchoTestConfiguration 实例
+    EchoTestConfiguration config = new EchoTestConfiguration();
+    // 开启视频设备测试
+    config.enableVideo = true;
+    // 指定用于渲染本地用户视频的视图
+    config.view = requireView().findViewById(R.id.surfaceView);
+    // 关闭音频设备测试
+    config.enableAudio = false;
+    // 设置视频画面的期望延迟
+    config.intervalInSeconds = MAX_COUNT_DOWN;
+    // 标识每个测试的频道名
+    config.channelId = "VideoEchoTest" + (new Random().nextInt(1000) + 10000);
+    // 开始测试
+    engine.startEchoTest(config);
+}
+
+```
+
+### 网络质量探测
+
+网络质量探测的基本流程如下：
+
+![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络探测。你需要在 `LastmileProbeConfig` 中设置探测对象和预期最高码率。
+2. 调用该方法后，SDK 会触发以下回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 方法两秒后触发。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 方法 30 秒后触发。该回调返回网络状况的实时统计数据，包括丢包率、网络抖动和可用带宽，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 方法停止 last mile 网络检测。
+
+请参考以下代码实现网络质量探测：
+
+```java
+// 配置 LastmileProbeConfig 实例
+LastmileProbeConfig config = new LastmileProbeConfig(){};
+// 检测上行网络质量
+config.probeUplink = true;
+// 检测下行网络质量
+config.probeDownlink = true;
+// 用户期望的最高发送码率 (bps)。取值范围为 [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// 用户期望的最高接收码率 (bps)。取值范围为 [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+// 开始网络质量探测
+engine.startLastmileProbeTest(config);
+
+// 注册回调
+public void onLastmileQuality(int quality){
+    statisticsInfo.setLastMileQuality(quality);
+    updateLastMileResult();
+}
+public void onLastmileProbeResult(LastmileProbeResult) {
+    statisticsInfo.setLastMileProbeResult(lastmileProbeResult);
+    updateLastMileResult();
+}
+
+// 停止网络质量探测
+engine.stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### 检测异常处理建议
+
+在确保 API 正确调用的前提下，遇到检测异常时，声网推荐你参考下表采取措施：
+
+| 异常现象 | 解决方案 |
+| --- | --- |
+| 检测音频设备时听不到声音 | <Slot name="lastmile-quality-android-markdown-0-1-1" /> |
+| 检测视频设备时看不到画面 | <Slot name="lastmile-quality-android-markdown-0-2-1" /> |
+| 检测到上行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-android-markdown-0-3-1" /> |
+| 检测到下行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-android-markdown-0-4-1" /> |
+
+<Slot for="lastmile-quality-android-markdown-0-1-1">
+
+- 检查录制设备和播放设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-android-markdown-0-2-1">
+
+- 检查视频设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-android-markdown-0-3-1">
+
+- 检查本地网络是否正常。
+- 通过降低分辨率或降低帧率等方法确保发布音视频流的码率不超过上行可用带宽。你可以参考[视频参数推荐值](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频参数推荐值)和[视频属性参考表](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频属性参考)进行设置。
+
+</Slot>
+
+<Slot for="lastmile-quality-android-markdown-0-4-1">
+
+- 检查本地网络是否正常。
+- 通过以下方式确保本地订阅的总带宽不超过下行可用带宽：
+
+  - 减少接收端订阅音视频流的数量或降低发送端发布音视频流的码率。
+  - 在发送端启用[双流模式](/api-ref/rtc/android/API/toc_dual_stream#api_irtcengine_setdualstreammode)，并在接收端申请接收小流以降低带宽消耗。
+  - 接收端开启[视频流回退功能](/api-ref/rtc/android/API/toc_network#api_irtcengine_setremotesubscribefallbackoption)。
+
+</Slot>
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="通话前检测" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/PreCallTest.java" />
+</Cards>
+
+### API 参考
+
+- [`startEchoTest`[3/3]](/api-ref/rtc/android/API/toc_network#api_irtcengine_startechotest3)
+- [`stopEchoTest`](/api-ref/rtc/android/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/android/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/android/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [设置视频编码属性](/zh-CN/realtime-media/rtc/basic-features/video-profile)
+- [设置音频编码属性](/zh-CN/realtime-media/rtc/basic-features/audio-profile)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在视频会议、在线教育、互动直播等对通信质量要求高的场景下，进行通话前检测可以帮助提前识别并排查问题，保证实时互动体验。
+
+## 功能介绍
+
+通话前检测通常可以从**设备质量检测**和**网络质量探测**两个角度开展。
+
+- **设备质量检测**：包括检测本地麦克风、扬声器以及摄像头是否能正常工作。
+- **网络质量探测**：可以向用户反馈上下行 last mile 网络的带宽、丢包、网络抖动和往返时延数据，从而判断当前网络状态是否良好。其中，**last mile** 指的是声网边缘服务器和终端用户设备之间通信的“最后一公里”，last mile 网络质量影响用户发送和接收音视频的流畅度和清晰度。
+
+## 前提条件
+
+在进行通话前检测之前，请确保你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现步骤
+
+参考以下步骤在 App 中实现通话前检测。
+
+### 设备质量检测
+
+设备质量检测的基本流程如下：
+
+![设备质量检测流程图](/img/rtc/echotest.svg)
+
+SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
+
+1. 在加入频道前，调用 `startEchoTestWithConfig`，并在 `AgoraEchoTestConfiguration` 中配置测试的对象、频道名和返回测试结果的时间间隔。
+2. 开始测试后，用户需发出声音或面对摄像头，音频或视频默认会在约 2 秒后播放出来。如果音频播放正常，则表示系统音频设备和用户上下行网络均正常；如果视频播放正常，则表示系统视频设备和用户上下行网络均正常。
+3. 获得测试结果后，调用 `stopEchoTest` 停止测试，然后再调用 `joinChannel` 加入频道。
+
+:::warning[注意]
+目前，使用 `startEchoTestWithConfig` 同时测试音频设备和视频设备可能导致测试结果出现短暂的音画不同步。
+:::
+
+请参考以下代码实现设备检测：
+
+```swift
+// 测试音频设备
+@IBAction func doAudioTest(sender: UIButton) {
+  let testConfig = AgoraEchoTestConfiguration()
+  // 设置返回测试结果的时间间隔
+  testConfig.intervalInSeconds = 10
+  // 开启音频设备测试
+  testConfig.enableAudio = true
+  // 关闭视频设备测试
+  testConfig.enableVideo = false
+  // 标识每个测试的频道名
+  testConfig.channelId = "AudioEchoTest" + "\(Int.random(in: 1...1000))"
+  // 开始测试音频设备
+  let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+
+// 测试视频设备
+@IBAction func doVideoTest(_ sender: UIButton) {
+  let testConfig = AgoraEchoTestConfiguration()
+  // 设置视频画面的延迟
+  testConfig.intervalInSeconds = 2
+  // 关闭音频设备测试
+  testConfig.enableAudio = false
+  // 开启视频设备测试
+  testConfig.enableVideo = true
+  // 标识每个测试的频道名
+  testConfig.channelId = "VideoEchoTest" + "\(Int.random(in: 1...1000))"
+  // 设置用于渲染本地用户视频的视图
+  testConfig.view = videoCanvasView
+  // 开始测试视频设备
+  let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+```
+
+### 网络质量探测
+
+网络质量探测的基本流程如下：
+
+![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络探测。你需要在 `LastmileProbeConfig` 中设置探测对象和预期最高码率。
+2. 调用该方法后，SDK 会触发以下回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 方法两秒后触发。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 方法 30 秒后触发。该回调返回网络状况的实时统计数据，包括丢包率、网络抖动和可用带宽，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 方法停止 last mile 网络检测。
+
+请参考以下代码实现网络质量探测：
+
+```swift
+// 创建网络探测配置对象
+let config = AgoraLastmileProbeConfig()
+// 检测上行网络
+config.probeUplink = true;
+// 检测下行网络
+config.probeDownlink = true;
+// 预期的上行比特率 (bps)。取值范围为 [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// 预期的下行比特率 (bps)。取值范围为 [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+
+// 开始网络质量探测
+agoraKit.startLastmileProbeTest(config)
+
+// 定义回调函数用于接收网络质量统计信息
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileQuality quality: AgoraNetworkQuality) {
+    lastmileResultLabel.text = "Quality: \(quality.description())"
+}
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileProbeTest result: AgoraLastmileProbeResult) {
+  // 往返时延
+  let rtt = "Rtt: \(result.rtt)ms"
+  // 下行网络带宽
+  let downlinkBandWidth = "DownlinkAvailableBandwidth: \(result.downlinkReport.availableBandwidth)Kbps"
+  // 下行抖动缓冲区
+  let downlinkJitter = "DownlinkJitter: \(result.downlinkReport.jitter)ms"
+  // 下行丢包率
+  let downlinkLoss = "DownlinkLoss: \(result.downlinkReport.packetLossRate)%"
+  // 上行网络带宽
+  let uplinkBandwidth = "UplinkAvailableBandwidth: \(result.uplinkReport.availableBandwidth)Kbps"
+  // 上行抖动缓冲区
+  let uplinkJitter = "UplinkJitter: \(result.uplinkReport.jitter)ms"
+  // 上行丢包率
+  let uplinkLoss = "UplinkLoss: \(result.uplinkReport.packetLossRate)%"
+
+  lastmileProbResultLabel.text = [rtt, downlinkBandwidth, downlinkJitter, downlinkLoss,uplinkBandwidth,uplinkJitter,uplinkLoss].joined(separator: "\n")
+}
+
+// 停止网络质量探测
+agoraKit.stopLastmileProbeTest()
+```
+
+## 参考信息
+
+### 检测异常处理建议
+
+在确保 API 正确调用的前提下，遇到检测异常时，声网推荐你参考下表采取措施：
+
+| 异常现象 | 解决方案 |
+| --- | --- |
+| 检测音频设备时听不到声音 | <Slot name="lastmile-quality-ios-markdown-0-1-1" /> |
+| 检测视频设备时看不到画面 | <Slot name="lastmile-quality-ios-markdown-0-2-1" /> |
+| 检测到上行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-ios-markdown-0-3-1" /> |
+| 检测到下行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-ios-markdown-0-4-1" /> |
+
+<Slot for="lastmile-quality-ios-markdown-0-1-1">
+
+- 检查录制设备和播放设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-ios-markdown-0-2-1">
+
+- 检查视频设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-ios-markdown-0-3-1">
+
+- 检查本地网络是否正常。
+- 通过降低分辨率或降低帧率等方法确保发布音视频流的码率不超过上行可用带宽。你可以参考[视频参数推荐值](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频参数推荐值)和[视频属性参考表](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频属性参考)进行设置。
+
+</Slot>
+
+<Slot for="lastmile-quality-ios-markdown-0-4-1">
+
+- 检查本地网络是否正常。
+- 通过以下方式确保本地订阅的总带宽不超过下行可用带宽：
+
+  - 减少接收端订阅音视频流的数量或降低发送端发布音视频流的码率。
+  - 在发送端启用[双流模式](/api-ref/rtc/ios/API/toc_dual_stream#api_irtcengine_setdualstreammode)，并在接收端申请接收小流以降低带宽消耗。
+  - 接收端开启[视频流回退功能](/api-ref/rtc/ios/API/toc_network#api_irtcengine_setremotesubscribefallbackoption)。
+
+</Slot>
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="PrecallTest.swift" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/PrecallTest/PrecallTest.swift" />
+</Cards>
+
+### API 参考
+
+- [`startEchoTestWithConfig`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_startechotest3)
+- [`stopEchoTest`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [设置视频编码属性](/zh-CN/realtime-media/rtc/basic-features/video-profile)
+- [设置音频编码属性](/zh-CN/realtime-media/rtc/basic-features/audio-profile)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+在视频会议、在线教育、互动直播等对通信质量要求高的场景下，进行通话前检测可以帮助提前识别并排查问题，保证实时互动体验。
+
+## 功能介绍
+
+通话前检测通常可以从**设备质量检测**和**网络质量探测**两个角度开展。
+
+- **设备质量检测**：包括检测本地麦克风、扬声器以及摄像头是否能正常工作。
+- **网络质量探测**：可以向用户反馈上下行 last mile 网络的带宽、丢包、网络抖动和往返时延数据，从而判断当前网络状态是否良好。其中，**last mile** 指的是声网边缘服务器和终端用户设备之间通信的“最后一公里”，last mile 网络质量影响用户发送和接收音视频的流畅度和清晰度。
+
+## 前提条件
+
+在进行通话前检测之前，请确保你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现步骤
+
+参考以下步骤在 App 中实现通话前检测。
+
+### 设备质量检测
+
+设备质量检测的基本流程如下：
+
+![设备质量检测流程图](/img/rtc/echotest.svg)
+
+SDK 提供了 `startEchoTestWithConfig` 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
+
+1. 在加入频道前，调用 `startEchoTestWithConfig`，并在 `EchoTestConfiguration` 中配置测试的对象、频道名和返回测试结果的时间间隔。
+2. 开始测试后，用户需发出声音或面对摄像头，音频或视频默认会在约 2 秒后播放出来。如果音频播放正常，则表示系统音频设备和用户上下行网络均正常；如果视频播放正常，则表示系统视频设备和用户上下行网络均正常。
+3. 获得测试结果后，调用 `stopEchoTest` 停止测试，然后再调用 `joinChannel` 加入频道。
+
+:::warning[注意]
+目前，使用 `startEchoTest` 同时测试音频设备和视频设备可能导致测试结果出现短暂的音画不同步。
+:::
+
+请参考以下代码实现设备检测：
+
+```swift
+// 测试音频设备
+@IBAction func doAudioTest(sender: UIButton) {
+  let testConfig = AgoraEchoTestConfiguration()
+  // 设置返回测试结果的时间间隔
+  testConfig.intervalInSeconds = 10
+  // 开启音频设备测试
+  testConfig.enableAudio = true
+  // 关闭视频设备测试
+  testConfig.enableVideo = false
+  // 标识每个测试的频道名
+  testConfig.channelId = "AudioEchoTest" + "\(Int.random(in: 1...1000))"
+  // 开始测试音频设备
+  let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+
+// 测试视频设备
+@IBAction func doVideoTest(_ sender: UIButton) {
+  let testConfig = AgoraEchoTestConfiguration()
+  // 设置视频画面的延迟
+  testConfig.intervalInSeconds = 2
+  // 关闭音频设备测试
+  testConfig.enableAudio = false
+  // 开启视频设备测试
+  testConfig.enableVideo = true
+  // 标识每个测试的频道名
+  testConfig.channelId = "VideoEchoTest" + "\(Int.random(in: 1...1000))"
+  // 设置用于渲染本地用户视频的视图
+  testConfig.view = videoCanvasView
+  // 开始测试视频设备
+  let ret = agoraKit.startEchoTest(withConfig: testConfig)
+}
+```
+
+### 网络质量探测
+
+网络质量探测的基本流程如下：
+
+![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络探测。你需要在 `LastmileProbeConfig` 中设置探测对象和预期最高码率。
+2. 调用该方法后，SDK 会触发以下回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 方法两秒后触发。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 方法 30 秒后触发。该回调返回网络状况的实时统计数据，包括丢包率、网络抖动和可用带宽，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 方法停止 last mile 网络检测。
+
+请参考以下代码实现网络质量探测：
+
+```swift
+// 创建网络探测配置对象
+let config = AgoraLastmileProbeConfig()
+// 检测上行网络
+config.probeUplink = true;
+// 检测下行网络
+config.probeDownlink = true;
+// 预期的上行比特率 (bps)。取值范围为 [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// 预期的下行比特率 (bps)。取值范围为 [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+
+// 开始网络质量探测
+agoraKit.startLastmileProbeTest(config)
+
+// 定义回调函数用于接收网络质量统计信息
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileQuality quality: AgoraNetworkQuality) {
+    lastmileResultLabel.text = "Quality: \(quality.description())"
+}
+func rtcEngine(_ engine: AgoraRtcEngineKit, lastmileProbeTest result: AgoraLastmileProbeResult) {
+  // 往返时延
+  let rtt = "Rtt: \(result.rtt)ms"
+  // 下行网络带宽
+  let downlinkBandWidth = "DownlinkAvailableBandwidth: \(result.downlinkReport.availableBandwidth)Kbps"
+  // 下行抖动缓冲区
+  let downlinkJitter = "DownlinkJitter: \(result.downlinkReport.jitter)ms"
+  // 下行丢包率
+  let downlinkLoss = "DownlinkLoss: \(result.downlinkReport.packetLossRate)%"
+  // 上行网络带宽
+  let uplinkBandwidth = "UplinkAvailableBandwidth: \(result.uplinkReport.availableBandwidth)Kbps"
+  // 上行抖动缓冲区
+  let uplinkJitter = "UplinkJitter: \(result.uplinkReport.jitter)ms"
+  // 上行丢包率
+  let uplinkLoss = "UplinkLoss: \(result.uplinkReport.packetLossRate)%"
+
+  lastmileProbResultLabel.text = [rtt, downlinkBandwidth, downlinkJitter, downlinkLoss,uplinkBandwidth,uplinkJitter,uplinkLoss].joined(separator: "\n")
+}
+
+// 停止网络质量探测
+agoraKit.stopLastmileProbeTest()
+```
+
+## 参考信息
+
+### 检测异常处理建议
+
+在确保 API 正确调用的前提下，遇到检测异常时，声网推荐你参考下表采取措施：
+
+| 异常现象 | 解决方案 |
+| --- | --- |
+| 检测音频设备时听不到声音 | <Slot name="lastmile-quality-macos-markdown-0-1-1" /> |
+| 检测视频设备时看不到画面 | <Slot name="lastmile-quality-macos-markdown-0-2-1" /> |
+| 检测到上行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-macos-markdown-0-3-1" /> |
+| 检测到下行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-macos-markdown-0-4-1" /> |
+
+<Slot for="lastmile-quality-macos-markdown-0-1-1">
+
+- 检查录制设备和播放设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-macos-markdown-0-2-1">
+
+- 检查视频设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-macos-markdown-0-3-1">
+
+- 检查本地网络是否正常。
+- 通过降低分辨率或降低帧率等方法确保发布音视频流的码率不超过上行可用带宽。你可以参考[视频参数推荐值](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频参数推荐值)和[视频属性参考表](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频属性参考)进行设置。
+
+</Slot>
+
+<Slot for="lastmile-quality-macos-markdown-0-4-1">
+
+- 检查本地网络是否正常。
+- 通过以下方式确保本地订阅的总带宽不超过下行可用带宽：
+
+  - 减少接收端订阅音视频流的数量或降低发送端发布音视频流的码率。
+  - 在发送端启用[双流模式](/api-ref/rtc/macos/API/toc_dual_stream#api_irtcengine_setdualstreammode)，并在接收端申请接收小流以降低带宽消耗。
+  - 接收端开启[视频流回退功能](/api-ref/rtc/macos/API/toc_network#api_irtcengine_setremotesubscribefallbackoption)。
+
+</Slot>
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="PrecallTest.swift" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/PrecallTest/PrecallTest.swift" />
+</Cards>
+
+### API 参考
+
+- [`startEchoTestWithConfig`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_startechotest3)
+- [`stopEchoTest`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](/api-ref/rtc/macos/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](/api-ref/rtc/macos/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [设置视频编码属性](/zh-CN/realtime-media/rtc/basic-features/video-profile)
+- [设置音频编码属性](/zh-CN/realtime-media/rtc/basic-features/audio-profile)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+在对通话质量要求高的场景下，进行通话前检测可以帮助提前识别并排查问题，保证实时通信体验。通话前检测通常可以从如下两个角度开展：
+
+- 设备检测：检测本地麦克风、摄像头等音视频设备能否正常工作。
+- 网络探测：通过探测当前的上下行 Last mile 网络质量，判断或预测用户当前的网络状况是否良好，是否可以满足音频码率或者当前选定的视频属性的目标码率。
+
+声网 SDK 提供了完备的网络探测及设备检测接口，帮助你实现如上功能，保证用户的使用体验。本文介绍如何使用相关 API 实现上述功能。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
+
+## 实现方法
+
+本节介绍如何进行设备检测和网络探测。
+
+### 设备检测
+
+你需要分别检测采集设备和播放设备。
+
+#### 采集设备检测
+
+参考以下步骤检测本地麦克风和摄像头：
+
+1. 调用 [`AgoraRTC.getDevices`](/api-ref/rtc/javascript/interfaces/iagorartc#getdevices) 获取可用设备及设备 ID。
+2. 在调用 `AgoraRTC.createCameraVideoTrack` 和 `AgoraRTC.createMicrophoneAudioTrack` 创建本地音视频轨道对象时，传入 `cameraId` 和 `microphoneId` 指定想测试的设备。
+3. 创建好本地音视频轨道对象后，调用 `CameraVideoTrack.play` 播放本地视频轨道：
+   - 如果是测试麦克风，调用 `MicrophoneAudioTrack.getVolumeLevel` 获取音量，音量大于 0 说明麦克风正常。
+   - 如果是测试摄像头，播放视频轨道后可以看到画面说明摄像头正常。
+
+示例代码如下：
+
+```javascript
+// 获取所有音视频设备
+AgoraRTC.getDevices()
+  .then(devices => {
+    const audioDevices = devices.filter(function(device){
+        return device.kind === "audioinput";
+    });
+    const videoDevices = devices.filter(function(device){
+        return device.kind === "videoinput";
+    });
+
+    var selectedMicrophoneId = audioDevices[0].deviceId;
+    var selectedCameraId = videoDevices[0].deviceId;
+    return Promise.all([
+      AgoraRTC.createCameraVideoTrack({ cameraId: selectedCameraId }),
+      AgoraRTC.createMicrophoneAudioTrack({ microphoneId: selectedMicrophoneId }),
+    ]);
+  })
+  .then([videoTrack, audioTrack] => {
+    videoTrack.play("<ELEMENT_ID_IN_DOM>");
+    setInterval(() => {
+      const level = audioTrack.getVolumeLevel();
+      console.log("local stream audio level", level);
+    }, 1000);
+  });
+```
+
+:::info[信息]
+- 建议你将音量变化和摄像头画面绘制在 UI 上，以便用户自行判断设备是否正常工作。
+- 设备 ID 是随机生成的，部分情况下同一个设备的 ID 可能会改变，因此我们建议每次测试设备时都先调用 `AgoraRTC.getDevices` 获取设备 ID。
+:::
+
+#### 播放设备检测
+
+声网 Web SDK 不提供 API 用于音频播放设备的测试。你可以通过以下方法测试音频播放设备：
+
+- 使用 HTML5 的 `<audio>` 元素在页面上创建一个音频播放器，让用户播放在线音频文件并确认是否有声音。
+- 采集完麦克风后，调用 `MicrophoneAudioTrack.play` 来播放麦克风声音，让用户主观确认是否可以听到麦克风声音。
+
+### 网络探测
+
+参考下列步骤在正式通话或直播前进行网络质量探测：
+
+1. 调用两次 `createClient` 创建两个 Client：
+
+   - uplinkClient：用于测试上行网络的连接状况
+   - downlinkClient：用于测试下行网络的连接状况。
+
+2. 两个 Client 均调用 `join`，进入一个测试用的频道。
+
+3. 调用 `createMicrophoneAndCameraTracks` 创建音视频轨道。
+
+4. 在 uplinkClient 上调用 `publish` 发布音视频轨道，在 downlinkClient 上调用 `subscribe` 方法订阅音视频轨道。
+
+5. 监听 `uplinkClient.on("network-quality")` 事件获取本地与声网服务器之间的上行网络状况。
+
+6. 监听 `downlinkClient.on("network-quality")` 事件获取本地与声网服务器之间的下行网络状况。SDK 每两秒触发一次 `client.on("network-quality")` 回调。
+
+7. 如果你想获得发送或者接收媒体轨道的具体统计数据，如发送/接收码率、端到端延迟等，可以在 uplinkClient 上调用 `getLocalAudioStats` 和 `getLocalVideoStats` 获取上行统计数据，在 downlinkClient 上调用 `getRemoteAudioStats` 和 `getRemoteVideoStats` 获取下行统计数据。
+
+下图展示了网络质量探测的调用时序：
+
+![API 时序](/img/rtc/js-lastmile-quality.svg)
+
+你可以参考以下示例代码：
+
+```ts
+// 获取上行网络质量
+uplinkClient.on("network-quality", (quality) => {
+  console.log("uplink network quality", quality.uplinkNetworkQuality);
+});
+
+// 获取下行网络质量
+downlinkClient.on("network-quality", (quality) => {
+  console.log("downlink network quality", quality.downlinkNetworkQuality);
+});
+
+// 获取上行统计数据
+uplinkVideoStats = uplinkClient.getLocalVideoStats();
+// 获取下行统计数据
+downlinkVideoStats = downlinkClient.getRemoteVideoStats()[<UPLINKCLIENT_UID>];
+
+console.log("uplink video stats", uplinkVideoStats);
+console.log("downlink video stats", downlinkVideoStats);
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了已实现通话前检测功能的开源示例项目供你参考，你可以前往下载或查看 `index.js` 中的源代码。
+<Cards>
+  <Card title="recordingDeviceControl" href="https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/advanced/recordingDeviceControl" />
+  <Card title="recordingDeviceControl" href="https://github.com/Shengwang-Lab/API-Examples-Web/tree/main/src/example/advanced/recordingDeviceControl" />
+</Cards>
+
+### API 参考
+
+- 设备检测相关：
+    - [`getDevices`](/api-ref/rtc/javascript/interfaces/iagorartc#getdevices)
+    - [`getCameras`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getcameras)
+    - [`getMicrophones`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getmicrophones)
+    - [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createmicrophoneaudiotrackm)
+    - [`createCameraVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcameravideotrack)
+- 网络探测相关：
+    - [`network-quality`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_network_quality)
+    - [`getLocalAudioStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getlocalaudiostats)
+    - [`getLocalVideoStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getlocalvideostats)
+    - [`getRemoteAudioStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getremoteaudiostats)
+    - [`getRemoteVideoStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getremotevideostats)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+在视频会议、在线教育、互动直播等对通信质量要求高的场景下，进行通话前检测可以帮助提前识别并排查问题，保证实时互动体验。
+
+## 功能介绍
+
+通话前检测通常可以从**设备质量检测**和**网络质量探测**两个角度开展。
+
+- **设备质量检测**：包括检测本地麦克风、扬声器以及摄像头是否能正常工作。
+- **网络质量探测**：可以向用户反馈上下行 last mile 网络的带宽、丢包、网络抖动和往返时延数据，从而判断当前网络状态是否良好。其中，**last mile** 指的是声网边缘服务器和终端用户设备之间通信的“最后一公里”，last mile 网络质量影响用户发送和接收音视频的流畅度和清晰度。
+
+## 前提条件
+
+在进行通话前检测之前，请确保你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现步骤
+
+参考以下步骤在 App 中实现通话前检测。
+
+### 设备质量检测
+
+设备质量检测的基本流程如下：
+
+![设备质量检测流程图](/img/rtc/echotest.svg)
+
+SDK 提供了 `startEchoTest`[3/3] 方法，用于测试网络连接和音视频设备是否正常工作。参考以下步骤实现设备质量检测：
+
+1. 在加入频道前，调用 `startEchoTest`[3/3]，并在 `EchoTestConfiguration` 中配置测试的对象、频道名和返回测试结果的时间间隔。
+2. 开始测试后，用户需发出声音或面对摄像头，音频或视频默认会在约 2 秒后播放出来。如果音频播放正常，则表示系统音频设备和用户上下行网络均正常；如果视频播放正常，则表示系统视频设备和用户上下行网络均正常。
+3. 获得测试结果后，调用 `stopEchoTest` 停止测试，然后再调用 `joinChannel` 加入频道。
+
+:::warning[注意]
+目前，使用 `startEchoTest`[3/3] 同时测试音频设备和视频设备可能导致测试结果出现短暂的音画不同步。
+:::
+
+请参考以下代码实现设备检测：
+
+```cpp
+// 测试音频设备
+void testAudioDevice() {
+    EchoTestConfiguration config;
+    // 开启音频设备测试
+    config.enableAudio = true;
+    // 关闭视频设备测试
+    config.enableVideo = false;
+    // 设置返回测试结果的时间间隔
+    config.intervalInSeconds = m_audioEchoInterval;
+    //标识测试频道
+    config.channelId = "AudioEchoTestChannel";
+    // 开始测试
+    m_rtcEngine->startEchoTest(config);
+}
+
+// 测试视频设备
+void testVideoDevice() {
+    EchoTestConfiguration config;
+    // 关闭音频设备测试
+    config.enableAudio = false;
+    // 开启视频设备测试
+    config.enableVideo = true;
+    // 指定用于渲染本地用户视频的视图
+    config.view = m_VideoTest.GetVideoSafeHwnd();
+    // 设置视频画面的期望延迟
+    config.intervalInSeconds = m_videoEchoInterval;
+    // 标识测试频道
+    config.channelId = "VideoEchoTestChannel";
+    // 开始测试
+    m_rtcEngine->startEchoTest(config);
+}
+```
+
+### 网络质量探测
+
+网络质量探测的基本流程如下：
+
+![网络质量探测流程图](/img/rtc/lastmile-test.svg)
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道之前探测 last mile 网络质量，并返回有关网络质量打分和网络质量统计信息。参考以下步骤进行网络质量探测：
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络探测。你需要在 `LastmileProbeConfig` 中设置探测对象和预期最高码率。
+2. 调用该方法后，SDK 会触发以下回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 方法两秒后触发。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 方法 30 秒后触发。该回调返回网络状况的实时统计数据，包括丢包率、网络抖动和可用带宽，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 方法停止 last mile 网络检测。
+
+请参考以下代码实现网络质量探测：
+
+```cpp
+// 注册回调
+void onLastmileQuality(int quality) {
+}
+void onLastmileProbeResult(LastmileProbeResult) {
+}
+
+// 配置一个 LastmileProbeConfig 实例
+LastmileProbeConfig config;
+// 确认探测上行网络质量
+config.probeUplink = true;
+// 确认探测下行网络质量
+config.probeDownlink = true;
+// 期望的最高发送码率，单位为 bps，范围为 [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// 期望的最高接收码率，单位为 bps，范围为 [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+// 开始网络质量探测
+m_rtcEngine->startLastmileProbeTest(config);
+
+// 停止网络质量探测
+m_rtcEngine->stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### 检测异常处理建议
+
+在确保 API 正确调用的前提下，遇到检测异常时，声网推荐你参考下表采取措施：
+
+| 异常现象 | 解决方案 |
+| --- | --- |
+| 检测音频设备时听不到声音 | <Slot name="lastmile-quality-windows-markdown-0-1-1" /> |
+| 检测视频设备时看不到画面 | <Slot name="lastmile-quality-windows-markdown-0-2-1" /> |
+| 检测到上行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-windows-markdown-0-3-1" /> |
+| 检测到下行网络质量不佳（丢包率 > 5%；网络抖动 > 100ms） | <Slot name="lastmile-quality-windows-markdown-0-4-1" /> |
+
+<Slot for="lastmile-quality-windows-markdown-0-1-1">
+
+- 检查录制设备和播放设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-windows-markdown-0-2-1">
+
+- 检查视频设备是否正常工作、是否被其他程序占用。
+- 检查网络连接是否正常。
+
+</Slot>
+
+<Slot for="lastmile-quality-windows-markdown-0-3-1">
+
+- 检查本地网络是否正常。
+- 通过降低分辨率或降低帧率等方法确保发布音视频流的码率不超过上行可用带宽。你可以参考[视频参数推荐值](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频参数推荐值)和[视频属性参考表](/zh-CN/realtime-media/rtc/basic-features/video-profile#视频属性参考)进行设置。
+
+</Slot>
+
+<Slot for="lastmile-quality-windows-markdown-0-4-1">
+
+- 检查本地网络是否正常。
+- 通过以下方式确保本地订阅的总带宽不超过下行可用带宽：
+
+  - 减少接收端订阅音视频流的数量或降低发送端发布音视频流的码率。
+  - 在发送端启用[双流模式](/api-ref/rtc/windows/API/toc_dual_stream#api_irtcengine_setdualstreammode)，并在接收端申请接收小流以降低带宽消耗。
+  - 接收端开启[视频流回退功能](/api-ref/rtc/windows/API/toc_network#api_irtcengine_setremotesubscribefallbackoption)。
+
+</Slot>
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="通话前检测" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/PreCallTest" />
+  <Card title="通话前检测" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/PreCallTest" />
+</Cards>
+
+### API 参考
+
+- [`startEchoTest`[3/3]](/api-ref/rtc/windows/API/toc_network#api_irtcengine_startechotest3)
+- [`stopEchoTest`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](/api-ref/rtc/windows/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](/api-ref/rtc/windows/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [设置视频编码属性](/zh-CN/realtime-media/rtc/basic-features/video-profile)
+- [设置音频编码属性](/zh-CN/realtime-media/rtc/basic-features/audio-profile)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了 `startEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+在进行 last mile 检测时，视频 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。有关详细信息，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 操作步骤
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+#### 语音通话检测
+
+测试系统的音频设备和网络连接是否正常，请参考以下步骤。
+
+1. 在加入频道之前，调用 `startEchoTest`。你需要在该方法中设置 `intervalInSeconds` 参数来通知 SDK 何时上报本次测试的结果。取值范围为 [2~10]，默认值为 10（单位：秒）。
+2. 当回声测试开始后，引导用户说一句话。如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。
+3. 获得测试结果后，先调用 `stopEchoTest` 停止测试，再调用 `joinChannelByToken` 加入频道。
+
+请参考以下示例代码来实现该功能。
+
+```typescript
+this.engine.startEchoTest(10);
+this.engine.stopEchoTest();
+```
+
+#### 音频录制设备检测
+
+测试本地音频录制设备（如麦克风）是否正常工作，请参考以下步骤。
+
+1. 调用 `startRecordingDeviceTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，SDK 会在 `onAudioVolumeIndication` 回调中报告 `uid` = 0 及设备的音量信息。
+3. 完成测试后，调用 `stopRecordingDeviceTest` 停止录制设备测试。
+
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+
+```typescript
+this.engine.getAudioDeviceManager().setRecordingDevice(deviceId);
+this.engine.registerEventHandler({
+  onAudioVolumeIndication(
+    connection: RtcConnection,
+    speakers: AudioVolumeInfo[],
+    speakerNumber: number,
+    totalVolume: number
+  ){},
+});
+this.engine.getAudioDeviceManager().startRecordingDeviceTest(1000);
+this.engine.getAudioDeviceManager().stopRecordingDeviceTest();
+```
+
+#### 音频播放设备检测
+
+测试本地音频播放设备（如外放设备）是否正常工作，请参考以下步骤。
+
+1. 调用 `startPlaybackDeviceTest`，并将 `audioFileName` 参数设置为待播放的音频文件的绝对路径。
+2. 如果能听到声音，说明播放设备能正常工作。SDK 会触发一次 `onAudioVolumeIndication` 回调，报告 `uid`= 1 及播放设备的音量信息。
+3. 完成测试后，调用 `stopPlaybackDeviceTest` 停止播放设备测试。
+
+```typescript
+this.engine.getAudioDeviceManager().setPlaybackDevice(deviceId);
+this.engine.getAudioDeviceManager().startPlaybackDeviceTest(filePath);
+this.engine.getAudioDeviceManager().stopPlaybackDeviceTest();
+```
+
+#### 音频设备回路检测
+
+测试本地音频设备回路是否正常，请参考以下步骤。
+
+1. 调用 `startAudioDeviceLoopbackTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，麦克风会采集声音然后用扬声器播放，同时 SDK 会返回两个 `onAudioVolumeIndication` 回调，分别报告音频采集设备（`uid`= 0）和音频播放设备（`uid`= 1）的音量信息。
+3. 完成测试后，调用 `stopAudioDeviceLoopbackTest` 停止录制设备测试。
+
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+
+```typescript
+this.engine.registerEventHandler({
+  onAudioVolumeIndication(
+    connection: RtcConnection,
+    speakers: AudioVolumeInfo[],
+    speakerNumber: number,
+    totalVolume: number
+  ){},
+}); this.engine.getAudioDeviceManager().startAudioDeviceLoopbackTest(1000);
+this.engine.getAudioDeviceManager().stopAudioDeviceLoopbackTest();
+```
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 停止网络检测。
+
+```typescript
+this.engine.registerEventHandler({
+  onLastmileQuality(quality: QualityType) {},
+  onLastmileProbeResult(result: LastmileProbeResult) {},
+});
+this.engine.startLastmileProbeTest({
+  probeUplink: true,
+  probeDownlink: true,
+  expectedUplinkBitrate: 100000,
+  expectedDownlinkBitrate: 100000,
+});
+this.engine.stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/electron/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/electron/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/electron/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/electron/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/electron/API/toc_mediaplayer_observer#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了`StartEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `StartLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+在进行 last mile 检测时，视频 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。有关详细信息，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 操作步骤
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+#### 语音通话检测
+
+测试系统的音频设备和网络连接是否正常，请参考以下步骤。
+
+1. 在加入频道之前，调用 `StartEchoTest`。你需要在该方法中设置 `intervalInSeconds` 参数来通知 SDK 何时上报本次测试的结果。取值范围为 [2~10]，默认值为 10（单位：秒）。
+2. 当回声测试开始后，引导用户说一句话。如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。
+3. 获得测试结果后，先调用` StopEchoTest` 停止测试，再调用 `JoinChannel` 加入频道。
+
+请参考以下示例代码来实现该功能。
+
+```cs
+// 开始回声测试
+// 只有主播才能调用 StartEchoTest
+RtcEngine.StartEchoTest(2);
+ 
+// 等待并检查是否可以听到自己的声音回放
+
+// 停止回声测试
+// 必须调用 StopEchoTest 结束回声测试。否则，你将无法进行另一次回声测试或加入频道
+RtcEngine.StopEchoTest();
+```
+
+#### 音频录制设备检测
+
+测试本地音频录制设备（如麦克风）是否正常工作，请参考以下步骤。
+
+1. 调用 `StartRecordingDeviceTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，SDK 会在 `OnAudioVolumeIndication` 回调中报告 `uid` = 0 及设备的音量信息。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `OnAudioVolumeIndication` 回调。
+:::
+
+```cs
+// 创建 IRtcEngine 对象
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+                      CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+                      AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+// 初始化 IRtcEngine
+RtcEngine.Initialize(context);
+// 设置监听回调
+RtcEngine.InitEventHandler(handler);
+// 获取 IAudioDeviceManager 对象
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+// 开启本地音频录制测试
+audioDeviceManager.StartRecordingDeviceTest(100);
+ 
+ 
+class UserEventHandler : IRtcEngineEventHandler
+{
+    // 实现音频音量回调接口
+    public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+    {
+             
+    }
+}
+```
+
+#### 音频播放设备检测
+
+测试本地音频播放设备（如外放设备）是否正常工作，请参考以下步骤。
+
+1. 调用 `StartPlaybackDeviceTest`，并将 `testAudioFilePath ` 参数设置为待播放的音频文件的绝对路径。
+2. 如果能听到声音，说明播放设备能正常工作。SDK 会触发一次 `OnAudioVolumeIndication` 回调，报告 `uid `= 1 及播放设备的音量信息。
+
+```cs
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+                      CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+                      AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// 设置监听回调
+RtcEngine.InitEventHandler(handler);
+// 测试本地音频播放设备
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+audioDeviceManager.StartPlaybackDeviceTest("/User/hello.mp3");
+ 
+ 
+class UserEventHandler : IRtcEngineEventHandler
+{
+    // 实现音频音量回调接口
+    public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+    {
+             
+    }
+}
+```
+
+#### 音频设备回路检测
+
+测试本地音频设备回路是否正常，请参考以下步骤。
+
+1. 调用 `StartAudioDeviceLoopbackTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，麦克风会采集声音然后用扬声器播放，同时 SDK 会返回两个 `OnAudioVolumeIndication` 回调，分别报告音频采集设备（`uid`= 0）和音频播放设备（`uid`= 1）的音量信息。
+3. 完成测试后，调用 `StopAudioDeviceLoopbackTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `OnAudioVolumeIndication` 回调。
+:::
+
+  ```cs
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+                      CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+                      AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// 设置监听回调
+RtcEngine.InitEventHandler(handler);
+// 测试本地音频设备回路是否正常
+IAudioDeviceManager audioDeviceManager = RtcEngine.GetAudioDeviceManager();
+audioDeviceManager.StartAudioDeviceLoopbackTest(100);
+ 
+ 
+// 完成测试后调用 StopAudioDeviceLoopbackTest 停止录制设备测试
+audioDeviceManager.StopAudioDeviceLoopbackTest();
+ 
+ 
+class UserEventHandler : IRtcEngineEventHandler
+{
+    // 实现音频音量回调接口
+    public override void OnAudioVolumeIndication(RtcConnection connection, AudioVolumeInfo[] speakers, uint speakerNumber, int totalVolume)
+    {
+             
+    }
+}
+  ```
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `StartLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `OnLastmileQuality`：在调用 `StartLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `OnLastmileProbeResult`：在调用 `StartLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+
+3. 获取网络质量统计信息后，调用 `StopLastmileProbeTest` 停止网络检测。
+
+```cs
+RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+UserEventHandler handler = new UserEventHandler(this);
+RtcEngineContext context = new RtcEngineContext(_appID, 0,
+                      CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING,
+                      AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT);
+RtcEngine.Initialize(context);
+// 设置监听回调
+RtcEngine.InitEventHandler(handler);
+// 开始 Last-mile 网络检测
+RtcEngine.StartLastmileProbeTest(new LastmileProbeConfig());
+ 
+ 
+// 结束网络检测。在测试结束前，声网建议不要调用其他 API 方法
+RtcEngine.StopLastmileProbeTest();
+ 
+ 
+class UserEventHandler : IRtcEngineEventHandler
+{  
+    // 开始 Last-mile 网络检测后，约 2 秒后发生该回调
+    public override void OnLastmileQuality(int quality)
+    {
+             
+    }
+     
+    // 开始 Last-mile 网络检测后，约 30 秒后发生该回调
+    public override void OnLastmileProbeResult(LastmileProbeResult result)
+    {
+             
+    }
+}
+
+```
+
+## 参考信息
+
+介绍本文中使用方法的更多信息。
+
+### API 参考
+
+- [`StartRecordingDeviceTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_startrecordingdevicetest_ng)
+- [`StopRecordingDeviceTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`StartPlaybackDeviceTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`StopPlaybackDeviceTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`StartAudioDeviceLoopbackTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_startaudiodeviceloopbacktest_ng)
+- [`StopAudioDeviceLoopbackTest`](/api-ref/rtc/unity/API/toc_audio_device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`StartEchoTest`](/api-ref/rtc/unity/API/toc_network#api_startechotest2)
+- [`StopEchoTest`](/api-ref/rtc/unity/API/toc_network#api_stopechotest)
+- [`StartLastmileProbeTest`](/api-ref/rtc/unity/API/toc_network#api_startlastmileprobetest)
+- [`StopLastmileProbeTest`](/api-ref/rtc/unity/API/toc_network#api_stoplastmileprobetest)
+- [`OnLastmileQuality`](/api-ref/rtc/unity/API/toc_network#callback_onlastmilequality)
+- [`OnLastmileProbeResult`](/api-ref/rtc/unity/API/toc_network#callback_onlastmileproberesult)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了 `startEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+各 API 的调用时序如下：
+
+![网络质量探测调用时序图](https://web-cdn.agora.io/docs-files/1675740215059)
+
+在进行 last mile 检测时，视频 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。有关详细信息，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 操作步骤
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+#### 语音通话检测
+
+测试系统的音频设备和网络连接是否正常，请参考以下步骤。
+
+1. 在加入频道之前，调用 `startEchoTest`。你需要在该方法中设置 `intervalInSeconds` 参数来通知 SDK 何时上报本次测试的结果。取值范围为 [2~10]，默认值为 10（单位：秒）。
+2. 当回声测试开始后，引导用户说一句话。如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。
+3. 获得测试结果后，先调用 `stopEchoTest` 停止测试，再调用 `joinChannel` 加入频道。
+
+请参考以下示例代码来实现该功能。
+
+```dart
+// 开始回声测试
+// 只有主播才能调用 startEchoTest
+await _engine.startEchoTest();
+ 
+// 等待并检查是否可以听到自己的声音回放
+
+// 停止回声测试
+// 必须调用 stopEchoTest 结束回声测试。否则，你将无法进行另一次回声测试或加入频道
+await _engine.stopEchoTest();
+```
+
+#### 音频录制设备检测
+
+测试本地音频录制设备（如麦克风）是否正常工作，请参考以下步骤。
+
+1. 调用 `startRecordingDeviceTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，SDK 会在 `onAudioVolumeIndication` 回调中报告 `uid` = 0 及设备的音量信息。
+3. 完成测试后，调用 `stopRecordingDeviceTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+:::
+
+```dart
+// 选择一个音频采集设备
+await _audioDeviceManager.setRecordingDevice(deviceId);
+ 
+// 实现音频音量回调接口
+onAudioVolumeIndication: (RtcConnection connection,
+    List<AudioVolumeInfo> speakers, int speakerNumber, int totalVolume) {
+  logSink.log('[onAudioVolumeIndication] speakers: ${speakers.toString()}, speakerNumber: $speakerNumber, totalVolume: $totalVolume');
+},
+ 
+// 开始音频采集设备测试
+await _audioDeviceManager.startRecordingDeviceTest(1000);
+ 
+// 停止音频采集设备测试
+await _audioDeviceManager.stopRecordingDeviceTest();
+```
+
+#### 音频播放设备检测
+
+测试本地音频播放设备（如外放设备）是否正常工作，请参考以下步骤。
+
+1. 调用 `startPlaybackDeviceTest`，并将 `audioFileName` 参数设置为待播放的音频文件的绝对路径。
+2. 如果能听到声音，说明播放设备能正常工作。SDK 会触发一次 `onAudioVolumeIndication` 回调，报告 `uid` = 1 及播放设备的音量信息。
+3. 完成测试后，调用 `stopPlaybackDeviceTest` 停止播放设备测试。
+
+```dart
+// 选择一个音频播放设备
+await _audioDeviceManager.setPlaybackDevice(_selectedPlaybackDeviceId);
+
+// 指定音频文件的绝对路径，启动播放设备测试
+await _audioDeviceManager.startPlaybackDeviceTest(filePath);
+ 
+// 停止音频播放设备测试
+await _audioDeviceManager.stopPlaybackDeviceTest();
+```
+
+#### 音频设备回路检测
+
+测试本地音频设备回路是否正常，请参考以下步骤。
+
+1. 调用 `startAudioDeviceLoopbackTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，麦克风会采集声音然后用扬声器播放，同时 SDK 会返回两个 `onAudioVolumeIndication` 回调，分别报告音频采集设备（`uid`= 0）和音频播放设备（`uid`= 1）的音量信息。
+3. 完成测试后，调用 `stopAudioDeviceLoopbackTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+:::
+
+```dart
+await _audioDeviceManager.startAudioDeviceLoopbackTest(1000);
+ 
+await _audioDeviceManager.stopAudioDeviceLoopbackTest();
+```
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 停止网络检测。
+
+```dart
+// 配置一个 LastmileProbeConfig 实例
+LastmileProbeConfig config = const LastmileProbeConfig(
+  probeUplink: true,  // 确认探测上行网络质量
+  probeDownlink: true,  // 确认探测下行网络质量
+  expectedUplinkBitrate: 100000,  // 期望的最高发送码率，单位为 bps，范围为 [100000,5000000]
+  expectedDownlinkBitrate: 100000,  // 期望的最高接收码率，单位为 bps，范围为 [100000,5000000]
+);
+// 开启网络探测
+await _engine.startLastmileProbeTest(config);
+ 
+ 
+// 停止网络检测
+await _engine.stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### API 参考
+
+- [`startRecordingDeviceTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`stopRecordingDeviceTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`startPlaybackDeviceTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`stopPlaybackDeviceTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`startAudioDeviceLoopbackTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`stopAudioDeviceLoopbackTest`](/api-ref/rtc/flutter/API/toc_audio_device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`startEchoTest`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_startechotest2)
+- [`stopEchoTest`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onLastmileQuality`](/api-ref/rtc/flutter/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onLastmileProbeResult`](/api-ref/rtc/flutter/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了`startEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+在进行 last mile 检测时，视频 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。有关详细信息，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 操作步骤
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+#### 语音通话检测
+
+测试系统的音频设备和网络连接是否正常，请参考以下步骤。
+
+1. 在加入频道之前，调用 `startEchoTest`。你需要在该方法中设置 `intervalInSeconds` 参数来通知 SDK 何时上报本次测试的结果。取值范围为 [2~10]，默认值为 10（单位：秒）。
+2. 当回声测试开始后，引导用户说一句话。如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。
+3. 获得测试结果后，先调用`stopEchoTest` 停止测试，再调用 `joinChannelByToken` 加入频道。
+
+请参考以下示例代码来实现该功能。
+
+```typescript
+this.engine.startEchoTest(10);
+this.engine.stopEchoTest();
+```
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 停止网络检测。
+
+```typescript
+this.engine.registerEventHandler({
+  onLastmileQuality(quality: QualityType) {},
+  onLastmileProbeResult(result: LastmileProbeResult) {},
+});
+this.engine.startLastmileProbeTest({
+  probeUplink: true,
+  probeDownlink: true,
+  expectedUplinkBitrate: 100000,
+  expectedDownlinkBitrate: 100000,
+});
+this.engine.stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### API 参考
+
+- [`adjustRecordingSignalVolume`](/api-ref/rtc/rn/API/toc_audio_capture#api_irtcengine_adjustrecordingsignalvolume)
+- [`adjustPlaybackSignalVolume`](/api-ref/rtc/rn/API/toc_audio_mixing#api_irtcengine_adjustplaybacksignalvolume)
+- [`adjustUserPlaybackSignalVolume`](/api-ref/rtc/rn/API/toc_audio_basic#api_irtcengine_adjustuserplaybacksignalvolume)
+- [`adjustAudioMixingPlayoutVolume`](/api-ref/rtc/rn/API/toc_audio_mixing#api_irtcengine_adjustaudiomixingplayoutvolume)
+- [`onAudioVolumeIndication`](/api-ref/rtc/rn/API/toc_mediaplayer_observer#callback_irtcengineeventhandler_onaudiovolumeindication)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了`startEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `startLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+各 API 的调用时序如下：
+
+![](https://web-cdn.agora.io/docs-files/1675666246094)
+
+在进行 last mile 检测时，视频 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。有关详细信息，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 操作步骤
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+#### 语音通话检测
+
+测试系统的音频设备和网络连接是否正常，请参考以下步骤。
+
+1. 在加入频道之前，调用 `startEchoTest`。你需要在该方法中设置 `intervalInSeconds` 参数来通知 SDK 何时上报本次测试的结果。取值范围为 [2~10]，默认值为 10（单位：秒）。
+2. 当回声测试开始后，引导用户说一句话。如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。
+3. 获得测试结果后，先调用` stopEchoTest` 停止测试，再调用 `joinChannelByToken` 加入频道。
+
+请参考以下示例代码来实现该功能。
+
+```cpp
+// 开始回声测试
+// 只有主播才能调用 startEchoTest
+rtcEngine.startEchoTest(10);
+
+// 等待并检查是否可以听到自己的声音回放
+
+// 停止回声测试
+// 必须调用 stopEchoTest 结束回声测试。否则，你将无法进行另一次回声测试或加入频道
+rtcEngine.stopEchoTest
+```
+
+#### 音频录制设备检测
+
+测试本地音频录制设备（如麦克风）是否正常工作，请参考以下步骤。
+
+1. 调用 `startRecordingDeviceTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，SDK 会在 `onAudioVolumeIndication` 回调中报告 `uid` = 0 及设备的音量信息。
+3. 完成测试后，调用 `stopRecordingDeviceTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+:::
+
+```cpp
+// 选择一个音频采集设备
+lpDeviceManager->setRecordingDevice(strDeviceID);
+
+// 实现音频音量回调接口
+virtual void onAudioVolumeIndication(const AudioVolumeInfo *speakers,
+                                     unsigned int speakerNumber,
+                                     int totalVolume) {
+    (void)speakers;
+    (void)speakerNumber;
+    (void)totalVolume;
+}
+
+// 开始音频采集设备测试
+(*lpDeviceManager)->startRecordingDeviceTest(1000);
+
+// 停止音频采集设备测试
+(*lpDeviceManager)->stopRecordingDeviceTest();
+```
+
+#### 音频播放设备检测
+
+测试本地音频播放设备（如外放设备）是否正常工作，请参考以下步骤。
+
+1. 调用 `startPlaybackDeviceTest`，并将 `audioFileName ` 参数设置为待播放的音频文件的绝对路径。
+2. 如果能听到声音，说明播放设备能正常工作。SDK 会触发一次 `onAudioVolumeIndication` 回调，报告 `uid `= 1 及播放设备的音量信息。
+3. 完成测试后，调用 `stopPlaybackDeviceTest` 停止播放设备测试。
+
+```cpp
+// 选择一个音频播放设备
+lpDeviceManager->setPlaybackDevice(strDeviceID); 
+
+// 指定音频文件的绝对路径，启动播放设备测试
+(*lpDeviceManager)->startPlaybackDeviceTest(filePath);
+
+// 停止音频播放设备测试
+(*lpDeviceManager)->stopPlaybackDeviceTest();
+```
+
+#### 音频设备回路检测
+
+测试本地音频设备回路是否正常，请参考以下步骤。
+
+1. 调用 `startAudioDeviceLoopbackTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，麦克风会采集声音然后用扬声器播放，同时 SDK 会返回两个 `onAudioVolumeIndication` 回调，分别报告音频采集设备（`uid`= 0）和音频播放设备（`uid`= 1）的音量信息。
+3. 完成测试后，调用 `stopAudioDeviceLoopbackTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `onAudioVolumeIndication` 回调。
+:::
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `startLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `onLastmileQuality`：在调用 `startLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `onLastmileProbeResult`：在调用 `startLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+
+3. 获取网络质量统计信息后，调用 `stopLastmileProbeTest` 停止网络检测。
+
+```cpp
+// 注册回调接口
+// 开始 Last-mile 网络探测后，约 2 秒后发生该回调
+void onLastmileQuality(int quality) {
+}
+
+// 开始 Last-mile 网络探测后，约 30 秒后发生该回调
+void onLastmileProbeResult(LastmileProbeResult) {
+  // (1)可以选择在回调内部结束测试。在测试结束前，声网建议不要调用其他 API 方法
+  lpAgoraEngine->stopLastmileProbeTest();
+}
+
+// 配置一个 LastmileProbeConfig 实例
+LastmileProbeConfig config;
+// 确认探测上行网络质量
+config.probeUplink = true;
+// 确认探测下行网络质量
+config.probeDownlink = true;
+// 期望的最高发送码率，单位为 bps，范围为 [100000,5000000]
+config.expectedUplinkBitrate = 100000;
+// 期望的最高接收码率，单位为 bps，范围为 [100000,5000000]
+config.expectedDownlinkBitrate = 100000;
+// 加入频道前开始 Last-mile 网络探测
+lpAgoraEngine->startLastmileProbeTest(config);
+
+// (2)也可以选择在其他时候结束测试。在测试结束前，声网建议不要调用其他 API 方法
+lpAgoraEngine->stopLastmileProbeTest();
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Unreal C++ 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example" />
+</Cards>
+
+### API 参考
+
+- [`startRecordingDeviceTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`stopRecordingDeviceTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`startPlaybackDeviceTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`stopPlaybackDeviceTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`startAudioDeviceLoopbackTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`stopAudioDeviceLoopbackTest`](/api-ref/rtc/unreal-cpp/API/toc_audio_device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`startEchoTest`](/api-ref/rtc/unreal-cpp/API/toc_network#startEchoTest)
+- [`stopEchoTest`](/api-ref/rtc/unreal-cpp/API/toc_network#api_irtcengine_stopechotest)
+- [`startLastmileProbeTest`](/api-ref/rtc/unreal-cpp/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`stopLastmileProbeTest`](/api-ref/rtc/unreal-cpp/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`onlastmileQuality`](/api-ref/rtc/unreal-cpp/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`onlastmileProbeResult`](/api-ref/rtc/unreal-cpp/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+在对音视频质量要求较高的场景下，需要在通话前进行检测，以确保设备的运转状态良好、设备与声网平台之间的网络状态正常。此操作能够提前识别并排除潜在的故障，从而改善用户体验。
+
+本文介绍如何在 App 中实施网络和设备检测。
+
+## 技术原理
+
+在通信场景中，可通过检测了解网络状态。例如，简单发送一条空消息以查看目标地址是否存在。
+
+进行网络检测时需要重点关注以下指标：
+
+- 带宽：通常以 bit/s 为单位，表示信息传输的最大速率
+- 吞吐量：信息传输的实际速率
+- 时延：信息从发送方到接收方所需要的时间，包括接收方的解码时间，以及每一个网络节点进行数据处理的时间
+- 抖动：接收方收到数据包的延迟变化
+- 错误率：以百分比或分数表示损坏的信息占发送信息总数的比例
+
+进行设备检测可以保证设备获取的音频在经过网络传输后可以正常播放。首先，声网会从设备的麦克风获取音频，然后将其发送到声网平台，并定义一个等待时间（例如：5 秒）。等待时间过后，声网平台将音频发送回设备，并在设备扬声器中播放。然后，你可以判断音频的质量是否良好。
+
+声网建议你先进行设备测试，然后进行网络检测。
+
+### 设备检测
+
+SDK 提供了`StartEchoTest` 方法，用于测试网络连接和音频设备（例如麦克风和扬声器）是否正常工作。
+
+### 网络检测
+
+SDK 提供了 `StartLastmileProbeTest` 方法，用于在加入频道前检测 last mile 网络并返回有关网络质量的统计信息，包括往返时延、丢包率和网络带宽。
+
+在进行 last mile 检测时，实时互动 SDK 根据视频配置文件调整实际比特率。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+请参考以下步骤在 App 中实施通话前检测。
+
+### 设备检测
+
+在开始通话前，你可以通过如下方式进行设备检测。
+
+#### 语音通话检测
+
+本小节介绍如何调用 `StartEchoTest` 和 `StopEchoTest` 开始/停止语音通话回路测试。
+
+##### 开始语音通话检测
+
+1. 创建 UMG
+创建一个 **Button** (按钮) 控件，命名为 **Btn_StartEchoTest**，你可以点击按钮开始语音通话回路测试。如下图所示：
+
+![](/img/rtc/lastmile-quality-startechotest-umg.png)
+
+2. 绑定 UI 事件
+创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StartEchoTest** 控件和 **OnStartEchoTestClicked** 回调。当你按下按钮开始语音通话测试时，触发 **OnStartEchoTestClicked** 回调。如下图所示：
+
+![](/img/rtc/lastmile-quality-startechotest-bind.png)
+
+3. 实现 UI 事件
+创建 **OnStartEchoTestClicked** 回调函数。触发该回调后，调用 **Start Echo Test** 方法开始语音通话检测。当回声测试开始后，引导用户说一句话，如果在设置的时间间隔后回放录音，则表示音频设备和网络连接正常。在本示例中，配置 **Start Echo Test** 的 **Config** 参数如下：
+
+    - 默认勾选 **Enable Audio**，即开启音频设备检测。
+    - 取消勾选 **Enable Video**，即关闭视频设备检测。
+    - 传入 **Token** 和 **Channel Id** (频道名)。
+    - **Interval In Seconds** 默认设置为 2，即每隔 2 秒上报一次音频通话回路的测试结果。
+
+![](/img/rtc/lastmile-quality-startechotest-callback.png)
+
+##### 停止语音通话检测
+
+1. 创建 UMG
+创建一个 **Button** (按钮) 控件，命名为 **Btn_StopEchoTest**，你可以点击按钮停止语音通话回路测试。如下图所示：
+
+![](/img/rtc/lastmile-quality-stopechotest-umg.png)
+
+2. 绑定 UI 事件
+创建 **Bind Event to On Clicked** 节点，分别连接 **Btn_StopEchoTest** 控件和 **OnStopEchoTestClicked** 回调。当你按下按钮停止语音通话测试时，会触发 **OnStopEchoTestClicked** 回调。如下图所示：
+
+![](/img/rtc/lastmile-quality-stopechotest-bind.png)
+
+3. 实现 UI 事件
+创建 **OnStopEchoTestClicked** 回调函数。获得测试结果后，你可以按下停止按钮触发该回调，调用 **Stop Echo Test** 方法停止语音通话检测。如下图所示：
+
+![](/img/rtc/lastmile-quality-stopechotest-callback.png)
+
+#### 音频录制设备检测
+
+测试本地音频录制设备（如麦克风）是否正常工作，请参考以下步骤。
+
+1. 调用 `StartRecordingDeviceTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，SDK 会在 `FOnAudioVolumeIndication` 回调中报告 `uid` = 0 及设备的音量信息。
+3. 完成测试后，调用 `StopRecordingDeviceTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `FOnAudioVolumeIndication` 回调。
+:::
+
+#### 音频播放设备检测
+
+测试本地音频播放设备（如外放设备）是否正常工作，请参考以下步骤。
+
+1. 调用 `StartPlaybackDeviceTest`，并将 `testAudioFilePath` 参数设置为待播放的音频文件的绝对路径。
+2. 如果能听到声音，说明播放设备能正常工作。SDK 会触发一次 `FOnAudioVolumeIndication` 回调，报告 `uid `= 1 及播放设备的音量信息。
+3. 完成测试后，调用 `StopPlaybackDeviceTest` 停止播放设备测试。
+
+#### 音频设备回路检测
+
+测试本地音频设备回路是否正常，请参考以下步骤。
+
+1. 调用 `StartAudioDeviceLoopbackTest`，并将 `indicationInterval` 参数设置为触发回调的时间间隔。
+2. 引导用户说一句话，麦克风会采集声音然后用扬声器播放，同时 SDK 会返回两个 `FOnAudioVolumeIndication` 回调，分别报告音频采集设备（`uid`= 0）和音频播放设备（`uid`= 1）的音量信息。
+3. 完成测试后，调用 `StopAudioDeviceLoopbackTest` 停止录制设备测试。
+
+:::warning[注意]
+建议将 `indicationInterval` 参数设置到大于 200 毫秒，最小不得少于 10 毫秒，否则会收不到 `FOnAudioVolumeIndication` 回调。
+:::
+
+### 网络检测
+
+请参考以下步骤进行网络检测。
+
+1. 在加入频道或切换用户角色之前，调用 `StartLastmileProbeTest` 启动网络检测。你需要在此方法中设置你预期的上行和下行比特率。
+2. 调用该方法后，SDK 将返回以下两个回调：
+   - `FOnLastmileQuality`：在调用 `StartLastmileProbeTest` 2 秒后返回。该回调通过打分反馈上下行网络质量，更贴近主观感受。
+   - `FOnLastmileProbeResult`：在调用 `StartLastmileProbeTest` 30 秒后返回。该回调提供了网络质量的实时统计数据，更加客观。
+3. 获取网络质量统计信息后，调用 `StopLastmileProbeTest` 停止网络检测。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio" />
+</Cards>
+
+### API 参考
+
+- [`StartEchoTest`](/api-ref/rtc/unreal-blueprint/API/toc_network#api_irtcengine_startechotest3)
+- [`StopEchoTest`](/api-ref/rtc/unreal-blueprint/API/toc_network#api_irtcengine_stopechotest)
+- [`StartRecordingDeviceTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_startrecordingdevicetest)
+- [`StopRecordingDeviceTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_stoprecordingdevicetest)
+- [`StartPlaybackDeviceTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_startplaybackdevicetest)
+- [`StopPlaybackDeviceTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_stopplaybackdevicetest)
+- [`StartAudioDeviceLoopbackTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_startaudiodeviceloopbacktest)
+- [`StopAudioDeviceLoopbackTest`](/api-ref/rtc/unreal-blueprint/API/toc_audio_device#api_iaudiodevicemanager_stopaudiodeviceloopbacktest)
+- [`StartLastmileProbeTest`](/api-ref/rtc/unreal-blueprint/API/toc_network#api_irtcengine_startlastmileprobetest)
+- [`StopLastmileProbeTest`](/api-ref/rtc/unreal-blueprint/API/toc_network#api_irtcengine_stoplastmileprobetest)
+- [`FOnLastmileQuality`](/api-ref/rtc/unreal-blueprint/API/toc_network#callback_irtcengineeventhandler_onlastmilequality)
+- [`FOnLastmileProbeResult`](/api-ref/rtc/unreal-blueprint/API/toc_network#callback_irtcengineeventhandler_onlastmileproberesult)
+
+</PlatformStructured>

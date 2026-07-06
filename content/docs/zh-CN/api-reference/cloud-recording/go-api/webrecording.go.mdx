@@ -1,0 +1,178 @@
+---
+title: "WebRecording 类"
+---
+<a id="acquire"></a>
+## Acquire
+
+```go
+func (w *WebRecording) Acquire(ctx context.Context, cname string, uid string, clientRequest *req.AcquireWebRecodingClientRequest) (*api.AcquireResp, error)
+```
+
+获取页面录制的资源 ID。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+调用该方法后，可使用返回的资源 ID 调用 [`Start`](/zh-CN/api-reference/cloud-recording/go-api/webrecording.go#start) 启动云端录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `cname` | `string` | 待录制的频道名。 |
+| `uid` | `string` | 页面录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `clientRequest` | `*AcquireWebRecodingClientRequest` | 请求体，详见 [`AcquireWebRecodingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquirewebrecodingclientrequest)。 |
+
+#### 返回值
+
+- `*AcquireResp`：方法调用成功时返回响应，详见 [`AcquireResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquireresp)。
+- `error`：方法调用失败时返回错误对象，包含错误信息；成功时返回 `nil`。
+
+<a id="start"></a>
+## Start
+
+```go
+func (w *WebRecording) Start(ctx context.Context, resourceID string, cname string, uid string, clientRequest *req.StartWebRecordingClientRequest) (*api.StartResp, error)
+```
+
+启动页面录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceID` | `string` | 资源 ID。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 用户 ID。 |
+| `clientRequest` | `*StartWebRecordingClientRequest` | 请求体，详见 [`StartWebRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startwebrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*StartResp`：方法调用成功时返回响应，详见 [`StartResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startresp)。
+- `error`：方法调用失败时返回错误信息，成功时返回 `nil`。
+
+<a id="query"></a>
+## Query
+
+```go
+func (w *WebRecording) Query(ctx context.Context, resourceID string, sid string) (*resp.QueryWebRecordingResp, error)
+```
+
+查询页面录制状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `resourceID` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryWebRecordingResp`：方法调用成功时返回的响应对象，详见 [`QueryWebRecordingResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#querywebrecordingresp)。
+- `error`：方法调用失败时返回的错误信息，成功时返回 `nil`。
+
+<a id="queryrtmppublish"></a>
+## QueryRtmpPublish
+
+```go
+func (w *WebRecording) QueryRtmpPublish(ctx context.Context, resourceID string, sid string) (*resp.QueryRtmpPublishResp, error)
+```
+
+查询页面录制的 CDN 推流状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `resourceID` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryRtmpPublishResp`：方法调用成功时返回响应，详见 [`QueryRtmpPublishResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#queryrtmppublishresp)。
+- `error`：方法调用失败时返回错误信息，详见 `error`。
+
+<a id="update"></a>
+## Update
+
+```go
+func (w *WebRecording) Update(ctx context.Context, resourceID string, sid string, cname string, uid string, clientRequest *req.UpdateWebRecordingClientRequest) (*api.UpdateResp, error)
+```
+
+更新页面录制配置。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceID` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 页面录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `clientRequest` | `*UpdateWebRecordingClientRequest` | 请求体，详见 [`UpdateWebRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updatewebrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*UpdateResp`：方法调用成功时返回响应，详见 [`UpdateResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updateresp)。
+- `error`：方法调用失败时返回错误信息，详见 `error`。
+
+<a id="stop"></a>
+## Stop
+
+```go
+func (w *WebRecording) Stop(ctx context.Context, resourceID string, sid string, cname string, uid string, asyncStop bool) (*api.StopResp, error)
+```
+
+停止页面录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceID` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 页面录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `asyncStop` | `bool` | <Slot name="webrecording-go-html-5-6-2" /> |
+
+<Slot for="webrecording-go-html-5-6-2">
+
+是否异步停止录制：
+
+    - `true`：异步停止录制。
+    - `false`：同步停止录制。
+
+</Slot>
+
+#### 返回值
+
+- `*StopResp`：方法调用成功时返回响应，详见 [`StopResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#stopresp)。
+- `error`：方法调用失败时返回错误对象，包含错误信息；成功时返回 `nil`。

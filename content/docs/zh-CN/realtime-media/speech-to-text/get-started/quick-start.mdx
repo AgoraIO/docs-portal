@@ -1,0 +1,195 @@
+---
+title: "开始实时转录翻译"
+---
+实时转录翻译服务可以订阅媒体流的音频内容，并将其实时转写为指定语言的文本。本文介绍如何使用基本的 RESTful API 方法来启动、停止和查询实时转录翻译服务。
+
+:::warning[注意]
+命令行示例仅用于演示目的。在生产环境中，请通过你的应用服务器发送 RESTful API 请求。
+:::
+
+## 技术原理
+
+以下流程图概述了实现实时转录翻译的流程：
+
+![实时转录翻译流程图](/img/speech-to-text/real-time-stt-flow.png)
+
+该流程包括调用以下 RESTful API 方法：
+
+1. `start`：调用该方法加入频道并开始转写。如果请求成功，你会在响应 Body 中收到一个 `agent_id`，用于标识当前的转写会话。
+2. `update`：在转写服务运行过程中，使用 `update` 方法修改转写或翻译语言，或更新启用转写的主播。
+3. `query`：在 `start` 后，调用 `query` 来查询服务状态。
+4. `stop`：调用该方法停止转写。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- 参考[开通服务](/zh-CN/realtime-media/speech-to-text/get-started/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
+- 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/user-guides/http-basic-auth)获取 `Authorization` 值。
+
+## 实现实时转录翻译
+
+本节介绍调用 `start`、`stop`、`update` 和 `query` 实时转录翻译服务的示例 API 调用。
+
+### 启用服务
+
+调用 `start` 开始字幕录制和翻译。
+
+请求成功时，你会在 HTTP 响应 Body 中收到一个 `agent_id`。此 ID 是转写会话的唯一标识符。
+
+**请求示例**
+
+以下是启动实时转录翻译的简单请求示例。有关更多功能配置，请参考[加密字幕](/zh-CN/realtime-media/speech-to-text/user-guides/encrypt-captions)、[录制字幕](/zh-CN/realtime-media/speech-to-text/user-guides/record-captions)和[转写指定主播](/zh-CN/realtime-media/speech-to-text/user-guides/transcribe-specified-hosts)。
+
+```shell
+curl --request post \
+  --url https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/join \
+  --header 'Authorization: Basic <credentials>' \
+  --data '
+{
+  "languages": [
+    "en-US"
+  ],
+  "name": "agora-test",
+  "maxIdleTime": 50,
+  "rtcConfig": {
+    "channelName": "agora-test",
+    "subBotUid": "47091",
+    "pubBotUid": "88222"
+  },
+  "translateConfig": {
+    "languages": [
+      {
+        "source": "en-US",
+        "target": [
+          "ar-SA",
+          "id-ID",
+          "fr-FR",
+          "ja-JP"
+        ]
+      }
+    ]
+  },
+  "captionConfig": {
+    "sliceDuration": 60,
+    "storage": {
+      "accessKey": "test-oss",
+      "secretKey": "test-oss",
+      "bucket": "test-oss",
+      "vendor": 2,
+      "region": 3
+    }
+  }
+}'
+```
+
+:::warning[注意]
+- 字符串用户 ID 仅在 128 主播环境中受支持，计划在不久的将来提供全面支持。
+- `pubBotUid` 和 `subBotUid` 是 `int` 类型的用户 ID，必须不同以避免未知问题。
+:::
+
+**响应示例**
+
+- 成功
+
+    ```json
+    {
+      "agent_id": "Agent ID.",
+      "create_ts": null,
+      "status": "RUNNING"
+    }
+    ```
+
+| 参数名称 | 类型 | 描述 |
+| --- | --- | --- |
+| `agent_id` | String | 服务的 ID。 |
+| `create_ts` | Integer | 服务创建时的 Unix 时间戳（秒）。 |
+| `status` | String | <Slot name="quick-start-html-0-3-2" /> |
+
+<Slot for="quick-start-html-0-3-2">
+
+服务状态：
+
+      - `STARTING`：服务正在启动。
+      - `RUNNING`：服务正在运行。
+      - `STOPPING`：服务正在退出。
+      - `STOPPED`：服务已成功退出。
+      - `RECOVERING`：服务正在恢复。
+      - `FAILED`：服务退出失败。
+
+</Slot>
+
+- 失败
+
+    ```json
+    {
+      "detail": "Details of the request failure.",
+      "reason": "The reason why the request failed."
+    }
+    ```
+
+### 查询服务状态
+
+调用 `query` 获取转写会话期间服务的状态。请求成功时，你会在响应 Body 中收到当前状态和相关信息。
+
+**请求示例**
+
+```shell
+curl --request GET \
+  --url https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents/:agentId \
+  --header 'Authorization: Basic <credentials>'
+```
+
+**响应示例**
+
+- 成功
+
+    ```json
+    {
+      "message": "Details of the request result.",
+      "agent_id": "Agent ID.",
+      "create_ts": null,
+      "status": "RUNNING"
+    }
+    ```
+
+- 失败
+
+    ```json
+    {
+      "message": "Details of the failed request.",
+      "agent_id": "Agent ID.",
+      "create_ts": null,
+      "status": "FAILED"
+    }
+    ```
+
+### 更新配置
+
+详情请参考[更新配置](/zh-CN/realtime-media/speech-to-text/user-guides/update-service)。
+
+### 停止服务
+
+调用 `stop` 停止转写。请求成功时，你会在响应 Body 中收到转写会话的状态。
+
+**请求示例**
+
+```shell
+curl --request POST \
+  --url https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/:appid/agents/:agentId/leave \
+  --header 'Authorization: Basic <credentials>'
+```
+
+## 参考信息
+
+### 示例项目和源代码
+
+你可以查看[Demo](https://stt-demo.agora.io) 体验实时转录翻译并评估其准确性和延迟。
+
+你也可以参考 [GitHub 上的示例项目](https://github.com/AgoraIO-Community/Agora-RTT-Demo)了解字幕和转写的实现方式。如需更多演示代码，请联系 [support@agora.io](mailto:support@agora.io)。
+
+### REST API 中间件
+
+[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) 是一个开源微服务，它公开了一个 RESTful API，旨在简化与声网的交互。该项目使用 Golang 编写，由 Gin 框架驱动，作为中间件连接使用声网视频 SDK 或视频 SDK 的前端应用与声网的 RESTful API。

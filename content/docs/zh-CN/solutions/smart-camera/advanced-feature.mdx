@@ -1,0 +1,134 @@
+---
+title: "告警通知和设备控制"
+---
+本文介绍如何实现smart-camera场景的进阶功能：
+
+- 告警通知：以人形检测为例。当smart-camera检测识别到有人后，会主动推送告警事件至应用端。
+- 设备控制：客户端可以调节摄像头分辨率、设备音量等。
+
+## 告警通知
+
+设备端检测到预定义的异常事件后，会将事件通知推送到客户端。如果客户端处于后台运行或关闭状态，你还需要集成离线推送服务，确保通知可以及时到达。你可以参考[第三方推送集成](https://docs-im.easemob.com/im/android/push/thirdpartypush)集成环信的离线推送服务。
+
+## 设备控制
+
+客户端需要通过信令系统在设备端调节摄像头分辨率、设备音量等。你可以在客户端集成声网 [RTM SDK](https://docs.agora.io/cn/Real-time-Messaging/product_rtm) 实现设备控制。RTSA Lite SDK 具备云信令接口，可以直接与 RTM SDK 进行通信。
+
+### 1. 生成 RTM Token
+
+使用信令接口需要通过 RTM Token 鉴权。你需要自行在业务后台生成 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm)。业务后台会分配此次通话的主叫用户 ID、被叫用户 ID 及对应的 RTM Token，并分别下发至客户端和设备端。这些参数都是后续客户端使用的 RTM SDK 和设备端使用的 RTSA Lite SDK 登录 RTM 系统所需要的。
+
+### 2. 设备端和客户端登录 RTM 系统
+
+设备端通过 RTSA Lite SDK 的 `agora_rtc_login_rtm` 方法登录 RTM 系统。
+
+```c
+rval = agora_rtc_login_rtm(p_config->p_rtm_uid, p_config->p_token, &rtm_handler);
+if (rval < 0) {
+    printf("login rtm failed\n");
+    goto EXIT;
+}
+```
+
+客户端通过 RTM SDK 的 `login` 方法登录 RTM 系统。
+
+```java
+mRtmClient.login(token, uid, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        CharSequence text = "User: " + uid + " failed to log in to the RTM system!" + errorInfo.toString();
+        int duration = Toast.LENGTH_SHORT;
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+                toast.show();
+            }
+        });
+
+    }
+});
+```
+
+### 3. 设备端发送和接收信令
+
+设备端通过 RTSA Lite SDK 的 `agora_rtc_send_rtm_data` 方法和 `_on_rtm_data` 回调发送和接收信令。
+
+```c
+// 接收你登录的 RTM 系统中对端发送信令
+static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
+    app_t *p_app = app_get_instance();
+    app_config_t *p_config = &p_app->config;
+
+    if (p_config->rtm_role == 3) {
+        printf("Receive data[%s] length[%d]\n", (char *)data, (int)data_len);
+    } else {
+        printf("data_callback %s data[], length[%lu]\n", user_id, data_len);
+    }
+
+    if (p_app->config.rtm_recv_dump_flag && p_app->rtm_recv_file_fd != INVALID_FD) {
+        if (write(p_app->rtm_recv_file_fd, data, data_len) != data_len) {
+            printf("write error\n");
+            return;
+        }
+    }
+}
+// 监听本地用户状态
+static void __on_rtm_event(const char *user_id, uint32_t event_id, uint32_t event_code) {
+    LOGD("%s event id[%u], event code[%u]", user_id, event_id, event_code);
+    if (event_id == 0 && event_code == 0) {
+        app_t *p_app = app_get_instance();
+        p_app->b_rtm_login_success_flag = 1;
+    }
+}
+// 监听本地信令发送结果
+static void __on_rtm_send_data_res(uint32_t msg_id, uint32_t error_code) {
+    LOGD("msg id [%u], error_code[%u]", msg_id, error_code);
+}
+// 向指定 RTM 用户发送信令
+rval = agora_rtc_send_rtm_data(p_app->config.p_peer_uid, ++message_id, buffer, rval);
+if (rval < 0) {
+    LOGE("%s send data failed, rval=%d", TAG_API, rval);
+    goto EXIT;
+}
+```
+
+### 4. 客户端发送和接收信令
+
+客户端通过 RTM SDK 的 `sendMessageToPeer` 方法和 `onMessageReceived` 回调发送和接收信令。
+
+```java
+// 发送信令
+mRtmClient.sendMessageToPeer(peer_id, message, option, new ResultCallback<Void>() {
+
+    @Override
+    public void onSuccess(Void aVoid) {
+        String text = "Message sent from " + uid + " To " + peer_id + " ： " + message.getText() + "\n";
+        writeToMessageHistory(text);
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        String text = "Message fails to send from " + uid + " To " + peer_id + " Error ： " + errorInfo + "\n";
+        writeToMessageHistory(text);
+
+    }
+});
+
+// 接收信令
+@Override
+public void onMessageReceived(RtmMessage rtmMessage, String peerId) {
+    String text = "Message received from " + peerId + " Message: " + rtmMessage.getText() + "\n";
+    writeToMessageHistory(text);
+}
+```
+
+## 开发注意事项
+
+在开发过程中，你需要注意如下事项：
+
+- RTC SDK、RTM SDK、RTSA Lite SDK 和你的 Token 生成器必须使用相同的 [App ID](/basics/glossary#appid)，否则无法互通。
+- RTC SDK 和 RTSA Lite SDK 的音视频接口使用 [RTC Token](/zh-CN/realtime-media/rtc/basic-features/token-authentication) 进行鉴权，RTM SDK 和 RTSA Lite SDK 的云信令接口使用 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm) 进行鉴权。两者生成方式不同且不可混用。

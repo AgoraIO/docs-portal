@@ -1,0 +1,160 @@
+---
+title: "设置并更新 SEI 信息"
+---
+本文介绍如何设置并更新用户 SEI（Supplemental Enhancement Information）信息。
+
+## 设置 SEI
+
+在 `Create` 请求时，通过 `converter.transcodeOptions.videoOptions.seiOptions` 字段设置 SEI。
+
+示例如下：
+
+```json
+{
+  "converter": {
+    "name": "string",
+    "transcodeOptions": {
+      "rtcChannel": "string",
+      "audioOptions": {},
+      "videoOptions": {
+        // highlight-start
+        "seiOptions": {
+          "source": {
+            "metadata": true,
+            "datastream": false,
+            "customized": {}
+          },
+          "sink": {
+            "type": 100
+          }
+        },
+        // highlight-end
+        "canvas": {
+          "width": 100,
+          "height": 100,
+          "color": 0
+        },
+        "layoutType": 1,
+        "vertical": {
+          "maxResolutionUid": 3,
+          "fillMode": "fill",
+          "refreshIntervalSec": 3
+        },
+        "defaultPlaceholderImageUrl": "string",
+        "bitrate": 30,
+        "frameRate": 15,
+        "gop": 30,
+        "codec": "H.264",
+        "codecProfile": "high"
+      }
+    },
+    "rtmpUrl": "rtmp://example/live/global"
+  }
+}
+```
+
+## 更新 SEI
+
+在 `Update` 请求时，通过如下字段更新 SEI：
+
+- `seiOptions.source`：更新 SEI 信息的数据来源。
+- `seiOptions.sink`：输出的 SEI 信息。
+- `seiOptions`：更新 SEI 的所有配置。
+
+更新时，请求 Body 中的 `source` 和 `sink` object 需要全量设置，不能仅设置 object 中的某个字段。
+
+### 示例一：更新 source
+
+基于[设置 SEI](#设置-sei) 示例，更新 `source`。例如将 `datastream` 更新为 `true`：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "videoOptions": {
+        "seiOptions": {
+          // highlight-start
+          "source": {
+            "metadata": true,
+            "datastream": true,
+            "customized": {}
+          }
+          // highlight-end
+        }
+      }
+    }
+  },
+  // highlight-start
+  "fields": "transcodeOptions.videoOptions.seiOptions.source"
+  // highlight-end
+}
+```
+
+### 示例二：更新 sink
+
+基于[设置 SEI](#设置-sei) 示例，更新 `sink`。例如将 `type` 更新为 `119`：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "videoOptions": {
+        "seiOptions": {
+          // highlight-start
+          "sink": {
+            "type": 119
+          }
+          // highlight-end
+        }
+      }
+    }
+  },
+  // highlight-start
+  "fields": "transcodeOptions.videoOptions.seiOptions.sink"
+  // highlight-end
+}
+```
+
+### 示例三：更新 source 和 sink
+
+基于[设置 SEI](#设置-sei) 示例，同时更新 `source` 和 `sink`。例如将 `datastream` 更新为 `true` 且 `type` 更新为 `119`：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "videoOptions": {
+        "seiOptions": {
+          // highlight-start
+          "source": {
+            "metadata": true,
+            "datastream": true,
+            "customized": {}
+          },
+          "sink": {
+            "type": 119
+          }
+          // highlight-end
+        }
+      }
+    }
+  },
+  // highlight-start
+  "fields": "transcodeOptions.videoOptions.seiOptions"
+  // highlight-end
+}
+```
+
+## 特例：纯音频场景设置输出 SEI
+
+在纯音频流（无视频）场景中，默认情况下无需设置 `videoOptions` 及其相关字段。但是如果你需要在音频流中携带用户的额外信息（例如音量），你可以通过 `videoOptions` 中的 `seiOptions` 字段设置 SEI 信息。
+
+如果你想在纯音频场景下输出用户携带的 Metadata 或 DataStream 类型的 SEI 信息，而且不想被收取视频转码费用，那么你需要进行如下设置：
+
+-  在 `videoOptions.seiOptions` 中传入待输出的 SEI 信息。
+-  确保 `videoOptions.canvas` 中的宽度和高度均设为 16，否则会产生视频转码费用。
+-  在 `videoOptions.layout` 中将携带 SEI 信息的用户 ID 传入 `rtcStreamUid` 字段中。
+
+## API 参考
+
+你可以参考 [`Create`](../media-push/operations/post-region-v1-projects-appId-rtmp-converters) 和 [`Update`](../media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId) 方法了解字段详情。

@@ -1,0 +1,76 @@
+---
+title: "CloudRecordingClient 类"
+---
+<a id="create"></a>
+## create
+
+```java
+public static synchronized CloudRecordingClient create(CloudRecordingConfig cloudRecordingConfig)
+```
+
+使用指定配置创建 [`CloudRecordingClient`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java) 实例。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cloudRecordingConfig` | `CloudRecordingConfig` | 云端录制配置。详见 [`CloudRecordingConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#cloudrecordingconfig)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`CloudRecordingClient`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java) 实例。
+
+<a id="individualscenario"></a>
+## individualScenario
+
+```java
+public abstract IndividualScenario individualScenario();
+```
+
+返回 [`IndividualScenario`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java) 实例。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 返回值
+
+方法调用成功，返回 [`IndividualScenario`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java) 实例。
+
+<a id="webscenario"></a>
+## webScenario
+
+```java
+public abstract WebScenario webScenario();
+```
+
+返回 [`WebScenario`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java) 实例。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 返回值
+
+方法调用成功，返回 [`WebScenario`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java) 实例。
+
+<a id="mixscenario"></a>
+## mixScenario
+
+```java
+public abstract MixScenario mixScenario();
+```
+
+返回 [`MixScenario`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java) 实例。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 返回值
+
+方法调用成功，返回 [`MixScenario`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java) 实例。

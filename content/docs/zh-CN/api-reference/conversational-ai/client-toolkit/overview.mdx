@@ -1,0 +1,68 @@
+---
+title: "API 概览"
+---
+
+<PlatformStructured platform="android">
+
+## IConversationalAIAPI
+
+| API | 描述 |
+|---|---|
+|[`chat`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#chat) | 向智能体发送消息。|
+|[`addHandler`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#addhandler) | 注册事件处理器，用于接收智能体会话事件。|
+|[`removeHandler`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#removehandler) | 移除已注册的事件处理器。|
+|[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#subscribemessage) | 订阅频道以接收智能体对话事件。|
+|[`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#unsubscribemessage) | 取消订阅频道并停止接收事件。|
+|[`interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#interrupt) | 打断智能体当前发言。|
+|[`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#loadaudiosettings) | 设置音频参数以优化对话性能。|
+|[`destroy`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapi#destroy) | 销毁 `API` 实例并释放资源。|
+
+## IConversationalAIAPIEventHandler
+
+| API | 描述 |
+|---|---|
+|[`onMessageError`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onmessageerror) | 消息处理出错回调。|
+|[`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onmessagereceiptupdated) | 消息回执更新回调。|
+|[`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentstatechanged) | 智能体状态变化回调。|
+|[`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentlisteningchanged) | 智能体倾听状态变化回调。|
+|[`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentthinkingchanged) | 智能体思考状态变化回调。|
+|[`onAgentSpeakingChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentspeakingchanged) | 智能体说话状态变化回调。|
+|[`onAgentInterrupted`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentinterrupted) | 中断事件回调。|
+|[`onAgentMetrics`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagentmetrics) | 性能指标回调。|
+|[`onAgentError`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#onagenterror) | 智能体错误回调。|
+|[`onTranscriptUpdated`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#ontranscriptupdated) | 转写内容更新回调。|
+|[`onDebugLog`](/zh-CN/api-reference/conversational-ai/client-toolkit/iconversationalaiapieventhandler#ondebuglog) | 内部调试日志回调。|
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## ConversationalAIAPI
+
+| API | 描述 |
+|---|---|
+|[`chat`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#chat) | 向智能体发送消息以进行处理。|
+|[`interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#interrupt) | 打断智能体当前正在进行的语音或任务处理。|
+|[`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#loadaudiosettings) | 设置音频最佳实践参数以获得更佳性能。|
+|[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#subscribemessage) | 订阅频道消息。|
+|[`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#unsubscribemessage) | 取消订阅频道消息。|
+|[`addHandler`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#addhandler) | 添加事件处理器以接收回调。|
+|[`removeHandler`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#removehandler) | 移除事件处理器。|
+|[`destroy`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi#destroy) | 销毁 API 实例并释放所有资源。|
+
+## ConversationalAIAPIEventHandler
+
+| API | 描述 |
+|---|---|
+|[`onMessageError`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onmessageerror) | 消息处理错误回调。|
+|[`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onmessagereceiptupdated) | 消息回执更新回调。|
+|[`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentstatechanged) | 智能体状态变化回调。|
+|[`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentlisteningchanged) | 智能体倾听状态变化回调。|
+|[`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentthinkingchanged) | 智能体思考状态变化回调。|
+|[`onAgentSpeakingChanged`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentspeakingchanged) | 智能体说话状态变化回调。|
+|[`onAgentInterrupted`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentinterrupted) | 中断事件回调。|
+|[`onAgentMetrics`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagentmetrics) | 性能指标回调。|
+|[`onAgentError`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#onagenterror) | AI 模块错误回调。|
+|[`onTranscriptUpdated`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapieventhandler#ontranscriptupdated) | 转写内容更新回调。|
+
+</PlatformStructured>

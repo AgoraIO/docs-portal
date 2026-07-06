@@ -1,0 +1,1104 @@
+---
+title: "高级美颜（Legacy）"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何实现美型和美妆两种高级美颜功能。
+
+:::info[信息]
+本文适用于 v4.5.x 版本的 SDK。如果你的 SDK 版本 v4.6.0 及以上，请参考[高级美颜](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty)了解如何使用美颜 2.0。
+:::
+
+## 功能介绍
+
+SDK 提供 [`setBeautyEffectOptions`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions) 方法，用于实现美白、磨皮等基础美颜功能。
+
+自 v4.5.0 起，SDK 提供以下高级美颜功能：
+
+- 美型：对人脸各部位进行修饰（即捏脸），使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，也支持对人脸的各个部位单独微调，实现更加精细的美型效果。
+- 美妆：实现眼影、美瞳、睫毛、美眉、唇彩、腮红等美妆特效。
+
+:::info[信息]
+当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+:::
+
+## 前提条件
+
+在实现高级美颜之前，请确保：
+
+- 已集成实时互动 SDK v4.5.0 及以上版本。
+- 已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，如果删除该动态库会导致无法正常开启高级美颜。动态库名和集成方式详见[插件列表](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#插件列表)。
+- 如需使用美妆功能，请[联系技术支持](https://ticket.shengwang.cn/)获取美妆资源。
+
+## 实现高级美颜
+
+### 美型
+
+#### 实现预设美型效果
+
+`setFaceShapeBeautyOptions` 方法为美型效果的总开关，调用该方法，并在 `enable` 参数中传入 `true` 即可开启美型效果。你可以在 `FaceShapeBeautyOptions` 中指定美型风格和风格强度，使用预设的参数快速实现美型效果。
+
+```java
+import io.agora.rtc2.video.FaceShapeBeautyOptions;
+
+FaceShapeBeautyOptions beautyOptions = new FaceShapeBeautyOptions();
+// 设置美型风格类型为男性
+beautyOptions.shapeStyle = FaceShapeBeautyOptions.FACE_SHAPE_BEAUTY_STYLE_MALE;
+// 设置风格强度
+beautyOptions.styleIntensity = 100;
+mRtcEngine.setFaceShapeBeautyOptions(true, beautyOptions);
+```
+
+#### 微调单个部位
+
+开启美型后，调用 `setFaceShapeAreaOptions` 方法可对人脸的各个部位单独微调。该方法对单个部位修饰力度的调整为立即生效，不会修改预设值。
+
+```java
+import io.agora.rtc2.video.FaceShapeAreaOptions;
+
+FaceShapeAreaOptions areaOptions = new FaceShapeAreaOptions();
+// 指定一个微调的部位，比如：头部尺寸
+areaOptions.shapeArea = FaceShapeAreaOptions.FACE_SHAPE_AREA_HEADSCALE;
+// 该部位调整的强度
+areaOptions.shapeIntensity = 100;
+mRtcEngine.setFaceShapeAreaOptions(areaOptions);
+```
+
+#### 关闭美型
+
+调用 `setFaceShapeEffectOptions` 方法，并在 `enable` 参数中传入 `false` 即可关闭美型效果。
+
+```java
+mRtcEngine.setFaceShapeBeautyOptions(false, beautyOptions)
+```
+
+### 美妆
+
+#### 开启美妆
+
+调用 `setExtensionProperty` 方法开启美妆效果，参考以下说明填写参数：
+
+- `provider`：`agora_video_filters_clear_vision`
+- `extension`：`clear_vision`
+- `key`：`makeup_options`
+- `value`：以 JSON 格式包装，其中不同的字段对应了不同的美妆效果，详见[美妆 JSON 字段说明](#美妆-json-字段说明)。
+- `sourceType`：仅支持以下设置：
+    - 使用摄像头采集时，保持默认的 `PRIMARY_CAMERA_SOURCE`。
+    - 自采集场景下，设为 `CUSTOM_VIDEO_SOURCE`。
+
+参考以下代码开启美妆效果：
+
+```java
+// 创建一个用于配置美妆效果的 JSON
+public class MpOptions {
+    public static final String TAG = "MpOptions";
+    public boolean enable_mu;
+    public int browStyle;
+    public int browColor;
+    public float browStrength;
+    public int lashStyle;
+    public int lashColor;
+    public float lashStrength;
+    public int shadowStyle;
+    public float shadowStrength;
+    public int pupilStyle;
+    public float pupilStrength;
+    public int blushStyle;
+    public int blushColor;
+    public float blushStrength;
+    public int lipStyle;
+    public int lipColor;
+    public float lipStrength;
+
+    public MpOptions() {
+        this.enable_mu = false;
+        this.browStyle = 0;
+        this.browColor = 0;
+        this.browStrength = 0.5f;
+        this.lashStyle = 0;
+        this.lashColor = 0;
+        this.lashStrength = 0.5f;
+        this.shadowStyle = 0;
+        this.shadowStrength = 0.5f;
+        this.pupilStyle = 0;
+        this.pupilStrength = 0.5f;
+        this.blushStyle = 0;
+        this.blushColor = 0;
+        this.blushStrength = 0.5f;
+        this.lipStyle = 0;
+        this.lipColor = 0;
+        this.lipStrength = 0.5f;
+    }
+
+    public String toJson() {
+        String json = "{}";
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            Field[] fields = MpOptions.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                String name = field.getName();
+                Object value = field.get(this);
+                jsonObject.put(name, value);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "toJson: error:" + e.getMessage());
+        }
+        json = jsonObject.toString();
+        Log.d(TAG, "toJson: " + json);
+        return json;
+    }
+}
+
+// 设置美妆效果选项
+MpOptions makeUpOptions = new MpOptions();
+makeUpOptions.enable_mu = true;
+makeUpOptions.lashStyle = 1;
+makeUpOptions.lashColor = 2;
+makeUpOptions.lashStrength = 0.5f;
+// 开启美妆效果
+mRtcEngine.setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", makeUpOptions.toJson(), Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+```
+
+#### 修改美妆效果选项
+
+修改 JSON 中美妆效果字段的值后调用 `setExtensionProperty` 方法，即可修改美妆效果选项。参考以下代码修改美妆效果：
+
+```java
+MpOptions makeUpOptions = new MpOptions();
+// 修改眉毛修饰力度
+makeUpOptions.lashStrength = 0.8f;
+mRtcEngine.setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", makeUpOptions.toJson(), Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+```
+
+#### 关闭美妆效果
+
+在 JSON 中指定 `enable_mu` 节点为 `false`，再调用 `setExtensionProperty` 方法即可关闭美妆效果：
+
+```java
+MpOptions makeUpOptions = new MpOptions();
+makeUpOptions.enable_mu = false;
+mRtcEngine.setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", makeUpOptions.toJson(), Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="VideoProcessExtension" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/VideoProcessExtension.java" />
+  <Card title="VideoProcessExtension" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/VideoProcessExtension.java" />
+</Cards>
+
+### API 参考
+
+#### 美型
+
+- [`setFaceShapeBeautyOptions`[1/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions)
+- [`setFaceShapeBeautyOptions`[2/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions2)
+- [`setFaceShapeAreaOptions`[1/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions)
+- [`setFaceShapeAreaOptions`[2/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions2)
+- [`getFaceShapeBeautyOptions`[1/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions)
+- [`getFaceShapeBeautyOptions`[2/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions2)
+- [`getFaceShapeAreaOptions`[1/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions)
+- [`getFaceShapeAreaOptions`[2/2]](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions2)
+
+#### 美妆
+
+- [`setExtensionProperty`](/api-ref/rtc/android/API/toc_extension#api_irtcengine_setextensionproperty)
+
+### 美妆 JSON 字段说明
+
+实现美妆效果的 JSON 示例和具体字段说明如下：
+
+```json
+{
+    "enable_mu": true,
+    "browStyle": 1,
+    "browColor": 2,
+    "browStrength": 0.5,
+    "lashStyle": 1,
+    "lashColor": 2,
+    "lashStrength": 0.5,
+    "shadowStyle": 2,
+    "shadowStrength": 0.5,
+    "pupilStyle": 2,
+    "pupilStrength": 0.5,
+    "blushStyle": 1,
+    "blushColor": 1,
+    "blushStrength": 0.5,
+    "lipStyle": 2,
+    "lipColor": 2,
+    "lipStrength": 0.5
+}
+```
+
+- `enable_mu`：Boolean。美妆开关。设置为：
+  - `true`：开启美妆效果。
+  - `false`：关闭美妆效果。
+- `browStyle`：Integer。眉毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `browColor`：Integer。眉毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `browStrength`：Float。眉毛强度，取值范围为 [0.0, 1.0]，其中：
+  - `0.0`：无强度。
+  - `1.0`：最大强度。
+- `lashStyle`：Integer。眼睫毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lashColor`：Integer。眼睫毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `lashStrength`：Float。眼睫毛强度，取值范围为 [0.0, 1.0]。
+- `shadowStyle`：Integer。眼影类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `shadowStrength`：Float。眼影强度，取值范围为 [0.0, 1.0]。
+- `pupilStyle`：Integer。瞳孔类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `pupilStrength`：Float。瞳孔强度，取值范围为 [0.0, 1.0]。
+- `blushStyle`：Integer。腮红类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `blushColor`：Integer。腮红颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `blushStrength`：Float。腮红强度，取值范围为 [0.0, 1.0]。
+- `lipStyle`：Integer。唇彩类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lipColor`：Integer。唇彩颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `lipStrength`：Float。唇彩强度，取值范围为 [0.0, 1.0]。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何实现美型和美妆两种高级美颜功能。
+
+:::info[信息]
+本文适用于 v4.5.x 版本的 SDK。如果你的 SDK 版本 v4.6.0 及以上，请参考[高级美颜](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty)了解如何使用美颜 2.0。
+:::
+
+## 功能介绍
+
+SDK 提供 [`setBeautyEffectOptions`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions) 方法，用于实现美白、磨皮等基础美颜功能。
+
+自 v4.5.0 起，SDK 提供以下高级美颜功能：
+
+- 美型：对人脸各部位进行修饰（即捏脸），使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，也支持对人脸的各个部位单独微调，实现更加精细的美型效果。
+- 美妆：实现眼影、美瞳、睫毛、美眉、唇彩、腮红等美妆特效。
+
+:::info[信息]
+当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+:::
+
+## 前提条件
+
+在实现高级美颜之前，请确保：
+
+- 已集成实时互动 SDK v4.5.0 及以上版本。
+- 已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，如果删除该动态库会导致无法正常开启高级美颜。动态库名和集成方式详见[插件列表](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#插件列表)。
+- 如需使用美妆功能，请[联系技术支持](https://ticket.shengwang.cn/)获取美妆资源。
+
+## 实现高级美颜
+
+### 美型
+
+#### 实现预设美型效果
+
+`setFaceShapeBeautyOptions:options:` 方法为美型效果的总开关，调用该方法，并在 `enable` 参数中传入 `true` 即可开启美型效果。你可以在 `FaceShapeBeautyOptions` 中指定美型风格和风格强度，使用预设的参数快速实现美型效果。
+
+```swift
+var beautyOptions = AgoraFaceShapeBeautyOptions()
+// 设置美型风格类型为男性
+beautyOptions.shapeStyle = AgoraFaceShapeStyle.male
+// 设置风格强度
+beautyOptions.styleIntensity = 100
+agoraKit?.setFaceShapeBeautyOptions(true, options: beautyOptions)
+```
+
+#### 微调单个部位
+
+开启美型后，调用 `setFaceShapeAreaOptions:` 方法可对人脸的各个部位单独微调。该方法对单个部位修饰力度的调整为立即生效，不会修改预设值。
+
+```swift
+var areaOptions = AgoraFaceShapeAreaOptions()
+// 指定一个微调的部位，比如：头部尺寸
+areaOptions.shapeArea = AgoraFaceShapeArea.headScale
+// 该部位调整的强度
+areaOptions.shapeIntensity = 100
+agoraKit?.setFaceShapeAreaOptions(areaOptions)
+```
+
+#### 关闭美型
+
+调用 `setFaceShapeBeautyOptions:options:` 方法，并在 `enable` 参数中传入 `false` 即可关闭美型效果。
+
+```swift
+agoraKit?.setFaceShapeBeautyOptions(false, options: beautyOptions)
+```
+
+### 美妆
+
+#### 开启美妆
+
+调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法开启美妆效果，参考以下说明填写参数：
+
+- `provider`：`agora_video_filters_clear_vision`
+- `extension`：`clear_vision`
+- `key`：`makeup_options`
+- `value`：以 JSON 格式包装，其中不同的字段对应了不同的美妆效果，详见[美妆 JSON 字段说明](#美妆-json-字段说明)。
+
+参考以下代码开启美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "enable_mu": true,
+   "blushStyle": 1,
+   "blushColor": 2,
+   "blushStrength": 0.5
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+#### 修改美妆效果选项
+
+修改 JSON 中美妆效果字段的值后调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法，即可修改美型效果选项。参考以下代码修改美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "blushColor": 1,
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+#### 关闭美妆效果
+
+在 JSON 中指定 `enable_mu` 节点为 `false`，再调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法即可关闭美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "enable_mu": false,
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="VideoProcess" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title="VideoProcess" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+</Cards>
+
+### API 参考
+
+#### 美型
+
+- [`setFaceShapeBeautyOptions:options:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions)
+- [`setFaceShapeBeautyOptions:options:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions2)
+- [`setFaceShapeAreaOptions:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions)
+- [`setFaceShapeAreaOptions:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions2)
+- [`getFaceShapeBeautyOptions`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions)
+- [`getFaceShapeBeautyOptions:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions2)
+- [`getFaceShapeAreaOptions:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions)
+- [`getFaceShapeAreaOptions:sourceType:`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions2)
+
+#### 美妆
+
+- [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/ios/API/toc_extension#api_irtcengine_setextensionproperty)
+
+### 美妆 JSON 字段说明
+
+实现美妆效果的 JSON 示例和具体字段说明如下：
+
+```json
+{
+    "enable_mu": true,
+    "browStyle": 1,
+    "browColor": 2,
+    "browStrength": 0.5,
+    "lashStyle": 1,
+    "lashColor": 2,
+    "lashStrength": 0.5,
+    "shadowStyle": 2,
+    "shadowStrength": 0.5,
+    "pupilStyle": 2,
+    "pupilStrength": 0.5,
+    "blushStyle": 1,
+    "blushColor": 1,
+    "blushStrength": 0.5,
+    "lipStyle": 2,
+    "lipColor": 2,
+    "lipStrength": 0.5
+}
+```
+
+- `enable_mu`：Boolean。美妆开关。设置为：
+  - `true`：开启美妆效果。
+  - `false`：关闭美妆效果。
+- `browStyle`：Integer。眉毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `browColor`：Integer。眉毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `browStrength`：Float。眉毛强度，取值范围为 [0.0, 1.0]，其中：
+  - `0.0`：无强度。
+  - `1.0`：最大强度。
+- `lashStyle`：Integer。眼睫毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lashColor`：Integer。眼睫毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `lashStrength`：Float。眼睫毛强度，取值范围为 [0.0, 1.0]。
+- `shadowStyle`：Integer。眼影类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `shadowStrength`：Float。眼影强度，取值范围为 [0.0, 1.0]。
+- `pupilStyle`：Integer。瞳孔类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `pupilStrength`：Float。瞳孔强度，取值范围为 [0.0, 1.0]。
+- `blushStyle`：Integer。腮红类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `blushColor`：Integer。腮红颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `blushStrength`：Float。腮红强度，取值范围为 [0.0, 1.0]。
+- `lipStyle`：Integer。唇彩类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lipColor`：Integer。唇彩颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `lipStrength`：Float。唇彩强度，取值范围为 [0.0, 1.0]。
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+本文介绍如何实现美型和美妆两种高级美颜功能。
+
+:::info[信息]
+本文适用于 v4.5.x 版本的 SDK。如果你的 SDK 版本 v4.6.0 及以上，请参考[高级美颜](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty)了解如何使用美颜 2.0。
+:::
+
+## 功能介绍
+
+SDK 提供 [`setBeautyEffectOptions`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions) 方法，用于实现美白、磨皮等基础美颜功能。
+
+自 v4.5.0 起，SDK 提供以下高级美颜功能：
+
+- 美型：对人脸各部位进行修饰（即捏脸），使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，也支持对人脸的各个部位单独微调，实现更加精细的美型效果。
+- 美妆：实现眼影、美瞳、睫毛、美眉、唇彩、腮红等美妆特效。
+
+:::info[信息]
+当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+:::
+
+## 前提条件
+
+在实现高级美颜之前，请确保：
+
+- 已集成实时互动 SDK v4.5.0 及以上版本。
+- 已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，如果删除该动态库会导致无法正常开启高级美颜。动态库名和集成方式详见[插件列表](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#插件列表)。
+- 如需使用美妆功能，请[联系技术支持](https://ticket.shengwang.cn/)获取美妆资源。
+
+## 实现高级美颜
+
+### 美型
+
+#### 实现预设美型效果
+
+`setFaceShapeBeautyOptions:options:` 方法为美型效果的总开关，调用该方法，并在 `enable` 参数中传入 `true` 即可开启美型效果。你可以在 `FaceShapeBeautyOptions` 中指定美型风格和风格强度，使用预设的参数快速实现美型效果。
+
+```swift
+var beautyOptions = AgoraFaceShapeBeautyOptions()
+// 设置美型风格类型为男性
+beautyOptions.shapeStyle = AgoraFaceShapeStyle.male
+// 设置风格强度
+beautyOptions.styleIntensity = 100
+agoraKit?.setFaceShapeBeautyOptions(true, options: beautyOptions)
+```
+
+#### 微调单个部位
+
+开启美型后，调用 `setFaceShapeAreaOptions:` 方法可对人脸的各个部位单独微调。该方法对单个部位修饰力度的调整为立即生效，不会修改预设值。
+
+```swift
+var areaOptions = AgoraFaceShapeAreaOptions()
+// 指定一个微调的部位，比如：头部尺寸
+areaOptions.shapeArea = AgoraFaceShapeArea.headScale
+// 该部位调整的强度
+areaOptions.shapeIntensity = 100
+agoraKit?.setFaceShapeAreaOptions(areaOptions)
+```
+
+#### 关闭美型
+
+调用 `setFaceShapeBeautyOptions:options:` 方法，并在 `enable` 参数中传入 `false` 即可关闭美型效果。
+
+```swift
+agoraKit?.setFaceShapeBeautyOptions(false, options: beautyOptions)
+```
+
+### 美妆
+
+#### 开启美妆
+
+调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法开启美妆效果，参考以下说明填写参数：
+
+- `provider`：`agora_video_filters_clear_vision`
+- `extension`：`clear_vision`
+- `key`：`makeup_options`
+- `value`：以 JSON 格式包装，其中不同的字段对应了不同的美妆效果，详见[美妆 JSON 字段说明](#美妆-json-字段说明)。
+
+参考以下代码开启美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "enable_mu": true,
+   "blushStyle": 1,
+   "blushColor": 2,
+   "blushStrength": 0.5
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+#### 修改美妆效果选项
+
+修改 JSON 中美妆效果字段的值后调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法，即可修改美型效果选项。参考以下代码修改美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "blushColor": 1,
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+#### 关闭美妆效果
+
+在 JSON 中指定 `enable_mu` 节点为 `false`，再调用 `setExtensionPropertyWithVendor:extension:key:value:` 方法即可关闭美妆效果：
+
+```swift
+let makeupParams: [String: Any] = [
+   "enable_mu": false,
+]
+guard let json = try? JSONSerialization.data(withJSONObject: makeupParams, options: []),
+   let jsonString = String(data: json, encoding: .utf8) else {
+   return
+}
+
+self.agoraKit.setExtensionPropertyWithVendor("agora_video_filters_clear_vision",
+                                              extension: "clear_vision",
+                                              key: "makeup_options",
+                                              value: jsonString)
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="VideoProcess" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title="VideoProcess" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+</Cards>
+
+### API 参考
+
+#### 美型
+
+- [`setFaceShapeBeautyOptions:options:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions)
+- [`setFaceShapeBeautyOptions:options:sourceType:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions2)
+- [`setFaceShapeAreaOptions:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions)
+- [`setFaceShapeAreaOptions:sourceType:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions2)
+- [`getFaceShapeBeautyOptions`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions)
+- [`getFaceShapeBeautyOptions:sourceType:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions2)
+- [`getFaceShapeAreaOptions:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions)
+- [`getFaceShapeAreaOptions:sourceType:`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions2)
+
+#### 美妆
+
+- [`setExtensionPropertyWithVendor:extension:key:value:`](/api-ref/rtc/macos/API/toc_extension#api_irtcengine_setextensionproperty)
+
+### 美妆 JSON 字段说明
+
+实现美妆效果的 JSON 示例和具体字段说明如下：
+
+```json
+{
+    "enable_mu": true,
+    "browStyle": 1,
+    "browColor": 2,
+    "browStrength": 0.5,
+    "lashStyle": 1,
+    "lashColor": 2,
+    "lashStrength": 0.5,
+    "shadowStyle": 2,
+    "shadowStrength": 0.5,
+    "pupilStyle": 2,
+    "pupilStrength": 0.5,
+    "blushStyle": 1,
+    "blushColor": 1,
+    "blushStrength": 0.5,
+    "lipStyle": 2,
+    "lipColor": 2,
+    "lipStrength": 0.5
+}
+```
+
+- `enable_mu`：Boolean。美妆开关。设置为：
+  - `true`：开启美妆效果。
+  - `false`：关闭美妆效果。
+- `browStyle`：Integer。眉毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `browColor`：Integer。眉毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `browStrength`：Float。眉毛强度，取值范围为 [0.0, 1.0]，其中：
+  - `0.0`：无强度。
+  - `1.0`：最大强度。
+- `lashStyle`：Integer。眼睫毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lashColor`：Integer。眼睫毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `lashStrength`：Float。眼睫毛强度，取值范围为 [0.0, 1.0]。
+- `shadowStyle`：Integer。眼影类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `shadowStrength`：Float。眼影强度，取值范围为 [0.0, 1.0]。
+- `pupilStyle`：Integer。瞳孔类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `pupilStrength`：Float。瞳孔强度，取值范围为 [0.0, 1.0]。
+- `blushStyle`：Integer。腮红类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `blushColor`：Integer。腮红颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `blushStrength`：Float。腮红强度，取值范围为 [0.0, 1.0]。
+- `lipStyle`：Integer。唇彩类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lipColor`：Integer。唇彩颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `lipStrength`：Float。唇彩强度，取值范围为 [0.0, 1.0]。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+本文介绍如何实现美型和美妆两种高级美颜功能。
+
+:::info[信息]
+本文适用于 v4.5.x 版本的 SDK。如果你的 SDK 版本 v4.6.0 及以上，请参考[高级美颜](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty)了解如何使用美颜 2.0。
+:::
+
+## 功能介绍
+
+SDK 提供 [`setBeautyEffectOptions`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions) 方法，用于实现美白、磨皮等基础美颜功能。
+
+自 v4.5.0 起，SDK 提供以下高级美颜功能：
+
+- 美型：对人脸各部位进行修饰（即捏脸），使用预设的模板一次性实现瘦脸、大眼、瘦鼻等微整形效果，也支持对人脸的各个部位单独微调，实现更加精细的美型效果。
+- 美妆：实现眼影、美瞳、睫毛、美眉、唇彩、腮红等美妆特效。
+
+:::info[信息]
+当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+:::
+
+## 前提条件
+
+在实现高级美颜之前，请确保：
+
+- 已集成实时互动 SDK v4.5.0 及以上版本。
+- 已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，如果删除该动态库会导致无法正常开启高级美颜。动态库名和集成方式详见[插件列表](/zh-CN/realtime-media/rtc/best-practice/reduce-app-size#插件列表)。
+- 如需使用美妆功能，请[联系技术支持](https://ticket.shengwang.cn/)获取美妆资源。
+
+## 实现高级美颜
+
+### 美型
+
+#### 实现预设美型效果
+
+`setFaceShapeBeautyOptions` 方法为美型效果的总开关，调用该方法，并在 `enable` 参数中传入 `true` 即可开启美型效果。你可以在 `FaceShapeBeautyOptions` 中指定美型风格和风格强度，使用预设的参数快速实现美型效果。
+
+```cpp
+agora::rtc::FaceShapeBeautyOptions beauty_options;
+// 设置美型风格类型为男性
+beauty_options.shapeStyle = agora::rtc::FaceShapeBeautyOptions::FACE_SHAPE_BEAUTY_STYLE_MALE;
+// 设置风格强度
+beauty_options.styleIntensity = 100;
+mRtcEngine->setFaceShapeBeautyOptions(true, beauty_options);
+```
+
+#### 微调单个部位
+
+开启美型后，调用 `setFaceShapeAreaOptions` 方法可对人脸的各个部位单独微调。该方法对单个部位修饰力度的调整为立即生效，不会修改预设值。
+
+```cpp
+agora::rtc::FaceShapeAreaOptions area_options;
+// 指定一个微调的部位，比如：小头
+area_options.shapeArea = agora::rtc::FaceShapeAreaOptions::FACE_SHAPE_AREA_HEADSCALE;
+// 该部位调整的强度
+area_options.shapeIntensity = 100;
+mRtcEngine->setFaceShapeAreaOptions(area_options)
+```
+
+#### 关闭美型
+
+调用 `setFaceShapeEffectOptions` 方法，并在 `enable` 参数中传入 `false` 即可关闭美型效果。
+
+```cpp
+mRtcEngine->setFaceShapeBeautyOptions(false, beauty_options);
+```
+
+### 美妆
+
+#### 开启美妆
+
+调用 `setExtensionProperty` 方法开启美妆效果，参考以下说明填写参数：
+
+- `provider`：`agora_video_filters_clear_vision`
+- `extension`：`clear_vision`
+- `key`：`makeup_options`
+- `value`：以 JSON 格式包装，其中不同的字段对应了不同的美妆效果，详见[美妆 JSON 字段说明](#美妆-json-字段说明)。
+- `sourceType`：仅支持以下设置：
+    - 使用摄像头采集时，保持默认的 `PRIMARY_CAMERA_SOURCE`。
+    - 自采集场景下，设为 `CUSTOM_VIDEO_SOURCE`。
+
+参考以下代码开启美妆效果：
+
+```cpp
+// 创建一个用于配置美妆效果的 JSON
+struct MakeupOptions
+{
+    bool enable_mu;
+    int browStyle;
+    int browColor;
+    float browStrength;
+    int lashStyle;
+    int lashColor;
+    float lashStrength;
+    int shadowStyle;
+    float shadowStrength;
+    int pupilStyle;
+    float pupilStrength;
+    int blushStyle;
+    int blushColor;
+    float blushStrength;
+    int lipStyle;
+    int lipColor;
+    float lipStrength;
+
+    void reset()
+    {
+        enable_mu = false;
+        browStyle = 0;
+        browColor = 0;
+        browStrength = 0.0f;
+        lashStyle = 0;
+        lashColor = 0;
+        lashStrength = 0.0f;
+        shadowStyle = 0;
+        shadowStrength = 0.0f;
+        pupilStyle = 0;
+        pupilStrength = 0.0f;
+        blushStyle = 0;
+        blushColor = 0;
+        blushStrength = 0.0f;
+        lipStyle = 0;
+        lipColor = 0;
+        lipStrength = 0.0f;
+    }
+
+    MakeupOptions()
+    {
+        reset();
+    }
+    //to json string
+    std::string toJsonString()
+    {
+        std::string jsonStr = "{\"enable_mu\":";
+        jsonStr += enable_mu ? "true" : "false";
+        jsonStr += ",\"browStyle\":" + std::to_string(browStyle);
+        jsonStr += ",\"browColor\":" + std::to_string(browColor);
+        jsonStr += ",\"browStrength\":" + std::to_string(browStrength);
+        jsonStr += ",\"lashStyle\":" + std::to_string(lashStyle);
+        jsonStr += ",\"lashColor\":" + std::to_string(lashColor);
+        jsonStr += ",\"lashStrength\":" + std::to_string(lashStrength);
+        jsonStr += ",\"shadowStyle\":" + std::to_string(shadowStyle);
+        jsonStr += ",\"shadowStrength\":" + std::to_string(shadowStrength);
+        jsonStr += ",\"pupilStyle\":" + std::to_string(pupilStyle);
+        jsonStr += ",\"pupilStrength\":" + std::to_string(pupilStrength);
+        jsonStr += ",\"blushStyle\":" + std::to_string(blushStyle);
+        jsonStr += ",\"blushColor\":" + std::to_string(blushColor);
+        jsonStr += ",\"blushStrength\":" + std::to_string(blushStrength);
+        jsonStr += ",\"lipStyle\":" + std::to_string(lipStyle);
+        jsonStr += ",\"lipColor\":" + std::to_string(lipColor);
+        jsonStr += ",\"lipStrength\":" + std::to_string(lipStrength);
+        jsonStr += "}";
+        return jsonStr;
+    }
+};
+
+// 设置美妆效果
+MakeupOptions m_makeupOptions;
+m_makeupOptions.enable_mu = true;
+m_makeupOptions.browStyle = 1;
+m_makeupOptions.browColor = 2;
+m_makeupOptions.browStrength = 0.5;
+
+// 转换为 JSON 字符串
+std::string str = m_makeupOptions.toJsonString();
+// 开启美妆
+mRtcEngine->setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", str.c_str(), PRIMARY_CAMERA_SOURCE);
+```
+
+#### 修改美妆效果选项
+
+修改 JSON 中美妆效果字段的值后调用 `setExtensionProperty` 方法，即可修改美妆效果选项。参考以下代码修改美妆效果：
+
+```cpp
+MakeupOptions m_makeupOptions;
+// 修改眉毛类型
+m_makeupOptions.browStyle = 2;
+std::string str = m_makeupOptions.toJsonString();
+mRtcEngine->setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", str.c_str(), PRIMARY_CAMERA_SOURCE);
+```
+
+#### 关闭美妆效果
+
+在 JSON 中指定 `enable_mu` 节点为 `false`，再调用 `setExtensionProperty` 方法即可关闭美妆效果：
+
+```cpp
+MakeupOptions m_makeupOptions;
+m_makeupOptions.enable_mu = false;
+std::string str = m_makeupOptions.toJsonString();
+mRtcEngine->setExtensionProperty("agora_video_filters_clear_vision", "clear_vision", "makeup_options", str.c_str(), PRIMARY_CAMERA_SOURCE);
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="CDlgBeautyEx" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty/CDlgBeautyEx.h" />
+  <Card title="CDlgBeautyEx" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty/CDlgBeautyEx.h" />
+</Cards>
+
+### API 参考
+
+#### 美型
+
+- [`setFaceShapeBeautyOptions`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_setfaceshapebeautyoptions)
+- [`setFaceShapeAreaOptions`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_setfaceshapeareaoptions)
+- [`getFaceShapeBeautyOptions`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_getfaceshapebeautyoptions)
+- [`getFaceShapeAreaOptions`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_getfaceshapeareaoptions)
+
+#### 美妆
+
+- [`setExtensionProperty`](/api-ref/rtc/windows/API/toc_extension#api_irtcengine_setextensionproperty)
+
+### 美妆 JSON 字段说明
+
+实现美妆效果的 JSON 示例和具体字段说明如下：
+
+```json
+{
+    "enable_mu": true,
+    "browStyle": 1,
+    "browColor": 2,
+    "browStrength": 0.5,
+    "lashStyle": 1,
+    "lashColor": 2,
+    "lashStrength": 0.5,
+    "shadowStyle": 2,
+    "shadowStrength": 0.5,
+    "pupilStyle": 2,
+    "pupilStrength": 0.5,
+    "blushStyle": 1,
+    "blushColor": 1,
+    "blushStrength": 0.5,
+    "lipStyle": 2,
+    "lipColor": 2,
+    "lipStrength": 0.5
+}
+```
+
+- `enable_mu`：Boolean。美妆开关。设置为：
+  - `true`：开启美妆效果。
+  - `false`：关闭美妆效果。
+- `browStyle`：Integer。眉毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `browColor`：Integer。眉毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `browStrength`：Float。眉毛强度，取值范围为 [0.0, 1.0]，其中：
+  - `0.0`：无强度。
+  - `1.0`：最大强度。
+- `lashStyle`：Integer。眼睫毛类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lashColor`：Integer。眼睫毛颜色，可选值为：
+  - `0`：无。
+  - `1`：黑色。
+  - `2`：棕色。
+- `lashStrength`：Float。眼睫毛强度，取值范围为 [0.0, 1.0]。
+- `shadowStyle`：Integer。眼影类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `shadowStrength`：Float。眼影强度，取值范围为 [0.0, 1.0]。
+- `pupilStyle`：Integer。瞳孔类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `pupilStrength`：Float。瞳孔强度，取值范围为 [0.0, 1.0]。
+- `blushStyle`：Integer。腮红类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `blushColor`：Integer。腮红颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `blushStrength`：Float。腮红强度，取值范围为 [0.0, 1.0]。
+- `lipStyle`：Integer。唇彩类型，可选值为：
+  - `0`：关闭。
+  - `1`：类型 1。
+  - `2`：类型 2。
+- `lipColor`：Integer。唇彩颜色，可选值为：
+  - `0`：无。
+  - `1`：1号色。
+  - `2`：2号色。
+  - `3`：3号色。
+  - `4`：4号色。
+  - `5`：5号色。
+- `lipStrength`：Float。唇彩强度，取值范围为 [0.0, 1.0]。
+
+</PlatformStructured>

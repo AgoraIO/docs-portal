@@ -1,0 +1,113 @@
+---
+title: "LocalUserObserver 类"
+---
+<span className="index-desc-localuserobserver">`LocalUserObserver` 类。</span>
+
+<a id="onuseraudiotrackstatechanged"></a>
+## OnUserAudioTrackStateChanged
+
+```go
+OnUserAudioTrackStateChanged func(localUser *LocalUser, uid string, remoteAudioTrack *RemoteAudioTrack, state int, reason int, elapsed int)
+```
+
+<span className="index-desc-onuseraudiotrackstatechanged">在远端音频轨道状态变化时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `localUser` | `LocalUserObserver` 类。 |
+| `uid` | 远端用户 ID。 |
+| `remoteAudioTrack` | 远端音频轨道。 |
+| `state` | <Slot name="localuserobserver-go-html-0-4-1" /> |
+| `reason` | <Slot name="localuserobserver-go-html-0-5-1" /> |
+| `elapsed` | 远端用户连接频道之后经过的时间（毫秒）。 |
+
+<Slot for="localuserobserver-go-html-0-4-1">
+
+音频轨道的当前状态。
+
+    - 0：远端音频位于初始状态。
+    - 1：第一个远端音频包被成功接收。
+    - 2：远端音频流正常解码和播放。
+    - 3：远端音频流卡顿。
+    - 4：远端音频流启动失败。
+
+</Slot>
+
+<Slot for="localuserobserver-go-html-0-5-1">
+
+状态改变原因。
+
+    - 0：音频状态发生改变时，会报告该原因。
+    - 1：网络阻塞。
+    - 2：网络恢复正常。
+    - 3：本地用户停止接收远端音频流或本地用户禁用音频模块。
+    - 4：本地用户恢复接收远端音频流或本地用户启动音频模块。
+    - 5：远端用户停止发送音频流或远端用户禁用音频模块。
+    - 6：远端用户恢复发送音频流或远端用户启用音频模块。
+    - 7：远端用户离开频道。
+
+</Slot>
+
+<a id="onstreammessage"></a>
+## OnStreamMessage
+
+```go
+OnStreamMessage func(localUser *LocalUser, uid string, streamId int, data []byte)
+```
+
+<span className="index-desc-onstreammessage">接收到数据流消息的回调。该回调表示本地用户收到了远端用户调用 `SendStreamMessage` 方法发送的流消息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `localUser` | `LocalUserObserver` 类。 |
+| `uid` | 发送消息的用户 ID。 |
+| `streamId` | 接收到的消息的 Stream ID。 |
+| `data` | 接收到的数据。 |
+
+<a id="onuserinfoupdated"></a>
+## OnUserInfoUpdated
+
+```go
+OnUserInfoUpdated func(localUser *LocalUser, uid string, userMediaInfo int, val int)
+```
+
+<span className="index-desc-onuserinfoupdated">用户媒体信息更新时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `localUser` | [`LocalUser`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go) 类。 |
+| `uid` | 用户 ID。 |
+| `userMediaInfo` | 用户媒体信息。详见 [`UserMediaInfo`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#usermediainfo)。 |
+| `val` | <Slot name="localuserobserver-go-html-1-4-1" /> |
+
+<Slot for="localuserobserver-go-html-1-4-1">
+
+用户是否停止发流。
+
+    - `0`: 不停止发流。
+    - `1`: 停止发流
+
+</Slot>
+
+<a id="onaudiometadatareceived"></a>
+## OnAudioMetadataReceived
+
+```go
+OnAudioMetadataReceived func(localUser *LocalUser, uid string, metadata []byte)
+```
+
+接收到对方音频 Metadata 数据的回调。该回调表示本地用户收到了远端用户调用 [`SendAudioMetadata`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#sendaudiometadata) 方法发送的音频 Metadata 数据。
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `localUser` | [`LocalUser`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go) 类。 |
+| `uid` | 发送音频 Metadata 数据的用户 ID。 |
+| `metadata` | 音频 Metadata 数据。 |

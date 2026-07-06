@@ -1,0 +1,241 @@
+---
+---
+---
+title: 合并音视频文件
+---
+
+单流录制模式下，每个 UID 的音频和视频均分开录制，每个 UID 都有其对应的音频文件和视频文件。你可以使用我们的音视频合并脚本，合并每个 UID 的音频文件和视频文件。
+
+## 前提条件
+
+### 环境准备
+
+- 以下物理或虚拟服务器：
+  - Ubuntu 14.04+ x64
+  - CentOS 6.5+（推荐 7.0）x64
+- 安装 Python 2.7 及以上版本
+
+### 录制文件准备
+
+- 确保你已经使用声网本地服务端录制 SDK 单流录制生成录制文件。
+- 确保录制文件夹内有 `recording2-done.txt` 文件，标识本频道录制结束。
+
+## 转码步骤
+
+### 获取音视频合并转码脚本
+
+前往[资源获取](/zh-CN/realtime-media/recording/local-server-recording/resources)下载本地服务端录制 SDK 并解压，在 `tools` 文件夹下找到 `ffmpeg.tar.gz` 和 `video_convert.py` 文件。
+
+打开终端，进入 `tools` 文件夹，通过 `tar -xf ffmpeg.tar.gz` 命令解压 `ffmpeg.tar.gz`，确保和 `video_convert.py` 在同一目录下。
+
+### 设置转码参数
+
+解压完成后，设置转码参数即可开始转码。
+
+#### 转码参数介绍
+
+你可先如下图所示，输入命令行 `python video_convert.py`，查看转码参数介绍。
+
+![转码参数](https://web-cdn.agora.io/docs-files/1569396483232)
+
+也可通过下列表格了解各参数。
+
+| 参数 | 描述 |
+| --- | --- |
+| `-f` | 必设，指定待转码文件的存储路径。 |
+| `-m` | <Slot name="merge-files-html-0-2-1" /> |
+| `-s` | <Slot name="merge-files-html-0-3-1" /> |
+| `-p` | 设置转码后视频的帧率，单位为 fps。默认值为 15 fps。取值范围为 5 fps 到 120 fps。如果设置低于 5 fps，则按 5 fps 执行。具体设置请参考[分辨率、帧率、码率对照表](/zh-CN/realtime-media/recording/local-server-recording/legacy/set-output-video#分辨率帧率码率对照表)。 |
+| `-r` | 设置转码后视频的分辨率，格式为 `宽 高`，例如 `-r 640 360`。具体设置请参考[分辨率、帧率、码率对照表](/zh-CN/realtime-media/recording/local-server-recording/legacy/set-output-video#分辨率帧率码率对照表)。 |
+
+<Slot for="merge-files-html-0-2-1">
+
+设置转码模式，可设为：
+
+      - `0`：默认转码模式，按 Segment 转码，即把同一个 Segment 的音频和视频合成一个音视频文件。
+      - `1`：音视频合并模式。
+      - `2`：音频合并模式。
+      - `3`：视频合并模式。
+
+      详见下文 [`-m` 参数介绍](#option)。
+
+</Slot>
+
+<Slot for="merge-files-html-0-3-1">
+
+设置保存模式，表示转码是否需要严格时间同步，即用户离开频道的时间是否占转码文件时长：
+
+      - 不设置 `-s`，则为默认的 `all time recording` 模式。此模式下，如果用户录制中途退出频道后重新加入，用户退出的时间会以黑色的画面呈现在录制文件里。举例来说，用户在频道里 2 分钟后，退出频道 30 分钟，再加入频道 2 分钟，则录制文件长度最终为 34 分钟，其中 30 分钟为黑屏。
+      - 如果设置了 `-s`，则转码文件中删除用户中途退出频道到重新加入频道之间的时长。
+
+      :::warning[注意]
+      此参数仅在 `-m` 设为 `1`，`2` 或 `3` 时有效。
+      :::
+
+</Slot>
+
+<a id="option"></a>
+**-m 参数介绍**
+
+在此之前，你需要了解录制 Segment 的概念。
+
+录制 Segment 指每个 UID 从开始录制到结束录制这一过程。具体条件如下表所示。
+
+| 该 UID 开始录制 | 该 UID 结束录制 | Column 3 |
+| --- | --- | --- |
+| 自动录制 | <Slot name="merge-files-html-1-1-1" /> | <Slot name="merge-files-html-1-1-2" /> |
+| 手动录制 | <Slot name="merge-files-html-1-2-1" /> | <Slot name="merge-files-html-1-2-2" /> |
+
+<Slot for="merge-files-html-1-1-1">
+
+同时满足以下条件：
+
+      - 该 UID 加入频道并发流
+      - 录制 SDK 加入频道
+
+</Slot>
+
+<Slot for="merge-files-html-1-1-2">
+
+满足以下任一条件：
+
+      - 该 UID 停止发流且 15 秒内没有重新发流
+      - 该 UID 离开频道且 15 秒内没有重新加入
+      - 录制 SDK 离开频道
+
+</Slot>
+
+<Slot for="merge-files-html-1-2-1">
+
+同时满足以下条件：
+
+      - 该 UID 加入频道并发流
+      - 录制 SDK 加入频道并手动开始录制
+
+</Slot>
+
+<Slot for="merge-files-html-1-2-2">
+
+满足以下任一条件：
+
+      - 该 UID 停止发流且 15 秒内没有再发流
+      - 该 UID 离开频道且 15 秒内没有重新加入
+      - 录制 SDK 手动暂停录制
+
+</Slot>
+
+了解录制 Segment 的概念后，我们再来看 `-m` 参数不同设置的具体行为。
+
+`-m` 参数不同设置的行为视录制启动模式而定。
+
+:::info[信息]
+为方便描述，以下我们假设每个 UID 均录制生成多个音频文件和视频文件。
+:::
+
+**自动录制模式**
+
+自动录制模式（默认录制启动模式，`triggerMode` 设为 `0`）下，`-m` 参数不同设置的行为如下：
+
+- `0`：把同一个 UID 的音频和视频按照录制 Segment 合并。一个 UID 的一个录制 Segment 对应一个音视频文件，文件名为 `UID_timestamp_av.mp4`。
+- `1`：把同一个 UID 的**音频和视频**按时间顺序合成一个文件。一个 UID 对应一个音视频文件，文件名为 `UID_0_merge_av.mp4`。
+- `2`：把同一个 UID 的**音频**按时间顺序合成一个文件。一个 UID 对应一个音频文件，文件名为 `UID_0_merge.m4a`。
+- `3`：把同一个 UID 的**视频**按时间顺序合成一个文件。一个 UID 对应一个视频文件，文件名为 `UID_0_merge.mp4`。
+
+其中，`timestamp` 为服务器开始录制的时间戳，由年、月、日、小时、分钟、秒和毫秒组成，时区为 UTC + 0。例如 `123_20190611073246073.aac` 表示在 UTC 2019 年 6 月 11 日 7 点 32 分 46 秒 73 毫秒时开始录制的一个 UID 为 `123` 的用户的音频文件。如音频和视频的开始录制时间不一致，`timestamp` 为两个开始时间中较早的时间。
+
+**手动录制模式**
+
+手动录制模式（`triggerMode` 设为 `1`）下，你需要手动开始录制和暂停录制。每一次开始/暂停视为一次录制 Session。请结合下图进行理解录制 Segment 和录制 Session。
+
+![录制 Session 与 Segment](https://web-cdn.agora.io/docs-files/1569399270238)
+
+在此模式下， `-m` 参数不同设置的行为如下：
+
+  - `0`：把同一个 UID 的音频和视频按照录制 Segment 合并。一个 UID 的一个录制 Segment 对应一个音视频文件，文件名为 `UID_timestamp_av.mp4`。
+  - `1`：把同一个 UID 的音频和视频按照录制 Session 合并。一个 UID 的一个录制 Session 对应一个音视频文件，文件名为 `UID_X_merge_av.mp4`。
+  - `2`：把同一个 UID 的音频按录制 Session 合并。一个 UID 的一个录制 Session 对应一个音频文件，文件名为 `UID_X_merge.m4a`。
+  - `3`：把同一个 UID 的视频按录制 Session 合并。一个 UID 的一个录制 Session 对应一个视频文件。文件名为 `UID_X_merge.mp4`。
+
+其中，X 为录制 Session 的序号，从 0 开始。
+
+#### 转码参数设置示例
+
+下面结合具体案例来介绍转码参数的设置和最终得到的转码文件。
+
+**案例一**：频道内有两个用户，UID 分别为 `100` 和 `123`。录制 SDK 以**自动录制模式**加入频道进行录制。在此过程中 UID `100` 用户曾离开频道，30 秒后再进入。因此 UID `100` 用户有两个录制 Segment，对应两个音频文件和两个视频文件，UID `123` 用户对应一个音频文件和一个视频文件。
+
+可运行以下命令将每个 UID 的音视频合并成一个文件：
+
+```shell
+video_convert.py -f <待转码文件所在路径> -m 1 -s -p 30 -r 640 360
+```
+
+最终会生成两个转码文件：`100_0_merge_av.mp4` 和 `123_0_merge_av.mp4`。UID `100` 用户退出频道后再进入频道之间的 30 秒时长不会包含在内。如要将 30 秒时长包含在内，需要取消设置 `-s`。
+
+**案例二**：频道内有两个用户，UID 分别为 `100` 和 `123`。录制 SDK 以**手动录制模式**加入频道进行录制。在此过程中曾有一次暂停录制然后又开始录制，用户 `123` 和用户 100 中途多次进出频道。因此得到的录制文件中，UID `100` 用户对应多个音频文件和多个视频文件，UID `123` 用户也对应多个音频文件和多个视频文件。
+
+可运行以下命令将每个 UID 的音视频文件按录制 Session 合并：
+
+```shell
+video_convert.py -f <待转码文件所在路径> -m 1 -p 30 -r 640 360
+```
+
+最终会生成四个转码文件：`100_0_merge_av.mp4`，`100_1_merge_av.mp4`，`123_0_merge_av.mp4` 和 `123_1_merge_av.mp4`。
+
+转码完成后，会生成一个 `convert-done.txt`，标志转码成功；还会生成一个 `convert.log` 日志文件，和音视频文件在同一个目录下。
+
+## 播放器支持
+
+转码完成后的 MP4 文件可在下表所列的播放器中播放。
+
+| 操作系统 | 支持播放器 |
+| --- | --- |
+| Linux | <Slot name="merge-files-html-2-1-1" /> |
+| Windows | <Slot name="merge-files-html-2-2-1" /> |
+| macOS | <Slot name="merge-files-html-2-3-1" /> |
+| iOS | <Slot name="merge-files-html-2-4-1" /> |
+| Android | <Slot name="merge-files-html-2-5-1" /> |
+
+<Slot for="merge-files-html-2-1-1">
+
+- VLC
+      - ffplayer
+
+</Slot>
+
+<Slot for="merge-files-html-2-2-1">
+
+- Media Player
+      - KM Player
+      - VLC Player
+      - Chrome (>= 49.0.2623)
+
+</Slot>
+
+<Slot for="merge-files-html-2-3-1">
+
+- Quick Time Player
+      - Movist
+      - MX Player
+      - Chrome (>= 49.0.2623)
+      - Safari (>= 11.0.3)
+
+</Slot>
+
+<Slot for="merge-files-html-2-4-1">
+
+- 系统播放器
+      - KM Player
+      - Safari (>= 9.0)
+
+</Slot>
+
+<Slot for="merge-files-html-2-5-1">
+
+- 系统播放器
+      - MX Player
+      - VLC
+      - KM Player
+      - Chrome (>= 49.0.2623)
+
+</Slot>

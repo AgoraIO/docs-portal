@@ -1,0 +1,52 @@
+---
+title: "RemoteVideoTrack 类"
+---
+<span className="index-desc-remotevideotrack">`RemoteVideoTrack` 类。</span>
+
+<a id="registervideoencodedimagereceiver"></a>
+## register_video_encoded_image_receiver
+
+```python
+def register_video_encoded_image_receiver(self, receiver):
+    ret = agora_remote_video_track_register_video_encoded_image_receiver(self.track_handle, receiver)
+    if ret != 0:
+        print(f"Failed to register video encoded image receiver, error code: {ret}")
+    return ret
+```
+
+<span className="index-desc-registervideoencodedimagereceiver">注册 [`IVideoEncodedImageReceiver`](./ivideoencodedimagereceiver) 对象。 注册成功之后，SDK 在收到已编码视频帧时触发 [`on_encoded_video_image_received`](./ivideoencodedimagereceiver#onencodedvideoimagereceived) 回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `receiver` | `IVideoEncodedImageReceiver` 对象。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregistervideoencodedimagereceiver"></a>
+## unregister_video_encoded_image_receiver
+
+```python
+def unregister_video_encoded_image_receiver(self, receiver):
+    ret = agora_remote_video_track_unregister_video_encoded_image_receiver(self.track_handle, receiver)
+    if ret != 0:
+        print(f"Failed to unregister video encoded image receiver, error code: {ret}")
+    return ret
+```
+
+<span className="index-desc-unregistervideoencodedimagereceiver">销毁 [`IVideoEncodedImageReceiver`](./ivideoencodedimagereceiver) 对象。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `receiver` | `IVideoEncodedImageReceiver` 对象。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

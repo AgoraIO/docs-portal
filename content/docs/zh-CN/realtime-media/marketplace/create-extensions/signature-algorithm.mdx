@@ -1,0 +1,166 @@
+---
+title: "签名算法"
+---
+服务开通 RESTful API 和计量计费 RESTful API 使用签名（`signature` 字段）进行身份验证。签名是经过加密处理的字符串，仅在服务商和声网之间共享。服务商可以通过签名鉴定声网发送的 HTTP 请求。
+
+本文介绍如何生成签名。
+
+## 概述
+
+签名由源串（`SourceString`）和密钥（`apiSecret&`） 经过加密算法的处理而生成，加密算法如下：
+
+- GET 和 PUT 方法：
+
+  ```shell
+  signature = URLEncode(Base64( HMAC-SHA1( apiSecret&, SourceString) ), "UTF-8")
+  ```
+
+- POST 方法：
+
+  ```shell
+  signature = Base64( HMAC-SHA1( apiSecret&, SourceString) )
+  ```
+
+收到请求后，你需要通过上述算法自行生成一个签名。如果你生成的签名与请求中收到的签名一致，说明该请求由声网发送。
+
+## 计算示例（GET 和 PUT ）
+
+以声网调用计量计费 RESTful API [查询用量](/zh-CN/realtime-media/marketplace/create-extensions/usage-billing)为例，请求 URL 为：
+
+```shell
+https://[host]/usage?fromTs=1619913600&toTs=1619917200&pageNum=1&apiKey=pzD5XinRSlmA64tZx81fL92YcBsJK0gd&signature={signature}
+```
+
+则加密算法中的各项参数为：
+
+| 参数 | 值 |
+| --- | --- |
+| `SourceString` | `GET&%2Fusage&apiKey%3DpzD5XinRSlmA64tZx81fL92YcBsJK0gd%26fromTs%3D1619913600%26pageNum%3D1%26toTs%3D1619917200` |
+| `apiSecret` | `U1SXE6k57vxVRjTomgquwC2F3tH8ziOB`（仅作演示，你需要换成自己的 `apiSecret`） |
+| `signature` | `SFVnCVlRbrZcjMPGTWVxAE4QWZ8%3D` |
+
+下面介绍签名计算的详细步骤。
+
+### 第 1 步：构造源串
+
+构造源串的步骤如下：
+
+1. 将 HTTP 请求的类型与 “&” 拼接：
+
+   ```shell
+   GET&
+   ```
+
+2. 对请求 URL 中位于 `[host]` 之后、`?` 之前的路径（即 `/usage`）进行 URL 编码，与 “&” 拼接。此时的源串如下：
+
+   ```shell
+   GET&%2Fusage&
+   ```
+
+3. 按字典升序排列路径参数中除 `signature` 以外的所有字段（即 `fromTs`、`toTs`、`apiKey`），字段均写为 `key=value`（字段名称 = 取值）的形式，不同字段用 “&” 拼接：
+
+   ```shell
+   apiKey=pzD5XinRSlmA64tZx81fL92YcBsJK0gd&fromTs=1619913600&pageNum=1&toTs=1619917200
+   ```
+
+4. 对步骤 3 得到的字符串进行 URL 编码，并与步骤 2 的源串拼接，最终生成的源串如下：
+
+   ```shell
+   GET&%2Fusage&apiKey%3DpzD5XinRSlmA64tZx81fL92YcBsJK0gd%26fromTs%3D1619913600%26pageNum%3D1%26toTs%3D1619917200
+   ```
+
+### 第 2 步：拼接密钥
+
+密钥由 apiSecret 和 “&” 拼接生成。其中的 apiSecret 是你在申请入驻云市场时提供给声网的信息。
+
+例如：你提供的 apiSecret 是 U1SXE6k57vxVRjTomgquwC2F3tH8ziOB，则对应的密钥为 `U1SXE6k57vxVRjTomgquwC2F3tH8ziOB&`。
+
+### 第 3 步：生成签名
+
+GET 和 PUT 方法的加密算法如下：
+
+```shell
+signature = URLEncode(Base64( HMAC-SHA1( apiSecret&, SourceString) ), "UTF-8")
+```
+
+使用前两步的 `SourceString` 和 `apiSecret&`，生成签名如下：
+
+```shell
+SFVnCVlRbrZcjMPGTWVxAE4QWZ8%3D
+```
+
+## 计算示例（POST）
+
+以声网调用服务开通 RESTful API [激活插件](/zh-CN/realtime-media/marketplace/create-extensions/provisioning)为例，请求包体为：
+
+```json
+{
+    "projectId": "430892",
+    "apiKey": "pzD5XinRSlmA64tZx81fL92YcBsJK0gd",
+    "signature": "To be generated"
+}
+```
+
+请求 URL 为：
+
+```shell
+https://[host]/customers/123456/projects/new
+```
+
+则加密算法中的各项参数为：
+
+| 参数 | 值 |
+| --- | --- |
+| `SourceString` | `POST&%2Fcustomers%2F123456%2Fprojects%2Fnew&apiKey%3DpzD5XinRSlmA64tZx81fL92YcBsJK0gd%26projectId%3D430892` |
+| `apiSecret` | `U1SXE6k57vxVRjTomgquwC2F3tH8ziOB`（仅作演示，你需要换成自己的 `apiSecret`） |
+| `signature` | `QRJDBm3gGmlFb5ZF9XBqm7u4EkI=` |
+
+下面介绍签名计算的详细步骤。
+
+### 第 1 步：构造源串
+
+构造源串的步骤如下：
+
+1. 将 HTTP 请求的类型与 “&” 拼接：
+
+   ```shell
+   POST&
+   ```
+
+2. 对请求 URL 中位于 `[host]` 之后的路径（即 `/customers/123456/projects/new`）进行 URL 编码，与 “&” 拼接。此时的源串如下：
+
+   ```shell
+   POST&%2Fcustomers%2F123456%2Fprojects%2Fnew&
+   ```
+
+3. 按字典升序排列请求包体中除 `signature` 以外的所有字段（即 `projectId`、`apiKey`），字段均写为 `key=value`（字段名称 = 取值）的形式，不同字段用 “&” 拼接：
+
+   ```shell
+   apiKey=pzD5XinRSlmA64tZx81fL92YcBsJK0gd&projectId=430892
+   ```
+
+   对该字符串进行 URL 编码，并与之前的源串拼接，最终生成的源串如下：
+
+   ```shell
+   POST&%2Fcustomers%2F123456%2Fprojects%2Fnew&apiKey%3DpzD5XinRSlmA64tZx81fL92YcBsJK0gd%26projectId%3D430892
+   ```
+
+### 第 2 步：拼接密钥
+
+密钥由 apiSecret 和 “&” 拼接生成。其中的 apiSecret 是你在申请入驻云市场时提供给声网的信息。
+
+例如：你提供的 apiSecret 是 U1SXE6k57vxVRjTomgquwC2F3tH8ziOB，则对应的密钥为 `U1SXE6k57vxVRjTomgquwC2F3tH8ziOB&`。
+
+### 第 3 步：生成签名
+
+POST 方法的加密算法如下：
+
+```shell
+signature = Base64( HMAC-SHA1( apiSecret&, SourceString) )
+```
+
+使用前两步的 `SourceString` 和 `apiSecret&`，生成签名如下：
+
+```shell
+QRJDBm3gGmlFb5ZF9XBqm7u4EkI=
+```

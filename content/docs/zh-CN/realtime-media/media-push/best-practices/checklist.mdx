@@ -1,0 +1,31 @@
+---
+title: "集成检查清单"
+---
+参考以下表格，快速确认每条检查项是否符合集成要求，以保证media-push服务的可靠性。
+
+:::warning[注意]
+声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
+:::
+
+| 编号 | 重要程度 | 检查项 | 检查内容 |
+| --- | --- | --- | --- |
+| 1 | 必要 | 频道模式 | 所在频道场景为直播（`profile` 为 `BROADCASTING`）。 |
+| 2 | 必要 | 开通服务 | [开通旁路推流服务](/zh-CN/realtime-media/media-push/get-started/enable-service#开通旁路推流服务)。 |
+| 3 | 必要 | QPS 限制条件 | 确保一个项目中，API 的调用速率低于最大限制。详见 [API 限速](/zh-CN/realtime-media/media-push/quota#api-限速)。 |
+| 4 | 必要 | PCW 限制 | 确保一个项目中，并发任务数低于 300。详见 [PCW 限制](/zh-CN/realtime-media/media-push/quota#pcw)。 |
+| 5 | 可选 | 管理 Converter | 使用 `name` 字段管理指定项目下的 Converter，以频道名和 Converter 特性组合来为 `name` 赋值。 |
+| 6 | 必要 | 区域设置 | 设置的 `region` 与你的 CDN 源站在同一个区域。传入 `region` 值为小写。 |
+| 7 | 必要 | 超时逻辑 | 设置合理的 `idleTimeout`，推荐设置为 300 秒。 |
+| 8 | 必要 | 更新 Converter | 对同一个 Converter 进行多次 `Update` 时，`sequence` 值递增。 |
+| 9 | 可选 | 问题排查 | <Slot name="checklist-markdown-0-9-3" /> |
+| 10 | 可选 | 消息通知 | 开通旁路推流[消息通知服务](/zh-CN/realtime-media/media-push/webhook/enable-ncs)，并监听旁路推流事件。 |
+
+<Slot for="checklist-markdown-0-9-3">
+
+请按照如下方案进行问题排查：
+
+- 使用退避策略。
+- 根据错误码排查。
+- 如果以上排查方法并未解决问题，请打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并联系声网技术支持。
+
+</Slot>

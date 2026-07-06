@@ -1,0 +1,191 @@
+---
+title: "MixScenario 类"
+---
+<a id="acquire"></a>
+## acquire
+
+```java
+public abstract Mono<AcquireResourceRes> acquire(String cname, String uid, AcquireMixRecordingResourceClientReq clientRequest);
+```
+
+获取合流录制资源 ID。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+获取资源 ID 后，需调用 [`start`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#start) API 启动云端录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `clientRequest` | `AcquireMixRecordingResourceClientReq` | 请求体参数，详见 [`AcquireMixRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#acquiremixrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`AcquireResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#acquireresourceres) 对象。
+
+<a id="start"></a>
+## start
+
+```java
+public abstract Mono<StartResourceRes> start(String cname, String uid, String resourceId, StartMixRecordingResourceClientReq clientRequest);
+```
+
+启动合流录制。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 用于标识录制服务在 RTC 频道中的用户 ID。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `clientRequest` | `StartMixRecordingResourceClientReq` | 请求体参数，详见 [`StartMixRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startmixrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`StartResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourceres) 对象。
+
+<a id="queryhls"></a>
+## queryHLS
+
+```java
+public abstract Mono<QueryMixHLSRecordingResourceRes> queryHLS(String resourceId, String sid);
+```
+
+查询视频文件格式为 HLS 时的合流录制状态。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+方法调用成功，返回 [`QueryMixHLSRecordingResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#querymixhlsrecordingresourceres) 对象。
+
+<a id="queryhlsandmp4"></a>
+## queryHLSAndMP4
+
+```java
+public abstract Mono<QueryMixHLSAndMP4RecordingResourceRes> queryHLSAndMP4(String resourceId, String sid);
+```
+
+查询当视频文件格式为 HLS 和 MP4 时的合流云端录制状态。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+方法调用成功，返回 [`QueryMixHLSAndMP4RecordingResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#querymixhlsandmp4recordingresourceres) 对象。
+
+<a id="updatelayout"></a>
+## updateLayout
+
+```java
+public abstract Mono<UpdateLayoutResourceRes> updateLayout(String cname, String uid, String resourceId, String sid, UpdateLayoutMixRecordingResourceClientReq clientRequest);
+```
+
+更新合流云端录制的布局。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+| `clientRequest` | `UpdateLayoutMixRecordingResourceClientReq` | 请求体，详见 [`UpdateLayoutMixRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatelayoutmixrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`UpdateLayoutResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatelayoutresourceres) 对象。
+
+<a id="update"></a>
+## update
+
+```java
+public abstract Mono<UpdateResourceRes> update(String cname, String uid, String resourceId, String sid, UpdateMixRecordingResourceClientReq clientRequest);
+```
+
+更新合流录制配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+| `clientRequest` | `UpdateMixRecordingResourceClientReq` | 请求体，详见 [`UpdateMixRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatemixrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`UpdateResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourceres) 对象。
+
+<a id="stop"></a>
+## stop
+
+```java
+public abstract Mono<StopResourceRes> stop(String cname, String uid, String resourceId, String sid, boolean asyncStop);
+```
+
+停止合流录制。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+| `asyncStop` | `boolean` | <Slot name="mixscenario-java-html-6-5-2" /> |
+
+<Slot for="mixscenario-java-html-6-5-2">
+
+- `true`：异步停止录制。
+    - `false`：同步停止录制。
+
+</Slot>
+
+#### 返回值
+
+方法调用成功，返回 [`StopResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#stopresourceres) 对象。

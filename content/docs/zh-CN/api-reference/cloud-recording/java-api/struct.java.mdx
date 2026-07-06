@@ -1,0 +1,2413 @@
+---
+title: "结构体"
+---
+<a id="cloudrecordingconfig"></a>
+## CloudRecordingConfig
+
+```java
+public class CloudRecordingConfig {
+    private final String appId;
+    private final Credential credential;
+    private final DomainArea domainArea;
+    private final HttpProperty httpProperty;
+}
+```
+
+用于配置云端录制客户端的参数信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `appId` | `String` | 声网 App ID。 |
+| `credential` | `Credential` | 用于访问声网服务的认证信息。支持的认证类型包括：[`BasicAuthCredential`](/zh-CN/api-reference/cloud-recording/java-api/basicauthcredential.java)。 |
+| `domainArea` | `DomainArea` | REST Client的区域信息，详见 [`DomainArea`](/zh-CN/api-reference/cloud-recording/java-api/enum.java#domainarea)。 |
+| `httpProperty` | `HttpProperty` | REST Client的 HTTP 属性，详见 [`HttpProperty`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#httpproperty)。 |
+
+<a id="acquireindividualresourceclientreq"></a>
+## AcquireIndividualResourceClientReq
+
+```java
+public class AcquireIndividualResourceClientReq {
+    private Integer resourceExpiredHour;
+    private List<String> excludeResourceIds;
+    private Integer regionAffinity;
+    private StartIndividualRecordingClientReq startParameter;
+}
+```
+
+用于获取单流录制资源的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+用于申请云端录制所需的资源。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceExpiredHour` | `Integer` | 调用云端录制 RESTful API 的有效期（单位为小时）。将在成功启动云端录制服务并获得记录 ID（`sid`）后开始计算。取值范围为 [1, 720]，默认值为 72。 |
+| `excludeResourceIds` | `List<String>` | 其他一个或多个录制任务的 `resourceId`。 |
+| `regionAffinity` | `Integer` | <Slot name="struct-java-html-1-3-2" /> |
+| `startParameter` | `StartIndividualRecordingClientReq` | 启动参数，用于提升可用性与优化负载均衡。详见 [`StartIndividualRecordingClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startindividualrecordingclientreq)。 |
+
+<Slot for="struct-java-html-1-3-2">
+
+指定云端录制服务可访问的区域。
+
+    - 0：距离请求源最近（默认）。
+    - 1：中国。
+    - 2：东南亚。
+    - 3：欧洲。
+    - 4：北美。
+
+</Slot>
+
+<a id="startindividualrecordingclientreq"></a>
+## StartIndividualRecordingClientReq
+
+```java
+public class StartIndividualRecordingClientReq {
+    private String token;
+    private StartResourceReq.AppsCollection appsCollection;
+    private StartResourceReq.RecordingConfig recordingConfig;
+    private StartResourceReq.TranscodeOptions transcodeOptions;
+    private StartResourceReq.RecordingFileConfig recordingFileConfig;
+    private StartResourceReq.SnapshotConfig snapshotConfig;
+    private StartResourceReq.StorageConfig storageConfig;
+}
+```
+
+用于发起单人录制的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `String` | （可选）声网 App Token。 |
+| `appsCollection` | `StartResourceReq.AppsCollection` | （可选）应用配置信息。详见 [`AppsCollection`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.appscollection)。 |
+| `recordingConfig` | `StartResourceReq.RecordingConfig` | （可选）录制的音视频流配置。详见 [`RecordingConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.recordingconfig)。 |
+| `transcodeOptions` | `StartResourceReq.TranscodeOptions` | （可选）延后转码或音频合成生成的录制文件配置。详见 [`TranscodeOptions`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.transcodeoptions)。 |
+| `recordingFileConfig` | `StartResourceReq.RecordingFileConfig` | （可选）录制文件配置。详见 [`RecordingFileConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.recordingfileconfig)。 |
+| `snapshotConfig` | `StartResourceReq.SnapshotConfig` | （可选）截图采集配置。详见 [`SnapshotConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.snapshotconfig)。 |
+| `storageConfig` | `StartResourceReq.StorageConfig` | （必填）第三方云存储配置。详见 [`StorageConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.storageconfig)。 |
+
+<a id="updateindividualrecordingresourceclientreq"></a>
+## UpdateIndividualRecordingResourceClientReq
+
+```java
+public class UpdateIndividualRecordingResourceClientReq {
+    private UpdateResourceReq.StreamSubscribe streamSubscribe;
+}
+```
+
+用于更新单流录制资源的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `streamSubscribe` | `UpdateResourceReq.StreamSubscribe` | （可选）更新订阅列表，详见 [`StreamSubscribe`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourcereq.streamsubscribe)。 |
+
+<a id="acquirewebrecordingresourceclientreq"></a>
+## AcquireWebRecordingResourceClientReq
+
+```java
+public class AcquireWebRecordingResourceClientReq {
+    private Integer resourceExpiredHour;
+    private List<String> excludeResourceIds;
+    private Integer regionAffinity;
+    private StartWebRecordingResourceClientReq startParameter;
+}
+```
+
+用于获取页面录制资源的客户端请求类。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceExpiredHour` | `Integer` | 调用云端录制 RESTful API 的有效期（单位为小时）。该值从成功启动页面录制服务并获取 `sid`（录制 ID）后开始计算。取值范围为 [1, 720]，默认值为 72。 |
+| `excludeResourceIds` | `List<String>` | 其他一个或多个页面录制任务的 `resourceId`。 |
+| `regionAffinity` | `Integer` | <Slot name="struct-java-html-4-3-2" /> |
+| `startParameter` | `StartWebRecordingResourceClientReq` | 启动参数，用于提升可用性并优化负载均衡。详见 [`StartWebRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startwebrecordingresourceclientreq)。 |
+
+<Slot for="struct-java-html-4-3-2">
+
+指定页面录制服务可访问的区域。
+
+    - 0：（默认）离发起请求最近的区域。
+    - 1：中国大陆。
+    - 2：东南亚。
+    - 3：欧洲。
+    - 4：北美。
+
+</Slot>
+
+<a id="startwebrecordingresourceclientreq"></a>
+## StartWebRecordingResourceClientReq
+
+```java
+public class StartWebRecordingResourceClientReq {
+    private StartResourceReq.StorageConfig storageConfig;
+    private StartResourceReq.RecordingFileConfig recordingFileConfig;
+    private StartResourceReq.ExtensionServiceConfig extensionServiceConfig;
+}
+```
+
+用于发起启动页面录制的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `storageConfig` | `StartResourceReq.StorageConfig` | （必填）第三方云端 Storage 配置，详见 [`StorageConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.storageconfig)。 |
+| `recordingFileConfig` | `StartResourceReq.RecordingFileConfig` | （可选）录制文件配置，详见 [`RecordingFileConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.recordingfileconfig)。 |
+| `extensionServiceConfig` | `StartResourceReq.ExtensionServiceConfig` | （可选）扩展服务配置，详见 [`ExtensionServiceConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.extensionserviceconfig)。 |
+
+<a id="updatewebrecordingresourceclientreq"></a>
+## UpdateWebRecordingResourceClientReq
+
+```java
+public class UpdateWebRecordingResourceClientReq {
+    private UpdateResourceReq.WebRecordingConfig webRecordingConfig;
+    private UpdateResourceReq.RtmpPublishConfig rtmpPublishConfig;
+}
+```
+
+用于更新页面录制资源的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `webRecordingConfig` | `UpdateResourceReq.WebRecordingConfig` | 页面录制配置，详见 [`WebRecordingConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourcereq.webrecordingconfig)。 |
+| `rtmpPublishConfig` | `UpdateResourceReq.RtmpPublishConfig` | CDN 推流配置，详见 [`RtmpPublishConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourcereq.rtmppublishconfig)。 |
+
+<a id="acquiremixrecordingresourceclientreq"></a>
+## AcquireMixRecordingResourceClientReq
+
+```java
+public class AcquireMixRecordingResourceClientReq {
+    private Integer resourceExpiredHour;
+    private List<String> excludeResourceIds;
+    private Integer regionAffinity;
+    private StartMixRecordingResourceClientReq startParameter;
+}
+```
+
+用于客户端获取合流录制资源的请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceExpiredHour` | `Integer` | 调用云端录制 RESTful API 的有效期。该值从成功启动云端录制服务并获取 `sid`（录制 ID）后开始计算，单位为小时。取值范围为 [1, 720]，默认值为 72。 |
+| `excludeResourceIds` | `List<String>` | 其他一个或多个录制任务的 `resourceId`。 |
+| `regionAffinity` | `Integer` | <Slot name="struct-java-html-7-3-2" /> |
+| `startParameter` | `StartMixRecordingResourceClientReq` | 启动参数，用于提升可用性和优化负载均衡。详见 [`StartMixRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startmixrecordingresourceclientreq)。 |
+
+<Slot for="struct-java-html-7-3-2">
+
+指定云端录制服务可访问的区域。
+
+    - 0：（默认）最靠近请求源。
+    - 1：中国大陆。
+    - 2：东南亚。
+    - 3：欧洲。
+    - 4：北美。
+
+</Slot>
+
+<a id="startmixrecordingresourceclientreq"></a>
+## StartMixRecordingResourceClientReq
+
+```java
+public class StartMixRecordingResourceClientReq {
+    private String token;
+    private StartResourceReq.StorageConfig storageConfig;
+    private StartResourceReq.RecordingConfig recordingConfig;
+    private StartResourceReq.RecordingFileConfig recordingFileConfig;
+}
+```
+
+用于启动合流录制的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `String` | （可选）用于身份验证的 Token。 |
+| `storageConfig` | `StartResourceReq.StorageConfig` | （必填）第三方云存储的配置。详见 [`StorageConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.storageconfig)。 |
+| `recordingConfig` | `StartResourceReq.RecordingConfig` | （可选）录制的音视频流配置。详见 [`RecordingConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.recordingconfig)。 |
+| `recordingFileConfig` | `StartResourceReq.RecordingFileConfig` | （可选）录制文件的配置。详见 [`RecordingFileConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.recordingfileconfig)。 |
+
+<a id="updatemixrecordingresourceclientreq"></a>
+## UpdateMixRecordingResourceClientReq
+
+```java
+public class UpdateMixRecordingResourceClientReq {
+    private UpdateResourceReq.StreamSubscribe streamSubscribe;
+}
+```
+
+用于更新合流录制设置的客户端请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `streamSubscribe` | `UpdateResourceReq.StreamSubscribe` | （可选）更新订阅流的列表。详见 [`StreamSubscribe`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourcereq.streamsubscribe)。 |
+
+<a id="updatelayoutmixrecordingresourceclientreq"></a>
+## UpdateLayoutMixRecordingResourceClientReq
+
+```java
+public class UpdateLayoutMixRecordingResourceClientReq {
+    private String maxResolutionUID;
+    private int mixedVideoLayout;
+    private String backgroundColor;
+    private String backgroundImage;
+    private String defaultUserBackgroundImage;
+    private List<UpdateLayoutResourceReq.LayoutConfig> layoutConfig;
+    private List<UpdateLayoutResourceReq.BackgroundConfig> backgroundConfig;
+}
+```
+
+用于客户端更新合流录制布局的请求。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `maxResolutionUID` | `String` | （可选）仅在竖屏布局下需设置。指定大画面视频窗口的用户 ID。 |
+| `mixedVideoLayout` | `int` | <Slot name="struct-java-html-10-2-2" /> |
+| `backgroundColor` | `String` | （可选）视频画布的背景颜色。支持 RGB 颜色，格式为 “#” 加 6 位十六进制字符。默认值为 “#000000”，表示黑色。 |
+| `backgroundImage` | `String` | （可选）视频画布的背景图像。背景图显示模式为裁剪模式：优先填满画布，图像等比例缩放直至填满整个画布，若图像宽高比与画布不同，则边缘将被裁剪以适配。 |
+| `defaultUserBackgroundImage` | `String` | （可选）默认的用户视频画面背景图 URL。当用户停止发送视频流超过 3.5 秒时，画面将切换为该背景图。若为某个 `UID` 单独设置了背景图，该设置将被覆盖。 |
+| `layoutConfig` | `List<UpdateLayoutResourceReq.LayoutConfig>` | （可选）用户的视频混图布局配置。每个用户的屏幕布局设置数组，最多支持 17 个用户。详见 [`LayoutConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatelayoutresourcereq.layoutconfig)。 |
+| `backgroundConfig` | `List<UpdateLayoutResourceReq.BackgroundConfig>` | （可选）背景配置。通过该字段设置视频窗口的背景。详见 [`BackgroundConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatelayoutresourcereq.backgroundconfig)。 |
+
+<Slot for="struct-java-html-10-2-2">
+
+（可选）合流视频布局类型。支持以下取值：
+
+    - 0：（默认）浮动布局。最先加入频道的用户显示为大窗口，填满画布，其他用户的视频以小窗口形式从下往上横向排列，最多支持 4 行，每行 4 个窗口，最多支持 17 个用户的视频窗口。
+    - 1：自适应布局。根据用户数量自动调整每个用户的视频窗口尺寸，所有用户窗口大小一致，最多支持 17 个窗口。
+    - 2：竖屏布局。通过设置 `maxResolutionUID` 显示左侧的大窗口，其他用户的视频窗口在右侧垂直排列，最多 2 列，每列最多 8 个窗口，总共最多 17 个窗口。
+    - 3：自定义布局。通过设置 `layoutConfig` 字段实现自定义合流布局。
+
+</Slot>
+
+<a id="queryresourceres.queryindividualrecordingresourceres"></a>
+#### QueryIndividualRecordingResourceRes
+
+```java
+public class QueryIndividualRecordingResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.QueryIndividualRecordingServerResponse serverResponse;
+}
+```
+
+返回单流录制查询 API 的响应信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制任务的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.QueryIndividualRecordingServerResponse` | 服务器响应，详见 [`QueryIndividualRecordingServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.queryindividualrecordingserverresponse)。 |
+
+<a id="queryindividualrecordingvideoscreenshotresourceres"></a>
+## QueryIndividualRecordingVideoScreenshotResourceRes
+
+```java
+public class QueryIndividualRecordingVideoScreenshotResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.QueryIndividualVideoScreenshotServerResponse serverResponse;
+}
+```
+
+用于返回单流录制 [`queryVideoScreenshot`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#queryresourceresqueryvideoscreenshot) API 响应的类。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.QueryIndividualVideoScreenshotServerResponse` | 服务器返回的信息，详见 [`QueryIndividualVideoScreenshotServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.queryindividualvideoscreenshotserverresponse)。 |
+
+<a id="querywebrecordingresourceres"></a>
+## QueryWebRecordingResourceRes
+
+```java
+public class QueryWebRecordingResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.WebRecordingServerResponse serverResponse;
+}
+```
+
+页面录制资源查询 API 返回的响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.WebRecordingServerResponse` | 服务器响应，详见 [`WebRecordingServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingserverresponse)。 |
+
+<a id="querywebrecordingrtmppublishresourceres"></a>
+## QueryWebRecordingRtmpPublishResourceRes
+
+```java
+public class QueryWebRecordingRtmpPublishResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.WebRecordingRtmpPublishServerResponse serverResponse;
+}
+```
+
+[`queryRtmpPublish`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#queryrtmppublish) API 返回的页面录制 RTMP 推流资源响应信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.WebRecordingRtmpPublishServerResponse` | 服务端响应。详见 [`WebRecordingRtmpPublishServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingrtmppublishserverresponse)。 |
+
+<a id="querymixhlsrecordingresourceres"></a>
+## QueryMixHLSRecordingResourceRes
+
+```java
+public class QueryMixHLSRecordingResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.MixRecordingHLSServerResponse serverResponse;
+}
+```
+
+查询合流录制 HLS 的接口返回的响应信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.MixRecordingHLSServerResponse` | 服务器的响应信息，详见 [`MixRecordingHLSServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.mixrecordinghlsserverresponse)。 |
+
+<a id="querymixhlsandmp4recordingresourceres"></a>
+## QueryMixHLSAndMP4RecordingResourceRes
+
+```java
+public class QueryMixHLSAndMP4RecordingResourceRes {
+    private String cname;
+    private String uid;
+    private String resourceId;
+    private String sid;
+    private QueryResourceRes.MixRecordingHLSAndMP4ServerResponse serverResponse;
+}
+```
+
+返回合流录制 [`queryHLSAndMP4`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#queryhlsandmp4) API 的响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+| `serverResponse` | `QueryResourceRes.MixRecordingHLSAndMP4ServerResponse` | 服务器响应，详见 [`MixRecordingHLSAndMP4ServerResponse`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.mixrecordinghlsandmp4serverresponse)。 |
+
+<a id="acquireresourceres"></a>
+## AcquireResourceRes
+
+```java
+public class AcquireResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+}
+```
+
+获取云端录制资源接口的返回结果。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+表示获取云端录制资源接口的返回结果对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 要录制的频道名称。 |
+| `uid` | `String` | 用于在 RTC 频道中标识云端录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+
+<a id="startresourceres"></a>
+## StartResourceRes
+
+```java
+public class StartResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+
+    @JsonProperty("sid")
+    private String sid;
+}
+```
+
+启动各类云端录制场景的 API 返回的响应数据。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+
+<a id="stopresourceres"></a>
+## StopResourceRes
+
+```java
+public class StopResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+
+    @JsonProperty("sid")
+    private String sid;
+}
+```
+
+云端录制多种场景停止后返回的结果。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+
+<a id="updateresourceres"></a>
+## UpdateResourceRes
+
+```java
+public class UpdateResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+
+    @JsonProperty("sid")
+    private String sid;
+}
+```
+
+表示云端录制场景中 `update` API 的返回结果。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 要录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+
+<a id="updatelayoutresourceres"></a>
+## UpdateLayoutResourceRes
+
+```java
+public class UpdateLayoutResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+
+    @JsonProperty("sid")
+    private String sid;
+}
+```
+
+合流录制 [`updateLayout`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#updatelayout) API 的返回结果。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 要录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中用于标识录制服务的用户 ID。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+
+<a id="queryresourceres"></a>
+## QueryResourceRes
+
+```java
+public class QueryResourceRes {
+    @JsonProperty("cname")
+    private String cname;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("resourceId")
+    private String resourceId;
+
+    private String sid;
+}
+```
+
+用于各类云端录制场景中查询 API 返回的响应类。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识该频道中的录制服务。 |
+| `resourceId` | `String` | 资源的唯一标识符。 |
+| `sid` | `String` | 录制会话的唯一标识符。 |
+
+<a id="queryresourceres.queryindividualrecordingserverresponse"></a>
+#### QueryIndividualRecordingServerResponse
+
+```java
+public static class QueryIndividualRecordingServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("fileListMode")
+    private String fileListMode;
+
+    @JsonProperty("fileList")
+    private List<FileDetail> fileList;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+单流录制查询接口的服务端响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+用于描述服务端在调用单流录制查询接口时返回的内容，包括云服务状态、文件列表格式和录制开始时间等信息。
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-23-1-2" /> |
+| `fileListMode` | `String` | <Slot name="struct-java-html-23-2-2" /> |
+| `fileList` | `List<FileDetail>` | 文件列表。详见 [`FileDetail`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryindividualrecordingserverresponse.filedetail)。 |
+| `sliceStartTime` | `Long` | 文件的录制开始时间，Unix 时间戳，单位为秒。 |
+
+<Slot for="struct-java-html-23-1-2">
+
+云服务的当前状态：
+
+    - 0：云服务尚未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件正在启动。
+    - 3：部分云服务组件准备就绪。
+    - 4：全部云服务组件准备就绪。
+    - 5：云服务运行中。
+    - 6：云服务接收到停止请求。
+    - 7：云服务的所有组件停止运行。
+    - 8：云服务退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<Slot for="struct-java-html-23-2-2">
+
+fileList 字段的数据格式：
+
+    - "string"：fileList 为字符串类型。在合流录制模式下，若 avFileType 设置为 `["hls"]`，则 fileListMode 为 "string"。
+    - "json"：fileList 为 JSON 数组。当 avFileType 设置为 `["hls", "mp4"]`，在单流录制或合流录制模式下，fileListMode 设置为 "json"。
+
+</Slot>
+
+<a id="queryindividualrecordingserverresponse.filedetail"></a>
+#### FileDetail
+
+```java
+public static class FileDetail {
+    @JsonProperty("fileName")
+    private String fileName;
+
+    @JsonProperty("trackType")
+    private String trackType;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("mixedAllUser")
+    private Boolean mixedAllUser;
+
+    @JsonProperty("isPlayable")
+    private Boolean isPlayable;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+描述录制过程中生成的 M3U8 和 MP4 文件的详细信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fileName` | `String` | 录制过程中生成的 M3U8 或 MP4 文件的文件名。 |
+| `trackType` | `String` | <Slot name="struct-java-html-24-2-2" /> |
+| `uid` | `String` | 用户的 UID，表示录制的是哪个用户的音频或视频流。在合流录制模式下，该值为 "0"。 |
+| `mixedAllUser` | `Boolean` | <Slot name="struct-java-html-24-4-2" /> |
+| `isPlayable` | `Boolean` | <Slot name="struct-java-html-24-5-2" /> |
+| `sliceStartTime` | `Long` | 文件的录制开始时间，单位为秒的 Unix 时间戳。 |
+
+<Slot for="struct-java-html-24-2-2">
+
+录制的文件类型：
+
+    - "audio"：仅音频文件。
+    - "video"：仅视频文件。
+    - "audio_and_video"：音视频文件。
+
+</Slot>
+
+<Slot for="struct-java-html-24-4-2">
+
+是否为合流录制：
+
+    - true：所有用户的音视频录制在一个文件中。
+    - false：分别录制每个用户的音视频。
+
+</Slot>
+
+<Slot for="struct-java-html-24-5-2">
+
+文件是否支持在线播放：
+
+    - true：支持在线播放。
+    - false：不支持在线播放。
+
+</Slot>
+
+<a id="queryresourceres.queryindividualvideoscreenshotserverresponse"></a>
+#### QueryIndividualVideoScreenshotServerResponse
+
+```java
+public static class QueryIndividualVideoScreenshotServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+用于接收单流录制 [`queryVideoScreenshot`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#queryvideoscreenshot) API 的服务器响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+表示调用 [`queryVideoScreenshot`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#queryvideoscreenshot) 后云端返回的响应结果。
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-25-1-2" /> |
+| `sliceStartTime` | `Long` | 文件的录制起始时间，单位为 Unix 时间戳（秒）。 |
+
+<Slot for="struct-java-html-25-1-2">
+
+云服务的当前状态：
+
+    - 0：云服务未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件启动中。
+    - 3：部分云服务组件已就绪。
+    - 4：所有云服务组件已就绪。
+    - 5：云服务运行中。
+    - 6：云服务接收到停止请求。
+    - 7：所有云服务组件已停止。
+    - 8：云服务已退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<a id="queryresourceres.mixrecordinghlsserverresponse"></a>
+#### MixRecordingHLSServerResponse
+
+```java
+public static class MixRecordingHLSServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("fileListMode")
+    private String fileListMode;
+
+    @JsonProperty("fileList")
+    private String fileList;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+用于合流录制查询 HLS API 的服务端响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-26-1-2" /> |
+| `fileListMode` | `String` | <Slot name="struct-java-html-26-2-2" /> |
+| `fileList` | `String` | 文件列表。 |
+| `sliceStartTime` | `Long` | 文件的录制开始时间，Unix 时间戳，单位为秒。 |
+
+<Slot for="struct-java-html-26-1-2">
+
+云服务当前状态：
+
+    - 0：云服务未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件启动中。
+    - 3：部分云服务组件就绪。
+    - 4：全部云服务组件就绪。
+    - 5：云服务进行中。
+    - 6：云服务收到停止请求。
+    - 7：全部云服务组件停止。
+    - 8：云服务已退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<Slot for="struct-java-html-26-2-2">
+
+字段 `fileList` 的数据格式：
+
+    - "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
+    - "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，无论是单流录制还是合流录制模式，`fileListMode` 为 "json"。
+
+</Slot>
+
+<a id="queryresourceres.mixrecordinghlsandmp4serverresponse"></a>
+#### MixRecordingHLSAndMP4ServerResponse
+
+```java
+public static class MixRecordingHLSAndMP4ServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("fileListMode")
+    private String fileListMode;
+
+    @JsonProperty("fileList")
+    private List<FileDetail> fileList;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+合流录制 [`queryHLSAndMP4`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#queryhlsandmp4) API 返回的服务响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-27-1-2" /> |
+| `fileListMode` | `String` | <Slot name="struct-java-html-27-2-2" /> |
+| `fileList` | `List<FileDetail>` | 文件列表。详见 [`FileDetail`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.mixrecordinghlsandmp4serverresponse.filedetail)。 |
+| `sliceStartTime` | `Long` | 文件的录制开始时间，Unix 时间戳，单位为秒。 |
+
+<Slot for="struct-java-html-27-1-2">
+
+云服务当前的状态：
+
+    - 0：云服务尚未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件启动中。
+    - 3：部分云服务组件准备就绪。
+    - 4：所有云服务组件准备就绪。
+    - 5：云服务进行中。
+    - 6：收到停止云服务请求。
+    - 7：所有云服务组件已停止。
+    - 8：云服务已退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<Slot for="struct-java-html-27-2-2">
+
+字段 `fileList` 的数据格式：
+
+    - "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
+    - "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，在单流录制或合流录制模式下，`fileListMode` 为 "json"。
+
+</Slot>
+
+<a id="queryresourceres.mixrecordinghlsandmp4serverresponse.filedetail"></a>
+#### FileDetail
+
+```java
+public static class FileDetail {
+    @JsonProperty("fileName")
+    private String fileName;
+
+    @JsonProperty("trackType")
+    private String trackType;
+
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("mixedAllUser")
+    private Boolean mixedAllUser;
+
+    @JsonProperty("isPlayable")
+    private Boolean isPlayable;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+当 `avFileType` 设置为 `["hls", "mp4"]` 时的文件详细信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fileName` | `String` | （可选）录制过程中生成的 M3U8 或 MP4 文件名称。 |
+| `trackType` | `String` | <Slot name="struct-java-html-28-2-2" /> |
+| `uid` | `String` | （可选）用户 UID，表示被录制的音频或视频流所属的用户。在合流录制模式下，该值为 "0"。 |
+| `mixedAllUser` | `Boolean` | <Slot name="struct-java-html-28-4-2" /> |
+| `isPlayable` | `Boolean` | <Slot name="struct-java-html-28-5-2" /> |
+| `sliceStartTime` | `Long` | （可选）文件的录制开始时间，Unix 时间戳，单位为秒。 |
+
+<Slot for="struct-java-html-28-2-2">
+
+（可选）录制的文件类型。
+
+    - "audio"：仅音频文件。
+    - "video"：仅视频文件。
+    - "audio_and_video"：音视频文件。
+
+</Slot>
+
+<Slot for="struct-java-html-28-4-2">
+
+（可选）是否将所有用户的音视频流合并录制。
+
+    - true：所有用户被录制到一个文件中。
+    - false：每个用户分别录制到独立文件中。
+
+</Slot>
+
+<Slot for="struct-java-html-28-5-2">
+
+（可选）该文件是否支持在线播放。
+
+    - true：支持在线播放。
+    - false：不支持在线播放。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingserverresponse"></a>
+#### WebRecordingServerResponse
+
+```java
+public static class WebRecordingServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+    @JsonProperty("extensionServiceState")
+    private List<ExtensionServiceState> extensionServiceState;
+}
+```
+
+表示页面录制查询 API 返回的服务器响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-29-1-2" /> |
+| `extensionServiceState` | `List<ExtensionServiceState>` | 扩展服务的状态。详见 [`ExtensionServiceState`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingserverresponse.extensionservicestate)。 |
+
+<Slot for="struct-java-html-29-1-2">
+
+云服务的当前状态：
+
+    - 0：云服务尚未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件启动中。
+    - 3：部分云服务组件已就绪。
+    - 4：全部云服务组件已就绪。
+    - 5：云服务运行中。
+    - 6：云服务已收到停止请求。
+    - 7：全部云服务组件已停止。
+    - 8：云服务已退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingserverresponse.extensionservicestate"></a>
+#### ExtensionServiceState
+
+```java
+public static class ExtensionServiceState {
+    @JsonProperty("payload")
+    private Payload payload;
+
+    @JsonProperty("serviceName")
+    private String serviceName;
+}
+```
+
+扩展服务状态信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `payload` | `Payload` | 扩展服务的载荷。详见 [`Payload`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingserverresponse.extensionservicestate.payload)。 |
+| `serviceName` | `String` | <Slot name="struct-java-html-30-2-2" /> |
+
+<Slot for="struct-java-html-30-2-2">
+
+扩展服务的名称。
+
+    - "web_recorder_service"：表示扩展服务为页面录制。
+    - "rtmp_publish_service"：表示扩展服务为将页面录制推送至 CDN。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingserverresponse.extensionservicestate.payload"></a>
+#### Payload
+
+```java
+public static class Payload {
+    @JsonProperty("fileList")
+    private List<FileDetail> fileList;
+
+    @JsonProperty("onhold")
+    private Boolean onhold;
+
+    @JsonProperty("state")
+    private String state;
+}
+```
+
+扩展服务的载荷。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fileList` | `List<FileDetail>` | 文件列表。详见 [`FileDetail`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingserverresponse.extensionservicestate.payload.filedetail)。 |
+| `onhold` | `Boolean` | <Slot name="struct-java-html-31-2-2" /> |
+| `state` | `String` | <Slot name="struct-java-html-31-3-2" /> |
+
+<Slot for="struct-java-html-31-2-2">
+
+页面录制是否处于暂停状态：
+
+    - true：已暂停。
+    - false：正在进行中。
+
+</Slot>
+
+<Slot for="struct-java-html-31-3-2">
+
+上传订阅内容到扩展服务的状态：
+
+    - "init"：服务初始化中。
+    - "inProgress"：服务已启动且正在运行。
+    - "exit"：服务退出。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingserverresponse.extensionservicestate.payload.filedetail"></a>
+#### FileDetail
+
+```java
+public static class FileDetail {
+    @JsonProperty("filename")
+    private String filename;
+
+    @JsonProperty("sliceStartTime")
+    private Long sliceStartTime;
+}
+```
+
+表示文件的详细信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `filename` | `String` | 文件名称。 |
+| `sliceStartTime` | `Long` | 文件的录制起始时间，Unix 时间戳，单位为秒。 |
+
+<a id="queryresourceres.webrecordingrtmppublishserverresponse"></a>
+#### WebRecordingRtmpPublishServerResponse
+
+```java
+public static class WebRecordingRtmpPublishServerResponse {
+    @JsonProperty("status")
+    private Integer status;
+
+    @JsonProperty("extensionServiceState")
+    private List<ExtensionServiceState> extensionServiceState;
+}
+```
+
+页面录制中 [`queryRtmpPublish`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#queryrtmppublish) 接口返回的服务端响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `status` | `Integer` | <Slot name="struct-java-html-33-1-2" /> |
+| `extensionServiceState` | `List<ExtensionServiceState>` | 扩展服务的状态。详见 [`ExtensionServiceState`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate)。 |
+
+<Slot for="struct-java-html-33-1-2">
+
+云服务的当前状态：
+
+    - 0：云服务未启动。
+    - 1：云服务初始化完成。
+    - 2：云服务组件正在启动。
+    - 3：部分云服务组件就绪。
+    - 4：全部云服务组件就绪。
+    - 5：云服务运行中。
+    - 6：云服务接收到停止请求。
+    - 7：全部云服务组件停止。
+    - 8：云服务退出。
+    - 20：云服务异常退出。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate"></a>
+#### ExtensionServiceState
+
+```java
+public static class ExtensionServiceState {
+    @JsonProperty("payload")
+    private Payload payload;
+
+    @JsonProperty("serviceName")
+    private String serviceName;
+}
+```
+
+表示扩展服务的状态信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `payload` | `Payload` | 扩展服务的载荷。详见 [`Payload`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate.payload)。 |
+| `serviceName` | `String` | <Slot name="struct-java-html-34-2-2" /> |
+
+<Slot for="struct-java-html-34-2-2">
+
+扩展服务的名称：
+
+    - "web_recorder_service"：表示扩展服务为页面录制。
+    - "rtmp_publish_service"：表示扩展服务为将页面录制推流至 CDN。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate.payload"></a>
+#### Payload
+
+```java
+public static class Payload {
+    @JsonProperty("state")
+    private String state;
+
+    @JsonProperty("outputs")
+    private List<Output> outputs;
+}
+```
+
+扩展服务的负载信息。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `state` | `String` | <Slot name="struct-java-html-35-1-2" /> |
+| `outputs` | `List<Output>` | 向 CDN 推流的状态。详见 [`Output`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate.payload.output)。 |
+
+<Slot for="struct-java-html-35-1-2">
+
+上传订阅内容至扩展服务的状态。
+
+    - "init"：服务初始化中。
+    - "inProgress"：服务已启动，正在进行中。
+    - "exit"：服务已退出。
+
+</Slot>
+
+<a id="queryresourceres.webrecordingrtmppublishserverresponse.extensionservicestate.payload.output"></a>
+#### Output
+
+```java
+public static class Output {
+    @JsonProperty("rtmpUrl")
+    private String rtmpUrl;
+
+    @JsonProperty("status")
+    private String status;
+}
+```
+
+表示 CDN 推流输出的配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `rtmpUrl` | `String` | 推流到 CDN 的地址。 |
+| `status` | `String` | <Slot name="struct-java-html-36-2-2" /> |
+
+<Slot for="struct-java-html-36-2-2">
+
+页面录制推流的当前状态：
+
+    - "connecting"：正在连接 CDN 服务器。
+    - "publishing"：正在进行推流。
+    - "onhold"：暂停推流。
+    - "disconnected"：推流连接失败，建议更换 CDN 地址重新推流。
+
+</Slot>
+
+<a id="updateresourcereq.streamsubscribe"></a>
+#### StreamSubscribe
+
+```java
+public static class StreamSubscribe {
+    @JsonProperty("audioUidList")
+    private AudioUIDList audioUidList;
+
+    @JsonProperty("videoUidList")
+    private VideoUIDList videoUidList;
+}
+```
+
+用于更新订阅列表。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `audioUidList` | `AudioUIDList` | （可选）音频订阅用户列表。详见 [`AudioUIDList`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#audiouidlist)。 |
+| `videoUidList` | `VideoUIDList` | （可选）视频订阅用户列表。详见 [`VideoUIDList`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#videouidlist)。 |
+
+<a id="audiouidlist"></a>
+## AudioUIDList
+
+```java
+public static class AudioUIDList {
+    @JsonProperty("subscribeAudioUids")
+    private List<String> subscribeAudioUIDs;
+
+    @JsonProperty("unSubscribeAudioUids")
+    private List<String> unsubscribeAudioUIDs;
+}
+```
+
+用于配置音频订阅列表。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `subscribeAudioUIDs` | `List<String>` | <Slot name="struct-java-html-38-1-2" /> |
+| `unsubscribeAudioUIDs` | `List<String>` | 指定不需要订阅其音频流的 UID 列表。云端录制服务将订阅除指定 UID 外的所有其他 UID 的音频流。 |
+
+<Slot for="struct-java-html-38-1-2">
+
+指定需要订阅其音频流的 UID 列表。
+
+    - 如果希望订阅所有 UID 的音频流，则无需设置该字段。
+    - 设置为 `[#allstream#]` 表示订阅频道中所有 UID 的音频流。
+
+</Slot>
+
+<a id="videouidlist"></a>
+## VideoUIDList
+
+```java
+public static class VideoUIDList {
+    @JsonProperty("subscribeVideoUids")
+    private List<String> subscribeVideoUIDs;
+
+    @JsonProperty("unSubscribeVideoUids")
+    private List<String> unsubscribeVideoUIDs;
+}
+```
+
+用于更新视频订阅列表。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `subscribeVideoUIDs` | `List<String>` | <Slot name="struct-java-html-39-1-2" /> |
+| `unsubscribeVideoUIDs` | `List<String>` | 指定不订阅视频流的 UID 列表。云端录制服务将订阅除这些 UID 外的所有视频流。 |
+
+<Slot for="struct-java-html-39-1-2">
+
+指定需订阅视频流的 UID 列表。
+
+    - 如果希望订阅所有 UID 的视频流，无需设置该字段。
+    - 设置为 `#allstream#` 可订阅频道中所有 UID 的视频流。
+
+</Slot>
+
+<a id="updateresourcereq.webrecordingconfig"></a>
+#### WebRecordingConfig
+
+```java
+public static class WebRecordingConfig {
+    @JsonProperty("onhold")
+    private Boolean onHold;
+}
+```
+
+用于更新网页录制配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `onHold` | `Boolean` | <Slot name="struct-java-html-40-1-2" /> |
+
+<Slot for="struct-java-html-40-1-2">
+
+设置是否暂停网页录制。
+
+    - true：暂停网页录制并生成录制文件。
+    - false：（默认）继续网页录制并生成录制文件。
+    如果你想恢复已暂停的网页录制，可以调用更新方法并将 `onHold` 设置为 `false`。
+
+</Slot>
+
+<a id="updateresourcereq.rtmppublishconfig"></a>
+#### RtmpPublishConfig
+
+```java
+public static class RtmpPublishConfig {
+
+    @JsonProperty("outputs")
+    private List<UpdateOutput> outputs;
+}
+```
+
+用于更新页面录制推流到 CDN 的配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `outputs` | `List<UpdateOutput>` | 用于页面录制推流到 CDN 的输出配置。详见 [`UpdateOutput`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateoutput)。 |
+
+<a id="updateoutput"></a>
+## UpdateOutput
+
+```java
+public static class UpdateOutput {
+    @JsonProperty("rtmpUrl")
+    private String rtmpURL;
+}
+```
+
+用于更新页面录制的 CDN 推流输出。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `rtmpURL` | `String` | <Slot name="struct-java-html-42-1-2" /> |
+
+<Slot for="struct-java-html-42-1-2">
+
+用于推流的 CDN URL。仅支持 RTMP 和 RTMPS 协议。
+
+    :::warning[注意]
+    最多支持一路推流。
+    :::
+
+</Slot>
+
+<a id="startresourcereq.appscollection"></a>
+#### AppsCollection
+
+```java
+public static class AppsCollection {
+    @JsonProperty("combinationPolicy")
+    private String combinationPolicy;
+}
+```
+
+应用程序配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `combinationPolicy` | `String` | <Slot name="struct-java-html-43-1-2" /> |
+
+<Slot for="struct-java-html-43-1-2">
+
+（可选）云端录制应用程序的组合策略。可设置为：
+
+    - "default"：默认策略，适用于除延迟转码和混音以外的场景。
+    - "postpone_transcoding"：当需要延迟转码或混音时使用该策略。
+
+</Slot>
+
+<a id="startresourcereq.recordingconfig"></a>
+#### RecordingConfig
+
+```java
+public static class RecordingConfig {
+    @JsonProperty("channelType")
+    private Integer channelType;
+
+    @JsonProperty("streamTypes")
+    private Integer streamTypes;
+
+    @JsonProperty("streamMode")
+    private String streamMode;
+}
+```
+
+配置录制的音视频流。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channelType` | `Integer` | <Slot name="struct-java-html-44-1-2" /> |
+| `streamTypes` | `Integer` | <Slot name="struct-java-html-44-2-2" /> |
+| `streamMode` | `String` | <Slot name="struct-java-html-44-3-2" /> |
+
+<Slot for="struct-java-html-44-1-2">
+
+（必填）频道场景类型。可设置为：
+
+    - 0：通信场景（默认）。
+    - 1：直播场景。
+
+</Slot>
+
+<Slot for="struct-java-html-44-2-2">
+
+（可选）订阅的媒体流类型。可设置为：
+
+    - 0：仅订阅音频流，适用于智能语音审核场景。
+    - 1：仅订阅视频流。
+    - 2：同时订阅音频和视频流（默认）。
+
+</Slot>
+
+<Slot for="struct-java-html-44-3-2">
+
+（可选）媒体流的输出模式。可设置为：
+
+    - "default"：默认模式。音频转码录制时分别生成 M3U8 音频索引文件和视频索引文件。
+    - "standard"：标准模式，声网推荐使用。音频转码录制时分别生成 M3U8 音频索引文件、视频索引文件以及合并的音视频索引文件。若 Web 端使用 VP8 编码，还会生成合并的 MPD 音视频索引文件。
+    - "original"：原始编码模式，适用于非转码的音频录制，仅当 `streamTypes` 为 0（仅音频）时生效。录制过程中音频不转码，生成 M3U8 音频索引文件。
+
+</Slot>
+
+<a id="container"></a>
+## Container
+
+```java
+public static class Container {
+
+    @JsonProperty("format")
+    private String format;
+}
+```
+
+用于定义文件的容器格式。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `format` | `String` | <Slot name="struct-java-html-45-1-2" /> |
+
+<Slot for="struct-java-html-45-1-2">
+
+（可选）文件的容器格式。可设置为：
+
+    - "mp4"：延迟转码的默认格式，MP4 格式。
+    - "mp3"：延迟混音的默认格式，MP3 格式。
+    - "m4a"：M4A 格式。
+    - "aac"：AAC 格式。
+
+</Slot>
+
+<a id="startresourcereq.transcodeoptions"></a>
+#### TranscodeOptions
+
+```java
+public static class TranscodeOptions {
+    @JsonProperty("container")
+    private Container container;
+
+    @JsonProperty("transConfig")
+    private TransConfig transConfig;
+
+    @JsonProperty("audio")
+    private Audio audio;
+}
+```
+
+用于配置延迟转码或混音生成的录制文件。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `container` | `Container` | （可选）录制文件的容器格式。详见 [`Container`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#container)。 |
+| `transConfig` | `TransConfig` | （必填）转码配置。详见 [`TransConfig`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#transconfig)。 |
+| `audio` | `Audio` | 录制文件的音频属性。详见 [`Audio`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#audio)。 |
+
+<a id="transconfig"></a>
+## TransConfig
+
+```java
+public static class TransConfig {
+    @JsonProperty("transMode")
+    private String transMode;
+}
+```
+
+用于配置转码模式。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `transMode` | `String` | <Slot name="struct-java-html-47-1-2" /> |
+
+<Slot for="struct-java-html-47-1-2">
+
+（必填）转码模式。
+
+    可设置为：
+
+    - "postponeTranscoding"：延迟转码。
+    - "audioMix"：延迟混音。
+
+</Slot>
+
+<a id="audio"></a>
+## Audio
+
+```java
+public static class Audio {
+    @JsonProperty("sampleRate")
+    private String sampleRate;
+
+    @JsonProperty("bitrate")
+    private String bitRate;
+
+    @JsonProperty("channels")
+    private String channels;
+}
+```
+
+用于表示文件的音频属性。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `sampleRate` | `String` | <Slot name="struct-java-html-48-1-2" /> |
+| `bitRate` | `String` | （可选）音频码率（Kbps）。支持自定义数值。 |
+| `channels` | `String` | <Slot name="struct-java-html-48-3-2" /> |
+
+<Slot for="struct-java-html-48-1-2">
+
+（可选）音频采样率。可设置为：
+
+    - "48000"：48 kHz（默认）
+    - "32000"：32 kHz
+    - "16000"：16 kHz。
+
+</Slot>
+
+<Slot for="struct-java-html-48-3-2">
+
+（可选）音频声道。可设置为：
+
+    - "1"：单声道
+    - "2"：立体声（默认）。
+
+</Slot>
+
+<a id="transcodingconfig"></a>
+## TranscodingConfig
+
+```java
+public static class TranscodingConfig {
+    @JsonProperty("width")
+    private Integer width;
+
+    @JsonProperty("height")
+    private Integer height;
+
+    @JsonProperty("fps")
+    private Integer fps;
+
+    @JsonProperty("bitrate")
+    private Integer bitrate;
+
+    @JsonProperty("mixedVideoLayout")
+    private Integer mixedVideoLayout;
+}
+```
+
+配置云端转码输出的视频参数。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `width` | `Integer` | （可选）视频的宽度，单位为像素。宽度 × 高度不能超过 1920 × 1080。 |
+| `height` | `Integer` | （可选）视频的高度，单位为像素。宽度 × 高度不能超过 1920 × 1080。 |
+| `fps` | `Integer` | （可选）视频的帧率，单位为 fps。 |
+| `bitrate` | `Integer` | （可选）视频的码率，单位为 Kbps。 |
+| `mixedVideoLayout` | `Integer` | <Slot name="struct-java-html-49-5-2" /> |
+
+<Slot for="struct-java-html-49-5-2">
+
+（可选）合成视频的布局方式。可设置为：
+
+    - 0：浮动布局（默认）
+    - 1：自适应布局
+    - 2：垂直布局
+    - 3：自定义布局。
+
+</Slot>
+
+<a id="startresourcereq.recordingfileconfig"></a>
+#### RecordingFileConfig
+
+```java
+public static class RecordingFileConfig {
+    @JsonProperty("avFileType")
+    private List<String> avFileType;
+}
+```
+
+用于配置录制生成的视频文件类型。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `avFileType` | `List<String>` | <Slot name="struct-java-html-50-1-2" /> |
+
+<Slot for="struct-java-html-50-1-2">
+
+（可选）录制生成的视频文件类型。可设置为：
+
+    - "hls"：默认值，对应 M3U8 和 TS 文件。
+    - "mp4"：MP4 文件。
+
+</Slot>
+
+<a id="startresourcereq.snapshotconfig"></a>
+#### SnapshotConfig
+
+```java
+public static class SnapshotConfig {
+    @JsonProperty("captureInterval")
+    private Integer captureInterval;
+
+    @JsonProperty("fileType")
+    private List<String> fileType;
+}
+```
+
+配置截图采集参数。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+用于配置云端录制中的截图采集参数。
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `captureInterval` | `Integer` | （可选）云端录制中定时截图的周期。单位为秒，取值范围为 [5, 3600]。 |
+| `fileType` | `List<String>` | 截图文件的格式。目前仅支持 `["jpg"]`，将生成 JPG 格式的截图文件。 |
+
+<a id="startresourcereq.storageconfig"></a>
+#### StorageConfig
+
+```java
+public static class StorageConfig {
+    @JsonProperty("vendor")
+    private Integer vendor;
+
+    @JsonProperty("region")
+    private Integer region;
+
+    @JsonProperty("bucket")
+    private String bucket;
+
+    @JsonProperty("accessKey")
+    private String accessKey;
+
+    @JsonProperty("secretKey")
+    private String secretKey;
+
+    @JsonProperty("fileNamePrefix")
+    private List<String> fileNamePrefix;
+}
+```
+
+配置第三方云存储服务。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `vendor` | `Integer` | <Slot name="struct-java-html-52-1-2" /> |
+| `region` | `Integer` | （必填）第三方云存储指定的区域信息。 |
+| `bucket` | `String` | （必填）第三方云存储的桶名称。 |
+| `accessKey` | `String` | （必填）第三方云存储的访问密钥。 |
+| `secretKey` | `String` | （必填）第三方云存储的私密密钥。 |
+| `fileNamePrefix` | `List<String>` | （可选）录制文件在第三方云存储中的存储路径与文件名前缀相关。 |
+
+<Slot for="struct-java-html-52-1-2">
+
+（必填）第三方云存储平台。
+
+    可设置的厂商包括：
+
+    - 1：Amazon S3
+    - 2：Alibaba Cloud
+    - 3：Tencent
+    - 5：Microsoft Azure
+    - 6：Google Cloud
+    - 7：Huawei Cloud
+    - 8：Baidu IntelligentCloud。
+
+</Slot>
+
+<a id="extensionparams"></a>
+## ExtensionParams
+
+```java
+public static class ExtensionParams {
+    @JsonProperty("sse")
+    private String sse;
+
+    @JsonProperty("tag")
+    private String tag;
+}
+```
+
+第三方云存储服务会根据该类中的字段对上传的录制文件进行加密和打标签。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `sse` | `String` | <Slot name="struct-java-html-53-1-2" /> |
+| `tag` | `String` | （必填）标签内容。仅适用于阿里云和 Amazon S3，其他第三方云存储服务中该字段为非必填。 |
+
+<Slot for="struct-java-html-53-1-2">
+
+（必填）加密方式。仅适用于 Amazon S3。可设置为：
+
+    - "kms"：使用 KMS 加密。
+    - "aes256"：使用 AES256 加密。
+
+</Slot>
+
+<a id="startresourcereq.extensionserviceconfig"></a>
+#### ExtensionServiceConfig
+
+```java
+public static class ExtensionServiceConfig {
+    @JsonProperty("errorHandlePolicy")
+    private String errorHandlePolicy;
+
+    @JsonProperty("extensionServices")
+    private List<ExtensionService> extensionServices;
+}
+```
+
+用于配置扩展服务。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `errorHandlePolicy` | `String` | （可选）错误处理策略。仅支持设置为默认值 `error_abort`，表示一旦某个扩展服务发生错误，所有其他非扩展服务（如流的订阅）也将停止。 |
+| `extensionServices` | `List<ExtensionService>` | （必填）扩展服务列表。详见 [`ExtensionService`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#extensionservice)。 |
+
+<a id="extensionservice"></a>
+## ExtensionService
+
+```java
+public static class ExtensionService {
+    @JsonProperty("serviceName")
+    private String serviceName;
+
+    @JsonProperty("errorHandlePolicy")
+    private String errorHandlePolicy;
+
+    @JsonProperty("serviceParam")
+    private ServiceParam serviceParam;
+}
+```
+
+用于配置扩展服务。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `serviceName` | `String` | <Slot name="struct-java-html-55-1-2" /> |
+| `errorHandlePolicy` | `String` | <Slot name="struct-java-html-55-2-2" /> |
+| `serviceParam` | `ServiceParam` | （必填）扩展服务的具体配置信息。页面录制使用 [`WebRecordingServiceParam`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#webrecordingserviceparam)，推送页面录制到 CDN 使用 [`RtmpPublishServiceParam`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#rtmppublishserviceparam)。 |
+
+<Slot for="struct-java-html-55-1-2">
+
+（必填）扩展服务的名称。可设置为：
+
+    - `web_recorder_service`：表示扩展服务为页面录制。
+    - `rtmp_publish_service`：表示扩展服务为将页面录制推送到 CDN。
+
+</Slot>
+
+<Slot for="struct-java-html-55-2-2">
+
+（可选）扩展服务中的错误处理策略。可设置为：
+
+    - `error_abort`：页面录制时的默认值且为唯一值，当前扩展服务遇到错误时，其他扩展服务也会停止。
+    - `error_ignore`：推送页面录制到 CDN 时的默认值且为唯一值，当前扩展服务遇到错误时不影响其他扩展服务。
+
+</Slot>
+
+<a id="startresourcereq.output"></a>
+#### Output
+
+```java
+public static class Output {
+    @JsonProperty("rtmpUrl")
+    private String rtmpUrl;
+}
+```
+
+表示推流的 CDN 地址。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `rtmpUrl` | `String` | （必填）用于推送流的 CDN 地址。 |
+
+<a id="webrecordingserviceparam"></a>
+## WebRecordingServiceParam
+
+```java
+public static class WebRecordingServiceParam implements ServiceParam {
+    @JsonProperty("url")
+    private String url;
+
+    @JsonProperty("VideoBitrate")
+    private Integer videoBitRate;
+
+    @JsonProperty("videoFps")
+    private Integer videoFPS;
+}
+```
+
+配置页面录制服务的参数。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `url` | `String` | （必填）待录制页面的地址。 |
+| `videoBitRate` | `Integer` | <Slot name="struct-java-html-57-2-2" /> |
+| `videoFPS` | `Integer` | （可选）输出视频的帧率（fps）。取值范围为 [5, 60]，默认值为 15。 |
+
+<Slot for="struct-java-html-57-2-2">
+
+（可选）输出视频的码率（Kbps）。默认值根据输出分辨率而异：
+
+    - 输出分辨率大于或等于 1280 × 720 时，默认值为 2000。
+    - 输出分辨率小于 1280 × 720 时，默认值为 1500。
+
+</Slot>
+
+<a id="rtmppublishserviceparam"></a>
+## RtmpPublishServiceParam
+
+```java
+public static class RtmpPublishServiceParam implements ServiceParam {
+    @JsonProperty("outputs")
+    private List<Output> outputs;
+}
+```
+
+配置将页面录制推送至 CDN 的服务参数。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `outputs` | `List<Output>` | （必填）推流目标 CDN 地址列表。详见 [`Output`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourcereq.output)。 |
+
+<a id="startresourcereq.backgroundconfig"></a>
+#### BackgroundConfig
+
+```java
+public static class BackgroundConfig {
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("image_url")
+    private String imageUrl;
+
+    @JsonProperty("render_mode")
+    private Integer renderMode;
+}
+```
+
+配置用户背景图片。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `String` | （必填）字符串形式的用户 ID。 |
+| `imageUrl` | `String` | （必填）用户背景图片的 URL。支持 HTTP 和 HTTPS 协议，图片格式支持 JPG 和 BMP，大小不超过 6 MB。设置仅在录制服务成功下载该图片后生效，若下载失败则设置不生效。 |
+| `renderMode` | `Integer` | <Slot name="struct-java-html-59-3-2" /> |
+
+<Slot for="struct-java-html-59-3-2">
+
+（可选）用户视频画面的显示模式。
+
+    - 0：裁剪模式（默认），优先保证画面铺满。
+    - 1：适应模式，优先保证显示全部视频内容。
+
+</Slot>
+
+<a id="startresourcereq.layoutconfig"></a>
+#### LayoutConfig
+
+```java
+public static class LayoutConfig {
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("x_axis")
+    private Float xAxis;
+
+    @JsonProperty("y_axis")
+    private Float yAxis;
+
+    @JsonProperty("width")
+    private Float width;
+
+    @JsonProperty("height")
+    private Float height;
+
+    @JsonProperty("alpha")
+    private Float alpha;
+
+    @JsonProperty("render_mode")
+    private Integer renderMode;
+}
+```
+
+用于配置用户在画面中的布局。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `String` | 要显示在该区域的用户的 UID，32 位无符号整数。 |
+| `xAxis` | `Float` | 屏幕左上角横坐标的相对值，精确到小数点后六位。布局从左到右，0.0 表示最左，1.0 表示最右。该字段也可设置为整数 0 或 1。取值范围为 [0,1]。 |
+| `yAxis` | `Float` | 该区域左上角在屏幕中的纵坐标的相对值，精确到小数点后六位。布局从上到下，0.0 表示最上，1.0 表示最下。该字段也可设置为整数 0 或 1。取值范围为 [0,1]。 |
+| `width` | `Float` | 该区域宽度的相对值，精确到小数点后六位。该字段也可设置为整数 0 或 1。取值范围为 [0,1]。 |
+| `height` | `Float` | 该区域高度的相对值，精确到小数点后六位。该字段也可设置为整数 0 或 1。取值范围为 [0,1]。 |
+| `alpha` | `Float` | 用户视频窗口的透明度，精确到小数点后六位。0.0 表示完全透明，1.0 表示完全不透明。取值范围为 [0,1]。默认值为 1。 |
+| `renderMode` | `Integer` | <Slot name="struct-java-html-60-7-2" /> |
+
+<Slot for="struct-java-html-60-7-2">
+
+用户视频窗口的显示模式：
+
+    - 0：裁剪模式（默认），优先保证填满窗口。视频窗口按比例缩放至填满窗口，如果视频宽高与窗口不一致，将按窗口设定的宽高比例从边缘裁剪；
+    - 1：缩放模式，优先保证完整显示视频内容。视频按比例缩放直至一边与窗口边界对齐，但不保证填满窗口，可能出现黑边。
+
+</Slot>
+
+<a id="updatelayoutresourcereq.layoutconfig"></a>
+#### LayoutConfig
+
+```java
+public static class LayoutConfig {
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("x_axis")
+    private Float xAxis;
+
+    @JsonProperty("y_axis")
+    private Float yAxis;
+
+    @JsonProperty("width")
+    private Float width;
+
+    @JsonProperty("height")
+    private Float height;
+
+    @JsonProperty("alpha")
+    private Float alpha;
+
+    @JsonProperty("render_mode")
+    private Integer renderMode;
+}
+```
+
+用于配置用户视频窗口的布局。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `String` | 要显示在该区域内的用户的 UID，32 位无符号整型。 |
+| `xAxis` | `Float` | 视频窗口左上角相对于画面水平方向的位置，精确到小数点后六位。布局从左至右，0.0 表示最左侧，1.0 表示最右侧。该字段也可设置为整数 0 或 1。取值范围为 [0, 1]。 |
+| `yAxis` | `Float` | 视频窗口左上角相对于画面垂直方向的位置，精确到小数点后六位。布局从上至下，0.0 表示顶部，1.0 表示底部。该字段也可设置为整数 0 或 1。取值范围为 [0, 1]。 |
+| `width` | `Float` | 视频窗口的宽度相对值，精确到小数点后六位。该字段也可设置为整数 0 或 1。取值范围为 [0, 1]。 |
+| `height` | `Float` | 视频窗口的高度相对值，精确到小数点后六位。该字段也可设置为整数 0 或 1。取值范围为 [0, 1]。 |
+| `alpha` | `Float` | 视频窗口的透明度，精确到小数点后六位。0.0 表示完全透明，1.0 表示完全不透明。取值范围为 [0, 1]。默认值为 1。 |
+| `renderMode` | `Integer` | <Slot name="struct-java-html-61-7-2" /> |
+
+<Slot for="struct-java-html-61-7-2">
+
+视频窗口的渲染模式：
+
+    - 0：裁剪模式（默认）。优先保证填满画面，按比例缩放视频，若视频宽高比与窗口不一致，则裁剪边缘以适配窗口。
+    - 1：适应模式。优先保证完整显示视频内容，按比例缩放视频至一边对齐窗口边缘，可能出现黑边。
+
+</Slot>
+
+<a id="updatelayoutresourcereq.backgroundconfig"></a>
+#### BackgroundConfig
+
+```java
+public static class BackgroundConfig {
+    @JsonProperty("uid")
+    private String uid;
+
+    @JsonProperty("image_url")
+    private String imageURL;
+
+    @JsonProperty("render_mode")
+    private Integer renderMode;
+}
+```
+
+用于设置用户背景图的配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+当用户停止发送视频流超过 3.5 秒时，屏幕将显示设置的背景图像。支持的图像格式为 JPG 和 BMP，图像大小不得超过 6 MB。仅当录制服务成功下载图像后设置才会生效，下载失败则设置无效。
+
+##### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `String` | （必填）字符串形式的用户 ID。 |
+| `imageURL` | `String` | （必填）用户背景图像的 URL。URL 支持 HTTP 和 HTTPS 协议，支持的图像格式为 JPG 和 BMP，图像大小不得超过 6 MB。背景图设置在录制服务成功下载图像后才会生效，下载失败则设置无效。 |
+| `renderMode` | `Integer` | <Slot name="struct-java-html-62-3-2" /> |
+
+<Slot for="struct-java-html-62-3-2">
+
+（可选）用户视频窗口的显示模式。支持以下取值：
+
+    - 0：裁剪模式（默认），优先填满画面，按比例缩放并裁剪视频边缘以适配窗口；
+    - 1：适配模式，优先完整展示视频内容，按比例缩放至视频某一边与窗口边缘对齐。
+
+</Slot>
+
+<a id="basicauthcredential"></a>
+## BasicAuthCredential
+
+```java
+public class BasicAuthCredential implements Credential {
+    private final String username;
+    private final String password;
+    private final static String name = "BasicAuth";
+    public BasicAuthCredential(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+}
+```
+
+[`BasicAuthCredential`](/zh-CN/api-reference/cloud-recording/java-api/basicauthcredential.java) 提供对声网 REST Client的基本身份验证。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `username` | `String` | 从声网控制台获取的[客户 ID](/basics/glossary#客户-id-和客户密钥)。 |
+| `password` | `String` | 从声网控制台获取的[客户密钥](/basics/glossary#客户-id-和客户密钥)。 |
+
+<a id="httpproperty"></a>
+## HttpProperty
+
+```java
+public class HttpProperty {
+    private final int httpConnectionPoolSize;
+    private final int httpConnectionMaxIdleTime;
+    private final int httpConnectionMaxLifeTime;
+    private final int httpConnectionEvictInBackground;
+    private final int httpConnectionPendingAcquireTimout;
+    private final int httpConnectionPendingAcquireMaxCount;
+}
+```
+
+[`HttpProperty`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#httpproperty) 表示 HTTP 客户端的属性。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `httpConnectionPoolSize` | `int` | 连接池中的最大连接数。 |
+| `httpConnectionMaxIdleTime` | `int` | 连接池中连接的最大空闲时间，单位：毫秒。 |
+| `httpConnectionMaxLifeTime` | `int` | 连接池中连接的最大生命周期，单位：毫秒。 |
+| `httpConnectionEvictInBackground` | `int` | 在后台驱逐连接的时间，单位：毫秒。 |
+| `httpConnectionPendingAcquireTimout` | `int` | 从连接池获取连接的超时时间，单位：毫秒。 |
+| `httpConnectionPendingAcquireMaxCount` | `int` | 保持在挂起队列中的最大注册请求数。 |

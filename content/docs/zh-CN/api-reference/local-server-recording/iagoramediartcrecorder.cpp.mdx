@@ -1,0 +1,637 @@
+---
+title: "IAgoraMediaRtcRecorder 类"
+---
+<a id="initialize"></a>
+## initialize
+
+```cpp
+virtual int initialize(base::IAgoraService* agora_service, bool enable_mix = true, bool recordEncodedOnly = false) = 0;
+```
+
+初始化录制器实例。
+
+:::warning[注意]
+- `recordEncodedOnly` 参数仅在 `enable_mix` 为 `false` 时有效。
+- 如果你将 `recordEncodedOnly` 设为 `true`，则无法在录制过程中使用水印功能。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agora_service` | `base::IAgoraService*` | 声网服务对象，请确保已完成初始化。详见 [`IAgoraService`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp)。 |
+| `enable_mix` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-0-2-2" /> |
+| `recordEncodedOnly` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-0-3-2" /> |
+
+<Slot for="iagoramediartcrecorder-cpp-html-0-2-2">
+
+录制时是否启用合流模式：
+
+    - `true`：（默认）启用合流录制。
+    - `false`：启用单流录制。
+
+</Slot>
+
+<Slot for="iagoramediartcrecorder-cpp-html-0-3-2">
+
+是否仅录制编码后的视频：
+
+    - `true`：接收到的视频不会被解码，视频数据将以编码格式录制。该模式下仅支持 H264 和 H265。
+    - `false`：（默认）接收到的视频将被解码并重新编码。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="joinchannel"></a>
+## joinChannel
+
+```cpp
+virtual int joinChannel(const char* token,const char* channelId,const char* userId) = 0;
+```
+
+加入声网 RTC 频道。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `const char*` | 用于鉴权的 App ID 或 Token。 |
+| `channelId` | `const char*` | <Slot name="iagoramediartcrecorder-cpp-html-1-2-2" /> |
+| `userId` | `const char*` | 本地用户的用户 ID。如果未指定该参数或将 `userId` 设置为 `null`，SDK 会自动分配一个用户 ID。 |
+
+<Slot for="iagoramediartcrecorder-cpp-html-1-2-2">
+
+频道名。必须为字符串格式，且长度不超过 64 字节。支持的字符包括：
+
+    - 所有小写英文字母：a 到 z。
+    - 所有大写英文字母：A 到 Z。
+    - 所有数字字符：0 到 9。
+    - 空格字符。
+    - 标点符号和其他符号，包括："!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"&#123;"、"&#125;"、"|"、"~"、","。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="leavechannel"></a>
+## leaveChannel
+
+```cpp
+virtual int leaveChannel() = 0;
+```
+
+离开声网 RTC 频道。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableencryption"></a>
+## enableEncryption
+
+```cpp
+virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
+```
+
+启用或禁用内置加密功能。
+
+在高安全性场景下，建议你在加入频道前调用该方法启用内置加密功能。
+
+同一频道内的所有用户必须使用相同的加密模式和加密密钥。当所有用户离开频道后，该频道的加密密钥会被自动清除。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `enabled` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-2-1-2" /> |
+| `config` | `const EncryptionConfig&` | 内置加密配置。详见 [`EncryptionConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#encryptionconfig)。 |
+
+<Slot for="iagoramediartcrecorder-cpp-html-2-1-2">
+
+是否启用内置加密功能：
+
+    - `true`：启用内置加密功能。
+    - `false`：（默认）禁用内置加密功能。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="subscribeallaudio"></a>
+## subscribeAllAudio
+
+```cpp
+virtual int subscribeAllAudio() = 0;
+```
+
+订阅并录制频道中所有远端用户的音频。
+
+该方法会订阅并录制频道中所有远端用户的音频，并自动订阅后续加入频道的远端用户的音频。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="subscribeallvideo"></a>
+## subscribeAllVideo
+
+```cpp
+virtual int subscribeAllVideo(const agora::rtc::VideoSubscriptionOptions& subscriptionOptions) = 0;
+```
+
+订阅频道中所有远端用户的视频。
+
+该方法会自动订阅频道中所有远端用户的视频，包括之后加入频道的远端用户的视频。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `subscriptionOptions` | `const agora::rtc::VideoSubscriptionOptions&` | 视频订阅选项。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#videosubscriptionoptions)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="unsubscribeallaudio"></a>
+## unsubscribeAllAudio
+
+```cpp
+virtual int unsubscribeAllAudio() = 0;
+```
+
+停止订阅频道中所有远端用户的音频。
+
+除非你显式调用 [`subscribeAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeaudio) 或 [`subscribeAllAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeallaudio)，否则该方法会自动停止订阅之后加入频道的任何用户的音频。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="unsubscribeallvideo"></a>
+## unsubscribeAllVideo
+
+```cpp
+virtual int unsubscribeAllVideo() = 0;
+```
+
+停止订阅频道中所有远端用户的视频。
+
+调用该方法后，SDK 会停止订阅当前频道中所有远端用户的视频流。除非你显式调用 [`subscribeVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribevideo) 或 [`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeallvideo) 方法，否则该方法会自动停止订阅之后加入频道的任何用户的视频流。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="subscribeaudio"></a>
+## subscribeAudio
+
+```cpp
+virtual int subscribeAudio(user_id_t userId) = 0;
+```
+
+订阅并录制频道中指定远端用户的音频。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 你想要订阅音频的远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+  - -2（`ERR_INVALID_ARGUMENT`）：用户不存在或 `userId` 无效。
+
+<a id="unsubscribeaudio"></a>
+## unsubscribeAudio
+
+```cpp
+virtual int unsubscribeAudio(user_id_t userId) = 0;
+```
+
+停止订阅频道中指定远端用户的音频。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 要停止订阅音频的远端用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+  - -2（`ERR_INVALID_ARGUMENT`）：用户不存在或 `userId` 无效。
+
+<a id="subscribevideo"></a>
+## subscribeVideo
+
+```cpp
+virtual int subscribeVideo(user_id_t userId, const VideoSubscriptionOptions& subscriptionOptions) = 0;
+```
+
+订阅频道中指定远端用户的视频。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 你想要订阅的视频所属的远端用户 ID。 |
+| `subscriptionOptions` | `const VideoSubscriptionOptions&` | 视频订阅选项，例如仅订阅编码后的视频数据，或订阅低码率的视频流。详见 [`VideoSubscriptionOptions`](/zh-CN/api-reference/local-server-recording/struct.cpp#videosubscriptionoptions)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+  - -2（`ERR_INVALID_ARGUMENT`）：用户不存在或 `userId` 无效。
+
+<a id="unsubscribevideo"></a>
+## unsubscribeVideo
+
+```cpp
+virtual int unsubscribeVideo(user_id_t userId) = 0;
+```
+
+停止订阅频道中指定远端用户的视频。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 指定要停止订阅其视频的远端用户的用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+  - -2（`ERR_INVALID_ARGUMENT`）：用户不存在或 `userId` 无效。
+
+<a id="setaudiovolumeindicationparameters"></a>
+## setAudioVolumeIndicationParameters
+
+```cpp
+virtual int setAudioVolumeIndicationParameters(int intervalInMS) = 0;
+```
+
+设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onaudiovolumeindication) 回调的时间间隔。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `intervalInMS` | `int` | <Slot name="iagoramediartcrecorder-cpp-html-8-1-2" /> |
+
+<Slot for="iagoramediartcrecorder-cpp-html-8-1-2">
+
+设置两次音量回调之间的时间间隔，单位为毫秒（默认值为 500）。
+
+    - 小于或等于 10：关闭音量回调。
+    - 大于 10：设置两次回调之间的时间间隔（毫秒）。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setvideomixinglayout"></a>
+## setVideoMixingLayout
+
+```cpp
+virtual int setVideoMixingLayout(const VideoMixingLayout& layout) = 0;
+```
+
+设置混合视频流的布局。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `layout` | `const VideoMixingLayout&` | 混合视频流的布局。详见 [`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct.cpp#videomixinglayout)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setrecorderconfig"></a>
+## setRecorderConfig
+
+```cpp
+virtual int setRecorderConfig(const media::MediaRecorderConfiguration& config) = 0;
+```
+
+设置录制器实例配置。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#mediarecorderconfiguration)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableandupdatevideowatermarks"></a>
+## enableAndUpdateVideoWatermarks
+
+```cpp
+virtual int enableAndUpdateVideoWatermarks(WatermarkConfig* watermark_configs, int num) = 0;
+```
+
+为视频流添加水印。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `watermark_configs` | `WatermarkConfig*` | 水印配置。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkconfig)。 |
+| `num` | `int` | 水印配置的数量。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="disablevideowatermarks"></a>
+## disableVideoWatermarks
+
+```cpp
+virtual int disableVideoWatermarks() = 0;
+```
+
+禁用视频水印。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="startrecording"></a>
+## startRecording
+
+```cpp
+virtual int startRecording() = 0;
+```
+
+开始录制。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="stoprecording"></a>
+## stopRecording
+
+```cpp
+virtual int stopRecording() = 0;
+```
+
+停止录制。
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="startsinglerecordingbyuid"></a>
+## startSingleRecordingByUid
+
+```cpp
+virtual int startSingleRecordingByUid(user_id_t userId) = 0;
+```
+
+根据用户 ID 启动录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 要启动录制的用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="stopsinglerecordingbyuid"></a>
+## stopSingleRecordingByUid
+
+```cpp
+virtual int stopSingleRecordingByUid(user_id_t userId) = 0;
+```
+
+通过指定用户 ID 停止录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 要停止录制的用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setrecorderconfigbyuid"></a>
+## setRecorderConfigByUid
+
+```cpp
+virtual int setRecorderConfigByUid(const media::MediaRecorderConfiguration& config, user_id_t userId) = 0;
+```
+
+根据用户 ID 设置录制配置。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `const media::MediaRecorderConfiguration&` | 录制器实例的配置。详见 [`MediaRecorderConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#mediarecorderconfiguration)。 |
+| `userId` | `user_id_t` | 要设置录制配置的用户 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enableandupdatevideowatermarksbyuid"></a>
+## enableAndUpdateVideoWatermarksByUid
+
+```cpp
+virtual int enableAndUpdateVideoWatermarksByUid(WatermarkConfig* watermark_configs, int num, user_id_t userId) = 0;
+```
+
+为指定用户的视频流添加水印。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `watermark_configs` | `WatermarkConfig*` | 水印配置数组。详见 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#watermarkconfig)。 |
+| `num` | `int` | 水印配置的数量。 |
+| `userId` | `user_id_t` | 你想要添加水印的视频流所属用户的 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="disablevideowatermarksbyuid"></a>
+## disableVideoWatermarksByUid
+
+```cpp
+virtual int disableVideoWatermarksByUid(user_id_t userId) = 0;
+```
+
+根据用户 ID 关闭其视频流的水印。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `user_id_t` | 要关闭水印的视频流所属用户的 ID。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="registerrecordereventhandle"></a>
+## registerRecorderEventHandle
+
+```cpp
+virtual int registerRecorderEventHandle(IAgoraMediaRtcRecorderEventHandler* handler) = 0;
+```
+
+注册录制事件处理器。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="unregisterrecordereventhandle"></a>
+## unregisterRecorderEventHandle
+
+```cpp
+virtual int unregisterRecorderEventHandle(IAgoraMediaRtcRecorderEventHandler* handler) = 0;
+```
+
+注销录制事件处理器。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `handler` | `IAgoraMediaRtcRecorderEventHandler*` | 录制事件处理器。详见 [`IAgoraMediaRtcRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="setgloballocalaccesspoint"></a>
+## setGlobalLocalAccessPoint
+
+```cpp
+virtual int setGlobalLocalAccessPoint(const LocalAccessPointConfiguration& config) = 0;
+```
+
+设置本地 AP 模式下的全局本地接入点地址。
+
+请在加入频道前调用该方法设置本地 AP 模式（该模式也会调用本地代理）下的全局本地接入点地址。该方法会影响同一进程中的所有录制器实例，仅需调用一次。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `config` | `const LocalAccessPointConfiguration&` | 本地接入点配置。详见 [`LocalAccessPointConfiguration`](/zh-CN/api-reference/local-server-recording/struct.cpp#localaccesspointconfiguration)。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="renewtoken"></a>
+## renewToken
+
+```cpp
+virtual int renewToken(const char* token) = 0;
+```
+
+更新 Token。
+
+ Token 在一段时间后会过期。你必须在以下任一情况下从服务器重新生成新的 Token，并调用该方法进行更新，否则 SDK 会断开与频道的连接：
+
+- [`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onerror) 回调报告错误码 ERR_TOKEN_EXPIRED(109)。
+- 触发 [`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegewillexpire) 回调。
+- 触发 [`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegedidexpire) 回调。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `const char*` | 指向新 Token 的指针。 |
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="enablerecordervideoframecapture"></a>
+## enableRecorderVideoFrameCapture
+
+```cpp
+virtual int enableRecorderVideoFrameCapture(bool enable, const RecorderVideoFrameCaptureConfig& config) = 0;
+```
+
+启用并配置录制器视频帧采集。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `enable` | `bool` | <Slot name="iagoramediartcrecorder-cpp-html-21-1-2" /> |
+| `config` | `const RecorderVideoFrameCaptureConfig&` | 视频帧采集配置，详见 [`RecorderVideoFrameCaptureConfig`](/zh-CN/api-reference/local-server-recording/struct.cpp#recordervideoframecaptureconfig)。 |
+
+<Slot for="iagoramediartcrecorder-cpp-html-21-1-2">
+
+是否启用视频帧采集：
+
+    - `true`：启用。
+    - `false`：不启用。
+
+</Slot>
+
+#### 返回值
+
+- 0：方法调用成功。
+- < 0：方法调用失败。

@@ -1,0 +1,42 @@
+---
+title: "响应状态码"
+---
+在调用水晶球 RESTful API 过程中，你可能会遇到以下情况：
+
+- 如果响应 Body 中不含 `code` 字段或 `code` 为 `200`，则请求成功。
+
+- 如果响应 Body 中包含 `code` 且 `code` 不为 `200`，则请求失败。你可以根据对应的响应 Body 中可能出现的 `message` 字段排查问题。
+
+例如，请求失败时，你可能收到如下响应：
+
+```json
+## 200 OK
+{
+    "code": 300,
+    "message": "qps limit error",
+    "data": null
+}
+```
+
+## HTTP 响应状态码
+
+| HTTP 响应状态码 | 描述                                                       | 处理建议                                  |
+| :-------------- | :--------------------------------------------------------- | ---------------------------------------------------------- |
+| `200 OK`          | 请求成功，服务器成功返回请求的数据。                       | 无需处理。                 |
+| `404 Not Found` | 服务器无法找到请求的资源。                                 | 检查请求内容是否正确。               |
+| `500 Internal Server Error` | 服务器内部错误，无法完成请求。                             | 重试或[联系技术支持](https://ticket.shengwang.cn/)。 |
+
+## 业务状态码
+
+HTTP 状态码为 `200 OK` 且响应 Body 中的业务状态码 (`code`) 为 `300` 时，可能会返回以下错误信息 (`message`)：
+
+| `message`                                                     | 描述                                 | 正确示例                                                     |
+| :----------------------------------------------------------- | ------------------------------------ | :----------------------------------------------------------- |
+| qps limit error                                              | 每秒的请求次数超出限制               | 如果 qps limit = 10，则 current qps < 10                     |
+| qpm limit error                                              | 每分钟的请求次数超出限制               | 如果 qpm limit = 100，则 current qpm < 100                     |
+| qpd limit error                                              | 每天的请求次数超出限制               | 如果 qpd limit = 10000，则 current qpd < 10000               |
+| query latency limit error                                    | 数据延迟超出限制                     | 如果 query latency limit = 10s， current time = 1623316864，则 `end_ts` < 1623316864 - 10 |
+| query time range limit error                                 | 可查询时间范围超出限制               | 如果 query time range limit = 3d，current time = 1623316864，则 `start_ts` > 1623316864 - 3 × 86400 (s) |
+| query duration limit error                                   | 单次查询时间范围超出限制               | 如果 query duration = 8h，则 `end_ts` -`start_ts` < 8 × 3600 (s) |
+| query time length limit error                                | 响应内容中每次最多返回的数据超出限制 | 如果 query time length limit = 3h，则 `end_ts` -`start_ts` < 3 × 3600 (s) |
+| you have no auth to access this service, please buy or upgrade your service package | 当前套餐包不支持调用该 API           | 无                                                           |

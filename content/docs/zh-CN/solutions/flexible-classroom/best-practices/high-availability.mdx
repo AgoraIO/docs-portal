@@ -1,0 +1,216 @@
+---
+title: "保障 REST 服务高可用"
+---
+
+为保障 REST 服务的高可用性，避免因区域网络抖动、故障、DNS 解析失败或服务异常导致的请求失败，声网提供了完整的容错方案，包括**多域名切换**和**指数退避重试**机制。
+
+## 为什么需要容错机制？
+
+在分布式系统中，网络请求可能因以下原因失败：
+
+- **DNS 解析故障**：域名解析到故障节点
+- **网络波动**：区域网络不稳定导致超时
+- **服务异常**：目标服务器临时不可用（`50x` 错误）
+- **跨域访问**：地理位置导致的延迟或丢包
+
+通过多域名切换和退避重试，可以将服务可用性从 **99%** 提升至 **99.99%** 以上。
+
+## 容错策略
+
+### 触发条件
+
+在以下情况下触发重试机制：
+
+- **请求超时**（建议超时时间：10-30秒）
+- **HTTP 状态码 50x**（500、502、503、504等服务端错误）
+- **域名解析失败**（DNS 解析超时或无法解析）
+
+### 重试策略
+
+你可以采用以下重试策略：
+
+| 阶段 | 重试次数 | 等待时间 | 域名类型 | 说明 |
+|-----|---------|---------|---------|------|
+| **初始请求** | - | - | 主域名 | 根据服务器地理位置选择 |
+| **第1次重试** | 1 | 1秒 | 主域名 | 同域名立即重试 |
+| **第2次重试** | 2 | 3秒 | 备用主域名 | 切换到备用全局域名 |
+| **第3次重试** | 3 | 6秒 | 区域域名1 | 切换到相邻区域 |
+| **第4次重试** | 4 | 10秒 | 区域域名2 | 切换到另一相邻区域 |
+
+**总计**：最多 5 次请求（1 次初始 + 4 次重试），累计等待时间约 20 秒。
+
+## 域名选择规则
+
+根据你的业务服务器所在地选择主域名：
+
+- **中国大陆**：优先使用 `api.sd-rtn.com`，备用 `api.agora.io`
+- **海外地区**：优先使用 `api.agora.io`，备用 `api.sd-rtn.com`
+
+:::info[信息]
+切换到区域域名前，请确保目标区域已部署你使用的服务（如云端录制、实时消息等）。
+:::
+
+### 域名信息
+
+| 主域名 | 区域域名 | 地理区域 |
+|--------|----------|----------|
+| `api.sd-rtn.com` | `api-us-west-1.sd-rtn.com` | 美国西部 |
+|  | `api-us-east-1.sd-rtn.com` | 美国东部 |
+|  | `api-ap-southeast-1.sd-rtn.com` | 亚太东南 |
+|  | `api-ap-northeast-1.sd-rtn.com` | 亚太东北 |
+|  | `api-eu-west-1.sd-rtn.com` | 欧洲西部 |
+|  | `api-eu-central-1.sd-rtn.com` | 欧洲中部 |
+|  | `api-cn-east-1.sd-rtn.com` | 中国华东 |
+|  | `api-cn-north-1.sd-rtn.com` | 中国华北 |
+| `api.agora.io` | `api-us-west-1.agora.io` | 美国西部 |
+|  | `api-us-east-1.agora.io` | 美国东部 |
+|  | `api-ap-southeast-1.agora.io` | 亚太东南 |
+|  | `api-ap-northeast-1.agora.io` | 亚太东北 |
+|  | `api-eu-west-1.agora.io` | 欧洲西部 |
+|  | `api-eu-central-1.agora.io` | 欧洲中部 |
+|  | `api-cn-east-1.agora.io` | 中国华东 |
+|  | `api-cn-north-1.agora.io` | 中国华北 |
+
+## 完整重试流程
+
+### 流程图
+
+![高可用性流程图](/img/flexible-classroom/high-availability.png)
+
+### 伪代码实现
+
+```java
+/**
+ * RESTful API 请求容错重试
+ */
+public class RestfulApiClient {
+    
+    // 域名配置 - 中国区
+    private static final String[] DOMAINS_CN = {
+        "api.sd-rtn.com",                  // 主域名
+        "api.agora.io",                    // 备用主域名
+        "api-cn-east-1.sd-rtn.com",        // 区域域名 - 中国华东
+        "api-cn-north-1.sd-rtn.com"        // 区域域名 - 中国华北
+    };
+    
+    // 域名配置 - 海外
+    private static final String[] DOMAINS_OVERSEAS = {
+        "api.agora.io",                    // 主域名
+        "api.sd-rtn.com",                  // 备用主域名
+        "api-us-west-1.agora.io",          // 区域域名 - 美国西部
+        "api-us-east-1.agora.io"           // 区域域名 - 美国东部
+    };
+    
+    // 退避时间（毫秒）
+    private static final int[] BACKOFF_DELAYS = {0, 1000, 3000, 6000, 10000};
+    
+    // 最大重试次数
+    private static final int MAX_RETRIES = 4;
+    
+    // 请求超时时间（毫秒）
+    private static final int TIMEOUT = 10000;
+    
+    /**
+     * 发起带容错的 HTTP 请求
+     * 
+     * @param path    请求路径
+     * @param method  HTTP 方法
+     * @param body    请求体
+     * @param isChina 是否中国区
+     * @return 响应结果
+     */
+    public Response requestWithRetry(String path, String method, Object body, boolean isChina) {
+        String[] domains = isChina ? DOMAINS_CN : DOMAINS_OVERSEAS;
+        int retryCount = 0;
+        Exception lastException = null;
+        
+        while (retryCount <= MAX_RETRIES) {
+            // 1. 选择域名（根据重试次数切换）
+            int domainIndex = Math.min(retryCount, domains.length - 1);
+            String domain = domains[domainIndex];
+            String url = "https://" + domain + path;
+            
+            // 2. 等待退避时间（首次请求不等待）
+            if (retryCount > 0) {
+                sleep(BACKOFF_DELAYS[retryCount]);
+                log.info("第{}次重试，使用域名: {}", retryCount, domain);
+            }
+            
+            try {
+                // 3. 发起 HTTP 请求
+                Response response = httpRequest(url, method, body, TIMEOUT);
+                
+                // 4. 请求成功，返回结果
+                if (isSuccess(response)) {
+                    return response;
+                }
+                
+                // 5. 服务端错误（50x），触发重试
+                if (isServerError(response)) {
+                    log.warn("服务端错误: {} {}", response.getStatus(), url);
+                    lastException = new ServerException(response.getStatus());
+                } else {
+                    // 客户端错误（4xx），不重试，直接返回
+                    return response;
+                }
+                
+            } catch (TimeoutException e) {
+                log.warn("请求超时: {}", url);
+                lastException = e;
+            } catch (NetworkException e) {
+                log.warn("网络异常: {} - {}", url, e.getMessage());
+                lastException = e;
+            }
+            
+            retryCount++;
+        }
+        
+        // 所有重试均失败，抛出异常
+        throw new ApiRequestException("请求失败，已重试" + MAX_RETRIES + "次", lastException);
+    }
+    
+    /**
+     * 判断是否成功响应（2xx）
+     */
+    private boolean isSuccess(Response response) {
+        return response.getStatus() >= 200 && response.getStatus() < 300;
+    }
+    
+    /**
+     * 判断是否服务端错误（需要重试）
+     */
+    private boolean isServerError(Response response) {
+        int status = response.getStatus();
+        return status == 500 || status == 502 || status == 503 || status == 504;
+    }
+}
+```
+
+### 使用示例
+
+```java
+RestfulApiClient client = new RestfulApiClient();
+
+// 中国区请求
+Response response = client.requestWithRetry(
+    "/cn/conference/apps/{appId}/v1/rooms",
+    "POST",
+    requestBody,
+    true  // isChina = true
+);
+
+// 海外请求
+Response response = client.requestWithRetry(
+    "/conference/apps/{appId}/v1/rooms",
+    "POST",
+    requestBody,
+    false  // isChina = false
+);
+```
+
+## 开发注意事项
+
+1. **幂等性**：确保重试的接口是幂等的（GET、PUT、DELETE），对于非幂等的 POST 请求重复执行会产生多个新资源或重复操作，可考虑引入幂等键等机制
+2. **超时设置**：建议设置 5-10 秒超时，过短可能导致误判
+3. **日志记录**：记录每次重试的域名和错误信息，便于排查问题
+4. **监控告警**：当重试次数频繁时，应触发告警检查服务状态

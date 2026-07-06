@@ -1,0 +1,55 @@
+---
+title: "发版说明"
+---
+本页提供 RTC 服务端 SDK 的发版说明。
+
+## 2.2.4 版
+
+该版本于 2025 年 5 月 28 日发布。
+
+### 新增特性
+
+#### 音频 Metadata 数据
+
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`send_audio_metadata`](/api-ref/rtc-server-sdk/python/python-api/localuser#sendaudiometadata) 方法进行发送，远端用户会在 [`on_audio_meta_data_received`](/api-ref/rtc-server-sdk/python/python-api/localuserobserver#onaudiometadatareceived) 回调中接收到发送的信息。
+
+#### 外部视频源能力扩展
+
+该版本在 [`ExternalVideoFrame`](/api-ref/rtc-server-sdk/python/python-api/apidatatype#externalvideoframe) 中增加了如下字段：
+
+- `fill_alpha_buffer` 和 `alpha_buffer`，支持 Alpha 数据通道。
+- `color_space`，支持对外部采集到的视频数据自定义颜色空间。
+
+#### 数据流加密
+
+该版本新增 [`enable_encryption`](/api-ref/rtc-server-sdk/python/python-api/rtcconnection#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`on_encryption_error`](/api-ref/rtc-server-sdk/python/python-api/irtcconnectionobserver#onencryptionerror) 得知。
+
+## 2.1.0 版
+
+该版本于 2024 年 10 月 24 日发布。这是 Python SDK 的第一个版本。
+
+### 新增特性
+
+#### 发送和接收音视频数据
+
+支持多种音视频编码格式，例如，H.264、H.265、VP8 等视频编码格式，OPUS、G722、PCMA 等音频编码格式。你可以发送和接收多种音频和视频数据，无需受限于音视频设备。
+
+#### 发送和接收数据流
+
+支持发送和接收数据流消息，适用于需要消息传输的场景。例如，一个聊天应用可以通过该功能实现用户之间的即时消息传递。
+
+#### 管理多频道
+
+支持同时在多个频道发送或接收媒体流，适用于需要同时管理多个频道的场景。例如，一个在线教育平台可以同时进行多个班级的直播课程，每个班级的音视频数据互不干扰。
+
+#### 订阅指定用户
+
+可通过用户 ID 选择性地订阅指定用户的媒体流。例如，在一个大型会议中，观众可以只订阅主讲人的媒体流，而不需要订阅其他参会者的媒体流，从而节省带宽和提高会议效率。
+
+#### 混音
+
+支持将多路音频流混音，适用于多个用户/设备同时发流的场景。例如，一个在线音乐会可以将吉他、鼓和人声的音频流混合成一个高质量的音频流，提供给观众。
+
+#### 使用云代理
+
+在防火墙上将特定 IP 和端口列入白名单，即可在内网中访问声网服务。适用于大型企业、医院、高校、银行等安全需求较高的机构，确保安全和稳定的连接。

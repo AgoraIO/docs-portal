@@ -1,0 +1,798 @@
+---
+title: "结构体"
+---
+<a id="advancedconfiginfo"></a>
+## AdvancedConfigInfo
+
+```java
+public class AdvancedConfigInfo {
+    private LogUploadServerInfo logUploadServer;
+}
+```
+
+用于配置高级功能。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `logUploadServer` | `LogUploadServerInfo` | 日志上传服务器。详见 [`LogUploadServerInfo`](/zh-CN/api-reference/local-server-recording/struct.java#loguploadserverinfo)。 |
+
+<a id="remoteaudiostatistics"></a>
+## RemoteAudioStatistics
+
+```java
+public class RemoteAudioStatistics {
+    private int quality;
+    private int networkTransportDelay;
+    private int jitterBufferDelay;
+    private int audioLossRate;
+}
+```
+
+远端音频流的统计信息。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `quality` | `int` | 音频流的质量。取值范围为 0（未知）到 5（极佳）。 |
+| `networkTransportDelay` | `int` | 网络传输延迟，单位为毫秒。 |
+| `jitterBufferDelay` | `int` | 抖动缓冲延迟，单位为毫秒。 |
+| `audioLossRate` | `int` | 音频丢包率，单位为百分比。 |
+
+<a id="agoraserviceconfiguration"></a>
+## AgoraServiceConfiguration
+
+```java
+public class AgoraServiceConfiguration {
+    private boolean enableAudioProcessor = true;
+    private boolean enableAudioDevice = true;
+    private boolean enableVideo = false;
+    private Object context = null;
+    private String appId = null;
+    private int areaCode = Constants.AreaCode.AREA_CODE_GLOB.getValue();
+    private int channelProfile = Constants.ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING.getValue();
+    private String license = null;
+    private int audioScenario = Constants.AudioScenarioType.AUDIO_SCENARIO_DEFAULT.getValue();
+    private LogConfig logConfig = new LogConfig();
+    private boolean useStringUid = false;
+    private boolean useExternalEglContext = false;
+    private boolean domainLimit = false;
+}
+```
+
+用于初始化和配置声网服务实例。
+
+你可以使用 `getter`/`setter` 方法获取或设置初始化和配置声网服务实例所需的参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `enableAudioProcessor` | `boolean` | <Slot name="struct-java-html-2-1-2" /> |
+| `enableAudioDevice` | `boolean` | <Slot name="struct-java-html-2-2-2" /> |
+| `enableVideo` | `boolean` | <Slot name="struct-java-html-2-3-2" /> |
+| `context` | `Object` | 用户上下文。在 Android 上，此参数指 Activity 的上下文。 |
+| `appId` | `String` | 你的项目的 App ID。 |
+| `areaCode` | `int` | 支持的区域码，默认值为 `AREA_CODE_GLOB`。 |
+| `channelProfile` | `int` | 频道场景，默认值为 `CHANNEL_PROFILE_LIVE_BROADCASTING`。 |
+| `license` | `String` | 连接频道时用于鉴权的 license，根据该 license 收费。 |
+| `audioScenario` | `int` | 音频场景，默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `logConfig` | `LogConfig` | 日志配置。详见 [`LogConfig`](/zh-CN/api-reference/local-server-recording/struct.java#logconfig)。 |
+| `useStringUid` | `boolean` | <Slot name="struct-java-html-2-11-2" /> |
+| `useExternalEglContext` | `boolean` | <Slot name="struct-java-html-2-12-2" /> |
+| `domainLimit` | `boolean` | <Slot name="struct-java-html-2-13-2" /> |
+
+<Slot for="struct-java-html-2-1-2">
+
+是否启用音频处理模块。
+
+    - `true`：（默认）启用音频处理模块。
+    - `false`：禁用音频处理模块。禁用后无法创建音频轨道。
+
+</Slot>
+
+<Slot for="struct-java-html-2-2-2">
+
+是否启用音频设备模块。
+
+    - `true`：（默认）启用音频设备模块。
+    - `false`：禁用音频设备模块。
+
+    :::warning[注意]
+    在录制场景下，确保将该参数设置为 `false`。如果设置为 `true`，SDK 会报错，因为录制器实例没有任何音频设备。
+    :::
+
+</Slot>
+
+<Slot for="struct-java-html-2-3-2">
+
+是否启用视频功能。
+
+    - `true`：启用视频。
+    - `false`：（默认）禁用视频。
+
+</Slot>
+
+<Slot for="struct-java-html-2-11-2">
+
+是否启用字符串类型的用户 ID（`uid`）。
+
+    - `true`：启用字符串类型的用户 ID。
+    - `false`：（默认）不启用字符串类型的用户 ID。
+
+</Slot>
+
+<Slot for="struct-java-html-2-12-2">
+
+是否使用当前线程中的 EGL 上下文，作为 SDK 的根 EGL 上下文，并被所有与 EGL 相关的模块共享，例如相机采集与视频渲染。
+
+    - `true`：使用当前线程中的 EGL 上下文。
+    - `false`：（默认）不使用当前线程中的 EGL 上下文。
+
+    :::warning[注意]
+    此属性仅适用于 Android 平台。
+    :::
+
+</Slot>
+
+<Slot for="struct-java-html-2-13-2">
+
+是否启用域名限制。
+
+    - `true`：仅连接 DNS 已解析的服务器。
+    - `false`：（默认）不限制服务器连接。
+
+</Slot>
+
+<a id="watermarkoptions"></a>
+## WatermarkOptions
+
+```java
+public class WatermarkOptions {
+    private boolean visibleInPreview;
+    private Rectangle positionInLandscapeMode;
+    private Rectangle positionInPortraitMode;
+    private WatermarkRatio watermarkRatio;
+    private Constants.WatermarkFitMode mode;
+    private int zOrder;
+}
+```
+
+用于设置水印的显示参数。
+
+你可以使用该类的 getter/setter 方法来获取或设置各项参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `visibleInPreview` | `boolean` | <Slot name="struct-java-html-3-1-2" /> |
+| `positionInLandscapeMode` | `Rectangle` | 当水印的适配模式为 `FIT_MODE_COVER_POSITION` 时，用于设置水印图像在横屏模式下的显示区域。详见 [`Rectangle`](/zh-CN/api-reference/local-server-recording/struct.java#rectangle)。 |
+| `positionInPortraitMode` | `Rectangle` | 当水印的适配模式为 `FIT_MODE_COVER_POSITION` 时，用于设置水印图像在竖屏模式下的显示区域。详见 [`Rectangle`](/zh-CN/api-reference/local-server-recording/struct.java#rectangle)。 |
+| `watermarkRatio` | `WatermarkRatio` | 当水印的适配模式为 `FIT_MODE_USE_IMAGE_RATIO` 时，用于设置水印的坐标信息。详见 [`WatermarkRatio`](/zh-CN/api-reference/local-server-recording/struct.java#watermarkratio)。 |
+| `mode` | `Constants.WatermarkFitMode` | 水印的适配模式。详见 [`WatermarkFitMode`](/zh-CN/api-reference/local-server-recording/enum.java#watermarkfitmode)。 |
+| `zOrder` | `int` | 水印图像的图层顺序。默认值为 0。 |
+
+<Slot for="struct-java-html-3-1-2">
+
+水印图像在本地视频预览中是否可见。
+
+    - `true`：水印图像在本地预览中可见。
+    - `false`：水印图像在本地预览中不可见。
+
+</Slot>
+
+<a id="videomixinglayout"></a>
+## VideoMixingLayout
+
+```java
+public class VideoMixingLayout {
+    private int canvasWidth;
+    private int canvasHeight;
+    private int canvasFps;
+    private long backgroundColor;
+    private String backgroundImage;
+    private UserMixerLayout[] userLayoutConfigs;
+}
+```
+
+用于设置视频合流的布局参数。
+
+[`VideoMixingLayout`](/zh-CN/api-reference/local-server-recording/struct.java#videomixinglayout) 用于设置声网 SDK 中的视频合流布局参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `canvasWidth` | `int` | 画布的宽度。 |
+| `canvasHeight` | `int` | 画布的高度。 |
+| `canvasFps` | `int` | 画布的帧率。 |
+| `backgroundColor` | `long` | 画布的背景颜色，以 `long` 类型表示。 |
+| `backgroundImage` | `String` | 画布的背景图像。 |
+| `userLayoutConfigs` | `UserMixerLayout[]` | 用户布局配置。详见 [`UserMixerLayout`](/zh-CN/api-reference/local-server-recording/struct.java#usermixerlayout)。 |
+
+<a id="encryptionconfig"></a>
+## EncryptionConfig
+
+```java
+public class EncryptionConfig {
+    private Constants.EncryptionMode encryptionMode;
+    private String encryptionKey;
+    private byte[] encryptionKdfSalt;
+}
+```
+
+用于配置声网录制 SDK 的加密设置。
+
+你可以使用对应的 getter/setter 方法来获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `encryptionMode` | `Constants.EncryptionMode` | 加密模式。默认值为 `AES_128_GCM2`。详见 [`EncryptionMode`](/zh-CN/api-reference/local-server-recording/enum.java#encryptionmode)。 |
+| `encryptionKey` | `String` | <Slot name="struct-java-html-5-2-2" /> |
+| `encryptionKdfSalt` | `byte[]` | 用于加密密钥的盐值。默认值为一个包含 32 个零的数组。 |
+
+<Slot for="struct-java-html-5-2-2">
+
+加密密钥，字符串格式。
+
+    :::warning[注意]
+    如果你未设置加密密钥或设置为 `null`，则无法使用内置加密，SDK 会返回错误码 `ERR_INVALID_ARGUMENT`（-2）。
+    :::
+
+</Slot>
+
+<a id="mediarecorderconfiguration"></a>
+## MediaRecorderConfiguration
+
+```java
+public class MediaRecorderConfiguration {
+    private String storagePath;
+    private Constants.MediaRecorderContainerFormat containerFormat;
+    private Constants.MediaRecorderStreamType streamType;
+    private int maxDurationMs;
+    private int recorderInfoUpdateInterval;
+    private int width;
+    private int height;
+    private int fps;
+    private int sampleRate;
+    private int channelNum;
+    private Constants.VideoSourceType videoSourceType;
+}
+```
+
+用于设置媒体录制的相关参数。
+
+适用于声网 SDK，用于设置媒体录制的相关参数。你可以通过 getter/setter 方法设置或获取这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `storagePath` | `String` | 录制文件的绝对路径（包括文件扩展名）。例如：Windows：C:/Users/userName/AppData/Local/声网/process_name/example.mp4；iOS：/App Sandbox/Library/Caches/example.mp4；macOS：/Library/Logs/example.mp4；Android：/storage/emulated/0/Android/data/package_name/files/example.mp4；Linux：result/example.mp4。确保指定路径存在且具有可写权限。 |
+| `containerFormat` | `Constants.MediaRecorderContainerFormat` | 录制文件的封装格式。详见 [`MediaRecorderContainerFormat`](/zh-CN/api-reference/local-server-recording/enum.java#mediarecordercontainerformat)。 |
+| `streamType` | `Constants.MediaRecorderStreamType` | 录制的内容类型。详见 [`MediaRecorderStreamType`](/zh-CN/api-reference/local-server-recording/enum.java#mediarecorderstreamtype)。 |
+| `maxDurationMs` | `int` | 最大录制时长，单位为毫秒。默认值为 120000。 |
+| `recorderInfoUpdateInterval` | `int` | 录制信息的更新间隔，单位为毫秒。取值范围为 [1000, 10000]。根据该参数设置，SDK 会触发 [`onRecorderInfoUpdated`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.java#onrecorderinfoupdated) 回调用于报告录制信息的更新。 |
+| `width` | `int` | 录制视频的宽度（单位：像素）。默认值为 1280。 |
+| `height` | `int` | 录制视频的高度（单位：像素）。默认值为 720。 |
+| `fps` | `int` | 录制视频的帧率（单位：帧/秒）。默认值为 30。 |
+| `sampleRate` | `int` | 录制音频的采样率（单位：Hz）。默认值为 48000。 |
+| `channelNum` | `int` | 录制音频的声道数。默认值为 1（单声道）。 |
+| `videoSourceType` | `Constants.VideoSourceType` | 用于外部频道录制的视频源类型。详见 [`VideoSourceType`](/zh-CN/api-reference/local-server-recording/enum.java#videosourcetype)。 |
+
+<a id="encodedvideoframeinfo"></a>
+## EncodedVideoFrameInfo
+
+```java
+public class EncodedVideoFrameInfo {
+    private int uid;
+    private int codecType;
+    private int width;
+    private int height;
+    private int framesPerSecond;
+    private int frameType;
+    private int rotation;
+    private int trackId;
+    private long captureTimeMs;
+    private long decodeTimeMs;
+    private int streamType;
+    private long presentationMs;
+}
+```
+
+编码后的视频帧信息封装。
+
+与原生 [`EncodedVideoFrameInfo`](/zh-CN/api-reference/local-server-recording/struct.java#encodedvideoframeinfo) 对齐。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `int` | 发送该视频帧的用户 ID。 |
+| `codecType` | `int` | 视频编解码类型，详见 [`VideoCodecType`](/zh-CN/api-reference/local-server-recording/enum.java#videocodectype)。 |
+| `width` | `int` | 帧宽度，单位为像素。 |
+| `height` | `int` | 帧高度，单位为像素。 |
+| `framesPerSecond` | `int` | 帧率，单位为帧每秒（fps）。 |
+| `frameType` | `int` | 帧类型，详见 [`VideoFrameType`](/zh-CN/api-reference/local-server-recording/enum.java#videoframetype)。 |
+| `rotation` | `int` | 顺时针旋转角度，详见 [`VideoOrientation`](/zh-CN/api-reference/local-server-recording/enum.java#videoorientation)。 |
+| `trackId` | `int` | 轨道标识符。 |
+| `captureTimeMs` | `long` | 采集时间戳，单位为毫秒。 |
+| `decodeTimeMs` | `long` | 解码时间戳，单位为毫秒。 |
+| `streamType` | `int` | 视频流类型，详见 [`VideoStreamType`](/zh-CN/api-reference/local-server-recording/enum.java#videostreamtype)。 |
+| `presentationMs` | `long` | 呈现时间戳，单位为毫秒。 |
+
+<a id="recordervideoframecaptureconfig"></a>
+## RecorderVideoFrameCaptureConfig
+
+```java
+public class RecorderVideoFrameCaptureConfig {
+    private Constants.VideoFrameCaptureType videoFrameType = Constants.VideoFrameCaptureType.VIDEO_FORMAT_ENCODED_FRAME_TYPE;
+    private String jpgFileStorePath;
+    private int jpgCaptureIntervalInSec = 5;
+    private IRecorderVideoFrameObserver observer;
+}
+```
+
+用于配置录制器的视频帧采集功能。
+
+用于设置视频帧采集参数，包括帧类型、JPG 文件保存路径、JPG 抓帧间隔和回调观察者。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `videoFrameType` | `Constants.VideoFrameCaptureType` | 视频帧的采集类型。详见 [`VideoFrameCaptureType`](/zh-CN/api-reference/local-server-recording/enum.java#videoframecapturetype)。 |
+| `jpgFileStorePath` | `String` | <Slot name="struct-java-html-8-2-2" /> |
+| `jpgCaptureIntervalInSec` | `int` | JPG 格式视频帧采集的时间间隔，单位为秒。默认值为 5 秒，最小值为 1 秒。 |
+| `observer` | `IRecorderVideoFrameObserver` | 用于获取视频帧的观察者接口。详见 [`IRecorderVideoFrameObserver`](/zh-CN/api-reference/local-server-recording/irecordervideoframeobserver.java)。 |
+
+<Slot for="struct-java-html-8-2-2">
+
+保存 JPG 文件的绝对目录路径。文件名格式为："channelId_userId_YYYYMMDDHHMMSS_MS.jpg"。请确保该目录已存在且可写。
+
+    :::warning[注意]
+    当使用 `VIDEO_FORMAT_JPG_FILE_TYPE` 类型采集图像时，请务必设置该参数，否则 JPG 文件将不会被保存。
+    :::
+
+</Slot>
+
+<a id="recorderinfo"></a>
+## RecorderInfo
+
+```java
+public class RecorderInfo {
+    private String fileName;
+    private int durationMs;
+    private int fileSize;
+}
+```
+
+用于获取录制文件的相关信息。
+
+你可以通过 getter/setter 方法获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fileName` | `String` | 录制文件的绝对路径。 |
+| `durationMs` | `int` | 录制时长，单位为毫秒。 |
+| `fileSize` | `int` | 录制文件的大小，单位为字节。 |
+
+<a id="rectangle"></a>
+## Rectangle
+
+```java
+public class Rectangle {
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+}
+```
+
+[`Rectangle`](/zh-CN/api-reference/local-server-recording/struct.java#rectangle) 类用于定义矩形的相关参数。
+
+你可以使用 `getter`/`setter` 方法获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `x` | `int` | 距左上角的水平偏移量。 |
+| `y` | `int` | 距左上角的垂直偏移量。 |
+| `width` | `int` | 区域的宽度。 |
+| `height` | `int` | 区域的高度。 |
+
+<a id="logconfig"></a>
+## LogConfig
+
+```java
+public class LogConfig {
+    private String filePath = null;
+    private int fileSizeInKB = Constants.DEFAULT_LOG_SIZE_IN_KB;
+    private Constants.LogLevel level = Constants.LogLevel.LOG_LEVEL_INFO;
+}
+```
+
+用于配置日志功能。
+
+[`LogConfig`](/zh-CN/api-reference/local-server-recording/struct.java#logconfig) 用于配置日志功能，包括日志文件路径、日志文件大小和日志级别。你可以通过其 getter/setter 方法获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `filePath` | `String` | 日志文件的路径。默认值为 `null`，表示使用默认的日志路径。 |
+| `fileSizeInKB` | `int` | 日志文件的大小（单位为 KB）。默认值为 1024。 |
+| `level` | `Constants.LogLevel` | 日志级别。默认值为 `LOG_LEVEL_INFO`。详见 [`LogLevel`](/zh-CN/api-reference/local-server-recording/enum.java#loglevel)。 |
+
+<a id="usermixerlayout"></a>
+## UserMixerLayout
+
+```java
+public class UserMixerLayout {
+    private String userId;
+    private MixerLayoutConfig config;
+}
+```
+
+表示用户在视频合流中的布局配置。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `String` | 用户的 ID。 |
+| `config` | `MixerLayoutConfig` | 用户的布局配置。详见 [`MixerLayoutConfig`](/zh-CN/api-reference/local-server-recording/struct.java#mixerlayoutconfig)。 |
+
+<a id="watermarktimestamp"></a>
+## WatermarkTimestamp
+
+```java
+public class WatermarkTimestamp {
+    private int fontSize;
+    private String fontFilePath;
+}
+```
+
+用于设置时间戳样式。
+
+你可以使用 `getter`/`setter` 方法获取或设置参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fontSize` | `int` | 时间戳的字体大小。默认值为 10。 |
+| `fontFilePath` | `String` | 时间戳的字体文件路径。默认值为 `null`，表示使用系统字体。 |
+
+<a id="watermarklitera"></a>
+## WatermarkLitera
+
+```java
+public class WatermarkLitera {
+    private String wmLitera;
+    private String fontFilePath;
+    private int fontSize;
+}
+```
+
+用于设置水印文本内容、字体路径和字体大小。
+
+你可以通过 getter/setter 方法获取或设置各参数的值。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `wmLitera` | `String` | 水印的文本内容。默认值为 `null`。 |
+| `fontFilePath` | `String` | 水印文本字体文件的路径。默认值为 `null`，表示使用系统字体。 |
+| `fontSize` | `int` | 水印文本的字体大小。默认值为 10。 |
+
+<a id="loguploadserverinfo"></a>
+## LogUploadServerInfo
+
+```java
+public class LogUploadServerInfo {
+    private String serverDomain;
+    private String serverPath;
+    private int serverPort;
+    private boolean serverHttps;
+}
+```
+
+用于配置日志上传服务器的信息。
+
+你可以通过对应的 getter/setter 方法获取或设置各参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `serverDomain` | `String` | 日志上传服务器的域名。 |
+| `serverPath` | `String` | 日志上传服务器的路径。 |
+| `serverPort` | `int` | 日志上传服务器的端口号。 |
+| `serverHttps` | `boolean` | <Slot name="struct-java-html-15-4-2" /> |
+
+<Slot for="struct-java-html-15-4-2">
+
+是否使用 HTTPS 协议发送请求：
+
+    - `true`：使用 HTTPS 请求。
+    - `false`：使用 HTTP 请求。
+
+</Slot>
+
+<a id="remotevideostatistics"></a>
+## RemoteVideoStatistics
+
+```java
+public class RemoteVideoStatistics {
+    private int delay;
+    private int width;
+    private int height;
+    private int receivedBitrate;
+    private int decoderOutputFrameRate;
+    private Constants.VideoStreamType rxStreamType;
+}
+```
+
+获取远端视频流的统计信息。
+
+[`RemoteVideoStatistics`](/zh-CN/api-reference/local-server-recording/struct.java#remotevideostatistics) 用于获取远端视频流的统计信息，包括延时、视频尺寸、接收码率、解码输出帧率和视频流类型等。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `delay` | `int` | 延时，单位为毫秒。 |
+| `width` | `int` | 视频帧的宽度。 |
+| `height` | `int` | 视频帧的高度。 |
+| `receivedBitrate` | `int` | 接收码率，单位为 Kbps。 |
+| `decoderOutputFrameRate` | `int` | 解码后的视频输出帧率。 |
+| `rxStreamType` | `Constants.VideoStreamType` | 接收的视频流类型，详见 [`VideoStreamType`](/zh-CN/api-reference/local-server-recording/enum.java#videostreamtype)。 |
+
+<a id="watermarkconfig"></a>
+## WatermarkConfig
+
+```java
+public class WatermarkConfig {
+    private int index;
+    private WatermarkSourceType type;
+    private WatermarkTimestamp timestampSource;
+    private WatermarkLitera literaSource;
+    private String imageUrl;
+    private WatermarkOptions options;
+}
+```
+
+用于定义和配置水印参数。
+
+你可以通过 getter/setter 方法获取或设置各个参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `index` | `int` | 水印索引。默认值为 0。 |
+| `type` | `WatermarkSourceType` | 水印类型。详见 [`WatermarkSourceType`](/zh-CN/api-reference/local-server-recording/enum.java#watermarksourcetype)。 |
+| `timestampSource` | `WatermarkTimestamp` | 水印时间戳来源。详见 [`WatermarkTimestamp`](/zh-CN/api-reference/local-server-recording/struct.java#watermarktimestamp)。 |
+| `literaSource` | `WatermarkLitera` | 水印文本来源。详见 [`WatermarkLitera`](/zh-CN/api-reference/local-server-recording/struct.java#watermarklitera)。 |
+| `imageUrl` | `String` | 用于水印的图像文件 URL。默认值为 `null`。 |
+| `options` | `WatermarkOptions` | 水印参数选项。详见 [`WatermarkOptions`](/zh-CN/api-reference/local-server-recording/struct.java#watermarkoptions)。 |
+
+<a id="speakvolumeinfo"></a>
+## SpeakVolumeInfo
+
+```java
+public class SpeakVolumeInfo {
+    private String userId;
+    private int volume;
+}
+```
+
+用于获取或设置说话者的音量信息。
+
+你可以使用 getter/setter 方法获取或设置参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `userId` | `String` | 说话者的用户 ID。 |
+| `volume` | `int` | 说话者的音量，范围为 0 到 255。 |
+
+<a id="localaccesspointconfiguration"></a>
+## LocalAccessPointConfiguration
+
+```java
+public class LocalAccessPointConfiguration {
+    private String[] ipList;
+    private int ipListSize;
+    private String[] domainList;
+    private int domainListSize;
+    private String verifyDomainName;
+    private Constants.LocalProxyMode mode;
+    private AdvancedConfigInfo advancedConfig;
+    private boolean disableAut;
+}
+```
+
+用于配置本地接入点的连接参数。
+
+你可以使用 getter/setter 方法获取或设置参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ipList` | `String[]` | 本地接入点的 IP 地址列表。 |
+| `ipListSize` | `int` | 本地接入点的 IP 地址数量。 |
+| `domainList` | `String[]` | 本地接入点的域名列表。 |
+| `domainListSize` | `int` | 本地接入点的域名数量。 |
+| `verifyDomainName` | `String` | 安装在指定本地接入点上的证书域名。传入 `""` 表示使用该接入点上的 SNI（Server Name Indication）域名。SNI 是 TLS 协议的扩展。 |
+| `mode` | `Constants.LocalProxyMode` | 本地代理连接模式，详见 [`LocalProxyMode`](/zh-CN/api-reference/local-server-recording/enum.java#localproxymode)。 |
+| `advancedConfig` | `AdvancedConfigInfo` | 本地代理连接的高级配置信息，详见 [`AdvancedConfigInfo`](/zh-CN/api-reference/local-server-recording/struct.java#advancedconfiginfo)。 |
+| `disableAut` | `boolean` | <Slot name="struct-java-html-19-8-2" /> |
+
+<Slot for="struct-java-html-19-8-2">
+
+是否禁用 vos-aut：
+
+    - `true`：（默认）禁用 vos-aut。
+    - `false`：不禁用 vos-aut。
+
+</Slot>
+
+<a id="mixerlayoutconfig"></a>
+## MixerLayoutConfig
+
+```java
+public class MixerLayoutConfig {
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private int zOrder;
+    private float alpha;
+    private boolean mirror;
+    private String imagePath;
+    private int rotation;
+}
+```
+
+用于设置视频合流的布局参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `x` | `int` | 布局左上角的 x 坐标。 |
+| `y` | `int` | 布局左上角的 y 坐标。 |
+| `width` | `int` | 布局的宽度。 |
+| `height` | `int` | 布局的高度。 |
+| `zOrder` | `int` | 布局的图层顺序。值越大，越靠前显示。 |
+| `alpha` | `float` | 布局的透明度，取值范围为 0.0（完全透明）到 1.0（完全不透明）。 |
+| `mirror` | `boolean` | <Slot name="struct-java-html-20-7-2" /> |
+| `imagePath` | `String` | 布局背景图的文件路径。 |
+| `rotation` | `int` | <Slot name="struct-java-html-20-9-2" /> |
+
+<Slot for="struct-java-html-20-7-2">
+
+是否对布局进行水平镜像：
+
+    - `true`：开启水平镜像。
+    - `false`：关闭水平镜像。
+
+</Slot>
+
+<Slot for="struct-java-html-20-9-2">
+
+布局的旋转角度。
+
+    - 0：不旋转。
+    - 1：顺时针旋转 90 度。
+    - 2：顺时针旋转 180 度。
+    - 3：顺时针旋转 270 度。
+
+    默认值为 0。
+
+</Slot>
+
+<a id="videoframe"></a>
+## VideoFrame
+
+```java
+public class VideoFrame {
+    private int width;
+    private int height;
+    private int yStride;
+    private int uStride;
+    private int vStride;
+    private byte[] yBuffer;
+    private byte[] uBuffer;
+    private byte[] vBuffer;
+    private long timestampMs;
+    private int rotation;
+}
+```
+
+用于传输 YUV 视频帧数据及其时序和格式信息。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `width` | `int` | 视频帧的宽度，单位为像素。 |
+| `height` | `int` | 视频帧的高度，单位为像素。 |
+| `yStride` | `int` | Y 平面缓冲区的行跨度，单位为像素。 |
+| `uStride` | `int` | U 平面缓冲区的行跨度，单位为像素。 |
+| `vStride` | `int` | V 平面缓冲区的行跨度，单位为像素。 |
+| `yBuffer` | `byte[]` | 原始 Y 平面缓冲区，长度为 `yStride * height`。 |
+| `uBuffer` | `byte[]` | 原始 U 平面缓冲区，长度为 `uStride * (height / 2)`。 |
+| `vBuffer` | `byte[]` | 原始 V 平面缓冲区，长度为 `vStride * (height / 2)`。 |
+| `timestampMs` | `long` | 用于音视频同步的渲染时间戳，单位为毫秒。 |
+| `rotation` | `int` | 此帧顺时针旋转的角度：0、90、180 或 270。 |
+
+<a id="watermarkratio"></a>
+## WatermarkRatio
+
+```java
+public class WatermarkRatio {
+    private float xRatio;
+    private float yRatio;
+    private float widthRatio;
+}
+```
+
+用于设置水印位置和尺寸的比例。
+
+你可以通过 getter/setter 方法获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `xRatio` | `float` | 水印左上角的 X 坐标比例。 |
+| `yRatio` | `float` | 水印左上角的 Y 坐标比例。 |
+| `widthRatio` | `float` | 水印的宽度比例。 |
+
+<a id="videosubscriptionoptions"></a>
+## VideoSubscriptionOptions
+
+```java
+public class VideoSubscriptionOptions {
+    private Constants.VideoStreamType type;
+    private boolean encodedFrameOnly;
+}
+```
+
+用于配置订阅视频流的参数。
+
+你可以通过 getter/setter 方法获取或设置这些参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `Constants.VideoStreamType` | 要订阅的视频流类型，详见 [`VideoStreamType`](/zh-CN/api-reference/local-server-recording/enum.java#videostreamtype)。默认值为 `VIDEO_STREAM_HIGH`，表示高质量视频流。 |
+| `encodedFrameOnly` | `boolean` | <Slot name="struct-java-html-23-2-2" /> |
+
+<Slot for="struct-java-html-23-2-2">
+
+是否仅订阅编码后的视频数据：
+
+    - `true`：仅订阅编码后的视频数据。
+    - `false`：（默认）订阅解码后的视频数据。
+
+    :::warning[注意]
+    在涉及视频帧采集的场景中，如果需要采集 YUV 帧、JPG 帧或 JPG 文件，请确保将该参数设置为 `false`。
+    :::
+
+</Slot>

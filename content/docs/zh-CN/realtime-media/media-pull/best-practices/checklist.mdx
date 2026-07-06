@@ -1,0 +1,34 @@
+---
+title: "集成检查清单"
+---
+参考以下表格，快速确认每条检查项是否符合集成要求，以保证media-pull服务的可靠性。
+
+:::warning[注意]
+声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
+:::
+
+| 编号 | 重要程度 | 检查项 | 检查详情 |
+| --- | --- | --- | --- |
+| 1 | 必要 | 频道模式 | 所在频道场景为直播，即 `profile` 设为 `BROADCASTING`。 |
+| 2 | 必要 | 开通服务 | [开通服务](/zh-CN/realtime-media/media-pull/get-started/enable-service#开通服务)。 |
+| 3 | 必要 | 请求速率限制条件 | [API 限速](/zh-CN/realtime-media/media-pull/quota#api-限速)。 |
+| 4 | 必要 | 最大并发任务数限制 | [最大并发数](/zh-CN/realtime-media/media-pull/quota#pcw)。 |
+| 5 | 必要 | 区域设置 | <Slot name="checklist-markdown-0-5-3" /> |
+| 6 | 必要 | 超时逻辑 | 设置合理的 `idleTimeout`，推荐设置为 300 秒。 |
+| 7 | 可选 | 管理 Converter | <Slot name="checklist-markdown-0-7-3" /> |
+| 8 | 可选 | 问题排查 | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/best-practices/rest-availability#使用退避重试策略)或根据[响应状态码](/zh-CN/realtime-media/media-pull/response-code)排查。 |
+| 9 | 可选 | 接收事件回调 | 开通[消息通知服务](/zh-CN/realtime-media/media-pull/webhook/enable-event-notification)，并监听输入在线媒体流事件。 |
+
+<Slot for="checklist-markdown-0-5-3">
+
+- 设置的 `region` 与你的媒体流源站在同一个区域。
+- `region` 值为小写。
+
+</Slot>
+
+<Slot for="checklist-markdown-0-7-3">
+
+- 设置 `uid` 或 `account` 作为云端播放器的用户名，且 `uid` 和 `account` 二选一设置。
+- 使用 `name` 字段管理指定项目下的云端播放器。
+
+</Slot>

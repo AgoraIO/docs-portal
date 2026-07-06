@@ -1,0 +1,355 @@
+---
+title: "PPT 转码服务 API 参考"
+---
+本页提供 @netless/slide 的 TypeScript API 参考。
+
+<a id="slide"></a>
+## Slide
+
+`Slide` 类提供管理 `Slide` 对象的方法。
+
+<a id="setresource"></a>
+### setResource
+
+```typescript
+setResource(taskId: string, url: string): void;
+```
+
+设置转换后的资源。
+
+**参数**
+
+- `taskId`：String。转码任务 ID，即调用[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)或[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `uuid`。
+- `url`：String。转码后的资源前缀路径，即调用[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)返回的 `prefixUrl`。
+
+:::warning[注意]
+需要保证访问 `prefixUrl` 路径里的资源不会跨域。
+:::
+
+<a id="renderslide"></a>
+### renderSlide
+
+```typescript
+renderSlide(index: number, isForward?: boolean): void;
+```
+
+渲染 PPT 资源的指定页码。
+
+**参数**
+
+- `index`：Number。欲渲染 PPT 页面的页码。
+- `isForward`：Boolean。是否向前翻页，默认为 `false`。
+
+**注意**
+
+页码从 1 开始，需要确保传入的页码在原始 PPT 页数范围内。
+
+<a id="nextstep"></a>
+### nextStep
+
+```typescript
+nextStep(): void;
+```
+
+执行下一个主序列动画。
+
+<a id="prevstep"></a>
+### prevStep
+
+```typescript
+prevStep(): void;
+```
+
+执行上一个主序列动画。
+
+<a id="setmainseqstep"></a>
+### setMainSeqStep
+
+```typescript
+setMainSeqStep(index: number, status: "start" | "end"): void;
+```
+
+重置主序列动画。
+
+**参数**
+
+- `index`：Number。欲重置的 PPT 主序列动画的编号。
+- `status`：欲重置动画到的状态。
+  - `"start"`：重置到动画的开始。
+  - `"end"`：重置到动画的结束。
+
+<a id="rtcaudio"></a>
+## RtcAudio
+
+`RtcAudio` 类提供管理 `RtcAudio` 对象的方法和属性。
+
+:::info[信息]
+PPT 里的音频和视频默认使用浏览器的 API 播放，如果有 RTC 混音需求可以提供自定义的播放器类来替换掉内置播放器。自定义的播放器需要实现 [`RtcAudioClazz`](#rtcaudioclazz) 接口，用于创建 `RtcAudio` 对象。
+:::
+
+<a id="play"></a>
+### play
+
+```typescript
+play(): void;
+```
+
+开始播放音频。
+
+<a id="pause"></a>
+### pause
+
+```typescript
+pause(): void;
+```
+
+暂停播放音频，且当前音频的播放时间保持不变。
+
+<a id="destroy"></a>
+### destroy
+
+```typescript
+destroy(): void;
+```
+
+销毁音频对象。
+
+<a id="volume"></a>
+### volume
+
+```typescript
+volume(value: number): void;
+```
+
+设置音频播放音量。
+
+**参数**
+
+- `value`：Number。音量值，取值范围为 [0,1]。
+
+<a id="on"></a>
+### on
+
+```typescript
+on(event: "load" | "pause" | "play", listener: () => void): this;
+```
+
+注册事件监听器。
+
+**参数**
+
+- `event`：事件名称，可传以下值：
+  - `"load"`：音频加载完成。
+  - `"pause"`：音频暂停。
+  - `"play"`：音频开始播放。
+- `listener`：事件处理函数。`event` 事件发生时，`listener` 函数将被调用。
+
+<a id="removealllisteners"></a>
+### removeAllListeners
+
+```typescript
+removeAllListeners(event: string): void;
+```
+
+移除指定事件或所有事件的监听器。
+
+**参数**
+
+- `event`：欲移除的事件名称，详见 [`on`](#on)。传入空值时，将移除所有事件的监听器。
+
+<a id="currenttime"></a>
+### currentTime
+
+Number。音频当前的播放时间，单位为秒。
+
+<a id="ispaused"></a>
+### isPaused
+
+Boolean。音频是否为暂停状态。
+
+<a id="duration"></a>
+### duration
+
+Number。音频时长。
+
+<a id="rtcaudioclazz"></a>
+## RtcAudioClazz
+
+`RtcAudioClazz` 类用于创建 `RtcAudio` 对象。
+
+<a id="new"></a>
+### new
+
+```typescript
+new (url: string): RtcAudio;
+```
+
+创建一个 `RtcAudio` 对象。
+
+**参数**
+
+- `url`：String。音频地址。
+
+**返回**
+
+[`RtcAudio`](#rtcaudio) 对象。
+
+<a id="ilogger"></a>
+## ILogger
+
+`ILogger` 类用于定义逐条接收 PPT 运行日志的方法。需要在初始化 `slide` 对象时，在 [`ISlideConfig`](#isslideconfig) 中的 `logger` 属性中传入一个实现了该类下方法的对象。该类下的方法都是可选的，如果不实现该类下的方法，则日志记录器不会记录任何日志。示例如下：
+
+```typescript
+import { Slide } from "@netless/slide";
+
+const slide = new Slide({
+    anchor: someDivElement,
+    interactive: true,
+    mode: "local",
+    logger: {
+        info(msg: string) {
+            console.log(msg);
+        }
+    }
+});
+```
+
+<a id="info"></a>
+### info
+
+```typescript
+info?(msg: string): void;
+```
+
+记录信息日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="error"></a>
+### error
+
+```typescript
+error?(msg: string): void;
+```
+
+记录错误日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="warn"></a>
+### warn
+
+```typescript
+warn?(msg: string): void;
+```
+
+记录警告日志。
+
+**参数**
+
+- `msg`：String。日志消息。
+
+<a id="islideconfig"></a>
+## 类型定义
+### ISlideConfig
+
+```typescript
+export interface ISlideConfig {
+    anchor: HTMLDivElement;
+    interactive: boolean;
+    mode: "interactive" | "sync" | "local";
+    renderOptions?: ISlideRenderOptions;
+    controller?: boolean;
+    resize?: boolean;
+    timestamp?: () => number;
+    enableGlobalClick?: boolean;
+    rtcAudio?: RtcAudioClazz;
+    logger?: ILogger;
+    useLocalCache?: boolean;
+    resourceTimeout?: number;
+    fixedFrameSize?: {
+        width: number;
+        height: number;
+    };
+    clientId?: string;
+    enableTracking?: boolean;
+    urlInterrupter?: (url: string) => Promise<string>;
+}
+```
+
+Slide 对象的配置项。
+
+- `anchor`：HTMLElement。`Slide` 对象渲染出的 `canvas` 元素挂载点。
+- `interactive`：Boolean。PPT 是否可交互。不可交互的 PPT 无法响应用户的事件。
+- `mode`：String。操作模式，可传入以下值：
+  - `"interactive"`：交互模式，所有客户端都可以操作 PPT。
+  - `"sync"`：同步模式，仅一个客户端可以操作 PPT。
+  - `"local"`：单机模式，`Slide` 对象不会触发任意同步事件。
+- `renderOptions`：渲染选项，详见 [`ISlideRenderOptions`](#isliderenderoptions)。
+- `controller`：Boolean。是否显示控制栏和统计信息。
+- `resize`：Boolean。是否根据窗口大小自动调整分辨率。
+- `timestamp`：() => Number。获取房间时间。
+- `enableGlobalClick`：Boolean。是否启用全局点击，默认为 `false`。
+- `rtcAudio`：配置 RTC 混音，详见 [`RtcAudioClazz`](#rtcaudioclazz)。
+- `logger`：日志记录对象，详见 [`ILogger`](#ilogger)。
+- `useLocalCache`：Boolean。是否启用本地缓存，默认为 `true`。
+- `resourceTimeout`：Number。资源加载超时，默认为 15 秒。
+- `fixedFrameSize`：为 PPT 设置固定的宽高，设置后 PPT 将不会自动随着父元素的大小而改变。如果需要缩放，需要调用 `updateFixedFrameSize` 方法。
+  - `width`：Number。PPT 的宽度，单位为 px。
+  - `height`：Number。PPT 的高度，单位为 px。
+- `clientId` ：String。客户端 ID。在同步和交互场景下，该参数用于区分每个不同的客户端，不设置该参数可能会导致在某些情况下状态不同步。对于接收同步消息的端，需要使用该参数来判断是否是自己发送的消息。
+- `enableTracking`：Boolean。是否启用日志追踪，默认为 `true`。
+- `urlInterrupter`：用于开启 PPT URL 拦截替换功能的回调函数。该功能可用于加密用户上传的 PPT 资源，保护用户隐私。你需要在该回调函数中编写 URL 替换逻辑，通过返回 `Promise` 对象提供替换后的 URL。
+  - `url`：待替换的 URL。
+
+<a id="isliderenderoptions"></a>
+### ISlideRenderOptions
+
+```typescript
+export interface ISlideRenderOptions {
+    minFPS?: number;
+    maxFPS?: number;
+    resolution?: number;
+    autoResolution?: boolean;
+    autoFPS?: boolean;
+    transactionBgColor?: string | number;
+    maxResolutionLevel?: number;
+    forceCanvas?: boolean;
+}
+```
+
+PPT 资源可选渲染配置项。
+
+**参数**
+
+- `minFPS`：Number。最小帧率（FPS），默认值为 30。App 会尽量保证实际 FPS 高于此值，此值越小，CPU 开销越小。
+
+- `maxFPS`：Number。最大 FPS，默认值为 40。应用会保证实际 FPS 低于此值，此值越小，CPU 开销越小。
+
+- `resolution`：Number。渲染分辨倍率，桌面端默认值为 `window.devicePixelRatio`，移动端默认值为 1。原始 PPT 有自己的像素尺寸，当在 2K 或者 4K 屏幕下，如果按原始 PPT 分辨率显示，画面会比较模糊。可以调整此值，使画面更清晰，但同时性能开销也会变高。声网建议保持默认值或者固定值为 1。
+
+- `autoResolution`：Boolean。是否根据实际 FPS 自动缩放分辨率，默认为 `false`。自动缩放渲染分辨率会使 PPT 渲染时的 FPS 保持在 `minFPS` 和 `maxFPS` 之间。
+
+- `autoFPS`：是否开启动态 FPS，默认为 `false`。开启后，会根据 CPU 效率动态提升和降低 FPS。
+
+- `transactionBgColor`：切页动画的背景色，默认值为 `0x000000`（纯黑色）。支持设置为 CSS 颜色字符串或者 16 进制颜色值。
+
+- `maxResolutionLevel`：Number。最高显示分辨率。支持以下值：
+
+  - `0`：640 × 360 (360p)。
+
+  - `1`：960 × 540 (540p)。
+
+  - `2`：1280 × 720 (720p)，为移动端设备的默认值。
+
+  - `3`：1920 × 1080 (1080p)。
+
+  - `4`：3200 × 1800 (3K)，为桌面端设备的默认值。
+
+  该属性将同时影响 canvas 渲染分辨率和材质质量。在低端设备上，降低该属性的值可以降低内存占用，改善因内存不足，图像渲染失败导致的黑屏现象。
+
+- `forceCanvas`：Boolean。是否强制使用 2D 渲染。启用后可能会导致渲染时丢失部分 3D 滤镜和特效。

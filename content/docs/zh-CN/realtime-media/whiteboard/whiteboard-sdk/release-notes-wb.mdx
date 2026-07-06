@@ -1,0 +1,2582 @@
+---
+title: "发版说明"
+---
+
+<PlatformStructured platform="android">
+
+本文提供声 Whiteboard Android SDK 的发版说明。
+
+:::info[桥接说明]
+为了确保 Whiteboard SDK 在不同平台上提供一致的用户体验，同时允许各端以原生方式接入，Whiteboard Android SDK 通过桥接 Whiteboard Web SDK 实现，不是完全原生的 SDK。因此，Android SDK 的版本更新内容会默认包含指定 Web SDK 版本及以前的更新内容，你可以根据 Android 各版本的桥接说明，前往 [Web SDK 发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb)查看包含的更新内容。
+:::
+
+## 2.16.100 版
+
+该版本于 2025 年 4 月 7 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.53](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.53%20版)。
+:::
+
+### 新增特性
+
+#### 高性能白板绘制工具
+
+该版本新增 `appliance-plugin` 插件，实现了一套高性能的白板绘制工具。安装 `@netless/appliance-plugin` 后，你可以通过 `WhiteSdkConfiguration.enableAppliancePlugin` 配置项启用该插件。详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md)。
+
+:::warning[注意]
+- `@netless/appliance-plugin` 为必需外部依赖，需要单独安装。
+- 为确保笔迹正常显示，请在所有终端（Web、Android 和 iOS）上都开启 `appliance-plugin` 插件。如果某个终端未开启，其他终端使用 `appliance-plugin` 绘制的笔迹将无法在该终端显示。
+- 开启 `appliance-plugin` 插件后，白板上的历史内容仍会显示，但无法对其进行操作或升级。为避免影响使用体验，建议在全新的白板上使用该插件。关闭插件后，使用该插件绘制的内容将会丢失。
+:::
+
+开启 `appliance-plugin` 插件后，你可以：
+
+- 使用新增的激光铅笔工具 `LASER_PENCIL`，使用方式详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E6%96%B0%E5%8A%9F%E8%83%BD)。
+- 新增 `MemberState.strokeOpacity` 属性，用于更改线框透明度。
+- 新增 `MemberState.fillOpacity` 属性，用于更改填充透明度。
+- 新增 `MemberState.fillColor` 属性，用于更改填充颜色。
+
+#### 处理 PPT 渲染错误
+
+该版本新增 `SlideListener.onSlideError` 方法，用于监听 PPT 渲染错误。此外，发生 PPT 渲染错误时，你可以调用 `WhiteSdk.recoverSlide` 方法恢复 PPT 渲染。
+
+### API 变更
+
+#### 新增
+
+- `WhiteSdkConfiguration` 新增 `enableAppliancePlugin`
+- `MemberState` 新增以下属性：
+  - `strokeOpacity`
+  - `fillOpacity`
+  - `fillColor`
+- `onSlideError`
+- `recoverSlide`
+
+## 2.16.86 版
+
+该版本于 2024 年 6 月 6 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.51](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.51%20版)。
+:::
+
+### 新增特性
+
+#### 接入域名预选
+
+该版本新增 `prepareWhiteConnection` 方法，用于提前选择连接线路以加快首次加入白板方间的连接速度。
+
+### API 变更
+
+#### 新增
+
+- `prepareWhiteConnection`
+- `ConnectionPrepareParam`
+
+## 2.16.81 版
+
+该版本于 2024 年 3 月 13 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.48](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.48%20版)。
+:::
+
+### 新增特性
+
+#### 小窗应用管理
+
+在[多窗口模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/overview/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/overview/concepts#小窗应用)。该版本起，`Room` 对象新增以下方法用于在多窗口模式下管理小窗应用：
+
+- `addApp`：插入小窗应用，并返回应用 ID。
+- `closeApp`：关闭指定小窗应用的窗口。
+- `focusApp`：切换聚焦窗口为指定小窗应用的窗口。
+- `queryApp`：查询指定小窗应用的信息。
+- `queryAllApps`：查询当前所有小窗应用的信息。
+
+#### 白板工具自定义
+
+`MemberState` 新增以下属性用于自定义白板工具：
+
+- `textColor`：文本工具中文字的颜色。
+- `pencilEraserSize`：铅笔橡皮工具的尺寸。
+
+#### PPT 渲染配置新增
+
+PPT 渲染配置项 `WhiteSdkConfiguration.SlideAppOptions` 新增了以下属性：
+
+- `minFPS`：设置 PPT 动画的最小帧率。
+- `maxFPS`：设置 PPT 动画的最大帧率。
+- `resolution`：设置 PPT 渲染分辨倍率。
+- `maxResolutionLevel`：设置 PPT 最大分辨率。
+- `bgColor`：设置 PPT 动画的背景色。
+- `forceCanvas`：是否强制使用 2D 渲染，默认不开启。
+- `enableGlobalClick`：是否可以通过点击 PPT 画面执行下一步功能，默认开启。
+
+#### 白板绘制性能优化策略
+
+`RoomParams` 新增 `optimizeOptions` 属性，用于设置白板绘制的性能优化策略。性能优化的方式包括以下三种：
+
+- 调整白板绘制的刷新间隔：刷新间隔越低，笔迹显示越流畅，性能开销越大；刷新间隔越高，笔迹越卡，性能消耗越少。
+- 使用单画布绘制：白板默认使用两个画布交替绘制以避免在部分设备上绘制时可能出现的画面闪烁现象，使用单个画布绘制可以避免重绘，降低性能消耗。
+- 使用浮动画布：书写场景下，启用单画布绘制后，会根据绘制位置生成一个大小约为 256 × 256 px 的浮动画布，后续绘制不超过该画布的范围时，同步绘制笔迹的范围会限定在这个浮动画布中，而不是同步整个画布，从而降低性能消耗。
+
+#### 其他新增
+
+该版本还新增了以下特性：
+
+- 新增 `updateText` 方法, 用于更新调用 `insertText` 插入的文本。
+- 新增 `setSyncMode` 方法, 用于立即处理白板事件，绘制画笔。
+- 新增 `setDisableInitialStateCallback` 方法, 用于禁止加入房间后的全量状态回调。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- `WhiteWindowParams.fullscreen` 开启后，第二次打开 App 没有全屏。
+- `WindowParams.fullscreen` 开启后偶现状态栏闪烁。
+- 路径动画跳页后无法恢复到原位。
+- 菱形填充会充满图形。
+- 重连后，SDK 内置光标消失。
+- 使用淡入淡出动画时偶现闪烁。
+- SDK 内置光标在修改 `isWritable` 后消失。
+
+### API 变更
+
+#### 新增
+
+- `addApp`
+- `closeApp`
+- `focusApp`
+- `queryApp`
+- `queryAllApps`
+- `WindowAppSyncAttrs`
+- `MemberState` 新增
+  - `textColor`
+  - `pencilEraserSize`
+- `SlideAppOptions` 新增
+  - `minFPS`
+  - `maxFPS`
+  - `resolution`
+  - `maxResolutionLevel`
+  - `bgColor`
+  - `forceCanvas`
+  - `enableGlobalClick`
+- `setSyncMode`
+- `updateText`
+- `setDisableInitialStateCallback`
+
+#### 修改
+
+- `insertText`
+
+## 2.16.59 版
+
+该版本于 2023 年 8 月 31 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 v2.16.42。
+:::
+
+### 升级必看
+
+该版本废弃了白板数据中心原有的英国伦敦数据中心（`Region.gb-lon`），并新增了欧洲法兰克福数据中心（`Region.eu`），服务区覆盖欧洲。如果你在之前版本中设置了 `Region.gb-lon`，请在升级到该版本后改用 `Region.eu`，并在控制台-互动白板服务配置中启用该数据中心。
+
+### 新增特性
+
+#### PPT 音量控制
+
+该版本废新增 `getSlideVolume` 和 `updateSlideVolume` 方法用于获取和更新 PPT 内音频的音量。
+
+#### PPT URL 拦截替换
+
+`WhiteSdkConfiguration` 新增 `enableSlideInterrupterAPI` 配置项，用于开启 PPT 资源 URL 拦截替换功能。该功能可用于加密用户上传的 PPT 资源，保护用户隐私。
+
+开启后，通过调用 `WhiteSdk.setSlideListener(SlideListener)` 实现 PPT 文件 URL 的拦截替换功能。
+
+#### PPT 渲染提示
+
+`WhiteSdkConfiguration` 新增 `whiteSlideAppParams` 配置项用于 [@netless/app-slide](https://github.com/netless-io/netless-app/tree/master/packages/app-slide) 渲染相关的显示配置。当前支持配置 `WhiteSlideAppParams.showRenderError`，用于配置显示/隐藏渲染错误提示。
+
+#### 自定义 API 服务器域名
+
+`WhiteSdkConfiguration` 新增 `apiHosts` 配置项, 用于配置白板的 API 服务器域名列表，可用于实现服务器代理。
+
+#### 自定义模块源
+
+`RoomParams` 和 `PlayerConfiguration` 分别新增 `modulesOrigin` 配置项，用于配置白板请求模块（modules）数据的地址。
+
+#### 文档操作事件
+
+新增 `dispatchDocsEvent` 方法，用于向插入白板的 PDF/PPTX 文档发送事件，实现控制文档翻页、页面跳转和幻灯片动画播放。
+
+### 改进
+
+#### 优化插入文档
+
+该版本优化了使用[新版文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/advanced-features/convert-files)转换 PPT 文件并插入至白板的流程。
+
+你可以使用新增的 `createSlideApp` 方法即可构建 `WindowAppParam` 对象，该对象包含 `ProjectorAttributes` 和 `ProjectorOptions`, 对应打开文档时传入的参数，详见 [`addApp`](https://github.com/netless-io/window-manager/blob/master/docs/basic.md#open-dynamicstatic-ppt)。
+
+#### 窗口全屏
+
+新增 `WindowParams.fullscreen` 属性, 用于控制窗口是否全屏。
+
+### 问题修复
+
+该版本修复了新版 Android Studio 无法预览布局的问题。
+
+### API 变更
+
+#### 新增
+
+- `getSlideVolumeWithCompletionHandler`
+- `updateSlideVolume`
+- `WhiteSdkConfiguration` 中新增：
+  - `enableSlideInterrupterAPI`
+  - `whiteSlideAppParams`
+  - `apiHosts`
+- `setSlideDelegate`
+- `RoomParams` 新增 `modulesOrigin`
+- `PlayerConfiguration` 新增 `modulesOrigin`
+- `dispatchDocsEvent`
+ - `WindowDocsEvent`
+- `createSlideApp`
+  - `ProjectorAttributes`
+  - `ProjectorOptions`
+  - `WindowAppParam`
+- `WindowParams.fullscreen`
+
+## 2.16.42 版
+
+该版本于 2022 年 12 月 2 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.37](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.37%20版)。
+:::
+
+### 新增特性
+
+#### 教具新特性
+
+该版本为以下白板教具添加了新特性：
+
+- 铅笔工具：支持画虚线。你需要设置 `room.memberState.dottedLine` 为 `true` 开启该功能。
+- 文字工具：支持直接选择并编辑文字。你需要设置 `room.memberState.textCanSelectText` 为 `true` 以开启该功能。
+
+此外，该版本还新增了铅笔橡皮工具，用于擦除局部铅笔笔迹。
+
+#### 浮动条
+
+该版本新增浮动条功能，选中任意白板元素即可弹出浮动条，方便用户快速编辑指定白板元素。例如，选中笔迹可以快速删除笔迹、调整位置、更变笔迹颜色等，选中文字可以快速删除文字、调整文字样式、修改字体等。你可以通过调用 `setUsingFloatBar` 方法启用浮动条功能。
+
+![浮动条功能示意图](https://web-cdn.agora.io/docs-files/1669884020024)
+
+#### 删除白板页
+
+该版本新增了 `removePage` 方法用于删除指定白板页。
+
+#### 获取 PPT 日志
+
+`WhiteSdk` 类新增 `requestSlideLog` 方法，用于客户端获取 PPT 日志，方便排查 PPT 相关问题。
+
+#### 回放回调
+
+为方便监听 `Player` 的状态变化，该版本在 `Player` 类中新增 `addPlayerListener` 和 `removePlayerListener` 方法，用于添加和删除白板回放回调。
+
+### 改进
+
+该版本优化了 PPT 音频播放控制，现在可以通过调用 `AudioMixerBridge` 接口下新增的 `pauseAudioMixing` 和 `resumeAudioMixing` 方法，实现暂停和恢复播放动态 PPT 中的音频和混音。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 多窗口模式下 `sceneState` 变化时收不到回调。
+- 重连后，白板 app 可能无法正确创建。
+- 创建 app 时，无法正确同步白板初始宽度和高度。
+- 切换只读/读写状态时可能导致 `mainView` 的 `disableCameraTransform` 配置丢失。
+
+### API 变更
+
+#### 新增
+
+- `MemberState` 类新增属性 `dottedLine` 和 `textCanSelectText`
+- `Appliance` 类新增属性 `PENCIL_ERASER`
+- `removePage`
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+- `addPlayerListener`
+- `removePlayerListener`
+- `setUsingFloatBar`
+- `requestSlideLog`
+
+## 2.16.21 版
+
+该版本于 2022 年 7 月 8 日发布。
+
+### 升级必看
+
+#### SDK 集成变更
+
+自 2.16.0 版本起，声网仅更新 `netless-io:whiteboard-android` GitHub 仓库，不再维护 `duty-os:white-sdk-android` GitHub 仓库。使用 JitPack 集成 2.16.0 版本之后的 SDK 时，你需要将 `/Gradle Scripts/build.gradle(Module: .app)` 文件中 `dependencies` 下的 `implementation` 字段修改为：
+
+```
+dependencies {
+    implementation 'com.github.netless-io:whiteboard-android:<version>'
+}
+```
+
+详见[获取 SDK](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/resources-wb)。
+
+### 新增特性
+
+#### 插入文字
+
+该版本新增 `insertText` 方法，支持在指定位置插入文字。
+
+#### 设置笔锋效果
+
+该版本在 `WhiteSdkConfiguration` 类中新增 `setDisableNewPencilStroke` 方法，用于开启或关闭新铅笔的笔锋效果。该方法中 `disableNewPencilStrokeSDK` 参数的默认值为 `true`，当你调用 `setDisableNewPencil(false)` 开启新铅笔后，SDK 立即开启笔锋效果。如果需要关闭新铅笔的笔锋效果，可以设置 `setDisableNewPencilStroke(true)`。
+
+同时，该版本在 `WhiteSdkConfiguration` 类中新增 `isDisableNewPencilStroke` 方法，用于查询笔锋效果的开启状态。
+
+#### 获取场景信息
+
+该版本在 `Displayer` 类中新增 `getScene` 方法，支持使用场景路径获取指定场景的信息。
+
+#### 全链路加速
+
+自该版本起，声网互动白板服务集成并支持声网全链路加速（FPA）服务。集成声网 Whiteboard SDK 后，你只需调用 `setUseNativeWebSocket(true)`，即可在互动白板应用中开启全链路加速服务，提升传输质量。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 为新铅笔工具添加补间动画。当用户使用新铅笔书写时，SDK 会自动在关键帧之间插入帧，使远端用户看到的笔迹绘制过程更加流畅。要体验该优化，请确保你已调用 `setDisableNewPencil(false)` 开启新铅笔工具。
+- 优化了在 Android 浏览器上的书写性能。
+- 优化了弱网环境下的重连机制，减少不必要的重连。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 放缩、移动视角后，偶现画面出现偏移、重影。
+- 偶现动态 PPT 在断线重连后无法翻页。
+- 刚加入房间时，如果白板上已经有内容，可能显示不全。
+- SDK 断线重连后可能会发生内存泄漏。
+- 反复调用 `setWritable` 时可能会发生错误。
+- 用户切换为只读模式，再切换回读写模式并写写画画时，远端用户看到该用户的光标是固定的。
+
+### API 变更
+
+#### 新增
+
+- `insertText`
+- `setDisableNewPencilStroke`
+- `isDisableNewPencilStroke`
+- `getScene`
+
+## 2.15.24 版
+
+该版本于 2022 年 1 月 21 日发布。
+
+该版本进行了如下改进：
+
+- 更新封装的 `white-web-sdk` 至 2.15.16 版。
+- 优化 `getSceneSnapshotImage` 和 `getScenePreviewImage` 方法，确保在截图中正常显示场景中插入的图片。
+
+## 2.15.0 版
+
+该版本于 2021 年 11 月 16 日发布。
+
+### 升级必看
+
+为方便管理房间内的用户，该版本在 `RoomParams` 中新增 `uid` 参数，用于设置用户 ID。
+
+如果你将 SDK 升级到 v2.15.0 或之后版本，为保证你的业务功能不受影响，调用 `joinRoom` 时必须在 `RoomParams` 传入字符串格式的 `uid`，长度不超过 1024 字节，并确保同一房间内每个用户的 `uid` 唯一。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+### 新增特性
+
+该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 动作按钮
+- 母版动画
+
+### 改进
+
+该版本进行了如下改进：
+
+- 更新封装的 `white-web-sdk` 至 2.15.1 版。
+- 进一步优化书写体验。
+
+### 问题修复
+
+该版本修复了在白板中展示动态 PPT 时遇到的如下问题：
+
+- 偶现的图片位置偏移
+- 部分样式读取失败导致的白屏
+- 部分文字旋转角度和颜色错误
+- 带有动画效果的元素可能不出现
+- 文字的动画效果表现不正确
+
+### API 变更
+
+#### 修改
+
+- RoomParams [1/3]
+- RoomParams [2/3]
+- RoomParams [3/3]
+
+## 2.14.3 版
+
+该版本于 2021 年 10 月 21 日发布。
+
+### 升级必看
+
+自该版本起，互动白板 Android SDK 支持的最低平台要求变更如下：
+
+- Android 4.4 变更为 Android 5.0
+- Android SDK API level 19 变更为 Android SDK API level 21
+
+### 改进
+
+该版本进行了如下优化：
+
+- 更新封装的 `white-web-sdk` 至 2.14.5 版。
+- 持续优化书写性能。
+- 优化书写笔迹的形态。
+- 提高 `onPhaseChanged` 回调的准确性。
+- 隐藏动态 PPT 母版中不应该显示的元素。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 切换到抓手工具后，无法切换回光标。
+- 书写过程中偶现的笔迹突然消失。
+- 书写时偶现的笔迹带有不自然的水滴状笔锋。
+- 手动缩放文本框后再编辑文字，文本框和文字复原到原来的大小。
+- 在部分设备上窗口尺寸发生变化后，视角出现异常。
+- 快速拖动橡皮擦时，橡皮擦的图标放大效果和快速删除功能失效。
+- 偶现的动态 PPT 中多个音频文件同时播放。
+- 动态 PPT 返回上一页后动画显示异常。
+- 动态 PPT 中带动画的文本框偶现镜像翻转。
+
+## 2.13.22 版
+
+该版本于 2021 年 8 月 20 日发布。
+
+### 新增特性
+
+该版本新增如下特性：
+
+- 在 `CommonCallback` 接口中新增 `onLogger` 回调，用于获取 SDK 输出的本地调试日志。
+- 为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+  - 对文本按段落添加动画。
+  - 对文本添加的动画可逐字或逐词显示。
+  - 所有的表格预设样式。
+  - 小于 12 px 的文字。
+
+### 改进
+
+该版本更新封装的 `white-web-sdk` 至 2.13.17 版。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- `onLogger` 和 `onMessage` 回调不生效。
+- 偶现的加入房间时，房间一直卡在 `connecting` 状态。
+- 断线重连后，部分用户的光标消失。
+- 断线重连后，部分插件的状态出现混乱。
+- 抓手工具不受设置的视角边界的限制。
+- 在某些高分辨率的设备上，当用户处于跟随模式时，视角的中心点出现轻微偏移。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 段间距显示不正确
+  - 文本分栏无效
+  - 使用幻灯片背景填充形状时显示不正确
+  - 悬挂缩进异常
+  - 动画回退后显示异常
+  - 文字编号错误
+  - 转换后公式显示不全
+  - 部分换行不正确
+  - 从右往左书写的文字（如阿拉伯文）显示异常
+
+## 2.13.17 版
+
+该版本于 2021 年 7 月 23 日发布。
+
+### 新增特性
+
+为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 反转路径方向动画效果
+- 纵向文本框
+- Microsoft 公式编辑器 3.0
+- 母版隐藏背景图形
+- 编辑图片颜色
+- 部分图片效果：
+  - 金属框架
+  - 柔化边缘矩形
+  - 双框架，黑色
+  - 厚重哑光，黑色
+  - 简单框架，黑色
+  - 中等复杂框架，黑色
+  - 居中矩形阴影
+  - 柔化边缘椭圆
+  - 金属圆角矩形
+  - 金属椭圆
+
+### 改进
+
+该版本进行了如下优化：
+
+- 更新封装的 `white-web-sdk` 至 2.13.11 版。
+- 更新封装的 `@netless/video-js-plugin` 至 0.3.3 版本。
+- 降低了播放动态 PPT 动画时占用的 CPU。
+- 提升了在白板上书写绘画的流畅度。
+- 为提升时间同步的准确性，将 `setTimeDelay` 方法中 `delaySec` 参数的数据类型由 Integer 改为 Double。
+- 打印的日志中包含场景变更信息。
+- 在 `PptPage` 中新增 `preview` 参数，支持在白板场景中展示动态 PPT 预览图。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调整视角时偶现的白板清晰度异常。
+- 偶现的用户进入房间后无法画出第一笔线。
+- 偶现的 `refreshViewSize` 调用不生效。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 动画未按设置的顺序播放。
+  - 动画播放后未按设置隐藏。
+  - 表格高度显示异常。
+  - 无法显示占位符中插入图片。
+  - 部分形状绘制错误。
+  - 文字缩进错误。
+  - 无法点击动画触发器。
+  - 图片透明度过大。
+
+## 2.13.4 版
+
+该版本于 2021 年 6 月 15 日发布。
+
+该版本更新 `white-web-sdk` 至 2.13.4。
+
+## 2.13.2 版
+
+该版本于 2021 年 6 月 11 日发布。
+
+该版本更新 `white-web-sdk` 至 2.13.3。
+
+## 2.13.1 版
+
+该版本于 2021 年 6 月 11 日发布。
+
+#### 改进
+
+该版本更新 `white-web-sdk` 至 2.13.2。
+
+#### 问题修复
+
+该版本修复了 `disableDeviceInputs` 设为 `true` 时，用户可能仍然可以操作 iframe 插件的问题。
+
+## 2.12.36 版
+
+该版本于 2021 年 6 月 8 日发布。
+
+该版本修复的问题如下：
+
+主播模式的用户在使用点选工具（`Clicker`）时，如果对 HTML5 课件进行缩放，会导致跟随模式的用户看到的课件内容不完整。
+
+## 2.12.35 版
+
+该版本于 2021 年 6 月 7 日发布。
+
+该版本更新 [`@netless/cursor-tool `](https://www.npmjs.com/package/@netless/cursor-tool)至 0.1.0，并且更新 `@netless/iframe-bridge `至 2.1.2。
+
+## 2.12.34 版
+
+该版本于 2021 年 6 月 4 日发布。
+
+该版本更新 `white-web-sdk `至 2.12.21。
+
+## 2.12.33 版
+
+该版本于 2021 年 6 月 3 日发布。
+
+该版本更新 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 至 0.1.5。
+
+## 2.12.32 版
+
+该版本于 2021 年 6 月 2 日发布。
+
+该版本修复了 `video-js-plugin` 插件在白板上无法显示的问题。
+
+## 2.12.31 版
+
+该版本于 2021 年 6 月 1 日发布。
+
+该版本更新 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin)至 0.1.3，修复了 video-js-plugin 和低版本 Android 系统的 WebView 不兼容的问题。
+
+## 2.12.30 版
+
+该版本于 2021 年 5 月 25 日发布。
+
+该版本更新 [`@netless/cursor-tool`](https://www.npmjs.com/package/@netless/cursor-tool) 至 0.0.9。
+
+## 2.12.29 版
+
+该版本于 2021 年 5 月 24 日发布。
+
+### 新增特性
+
+该版本集成 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 插件，用于在 Android 端观看 Web 端白板上播放的视频。支持的视频格式包括 M3U8 等。
+
+### 改进
+
+该版本更新 `white-web-sdk `至 2.12.20。
+
+## 2.12.28 版
+
+该版本于 2021 年 5 月 20 日发布。
+
+该版本更新 `white-web-sdk `至 2.12.19。
+
+## 2.12.27 版
+
+该版本于 2021 年 5 月 17 日发布。
+
+该版本有以下改进：
+
+- 更新 `white-web-sdk `至 2.12.18。
+- 服务端排版（`useServerWrap`）由默认关闭改为默认开启。开启服务端排版后，服务端会裁剪字体包的体积，提高渲染速度。
+
+## 2.12.26 版
+
+该版本于 2021 年 5 月 13 日发布。
+
+该版本新增以下特性：
+
+- `Appliance` 新增点选工具 （`Clicker`），用于 H5 课件的操作和交互。
+- `MemberState` 新增 `ShapeType`，支持设置图形工具。目前支持的图形包括三角形、菱形、五角星、对话气泡。
+- `Room` 类新增 `syncBlockTimestamp` 方法，用于设置发送白板内容的延时，保证白板内容与音视频同步。
+- 更新 `white-web-sdk `至 2.12.17。
+
+## 2.12.25 版
+
+该版本于 2021 年 4 月 28 日发布。
+
+该版本更新 [`@netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) 和 [`@netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin) 插件，修复了部分显示问题。
+
+## 2.12.24 版
+
+该版本于 2021 年 4 月 27 日发布。
+
+### 新增特性
+
+该版本支持 [`@netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) 和 [`@netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin)，用于在 Android 端观看 Web 端白板上播放的音频或视频。
+
+### 问题修复
+
+- 更新 `@netless/white-audio-plugin` 至 1.2.23，修复了白板回放中音频文件的显示问题。
+- 修复了 `getRoomState` 异步方法没有回调的问题。
+
+## 2.12.22 版
+
+该版本于 2021 年 4 月 22 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.14。
+
+## 2.12.21 版
+
+该版本于 2021 年 4 月 22 日发布。
+
+该版本有以下改进：
+
+- 更改 `RoomListener` 和 `PlayerListener` 为主线程回调。
+- 更新 `white-web-sdk` 至 2.12.13。
+- 更新 `@netless/iframe-bridge` 至 2.12.17，优化了白板回放的 iframe 插件逻辑。
+
+## 2.12.20 版
+
+该版本于 2021 年 4 月 17 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.12。
+
+## 2.12.19 版
+
+该版本于 2021 年 4 月 14 日发布。
+
+该版本有以下改进：
+
+- 新增 `PptParams` 的构造方法，无需配置 `scheme` 参数。
+- 更新 `@netless/iframe-bridge` 至 2.0.14，优化了 iframe 插件。
+
+## 2.12.18 版
+
+该版本于 2021 年 4 月 12 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.13，优化了消息通知。
+
+## 2.12.17 版
+
+该版本于 2021 年 4 月 12 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.11，优化了 Android 端的显示问题。
+
+## 2.12.16 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.10，优化了 Android 端的显示问题。
+
+## 2.12.15 版
+
+该版本于 2021 年 4 月 10 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.9。
+
+## 2.12.14 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.9，修复了 H5 课件的显示问题。
+
+## 2.12.13 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本恢复了 `Displayer` 接口的 `scaleIframeToFit` 方法。
+
+## 2.12.12 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.8，修复了 H5 课件的显示问题。
+
+## 2.12.11 版
+
+该版本于 2021 年 4 月 6 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.8，修复了设置跟随者模式无法立即生效的问题。
+
+## 2.12.10 版
+
+该版本于 2021 年 4 月 2 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.7，优化了动态 PPT 的显示。
+
+## 2.12.9 版
+
+该版本于 2021 年 3 月 30 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.7。
+
+## 2.12.8 版
+
+该版本于 2021 年 3 月 30 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.6。
+
+## 2.12.7 版
+
+该版本于 2021 年 3 月 25 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.5，优化白板回放时的 H5 课件展示。
+
+## 2.12.6 版
+
+该版本于 2021 年 3 月 25 日发布。
+
+该版本在 `Displayer` 类中新增 `scaleIframeToFit` 方法，支持等比例缩放视角，以保证完整显示 H5 课件的内容。
+
+## 2.12.5 版
+
+该版本于 2021 年 3 月 25 日发布。
+
+该版本更新 [`@netless/cursor-tool`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/cursor-tool) 至 0.0.7。
+
+## 2.12.3 版
+
+该版本于 2021 年 3 月 20 日发布。
+
+为解决笔锋效果与 2.2.12 之前版本 SDK 不兼容的问题，该版本将 `setDisableNewPencil` 方法的 `disableNewPencil` 参数默认值由 `false` 改为 `true`，以默认关闭笔锋效果。
+
+:::warning[注意]
+为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+
+- Android SDK 2.12.3 版或之后
+- iOS SDK 2.12.3 版或之后
+- Web SDK 2.12.5 版或之后
+:::
+
+## 2.12.2 版
+
+该版本于 2021 年 3 月 16 日发布。
+
+### 新增特性
+
+为优化笔迹显示，该版本新增笔锋效果。你可以调用 `setDisableNewPencil` 关闭或开启笔锋效果；调用 `isDisableNewPencil` 获取是否开启笔锋效果。
+
+:::warning[注意]
+为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+
+- Android SDK 2.12.2 版或之后
+- iOS SDK 2.12.3 版或之后
+- Web SDK 2.12.5 版或之后
+:::
+
+### 改进
+
+- 更新 `white-web-sdk` 至 2.12.4 版本，优化 PPT 显示逻辑。
+- 优化音视频插件在白板回放时的按钮显示。
+
+### 问题修复
+
+修复 `debug` 模式下，实时房间异常回调导致的崩溃问题。
+
+## 2.12.2 版之前
+
+关于更多版本的发版说明，详见[版本历史](https://developer.netless.link/android-zh/home/android-changelog)。
+
+:::warning[注意]
+2.6.4 及之前版本已经停止维护，建议升级到最新版本。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文提供声网 Whiteboard iOS SDK 的发版说明。
+
+:::info[桥接说明]
+为了确保 Whiteboard SDK 在不同平台上提供一致的用户体验，同时允许各端以原生方式接入，Whiteboard iOS SDK 通过桥接 Whiteboard Web SDK 实现，不是完全原生的 SDK。因此，iOS SDK 的版本更新内容会默认包含指定 Web SDK 版本及以前的更新内容，你可以根据 iOS 各版本的桥接说明，前往 [Web SDK 发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb)查看包含的更新内容。
+:::
+
+## 2.16.112 版
+
+该版本于 2025 年 4 月 7 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.53](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.53%20版)。
+:::
+
+### 新增特性
+
+#### 高性能白板绘制工具
+
+该版本新增 `appliance-plugin` 插件，实现了一套高性能的白板绘制工具。安装 `@netless/appliance-plugin` 后，你可以通过 `WhiteSdkConfiguration.enableAppliancePlugin` 配置项启用该插件。详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md)。
+
+:::warning[注意]
+- `@netless/appliance-plugin` 为必需外部依赖，需要单独安装。
+- 为确保笔迹正常显示，请在所有终端（Web、Android 和 iOS）上都开启 `appliance-plugin` 插件。如果某个终端未开启，其他终端使用 `appliance-plugin` 绘制的笔迹将无法在该终端显示。
+- 开启 `appliance-plugin` 插件后，白板上的历史内容仍会显示，但无法对其进行操作或升级。为避免影响使用体验，建议在全新的白板上使用该插件。关闭插件后，使用该插件绘制的内容将会丢失。
+:::
+
+开启 `appliance-plugin` 插件后，你可以：
+
+- 使用新增的激光铅笔工具 `LASER_PENCIL`，使用方式详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E6%96%B0%E5%8A%9F%E8%83%BD)。
+- 新增 `WhiteMemberState.strokeOpacity` 属性，用于更改线框透明度。
+- 新增 `WhiteMemberState.fillOpacity` 属性，用于更改填充透明度。
+- 新增 `WhiteMemberState.fillColor` 属性，用于更改填充颜色。
+
+#### 处理 PPT 渲染错误
+
+该版本新增 `SlideListener.onSlideError` 方法，用于监听 PPT 渲染相关错误。此外，发生 PPT 渲染错误时，你可以调用 `WhiteSdk.recoverSlide` 方法恢复 PPT 渲染。
+
+#### 自动聚焦
+
+新增 `WhiteSdkConfiguration.useWebKeyboardInjection` 属性，用于控制是否允许 WKWebview 自动获得输入焦点。主要用于处理键盘显示和文本输入的控制，特别是在复杂的 App 界面中，多个组件可能都需要接收键盘输入时的协调问题。
+
+### API 变更
+
+#### 新增
+
+- `WhiteSdkConfiguration` 新增以下属性：
+  - `enableAppliancePlugin`
+  - `useWebKeyboardInjection`
+- `WhiteMemberState` 新增以下属性：
+  - `strokeOpacity`
+  - `fillOpacity`
+  - `fillColor`
+- `onSlideError`
+- `recoverSlide`
+
+## 2.16.95 版
+
+该版本于 2024 年 6 月 6 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.51](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.51%20版)。
+:::
+
+### 新增特性
+
+#### 接入域名预选
+
+该版本新增 `WhiteSDK.prepareWhiteConnectionForAppId` 方法，用于提前选择最佳接入域名，用于加快用户首次加入白板方间时的连接速度。
+
+#### 白板窗口样式覆盖
+
+该版本新增 `WhiteWindowParams.overwriteStyles`，用于使用 CSS 覆盖白板窗口样式，实现自定义 UI 细节。
+
+### 问题修复
+
+该版本修复了 `drawOnlyPencil` 在 iOS 17 及以上版本失效的问题。
+
+### API 变更
+
+#### 新增
+
+- `prepareWhiteConnectionForAppId`
+- `overwriteStyles`
+
+## 2.16.88 版
+
+该版本于 2024 年 3 月 13 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 [v2.16.48](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb#2.16.48%20版)。
+:::
+
+### 新增特性
+
+#### 小窗应用管理
+
+在[多窗口模式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/overview/concepts#多窗口模式)下，SDK 支持以新建窗口的方式插入 PPT 或白板插件等，它们统称为[小窗应用](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/overview/concepts#小窗应用)。该版本起，`WhiteRoom` 类新增以下方法用于在多窗口模式下管理小窗应用：
+
+- `addApp`：插入小窗应用，并返回应用 ID。
+- `closeApp`：关闭指定小窗应用的窗口。
+- `focusApp`：切换聚焦窗口为指定小窗应用的窗口。
+- `queryApp`：查询指定小窗应用的信息。
+- `queryAllAppsWithCompletionHandler`：查询当前所有小窗应用的信息。
+
+#### 白板工具自定义
+
+`WhiteMemberState` 和 `WhiteReadonlyMemberState` 新增以下属性用于自定义白板工具：
+
+- `textColor`：修改文本工具中文字的颜色。
+- `pencilEraserSize`：修改铅笔橡皮工具的尺寸。
+
+#### PPT 渲染配置新增
+
+PPT 渲染配置项 `WhiteSlideAppParams` 新增了以下属性：
+
+- `minFPS`：设置 PPT 动画的最小帧率。
+- `maxFPS`：设置 PPT 动画的最大帧率。
+- `resolution`：设置 PPT 渲染分辨倍率。
+- `maxResolutionLevel`：设置 PPT 最大分辨率。
+- `bgColor`：设置 PPT 动画的背景色。
+- `forceCanvas`：是否强制使用 2D 渲染，默认不开启。
+- `enableGlobalClick`：是否可以通过点击 PPT 画面执行下一步功能，默认开启。
+
+#### 文本更新
+
+新增 `updateText` 方法, 用于更新调用 `insertText` 插入的文本。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- `WKWebView` 在某些异常情况下可能导致无法打开 `indexDB`。
+- 配置 `WhiteWindowParams.fullscreen` 后，第二次打开 App 没有全屏。
+- 配置 `WhiteWindowParams.fullscreen` 后偶现短暂的闪烁。
+- 使用淡入淡出动画时偶现闪烁。
+
+### API 变更
+
+#### 新增
+
+- `addApp`
+- `closeApp`
+- `focusApp`
+- `queryApp`
+- `queryAllAppsWithCompletionHandler`
+- `WhiteAppParam`
+- `WhiteAppSyncAttributes`
+- `WhiteMemberState` 和 `WhiteReadonlyMemberState` 新增
+  - `textColor`
+  - `pencilEraserSize`
+- `updateText`
+- `WhiteSlideAppParams` 新增
+  - `minFPS`
+  - `maxFPS`
+  - `resolution`
+  - `maxResolutionLevel`
+  - `bgColor`
+  - `forceCanvas`
+  - `enableGlobalClick`
+
+## 2.16.62 版
+
+该版本于 2023 年 8 月 31 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 v2.16.42。
+:::
+
+### 升级必看
+
+该版本废弃了白板数据中心（`region`）原有的英国伦敦数据中心（`gb-lon`），并新增了欧洲法兰克福数据中心（`eu`），服务区覆盖欧洲。如果你在之前版本中设置了 `region` 为 `gb-lon`，请在升级到该版本后改用 `eu`，并在控制台-互动白板服务配置中启用该数据中心。
+
+### 新增特性
+
+#### PPT 音量控制
+
+该版本新增 `getSlideVolumeWithCompletionHandler` 和 `updateSlideVolume` 方法用于获取和更新 PPT 内音频的音量。
+
+#### PPT URL 拦截替换
+
+该版本在 `WhiteSdkConfiguration` 中新增 `enableSlideInterrupterAPI` 配置项，用于开启 PPT 资源 URL 拦截替换功能。该功能可用于加密用户上传的 PPT 资源，保护用户隐私。
+
+开启后，通过调用 `WhiteSDK.setSlideDelegate` 设置回调对象，并在 `slideUrlInterrupter: url: completionHandler` 回调中添加 PPT URL 的替换逻辑，从而实现 PPT URL 的拦截替换功能。
+
+#### PPT 渲染显示配置
+
+该版本在 `WhiteSdkConfiguration` 中新增 `whiteSlideAppParams` 配置项用于 [@netless/app-slide](https://github.com/netless-io/netless-app/tree/master/packages/app-slide) 渲染相关的显示配置。你可以通过 `WhiteSlideAppParams.showRenderError` 配置显示/隐藏渲染错误提示。
+
+#### 自定义 API 服务器域名
+
+该版本在 `WhiteSdkConfiguration` 中新增 `apiHosts` 配置项, 用于配置白板的 API 服务器域名列表，例如添加代理服务器域名。
+
+#### 自定义模块源
+
+该版本在 `RoomParams` 和 `PlayerConfiguration` 中分别新增 `modulesOrigin` 配置项，用于配置白板请求模块（modules）数据的地址。
+
+#### 文档操作事件
+
+该版本新增 `dispatchDocsEvent` 方法，用于向插入白板的 PDF/PPTX 文档发送事件，实现控制文档翻页、页面跳转和幻灯片动画播放。
+
+#### 窗口全屏
+
+该版本在 `WhiteWindowParams` 中新增 `fullscreen`, 用于控制窗口是否全屏显示。
+
+### API 变更
+
+#### 新增
+
+- `getSlideVolumeWithCompletionHandler`
+- `updateSlideVolume`
+- `WhiteSdkConfiguration`
+  - `enableSlideInterrupterAPI`
+  - `whiteSlideAppParams`
+  - `apiHosts`
+- `setSlideDelegate`
+  - `WhiteSlideDelegate`
+  - `slideUrlInterrupter: url: completionHandler`
+- `dispatchDocsEvent`
+  - `WhiteWindowDocsEventOptions`
+  - `WhiteWindowDocsEventKey`
+- `RoomParams` 新增 `modulesOrigin`
+- `PlayerConfiguration` 新增 `modulesOrigin`
+- `WhiteWindowParams `新增 `fullscreen`
+
+#### 废弃
+
+- `WhiteRegionKey` 中的 `WhiteRegionGB`, 改用 `WhiteRegionEU`
+- `WhitePptParams`，改用 `WhiteSlideAppParams`
+
+## 2.16.46 版
+
+该版本于 2022 年 12 月 2 日发布。
+
+:::info[桥接说明]
+桥接的 Web SDK 已升级至 v2.16.35。
+:::
+
+### 新增特性
+
+#### 教具新特性
+
+该版本为以下白板教具添加了新特性：
+
+- 画笔工具：支持画虚线。你需要设置 `room.memberState.dottedLine` 为 `true` 开启该功能。
+- 文字工具：支持直接选择并编辑文字。你需要设置 `room.memberState.textCanSelectText` 为 `true` 以开启该功能。
+
+此外，该版本还新增了铅笔橡皮工具，用于擦除局部铅笔笔迹。
+
+#### 浮动条
+
+该版本新增浮动条功能，选中任意白板元素即可弹出浮动条，方便用户快速编辑指定白板元素。例如，选中笔迹可以快速删除笔迹、调整位置、更变笔迹颜色等，选中文字可以快速删除文字、调整文字样式、修改字体等。你可以通过调整 `WhiteRoomConfig` 中的 `floatBar` 参数启用浮动条功能。
+
+![浮动条功能示意图](https://web-cdn.agora.io/docs-files/1669883894080)
+
+#### 白板截图
+
+该版本在 `WhiteDisplayer` 新增 `getLocalSnapShotWithCompletion` 方法获取当前屏幕截图。
+
+#### 获取 PPT 日志
+
+`WhiteSDK` 新增 `requestSlideLogToFilePath` 方法，用于将 PPT 产生的日志写入到指定文件。
+
+### 改进
+
+该版本进行了以下改进：
+
+- 现在因 Web 内存不足导致白板崩溃后，SDK 会自动尝试恢复。之前如果设置过 `navigationDelegate`，需要先取消设置才能启用该优化。此外，该版本新增 `startRecoveringFromMemoryIssues` 和 `endRecoveringFromMemoryIssues` 回调，分别用于在内存不足时，报告 SDK 即将开始恢复白板 SDK 和 白板 SDK 恢复完毕。
+- 现在可以通过调用 `WhiteAudioMixerBridge` 下新增的 `pauseAudioMixing` 和 `resumeAudioMixing` 方法，实现暂停和恢复播放动态 PPT 中的音频和混音。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 重连后，白板 app 可能无法正确创建。
+- 创建白板 app 时，偶尔无法正确同步白板初始宽度和高度。
+- 加入房间时，偶现的 `WhiteBroadcastState` 初始化错误。
+- 在 iPad 上使用非 ApplePencil 的手写笔时，调用 `drawOnlyPencil` 功能可能导致白板崩溃。
+- 在用户没有读写权限的时候，调用 `drawOnlyPencil` 可能产生错误日志。
+- 切换只读/读写状态时可能导致 `mainView` 的 `disableCameraTransform` 配置丢失。
+
+### API 变更
+
+#### 新增
+
+- `MemberState` 新增属性 `dottedLine` 和 `textCanSelectText`
+- `pauseAudioMixing`
+- `resumeAudioMixing`
+- `WhiteRoomConfig` 新增 `floatBar` 参数
+- `WhiteApplianceNameKey` 新增 `AppliancePencilEraser` 类型
+- `requestSlideLogToFilePath`
+- `startRecoveringFromMemoryIssues`
+- `endRecoveringFromMemoryIssues`
+- `getLocalSnapShotWithCompletion`
+
+## 2.16.24 版
+
+该版本于 2022 年 7 月 8 日发布。
+
+### 新增特性
+
+#### 插入文字
+
+该版本在 `WhiteRoom` 类新增 `insertText` 方法，支持在指定位置插入文字。
+
+#### 设置笔锋效果
+
+该版本在 `WhiteSdkConfiguration` 类中新增 `disableNewPencilStroke` 属性，用于开启或关闭新铅笔的笔锋效果。`disableNewPencilStroke` 的默认值为 `YES`，当你设置 `disableNewPencil(NO)` 开启新铅笔后，SDK 立即开启笔锋效果。如果需要关闭新铅笔的笔锋效果，可以设置 `disableNewPencilStroke(YES)`。
+
+#### 获取场景信息
+
+该版本在 `WhiteDisplayer` 类中新增 `getSceneFromScenePath` 方法，支持使用场景路径获取指定场景的信息。
+
+#### 全链路加速
+
+自该版本起，声网互动白板服务集成并支持声网全链路加速（FPA）服务。集成声网 Whiteboard iOS SDK 后，你可以按照如下步骤设置，在互动白板应用中开启全链路加速功能，提升传输质量：
+
+1. 在项目的 `podfile` 文件中添加如下依赖：
+
+   ```
+   pod 'Whiteboard/fpa'
+   ```
+
+2. 加入频道前，将 `WhiteRoomConfig` 中的 `nativeWebSocket` 设为 `YES`，开启全链路加速功能。
+
+:::warning[注意]
+该功能仅支持 iOS 13.0 或之后的系统。
+:::
+
+#### 设置是否只允许使用 Apple Pencil 绘制和书写
+
+该版本支持在 iPad 上设置是否只允许用户使用 Apple Pencil 在白板上绘制和书写。加入白板房间前，你可以通过 `WhiteRoomConfig` 类中 `drawOnlyApplePencil` 属性来设置；加入房间后，你可以调用 `WhiteRoom` 类中的 `setDrawOnlyApplePencil` 方法来修改设置。
+
+#### 支持 YYKit
+
+声网 Whiteboard iOS SDK 默认使用 [YYModel](https://github.com/ibireme/YYModel) 进行数据类型转换。自该版本起，SDK 新增支持 [YYKit](https://github.com/ibireme/YYKit)。如果要使用 YYKit，你需要在 `Podfile` 文件中添加如下行，来添加依赖：
+
+- 不使用全链路加速功能：
+
+  ```shell
+  pod 'Whiteboard/Whiteboard-YYKit'
+  ```
+
+- 使用全链路加速功能：
+
+  ```shell
+  pod 'Whiteboard/fpa-YYKit'
+  ```
+
+### 改进
+
+该版本进行了如下改进：
+
+- 铅笔工具添加补间动画，使远端用户看到的笔迹绘制过程更加流畅。
+- 优化了弱网环境下的重连机制，减少不必要的重连。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 放缩、移动视角后，偶现画面出现偏移、重影。
+- 偶现动态 PPT 在断线重连后无法翻页。
+- 刚加入房间时，如果白板上已经有内容，可能显示不全。
+- SDK 断线重连后可能会发生内存泄漏。
+- 反复调用 `setWritable` 时可能会发生错误。
+- 点击 text 时无法弹出虚拟键盘。
+- 用户切换为只读模式，再切换回读写模式并写写画画时，远端用户看到该用户的光标是固定的。
+
+### API 变更
+
+#### 新增
+
+- `insertText`
+- `getSceneFromScenePath`
+- `setDrawOnlyApplePencil`
+- `drawOnlyApplePencil`
+- `disableNewPencilStroke`
+- `nativeWebSocket`
+
+## 2.15.23 版
+
+该版本于 2022 年 1 月 21 日发布。
+
+该版本进行了如下改进：
+
+- 更新封装的 `white-web-sdk` 至 2.15.16 版。
+- 优化 `getSceneSnapshotImage` 和 `getScenePreviewImage` 方法，确保确保在截图中正常显示场景中插入的图片。
+
+## 2.15.0 版
+
+该版本于 2021 年 11 月 16 日发布。
+
+### 升级必看
+
+为简化接口，该版本删除 `joinRoomWithUuid` 和 `joinRoomWithRoomUuid` 方法，仅保留 `joinRoomWithConfig` 方法。
+
+同时，为方便管理房间内的用户，该版本在 `WhiteRoomConfig` 类的 `initWithUuid` 中新增 `uid` 参数，用于设置用户 ID。
+
+如果你将 SDK 升级到 v2.15.0 或之后版本，要加入房间，你必须调用 `joinRoomWithConfig`，并确保初始化 `WhiteRoomConfig` 对象时在 `initWithUuid` 中传入字符串格式的 `uid`。每个用户的 `uid` 长度不能超过 1024 字节，且在同一房间内必须唯一。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb#3-初始化-sdk-并加入房间)。
+
+### 新增特性
+
+该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 动作按钮
+- 母版动画
+
+### 改进
+
+该版本进行了如下改进：
+
+- 更新封装的 `white-web-sdk` 至 2.15.1 版。
+- 进一步优化书写体验。
+
+### 问题修复
+
+该版本修复了在白板中展示动态 PPT 时遇到的如下问题：
+
+- 偶现的图片位置偏移
+- 部分样式读取失败导致的白屏
+- 部分文字旋转角度和颜色错误
+- 带有动画效果的元素可能不出现
+- 文字的动画效果表现不正确
+
+### API 变更
+
+#### 修改
+
+- `initWithUuid:roomToken`
+- `initWithUuid:roomToken:userPayload`
+
+#### 删除
+
+- `initWithUuid:roomToken:memberInfo`
+- `joinRoomWithUuid`
+- `joinRoomWithRoomUuid`
+
+## 2.14.1 版
+
+该版本于 2021 年 10 月 21 日发布。
+
+### 升级必看
+
+自该版本起，互动白板 iOS SDK 支持的最低平台要求由 iOS 9 变更为 iOS 10。
+
+### 改进
+
+该版本进行了如下优化：
+
+- 更新封装的 `white-web-sdk` 至 2.14.4 版。
+- 持续优化书写性能。
+- 优化书写笔迹的形态。
+- 提高 `firePhaseChanged` 回调的准确性。
+- 隐藏动态 PPT 母版中不应该显示的元素。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 切换到抓手工具后，无法切换回光标。
+- 书写过程中偶现的笔迹突然消失。
+- 书写时偶现的笔迹带有不自然的水滴状笔锋。
+- 手动缩放文本框后再编辑文字，文本框和文字复原到原来的大小。
+- 在部分设备上窗口尺寸发生变化后，视角出现异常。
+- 快速拖动橡皮擦时，橡皮擦的图标放大效果和快速删除功能失效。
+- 偶现的动态 PPT 中多个音频文件同时播放。
+- 动态 PPT 返回上一页后动画显示异常。
+- 动态 PPT 中带动画的文本框偶现镜像翻转。
+
+## 2.13.19 版
+
+该版本于 2021 年 8 月 20 日发布。
+
+### 新增特性
+
+该版本新增如下特性：
+
+- 在 `WhiteCommonCallbackDelegate` 中新增 `logger` 回调，用于获取 SDK 输出的本地调试日志。
+- 为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+  - 对文本按段落添加动画。
+  - 对文本添加的动画可逐字或逐词显示。
+  - 所有的表格预设样式。
+  - 小于 9 pt (12 px) 的文字。
+
+### 改进
+
+该版本进行了如下优化：
+
+- 更新封装的 `white-web-sdk` 至 2.13.17 版。
+- 为提高安全性，关闭白板内部的 `allowUniversalAccessFromFileURLs` 功能。关闭该功能后，调用 `getSceneSnapshotImage` 时，在生成的截图中跨域图片可能无法显示。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 偶现的加入房间时，房间一直卡在 `connecting` 状态。
+- 断线重连后，部分用户的光标消失。
+- 断线重连后，部分插件的状态出现混乱。
+- 抓手工具不受设置的视角边界的限制。
+- 在高分辨率的设备上，当用户处于跟随视角模式时，视角的中心点出现轻微偏移。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 段间距显示不正确
+  - 文本分栏无效
+  - 使用幻灯片背景填充形状时显示不正确
+  - 悬挂缩进异常
+  - 动画回退后显示异常
+  - 文字编号错误
+  - 转换后公式显示不全
+  - 部分换行不正确
+  - 从右往左书写的文字（如阿拉伯文）显示异常
+
+## 2.13.15 版
+
+该版本于 2021 年 7 月 23 日发布。
+
+### 新增特性
+
+为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 反转路径方向动画效果
+- 纵向文本框
+- Microsoft 公式编辑器 3.0
+- 母版隐藏背景图形
+- 编辑图片颜色
+- 部分图片效果：
+  - 金属框架
+  - 柔化边缘矩形
+  - 双框架，黑色
+  - 厚重哑光，黑色
+  - 简单框架，黑色
+  - 中等复杂框架，黑色
+  - 居中矩形阴影
+  - 柔化边缘椭圆
+  - 金属圆角矩形
+  - 金属椭圆
+
+### 改进
+
+该版本进行了如下优化：
+
+- 更新封装的 `white-web-sdk` 至 2.13.11 版。
+- 更新封装的 `@netless/video-js-plugin` 至 0.3.3 版本。
+- 降低了播放动态 PPT 动画时占用的 CPU。
+- 提升了在白板上书写绘画的流畅度。
+- 优化时间戳同步算法，缩小时间同步误差。
+- 打印的日志中包含场景变更信息。
+- 在 `WhitePptPage` 类中新增 `previewURL` 属性，支持在白板场景中展示动态 PPT 预览图。
+- 废弃 `WhiteDisplayer` 中 `backgroundColor` 属性，同时优化 `WhiteboardView` 类的实现逻辑，支持在 `WhiteboardView` 对象中直接调用 `UIView` 类的 `backgroundColor` 属性修改白板的背景色。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调整视角时偶现的白板清晰度异常。
+- 偶现的用户进入房间后无法画出第一笔线。
+- 偶现的 `refreshViewSize` 调用不生效。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 动画未按设置的顺序播放。
+  - 动画播放后未按设置隐藏。
+  - 表格高度显示异常。
+  - 无法显示占位符中插入图片。
+  - 部分形状绘制错误。
+  - 文字缩进错误。
+  - 无法点击动画触发器。
+  - 图片透明度过大。
+
+## 2.13.4 版
+
+该版本于 2021 年 6 月 15 日发布。
+
+该版本更新 `white-web-sdk` 至 2.13.4。
+
+## 2.13.2 版
+
+该版本于 2021 年 6 月 11 日发布。
+
+该版本更新 `white-web-sdk` 至 2.13.3。
+
+## 2.13.1 版
+
+该版本于 2021 年 6 月 11 日发布。
+
+#### 改进
+
+该版本更新 `white-web-sdk` 至 2.13.2。
+
+#### 问题修复
+
+该版本修复了 `disableDeviceInputs` 设为 `true` 时，用户可能仍然可以操作 iframe 插件的问题。
+
+## 2.12.33 版
+
+该版本于 2021 年 6 月 8 日发布。
+
+该版本修复的问题如下：
+
+主播模式的用户在使用点选工具（`Clicker`）时，如果对 HTML5 课件进行缩放，会导致跟随模式的用户看到的课件内容不完整。
+
+## 2.12.32 版
+
+该版本于 2021 年 6 月 7 日发布。
+
+该版本更新 [`@netless/cursor-tool `](https://www.npmjs.com/package/@netless/cursor-tool) 至 0.1.0，并且更新 `@netless/iframe-bridge `至 2.1.2。
+
+## 2.12.31 版
+
+该版本于 2021 年 6 月 4 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.21，并且更新 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 至 0.1.5。
+
+## 2.12.30 版
+
+该版本于 2021 年 6 月 2 日发布。
+
+该版本修复了 `video-js-plugin` 插件在白板上无法显示的问题。
+
+## 2.12.29 版
+
+该版本于 2021 年 6 月 1 日发布。
+
+该版本更新 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin)至 0.1.3，修复了 video-js-plugin 和低版本 iOS 系统的 WebView 不兼容的问题。
+
+## 2.12.28 版
+
+该版本于 2021 年 5 月 25 日发布。
+
+该版本更新 [`@netless/cursor-tool`](https://www.npmjs.com/package/@netless/cursor-tool) 至 0.0.9。
+
+## 2.12.27 版
+
+该版本于 2021 年 5 月 24 日发布。
+
+该版本支持 [`@netless/video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 插件，并更新 `white-web-sdk `至 2.12.20。
+
+## 2.12.26 版
+
+该版本于 2021 年 5 月 20 日发布。
+
+该版本新增以下特性：
+
+- `WhiteApplianceNameKey` 中新增 `ApplianceClicker`，支持设置点选工具，用于 H5 课件的操作和交互。
+- 更新 `white-web-sdk `至 2.12.18。
+
+## 2.12.25 版
+
+该版本于 2021 年 5 月 17 日发布。
+
+该版本有以下改进：
+
+- 更新 `white-web-sdk `至 2.12.18。
+- 服务端排版（`useServerWrap`）由默认关闭改为默认开启，并返回裁剪后的字体。
+
+## 2.12.24 版
+
+该版本于 2021 年 5 月 13 日发布。
+
+该版本新增以下特性：
+
+- `WhiteApplianceNameKey` 中新增 `ApplianceShape`，支持设置图形工具。目前支持的图形包括三角形、菱形、五角星、对话气泡。
+- 新增 `syncBlockTimestamp` 方法，用于设置发送白板内容的延时，保证白板内容与音视频同步。
+- 更新 `white-web-sdk `至 2.12.17。
+
+## 2.12.23 版
+
+该版本于 2021 年 5 月 11 日发布。
+
+该版本新增 `RegionKey` 枚举，用于设置数据中心。
+
+## 2.12.22 版
+
+该版本于 2021 年 4 月 28 日发布。
+
+该版本更新 `@netless/white-audio-plugin2` 和 `@netless/white-video-plugin2 `插件，修复了部分显示问题。
+
+## 2.12.21 版
+
+该版本于 2021 年 4 月 28 日发布。
+
+### 新增特性
+
+该版本支持[ `@netless/white-audio-plugin2`](https://github.com/netless-io/whiteboard-demo/tree/master/packages/white-audio-plugin) 和 [`@netless/white-video-plugin2`](https://github.com/netless-io/react-whiteboard/tree/master/packages/white-video-plugin)，用于在 iOS 端观看 Web 端白板上播放的音频或视频。
+
+### 问题修复
+
+该版本更新 `@netless/white-audio-plugin` 至 1.2.23，修复了白板回放中音频文件的显示问题。
+
+## 2.12.20 版
+
+该版本于 2021 年 4 月 22 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.14。
+
+## 2.12.19 版
+
+该版本于 2021 年 4 月 22 日发布。
+
+该版本有以下改动：
+
+- 更新 `white-web-sdk` 至 2.12.13，优化了动态 PPT 的播放。
+- 更新 `@netless/iframe-bridge` 至 2.0.17，优化了白板回放的 iframe 插件逻辑。
+
+## 2.12.18 版
+
+该版本于 2021 年 4 月 20 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.16，优化了白板回放的 iframe 插件逻辑。
+
+## 2.12.17 版
+
+该版本于 2021 年 4 月 17 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.12。
+
+## 2.12.16 版
+
+该版本于 2021 年 4 月 14 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.14，优化了 iframe 插件。
+
+## 2.12.15 版
+
+该版本于 2021 年 4 月 13 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.13，优化了 H5 课件的消息发送逻辑。
+
+## 2.12.14 版
+
+该版本于 2021 年 4 月 13 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.11，修复了 H5 课件的显示问题。
+
+## 2.12.13 版
+
+该版本于 2021 年 4 月 10 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.9。
+
+## 2.12.12 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.9，修复了 H5 课件的显示问题。
+
+## 2.12.11 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.8，修复了 H5 课件的显示问题。
+
+## 2.12.10 版
+
+该版本于 2021 年 4 月 6 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.8，修复了设置跟随者模式无法立即生效的问题。
+
+## 2.12.9 版
+
+该版本于 2021 年 4 月 2 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.7，优化了动态 PPT 的显示。
+
+## 2.12.8 版
+
+该版本于 2021 年 3 月 30 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.7。
+
+## 2.12.7 版
+
+该版本于 2021 年 3 月 30 日发布。
+
+该版本更新 `white-web-sdk` 至 2.12.6。
+
+## 2.12.6 版
+
+该版本于 2021 年 3 月 25 日发布。
+
+该版本更新 `@netless/iframe-bridge` 至 2.0.5，优化了白板回放时 H5 课件的展示。
+
+## 2.12.5 版
+
+该版本于 2021 年 3 月 25 日发布。
+
+该版本在 `Displayer` 类中新增 `scaleIframeToFit` 方法，支持等比例缩放视角，以保证完整显示 H5 课件的内容。
+
+## 2.12.4 版
+
+该版本于 2021 年 3 月 24 日发布。
+
+该版本更新 `@netless/cursor-tool` 至 0.0.7。
+
+## 2.12.3 版
+
+该版本于 2021 年 3 月 20 日发布。
+
+为解决笔锋效果与 2.2.12 之前版本 SDK 不兼容的问题，该版本将 `WhiteRoomConfig` 接口中的 `disableNewPencil` 属性设为 `YES`，以默认关闭笔锋效果。
+
+:::warning[注意]
+为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+
+- Android SDK 2.12.3 版或之后
+- iOS SDK 2.12.3 版或之后
+- Web SDK 2.12.5 版或之后
+:::
+
+## 2.12.2 版
+
+该版本于 2021 年 3 月 16 日发布。
+
+### 新增特性
+
+为优化笔迹显示，该版本新增笔锋效果。你可以通过 `WhiteRoomConfig` 接口中的 `disableNewPencil` 属性关闭或开启笔锋功能。
+
+:::warning[注意]
+为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+
+- Android SDK 2.12.2 版或之后
+- iOS SDK 2.12.3 版或之后
+- Web SDK 2.12.5 版或之后
+:::
+
+### 改进
+
+- 更新 `white-web-sdk` 至 2.12.4 版本，优化 PPT 显示逻辑。
+- 优化音视频插件在白板回放时的按钮显示。
+
+## 2.12.2 版之前
+
+关于更多版本的发版说明，详见[版本历史](https://developer.netless.link/ios-zh/home/ios-changelog)。
+
+:::warning[注意]
+2.6.4 及之前版本已经停止维护，建议升级到最新版本。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文提供声网 Whiteboard Web SDK 的发版说明。
+
+## 2.16.53 版
+
+该版本于 2025 年 4 月 7 日发布。
+
+### 优化
+
+该版本进行了以下优化：
+
+- 基于安全合规考虑，加入白板房间时配置的数据中心地址 (`regions`) 现在按地区区分了国内外节点。
+- 为了避免因上传 `base64` 等格式的图片导致房间内存爆满，该版本起，插入图片的 `src` 路径必须为  `http/https` 开头的 URL 路径。
+
+## 2.16.51 版
+
+该版本于 2024 年 5 月 21 日发布。
+
+### 新增特性
+
+#### 备选 API 域名
+
+为保障 API 调用的连通性，该版本新增了以下备选 API 域名，SDK 初始化时将自动选择：
+
+- `api.whiteboard.sd-rtn.com`
+- `api.baiban.shengwang.cn`
+- `api.whiteboard.rtelink.com`
+- `api.netless.link`
+- `api.whiteboard.agora.io`
+
+### 优化
+
+#### WebSocket 传输体验优化
+
+针对白板加入房间较慢的问题，该版本进行了以下优化：
+
+- 优化了 WebSocket 重连算法，提升了重连速度。
+- 新增 `onConnection` 事件，报告 WebSocket 已连接，正在下载当前房间的白板快照数据，恢复房间状态中。你可以通过该回调事件提示用户白板房间加载中。
+
+该版本还进行了以下优化：
+
+- 改进了图形存在填充色时，判断光标是否命中图形的算法，优化了图形选取体验。
+- `screenshotToCanvasAsync` 方法新增 `timeout` 参数，用于设置图片加载超时时间。图片加载超过该时间后，SDK 会直接进行下一步绘制操作，而不会等待图片加载完成。
+- `ConstructRoomParams` 新增 `commandWheelToZoom` 属性，用于 macOS 设备上实现按住 `command` 键 + 滚动鼠标滚轮缩放白板。
+- 优化了浮动条中“透明”填充色的按钮样式。
+
+### 问题修复
+
+该版本修复了连接 WebSocket 超过 2 秒时，控制台出现的报错：`AkkoSocket can't emit when phase is connecting`。
+
+### API 变更
+
+#### 新增
+
+- `onConnection`
+- `screenshotToCanvasAsync` 新增 `timeout` 参数
+- `ConstructRoomParams` 新增 `commandWheelToZoom` 属性
+
+## 2.16.49 版
+
+该版本于 2024 年 4 月 2 日发布。
+
+### 新增特性
+
+#### 填充封闭图形元素
+
+`MemberState` 新增 `fillColor` 属性，用于设置圆形、矩形等封闭图形元素的填充色。
+
+#### 自动切换选择工具
+
+`MemberState` 新增以下属性，用于设置是否在使用对应白板工具后自动切换为选择工具：
+
+- `textCompleteToSelector`：使用文字工具打完字后自动切到选择工具。
+- `rectangleCompleteToSelector`：画完矩形后自动切到选择工具。
+- `ellipseCompleteToSelector`：画完圆形后自动切到选择工具。
+- `straightCompleteToSelector`：画完直线后自动切到选择工具。
+- `arrowCompleteToSelector`：画完箭头后自动切到选择工具。
+- `shapeCompleteToSelector`：画完三角、气泡等图形后自动切到选择工具。
+
+#### 异步截图
+
+新增 `screenshotToCanvasAsync` 方法，用于在目标场景中的图片加载完成后生成屏幕快照并写入指定的渲染上下文中。该功能目前处于实验阶段，如果你在使用中遇到了问题，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+### 优化
+
+该版本进行了以下优化：
+
+- `MemberState` 新增 `textSizeOverride` 属性，用于设置文本工具的默认字体大小。如果不设置，则默认采用上次创建文本元素时使用的字体大小。
+- 新增属性 `room.useNativeClipboard`，用于设置是否使用原生剪贴板。启用后，白板快捷键，即 `HotKeys` 中的复制和粘贴将失效，改为使用原生的 `copy` 和 `paste` 事件。
+- `DisplayerCallbacks` 新增 `onBackgroundError` 回调，用于报告背景图加载失败。
+- `RoomCallbacks` 新增 `onObjectsLimit` 回调，用于报告白板中的元素数量超过限制，当到达限制时前端会抛出警告和事件。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 退出房间时没有销毁某些监听器导致内存泄漏。
+- 只读用户按 Esc 键时产生异常报错。
+
+### API 变更
+
+- `MemberState` 新增以下属性：
+  - `fillColor`
+  - `textSizeOverride`
+  - `textCompleteToSelector`
+  - `rectangleCompleteToSelector`
+  - `ellipseCompleteToSelector`
+  - `straightCompleteToSelector`
+  - `arrowCompleteToSelector`
+  - `shapeCompleteToSelector`
+- `DisplayerCallbacks` 新增 `onBackgroundError`
+- `screenshotToCanvasAsync`
+- `Room` 新增 `useNativeClipboard` 属性
+- `RoomCallbacks` 新增 `onObjectsLimit`
+
+## 2.16.48 版
+
+该版本于 2024 年 3 月 13 日发布。
+
+### 新增特性
+
+#### 回放录像剪辑
+
+`ReplayRoomParams` 新增了以下属性以实现剪辑并播放白板回放录像：
+
+- `crops`：设置剪辑回放录像的时间起点和终点。
+- `alignmentThreshold`：设置回放时间轴对齐阈值。
+- `alignmentInterval`：回放时间轴对齐时长。
+
+#### 白板绘制性能优化策略
+
+`joinRoom` 方法新增 `optimizeOptions` 参数，用于设置白板绘制的性能优化策略。性能优化的方式包括以下三种：
+
+- 调整白板绘制的刷新间隔：刷新间隔越低，笔迹显示越流畅，性能消耗越大；刷新间隔越高，笔迹越卡，性能消耗越少。
+- 使用单画布绘制：白板默认使用两个画布交替绘制以避免在部分设备上绘制时可能出现的画面闪烁现象，使用单个画布绘制可以避免重绘，降低性能消耗。
+- 使用浮动画布：书写场景下，启用单画布绘制后，会根据绘制位置生成一个大小约为 256 × 256 px 的浮动画布，后续绘制不超过该画布的范围时，同步笔迹的范围会限定在这个浮动画布中，从而降低性能消耗。
+
+### 优化
+
+该版本进行了以下优化：
+
+- `ImageInformation` 新增 `crossOrigin` 属性，用于设置是否以跨域方式加载图片，默认开启。
+- `room` 类新增 `syncMode` 属性，设为 `true` 则同步会更频繁，但会略微影响动画流畅度。
+- 新增选中图形元素（矩形工具、圆形工具等绘制出的图形）时弹出浮动条。
+- 新增 `clearUndoHistory` 方法用于清空可撤回的操作历史记录。
+- 设置 `cursorAdapter: false` 可隐藏内置光标 (激光笔、橡皮擦等)。
+- 文本元素采用固定行高，避免各端显示差异。
+
+### 问题修复
+
+- 画虚线时偶现显示错误。
+- 触摸设备上擦除文字工具时陷入异常，不能擦除。
+- 进入房间时偶现白屏但不报错。
+- 复制粘贴出来的的文本元素无法被选中。
+
+### API 变更
+
+#### 新增
+
+- `clearUndoHistory`
+- `ReplayRoomParams` 新增了以下属性：
+  - `crops`
+  - `alignmentThreshold`
+  - `alignmentInterval`
+- `joinRoom` 新增 `optimizeOptions` 参数
+- `OptimizeOptions`
+- `LowTaskAnimationInterval`
+- `OriginCoordType`
+- `ImageInformation` 新增 `crossOrigin` 属性
+- `room` 新增 `syncMode` 属性
+
+## 2.16.43 版
+
+该版本于 2023 年 8 月 31 日发布。
+
+### 升级必看
+
+该版本废弃了白板数据中心（`region`）原有的英国伦敦数据中心（`gb-lon`），并新增了欧洲法兰克福数据中心（`eu`），服务区覆盖欧洲。如果你在之前版本中设置了 `region` 为 `gb-lon`，请在升级到该版本后改用 `eu`，并在控制台-互动白板服务配置中启用该数据中心。
+
+### 问题修复
+
+该版本修复了在 Windows 平台上使用白板 Web App 时，`shift` 按键判定有误，导致铅笔工具切换为画直线后无法恢复。
+
+## 2.16.37 版
+
+该版本于 2022 年 12 月 2 日发布。
+
+### 新增特性
+
+#### 教具新特性
+
+该版本为以下白板教具添加了新特性：
+
+- 圆形工具：按住 `alt/option` 键可以以光标为圆心画圆。
+- 铅笔工具：
+  - 画直线：按住 `shift` 键可以画直线。
+  - 画虚线：你需要在 `room.memberState` 中添加 `dottedLine: true` 以开启该功能。
+  - 书写表现：支持通过 `NewPencilWritingQuality` 调整书写性能与书写质量之间的平衡。
+- 文字工具：支持直接选中并编辑文字。你需要在 `room.memberState` 中添加 `textCanSelectText: true` 以开启该功能。
+
+此外，该版本还新增了铅笔橡皮工具，用于擦除局部铅笔笔迹。
+
+#### 白板截图
+
+该版本新增 `screenshotToCanvas` 方法，可以将指定白板内容截图至 canvas。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 用户断线重连后或切页后，撤回与重做功能可能会重置。
+- `room.setMemberState()` 中的某些字段无法保存到本地。
+- 浮动条（`floatBar`）在部分触摸设备上无法正常使用。
+
+### API 变更
+
+#### 新增
+
+- `MemberState` 新增属性 `dottedLine` 和 `textCanSelectText`
+- `NewPencilWritingQuality`
+- `screenshotToCanvas`
+- `ApplianceNames` 新增枚举值 `pencilEraser`
+
+## 2.16.24 版
+
+该版本于 2022 年 7 月 8 日发布。
+
+### 新增特性
+
+#### 文字编辑
+
+为支持自定义文本编辑选项，该版本新增如下 API：
+
+- `insertText`：在指定位置插入文字。
+- `updateText`：修改指定文字的内容。
+- `updateSelectedText`：修改当前被选中文字的字体样式，包括字体大小、颜色、是否加粗、是否斜体等。
+
+你可以使用上述 API 自定义文本输入框和编辑工具栏。
+
+同时，该版本在 `MemberState` 中新增 `textColor`、`bold`、`italic`、`underline` 和 `lineThrough` 属性，提供更加丰富的文本编辑选项。当你使用白板 SDK 提供的 `text` 工具，但想自定义文本编辑工具栏时，你可以将 `JoinRoomParams` 中的 `floatBar` 属性设为 `false`，并通过 `MemberState` 中新增的属性编辑文本。
+
+此外，该版本删除了 `updateTextFontSize` 方法，你可以使用 `updateSelectedText` 或 `MemberState` 中的 `textSize` 代替。
+
+#### 图片旋转
+
+该版本在 `WhiteWebSdkConfiguration` 中新增 `disableRotation` 属性，用于开启或关闭图片旋转功能。SDK 默认开启图片旋转。开启该功能后，用户可以任意旋转选中的图片。如果需要关闭，可以设置 `disableRotation(true)`。
+
+#### 补间动画
+
+该版本为铅笔工具新增补间动画功能。当用户使用铅笔书写时，SDK 会自动在关键帧之间插入帧，使远端用户看到的笔迹绘制过程更加流畅，但会因此增加延时。
+
+同时，该版本在 `WhiteWebSdkConfiguration` 中新增 `disableCurveAnimes` 属性，用于开启或关闭新铅笔的补间动画功能。SDK 默认开启补间动画功能。如果需要关闭，可以设置 `disableCurveAnimes(true)`。
+
+:::warning[注意]
+补间动画仅在 `disableNewPencil` 设为 `fasle` 时生效。
+:::
+
+#### 关闭笔锋效果
+
+该版本在 `WhiteWebSdkConfiguration` 中新增 `disableNewPencilStroke` 属性，用于开启或关闭铅笔的笔锋效果。`disableNewPencilStroke` 默认值为 `true`，当你设置 `disableNewPencil(false)` 开启新铅笔后，SDK 立即开启笔锋效果。如果需要关闭新铅笔的笔锋效果，可以设置 `disableNewPencilStroke(true)`。
+
+:::warning[注意]
+笔锋效果仅在 `disableNewPencil` 设为 `fasle` 时生效。
+:::
+
+#### 获取场景信息
+
+该版本在 `Displayer` 类中新增 `getScene` 方法，支持使用场景路径获取指定场景的信息。
+
+#### 场景回调
+
+该版本新增 `createScenesCallback` 方法，用于创建场景目录的监听器对象。成功创建监听器对象后，当指定场景目录下的场景、子场景目录发生变化时，SDK 会触发你在 `ScenesCallbacks` 中注册的回调，报告场景事件。
+
+#### 动态 PPT 中的媒体文件播放出错回调
+
+该版本新增 `onPPTMediaPlayError` 回调，用于报告动态 PPT 中的媒体文件播放时发生的异常。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 优化了在 Android 浏览器上的书写性能。
+- 优化了弱网环境下的重连机制，减少不必要的重连。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 放缩、移动视角后，偶现画面出现偏移、重影。
+- 偶现动态 PPT 在断线重连后无法翻页。
+- 刚加入房间时，如果白板上已经有内容，可能显示不全。
+- SDK 断线重连后可能会发生内存泄漏。
+- 反复调用 `setWritable` 时可能会发生错误。
+- 使用低版本的 react 时白板显示异常并报错。
+- 在 iOS 的浏览器上点击 text 时无法弹出虚拟键盘。
+- 用户切换为只读模式，再切换回读写模式并写写画画时，远端用户看到该用户的光标是固定的。
+
+### API 变更
+
+#### 新增
+
+- `insertText`
+- `updateText`
+- `updateSelectedText`
+- `getScene`
+- `createScenesCallback`
+- `onPPTMediaPlayError`
+- `MemberState` 中新增如下属性：
+  - `textColor`
+  - `bold`
+  - `italic`
+  - `underline`
+  - `lineThrough `
+- `WhiteWebSdkConfiguration` 中新增如下属性：
+  - `disableRotation`
+  - `disableCurveAnimes`
+  - `disableNewPencilStroke`
+
+#### 删除
+
+- `updateTextFontSize`
+- `CustomInput`
+
+## 2.15.16 版
+
+该版本于 2022 年 1 月 21 日发布。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 优化 `disconnect` 和 `setWritable` 的逻辑。当调用 `disconnect` 或 `setWritable(false)` 时，待调用该方法之前所有请求都执行完成后才令 Promise 成功。
+- 优化文本编辑浮动条（`floatBar`）的 UI，并保存用户通过浮动条设置的字体样式。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 加入房间失败时返回的错误码不准确。
+- 重新加入房间后，`room.state.memberState` 为房间初始化时的状态，而非当前的状态。
+- 偶现的重连成功后控制台会报错。
+- 偶现的 `room.state.memberState` 为 `undefined`。
+- 文本编辑浮动条（`floatBar`）的按钮不起作用或直接消失。
+- 偶现的房间突然白屏并重连。
+- 调用 `dispatchMagixEvent` 发送事件后多次收到事件回调。
+- PPT 源文件未设置背景填充导致的文档转换失败。
+- 偶现的 `canvas` 渲染崩溃。
+- 偶现的 `canvas` 渲染占用内存过高。
+- 在 iOS 或 Android 设备上，白板偶现网格。
+
+## 2.15.1 版
+
+该版本于 2021 年 11 月 16 日发布，修复了在白板中展示动态 PPT 时遇到的如下问题：
+
+- 当母版中的动画出错时，应用了该母版的幻灯片页无法翻页。
+- 部分可点击的元素点击无效。
+
+## 2.15.2 版
+
+该版本于 2021 年 11 月 19 日发布。
+
+### 新增特性
+
+#### 关闭/开启笔迹同步的频率限制
+
+该版本在 `JoinRoomParams` 中新增 `disablePencilWrittingLimitFrequency` 属性，支持关闭或开启在使用 `pencil` 书写时笔迹同步的频率限制。
+
+#### 自定义事件监听选项
+
+为方便开发者灵活监听自定义事件，该版本在 `addMagixEventListener` 方法中新增 `options` 参数并新增 `MagixEventListenerOptions` 类，支持设置以下自定义事件监听选项：
+
+- `fireInterval`：SDK 触发自定义事件回调的间隔，单位为毫秒。
+- `fireSelfEventAfterCommit`：是否待服务器确认 `dispatchMagixEvent` 方法调用成功后再发送事件回调。
+
+### 问题修复
+
+该版本修复了特定情况下，房间初始化或调整场景中组件顺序后渲染崩溃的问题。
+
+### API 变更
+
+#### 新增
+
+- `JoinRoomParams` 中新增 `disablePencilWrittingLimitFrequency` 属性
+- `addMagixEventListener` 中新增 `options` 参数
+- `MagixEventListenerOptions`
+
+## 2.15.0 版
+
+该版本于 2021 年 11 月 16 日发布。
+
+### 升级必看
+
+为方便管理房间内的用户，该版本在 `JoinRoomParams` 中新增 `uid` 属性，用于设置用户 ID。
+
+如果你将 SDK 升级到 v2.15.0 或之后版本，为保证你的业务功能不受影响，调用 `joinRoom` 时必须在 `JoinRoomParams` 传入字符串格式的 `uid`，长度不超过 1024 字节，并确保同一房间内每个用户的 `uid` 唯一。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+### 新增特性
+
+#### 关闭/开启发送自定义事件的频率限制
+
+该版本在 `JoinRoomParams` 中新增 `disableMagixEventDispatchLimit` 属性，支持关闭或开启发送自定义事件的频率限制。
+
+#### 文档转换优化
+
+该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 动作按钮
+- 母版动画
+
+### 改进
+
+#### 跳转回放
+
+为方便获取跳转操作的结果，该版本将 `seekToProgressTime` 方法的返回值由 `void` 改为 `Promise`。成功调用 `seekToProgressTime` 方法后，SDK 会返回 `PlayerSeekingResult`，报告跳转回放的结果。
+
+#### 其他改进
+
+该版本进行了如下改进：
+
+- 进一步优化书写体验。
+- 为提升用户体验，当调用 `insertImage` 插入图片时，SDK 默认将 `ImageInformation` 中的 `uniformScale` 设为 `true`，确保用户调整图片时，图片会按比例缩放。如果你不需要图片按比例缩放，可以将 `uniformScale` 设为 `false`.
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 加入房间时调用 `setWritable(false)` 导致房间状态异常。
+- 粘贴复制的内容时，可能粘贴出多份。
+- 读取 `room.state.roomMembers` 时，每个字段可能出现两次。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 偶现的图片位置偏移
+  - 部分样式读取失败导致的白屏
+  - 部分文字旋转角度和颜色错误
+  - 带有动画效果的元素可能不出现
+  - 文字的动画效果表现不正确
+
+### API 变更
+
+#### 新增
+
+- `JoinRoomParams` 中新增以下属性：
+
+  - `uid`
+  - `disableMagixEventDispatchLimit`
+
+#### 修改
+
+- `seekToProgressTime`
+
+#### 删除
+
+- `MemberState` 中的 `pencilOptions` 属性
+- `BroadcastState` 中的 `broadcasterInformation` 属性
+- `RoomState` 中的 `zoomScale` 属性
+- `Player` 中的 `scheduleTime` 属性
+- `Player` 中的 `seekToScheduleTime` 方法
+
+## 2.14.5 版
+
+该版本于 2021 年 10 月 21 日发布。
+
+### 升级必看
+
+自该版本起，`white-web-sdk` 不再支持以下版本的移动端浏览器：
+
+- 适用于 Android 4.4 及之前版本的浏览器。
+- 适用于 iOS 9 及之前版本的浏览器。
+
+### 新增特性
+
+#### 导入导出场景
+
+该版本新增如下方法支持导入和导出场景：
+
+- `exportScene`：导出指定场景的所有内容，包括场景中展示的图片或网页，并保存为二进制文件（Blob 对象）。
+- `importScene`：将通过 `exportScene` 方法导出的场景内容导入指定的场景目录中。
+
+#### 场景路径类型
+
+该版本在 `ScenePathType` 中新增 `conflict` 枚举，表示该路径中包含已有场景的路径，无法存在。
+
+#### 锁定图片
+
+该版本新增 `lockImages` 方法，支持锁定或解除锁定选中的图片。当图片被锁定时，用户无法移动、缩放或删除该图片。
+
+#### 调整字体大小
+
+该版本新增 `updateTextFontSize` 方法，用于调整使用 `text` 工具输入的文字的大小。
+
+#### 调整组件层级
+
+该版本新增如下方法，支持调整组件层级：
+
+- `moveSelectedComponentsToTop`：移动选中的组件到顶层。
+- `moveSelectedComponentsToBottom`：移动选中的组件到底层。
+
+### 改进
+
+该版本进行了如下改进：
+
+- Web 端之间支持发送和接收 `payload` 为 `ArrayBuffer` 的自定义事件。
+- 持续优化书写性能。
+- 优化书写笔迹的形态。
+- 提高 `onPhaseChanged` 回调的准确性。
+- 在 PC 端，使用橡皮擦只能删除选中的最上层组件。
+- 隐藏动态 PPT 母版中不应该显示的元素。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调用 `customInput` 自定义输入源不生效。
+- 切换到抓手工具后，无法切换回光标。
+- 书写过程中偶现的笔迹突然消失。
+- 书写时偶现的笔迹带有不自然的水滴状笔锋。
+- 手动缩放文本框后再编辑文字，文本框和文字复原到原来的大小。
+- 修改 `InvisiblePlugin` 时，新传入的 `attributes` 无法与原 `attributes` 重复。
+- 在部分浏览器和设备上窗口尺寸发生变化后，视角出现异常。
+- 快速拖动橡皮擦时，橡皮擦的图标放大效果和快速删除功能失效。
+- 偶现的动态 PPT 中多个音频文件同时播放。
+- 动态 PPT 返回上一页后动画显示异常。
+- 动态 PPT 中带动画的文本框偶现镜像翻转。
+
+### API 变更
+
+#### 新增
+
+- `exportScene`
+- `importScene`
+- `ScenePathType` 中新增 `conflict`
+- `lockImages`
+- `updateTextFontSize`
+- `moveSelectedComponentsToTop`
+- `moveSelectedComponentsToBottom`
+
+## 2.13.17 版
+
+该版本于 2021 年 8 月 20 日发布。
+
+### 新增特性
+
+为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint 特性：
+
+- 对文本按段落添加动画。
+- 对文本添加的动画可逐字或逐词显示。
+- 所有的表格预设样式。
+- 小于 9 pt（12 px） 的文字。
+
+### 改进
+
+该版本进行了如下优化：
+
+- 在白板上编辑文本时，设置浮动条上的删除按钮为禁用状态。
+- 用户点击浮动条上面的按钮时，禁止浮动条移动。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 偶现的加入房间时，房间一直卡在 `connecting` 状态。
+- 断线重连后，部分用户的光标消失。
+- 断线重连后，部分插件的状态出现混乱。
+- 抓手工具不受设置的视角边界的限制。
+- 在某些高分辨率设备上，当用户处于跟随视角模式时，视角的中心点出现轻微偏移。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 段间距显示不正确
+  - 文本分栏无效
+  - 使用幻灯片背景填充形状时显示不正确
+  - 悬挂缩进异常
+  - 动画回退后显示异常
+  - 文字编号错误
+  - 转换后公式显示不全
+  - 部分换行不正确
+  - 从右往左书写的文字（如阿拉伯文）显示异常
+
+## 2.13.11 版
+
+该版本于 2021 年 7 月 23 日发布。
+
+### 新增特性
+
+为完善动态文档转换功能，该版本新增支持转换和展示如下 PowerPoint（PPT）特性：
+
+- 反转路径方向动画效果
+- 纵向文本框
+- Microsoft 公式编辑器 3.0
+- 母版隐藏背景图形
+- 编辑图片颜色
+- 部分图片效果：
+  - 金属框架
+  - 柔化边缘矩形
+  - 双框架，黑色
+  - 厚重哑光，黑色
+  - 简单框架，黑色
+  - 中等复杂框架，黑色
+  - 居中矩形阴影
+  - 柔化边缘椭圆
+  - 金属圆角矩形
+  - 金属椭圆
+
+### 改进
+
+该版本进行了如下优化：
+
+- 降低了播放动态 PPT 动画时占用的 CPU。
+- 提升了在白板上书写绘画的流畅度。
+- 优化时间戳同步算法，缩小时间同步误差。
+- 支持在场景变更时打印日志。
+- 在 `PptDescription` 中新增 `previewURL` 参数，支持在白板场景中展示动态 PPT 预览图。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 调整视角时偶现的白板清晰度异常。
+- SDK 代码经过 uglify-js 混淆后的语义可能和之前不一样。
+- 移动端用户进入房间后有时无法画出第一笔线。
+- 在白板中展示动态 PPT 时遇到的如下问题：
+  - 动画未按设置的顺序播放。
+  - 动画播放后未按设置隐藏。
+  - 表格高度显示异常。
+  - 无法显示占位符中插入图片。
+  - 部分形状绘制错误。
+  - 文字缩进错误。
+  - 无法点击动画触发器。
+  - 图片透明度过大。
+
+## 2.13.4 版
+
+该版本于 2021 年 6 月 15 日发布。
+
+该版本修复了调用 `moveCamera` 不生效的问题。
+
+## 2.13.2 版
+
+该版本于 2021 年 6 月 10 日发布。
+
+该版本修复了如下问题：
+
+- `redo`、`undo` 方法的部分异常行为。
+- 文本输入框的异常行为。
+
+## 2.12.21 版
+
+该版本于 2021 年 6 月 4 日发布。
+
+该版本修复了如下问题：
+
+- 浏览器控制台打印出的若干错误信息。
+- 动态 PPT 上显示的箭头头部过大。
+- 频繁切换动态 PPT 页面可能导致字体显示混乱。
+- 无法解析不含 `tablestyle.xml` 文件的动态 PPT。
+
+## 2.12.20 版
+
+该版本于 2021 年 5 月 24 日发布。
+
+该版本优化了动态 PPT 的日志等级。
+
+## 2.12.19 版
+
+该版本于 2021 年 5 月 20 日发布。
+
+该版本修复了特定情况下 SDK 连接服务器失败并报错 `magix connect failed` 的问题。
+
+## 2.12.18 版
+
+该版本于 2021 年 5 月 17 日发布。
+
+该版本将服务端排版（`useSeverWrap`）由默认关闭改为默认开启。开启服务端排版后，服务端会裁剪字体包的体积，提高渲染速度。
+
+## 2.12.17 版
+
+该版本于 2021 年 5 月 13 日发布。
+
+该版本修复了用户设备的系统时间不准时导致实时房间的延迟出现异常的问题。
+
+## 2.12.16 版
+
+该版本于 2021 年 5 月 11 日发布。
+
+#### 新增
+
+该版本新增如下特性：
+
+- 动态 PPT 支持设置图片透明度。
+- 动态 PPT 支持将 SmartArt 展示为图片（暂不支持 SmartArt 动画）。
+- 动态 PPT 支持图表
+
+#### 修复
+
+该版本修复了如下问题：
+
+- 调用 `room.insertPlugin` 时 `selectable` 字段不生效。
+- 动态 PPT 部分元素内容缺失可能会导致渲染失败。
+- 在动态 PPT 上使用画笔可能不生效。
+
+## 2.12.15 版
+
+该版本于 2021 年 4 月 28 日发布。
+
+### 新增特性
+
+该版本新增 `changeToClick` 和 `changeToText`，分别设置快速切换到点选工具（`clicker`）和文字工具（`text`）的快捷键。
+
+### 改进
+
+该版本优化了动态 PPT 的加载速度。
+
+### 问题修复
+
+该版本修复了暂停白板回放后，动态 PPT 内媒体文件没有停止播放的问题。
+
+## 2.12.14 版
+
+该版本于 2021 年 4 月 22 日发布。
+
+### 新增特性
+
+该版本新增音视频裁剪功能。
+
+### 改进
+
+该版本优化了动态 PPT 的预加载逻辑。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 预览 PPT 页面时，页面上的音视频播放条没有显示。
+- 部分情况下，`room.state.cameraState` 更新不及时。
+
+## 2.12.13 版
+
+该版本于 2021 年 4 月 21 日发布。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 在白板回放过程中频繁调用 `seekToProgressTime` 方法，可能会出现异常。
+- 部分情况下，文本框在编辑模式和非编辑模式之间的切换不及时。
+
+## 2.12.12 版
+
+该版本于 2021 年 4 月 16 日发布。
+
+### 改进
+
+该版本有如下改进：
+
+- 提高了动态 PPT 的颜色兼容性。
+- 优化了动态 PPT 的分散对齐和两端对齐功能。
+- 优化了动态 PPT 文本缩进的显示。
+
+## 2.12.11 版
+
+该版本于 2021 年 4 月 15 日发布。
+
+### 新增特性
+
+该版本的新增特性如下：
+
+- 新增 `syncBlockTimstamp` 方法，用于设置发送白板内容的延时。该方法可以用于保证白板内容与音视频同步发送。
+- 新增 `customInput` 接口，用于设置自定义输入源。
+
+### 改进
+
+该版本优化了 `canvas` 渲染模式下的显示性能。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- `InvisiblePlugin` 部分情况下的异常行为。
+- 放大或缩小视角之后，文字的位置可能错位。
+
+## 2.12.9 版
+
+该版本于 2021 年 4 月 9 日发布。
+
+### 新增特性
+
+该版本支持在白板回放房间使用 Token 鉴权。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 某些情况下已经消失的光标会再次出现。
+- 在某些低版本浏览器中，`canvas` 渲染引擎对图像的渲染不准确。
+
+## 2.12.8 版
+
+该版本于 2021 年 4 月 6 日发布。
+
+### 改进
+
+该版本优化了日志的上报逻辑。
+
+### 问题修复
+
+该版本修复了设置跟随者模式无法立即生效的问题。
+
+## 2.12.7 版
+
+该版本于 2021 年 3 月 31 日发布，修复了如下问题：
+
+- 动态 PPT 中同时有动画出现和动画消失时，图形显示不完整。
+- 动态 PPT 中的部分动画和公式无法识别，导致出现白屏。
+
+## 2.12.6 版
+
+该版本于 2021 年 3 月 29 日发布，修复了部分组件有时消失不见的问题。
+
+## 2.12.5 版
+
+该版本于 2021 年 3 月 20 日发布。
+
+### 新增特性
+
+为优化笔迹显示，该版本新增笔锋效果。你可以在构造 `joinRoomParams` 时，设置 `disableNewPencil` 为 `false`/`true` 以关闭/开启笔峰效果。
+
+:::warning[注意]
+为正常显示笔迹，在开启笔峰效果前，请确保该房间内的所有用户使用如下 SDK：
+
+- Android SDK 2.12.2 版或之后
+- iOS SDK 2.12.3 版或之后
+- Web SDK 2.12.5 版或之后
+:::
+
+### 改进
+
+该版本改进了文字工具。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 特定场景下，动态 PPT 出现白屏。
+- 在支持 ES6 的浏览器上使用白板时，`Symbol` 对象使用异常。
+- 铅笔工具绘制的笔迹出现视觉问题。
+
+## 2.12.2 版
+
+该版本于 2021 年 3 月 04 日发布，优化了网络连接。
+
+## 2.12.1 版
+
+该版本于 2021 年 3 月 04 日发布，修复了 `onPPTLoadProgress` 报告的文档转换任务进度不准的问题。
+
+## 2.12.0 版
+
+该版本于 2021 年 2 月 26 日发布。
+
+### 新增特性
+
+该版本新增特性如下：
+
+- 为丰富图形绘制工具，该版本在 `ShapeType` 新增以下枚举值：
+	- `triangle`：三角形
+	- `rhombus`：菱形
+	- `pentagram`：五角星
+	- `speechBalloon`：备注气泡
+
+- 浮动条新增**图层**按钮，可以用于置顶 / 置底图片。
+- 浮动条新增**复刻**按钮。
+- `Displayer`、`JoinRoomParams` 和 `ReplayRoomParams` 中新增配置项 `disableOthersSelectingBox`，可用于隐藏/显示其他用户的选择框。
+- `ImageInformation` 中新增 `uniformScale`，用于设置图片为等比例缩放。
+- 支持使用服务器端换行引擎排版结果。
+
+### 改进
+
+- 优化了浮动条的图标，以加快加载速度。
+- 使用文字工具书写文字后，不会自动切换到选择工具。
+- 互动模式的用户全部离开白板房间后，如果白板上有 PPT，则白板播放器自动聚焦在 PPT 上。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 偶现的动态 PPT 转换无法预览的问题。
+- 部分高亮选择器的层级渲染错误。
+- 拖动物体时判定范围可能发生错误。
+- 渲染矩形时，有时四个角会在圆角、直角之间来回切换。
+- 内部组件渲染出错，导致动态 PPT 整体不可见。
+
+## 2.12.0 版之前
+
+关于更多版本的发版说明，详见[版本历史](https://developer.netless.link/javascript-zh/home/js-changelog)。
+
+:::warning[注意]
+2.6.4 及之前版本已经停止维护，建议升级到最新版本。
+:::
+
+</PlatformStructured>

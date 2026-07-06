@@ -1,0 +1,614 @@
+---
+title: "事件类型"
+---
+开通声网消息通知后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+本页介绍频道事件回调中返回的各事件类型及含义。
+
+## 请求 Header
+
+消息通知回调的请求 Header 中包含以下字段：
+
+| 字段名               | 值                                                           |
+| :------------------- | :----------------------------------------------------------- |
+| `Content-Type`       | application/json                                             |
+| `Agora-Signature`    | 声网用客户密钥和 HMAC/SHA1 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/ai/webhook/enable-ncs#验证签名)。 |
+| `Agora-Signature-V2` | 声网用客户密钥和 HMAC/SHA256 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/ai/webhook/enable-ncs#验证签名)。 |
+
+## 请求 Body
+
+消息通知回调的请求 Body 包含以下字段：
+
+| 字段        | 类型        | 描述                                                         |
+| :---------- | :---------- | :----------------------------------------------------------- |
+| `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。           |
+| `productId` | Number      | 业务 ID。值为 `17` 表示对话式 AI 引擎业务。                         |
+| `eventType` | Number      | 通知的事件类型。详见[事件类型](#eventtype)。 |
+| `notifyMs`  | Number      | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。通知**重试**时该值会更新。 |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[事件类型](#eventtype)。 |
+
+消息通知回调的请求 Body 示例：
+
+```json
+{
+    "noticeId": "2000001428:4330:107",
+    "productId": 17,
+    "eventType": 101,
+    "notifyMs": 1611566412672,
+    "payload": {...}
+}
+```
+
+<a id="eventtype"></a>
+## 事件类型
+
+声网消息通知服务可以通知对话式 AI 引擎服务中的以下事件：
+
+| eventType | event_name | 事件描述 |
+| --- | --- | --- |
+| [101](#101) | `agent joined` | 智能体加入频道。 |
+| [102](#102) | `agent left` | 智能体离开频道。 |
+| [103](#103) | `agent history` | <Slot name="ncs-events-html-0-3-2" /> |
+| [104](#104) | `agent expire` | RTC Token 即将过期预警。 |
+| [110](#110) | `agent error` | 智能体错误。 |
+| [111](#111) | `agent metrics` | 智能体性能指标。 |
+| [112](#112) | `turns finished` | 会话结束后批量回调对话轮次数据。 |
+
+<Slot for="ncs-events-html-0-3-2">
+
+智能体停止后回调其储存的短期记忆（最大条数由[创建智能体](https://doc.shengwang.cn/doc/convoai/restful/convoai/operations/start-agent#llm-max_history)时传入的 `llm.max_history` 参数决定，默认为 32 条），包括以下信息：
+
+    - 用户和智能体对话消息
+    - 智能体创建和停止的时间戳
+
+</Slot>
+
+<a id="101"></a>
+### 101 agent joined
+
+`eventType` 为 `101` 表示智能体加入频道，`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                                |
+| :------------ | :------- | :-------------------------------------------------- |
+| `agent_id` | String   | 智能体 ID。                                            |
+| `name` | String   | 智能体名称。 |
+| `start_ts`          | Number   | 智能体创建并加入频道的时间戳。 |
+| `channel` | String   | 智能体所在频道名。                                            |
+| `labels` | Object   | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "channel": "xxxxx",
+    "labels": {
+        "campaign_id": "test_campaign",
+        "customer_group": "vip"
+    }
+}
+```
+
+<a id="102"></a>
+### 102 agent left
+
+`eventType` 为 `102` 表示智能体离开频道，`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                                |
+| :------------ | :------- | :-------------------------------------------------- |
+| `agent_id` | String   | 智能体 ID。                                            |
+| `name` | String   | 智能体名称。 |
+| `start_ts`          | Number   | 智能体创建并加入频道的时间戳。 |
+| `stop_ts` | Number   | 智能体停止并离开频道的时间戳。 |
+| `channel` | String   | 智能体所在频道名。                                            |
+| `status` | String   | 智能体状态。 |
+| `message` | String   | 智能体离开频道的原因。 |
+| `labels` | Object   | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+
+智能体因不同原因离开频道的 `payload` 示例：
+
+```json tab="手动停止智能体" tabGroup="102"
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "stop_ts": 1737111455,
+    "channel": "xxxxx",
+    "status": "STOPPED",
+    "message": "OK"
+}
+```
+
+```json tab="智能体空闲超时" tabGroup="102"
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "stop_ts": 1737111455,
+    "channel": "xxxxx",
+    "status": "STOPPED",
+    "message": "Idle for too long"
+}
+```
+
+```json tab="任务存活超限" tabGroup="102"
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "stop_ts": 1737111455,
+    "channel": "xxxxx",
+    "status": "STOPPED",
+    "message": "Task lifetime limit exceeded"
+}
+```
+
+```json tab="智能体出错" tabGroup="102"
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "stop_ts": 1737111455,
+    "channel": "xxxxx",
+    "status": "FAILED",
+    "message": "Connecting for too long"
+}
+```
+
+```json tab="RTC 连接出错" tabGroup="102"
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "stop_ts": 1737111455,
+    "channel": "xxxxx",
+    "status": "FAILED",
+    "message": "RTC connection error"
+}
+```
+
+<a id="103"></a>
+### 103 agent history
+
+`eventType` 为 `103` 表示用户和智能体对话的短期记忆，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 智能体 ID。 |
+| `name` | String | 智能体名称。 |
+| `channel` | String | 智能体所在频道名。 |
+| `start_ts` | Number | 智能体创建并加入频道的时间戳。 |
+| `stop_ts` | Number | 智能体停止并离开频道的时间戳。 |
+| `contents` | Array[Object] | <Slot name="ncs-events-html-1-6-2" /> |
+| `labels` | Object | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+
+<Slot for="ncs-events-html-1-6-2">
+
+用户和智能体对话的短期记忆。包含以下字段：
+
+    - `role`：消息发送角色，包括以下值：
+      - `user`：用户。
+      - `assistant`：智能体。
+    - `content`：消息内容。
+    - `speech_start_ms`：用户说话或 TTS 播报开始时间戳，单位为毫秒（Unix 时间戳）。
+    - `speech_end_ms`：用户说话或 TTS 播报完成或被打断，单位为毫秒（Unix 时间戳）。
+    - `speech_algorithmic_delay`：算法处理时延，单位为毫秒。
+      - 仅当 `contents[].role = user` 且存在实际语音输入时返回。
+      - 表示音频从用户设备麦克风采集后，经过降噪、背景人声消除、声纹锁定等算法处理引入的总延迟，可用于进一步对齐云录制原始音频的时间戳。
+    :::info[信息]
+    `speech_start_ms`、`speech_end_ms` 和 `speech_algorithmic_delay` 仅在 `llm.vendor = custom` 的 `103` agent history 事件中返回。
+    :::
+
+</Slot>
+
+`payload` 示例：
+
+<Tabs defaultValue="default" groupId="103-payload-example" persist>
+<TabsList>
+  <TabsTrigger value="default">默认示例</TabsTrigger>
+  <TabsTrigger value="custom">llm.vendor = custom</TabsTrigger>
+</TabsList>
+
+<TabsContent value="default">
+
+```json
+{
+    "agent_id": "xxxx",
+    "name": "support_agent_001",
+    "channel": "xxxx",
+    "start_ts": 123,
+    "stop_ts": 123,
+    "contents": [
+        {
+            "role": "user",
+            "content": "hello."
+        },
+        {
+            "role": "assistant",
+            "content": "hi, how can I help you?",
+        }
+    ],
+    "labels": {
+        "campaign_id": "test_campaign",
+        "customer_group": "vip"
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="custom">
+
+当 `llm.vendor = custom` 时，`contents` 中的消息对象可能额外包含语音时间相关字段，示例如下：
+
+```json
+{
+    "agent_id": "xxxx",
+    "name": "support_agent_001",
+    "channel": "xxxx",
+    "start_ts": 1715000000,
+    "stop_ts": 1715000060,
+    "contents": [
+        {
+            "role": "assistant",
+            "content": "Hello, welcome to the AI customer service. How can I help you?",
+            "speech_start_ms": 1715000001200, // TTS 第一帧推流时刻（ms）
+            "speech_end_ms": 1715000004800 // TTS 播报完成推算时刻（ms）
+        },
+        {
+            "role": "user",
+            "content": "", // ASR 文本为空，但用户确实发声
+            "speech_start_ms": 1715000004900, // 用户实际开口时刻（ms）
+            "speech_end_ms": 1715000005100, // 用户实际停口时刻（ms）
+            "speech_algorithmic_delay": 120 // 算法处理时延（ms），仅 role=user，用于进一步对齐云录制原始音频时间戳
+        },
+        {
+            "role": "user",
+            "content": "I'd like to check the status of my package, tracking number 12345.",
+            "speech_start_ms": 1715000005200, // 用户实际开口时刻（ms）
+            "speech_end_ms": 1715000007600, // 用户实际停口时刻（ms）
+            "speech_algorithmic_delay": 120 // 算法处理时延（ms），仅 role=user，用于进一步对齐云录制原始音频时间戳
+        },
+        {
+            "role": "assistant",
+            "content": "Your package with tracking number 12345 is currently out for delivery.",
+            "speech_start_ms": 1715000009500, // TTS 第一帧推流时刻（ms）
+            "speech_end_ms": 1715000013200 // 被打断时刻（ms）
+        },
+        {
+            "role": "user",
+            "content": "[think API injected] User level: VIP"
+            // think 类消息：无 speech_* 字段
+        }
+    ],
+    "labels": {
+        "campaign_id": "test_campaign"
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+<a id="104"></a>
+### 104 agent expire
+
+`eventType` 为 `104` 表示智能体使用的 RTC Token 即将过期，`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                                |
+| :------------ | :------- | :-------------------------------------------------- |
+| `agent_id` | String   | 智能体任务唯一 ID。 |
+| `name` | String   | 创建任务时传入的 `name` 参数。 |
+| `start_ts` | Number   | 任务启动时间戳。 |
+| `channel` | String   | 智能体所在 RTC 频道名。 |
+| `message` | String   | RTC token 即将过期提醒。固定值：`Token will expire!`。 |
+
+`payload` 示例：
+
+```json
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "name": "support_agent_001",
+  "start_ts": 1737111452,
+  "channel": "xxxxx",
+  "message": "Token will expire!"
+}
+```
+
+:::info[信息]
+当智能体使用的 RTC Token 即将过期时，平台会主动向开发者服务器推送 `104` 事件。该事件仅用于预警，智能体不会退出频道，也不会中断服务。收到该事件后，你可以立即调用 [POST 更新智能体配置](../convoai/operations/agent-update) 接口，并传入新的 `properties.token` 完成 Token 刷新。
+:::
+
+<a id="110"></a>
+### 110 agent error
+
+`eventType` 为 `110` 表示智能体出错，`payload` 中包含以下字段：
+
+export const TableHeadermryrot94ej = [
+  {
+    label: '字段'
+  },
+  {
+    label: '数据类型'
+  },
+  {
+    label: '含义'
+  }
+];
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 智能体 ID。 |
+| `name` | String | 智能体名称。 |
+| `start_ts` | Number | 智能体创建并加入频道的时间戳。 |
+| `channel` | String | 智能体所在频道名。 |
+| `turn_id` | String | 字幕对话轮次，详见[实时字幕 API 参考](/zh-CN/ai/user-guides/realtime-sub#api-参考)。 |
+| `errors` | Array | <Slot name="ncs-events-html-2-6-2" /> |
+| `labels` | Object | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+
+<Slot for="ncs-events-html-2-6-2">
+
+错误信息。包含以下字段：
+
+    - `module`：错误发生的模块。
+    - `turn_id`：字幕对话轮次。
+    - `code`：错误码。你可以前往错误模块对应供应商的错误码文档查看详细信息。
+    - `message`：错误信息。
+
+</Slot>
+
+智能体出错时返回的 `payload` 示例：
+
+<Tabs defaultValue="default" groupId="agent-error-payload" persist>
+<TabsList>
+  <TabsTrigger value="default">default</TabsTrigger>
+  <TabsTrigger value="greeting-audio">录音开场白异常</TabsTrigger>
+</TabsList>
+
+<TabsContent value="default">
+
+```json
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "support_agent_001",
+    "start_ts": 1737111452,
+    "channel": "xxxxx",
+    "turn_id": 2,
+    "errors": [{"module": "llm", "turn_id":2, "code":503, "message": "Insufficient balance."}],
+}
+```
+
+</TabsContent>
+
+<TabsContent value="greeting-audio">
+
+录音开场白下载失败、超时、格式不支持或解码失败时，也会通过 `110 agent error` 事件上报错误信息。此类错误中，`errors[].module` 为 `agent`，你可以结合 `message` 中的具体原因判断是否发生了录音开场白回退。
+
+```json
+{
+    "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+    "name": "outbound_voice_agent",
+    "start_ts": 1737111452,
+    "channel": "outbound_call_channel_001",
+    "turn_id": 0,
+    "errors": [
+        {
+            "module": "agent",
+            "turn_id": 0,
+            "code": 4001,
+            "message": "Greeting audio URL unreachable, fallback to TTS. audio_url: https://cdn.example.com/audio/welcome.mp3"
+        }
+    ],
+    "labels": {}
+}
+```
+
+</TabsContent>
+</Tabs>
+
+上述 `110 agent error` 为服务端 Webhook / RTM 错误事件。如果你在创建智能体时同时开启了 `parameters.enable_error_message = true`，相关异常还会额外通过 RTM 消息错误事件下发到客户端组件的 `onMessageError` 回调中，便于你在端侧记录日志、展示错误提示或触发自定义降级逻辑。
+
+<a id="111"></a>
+### 111 agent metrics
+
+`eventType` 为 `111` 表示智能体性能指标，`payload` 中包含以下字段：
+
+export const TableHeadermetrics111 = [
+  {
+    label: '字段'
+  },
+  {
+    label: '数据类型'
+  },
+  {
+    label: '含义'
+  }
+];
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 智能体 ID。 |
+| `name` | String | 智能体名称。 |
+| `start_ts` | Number | 智能体创建并加入频道的时间戳。 |
+| `stop_ts` | Number | 智能体停止并离开频道的时间戳。 |
+| `channel` | String | 智能体所在频道名。 |
+| `metrics` | Array[Object] | <Slot name="ncs-events-html-3-6-2" /> |
+| `labels` | Object | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+
+<Slot for="ncs-events-html-3-6-2">
+
+性能指标数组。每个对象包含以下字段：
+
+    - `turn_id`：对话轮次 ID。
+    - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从用户说话结束到 ASR 输出最后一个词的延迟时间（ms）。
+    - `llm_ttfb`：LLM 模块的 ttfb（Time To First Byte）指标，表示从 LLM 请求开始到收到第一个字节的响应延迟时间（ms）。
+    - `llm_ttfs`：LLM 模块的 ttfs（Time To First Sentence）指标，表示从 LLM 请求开始到收到第一个完整句子的响应所经过的时间（ms）。
+    - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 请求开始到收到第一个字节的响应延迟时间（ms）。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "A42AC47Hxxxxxxxx4PK27ND25E",
+    "name": "support_agent_001",
+    "start_ts": 1000,
+    "stop_ts": 1672531200,
+    "channel": "test-channel",
+    "metrics": [
+        {
+            "turn_id": 1,
+            "tts_ttfb": 61
+        },
+        {
+            "turn_id": 2,
+            "asr_ttlw": 141,
+            "llm_ttfb": 270,
+            "llm_ttfs": 482,
+            "tts_ttfb": 90,
+        },
+        {
+            "turn_id": 3,
+            "asr_ttlw": 103,
+            "llm_ttfb": 306,
+            "llm_ttfs": 948,
+            "tts_ttfb": 106,
+        }
+    ],
+    "labels": {
+        "campaign_id": "test_campaign",
+        "customer_group": "vip"
+    }
+}
+```
+
+<a id="112"></a>
+### 112 turns finished
+
+`eventType` 为 `112` 表示会话结束后批量回调对话轮次数据。该事件用于在单次回调中返回当前会话的对话轮次集合，便于你在会话结束后统一进行分析、归档或离线处理。
+
+单包 `turns` 数量阈值建议设置为 `200`。当单次回调未返回完整轮次数据时，可通过 `is_truncated` 字段判断当前回调结果是否被截断。
+
+`payload` 中包含以下字段：
+
+export const TableHeaderturn112 = [
+  {
+    label: '字段'
+  },
+  {
+    label: '数据类型'
+  },
+  {
+    label: '含义'
+  }
+];
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | String | 智能体 ID。 |
+| `name` | String | 智能体名称。 |
+| `channel` | String | 频道名。 |
+| `start_ts` | Number | 智能体加入频道的时间戳。 |
+| `stop_ts` | Number | 智能体离开频道的时间戳。 |
+| `total_turn_count` | Number | 该会话的对话轮次总数。 |
+| `is_truncated` | Boolean | 当前回调中的 `turns` 数据是否被截断。为 `true` 时表示本次回调未返回全部轮次。 |
+| `labels` | Object | 自定义标签。仅在创建智能体时传入了 `labels` 字段才会返回。 |
+| `turns` | Array[Object] | 对话轮次列表。 |
+| `turn_id` | Number | `turns` 数组中单个对话轮次的 ID，严格整形，频道内递增唯一标识。 |
+| `start` | Object | <Slot name="ncs-events-html-4-11-2" /> |
+| `end` | Object | <Slot name="ncs-events-html-4-12-2" /> |
+| `metrics` | Object | <Slot name="ncs-events-html-4-13-2" /> |
+
+<Slot for="ncs-events-html-4-11-2">
+
+`turns` 数组中单个对话轮次开始的相关信息。包含以下字段：
+
+    - `start_at`：Unix 时间戳，精确到毫秒，UTC 时区。
+    - `type`：对话轮次开始类型，包括以下值：
+      - `greeting`：问候语。
+      - `silence_timeout`：静音超时。
+      - `api_speak`：API 调用说话。
+      - `api_think`：API 调用思考。
+      - `voice_input`：语音输入。
+    - `metadata`：元数据对象，包含以下字段：
+      - `speech_duration_ms`：语音时长（ms）。
+      - `interrupt_duration_ms`：打断时长（ms）。
+
+</Slot>
+
+<Slot for="ncs-events-html-4-12-2">
+
+`turns` 数组中单个对话轮次结束的相关信息。包含以下字段：
+
+    - `end_at`：Unix 时间戳，精确到毫秒，UTC 时区。
+    - `type`：对话轮次结束类型，包括以下值：
+      - `ok`：正常结束。
+      - `error`：错误结束。
+      - `ignored`：被忽略。
+      - `interrupted`：被中断。
+    - `metadata`：元数据对象。
+
+</Slot>
+
+<Slot for="ncs-events-html-4-13-2">
+
+`turns` 数组中单个对话轮次的统计指标。包含以下字段：
+
+    - `e2e_latency_ms`：端到端延迟（ms），代表从用户说话结束到听到智能体开口说话的延迟时间。
+    - `segmented_latency_ms`：分段延时对象，包含以下字段：
+      - `algorithm_processing`：算法处理时间（ms），代表从用户说话结束的实际时间到判定出用户说话结束的延迟时间。
+      - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从检测到用户说话结束到 ASR 输出最后一个词的延迟时间。
+      - `llm_ttft`：LLM 模块的 ttft（Time To First Token）指标，表示从 LLM 收到请求到输出第一个 token 的延迟时间。
+      - `llm_ftfs`：LLM 模块的 ftfs（First token To First Sentence）指标，表示从 LLM 输出第一个 token 到输出第一个完整句子的延迟时间。
+      - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 模块收到文本请求开始到 TTS 输出第一个音频字节的延迟时间。
+      - `transport`：网络传输延迟 (ms)。目前，当用户使用 RTC Web SDK 时，不返回该字段。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "xxxx",
+    "name": "support_agent_001",
+    "channel": "xxxx",
+    "start_ts": 1715000000000,
+    "stop_ts": 1715000015000,
+    "total_turn_count": 250,
+    "is_truncated": true,
+    "labels": {
+        "campaign_id": "test_campaign",
+        "customer_group": "vip"
+    },
+    "turns": [
+        {
+            "agent_id": "xxxx",
+            "channel": "xxxx",
+            "turn_id": 1,
+            "start": {
+                "start_at": 1774579820147,
+                "type": "voice_input"
+            },
+            "end": {
+                "end_at": 1774579822412,
+                "type": "ok"
+            },
+            "metrics": {
+                "e2e_latency_ms": 1500,
+                "segmented_latency_ms": {
+                    "algorithm_processing": 300,
+                    "asr_ttlw": 200,
+                    "llm_ttft": 600,
+                    "tts_ttfb": 200,
+                    "transport": 300
+                }
+            }
+        }
+    ]
+}
+```
+
+<a id="201"></a>

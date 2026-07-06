@@ -1,0 +1,2085 @@
+---
+title: "结构体"
+---
+<a id="convoaiconfig"></a>
+## ConvoAIConfig
+
+```java
+public class ConvoAIConfig {
+
+    private final String appId;
+    private final Credential credential;
+    private final DomainArea domainArea;
+    private final HttpProperty httpProperty;
+    private final ConvoAIServiceRegionEnum serviceRegion;
+
+    public static class Builder {
+
+        private String appId;
+        private Credential credential;
+        private DomainArea domainArea;
+        private HttpProperty httpProperty;
+        private ConvoAIServiceRegionEnum serviceRegion;
+
+        public Builder appId(String appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        public Builder credential(Credential credential) {
+            this.credential = credential;
+            return this;
+        }
+
+        public Builder domainArea(DomainArea domainArea) {
+            this.domainArea = domainArea;
+            return this;
+        }
+
+        public Builder httpProperty(HttpProperty httpProperty) {
+            this.httpProperty = httpProperty;
+            return this;
+        }
+
+        public Builder serverRegion(ConvoAIServiceRegionEnum serverRegion) {
+            this.serviceRegion = serverRegion;
+            return this;
+        }
+
+        public ConvoAIConfig build() {
+            if (httpProperty == null) {
+                this.httpProperty = HttpProperty.builder().build();
+            }
+            return new ConvoAIConfig(this);
+        }
+    }
+}
+```
+
+用于配置对话式智能体引擎客户端。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `appId` | `String` | 声网 App ID。 |
+| `credential` | `Credential` | <Slot name="struct-java-html-0-2-2" /> |
+| `domainArea` | `DomainArea` | REST Client 的域名区域，详见 [`DomainArea`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#domainarea)。 |
+| `httpProperty` | `HttpProperty` | REST Client 的 HTTP 属性。详见 [`HttpProperty`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#httpproperty)。 |
+| `serviceRegion` | `ConvoAIServiceRegionEnum` | 对话式智能体引擎的服务区域，详见 [`ConvoAIServiceRegionEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#convoaiserviceregionenum)。 |
+
+<Slot for="struct-java-html-0-2-2">
+
+用于访问声网服务的身份凭据。可用的凭据类型：
+
+    - [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential.java)，详见 [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/client-toolkit/basicauthcredential.java)。
+
+</Slot>
+
+<a id="properties"></a>
+## Properties
+
+```java
+public static class Properties {
+@JsonProperty("token")
+private String token;
+@JsonProperty("channel")
+private String channel;
+@JsonProperty("agent_rtc_uid")
+private String agentRtcUId;
+@JsonProperty("remote_rtc_uids")
+private List<String> remoteRtcUIds;
+@JsonProperty("enable_string_uid")
+private Boolean enableStringUId;
+@JsonProperty("idle_timeout")
+private Integer idleTimeout;
+@JsonProperty("agent_rtm_uid")
+private String agentRtmUId;
+@JsonProperty("advanced_features")
+private AdvancedFeatures advancedFeatures;
+@JsonProperty("llm")
+private LLMPayload llmPayload;
+@JsonProperty("tts")
+private TTSPayload ttsPayload;
+@JsonProperty("vad")
+private VADPayload vadPayload;
+@JsonProperty("asr")
+private ASRPayload asrPayload;
+@JsonProperty("parameters")
+private Map<String, Object> parameters;
+}
+```
+
+配置智能体加入实时音视频频道的参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `String` | （可选）用于加入实时音视频频道的 Token，即用于身份验证的动态密钥。如果项目启用了 App 证书，必须通过该字段传入动态密钥。 |
+| `channel` | `String` | （必填）智能体加入的实时音视频频道名称。 |
+| `agentRtcUId` | `String` | （必填）智能体在实时音视频频道中的用户 ID。填入 "0" 表示由系统随机分配，此时需要相应地修改 `token`。 |
+| `remoteRtcUIds` | `List<String>` | （必填）智能体在实时音视频频道中订阅的用户 ID 列表。仅订阅的用户可以与智能体进行交互。传入 "*" 表示订阅频道内所有用户。 |
+| `enableStringUId` | `Boolean` | <Slot name="struct-java-html-1-5-2" /> |
+| `idleTimeout` | `Integer` | （可选）频道的最大空闲时间（秒）。当 `remote_rtc_uids` 中所有用户离开频道后开始计时，若超过设定的最大值，智能体将自动停止并退出频道。设为 0 表示仅在手动退出时智能体才停止。 |
+| `agentRtmUId` | `String` | 智能体在实时消息频道中的用户 ID。仅当 `advancedFeatures.enable_rtm` 为 `true` 时有效。 |
+| `advancedFeatures` | `AdvancedFeatures` | （可选）高级功能配置。详见 [`AdvancedFeatures`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#advancedfeatures)。 |
+| `llmPayload` | `LLMPayload` | （必填）自定义语言模型（LLM）配置。详见 [`LLMPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#llmpayload)。 |
+| `ttsPayload` | `TTSPayload` | （可选）文本转语音（TTS）模块配置。详见 [`TTSPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#ttspayload)。 |
+| `vadPayload` | `VADPayload` | （可选）语音活动检测（VAD）配置。详见 [`VADPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#vadpayload)。 |
+| `asrPayload` | `ASRPayload` | （可选）自动语音识别（ASR）配置。详见 [`ASRPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#asrpayload)。 |
+| `parameters` | `Map<String, Object>` | 自定义参数配置。 |
+
+<Slot for="struct-java-html-1-5-2">
+
+（可选）是否启用字符串 UID。
+
+    - `true`：启用字符串 UID。
+    - `false`：（默认）不启用字符串 UID。
+
+</Slot>
+
+<a id="advancedfeatures"></a>
+## AdvancedFeatures
+
+```java
+public static class AdvancedFeatures {
+    @JsonProperty("enable_aivad")
+    private Boolean enableAIVad;
+    @JsonProperty("enable_rtm")
+    private Boolean enableRtm;
+    @JsonProperty("enable_mllm")
+    private Boolean enableMLLM;
+}
+```
+
+配置智能体加入 RTC 频道时的高级功能。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `enableAIVad` | `Boolean` | <Slot name="struct-java-html-2-1-2" /> |
+| `enableRtm` | `Boolean` | <Slot name="struct-java-html-2-2-2" /> |
+| `enableMLLM` | `Boolean` | <Slot name="struct-java-html-2-3-2" /> |
+
+<Slot for="struct-java-html-2-1-2">
+
+是否启用自然中断功能（AIVAD）。
+
+    - `true`：启用。你可以在任何时候中断智能体并快速响应，实现自然的过渡与流畅的对话。
+    - `false`：（默认）不启用。
+
+</Slot>
+
+<Slot for="struct-java-html-2-2-2">
+
+是否启用 Real-time Messaging（RTM）模块。
+
+    - `true`：启用。智能体可以使用 RTM 提供的能力来实现某些高级功能。
+    - `false`：（默认）不启用。
+
+</Slot>
+
+<Slot for="struct-java-html-2-3-2">
+
+是否启用多模态大语言模型。
+
+    - `true`：启用。
+    - `false`：禁用（默认）。
+    启用多模态大语言模型将自动禁用 `ASR`、`LLM` 和 `TTS`。当该参数设置为 `true` 时，`enable_aivad` 也将被禁用。
+
+</Slot>
+
+<a id="llmpayload"></a>
+## LLMPayload
+
+```java
+public static class LLMPayload {
+    @JsonProperty("url")
+    private String url;
+    @JsonProperty("api_key")
+    private String apiKey;
+    @JsonProperty("system_messages")
+    private List<Map<String, Object>> systemMessages;
+    @JsonProperty("params")
+    private HashMap<String, Object> params;
+    @JsonProperty("max_history")
+    private Integer maxHistory;
+    @JsonProperty("greeting_message")
+    private String greetingMessage;
+    @JsonProperty("input_modalities")
+    private List<String> inputModalities;
+    @JsonProperty("output_modalities")
+    private List<String> outputModalities;
+    @JsonProperty("failure_message")
+    private String failureMessage;
+}
+```
+
+用于配置智能体加入 RTC 频道时的大型语言模型（LLM）参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `url` | `String` | （必填）LLM 回调地址，需兼容 OpenAI 协议。 |
+| `apiKey` | `String` | （必填）用于验证 LLM 的 API 密钥。生产环境中必须启用 API 密钥。 |
+| `systemMessages` | `List<Map<String, Object>>` | （可选）在每次大型语言模型调用开始时附加的一组预设信息，用于控制模型输出。可以包含角色设置、提示词和回答示例，必须兼容 OpenAI 协议。 |
+| `params` | `HashMap<String, Object>` | （可选）在大型语言模型消息体中传输的附加信息，如所使用的模型、最大 token 限制等。不同的 LLM 提供商支持不同的配置，详见各自的 LLM 文档。 |
+| `maxHistory` | `Integer` | （可选）缓存于大型语言模型中的短期记忆条目数量。默认值为 10。传入 0 表示不缓存短期记忆，智能体和订阅用户将分别记录条目。 |
+| `greetingMessage` | `String` | （可选）智能体的欢迎语消息。若设置此字段，当 `remote_rtc_uids` 列表为空时，智能体会自动向第一个加入频道的订阅用户发送欢迎语。 |
+| `inputModalities` | `List<String>` | <Slot name="struct-java-html-3-7-2" /> |
+| `outputModalities` | `List<String>` | <Slot name="struct-java-html-3-8-2" /> |
+| `failureMessage` | `String` | （可选）智能体的失败提示消息。当大型语言模型调用失败时，将通过 TTS 模块返回此消息。 |
+
+<Slot for="struct-java-html-3-7-2">
+
+（可选）大型语言模型的输入模态。
+
+    - `["text"]`：仅文本（默认）。
+    - `["text", "image"]`：文本和图像，要求所选模型支持视觉模态输入。
+
+</Slot>
+
+<Slot for="struct-java-html-3-8-2">
+
+（可选）大型语言模型的输出模态。
+
+    - `["text"]`：仅文本（默认）。输出文本将通过 TTS 模块转为语音，并发布到 RTC 频道。
+    - `["audio"]`：仅音频。音频将直接发布到 RTC 频道。
+    - `["text", "audio"]`：文本和音频。你可以根据需要自定义处理 LLM 输出的逻辑。
+
+</Slot>
+
+<a id="ttspayload"></a>
+## TTSPayload
+
+```java
+public static class TTSPayload {
+    @JsonProperty("vendor")
+    private TTSVendorEnum vendor;
+
+    @JsonProperty("params")
+    private TTSVendorParams params;
+
+    @JsonProperty("skip_patterns")
+    private List<Integer> skipPatterns;
+}
+```
+
+配置智能体加入 RTC 频道所需的文本转语音（TTS）模块。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+用于配置 `TTS` 模块在智能体加入频道时的行为。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `vendor` | `TTSVendorEnum` | TTS 服务商。详见 [`TTSVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#ttsvendorenum)。 |
+| `params` | `TTSVendorParams` | TTS 服务商参数说明。详见 [`MinimaxTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendorparams)、[`TencentTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#tencentttsvendorparams)、[`BytedanceTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#bytedancettsvendorparams) 和 [`MicrosoftTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#microsoftttsvendorparams)。 |
+| `skipPatterns` | `List<Integer>` | <Slot name="struct-java-html-4-3-2" /> |
+
+<Slot for="struct-java-html-4-3-2">
+
+用于控制 `TTS` 模块在朗读 `LLM` 响应文本时是否跳过括号中的内容。该功能可避免朗读结构性提示信息，如语气标识、动作描述和系统提示，使听觉体验更加自然沉浸。通过指定一个或多个数值启用该功能：
+
+    - 1：跳过中文圆括号（ ）。
+    - 2：跳过中文方括号【】。
+    - 3：跳过英文圆括号 ()。
+    - 4：跳过英文方括号 [ ]。
+    - 5：跳过大括号 { }。
+
+</Slot>
+
+<a id="tencentttsvendorparams"></a>
+## TencentTTSVendorParams
+
+```java
+public static class TencentTTSVendorParams implements TTSVendorParams {
+    @JsonProperty("app_id")
+    private String appId;
+
+    @JsonProperty("secret_id")
+    private String secretId;
+
+    @JsonProperty("secret_key")
+    private String secretKey;
+
+    @JsonProperty("voice_type")
+    private Integer voiceType;
+
+    @JsonProperty("volume")
+    private Integer volume;
+
+    @JsonProperty("speed")
+    private Integer speed;
+
+    @JsonProperty("emotion_category")
+    private String emotionCategory;
+
+    @JsonProperty("emotion_intensity")
+    private Integer emotionIntensity;
+
+    @Override
+    public TTSVendorEnum getVendor() {
+        return TTSVendorEnum.TENCENT;
+    }
+}
+```
+
+用于配置 Tencent 文本转语音模块的参数。更多信息详见 [Tencent](https://cloud.tencent.com/document/product/1073/94308)。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+更多信息详见 [Tencent](https://cloud.tencent.com/document/product/1073/94308)。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `appId` | `String` | Tencent 云文本转语音的 `App ID`。 |
+| `secretId` | `String` | Tencent 云文本转语音的 `Secret ID`。 |
+| `secretKey` | `String` | Tencent 云文本转语音的 `Secret Key`。 |
+| `voiceType` | `Integer` | 语音类型。 |
+| `volume` | `Integer` | 音量大小。 |
+| `speed` | `Integer` | 语速。 |
+| `emotionCategory` | `String` | 情感类别。 |
+| `emotionIntensity` | `Integer` | 情感强度。 |
+
+<a id="vadpayload"></a>
+## VADPayload
+
+```java
+public static class VADPayload {
+    @JsonProperty("interrupt_duration_ms")
+    private Integer interruptDurationMs;
+    @JsonProperty("prefix_padding_ms")
+    private Integer prefixPaddingMs;
+    @JsonProperty("silence_duration_ms")
+    private Integer silenceDurationMs;
+    @JsonProperty("threshold")
+    private Float threshold;
+}
+```
+
+用于配置智能体加入 RTC 频道时的语音活动检测（VAD）参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+用于定义语音活动检测（VAD）参数，包括人声持续时长、前缀填充、静默时长和识别灵敏度等配置项。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `interruptDurationMs` | `Integer` | （可选）连续人声信号的最短持续时长，单位为毫秒，范围为 [120, 1200]。用于避免因短暂中断而错误终止语音检测。 |
+| `prefixPaddingMs` | `Integer` | （可选）触发新语音片段所需的最小人声音持续时长，单位为毫秒，范围为 [0, 5000]。用于避免因短促声音而误触发语音活动检测。 |
+| `silenceDurationMs` | `Integer` | （可选）语音末尾的最小静默时长，单位为毫秒，范围为 [0, 2000]。用于确保短暂停顿不会被误判为语音结束。 |
+| `threshold` | `Float` | （可选）语音识别灵敏度，范围为 (0.0, 1.0)。表示被认为是语音活动的音频信号强度阈值。值越小，越容易检测到语音；值越大，可能会忽略较弱的声音。 |
+
+<a id="asrpayload"></a>
+## ASRPayload
+
+```java
+public static class ASRPayload {
+    @JsonProperty("language")
+    private String language;
+    @JsonProperty("vendor")
+    private ASRVendorEnum vendor;
+    @JsonProperty("params")
+    private ASRVendorParams params;
+}
+```
+
+用于配置智能体加入 RTC 频道时的自动语音识别（ASR）设置。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `language` | `String` | <Slot name="struct-java-html-7-1-2" /> |
+| `vendor` | `ASRVendorEnum` | ASR 服务提供商，详见 [`ASRVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#asrvendorenum)。 |
+| `params` | `ASRVendorParams` | ASR 服务参数说明，详见 [`FengmingASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#fengmingasrvendorparams)、[`TencentASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#tencentasrvendorparams) 和 [`MicrosoftASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#microsoftasrvendorparams)。 |
+
+<Slot for="struct-java-html-7-1-2">
+
+（可选）用户与智能体之间交互使用的语言。
+
+    - `zh-CN`：中文（支持中英文混说）（默认值）。
+    - `en-US`：英文。
+
+</Slot>
+
+<a id="joinconvoaireq"></a>
+## JoinConvoAIReq
+
+```java
+public class JoinConvoAIReq {
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("properties")
+    private Properties properties;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private JoinConvoAIReq(Builder builder) {
+        setName(builder.name);
+        setProperties(builder.properties);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+}
+```
+
+用于调用对话式 AI 引擎 [`join`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#join) API 的请求体参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `name` | `String` | 智能体的唯一标识符，不可重复。 |
+| `properties` | `Properties` | 智能体的配置属性。详见 [`Properties`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#properties)。 |
+
+<a id="minimaxttsvendorparams"></a>
+## MinimaxTTSVendorParams
+
+```java
+public static class MinimaxTTSVendorParams implements TTSVendorParams {
+    @JsonProperty("group_id")
+    private String groupId;
+
+    @JsonProperty("key")
+    private String key;
+
+    @JsonProperty("model")
+    private String model;
+
+    @JsonProperty("audio_setting")
+    private MinimaxTTSVendorAudioSettingParam audioSetting;
+
+    @JsonProperty("voice_setting")
+    private MinimaxTTSVendorVoiceSettingParam voiceSetting;
+
+    @JsonProperty("pronunciation_dict")
+    private PronunciationDictParam pronunciationDict;
+
+    @JsonProperty("timber_weights")
+    private List<MinimaxTTSVendorTimberWeightParam> timberWeights;
+
+    @JsonProperty("language_boost")
+    private String languageBoost;
+}
+```
+
+用于配置 `Minimax` TTS 模块的参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+更多信息详见 [Minimax](https://platform.minimaxi.com/document/T2A%20V2)。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `groupId` | `String` | Group ID。 |
+| `key` | `String` | API 密钥。 |
+| `model` | `String` | 使用的模型标识。 |
+| `audioSetting` | `MinimaxTTSVendorAudioSettingParam` | 音频配置参数，详见 [`MinimaxTTSVendorAudioSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendoraudiosettingparam)。 |
+| `voiceSetting` | `MinimaxTTSVendorVoiceSettingParam` | 语音配置参数，详见 [`MinimaxTTSVendorVoiceSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendorvoicesettingparam)。 |
+| `pronunciationDict` | `PronunciationDictParam` | 发音词典参数。详见 [`PronunciationDictParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#pronunciationdictparam)。 |
+| `timberWeights` | `List<MinimaxTTSVendorTimberWeightParam>` | 音色权重参数。详见 [`MinimaxTTSVendorTimberWeightParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendortimberweightparam)。 |
+| `languageBoost` | `String` | 语言增强设置。 |
+
+<a id="minimaxttsvendoraudiosettingparam"></a>
+## MinimaxTTSVendorAudioSettingParam
+
+```java
+public static class MinimaxTTSVendorAudioSettingParam {
+    @JsonProperty("sample_rate")
+    private Integer sampleRate;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private MinimaxTTSVendorAudioSettingParam(Builder builder) {
+        setSampleRate(builder.sampleRate);
+    }
+
+    public Integer getSampleRate() {
+        return sampleRate;
+    }
+
+    public void setSampleRate(Integer sampleRate) {
+        this.sampleRate = sampleRate;
+    }
+
+    public static final class Builder {
+        private Integer sampleRate;
+
+        private Builder() {
+        }
+
+        public Builder sampleRate(Integer val) {
+            sampleRate = val;
+            return this;
+        }
+
+        public MinimaxTTSVendorAudioSettingParam build() {
+            return new MinimaxTTSVendorAudioSettingParam(this);
+        }
+    }
+}
+```
+
+Minimax 供应商的音频设置参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `sampleRate` | `Integer` | 采样率。 |
+
+<a id="minimaxttsvendorvoicesettingparam"></a>
+## MinimaxTTSVendorVoiceSettingParam
+
+```java
+public static class MinimaxTTSVendorVoiceSettingParam {
+    @JsonProperty("voice_id")
+    private String voiceId;
+
+    @JsonProperty("speed")
+    private Float speed;
+
+    @JsonProperty("vol")
+    private Float vol;
+
+    @JsonProperty("pitch")
+    private Integer pitch;
+
+    @JsonProperty("emotion")
+    private String emotion;
+
+    @JsonProperty("latex_read")
+    private Boolean latexRead;
+
+    @JsonProperty("english_normalization")
+    private Boolean englishNormalization;
+}
+```
+
+配置 `Minimax` 语音参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+用于配置 `Minimax` 厂商的语音合成参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `voiceId` | `String` | 语音 ID。 |
+| `speed` | `Float` | 语速。 |
+| `vol` | `Float` | 音量。 |
+| `pitch` | `Integer` | 音高。 |
+| `emotion` | `String` | 情绪。 |
+| `latexRead` | `Boolean` | <Slot name="struct-java-html-11-6-2" /> |
+| `englishNormalization` | `Boolean` | <Slot name="struct-java-html-11-7-2" /> |
+
+<Slot for="struct-java-html-11-6-2">
+
+是否朗读 LaTeX 内容。
+
+    - `true`：朗读 LaTeX 内容。
+    - `false`：（默认）不朗读 LaTeX 内容。
+
+</Slot>
+
+<Slot for="struct-java-html-11-7-2">
+
+是否对英文内容进行标准化处理。
+
+    - `true`：对英文内容进行标准化处理。
+    - `false`：（默认）不进行标准化处理。
+
+</Slot>
+
+<a id="bytedancettsvendorparams"></a>
+## BytedanceTTSVendorParams
+
+```java
+public static class BytedanceTTSVendorParams implements TTSVendorParams {
+    @JsonProperty("token")
+    private String token;
+    @JsonProperty("app_id")
+    private String appId;
+    @JsonProperty("cluster")
+    private String cluster;
+    @JsonProperty("voice_type")
+    private String voiceType;
+    @JsonProperty("speed_ratio")
+    private Float speedRatio;
+    @JsonProperty("volume_ratio")
+    private Float volumeRatio;
+    @JsonProperty("pitch_ratio")
+    private Float pitchRatio;
+    @JsonProperty("emotion")
+    private String emotion;
+    @Override
+    public TTSVendorEnum getVendor() {
+        return TTSVendorEnum.BYTEDANCE;
+    }
+}
+```
+
+用于配置 Bytedance TTS 模块的参数。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+更多信息详见 [Bytedance](https://www.volcengine.com/docs/6561/79823)。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `String` | 用于鉴权的动态密钥 Token。 |
+| `appId` | `String` | Bytedance TTS 的 App ID。 |
+| `cluster` | `String` | Bytedance TTS 的集群信息。 |
+| `voiceType` | `String` | 语音类型。 |
+| `speedRatio` | `Float` | 语速比例。 |
+| `volumeRatio` | `Float` | 音量比例。 |
+| `pitchRatio` | `Float` | 音调比例。 |
+| `emotion` | `String` | 语音情感参数。 |
+
+<a id="microsoftttsvendorparams"></a>
+## MicrosoftTTSVendorParams
+
+```java
+public static class MicrosoftTTSVendorParams implements TTSVendorParams {
+@JsonProperty("key")
+private String key;
+@JsonProperty("region")
+private String region;
+@JsonProperty("voice_name")
+private String voiceName;
+@JsonProperty("speed")
+private Float speed;
+@JsonProperty("volume")
+private Float volume;
+@JsonProperty("sample_rate")
+private Integer sampleRate;
+}
+```
+
+用于配置 Microsoft TTS 语音服务的参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `speed` | `Float` | 调节语音合成的语速值。 |
+| `sampleRate` | `Integer` | 语音音频的采样率，单位为 Hz。 |
+
+<a id="microsoftasrvendorparams"></a>
+## MicrosoftASRVendorParams
+
+```java
+public static class MicrosoftASRVendorParams implements ASRVendorParams {
+    @JsonProperty("key")
+    private String key;
+
+    @JsonProperty("region")
+    private String region;
+
+    @JsonProperty("language")
+    private String language;
+
+    @JsonProperty("phrase_list")
+    private List<String> phraseList;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private MicrosoftASRVendorParams(Builder builder) {
+        setKey(builder.key);
+        setRegion(builder.region);
+        setLanguage(builder.language);
+        setPhraseList(builder.phraseList);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<String> getPhraseList() {
+        return phraseList;
+    }
+
+    public void setPhraseList(List<String> phraseList) {
+        this.phraseList = phraseList;
+    }
+
+    public static final class Builder {
+        private String key;
+        private String region;
+        private String language;
+        private List<String> phraseList;
+
+        private Builder() {
+        }
+
+        public Builder key(String val) {
+            key = val;
+            return this;
+        }
+
+        public Builder region(String val) {
+            region = val;
+            return this;
+        }
+
+        public Builder language(String val) {
+            language = val;
+            return this;
+        }
+
+        public Builder phraseList(List<String> val) {
+            phraseList = val;
+            return this;
+        }
+
+        public MicrosoftASRVendorParams build() {
+            return new MicrosoftASRVendorParams(this);
+        }
+    }
+
+    @Override
+    public ASRVendorEnum getVendor() {
+        return ASRVendorEnum.MICROSOFT;
+    }
+}
+```
+
+配置 Microsoft 语音识别（ASR）模块的参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `key` | `String` | 用于访问 Microsoft ASR 服务的密钥。 |
+| `region` | `String` | 用于指定 Microsoft ASR 服务所在的区域。 |
+| `phraseList` | `List<String>` | 用于提升识别准确率的短语提示词列表。 |
+
+<a id="mllmpayload"></a>
+## MLLMPayload
+
+```java
+public static class MLLMPayload {
+    @JsonProperty("url")
+    private String url;
+    @JsonProperty("api_key")
+    private String apiKey;
+    @JsonProperty("messages")
+    private List<Map<String, Object>> messages;
+    @JsonProperty("params")
+    private Map<String, Object> params;
+    @JsonProperty("max_history")
+    private Integer maxHistory;
+    @JsonProperty("input_modalities")
+    private List<String> inputModalities;
+    @JsonProperty("output_modalities")
+    private List<String> outputModalities;
+    @JsonProperty("greeting_message")
+    private String greetingMessage;
+    @JsonProperty("vendor")
+    private String vendor;
+    @JsonProperty("style")
+    private String style;
+}
+```
+
+用于配置多模态语言模型（MLLM）。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `url` | `String` | （必填）用于 OpenAI 实时 API 的 WebSocket 地址。 |
+| `apiKey` | `String` | （必填）用于身份验证的 API 密钥。你可以从 OpenAI 控制台获取该密钥。 |
+| `messages` | `List<Map<String, Object>>` | （可选）用于短期记忆管理的对话项数组。结构与 OpenAI 实时 API 中 `item.content` 相同，详见 [OpenAI 文档](https://platform.openai.com/docs/api-reference/realtime-client-events/conversation/item/[`create`](convoaiclient#create))。 |
+| `params` | `Map<String, Object>` | <Slot name="struct-java-html-15-4-2" /> |
+| `maxHistory` | `Integer` | 保留的对话历史消息数量。不能超过模型的上下文窗口，默认值为 32。 |
+| `inputModalities` | `List<String>` | <Slot name="struct-java-html-15-6-2" /> |
+| `outputModalities` | `List<String>` | 输出格式选项，例如 ["text", "audio"] 表示返回文本和语音回复。 |
+| `greetingMessage` | `String` | 用户加入频道时，智能体发送的欢迎语。 |
+| `vendor` | `String` | MLLM 的服务提供商标识。设置为 `openai` 表示使用 OpenAI 实时 API。 |
+| `style` | `String` | API 请求的格式类型。设置为 `openai` 表示采用 OpenAI 实时 API 的格式。 |
+
+<Slot for="struct-java-html-15-4-2">
+
+（可选）额外的 MLLM 配置参数。
+
+    - 模态设置覆盖：`params` 中的 `modalities` 设置将被 `inputModalities` 和 `outputModalities` 覆盖。
+    - 轮次检测覆盖：`params` 中的 `turn_detection` 设置将被 `mllm` 外部的 `turn_detection` 设置覆盖。
+
+</Slot>
+
+<Slot for="struct-java-html-15-6-2">
+
+（可选）MLLM 的输入模态。
+
+    - ["audio"]：仅音频（默认）。
+    - ["audio", "text"]：音频和文本。
+
+</Slot>
+
+<a id="pronunciationdictparam"></a>
+## PronunciationDictParam
+
+```java
+public static class PronunciationDictParam {
+
+    @JsonProperty("tones")
+    private List<String> tones;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private PronunciationDictParam(Builder builder) {
+        setTones(builder.tones);
+    }
+
+    public List<String> getTones() {
+        return tones;
+    }
+
+    public void setTones(List<String> tones) {
+        this.tones = tones;
+    }
+
+    public static final class Builder {
+        private List<String> tones;
+
+        private Builder() {
+        }
+
+        public Builder tones(List<String> tones) {
+            this.tones = tones;
+            return this;
+        }
+
+        public PronunciationDictParam build() {
+            return new PronunciationDictParam(this);
+        }
+    }
+}
+```
+
+用于配置声网 Minimax TTS 供应商的发音字典参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `tones` | `List<String>` | 发音词典的音调配置。 |
+
+<a id="minimaxttsvendortimberweightparam"></a>
+## MinimaxTTSVendorTimberWeightParam
+
+```java
+public static class MinimaxTTSVendorTimberWeightParam {
+
+    @JsonProperty("voice_id")
+    private String voiceId;
+
+    @JsonProperty("weight")
+    private Float weight;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private MinimaxTTSVendorTimberWeightParam(Builder builder) {
+        setVoiceId(builder.voiceId);
+        setWeight(builder.weight);
+    }
+
+    public String getVoiceId() {
+        return voiceId;
+    }
+
+    public void setVoiceId(String voiceId) {
+        this.voiceId = voiceId;
+    }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
+
+    public static final class Builder {
+        private String voiceId;
+        private Float weight;
+
+        private Builder() {
+        }
+
+        public Builder voiceId(String val) {
+            voiceId = val;
+            return this;
+        }
+
+        public Builder weight(Float val) {
+            weight = val;
+            return this;
+        }
+
+        public MinimaxTTSVendorTimberWeightParam build() {
+            return new MinimaxTTSVendorTimberWeightParam(this);
+        }
+    }
+}
+```
+
+用于设置 `Minimax TTS` 供应商的音色权重参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `voiceId` | `String` | 声音 ID。 |
+| `weight` | `Float` | 对应声音的权重。 |
+
+<a id="tencentasrvendorparams"></a>
+## TencentASRVendorParams
+
+```java
+public static class TencentASRVendorParams implements ASRVendorParams {
+    @JsonProperty("secret_id")
+    private String secretId;
+
+    @JsonProperty("app_id")
+    private String appId;
+
+    @JsonProperty("secret_key")
+    private String secretKey;
+
+    @JsonProperty("engine_model_type")
+    private String engineModelType;
+
+    @JsonProperty("voice_id")
+    private String voiceId;
+}
+```
+
+用于配置腾讯语音识别模块的参数。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `secretId` | `String` | 腾讯云 ASR 的 secret id。 |
+| `appId` | `String` | 腾讯云账号对应的应用标识。 |
+| `secretKey` | `String` | 腾讯云 ASR 的 secret key。 |
+| `engineModelType` | `String` | 指定使用的语音识别引擎模型类型。 |
+| `voiceId` | `String` | 语音识别任务的唯一标识 ID。 |
+
+<a id="fengmingasrvendorparams"></a>
+## FengmingASRVendorParams
+
+```java
+public static class FengmingASRVendorParams implements ASRVendorParams {
+
+    private FengmingASRVendorParams() {
+    }
+
+    private FengmingASRVendorParams(Builder builder) {
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private Builder() {
+        }
+
+        public FengmingASRVendorParams build() {
+            return new FengmingASRVendorParams(this);
+        }
+    }
+
+    @Override
+    public ASRVendorEnum getVendor() {
+        return ASRVendorEnum.FENGMING;
+    }
+}
+```
+
+用于配置凤鸣 ASR 模块参数。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+<a id="turndetectionpayload"></a>
+## TurnDetectionPayload
+
+```java
+public static class TurnDetectionPayload {
+    @JsonProperty("interrupt_mode")
+    private String interruptMode;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("interrupt_duration_ms")
+    private Integer interruptDurationMs;
+    @JsonProperty("prefix_padding_ms")
+    private Integer prefixPaddingMs;
+    @JsonProperty("silence_duration_ms")
+    private Integer silenceDurationMs;
+    @JsonProperty("threshold")
+    private Float threshold;
+    @JsonProperty("create_response")
+    private Boolean createResponse;
+    @JsonProperty("interrupt_response")
+    private Boolean interruptResponse;
+    @JsonProperty("eagerness")
+    private String eagerness;
+}
+```
+
+用于配置智能体的轮次检测行为。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `interruptMode` | `String` | <Slot name="struct-java-html-19-1-2" /> |
+| `type` | `String` | <Slot name="struct-java-html-19-2-2" /> |
+| `interruptDurationMs` | `Integer` | （可选）触发打断前，用户语音需超过 VAD 阈值的时长，单位为毫秒。默认值为 160。 |
+| `prefixPaddingMs` | `Integer` | 语音识别启动前的前向补偿时间，单位为毫秒，用于更好地捕获语音起始内容。默认值为 800。 |
+| `silenceDurationMs` | `Integer` | （可选）静音触发时长，单位为毫秒。当指定时间内未检测到语音活动时，智能体将认为用户已停止说话。默认值为 480。 |
+| `threshold` | `Float` | <Slot name="struct-java-html-19-6-2" /> |
+| `createResponse` | `Boolean` | <Slot name="struct-java-html-19-7-2" /> |
+| `interruptResponse` | `Boolean` | <Slot name="struct-java-html-19-8-2" /> |
+| `eagerness` | `String` | <Slot name="struct-java-html-19-9-2" /> |
+
+<Slot for="struct-java-html-19-1-2">
+
+当智能体正在交互（说话或思考）时，人类语音打断智能体行为的模式，支持以下取值：
+
+    - [`interrupt`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#interrupt)（默认）：打断模式，用户语音会立即打断智能体当前交互，智能体将中止当前交互并直接处理新的语音输入。
+    - `append`：追加模式，用户语音不会打断当前交互，智能体将在当前交互结束后处理新的语音输入。
+    - `ignore`：忽略模式，智能体会忽略用户语音输入并不将其存入上下文中。
+
+</Slot>
+
+<Slot for="struct-java-html-19-2-2">
+
+轮次检测机制（可选）：
+
+    - `agora_vad`：声网 VAD。（默认）
+    - `server_vad`：通过音量分析识别用户语音起止，仅在启用 mllm 并使用 OpenAI 时生效。
+    - `semantic_vad`：在 VAD 基础上结合语义检测模型判断用户是否说完，并基于判断结果动态设定超时时间以支持更自然的对话，仅在启用 mllm 并使用 OpenAI 时生效。
+
+</Slot>
+
+<Slot for="struct-java-html-19-6-2">
+
+（可选）识别灵敏度，用于判断声音是否为语音活动。取值范围为 (0.0, 1.0)。
+
+    - 值越小越容易检测出语音。
+    - 值越大则会忽略较弱的声音。
+    默认值为 0.5。
+
+</Slot>
+
+<Slot for="struct-java-html-19-7-2">
+
+（可选）是否在发生 VAD 停止事件时自动生成响应，仅在使用 OpenAI Realtime API 的 `server_vad` 和 `semantic_vad` 模式下可用。
+
+    - `true`：（默认）自动生成响应。
+    - `false`：不自动生成响应。
+
+</Slot>
+
+<Slot for="struct-java-html-19-8-2">
+
+是否在发生 VAD 启动事件时自动打断已有响应，仅在使用 OpenAI Realtime API 的 `server_vad` 和 `semantic_vad` 模式下可用。
+
+    - `true`：（默认）自动打断已有响应。
+    - `false`：不打断已有响应。
+
+</Slot>
+
+<Slot for="struct-java-html-19-9-2">
+
+模型响应的积极性（可选），仅在使用 OpenAI Realtime API 的 `semantic_vad` 模式下可用：
+
+    - `auto`（默认）：中等响应速度。
+    - `low`：等待用户更长时间以继续说话。
+    - `high`：更快速地响应。
+
+</Slot>
+
+<a id="parameters"></a>
+## Parameters
+
+```java
+public static class Parameters {
+@JsonIgnore
+private FixedParams fixedParams;
+@JsonIgnore
+private Map<String, Object> extraParams = new HashMap<>();
+public FixedParams getFixedParams() {
+return fixedParams;
+}
+public Map<String, Object> getExtraParams() {
+return extraParams;
+}
+@JsonAnyGetter
+public Map<String, Object> getParameters() throws IllegalArgumentException {
+Map<String, Object> merged = new HashMap<>();
+if (fixedParams != null) {
+try {
+ObjectMapper objectMapper = new ObjectMapper();
+Map<String, Object> fixedParamsMap = objectMapper.convertValue(fixedParams, Map.class);
+merged.putAll(fixedParamsMap);
+} catch (Exception e) {
+throw new IllegalArgumentException("Failed to convert fixed params to map", e);
+}
+}
+if (extraParams != null) {
+merged.putAll(extraParams);
+}
+return merged;
+}
+private void setFixedParams(FixedParams fixedParams) {
+this.fixedParams = fixedParams;
+}
+private void setExtraParams(Map<String, Object> extraParams) {
+this.extraParams = extraParams;
+}
+public static Builder builder() {
+return new Builder();
+}
+private Parameters(Builder builder) {
+setFixedParams(builder.fixedParams);
+setExtraParams(builder.extraParams);
+}
+public static final class Builder {
+private FixedParams fixedParams;
+private Map<String, Object> extraParams;
+private Builder() {
+}
+public Builder fixedParams(FixedParams val) {
+fixedParams = val;
+return this;
+}
+public Builder extraParams(Map<String, Object> val) {
+extraParams = val;
+return this;
+}
+public Parameters build() {
+return new Parameters(this);
+}
+}
+}
+```
+
+用于配置智能体的参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+当 `fixedParams` 和 `extraParams` 中存在相同的键时，系统会将它们合并。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fixedParams` | `FixedParams` | 智能体的固定参数。详见 [`FixedParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#fixedparams)。 |
+| `extraParams` | `Map<String, Object>` | 智能体的额外参数。 |
+
+<a id="fixedparams"></a>
+## FixedParams
+
+```java
+public static class FixedParams {
+    @JsonProperty("silence_config")
+    private SilenceConfig silenceConfig;
+    @JsonProperty("data_channel")
+    private String dataChannel;
+    @JsonProperty("enable_metrics")
+    private Boolean enableMetrics;
+    @JsonProperty("enable_error_message")
+    private Boolean enableErrorMessage;
+}
+```
+
+用于配置智能体的固定参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `silenceConfig` | `SilenceConfig` | 静音配置。详见 [`SilenceConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#silenceconfig)。 |
+| `dataChannel` | `String` | <Slot name="struct-java-html-21-2-2" /> |
+| `enableMetrics` | `Boolean` | <Slot name="struct-java-html-21-3-2" /> |
+| `enableErrorMessage` | `Boolean` | <Slot name="struct-java-html-21-4-2" /> |
+
+<Slot for="struct-java-html-21-2-2">
+
+（可选）智能体数据传输通道：
+
+    - `rtm`：使用 RTM 传输。仅当 `enable_rtm` 为 `true` 时生效。
+    - `datastream`：使用 RTC 数据流传输（默认值）。
+
+</Slot>
+
+<Slot for="struct-java-html-21-3-2">
+
+（可选）是否接收智能体性能数据。仅当 `enable_rtm` 为 `true` 时生效。
+
+    - `true`：接收智能体性能数据。
+    - `false`：（默认）不接收智能体性能数据。
+
+</Slot>
+
+<Slot for="struct-java-html-21-4-2">
+
+（可选）是否接收智能体错误事件。仅当 `enable_rtm` 为 `true` 时生效。
+
+    - `true`：接收智能体错误事件。
+    - `false`：（默认）不接收智能体错误事件。
+
+</Slot>
+
+<a id="silenceconfig"></a>
+## SilenceConfig
+
+```java
+public static class SilenceConfig {
+    @JsonProperty("timeout_ms")
+    private Integer timeoutMs;
+    @JsonProperty("action")
+    private String action;
+    @JsonProperty("content")
+    private String content;
+}
+```
+
+用于设置智能体的静默行为。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+用于定义智能体在非聆听、思考或说话状态下的静默行为。当静默时间达到设定值后，智能体将根据配置触发提示操作。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `timeoutMs` | `Integer` | <Slot name="struct-java-html-22-1-2" /> |
+| `action` | `String` | <Slot name="struct-java-html-22-2-2" /> |
+| `content` | `String` | （可选）静默提示消息的内容。该内容将根据 `action` 的设置以不同方式使用。 |
+
+<Slot for="struct-java-html-22-1-2">
+
+（可选）智能体的最大静默时长（毫秒）。当智能体被创建并有用户加入频道后，如果其处于非聆听、思考或说话状态的持续时间达到设定值，将触发静默提示消息。
+
+    - 设置为 0：不启用该功能。
+    - 设置为 (0, 60000]：必须同时设置 `content` 参数，否则该配置无效。
+
+</Slot>
+
+<Slot for="struct-java-html-22-2-2">
+
+（可选）当静默时间达到设定值后，智能体执行的操作：
+
+    - [`speak`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#speak)：使用 TTS 模块播报静默消息（默认）。
+    - `think`：将静默消息追加至上下文，并传递给 LLM。
+
+</Slot>
+
+<a id="data"></a>
+## Data
+
+```java
+public static class Data {
+    @JsonProperty("count")
+    private Integer count;
+    @JsonProperty("list")
+    private List<Agent> list;
+    public Integer getCount() {
+        return count;
+    }
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+    public List<Agent> getList() {
+        return list;
+    }
+    public void setList(List<Agent> list) {
+        this.list = list;
+    }
+}
+```
+
+封装智能体数据信息。
+
+用于封装响应中返回的智能体数量和符合条件的智能体列表。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `count` | `Integer` | 本次响应中返回的智能体数量。 |
+| `list` | `List<Agent>` | 符合条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
+| `getCount` | `Integer` | 获取响应中返回的智能体数量。 |
+| `setCount` | `Integer` | 设置响应中返回的智能体数量。 |
+| `getList` | `List<Agent>` | 获取满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
+| `setList` | `List<Agent>` | 设置满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
+
+<a id="agent"></a>
+## Agent
+
+```java
+public static class Agent {
+    @JsonProperty("agent_id")
+    private String agentId;
+    @JsonProperty("start_ts")
+    private Integer startTs;
+    @JsonProperty("status")
+    private String status;
+}
+```
+
+表示智能体信息，包含智能体的标识、时间戳和状态信息。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `startTs` | `Integer` | 智能体的创建时间戳。 |
+| `status` | `String` | <Slot name="struct-java-html-24-3-2" /> |
+
+<Slot for="struct-java-html-24-3-2">
+
+当前状态。
+
+    - `IDLE` (0)：智能体空闲。
+    - `STARTING` (1)：智能体正在启动。
+    - `RUNNING` (2)：智能体正在运行。
+    - `STOPPING` (3)：智能体正在停止。
+    - `STOPPED` (4)：智能体已停止。
+    - `RECOVERING` (5)：智能体正在恢复。
+    - `FAILED` (6)：智能体发生故障。
+
+</Slot>
+
+<a id="meta"></a>
+## Meta
+
+```java
+public static class Meta {
+    @JsonProperty("total")
+    private Integer total;
+
+    @JsonProperty("cursor")
+    private String cursor;
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
+    }
+}
+```
+
+返回列表的元数据。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `total` | `Integer` | 满足查询条件的智能体总数。 |
+| `cursor` | `String` | 分页游标。 |
+| `getTotal` | `Integer` | 获取符合查询条件的智能体总数。 |
+| `setTotal` | `void` | 设置符合查询条件的智能体总数。 |
+| `getCursor` | `String` | 获取分页游标。 |
+| `setCursor` | `void` | 设置分页游标。 |
+
+<a id="listconvoaires"></a>
+## ListConvoAIRes
+
+```java
+public class ListConvoAIRes {
+    @JsonProperty("data")
+    private Data data;
+    @JsonProperty("meta")
+    private Meta meta;
+    @JsonProperty("status")
+    private String status;
+}
+```
+
+用于返回会话式 AI 引擎的 List API 响应。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `data` | `Data` | 智能体数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
+| `meta` | `Meta` | 返回列表的元数据信息。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
+| `status` | `String` | 请求状态。 |
+| `getData` | `Data` | 获取智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
+| `setData` | `Data` | 设置智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
+| `getMeta` | `Meta` | 获取返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
+| `setMeta` | `Meta` | 设置返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
+| `getStatus` | `String` | 获取请求的状态信息。 |
+| `setStatus` | `String` | 设置请求的状态信息。 |
+
+<a id="queryconvoaires"></a>
+## QueryConvoAIRes
+
+```java
+public class QueryConvoAIRes {
+    @JsonProperty("message")
+    private String message;
+    @JsonProperty("start_ts")
+    private Integer startTs;
+    @JsonProperty("stop_ts")
+    private Integer stopTs;
+    @JsonProperty("status")
+    private String status;
+    @JsonProperty("agent_id")
+    private String agentId;
+}
+```
+
+用于返回对 Conversational AI 引擎的 Query API 请求的响应。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `message` | `String` | 请求消息。 |
+| `startTs` | `Integer` | 智能体创建时的时间戳。 |
+| `stopTs` | `Integer` | 智能体停止时的时间戳。 |
+| `status` | `String` | <Slot name="struct-java-html-27-4-2" /> |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+
+<Slot for="struct-java-html-27-4-2">
+
+状态，包含以下取值：
+
+    - `IDLE` (0)：智能体空闲。
+    - `STARTING` (1)：智能体启动中。
+    - `RUNNING` (2)：智能体运行中。
+    - `STOPPING` (3)：智能体停止中。
+    - `STOPPED` (4)：智能体已停止。
+    - `RECOVERING` (5)：智能体恢复中。
+    - `FAILED` (6)：智能体异常。
+
+</Slot>
+
+<a id="updateconvoaires"></a>
+## UpdateConvoAIRes
+
+```java
+public class UpdateConvoAIRes {
+    @JsonProperty("agent_id")
+    private String agentId;
+    @JsonProperty("create_ts")
+    private Integer createTs;
+    @JsonProperty("state")
+    private String state;
+}
+```
+
+更新智能对话引擎后返回的响应信息。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `createTs` | `Integer` | 智能体的创建时间戳。 |
+| `state` | `String` | <Slot name="struct-java-html-28-3-2" /> |
+
+<Slot for="struct-java-html-28-3-2">
+
+状态。
+    可选状态包括：
+
+    - `IDLE` (0)：智能体空闲。
+    - `STARTING` (1)：智能体正在启动。
+    - `RUNNING` (2)：智能体正在运行。
+    - `STOPPING` (3)：智能体正在停止。
+    - `STOPPED` (4)：智能体已停止。
+    - `RECOVERING` (5)：智能体正在恢复。
+    - `FAILED` (6)：智能体发生故障。
+
+</Slot>
+
+<a id="speakconvoaireq"></a>
+## SpeakConvoAIReq
+
+```java
+public class SpeakConvoAIReq {
+    private String text;
+    private String priority;
+    private Boolean interrupt;
+}
+```
+
+用于配置调用会话式人工智能引擎语音接口的请求参数。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+封装请求参数。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `text` | `String` | （必填）要转语音的文本内容，最大长度为 512 字节。 |
+| `priority` | `String` | <Slot name="struct-java-html-29-2-2" /> |
+| `interrupt` | `Boolean` | <Slot name="struct-java-html-29-3-2" /> |
+
+<Slot for="struct-java-html-29-2-2">
+
+（可选）语音行为的优先级，支持以下取值：
+
+    - `INTERRUPT`（默认）：高优先级，中断并立即播报。智能体将终止当前交互，直接播报该消息。
+    - `APPEND`：中优先级，追加播报。智能体将在当前交互结束后播报该消息。
+    - `IGNORE`：低优先级，仅在空闲时播报。如果智能体当前正在交互中，将忽略并丢弃该消息；仅在未交互时才会播报。
+
+</Slot>
+
+<Slot for="struct-java-html-29-3-2">
+
+（可选）是否允许用户发言打断智能体的语音播报：
+
+    - `true`（默认）：允许打断。
+    - `false`：不允许打断。
+
+</Slot>
+
+<a id="historycontent"></a>
+## HistoryContent
+
+```java
+public static class HistoryContent {
+    @JsonProperty("content")
+    private String content;
+
+    @JsonProperty("role")
+    private String role;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "HistoryContent{" +
+                "content='" + content + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+}
+```
+
+用于设置智能体的短期记忆内容。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `content` | `String` | 消息的内容。 |
+| `role` | `String` | <Slot name="struct-java-html-30-2-2" /> |
+
+<Slot for="struct-java-html-30-2-2">
+
+发送消息的角色：
+
+    - `user`：用户。
+    - `assistant`：智能体。
+
+</Slot>
+
+<a id="historyconvoaires"></a>
+## HistoryConvoAIRes
+
+```java
+public class HistoryConvoAIRes {
+    @JsonProperty("start_ts")
+    private Long startTs;
+    @JsonProperty("agent_id")
+    private String agentId;
+    @JsonProperty("status")
+    private String status;
+    @JsonProperty("contents")
+    private List<HistoryContent> contents;
+}
+```
+
+用于返回对话式 AI 引擎 `getHistory` API 的响应内容。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `startTs` | `Long` | 智能体的创建时间戳。 |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `status` | `String` | 智能体的运行状态。 |
+| `contents` | `List<HistoryContent>` | 智能体的短期记忆内容。详见 [`HistoryContent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#historycontent)。 |
+
+<a id="interruptconvoaires"></a>
+## InterruptConvoAIRes
+
+```java
+public class InterruptConvoAIRes {
+    @JsonProperty("agent_id")
+    private String agentId;
+
+    @JsonProperty("start_ts")
+    private Integer startTs;
+
+    @JsonProperty("channel")
+    private String channel;
+}
+```
+
+对话式 AI 引擎中断接口的响应结果。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `startTs` | `Integer` | 智能体的启动时间戳。 |
+| `channel` | `String` | 频道名。 |
+
+<a id="speakconvoaires"></a>
+## SpeakConvoAIRes
+
+```java
+public class SpeakConvoAIRes {
+    @JsonProperty("agent_id")
+    private String agentId;
+    @JsonProperty("start_ts")
+    private Integer startTs;
+    @JsonProperty("channel")
+    private String channel;
+}
+```
+
+用于返回智能对话引擎 `Speak` API 的响应。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `startTs` | `Integer` | 智能体的起始时间戳。 |
+| `channel` | `String` | 频道名。 |
+
+<a id="httpproperty"></a>
+## HttpProperty
+
+```java
+public class HttpProperty {
+    private final int httpConnectionPoolSize;
+    private final int httpConnectionMaxIdleTime;
+    private final int httpConnectionMaxLifeTime;
+    private final int httpConnectionEvictInBackground;
+    private final int httpConnectionPendingAcquireTimout;
+    private final int httpConnectionPendingAcquireMaxCount;
+
+    public static final class Builder {
+        private int httpConnectionPoolSize = 50;
+        private int httpConnectionMaxIdleTime = 10 * 1000;
+        private int httpConnectionMaxLifeTime = 60 * 1000;
+        private int httpConnectionEvictInBackground = 120 * 1000;
+        private int httpConnectionPendingAcquireTimout = 60 * 1000;
+        private int httpConnectionPendingAcquireMaxCount = 100;
+    }
+}
+```
+
+用于配置 HTTP 客户端的连接属性。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `httpConnectionPoolSize` | `int` | 连接池中最大连接数。 |
+| `httpConnectionMaxIdleTime` | `int` | 连接在连接池中保持空闲状态的最长时间，单位为毫秒。 |
+| `httpConnectionMaxLifeTime` | `int` | 连接在连接池中的最大生命周期，单位为毫秒。 |
+| `httpConnectionEvictInBackground` | `int` | 后台驱逐连接的执行间隔，单位为毫秒。 |
+| `httpConnectionPendingAcquireTimout` | `int` | 从连接池中获取连接的超时时间，单位为毫秒。 |
+| `httpConnectionPendingAcquireMaxCount` | `int` | 等待队列中最多可保留的连接获取请求数。 |
+
+<a id="listconvoaireq"></a>
+## ListConvoAIReq
+
+```java
+public class ListConvoAIReq {
+    private final String channel;
+    private final Integer limit;
+    private final String cursor;
+    private final Long fromTime;
+    private final Long toTime;
+    private final Integer state;
+}
+```
+
+用于设置查询智能体列表的筛选条件。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channel` | `String` | 频道名。 |
+| `limit` | `Integer` | 每页返回的条目数量，默认值为 20。 |
+| `cursor` | `String` | 分页游标，即分页起始位置的智能体 ID。 |
+| `fromTime` | `Long` | 结束时间戳，单位为秒，默认值为当前时间。 |
+| `toTime` | `Long` | 起始时间戳，单位为秒，默认值为一天前。 |
+| `state` | `Integer` | <Slot name="struct-java-html-35-6-2" /> |
+
+<Slot for="struct-java-html-35-6-2">
+
+要查询的智能体状态，支持以下状态：
+
+    - `0`：空闲状态（IDLE）。
+    - `1`：启动中（STARTING）。
+    - `2`：运行中（RUNNING）。
+    - `3`：停止中（STOPPING）。
+    - `4`：已停止（STOPPED）。
+    - `5`：恢复中（RECOVERING）。
+    - `6`：失败状态（FAILED）。
+
+</Slot>
+
+<a id="updateconvoaireq"></a>
+## UpdateConvoAIReq
+
+```java
+public class UpdateConvoAIReq {
+
+    @JsonProperty("token")
+    private String token;
+
+    @JsonProperty("llm")
+    private UpdateLLMParams llm;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private UpdateConvoAIReq(Builder builder) {
+        setToken(builder.token);
+        setLlm(builder.llm);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public UpdateLLMParams getLlm() {
+        return llm;
+    }
+
+    public void setLlm(UpdateLLMParams llm) {
+        this.llm = llm;
+    }
+
+    public static final class Builder {
+        private String token;
+
+        private UpdateLLMParams llm;
+
+        private Builder() {
+        }
+
+        public Builder token(String val) {
+            token = val;
+            return this;
+        }
+
+        public Builder llm(UpdateLLMParams val) {
+            llm = val;
+            return this;
+        }
+
+        public UpdateConvoAIReq build() {
+            return new UpdateConvoAIReq(this);
+        }
+    }
+}
+```
+
+用于调用会话型智能体引擎的 `Update` API 的请求体。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `token` | `String` | 用于鉴权的动态密钥 Token。如果你的项目启用了 App 证书，必须在此字段中传入 Token。 |
+| `llm` | `UpdateLLMParams` | `LLM` 参数。详见 [`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updatellmparams)。 |
+
+<a id="updatellmparams"></a>
+## UpdateLLMParams
+
+```java
+public static class UpdateLLMParams {
+    @JsonProperty("system_messages")
+    private List<Map<String, Object>> systemMessages;
+
+    @JsonProperty("params")
+    private Map<String, Object> params;
+}
+```
+
+[`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updatellmparams) 用于定义大语言模型的参数。
+
+:::info[信息]
+自 v0.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `systemMessages` | `List<Map<String, Object>>` | （可选）附加于每次大语言模型调用开头的一组预设信息，用于控制大语言模型的输出。可以包含角色设定、提示词和回答示例，必须兼容 OpenAI 协议。 |
+| `params` | `Map<String, Object>` | （可选）在大语言模型消息体中传输的附加信息，例如所使用的模型、最大 Token 限制等。不同的大语言模型服务商支持的配置项不同，详见各自的大语言模型文档。 |
+
+<a id="joinconvoaires"></a>
+## JoinConvoAIRes
+
+```java
+public class JoinConvoAIRes {
+    @JsonProperty("agent_id")
+    private String agentId;
+    @JsonProperty("create_ts")
+    private Integer createTs;
+    @JsonProperty("status")
+    private String status;
+}
+```
+
+用于响应 Conversational AI 引擎的 [`join`](/zh-CN/api-reference/conversational-ai/client-toolkit/convoaiclient.java#join) API 请求。
+
+:::info[信息]
+自 v0.3.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentId` | `String` | 智能体的唯一标识符。 |
+| `createTs` | `Integer` | 创建该智能体的时间戳。 |
+| `status` | `String` | <Slot name="struct-java-html-38-3-2" /> |
+
+<Slot for="struct-java-html-38-3-2">
+
+状态。
+
+    - `IDLE`：智能体空闲。
+    - `STARTING`：智能体启动中。
+    - `RUNNING`：智能体运行中。
+    - `STOPPING`：智能体停止中。
+    - `STOPPED`：智能体已停止。
+    - `RECOVERING`：智能体恢复中。
+    - `FAILED`：智能体失败。
+
+</Slot>

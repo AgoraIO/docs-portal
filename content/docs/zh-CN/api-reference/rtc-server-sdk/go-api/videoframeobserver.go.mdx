@@ -1,0 +1,21 @@
+---
+title: "VideoFrameObserver 类"
+---
+<span className="index-desc-ivideoframeobserver">`VideoFrameObserver` 类。</span>
+
+<a id="onframe"></a>
+## OnFrame
+
+```go
+OnFrame func(channelId string, userId string, frame *VideoFrame) bool
+```
+
+<span className="index-desc-onframe">每次收到视频帧时触发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channelId` | 频道名称。             |
+| `userId` | 远端用户的用户 ID。             |
+| `frame`| 视频数据。详见 [`VideoFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#videoframe)         |

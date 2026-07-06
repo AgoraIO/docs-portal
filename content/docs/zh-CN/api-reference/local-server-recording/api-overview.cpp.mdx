@@ -1,0 +1,88 @@
+---
+title: "API 概览"
+---
+## IAgoraService
+
+| API | 描述 |
+|---|---|
+|[`createAgoraService`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#createagoraservice) | 创建一个 [`IAgoraService`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp) 对象并返回指针。 |
+|[`initialize`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#initialize) | 初始化 [`IAgoraService`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp) 对象。 |
+|[`release`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#release) | 释放 [`IAgoraService`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp) 对象。 |
+|[`setLogFile`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#setlogfile) | 设置 SDK 日志文件的路径和大小。 |
+|[`setLogFilter`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#setlogfilter) | 设置 SDK 日志输出过滤器。 |
+|[`getAgoraParameter`](/zh-CN/api-reference/local-server-recording/iagoraservice.cpp#getagoraparameter) | 获取 `IAgoraParameter` 对象。 |
+
+## IAgoraMediaComponentFactory
+
+| API | 描述 |
+|---|---|
+|[`createMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/iagoramediacomponentfactory.cpp#createmediartcrecorder) | 创建一个 [`IAgoraMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp) 媒体录制器实例。 |
+|[`createAgoraMediaComponentFactory`](/zh-CN/api-reference/local-server-recording/iagoramediacomponentfactory.cpp#createagoramediacomponentfactory) | 创建一个 `IMediaComponentFactory` 对象并返回指针。 |
+
+## IAgoraMediaRtcRecorder
+
+| API | 描述 |
+|---|---|
+|[`initialize`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#initialize) | 初始化录制器实例。 |
+|[`joinChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#joinchannel) | 加入声网 RTC 频道。 |
+|[`leaveChannel`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#leavechannel) | 离开声网 RTC 频道。 |
+|[`enableEncryption`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#enableencryption) | 启用或禁用内置加密功能。 |
+|[`subscribeAllAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeallaudio) | 订阅并录制频道中所有远端用户的音频。 |
+|[`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeallvideo) | 订阅频道中所有远端用户的视频。 |
+|[`unsubscribeAllAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#unsubscribeallaudio) | 停止订阅频道中所有远端用户的音频。 |
+|[`unsubscribeAllVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#unsubscribeallvideo) | 停止订阅频道中所有远端用户的视频。 |
+|[`subscribeAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribeaudio) | 订阅并录制频道中指定远端用户的音频。 |
+|[`unsubscribeAudio`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#unsubscribeaudio) | 停止订阅频道中指定远端用户的音频。 |
+|[`subscribeVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#subscribevideo) | 订阅频道中指定远端用户的视频。 |
+|[`unsubscribeVideo`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#unsubscribevideo) | 停止订阅频道中指定远端用户的视频。 |
+|[`setAudioVolumeIndicationParameters`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#setaudiovolumeindicationparameters) | 设置 [`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onaudiovolumeindication) 回调的时间间隔。 |
+|[`setVideoMixingLayout`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#setvideomixinglayout) | 设置混合视频流的布局。 |
+|[`setRecorderConfig`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#setrecorderconfig) | 设置录制器实例配置。 |
+|[`enableAndUpdateVideoWatermarks`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#enableandupdatevideowatermarks) | 为视频流添加水印。 |
+|[`disableVideoWatermarks`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#disablevideowatermarks) | 禁用视频水印。 |
+|[`startRecording`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#startrecording) | 开始录制。 |
+|[`stopRecording`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#stoprecording) | 停止录制。 |
+|[`startSingleRecordingByUid`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#startsinglerecordingbyuid) | 根据用户 ID 启动录制。 |
+|[`stopSingleRecordingByUid`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#stopsinglerecordingbyuid) | 通过指定用户 ID 停止录制。 |
+|[`setRecorderConfigByUid`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#setrecorderconfigbyuid) | 根据用户 ID 设置录制配置。 |
+|[`enableAndUpdateVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#enableandupdatevideowatermarksbyuid) | 为指定用户的视频流添加水印。 |
+|[`disableVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#disablevideowatermarksbyuid) | 根据用户 ID 关闭其视频流的水印。 |
+|[`registerRecorderEventHandle`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#registerrecordereventhandle) | 注册录制事件处理器。 |
+|[`unregisterRecorderEventHandle`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#unregisterrecordereventhandle) | 注销录制事件处理器。 |
+|[`setGlobalLocalAccessPoint`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#setgloballocalaccesspoint) | 设置本地 AP 模式下的全局本地接入点地址。 |
+|[`renewToken`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#renewtoken) | 更新 Token。 |
+|[`enableRecorderVideoFrameCapture`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecorder.cpp#enablerecordervideoframecapture) | 启用并配置录制器视频帧采集。 |
+
+## IAgoraMediaRtcRecorderEventHandler
+
+| API | 描述 |
+|---|---|
+|[`onConnected`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onconnected) | SDK 与声网频道连接状态变为 `CONNECTION_STATE_CONNECTED(3)` 时触发的回调。 |
+|[`onDisconnected`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ondisconnected) | 当 SDK 与声网频道的连接状态变为 `CONNECTION_STATE_DISCONNECTED(1)` 时触发的回调。 |
+|[`onReconnected`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onreconnected) | 连接状态再次变为 `CONNECTION_STATE_CONNECTED(3)` 时触发的回调。 |
+|[`onConnectionLost`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onconnectionlost) | 当 SDK 与声网频道失去连接时触发的回调。 |
+|[`onUserJoined`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onuserjoined) | 远端用户成功加入频道回调。 |
+|[`onUserLeft`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onuserleft) | 远端用户离开频道回调。 |
+|[`onFirstRemoteVideoDecoded`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onfirstremotevideodecoded) | 远端视频首帧解码完成回调。 |
+|[`onFirstRemoteAudioDecoded`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onfirstremoteaudiodecoded) | 远端音频首帧解码回调。 |
+|[`onAudioVolumeIndication`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onaudiovolumeindication) | 报告正在说话的用户、各说话者的音量，以及本地用户是否在说话。 |
+|[`onActiveSpeaker`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onactivespeaker) | 检测到活跃发言人时触发的回调。 |
+|[`onUserVideoStateChanged`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onuservideostatechanged) | 远端视频状态发生改变回调。 |
+|[`onUserAudioStateChanged`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onuseraudiostatechanged) | 远端用户音频状态发生变化回调。 |
+|[`onRemoteVideoStats`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onremotevideostats) | 报告远端视频统计信息的回调。 |
+|[`onRemoteAudioStats`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onremoteaudiostats) | 远端音频统计信息回调。 |
+|[`onRecorderStateChanged`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onrecorderstatechanged) | 本地录制状态发生变化时的回调。 |
+|[`onRecorderInfoUpdated`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onrecorderinfoupdated) | 录制信息更新回调。 |
+|[`onEncryptionError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onencryptionerror) | 报告加密错误类型的回调。 |
+|[`onError`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onerror) | 报告错误码和错误信息。 |
+|[`onTokenPrivilegeWillExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegewillexpire) |  Token 在 30 秒后即将过期时触发的回调。 |
+|[`onTokenPrivilegeDidExpire`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#ontokenprivilegedidexpire) |  Token 过期回调。 |
+|[`onVideoSizeChanged`](/zh-CN/api-reference/local-server-recording/iagoramediartcrecordereventhandler.cpp#onvideosizechanged) | 视频尺寸发生变化回调。 |
+
+## IRecorderVideoFrameObserver
+
+| API | 描述 |
+|---|---|
+|[`onYuvFrameCaptured`](/zh-CN/api-reference/local-server-recording/irecordervideoframeobserver.cpp#onyuvframecaptured) | 捕获到 YUV 视频帧时触发的回调。 |
+|[`onEncodedFrameReceived`](/zh-CN/api-reference/local-server-recording/irecordervideoframeobserver.cpp#onencodedframereceived) | 编码后的视频帧采集回调。 |
+|[`onJPGFileSaved`](/zh-CN/api-reference/local-server-recording/irecordervideoframeobserver.cpp#onjpgfilesaved) | 捕获的 JPG 文件保存成功时触发的回调。 |
