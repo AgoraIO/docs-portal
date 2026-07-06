@@ -26,12 +26,12 @@ export const OPENAPI_LANES = [
     },
     publicSourceUrl: {
       en: '/openapi/conversational-ai/rest-api.en.yaml',
-      'zh-CN': '/openapi/conversational-ai/rest-api.en.yaml',
+      'zh-CN': '/openapi/conversational-ai/rest-api.zh-CN.yaml',
     },
     routePrefix: 'api-reference/api-ref/conversational-ai',
     sourcePath: {
       en: 'content/openapi/conversational-ai/rest-api.en.yaml',
-      'zh-CN': 'content/openapi/conversational-ai/rest-api.en.yaml',
+      'zh-CN': 'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
     },
     tab: 'api-reference',
     operations: {
