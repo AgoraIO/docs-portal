@@ -40,6 +40,8 @@ const enCommon = {
     pagesLabel: 'Pages',
     toc: 'On this page',
     tocEmpty: 'No headings on this page.',
+    lastUpdated: 'Updated',
+    lastUpdatedUnavailable: 'Last update unavailable',
     returnToSource: 'Back to {{title}}',
     next: 'Next',
     previous: 'Previous',
