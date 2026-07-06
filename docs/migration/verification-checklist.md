@@ -87,8 +87,13 @@ Use this checklist before marking any migration ledger row `done`.
 Run the smallest command set that matches the touched surface:
 
 ```bash
+bun run docs:mdx-build-syntax
 bun run types:check
 ```
+
+Use `docs:mdx-build-syntax` as a fast preflight before a full build. It catches
+common migrated MDX syntax and structure patterns that block Fumadocs/Vite
+builds, but it does not replace `bun run build`.
 
 Add these when relevant:
 
