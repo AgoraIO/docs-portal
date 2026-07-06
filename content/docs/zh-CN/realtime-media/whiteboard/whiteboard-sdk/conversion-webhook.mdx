@@ -397,15 +397,23 @@ func calcSignatureV1(secret, payload string) string {
 | --- | --- | --- |
 | code | Number | 转换任务状态码，转换成功时为 `0`，失败时会返回错误码，详见[文档转换错误码](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/response-code#文档转换错误码)。 |
 | message | String | 错误码对应的错误消息，描述出错的原因。仅在转换任务失败时，才会返回该字段。 |
-| data | JSON Object | <Slot name="conversion-webhook-restful-markdown-1-3-2" /> |
+| data | JSON Object | 转换任务相关数据，字段说明见下方。 |
 
-<Slot for="conversion-webhook-restful-markdown-1-3-2">
+`data` 包含以下字段：
 
-转换任务相关数据，包含以下字段：
-
-- `taskId`：String。转换任务的 UUID，即转换任务的唯一标识符。</li><li>`taskType`：转换任务类型，取值如下： - `dynamic_convert`：动态文档转换，即文档转网页。 - `static_convert`：静态文档转换，即文档转图片。</li><li>`prefixUrl`：String。转换结果文件地址前缀路径。</li><li>`pageCount`：Number。文档页数，转换任务失败时没有该字段。</li><li>`previews`：JSON Object。转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。</li><li>`images`：JSON Object。文档转图片结果的地址和图片参数，每页对应一张图片。 - `width`：Number。图片宽度 (px)。 - `height`：Number。图片高度 (px)。 - `url`：String。图片连接地址。 该参数仅在该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `type` 设为 `static` 时才生效。</li><li>`note`：String。从文档中提取出的所有备注内容。</li><li>`noticeTimestamp`：Number。发送请求的时间戳。
-
-</Slot>
+- `taskId`：String。转换任务的 UUID，即转换任务的唯一标识符。
+- `taskType`：转换任务类型，取值如下：
+  - `dynamic_convert`：动态文档转换，即文档转网页。
+  - `static_convert`：静态文档转换，即文档转图片。
+- `prefixUrl`：String。转换结果文件地址前缀路径。
+- `pageCount`：Number。文档页数，转换任务失败时没有该字段。
+- `previews`：JSON Object。转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
+- `images`：JSON Object。文档转图片结果的地址和图片参数，每页对应一张图片。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `type` 设为 `static` 时才生效。
+  - `width`：Number。图片宽度 (px)。
+  - `height`：Number。图片高度 (px)。
+  - `url`：String。图片连接地址。
+- `note`：String。从文档中提取出的所有备注内容。
+- `noticeTimestamp`：Number。发送请求的时间戳。
 
 以下为请求包体示例：
 

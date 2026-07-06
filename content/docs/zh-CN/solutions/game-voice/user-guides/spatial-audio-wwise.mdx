@@ -628,13 +628,9 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 6. 为第 3、4 步添加的 Audio Input Source 和 Audio Receive Source 创建 Event，例如播放（Play）和停止（Stop）事件。
 
-   <Accordions>
-<Accordion title="以创建 Audio Input Source 的播放事件为例">
+**以创建 Audio Input Source 的播放事件为例**
 
 ![Input Source 的播放事件](/img/game-voice/add-play-event-to-input-source.png)
-
-</Accordion>
-</Accordions>
 
     所有事件创建完成后，效果如下图：
 
@@ -652,29 +648,9 @@ Assets/Wwise/API/Runtime/Plugins/iOS
 
 1. 将项目中集成的声网 Unreal SDK 替换成[带 Wwise 模块的 Unreal SDK](https://download.agora.io/sdk/release/AgoraPlugin.zip)。Wwise 模块对应 SDK 中的 `AgoraWwiseCommHandler` 和 `WwiseHeaderFiles` 文件夹。
 
-    | 替换前 | 替换后 |
+| 替换前 | 替换后 |
 | --- | --- |
-| <Slot name="spatial-audio-wwise-unreal-cpp-html-0-1-0" /> | <Slot name="spatial-audio-wwise-unreal-cpp-html-0-1-1" /> |
-
-<Slot for="spatial-audio-wwise-unreal-cpp-html-0-1-0">
-
-- SDK 来源：从[下载页](/zh-CN/solutions/game-voice/resources)获取
-
-        - SDK 文件夹名称：AgoraPlugin
-
-        - SDK 区别：不含 Wwise 模块
-
-</Slot>
-
-<Slot for="spatial-audio-wwise-unreal-cpp-html-0-1-1">
-
-- SDK 来源：从本节获取
-
-        - SDK 文件夹名称：AgoraPlugin
-
-        - SDK 区别：含有 Wwise 模块
-
-</Slot>
+| SDK 来源：从[下载页](/zh-CN/solutions/game-voice/resources)获取<br />SDK 文件夹名称：AgoraPlugin<br />SDK 区别：不含 Wwise 模块 | SDK 来源：从本节获取<br />SDK 文件夹名称：AgoraPlugin<br />SDK 区别：含有 Wwise 模块 |
 
 2. 打开 Unreal Engine 项目，对 API 进行如下修改：
 
