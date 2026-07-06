@@ -1019,30 +1019,9 @@ override func viewDidLoad() {
 
     | Capability | Category | Permission |
     | --- | --- | --- |
-    | App Sandbox | Network | <Slot name="audio-quick-start-macos-markdown-1-1-2" /> |
-    | App Sandbox | Hardware | <Slot name="audio-quick-start-macos-markdown-1-2-2" /> |
-    | Hardened Runtime | Resource Access | <Slot name="audio-quick-start-macos-markdown-1-3-2" /> |
-
-    <Slot for="audio-quick-start-macos-markdown-1-1-2">
-
-    - Incoming Connections (Server)
-    - Outgoing Connections (Client)
-
-    </Slot>
-
-    <Slot for="audio-quick-start-macos-markdown-1-2-2">
-
-    - Camera
-    - Audio Input
-
-    </Slot>
-
-    <Slot for="audio-quick-start-macos-markdown-1-3-2">
-
-    - Camera
-    - Audio Input
-
-    </Slot>
+    | App Sandbox | Network | Incoming Connections (Server)<br />Outgoing Connections (Client) |
+    | App Sandbox | Hardware | Camera<br />Audio Input |
+    | Hardened Runtime | Resource Access | Camera<br />Audio Input |
 
 ## 集成 SDK
 根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
@@ -1729,8 +1708,7 @@ startBasicCall();
     - 加入和离开频道按钮
 
     你可以参考下列步骤来创建用户界面。
-    <Accordions>
-<Accordion title="创建用户界面步骤">
+**创建用户界面步骤**
 
 1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
 
@@ -1744,8 +1722,6 @@ startBasicCall();
 
 ![ui](/img/rtc/windows-audio-quickstart.png)
 
-</Accordion>
-</Accordions>
 
     ## 实现步骤
 
@@ -2093,7 +2069,6 @@ void CAgoraQuickStartDlg::OnBnClickedBtnLeave()
 }
 
 
-
 LRESULT CAgoraQuickStartDlg::OnEIDJoinChannelSuccess(WPARAM wParam, LPARAM lParam) {
     // 加入频道成功回调
     uid_t localUid = wParam;
@@ -2309,8 +2284,7 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     在 `APP_ID` 和 `Token` 字段中传入你在控制台获取到的 App ID 和临时 Token。
     :::
 
-    <Accordions>
-<Accordion title="实现纯语音互动示例代码">
+**实现纯语音互动示例代码**
 
 ```csharp
 using System;
@@ -2441,8 +2415,6 @@ namespace WindowsFormsApp2
 }
 ```
 
-</Accordion>
-</Accordions>
 
     ### 导入声网相关的类
 
@@ -3301,7 +3273,6 @@ const EventHandles = {
         console.log('远端用户 ' + remoteUid + ' 已离开频道');
     },
 };
-
 
 
 window.onload = () => {
@@ -5554,8 +5525,7 @@ public class UnrealLearning : ModuleRules
 
 4. 添加系统所需权限
 
-    <Accordions>
-<Accordion title="Android">
+**Android**
 
 如果目标平台为 Android，则添加 AndroidPermission 库并获取设备及网络权限：
 
@@ -5612,9 +5582,7 @@ void UAgoraWidget::NativeConstruct()
 }
 ```
 
-</Accordion>
-
-<Accordion title="iOS & macOS">
+**iOS & macOS**
 
 1. 如果目标平台为 iOS/macOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/faq/integration-issues/unreal-permissions)
 
@@ -5636,9 +5604,6 @@ void UAgoraWidget::NativeConstruct()
         }
     }
     ```
-
-</Accordion>
-</Accordions>
 
 5. 关联 C++ 类和 Widget
 
@@ -6002,54 +5967,16 @@ void UAgoraWidget::NativeDestruct()
 
 | 序号 | 节点 | 类型 | 描述 |
 | --- | --- | --- | --- |
-| 1 | **Set Show Mouse Cursor** | 原生* | <Slot name="audio-quick-start-unreal-blueprint-html-0-1-3" /> |
+| 1 | **Set Show Mouse Cursor** | 原生* | (可选) 设置是否显示鼠标光标，勾选代表显示。<br />该节点仅适用于 Windows 和 macOS。<br />如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。<br />![](https://web-cdn.agora.io/docs-files/1689863102745) |
 | 2 | **Load Agora Config** | 自定义** | 加载声网配置。用于后续在创建和加入频道时验证用户身份。 |
-| 3 | **Create BP Audio Widget** | 原生 | <Slot name="audio-quick-start-unreal-blueprint-html-0-3-3" /> |
-| 4 | **Set Basic Audio Call Widget** | 自定义 | <Slot name="audio-quick-start-unreal-blueprint-html-0-4-3" /> |
+| 3 | **Create BP Audio Widget** | 原生 | 创建用户界面。步骤如下：<br />1. 创建 **Create Widget** 节点。<br />2. 选择该节点的 **Class** 为 **BP_AudioWidget**，将该节点关联至已经创建好的用户界面。 |
+| 4 | **Set Basic Audio Call Widget** | 自定义 | 设置用户界面。步骤如下：<br />1. 创建 **BasicAudioCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_AudioWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。<br />2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicAudioCallWidget** 和 **Get BasicAudioCallWidget** 两个选项，选择 **Set BasicAudioCallWidget** 创建节点，用于访问并设置用户界面。 |
 | 5 | **Bind UIEvent** | 自定义 | 绑定 UI 事件，用于处理点击 **JoinChannel** 和 **LeaveChannel** 按钮后的事件逻辑。 |
 | 6 | **Add to Viewport** | 原生 | 将用户界面添加到视口。 |
-| 7 | **Check Permission** | 自定义 | <Slot name="audio-quick-start-unreal-blueprint-html-0-7-3" /> |
+| 7 | **Check Permission** | 自定义 | (可选) 检查是否已获取语音通话所需的系统权限，如访问麦克风等。<br />如果你的目标平台是 Android，需要创建该节点用于检查系统权限。 |
 | 8 | **Init Rtc Engine** | 自定义 | 创建并初始化 RTC 引擎。 |
 | 9 | **UnInitRtcEngine** | 自定义 | 离开频道并释放资源。 |
 
-<Slot for="audio-quick-start-unreal-blueprint-html-0-1-3">
-
-(可选) 设置是否显示鼠标光标，勾选代表显示。
-      :::warning[注意]
-      - 该节点仅适用于 Windows 和 macOS。
-            - 如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。
-
-      ![](https://web-cdn.agora.io/docs-files/1689863102745)
-      :::
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-0-3-3">
-
-创建用户界面。步骤如下：
-
-        1. 创建 **Create Widget** 节点。
-        2. 选择该节点的 **Class** 为 **BP_AudioWidget**，将该节点关联至已经创建好的用户界面。
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-0-4-3">
-
-设置用户界面。步骤如下：
-
-        1. 创建 **BasicAudioCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_AudioWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。
-        2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicAudioCallWidget** 和 **Get BasicAudioCallWidget** 两个选项，选择 **Set BasicAudioCallWidget** 创建节点，用于访问并设置用户界面。
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-0-7-3">
-
-(可选) 检查是否已获取语音通话所需的系统权限，如访问麦克风等。
-        :::warning[注意]
-        如果你的目标平台是 Android，需要创建该节点用于检查系统权限。
-        :::
-
-</Slot>
 
 *原生节点为蓝图内置的节点，无需额外配置即可直接添加调用。
 
@@ -6091,38 +6018,11 @@ void UAgoraWidget::NativeDestruct()
 
             | 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
-| `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="audio-quick-start-unreal-blueprint-html-1-1-2" /> |
-| `FOnLeaveChannel` | 离开频道回调。 | <Slot name="audio-quick-start-unreal-blueprint-html-1-2-2" /> |
-| `FOnUserJoined` | 远端用户加入当前频道回调。 | <Slot name="audio-quick-start-unreal-blueprint-html-1-3-2" /> |
-| `FOnUserOffline` | 远端用户离开当前频道回调。 | <Slot name="audio-quick-start-unreal-blueprint-html-1-4-2" /> |
+| `FOnJoinChannelSuccess` | 成功加入频道回调。 | `channel`: (String) 频道名。<br />`uid`: (Integer64) 加入频道的本地用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
+| `FOnUserJoined` | 远端用户加入当前频道回调。 | `uid`: (Integer64) 新加入频道的远端用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnUserOffline` | 远端用户离开当前频道回调。 | `uid`: (Integer64) 离线用户的用户 ID。<br />`reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。 |
 
-<Slot for="audio-quick-start-unreal-blueprint-html-1-1-2">
-
-- `channel`: (String) 频道名。
-                - `uid`: (Integer64) 加入频道的本地用户的用户 ID。
-                - `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-1-2-2">
-
-- `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-1-3-2">
-
-- `uid`: (Integer64) 新加入频道的远端用户的用户 ID。
-                - `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
-
-</Slot>
-
-<Slot for="audio-quick-start-unreal-blueprint-html-1-4-2">
-
-- `uid`: (Integer64) 离线用户的用户 ID。
-                - `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。
-
-</Slot>
 
         2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
 

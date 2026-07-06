@@ -495,8 +495,7 @@ iOS 开发环境需满足以下要求：
 
 1. 在 Flutter 项目中，根据实际需要集成原生的 Android 和/或 iOS 插件：
 
-    <Accordions>
-<Accordion title="通过 Gradle 集成 Android 插件">
+**通过 Gradle 集成 Android 插件**
 
 1. 进入[声网控制台 > 云市场](https://console.shengwang.cn/marketplace/list/all)页面，下载**相芯美颜道具高级版**的 Android 插件动态库压缩包。
     2. 解压文件夹，将所有 `.aar` 文件保存到项目文件夹，比如 `android/libs`  路径。
@@ -509,9 +508,8 @@ iOS 开发环境需满足以下要求：
         implementation fileTree(dir: "${rootProject.projectDir}/libs", include: ["*.aar"])
         ```
 
-</Accordion>
 
-<Accordion title="通过 CocoaPods 集成 iOS 插件">
+**通过 CocoaPods 集成 iOS 插件**
 
 1. 进入[声网控制台 > 云市场](https://console.shengwang.cn/marketplace/list/all)页面，下载**相芯美颜道具高级版**的 iOS 插件动态库压缩包。
 2. 解压文件夹，将所有 `.framework` 文件导入项目。
@@ -539,8 +537,6 @@ iOS 开发环境需满足以下要求：
     pod 'Extensions', :path => "./"
     ```
 
-</Accordion>
-</Accordions>
 
 2. 添加证书文件：将插件包里的证书文件（`authpack.java` 或 `authpack.h`）转换成 dart 语法，并保存到项目文件夹，比如 `lib` 路径。`authpack.java` 和 `authpack.h` 所包含的证书数据一样。以转换 `authpack.h` 文件为例，将文件内的数据复制到 `List<int> gAuthPackage = [];` 这一行的 `[]` 中即可：
 

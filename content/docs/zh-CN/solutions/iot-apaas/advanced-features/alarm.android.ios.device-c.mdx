@@ -115,11 +115,7 @@ static int stop_alarm_record(agora_iot_handle_t handle, unsigned long long video
 
 为增加查询的灵活性，声网灵隼在 Android 和 iOS API 中提供如下两组查询告警内容的方法：
 
-- 同时查询所有告警内容：你可以通过 `IAlarmMgr` 类中的 `queryById` 方法同时查询告警消息、告警图片和告警视频，并通过 <PlatformInline platform="android">
-onAlarmInfoQueryDone 回调
-</PlatformInline><PlatformInline platform="ios">
-`queryById` 的返回值
-</PlatformInline>获取查询结果。
+- 同时查询所有告警内容：你可以通过 `IAlarmMgr` 类中的 `queryById` 方法同时查询告警消息、告警图片和告警视频，并通过 Android 的 `onAlarmInfoQueryDone` 回调或 iOS 中 `queryById` 的返回值获取查询结果。
 - 分别查询某项告警内容：
 
 <PlatformStructured platform="android">

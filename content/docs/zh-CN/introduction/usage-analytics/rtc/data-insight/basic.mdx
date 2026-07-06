@@ -48,7 +48,9 @@ title: "数据洞察普通版"
 - 快速查看指标分析：点击曲线图上的数据点，然后点击**查看分布**，可以跳转到该数据点对应时间的**指标分析**面板，查看对应指标在各个维度的数据。查看完毕后，可以点击**重置时间**，恢复原来的筛选条件。
 
 :::warning[注意]
-- 部分套餐包不支持查看小时的功能。详见[套餐包详情](/zh-CN/introduction/usage-analytics/overview/billing#套餐包详情)。</li><li>最大同时在线频道数、最大同时在线人数、频道数的曲线暂不支持查看分布。</li><li>实时互动拓展服务板块将根据云录制、输入在线流媒体和旁路推流的开启情况决定是否展示相关指标，若所有服务均未开启，则该板块不展示。
+- 部分套餐包不支持查看小时的功能。详见[套餐包详情](/zh-CN/introduction/usage-analytics/overview/billing#套餐包详情)。
+- 最大同时在线频道数、最大同时在线人数、频道数的曲线暂不支持查看分布。
+- 实时互动拓展服务板块将根据云录制、输入在线流媒体和旁路推流的开启情况决定是否展示相关指标，若所有服务均未开启，则该板块不展示。
 :::
 
 ### 指标分析
@@ -62,7 +64,8 @@ title: "数据洞察普通版"
 各维度的含义详见[维度](#维度)。
 
 :::warning[注意]
-- 地域版块的地区条形图中，默认展示排名第一的国家的地区排名。如果要查看其它国家的地区排名，在地图上点击对应的国家即可。</li><li>如果某个维度没有用量或用量信息不全，条形图可能无法显示或显示不全。
+- 地域版块的地区条形图中，默认展示排名第一的国家的地区排名。如果要查看其它国家的地区排名，在地图上点击对应的国家即可。
+- 如果某个维度没有用量或用量信息不全，条形图可能无法显示或显示不全。
 :::
 
 ## 质量概览
@@ -95,7 +98,8 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 - 用户采样：在频道数据采样的散点图上，点击数据点，然后点击**用户数据采样**，可以看到频道中卡顿率最高的六位用户的数据。如果需要查看某位用户更详细的通话质量数据，可以点击与该用户对应的**通话调查**。通话调查提供的数据详见[通话调查](/zh-CN/introduction/usage-analytics/rtc/call-search/overview)。
 
 :::warning[注意]
-- 部分套餐包不支持查看小时、查看分钟和数据采样的功能。详见[套餐包详情](/zh-CN/introduction/usage-analytics/overview/billing#套餐包详情)。</li><li>只有点击的数据点符合对应的[采样规则](#采样规则)时，采样选项才会出现。
+- 部分套餐包不支持查看小时、查看分钟和数据采样的功能。详见[套餐包详情](/zh-CN/introduction/usage-analytics/overview/billing#套餐包详情)。
+- 只有点击的数据点符合对应的[采样规则](#采样规则)时，采样选项才会出现。
 :::
 
 ###  指标分析
@@ -114,7 +118,8 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 - 登录成功率或 5 s 登录成功率小于 95%
 
 :::warning[注意]
-- 地域版块的地区气泡图中，默认展示排名第一的国家的地区排名。如果要查看其它国家的地区排名，在地图上点击对应的国家即可。</li><li>如果某个维度没有用量或用量信息不全，气泡可能无法显示或显示不全。
+- 地域版块的地区气泡图中，默认展示排名第一的国家的地区排名。如果要查看其它国家的地区排名，在地图上点击对应的国家即可。
+- 如果某个维度没有用量或用量信息不全，气泡可能无法显示或显示不全。
 :::
 
 ## 参考信息
@@ -154,7 +159,11 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 <Slot for="basic-markdown-0-11-1">
 
 仅开启旁路推流时展示，详见[旁路推流](https://docs.agora.io/cn/media-push/streaming_product)。
-提供三种推流模式的数据：<li>`SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl`  中的 `transcodingEnabled` 设置为 `false`。</li><li>`SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl`  中的 `transcodingEnabled` 设置为 `true`。</li><li>`RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。</li>
+提供三种推流模式的数据：
+
+- `SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `false`。
+- `SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `true`。
+- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。
 
 </Slot>
 
@@ -197,7 +206,8 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 | 网络延迟率 | 网络延迟率大于 10%、1 分钟内所有频道的音视频时长之和超过 100 分钟。 |
 
 :::warning[注意]
-- 采样规则中的视频时长、音频时长、音频和视频总时长均为[按流计算](#按流计算)的时长用量。</li><li>登录成功率、5 s 登录成功率暂不支持采样。
+- 采样规则中的视频时长、音频时长、音频和视频总时长均为[按流计算](#按流计算)的时长用量。
+- 登录成功率、5 s 登录成功率暂不支持采样。
 :::
 
 ### 相关链接

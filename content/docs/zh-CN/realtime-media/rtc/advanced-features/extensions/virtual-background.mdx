@@ -430,7 +430,10 @@ export type VirtualBackgroundEffectOptions = {
 - `source`: `HTMLImageElement` 或 `HTMLVideoElement` 对象。当你将 `type` 设为 `"img"` 或 `"video"` 时，可通过此参数设置自定义背景图片或视频。
 
     :::warning[注意]
-    - 如果出现 "texture bound to texture unit 2 is not renderable. It might be non-power-of-2 or have incompatible texture filtering (maybe)?" 报错，请检查图片的分辨率相乘后是否是 2 的倍数。</li><li>受浏览器安全策略限制，当背景图片或视频资源进行跨域部署时，你需要确保开启服务器的跨域访问权限，且将 `HTMLImageElement` 对象的 `crossOrigin` 属性设置为 `"anonymous"`。</li><li>由于 `HTMLImageElement` 对象的图片加载需要时间，声网建议在 `HTMLImageElement` 对象的 `onload` 事件回调中调用 `setOptions` 方法，否则背景会变成黑色。</li><li>如果使用视频作为背景，你需要为 `video` 元素设置 `mute` 属性开启静音、设置 `loop` 属性开启循环播放。
+    - 如果出现 "texture bound to texture unit 2 is not renderable. It might be non-power-of-2 or have incompatible texture filtering (maybe)?" 报错，请检查图片的分辨率相乘后是否是 2 的倍数。
+    - 受浏览器安全策略限制，当背景图片或视频资源进行跨域部署时，你需要确保开启服务器的跨域访问权限，且将 `HTMLImageElement` 对象的 `crossOrigin` 属性设置为 `"anonymous"`。
+    - 由于 `HTMLImageElement` 对象的图片加载需要时间，声网建议在 `HTMLImageElement` 对象的 `onload` 事件回调中调用 `setOptions` 方法，否则背景会变成黑色。
+    - 如果使用视频作为背景，你需要为 `video` 元素设置 `mute` 属性开启静音、设置 `loop` 属性开启循环播放。
     :::
 
 - `blurDegree`: Number 型。当你将 `type` 设为 `"blur"` 时，可通过此参数设置背景虚化程度。可设为：
