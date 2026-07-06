@@ -1874,6 +1874,93 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
   });
 
+  it('applies 24px depth increments to nested response schema rows', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v1/projects/{appId}/agents/{agentId}',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/projects/{appId}/agents/{agentId}': {
+                  get: {
+                    operationId: 'get-agent',
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                data: {
+                                  properties: {
+                                    agent: {
+                                      properties: {
+                                        voice: {
+                                          type: 'string',
+                                        },
+                                      },
+                                      type: 'object',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Get agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Response schema' });
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Expand all Response schema fields',
+      }),
+    );
+
+    const expectResponseSchemaRowPadding = (
+      anchorId: string,
+      paddingInlineStart: string,
+    ) => {
+      const row = document.getElementById(anchorId);
+
+      expect(row).toBeInstanceOf(HTMLElement);
+      expect((row as HTMLElement).style.paddingInlineStart).toBe(
+        paddingInlineStart,
+      );
+    };
+
+    expectResponseSchemaRowPadding('responses-200-data', '1rem');
+    expectResponseSchemaRowPadding(
+      'responses-200-data-agent',
+      'calc(1rem + 24px)',
+    );
+    expectResponseSchemaRowPadding(
+      'responses-200-data-agent-voice',
+      'calc(1rem + 48px)',
+    );
+  });
+
   it('adds stable deep-link anchors to parameters and schema fields', async () => {
     render(
       <FumadocsOpenApiContent
