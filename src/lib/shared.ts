@@ -6,7 +6,7 @@ export const docsImageRoute = 'https://assets-docs.agora.io/og/docs.png';
 
 export const legacyDocsBannerConfig = {
   hrefs: {
-    en: 'https://docs.agora.io/en/',
+    en: 'https://docs-legacy.agora.io/en',
     'zh-CN': 'https://doc.shengwang.cn/',
   },
 };

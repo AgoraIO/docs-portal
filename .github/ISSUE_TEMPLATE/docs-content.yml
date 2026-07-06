@@ -1,0 +1,49 @@
+name: Documentation issue
+description: Report an incorrect, unclear, missing, or outdated documentation page.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the docs. Do not include secrets, private credentials, customer data, or confidential support details.
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL
+      description: Link to the affected docs page.
+      placeholder: https://docs.agora.io/...
+    validations:
+      required: true
+  - type: dropdown
+    id: locale
+    attributes:
+      label: Locale
+      options:
+        - English
+        - Chinese
+        - Both
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong?
+      description: Describe the incorrect, unclear, missing, or outdated content.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should the docs say or do instead?
+      description: Include source links or product behavior evidence when available.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots, environment details, SDK versions, or related links if relevant.
+    validations:
+      required: false

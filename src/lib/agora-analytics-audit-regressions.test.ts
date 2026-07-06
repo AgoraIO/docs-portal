@@ -3,9 +3,9 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
-  'content/docs/en/solutions/agora-analytics/build/explore-and-analyze-data/data-insight-plus.md',
-  'content/docs/en/solutions/agora-analytics/build/integrate-and-embed/datadog-integration.md',
-  'content/docs/en/solutions/agora-analytics/build/manage-agora-account.md',
+  'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight-plus.md',
+  'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration.md',
+  'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md',
 ];
 
 function readContent(path: string) {
@@ -62,6 +62,19 @@ function splitMarkdownRow(row: string) {
   return row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|');
 }
 
+function tableSection(source: string, title: string, endMarker: string) {
+  const legacyTitle = `**${title}**`;
+  const accordionTitle = `<Accordion title="${title}">`;
+  const start = Math.max(
+    source.indexOf(legacyTitle),
+    source.indexOf(accordionTitle),
+  );
+
+  expect(start).toBeGreaterThanOrEqual(0);
+
+  return source.slice(start, source.indexOf(endMarker));
+}
+
 describe('agora analytics audit regressions', () => {
   it('keeps ordered procedures source-numbered after the first step', () => {
     for (const path of orderedListTargets) {
@@ -71,13 +84,13 @@ describe('agora analytics audit regressions', () => {
 
   it('keeps the security data-classification table rectangular', () => {
     const source = readContent(
-      'content/docs/en/solutions/agora-analytics/reference/security.md',
+      'content/docs/en/realtime-media/agora-analytics/reference/security.md',
     );
-    const tableLines = source
-      .slice(
-        source.indexOf('**Data classification categories**'),
-        source.indexOf('### Data security'),
-      )
+    const tableLines = tableSection(
+      source,
+      'Data classification categories',
+      '### Data security',
+    )
       .split(/\r?\n/)
       .filter((line) => line.startsWith('|'));
     const expectedCells = splitMarkdownRow(tableLines[0]).length;

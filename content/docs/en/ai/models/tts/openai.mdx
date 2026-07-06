@@ -92,21 +92,18 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 - **Managed mode**
 
-  To use OpenAI TTS with an Agora-managed key, specify the following preset in the [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset) field when starting an agent:
-
-  - `openai_tts_1`
-
-  When using a preset, you do not need to provide the API key, base URL, or model. You can still use the `tts` field to configure additional settings such as `voice` and `instructions`.
+  To use OpenAI TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.api_key` is not required. You can still use the `tts` field to configure additional settings such as `voice` and `instructions`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
 
   ```json
-  "preset": "openai_tts_1",
-  "properties": {
-    "tts": {
-      "params": {
-        "voice": "coral",
-        "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
-        "speed": 1
-      }
+  "tts": {
+    "credential_mode": "managed",
+    "vendor": "openai",
+    "params": {
+      "base_url": "https://api.openai.com/v1",
+      "model": "tts-1",
+      "voice": "coral",
+      "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
+      "speed": 1
     }
   }
   ```
@@ -136,7 +133,7 @@ The parameters listed on this page are validated for use with Conversational AI 
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK). They are not required when using a preset.
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
 
 <ParameterList title="params">
   <Parameter name="base_url" type="string" required={true}>

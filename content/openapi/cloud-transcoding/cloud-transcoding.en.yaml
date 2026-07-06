@@ -1053,7 +1053,7 @@ paths:
           markdown: >
             To understand the difference between query methods and message notification service, see
             [What's the difference between query methods and message notification
-            service?](/help/general-product-inquiry/query_vs_notifications).
+            service?](/en/api-reference/faq/integration/ncs_vs_query).
         - title: Response
           position: before-response-body
           markdown: >-
@@ -1645,7 +1645,7 @@ paths:
 
             - If the returned status code is not `200`, the request failed. The response body
             includes the `detail` and `reason` for failure. Refer to [status
-            codes](../rest-api/reference#response-status-codes) to understand the possible reasons
+            codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) to understand the possible reasons
             for failure.
         - markdown: |-
             ```json
@@ -1741,7 +1741,7 @@ paths:
 
             - If the returned status code is not `200`, the request failed. The response body
             includes the `detail` and `reason` for failure. Refer to [status
-            codes](../rest-api/reference#response-status-codes) to understand the possible reasons
+            codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) to understand the possible reasons
             for failure.
         - markdown: |-
             ```json
@@ -1849,7 +1849,7 @@ paths:
 
 
             - If the returned status code is not `200`, the request failed. See [Response status
-            codes](../reference/common-errors#status-codes) for troubleshooting.
+            codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) for troubleshooting.
       operationId: query-cloud-transcoding-ncs-ip
       x-codeSamples:
         - lang: bash
@@ -2189,16 +2189,6 @@ components:
             The RTC channel name for the transcoded audio and video.
 
 
-            The RTC channel name for the audio input source. Currently, only audio and video sources
-            that subscribe to a single channel are supported. The audio source and video source must
-            belong to the same channel.
-
-
-            The RTC channel name for the video input source. Currently, only audio and video sources
-            that subscribe to a single channel are supported. The audio source and video source must
-            belong to the same channel.
-
-
             The RTC channel name for the audio input source. Currently, you can only subscribe to
             audio and video sources from a single channel; the audio and video sources must belong
             to the same channel.
@@ -2234,7 +2224,7 @@ components:
             users in the channel. See Token authentication for details.
 
              The UID of Cloud Transcoder in the RTC channel is randomly assigned by Agora. Therefore, when generating a token, set the uid to 0.
-      description: Required for publishing to an RTC channel.
+      description: Required for publishing to an RTC channel. Currently, you can publish to only one RTC channel.
     canvas:
       type: object
       required:

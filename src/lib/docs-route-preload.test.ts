@@ -50,6 +50,7 @@ describe('preloadDocsPageContent', () => {
           platformTabs: {
             canonicalPlatform: 'ios',
             defaultPlatform: 'ios',
+            initialPlatform: undefined,
             platforms: '["ios","android"]',
           },
           platforms: ['ios', 'android'],
@@ -130,6 +131,7 @@ function createPayload(
       next: undefined,
       previous: undefined,
     },
+    productScopes: [],
     sidebar: [],
     sidebarHeader: undefined,
     slug: 'about',

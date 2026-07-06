@@ -14,7 +14,7 @@ description: 与智能体互动期间，你可能需要打断智能体发言来�
 声网对话式 AI 引擎支持开启优雅打断功能，开启后，用户与智能体互动时，支持基于语义判定用户当前是否结束发言，实现更自然的对话交互体验。
 
 > 信息
-> - 优雅打断为增值服务，开启后会收取费用，详见[计费说明](../overview/billing.md)。
+> - 优雅打断为增值服务，开启后会收取费用，详见[计费说明](./billing)。
 > - 当语义判定用户未结束发言时，会等待一段时间才最终判定对话结束，此时响应延时会有所增加。
 
 优雅打断功能默认关闭，你需要在调用 [POST 创建对话式智能体](../operations/start-agent.md)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 开启优雅打断。以 curl 为例：
@@ -147,7 +147,7 @@ curl --request POST \
 - [打断智能体](./interrupt-agent.md)
 - [实时字幕](./realtime-sub.md)
 - [监听智能体相关事件](./listen-agent-events.md)
-- [设置最佳音频参数](../best-practice/audio-settings.md) （仅支持 Android 和 iOS）
+- [设置最佳音频参数](./best-practices/audio-settings) （仅支持 Android 和 iOS）
 - [发送图片消息](./send-multimodal-message.md)
 
 #### 前提条件
@@ -156,7 +156,7 @@ curl --request POST \
 
 - 已集成 RTC v4.5.1 及以上版本 SDK，且在 App 中实现了基本的实时音视频功能、获取了相关设备的使用权限。请参考[实现音视频互动](https://doc.shengwang.cn/doc/rtc/android/get-started/quick-start)。
 - 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现了基本的实时消息功能。请参考[实现收发消息](https://doc.shengwang.cn/doc/rtm2/javascript/get-started/quick-start)。
-- 已参考[实现对话式智能体](../get-started/quick-start.md)实现与智能体对话的基本逻辑。
+- 已参考[实现对话式智能体](./quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
 #### 集成组件

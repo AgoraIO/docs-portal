@@ -1,18 +1,24 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { getDocsPagePayload } from '@/lib/docs-page';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import {
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
+import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
 import {
   isKnownPlatform,
   normalizePlatformKey,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import { recordRecentPage } from '@/lib/recently-viewed';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -39,10 +45,27 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
 
+    if (shouldUseStaticDocsPayload()) {
+      const legacyRedirect = resolveStaticLegacySitemapRedirect(
+        `/${[params.locale, params.tab, ...slugSegments].join('/')}`,
+        location.searchStr,
+      );
+
+      if (legacyRedirect) {
+        throw redirect({
+          href: preserveRedirectSearch(
+            legacyRedirect.redirectUrl,
+            location,
+            legacyRedirect.preserveSearch,
+          ),
+        });
+      }
+    }
+
     const loadPayload = (segments: string[]) =>
       shouldUseStaticDocsPayload()
         ? resolvePlatformStaticDocsPayload<
-            DocsPagePayload | { redirectUrl: string }
+            DocsPagePayload | DocsRedirectPayload
           >({
             locale: params.locale,
             slugSegments: segments,
@@ -51,6 +74,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
         : getDocsPagePayload({
             data: {
               locale: params.locale,
+              search: location.searchStr,
               slugSegments: segments,
               tab: params.tab,
             },
@@ -81,13 +105,15 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
+      const preserveSearch =
+        'preserveSearch' in payload ? payload.preserveSearch : true;
 
       if (!redirectUrl) {
         throw notFound();
       }
 
       throw redirect({
-        href: preserveRedirectSearch(redirectUrl, location),
+        href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
       });
     }
 
@@ -118,6 +144,19 @@ function Page() {
     title,
   } = Route.useLoaderData();
 
+  // Remember this page so the search dialog can offer it under "Recent". Keyed
+  // on the resolved title so a client-side navigation to another page re-records.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !title) {
+      return;
+    }
+    recordRecentPage({
+      description,
+      title,
+      url: window.location.pathname,
+    });
+  }, [description, title]);
+
   return (
     <DocsContent
       body={body}
@@ -139,12 +178,13 @@ function Page() {
 function preserveRedirectSearch(
   href: string,
   location: { hash?: string; searchStr?: string },
+  preserveSearch = true,
 ) {
   if (/[?#]/.test(href)) {
     return href;
   }
 
-  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
+  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
 }
 
 export function getKnownPlatformSearchParam(searchStr?: string) {
@@ -157,7 +197,7 @@ export function getKnownPlatformSearchParam(searchStr?: string) {
 }
 
 export function payloadSupportsPlatform(
-  payload: DocsPagePayload | { redirectUrl: string },
+  payload: DocsPagePayload | DocsRedirectPayload,
   platform: PlatformKey,
 ) {
   const platformTabs = getPayloadPlatformTabs(payload);
@@ -175,7 +215,7 @@ export function payloadSupportsPlatform(
 }
 
 function getPayloadPlatformTabs(
-  payload: DocsPagePayload | { redirectUrl: string },
+  payload: DocsPagePayload | DocsRedirectPayload,
 ) {
   if ('redirectUrl' in payload || payload.body.kind === 'openapi') {
     return undefined;

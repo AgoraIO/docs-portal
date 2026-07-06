@@ -27,6 +27,63 @@ See [Supported platforms](/en/realtime-media/video/reference/supported-platforms
 ### Known issues
 
 
+### v4.24.5
+
+Released on June 24, 2026.
+
+#### Upgrade considerations
+
+- **Domain allowlist change**
+
+  Starting with v4.24.5, the SDK domain allowlist is updated to:
+
+  ```text
+  .agora.io
+  .edge.agora.io
+  .sd-rtn.com
+  .edge.sd-rtn.com
+  .rtnsvc.com
+  .edge.rtnsvc.com
+  .rtesvc.com
+  .edge.rtesvc.com
+  ```
+
+  If you upgrade to v4.24.5, update your firewall allowlist so the SDK continues to work in restricted-network environments. See [Firewall requirements](/en/realtime-media/video/reference/firewall).
+
+#### New features
+
+- **Background voice removal in AI Noise Suppression**
+
+  The AI Noise Suppression extension is enhanced to remove background human voices. In noisy environments or scenarios with multiple speakers, this capability further isolates the target speaker and improves audio capture. See [Extension release notes](#ai-noise-suppression).
+
+#### Improvements
+
+This release includes the following improvements:
+
+- Optimized the signaling flow to improve session-setup efficiency and connection success rates in complex network environments.
+- Optimized media-tracing links and jitter-buffer handling to reduce first-frame time and audio and video stuttering in certain scenarios.
+- The audio subscription flow now uses a presubscribe model by default, improving subscription efficiency and playback stability. When full-link feedback and frame-rate-priority mode are enabled, you can now set a lower bound for resolution downgrade.
+
+#### Fixed issues
+
+This release fixed the following issues:
+
+- Connection setup could time out in some scenarios.
+- The remote user received duplicate `user-joined` callbacks when a user with a string UID rejoined a channel immediately after leaving.
+- Messages could not be received in some scenarios.
+- The Web client could fail to receive H.265 video and metadata sent from a Native client.
+- On Safari 16.6, the local view could turn black or exit unexpectedly in some scenarios.
+- Remote video could freeze briefly after the first `client.publish(video)` call.
+- TypeScript type definition files were missing and some exported symbols were incorrect in the npm package.
+
+### v4.24.4
+
+Released on May 27, 2026.
+
+#### Improvements
+
+This release includes internal optimizations for weak-network scenarios, improving the login success rate.
+
 ### v4.24.3
 
 Released on April 1, 2026.
@@ -841,7 +898,7 @@ which prevents a black screen during the reconnection process. This optimization
 
 This release also includes the following improvements:
 
-- The accuracy of SDK-related quality metrics on [Analytics](/en/solutions/agora-analytics/product-overview) is improved.
+- The accuracy of SDK-related quality metrics on [Analytics](/en/realtime-media/agora-analytics/product-overview) is improved.
 - The time required to join a channel is reduced. This optimization is not available on Firefox due to Firefox's limitations.
 
 #### API changes
@@ -1033,7 +1090,7 @@ v4.13.0 was released on July 25, 2022.
 
 **Adding support for media processing extensions**
 
-As of v4.13.0, the SDK supports using media processing extensions on remote audio and video tracks (extension support for local audio and video tracks was added in [v4.10.0](#410)).
+As of v4.13.0, the SDK supports using media processing extensions on remote audio and video tracks (extension support for local audio and video tracks was added in [v4.10.0](#v410)).
 
 Currently, Agora provides the following extension for remote audio tracks:
 
@@ -2975,7 +3032,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -5232,7 +5289,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -6736,7 +6793,7 @@ If you set AgoraALD or Soundflower as the default input or output device when jo
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -8413,7 +8470,7 @@ This release optimizes the APIs for camera and screen capture function. As of v4
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise reduction mode as balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -10055,7 +10112,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -10343,7 +10400,7 @@ This release speeds up the first video frame rendering time to improve the video
 
 **3. Screen sharing**
 
-In addition to the usability enhancements detailed in the [fixed issued](#issue-fixed) section, this release includes a number of functional improvements to screen sharing, as follows:
+In addition to the usability enhancements detailed in the [fixed issued](#issues-fixed) section, this release includes a number of functional improvements to screen sharing, as follows:
 
 **All**
 
@@ -11864,7 +11921,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -12222,7 +12279,7 @@ This release speeds up the first video frame rendering time to improve the video
 
 **3. Screen sharing**
 
-In addition to the usability enhancements detailed in the [fixed issued](#issue-fixed) section, this release includes a number of functional improvements to screen sharing, as follows:
+In addition to the usability enhancements detailed in the [fixed issued](#issues-fixed) section, this release includes a number of functional improvements to screen sharing, as follows:
 
 **Windows**
 - New `minimizeWindow` member in `ScreenCaptureSourceInfo` to indicate whether the target window is minimized.
@@ -13603,7 +13660,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -15512,7 +15569,7 @@ In use-cases such as 1-on-1 video calls and video group chats, the increase in t
 This release introduces public APIs for the AI Noise Suppression function. Once enabled, the SDK automatically detects and reduces background noises. Whether in bustling public venues or real-time competitive arenas that demand lightning-fast responsiveness, this function guarantees optimal audio clarity, providing users with an elevated audio experience. You can enable this function through the newly-introduced `setAINSMode` method and set the noise suppression mode to balance, aggressive, or low latency according to your use-case.
 
 :::info
-Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges separately for this function. See [AI Noise Suppression unit pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 
@@ -16812,8 +16869,17 @@ Agora provides the open source [example project](https://github.com/AgoraIO-Exte
 ## AI Noise Suppression
 
 :::info
-Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing#ai-noise-suppression-pricing).
+Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
+
+### v2.0.2
+
+Released on June 24, 2026.
+
+#### New features
+
+- Added background voice removal.
+- Suitable for noisy environments or scenarios with multiple speakers to further highlight the target voice and improve audio capture.
 
 ### v2.0.1
 

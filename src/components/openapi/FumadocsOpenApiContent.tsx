@@ -29,6 +29,7 @@ import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
   buildOpenApiSchemaRows,
+  getOpenApiSchemaRowLayout,
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
 
@@ -667,6 +668,10 @@ function OpenApiFieldList({
   title: string;
 }) {
   const titleId = anchorPrefix;
+  const anchorIds = buildUniqueOpenApiAnchorIds(
+    anchorPrefix,
+    fields.map((field) => field.anchorSuffix ?? field.name),
+  );
 
   return (
     <section className="mt-8">
@@ -677,10 +682,7 @@ function OpenApiFieldList({
         <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
       </h2>
       <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-        {buildUniqueOpenApiAnchorIds(
-          anchorPrefix,
-          fields.map((field) => field.anchorSuffix ?? field.name),
-        ).map((anchorId, index) => {
+        {anchorIds.map((anchorId, index) => {
           const field = fields[index];
 
           return (
@@ -1156,6 +1158,73 @@ function useOpenApiHashScroll() {
   }, []);
 }
 
+function useOpenApiSchemaHashExpansion(
+  anchorIds: string[],
+  parentIndex: number[],
+  setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
+) {
+  useEffect(() => {
+    const openCurrentHashTarget = () => {
+      const hashAnchorId = getCurrentOpenApiHashAnchorId();
+      const targetIndex = anchorIds.indexOf(hashAnchorId);
+
+      if (targetIndex === -1) {
+        return;
+      }
+
+      const ancestorAnchorIds: string[] = [];
+
+      for (
+        let parent = parentIndex[targetIndex];
+        parent !== -1;
+        parent = parentIndex[parent]
+      ) {
+        ancestorAnchorIds.push(anchorIds[parent]);
+      }
+
+      if (ancestorAnchorIds.length > 0) {
+        setExpandedIds((current) => {
+          if (ancestorAnchorIds.every((id) => current.has(id))) {
+            return current;
+          }
+
+          const next = new Set(current);
+          for (const id of ancestorAnchorIds) {
+            next.add(id);
+          }
+          return next;
+        });
+      }
+
+      window.requestAnimationFrame(() => {
+        syncDocsHashTargetFromLocation('auto');
+      });
+    };
+
+    const frame = window.requestAnimationFrame(openCurrentHashTarget);
+    window.addEventListener('hashchange', openCurrentHashTarget);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', openCurrentHashTarget);
+    };
+  }, [anchorIds, parentIndex, setExpandedIds]);
+}
+
+function getCurrentOpenApiHashAnchorId() {
+  const hash = window.location.hash;
+
+  if (!hash.startsWith('#')) {
+    return '';
+  }
+
+  try {
+    return decodeURIComponent(hash.slice(1));
+  } catch {
+    return hash.slice(1);
+  }
+}
+
 function getOpenApiSchemaAnchorPrefix(options: {
   readOnly?: boolean;
   writeOnly?: boolean;
@@ -1237,10 +1306,73 @@ function OpenApiSchemaRows({
   root: unknown;
   writeOnly?: boolean;
 }) {
-  const rows = buildOpenApiSchemaRows(root, {
-    document,
-    usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
-  });
+  const rows = useMemo(
+    () =>
+      buildOpenApiSchemaRows(root, {
+        document,
+        usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
+      }),
+    [root, document, writeOnly, readOnly],
+  );
+  const anchorIds = useMemo(
+    () =>
+      buildUniqueOpenApiAnchorIds(
+        anchorPrefix,
+        rows.map((row) => row.path),
+      ),
+    [anchorPrefix, rows],
+  );
+  const layout = useMemo(() => getOpenApiSchemaRowLayout(rows), [rows]);
+  const collapsibleAnchorIds = useMemo(
+    () => anchorIds.filter((_, index) => layout.hasChildren[index]),
+    [anchorIds, layout],
+  );
+  const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  useOpenApiSchemaHashExpansion(
+    anchorIds,
+    layout.parentIndex,
+    setExpandedRowIds,
+  );
+
+  const visibleFlags = useMemo(() => {
+    const flags: boolean[] = [];
+
+    rows.forEach((_row, index) => {
+      const parent = layout.parentIndex[index];
+
+      flags[index] =
+        parent === -1
+          ? true
+          : flags[parent] && expandedRowIds.has(anchorIds[parent]);
+    });
+
+    return flags;
+  }, [rows, layout, expandedRowIds, anchorIds]);
+
+  const allRowsExpanded =
+    collapsibleAnchorIds.length > 0 &&
+    collapsibleAnchorIds.every((id) => expandedRowIds.has(id));
+
+  function setAllRowsExpanded(expanded: boolean) {
+    setExpandedRowIds(expanded ? new Set(collapsibleAnchorIds) : new Set());
+  }
+
+  function setRowExpanded(anchorId: string, expanded: boolean) {
+    setExpandedRowIds((current) => {
+      const next = new Set(current);
+
+      if (expanded) {
+        next.add(anchorId);
+      } else {
+        next.delete(anchorId);
+      }
+
+      return next;
+    });
+  }
 
   if (rows.length === 0) {
     return null;
@@ -1248,16 +1380,32 @@ function OpenApiSchemaRows({
 
   return (
     <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      {buildUniqueOpenApiAnchorIds(
-        anchorPrefix,
-        rows.map((row) => row.path),
-      ).map((anchorId, index) => {
+      {collapsibleAnchorIds.length > 0 ? (
+        <div className="flex justify-end border-fd-border border-b px-4 py-2">
+          <button
+            aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
+            className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
+            onClick={() => setAllRowsExpanded(!allRowsExpanded)}
+            type="button"
+          >
+            {allRowsExpanded ? 'Collapse all' : 'Expand all'}
+          </button>
+        </div>
+      ) : null}
+      {anchorIds.map((anchorId, index) => {
+        if (!visibleFlags[index]) {
+          return null;
+        }
+
         const row = rows[index];
 
         return (
           <OpenApiSchemaRowItem
             anchorId={anchorId}
+            expandable={layout.hasChildren[index]}
+            expanded={expandedRowIds.has(anchorId)}
             key={row.path}
+            onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
             renderMarkdown={renderMarkdown}
             row={row}
           />
@@ -1269,28 +1417,62 @@ function OpenApiSchemaRows({
 
 function OpenApiSchemaRowItem({
   anchorId,
+  expandable,
+  expanded,
+  onExpandedChange,
   renderMarkdown,
   row,
 }: {
   anchorId: string;
+  expandable: boolean;
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
 }) {
+  const chevronClass = cn(
+    'select-none text-fd-muted-foreground text-xs transition-transform',
+    expanded && 'rotate-90',
+  );
+  const nameCode = (
+    <code
+      className={cn(
+        'openapi-schema-property-name font-bold text-fd-foreground',
+        row.deprecated && 'line-through opacity-70',
+      )}
+    >
+      {row.name}
+    </code>
+  );
+
   return (
     <div
-      className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
+      className="scroll-mt-24 border-fd-border border-t py-3 pr-4 text-sm first:border-t-0"
       id={anchorId}
       style={{ paddingInlineStart: `${1 + row.depth * 1.25}rem` }}
     >
-      <div className="flex min-w-0 flex-wrap items-center gap-2">
-        <code
-          className={cn(
-            'font-medium text-fd-primary',
-            row.deprecated && 'line-through opacity-70',
-          )}
+      <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
+        <span
+          aria-hidden={!expandable}
+          className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
         >
-          {row.name}
-        </code>
+          {expandable ? (
+            <button
+              aria-expanded={expanded}
+              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
+              className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+              onClick={() => onExpandedChange(!expanded)}
+              type="button"
+            >
+              <span aria-hidden="true" className={chevronClass}>
+                ▶
+              </span>
+            </button>
+          ) : null}
+        </span>
+        <span className="openapi-schema-property-name-column min-w-0">
+          {nameCode}
+        </span>
         <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
         <OpenApiSchemaRequiredBadge required={row.required} />
         <span className="font-mono text-fd-muted-foreground text-xs">
@@ -1312,6 +1494,22 @@ function OpenApiSchemaRowItem({
       <OpenApiSchemaMeta row={row} />
     </div>
   );
+}
+
+function getOpenApiSchemaGroupLabel(anchorPrefix: string) {
+  if (anchorPrefix === 'request-body') {
+    return 'Request Body schema fields';
+  }
+
+  if (anchorPrefix.startsWith('responses-')) {
+    return 'Response schema fields';
+  }
+
+  if (anchorPrefix === 'response-body') {
+    return 'Response Body schema fields';
+  }
+
+  return 'schema fields';
 }
 
 function OpenApiSchemaRequiredBadge({ required }: { required: boolean }) {

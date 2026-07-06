@@ -18,6 +18,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  captureDocsPageFeedback,
+  type DocsFeedbackValue,
+} from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import {
   type AppLocale,
@@ -39,7 +43,8 @@ export function DocsPageFeedback({
   locale?: AppLocale | string;
 }) {
   const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const normalizedLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(normalizedLocale, 'common');
   const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null);
   const [feedbackKind, setFeedbackKind] = useState<FeedbackKind>('issue');
   const [feedbackText, setFeedbackText] = useState('');
@@ -52,6 +57,13 @@ export function DocsPageFeedback({
     text: feedbackText,
     title: t('docs.feedbackIssueTitle'),
   });
+  const submitHelpfulnessFeedback = (value: DocsFeedbackValue) => {
+    setFeedback(value);
+    captureDocsPageFeedback({
+      locale: normalizedLocale,
+      value,
+    });
+  };
 
   return (
     <div
@@ -73,7 +85,7 @@ export function DocsPageFeedback({
         <Button
           aria-pressed={feedback === 'yes'}
           className="h-8 rounded-md px-3 text-xs"
-          onClick={() => setFeedback('yes')}
+          onClick={() => submitHelpfulnessFeedback('yes')}
           size="sm"
           variant={feedback === 'yes' ? 'secondary' : 'outline'}
         >
@@ -83,7 +95,7 @@ export function DocsPageFeedback({
         <Button
           aria-pressed={feedback === 'no'}
           className="h-8 rounded-md px-3 text-xs"
-          onClick={() => setFeedback('no')}
+          onClick={() => submitHelpfulnessFeedback('no')}
           size="sm"
           variant={feedback === 'no' ? 'secondary' : 'outline'}
         >

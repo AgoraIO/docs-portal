@@ -3,18 +3,18 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const orderedListTargets = [
-  'content/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk.md',
-  'content/docs/en/solutions/flexible-classroom/build/enable-teaching-features/record-a-class.md',
-  'content/docs/en/solutions/flexible-classroom/build/enable-teaching-features/supply-course-materials.md',
-  'content/docs/en/solutions/flexible-classroom/build/manage-agora-account.md',
-  'content/docs/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow.md',
-  'content/docs/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/enable-flexible-classroom.md',
-  'content/docs/en/solutions/flexible-classroom/quickstart.md',
+  'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/build/enable-teaching-features/record-a-class.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/build/enable-teaching-features/supply-course-materials.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/build/manage-agora-account.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/enable-flexible-classroom.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/quickstart.mdx',
 ];
 
 const codeTokenTargets = [
-  'content/docs/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin.md',
-  'content/docs/en/solutions/flexible-classroom/reference/plugin-technology-principles.md',
+  'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin.mdx',
+  'content/docs/en/realtime-media/flexible-classroom/reference/plugin-technology-principles.mdx',
 ];
 
 function readContent(path: string) {

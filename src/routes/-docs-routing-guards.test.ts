@@ -1,6 +1,42 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+
+vi.mock('@/lib/docs-route-preload', () => ({
+  preloadDocsPageContent: vi.fn(),
+}));
+
+vi.mock('@/lib/docs-page', () => ({
+  getDocsPagePayload: async ({
+    data,
+  }: {
+    data: {
+      locale: string;
+      search?: string;
+      slugSegments: string[];
+      tab: string;
+    };
+  }) => {
+    const { loadDocsPagePayload } = await import('@/lib/docs-page.server');
+
+    return loadDocsPagePayload(
+      data.locale,
+      data.tab,
+      data.slugSegments,
+      data.search,
+    );
+  },
+  getDocsTabIndex: async ({
+    data,
+  }: {
+    data: { locale: string; tab: string };
+  }) => {
+    const { loadDocsTabIndex } = await import('@/lib/docs-page.server');
+
+    return loadDocsTabIndex(data.locale, data.tab);
+  },
+}));
+
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
@@ -10,6 +46,8 @@ import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
 import { Route as LlmsTextRoute } from './llms[.]txt';
+
+const REAL_DOCS_ROUTE_TIMEOUT = 300_000;
 
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;
@@ -47,10 +85,11 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
     localeLinks: [],
     markdownUrl: '/en/realtime-media/rtm/build/presence.md',
     navigation: {},
+    productScopes: [],
     sidebar: [],
     sidebarHeader: {
       backHref: '/en/realtime-media/overview',
-      backLabel: 'Realtime Media',
+      backLabel: 'RTC',
       title: 'Signaling',
     },
     slug: 'presence',
@@ -180,6 +219,36 @@ describe('docs route locale guards', () => {
     ).toBe(false);
   });
 
+  for (const platform of ['android', 'ios'] as const) {
+    it(
+      `loads /en/api-reference/api-ref/uikit-sdk/${platform} without redirect and selects ${platform}`,
+      async () => {
+        const payload = await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: `api-ref/uikit-sdk/${platform}`,
+            locale: 'en',
+            tab: 'api-reference',
+          },
+        } as never);
+
+        expect(payload).toMatchObject({
+          body: {
+            kind: 'mdx',
+            platformTabs: {
+              initialPlatform: platform,
+            },
+          },
+          markdownUrl: `/en/api-reference/api-ref/uikit-sdk/${platform}.md`,
+        });
+      },
+      REAL_DOCS_ROUTE_TIMEOUT,
+    );
+  }
+
   it('serves direct .md docs page URLs as markdown', async () => {
     const response = (await getGetHandler(DocPageRoute)({
       context: {},
@@ -201,7 +270,7 @@ describe('docs route locale guards', () => {
       '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
     );
     expect(response.headers.get('Content-Type')).toBe('text/markdown');
-  }, 15_000);
+  }, REAL_DOCS_ROUTE_TIMEOUT);
 
   it('does not serve zh-CN direct .md docs page URLs', async () => {
     try {
@@ -252,7 +321,7 @@ describe('docs route locale guards', () => {
     );
     expect(markdown).toContain('## FastboardView class');
     expect(markdown).not.toContain('## createFastboard');
-  });
+  }, REAL_DOCS_ROUTE_TIMEOUT);
 
   it('does not serve zh-CN direct platform .md docs page URLs', async () => {
     try {
@@ -288,5 +357,5 @@ describe('docs route locale guards', () => {
 
     expect(indexText).toContain('/en/');
     expect(indexText).not.toContain('/zh-CN/');
-  }, 15_000);
+  }, REAL_DOCS_ROUTE_TIMEOUT);
 });

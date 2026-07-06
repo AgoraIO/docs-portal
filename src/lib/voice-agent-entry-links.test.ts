@@ -58,7 +58,6 @@ describe('Voice Agent entry links', () => {
     expect(voiceAgentAppLinks).toEqual(
       expect.arrayContaining([
         '/en/ai/get-started/quickstart',
-        '/en/ai/build/custom-model-integration/build-server-client',
         '/en/ai/reference/openai-realtime-integration',
       ]),
     );

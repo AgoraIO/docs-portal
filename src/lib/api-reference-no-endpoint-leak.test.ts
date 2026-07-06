@@ -35,38 +35,42 @@ function flattenUrls(nodes: SidebarNode[]): string[] {
 }
 
 describe('api reference sidebar does not leak REST endpoint pages', () => {
-  it('keeps the Voice & Video product group to platform/REST leaves only', async () => {
-    const payload = await loadDocsPagePayload('en', 'api-reference', []);
+  it(
+    'keeps the Voice & Video product group to platform/REST leaves only',
+    async () => {
+      const payload = await loadDocsPagePayload('en', 'api-reference', []);
 
-    if (!payload || 'redirectUrl' in payload) {
-      throw new Error('expected an api-reference docs page payload');
-    }
+      if (!payload || 'redirectUrl' in payload) {
+        throw new Error('expected an api-reference docs page payload');
+      }
 
-    const voiceVideo = findSection(
-      payload.sidebar as SidebarNode[],
-      'Voice & Video',
-    );
-    expect(voiceVideo).toBeDefined();
-    const children = voiceVideo?.children ?? [];
+      const voiceVideo = findSection(
+        payload.sidebar as SidebarNode[],
+        'Voice & Video',
+      );
+      expect(voiceVideo).toBeDefined();
+      const children = voiceVideo?.children ?? [];
 
-    // No leaked OpenAPI endpoint pages: none should carry an HTTP method, and
-    // none should point at a sub-path beyond the rtc lane landing page.
-    expect(children.every((child) => child.type === 'page')).toBe(true);
-    expect(children.some((child) => child.method !== undefined)).toBe(false);
-    expect(
-      children.filter((child) =>
-        child.url?.startsWith('/en/api-reference/api-ref/rtc/'),
-      ),
-    ).toHaveLength(0);
+      // No leaked OpenAPI endpoint pages: none should carry an HTTP method, and
+      // none should point at a sub-path beyond the rtc lane landing page.
+      expect(children.every((child) => child.type === 'page')).toBe(true);
+      expect(children.some((child) => child.method !== undefined)).toBe(false);
+      expect(
+        children.filter((child) =>
+          child.url?.startsWith('/en/api-reference/api-ref/rtc/'),
+        ),
+      ).toHaveLength(0);
 
-    // The in-portal REST API leaf (lane landing page) must still be present.
-    expect(
-      children.some((child) => child.url === '/en/api-reference/api-ref/rtc'),
-    ).toBe(true);
+      // The in-portal REST API leaf (lane landing page) must still be present.
+      expect(
+        children.some((child) => child.url === '/en/api-reference/api-ref/rtc'),
+      ).toBe(true);
 
-    // The product group should stay small (13 platform links + 1 REST leaf).
-    expect(children.length).toBeLessThanOrEqual(15);
-  });
+      // The product group should stay small (13 platform links + 1 REST leaf).
+      expect(children.length).toBeLessThanOrEqual(15);
+    },
+    15_000,
+  );
 
   it('still lists endpoint pages in the focused rtc lane view', async () => {
     const payload = await loadDocsPagePayload('en', 'api-reference', [

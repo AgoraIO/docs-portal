@@ -186,7 +186,7 @@ To avoid creating multiple cloud players that inject the same online media strea
 If you do not set an encryption key or set it to null, built-in encryption is disabled.
 :::
 
-- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](/en/solutions/interactive-live-streaming/build/secure-and-protect-channels/media-stream-encryption).
+- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/media-stream-encryption).
 
 
 :::info

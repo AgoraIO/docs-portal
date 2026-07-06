@@ -130,6 +130,21 @@ export function DocsCopyMenu({
     }, COPY_STATE_MS);
   };
 
+  const copyMarkdownPage = async () => {
+    try {
+      const response = await fetch(markdownUrl, { credentials: 'same-origin' });
+
+      if (!response.ok) {
+        return;
+      }
+
+      const markdown = await response.text();
+      await copy('page', markdown);
+    } catch {
+      return;
+    }
+  };
+
   return (
     <DropdownMenu>
       <div
@@ -147,7 +162,7 @@ export function DocsCopyMenu({
               'scale-[1.02] bg-emerald-500/12 text-emerald-700 ring-1 ring-emerald-500/35 hover:bg-emerald-500/12 hover:text-emerald-700 dark:text-emerald-300',
           )}
           data-copied={isPrimaryCopied ? 'true' : undefined}
-          onClick={() => void copy('page', buildMarkdownPageUrl(markdownUrl))}
+          onClick={() => void copyMarkdownPage()}
           size="sm"
           variant="ghost"
         >

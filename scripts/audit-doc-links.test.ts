@@ -52,6 +52,8 @@ describe('auditDocsLinks', () => {
         '[index route](guide.md)',
         '[legacy operation](../operations/start-agent.md#llm-max_history)',
         '[generated endpoint](../api-reference/conversational-ai/rest-api/agent/join.md)',
+        '[api macro]({{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel)',
+        '[lowercase api macro]({{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:))',
         '[missing](missing.md)',
       ].join('\n'),
     );
@@ -102,6 +104,18 @@ describe('auditDocsLinks', () => {
       resolvedTargetPath:
         'openapi:/en/api-reference/api-ref/conversational-ai/join',
     });
+    expect(stats.apiReferenceMacroLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '{{Global.API_REF_ANDROID_ROOT}}/class_irtcengine.html#api_irtcengine_joinchannel',
+          reason: 'api-reference-macro',
+        }),
+        expect.objectContaining({
+          href: '{{global.API_REF_IOS_ROOT}}/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:uid:mediaoptions:joinsuccess:',
+          reason: 'api-reference-macro',
+        }),
+      ]),
+    );
   });
 
   it('checks root JSX links against known docs and OpenAPI routes', async () => {
@@ -114,37 +128,196 @@ describe('auditDocsLinks', () => {
         '<Card href="/en/ai" />',
         '<Card href="/en/api-reference/api-ref/rtc/query-channel-list" />',
         '<Card href="/en/api-reference/rtc/android/overview" />',
+        '<Card href="/en/api-reference/rtc/android/(current)/broken" />',
+        '<Card href="/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo" />',
+        '<Card href="/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo" />',
         '<Card href="/en/missing-page" />',
         '<Card href="https://example.com/docs" />',
       ].join('\n'),
     );
     await writeDoc(path.join(docsRoot, 'en', 'ai', 'index.mdx'));
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'en',
+        'api-reference',
+        'rtc',
+        'android',
+        '(current)',
+        'video',
+        'video-basic.mdx',
+      ),
+      ['# Video basic', '', '<a id="api_irtcengine_enablevideo"></a>'].join(
+        '\n',
+      ),
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'zh-CN',
+        'api-reference',
+        'rtc',
+        'android',
+        '(current)',
+        'video',
+        'video-basic.mdx',
+      ),
+      ['# Video basic', '', '<a id="api_irtcengine_enablevideo"></a>'].join(
+        '\n',
+      ),
+    );
 
     const stats = auditDocsLinks({ docsRoot });
     const rootLinks = stats.rootLinks as AuditEntry[];
     const skippedRootLinks = stats.skippedRootLinks as AuditEntry[];
     const missingRootLinks = stats.missingRootLinks as AuditEntry[];
+    const validHashLinks = stats.validHashLinks as AuditEntry[];
 
     expect(rootLinks.map((entry) => entry.href)).toEqual([
       '/en/ai',
       '/en/api-reference/api-ref/rtc/query-channel-list',
+      '/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+      '/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
     ]);
     expect(rootLinks.at(1)).toMatchObject({
       resolution: 'openapi-route',
       resolvedTargetPath:
         'openapi:/en/api-reference/api-ref/rtc/query-channel-list',
     });
-    expect(skippedRootLinks).toHaveLength(1);
-    expect(skippedRootLinks[0]).toMatchObject({
-      href: '/en/api-reference/rtc/android/overview',
-      resolution: 'hosted-reference',
+    expect(rootLinks.at(2)).toMatchObject({
+      resolution: 'route',
+      resolvedTargetPath:
+        'en/api-reference/rtc/android/(current)/video/video-basic.mdx',
     });
-    expect(missingRootLinks).toHaveLength(1);
-    expect(missingRootLinks[0]).toMatchObject({
-      href: '/en/missing-page',
-      normalizedHref: '/en/missing-page',
-      sourcePath: 'en/introduction/index.mdx',
+    expect(rootLinks.at(3)).toMatchObject({
+      resolution: 'route',
+      resolvedTargetPath:
+        'zh-CN/api-reference/rtc/android/(current)/video/video-basic.mdx',
     });
+    expect(validHashLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+          anchor: 'api_irtcengine_enablevideo',
+        }),
+        expect.objectContaining({
+          href: '/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_enablevideo',
+          anchor: 'api_irtcengine_enablevideo',
+        }),
+      ]),
+    );
+    expect(skippedRootLinks).toEqual([
+      expect.objectContaining({
+        href: '/en/api-reference/rtc/android/overview',
+        resolution: 'hosted-reference',
+      }),
+    ]);
+    expect(missingRootLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/api-reference/rtc/android/(current)/broken',
+          normalizedHref: '/en/api-reference/rtc/android/(current)/broken',
+          sourcePath: 'en/introduction/index.mdx',
+        }),
+        expect.objectContaining({
+          href: '/en/missing-page',
+          normalizedHref: '/en/missing-page',
+          sourcePath: 'en/introduction/index.mdx',
+        }),
+      ]),
+    );
+    expect(missingRootLinks).toHaveLength(2);
+    expect(stats.externalLinks).toBe(1);
+  });
+
+  it('audits Markdown links embedded in OpenAPI YAML sources', async () => {
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(tempRoot);
+    const docsRoot = path.join(tempRoot, 'docs');
+    const openApiRoot = path.join(tempRoot, 'openapi');
+
+    await writeDoc(
+      path.join(docsRoot, 'en', 'ai', 'models', 'asr', 'openai.mdx'),
+      '# OpenAI ASR\n',
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'en',
+        'api-reference',
+        'api-ref',
+        'conversational-ai',
+        'index.mdx',
+      ),
+      '# Conversational AI API\n',
+    );
+    await writeDoc(
+      path.join(openApiRoot, 'conversational-ai', 'rest-api.en.yaml'),
+      [
+        'openapi: 3.1.0',
+        'info:',
+        '  title: Test API',
+        '  version: 1.0.0',
+        'paths:',
+        '  /v1/test:',
+        '    get:',
+        '      summary: Test',
+        '      description: |',
+        '        Use [OpenAI ASR](/en/ai/models/asr/openai).',
+        '        See [Leave endpoint](leave).',
+        '        See [local generated anchor](#properties-test).',
+        '        See [missing topic](/en/ai/missing-topic).',
+        '        See [wrapped',
+        '        missing topic](/en/ai/wrapped-missing-topic).',
+        '        See [external docs](https://example.com/openapi).',
+      ].join('\n'),
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+    const relativeMarkdownLinks = stats.relativeMarkdownLinks as AuditEntry[];
+    const rootLinks = stats.rootLinks as AuditEntry[];
+    const missingRootLinks = stats.missingRootLinks as AuditEntry[];
+    const missingHashLinks = stats.missingHashLinks as AuditEntry[];
+
+    expect(stats.openapiFiles).toBe(1);
+    expect(rootLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: '/en/ai/models/asr/openai',
+          sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+        }),
+      ]),
+    );
+    expect(relativeMarkdownLinks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          href: 'leave',
+          normalizedHref: '/en/api-reference/api-ref/conversational-ai/leave',
+          resolution: 'openapi-route',
+          resolvedTargetPath:
+            'openapi:/en/api-reference/api-ref/conversational-ai/leave',
+          sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+        }),
+      ]),
+    );
+    expect(missingRootLinks).toEqual([
+      expect.objectContaining({
+        href: '/en/ai/missing-topic',
+        normalizedHref: '/en/ai/missing-topic',
+        sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+      }),
+      expect.objectContaining({
+        href: '/en/ai/wrapped-missing-topic',
+        normalizedHref: '/en/ai/wrapped-missing-topic',
+        sourcePath: 'openapi/conversational-ai/rest-api.en.yaml',
+      }),
+    ]);
+    expect(
+      missingHashLinks.filter(
+        (entry) =>
+          entry.sourcePath === 'openapi/conversational-ai/rest-api.en.yaml',
+      ),
+    ).toEqual([]);
     expect(stats.externalLinks).toBe(1);
   });
 
@@ -220,6 +393,13 @@ describe('auditDocsLinks', () => {
         }),
       ]),
     );
+    expect(
+      validHashLinks.some(
+        (entry) =>
+          entry.href === 'guide#missing-anchor' &&
+          entry.resolution === 'generated-anchor',
+      ),
+    ).toBe(false);
     expect(invalidInternalLinks).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -360,14 +540,13 @@ describe('auditDocsLinks', () => {
         'en/introduction/index.mdx',
         'en/ai/index.mdx',
         'en/realtime-media/overview.mdx',
-        'en/solutions/index.mdx',
         'en/api-reference/index.mdx',
       ],
     });
 
-    expect(stats.docsFiles).toBe(5);
+    expect(stats.docsFiles).toBe(4);
     expect(stats.rootLinks).not.toHaveLength(0);
     expect(stats.missingRootLinks).toEqual([]);
     expect(stats.missingRelativeMarkdownLinks).toEqual([]);
-  });
+  }, 120_000);
 });

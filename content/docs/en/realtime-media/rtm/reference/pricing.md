@@ -136,7 +136,9 @@ Signaling 2.x is an enhanced version of 1.x with a wide range of new features an
 | List Price/month | - | $42.75 | $67.50 | $337.50 | $975.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
 | Package Price/month | FREE | $39.00 | $59.00 | $279.00 | $749.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
 | You save | - | 9% | 13% | 18% | 23% | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| Additional usage policy | Service suspension | Additional charges apply after package limit | Additional charges apply after package limit | Additional charges apply after package limit | Additional charges apply after package limit | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Additional usage policy | Service suspension | Overage protection\* | Overage protection\* | Overage protection\* | Overage protection\* | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+
+\* Overage protection keeps your service running seamlessly. Overage charges are billed weekly to your prepaid balance or card on file, unless your contract specifies a different billing cycle.
 
 Additional usage cost over and above the fixed package limits:
 
@@ -144,7 +146,7 @@ Additional usage cost over and above the fixed package limits:
 - Messages: **$3 per 1 Million**
 - Storage: **$15 per 1 GB**
 
-Refer to the following examples for further details.
+**Note**: If overage charges cannot be covered by your available balance or a valid payment method on file, your account may be temporarily paused once your prepaid package quota is exhausted. Your account will be restored after all outstanding charges are settled.
 
 ### Billing examples
 

@@ -93,7 +93,6 @@ describe('API reference overview links', () => {
 
   it('uses product-specific overview titles for API reference product entry pages', () => {
     const expectedTitles = {
-      'broadcast-streaming': 'Broadcast Streaming Overview',
       'cloud-recording': 'Cloud Recording Overview',
       'cloud-transcoding': 'Cloud Transcoding Overview',
       'conversational-ai': 'Conversational AI Overview',

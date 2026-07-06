@@ -150,7 +150,7 @@ describe('overview MDX components', () => {
       <SolutionCardGrid>
         <SolutionCard
           description="Build realtime voice experiences."
-          href="/en/solutions/voice"
+          href="/en/realtime-media/voice"
           icon="rtc"
           tags={['Voice', 'RTC']}
           title="Voice Calling"
@@ -161,7 +161,7 @@ describe('overview MDX components', () => {
 
     expect(
       screen.getByRole('link', { name: /Voice Calling/i }),
-    ).toHaveAttribute('href', '/en/solutions/voice');
+    ).toHaveAttribute('href', '/en/realtime-media/voice');
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
   });

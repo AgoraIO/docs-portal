@@ -37,7 +37,11 @@ import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { buildDocPath } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
+import type {
+  DocsSidebarNode,
+  ProductScope,
+  TabSummary,
+} from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -52,6 +56,7 @@ import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
+import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -119,11 +124,13 @@ export function DocsShell({
   activePath,
   activeTab,
   children,
+  contentPath,
   loadPages,
   localeLinks,
   locale,
   previous,
   next,
+  productScopes,
   sidebar,
   sidebarHeader,
   tabs,
@@ -134,6 +141,7 @@ export function DocsShell({
   activePath: string;
   activeTab: string;
   children: React.ReactNode;
+  contentPath?: string;
   loadPages: () => Promise<SearchEntry[]>;
   layoutMode?: DocsLayoutMode;
   hideToc?: boolean;
@@ -141,6 +149,7 @@ export function DocsShell({
   locale: string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
+  productScopes?: ProductScope[];
   sidebar: DocsSidebarNode[];
   sidebarHeader?: DocsSidebarHeader;
   tabs: TabSummary[];
@@ -148,6 +157,7 @@ export function DocsShell({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
@@ -369,7 +379,7 @@ export function DocsShell({
                   loadPages={loadPages}
                   locale={currentLocale}
                   mode="mobile"
-                  tabs={tabs}
+                  productScopes={productScopes}
                 />
               </div>
               <div
@@ -381,7 +391,7 @@ export function DocsShell({
                     loadPages={loadPages}
                     locale={currentLocale}
                     mode="desktop"
-                    tabs={tabs}
+                    productScopes={productScopes}
                   />
                 </div>
                 <Button
@@ -489,7 +499,11 @@ export function DocsShell({
             {children}
           </DocsMainColumn>
           {contentFillsWidth ? null : (
-            <DocsTocRail locale={currentLocale} toc={toc} />
+            <DocsTocRail
+              locale={currentLocale}
+              sourceLinks={sourceLinks}
+              toc={toc}
+            />
           )}
         </div>
         <DocsSiteFooter

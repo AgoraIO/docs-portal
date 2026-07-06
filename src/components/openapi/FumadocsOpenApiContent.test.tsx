@@ -1,6 +1,13 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import type { Document } from 'fumadocs-openapi';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -664,9 +671,24 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const channelField = await screen.findByText('channel');
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const schemaTreeEl = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
+    fireEvent.click(
+      within(schemaTreeEl).getByRole('button', {
+        name: 'Expand all Request Body schema fields',
+      }),
+    );
 
-    expect(channelField).toBeInTheDocument();
+    const channelField = screen.getByText('channel');
+
+    expect(channelField).toHaveClass(
+      'openapi-schema-property-name',
+      'font-bold',
+      'text-fd-foreground',
+    );
+
     expect(screen.getByText('llm')).toBeInTheDocument();
     expect(screen.getByText('url')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Token docs' })).toHaveAttribute(
@@ -685,7 +707,7 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTree = within(schemaTreeElement as HTMLElement);
     const optionalFieldRow = schemaTree
       .getByText('displayName')
-      .closest('div[style]');
+      .closest('[style]');
     expect(optionalFieldRow).toBeInstanceOf(HTMLElement);
     expect(
       within(optionalFieldRow as HTMLElement).getByText('optional'),
@@ -811,6 +833,11 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTreeElement = document.querySelector('.openapi-schema-tree');
 
     expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
+    fireEvent.click(
+      within(schemaTreeElement as HTMLElement).getByRole('button', {
+        name: 'Expand all Response Body schema fields',
+      }),
+    );
     expect(
       within(schemaTreeElement as HTMLElement).getByText('cname'),
     ).toBeInTheDocument();
@@ -1808,6 +1835,11 @@ describe('FumadocsOpenApiContent', () => {
     const responseBody = await screen.findByRole('heading', {
       name: 'Response schema',
     });
+    for (const button of screen.getAllByRole('button', {
+      name: /^Expand all .* schema fields$/,
+    })) {
+      fireEvent.click(button);
+    }
     expect(responseBody).toBeInTheDocument();
     const responseScope = within(document.body);
     const visibleText = document.body.textContent?.replace(/\s+/g, ' ') ?? '';
@@ -1928,6 +1960,12 @@ describe('FumadocsOpenApiContent', () => {
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
 
+    for (const button of screen.getAllByRole('button', {
+      name: /^Expand all .* schema fields$/,
+    })) {
+      fireEvent.click(button);
+    }
+
     expect(document.getElementById('path-parameters-appid')).not.toBeNull();
     expect(
       document.getElementById('query-parameters-page-token'),
@@ -1943,5 +1981,260 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.querySelector('a[href="#request-body-channel-name"]'),
     ).not.toBeNull();
+  });
+
+  it('shows parameter descriptions without any collapse control', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    parameters: [
+                      {
+                        description: 'The App ID used by this request.',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const pathSection = (
+      await screen.findByRole('heading', { name: 'Path Parameters' })
+    ).closest('section') as HTMLElement;
+
+    expect(
+      within(pathSection).getByText('The App ID used by this request.'),
+    ).toBeVisible();
+    expect(
+      within(pathSection).getByText('appid').closest('details'),
+    ).toBeNull();
+    expect(
+      within(pathSection).queryByRole('button', {
+        name: /Expand all|Collapse all/,
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  async function renderNestedSchema() {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description: 'Unique agent name.',
+                                type: 'string',
+                              },
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const tree = document.querySelector('.openapi-schema-tree') as HTMLElement;
+    return within(tree);
+  }
+
+  it('shows top-level schema descriptions but hides nested children until expanded', async () => {
+    const tree = await renderNestedSchema();
+
+    expect(tree.getByText('name')).toBeVisible();
+    expect(tree.getByText('Unique agent name.')).toBeVisible();
+    expect(tree.getByText('config')).toBeVisible();
+    expect(tree.getByText('Agent runtime settings.')).toBeVisible();
+
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+
+    expect(
+      tree.queryByRole('button', { name: 'Expand name properties' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      tree.getByRole('button', { name: 'Expand config properties' }),
+    );
+
+    expect(tree.getByText('idleTimeout')).toBeVisible();
+    expect(tree.getByText('Idle timeout in seconds.')).toBeVisible();
+
+    fireEvent.click(
+      tree.getByRole('button', { name: 'Collapse config properties' }),
+    );
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+  });
+
+  it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
+    const tree = await renderNestedSchema();
+    const nameField = tree.getByText('name');
+    const nameHeading = nameField.closest(
+      '.openapi-schema-property-heading',
+    ) as HTMLElement;
+    const [gutter, nameColumn] = Array.from(nameHeading.children);
+
+    expect(nameHeading.textContent).not.toContain('\u00a0');
+    expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
+    expect(gutter.textContent).toBe('');
+    expect(gutter.querySelector('button')).toBeNull();
+    expect(nameColumn).toHaveClass('openapi-schema-property-name-column');
+    expect(nameColumn).toContainElement(nameField);
+  });
+
+  it('uses the same gutter and name column structure for expandable and leaf schema rows at the same depth', async () => {
+    const tree = await renderNestedSchema();
+
+    const getSchemaRowColumns = (name: string) => {
+      const field = tree.getByText(name);
+      const heading = field.closest(
+        '.openapi-schema-property-heading',
+      ) as HTMLElement;
+      const [gutter, nameColumn] = Array.from(heading.children);
+
+      return { field, gutter, heading, nameColumn };
+    };
+
+    const leafRow = getSchemaRowColumns('name');
+    const expandableRow = getSchemaRowColumns('config');
+
+    for (const row of [leafRow, expandableRow]) {
+      expect(row.gutter).toHaveClass('openapi-schema-property-control-gutter');
+      expect(row.nameColumn).toHaveClass('openapi-schema-property-name-column');
+      expect(row.nameColumn).toContainElement(row.field);
+      expect(row.heading.firstElementChild).toBe(row.gutter);
+      expect(row.gutter.nextElementSibling).toBe(row.nameColumn);
+    }
+
+    expect(
+      within(expandableRow.gutter as HTMLElement).getByRole('button', {
+        name: 'Expand config properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(leafRow.gutter.querySelector('button')).toBeNull();
+  });
+
+  it('expands and collapses every nested field with the schema-wide control', async () => {
+    const tree = await renderNestedSchema();
+
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    fireEvent.click(
+      tree.getByRole('button', {
+        name: 'Expand all Request Body schema fields',
+      }),
+    );
+    expect(tree.getByText('idleTimeout')).toBeVisible();
+
+    fireEvent.click(
+      tree.getByRole('button', {
+        name: 'Collapse all Request Body schema fields',
+      }),
+    );
+    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('name')).toBeVisible();
+  });
+
+  it('expands nested ancestors when linking to a nested schema field', async () => {
+    window.history.replaceState(null, '', '#request-body-config-idle-timeout');
+
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              config: {
+                                description: 'Agent runtime settings.',
+                                properties: {
+                                  idleTimeout: {
+                                    description: 'Idle timeout in seconds.',
+                                    type: 'integer',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    await act(async () => {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('idleTimeout')).toBeVisible();
+    });
+    expect(screen.getByText('Idle timeout in seconds.')).toBeVisible();
+
+    window.history.replaceState(null, '', '/');
   });
 });

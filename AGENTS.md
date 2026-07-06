@@ -38,7 +38,7 @@ Do not commit secrets, tokens, or private service credentials. Keep environment-
 
 ### Issue tracker
 
-Issues and PRDs are tracked in GitHub Issues for `Shengwang-Community/docs-portal`. See `docs/agents/issue-tracker.md`.
+Issues and PRDs are tracked in GitHub Issues for `AgoraIO/docs-portal` (external PRs are not a triage surface). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

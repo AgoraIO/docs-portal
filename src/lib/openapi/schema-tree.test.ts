@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { OPENAPI_LANES } from './lanes';
-import { buildOpenApiSchemaRows, buildOpenApiSchemaTree } from './schema-tree';
+import {
+  buildOpenApiSchemaRows,
+  buildOpenApiSchemaTree,
+  getOpenApiSchemaRowLayout,
+} from './schema-tree';
 import { getOpenApiOperation } from './source.server';
 
 describe('openapi schema tree', () => {
@@ -252,6 +256,59 @@ describe('openapi schema tree', () => {
         }),
       ]),
     );
+  });
+
+  it('derives parent index and has-children from row depths', () => {
+    const rows = [
+      { depth: 0, name: 'name', path: 'name', required: false, type: 'string' },
+      {
+        depth: 0,
+        name: 'config',
+        path: 'config',
+        required: false,
+        type: 'object',
+      },
+      {
+        depth: 1,
+        name: 'ttl',
+        path: 'config.ttl',
+        required: false,
+        type: 'integer',
+      },
+      {
+        depth: 1,
+        name: 'llm',
+        path: 'config.llm',
+        required: false,
+        type: 'object',
+      },
+      {
+        depth: 2,
+        name: 'url',
+        path: 'config.llm.url',
+        required: false,
+        type: 'string',
+      },
+      { depth: 0, name: 'tail', path: 'tail', required: false, type: 'string' },
+    ];
+
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(layout.hasChildren).toEqual([
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+    ]);
+    expect(layout.parentIndex).toEqual([-1, -1, 1, 1, 3, -1]);
+  });
+
+  it('returns empty layout arrays for no rows', () => {
+    const layout = getOpenApiSchemaRowLayout([]);
+    expect(layout.hasChildren).toEqual([]);
+    expect(layout.parentIndex).toEqual([]);
   });
 });
 

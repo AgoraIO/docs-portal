@@ -18,10 +18,13 @@ import {
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinksFromNode,
+  getProductScopes,
   getSidebarBreadcrumb,
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
+import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -137,6 +140,7 @@ export async function loadDocsPagePayload(
   locale: string,
   tab: string,
   slugSegments: string[],
+  search?: string,
 ) {
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
@@ -182,6 +186,16 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const legacySitemapRedirect = resolveLegacySitemapRedirect(
+    locale,
+    tab,
+    slugSegments,
+    search,
+  );
+  if (legacySitemapRedirect) {
+    return legacySitemapRedirect;
+  }
+
   const legacyRedirect = resolveLegacyBestPracticesRedirect(
     locale,
     tab,
@@ -210,6 +224,18 @@ export async function loadDocsPagePayload(
   if (solutionsApiReferenceRedirect) {
     return {
       redirectUrl: solutionsApiReferenceRedirect,
+    };
+  }
+
+  const legacySolutionsRedirect = getLegacySolutionsRedirectUrl({
+    locale,
+    slugSegments,
+    tab,
+  });
+  if (legacySolutionsRedirect) {
+    return {
+      preserveSearch: true,
+      redirectUrl: legacySolutionsRedirect,
     };
   }
 
@@ -280,9 +306,33 @@ export async function loadDocsPagePayload(
   const platformGroupParent = resolvePlatformGroupParentPage(page, localePages);
 
   if (platformGroupParent) {
-    return {
-      redirectUrl: platformGroupParent.url,
-    };
+    const panelPage = page;
+    const platformGroup = resolvePlatformGroupDefinition(
+      platformGroupParent,
+      localePages,
+    );
+    const panelPlatform = platformGroup?.panels.find(
+      (panel) => panel.contentPath === panelPage.path,
+    )?.platform;
+
+    if (!panelPlatform) {
+      return {
+        redirectUrl: platformGroupParent.url,
+      };
+    }
+
+    const parentPage = source.getPage(
+      platformGroupParent.slugs.slice(1),
+      locale,
+    );
+    if (!parentPage) {
+      return {
+        redirectUrl: platformGroupParent.url,
+      };
+    }
+
+    page = parentPage;
+    requestedPlatform = panelPlatform;
   }
 
   const pageTree = getCanonicalPageTree(source, locale);
@@ -345,6 +395,7 @@ export async function loadDocsPagePayload(
         platformTabs: {
           canonicalPlatform: platformGroup.canonicalPlatform,
           defaultPlatform: platformGroup.canonicalPlatform,
+          initialPlatform: requestedPlatform,
           platforms: JSON.stringify(platformGroup.platforms),
         },
         platforms: platformGroup.platforms,
@@ -426,6 +477,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    productScopes: getProductScopes(pageTree),
     sidebar,
     sidebarHeader,
     slug: page.slugs.at(-1),
@@ -735,6 +787,7 @@ function resolveAiDocsRedirect(
     [`choose-your-path/${CONVERSATIONAL_AI_PATH_ENTRY_SLUG}`]: `/${locale}/ai/get-started/quickstart`,
     'build/code-first-architecture': `/${locale}/ai/build/architecture`,
     'build/event-types': `/${locale}/ai/reference/event-types`,
+    pricing: `/${locale}/ai/reference/pricing`,
     'reference/code-first-architecture': `/${locale}/ai/build/architecture`,
     'reference/architecture': `/${locale}/ai/build/architecture`,
     create_asr_extension: `/${locale}/ai/reference/ten-agent/create-asr-extension`,
@@ -783,6 +836,23 @@ function resolveLegacyProductRedirect(
   return redirects[`${tab}/${normalizedPath}`] ?? null;
 }
 
+export function resolveLegacySitemapRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+  search?: string,
+) {
+  const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
+  const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
+
+  return rule
+    ? {
+        preserveSearch: rule.preserveSearch,
+        redirectUrl: rule.target,
+      }
+    : null;
+}
+
 function resolveRealtimeMediaRedirect(
   locale: string,
   tab: string,
@@ -799,6 +869,16 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
     'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
+    'cloud-recording/pricing-webpage-recording': `/${locale}/realtime-media/cloud-recording/reference/pricing-webpage-recording`,
+    'whiteboard/overview': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/account-settlement': `/${locale}/realtime-media/whiteboard/reference/account-settlement`,
+    'whiteboard/overview/core-concepts': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/pricing': `/${locale}/realtime-media/whiteboard/reference/pricing`,
+    'whiteboard/overview/product-overview': `/${locale}/realtime-media/whiteboard`,
+    'whiteboard/overview/release-notes': `/${locale}/realtime-media/whiteboard/reference/release-notes`,
+    'whiteboard/overview/release-notes-uikit': `/${locale}/realtime-media/whiteboard/reference/release-notes-uikit`,
+    'whiteboard/overview/supported-platforms': `/${locale}/realtime-media/whiteboard/reference/supported-platforms`,
+    'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
   };
 
   return redirects[normalizedPath] ?? null;
@@ -842,6 +922,7 @@ function resolveRealtimeMediaApiReferenceRedirect(
       '/en/api-reference/api-ref/media-push/restful-type-definition',
     'on-premise-recording/reference/api-reference':
       '/en/api-reference/api-ref/on-premise-recording',
+    'rtm/reference/rest-api': '/en/api-reference/api-ref/signaling',
     'rtmp-gateway/reference/rest-api': '/en/api-reference/api-ref/rtmp-gateway',
     'rtmp-gateway/reference/restful-authentication':
       '/en/api-reference/api-ref/rtmp-gateway/authentication',
@@ -955,8 +1036,13 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
 
 export type DocsPagePayload = Exclude<
   Awaited<ReturnType<typeof loadDocsPagePayload>>,
-  null | { redirectUrl: string }
+  null | DocsRedirectPayload
 >;
+
+export type DocsRedirectPayload = {
+  preserveSearch?: boolean;
+  redirectUrl: string;
+};
 
 async function readProcessedText(page: PageWithSource) {
   try {
@@ -1156,7 +1242,7 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
   {
     productSlug: 'broadcast-streaming',
     title: 'RESTful API',
-    url: '/en/api-reference/api-ref/broadcast-streaming',
+    url: '/en/api-reference/api-ref/rtc',
   },
   {
     productSlug: 'cloud-recording',
@@ -1182,6 +1268,11 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
     productSlug: 'on-premise-recording',
     title: 'API reference',
     url: '/en/api-reference/api-ref/on-premise-recording',
+  },
+  {
+    productSlug: 'rtm',
+    title: 'Signaling REST API',
+    url: '/en/api-reference/api-ref/signaling',
   },
   {
     productSlug: 'rtmp-gateway',
@@ -1242,7 +1333,8 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ...node,
       children: [
         pageNode,
-        ...node.children.filter(
+        ...filterSidebarNodes(
+          node.children,
           (child) => child.type !== 'page' || !existingUrls.has(child.url),
         ),
       ],
@@ -1295,6 +1387,8 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
       ];
     case 'on-premise-recording':
       return [`${prefix}/reference/api-reference`];
+    case 'rtm':
+      return [`${prefix}/reference/rest-api`];
     case 'rtmp-gateway':
       return [
         `${prefix}/reference/rest-api`,
@@ -1430,6 +1524,14 @@ function buildAiProductSidebar(
   const conversationalAiQuickstart =
     findSidebarPageByExactUrlInNodes(nodes, '/en/ai/get-started/quickstart') ??
     findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/get-started/quickstart');
+  const conversationalAiReleaseNotes =
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/zh-CN/ai/release-notes') ??
+    findSidebarPageByExactUrlInNodes(nodes, '/en/ai/reference/release-notes') ??
+    findSidebarPageByExactUrlInNodes(
+      nodes,
+      '/zh-CN/ai/reference/release-notes',
+    );
   const buildSection = findTopLevelSidebarSection(nodes, ['Build', '构建']);
   const bestPracticesSection = findTopLevelSidebarSection(nodes, [
     'Best practices',
@@ -1521,7 +1623,11 @@ function buildAiProductSidebar(
           child.url === '/en/ai/reference/server-sdk' ||
           child.url === '/en/ai/reference/client-toolkit' ||
           child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit')
+          child.url === '/zh-CN/ai/reference/client-toolkit' ||
+          child.url === '/en/ai/release-notes' ||
+          child.url === '/zh-CN/ai/release-notes' ||
+          child.url === '/en/ai/reference/release-notes' ||
+          child.url === '/zh-CN/ai/reference/release-notes')
       ),
   );
 
@@ -1557,6 +1663,7 @@ function buildAiProductSidebar(
     },
     {
       children: stripSidebarSectionMetaFromNodes([
+        ...(conversationalAiReleaseNotes ? [conversationalAiReleaseNotes] : []),
         {
           ...conversationalAiQuickstart,
           title: isZhCn ? 'Quickstart' : 'Quickstart',
@@ -1591,6 +1698,16 @@ function flattenDeviceKitSidebarChildren(
   children: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const flattened: DocsSidebarNode[] = [];
+  let hasPushedReleaseNotes = false;
+  const releaseNotes =
+    findSidebarPageByExactUrlInNodes(
+      children,
+      '/en/ai/device-kit/reference/release-notes',
+    ) ??
+    findSidebarPageByExactUrlInNodes(
+      children,
+      '/zh-CN/ai/device-kit/reference/release-notes',
+    );
 
   for (const child of children) {
     if (child.type === 'page') {
@@ -1601,6 +1718,12 @@ function flattenDeviceKitSidebarChildren(
         continue;
       }
 
+      if (
+        child.url === '/en/ai/device-kit/reference/release-notes' ||
+        child.url === '/zh-CN/ai/device-kit/reference/release-notes'
+      ) {
+        hasPushedReleaseNotes = true;
+      }
       flattened.push(child);
       continue;
     }
@@ -1617,6 +1740,10 @@ function flattenDeviceKitSidebarChildren(
         );
 
       if (quickstart) {
+        if (releaseNotes && !hasPushedReleaseNotes) {
+          flattened.push(releaseNotes);
+          hasPushedReleaseNotes = true;
+        }
         flattened.push({
           ...quickstart,
           title: quickstart.url.startsWith('/zh-CN/')
@@ -1640,7 +1767,10 @@ function flattenDeviceKitSidebarChildren(
               !(
                 node.type === 'page' &&
                 (node.url === '/en/ai/device-kit/reference/enable-services' ||
-                  node.url === '/zh-CN/ai/device-kit/reference/enable-services')
+                  node.url ===
+                    '/zh-CN/ai/device-kit/reference/enable-services' ||
+                  node.url === '/en/ai/device-kit/reference/release-notes' ||
+                  node.url === '/zh-CN/ai/device-kit/reference/release-notes')
               ),
           ),
         }),

@@ -15,7 +15,7 @@ import {
 } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
@@ -25,6 +25,15 @@ import { DocsTocRail } from './DocsTocRail';
 import { DocsCopyMenu } from './docs-copy-menu';
 
 const clipboardWriteText = vi.fn();
+const fetchMock = vi.fn();
+const { captureDocsPageFeedbackMock } = vi.hoisted(() => ({
+  captureDocsPageFeedbackMock: vi.fn(),
+}));
+
+vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  initializePostHog: vi.fn(),
+}));
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => {
@@ -129,8 +138,14 @@ describe('DocsContent', () => {
   });
 
   beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('hides a single-item breadcrumb that just repeats the page title', async () => {
@@ -208,6 +223,27 @@ describe('DocsContent', () => {
       within(breadcrumb).getByRole('link', { name: 'Introduction' }),
     ).toHaveAttribute('href', '/en/introduction');
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
+  });
+
+  it('does not render the copy page action when the locale has no public markdown content', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/introduction/about-agora.md"
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+      '/zh-CN/introduction/about-agora',
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'About Agora' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Copy Page' }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders MDX content in the server output without a skeleton', () => {
@@ -839,7 +875,14 @@ describe('DocsContent', () => {
     ).not.toHaveAttribute('data-copied');
   });
 
-  it('copies the markdown url from the primary copy button', async () => {
+  it('copies the markdown content from the primary copy button', async () => {
+    const markdown =
+      '# About Agora\n\nAgora is a real-time engagement platform.';
+
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      text: vi.fn().mockResolvedValue(markdown),
+    });
     clipboardWriteText.mockReset();
     clipboardWriteText.mockResolvedValue(undefined);
 
@@ -855,13 +898,50 @@ describe('DocsContent', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Copy Page' }));
 
     await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenCalledWith(
-        `${window.location.origin}/en/introduction/about-agora.md`,
-      );
+      expect(clipboardWriteText).toHaveBeenCalledWith(markdown);
+    });
+    expect(fetchMock).toHaveBeenCalledWith('/en/introduction/about-agora.md', {
+      credentials: 'same-origin',
     });
   });
 
+  it('does not mark the page copied when markdown content cannot be fetched', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      text: vi.fn().mockResolvedValue('<h1>Not Found</h1>'),
+    });
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="en"
+        markdownUrl="/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+      />,
+    );
+
+    const copyButton = await screen.findByRole('button', { name: 'Copy Page' });
+    fireEvent.click(copyButton);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        '/en/introduction/about-agora.md',
+        {
+          credentials: 'same-origin',
+        },
+      );
+    });
+    expect(clipboardWriteText).not.toHaveBeenCalled();
+    expect(copyButton).not.toHaveAttribute('data-copied');
+  });
+
   it('uses a more visible success state after copying the page link', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      text: vi.fn().mockResolvedValue('# About Agora'),
+    });
     clipboardWriteText.mockReset();
     clipboardWriteText.mockResolvedValue(undefined);
 
@@ -960,6 +1040,12 @@ describe('DocsTableOfContents', () => {
           <h3 id="details">Details</h3>
         </div>
         <DocsTableOfContents
+          sourceLinks={{
+            editUrl:
+              'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/en/introduction/about-agora.md',
+            viewUrl:
+              'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/en/introduction/about-agora.md',
+          }}
           toc={[
             { depth: 2, title: 'Overview', url: '#overview' },
             { depth: 3, title: 'Details', url: '#details' },
@@ -993,11 +1079,51 @@ describe('DocsTableOfContents', () => {
       screen.getByRole('link', { name: 'Edit this page' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/AgoraIO/docs-portal/tree/main/content/docs',
+      'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/en/introduction/about-agora.md',
     );
     expect(
       screen.getByRole('link', { name: 'View on GitHub' }),
-    ).toHaveAttribute('href', 'https://github.com/AgoraIO/docs-portal');
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/en/introduction/about-agora.md',
+    );
+  });
+
+  it('uses localized docs source links for the table of contents actions', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 200, overflow: 'auto' }}
+        >
+          <h2 id="overview">概览</h2>
+        </div>
+        <DocsTableOfContents
+          locale="zh-CN"
+          sourceLinks={{
+            editUrl:
+              'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/zh-CN/introduction/about-agora.md',
+            viewUrl:
+              'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/zh-CN/introduction/about-agora.md',
+          }}
+          toc={[{ depth: 2, title: '概览', url: '#overview' }]}
+          variant="mobile"
+        />
+      </AppProviders>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '本页目录' }));
+
+    expect(screen.getByRole('link', { name: '编辑此页' })).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/edit/main/content/docs/zh-CN/introduction/about-agora.md',
+    );
+    expect(
+      screen.getByRole('link', { name: '在 GitHub 查看' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/AgoraIO/docs-portal/blob/main/content/docs/zh-CN/introduction/about-agora.md',
+    );
   });
 
   it('keeps mobile heading links interactive and collapses after a selection', async () => {
@@ -1604,6 +1730,36 @@ describe('DocsTocRail', () => {
 });
 
 describe('DocsPageFeedback placement', () => {
+  it('captures helpfulness feedback without changing the local pressed state', async () => {
+    renderWithRouter(
+      <DocsMainColumn locale="en">
+        <article>Body</article>
+      </DocsMainColumn>,
+    );
+
+    const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
+    const feedback = within(mobileFlow).getByTestId('docs-feedback');
+    const yesButton = within(feedback).getByRole('button', { name: 'Yes' });
+    const noButton = within(feedback).getByRole('button', { name: 'No' });
+
+    fireEvent.click(yesButton);
+
+    expect(yesButton).toHaveAttribute('aria-pressed', 'true');
+    expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
+      locale: 'en',
+      value: 'yes',
+    });
+
+    fireEvent.click(noButton);
+
+    expect(yesButton).toHaveAttribute('aria-pressed', 'false');
+    expect(noButton).toHaveAttribute('aria-pressed', 'true');
+    expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
+      locale: 'en',
+      value: 'no',
+    });
+  });
+
   it('opens a feedback dialog with a prefilled issue link', async () => {
     window.history.replaceState(
       {},

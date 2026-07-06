@@ -871,6 +871,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                 name: 'Video Calling',
                 type: 'folder',
               },
+              {
+                $id: 'realtime-media-rtm-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-rtm-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-rtm-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-rtm-rest-api',
+                        name: 'Signaling REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/rtm/reference/rest-api',
+                      },
+                      {
+                        $id: 'realtime-media-rtm-downloads',
+                        name: 'Downloads',
+                        type: 'page',
+                        url: '/en/realtime-media/rtm/reference/downloads',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-rtm-index',
+                  name: 'Signaling',
+                  type: 'page',
+                  url: '/en/realtime-media/rtm',
+                },
+                name: 'Signaling',
+                type: 'folder',
+              },
             ],
             index: {
               $id: 'realtime-media-index',
@@ -1684,6 +1721,7 @@ Web body
         platformTabs: {
           canonicalPlatform: 'ios',
           defaultPlatform: 'ios',
+          initialPlatform: undefined,
           platforms: '["ios","android"]',
         },
         platforms: ['ios', 'android'],
@@ -1698,18 +1736,32 @@ Web body
     ).not.toContain('/en/ai/get-started/platform-split/ios');
   });
 
-  it('redirects split-file platform panel routes to the parent page', async () => {
+  it('resolves split-file platform panel routes with the selected platform active', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
 
-    mockedGetPage.mockReturnValue(iosPage);
+    mockedGetPage.mockImplementation((slugs) =>
+      slugs.includes('ios') ? iosPage : parentPage,
+    );
     mockedGetPages.mockReturnValue([parentPage, iosPage]);
     mockedGetPageTree.mockReturnValue(pageTree);
 
-    await expect(
-      loadDocsPagePayload('en', 'ai', ['get-started', 'platform-split', 'ios']),
-    ).resolves.toEqual({
-      redirectUrl: '/en/ai/get-started/platform-split',
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'get-started',
+      'platform-split',
+      'ios',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/en/ai/get-started/platform-split',
+      body: {
+        contentPath: 'en/ai/get-started/platform-split/index.mdx',
+        kind: 'platform-group',
+        platformTabs: {
+          initialPlatform: 'ios',
+        },
+      },
+      markdownUrl: '/en/ai/get-started/platform-split/ios.md',
     });
   });
 
@@ -2505,6 +2557,71 @@ Web body
     });
   });
 
+  it('redirects legacy docs.agora.io sitemap URLs to article-level targets when available', async () => {
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'video-calling',
+        ['get-started', 'get-started-sdk'],
+        '?platform=android',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+    });
+
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'agora-chat',
+        ['client-api', 'messages', 'send-receive-messages'],
+        '?platform=android',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl:
+        '/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'convo-ai-device-kit', [
+        'overview',
+        'product-overview',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/ai/device-kit',
+    });
+  });
+
+  it('redirects legacy sitemap URLs with platform query to platform-specific targets', async () => {
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'broadcast-streaming',
+        ['overview', 'release-notes'],
+        '?platform=ios',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+    });
+
+    await expect(
+      loadDocsPagePayload(
+        'en',
+        'broadcast-streaming',
+        ['overview', 'release-notes'],
+        '?platform=react-js',
+      ),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    });
+  });
+
   it('redirects the Deploy to IoT devices path entry to the Device Kit product space', async () => {
     await expect(
       loadDocsPagePayload('en', 'ai', [
@@ -2834,6 +2951,16 @@ Web body
 
     await expect(
       loadDocsPagePayload('en', 'realtime-media', [
+        'rtm',
+        'reference',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/api-reference/api-ref/signaling',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
         'whiteboard',
         'reference',
         'uikit-sdk',
@@ -2920,6 +3047,25 @@ Web body
     });
   });
 
+  it('redirects the legacy Solutions root to the Realtime Media overview', async () => {
+    await expect(loadDocsPagePayload('en', 'solutions', [])).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/overview',
+    });
+  });
+
+  it('redirects legacy Solutions product routes to realtime-media', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'solutions', [
+        'interactive-live-streaming',
+        'quickstart',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/interactive-live-streaming/quickstart',
+    });
+  });
+
   it('redirects legacy standalone REST reference pages to canonical targets', async () => {
     await expect(
       loadDocsPagePayload('en', 'interactive-whiteboard', [
@@ -2997,17 +3143,20 @@ Web body
         expect.objectContaining({
           children: expect.arrayContaining([
             {
-              id: '/en/api-reference/api-ref/broadcast-streaming',
+              id: '/en/api-reference/api-ref/rtc',
               linked: true,
               title: 'RESTful API',
               type: 'page',
-              url: '/en/api-reference/api-ref/broadcast-streaming',
+              url: '/en/api-reference/api-ref/rtc',
             },
           ]),
           title: 'Reference',
           type: 'section',
         }),
       ]),
+    );
+    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
+      '/en/api-reference/api-ref/broadcast-streaming',
     );
 
     const videoPage = {
@@ -3068,6 +3217,62 @@ Web body
     );
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
+    );
+
+    const rtmPage = {
+      ...page,
+      data: {
+        ...page.data,
+        info: {
+          fullPath: '/virtual/content/docs/en/realtime-media/rtm/index.mdx',
+          path: 'en/realtime-media/rtm/index.mdx',
+        },
+        title: 'Signaling',
+      },
+      path: 'en/realtime-media/rtm/index.mdx',
+      slugs: ['en', 'realtime-media', 'rtm', 'index'],
+      url: '/en/realtime-media/rtm',
+    };
+
+    mockedGetPage.mockReturnValue(rtmPage);
+    mockedGetPages.mockReturnValue([rtmPage]);
+    mockedGetPageTree.mockReturnValue(
+      createRealtimeMediaApiReferenceJumpPageTree(),
+    );
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'realtime-media-rtm-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: 'Signaling',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const rtmPayload = unwrapPayload(
+      await loadDocsPagePayload('en', 'realtime-media', ['rtm']),
+    );
+
+    expect(rtmPayload.sidebar).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          children: expect.arrayContaining([
+            {
+              id: '/en/api-reference/api-ref/signaling',
+              linked: true,
+              title: 'Signaling REST API',
+              type: 'page',
+              url: '/en/api-reference/api-ref/signaling',
+            },
+          ]),
+          title: 'Reference',
+          type: 'section',
+        }),
+      ]),
+    );
+    expect(flattenSidebarPageUrls(rtmPayload.sidebar)).not.toContain(
+      '/en/realtime-media/rtm/reference/rest-api',
     );
   });
 
@@ -3154,10 +3359,64 @@ Web body
       redirectUrl: '/en/ai/reference/event-types',
     });
 
+    await expect(loadDocsPagePayload('en', 'ai', ['pricing'])).resolves.toEqual(
+      {
+        redirectUrl: '/en/ai/reference/pricing',
+      },
+    );
+
     await expect(
       loadDocsPagePayload('en', 'ai', ['best-practices', 'filler-words']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/build/filler-words',
+    });
+  });
+
+  it('redirects moved Reference pages to their new product paths', async () => {
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'cloud-recording',
+        'pricing-webpage-recording',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/cloud-recording/reference/pricing-webpage-recording',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', ['whiteboard', 'overview']),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'core-concepts',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'pricing',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/reference/pricing',
+    });
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'whiteboard',
+        'overview',
+        'whiteboard-fastboard',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/realtime-media/whiteboard/whiteboard-fastboard',
     });
   });
 
@@ -3295,23 +3554,10 @@ Web body
                   $id: 'ai-device-kit-folder',
                   children: [
                     {
-                      $id: 'device-kit-start-here-folder',
-                      children: [
-                        {
-                          $id: 'device-kit-quickstart',
-                          name: 'Quickstart',
-                          type: 'page',
-                          url: '/en/ai/device-kit/start-here/quickstart',
-                        },
-                        {
-                          $id: 'device-kit-enable-services',
-                          name: 'Enable services',
-                          type: 'page',
-                          url: '/en/ai/device-kit/reference/enable-services',
-                        },
-                      ],
-                      name: 'Start here',
-                      type: 'folder',
+                      $id: 'device-kit-release-notes',
+                      name: 'Release notes',
+                      type: 'page',
+                      url: '/en/ai/device-kit/reference/release-notes',
                     },
                     {
                       $id: 'device-kit-build-folder',
@@ -3335,12 +3581,6 @@ Web body
                     {
                       $id: 'device-kit-reference-folder',
                       children: [
-                        {
-                          $id: 'device-kit-release-notes',
-                          name: 'Release notes',
-                          type: 'page',
-                          url: '/en/ai/device-kit/reference/release-notes',
-                        },
                         {
                           $id: 'device-kit-pricing',
                           name: 'Pricing',
@@ -3417,7 +3657,6 @@ Web body
         '/en/ai/reference/ten-agent/create-tts-extension',
         '/en/ai/reference/release-notes',
         '/en/ai/reference/pricing',
-        '/en/ai/device-kit/start-here/quickstart',
         '/en/ai/device-kit/build/run-the-r1-demo',
         '/en/ai/device-kit/build/device-controls',
         '/en/ai/device-kit/reference/release-notes',
@@ -3453,6 +3692,16 @@ Web body
       throw new Error('expected the apps section');
     }
 
+    expect(softwareSection.children.slice(0, 2)).toMatchObject([
+      {
+        type: 'page',
+        url: '/en/ai/reference/release-notes',
+      },
+      {
+        type: 'page',
+        url: '/en/ai/get-started/quickstart',
+      },
+    ]);
     expect(
       softwareSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
@@ -3468,6 +3717,12 @@ Web body
     ) {
       throw new Error('expected the software reference section');
     }
+    expect(
+      softwareReferenceSection.children.some(
+        (node) =>
+          node.type === 'page' && node.url === '/en/ai/reference/release-notes',
+      ),
+    ).toBe(false);
 
     const buildSection = softwareSection.children.find(
       (node) => node.type === 'section' && node.title === 'Build',
@@ -3497,6 +3752,16 @@ Web body
       throw new Error('expected the dedicated devices section');
     }
 
+    expect(dedicatedDevicesSection.children.slice(0, 2)).toMatchObject([
+      {
+        type: 'page',
+        url: '/en/ai/device-kit/reference/release-notes',
+      },
+      {
+        type: 'section',
+        title: 'Build',
+      },
+    ]);
     expect(
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Reference',
@@ -3525,7 +3790,7 @@ Web body
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/reference/release-notes',
       ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       dedicatedReferenceSection.children.some(
         (node) =>
@@ -3539,7 +3804,7 @@ Web body
           node.type === 'page' &&
           node.url === '/en/ai/device-kit/start-here/quickstart',
       ),
-    ).toBe(true);
+    ).toBe(false);
     expect(
       dedicatedDevicesSection.children.some(
         (node) => node.type === 'section' && node.title === 'Build',

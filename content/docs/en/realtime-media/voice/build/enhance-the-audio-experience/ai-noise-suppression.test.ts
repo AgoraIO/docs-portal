@@ -23,6 +23,7 @@ describe('voice ai-noise-suppression platforms', () => {
 
     expect(extractStructuredPlatformTabs(compiled)).toEqual({
       canonicalPlatform: 'web',
+      defaultPlatform: 'android',
       platforms: [
         'android',
         'ios',

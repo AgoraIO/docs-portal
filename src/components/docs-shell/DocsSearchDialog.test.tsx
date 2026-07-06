@@ -6,9 +6,16 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
@@ -32,6 +39,7 @@ describe('DocsSearchDialog', () => {
     vi.unstubAllEnvs();
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
+    window.localStorage.clear();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
@@ -43,30 +51,8 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="mobile"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          <DocsSearchDialog loadPages={loadPages} mode="mobile" />
         </AppProviders>
       ),
     });
@@ -100,9 +86,10 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(mobileButton);
 
-    expect(
+    fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
+      { target: { value: 'quick' } },
+    );
     fireEvent.click(await screen.findByText('Quick Start'));
 
     await waitFor(() => {
@@ -123,18 +110,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
-          />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -150,10 +126,12 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
 
-    expect(
+    // Results only appear once there's a query. 'ai' matches the Quick Start
+    // page (its url contains /ai/).
+    fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('AI')).toBeInTheDocument();
+      { target: { value: 'ai' } },
+    );
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Quick Start'));
@@ -177,7 +155,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPagesSpy} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPagesSpy} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -211,7 +189,7 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} mode="desktop" tabs={[]} />
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
         </AppProviders>
       ),
     });
@@ -232,7 +210,7 @@ describe('DocsSearchDialog', () => {
     ).toBeInTheDocument();
   });
 
-  it('keeps tabs usable and explains that page search is unavailable when lazy page loading fails', async () => {
+  it('explains that page search is unavailable when lazy page loading fails', async () => {
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
@@ -242,15 +220,57 @@ describe('DocsSearchDialog', () => {
       path: '/$locale/$tab/$slug',
       component: () => (
         <AppProviders>
+          <DocsSearchDialog loadPages={loadPagesFailure} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+    render(<RouterProvider router={router} />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // The page index failed to load; typing a query surfaces the unavailable
+    // message rather than a "no matches" message or a crash.
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'anything' } },
+    );
+    expect(
+      await screen.findByText('Search index unavailable.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+    await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
+  });
+
+  it('scopes the Algolia query to a product when a product filter is chosen', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
           <DocsSearchDialog
-            loadPages={loadPagesFailure}
+            loadPages={loadPages}
+            locale="en"
             mode="desktop"
-            tabs={[
+            productScopes={[
               {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
+                description: 'Real-time voice.',
+                filter: 'product:"voice"',
+                group: 'Realtime Media',
+                id: 'product:voice',
+                label: 'Voice Calling',
               },
             ]}
           />
@@ -263,27 +283,18 @@ describe('DocsSearchDialog', () => {
         initialEntries: ['/en/introduction/about-agora'],
       }),
     });
-    const navigateSpy = vi.spyOn(router, 'navigate');
 
     render(<RouterProvider router={router} />);
 
     fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
-
-    expect(
-      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('AI')).toBeInTheDocument();
-    expect(screen.getByText('Search index unavailable.')).toBeInTheDocument();
-    expect(screen.queryByText('No matching pages found.')).toBeNull();
-
-    fireEvent.click(screen.getByText('AI'));
+    fireEvent.click(
+      await screen.findByRole('combobox', { name: 'All products' }),
+    );
+    fireEvent.click(await screen.findByText('Voice Calling'));
 
     await waitFor(() => {
-      expect(loadPagesFailure).toHaveBeenCalledOnce();
-      expect(navigateSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: '/en/ai',
-        }),
+      expect(createAlgoliaDocsClient).toHaveBeenCalledWith(
+        expect.objectContaining({ scopeFilter: 'product:"voice"' }),
       );
     });
   });
@@ -298,6 +309,7 @@ describe('DocsSearchDialog', () => {
           content: 'Voice Activity Detection',
           id: 'android-vad',
           objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
           platform: ['android'],
           product: 'voice',
           section: 'Enable VAD',
@@ -309,6 +321,7 @@ describe('DocsSearchDialog', () => {
           content: 'Voice Activity Detection',
           id: 'ios-vad',
           objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
           platform: ['ios'],
           product: 'voice',
           section: 'Enable VAD',
@@ -331,14 +344,6 @@ describe('DocsSearchDialog', () => {
             loadPages={loadPagesSpy}
             locale="en"
             mode="desktop"
-            tabs={[
-              {
-                description: 'AI docs',
-                id: 'ai',
-                title: 'AI',
-                url: '/en/ai',
-              },
-            ]}
           />
         </AppProviders>
       ),
@@ -361,13 +366,16 @@ describe('DocsSearchDialog', () => {
       },
     );
 
+    // 2 result rows + 1 title in the beside detail panel (happy-dom innerWidth=1024)
     expect(await screen.findAllByText('Voice Activity Detection')).toHaveLength(
-      2,
+      3,
     );
     expect(screen.getByText('android')).toBeInTheDocument();
     expect(screen.getByText('ios')).toBeInTheDocument();
-    expect(screen.getAllByText('voice')).toHaveLength(2);
-    expect(screen.getAllByText('Enable VAD')).toHaveLength(2);
+    expect(screen.getAllByText('Realtime Media › Voice')).toHaveLength(2);
+    expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+      'Enable VAD on Android.',
+    );
     fireEvent.click(screen.getAllByText('Voice Activity Detection')[0]);
 
     await waitFor(() => {
@@ -385,5 +393,538 @@ describe('DocsSearchDialog', () => {
         }),
       );
     });
+  });
+
+  it('shows a keyboard-hint bar while the dialog is open', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    const hints = await screen.findByTestId('search-keyboard-hints');
+    expect(hints).toHaveTextContent('navigate');
+    expect(hints).toHaveTextContent('select');
+    expect(hints).toHaveTextContent('close');
+  });
+
+  it('shows animated skeleton rows while a search is in flight', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn(() => new Promise<never>(() => {})),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'vad' } },
+    );
+
+    expect(await screen.findByTestId('search-loading')).toBeInTheDocument();
+    expect(screen.queryByText('Searching...')).toBeNull();
+  });
+
+  it('does not flash the empty message when an in-flight request is superseded by a newer one', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    // Hand out a controllable promise per search call so we can leave the first
+    // request in flight while the second fires, then resolve the (superseded)
+    // first one — the exact race that flips fumadocs' isLoading off early.
+    const deferreds: Array<(value: never[]) => void> = [];
+    const search = vi.fn(
+      () =>
+        new Promise<never[]>((resolve) => {
+          deferreds.push(resolve);
+        }),
+    );
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search,
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+
+    // First query fires after the debounce and stays in flight.
+    fireEvent.input(input, { target: { value: 'sta' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    // Second query fires while the first is still pending.
+    fireEvent.input(input, { target: { value: 'star' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+
+    // Resolve the superseded first request (its result is discarded, but its
+    // finally() flips fumadocs' isLoading off). The second is still pending, so
+    // we must stay in the loading state — no empty message.
+    await act(async () => {
+      deferreds[0]([]);
+    });
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+    expect(screen.getByTestId('search-loading')).toBeInTheDocument();
+
+    // Once the latest request settles empty, the message is correct.
+    await act(async () => {
+      deferreds[1]([]);
+    });
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
+  });
+
+  it('updates the footer detail as the highlighted result changes', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([
+        {
+          content: 'Voice Activity Detection',
+          id: 'android-vad',
+          objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
+          platform: ['android'],
+          product: 'voice',
+          snippet: 'Enable <mark>VAD</mark> on Android.',
+          type: 'page',
+          url: '/en/voice/vad#android',
+        },
+        {
+          content: 'Voice Activity Detection',
+          id: 'ios-vad',
+          objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
+          platform: ['ios'],
+          product: 'voice',
+          snippet: 'Enable <mark>VAD</mark> on iOS.',
+          type: 'page',
+          url: '/en/voice/vad#ios',
+        },
+      ]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'vad' } });
+
+    await screen.findAllByText('Voice Activity Detection');
+    await waitFor(() =>
+      expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+        'Enable VAD on Android.',
+      ),
+    );
+
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+
+    await waitFor(() =>
+      expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+        'Enable VAD on iOS.',
+      ),
+    );
+  });
+
+  it('does not show the empty state before anything is searched', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    await screen.findByPlaceholderText('Search docs, APIs, guides...');
+
+    // No query typed yet → the "no matching pages" message must not appear.
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+  });
+
+  it('shows the empty message once a query resolves with no results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'zzzznomatch' } },
+    );
+
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
+  });
+
+  it('opens only one dialog on ⌘K even when a mobile instance is also mounted', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          <DocsSearchDialog loadPages={loadPages} mode="mobile" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    await screen.findAllByRole('button', { name: 'Search docs' });
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+
+    await screen.findByPlaceholderText('Search docs, APIs, guides...');
+    // Both instances register no listener except the desktop one, so exactly
+    // one dialog opens — not two overlapping ones.
+    expect(
+      screen.getAllByPlaceholderText('Search docs, APIs, guides...'),
+    ).toHaveLength(1);
+  });
+
+  it('shows recently-viewed pages under a Recent heading on open, and hides them once a query is typed', async () => {
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([
+        { title: 'Authentication', url: '/en/ai/authentication' },
+      ]),
+    );
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // On open (no query): the Recent heading + the seeded page, no prompt.
+    expect(await screen.findByText('Recent')).toBeInTheDocument();
+    expect(screen.getAllByText('Authentication').length).toBeGreaterThanOrEqual(
+      1,
+    );
+    expect(screen.queryByTestId('search-prompt')).toBeNull();
+
+    // Typing replaces the recent list with search results.
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'quick' } },
+    );
+    await waitFor(() => expect(screen.queryByText('Recent')).toBeNull());
+  });
+
+  it('resets the query on close so reopening does not show the previous no-results message', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // Type a query with no matches → the empty message shows.
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'zzzznomatch' } });
+    expect(
+      await screen.findByText('No matching pages found.'),
+    ).toBeInTheDocument();
+
+    // Close, then reopen: the stale query and its message must be gone.
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    await waitFor(() =>
+      expect(
+        screen.queryByPlaceholderText('Search docs, APIs, guides...'),
+      ).toBeNull(),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Search docs' }));
+
+    const reopenedInput = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    expect((reopenedInput as HTMLInputElement).value).toBe('');
+    expect(screen.queryByText('No matching pages found.')).toBeNull();
+  });
+
+  it('shows a prompt (not fake results) on open when there is no history', async () => {
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // No history and nothing typed: the prompt shows; there's no Recent heading.
+    expect(await screen.findByTestId('search-prompt')).toBeInTheDocument();
+    expect(screen.queryByText('Recent')).toBeNull();
+    // cmdk's empty slot must NOT render in the prompt state — its padding would
+    // sit above the prompt and throw off its vertical balance.
+    expect(document.querySelector('[data-slot="command-empty"]')).toBeNull();
+  });
+
+  it('cascades the recent list on first open, then drops the enter animation once the user types', async () => {
+    // Seed a recently-viewed page so the empty state has something to cascade.
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([{ title: 'Recent Page', url: '/en/ai/recent-page' }]),
+    );
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    // First open: the recent row cascades in with the enter animation class.
+    // ('Recent Page' also appears in the beside detail panel, so scope to the
+    // actual command item.)
+    const rowFor = async (text: string) => {
+      const matches = await screen.findAllByText(text);
+      const row = matches
+        .map((el) => el.closest('[data-slot="command-item"]'))
+        .find(Boolean);
+      if (!row) {
+        throw new Error(`expected a "${text}" command item`);
+      }
+      return row;
+    };
+    expect((await rowFor('Recent Page')).className).toContain(
+      'search-result-enter',
+    );
+
+    // Typing disarms the stagger, so results render instantly — no cascade on
+    // every keystroke.
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'quick' } },
+    );
+    await waitFor(async () => {
+      expect((await rowFor('Quick Start')).className).not.toContain(
+        'search-result-enter',
+      );
+    });
+  });
+
+  it('does not overlay the loading skeleton on top of existing results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    // First query resolves with a result; the next query never resolves, so the
+    // dialog stays "busy" while the previous result is still on screen.
+    const search = vi
+      .fn()
+      .mockResolvedValueOnce([
+        {
+          content: 'Voice Activity Detection',
+          id: 'android-vad',
+          objectType: 'docs',
+          path: ['Realtime Media', 'Voice'],
+          platform: ['android'],
+          product: 'voice',
+          snippet: 'Enable <mark>VAD</mark> on Android.',
+          type: 'page',
+          url: '/en/voice/vad#android',
+        },
+      ])
+      .mockReturnValue(new Promise<never>(() => {}));
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search,
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'vad' } });
+    // Title shows in the result row (and the beside detail panel), so >= 1.
+    await screen.findAllByText('Voice Activity Detection');
+
+    // Type again → the second query is in flight, but the previous result stays
+    // and the skeleton must NOT appear alongside it.
+    fireEvent.input(input, { target: { value: 'vadx' } });
+    await new Promise((resolve) => {
+      setTimeout(resolve, 300);
+    });
+    expect(screen.queryByTestId('search-loading')).toBeNull();
+    expect(
+      screen.getAllByText('Voice Activity Detection').length,
+    ).toBeGreaterThan(0);
   });
 });

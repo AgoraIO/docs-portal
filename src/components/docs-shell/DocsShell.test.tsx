@@ -99,7 +99,7 @@ const realtimeMediaSidebar: DocsSidebarNode[] = [
       },
     ],
     id: 'realtime-media',
-    title: 'Realtime Media',
+    title: 'RTC',
     type: 'section',
   },
 ];
@@ -108,7 +108,7 @@ const realtimeMediaTabs: TabSummary[] = [
   {
     icon: 'Radio',
     id: 'realtime-media',
-    title: 'Realtime Media',
+    title: 'RTC',
     url: '/en/realtime-media',
   },
 ];
@@ -138,6 +138,7 @@ function renderDocsShell(
     activePath: '/en/introduction',
     activeTab: 'introduction',
     children: <article>Body</article>,
+    contentPath: 'en/introduction/about-agora.md',
     loadPages: loadSearchPages,
     localeLinks: [
       {
@@ -414,7 +415,7 @@ describe('DocsShell', () => {
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(within(brandHomeLink).getByText('Docs')).toBeInTheDocument();
-    expect(brandHomeLink.querySelector('svg')).toBeInTheDocument();
+    expect(brandHomeLink.querySelector('img')).toBeInTheDocument();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
@@ -476,6 +477,9 @@ describe('DocsShell', () => {
 
     expect(banner).toHaveTextContent(
       'Looking for the previous docs site? Visit the legacy docs homepage.',
+    );
+    expect(legacyDocsBannerConfig.hrefs.en).toBe(
+      'https://docs-legacy.agora.io/en',
     );
     expect(banner).toHaveAttribute('href', legacyDocsBannerConfig.hrefs.en);
     expect(banner).toHaveAttribute('target', '_blank');
@@ -1520,13 +1524,8 @@ describe('DocsShell', () => {
           },
           {
             id: 'realtime-media',
-            title: 'Realtime Media',
+            title: 'RTC',
             url: '/en/realtime-media',
-          },
-          {
-            id: 'solutions',
-            title: 'Solutions',
-            url: '/en/solutions',
           },
           {
             id: 'api-reference',
@@ -1605,7 +1604,7 @@ describe('DocsShell', () => {
       within(sectionMenu).getByRole('menuitem', { name: 'Voice Agent' }),
     ).toBeInTheDocument();
     expect(
-      within(sectionMenu).getByRole('menuitem', { name: 'Realtime Media' }),
+      within(sectionMenu).getByRole('menuitem', { name: 'RTC' }),
     ).toBeInTheDocument();
     expect(
       within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),

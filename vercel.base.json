@@ -1,0 +1,38 @@
+{
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist/client",
+  "framework": null,
+  "redirects": [
+    {
+      "source": "/cn",
+      "destination": "/en",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/asr/overview",
+      "destination": "/en/ai/models/asr/deepgram",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/llm/overview",
+      "destination": "/en/ai/models/llm/openai",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/mllm/overview",
+      "destination": "/en/ai/models/mllm/openai",
+      "statusCode": 301
+    },
+    {
+      "source": "/conversational-ai/models/tts/overview",
+      "destination": "/en/ai/models/tts/openai",
+      "statusCode": 301
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!_build/|assets/|__static/|images/|openapi/|favicon.ico|robots.txt|sitemap.xml).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -11,6 +11,17 @@ export type TabSummary = {
   url: string;
 };
 
+// A search scope the user can narrow to. `filter` is an Algolia filter
+// expression over the already-indexed `product`/`tab` fields, so scoping needs
+// no re-sync. `group` is the section header shown in the scope dropdown.
+export type ProductScope = {
+  description?: string;
+  filter: string;
+  group?: string;
+  id: string;
+  label: string;
+};
+
 export type SidebarEntry =
   | {
       external?: boolean;
@@ -66,6 +77,73 @@ export type DocsSidebarGroupMetadata = {
 };
 
 const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat)\}$/;
+
+// Tabs whose second-level folders are genuine products (Voice, Video, …) and so
+// expand into per-product search scopes. Other tabs are offered as a single
+// tab-level scope; onboarding tabs aren't useful scopes at all.
+const PRODUCT_SCOPE_TAB_IDS = new Set(['realtime-media', 'solutions']);
+const NON_SCOPE_TAB_IDS = new Set(['introduction', 'best-practices']);
+
+export function getProductScopes(root: Root): ProductScope[] {
+  return getTabNodes(root).flatMap((node): ProductScope[] => {
+    const item = getTabIndex(node);
+    if (!item) {
+      return [];
+    }
+
+    const tabId = getTabIdFromUrl(item.url);
+    if (!tabId || NON_SCOPE_TAB_IDS.has(tabId)) {
+      return [];
+    }
+
+    const tabLabel =
+      node.type === 'folder'
+        ? normalizeLabel(node.name, tabId)
+        : normalizeLabel(item.name, tabId);
+
+    if (PRODUCT_SCOPE_TAB_IDS.has(tabId) && node.type === 'folder') {
+      return node.children.flatMap((child): ProductScope[] => {
+        if (child.type !== 'folder') {
+          return [];
+        }
+
+        const childIndex = getTabIndex(child);
+        // Product id = the folder's URL segment after locale + tab, which is
+        // exactly the value the index stores in `product`.
+        const productId = childIndex?.url.split('/').filter(Boolean)[2];
+        if (!productId) {
+          return [];
+        }
+
+        const scope: ProductScope = {
+          filter: `product:"${productId}"`,
+          group: tabLabel,
+          id: `product:${productId}`,
+          label: normalizeLabel(child.name, productId),
+        };
+
+        if (typeof childIndex.description === 'string') {
+          scope.description = childIndex.description;
+        }
+
+        return [scope];
+      });
+    }
+
+    // A whole tab (e.g. AI, Reference) as one scope.
+    const scope: ProductScope = {
+      filter: `tab:"${tabId}"`,
+      id: `tab:${tabId}`,
+      label: tabLabel,
+    };
+
+    if (typeof item.description === 'string') {
+      scope.description = item.description;
+    }
+
+    return [scope];
+  });
+}
 
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {

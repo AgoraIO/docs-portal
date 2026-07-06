@@ -1,5 +1,4 @@
 import { MACHINE_READABLE_LOCALE } from './machine-readable-docs';
-import { legacyDocsBannerConfig } from './shared';
 
 type SitemapPage = {
   url: string;
@@ -9,13 +8,14 @@ const XML_HEADER = '<?xml version="1.0" encoding="UTF-8"?>';
 const URLSET_OPEN =
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 const URLSET_CLOSE = '</urlset>';
+const PUBLIC_DOCS_BASE_URL = 'https://docs.agora.io';
 
 export function getSitemapBaseUrl() {
   const configured =
     process.env.SITE_URL ??
     process.env.VITE_SITE_URL ??
     process.env.PUBLIC_SITE_URL ??
-    legacyDocsBannerConfig.hrefs[MACHINE_READABLE_LOCALE];
+    PUBLIC_DOCS_BASE_URL;
 
   return configured.replace(/\/+$/, '').replace(/\/en$/, '');
 }

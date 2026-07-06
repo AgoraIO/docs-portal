@@ -15,9 +15,6 @@ To start a Video Calling session, implement the following steps in your app:
 
 - **Join a channel**: Call methods to create and join a channel.
 
-
-
-
 - **Send and receive audio and video**: All users can publish streams to the channel and subscribe to audio and video streams published by other users in the channel.
 
 
@@ -234,7 +231,7 @@ import io.agora.rtc2.ChannelMediaOptions
 
 ### Initialize the engine
 
-For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to--events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
 
 <Tabs defaultValue="java">
 <TabsList>
@@ -1269,7 +1266,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -1326,7 +1323,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -1713,7 +1710,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2123,7 +2120,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2534,7 +2531,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -2957,7 +2954,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -3399,7 +3396,7 @@ import AgoraRtcKit
 
 ### Initialize the engine
 
-Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to--events).
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
 
 ```swift
@@ -3978,7 +3975,7 @@ async function publishLocalTracks() {
 ```
 
 
-See [Local audio and video tracks](#local--tracks) to learn more about local tracks.
+See [Local audio and video tracks](#local-audio-and-video-tracks) to learn more about local tracks.
 
 ### Set up event listeners
 
@@ -4372,13 +4369,14 @@ In addition to using `npm` to install the Web SDK, you can also use the followin
 * In the project HTML file, add the following tag to obtain the SDK from CDN:
 
     ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.23.1.js"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
     ```
+
 
 * Download the Video SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
 
     ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.23.1.js"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
     ```
 
 Visit the [Download](/en/api-reference/sdks?product=video&platform=web) page to obtain the link for the latest SDK version.
@@ -4508,7 +4506,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to--events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
+For real-time communication, initialize an `IRtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `initialize` to initialize the engine, enabling further channel operations. Add the following code to your header and `.cpp` files:
 
 ```cpp
 // Declare the required variables
@@ -5225,7 +5223,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -5509,7 +5507,7 @@ let uid = 123;
 
 ### Initialize the engine
 
-For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id). Call `registerEventHandler` to register a custom [event handler](#subscribe-to--events) for managing user interactions within the channel.
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id). Call `registerEventHandler` to register a custom [event handler](#subscribe-to-video-sdk-events) for managing user interactions within the channel.
 
 ```js
 let rtcEngine;
@@ -5906,7 +5904,7 @@ window.onload = () => {
 :::info[Information]
 
 - In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
-- If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#get-device-permissions).
+- If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#set-up-the-main-process).
 
 :::
 
@@ -5994,7 +5992,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 ### Frequently asked questions
 
 * [How can I resolve common development issues on Electron?](/en/api-reference/faq/integration/electron_faq)
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -6600,7 +6598,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -7371,7 +7369,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -8443,7 +8441,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -8531,7 +8529,7 @@ To import Agora library, add the following to `AgoraWidget.h`:
 
 ### Initialize the engine
 
-For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to--events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/realtime-media/video/manage-agora-account#get-the-app-id), and custom [event handler](#subscribe-to-video-sdk-events), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
 
 Add the `SetupSDKEngine` method declaration and implementation to the following files:
 
@@ -9198,7 +9196,7 @@ To learn about Agora Unreal Blueprint development, refer to the [Unreal (Bluepri
 
 ### Frequently asked questions
 
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
@@ -9537,7 +9535,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 ### Frequently asked questions
 * [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
-* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#issue-description)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
 * [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
 * [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
 * [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
@@ -10566,6 +10564,7 @@ class RtcEngine:
         self.agora_service.release()
 ```
 
+<a id="complete-code"></a>
 
 ## Test the sample code
 
