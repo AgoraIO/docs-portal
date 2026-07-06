@@ -12,6 +12,17 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it('redirects the legacy Cloud Recording getstarted shortcut to the REST quickstart', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect(
+        '/en/cloud-recording/get-started/getstarted',
+      ),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/cloud-recording/rest-quickstart',
+    });
+  });
+
   it('prefers query-specific legacy rules before path fallback rules', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
