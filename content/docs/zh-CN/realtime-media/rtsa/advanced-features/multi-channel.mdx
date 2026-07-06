@@ -1,0 +1,103 @@
+---
+title: "多频道发流和单频道多路发流"
+---
+自 1.8.0 起，RTSA SDK 新增 Connection ID 机制。你可以通过 Connection ID 在多个频道发流，或者向单个频道发多路流。
+
+本文以 C 语言为示例，演示如何向多个频道发流，以及在单个频道内发多路流。
+
+## 向多频道发流
+
+你可以参考以下步骤在多个频道发送媒体流：
+
+1. 调用 `agora_rtc_create_connection` 创建多个 Connection。
+
+    ```c
+    connection_id_t conn1, conn2, conn3;
+    agora_rtc_create_connection(&conn1); // conn1 = 1
+    agora_rtc_create_connection(&conn2); // conn2 = 2
+    agora_rtc_create_connection(&conn3); // conn3 = 3
+    ```
+
+2. 调用 `agora_rtc_join_channel` 分别通过上一步创建的 Connection 加入不同频道。
+
+    ```c
+    agora_rtc_join_channel(conn1, cname1, 1, ...);
+    agora_rtc_join_channel(conn2, cname2, 1, ...);
+    agora_rtc_join_channel(conn3, cname3, 1, ...);
+    ```
+
+3. 调用 `agora_rtc_send_audio_data` 和 `agora_rtc_send_video_data` 分别为多个 Connection 发送音视频数据。
+
+    ```c
+    agora_rtc_send_video_data(conn1, ...); // 向 cname1 发送视频流
+    agora_rtc_send_video_data(conn2, ...); // 向 cname2 发送视频流
+    agora_rtc_send_video_data(conn3, ...); // 向 cname3 发送视频流
+
+    agora_rtc_send_audio_data(conn1, ...); // 向 cname1 发送音频流
+    agora_rtc_send_audio_data(conn2, ...); // 向 cname2 发送音频流
+    agora_rtc_send_audio_data(conn3, ...); // 向 cname3 发送音频流
+    ```
+
+4. 调用 `agora_rtc_leave_channel` 和 `agora_rtc_destroy_connection` 离开频道并销毁 Connection。
+
+    ```c showLineNumbers
+    agora_rtc_leave_channel(cname1);
+    agora_rtc_leave_channel(cname2);
+    agora_rtc_leave_channel(cname3);
+    agora_rtc_destroy_connection(conn1);
+    agora_rtc_destroy_connection(conn2);
+    agora_rtc_destroy_connection(conn3);
+    ```
+
+## 向单频道发多路流
+
+你可以参考以下步骤在单个频道发送多路媒体流：
+
+1. 调用 `agora_rtc_create_connection` 创建多个 Connection。
+
+    ```c showLineNumbers
+    connection_id_t conn1, conn2, conn3;
+    agora_rtc_create_connection(&conn1); // conn1 = 1
+    agora_rtc_create_connection(&conn2); // conn2 = 2
+    agora_rtc_create_connection(&conn3); // conn3 = 3
+    ```
+
+2. 调用 `agora_rtc_join_channel` 分别通过上一步创建的 Connection 加入同一个频道。每次你必须使用不同的用户 ID。
+
+    ```c showLineNumbers
+    agora_rtc_join_channel(conn1, cname, 1, ...);
+    agora_rtc_join_channel(conn2, cname, 2, ...);
+    agora_rtc_join_channel(conn3, cname, 3, ...);
+    ```
+
+3. 调用 `agora_rtc_send_audio_data` 和 `agora_rtc_send_video_data` 分别为多个 Connection 发送音视频数据。
+
+    ```c showLineNumbers
+    agora_rtc_send_video_data(conn1, ...); // 以 uid=1 向 cname 发送视频流
+    agora_rtc_send_video_data(conn2, ...); // 以 uid=2 向 cname 发送视频流
+    agora_rtc_send_video_data(conn3, ...); // 以 uid=3 向 cname 发送视频流
+
+    agora_rtc_send_audio_data(conn1, ...); // 以 uid=1 向 cname 发送音频流
+    agora_rtc_send_audio_data(conn2, ...); // 以 uid=2 向 cname 发送音频流
+    agora_rtc_send_audio_data(conn3, ...); // 以 uid=3 向 cname 发送音频流
+    ```
+
+4. 调用 `agora_rtc_leave_channel` 和 `agora_rtc_destroy_connection` 离开频道并销毁 Connection。
+
+    ```c showLineNumbers
+    agora_rtc_leave_channel(cname);
+    agora_rtc_destroy_connection(conn1);
+    agora_rtc_destroy_connection(conn2);
+    agora_rtc_destroy_connection(conn3);
+    ```
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+- [`agora_rtc_create_connection`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_create_connection())
+- [`agora_rtc_join_channel`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_join_channel())
+- [`agora_rtc_send_video_data`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_send_video_data())
+- [`agora_rtc_send_audio_data`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_send_audio_data())
+- [`agora_rtc_leave_channel`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_leave_channel())
+- [`agora_rtc_destroy_connection`](/api-ref/rtsa/c/agora__rtc__api_8h#agora_rtc_destroy_connection())

@@ -1,0 +1,151 @@
+---
+title: "本地截图"
+---
+## 功能简介
+
+在实时音视频互动中对接收到的远端视频进行截取，可以实现对直播画面进行内容审核，以确保内容合法合规。
+
+声网本地服务端 SDK 支持在单流和合流录制下，对远端视频进行截图；也支持只截图不录制。支持的截图格式包括：
+
+- H.264/H.265 编码帧：以原始编码格式回调视频帧数据
+- YUV 格式帧：以 YUV 编码格式回调视频帧数据
+- JPG 格式帧：以 JPG 编码格式回调视频帧数据
+- JPG 文件：将截图保存为 JPG 文件到指定目录
+
+本文介绍如何使用本地服务端录制 SDK 在你的项目中实现截图功能。
+
+## 前提条件
+
+开始前，请确保你已经参考[开始录制音视频](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording.cpp)在项目中集成了录制 SDK 并了解实现录制的基础逻辑和 API 时序。
+
+## 实现方法
+
+本地截图功能的实现逻辑如下：
+
+1. 完成录制实例初始化后，调用 `enableRecorderVideoFrameCapture` 开启和关闭截图功能：
+
+    ```cpp
+    int enableRecorderVideoFrameCapture(bool enable, const RecorderVideoFrameCaptureConfig& config)
+    ```
+
+2. 加入频道后，通过 `IRecorderVideoFrameObserver` 接口接收各类型的视频帧回调，获取截取的视频数据：
+
+    ```cpp
+    class RecorderVideoFrameObserver : public agora::rtc::IRecorderVideoFrameObserver{
+    public:
+    ~RecorderVideoFrameObserver() {}
+        // yuv数据回调
+        void onYuvFrameCaptured(const char* channelId, agora::user_id_t userId, const agora::media::base::VideoFrame *frame) override;
+        // H.264/H.265、JPG 帧数据回调
+        void onEncodedFrameReceived(const char* channelId, agora::user_id_t userId, const uint8_t* imageBuffer, size_t length, agora::rtc::EncodedVideoFrameInfo videoEncodedFrameInfo) override;
+        // JPG文件回调
+        void onJPGFileSaved(const char* channelId, agora::user_id_t userId, const char* jpgFilePath) override;
+    };
+    ```
+
+具体实现步骤如下。
+
+### 配置并开启视频帧截图
+
+首先调用 `enableRecorderVideoFrameCapture` 开启视频帧截图。你需要在该方法中配置一个 `RecorderVideoFrameCaptureConfig` 对象，设置你想要截取的视频帧格式、截图时间间隔等配置项。
+
+```cpp
+// 创建 observer 来接收视频帧
+std::unique_ptr<RecorderVideoFrameObserver> videoFrameObserver{new RecorderVideoFrameObserver()};
+agora::rtc::RecorderVideoFrameCaptureConfig videoFrameCaptureConfig;
+if(config.frameCaptureConfig.enable){
+    // 设置截图类型
+    videoFrameCaptureConfig.videoFrameType = static_cast<agora::rtc::VideoFrameCaptureType>(config.frameCaptureConfig.videoFrameType);
+    // JPG 帧和 JPG 文件支持设置截图时间间隔
+    videoFrameCaptureConfig.jpgCaptureIntervalInSec = config.frameCaptureConfig.jpgCaptureInterval;
+    // JPG 文件需要设置 JPG 文件的保存路径
+    videoFrameCaptureConfig.jpgFileStorePath = config.frameCaptureConfig.jpgFileStorePath.c_str();
+
+    // 设置 observer
+    videoFrameCaptureConfig.observer = videoFrameObserver.get();
+    // 调用 enableRecorderVideoFrameCapture 开启视频帧截图
+    recorder->enableRecorderVideoFrameCapture(true, videoFrameCaptureConfig);
+}
+```
+
+SDK 支持截取 H.264/H.265 编码帧、YUV 格式帧、JPG 格式帧和 JPG 文件。各类型视频帧的 `RecorderVideoFrameCaptureConfig` 对象设置如下：
+
+```cpp tab="H.264/H.265 编码帧" tabGroup="video-format"
+videoFrameCaptureConfig.videoFrameType = agora::rtc::VIDEO_FORMAT_ENCODED_FRAME_TYPE;
+```
+
+```cpp tab="YUV 格式帧" tabGroup="video-format"
+videoFrameCaptureConfig.videoFrameType = agora::rtc::VIDEO_FORMAT_YUV_FRAME_TYPE;
+```
+
+```cpp tab="JPG 格式帧" tabGroup="video-format"
+videoFrameCaptureConfig.videoFrameType = agora::rtc::VIDEO_FORMAT_JPG_FRAME_TYPE;
+videoFrameCaptureConfig.jpgCaptureIntervalInSec = 3; // 每 3 秒截图一次
+```
+
+```cpp tab="JPG 文件" tabGroup="video-format"
+videoFrameCaptureConfig.videoFrameType = agora::rtc::VIDEO_FORMAT_JPG_FILE_TYPE;
+videoFrameCaptureConfig.jpgCaptureIntervalInSec = 10; // 每 10 秒保存一张图片
+videoFrameCaptureConfig.jpgFileStorePath = "/tmp/screenshots/"; // 确保目录存在且可写
+```
+
+### 获取截取的视频帧
+
+加入频道后，你就可以在 [`IRecorderVideoFrameObserver`](/api-ref/recording/cpp/irecordervideoframeobserver) 接口类中，通过各视频帧格式对应的回调来接收截图数据：
+
+```cpp
+class RecorderVideoFrameObserver : public agora::rtc::IRecorderVideoFrameObserver {
+public:
+    ~RecorderVideoFrameObserver() {}
+
+    // YUV 数据回调
+    void onYuvFrameCaptured(const char* channelId, agora::user_id_t userId, 
+                            const agora::media::base::VideoFrame *frame) override {
+        // 处理 YUV 视频帧
+        printf("收到 YUV 帧: 频道 %s, 用户 %u\n", channelId, userId);
+    }
+
+    // H.264/H.265、JPG 帧数据回调
+    void onEncodedFrameReceived(const char* channelId, agora::user_id_t userId, 
+                                const uint8_t* imageBuffer, size_t length,
+                                agora::rtc::EncodedVideoFrameInfo videoEncodedFrameInfo) override {
+        // 处理编码后的视频帧
+        printf("收到编码帧: 频道 %s, 用户 %u, 数据长度 %zu\n", channelId, userId, length);
+    }
+
+    // JPG 文件保存回调
+    void onJPGFileSaved(const char* channelId, agora::user_id_t userId, 
+                        const char* jpgFilePath) override {
+        // JPG 文件保存成功
+        printf("JPG 文件已保存: 频道 %s, 用户 %u, 路径 %s\n", channelId, userId, jpgFilePath);
+    }
+};
+```
+
+### 停止视频帧截图
+
+当不再需要截图功能时，再次调用 `enableRecorderVideoFrameCapture` 并将 `enable` 参数设置为 `false`：
+
+```cpp
+// 停止截图功能
+recorder->enableRecorderVideoFrameCapture(false, videoFrameCaptureConfig);
+```
+
+## 开发注意事项
+
+### 视频订阅选项设置
+
+在使用截图功能时，当截图格式设置为 YUV、JPG 帧或 JPG 文件时，在调用 [`subscribeVideo`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribevideo)
+或 [`subscribeAllVideo`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribeallvideo) 时，需要将 `VideoSubscriptionOptions.encodedFrameOnly`
+设置为 `false`（默认值为 `false`）。
+
+### 录制与截图独立
+
+SDK 支持只截图不录制视频。是否录制通过 `startRecording` 方法控制，不影响截图的实现。
+
+## API 参考
+
+- [`enableRecorderVideoFrameCapture`](/api-ref/recording/cpp/iagoramediartcrecorder#enablerecordervideoframecapture)
+- [`RecorderVideoFrameCaptureConfig`](/api-ref/recording/cpp/struct#recordervideoframecaptureconfig)
+- [`IRecorderVideoFrameObserver`](/api-ref/recording/cpp/irecordervideoframeobserver)
+- [`VideoFrameCaptureType`](/api-ref/recording/cpp/enum#videoframecapturetype)

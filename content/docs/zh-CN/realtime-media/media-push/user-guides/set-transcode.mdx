@@ -1,0 +1,121 @@
+---
+title: "设置转码推流"
+---
+本文介绍如何设置转码推流。
+
+在 `Create` 请求创建 Converter 开启推流时，通过 `transcodeOptions` 设置推流的转码配置，你需要设置如下字段：
+
+- `rtcChannel`：必填。声网频道名称。
+- `audioOptions`：可选。Converter 的音频转码配置。
+- `videoOptions`：可选。Converter 的视频转码配置。
+
+## rtcChannel
+
+该字段为 Converter 处理的流所属频道的名称。
+
+## audioOptions
+
+该字段仅需在有音频的场景下设置。如果有音频但是无需自定义音频配置，那么将该字段设为空，即 `"audioOptions": {}`。
+
+该字段可用于设置 Converter 输出的音频编解码器规格，音频码率，音频声道数，混音音量等配置。混音和混音音量的设置详见[设置混音音量](/zh-CN/realtime-media/media-push/user-guides/set-volume)。
+
+## videoOptions
+
+该字段仅需在有视频的场景下设置。并且在音视频场景下，该字段不能为空。
+
+该字段可用于设置 Converter 输出的视频编解码规格，视频码率，视频分辨率，视频帧率，视频垂直布局或自定义布局，SEI（Supplemental Enhancement Information）信息等配置。
+
+### 设置自定义布局
+
+自定义布局是转码推流时用户视频画面布局的一种样式。相比[垂直布局](/zh-CN/realtime-media/media-push/user-guides/vertical-streaming)，自定义布局更加灵活，但是需要你填写的字段较多。设置自定义布局时，你需要调用 `Create` 方法并设置 `canvas`、`layout` 字段。
+
+- `canvas` 为 Object 类型，支持配置视频画布的配置。
+- `layout` 为 Object Array 类型，支持配置用户的视频画面布局，也支持配置图片（例如水印）的布局。
+
+如下示例展示将 `show68` 频道内用户使用自定义布局进行合图后推到 CDN：
+
+```json
+{
+  "converter": {
+    "name": "show68_vertical",
+    "transcodeOptions": {
+      "rtcChannel": "show68",
+      "audioOptions": {
+      },
+      "videoOptions": {
+        // highlight-start
+        "canvas": {
+          "width": 360,
+          "height": 640,
+          "color": 0
+        },
+        "layout": [
+          {
+            "rtcStreamUid": 201,
+            "region": {
+              "xPos": 0,
+              "yPos": 0,
+              "zIndex": 1,
+              "width": 360,
+              "height": 320
+            },
+            "fillMode": "fill",
+            "placeholderImageUrl": "http://example.agora.io/host_placeholder.jpg"
+          },
+          {
+            "rtcStreamUid": 202,
+            "region": {
+              "xPos": 0,
+              "yPos": 320,
+              "zIndex": 1,
+              "width": 360,
+              "height": 320
+            }
+          },
+          {
+            "imageUrl": "http://example.agora.io/watchmark.jpg",
+            "region": {
+              "xPos": 0,
+              "yPos": 0,
+              "zIndex": 2,
+              "width": 36,
+              "height": 64
+            },
+            "fillMode": "fit"
+          }
+        ],
+        // highlight-end
+        "codec": "H.264",
+        "codecProfile": "high",
+        "frameRate": 15,
+        "gop": 30,
+        "bitrate": 400,
+        "seiOptions": {
+          "source": {
+            "metadata": true,
+            "datastream": true,
+            "customized": {
+              "payload": "example"
+            }
+          },
+          "sink": {
+            "type": 100
+          }
+        }
+      }
+    },
+    "rtmpUrl": "rtmp://example/live/show68",
+    "idleTimeout": 300
+  }
+}
+```
+
+### 更多设置
+
+- 视频垂直布局详见[设置垂直布局](/zh-CN/realtime-media/media-push/user-guides/vertical-streaming)。
+- SEI 配置详见[设置 SEI](/zh-CN/realtime-media/media-push/user-guides/set-sei)。
+- 视频自定义布局详见[设置自定义布局](#设置自定义布局)。
+
+## API 参考
+
+你可以参考 [`Create`](../media-push/operations/post-region-v1-projects-appId-rtmp-converters) 方法了解字段详情。

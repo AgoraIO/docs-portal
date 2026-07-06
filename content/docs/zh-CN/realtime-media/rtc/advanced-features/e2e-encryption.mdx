@@ -1,0 +1,175 @@
+---
+title: "端到端加密（Beta）"
+---
+
+在数据安全要求较高的场景下，除了使用[媒体流加密](/zh-CN/realtime-media/rtc/advanced-features/channel-encryption)功能，你还可以使用端到端加密功能，实现在发送端设备上对媒体流进行加密、在接收端设备上对媒体流进行解密，确保数据不会在传输过程中被第三方获取。
+## 功能介绍
+
+Web SDK 的端到端加密功能基于 [WebRTC Encoded Transform](https://www.w3.org/TR/webrtc-encoded-transform/) 标准实现。由于 WebRTC Encoded Transform 还不够成熟、可能存在兼容或性能问题，目前端到端加密功能也存在一些使用限制。
+### 浏览器兼容性
+
+支持端到端加密的浏览器如下表，未列出的浏览器暂不支持：
+
+| 浏览器                | 版本要求    |
+| --------------------- | ----------- |
+| 桌面端、移动端 Chrome | 87 或以上   |
+| 桌面端、移动端 Safari | 15.4 或以上 |
+
+### 注意事项
+
+目前 Web SDK 的端到端加密功能有以下使用限制：
+
+- 仅支持加密 VP8 格式的视频和 Opus 格式的音频。
+- 仅支持在 Web 端之间接收和发布的音视频流，不能与其它平台的客户端互通，也不支持旁路推流服务。
+- 由于浏览器基础组件冲突，与 SEI 信息发送功能不能同时开启。
+
+## 实现原理
+
+为了帮助理解实现原理，你需要了解一些相关概念：
+
+- WebRTC Encoded Transform：在 WebRTC 中实现编码转换的一种技术。它提供了对 WebRTC 已编码数据的读写接口，允许开发者在编码后的数据上执行各种操作，例如转换编码格式、调整比特率或添加滤镜。
+- WebRTC Encoded Transform 处理管线：用于处理 WebRTC 编码转换数据的一系列步骤或操作。
+- `RTCRtpSender` 和 `RTCRtpReceiver`：WebRTC 标准组件，`RTCRtpSender` 负责发送编码后的数据，`RTCRtpReceiver` 负责接收编码后的数据。二者用于建立 WebRTC Encoded Transform 处理管线。
+- `RTCRtpTransceiver`：用于管理音视频发送和接收的 WebRTC API。通过 `RTCRtpTransceiver` 对象的 `sender` 和 `receiver` 属性，可以分别获取 `RTCRtpSender` 和 `RTCRtpReceiver` 对象。
+
+对于每个音频或视频轨道，Web SDK 提供 `getRTCRtpTransceiver` 方法，用于获取当前轨道的 `RTCRtpTransceiver` 对象。通过 `RTCRtpTransceiver` 对象获取到 `RTCRtpSender` 和 `RTCRtpReceiver` 后，你可以建立 WebRTC Encoded Transform 处理管线，对音频或视频数据进行加密、解密转换。
+
+## 前提条件
+
+开始之前，确保你满足以下条件：
+
+- 参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)实现基础的音视频互动。
+- [联系技术支持](https://ticket.shengwang.cn/)开通端到端加密功能。
+
+## 实现步骤
+
+本节以 Chrome 浏览器为例，介绍如何实现视频的发送端加密和接收端解密。Safari 浏览器的实现步骤稍有不同。
+
+示例中使用了 [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Crypto) 提供的 AES 加密算法。如果你需要使用特殊的加解密算法，可以使用 WebAssembly 实现自定义加解密算法。
+
+### 发送端
+
+发送端建立 WebRTC Encoded Transform 处理管线的步骤如下：
+
+1. 发布本地视频轨道后，调用 SDK 提供的 `getRTCRtpTransceiver` 方法获取本地视频轨道的 `RTCRtpTransceiver` 实例，并通过 `sender` 属性获取 `RTCRtpSender` 实例。
+2. 调用浏览器原生的 Streams API 对视频流进行加密：
+
+示例代码如下：
+
+```javascript
+async function publish() {
+  // 发布本地视频轨道
+  await client.publish([localVideoTrack]);
+
+  // 获取本地视频轨道的 RTCRtpTransceiver 实例
+  const transceiver = localVideoTrack.getRTCRtpTransceiver();
+  if (!transceiver || !transceiver.sender) {
+    return;
+  }
+  // 获取 RTCRtpSender，用于控制发送的媒体数据
+  const sender = transceiver.sender;
+
+  // 定义在 Chrome 浏览器上的加密方式
+  if (isChrome) {
+    // 创建编码流，用于加密转换
+    const streams = sender.createEncodedStreams();
+    // 创建加密转换器
+    const transformer = new TransformStream({
+      transform(chunk, controller) {
+        // VP8 视频关键帧的前 7 个字节和非关键帧的前 3 个字节需要保留、不作加密，否则媒体传输会失败
+        const vp8ReservedSize = chunk.type === 'key' ? 7 : 3;
+        // encrypt 方法需开发者依据加密需求实现
+        // 示例中使用了 Web Crypto API 提供的 AES 加密算法
+        const encryptedChunk = encrypt(chunk, key, vp8ReservedSize);
+        controller.enqueue(encryptedChunk);
+      }
+    });
+
+    // 连接编码流和加密转换器，并将结果写入数据流
+    streams.readable.pipeThrough(transformer).pipeTo(streams.writable);
+  }
+}
+```
+
+### 接收端
+
+接收端建立 WebRTC Encoded Transform 处理管线的步骤如下：
+
+1. 订阅远端视频流时，调用 SDK 提供的 `getRTCRtpTransceiver` 方法，获取远端视频轨道的 `RTCRtpTransceiver` 实例。
+2. 调用浏览器原生的 Streams API 对视频流进行解密。
+
+```javascript
+async function subscribe(user, mediaType) {
+  // 获取远端视频轨道的 RTCRtpTransceiver 实例
+  const transceiver = user.videoTrack.getRTCRtpTransceiver();
+  if (!transceiver || !transceiver.receiver) {
+    return;
+  }
+
+  // 获取 RTCRtpReceiver，用于控制接收的媒体数据
+  const receiver = transceiver.receiver;
+
+  // 定义在 Chrome 浏览器上的解密方式
+  if (isChrome) {
+    // 创建编码流，用于解密转换
+    const streams = receiver.createEncodedStreams();
+    // 创建解密转换器
+    const transformer = new TransformStream({
+      transform(chunk, controller) {
+        // VP8 视频关键帧的前 7 个字节和非关键帧的前 3 个字节不需要解密
+        const vp8ReservedSize = chunk.type === 'key' ? 7 : 3;
+        // decrypt 方法需开发者依据解密需求实现
+        const decryptedChunk = decrypt(chunk, key, vp8ReservedSize);
+        controller.enqueue (decryptedChunk);
+      }
+    });
+
+ // 连接编码流和解密转换器，并将结果写入数据流
+ streams.readable.pipeThrough(transformer).pipeTo(streams.writable);
+  }
+}
+```
+
+## 参考信息
+
+### 开发注意事项
+
+- 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 对象：
+  - 本地轨道：[transceiver-updated](/api-ref/rtc/javascript/interfaces/ilocaltrack#event_transceiver_updated)
+  - 远端轨道：[transceiver-updated](/api-ref/rtc/javascript/interfaces/iremotetrack#event_transceiver_updated_2)
+- 开通端到端加密功能后，由于浏览器限制，通过 Web SDK 创建的本地轨道即使不需要加密，也需要创建空的加密管线，否则无法发送该轨道的媒体数据。参考以下代码创建空的加密管线：
+
+  ```javascript
+  async function publish() {
+    await client.publish([localVideoTrack]);
+
+    const transceiver = localVideoTrack.getRTCRtpTransceiver();
+    if (!transceiver || !transceiver.sender) {
+      return;
+    }
+    const sender = transceiver.sender;
+
+    if (isChrome) {
+      const streams = sender.createEncodedStreams();
+      const transformer = new TransformStream({
+        transform(chunk, controller) {
+          // 直接写回
+          controller.enqueue(chunk);
+        }
+      });
+      streams.readable.pipeThrough(transformer).pipeTo(streams.writable);
+    }
+  }
+  ```
+
+### API 参考
+
+端到端加密功能的相关 API 如下：
+
+- Web SDK 提供的 API：
+  - [`ILocalTrack.getRTCRtpTransceiver`](/api-ref/rtc/javascript/interfaces/ilocaltrack#getrtcrtptransceiver)
+  - [`IRemoteTrack.getRTCRtpTransceiver`](/api-ref/rtc/javascript/interfaces/iremotetrack#getrtcrtptransceiver)
+- 浏览器原生的 Streams API ：
+  - [`TransformStream`](https://developer.mozilla.org/en-US/docs/Web/API/TransformStream/TransformStream)
+  - [`pipeThrough`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/pipeThrough)
+  - [`pipeTo`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/pipeTo)

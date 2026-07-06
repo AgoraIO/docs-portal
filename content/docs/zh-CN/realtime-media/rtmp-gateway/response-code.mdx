@@ -1,0 +1,180 @@
+---
+title: "响应状态码"
+---
+在调用 RTMP 网关 API 过程中，你可能收到如下 HTTP 响应状态码：
+
+- 如果 HTTP 状态码为 2XX，则请求成功。
+
+- 如果 HTTP 状态码不为 2XX，则请求失败。你可以根据对应的响应 Body 中可能出现的 `message` 字段排查问题。
+
+例如，请求失败时，你可能收到如下响应：
+
+```json
+# 400 Bad Request
+{
+  "message": "appid is invalid"
+}
+```
+
+## 推流码响应状态码
+
+下表介绍使用推流码时，可能收到的响应状态码、`message` 字段内容、建议措施。
+
+| 状态码 | 可能的 `message` 字段内容 | 原因 | 建议措施 |
+| --- | --- | --- | --- |
+| `200 OK` | / | 请求执行成功。 | 无需处理。 |
+| `400 Bad Request` | <Slot name="response-code-html-0-2-1" /> | 请求参数错误。 | 根据 `message` 字段的具体内容进行排查。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 认证失败。 | 重新执行 [HTTP 安全认证](/zh-CN/realtime-media/rtmp-gateway/user-guides/http-auth)。 |
+| `403 Forbidden` | <Slot name="response-code-html-0-4-1" /> | <Slot name="response-code-html-0-4-2" /> | <Slot name="response-code-html-0-4-3" /> |
+| `404 Not Found` | Resource is not found and destroyed. | 请求的资源不存在。 | 检查传入的 `streamKey` 是否正确。 |
+| `409 Conflict` | Resource with the same name already exists. | 并发请求过多。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `429 Too Many Requests` | <Slot name="response-code-html-0-7-1" /> | 并发请求过多。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `500 Internal Server Error` | Some internal error happened. Contact us to help fix it. | 服务端内部错误。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `503 Service Unavailable` | <Slot name="response-code-html-0-9-1" /> | 服务端内部错误。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `504 Gateway Timeout` | Gateway timeout. Query to check whether the player has been created, or to create another one instead. | 服务端内部错误。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+
+<Slot for="response-code-html-0-2-1">
+
+- Invalid settings.
+      - Parameter 'channel' is invalid formatted.
+      - Streamkey exists in region:na.
+
+</Slot>
+
+<Slot for="response-code-html-0-4-1">
+
+- This project has not enabled RTMP Gateway yet. Contact us to enable it.
+      - Stream does not belong to this app ID.
+
+</Slot>
+
+<Slot for="response-code-html-0-4-2">
+
+- 未开通 RTMP 网关服务。
+      - 查询的推流码不属于该  App ID。
+
+</Slot>
+
+<Slot for="response-code-html-0-4-3">
+
+- [联系技术支持](https://ticket.shengwang.cn)开通 RTMP 网关服务。
+      - 检查传入的 `streamKey` 和 App ID 是否匹配。
+
+</Slot>
+
+<Slot for="response-code-html-0-7-1">
+
+- Request rate limit exceeded.
+      - Resources quota limit exceeded.
+      - No available resources.
+
+</Slot>
+
+<Slot for="response-code-html-0-9-1">
+
+- Service overload. Retry with back off strategy, and contact us to help fix it.
+      - Service unavailable temporarily. Retry with back off strategy.
+
+</Slot>
+
+## 流配置模版响应状态码
+
+下表介绍使用流配置模版时，可能收到的响应状态码、`message` 字段内容、建议措施。
+
+| 状态码 | 可能的 `message` 字段内容 | 原因 | 建议措施 |
+| --- | --- | --- | --- |
+| `200 OK` | / | 请求执行成功。 | 无需处理。 |
+| `400 Bad Request` | <Slot name="response-code-html-1-2-1" /> | 请求参数错误。 | 参考 HTTP 响应 Body 中的 `message` 字段进行排查。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 认证失败。 | 重新执行 [HTTP 安全认证](/zh-CN/realtime-media/rtmp-gateway/user-guides/http-auth)。 |
+| `403 Forbidden` | <Slot name="response-code-html-1-4-1" /> | <Slot name="response-code-html-1-4-2" /> | <Slot name="response-code-html-1-4-3" /> |
+| `404 Not Found` | stream template not found. | 请求的资源不存在。 | 请检查传入的 `templateId` 是否正确。 |
+| `429 Too Many Requests` | <Slot name="response-code-html-1-6-1" /> | 并发请求过多。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `500 Internal Server Error` | Some internal error happened. Contact us to help fix it. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `502 Bad gateway` | Internal errors. Contact us for troubleshooting. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `503 Service Unavailable` | <Slot name="response-code-html-1-9-1" /> | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `504 Gateway Timeout` | Gateway timeout. Query to check whether the player has been created, or to create another one instead. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+
+<Slot for="response-code-html-1-2-1">
+
+- Invalid settings.
+      - invalid template id.
+      - missing field: "transcoding.video.enabled".
+      - unsupported codec: "AV1".
+
+</Slot>
+
+<Slot for="response-code-html-1-4-1">
+
+- This project has not enabled RTMPG product yet. Contact us to enable it.
+      - too many templates have been created.
+
+</Slot>
+
+<Slot for="response-code-html-1-4-2">
+
+- 未开通服务。
+      - 已创建太多流配置模板。
+
+</Slot>
+
+<Slot for="response-code-html-1-4-3">
+
+- [联系技术支持](https://ticket.shengwang.cn)开通 RTMP 网关服务。
+      - 删除不用的流配置模板。
+
+</Slot>
+
+<Slot for="response-code-html-1-6-1">
+
+- Request rate limit exceeded.
+      - Resources quota limit exceeded.
+      - no available resources.
+
+</Slot>
+
+<Slot for="response-code-html-1-9-1">
+
+- Service overload. Retry with back off strategy, and contact us to help fix it.
+      - Service unavailable temporarily. Retry with back off strategy.
+
+</Slot>
+
+## 对在推流进行操作状态码
+
+下表介绍查询操作在推流时，可能收到的响应状态码、`message` 字段内容、建议措施。
+
+| 状态码 | 可能的 `message` 字段内容 | 原因 | 建议措施 |
+| --- | --- | --- | --- |
+| `200 OK` | / | 请求执行成功。 | 无需处理 |
+| `400 Bad Request` | <Slot name="response-code-html-2-2-1" /> | 请求参数错误。 | 参考 HTTP 响应 Body 中的 `message` 字段进行排查。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 认证失败。 | 重新执行 [HTTP 安全认证](/zh-CN/realtime-media/rtmp-gateway/user-guides/http-auth)。 |
+| `403 Forbidden` | This project has not enabled RTMPG product yet. Contact us to enable it. | 未开通服务。 | [联系技术支持](https://ticket.shengwang.cn)开通 RTMP 网关服务。 |
+| `404 Not Found` | / | 请求的资源不存在。 | 请检查传入的 `sid` 是否正确。 |
+| `429 Too Many Requests` | <Slot name="response-code-html-2-6-1" /> | 并发请求过多。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `500 Unknown` | Some internal error happened. Contact us to help fix it. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `502 Bad gateway` | Internal errors. Contact us for troubleshooting. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `503 Service Unavailable` | <Slot name="response-code-html-2-9-1" /> | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+| `504 Gateway Timeout` | Gateway timeout. Query to check whether the player has been created, or to create another one instead. | 服务端内部错误。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
+
+<Slot for="response-code-html-2-2-1">
+
+- Invalid Body.
+      - invalid appid.
+      - sid is missing.
+
+</Slot>
+
+<Slot for="response-code-html-2-6-1">
+
+- Request rate limit exceeded.
+      - Resources quota limit exceeded.
+      - no available resources.
+
+</Slot>
+
+<Slot for="response-code-html-2-9-1">
+
+- Service overload. Retry with back off strategy, and contact us to help fix it.
+      - Service unavailable temporarily. Retry with back off strategy.
+
+</Slot>

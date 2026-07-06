@@ -1,0 +1,2903 @@
+---
+title: "客户端纯呼叫 API 参考"
+---
+
+<PlatformStructured platform="android">
+
+本页提供声网灵隼客户端 Android API 参考。
+
+| 类 | 描述 |
+| --- | --- |
+| [IAgoraCallkitSdk](#iagoracallkitsdk) | 提供总的服务接口 |
+| [IAccountMgr](#accountmgr) | 账号注册、登录与登出 |
+| [ICallkitMgr](#icallkitmgr) | 来电呼叫管理，包括拨号、接听、挂断等 |
+| [ErrCode](#errcode) | Iot SDK 在使用过程中的报错信息 |
+
+<a id="iagoracallkitsdk"></a>
+## IAgoraCallkitSdk
+
+SDK 引擎接口。
+
+<a id="initialize"></a>
+### initialize
+
+```java
+int initialize(InitParam initParam);
+```
+
+初始化 SDK。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `initParam` | SDK 初始化参数，详见 [InitParam](#initparam)。 |
+
+<a id="release"></a>
+### release
+
+```java
+void release();
+```
+
+释放 SDK 所有资源。
+
+<a id="getaccountmgr"></a>
+### getAccountMgr
+
+```java
+IAccountMgr getAccountMgr();
+```
+
+获取账号管理接口。
+
+**返回**
+
+- 账号管理接口，详见 [IAccountMgr](#accountmgr)。
+
+<a id="getcallkitmgr"></a>
+### getCallkitMgr
+
+```java
+ICallkitMgr getCallkitMgr();
+```
+
+获取呼叫系统接口。
+
+**返回**
+
+- 呼叫系统接口，详见 [ICallkitMgr](#callmgr)。
+
+<a id="iaccountmgr"></a>
+## IAccountMgr
+
+账号管理接口。
+
+<a id="login"></a>
+### login
+
+```swift
+func login(account: String, password: String,result:@escaping (Int,String)->Void)
+```
+
+登录一个用户账号。
+
+**参数**
+
+| 参数       | 描述                                |
+| ---------- | ----------------------------------- |
+| `account`  | 账号 ID，需要为邮箱地址或手机号码。 |
+| `password` | 账号密码。                          |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="logout"></a>
+### logout
+
+```swift
+func logout(result:@escaping (Int,String)->Void)
+```
+
+登出当前账号。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="getuserid"></a>
+### getUserId
+
+```swift
+func getUserId()->String
+```
+
+获取当前用户 ID。
+
+**返回**
+
+- user ID。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="getaccount"></a>
+### getAccount
+
+```java
+String getAccount();
+```
+
+获取当前已经登录的账号名称
+
+**返回**
+
+当前已经登录的账号名称
+
+<a id="icallkitmgr"></a>
+## ICallkitMgr
+
+呼叫系统管理接口。
+
+<a id="registerlistener"></a>
+### registerListener
+
+```java
+int registerListener(ICallkitMgr.ICallback callback);
+```
+
+注册回调接口。
+
+**参数**
+
+| 参数       | 描述                                |
+| ---------- | ----------------------------------- |
+| `callback`  | [ICallback](#ICallback) 对象。 |
+
+<a id="unregisterlistener"></a>
+### unregisterListener
+
+```java
+int unregisterListener(ICallkitMgr.ICallback callback);
+```
+
+注销回调接口。
+
+**参数**
+
+| 参数       | 描述                                |
+| ---------- | ----------------------------------- |
+| `callback`  | [ICallback](#ICallback) 对象。 |
+
+<a id="calldial"></a>
+### callDial
+
+```java
+int callDial(final String peerAccountId, final String attachMsg);
+```
+
+呼叫设备。
+
+**参数**
+
+| 参数        | 描述                                             |
+| ----------- | ------------------------------------------------ |
+| `peerAccountId`    | 要呼叫的账号。     |
+| `attachMsg` | 呼叫时附带的信息。                               |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="callhangup"></a>
+### callHangup
+
+```java
+int callHangup();
+```
+
+挂断当前通话。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="callanswer"></a>
+### callAnswer
+
+```java
+int callAnswer();
+```
+
+接听当前来电。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setlocalvideoview"></a>
+### setLocalVideoView
+
+```java
+int setLocalVideoView(final SurfaceView localView);
+```
+
+设置本地视频显示控件。如果不设置则不显示本地视频。
+
+**参数**
+
+| 参数        | 描述               |
+| ----------- | ------------------ |
+| `localView` | 本地视频显示控件。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setpeervideoview"></a>
+### setPeerVideoView
+
+```java
+int setPeerVideoView(final SurfaceView peerView);
+```
+
+设置对端视频显示控件。如果不设置则不显示对端视频。
+
+**参数**
+
+| 参数        | 描述               |
+| ----------- | ------------------ |
+| `localView` | 本地视频显示控件。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutelocalvideo"></a>
+### muteLocalVideo
+
+```java
+int muteLocalVideo(boolean mute);
+```
+
+停止/恢复发布本地视频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-android-html-0-1-1" /> |
+
+<Slot for="call-android-html-0-1-1">
+
+是否停止发布本地视频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutelocalaudio"></a>
+### muteLocalAudio
+
+```java
+int muteLocalAudio(boolean mute);
+```
+
+停止/恢复发布本地音频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-android-html-1-1-1" /> |
+
+<Slot for="call-android-html-1-1-1">
+
+是否停止发布本地音频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutepeervideo"></a>
+### mutePeerVideo
+
+```java
+int mutePeerVideo(boolean mute);
+```
+
+停止/恢复订阅远端视频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-android-html-2-1-1" /> |
+
+<Slot for="call-android-html-2-1-1">
+
+是否停止发布远端视频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutepeeraudio"></a>
+### mutePeerAudio
+
+```java
+int mutePeerAudio(boolean mute);
+```
+
+停止/恢复订阅远端音频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-android-html-3-1-1" /> |
+
+<Slot for="call-android-html-3-1-1">
+
+是否停止发布远端音频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setvolume"></a>
+### setVolume
+
+```java
+int setVolume(int volumeLevel);
+```
+
+设置音频播放的音量。
+
+**参数**
+
+| 参数          | 描述                           |
+| ------------- | ------------------------------ |
+| `volumeLevel` | 音量级别，取值范围为 [0,100]。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setaudioeffect"></a>
+### setAudioEffect
+
+```java
+int setAudioEffect(final AudioEffectId effectId);
+```
+
+设置音效效果（通常是变声等音效）。
+
+**参数**
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#AudioEffectId)。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="talkingrecordstart"></a>
+### talkingRecordStart
+
+```java
+int talkingRecordStart();
+```
+
+开始录制当前通话（包括音视频流），仅在通话状态下才能调用。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="talkingrecordstop"></a>
+### talkingRecordStop
+
+```java
+int talkingRecordStop();
+```
+
+停止录制当前通话，仅在通话状态下才能调用。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="capturepeervideoframe"></a>
+### capturePeerVideoFrame
+
+```java
+Bitmap capturePeerVideoFrame();
+```
+
+截屏对端视频帧图像，仅在通话状态下才能调用。
+
+**返回**
+
+- 截取到的视频帧图像。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="icallback"></a>
+### ICallback
+
+```java
+public static interface ICallback {
+	default void onDialDone(int errCode, final String peerAccountId) {}
+	default void onPeerIncoming(final String peerAccountId, final String attachMsg) {}
+	default void onPeerAnswer(final String peerAccountId) {}
+	default void onPeerHangup(final String peerAccountId) {}
+	default void onPeerTimeout(final String peerAccountId) {}
+	default void onPeerFirstVideo(final String peerAccountId, int videoWidth, int videoHeight) {}
+	default void onCallkitError(int errCode) {}
+    }
+```
+
+<a id="ondialdone"></a>
+#### onDialDone
+
+呼叫请求成功事件，服务器正在转接。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `errCode` | 错误码。详见 [ErrCode](#errcode)。 |
+| `peerAccountId` | 对端账号 ID。 |
+
+<a id="onpeercoming"></a>
+#### onPeerIncoming
+
+对端呼叫事件。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `peerAccountId` | 对端账号 ID。 |
+| `attachMsg` | 附加信息。 |
+
+<a id="onpeeranswer"></a>
+#### onPeerAnswer
+
+对端接听事件。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `peerAccountId` | 对端账号 ID。 |
+
+<a id="onpeerhangup"></a>
+#### onPeerHangup
+
+对端挂断事件。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `peerAccountId` | 对端账号 ID。 |
+
+<a id="onpeertimeout"></a>
+#### onPeerTimeout
+
+对端无人接听超时事件。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `peerAccountId` | 对端账号 ID。 |
+
+<a id="onpeerfirstvideo"></a>
+#### onPeerFirstVideo
+
+对端视频首帧出图事件。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `peerAccountId` | 对端账号 ID。 |
+| `videoWidth` | 首帧视频宽度。 |
+| `videoHeight` | 首帧视频高度。 |
+
+<a id="oncallkiterror"></a>
+#### onCallkitError
+
+错误事件，在呼叫系统中遇到任意错误时发生，触发该事件后，整个呼叫过程全部清除。
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `errCode` | 错误码。详见 [ErrCode](#errcode)。 |
+
+<a id="errcode"></a>
+## ErrCode
+
+### 全局错误
+
+| 错误码 | 错误代码 | 描述 |
+| --- | --- | --- |
+| `0` | `XERR_NONG` | 无错误。|
+| `0` | `XOK` | 无错误。 |
+| `-3` | `XERR_TOKEN_INVALID` | Token 过期。 |
+
+### 通用错误
+
+| 错误码   | 错误代码                | 描述                       |
+| -------- | ----------------------- | -------------------------- |
+| `-10000` | `XERR_BASE`             | 通用错误。                 |
+| `-10001` | `XERR_UNKNOWN`          | 未知错误。                 |
+| `-10002` | `XERR_INVALID_PARAM`    | 参数错误。                 |
+| `-10003` | `XERR_UNSUPPORTED`      | 当前操作不支持。           |
+| `-10004` | `XERR_BAD_STATE`        | 当前状态不正确，无法操作。 |
+| `-10005` | `XERR_NOT_FOUND`        | 没有找到相关数据。         |
+| `-10006` | `XERR_NO_MEMORY`        | 内存不足。                 |
+| `-10007` | `XERR_BUFFER_OVERFLOW`  | 缓冲区中数据不足。         |
+| `-10008` | `XERR_BUFFER_UNDERFLOW` | 缓冲区中数据过多。         |
+| `-10009` | `XERR_TIMEOUT`          | 操作超时。                 |
+| `-10012` | `XERR_NETWORK`          | 网络错误。                 |
+| `-10015` | `XERR_TOKEN_EXPIRED`    | Token 过期。               |
+
+### 呼叫系统相关错误
+
+| 错误码   | 错误代码                   | 描述                  |
+| -------- | -------------------------- | --------------------- |
+| `-40000` | `XERR_CALLKIT_BASE`        | 呼叫系统相关错误。    |
+| `-40001` | `XERR_CALLKIT_TIMEOUT`     | 呼叫超时无响应。      |
+| `-40002` | `XERR_CALLKIT_DIAL`        | 呼叫拨号失败。        |
+| `-40003` | `XERR_CALLKIT_HANGUP`      | 呼叫挂断失败。        |
+| `-40004` | `XERR_CALLKIT_ANSWER`      | 呼叫接听失败。        |
+| `-40005` | `XERR_CALLKIT_REJECT`      | 呼叫拒绝失败。        |
+| `-40006` | `XERR_CALLKIT_PEER_BUSY`   | 对端忙。              |
+| `-40007` | `XERR_CALLKIT_PEERTIMEOUT` | 对端超时无响应。      |
+| `-40008` | `XERR_CALLKIT_LOCAL_BUSY`  | 本地端忙。            |
+| `-40009` | `XERR_CALLKIT_ERR_OPT`     | 不支持的错误操作。    |
+| `-40010` | `XERR_CALLKIT_PEER_UNREG`  | 对端未注册。          |
+| `-40011` | `XERR_CALLKIT_NO_APPID`    | 未上报 App ID。       |
+| `-40012` | `XERR_CALLKIT_SAME_ID`     | 主叫和被叫同一个 ID。 |
+
+<a id="数据类型"></a>
+<a id="initparam"></a>
+## 数据类型
+### InitParam 类
+
+Iot SDK 初始化参数。
+
+```java
+    public static class InitParam {
+        public Context mContext;
+        public String mRtcAppId;
+        public String mProjectId;
+        public String mLogFilePath;
+        public boolean mPublishAudio = false;
+        public boolean mPublishVideo = false;
+        public boolean mSubscribeAudio = true;
+        public boolean mSubscribeVideo = true;
+        public String mMasterServerUrl;
+        public String mSlaveServerUrl;
+        public String mPusherId;
+    }
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `mContext` | Android 系统的 context。 |
+| `mRtcAppId` | 声网的 App ID。 |
+| `mProjectId` | 项目 ID，作为查询产品列表的过滤条件。 |
+| `mLogFilePath` | 日志文件路径。如果不设置该参数，则日志不会输出到本地文件。 |
+| `mPublishAudio` | <Slot name="call-android-html-4-5-1" /> |
+| `mPublishVideo` | <Slot name="call-android-html-4-6-1" /> |
+| `mSubscribeAudio` | <Slot name="call-android-html-4-7-1" /> |
+| `mSubscribeVideo` | <Slot name="call-android-html-4-8-1" /> |
+| `mMasterServerUrl` | 主服务器后台地址。 |
+| `mSlaveServerUrl` | 副服务器后台地址。 |
+| `mPusherId` | 离线推送的 pusher ID。 |
+
+<Slot for="call-android-html-4-5-1">
+
+通话时是否自动发布本地音频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-android-html-4-6-1">
+
+通话时是否自动发布本地视频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-android-html-4-7-1">
+
+通话时是否自动订阅对端音频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-android-html-4-8-1">
+
+通话时是否自动订阅对端视频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+### `CALLKIT_STATE` 相关常量
+
+通话状态。
+
+```java
+public static final int CALLKIT_STATE_IDLE = 0x0001;
+public static final int CALLKIT_STATE_DIALING = 0x0002;
+public static final int CALLKIT_STATE_INCOMING = 0x0003;
+public static final int CALLKIT_STATE_TALKING = 0x0004;
+public static final int CALLKIT_STATE_DIAL_REQING = 0x0005;
+public static final int CALLKIT_STATE_DIAL_RSPING = 0x0006;
+public static final int CALLKIT_STATE_ANSWER_REQING = 0x0007;
+public static final int CALLKIT_STATE_ANSWER_RSPING = 0x0008;
+public static final int CALLKIT_STATE_HANGUP_REQING = 0x0009;
+```
+
+**参数**
+
+| 参数               | 描述               |
+| ------------------ | ------------------ |
+| `CALLKIT_STATE_IDLE`      | 当前空闲状态，无通话。   |
+| `CALLKIT_STATE_DIALING`      | 正在呼叫设备中。         |
+| `CALLKIT_STATE_INCOMING`      | 正在来电中。         |
+| `CALLKIT_STATE_TALKING`     | 正在通话中。         |
+| `CALLKIT_STATE_DIAL_REQING`     | 正在发送主叫请求中。         |
+| `CALLKIT_STATE_DIAL_RSPING`    | 正在等待主叫响应中。         |
+| `CALLKIT_STATE_ANSWER_REQING`        | 正在发送接听请求中。       |
+| `CALLKIT_STATE_ANSWER_RSPING`     | 正在等待接听响应中。         |
+| `CALLKIT_STATE_HANGUP_REQING` | 正在发送挂断请求中。 |
+
+<a id="audioeffectid"></a>
+### AudioEffectId
+
+音频特效。
+
+```java
+public enum AudioEffectId {
+        NORMAL, OLDMAN, BABYBOY, BABYGIRL, ZHUBAJIE, ETHEREAL, HULK
+    }
+```
+
+**参数**
+
+| 参数       | 描述                                                     |
+| ---------- | -------------------------------------------------------- |
+| `NORMAL`   | （默认）原声，即关闭本地语音的变声、美音或语聊美声效果。 |
+| `OLDMAN`   | 变声：老男孩。                                           |
+| `BABYBOY`  | 变声：小男孩。                                           |
+| `BABYGIRL` | 变声：小女孩。                                           |
+| `ZHUBAJIE` | 变声：猪八戒                                             |
+| `ETHEREAL` | 变声：空灵。                                             |
+| `HULK`     | 变声：绿巨人。                                           |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本页提供声网灵隼客户端 iOS API 参考。
+
+| 类 | 描述 |
+| --- | --- |
+| [IAgoraIotAppSdk](#iagoraiotappsdk) | 提供总的服务接口，各子功能通过 `getInstance` 方法获取 |
+| [IAccountMgr](#accountmgr) | 账号注册、登录与登出 |
+| [ICallkitMgr](#icallkitmgr) | 来电呼叫管理，包括拨号、接听、挂断等 |
+| [INotificationMgr](#inotificationmgr) | 消息通知管理 |
+| [ErrCode](#errcode) | Iot SDK 在使用过程中的报错信息 |
+
+<a id="iagoraiotappsdk"></a>
+## IAgoraIotAppSdk
+
+SDK 引擎接口。
+
+<a id="getmqttisconnected"></a>
+### getMqttIsConnected
+
+```swift
+func getMqttIsConnected() -> Bool
+```
+
+获取当前 MQTT（消息队列遥测传输协议）模块的连接状态。
+
+**返回**
+
+- `true`: 已连接。
+- `false`: 已断开连接。
+
+<a id="initialize"></a>
+### initialize
+
+```swift
+func initialize(initParam: InitParam,sdkStatus:@escaping(SdkStatus,String)->Void,callbackFilter:@escaping(Int,String)->(Int,String)) -> Int
+```
+
+初始化 SDK。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `initParam` | SDK 初始化参数，详见 [InitParam](#initparam)。 |
+| `sdkStatus` | SDK 状态，详见 [SdkStatus](#iagoracallkitsdkStatus)。 |
+| `callbackFilter` | 回调函数返回错误码/错误消息的集中过滤。所有带有 result 回调的接口，都会在调用 result 回调前触发该回调，返回 (ErrCode,ErrMessage)。 |
+
+<a id="release"></a>
+### release
+
+```swift
+func release()
+```
+
+释放 SDK 所有资源。
+
+<a id="accounrmgr"></a>
+### accounrMgr
+
+```swift
+var accountMgr: IAccountMgr{get}
+```
+
+获取账号管理接口。
+
+**返回**
+
+- 账号管理接口，详见 [IAccountMgr](#accountmgr)。
+
+<a id="callkitmgr"></a>
+### callkitMgr
+
+```swift
+var callkitMgr: ICallkitMgr{get}
+```
+
+获取呼叫系统接口。
+
+**返回**
+
+- 呼叫系统接口，详见 [ICallkitMgr](#callmgr)。
+
+<a id="devicemgr"></a>
+### deviceMgr
+
+```swift
+var deviceMgr: IDeviceMgr{get}
+```
+
+获取设备管理接口。
+
+**返回**
+
+- 设备管理接口，详见 [IDeviceMgr](#devicemgr)。
+
+<a id="alarmmgr"></a>
+### alarmMgr
+
+```swift
+var alarmMgr: IAlarmMgr{get}
+```
+
+获取告警信息管理接口。
+
+**返回**
+
+- 告警信息接口，详见 [IAlarmMgr](#alarmmgr)。
+
+<a id="notificationmgr"></a>
+### notificationMgr
+
+```swift
+var notificationMgr: INotificationMgr{get}
+```
+
+获取通知信息管理接口。
+
+**返回**
+
+- 通知信息接口，详见 [INotificationMgr](#inotificationmgr)。
+
+<a id="iaccountmgr"></a>
+## IAccountMgr
+
+账号管理接口。
+
+<a id="logout"></a>
+### logout
+
+```swift
+func logout(result:@escaping (Int,String)->Void)
+```
+
+登出当前账号。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="getuserid"></a>
+### getUserId
+
+```swift
+func getUserId()->String
+```
+
+获取当前用户 ID。
+
+**返回**
+
+- user ID。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="getaccountinfo"></a>
+### getAccountInfo
+
+```swift
+func getAccountInfo(result:@escaping(Int,String,AccountInfo?)->Void)
+```
+
+获取当前用户账号信息。
+
+**返回**
+
+- 账户信息，详见 [AccountInfo](#accountinfo)。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="updateaccountinfo"></a>
+### updateAccountInfo
+
+```swift
+func updateAccountInfo(info:AccountInfo,result:@escaping(Int,String)->Void)
+```
+
+更新当前用户账号信息。
+
+**参数**
+
+| 参数   | 描述                                         |
+| ------ | -------------------------------------------- |
+| `info` | 账号信息，详见 [AccountInfo](#accountinfo)。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="updateheadicon"></a>
+### updateHeadIcon
+
+```swift
+func updateHeadIcon(image:UIImage,result:@escaping(Int,String,String?)->Void)
+```
+
+上传用户头像。
+
+**参数**
+
+| 参数    | 描述           |
+| ------- | -------------- |
+| `image` | 头像图片文件。 |
+
+**返回**
+
+- 头像的 URL 地址。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="login"></a>
+### login
+
+```swift
+func login(param:LoginParam,result:@escaping(Int,String)->Void)
+```
+
+通过第三方账号的登陆参数登陆用户账号。
+
+该方法适用于用户已经自行实现第三方账号管理系统的情况。用户可以直接通过该方法登陆灵隼物联网平台。
+
+**参数**
+
+| 参数  | 描述                                  |
+| :---- | :------------------------------------ |
+| `param` | 第三方登陆参数。详见 [LoginParam](#loginparam)。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="publickeyset"></a>
+### publicKeySet
+
+```swift
+func publicKeySet(publicKey:String, _ result:@escaping (Int,String)->Void)
+```
+
+设置云存储视频加密的公钥。
+
+为加强云存储视频加密的安全性，你可以在应用层自行生成公钥、私钥，再通过该方法将公钥传入 SDK。例如，只有 SDK 的公钥和你 app 的私钥都正确，用户才能查看加密视频。
+
+:::warning[注意]
+声网不会保存你传入的公钥，你需要自行保存并管理。
+:::
+
+**参数**
+
+| 参数  | 描述                                  |
+| :---- | :------------------------------------ |
+| `publicKey` | 待设置的公钥。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="icallkitmgr"></a>
+## ICallkitMgr
+
+呼叫系统管理接口。
+
+<a id="register"></a>
+### register
+
+```swift
+func register(incoming: @escaping (String,String, ActionAck) -> Void,memberState:((MemberState,[UInt])->Void)?)
+```
+
+注册来电通知。
+
+通过该方法定义 `incoming` 和 `memberState` 回调函数后，如果你收到来电，SDK 会通过 `incoming` 和 `memberState` 回调通知你来电的设备、用户 ID 等相关信息。
+
+声网推荐你在 [login](#login) 之后调用该方法。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `incoming` | <Slot name="call-ios-html-0-1-1" /> |
+| `memberState` | <Slot name="call-ios-html-0-2-1" /> |
+
+<Slot for="call-ios-html-0-1-1">
+
+来电设备的信息，包含以下内容：
+
+    - 第一个参数：来电设备的名称。
+    - 第二个参数：来电时附带的信息。
+    - 第三个参数：来电时产生的事件，详见 [ActionAck](#actionack)。
+
+</Slot>
+
+<Slot for="call-ios-html-0-2-1">
+
+来电用户的信息，包含以下内容：
+
+    - 第一个参数：来电用户的状态，详见 [MemberState](#memberstate)。
+    - 第二个参数：来电用户的用户 ID。
+
+</Slot>
+
+<a id="calldial"></a>
+### callDial
+
+```swift
+func callDial(
+    device: IotDevice,
+    attachMsg: String,
+    result:@escaping(Int,String)->Void,
+    actionAck:@escaping(ActionAck)->Void,
+    memberState:((_ state:MemberState,_ uid:[UInt])->Void)?)
+```
+
+呼叫设备。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `device` | 要呼叫的设备，详见 [IotDevice](#iotdevice)。 |
+| `attachMsg` | 呼叫时附带的信息。 |
+| `actionAck` | 通话中产生的事件，详见 [ActionAck](#actionack)。 |
+| `memberState` | <Slot name="call-ios-html-1-4-1" /> |
+
+<Slot for="call-ios-html-1-4-1">
+
+其他用户的信息。
+
+    - `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
+    - `uid`: 其他用户的用户 ID。
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="callhangup"></a>
+### callHangup
+
+```swift
+func callHangup(result:@escaping(Int,String)->Void)
+```
+
+挂断当前通话。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="callanswer"></a>
+### callAnswer
+
+```swift
+func callAnswer(result:@escaping(Int,String)->Void,
+                actionAck:@escaping(ActionAck)->Void,
+                memberState:((_ state:MemberState,_ uid:[UInt])->Void)?)
+```
+
+接听当前来电。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `actionAck` | 通话中产生的事件。 |
+| `memberState` | <Slot name="call-ios-html-2-2-1" /> |
+
+<Slot for="call-ios-html-2-2-1">
+
+其他用户的信息。
+
+    - `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
+    - `uid`: 其他用户的用户 ID。
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setlocalvideoview"></a>
+### setLocalVideoView
+
+```swift
+func setLocalVideoView(localView: UIView?) -> Int
+```
+
+设置本地视频显示控件。如果不设置则不显示本地视频。
+
+**参数**
+
+| 参数        | 描述               |
+| ----------- | ------------------ |
+| `localView` | 本地视频显示控件。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setpeervideoview"></a>
+### setPeerVideoView
+
+```swift
+func setPeerVideoView(peerView: UIView?) -> Int
+```
+
+设置对端视频显示控件。如果不设置则不显示对端视频。
+
+**参数**
+
+| 参数        | 描述               |
+| ----------- | ------------------ |
+| `localView` | 本地视频显示控件。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutelocalvideo"></a>
+### muteLocalVideo
+
+```swift
+func muteLocalVideo(mute: Bool,result:@escaping(Int,String)->Void)
+```
+
+停止/恢复发布本地视频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-ios-html-3-1-1" /> |
+
+<Slot for="call-ios-html-3-1-1">
+
+是否停止发布本地视频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutelocalaudio"></a>
+### muteLocalAudio
+
+```swift
+func muteLocaAudio(mute: Bool,result:@escaping(Int,String)->Void)
+```
+
+停止/恢复发布本地音频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-ios-html-4-1-1" /> |
+
+<Slot for="call-ios-html-4-1-1">
+
+是否停止发布本地音频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutepeervideo"></a>
+### mutePeerVideo
+
+```swift
+func mutePeerVideo(mute: Bool,result:@escaping(Int,String)->Void)
+```
+
+停止/恢复订阅远端视频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-ios-html-5-1-1" /> |
+
+<Slot for="call-ios-html-5-1-1">
+
+是否停止发布远端视频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mutepeeraudio"></a>
+### mutePeerAudio
+
+```swift
+func mutePeerAudio(mute: Bool,result:@escaping(Int,String)->Void)
+```
+
+停止/恢复订阅远端音频流。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `mute` | <Slot name="call-ios-html-6-1-1" /> |
+
+<Slot for="call-ios-html-6-1-1">
+
+是否停止发布远端音频流：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setvolume"></a>
+### setVolume
+
+```swift
+func setVolume(volumeLevel: Int,result:@escaping(Int,String)->Void)
+```
+
+设置音频播放的音量。
+
+**参数**
+
+| 参数          | 描述                           |
+| ------------- | ------------------------------ |
+| `volumeLevel` | 音量级别，取值范围为 [0,100]。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="setvolumeeffect"></a>
+### setVolumeEffect
+
+```swift
+func setAudioEffect(effectId: AudioEffectId,result:@escaping(Int,String)->Void)
+```
+
+设置音效效果（通常是变声等音效）。
+
+**参数**
+
+| 参数       | 描述                                                  |
+| ---------- | ----------------------------------------------------- |
+| `effectId` | 音效文件的 ID。详见 [AudioEffectId](#AudioEffectId)。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="talkingrecordstart"></a>
+### talkingRecordStart
+
+```swift
+func talkingRecordStart(result:@escaping(Int,String)->Void)
+```
+
+开始录制当前通话（包括音视频流），仅在通话状态下才能调用。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="talkingrecordstop"></a>
+### talkingRecordStop
+
+```swift
+func talkingRecordStop(result:@escaping(Int,String)->Void)
+```
+
+停止录制当前通话，仅在通话状态下才能调用。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="capturepeervideoframe"></a>
+### capturePeerVideoFrame
+
+```swift
+func capturePeerVideoFrame(result:@escaping(Int,String,UIImage?)->Void)
+```
+
+截屏对端视频帧图像，仅在通话状态下才能调用。
+
+**返回**
+
+- 截取到的视频帧图像。
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="getnetworkstatus"></a>
+### getNetworkStatus
+
+```swift
+func getNetworkStatus()->RtcNetworkStatus
+```
+
+获取当前通话的统计信息。
+
+**返回**
+
+当前通话的统计信息。详见 [RtcNetworkStatus](#rtcnetworkstatus)。
+
+<a id="inotificationmgr"></a>
+## INotificationMgr
+
+通知消息管理接口。
+
+<a id="updatetoken"></a>
+### updateToken
+
+```swift
+func updateToken(_ deviceToken:Data)
+```
+
+离线推送时需要更新 Token。
+
+**参数**
+
+| 参数          | 描述         |
+| ------------- | ------------ |
+| `deviceToken` | 设备 Token。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="queryall"></a>
+### queryAll
+
+```swift
+func queryAll(result:@escaping(Int,String)->Void)
+```
+
+查询所有通知消息。
+
+查询成功会触发 [onAllNotificationQueryDone](#allnotificationquery) 回调。
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="querybydevice"></a>
+### queryByDevice
+
+```swift
+func queryByDevice(productKey: String, deviceId: String,result:@escaping(Int,String)->Void)
+```
+
+查询指定设备的所有通知消息。
+
+查询成功会触发 [onDeviceNotificationQueryDone](#devicenotificationquery) 回调。
+
+**参数**
+
+| 参数         | 描述       |
+| ------------ | ---------- |
+| `productKey` | 产品编号。 |
+| `deviceId`   | 设备 ID。  |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="deletenoti"></a>
+<a id="delete"></a>
+### delete
+
+```swift
+func delete(notificationIdList: [String],result:@escaping(Int,String)->Void)
+```
+
+删除多条通知消息。
+
+删除成功会触发 [onNotificationDeleteDone](#notificationdelete) 回调。
+
+**参数**
+
+| 参数                 | 描述                       |
+| -------------------- | -------------------------- |
+| `notificationIdList` | 要删除的通知消息 ID 列表。 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="mark"></a>
+### mark
+
+```swift
+func mark(markFlag: Int, notificationIdList: [String],result:@escaping(Int,String)->Void)
+```
+
+标记多条通知消息。
+
+标记成功会触发 [onNotificationMarkDone](#notificationmark) 回调。
+
+**参数**
+
+| 参数                 | 描述                       |
+| -------------------- | -------------------------- |
+| `notificationIdList` | 要删除的通知消息 ID 列表。 |
+| `markFlag`           | 标记信息。                 |
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="enablenotify"></a>
+### enableNotify
+
+```swift
+func enableNotify(enable:Bool,result:@escaping(Int,String)->Void)
+```
+
+开启/关闭接收推送消息。
+
+**参数**
+
+| 参数 | 描述 |
+| --- | --- |
+| `bool` | <Slot name="call-ios-html-7-1-1" /> |
+
+<Slot for="call-ios-html-7-1-1">
+
+是否要接收推送消息。
+
+    - true: 接收。
+    - false: 不接收。
+
+</Slot>
+
+**返回**
+
+- 错误码，详见 [ErrCode](#errcode)。
+
+<a id="notifyenabled"></a>
+### notifyEnabled
+
+```swift
+func notifyEnabled()->Bool
+```
+
+查询推送消息接收状态。
+
+**返回**
+
+- true: 接收。
+- false: 不接收。
+
+<a id="geteid"></a>
+### getEid
+
+```swift
+func getEid()->String
+```
+
+查询推送 eid。
+
+**返回**
+
+eid。
+
+<a id="errcode"></a>
+## ErrCode
+
+### 全局错误
+
+| 错误码 | 错误代码 | 描述 |
+| --- | --- | --- |
+| `0` | `XERR_NONG` | 无错误。|
+| `0` | `XOK` | 无错误。 |
+| `-3` | `XERR_TOKEN_INVALID` | Token 过期。 |
+
+### 通用错误
+
+| 错误码   | 错误代码                | 描述                       |
+| -------- | ----------------------- | -------------------------- |
+| `-10000` | `XERR_BASE`             | 通用错误。                 |
+| `-10001` | `XERR_UNKNOWN`          | 未知错误。                 |
+| `-10002` | `XERR_INVALID_PARAM`    | 参数错误。                 |
+| `-10003` | `XERR_UNSUPPORTED`      | 当前操作不支持。           |
+| `-10004` | `XERR_BAD_STATE`        | 当前状态不正确，无法操作。 |
+| `-10005` | `XERR_NOT_FOUND`        | 没有找到相关数据。         |
+| `-10006` | `XERR_NO_MEMORY`        | 内存不足。                 |
+| `-10007` | `XERR_BUFFER_OVERFLOW`  | 缓冲区中数据不足。         |
+| `-10008` | `XERR_BUFFER_UNDERFLOW` | 缓冲区中数据过多。         |
+| `-10009` | `XERR_TIMEOUT`          | 操作超时。                 |
+| `-10012` | `XERR_NETWORK`          | 网络错误。                 |
+| `-10015` | `XERR_TOKEN_INVALID`    | Token 无效。               |
+
+### 呼叫系统相关错误
+
+| 错误码   | 错误代码                   | 描述                  |
+| -------- | -------------------------- | --------------------- |
+| `-40000` | `XERR_CALLKIT_BASE`        | 呼叫系统相关错误。    |
+| `-40001` | `XERR_CALLKIT_TIMEOUT`     | 呼叫超时无响应。      |
+| `-40002` | `XERR_CALLKIT_DIAL`        | 呼叫拨号失败。        |
+| `-40003` | `XERR_CALLKIT_HANGUP`      | 呼叫挂断失败。        |
+| `-40004` | `XERR_CALLKIT_ANSWER`      | 呼叫接听失败。        |
+| `-40005` | `XERR_CALLKIT_REJECT`      | 呼叫拒绝失败。        |
+| `-40006` | `XERR_CALLKIT_PEER_BUSY`   | 对端忙。              |
+| `-40007` | `XERR_CALLKIT_PEERTIMEOUT` | 对端超时无响应。      |
+| `-40008` | `XERR_CALLKIT_LOCAL_BUSY`  | 本地端忙。            |
+| `-40009` | `XERR_CALLKIT_ERR_OPT`     | 不支持的错误操作。    |
+| `-40010` | `XERR_CALLKIT_PEER_UNREG`  | 对端未注册。          |
+| `-40011` | `XERR_CALLKIT_NO_APPID`    | 未上报 App ID。       |
+| `-40012` | `XERR_CALLKIT_SAME_ID`     | 主叫和被叫同一个 ID。 |
+| `-4001` | `XERR_CALLKIT_APPID_DIFF`     | 客户端和设备端使用的 App ID 不一致。 |
+
+<a id="数据类型"></a>
+<a id="initparam"></a>
+## 数据类型
+### InitParam
+
+Iot SDK 初始化参数。
+
+```swift
+public class InitParam : NSObject{
+    @objc public var rtcAppId: String = ""
+    @objc public var logFilePath : String? = nil
+    @objc public var publishAudio = true
+    @objc public var publishVideo = true
+    @objc public var subscribeAudio = true
+    @objc public var subscribeVideo = true
+    @objc public var ntfAppKey: String = ""
+    @objc public var ntfApnsCertName:String = ""
+    @objc public var masterServerUrl:String = ""
+    @objc public var slaveServerUrl:String = ""
+    @objc public var projectId:String = ""
+}
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `rtcAppId` | 声网的 App ID。 |
+| `logFilePath` | 日志文件路径。如果不设置该参数，则日志不会输出到本地文件。 |
+| `publishAudio` | <Slot name="call-ios-html-8-3-1" /> |
+| `publishVideo` | <Slot name="call-ios-html-8-4-1" /> |
+| `subscribeAudio` | <Slot name="call-ios-html-8-5-1" /> |
+| `subscribeVideo` | <Slot name="call-ios-html-8-6-1" /> |
+| `ntfAppKey` | 离线推送使用的 AppKey。 |
+| `ntfApnsCertName` | 离线推送使用的 ApnsCertName。 |
+| `masterServerUrl` | 主服务器后台地址。 |
+| `slaveServerUrl` | 副服务器后台地址。 |
+| `projectId` | 项目 ID，作为查询产品列表的过滤条件。 |
+
+<Slot for="call-ios-html-8-3-1">
+
+通话时是否自动发布本地音频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-ios-html-8-4-1">
+
+通话时是否自动发布本地视频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-ios-html-8-5-1">
+
+通话时是否自动订阅对端音频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-ios-html-8-6-1">
+
+通话时是否自动订阅对端视频：
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<a id="loginparam"></a>
+### LoginParam
+
+```swift
+public class LoginParam : NSObject{
+
+    public var tokenType:String = ""
+    public var accessToken:String = ""
+    public var refreshToken:String = ""
+    public var expireIn:UInt = 0
+    public var scope:String = ""
+
+    public var grawin_token:String = ""
+    public var expiration : UInt64 = 0
+    public var endPoint:String = ""
+    public var region:String = ""
+    public var account:String = ""
+
+    public var proof_sessionToken:String = ""
+    public var proof_secretKey:String = ""
+    public var proof_accessKeyId:String = ""
+    public var proof_sessionExpiration:UInt64 = 0
+
+    public var pool_token:String = ""
+    public var pool_identityId:String = ""
+    public var pool_identityPoolId:String = ""
+    public var pool_identifier = ""
+}
+```
+
+第三方账号的登陆参数。
+
+**参数**
+
+| 参数                    | 描述                          |
+| :---------------------- | :---------------------------- |
+| `tokenType`               | 预留字段。                    |
+| `accessToken`             | 灵隼平台账号的 Token。        |
+| `refreshToken`            | 更新 Token。                  |
+| `expireIn`                | Token 过期时间。              |
+| `scope`                   | 预留字段。                    |
+| `grawin_token`            | 第三方平台的 Token。          |
+| `expiration`              | `grawin_token` 的过期时间。     |
+| `endPoint`                | 灵隼服务器的边缘节点。        |
+| `region`                  | 灵隼服务器所在区域。          |
+| `account`                 | 用户的第三方账号。            |
+| `proof_sessionToken`      | IOT 临时账号的 Token。        |
+| `proof_secretKey`         | IOT 临时账号的密钥。          |
+| `proof_accessKeyId`       | IOT 临时账号的凭证。          |
+| `proof_sessionExpiration` | `proof_sessionToken` 的过期时间 |
+| `pool_token`              | 用户身份 Token。              |
+| `pool_identityId`         | 用户身份 ID。                 |
+| `pool_identityPoolId`     | 用户身份池 ID。               |
+| `pool_identifier`         | 用户身份。                    |
+
+<a id="productinfo"></a>
+### ProductInfo
+
+```swift
+public class ProductInfo:NSObject{
+    @objc public var alias : String = ""
+    @objc public var bindType:UInt = 0
+    @objc public var connectType : UInt = 0
+    @objc public var createTime : UInt64 = 0
+    @objc public var deleted : UInt = 0
+    @objc public var id : String = ""
+    @objc public var imgBig : String = ""
+    @objc public var imgSmall : String = ""
+    @objc public var merchantId : UInt64 = 0
+    @objc public var merchantName : String = ""
+    @objc public var name : String = ""
+    @objc public var productKey : String = ""
+    @objc public var productTypeId : UInt64  = 0
+    @objc public var productTypeName : String = ""
+    @objc public var status : UInt = 0
+    public var updateBy : UInt64 = 0
+    public var updateTime : UInt64 = 0
+    public init(alias:String,
+                bindType:UInt,
+                connectType:UInt,
+                createTime:UInt64,
+                deleted:UInt,
+                id:String,
+                imgBig:String,
+                imgSmall:String,
+                merchantId:UInt64,
+                merchantName:String,
+                name:String,
+                productKey:String,
+                productTypeId:UInt64,
+                productTypeName:String,
+                status:UInt,
+                updateBy:UInt64,
+                updateTime:UInt64) {
+        self.alias = alias
+        self.bindType = bindType
+        self.connectType = connectType
+        self.createTime = createTime
+        self.deleted = deleted
+        self.id = id
+        self.imgBig = imgBig
+        self.imgSmall = imgSmall
+        self.merchantId = merchantId
+        self.merchantName = merchantName
+        self.name = name
+        self.productKey = productKey
+        self.productTypeId = productTypeId
+        self.productTypeName = productTypeName
+        self.status = status
+        self.updateBy = updateBy
+        self.updateTime = updateTime
+    }
+}
+```
+
+产品信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `alias` | 产品别名。 |
+| `bindType` | <Slot name="call-ios-html-9-2-1" /> |
+| `connectType` | <Slot name="call-ios-html-9-3-1" /> |
+| `createTime` | 创建时间。 |
+| `deleted` | <Slot name="call-ios-html-9-5-1" /> |
+| `id` | 产品 ID。 |
+| `imgBig` | 产品大图。 |
+| `imgSmall` | 产品小图。 |
+| `merchantId` | 商户 ID。 |
+| `merchantName` | 商户名称。 |
+| `name` | 产品名称 |
+| `productKey` | 产品编号，即作为产品唯一标识的数字。 |
+| `productTypeId` | 产品型号 ID。 |
+| `productTypeName` | 产品型号名称。 |
+| `status` | <Slot name="call-ios-html-9-15-1" /> |
+| `updateBy` | 更新人 ID。 |
+| `updateTime` | 最后更新时间。 |
+
+<Slot for="call-ios-html-9-2-1">
+
+绑定类型：
+
+    - 1: 可重复绑定。
+    - 2: 不可重复绑定。
+
+</Slot>
+
+<Slot for="call-ios-html-9-3-1">
+
+网络连接类型：
+
+    - 1: WiFi 连接。
+    - 2: 蜂窝连接。
+
+</Slot>
+
+<Slot for="call-ios-html-9-5-1">
+
+是否已删除。
+
+    - true: 是
+    - false: 否
+
+</Slot>
+
+<Slot for="call-ios-html-9-15-1">
+
+产品状态：
+
+    - 1: 正常。
+    - 0: 停用。
+
+</Slot>
+
+<a id="deviceshare"></a>
+### DeviceShare
+
+```swift
+public class DeviceShare : NSObject{
+    @objc public var nickName:String = ""
+    @objc public var count:Int = 0
+    @objc public var time:UInt64 = 0
+    @objc public var deviceNumber:String = ""
+    @objc public var deviceId:String = ""
+}
+```
+
+分享的设备信息。
+
+| 参数           | 描述                         |
+| -------------- | ---------------------------- |
+| `nickName`     | 设备昵称。                   |
+| `count`        | 设备被分享次数。             |
+| `time`         | 创建时间。                   |
+| `deviceNumber` | 设备编号。                   |
+| `deviceId`     | 设备 ID，必须是唯一的。 |
+
+<a id="devicecancelable"></a>
+### DeviceCancelable
+
+```swift
+public class DeviceCancelable : NSObject{
+    @objc public var appuserId:String  = ""
+    @objc public var avatar:String = ""
+    @objc public var connect:Bool = false
+    @objc public var createTime:UInt64 = 0
+    @objc public var deviceNumber:String = ""
+    @objc public var deviceNickname:String = ""
+    @objc public var email:String = ""
+    @objc public var deviceId:String = ""
+    @objc public var nickName:String = ""
+    @objc public var phone:String = ""
+    @objc public var productId:String = ""
+    @objc public var productKey:String = ""
+    @objc public var sharer:String = ""
+    @objc public var uType:String = ""
+    @objc public var updateTime:UInt64 = 0
+}
+```
+
+分享给他人设备详情。
+
+| 参数 | 描述 |
+| --- | --- |
+| `appuserId` | 用户 ID。 |
+| `avatar` | 用户头像。 |
+| `connect` | <Slot name="call-ios-html-10-3-1" /> |
+| `createTime` | 创建时间。 |
+| `deviceNumber` | 设备编号。 |
+| `deviceNickname` | 设备昵称。 |
+| `email` | 用户邮箱. |
+| `deviceId` | 设备 ID，必须是唯一的。 |
+| `nickName` | 用户昵称。 |
+| `phone` | 用户手机。 |
+| `productId` | 产品 ID。 |
+| `productKey` | 产品编号。 |
+| `sharer` | 分享人 ID。 |
+| `uType` | <Slot name="call-ios-html-10-14-1" /> |
+| `updateTime` | 更新时间。 |
+
+<Slot for="call-ios-html-10-3-1">
+
+是否在线。
+
+    -  true：在线。
+    - false：离线。
+
+</Slot>
+
+<Slot for="call-ios-html-10-14-1">
+
+用户角色：
+
+    - 1：所有者。
+    - 2：管理员。
+    - 3：成员。
+
+</Slot>
+
+<a id="sharedetail"></a>
+### ShareDetail
+
+```swift
+public class ShareDetial : NSObject{
+    @objc public var auditStatus:Bool = false
+    @objc public var content:String = ""
+    @objc public var createBy:UInt64 = 0
+    @objc public var createTime:UInt64 = 0
+    @objc public var deleted:Int = 0
+    @objc public var id:UInt64 = 0
+    @objc public var merchantId:UInt64 = 0
+    @objc public var merchantName:String = ""
+    @objc public var msgType:Int = 0
+    @objc public var para:String = ""
+    @objc public var permission:Int = 0
+    @objc public var status:Int = 0
+    @objc public var title:String = ""
+    @objc public var type:Int = 0
+    @objc public var updateBy:UInt64 = 0
+    @objc public var updateTime:UInt64 = 0
+    @objc public var userId:UInt64 = 0
+}
+```
+
+分享详情。
+
+| 参数 | 描述 |
+| --- | --- |
+| `auditStatus` | <Slot name="call-ios-html-11-1-1" /> |
+| `content` | 推送内容。 |
+| `createBy` | 创建人 ID。 |
+| `createTime` | 创建时间。 |
+| `deleted` | <Slot name="call-ios-html-11-5-1" /> |
+| `id` | 该条消息 ID。 |
+| `merchantId` | 商户 ID。 |
+| `merchantName` | 商户名称。 |
+| `msgType` | <Slot name="call-ios-html-11-9-1" /> |
+| `para` | 分享口令。 |
+| `permission` | <Slot name="call-ios-html-11-11-1" /> |
+| `status` | <Slot name="call-ios-html-11-12-1" /> |
+| `title` | 推送标题。 |
+| `type` | <Slot name="call-ios-html-11-14-1" /> |
+| `updateBy` | 更新人 ID。 |
+| `updateTime` | 更新时间。 |
+| `userId` | 被分享者 ID。 |
+
+<Slot for="call-ios-html-11-1-1">
+
+消息处理状态：
+
+    - t: 已处理。
+    - f: 未处理。
+
+</Slot>
+
+<Slot for="call-ios-html-11-5-1">
+
+是否已删除。
+
+    - 1: 已删除。
+    - 0: 未删除。
+
+</Slot>
+
+<Slot for="call-ios-html-11-9-1">
+
+消息类型：
+
+    - 1: 设备分享消息。
+
+</Slot>
+
+<Slot for="call-ios-html-11-11-1">
+
+推送权限：
+
+    - 2：管理员。
+    - 3：成员。
+
+</Slot>
+
+<Slot for="call-ios-html-11-12-1">
+
+状态：
+
+    - 1：发送成功。
+    - 2：发送失败。
+    - 3：待发送。
+
+</Slot>
+
+<Slot for="call-ios-html-11-14-1">
+
+推送类型：
+
+    - 1：App 消息。
+    - 2：短信消息。
+    - 3：邮箱信息。
+
+</Slot>
+
+<a id="shareitem"></a>
+### ShareItem
+
+```swift
+public class ShareItem : NSObject{
+    @objc public var auditStatus:Bool = false
+    @objc public var content:String = ""
+    @objc public var createBy:UInt64 = 0
+    @objc public var createTime:UInt64 = 0
+    @objc public var deleted:Int = 0
+    @objc public var deviceNumber:UInt64 = 0
+    @objc public var id:UInt64 = 0
+    @objc public var img:String = ""
+    @objc public var merchantId:UInt64 = 0
+    @objc public var merchantName:String = ""
+    @objc public var msgType:Int = 0
+    @objc public var para:String = ""
+    @objc public var permission:Int = 0
+    @objc public var productName:String = ""
+    @objc public var pushTime:UInt64 = 0
+    @objc public var shareName:String = ""
+    @objc public var status:Int = 0
+    @objc public var title:String = ""
+    @objc public var type:Int = 0
+    @objc public var userId:UInt64 = 0
+}
+```
+
+分享条目。
+
+| 参数 | 描述 |
+| --- | --- |
+| `auditStatus` | <Slot name="call-ios-html-12-1-1" /> |
+| `content` | 推送内容。 |
+| `createBy` | 创建人 ID。 |
+| `createTime` | 创建时间。 |
+| `deleted` | <Slot name="call-ios-html-12-5-1" /> |
+| `deviceNumber` | 设备编号。 |
+| `id` | 该条消息 ID。 |
+| `img` | 产品图片地址。 |
+| `merchantId` | 商户 ID。 |
+| `merchantName` | 商户名称。 |
+| `msgType` | <Slot name="call-ios-html-12-11-1" /> |
+| `para` | 分享口令。 |
+| `permission` | <Slot name="call-ios-html-12-13-1" /> |
+| `productName` | 产品名称。 |
+| `pushTime` | 推送时间。 |
+| `shareName` | 分享设备的名称。 |
+| `status` | <Slot name="call-ios-html-12-17-1" /> |
+| `title` | 推送标题。 |
+| `type` | <Slot name="call-ios-html-12-19-1" /> |
+| `userId` | 被分享者 ID。 |
+
+<Slot for="call-ios-html-12-1-1">
+
+消息处理状态：
+
+    - t: 已处理。
+    - f: 未处理。
+
+</Slot>
+
+<Slot for="call-ios-html-12-5-1">
+
+是否已删除。
+
+    - 1: 已删除。
+    - 0: 未删除。
+
+</Slot>
+
+<Slot for="call-ios-html-12-11-1">
+
+消息类型：
+
+    - 1: 设备分享消息。
+
+</Slot>
+
+<Slot for="call-ios-html-12-13-1">
+
+推送权限：
+
+    - 2：管理员。
+    - 3：成员。
+
+</Slot>
+
+<Slot for="call-ios-html-12-17-1">
+
+状态：
+
+    - 1：发送成功。
+    - 2：发送失败。
+    - 3：待发送。
+
+</Slot>
+
+<Slot for="call-ios-html-12-19-1">
+
+推送类型：
+
+    - 1：App 消息。
+    - 2：短信消息。
+    - 3：邮箱信息。
+
+</Slot>
+
+<a id="pageturn"></a>
+### PageTurn
+
+```swift
+public class PageTurn:NSObject{
+    @objc var currentPage : Int = 0
+    @objc var end : Int = 0
+    @objc var firstPage : Int = 0
+    @objc var nextPage : Int = 0
+    @objc var page : Int = 0
+    @objc var pageCount : Int = 0
+    @objc var pageSize : Int = 0
+    @objc var prevPage : Int = 0
+    @objc var rowCount : Int = 0
+    @objc var start : Int = 0
+    @objc var startIndex : Int = 0
+}
+```
+
+产品查询翻页信息。
+
+| 参数          | 描述             |
+| ------------- | ---------------- |
+| `currentPage` | 当前页码。       |
+| `end`         | 当前页结束条数。 |
+| `firstPage`   | 第一页页码。     |
+| `nextPage`    | 下一页页码。     |
+| `page`        | 查询的页码。     |
+| `pageCount`   | 页数。           |
+| `pageSize`    | 分页大小。       |
+| `prevPage`    | 前一页页码。     |
+| `rowCount`    | 条数             |
+| `start`       | 当前页开始条数。 |
+| `startIndex`  | 开始翻页的索引。 |
+
+<a id="sdkstatus"></a>
+### SdkStatus 枚举
+
+```objc
+@objc public enum SdkStatus : Int{
+    case NotReady
+    case InitCallFail
+    case InitMqttFail
+    case InitPushFail
+    case AllReady
+    case Reconnected
+    case Disconnected
+}
+```
+
+SDK 状态。
+
+**参数**
+
+| 参数           | 描述                                                 |
+| -------------- | ---------------------------------------------------- |
+| `NotReady`     | 登录成功，但还在初始化各个子模块中，处于未就绪状态。 |
+| `InitCallFail` | 登录成功后，初始化呼叫模块出错。                     |
+| `InitMqttFail` | 登录成功后，初始化 MQTT 模块出错。                   |
+| `InitPushFail` | 登录成功后，初始化推送模块出错。                     |
+| `AllReady`     | 登录成功后，初始化过程完毕，处于就绪状态。           |
+| `Reconnected`  | 登录成功后，MQTT 重连成功。                          |
+| `Disconnected` | 登录成功后，MQTT 断开连接。                          |
+
+<a id="rtcnetworkstatus"></a>
+### RtcNetworkStatus
+
+```swift
+public class RtcNetworkStatus : NSObject{
+    public var isBusy : Bool             = false
+    public var totalDuration : UInt      = 0
+    public var txBytes : UInt            = 0
+    public var rxBytes : UInt            = 0
+    public var txKBitRate : UInt         = 0
+    public var txAudioBytes : UInt       = 0
+    public var rxAudioBytes : UInt       = 0
+    public var txVideoBytes : UInt       = 0
+    public var rxVideoBytes : UInt       = 0
+    public var rxKBitRate : UInt         = 0
+    public var txAudioKBitRate : UInt    = 0
+    public var rxAudioKBitRate : UInt    = 0
+    public var txVideoKBitRate : UInt    = 0
+    public var rxVideoKBitRate : UInt    = 0
+    public var lastmileDelay : UInt      = 0
+    public var cpuTotalUsage : Double    = 0
+    public var cpuAppUsage : Double      = 0
+    public var users : UInt              = 0
+    public var connectTimeMs : Int       = 0
+    public var txPacketLossRate : Int    = 0
+    public var rxPacketLossRate : Int    = 0
+    public var memoryAppUsageRatio : Double = 0
+    public var memoryTotalUsageRatio : Double = 0
+    public var memoryAppUsageInKbytes : Int = 0
+}
+```
+
+通话相关的统计信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `isBusy` | <Slot name="call-ios-html-13-1-1" /> |
+| `totalDuration` | 本地用户通话时长（秒），累计值。 |
+| `txBytes` | 发送字节数（bytes）。 |
+| `rxBytes` | 接收字节数（bytes）。 |
+| `txKBitRate` | 发送码率（Kbps）。 |
+| `txAudioBytes` | 发送音频字节数（bytes），累计值。 |
+| `rxAudioBytes` | 接收音频字节数（bytes），累计值。 |
+| `txVideoBytes` | 发送视频字节数（bytes），累计值。 |
+| `rxVideoBytes` | 接收视频字节数（bytes），累计值。 |
+| `rxKBitRate` | 接收码率（Kbps）。 |
+| `txAudioKBitRate` | 音频发送码率 (Kbps）。 |
+| `rxAudioKBitRate` | 音频接收码率 (Kbps）。 |
+| `txVideoKBitRate` | 视频发送码率 (Kbps）。 |
+| `rxVideoKBitRate` | 视频接收码率 (Kbps）。 |
+| `lastmileDelay` | 客户端到接入服务器的延时 (毫秒)。 |
+| `cpuTotalUsage` | 当前系统的 CPU 使用率 (%)。 |
+| `cpuAppUsage` | 当前 App 的 CPU 使用率 (%)。 |
+| `users` | 当前频道内的用户人数。 |
+| `connectTimeMs` | 从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。 |
+| `txPacketLossRate` | 使用抗丢包技术前，客户端上行发送到服务器丢包率 (%)。 |
+| `rxPacketLossRate` | 使用抗丢包技术前，服务器下行发送到客户端丢包率 (%)。 |
+| `memoryAppUsageRatio` | 当前 App 的内存占比 (%)。该值仅作参考。受系统限制可能无法获取。 |
+| `memoryTotalUsageRatio` | 当前系统的内存占比 (%)。该值仅作参考。受系统限制可能无法获取。 |
+| `memoryAppUsageInKbytes` | 当前 App 的内存大小 (KB)。该值仅作参考。受系统限制可能无法获取。 |
+
+<Slot for="call-ios-html-13-1-1">
+
+是否在呼叫中：
+
+    - `true`: 在呼叫中。
+    - `false`: 未进行呼叫。
+
+</Slot>
+
+<a id="memberstate"></a>
+### MemberState
+
+```swift
+@objc public enum MemberState : Int{
+    case Exist
+    case Enter
+    case Leave
+}
+```
+
+用户状态。
+
+| 参数    | 描述                     |
+| :------ | :----------------------- |
+| `Exist` | 当前通话中已有其他用户。 |
+| `Enter` | 其他用户加入通话。       |
+| `Leave` | 其他用户退出通话。       |
+
+<a id="actionack"></a>
+### ActionAck
+
+通话中产生的事件。
+
+```objc
+@objc public enum ActionAck:Int{
+
+    case StateInited
+    case LocalHangup
+    case LocalAnswer
+    case RemoteHangup
+    case RemoteAnswer
+    case RemoteTimeout
+    case RecordEnd
+    case LocalTimeout
+
+    case RemoteVideoReady
+    case RemoteAudioReady
+
+    case RemoteBusy
+    case CallIncoming
+    case CallForward
+    case CallOutgoing
+    case UnknownAction
+}
+```
+
+**参数**
+
+| 参数               | 描述               |
+| ------------------ | ------------------ |
+| `StateInited`      | 初始化呼叫状态。   |
+| `LocalHangup`      | 本地挂断。         |
+| `LocalAnswer`      | 本地接听。         |
+| `RemoteHangup`     | 设备挂断。         |
+| `RemoteAnswer`     | 设备接听。         |
+| `RemoteTimeout`    | 对端超时。         |
+| `RecordEnd`        | 云录制停止。       |
+| `LocalTimeout`     | 呼叫超时。         |
+| `RemoteVideoReady` | 首次收到设备视频。 |
+| `RemoteAudioReady` | 首次收到设备音频。 |
+| `RemoteBusy`       | 设备忙。           |
+| `CallIncoming`     | 设备来电振铃。     |
+| `CallForward`      | 本地去电中继。     |
+| `CallOutgoing`     | 本地去电振铃。     |
+| `UnknownAction`    | 未知错误。         |
+
+<a id="audioeffectid"></a>
+### AudioEffectId
+
+音频特效。
+
+```objc
+@objc public enum AudioEffectId:Int{
+    case NORMAL
+    case OLDMAN
+    case BABYBOY
+    case BABYGIRL
+    case ZHUBAJIE
+    case ETHEREAL
+    case HULK
+}
+```
+
+**参数**
+
+| 参数       | 描述                                                     |
+| ---------- | -------------------------------------------------------- |
+| `NORMAL`   | （默认）原声，即关闭本地语音的变声、美音或语聊美声效果。 |
+| `OLDMAN`   | 变声：老男孩。                                           |
+| `BABYBOY`  | 变声：小男孩。                                           |
+| `BABYGIRL` | 变声：小女孩。                                           |
+| `ZHUBAJIE` | 变声：猪八戒                                             |
+| `ETHEREAL` | 变声：空灵。                                             |
+| `HULK`     | 变声：绿巨人。                                           |
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+本文提供客户端微信小程序 SDK 的 API 参考。
+
+<a id="registeraccount"></a>
+## 账号管理
+### registerAccount
+
+在第三方平台注册用户账号。
+
+该方法适用于用户已经自行实现第三方账号管理系统的情况。声网不会保存用户名和密码，用户需要自行处理保存逻辑。
+
+#### 方法原型
+
+```javascript
+(property) AccountManager.registerAccount: (username: any, password: any) => Promise<any>
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getAccountManager().registerAccount(username, password)
+```
+
+#### 参数
+
+该方法参数为
+
+- `username`：用户名。数据类型为 String。请确保同一频道内的 `username` 是唯一的。支持的字符集包含：
+
+  - 10 个数字 0-9
+  - 26 个大写英文字母 A-Z
+  - 26 个小写英文字母 a-z
+
+- `password`：密码。数据类型为 String。支持的字符集包含：
+
+  - 10 个数字 0-9
+  - 26 个大写英文字母 A-Z
+  - 26 个小写英文字母 a-z
+
+#### 返回值
+
+该方法返回值为 `Promise<any>`。
+
+<a id="initsdk"></a>
+### initSdk
+
+初始化 SDK 并登陆用户账号。
+
+该方法需在 [registerAccount](#registeraccount) 之后调用。该方法中设置的 `username` 和 `password` 参数需与 `registerAccount` 中的对应参数保持一致，否则无法登陆。
+
+#### 方法原型
+
+```javascript
+function initSdk(config: any, username: any, password: any): Promise<void>
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getAccountManager().initSdk(config, username, password)
+```
+
+#### 参数
+
+该方法参数为
+
+- `config`：包含以下参数：
+
+  - `APPID`：声网的 App ID。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)。
+  - `PRODUCT_KEY`：Product Key。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)。
+  - `PROJECT_ID`：声网项目 ID。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)。
+
+- `username`：用户名。数据类型为 String。请确保同一频道内的 `username` 是唯一的。支持的字符集包含：
+
+  - 10 个数字 0-9
+  - 26 个大写英文字母 A-Z
+  - 26 个小写英文字母 a-z
+
+- `password`：密码。数据类型为 String。支持的字符集包含：
+
+  - 10 个数字 0-9
+  - 26 个大写英文字母 A-Z
+  - 26 个小写英文字母 a-z
+
+#### 返回值
+
+该方法返回值为 `Promise<void>`。
+
+<a id="destroysdk"></a>
+### destroySdk
+
+退出登陆用户账号并销毁 SDK。
+
+#### 方法原型
+
+```javascript
+function destroySdk(): void
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getAccountManager().destroySdk();
+```
+
+#### 返回值
+
+该方法返回值为 `void`。
+
+<a id="getuserdata"></a>
+## 用户管理
+### getUserData
+
+获取缓存中当前登录的用户信息。
+
+#### 方法原型
+
+```javascript
+function getUserData()
+```
+
+#### 示例代码
+
+```javascript
+const userData = CallkitSDK.getInstanceManager().getUserData()
+```
+
+#### 返回值
+
+该方法返回一个用户信息的 Object，其中包含如下字段：
+
+- `userId`: 当前登录的用户 ID。
+- `clientId`: 当前登录的用户的 client ID。
+
+<a id="userpublishstream"></a>
+## 呼叫管理
+### userPublishStream
+
+发布音视频流。
+
+#### 方法原型
+
+```javascript
+function userPublishStream()
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getInstanceManager().userPublishStream().then(
+    (pushUrl) => {
+        console.log("发布音视频流成功", pushUrl)
+    }).catch((err) => {
+        console.log("发布音视频流失败", err)
+    })
+```
+
+#### 返回值
+
+该方法返回一个 `Promise` 对象，包含如下参数：
+
+- `url`: 发布的音视频流的 URL 地址，数据类型为 String。
+
+<a id="calldevice"></a>
+### callDevice
+
+发出呼叫邀请。
+
+#### 方法原型
+
+```javascript
+async function callDevice(deviceMac, msg) 
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getInstanceManager().callDevice({
+    deviceId: "mydoorbell",
+    attachMsg: "Hello World",
+}).then(() => {
+    console.log("呼叫设备成功")
+}).catch((err) => {
+    console.log("呼叫设备失败")
+})
+```
+
+#### 参数
+
+该方法参数为包含了被叫端设备信息的 Object 对象，包含如下字段：
+
+- `deviceMac`: 被叫设备端的 ID，数据类型为 String。
+- `msg`: 发送给被叫设备端的呼叫邀请消息，数据类型为 String。
+
+#### 返回值
+
+该方法返回值为 `Promise<void>`。
+
+<a id="answerdevice"></a>
+### answerDevice
+
+接听来电。
+
+#### 方法原型
+
+```javascript
+async function answerDevice()
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getInstanceManager().answerDevice().then((res) => {
+    log.e("接听成功")
+}).catch((err) => {
+    log.e("接听失败")
+})
+```
+
+#### 返回值
+
+该方法返回值为 `Promise<void>`。
+
+<a id="hangupdevice"></a>
+### hangupDevice
+
+挂断来电。
+
+#### 方法原型
+
+```javascript
+async function hangupDevice()
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getInstanceManager().hangupDevice().then((res) => {
+    log.e("挂断成功")
+}).catch((err) => {
+    log.e("挂断失败")
+})
+```
+
+#### 返回值
+
+该方法返回值为 `Promise<void>`。
+
+<a id="mutelocal"></a>
+### muteLocal
+
+停止或恢复发送本地音视频流。
+
+该方法需要在加入频道后调用。
+
+#### 方法原型
+
+```javascript
+(property) CallkitManager.muteLocal: (target: any, isMuted: any) => void
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getCallkitManager().muteLocal('video', true);
+```
+
+#### 参数
+
+该方法参数为
+
+- `target`：数据内容。数据类型为 String。支持的字符如下：
+
+  - `video`：视频
+  - `audio`：音频
+  - `all`：音频和视频
+
+- `isMuted`：是否停止发送本地音视频流：
+
+  - `true`：停止发送
+  - `false`：恢复发送
+
+#### 返回值
+
+该方法返回值为 `void`。
+
+<a id="setaudiocodec"></a>
+### setAudioCodec
+
+设置音频编码格式。
+
+SDK 默认使用 G722 编码格式，如需修改音频编码格式，你可以调用该方法。
+
+#### 方法原型
+
+```javascript
+(property) CallkitManager.setAudioCodec: (audioCodec: any) => void
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getCallkitManager().setAudioCodec(e.detail.value);
+```
+
+#### 参数
+
+该方法参数为 `audioCodec`，表示音频编码属性。数据类型为 String。支持的字符如下：
+
+- `g711u`：G711U
+- `g722`：G722
+
+#### 返回值
+
+该方法返回值为 `void`。
+
+<a id="getaudiocodec"></a>
+### getAudioCodec
+
+获取音频编码格式。
+
+该方法可以获取 SDK 当前设置的音频编码属性。
+
+#### 方法原型
+
+```javascript
+(property) CallkitManager.getAudioCodec: () => "" | "g711u" | "g722"
+```
+
+#### 示例代码
+
+```javascript
+const currentAudioCodec = CallKitSDK.getCallkitManager().getAudioCodec();
+```
+
+#### 返回值
+
+该方法返回值为 SDK 当前设置的音频编码属性：
+
+- `g711u`：G711U
+- `g722`：G722
+
+<a id="peerrequesteventcallback"></a>
+## 事件管理
+### peerRequestEventCallback
+
+接收到对端用户发起的呼叫邀请时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function peerRequestEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.peerRequestEventCallbackUnsubscribe = CallKitSDK.getInstanceManager().peerRequestEventCallback((event) => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.peerRequestEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<event>`，其中 `event` 对象为呼叫时必需的参数，包含：
+
+-  `attachMsg`，即对端发起呼叫邀请时发出的消息。
+
+#### 返回值
+
+该方法会返回一个同步的 `peerRequestEventCallbackUnsubscribe` 函数，用于取消监听 `peerRequestEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="peerstreamaddedeventcallback"></a>
+### peerStreamAddedEventCallback
+
+接收到对端用户发布的音视频流时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function peerStreamAddedEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.peerStreamAddedEventCallbackUnsubscribe = CallKitSDK.getInstanceManager().peerStreamAddedEventCallback((playUrl) => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.peerStreamAddedEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<playUrl>`，其中 `playUrl` 为用于音视频流下行播放的 URL 地址。
+
+#### 返回值
+
+该方法会返回一个同步的 `peerStreamAddedEventCallbackUnsubscribe` 函数，用于取消监听 `peerStreamAddedEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="peeranswereventcallback"></a>
+### peerAnswerEventCallback
+
+对端用户接听发出的呼叫邀请时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function peerAnswerEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.peerAnswerEventCallbackUnsubscribe = CallKitSDK.getInstance().peerAnswerEventCallback(() => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.peerAnswerEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法会返回一个同步的 `peerAnswerEventCallbackUnsubscribe` 函数，用于取消监听 `peerAnswerEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="peerhangupeventcallback"></a>
+### peerHangupEventCallback
+
+对端用户挂断电话时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function peerHangupEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.peerHangupEventCallbackUnsubscribe = CallKitSDK.getInstanceManager().peerHangupEventCallback(() => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.peerHangupEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法会返回一个同步的 `peerHangupEventCallbackUnsubscribe` 函数，用于取消监听 `peerHangupEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="peerbusyeventcallback"></a>
+### peerBusyEventCallback
+
+对端用户占线时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function peerBusyEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.peerBusyEventCallbackUnsubscribe = CallKit.getInstanceManager().peerBusyEventCallback(() => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.peerBusyEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法会返回一个同步的 `peerBusyEventCallbackUnsubscribe` 函数，用于取消监听 `peerBusyEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="usersessionendeventcallback"></a>
+### userSessionEndEventCallback
+
+MQTT 连接状态或用户登录状态发生改变时，SDK 会触发该回调。你需要提醒用户退出登录。
+
+#### 方法原型
+
+```javascript
+function userSessionEndEventCallback(callback)
+```
+
+#### 示例代码
+
+```javascript
+onLoad: function() {
+    this.userSessionEndEventCallbackUnsubscribe = CallKitSDK.getInstanceManager().userSessionEndEventCallback(() => {
+        // 代码
+    })
+},
+onUnload: function() {
+    // 取消订阅事件
+    this.userSessionEndEventCallbackUnsubscribe()
+}
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法会返回一个同步的 `userSessionEndEventCallbackUnsubscribe` 函数，用于取消监听 `userSessionEndEventCallback` 事件。当小程序退出、页面被卸载，或者不想再监听该事件时，可以调用该方法。
+
+<a id="mqttreconnectedevent"></a>
+### mqttReconnectedEvent
+
+重连 MQTT 时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function mqttReconnectedEvent(callback: any): () => void
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getCallkitManager().mqttReconnectedEvent(() => {
+        log.i('mqtt reconnected event')
+    })
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法返回值为 `void`。
+
+<a id="mqttdisconnectedevent"></a>
+### mqttDisconnectedEvent
+
+与 MQTT 断开连接时，SDK 会触发该回调。
+
+#### 方法原型
+
+```javascript
+function mqttReconnectedEvent(callback: any): () => void
+```
+
+#### 示例代码
+
+```javascript
+CallKitSDK.getCallkitManager().mqttDisconnectedEvent(() => {
+        log.i('mqtt disconnected event')
+    })
+```
+
+#### 参数
+
+该方法参数为一个 `callback` 对象 `function<void>`。
+
+#### 返回值
+
+该方法返回值为 `void`。
+
+</PlatformStructured>

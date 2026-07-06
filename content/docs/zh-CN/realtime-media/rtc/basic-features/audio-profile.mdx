@@ -1,0 +1,1375 @@
+---
+title: "设置音频编码属性"
+---
+
+<PlatformStructured platform="android">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `create(config)` | 在创建 `RtcEngine` 实例时，设置音频应用场景。默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你项目的 `/app/java/com.example.<projectname>/MainActivity` 文件中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.DEFAULT);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_DEFAULT);
+```
+
+### 游戏开黑
+
+该场景主要要求传输人声、无杂音、节省码率。声网推荐如下设置：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.CHATROOM);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_SPEECH_STANDARD);
+```
+
+### 剧本杀
+
+该场景主要要求声音表现力好，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.CHATROOM);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_STANDARD);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.GAME_STREAMING);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.GAME_STREAMING);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```java
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.GAME_STREAMING);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_STANDARD_STEREO);
+```
+
+### 双师课堂
+
+该场景主要要求高音质，呈现丰富的声音效果，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```java
+
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.CHATROOM);
+engine = RtcEngine.create(config);
+
+// 设置音频编码属性
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_STANDARD_STEREO);
+```
+
+## 参考信息
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+</Cards>
+
+### API 参考
+
+- [`create`[2/2]](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AgoraAudioProfileDefault` 编码属性和 `AgoraAudioScenarioHighDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `sharedEngineWithConfig(config.audioScenario)` | 在创建 `AgoraRtcEngineKit` 实例时，设置音频应用场景。默认值为 `AgoraAudioScenarioHighDefault`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你项目的 `ViewController.swift` 文件中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .default
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .default
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 游戏开黑
+
+该场景主要要求传输人声、无杂音、节省码率。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .speechStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 剧本杀
+
+该场景主要要求声音表现力好，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighQuality
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighqQalityStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 双师课堂
+
+该场景主要要求高音质，呈现丰富的声音效果，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var audioScenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AgoraAudioScenarioGameStreaming`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### API 参考
+
+- [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AgoraAudioProfileDefault` 编码属性和 `AgoraAudioScenarioHighDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `sharedEngineWithConfig(config.audioScenario)` | 在创建 `AgoraRtcEngineKit` 实例时，设置音频应用场景。默认值为 `AgoraAudioScenarioHighDefault`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你项目的 `ViewController.swift` 文件中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .default
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .default
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 游戏开黑
+
+该场景主要要求传输人声、无杂音、节省码率。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .speechStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 剧本杀
+
+该场景主要要求声音表现力好，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandard
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighQuality
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicHighqQalityStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var scenario:AgoraAudioScenario = .gameStreaming
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+### 双师课堂
+
+该场景主要要求高音质，呈现丰富的声音效果，上下麦时无音量、音质变化。声网推荐如下设置：
+
+```swift
+// Swift
+// 在创建 AgoraRtcEngineKit 实例时，设置音频应用场景
+var audioScenario:AgoraAudioScenario = .chatRoom
+config.audioScenario = audioScenario
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+// 设置音频编码属性
+var profile:AgoraAudioProfile = .musicStandardStereo
+agoraKit.setAudioProfile(audioProfile)
+```
+
+## 参考信息
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### API 参考
+
+- [`sharedEngineWithConfig`](/api-ref/rtc/macos/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/macos/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/macos/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+在一些比较专业的场景里，用户对声音的效果尤为敏感，比如语音电台，此时就需要对双声道和高音质的支持。
+这里的高音质是指采样率为 48 kHz、码率为 192 Kbps 的音频编码能力，可用于实现高保真的音乐场景，常见于语音电台、唱歌比赛等直播场景。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)在你的项目中实现基本的实时音视频功能。
+## 实现方法
+
+声网 Web SDK 提供以下三种方法创建本地音频轨道：
+
+- `createMicrophoneAudioTrack`
+- `createBufferSourceAudioTrack`
+- `createCustomAudioTrack`
+
+你可以通过修改这些方法中的 `encoderConfig` 参数来调整音频的编码配置。`encoderConfig` 支持以下两种设置：
+
+- 使用 SDK 预设的音频编码属性。
+- 自定义各种音频编码参数的对象。
+
+**使用预设音频编码属性**
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+  encoderConfig: "high_quality_stereo",
+}).then(/**...**/);
+```
+
+**自定义音频编码属性**
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+  encoderConfig: {
+    sampleRate: 48000,
+    stereo: true,
+    bitrate: 128,
+  },
+}).then(/**...**/);
+```
+
+## 参考信息
+
+### 开发注意事项
+
+请在调用 `AgoraRTCClient.publish` 方法发布音频轨道之前设置好音频编码属性，音频轨道发布后无法修改音频编码属性。
+
+### API 参考
+
+- [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createmicrophoneaudiotrack)
+- [`createBufferSourceAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createbuffersourceaudiotrack)
+- [`createCustomAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomaudiotrack)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `initialize(context.audioScenario)` | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_DEFAULT
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_DEFAULT);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_STANDARD_STEREO);
+```
+
+## 参考信息
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="AudioProfile" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioProfile" />
+  <Card title="AudioProfile" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/AudioProfile" />
+</Cards>
+
+### API 参考
+
+- [`initialize`](/api-ref/rtc/windows/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/windows/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/windows/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `DEFAULT` 编码属性和 `DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                | 描述                                                        |
+| :--------------------------------- | :--------------------------------------------------------- |
+| `create(config.mAudioScenario)`    | 在创建 `RtcEngine` 实例时，设置音频应用场景。                   |
+| `setAudioProfile`                  | 在加入频道前后均可设置音频编码属性。                             |
+| `setAudioScenario`                 | 在加入频道前后均可设置音频应用场景。                             |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.DEFAULT;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.DEFAULT);
+```
+
+### 游戏开黑
+
+该场景主要要求传输人声、无杂音、节省码率。推荐如下设置：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.CHATROOM;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.SPEECH_STANDARD);
+```
+
+### 剧本杀
+
+该场景主要要求声音表现力好，上下麦时无音量、音质变化。推荐如下设置：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.CHATROOM;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_STANDARD);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.GAME_STREAMING;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_HIGH_QUALITY);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.GAME_STREAMING;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_HIGH_QUALITY_STEREO);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。推荐如下设置：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.GAME_STREAMING;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_STANDARD_STEREO);
+```
+
+### 双师课堂
+
+该场景主要要求高音质，呈现丰富的声音效果，上下麦时无音量、音质变化。推荐如下设置：
+
+```arkts
+// 在创建 RtcEngine 实例时，设置音频应用场景
+config.mAudioScenario = Constants.AudioScenarioType.CHATROOM;
+this.rtcEngine = RtcEngine.create(config);
+
+// 设置音频编码属性
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_STANDARD_STEREO);
+```
+
+## 参考信息
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinAudioChannel" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+  <Card title="JoinAudioChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+</Cards>
+
+### API 参考
+
+- [`create`](/api-ref/rtc/harmonyos/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`](/api-ref/rtc/harmonyos/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/harmonyos/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AudioProfileDefault` 编码属性和 `AudioScenarioDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                     | 描述                                                         |
+| :-------------------------------------- | :----------------------------------------------------------- |
+| `initialize(RtcEngineContext context);` | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AudioScenarioDefault`。 |
+| `setAudioProfile(profile)`              | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario(scenario)`            | 在加入频道前后均可设置音频应用场景。                         |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileDefault);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQuality);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioGameStreaming,});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+  });
+  // 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicStandardStereo);
+```
+
+## 参考信息
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### API 参考
+
+- [`initialize`](/api-ref/rtc/electron/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`](/api-ref/rtc/electron/API/toc_audio_basic#api_irtcengine_setaudioprofile)
+- [`setAudioScenario`](/api-ref/rtc/electron/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `Initialize(RtcEngineContext context)` | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `SetAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `SetAudioScenario(scenario)`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```csharp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context = new RtcEngineContext();
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT
+RtcEngine.Initialize(context);
+ 
+// 设置音频编码属性
+RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_DEFAULT);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```csharp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context = new RtcEngineContext();
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_GAME_STREAMING
+RtcEngine.Initialize(context);
+ 
+// 设置音频编码属性
+RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```csharp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context = new RtcEngineContext();
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_GAME_STREAMING
+RtcEngine.Initialize(context);
+ 
+// 设置音频编码属性
+RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```csharp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context = new RtcEngineContext();
+context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_GAME_STREAMING
+RtcEngine.Initialize(context);
+ 
+// 设置音频编码属性
+RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_MUSIC_STANDARD_STEREO);
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### API 参考
+
+- [`Initialize`](/api-ref/rtc/unity/API/toc_initialize#api_irtcengine_initialize)
+- [`SetAudioProfile`[2/2]](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`SetAudioScenario`](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `audioProfileDefault` 编码属性和 `audioScenarioDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API     | 描述   |
+| :--------- | :------------------- |
+| `initialize(context.audioScenario)` | 在创建 `RtcEngine` 实例时，设置音频应用场景。默认值为 `audioScenarioDefault`。 |
+| `setAudioProfile(profile, scenario)`   | 在加入频道前后均可设置音频编码属性和应用场景。  |
+| `setAudioScenario(scenario)`   | 在加入频道前后均可设置音频应用场景。  |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```dart
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AudioScenarioType.audioScenarioDefault;
+await rtcEngine.initialize(context);
+
+// 设置音频编码属性
+await rtcEngine.setAudioProfile(AudioProfileType.audioProfileDefault);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```dart
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AudioScenarioType.audioScenarioGameStreaming;
+await rtcEngine.initialize(context);
+
+// 设置音频编码属性
+await rtcEngine.setAudioProfile(AudioProfileType.audioScenarioGameStreaming);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```dart
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AudioProfileType.audioScenarioChorus;
+await rtcEngine.initialize(context);
+
+// 设置音频编码属性
+await rtcEngine.setAudioProfile(AudioProfileType.audioScenarioChorus);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。推荐如下设置：
+
+```dart
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AudioProfileType.audioScenarioMeeting;
+await rtcEngine.initialize(context);
+
+// 设置音频编码属性
+await rtcEngine.setAudioProfile(AudioProfileType.audioScenarioMeeting);
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `audioScenarioGameStreaming`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### API 参考
+
+- [`initialize`](/api-ref/rtc/flutter/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`](/api-ref/rtc/flutter/API/toc_audio_basic#api_irtcengine_setaudioprofile)
+- [`setAudioScenario`](/api-ref/rtc/flutter/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AudioProfileDefault` 编码属性和 `AudioScenarioDefault` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                     | 描述                                                         |
+| :-------------------------------------- | :----------------------------------------------------------- |
+| `initialize(RtcEngineContext context);` | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AudioScenarioDefault`。 |
+| `setAudioProfile(profile)`              | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario(scenario)`            | 在加入频道前后均可设置音频应用场景。                         |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileDefault);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQuality);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioGameStreaming,});
+// 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicHighQualityStereo);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```typescript
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+const engine = createAgoraRtcEngine();
+engine.initialize({
+  appId,
+  ...,
+  audioScenario: AudioScenarioType.AudioScenarioDefault,
+  });
+  // 设置音频编码属性
+engine.setAudioProfile(AudioProfileType.AudioProfileMusicStandardStereo);
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AudioScenarioGameStreaming`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+- [实现高音质](/zh-CN/realtime-media/rtc/best-practice/optimal-audio-quality)
+
+### API 参考
+
+- [`initialize`](/api-ref/rtc/rn/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`](/api-ref/rtc/rn/API/toc_audio_basic#api_irtcengine_setaudioprofile)
+- [`setAudioScenario`](/api-ref/rtc/rn/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                                          | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `initialize(context.audioScenario)` | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `setAudioProfile(profile)`                                   | 在加入频道前后均可设置音频编码属性。                         |
+| `setAudioScenario`                         | 在加入频道前后均可设置音频应用场景。               |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和应用场景。你可以将如下示例代码添加至你的项目中。
+
+### 一对一互动教学
+
+一对一互动教学主要要求保证通话质量、传输流畅。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_DEFAULT
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_DEFAULT);
+```
+
+### KTV
+
+KTV 主要要求高音质、对音乐和歌声的表现力好。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_HIGH_QUALITY);
+```
+
+### 语音电台
+
+语音电台一般会使用专业的音频设备，主要要求高音质和立体声。在你的项目中添加如下代码：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO);
+```
+
+### 音乐教学
+
+该场景主要要求高音质，支持将扬声器播放的音效传输到远端。声网推荐如下设置：
+
+```cpp
+// 在初始化 IRtcEngine 实例时，设置音频应用场景
+RtcEngineContext context;
+context.audioScenario = AUDIO_SCENARIO_GAME_STREAMING
+m_rtcEngine->initialize(context);
+
+// 设置音频编码属性
+m_rtcEngine->setAudioProfile(AUDIO_PROFILE_MUSIC_STANDARD_STEREO);
+```
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+
+### 示例项目
+
+声网提供了设置音频编码属性和应用场景功能的开源示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Unreal C++ 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example" />
+</Cards>
+
+### API 参考
+
+- [`initialize`](/api-ref/rtc/unreal-cpp/API/toc_initialize#api_irtcengine_initialize)
+- [`setAudioProfile`[2/2]](/api-ref/rtc/unreal-cpp/API/toc_audio_basic#api_irtcengine_setaudioprofile2)
+- [`setAudioScenario`](/api-ref/rtc/unreal-cpp/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+不同的 App 需要设置不同的音频编码属性或应用场景。本文介绍如何使用声网 RTC SDK 在你的 App 中设置合适的音频编码属性和应用场景。
+
+## 技术原理
+
+SDK 默认使用 `AUDIO_PROFILE_DEFAULT` 编码属性和 `AUDIO_SCENARIO_DEFAULT` 应用场景。如果默认设置无法满足你的需求，调用如下 API 设置音频编码属性和应用场景。
+
+| API                                   | 描述                                                          |
+| :------------------------------------ | :----------------------------------------------------------- |
+| `Initialize(context.audioScenario)`    | 在创建 `IRtcEngine` 实例时，设置音频应用场景。默认值为 `AUDIO_SCENARIO_DEFAULT`。 |
+| `SetAudioProfile(profile, scenario)`   | 在加入频道前后均可设置音频编码属性和应用场景。                       |
+| `SetAudioScenario`                     | 在加入频道前后均可设置音频应用场景。                                |
+
+## 前提条件
+
+在实现设置音频编码属性和应用场景前，请确保已在你的项目中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何为常见应用设置音频编码属性和音频应用场景。
+
+### 设置音频编码属性
+
+本小节介绍如何调用 `SetAudioProfile` 设置音频编码属性。
+
+#### 1. 创建 UMG
+
+创建一个 **ComboBoxString**（下拉列表框）控件，命名为 **CBS_Audio_Profile**，你可以在下拉列表中按需选择音频编码属性，其中默认选项为 **AUDIO_PROFILE_DEFAULT**，其他选项详见 [`EAUDIO_PROFILE_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_audioprofiletype)。如下图所示：
+
+![音频编码属性下拉列表框控件示意图](/img/rtc/audio-profile-umg-profile.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Selection Changed** 节点，分别连接 **CBS_Audio_Profile** 控件和 **OnSetAudioProfile** 回调。当你在 **CBS_Audio_Profile** 下拉列表框中选择不同的音频编码属性时，会触发 **OnSetAudioProfile** 回调。如下图所示：
+
+![绑定音频编码属性选择事件的蓝图节点示意图](/img/rtc/audio-profile-bind-profile.png)
+
+#### 3. 实现回调函数
+
+创建 **OnSetAudioProfile** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  | ------- | -------- | --------- |
+  | `SelectedItem` | String | 音频编码属性选项。 |
+  | `SelectionType` | Enum | 选择信息枚举类型，详见 [ESelectInfo](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/SlateCore/Types/ESelectInfo__Type?application_version=4.27)。 |
+
+触发该回调后，你选择的音频编码属性会传入 **Set Audio Profile** 的 **Profile** 参数，并调用 **Set Audio Profile** 方法完成设置。如下图所示：
+
+![设置音频编码属性回调函数蓝图示意图](/img/rtc/audio-profile-callback-profile.png)
+
+### 设置音频应用场景
+
+本小节介绍如何调用 `SetAudioScenario` 设置音频应用场景。
+
+#### 1. 创建 UMG
+
+创建一个 **ComboBoxString**（下拉列表框）控件，命名为 **CBS_Audio_Scenario**，你可以在下拉列表中按需选择音频应用场景，其中默认选项为 **AUDIO_SCENARIO_DEFAULT**，其他选项详见 [`EAUDIO_SCENARIO_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_audioscenariotype)。如下图所示：
+
+![音频应用场景下拉列表框控件示意图](/img/rtc/audio-profile-umg-scenario.png)
+
+#### 2. 绑定 UI 事件
+
+创建 **Bind Event to On Selection Changed** 节点，分别连接 **CBS_Audio_Scenario** 控件和 **OnSetAudioScenario** 回调。当你在 **CBS_Audio_Scenario** 下拉列表框中选择不同的音频应用场景时，会触发 **OnSetAudioScenario** 回调。如下图所示：
+
+![绑定音频应用场景选择事件的蓝图节点示意图](/img/rtc/audio-profile-bind-scenario.png)
+
+#### 3. 实现回调函数
+
+创建 **OnSetAudioScenario** 回调函数，配置以下参数：
+
+  | 输入参数 | 数据类型 | 参数描述 |
+  | ------- | -------- | --------- |
+  | `SelectedItem` | String | 音频应用场景选项。 |
+  | `SelectionType` | Enum | 选择信息枚举类型，详见 [ESelectInfo](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/SlateCore/Types/ESelectInfo__Type?application_version=4.27)。 |
+
+触发该回调后，你选择的音频应用场景会传入 **Set Audio Scenario** 的 **Scenario** 参数，并调用 **Set Audio Scenario** 方法完成设置。如下图所示：
+
+![设置音频应用场景回调函数蓝图示意图](/img/rtc/audio-profile-callback-scenario.png)
+
+### 推荐设置
+
+常见应用的音频编码属性和音频应用场景推荐设置如下：
+
+| 常见应用 | 音频编码属性 | 音频应用场景 |
+| --- | --- | --- |
+| 一对一互动教学，主要要求保证通话质量、传输流畅 | `AUDIO_PROFILE_DEFAULT` | `AUDIO_SCENARIO_DEFAULT` |
+| KTV，主要要求高音质、对音乐和歌声的表现力好 | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` | `AUDIO_SCENARIO_GAME_STREAMING` |
+| 语音电台，一般会使用专业的音频设备，主要要求高音质和立体声 | `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` | `AUDIO_SCENARIO_GAME_STREAMING` |
+| 音乐教学，主要要求高音质，支持将扬声器播放的音效传输到远端 | `AUDIO_PROFILE_MUSIC_STANDARD_STEREO` | `AUDIO_SCENARIO_GAME_STREAMING` |
+
+## 参考信息
+
+### 注意事项
+
+由于 iOS 系统限制，部分音频路由在通话音量模式下无法识别。因此，如需使用外接声卡，建议将音频应用场景设置为高音质场景 `AUDIO_SCENARIO_GAME_STREAMING`(3)。在这种场景下，SDK 会切换到媒体音量规避该问题。
+
+### 相关文档
+
+- [如何区分媒体音量和通话音量？](/faq/integration-issues/system-volume)
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic/JoinChannelAudio" />
+</Cards>
+
+### API 参考
+
+- [`Initialize`](/api-ref/rtc/unreal-blueprint/API/toc_initialize#api_irtcengine_initialize)
+- [`SetAudioProfile`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#api_irtcengine_setaudioprofile)
+- [`SetAudioScenario`](/api-ref/rtc/unreal-blueprint/API/toc_audio_basic#api_irtcengine_setaudioscenario)
+
+</PlatformStructured>

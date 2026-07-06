@@ -1,0 +1,83 @@
+---
+title: "集成指引"
+---
+本文列出专递课堂场景方案的常见功能以及对应的声网产品和集成文档。
+
+## 课前准备
+
+### 课堂管理
+
+通过[声网频道管理服务](/zh-CN/realtime-media/rtc/user-guides/channel-management)查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
+
+### 课前设备和网络检测
+
+在线教育场景非常重视音视频的效果和稳定性，因此声网强烈建议教师端和学生端都进行课前检测，检测麦克风、摄像头等音视频设备能否正常工作，并检测网络状况是否满足要求，详见[通话前网络和设备检测](/doc/rtc//basic-features/lastmile-quality)。
+
+## 课堂互动
+
+### 实时音视频互动
+
+使用声网 RTC SDK 实现实时音视频互动功能。教师对学生讲课，学生就上课内容向老师提问，形成良好的互动式课堂氛围。详见：
+
+- [RTC SDK 下载地址](/doc/rtc//resources)
+- [RTC SDK 快速开始](/doc/rtc//get-started/quick-start)
+- [RTC API 参考](/api-ref/rtc//API/rtc_api_overview)
+- [RTC GitHub 示例项目](https://github.com/AgoraIO/API-Examples)
+
+### 实时消息互动
+
+使用声网云信令 SDK 实现实时消息互动功能。教师和学生在课堂中发送文字消息进行互动。详见：
+
+- [云信令 SDK 下载地址](https://docportal.shengwang.cn/cn/Real-time-Messaging/downloads?platform=All%20Platforms)
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_android?platform=Android)
+- [云信令 API 参考](https://docportal.shengwang.cn/cn/Real-time-Messaging/api-ref?platform=All%20Platforms)
+- [云信令 GitHub 示例项目](https://github.com/AgoraIO/RTM)
+
+### 互动白板
+
+教师在白板上涂鸦、上传文件（PPT、Word 和 PDF）或播放视频，有助于提炼教学重点，帮助学生理解或记忆。学生也可使用白板与老师进行实时互动。详见：
+
+- [互动白板 SDK](/doc/whiteboard//landing-page)
+- [开启和配置互动白板服务](/doc/whiteboard//whiteboard-sdk/get-started/enable-service)
+
+### 屏幕共享
+
+通过声网 RTC SDK 提供的 API，教师可将自己屏幕的内容分享给学生观看，提高教学效果。详见[屏幕共享](/doc/rtc//basic-features/screen-share)。
+
+### 客户端播放媒体文件
+
+教师可通过[媒体播放器组件](/doc/rtc//advanced-features/media-player)（MediaPlayer Kit）在客户端播放本地或在线的媒体资源，将媒体资源同步分享给声网频道内的远端学生观看和收听。
+
+### 服务端播放在线媒体流
+
+开发者可通过[服务端输入在线媒体流服务](/zh-CN/realtime-media/media-pull)，将事先准备的音视频素材作为一个发送端输入正在进行的课堂，教师和学生可以一起观看该媒体流并实时互动。
+
+### 监课端
+
+监课端在在线教育场景中扮演的角色类似于现实中的助教，主要处理如下任务：
+
+- 处理紧急突发问题，确保课程正常完成。
+- 管理教室、课件、教师和学生等。
+
+你可以使用 RTC Web SDK，也可以使用 RTC Native SDK 实现监课端，把监课端想象成一个上课过程中只收流、不发流的特殊客户端。
+
+### 画质强化
+
+声网提供 API 供开发者设置视频编码属性，包含视频分辨率、帧率、码率等，最高支持 1080P 60fps，以确保用户的视频使用体验。详见[设置视频编码属性](/doc/rtc//basic-features/video-profile)。
+
+### 课堂管理
+
+通过[声网频道管理](/zh-CN/realtime-media/rtc/user-guides/channel-management)服务查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
+
+### 旁路推流
+
+将直播媒体流发布到 CDN（Content Delivery Network），用户无需安装 App 即可通过 Web 浏览器观看直播。详见[旁路推流](/zh-CN/realtime-media/media-push)。
+
+## 课后回顾
+
+### 录制
+
+使用声网录制服务将课堂内容录制下来，并生成回放链接，方便学生课后复习和学校评估教学质量。详见：
+
+- [云端录制](/zh-CN/realtime-media/recording/cloud-recording)（推荐）
+- [本地服务端录制](/zh-CN/realtime-media/recording/local-server-recording)

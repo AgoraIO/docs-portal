@@ -1,0 +1,662 @@
+---
+title: "事件类型"
+---
+[开通声网消息通知](/zh-CN/solutions/voip-call/webhook/receive-webhook)后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+本页介绍频道事件回调中返回的各事件类型及含义。
+
+## 请求 Header
+
+| 字段名            | 值                 |
+| ----------------- | ------------------ |
+| `Content-Type`    | `application/json` |
+| `Agora-Signature` |声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/solutions/voip-call/webhook/receive-webhook#验证签名)。          |
+| `Agora-Signature-V2` |声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。 详见[验证签名](/zh-CN/solutions/voip-call/webhook/receive-webhook#验证签名)。            |
+
+## 请求 Body
+
+请求 Body 的示例如下：
+
+```json
+{
+  "appId": "xxxxxskdsakm",
+  "sid": "C86646scxsc87",
+  "noticeId": "xxx",
+  "eventType": 1,
+  "eventName": "CALLING",
+  "payload": {
+    // ...
+  }
+}
+```
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `appId` | String | 你的声网项目的 App ID。|
+| `sid` | String | 触发该事件的请求 ID，和响应中返回的 `taskId` 一致。你可以使用该字段定位出现异常的请求。|
+| `noticeId` | String | 通知 ID，标识来自声网业务服务器的一次事件通知。|
+| `eventType` | Number | 事件类型。|
+| `eventName` | String | 事件名称。|
+| `payload` | Json Object | 通知事件的具体内容。详见[事件类型](#事件类型)。|
+
+## 事件类型
+
+### 01 CALLING
+
+`eventType` 为 `01` 表示通话正在拨打中，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-0-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | String | <Slot name="voip-events-html-0-3-2" /> |
+| `agora` | String | <Slot name="voip-events-html-0-4-2" /> |
+
+<Slot for="voip-events-html-0-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-0-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-0-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 1,
+  "detail": "device call wechat",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 02 CANCEL_CALLING
+
+`eventType` 为 `02` 表示通话拨打的时候被取消或拒绝，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-1-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | Object | <Slot name="voip-events-html-1-3-2" /> |
+| `agora` | Object | <Slot name="voip-events-html-1-4-2" /> |
+
+<Slot for="voip-events-html-1-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-1-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-1-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "calling is cancelled or rejected",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 03 TALKING
+
+`eventType` 为 `03` 表示正在通话中，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-2-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | Object | <Slot name="voip-events-html-2-3-2" /> |
+| `agora` | Object | <Slot name="voip-events-html-2-4-2" /> |
+
+<Slot for="voip-events-html-2-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-2-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-2-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 1,
+  "detail": "talking",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 04 HANGUP
+
+`eventType` 为 `04` 表示通话被挂断，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-3-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | String | <Slot name="voip-events-html-3-3-2" /> |
+| `agora` | String | <Slot name="voip-events-html-3-4-2" /> |
+| `hangupDirect` | Number | <Slot name="voip-events-html-3-5-2" /> |
+
+<Slot for="voip-events-html-3-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-3-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-3-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-3-5-2">
+
+挂断方向：
+
+    - 1：设备挂断
+    - 2：小程序挂断
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "hangup by xxx",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}",
+  "hangupDirect": 1
+}
+```
+
+### 05 TALKING_WX_ERROR
+
+`eventType` 为 `05` 表示通话中微信端发生错误，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-4-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | String | <Slot name="voip-events-html-4-3-2" /> |
+| `agora` | String | <Slot name="voip-events-html-4-4-2" /> |
+
+<Slot for="voip-events-html-4-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-4-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-4-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "wx error during talking",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 06 BUSY
+
+`eventType` 为 `06` 表示被叫处于忙碌状态无法接通，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-5-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | String | <Slot name="voip-events-html-5-3-2" /> |
+| `agora` | String | <Slot name="voip-events-html-5-4-2" /> |
+
+<Slot for="voip-events-html-5-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-5-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-5-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "xxx is busy",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 07 TIMEOUT
+
+`eventType` 为 `07` 表示呼叫超时，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-6-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `wechat` | String | <Slot name="voip-events-html-6-3-2" /> |
+| `agora` | String | <Slot name="voip-events-html-6-4-2" /> |
+
+<Slot for="voip-events-html-6-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-6-3-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-6-4-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "timeout of calling",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 08 TRANSCODE_INFO
+
+`eventType` 为 `08` 表示通话中收到视频转码信息，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-7-1-2" /> |
+| `wechat` | String | <Slot name="voip-events-html-7-2-2" /> |
+| `agora` | String | <Slot name="voip-events-html-7-3-2" /> |
+| `transcodeInfo` | String | <Slot name="voip-events-html-7-4-2" /> |
+
+<Slot for="voip-events-html-7-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-7-2-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-7-3-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-7-4-2">
+
+视频转码信息，包含如下字段：
+
+    - `source`：表示源视频。
+    - `target`：表示转码后的视频。
+    - `sourceHeight`：源视频高度。
+    - `sourceWidth`：源视频宽度。
+    - `targetHeight`：转码后的视频高度。
+    - `targetWidth`：转码后的视频宽度。
+    - `targetFrameRate`：转码后的视频帧率。
+    - `targetBitra`：转码后的视频码率。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}",
+  "transcodeInfo": "{\"source\":\"xxx\",\"target\":\"xxx\",\"sourceHeight\":\"240\",\"sourceWidth\":\"220\",\"targetHeight\":\"480\",\"targetWidth\":\"400\",\"taregtFrameRate\":\"7\",\"targetBItra\":\"172\"}"
+}
+```
+
+### 97 WX_CONFIG_ERROR
+
+`eventType` 为 `97` 表示呼叫初始化时微信配置错误，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-8-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `errorCode` | uint64 | 错误码。 |
+| `errorDetail` | String | 具体的错误信息。 |
+| `wechat` | String | <Slot name="voip-events-html-8-5-2" /> |
+| `agora` | String | <Slot name="voip-events-html-8-6-2" /> |
+
+<Slot for="voip-events-html-8-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-8-5-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-8-6-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "wx config error and cannot init call",
+  "errorCode": xxx,
+  "errorDetail": "xxx",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 98 API_ERROR
+
+`eventType` 为 `98` 表示 API 调用发生错误，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-9-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `errorCode` | uint64 | <Slot name="voip-events-html-9-3-2" /> |
+| `errorDetail` | String | 具体的错误信息。 |
+| `wechat` | String | <Slot name="voip-events-html-9-5-2" /> |
+| `agora` | String | <Slot name="voip-events-html-9-6-2" /> |
+
+<Slot for="voip-events-html-9-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-9-3-2">
+
+错误码：
+
+    - 1000：请求参数异常、账号未绑定、请求微信失败等。
+    - 1001：License 校验成功。
+    - 1002：License 校验失败。
+
+</Slot>
+
+<Slot for="voip-events-html-9-5-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-9-6-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "api error",
+  "errorCode": xxx,
+  "errorDetail": "xxx",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```
+
+### 99 AGORA_CONFIG_ERROR
+
+`eventType` 为 `99` 表示声网相关配置错误，`payload` 中包含以下字段：
+
+| 字段 | 类型 | 含义 |
+| --- | --- | --- |
+| `direct` | Number | <Slot name="voip-events-html-10-1-2" /> |
+| `detail` | String | 该事件类型代表的具体含义。 |
+| `errorCode` | uint64 | 错误码。 |
+| `errorDetail` | String | 具体的错误信息。 |
+| `wechat` | String | <Slot name="voip-events-html-10-5-2" /> |
+| `agora` | String | <Slot name="voip-events-html-10-6-2" /> |
+
+<Slot for="voip-events-html-10-1-2">
+
+呼叫方向：
+
+    - 1：设备拨打小程序
+    - 2：小程序拨打设备
+
+</Slot>
+
+<Slot for="voip-events-html-10-5-2">
+
+微信小程序相关配置项，包含如下字段：
+
+    - `deviceId`：设备 ID。
+    - `openId`：小程序用户的唯一 ID。
+    - `appId`：微信小程序的 App ID。
+
+</Slot>
+
+<Slot for="voip-events-html-10-6-2">
+
+声网相关配置项，包含如下字段：
+
+    - `channelName`：设备端加入的 RTC 频道名。
+    - `robotUID`：微呼叫服务加入 RTC 频道时使用的 UID。
+    - `deviceUID`：设备端加入 RTC 频道时使用的 UID。
+    - `appId`：声网项目的 App ID。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+  "direct": 2,
+  "detail": "agora config error",
+  "errorCode": xxx,
+  "errorDetail": "xxx",
+  "wechat": "{\"appId\":\"xxx\",\"deviceId\":\"xxx\",\"openId\":\"xxx\"}",
+  "agora": "{\"channelName\":\"xxx\",\"appId\":\"xxx\",\"robotUID\":\"xxx\",\"deviceUID\":\"xxx\"}"
+}
+```

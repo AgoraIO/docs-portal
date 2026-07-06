@@ -1,0 +1,158 @@
+---
+title: "跑通示例项目"
+---
+本文介绍如何集成 C++ SDK 并跑通声网提供的示例项目。
+
+## 准备开发环境
+
+确保你的服务端开发机满足以下要求。
+
+### 硬件环境
+
+**操作系统**
+
+- Ubuntu（18.04 版本及以上）
+- CentOS（7.0 版本及以上）
+
+**CPU 架构**
+
+- arm64
+- x86-64
+
+如需支持其他架构，请联系 sales@shengwang.cn。
+
+**性能要求**
+
+- CPU：8 核，1.8 GHz 主频 
+- 内存：2 GB 或更高。推荐 4 GB 或更高。
+
+**网络要求**
+
+- 服务器接入公网，有公网 IP
+- 服务器允许访问 .agora.io 以及 .agoralab.co
+
+### 软件环境
+
+- glibc 2.18 或更高版本
+- gcc 4.8 或更高版本
+
+以 Ubuntu 20.04.3 LTS 为例，在你的服务端安装以下依赖：
+
+```shell
+# 安装 aptitude
+sudo apt install aptitude
+# 安装 build-essential libx11-dev libxcomposite-dev libxext-dev libxfixes-dev libxdamage-dev cmake
+sudo aptitude install libx11-dev libxcomposite-dev libxext-dev libxfixes-dev libxdamage-dev cmake
+```
+
+如果你的操作系统为 CentOS，以 CentOS 为例，在你的服务端安装以下依赖：
+
+```shell
+sudo yum groupinstall "Development Tools"
+sudo yum install wget
+sudo yum groupinstall X11
+```
+
+## 开通服务
+
+参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/get-started/enable-service)获取声网 App ID 和 RTC 临时 Token。
+
+## 获取 SDK
+
+声网在 RTC 服务端 SDK 下载包中提供了可运行的示例项目。
+
+联系 sales@shengwang.cn 获取最新 SDK 下载地址。下载 SDK 并解压缩。
+
+## 编译示例项目
+
+以 x86_64 平台的 SDK 为例，运行以下命令构建示例项目：
+
+```shell
+# 切换到示例项目目录
+cd agora_rtc_sdk/example
+# 构建示例项目
+./build.sh
+# 同步项目所需的音视频数据
+cd out
+../sync-data.sh
+# 将 SDK 中的库导出到 LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
+```
+
+## 跑通服务端发流示例项目
+
+本文以 **sample_send_h264_pcm** 示例项目为例，演示服务端发流效果。
+
+### 运行步骤
+
+运行 **sample_send_h264_pcm** 示例项目。将 `--token` 的参数 `YOUR_RTC_TOKEN` 替换为你的 RTC 临时 Token。将 `--channelId` 的参数替换为你的声网 RTC 频道名，本文设为 `demo_channel`。
+
+```shell
+# 运行 sample_send_h264_pcm 示例发送 h264 编码格式的视频和 pcm 格式的音频
+./sample_send_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel --videoFile test_data/send_video.h264 --audioFile test_data/send_audio_16k_1ch.pcm
+```
+
+### 在客户端验证服务端发流
+
+你可以按如下步骤进行验证：
+
+1. 克隆 [API-Examples-Web](https://github.com/Shengwang-Lab/API-Examples-Web) 到本地，在浏览器中打开 `Demo/index.html` 文件。
+2. 点击 **basicvideocalling** 下的 **tryitnow**，进入视频通话 demo 界面。
+3. 输入你的  App ID、RTC 临时 Token、频道名 `demo_channel` 及任意用户名，点击 **join**。成功加入频道后，你就可以看到和听到实时音视频流了。
+
+![服务端发流验证](https://web-cdn.agora.io/docs-files/1667965332407)
+
+## 跑通服务端收流示例项目
+
+本文以 **sample_receive_h264_pcm** 示例项目为例，演示服务端收流效果。
+
+### 运行步骤
+
+运行 **sample_receive_h264_pcm** 示例项目。将 `--token` 的参数 `YOUR_RTC_TOKEN` 替换为你的 RTC 临时 Token。将 `--channelId` 的参数替换为你的声网 RTC 频道名，例如 `demo_channel`。
+
+```shell
+# 运行 sample_receive_h264_pcm 示例接收 h264 编码格式的视频和 pcm 格式的音频
+./sample_receive_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel
+```
+
+运行成功之后，控制台会打印以下信息：
+
+```text
+[ APP_LOG_INFO ] Subscribe streams from all remote users
+[ APP_LOG_INFO ] Start receiving audio & video data ...
+[ APP_LOG_INFO ] Created file received_audio.pcm to save received PCM samples
+[ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 4088243221, state 1, reason 0
+[ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 4088243221, state 2, reason 6
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 0, val 0
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 4, val 1
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 8, val 1
+[ APP_LOG_INFO ] onUserInfoUpdated: userId 4088243221, msg 1, val 1
+```
+
+### 验证服务端收流
+
+你可以按如下步骤进行验证：
+
+1. 克隆 [API-Examples-Web](https://github.com/Shengwang-Lab/API-Examples-Web) 到本地，在浏览器中打开 `Demo/index.html` 文件。
+2. 点击 **basicvideocalling** 下的 **tryitnow**，进入视频通话 demo 界面。
+3. 输入你的  App ID、RTC 临时 Token、频道名 `demo_channel` 及任意用户名，点击 **join**，开始发送音视频流。
+
+![服务端收流验证](https://web-cdn.agora.io/docs-files/1667965332407)
+
+4. 服务端会收到客户端发送的音视频流：
+
+    ```text
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 0, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 4, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 8, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 1, val 1
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 0, val 0
+    [ APP_LOG_INFO ] onUserInfoUpdated: userId 436868190, msg 1, val 0
+    [ APP_LOG_INFO ] onUserVideoTrackSubscribed: userId 436868190, codecType 1, encodedFrameOnly 1
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 1, reason 0
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 2, reason 6
+    [ APP_LOG_INFO ] Created file received_video.h264 to save received H264 frames
+    [ APP_LOG_INFO ] onUserAudioTrackStateChanged: userId 436868190, state 0, reason 7
+    ```
+
+ 收到的音视频流会分别存储为 `received_video.h264` 和 `received_audio.pcm` 文件。

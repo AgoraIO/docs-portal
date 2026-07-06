@@ -1,0 +1,159 @@
+---
+title: "设置单流不转码录制"
+---
+在仅录制音频的场景下，如果单流转码录制生成的文件无法满足你的需求，例如你需要调整音频编码属性或去除录制文件中的静音片段，则可以采用单流不转码录制。关于单流音频转码与不转码录制的区别，可参考[单流音频转码与不转码对比](/zh-CN/realtime-media/recording/cloud-recording/overview/concepts#转码)。
+
+本文介绍如何使用云端录制 RESTful API 进行单流音频不转码录制，并重点说明了相关参数的设置方法。
+
+## 前提条件
+
+开始前，请参考[使用 RESTful API 开始云端录制](/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start)进行一次完整的录制流程体验。
+
+## 实现步骤
+
+本节介绍如何在[申请录制服务器资源](/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start#申请录制服务器资源)后，开始单流不转码录制。
+
+### 开始录制
+
+调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法开始云端录制。
+
+以下介绍开始单流音频不转码录制请求的关键配置，确保你进行正确设置以实现预期的录制效果。
+
+1. 在调用 `start` 方法时，将 `mode` 参数设置为 `individual`，开启单流录制模式。
+   :::warning[注意]
+   录制模式的设置必须在开始录制的时候完成，不支持在录制开始后切换模式。
+   :::
+
+2. 设置 `recordingConfig` 中的如下参数：
+
+   | 字段                          | 配置内容                                                                         |
+   | :---------------------------- | :------------------------------------------------------------------------------- |
+   | `recordingConfig.streamTypes` | 订阅媒体流类型，单流音频不转码录制设置为 `0` （仅订阅音频）。       |
+   | `recordingConfig.streamMode`  | [媒体流输出模式](/zh-CN/realtime-media/recording/cloud-recording/api/reference#媒体流输出模式设置)，单流音频不转码录制设置为 `original`（原始模式）。 |
+   | `recordingConfig.subscribeUidGroup` | 预估的订阅人数峰值。该字段在单流录制模式下必填；例如订阅人数为 1 到 2 个用户 ID 时，可设置为 `0`。更多取值说明可参考 [API 参考](/zh-CN/realtime-media/recording/cloud-recording/api/reference#录制的音视频流配置项)。 |
+
+3. 参照[快速开始](/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start#开始录制)配置 `storageConfig` 相关参数。
+
+开启单流音频不转码录制的请求 Body 示例如下：
+
+```shell
+// highlight-start
+curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/cloud_recording/resourceid/<resourceId_returned>/mode/individual/start' \
+// highlight-end
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: <http_basic_auth>' \
+--data '{
+  "cname": "show",
+  "uid": "123",
+  "clientRequest": {
+    "token": "<your_token>",
+    // highlight-start
+    "recordingConfig": {
+      "channelType": 1,
+      "streamTypes": 0,
+      "streamMode": "original",
+      "subscribeUidGroup": 0,
+    },
+    "storageConfig": {
+      "vendor": 2,
+      "region": 3,
+      "bucket": "<your_storage_bucket_name>",
+      "accessKey": "<your_storage_access_key>",
+      "secretKey": "<your_storage_secret_key>",
+      "fileNamePrefix": [
+        "quickstart"
+         // highlight-end
+      ]
+    }
+  }
+}'
+```
+
+#### 响应示例
+
+```json
+{
+    "cname": "show",
+    "uid": "123",
+    "resourceId": "SGXETXXX",
+    // highlight-start
+    "sid": "04a85XXX"
+    // highlight-end
+}
+```
+
+你需要复制 `sid` 以备后用。
+
+### 停止录制
+
+录制完成后，调用 [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
+
+#### 请求示例
+
+```shell
+curl --location --request POST 'https://api.sd-rtn.com/v1/apps/{your_app_id}/cloud_recording/resourceid/<resourceId_returned>/sid/<sid_returned>/mode/individual/stop' \
+--header 'Content-Type: application/json' \
+--data '{
+  "cname": "show",
+  "uid": "123",
+  "clientRequest": {
+    "async_stop": false
+  }
+}'
+```
+
+#### 响应示例
+
+```json
+{
+  "resourceId": "SGXETXXX",
+  "sid": "04a85XXX",
+  "serverResponse": {
+    "fileListMode": "json",
+    "fileList": [
+      {
+        "fileName": "xxxxxxx",
+        "isPlayable": true,
+        "mixedAllUser": false,
+        "sliceStartTime": xxxxxxxxxx,
+        "trackType": "audio",
+        "uid": "xxx"
+      }
+    ],
+    //highlight-start
+    "uploadingStatus": "uploaded"
+    //highlight-end
+  },
+  "cname": "show",
+  "uid": "123"
+}
+```
+
+`uploadingStatus` 字段表示录制文件上传状态，当值为 `uploaded` 时表示录制文件已上传至第三方云存储。
+
+### 查看录制文件
+
+单流不转码生成的录制文件示意图如下：
+
+![单流录制生成文件](https://web-cdn.agora.io/doc-cms/uploads/1723454614081-单流original模式.png)
+
+你可以参考第三方云存储的官方文档来查看存储在云端的录制文件。录制文件包含一个 M3U8 和多个 TS 文件，点击即可播放。如需了解文件详情，可参考[录制文件介绍](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files)。如需将文件转换成 MP3、M4A、AAC 等格式，可参考[转换录制文件格式](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/convert-format)对录制后的文件进行转换。
+
+## 参考信息
+
+### 常见问题
+
+- [应用崩溃后对云端录制有什么影响？](/faq/integration-issues/app-exit)
+- [如何选择云存储 bucket 区域及处理跨区上传问题？](/faq/integration-issues/bucket-region)
+- [为什么无法通过浏览器调用云端录制 RESTful API？](/faq/integration-issues/call-browser)
+- [为什么第三方云储存中没有录制文件？](/faq/integration-issues/fail-to-upload)
+- [如何获取 M3U8 文件地址？](/faq/integration-issues/get-m3u8-file)
+- [云端录制如何处理服务器断网、进程被杀问题？](/faq/integration-issues/high-availability)
+
+### 相关文档
+
+在单流不转码录制过程中，你还可以参考如下文档：
+
+- [媒体流输出模式](/zh-CN/realtime-media/recording/cloud-recording/api/reference#媒体流输出模式设置)
+- [管理录制文件](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files)

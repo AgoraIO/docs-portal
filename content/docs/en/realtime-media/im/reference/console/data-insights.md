@@ -17,7 +17,7 @@ Agora Analytics offers the following features for Chat:
 
 ### Enable Chat-related features
 
-After [enabling and configuring Chat Service](../../get-started/enable), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required. 
+After [enabling and configuring Chat Service](../../get-started/enable), the Chat-related features in Agora Analytics are enabled by default and are free to use. No additional operation is required.
 
 ## Usage Insights
 

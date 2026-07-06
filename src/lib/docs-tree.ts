@@ -76,7 +76,6 @@ export type DocsSidebarGroupMetadata = {
   title: string;
 };
 
-const HIDDEN_TAB_IDS = new Set(['best-practices']);
 const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat)\}$/;
 
 // Tabs whose second-level folders are genuine products (Voice, Video, …) and so
@@ -155,7 +154,7 @@ export function getTabSummaries(root: Root): TabSummary[] {
     }
 
     const id = getTabIdFromUrl(item.url);
-    if (!id || HIDDEN_TAB_IDS.has(id)) {
+    if (!id) {
       return [];
     }
 

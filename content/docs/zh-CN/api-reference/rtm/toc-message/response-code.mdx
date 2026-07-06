@@ -1,0 +1,31 @@
+---
+title: "错误码"
+---
+
+在调用实时消息 RESTful API 时，你会通过响应接收每次请求的结果，其中：
+
+- `errorCode`：错误码。
+- `reason`：错误码对应的出错原因。
+
+本文介绍你可能收到的 `errorCode` 和 `reason` 详情，并提供具体的处理措施。
+
+| 错误码 | `reason` 详情 | 处理方法 |
+| --- | --- | --- |
+| 200 | Successfully get history messages. | 无需处理。 |
+| 400 | The request contains invalid data. | 请求中填入的参数无效。请重新填写。 |
+| 403 | The appID doesn't have History features enabled or The client isn't authorized to perform this operation. | <Slot name="response-code-restful-html-0-3-2" /> |
+| 415 | The format of the request body you supplied isn't supported. The request body must be in JSON format. | 请求 Body 的填写格式有错。请求 Body 必须为 Json 格式。 |
+| 435 | Payload contains illeagal format content. | 消息 Payload 中包含非法格式内容。请重新发送。 |
+| 429 | Request rate limit exceeded. | 请求配额超限。历史消息 RESTful API 的限额为每秒 60 次。 |
+| 500 | An internal server error occurred. | 服务器内部发生错误。请重新发送请求。 |
+| 503 | Request processing exceeded the maximum allowed time. | 请求处理超过最大允许时间。请重新发送请求。 |
+
+<Slot for="response-code-restful-html-0-3-2">
+
+无效的 App ID。
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+    - 检查 App ID 是否开通了历史服务功能。
+
+</Slot>

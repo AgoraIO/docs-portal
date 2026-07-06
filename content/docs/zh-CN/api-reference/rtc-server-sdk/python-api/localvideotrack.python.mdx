@@ -1,0 +1,48 @@
+---
+title: "LocalVideoTrack 类"
+---
+<span className="index-desc-localvideotrack">`LocalVideoTrack` 类提供本地视频轨道的基本方法。你可以通过 [`publish_video`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#publishvideo) 方法发布一个或多个视频轨道。</span>
+
+<a id="setenabled"></a>
+## set_enabled
+
+```python
+def set_enabled(self, enable)
+```
+
+<span className="index-desc-setenabled">开启或关闭本地视频轨道。本地视频轨道开启之后，SDK 可以采集、处理和编码本地视频。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `enable` | <Slot name="localvideotrack-python-html-0-1-1" /> |
+
+<Slot for="localvideotrack-python-html-0-1-1">
+
+开启或关闭本地视频轨道：
+
+    - `0`: 关闭本地视频轨道。
+    - `1`: 开启本地视频轨道，
+
+</Slot>
+
+<a id="setvideoencoderconfiguration"></a>
+## set_video_encoder_configuration
+
+```python
+def set_video_encoder_configuration(self, config)
+```
+
+<span className="index-desc-setvideoencoderconfiguration">设置视频编码属性。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|------|------|
+| `config` | 视频编码参数配置，详见 [`VideoEncoderConfig`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#videoencoderconfig)。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

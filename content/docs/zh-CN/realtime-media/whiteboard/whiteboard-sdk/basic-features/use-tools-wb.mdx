@@ -1,0 +1,227 @@
+---
+title: "使用白板工具"
+---
+
+成功加入互动白板实时房间后，你就可以用 SDK 默认的工具在白板上写写画画了。互动白板 SDK 提供丰富的基础编辑工具，如铅笔、箭头、直线、橡皮擦、各种图形等，并支持修改字体的大小、线条的颜色和粗细。
+
+本页面介绍以下白板工具的使用方法：
+
+- 直接在代码中设置白板工具。该方法适用于只需要一个简单编辑工具的场景。
+- 实现一个简单的工具条并通过点击按钮切换工具。该方法适用于需要提供多种工具供用户选择的场景。
+
+## 技术原理
+
+白板 SDK 提供 [`setMemberState`](/api-ref/whiteboard/javascript/interfaces/room#setMemberState) 方法，用于设置当前白板房间内使用的工具。你可以通过修改当前 `Room` 对象的 [`MemberState`](/api-ref/whiteboard/javascript/globals#MemberState) 切换工具、选择图形、修改字体的大小、线条的颜色和粗细。
+
+`MemberState` 包含如下属性：
+
+- `currentApplianceName`：白板工具名称。你可以通过该参数指定用户当前使用的白板工具，包含如下取值：
+  - `arrow`：箭头
+  - `clicker`：点选工具
+  - `ellipse`：椭圆
+  - `eraser`：橡皮擦
+  - `hand`：抓手
+  - `laserPointer`：激光笔
+  - `pencil`：铅笔
+  - `rectangle`：矩形
+  - `selector`：选择工具。如果你将 `JoinRoomParams` 中的 `floatBar` 属性设为 `true`，当用户使用 `selector` 工具时，会出现浮动条，提供更多文本编辑选项。
+  - `shape`：图形。当 `currentApplianceName` 设为 `shape` 时，还可以设置 `shapeType` 选择图形类型，默认为三角形。
+  - `straight`：直线
+  - `text`：文字。如果你将 `JoinRoomParams` 中的 `floatBar` 属性设为 `true`，当用户使用 `text` 工具时，会出现浮动条，提供更多文本编辑选项。
+
+- `shapeType`：（可选）图形类型，该参数只对 `shape` 生效。包含如下取值：
+  - `pentagram`：五角星
+  - `rhombus`：菱形
+  - `speechBalloon`：对话气泡
+  - `triangle`：三角形
+- `strokeColor`：线条的颜色，为 RGB 格式，例如 `[0,0,255]` 表示蓝色。
+- `strokeWidth`：线条的粗细。该参数不对 `text` 生效。
+- `textSize`：字体大小。该参数只对 `text` 生效。
+
+:::info[信息]
+这些工具的展现形式，关系到具体网页应用本身的交互设计和视觉风格。考虑到这一点，互动白板 SDK 没有直接提供这些工具的 UI。
+:::
+
+## 前提条件
+
+开始前，请确保你已在项目中集成声网互动白板 SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+## 通过修改代码切换工具
+
+本节展示如何在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)示例代码的基础上，直接在程序中设置当前用户使用的工具。
+
+在 `index.js` 文件中添加如下代码：
+
+```javascript
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 设置使用矩形工具，并设置线条颜色和粗细
+    room.setMemberState({
+      currentApplianceName: "rectangle",
+      strokeColor: [255, 182, 193],
+      strokeWidth: 12,
+    });
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+保存修改后，刷新 `index.html` 页面，拖动鼠标就可以画出一个粉色的矩形。
+
+你可以尝试将在 `index.js` 文件中添加的代码作如下修改：
+
+```javascript
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 设置当前使用的工具为五角星，并设置线条颜色和粗细。
+    room.setMemberState({
+      currentApplianceName: "shape",
+      shapeType: "pentagram",
+      strokeColor: [255, 90, 193],
+      strokeWidth: 20,
+    });
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+保存并刷新页面，就可以在白板上画出蓝色的五角星。
+
+## 通过 UI 切换工具
+
+在实际的应用中，不可能通过直接修改代码切换工具。你可以自行设计并实现工具 UI，以便用户切换工具。
+
+本节展示如何在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)示例代码的基础上，实现一个简单的工具条。
+
+1. 在 `index.js` 文件中添加如下代码，定义工具条和按钮等：
+
+```javascript
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 设置当前使用的工具为五角星，并设置线条颜色和粗细。
+    room.setMemberState({
+      currentApplianceName: "shape",
+      shapeType: "pentagram",
+      strokeColor: [255, 90, 193],
+      strokeWidth: 20,
+    });
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+
+var whiteWebSdk = new WhiteWebSdk({
+  appIdentifier: "你的互动白板 AppIdentifier",
+});
+
+var joinRoomParams = {
+  uuid: "房间 UUID",
+  roomToken: "房间 Token",
+};
+
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 定义工具条和按钮
+    var toolbar = document.getElementById("toolbar");
+    var toolNames = [
+      "clicker",
+      "selector",
+      "rectangle",
+      "eraser",
+      "text",
+      "arrow",
+      "ellipse",
+      "hand",
+      "laserPointer",
+      "shape",
+      "straight",
+    ];
+
+    for (var idx in toolNames) {
+      var toolName = toolNames[idx];
+      var btn = document.createElement("BUTTON");
+      btn.setAttribute("id", "btn" + toolName);
+      var t = document.createTextNode(toolName);
+      btn.appendChild(t);
+
+      // 监听按钮点击事件
+      btn.addEventListener("click", function (obj) {
+        var ele = obj.target;
+        // 调用 setMemberState 方法使用白板工具
+        room.setMemberState({
+          currentApplianceName: ele.getAttribute("id").substring(3),
+          shapeType: "pentagram",
+          strokeColor: [255, 182, 200],
+          strokeWidth: 12,
+          textSize: 40,
+        });
+      });
+      toolbar.appendChild(btn);
+      console.log(btn.getAttribute("id"));
+    }
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+2. 在 `index.html` 文件中添加如下代码，将工具条加载到网页上：
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://sdk.netless.link/white-web-sdk/2.12.20.js"></script>
+        <script src="./index.js"></script>
+    </head>
+    <body>
+        <div id="whiteboard" style="width: 100%; height: 100vh;">
+        </div>
+        <!--定义工具条的样式，并将其添加到网页上-->
+        <div id="toolbar" style="position:relative; top:40px;height:100px;z-index:10;">
+        </div>
+    </body>
+</html>
+```
+
+保存上述修改，并刷新 `index.html` 页面，就可以在页面左下角看到如下的工具条。你可以点击任意按钮，用对应的工具在白板上写写画画。
+
+![白板工具条示例界面](https://web-cdn.agora.io/docs-files/1629368479059)
+
+## 参考信息
+
+### 白板工具 UI 组件
+
+上述示例中的工具条相对简单，声网互动白板在 GitHub 上提供开源的示例项目 [whiteboard-demo](https://github.com/netless-io/whiteboard-demo)，其中 [@netless/tool-box](https://github.com/netless-io/whiteboard-demo/tree/master/packages/tool-box) 实现了一个样式和功能更加丰富工具 UI 组件。你可以下载体验或查看其中的源代码。
+
+### 更多白板工具
+
+除本页列出的编辑工具，互动白板 SDK 还提供了以下工具：
+
+| 方法                                                         | 描述                        |
+| :----------------------------------------------------------- | :-------------------------- |
+| [`copy`](/api-ref/whiteboard/javascript/interfaces/room#copy) | 复制选中内容                |
+| [`paste`](/api-ref/whiteboard/javascript/interfaces/room#paste) | 粘贴复制的内容              |
+| [`duplicate`](/api-ref/whiteboard/javascript/interfaces/room#duplicate) | 复制并粘贴选中的内容        |
+| [`delete`](/api-ref/whiteboard/javascript/interfaces/room#delete) | 删除选中的内容              |
+| [`disableSerialization`](/api-ref/whiteboard/javascript/interfaces/room#disableSerialization) | 开启/禁止本地序列化         |
+| [`redo`](/api-ref/whiteboard/javascript/interfaces/room#redo) | 重做                        |
+| [`undo`](/api-ref/whiteboard/javascript/interfaces/room#undo) | 撤销上一步操作              |
+| [`disableEraseImage`](/api-ref/whiteboard/javascript/interfaces/room#disableEraseImage) | 关闭/开启橡皮擦擦除图片功能 |
+| [`disableDeviceInputs`](/api-ref/whiteboard/javascript/interfaces/room#disableDeviceInputs) | 禁止/允许用户操作白板工具   |
+
+上述方法也是 `room` 类的成员方法，也没有提供直接的 UI。你可以根据业务需要，自行设计 UI 并调用上述方法，实现相应的功能。

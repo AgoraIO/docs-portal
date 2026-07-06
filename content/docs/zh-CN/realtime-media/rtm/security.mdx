@@ -1,0 +1,216 @@
+---
+title: "实时消息 SDK 合规使用说明"
+---
+根据中国法律法规和监管部门规章要求，App 开发运营者（以下简称“开发者”或“您”）在提供网络产品服务时应尊重和保护最终用户个人信息，不得违法违规收集使用个人信息，保证和承诺个人信息处理行为获得最终用户的授权同意，遵循最小必要原则，并且应当采取有效的技术措施和组织措施，确保个人信息安全。
+
+为帮助开发者在使用 SDK 的过程中更好地落实用户个人信息保护相关要求，避免出现侵害用户个人信息权益情形，上海声网科技有限公司（以下简称“我们”）特制定本 **实时消息 SDK** 合规使用说明文档（以下简称“文档”）。
+
+## 一、App 个人信息保护的合规要求
+
+为保护 App 最终用户的个人信息，App 及 App 的开发者需要满足如下合规要求：
+
+- App 开发者应该制定隐私政策，并在 App 界面中显著展示。
+- App 隐私政策应该单独成文，而不是作为用户协议等文件中的一部分进行展示。
+- App 隐私政策应该明示收集和使用个人信息的目的、方式和范围，并且确保隐私政策链接正常有效，易于访问和阅读。
+- App 隐私政策应逐项说明 App 各项业务功能以及对应收集的个人信息类型，不应使用“等、例如”等方式概括说明。
+- App 隐私政策应显著标识个人敏感信息类型（如：字体加粗等）。
+- App 隐私政策应逐项说明调用的第三方 SDK，包括明示 SDK 名称、SDK 开发者名称；SDK 收集和处理的个人信息类型、目的、方式、范围；SDK 隐私政策链接。
+
+## 二、App 使用实时消息 SDK 时的合规指引
+
+### 1. SDK 所需的系统权限的说明
+
+实时消息 SDK 功能和服务无需获取 App 权限。SDK 只会检查 App 是否接入网络，并不会主动向最终用户申请权限。
+
+### 2. SDK 初始化及业务功能调用时机说明
+
+您应确保在登录注册页面及 App 首次运行时，通过简洁、明显且易于访问方式向最终用户告知涵盖个人信息处理主体、处理目的、处理方式、处理类型、保存期限等内容的 App 个人信息处理规则（App 隐私政策）。
+
+您应确保在最终用户同意 App 隐私政策后，再进行实时消息 SDK 的初始化。并且，在用户同意隐私政策前，您应避免动态申请涉及用户个人信息的敏感设备权限；也应避免私自采集和上报个人信息。如果最终用户不同意 App 隐私政策，则不能初始化 SDK，无法使用 SDK 功能。
+
+SDK 初始化和相关功能配置，请查阅配置文档：
+
+- Android: [实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
+- iOS: [实现收发消息-2. 初始化 RTM​](/zh-CN/realtime-media/rtm/get-started/quick-start#2-初始化-rtm)
+
+实时消息 SDK 功能及接口配置方式及示例说明：
+
+| 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
+| --- | --- | --- | --- | --- |
+| Android | 启用实时消息 SDK 服务 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-1-3" /> | 加入或退出实时消息服务 |
+| Android | 发送消息 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-2-3" /> | 需要发送消息时 |
+| Android | 获取频道用户信息 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-3-3" /> | 需要查询频道用户时 |
+| iOS | 启用实时消息服务 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-4-3" /> | 加入或退出实时消息服务 |
+| iOS | 发送消息 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-5-3" /> | 需要发送消息时 |
+| iOS | 获取频道用户信息 | 设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型；频道内用户 ID（可选） | <Slot name="security-html-0-6-3" /> | 需要查询频道用户时 |
+
+<Slot for="security-html-0-1-3">
+
+**配置开启示例：**
+
+    `void login(String token, ResultCallback<Void> resultCallback);`
+
+    参数：
+
+    - `token`：在服务端生成的用于鉴权的动态密钥
+    - `resultCallback`：执行结果的回调通知
+
+    **配置关闭示例：**
+
+    `void logout(ResultCallback<Void> resultCallback);`
+
+    参数：
+
+    - `resultCallback`：执行结果的回调通知
+
+</Slot>
+
+<Slot for="security-html-0-2-3">
+
+**配置示例：**
+
+    `void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback);`
+
+    参数：
+
+    - `channelName`：频道名称
+    - `message`：消息载体
+    - `options`：消息选项
+    - `resultCallback`：执行结果的回调通知
+
+</Slot>
+
+<Slot for="security-html-0-3-3">
+
+**配置示例：**
+
+    `void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback);`
+
+    参数：
+
+    - `channelName`：频道名称
+    - `channelType`：频道类型
+    - `options`：用户信息选项
+    - `resultCallback`：执行结果的回调通知
+
+</Slot>
+
+<Slot for="security-html-0-4-3">
+
+**配置开启示例：**
+
+    `- (void) loginByToken: (NSString _Nullable)token completion: (AgoraRtmOperationBlock _Nullable)completionBlock;`
+
+    参数：
+
+    - `token`：在服务端生成的用于鉴权的动态密钥
+    - `completionBlock`：执行结果的回调通知
+
+    **配置关闭示例：**
+
+    `- (void) logout: (AgoraRtmOperationBlock _Nullable)completionBlock;`
+
+     参数：
+
+     - `completion`：执行结果回调通知
+
+</Slot>
+
+<Slot for="security-html-0-5-3">
+
+**配置示例：**
+
+    `- (void) publish:(NSString _Nonnull)channelName message:(NSString _Nonnull)message option:(AgoraRtmPublishOptions _Nullable)publishOption completion:(AgoraRtmOperationBlock _Nullable)completionBlock`
+
+    参数：
+
+    - `channelName`：频道名称
+    - `message`：消息载体
+    - `option`：消息选项
+    - `completion`：执行结果的回调通知
+
+</Slot>
+
+<Slot for="security-html-0-6-3">
+
+**配置示例：**
+
+    `-(void) whoNow: (NSString _Nonnull) channelName channelType: (AgoraRtmChannelType)channelType options: (AgoraRtmPresenceOptions _Nullable)options completion: (AgoraRtmWhoNowBlock _Nullable)completionBlock;`
+
+    参数：
+
+    - `channelName`：频道名称
+    - `channelType`：频道类型
+    - `options`：用户信息选项
+    - `completion`：执行结果的回调通知
+
+</Slot>
+
+### 3. SDK 隐私政策披露要求与示例说明
+
+请您根据集成实时消息 SDK 的实际情况，在您的 App 隐私政策中披露：第三方 SDK 名称、SDK 公司名称、SDK 使用目的和功能场景、SDK 涉及个人信息类型、实现 SDK 功能所需的权限、SDK 隐私政策链接。
+
+请在您的 App 隐私政策中，以文字或列表的方式向公众披露第三方 SDK 的相关信息。
+
+第三方 SDK 披露示例（仅供参考）：
+
+#### Android 示例：
+
+- SDK 名称：实时消息 SDK
+- SDK 公司名称：上海声网科技有限公司
+- SDK 使用目的和功能场景：提供实时消息互动功能和服务
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型、频道内用户 ID（可选）
+- 实现 SDK 功能所需权限：无
+- SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
+
+#### iOS 示例：
+
+- SDK 名称：实时消息 SDK
+- SDK 公司名称：上海声网科技有限公司
+- SDK 使用目的和功能场景：提供实时消息互动功能和服务
+- SDK 涉及的个人信息类型：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、IP 地址、网络接入方式和类型、频道内用户 ID（可选）
+- 实现 SDK 功能所需权限：无
+- SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
+
+### 4. 最终用户同意方式建议
+
+App 首次运行时应当有隐私弹窗，隐私弹窗中应公示隐私政策内容并附完整隐私政策链接，并明确提示最终用户阅读并选择是否同意隐私政策；隐私弹窗应提供同意按钮和拒绝同意的按钮，并由最终用户主动选择。
+
+![](/img/security/app-alert.png)
+
+### 5. 最终用户行使权利的配置说明
+
+开发者在 App 中集成实时消息 SDK 后，SDK 为提供实时消息互动功能和服务，会收集和处理最终用户的必要个人信息。
+
+SDK 提供以下接口配置，以便您帮助最终用户实现其个人信息权利的请求。在最终用户撤销同意处理其个人信息的授权时，您可以通过调用接口，停止和关闭 SDK 功能，并停止收集相应的用户数据。
+
+App 开发者应根据相关法律法规为最终用户提供行使个人信息主体权利的路径功能，需要实时消息 SDK 配合的，请与 SDK 及时进行联系。
+
+相关配置操作，请查阅相关配置文档：
+
+- Android:
+  - [实现收发消息-4. 登录服务](/zh-CN/realtime-media/rtm/get-started/quick-start#4-登录服务)
+  - [实现收发消息-6. 登出服务](/zh-CN/realtime-media/rtm/get-started/quick-start#6-登出服务)
+
+- iOS:
+  - [实现收发消息-4. 登录服务](/zh-CN/realtime-media/rtm/get-started/quick-start#4-登录服务)
+  - [实现收发消息-6. 登出服务](/zh-CN/realtime-media/rtm/get-started/quick-start#6-登出服务)
+
+## 三、合规文件指引
+
+1. [《个人信息保护法》](http://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm)
+2. [《工业和信息化部关于开展信息通信服务感知提升行动的通知》](https://www.gov.cn/zhengce/zhengceku/2021-11/06/content_5649420.htm)
+3. [《工业和信息化部关于开展纵深推进 App 侵害用户权益专项整治行动的通知》](https://www.gov.cn/zhengce/zhengceku/2020-08/02/content_5531975.htm)
+4. [《工业和信息化部关于开展 App 侵害用户权益专项整治工作的通知》](https://www.gov.cn/xinwen/2019-11/07/content_5449660.htm)
+5. [《App 违法违规收集使用个人信息行为认定方法》](http://www.cac.gov.cn/2019-12/27/c_1578986455686625.htm)
+6. [《App 违法违规收集使用个人信息自评估指南》](https://www.tc260.org.cn/upload/2020-07-22/1595396892533085831.pdf)
+7. [《常见类型移动互联网应用程序必要个人信息范围规定》](https://www.gov.cn/zhengce/zhengceku/2021-03/23/content_5595088.htm)
+8. [《GB/T 35273-2020信息安全技术个人信息安全规范》](https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=4568F276E0F8346EB0FBA097AA0CE05E&refer=outter)
+9. [《网络安全标准实践指南—移动互联网应用程序（App）使用软件开发工具包（SDK）安全指引》](https://www.tc260.org.cn/front/postDetail.html?id=20201126161240)
+
+## 四、联系方式
+
+我们设立了专门的个人信息保护团队和负责人，如果您和/或最终用户对本规则或个人信息保护相关事宜有疑问或投诉、建议时，可以通过以下方式与我们联系：
+privacy@shengwang.cn。
+
+我们将尽快审核所涉问题，并在 15 个工作日或法律法规规定的期限内予以反馈。

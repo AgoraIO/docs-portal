@@ -1,0 +1,861 @@
+---
+title: "agora_iot_api.h"
+---
+## 引用文件
+
+```c
+#include "agora_iot_base.h"
+#include "agora_iot_call.h"
+#include "agora_iot_dp.h"
+```
+
+<a id="agoraiotinit"></a>
+## 函数
+### agora_iot_init
+
+```c
+agora_iot_handle_t agora_iot_init(const agora_iot_config_t *cfg);
+```
+
+初始化 SDK。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `cfg` | SDK 配置。详见 [agora_iot_config_t](#agora_iot_config_t)。 |
+
+#### 返回值
+
+SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。
+
+<a id="agoraiotdeinit"></a>
+### agora_iot_deinit
+
+```c
+void agora_iot_deinit(agora_iot_handle_t handle);
+```
+
+释放 SDK 的资源。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+
+<a id="agoraiotlogfileconfig"></a>
+### agora_iot_logfile_config
+
+```c
+int agora_iot_logfile_config(agora_iot_handle_t handle, int size_per_file, int max_file_count);
+```
+
+设置 RTC 的日志文件。
+
+默认情况下，SDK 会生成 10 个日志文件，每个日志文件的默认大小为 1,0240 KB。如果写满了 10 个日志文件，则 SDK 会删掉第一个记录的日志文件并生成一个新的日志文件，用于记录新的日志。
+
+如果 RTC 日志文件的默认设置不能满足你的需求，你可以调用该方法设置日志文件。
+
+:::warning[注意]
+用该方法前不要在 agora_iot_config_t[#agora_iot_config_t] 中设置 `disable_rtc_log = true`，否则该方法不生效。
+:::
+
+#### 参数
+
+| 参数                  | 描述                                                         |
+| :-------------------- | :----------------------------------------------------------- |
+| [in] `handle`         | SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。                        |
+| [in] `size_per_file`  | 单个日志文件的大小（Byte）。默认值为 1048576，取值范围为 [0,10485760]。 |
+| [in] `max_file_count` | 日志文件的最大数量。默认值为 10，取值范围为 [0,100]。        |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotpushvideoframe"></a>
+### agora_iot_push_video_frame
+
+```c
+int agora_iot_push_video_frame(agora_iot_handle_t handle, ago_video_frame_t *frame, uint8_t push_type);
+```
+
+发送视频帧。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `frame` | 视频帧配置。详见 [ago_video_frame_t](#agovideoframet)。 |
+| [in] `push_type` | <Slot name="config-html-0-3-1" /> |
+
+<Slot for="config-html-0-3-1">
+
+发送视频帧的目标，支持的取值如下：
+
+    - `AGO_AV_PUSH_TYPE_MASK_RTC(0x01)`: 发送视频帧到 RTC 频道。
+    - `AGO_AV_PUSH_TYPE_MASK_OSS(0x02)`: 发送视频帧到云存储。
+
+</Slot>
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotpushaudioframe"></a>
+### agora_iot_push_audio_frame
+
+```c
+int agora_iot_push_audio_frame(agora_iot_handle_t handle, ago_audio_frame_t *frame, uint8_t push_type);
+```
+
+发送音频帧。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `frame` | 音频帧配置。详见 [ago_audio_frame_t](#agoaudioframet)。 |
+| [in] `push_type` | <Slot name="config-html-1-3-1" /> |
+
+<Slot for="config-html-1-3-1">
+
+发送音频帧的目标，支持的取值如下：
+
+    - `AGO_AV_PUSH_TYPE_MASK_RTC(0x01)`: 发送音频帧到 RTC 频道。
+    - `AGO_AV_PUSH_TYPE_MASK_OSS(0x02)`: 发送音频帧到云存储。
+
+</Slot>
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotfwinfoupdate"></a>
+### agora_iot_fw_info_update
+
+```c
+int agora_iot_fw_info_update(agora_iot_handle_t handle, const agora_iot_device_fw_info_t *fw_info);
+```
+
+更新固件信息。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `fw_info` |  固件信息。详见 [agora_iot_device_fw_info_t](#agoraiotdevicefwinfot)。   |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotsendrtm"></a>
+### agora_iot_send_rtm
+
+```c
+int agora_iot_send_rtm(agora_iot_handle_t handle, const char *peer_id, uint32_t msg_id, const void *msg, size_t msg_len);
+```
+
+发送 RTM 云信令消息。最高发送频率为每秒钟 60 次。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `peer_id` |  对端的 RTM 云信令用户 ID。   |
+| [in] `msg_id` |  消息 ID。该参数不能为 0。   |
+| [in] `msg` |  消息内容。   |
+| [in] `msg_len` |  消息长度，支持至多 4096 字节。   |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotpushalarmimage"></a>
+### agora_iot_push_alarm_image
+
+```c
+int agora_iot_push_alarm_image(agora_iot_handle_t handle, const agora_iot_file_info_t *file, char **image_id);
+```
+
+向云存储推送告警图片。
+
+设备端触发告警事件时，该方法可以把设备抓拍的图片推送到云存储。你需要自行实现抓拍逻辑并将图片传入 `file` 参数。
+
+:::info[信息]
+仅支持推送 JPEG、JPG 和 PNG 格式的图片。
+:::
+
+#### 参数
+
+| 参数             | 描述                                                         |
+| :--------------- | :----------------------------------------------------------- |
+| [in] `handle`    | `agora_iot_init` 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `file`      | 需要推送的告警图片信息。详见 [agora_iot_file_info_t](#agoraiotfileinfot)。       |
+| [out] `image_id` | 推送到云存储后返回的图片 ID。                                |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotpushalarmmessage"></a>
+### agora_iot_push_alarm_message
+
+```c
+int agora_iot_push_alarm_message(agora_iot_handle_t handle, unsigned long long begin_time, const char *nick_name,
+                                agora_iot_alarm_type_e type, const char *description, const char *image_id);
+```
+
+向客户端推送告警消息。
+
+设备端触发告警事件时，该方法可以把告警消息及云存储中的告警图片推送到客户端。
+
+:::warning[注意]
+你需要在该方法前调用 `agora_iot_push_alarm_image` 获取告警图片在云存储中的图片 ID。
+:::
+
+#### 参数
+
+| 参数               | 描述                                                         |
+| :----------------- | :----------------------------------------------------------- |
+| [in] `handle`      | `agora_iot_init` 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `begin_time`  | 告警事件触发的时间戳（ms）。告警事件与云存储中的视频仅通过该时间戳建立映射关系。如需使用告警事件云存储功能，该参数取值需大于或等于 `agora_iot_cloud_record_start` 方法中 `begin_time` 参数的值、小于 `agora_iot_cloud_record_stop` 方法中 `end_time` 参数的值。 |
+| [in] `nick_name`   | 设备名称。                                                   |
+| [in] `type`        | 告警类型。详见 [agora_iot_alarm_type_e](#agoraiotalarmtypee)。 |
+| [in] `description` | 告警事件的描述。                                             |
+| [in] `image_id`    | `agora_iot_push_alarm_image` 中输出的图片 ID。如果无需上传告警图片，设置该参数为空字符串。 |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotcloudrecordstart"></a>
+### agora_iot_cloud_record_start
+
+```c
+int agora_iot_cloud_record_start(agora_iot_handle_t handle, unsigned long long begin_time, unsigned long long end_time,
+                                ago_av_data_type_e audio_type, ago_av_data_type_e video_type, unsigned long long *record_id);
+```
+
+推送音视频帧到云存储。
+
+#### 参数
+
+| 参数              | 描述                                                         |
+| :---------------- | :----------------------------------------------------------- |
+| [in] `handle`     | SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。                        |
+| [in] `begin_time` | 开始推送的时间戳（ms）。                                     |
+| [in] `end_time`   | 停止推送的预期时间戳（ms）。如果你未调用 [agora_iot_cloud_record_stop](#agoraiotcloudrecordstop) 方法，则 SDK 会按该时间戳停止推送音视频帧。 |
+| [in] `audio_type` | 音频编码格式。详见 [ago_av_data_type_e](#agoavdatatypee)。                    |
+| [in] `video_type` | 视频编码格式。详见 [ago_av_data_type_e](#agoavdatatypee)。                    |
+| [out] `record_id` | 音视频帧在云存储中的 ID。                                    |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotcloudrecordstop"></a>
+### agora_iot_cloud_record_stop
+
+```c
+int agora_iot_cloud_record_stop(agora_iot_handle_t handle, unsigned long long record_id, unsigned long long end_time);
+```
+
+停止推送音视频帧到云存储。
+
+#### 参数
+
+| 参数            | 描述                                  |
+| :-------------- | :------------------------------------ |
+| [in] `handle`   | SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/call/base#agoraiothandlet)。 |
+| [in] `end_time` | 停止推送的实际时间戳（ms）。          |
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoavdatatypee"></a>
+## 类型定义
+### ago_av_data_type_e
+
+音视频编码格式。
+
+```c
+typedef enum {
+  AGO_VIDEO_DATA_TYPE_YUV420 = 0,
+  AGO_VIDEO_DATA_TYPE_H264 = 1,
+  AGO_VIDEO_DATA_TYPE_JPEG = 2,
+  AGO_VIDEO_DATA_TYPE_H265 = 3,
+  AGO_AUDIO_DATA_TYPE_PCM = 10,
+  AGO_AUDIO_DATA_TYPE_OPUS = 11,
+  AGO_AUDIO_DATA_TYPE_G711A = 12,
+  AGO_AUDIO_DATA_TYPE_G711U = 13,
+  AGO_AUDIO_DATA_TYPE_G722 = 14,
+  AGO_AUDIO_DATA_TYPE_AACLC = 15,
+  AGO_AUDIO_DATA_TYPE_HEAAC = 16,
+} ago_av_data_type_e;
+```
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AGO_VIDEO_DATA_TYPE_YUV420` | 0：YUV420 |
+| `AGO_VIDEO_DATA_TYPE_H264` | 1：H.264 |
+| `AGO_VIDEO_DATA_TYPE_JPEG` | 2：JPEG |
+| `AGO_VIDEO_DATA_TYPE_H265` | 3：H.265 |
+| `AGO_AUDIO_DATA_TYPE_PCM` | 10：PCM |
+| `AGO_AUDIO_DATA_TYPE_OPUS` | 11：Opus |
+| `AGO_AUDIO_DATA_TYPE_G711A` | 12：G711A |
+| `AGO_AUDIO_DATA_TYPE_G711U` | 13：G711U |
+| `AGO_AUDIO_DATA_TYPE_G722` | 14：G722 |
+| `AGO_AUDIO_DATA_TYPE_AACLC` | 15：AACLC |
+| `AGO_AUDIO_DATA_TYPE_HEAAC` | 16：HEAAC |
+
+<a id="agovideoframet"></a>
+### ago_video_frame_t
+
+视频帧设置。
+
+```c
+typedef struct {
+  ago_av_data_type_e data_type;
+  bool is_key_frame;
+  uint8_t *video_buffer;
+  uint32_t video_buffer_size;
+  uint8_t fps;
+} ago_video_frame_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `data_type` | 视频帧编码类型。 |
+| `is_key_frame` | <Slot name="config-html-2-2-1" /> |
+| `video_buffer` | 视频帧缓冲区。 |
+| `video_buffer_size` | 视频帧缓冲区大小。 |
+| `fps` | <Slot name="config-html-2-5-1" /> |
+
+<Slot for="config-html-2-2-1">
+
+该帧是否是关键帧。
+
+    - true: 该帧是关键帧。
+    - false: 该帧不是关键帧。
+
+</Slot>
+
+<Slot for="config-html-2-5-1">
+
+视频帧率。为确保云存储视频的播放速度与实际视频的播放速度一致，你需要根据视频的实际帧率实时调节该参数。
+
+      :::warning[注意]
+      只有在 [agora_iot_push_video_frame](#agoraiotpushvideoframe) 方法中设置 `push_type` 参数为 `AGO_AV_PUSH_TYPE_MASK_OSS` 时，该参数才有效。
+      :::
+
+</Slot>
+
+<a id="agoaudioframet"></a>
+### ago_audio_frame_t
+
+音频帧设置。
+
+```c
+typedef struct {
+  ago_av_data_type_e data_type;
+  uint8_t *audio_buffer;
+  uint32_t audio_buffer_size;
+} ago_audio_frame_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `data_type` | 音频编码类型。 |
+| `audio_buffer` | 音频帧缓冲区。 |
+| `audio_buffer_size` | 音频帧缓冲区大小。 |
+
+<a id="agoraiotrtccallbackt"></a>
+### agora_iot_rtc_callback_t
+
+```c
+typedef struct agora_iot_rtc_callback {
+  void (*cb_start_push_frame)(void);
+  void (*cb_stop_push_frame)(void);
+  void (*cb_receive_audio_frame)(ago_audio_frame_t *frame);
+  void (*cb_receive_video_frame)(ago_video_frame_t *frame);
+  void (*cb_key_frame_requested)(void);
+  void (*cb_target_bitrate_changed)(uint32_t target_bps);
+  void (*cb_audio_muted_changed)(bool is_muted);
+} agora_iot_rtc_callback_t;
+```
+
+SDK 音视频事件回调。
+
+<a id="cbstartpushframe"></a>
+#### cb_start_push_frame
+
+在客户端 SDK 加入频道时触发。该回调提醒你向客户端发送音视频帧。
+
+<a id="cbstoppushframe"></a>
+#### cb_stop_push_frame
+
+在客户端 SDK 离开频道时触发。该回调提醒你停止向客户端发送音视频帧。
+
+<a id="cbreceiveaudioframe"></a>
+#### cb_receive_audio_frame
+
+在 SDK 接收到音频帧时触发。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `frame` | 音频帧设置。详见 [ago_audio_frame_t](#agoaudioframet)。 |
+
+<a id="cbreceivevideoframe"></a>
+#### cb_receive_video_frame
+
+在 SDK 接收到视频帧时触发。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `frame` | 视频帧设置。详见 [ago_video_frame_t](#agovideoframet)。 |
+
+<a id="cbkeyframerequested"></a>
+#### cb_key_frame_requested
+
+在 SDK 需要你发送关键帧给对端时触发。该回调提醒你在本地生成一个新的关键帧并发送给对端。
+
+<a id="cbtargetbitratechanged"></a>
+#### cb_target_bitrate_changed
+
+在 SDK 探测到网络带宽变化时触发。
+
+你需要根据 `target_bps` 参数的值实时调整发送码率。
+
+如果你在 [agora_iot_config](#agora_iot_config) 中设置了 `max_possible_bitrate` 和 `min_possible_bitrate` 参数，则 SDK 会遵循如下规则返回 `target_bps` 参数：
+
+- 当带宽检测到的实际码率大于 `max_possible_bitrate` 参数值或小于 `min_possible_bitrate` 参数值时，SDK 返回的 `target_bps` 参数值为 `max_possible_bitrate` 参数值或 `min_possible_bitrate`。
+- 当带宽检测到的实际码率处于 [`min_possible_bitrate`, `max_possible_bitrate`] 之间时，SDK 返回的 `target_bps` 参数值为实际码率。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `target_bps` | SDK 推荐你使用的码率 (bps)。 |
+
+<a id="cbaudiomutedchanged"></a>
+#### cb_audio_muted_changed
+
+在客户端停止或恢复发布本地音频流时触发。
+
+如果你的业务中无需切换音频播放设备的工作模式，则无需监听该回调。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `is_muted` | <Slot name="config-html-3-1-1" /> |
+
+<Slot for="config-html-3-1-1">
+
+客户端是否停止发布本地音频流：
+
+    - `true`: 停止发布
+    - `false`: 恢复发布
+
+</Slot>
+
+<a id="agoaudiocodectypee"></a>
+### ago_audio_codec_type_e
+
+音频编码格式。
+
+```c
+typedef enum {
+  AGO_AUDIO_CODEC_DISABLED = 0,
+  AGO_AUDIO_CODEC_TYPE_OPUS = 1,
+  AGO_AUDIO_CODEC_TYPE_G722 = 2,
+ AGO_AUDIO_CODEC_TYPE_G711A = 3,
+ AGO_AUDIO_CODEC_TYPE_G711U = 4,
+} ago_audio_codec_type_e;
+```
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AGO_AUDIO_CODEC_DISABLED` | 0：PCM。|
+| `AGO_AUDIO_DATA_TYPE_OPUS` | 1：Opus。支持 16 KHz 或 48 KHz 采样率。每个样本 16 bit，单声道。每次发送数据长度 20 ms。 |
+| `AGO_AUDIO_DATA_TYPE_G722` | 2：G722。支持 16 KHz 采样率。每个样本 16 bit，单声道。每次发送数据长度 20 ms。 |
+| `AGO_AUDIO_DATA_TYPE_G711A` | 3：G711A。支持 8 KHz 采样率。每个样本 16 bit，单声道。每次发送数据长度 20 ms。 |
+| `AGO_AUDIO_DATA_TYPE_G711U` | 4：G711U。支持 8 KHz 采样率。每个样本 16 bit，单声道。每次发送数据长度 20 ms。 |
+
+<a id="agoraiotaudioconfigt"></a>
+### agora_iot_audio_config_t
+
+音频设置选项。
+
+```c
+typedef struct _agora_iot_audio_config {
+  ago_audio_codec_type_e audio_codec_type;
+  int pcm_sample_rate;
+  int pcm_channel_num;
+} agora_iot_audio_config_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `audio_codec_type` | 音频编码类型。详见 [ago_audio_codec_type_e](#agoaudiocodectypee)。 |
+| `pcm_sample_rate` | PCM 音频数据的采样率（Hz）。 |
+| `pcm_channel_num` | PCM 音频数据的通道数。 |
+
+<a id="agoraiotdevicefwinfot"></a>
+### agora_iot_device_fw_info_t
+
+固件信息。
+
+```c
+typedef struct agora_iot_device_fw_info {
+  char fw_wifi_ver[AG0_OTA_VERSION_LENGTH_MAX];
+  char fw_mcu_ver[AG0_OTA_VERSION_LENGTH_MAX];
+} agora_iot_device_fw_info_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `fw_wifi_ver` | WiFi 固件版本。字符长度至多为 50 字节。 |
+| `fw_mcu_ver` | MCU 固件版本。字符长度至多为 50 字节。|
+
+<a id="agorafwtypee"></a>
+### agora_fw_type_e
+
+```c
+typedef enum {
+  AGO_FW_WIFI = 0,
+  AGO_FW_MCU  = 1
+} agora_fw_type_e;
+```
+
+固件类型。
+
+| 参数 | 描述 |
+| --- | --- |
+| `AGO_FW_WIFI` | WiFi。 |
+| `AGO_FW_MCU` | MCU。|
+
+<a id="agoraiotdevicefotainfot"></a>
+### agora_iot_device_fota_info_t
+
+```c
+typedef struct agora_iot_device_fota_info {
+  agora_fw_type_e type;
+  uint32_t file_size;
+  char *file_ver;
+  char *file_url;
+} agora_iot_device_fota_info_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `type` | 固件类型。详见 [agora_fw_type_e](#agorafwtypee)。 |
+| `file_size` | 固件大小。|
+| `file_ver` | 固件版本。|
+| `file_url` | 固件 URL。|
+
+<a id="agoraiototacallbackt"></a>
+### agora_iot_ota_callback_t
+
+```c
+typedef struct agora_iot_ota_callback {
+  void (*fw_updated)(const agora_iot_device_fota_info_t *info);
+} agora_iot_ota_callback_t;
+```
+
+OTA 升级回调。
+
+<a id="fwupdated"></a>
+#### fw_updated
+
+客户端 SDK 已通知设备端更新固件。
+
+| 参数 | 描述 |
+| --- | --- |
+| `info` | 固件信息。详见 [agora_iot_device_fota_info_t](#agoraiotdevicefotainfot)。 |
+
+<a id="agorartmerre"></a>
+### agora_rtm_err_e
+
+```c
+typedef enum {
+  ERR_AGORA_RTM_OK = ERR_SUCCESS,
+  ERR_AGORA_RTM_FAILED = ERR_FAILED,
+} agora_rtm_err_e;
+```
+
+RTM 云信令错误码。
+
+| 枚举 | 描述 |
+| ---  | --- |
+| `ERR_AGORA_RTM_OK` | 没有错误。 |
+| `ERR_AGORA_RTM_FAILED` | 通用错误。 |
+
+<a id="agoraiotrtmcallbackt"></a>
+### agora_iot_rtm_callback_t
+
+```c
+typedef struct agora_iot_rtm_callback {
+
+  void (*on_receive_rtm)(const char *peer_uid, const void *msg, size_t msg_len);
+
+  void (*on_send_rtm_result)(uint32_t msg_id, agora_rtm_err_e error_code);
+} agora_iot_rtm_callback_t;
+```
+
+RTM 云信令回调。
+
+<a id="onreceivertm"></a>
+#### on_receive_rtm
+
+接收到对端发送的 RTM 云信令消息时触发。
+
+| 参数 | 描述 |
+| ---  | --- |
+| `peer_uid` | 对端的 RTM 云信令用户 ID。 |
+| `msg` | 消息内容。 |
+| `msg_len` | 消息长度。 |
+
+<a id="onsendrtmresult"></a>
+#### on_send_rtm_result
+
+RTM 云信令发送结果。
+
+| 参数 | 描述 |
+| ---  | --- |
+| `msg_id` | 消息 ID。 |
+| `error_code` | 错误码。详见 [agora_rtm_err_e](#agorartmerre)。 |
+
+<a id="agoraiotstatuse"></a>
+### agora_iot_status_e
+
+```c
+typedef enum {
+  AGORA_IOT_CONNECTED = 0,
+  AGORA_IOT_RECONNECTING,
+  AGORA_IOT_DISCONNECTED,
+} agora_iot_status_e;
+```
+
+SDK 连接状态。
+
+| 枚举 | 描述 |
+| ---  | --- |
+| `AGORA_IOT_CONNECTED` | 已连接。 |
+| `AGORA_IOT_RECONNECTING` | 正在重连。 |
+| `AGORA_IOT_DISCONNECTED` | 连接已断开。|
+
+<a id="agoraiotconnectcallbackt"></a>
+### agora_iot_connect_callback_t
+
+```c
+typedef struct agora_iot_connect_callback {
+  void (*on_connect_status)(agora_iot_status_e status);
+} agora_iot_connect_callback_t;
+```
+
+SDK 连接状态回调。
+
+| 参数 | 描述 |
+| ---  | --- |
+| `status` | 连接状态。详见 [agora_iot_status_e](#agoraiotstatuse)。 |
+
+<a id="agoraiotalarmtypee"></a>
+### agora_iot_alarm_type_e
+
+```c
+typedef enum {
+  AG_ALARM_TYPE_VAD           = 0,
+  AG_ALARM_TYPE_MOD           = 1,
+  AG_ALARM_TYPE_OTHERS        = 99
+}
+```
+
+告警类型。
+
+`TYPE` 值 2 至 98 为预留值，仅供声网使用。
+
+如需根据实际业务需求设计其他告警类型，你可以自定义 100 及以上的 `TYPE` 值。
+
+| 参数                 | 描述               |
+| :--------------------- | :----------------- |
+| `AG_ALARM_TYPE_VAD`    | 0：语音监测。      |
+| `AG_ALARM_TYPE_MOD`    | 1：动作监测。      |
+| `AG_ALARM_TYPE_OTHERS` | 99：其他告警类型。 |
+
+<a id="agoraiotfileinfot"></a>
+### agora_iot_file_info_t
+
+```c
+typedef struct agora_iot_file_info {
+  char *name_suffix;
+  char *buf;
+  int size;
+} agora_iot_file_info_t;
+```
+
+告警图片信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `name_suffix` | <Slot name="config-html-4-1-1" /> |
+| [in] `buf` | 图片需要的 buffer 大小（ms）。 |
+| [in] `size` | 图片文件的大小（KB）。取值范围为 [0,512]。 |
+
+<Slot for="config-html-4-1-1">
+
+图片的文件名后缀。仅支持以下值：
+
+    - JPEG
+    - JPG
+    - PNG
+
+</Slot>
+
+<a id="agoraiotloglevele"></a>
+### agora_iot_log_level_e
+
+```c
+typedef enum {
+  AGORA_LOG_DEFAULT = 0,
+  AGORA_LOG_EMERG,
+  AGORA_LOG_ALERT,
+  AGORA_LOG_CRIT,
+  AGORA_LOG_ERROR,
+  AGORA_LOG_WARNING,
+  AGORA_LOG_NOTICE,
+  AGORA_LOG_INFO,
+  AGORA_LOG_DEBUG,
+} agora_iot_log_level_e;
+```
+
+日志输出等级。
+
+| 参数            | 描述                                 |
+| :---------------- | :----------------------------------- |
+| `AGORA_LOG_DEFAULT` | 0: 默认等级，即 `AGORA_LOG_NOTICE`。 |
+| `AGORA_LOG_EMERG`   | 该等级的日志表示系统不可用。         |
+| `AGORA_LOG_ALERT`   | 该等级的日志表示有问题需立即处理。   |
+| `AGORA_LOG_CRIT`    | 危险等级。                           |
+| `AGORA_LOG_ERROR`   | 错误等级。                           |
+| `AGORA_LOG_WARNING` | 警告等级。                           |
+| `AGORA_LOG_NOTICE`  | 注意等级。                           |
+| `AGORA_LOG_INFO`    | 通知等级。                           |
+| `AGORA_LOG_DEBUG`   | 调试等级。                           |
+
+<a id="agora_iot_config_t"></a>
+<a id="agoraiotconfigt"></a>
+### agora_iot_config_t
+
+SDK 基本设置。
+
+```c
+typedef struct agora_iot_config {
+  const char *app_id;
+  const char *product_id;
+  const char *client_id;
+  const char *domain;
+  const char *root_ca;
+  const char *client_crt;
+  const char *client_key;
+
+  bool enable_rtc;
+  const char *certificate;
+  bool enable_recv_audio;
+  bool enable_recv_video;
+  agora_iot_rtc_callback_t rtc_cb;
+
+  bool disable_rtc_log;
+	agora_iot_log_level_e log_level;
+  uint32_t max_possible_bitrate;
+  uint32_t min_possible_bitrate;
+  bool enable_audio_config;
+  agora_iot_audio_config_t audio_config;
+
+  const char *slave_server_url;
+	agora_call_mode_e call_mode;
+  agora_iot_call_callback_t call_cb;
+} agora_iot_config_t;
+```
+
+| 参数 | 描述 |
+| --- | --- |
+| `app_id` | 声网为 app 开发者签发的 App ID，详见[获取 App ID](https://docs.agora.io/cn/Agora%20Platform/token#get-an-app-id)。使用同一个 App ID 的 SDK 才能互通。 |
+| `product_id` | 你的产品 ID，即 Product Key。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| `client_id` | Client ID，用于呼叫。调用 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager#agoraiotregisterandbind) 注册设备成功后返回。 |
+| `domain` | 设备端域名。可以从 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager#agoraiotregisterandbind) 方法返回的 `agora_iot_device_info_t::domain` 参数获取。 |
+| `root_ca` | AWS 服务根证书。你可以将值设为示例项目中的 `CONFIG_AWS_ROOT_CA` 的值，也可以自行[申请一个 AWS 根证书](https://docs.aws.amazon.com/zh_cn/acm-pca/latest/userguide/PCACertInstall.html)。 |
+| `client_crt` | 设备端证书。可以从 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager#agoraiotregisterandbind) 方法返回的 `agora_iot_device_info_t::certificate` 参数获取。 |
+| `client_key` | 设备端私钥。可以从 [agora_iot_register_and_bind](/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager#agoraiotregisterandbind) 方法返回的 `agora_iot_device_info_t::private_key` 参数获取。 |
+| `enable_rtc` | <Slot name="config-html-5-8-1" /> |
+| `certificate` | [agora_license_activate](/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager#agora_license_activate) 方法返回的证书。 |
+| `enable_recv_audio` | <Slot name="config-html-5-10-1" /> |
+| `enable_recv_video` | <Slot name="config-html-5-11-1" /> |
+| `rtc_cb` | 音视频传输事件回调。详见 [agora_iot_rtc_callback_t](#agoraiotrtccallbackt) 结构体。 |
+| `disable_rtc_log` | <Slot name="config-html-5-13-1" /> |
+| `log_level` | 设置日志等级。详见 [agora_iot_log_level_e](#agoraiotloglevele)。该参数仅在 `disable_rtc_log` 为 `false` 时生效。 |
+| `max_possible_bitrate` | 带宽探测的最大码率（bps）。该参数会影响 [cb_target_bitrate_changed](#cbtargetbitratechanged) 回调报告的值。 |
+| `min_possible_bitrate` | 带宽探测的最小码率（bps）。该参数会影响 [cb_target_bitrate_changed](#cbtargetbitratechanged) 回调报告的值。 |
+| `enable_audio_config` | <Slot name="config-html-5-17-1" /> |
+| `audio_config` | 音频配置。详见 [agora_iot_audio_config_t](#agoraiotaudioconfigt) 结构体。 |
+| `slave_server_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Slave Server URL** 处获取。详见[开通并配置声网灵隼服务](/doc/iot-apaas//get-started/enable-service)。 |
+| `call_cb` | 呼叫事件回调。详见 [agora_iot_call_callback_t](#agoraiotcall_callback_t) 结构体。 |
+| `ota_cb` | OTA 升级事件回调。详见 [agora_iot_ota_callback_t](#agoraiototacallbackt) 结构体。 |
+| `rtm_cb` | RTM 云信令事件回调。详见 [agora_iot_rtm_callback_t](#agoraiotrtmcallbackt) 结构体。 |
+| `connect_cb` | 呼叫事件回调。详见 [agora_iot_connect_callback_t](#agoraiotconnectcallbackt) 结构体。 |
+| `call_mode` | 通话模式，详见 [agora_call_mode_e](/zh-CN/api-reference/iot-apaas/device-sdk/call/make-call#agoracallmodee) 枚举。 |
+
+<Slot for="config-html-5-8-1">
+
+是否开启音视频传输。
+
+    - true：开启音视频传输。
+    - false：关闭音视频传输。
+
+</Slot>
+
+<Slot for="config-html-5-10-1">
+
+本地是否接收音频。
+
+    - true：接收音频。
+    - false：不接收音频。
+
+</Slot>
+
+<Slot for="config-html-5-11-1">
+
+本地是否接收视频。
+
+    - true：接收视频。
+    - false：不接收视频。
+
+</Slot>
+
+<Slot for="config-html-5-13-1">
+
+是否关闭日志。
+
+    - true：关闭日志。
+    - false：开启日志。
+
+</Slot>
+
+<Slot for="config-html-5-17-1">
+
+是否开启音频配置。
+
+    - true：开启音频配置。你可以通过 `audio_config` 参数配置音频。
+    - false：关闭音频配置。`audio_config` 参数的设置无效。
+
+</Slot>

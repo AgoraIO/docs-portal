@@ -1,0 +1,106 @@
+---
+title: "媒体流加密"
+---
+在实时音视频互动过程中，你需要对媒体流加密，从而保障用户的数据安全。声网 RTSA SDK 提供内置加密方案，可以对音视频数据包进行加密。
+
+:::info[信息]
+你可以根据业务所在区域对数据安全及隐私保护的要求，以及自身的安全策略，选择是否启用声网支持的加密功能以及具体的加密方式。
+:::
+
+声网 RTSA SDK 的加密原理如下：
+
+![RTSA 加密原理](/img/rtsa/encryption.png)
+
+RTSA SDK 目前支持以下加密模式：
+
+- `AES_128_XTS`
+- `AES_128_ECB`
+- `AES_256_XTS`
+- `SM4_128_ECB`
+- `AES_128_GCM`
+- `AES_256_GCM`
+- `AES_128_GCM2`（推荐）
+- `AES_256_GCM2`（推荐）
+
+## 实现方法
+
+在启用媒体流加密前，请确保已在你的项目中实现基本的实时音视频功能。
+
+参考如下步骤，为你的 App 添加内置媒体流加密功能：
+
+1. 在你的服务端生成一个密钥和盐。
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成一个 16 字节的随机值，并以 16 进制 (hex) 字符串形式输出，作为密钥使用：
+
+      ```shell
+      # 随机生成一个密钥
+      openssl rand -hex 16
+      # 示例输出
+      9f3c7a1e5b8d4c2a6e0f91b7d4a2c8e5
+      ```
+
+   - 在你的服务端，参考以下命令，通过 OpenSSL 随机生成 Base64 编码、32 字节的盐：
+
+      ```shell
+      # 随机生成一个 Base64 编码、32 字节的盐
+      openssl rand -base64 32
+      # 示例输出
+      X5w9T+50kzxVOnkJKiY/lUk82/bES2kATOt3vBuGEDw=
+      ```
+
+2. 实现客户端逻辑：
+
+   1. 从服务端获取 String 型的密钥和 Base64 编码的盐。
+
+   2. 将盐从 Base64 转换成 uint8_t。
+
+   3. 调用 `agora_rtc_join_channel``joinChannel` 时在 `crypto_option_t``CryptoOption` 中开启加密，设置加密模式为 `AES_128_GCM2` 或 `AES_256_GCM2`，并将密钥和盐传入 SDK。
+
+    :::info[信息]
+    - 同一频道内所有用户必须使用相同的加密模式、密钥和盐。否则，可能会出现黑屏或音频丢失等未定义行为。
+    - 为确保安全性，声网建议在每次启用媒体流加密前使用新的密钥和盐。
+    :::
+
+以下示例代码展示了该逻辑的实现过程：
+
+``` c
+rtc_channel_options_t channel_options = { 0 };
+// 开启加密
+channel_options.crypto_opt.enable = true;
+// 设置加密模式
+channel_options.crypto_opt.mode =AES_128_GCM2;
+// 传入密钥
+sprintf(channel_options.crypto_opt.key, "%s", key_str);
+// 传入盐
+uint8_t *salt_bytes = NULL;
+uint32_t salt_bytes_len = 0;
+salt_bytes = util_base64_decode(salt_base64_str, strlen(salt_base64_str), &salt_bytes_len);
+memcpy(channel_options.crypto_opt.salt, salt_bytes, salt_bytes_len);
+free(salt_bytes);
+// 加入频道
+agora_rtc_join_channel(conn_id, channel_name, uid, token, &channel_options);
+```
+
+``` java
+import java.util.Base64;
+ChannelOptions chOptions = new ChannelOptions();
+// 开启加密
+chOptions.cryptoOpt.enable = true;
+// 设置加密模式
+chOptions.cryptoOpt.mode = CryptoMode.AES_128_GCM2;
+// 传入密钥
+chOptions.cryptoOpt.key = key_str;
+// 传入盐
+byte[] salt_bytes = Base64.getDecoder().decode(salt_base64_str);
+System.arraycopy(salt_bytes, 0, chOptions.cryptoOpt.salt, 0, chOptions.cryptoOpt.salt.length);
+// 加入频道
+RtcService.joinChannel(connId, channelName, uid, token, chOptions);
+```
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+[`agora_rtc_join_channel`](/api-ref/rtsa/c/agora__rtc__api_8h#a6c29ff27f04623526a164cf6e5dcd738)
+
+[`joinChannel`](/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service#a3dd72e07c6799725a7dcce4b137028e2)

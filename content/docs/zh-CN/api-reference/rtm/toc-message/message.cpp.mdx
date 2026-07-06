@@ -1,0 +1,257 @@
+---
+title: "消息"
+---
+收发消息是 RTM 服务的基础功能之一，任何使用 RTM 服务发送的消息将会在 100 ms 以内送达到任何一个在线订阅用户端上，你可以一次只给一个人发消息，也可以一次给多人广播消息，这取决于你的使用方式。
+
+RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream Channel。3 种频道类型的主要区别如下：
+
+- Message Channel：实时频道，消息通过频道传递，可扩展性强。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `RTM_CHANNEL_TYPE_MESSAGE`，并将 `channelName` 参数设为频道名称，即可在频道中发送消息。远端用户可以调用 `subscribe` 方法订阅频道并接收消息。
+- User Channel：向指定用户发送点对点消息。本地用户可以调用 `publish` 方法，将 `channelType` 参数设为 `RTM_CHANNEL_TYPE_USER`，并将 `channelName` 参数设为对方的 `userId`，即可向指定用户发送消息。指定用户可以通过 `onMessageEvent` 事件通知来接收消息。
+- Stream Channel：流传输频道，用户需要先加入频道，然后加入 Topic，消息通过 Topic 传递。本地用户可以调用 `publishTopicMessage` 方法在 Topic 中发送消息，远端用户可以调用 `subscribeTopic` 方法订阅 Topic 并接收消息。
+
+本文介绍如何在 Message Channel 和 User Channel 中收发消息。
+
+想要了解更多收发消息的信息可以查看：
+
+- [消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)
+
+## publish
+
+### 接口描述
+
+你可以直接调用 `publish` 方法向订阅该频道的所有在线用户发送消息。即使没有订阅频道，也能在频道中发送消息。
+
+:::info[信息]
+以下做法可有效提升消息收发的可靠性：
+
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+:::
+
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `publish` 方法：
+
+```cpp
+virtual void publish(const char* channelName, const char* message, const size_t length, const PublishOptions& option, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | <Slot name="message-cpp-html-0-1-4" /> |
+| `message` | const char* | 必填 | - | 消息负载。 |
+| `length` | const size_t | 必填 | - | 消息负载的长度。 |
+| `option` | `const PublishOptions&` | 必填 | - | 消息选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+<Slot for="message-cpp-html-0-1-4">
+
+- 如需向 Message Channel 发送消息，填写频道名称。
+     - 如需向 User Channel 发送消息，填写用户 ID。
+
+</Slot>
+
+`PublishOptions` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelType` | `RTM_CHANNEL_TYPE` | 选填 | `RTM_CHANNEL_TYPE_MESSAGE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `messageType` | `RTM_MESSAGE_TYPE` | 选填 | `RTM_MESSAGE_TYPE_BINARY` | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#messagetype)。 |
+| `customType` | const char* | 选填 | `NULL` | 用户自定义字段。仅支持字符串型。 |
+| `storeInHistory` | bool | 选填 | `false` | <Slot name="message-cpp-html-1-4-4" /> |
+
+<Slot for="message-cpp-html-1-4-4">
+
+是否开启历史消息存储。开启后，消息在发送的同时会被存储到云端，便于用户在进入频道后可以查询到历史消息记录。
+
+    :::info[信息]
+    历史消息功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开通。
+    :::
+
+</Slot>
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onPublishResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+示例 1：向指定 Message Channel 发送 String 消息
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "PlainText";
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
+options.storeInHistory = true;
+
+std::string message =  "hello world";
+uint64_t requestId;
+rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+```
+
+示例 2：向指定频道 Message Channel 发送 Byte 消息
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
+options.storeInHistory = true;
+
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+uint64_t requestId;
+rtmClient->publish("channelName", message, 5, options, requestId);
+```
+
+示例 3：向指定 User Channel 发送 String 消息
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "PlainText";
+options.channelType = RTM_CHANNEL_TYPE_USER;
+options.storeInHistory = true;
+
+std::string message =  "hello world";
+uint64_t requestId;
+rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+```
+
+示例 4：向指定 User Channel 发送 Byte 消息
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+options.channelType = RTM_CHANNEL_TYPE_USER;
+options.storeInHistory = true;
+
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+uint64_t requestId;
+rtmClient->publish("channelName", message, 5, options, requestId);
+```
+
+示例 5：异步回调
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("publish message failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("publish message success\n");
+        }
+    }
+};
+```
+
+## getMessages
+
+### 接口描述
+
+如果你需要从指定频道中获取历史消息，在客户端调用 `getMessages` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getMessages` 方法：
+
+```cpp
+virtual void getMessages(const char* channelName, RTM_CHANNEL_TYPE channelType, const GetHistoryMessagesOptions& options, uint64_t& requestId) = 0;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | const char* | 必填 | - | 频道名称。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `options` | `const GetHistoryMessagesOptions&` | 必填 | - | 查询选项。 |
+| `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+`GetHistoryMessagesOptions` 数据类型包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述          |
+| --------- | --- | ----- | --- | -------- |
+| `messageCount`  | uint16_t |   选填   |  `100`   | 单次查询的最大消息数。如果单次查询的时间范围内消息数大于该值，则需多次调用 `getMessages` 方法进行查询。 |
+|   `start`   |  uint64_t  |   选填   |  `0`   | 历史消息开始的时间戳。 |
+| `end` | uint64_t |   选填   |   `0`    | 历史消息结束的时间戳。   |
+
+:::info[信息]
+RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设置：
+
+- `start` 和 `end` 为 UTC 时间戳，且两者间隔不能超过 24 小时（取 `event` 事件中返回的 `timestamp` 值）。
+- 如果你只设置了 `start` 参数，则你会获得比 `start` 时间戳更早的历史消息。
+- 如果你只设置了 `end` 参数，则你会获得当前时间戳到 `end` 时间戳（包含）之间的历史消息。
+- 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
+:::
+
+### 异步回调
+
+调用该方法后，SDK 会触发 `onGetHistoryMessagesResult` 回调并通过以下参数返回 API 调用结果：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `requestId` | const uint64_t | 请求标识符。 |
+| `messageList` | `const HistoryMessage*` | 历史消息列表。 |
+| `count` | const size_t | 历史消息数量。 |
+| `newStart` | const uint64_t | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+
+### 基本用法
+
+```cpp tab="方法调用"
+// 方法调用
+  GetHistoryMessagesOptions options;
+  options.start = 0;
+  options.end = 0;
+  options.messageCount = 100;
+
+  uint64_t requestId = 0;
+  rtmClient->getHistory()->getMessages("channelName", RTM_CHANNEL_TYPE_MESSAGE,
+               options, requestId);
+```
+
+```cpp tab="异步回调"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetHistoryMessagesResult(const uint64_t requestId, const HistoryMessage* messageList, const size_t count, const uint64_t newStart, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("get history message failed, error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("get history message success, new start %lld\n", newStart);
+            for (int i = 0; i < count; ++i) {
+              std::string msg(messageList[i].message, messageList[i].messageLength);
+              // ...
+            }
+        }
+    }
+};
+```
+
+<a id="接收消息"></a>
+## 接收消息
+
+RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。以接收 User Channel 中的消息为例，示例代码如下：
+
+```cpp
+class RtmEventHandler : public IRtmEventHandler {
+    void onMessageEvent(const MessageEvent& event) override {
+        // User Channel 私聊消息
+        if (event.channelType == RTM_CHANNEL_TYPE_USER) {
+          printf("receive message from %s, message: %s\n", event.publisher, event.message);
+        }
+    }
+
+    // ...
+};
+```
+
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)章节。

@@ -1,0 +1,724 @@
+---
+title: "用户鉴权"
+---
+
+<PlatformStructured platform="android">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+RTM 提供 Message Channel、User Channel 和 Stream Channel 三种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
+
+- 使用 Message Channel 或 User Channel：只需在调用 `login` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `join` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+
+Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## RtmClient.renewToken
+
+### 接口描述
+
+调用 `RtmClient.renewToken` 方法更新 RTM Token。
+
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `RtmClient.renewToken` 方法：
+
+```java
+void renewToken(String token, ResultCallback<Void> resultCallback)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTM Token。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="token-android-html-0-2-4" /> |
+
+<Slot for="token-android-html-0-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+rtmClient.renewToken("your_token", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // 处理操作成功结果
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // 处理报错
+    }
+});
+```
+
+## StreamChannel.renewToken
+
+### 接口描述
+
+调用 `StreamChannel.renewToken` 方法更新 RTC Token。
+
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `StreamChannel.renewToken` 方法：
+
+```java
+void renewToken(String token, ResultCallback<Void> resultCallback)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTC Token。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="token-android-html-1-2-4" /> |
+
+<Slot for="token-android-html-1-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+streamChannel.renewToken("your_token", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // 处理操作成功结果
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // 处理报错
+    }
+});
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+RTM 提供 Message Channel、User Channel 和 Stream Channel 三种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
+
+- 使用 Message Channel 或 User Channel：只需在调用 `loginByToken` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `joinWithOption` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+
+Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## AgoraRtmClientKit.renewToken
+
+### 接口描述
+
+调用 `AgoraRtmClientKit.renewToken` 方法更新 RTM Token。
+
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `AgoraRtmClientKit.renewToken` 方法：
+
+```objc
+- (void) renewToken:(NSString* _Nonnull)token
+         completion:(AgoraRtmOperationBlock _Nullable)completionBlock NS_SWIFT_NAME(renewToken(_:completion:));
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTM Token。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="token-ios-html-0-2-4" /> |
+
+<Slot for="token-ios-html-0-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[rtm renewToken:@"new token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"renew token success!!");
+    } else {
+        NSLog(@"renew token failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## AgoraRtmStreamChannel.renewToken
+
+### 接口描述
+
+调用 `AgoraRtmStreamChannel.renewToken` 方法更新 RTC Token。
+
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `AgoraRtmStreamChannel.renewToken` 方法：
+
+```objc
+- (void)renewToken:(NSString* _Nonnull)token
+        completion:(AgoraRtmOperationBlock _Nullable)completionBlock NS_SWIFT_NAME(renewToken(_:completion:));
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTC Token。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="token-ios-html-1-2-4" /> |
+
+<Slot for="token-ios-html-1-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[streamChannel renewToken:@"new token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"renew token success!!");
+    } else {
+        NSLog(@"renew token failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+RTM 提供 Message Channel、User Channel 和 Stream Channel 三种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
+
+- 使用 Message Channel 或 User Channel：只需在调用 `login` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `join` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+
+Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## renewToken
+
+### 接口描述
+
+调用 `renewToken` 方法更新 Token。
+
+更新不同类型的 Token 时，需要填写的参数不同：
+
+- RTM Token：更新时只需填写 `token` 参数。
+- RTC Token：更新时需填写 `token` 和 `channelName` 参数
+
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `renewToken` 方法：
+
+```javascript
+rtm.renewToken(token: string, options?: object): Promise<RenewTokenResponse>
+```
+
+|     参数      |       类型        | 是否必填 | 默认值 |  描述  |
+| ---------- | -------------- | ----- | --- | --------- |
+|   `token`   | string |   必填   |   -    | 新生成的 Token。 |
+|   `options`   |      object       |   选填   |   -    |                     Token 更新选项。                     |
+
+`options` 对象中包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述  |
+| --------- | --- | ----- | --- | ----------- |
+| `channelName` |      string       |   选填   |   -    |    频道名称。更新 RTC Token 时必须填写。    |
+
+### 基本用法
+
+示例 1：更新 RTM Token
+
+```javascript
+rtmClient.addEventListener('tokenPrivilegeWillExpire', async (channelName) => {
+    if(!channelName){
+        // RTM Token 即将过期
+        const newToken = "<Your new token>";
+        await rtmClient.renewToken(newToken);
+    }
+});
+```
+
+示例 2：更新 RTC Token
+
+```javascript
+rtmClient.addEventListener('tokenPrivilegeWillExpire', async (streamChannelName) => {
+    if(streamChannelName){
+        // RTC Token 即将过期。
+        const newToken = "<Your new token>";
+        await rtmClient.renewToken(newToken, {
+            channelName: streamChannelName
+        });
+    }
+});
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RenewTokenResponse` 类型数据：
+
+```javascript
+type RenewTokenResponse = {
+    timestamp: number,              // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+基于不同的传输连接，RTM SDK 提供的功能可以被划分为两种服务类型： `MESSAGE` 服务和 `STREAM` 服务。这两种服务使用的 Token 是不同的，更新 Token 的方法也不同。其中：
+
+- `MESSAGE` 服务：使用 RTM 实例下的 `renewToken()` 方法更新 token，为 `Message Channel`、`User Channel`、`Presence`、`Storage`、`Lock`等特性提供鉴权服务。
+- `STREAM` 服务： 使用 `streamChannel` 实例下的`renewToken()` 方法更新 Token，为 `Stream Channel`、`Topic` 等功能特性提供鉴权服务。
+
+这两种服务都会通过 `token` 事件返回 Token 即将过期通知。你可以通过监听此事件实现 Token 自动续期的业务逻辑。Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## renewToken
+
+### 接口描述
+
+为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
+
+- 通过调用 `rtmClient.renewToken(token: string)` 为 `MESSAGE` 服务更新 Token。
+- 通过调用 `streamChannel.renewToken(token: string)` 为 `STREAM` 服务更新 Token。
+
+### 接口方法
+
+你可以通过以下方式调用 `renewToken` 方法：
+
+```typescript
+async renewToken(token: string): Promise<RenewTokenResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | <Slot name="token-harmonyos-html-0-1-4" /> |
+
+<Slot for="token-harmonyos-html-0-1-4">
+
+根据使用的服务类型，在该参数中填入对应 Token。
+
+    - `MESSAGE` 服务：新生成的 RTM Token。
+    - `STREAM` 服务：新生成的 RTC Token。
+
+</Slot>
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+import type { TokenEvent } from '@shengwang/rtm-full';
+
+// 定义获取 token 函数
+async function fetchToken(channelName?: string): Promise<string> {
+  // 向 Token Provider 请求 Token
+  // ...
+  return 'your_token_here';
+}
+
+// 监听 token 事件，更新 Token
+rtmClient.addEventListener('token', async (event: object) => {
+  const tokenEvent = event as TokenEvent;
+  const token = await fetchToken();
+  try {
+    await rtmClient.renewToken(token);
+    console.log('MESSAGE service token renewed successfully');
+  } catch (error) {
+    if (error instanceof RtmError) {
+      console.error('Failed to renew MESSAGE token:', error.errorCode, error.reason);
+    }
+  }
+});
+```
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `RenewTokenResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`RenewTokenResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+RTM 提供 Message Channel 和 Stream Channel 两种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
+
+- 使用 Message Channel：只需在调用 `LoginAsync` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `JoinAsync` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+
+Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## IRtmClient::RenewTokenAsync
+
+### 接口描述
+
+调用 `IRtmClient::RenewTokenAsync` 方法更新 RTM Token。
+
+为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTM Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `IRtmClient::RenewTokenAsync` 方法：
+
+```csharp
+RtmResult<RenewTokenResult> RenewTokenAsync(string token);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTM Token。 |
+
+### 基本用法
+
+```csharp
+var result =  await rtmClient.RenewTokenAsync("your_token");
+if (result.Status.Error)
+{
+    // 更新失败，处理报错
+    Debug.Log(result.Status.ErrorCode);
+}
+else
+{
+    // 更新成功
+}
+```
+
+### 返回值
+
+`IRtmClient::RenewTokenAsync` 操作返回一个 `RtmResult<RenewTokenResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |       类型        | 描述         |
+| ------- | ----- | ------------ |
+|  `Status`  |   `RtmStatus`    | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。  |
+| `Response` | `RenewTokenResult` | 操作成功后，返回一个 `RenewTokenResult` 类型的数据结构，其中包含本次操作的执行结果。 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+## IStreamChannel::RenewTokenAsync
+
+### 接口描述
+
+调用 `IStreamChannel::RenewTokenAsync` 方法更新 RTC Token。
+
+为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTC Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `IStreamChannel::RenewTokenAsync` 方法：
+
+```csharp
+RtmResult<RenewTokenResult> RenewTokenAsync(string token);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | 新生成的 RTC Token。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="token-unity-html-1-2-4" /> |
+
+<Slot for="token-unity-html-1-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```csharp
+var result =  await streamChannel.RenewTokenAsync("your_token");
+if (result.Status.Error)
+{
+    // 更新失败，处理报错
+    Debug.Log(result.Status.ErrorCode);
+}
+else
+{
+    // 更新成功
+}
+```
+
+### 返回值
+
+`IStreamChannel::RenewTokenAsync` 操作返回一个 `RtmResult<RenewTokenResult>` 类型数据结构的返回值，其中包含：
+
+|    属性    |       类型        | 描述         |
+| ------- | ----- | ------------ |
+|  `Status`  |   `RtmStatus`    | 无论操作是否成功，都返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态。  |
+| `Response` | `RenewTokenResult` | 操作成功后，返回一个 `RenewTokenResult` 类型的数据结构，其中包含本次操作的执行结果。 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+基于不同的传输连接，RTM SDK 提供的功能可以被划分为两种服务类型： `MESSAGE` 服务和 `STREAM` 服务。这两种服务使用的 Token 是不同的，更新 Token 的方法也不同。其中：
+
+- `MESSAGE` 服务：使用 RTM 实例下的 `renewToken()` 方法更新 token，为 `Message Channel`、`User Channel`、`Presence`、`Storage`、`Lock`等特性提供鉴权服务。
+- `STREAM` 服务： 使用 `streamChannel` 实例下的`renewToken()` 方法更新 Token，为 `Stream Channel`、`Topic` 等功能特性提供健全服务。
+
+这两种服务都会通过 `token` 事件返回 Token 即将过期通知。你可以通过监听此事件实现 Token 自动续期的业务逻辑。Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+想要了解生成和使用 Token 的更多信息，可以查看：
+
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
+
+## renewToken
+
+### 接口描述
+
+为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
+
+- 通过调用 `rtmClient.renewToken(String token)` 为 `MESSAGE` 服务更新 Token。
+- 通过调用 `streamChannel.renewToken(String token)` 为 `STREAM` 服务更新 Token。
+
+### 接口方法
+
+你可以通过以下方式调用 `renewToken` 方法：
+
+```dart
+Future<(RtmStatus, RenewTokenResult?)> renewToken(String token);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 必填 | - | <Slot name="token-flutter-html-0-1-4" /> |
+
+<Slot for="token-flutter-html-0-1-4">
+
+根据使用的服务类型，在该参数中填入对应 Token。
+
+    - `MESSAGE` 服务：新生成的 RTM Token。
+    - `STREAM` 服务：新生成的 RTC Token。
+
+</Slot>
+
+### 基本用法
+
+```dart
+class TokenResult {
+    final String status;
+    final String token;
+    TokenResult(this.status, this.token);
+}
+// 定义获取 token 函数
+Future<TokenResult> fetchToken({required String channelName}) async {
+    // 向 Token Provider 请求 Token
+    ......
+    String status = "success";
+    String token = "your_token_here";
+    return TokenResult(status, token);
+}
+
+rtmClient.addListener({
+    token:(event) => {
+        if(event.channelName == '') {                                        // 当 event 中 channelName 为空时，表示 MESSAGE 服务 Token 过期
+            var result = await fetchToken();                                 // 获取 MESSAGE 服务 Token
+            rtmClient.renewToken(result.token);                              // 更新 MESSAGE 服务 Token
+        } else {                                                             // 当 event 中 channelName 不为空时，表示 `STREAM` 服务 Token 过期
+            var result = await fetchToken(channelName: event.channelName);   // 获取 STREAM 服务 Token
+            streamChannel.renewToken(result.token);                          // 更新 STREAM 服务 Token
+        }
+    }
+});
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, RenewTokenResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+  ```dart
+  class RtmStatus {
+      bool error;                   // 本次操作是否出错。
+      String errorCode;             // 本次操作错误码。
+      String operation;             // 本次操作的 API。
+      String reason;                // 本次操作错误原因简述。
+  }
+  ```
+
+  你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `RenewTokenResult` 类型的数据，定义如下：
+
+  ```dart
+  class RenewTokenResult {
+      final RtmServiceType serverType;  // 服务类型
+      final String channelName;         // 频道名
+  }
+  ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+鉴权是指在用户访问你的系统前，对其进行身份校验。用户在使用声网服务，如加入音视频通话或登录信令系统时，声网使用 Token 对其鉴权。
+
+RTM 提供 Message Channel、User Channel 和 Stream Channel 三种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
+
+- 使用 Message Channel 或 User Channel：只需在调用 `login` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `join` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+
+Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新 Token。本文介绍如何更新 Token。
+
+<a id="renewtoken"></a>
+## renewToken
+
+### 接口描述
+
+调用 `renewToken` 方法更新 Token。
+
+更新不同类型的 Token 时，需要填写的参数不同：
+
+- RTM Token：更新时只需填写 `token` 参数。
+- RTC Token：更新时需填写 `token` 和 `channelName` 参数
+
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+
+### 接口方法
+
+你可以通过以下方式调用 `renewToken` 方法：
+
+```typescript
+renewToken(
+    token: string,
+    options?: RenewTokenOptions
+): Promise<RenewTokenResponse>;
+```
+
+|     参数      |       类型        | 是否必填 | 默认值 |  描述  |
+| ---------- | -------------- | ----- | --- | --------- |
+|   `token`   | string |   必填   |   -    | 新生成的 Token。 |
+|   `options`   |      object       |   选填   |   -    |                     Token 更新选项。                     |
+
+`options` 对象中包含以下属性：
+
+|     属性     |  类型  | 是否必填 | 默认值 | 描述  |
+| --------- | --- | ----- | --- | ----------- |
+| `channelName` |      string       |   选填   |   -    |    频道名称。更新 RTC Token 时必须填写。    |
+
+### 基本用法
+
+```typescript
+rtmClient.addEventListener('tokenPrivilegeWillExpire', async (channelName) => {
+    if(!channelName){
+        // RTM Token 即将过期
+        const newToken = "<Your new token>";
+        await rtmClient.renewToken(newToken);
+    }
+});
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `RenewTokenResponse` 类型数据：
+
+```typescript
+type RenewTokenResponse = {
+    timestamp: number               // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/api-reference/rtm/error-codes)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
