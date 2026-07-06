@@ -1,0 +1,267 @@
+---
+title: "智能体短期记忆"
+---
+短期记忆（Short-term Memory）是智能体在当前会话中临时保存和处理的信息空间。用户和对话式智能体互动期间，智能体会在短期记忆中缓存当前对话的上下文，确保智能体能够连贯地理解和回应用户的连续输入。
+
+使用声网对话式 AI 引擎创建的智能体会维护对话期间产生的短期记忆，不仅支持从短期记忆中选取信息传递给大模型，且可以通过消息通知服务固化为长期记忆。
+
+本文将介绍以下内容：
+
+- 短期记忆中有什么
+- 如何获取短期记忆
+- 如何使用短期记忆
+
+:::info[信息]
+本文适用于 v1.4 及以上版本的声网对话式 AI 引擎。
+:::
+
+## 短期记忆的数据结构
+
+对话式 AI 引擎整体短期记忆会以 JSON 的形式存储，遵循 [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat) 的规则，同时进行了部分的扩展。具体数据结构如下：
+
+```json
+{
+    "contents": [
+        {
+            "role": "assistant",
+            "content": "How can I help you today?",
+            "turn_id": 1,
+            "timestamp": 1678901234,
+            "metadata": {
+                "source": "greeting"
+            }
+        },
+        {
+            "role": "user",
+            "content": "Can you tell me a joke?",
+            "turn_id": 2,
+            "timestamp": 1678901235,
+            "metadata": {
+                "source": "asr",
+                "user": "user123"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Why did the scarecrow ",
+            "turn_id": 2,
+            "timestamp": 1678901236,
+            "metadata": {
+                "interrupted": true,
+                "interrupt_timestamp": 1678905225,
+                "original": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+                "source": "llm"
+            }
+        },
+        {
+            "role": "user",
+            "content": "You know what? Tell me a story instead.",
+            "turn_id": 3,
+            "timestamp": 1678905235,
+            "metadata": {
+                "source": "asr",
+                "user": "user123"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses.",
+            "turn_id": 3,
+            "timestamp": 1678905236,
+            "metadata": {
+                "source": "llm"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Are you still there?",
+            "turn_id": 4,
+            "timestamp": 1678905236,
+            "metadata": {
+                "source": "command"
+            }
+        }
+    ]
+}
+```
+
+**OpenAI 标准字段**
+
+- `role`：发送消息的角色。短期记忆中仅支持用户 (`user`) 和智能体 (`assistant`)，不包含系统消息 (`system`)。
+- `content`：具体的文本内容。当前，短期记忆不考虑多模态输入。
+
+**声网对话式 AI 引擎扩展字段**
+
+- `turn_id`：对话轮次的标识符。`turn_id` 从 `0` 开始递增，用户和智能体的一轮对话对应一个 `turn_id`。
+- `timestamp`：对应消息的时间戳，精度为毫秒。
+- `metadata`：消息的元数据，具体字段如下：
+    - `source`：消息的输入源：
+        - `user` 消息可能的输入源包括：
+            - 语音识别结果 (`asr`)
+            - 文字消息 (`message`)
+            - RESTful API 调用产生的消息 (`command`)
+        - `assistant` 消息可能的输入源包括：
+            - 大模型 (`llm`)
+            - 问候语 (`greeting`)
+            - 大模型调用失败 (`llm failure`)
+            - RESTful API 调用产生的消息 (`command`)
+            - 静默提示消息 (`silence`)
+    - `interrupted`：本条智能体消息（`role` 为 `assistant`）是否被人声打断：
+        - `true`：本条消息被打断。
+        - `false`：本条消息未被打断。`false` 为默认情况，此时该字段将隐藏。
+    - `interrupt_timestamp`：智能体消息被打断的时间戳，精度为毫秒。该字段仅在智能体消息被人声打断时（`interrupted` 为 `true`）存在。
+    - `original`：大模型实际生成的完整内容。该字段仅在智能体消息被人声打断时（`interrupted` 为 `true`）存在。
+
+## 短期记忆的获取
+
+声网对话式 AI 引擎支持两种方式获取短期记忆：
+
+- 智能体运行期间，你可以调用 [GET 获取智能体短期记忆](../convoai/operations/get-history)接口获取短期记忆 JSON。该接口会得到智能体生命周期内储存的完整的短期记忆。
+- 智能体停止后，声网会通过消息通知服务将短期记忆回调至你的业务服务器，详见[消息通知事件类型](/zh-CN/ai/webhook/ncs-events#103-agent-history)。
+
+## 短期记忆的应用
+
+### 传递记忆内容给大模型
+
+根据智能体创建时传入的 `llm.vendor` 字段，声网对话式 AI 引擎会采取不同的策略来传递记忆内容给大模型：
+
+- 当 `llm.vendor` 不为 `"custom"` 时，为保证兼容性，声网对话式 AI 引擎仅从短期记忆中传输 OpenAI 标准字段，即 `role` 和 `content`。
+- 当 `llm.vendor` 为 `"custom"` 时，声网对话式 AI 引擎会传输短期记忆中的所有字段。你可以参考[自定义大模型](/zh-CN/ai/user-guides/custom-llm)中的示例代码实现一个包装器 (wrapper) 以过滤或合并短期记忆中的某些扩展字段，按需选择、处理并传递这些信息给大模型。
+
+![短期记忆传递给大模型的示意图](/img/convoai/use-memory.svg)
+
+#### 非 custom 场景
+
+在非 `custom` 场景下，仅从短期记忆中传入 OpenAI 标准的 `role` 和 `content` 字段作为大模型的输入。
+
+```json
+{
+    "messages": [
+        {
+            "role": "assistant",
+            "content": "How can I help you today?"
+        },
+        {
+            "role": "user",
+            "content": "Can you tell me a joke?"
+        },
+        {
+            "role": "assistant",
+            "content": "Why did the scarecrow "
+        },
+        {
+            "role": "user",
+            "content": "You know what? Tell me a story instead."
+        },
+        {
+            "role": "assistant",
+            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses."
+        },
+        {
+            "role": "assistant",
+            "content": "Are you still there?"
+        }
+    ]
+}
+```
+
+#### custom 场景
+
+在 `custom` 场景下，智能体将完整的扩展字段传递给大模型，你可以参考[自定义大模型](/zh-CN/ai/user-guides/custom-llm) 中的示例代码实现一个包装器 (wrapper) 来实现字段的过滤和合并，例如：
+
+- 将时间戳放到 `content` 前面
+- 将用户信息放在 `content` 前面
+- 在打断场景下，将 `original` 也提供给大模型
+
+这些操作可以与 `system_messages` 配合，以实现更智能的体验（大模型理解人、大模型理解打断等）。
+
+```json
+{
+    "messages": [
+        {
+            "role": "assistant",
+            "content": "How can I help you today?",
+            "turn_id": 1,
+            "timestamp": 1678901234,
+            "metadata": {
+                "source": "greeting"
+            }
+        },
+        {
+            "role": "user",
+            "content": "Can you tell me a joke?",
+            "turn_id": 2,
+            "timestamp": 1678901235,
+            "metadata": {
+                "source": "asr",
+                "user": "user123"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Why did the scarecrow ",
+            "turn_id": 2,
+            "timestamp": 1678901236,
+            "metadata": {
+                "interrupted": true,
+                "interrupt_timestamp": 1678905225,
+                "original": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+                "source": "llm"
+            }
+        },
+        {
+            "role": "user",
+            "content": "You know what? Tell me a story instead.",
+            "turn_id": 3,
+            "timestamp": 1678905235,
+            "metadata": {
+                "source": "asr",
+                "user": "user123"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses.",
+            "turn_id": 3,
+            "timestamp": 1678905236,
+            "metadata": {
+                "source": "llm"
+            }
+        },
+        {
+            "role": "assistant",
+            "content": "Are you still there?",
+            "turn_id": 4,
+            "timestamp": 1678905236,
+            "metadata": {
+                "source": "command"
+            }
+        }
+    ],
+    "turn_id": 4,
+    "timestamp": 1678905236,
+    "interruptable": true,
+    "model": "xxxx"
+}
+```
+
+### 固化和注入长期记忆
+
+智能体的短期记忆会随智能体停止而消失，你可以在智能体停止后，将短期记忆储存到你的服务器以固化为长期记忆，之后在创建智能体时通过 `llm.system_messages` 直接注入原始记忆内容或经过总结的记忆内容，从而实现在智能体退出或重启后仍然能够访问和使用这些数据。
+
+以下示例展示了通过 `system_messages` 注入经过总结的记忆内容：
+
+```json
+[
+    {
+        "role": "system",
+        "content": "You are a helpful assistant. xxx"
+    },
+    {
+        "role": "system",
+        "content": "Previously, user has talked about their favorite hobbies with some key topics: xxx"
+    }
+]
+```
+
+此外，自 v1.4 起，支持在智能体运行时，调用 [POST 更新智能体配置](../convoai/operations/agent-update)更新 `system_messages` 字段, 从而实现记忆内容的更新。

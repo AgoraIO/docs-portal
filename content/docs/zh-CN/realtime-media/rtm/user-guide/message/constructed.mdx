@@ -1,0 +1,1162 @@
+---
+title: "消息负载结构化"
+---
+消息负载的结构应该具备易读性和可扩展性，以减少程序的构建和维护成本，以及在未来版本升级时新老版本可以更容易地兼容。由于通过 RTM 发送的消息只能为字符串（String）或二进制（Binary）类型，RTM 无法直接提供可解析、可扩展的消息数据结构。但你可以根据业务需求自行构建结构化消息负载，并使用 `customType` 参数来标识和解析它。
+
+你在业务流程中可能会涉及到以下类型的消息：
+
+- **纯文本消息**
+- **文本消息**：包含有图片、文件等附件的 URL。
+- **视频文件消息**：包含文本说明、视频地址和缩略图地址等。
+- **问卷调查、答题消息**：可能包含预先设置的答案选项。
+- **邀请消息**：例如邀请其他用户参加私聊或者群聊。
+- **信令消息**：例如发起视频或音频聊天的邀请指令。
+- **指令消息**：例如平行驾驶或者 IoT 应用中向设备下发控制指令消息或传感器上传的设备状态消息。
+- **状态同步消息**：例如元宇宙或游戏中玩家的位置、视角或当前状态消息。
+
+假设你收到以下三条消息负载：
+
+- `"This is a Message!"`
+- `{ message: "https://cdn.agora.io/assets/avatar.png"}`
+- `{ message: { x =1 0, y = 100, z = 55 } }`
+
+当你收到这些消息负载时，你很难快速判断这是一条带有图片地址的消息或是一条包含位置信息的消息。即便可以扫描所有消息，检查文本中是否包含 `jpg` 字符串或含有 `x,y,z` 字符，这个方法也会随着 App 用户和消息类型的增加而变得困难。
+
+为了解决这类问题，你可以在消息负载结构中引入预定义的字段，通过结构化消息负载增加可解析性和扩展性。例如，在上面的例子中，我们在消息结构中引入 `type` 字段，改动如下：
+
+| 原消息结构                                             | 结构化消息结构                                                   |
+| --------------- | -------- |
+| `"Hello, This is a Message!"`                          | `{type: "text", message: "Hello, This is a Message!"}`           |
+| `{message: "https://cdn.agora.io/assets/avatar.png"} ` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
+| `{message: { x =1 0, y = 100, z = 55 }}`               | `{type: "position", coordinate: { x: 10, y: 100, z: 55 }}`       |
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `message.publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/user-guide/message/serialized)。
+
+```javascript showLineNumbers
+// Define message structure
+const message = {
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+// Message string serialization
+const payload = JSON.stringify(message);
+// Send message with customType set
+try {
+    const result = await rtm.publish( "my_channel", payload, {customType : "image", channelType: "MESSAGE"} );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+// When receiving a message, use the custom Type field to parse the message type。
+// Handle message event
+rtm.addEventListener("message", event => {
+    if (event.customType === "image" ) {
+        console.log("It is a image message!");
+        const message = JSON.parse(event.message);
+    }
+});
+```
+
+```java
+String message = {
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+};
+
+// Send message with customType
+PublishOptions options = new PublishOptions();
+options.customType = "image";
+mRtmClient.publish("channel_name", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+// When receiving a message, use the custom Type field to parse the message type
+
+new RtmEventListener {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        log(INFO, "onMessageEvent");
+        if (event.customType == "image") {
+            log(INFO, "It is a image message!");
+            // precess message
+            log(INFO, "message: " + event.message.getData());
+        }
+    }
+}
+
+```
+
+```swift
+let option = AgoraRtmPublishOptions();
+option.customType = "image"
+let message = "{
+    \"type\": \"image\",
+    \"asset_url\": \"https://my.app/image.png\",
+    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
+    \"mentionedUsers\": [\"Tony\",\"Lily\"],
+    \"sender\": \"Max\"
+    }"
+
+rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        print("message event")
+        if event.customType == "image" {
+            // precess message
+            print("message: \(event.message.stringData)")
+        }
+    }
+}
+
+```
+
+```objc
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSLog(@"didReceiveMessageEvent");
+    if (event.customType == @"image") {
+        NSLog(@"It is a image message!");
+        // precess message
+        NSLog(@"message: %@", event.message.stringData);
+    }
+}
+```
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "image";
+
+std::string message =  "{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}";
+
+uint64_t requestId;
+rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+
+// When receiving a message, use the custom Type field to parse the message type
+
+class RtmHandler: public IRtmEventHandler {
+    void onMessageEvent(const MessageEvent &event) override{
+        printf("onMessageEvent");
+        if (strcmp(event.customType, "image") == 0) {
+            // precess message
+            printf("%s", event.message);
+        }
+    }
+};
+
+```
+
+```dart
+import 'dart:convert';
+
+final channelName = 'chat_room';
+var message = {
+    type: 'image',
+    asset_url: 'https://my.app/image.png',
+    thumb_url: 'https://my.app/thumbnail/image.png',
+    mentionedUsers: ['Tony','Lily'],
+    sender: 'Max'
+}
+// Message string serialization
+var payload = jsonEncode(message);
+// Send message with customType set
+try {
+    var (status, response) = await rtmClient.publish(
+        channelName,
+        payload,
+        customType: 'image');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+// When receiving a message, use the custom Type field to parse the message type。
+// Handle message event
+rtm.addListener( message: (MessageEvent event) {
+    if (event.customType == "image" ) {
+        print("It is a image message!");
+        Map<String, dynamic> data = jsonDecode(utf8.decode(event.message!));
+    }
+});
+```
+
+```typescript
+import { PublishOptions, RtmChannelType, MessageEvent } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+// Define message structure interface
+interface ImageMessage {
+  type: string;
+  asset_url: string;
+  thumb_url: string;
+  mentionedUsers: string[];
+  sender: string;
+}
+
+// Define message structure
+const message: ImageMessage = {
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony", "Lily"],
+    sender: "Max"
+};
+
+// Message string serialization
+const payload = JSON.stringify(message);
+
+// Send message with customType set
+const options: PublishOptions = {
+  channelType: RtmChannelType.MESSAGE,
+  customType: "image"
+};
+
+try {
+  const response = await rtmClient.publish("my_channel", payload, options);
+  console.log("Publish message success:", response);
+} catch (error) {
+  console.error("Publish message failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+
+// When receiving a message, use the customType field to parse the message type
+rtmClient.addEventListener("message", (event: object) => {
+  const msgEvent = event as MessageEvent;
+  if (msgEvent.customType === "image") {
+    console.log("It is an image message!");
+    const messageData = JSON.parse(msgEvent.message as string) as ImageMessage;
+    console.log("Image URL:", messageData.asset_url);
+  }
+});
+```
+
+## 推荐消息负载结构
+
+本节列举了一些应用场景中经常用到的可解析、可扩展的消息结构示例，你可以根据自己的实际业务场景进行修改。
+
+### 文本消息
+
+```csharp
+{
+    type: "text",
+    message: "This is a message",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "text",
+    message: "This is a message",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "text",
+    message: "This is a message",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+### 多语言消息
+
+```csharp
+{
+    type: "translation",
+    message: {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "translation",
+    message: {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "translation",
+    message: {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+### 图片附件消息
+
+```csharp
+{
+    type: "attachment",
+    text: "Here is a image below!"
+    attachments: [
+        {
+            type: 'image',
+            asset_url: 'https://bit.ly/2K74TaG',
+            thumb_url: 'https://bit.ly/2Uumxti',
+            myCustomField: 123
+        }
+    ],
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "attachment",
+    text: "Here is a image below!"
+    attachments: [
+        {
+            type: "image",
+            asset_url: "https://bit.ly/2K74TaG",
+            thumb_url: "https://bit.ly/2Uumxti",
+            myCustomField: 123
+        }
+    ],
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "attachment",
+    text: "Here is a image below!"
+    attachments: [
+        {
+            type: "image",
+            asset_url: "https://bit.ly/2K74TaG",
+            thumb_url: "https://bit.ly/2Uumxti",
+            myCustomField: 123
+        }
+    ],
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+### 图片消息
+
+```csharp
+{
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+### 视频消息
+
+```csharp
+{
+    type: "video",
+    asset_url: "https://my.app/video.mp4",
+    thumb_url: "https://my.app/thumbnail/video.png"
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "video",
+    asset_url: "https://my.app/video.mp4",
+    thumb_url: "https://my.app/thumbnail/video.png"
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "video",
+    asset_url: "https://my.app/video.mp4",
+    thumb_url: "https://my.app/thumbnail/video.png"
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+### 动作提示消息
+
+```csharp
+{
+    type: "action",
+    event: "正在输入",
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "action",
+    event: "正在输入",
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "action",
+    event: "正在输入",
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+### 聊天邀请消息
+
+```csharp
+{
+    type: "chatInvite",
+    channel: "this is the channel you are being invited too",
+    message: "Hi Tony, welcome to the team!"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "chatInvite",
+    channel: "this is the channel you are being invited too",
+    message: "Hi Tony, welcome to the team!"
+}
+```
+
+```java
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+```swift
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+```objc
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+```cpp
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+```json
+{
+    type: "chatInvite",
+    channel: "this is the channel you are being invited too",
+    message: "Hi Tony, welcome to the team!"
+}
+```
+
+```json
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+### 视频呼叫消息
+
+```csharp
+{
+    type: "chatInvite",
+    session: "your_video_session",
+    message:"Hi Tony, welcome to the video chat!",
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "chatInvite",
+    session: "your_video_session",
+    message:"Hi Tony, welcome to the video chat!",
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "chatInvite",
+    session: "your_video_session",
+    message:"Hi Tony, welcome to the video chat!",
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+### 问卷消息
+
+```csharp
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers": {
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+### 状态同步消息
+
+```csharp
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```javascript showLineNumbers
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```java
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```swift
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```objc
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```cpp
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+```json
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+```json
+{
+    "type": "position",
+    "data": {
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll": 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```

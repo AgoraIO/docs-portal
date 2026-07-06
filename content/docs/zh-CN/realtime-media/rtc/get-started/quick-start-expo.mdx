@@ -1,0 +1,812 @@
+---
+title: "使用 Expo 实现音视频互动"
+---
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的实时互动 App，适用于互动直播和视频通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/overview/key-concept)。
+
+下图展示在 App 中实现音视频互动的基本工作流程：
+
+![实现音视频互动](/img/rtc/quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并根据需要设置用户角色：
+
+   - 互动直播：如果用户需要在频道中发流，则设为主播；如果用户只需要收流，则设为观众。
+   - 视频通话：将所有用户的角色都设为主播。
+2. 加入频道后，不同角色的用户具备不同的行为：
+
+   - 所有用户默认都可以接收频道中的音视频流。
+   - 主播可以在频道内发布音视频流。
+   - 观众如果需要发流，可在频道内调用 `setClientRole` 方法修改用户角色，使其具备发流权限。
+
+## 前提条件
+
+<Tabs defaultValue="android" groupId="preq" persist>
+<TabsList>
+  <TabsTrigger value="android">目标平台为 Android</TabsTrigger>
+  <TabsTrigger value="ios">目标平台为 iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- 已参考 [Expo 官方文档](https://docs.expo.dev/get-started/installation/)搭建好开发环境。
+- macOS 、Windows 或 Linux 操作系统
+- Android 5.0 (API level 21) 或以上设备
+- Node.js 18 或以上版本
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- 已参考 [Expo 官方文档](https://docs.expo.dev/get-started/installation/)搭建好开发环境。
+- macOS 操作系统
+- iOS 12.4 或以上设备
+- Node.js 18 或以上版本
+- 已安装 Xcode 14.0 或以上版本
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/get-started/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+</Tabs>
+
+## 创建 Expo 项目
+
+参考以下步骤，创建一个 Expo 项目。
+
+1. 运行以下命令，在 `ProjectName` 处填入你的项目名称，创建并初始化一个新项目。
+
+   ```shell
+   npx create-expo-app ProjectName && cd ProjectName
+   ```
+
+   运行完成后，会在执行该命令的路径下自动生成一个简单的示例项目。
+
+2. 安装 `expo-dev-client` 以支持原生模块：
+
+   ```shell
+   npx expo install expo-dev-client
+   ```
+
+3. 测试运行你的应用：
+
+   - **Android**：执行 `npx expo run:android` 运行 Android 应用
+   - **iOS**：执行 `npx expo run:ios` 运行 iOS 应用
+
+如果配置没有问题，你可以看到模拟器被打开，App 自动安装到模拟器上并开始运行。你也可以在 Android 或 iOS 真机上运行应用，详见[在设备上运行](https://reactnative.dev/docs/running-on-device)。
+
+现在你已经成功运行了项目，可以开始尝试集成声网 SDK 并修改项目。
+
+## 集成 SDK
+
+本节介绍如何在 Expo 项目中集成声网 React Native SDK。
+
+### 安装 SDK
+
+在项目根目录下，运行以下命令安装声网 React Native SDK：
+
+```shell
+npx expo install react-native-agora
+```
+
+### 配置 App 权限
+
+#### 配置 Android 权限
+
+在你的 `app.json` 文件中添加必要的 Android 权限：
+
+```json
+{
+  "expo": {
+    "android": {
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.BLUETOOTH",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
+    }
+  }
+}
+```
+
+#### 配置 iOS 权限
+
+在你的 `app.json` 文件中添加 iOS 权限请求说明：
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "允许 $(PRODUCT_NAME) 访问您的相机以进行视频通话",
+          "microphonePermission": "允许 $(PRODUCT_NAME) 访问您的麦克风以进行音频通话"
+        }
+      ]
+    ]
+  }
+}
+```
+
+### 配置最低部署目标
+
+声网 SDK 需要最低版本支持：
+
+- Android：minSdkVersion = 24
+- iOS：iOS 12.4+
+
+安装 `expo-build-properties` 来配置这些要求：
+
+```shell
+npx expo install expo-build-properties --save-dev
+```
+
+在你的 `app.json` 文件中添加以下配置：
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          },
+          "ios": {
+            "deploymentTarget": "12.4"
+          }
+        }
+      ]
+    ]
+  }
+}
+```
+
+### 应用配置更改
+
+完成配置更改后，你需要预编译项目：
+
+```shell
+npx expo prebuild
+```
+
+:::info[信息]
+在使用 Expo 开发客户端（dev client）时，每当更改原生配置（如权限、插件等）后都需要重新运行 `npx expo prebuild` 命令。
+:::
+
+## 创建用户界面
+
+根据实时音视频互动的场景需要，为你的项目创建两个视图框，并使用 [`RtcSurfaceView`](/api-ref/rtc/rn/API/rtc_interface_class#class_rtcsurfaceview) 组件展示本地视频和远端视频，并配置加入频道和离开频道按钮。复制以下代码即可快速创建场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```typescript
+// 导入 React Hooks
+import React, {useRef, useState, useEffect} from 'react';
+// 导入用户界面元素
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Switch,
+} from 'react-native';
+
+const App = () => {
+    const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine 实例
+    const [isJoined, setIsJoined] = useState(false); // 本地用户是否已加入频道
+    const [isHost, setIsHost] = useState(true); // 用户角色
+    const [remoteUid, setRemoteUid] = useState(0); // 远端用户的 Uid
+    const [message, setMessage] = useState(''); // 用户提示信息
+
+    // 渲染用户界面
+    return (
+        <SafeAreaView style={styles.main}>
+            <Text style={styles.head}>声网 Expo 实时音视频互动快速开始</Text>
+            <View style={styles.btnContainer}>
+                <Text onPress={join} style={styles.button}>
+                    加入频道
+                </Text>
+                <Text onPress={leave} style={styles.button}>
+                    离开频道
+                </Text>
+            </View>
+            <View style={styles.btnContainer}>
+                <Text>Audience</Text>
+                <Switch
+                    onValueChange={switchValue => {
+                        setIsHost(switchValue);
+                        if (isJoined) {
+                            leave();
+                        }
+                    }}
+                    value={isHost}
+                />
+                <Text>Host</Text>
+            </View>
+            <ScrollView
+                style={styles.scroll}
+                contentContainerStyle={styles.scrollContainer}>
+                {isJoined && isHost ? (
+                    <React.Fragment key={0}>
+                        // 使用 RtcSurfaceView 创建本地视图
+                        <RtcSurfaceView canvas={{ uid: 0 }} style={styles.videoView} />
+                        <Text>本地用户 uid: {uid}</Text>
+                    </React.Fragment>
+                ) : (
+                    <Text>加入一个频道</Text>
+                )}
+                {isJoined && remoteUid !== 0 ? (
+                    <React.Fragment key={remoteUid}>
+                        // 使用 RtcSurfaceView 创建远端视图
+                        <RtcSurfaceView
+                            canvas={{ uid: remoteUid }}
+                            style={styles.videoView}
+                        />
+                        <Text>远端用户 uid: {remoteUid}</Text>
+                    </React.Fragment>
+                ) : (
+                    <Text>{isJoined && !isHost ? '等待远端用户加入' : ''}</Text>
+                )}
+                <Text style={styles.info}>{message}</Text>
+            </ScrollView>
+        </SafeAreaView>
+    );
+
+    // 展示信息
+    function showMessage(msg: string) {
+        setMessage(msg);
+    }
+};
+
+// 定义用户界面样式
+const styles = StyleSheet.create({
+    button: {
+        paddingHorizontal: 25,
+        paddingVertical: 4,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        backgroundColor: '#0055cc',
+        margin: 5,
+    },
+    main: { flex: 1, alignItems: 'center' },
+    scroll: { flex: 1, backgroundColor: '#ddeeff', width: '100%' },
+    scrollContainer: { alignItems: 'center' },
+    videoView: { width: '90%', height: 200 },
+    btnContainer: { flexDirection: 'row', justifyContent: 'center' },
+    head: { fontSize: 20 },
+    info: { backgroundColor: '#ffffe0', paddingHorizontal: 8, color: '#0000ff' }
+});
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本节介绍如何在 Expo 项目中实现一个实时音视频互动 App。
+
+下图展示了使用声网 RTC SDK 实现音视频互动的基本流程。
+
+![实时互动快速开始流程图](/img/rtc/quick-start-sequence.svg)
+
+下面列出了一段实现实时音视频互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[测试项目](#测试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
+
+复制以下代码替换 `App.tsx` 文件的全部内容，即可快速体验实时音视频互动基础功能。
+
+<Accordions>
+<Accordion title="实现音视频互动示例代码">
+
+```typescript
+// 导入 React Hooks
+import React, { useRef, useState, useEffect } from 'react';
+// 导入用户界面元素
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    Switch,
+} from 'react-native';
+// 导入 Expo 权限管理组件
+import * as MediaLibrary from 'expo-media-library';
+import { Camera } from 'expo-camera';
+// 导入声网 SDK
+import {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    IRtcEngine,
+    RtcSurfaceView,
+    RtcConnection,
+    IRtcEngineEventHandler
+} from 'react-native-agora';
+
+// 定义基本信息
+const appId = '<-- Insert App ID -->';
+const token = '<-- Insert Token -->';
+const channelName = '<-- Insert Channel Name -->';
+const uid = 0; // 本地用户 Uid，无需修改
+
+const App = () => {
+    const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine 实例
+    const [isJoined, setIsJoined] = useState(false); // 本地用户是否已加入频道
+    const [isHost, setIsHost] = useState(true); // 用户角色
+    const [remoteUid, setRemoteUid] = useState(0); // 远端用户的 Uid
+    const [message, setMessage] = useState(''); // 用户提示信息
+    const eventHandles = useRef<IRtcEngineEventHandler>(); // 实现回调函数
+
+    useEffect(() => {
+        // 启动 App 时初始化引擎
+        setupVideoSDKEngine();
+        // 关闭 App 时释放内存
+        return () => {
+            agoraEngineRef.current?.unregisterEventHandler(eventHandles.current!);
+            agoraEngineRef.current?.release();
+        };
+    }, []);
+
+    // 定义启动 App 时调用的 setupVideoSDKEngine 方法 
+    const setupVideoSDKEngine = async () => {
+        try {
+            // 获取设备权限后创建 RtcEngine
+            await getPermission();
+            agoraEngineRef.current = createAgoraRtcEngine();
+            const agoraEngine = agoraEngineRef.current;
+            eventHandles.current = {
+                onJoinChannelSuccess: () => {
+                    showMessage('成功加入频道：' + channelName);
+                    setIsJoined(true);
+                },
+                onUserJoined: (_connection: RtcConnection, uid: number) => {
+                    showMessage('远端用户 ' + uid + ' 已加入');
+                    setRemoteUid(uid);
+                },
+                onUserOffline: (_connection: RtcConnection, uid: number) => {
+                    showMessage('远端用户 ' + uid + '已离开频道');
+                    setRemoteUid(0);
+                },
+            }
+
+            // 注册回调事件
+            agoraEngine.registerEventHandler(eventHandles.current);
+            // 初始化引擎
+            agoraEngine.initialize({
+                appId: appId,
+            });
+            // 开启本地视频
+            agoraEngine.enableVideo();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 定义点击加入频道按钮后调用的 join 方法 
+    const join = async () => {
+        if (isJoined) {
+            return;
+        }
+        try {
+            if (isHost) {
+                // 开启预览
+                agoraEngineRef.current?.startPreview();
+                // 以主播角色加入频道
+                agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+                    // 设置频道场景为直播场景
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+                    // 设置用户角色为主播
+                    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+                    // 发布麦克风采集的音频
+                    publishMicrophoneTrack: true,
+                    // 发布摄像头采集的视频
+                    publishCameraTrack: true,
+                    // 自动订阅所有音频流
+                    autoSubscribeAudio: true,
+                    // 自动订阅所有视频流
+                    autoSubscribeVideo: true,
+                });
+            } else {
+                // 以观众角色加入频道
+                agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+                    // 设置频道场景为直播场景
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+                    // 设置用户角色为观众
+                    clientRoleType: ClientRoleType.ClientRoleAudience,
+                    // 不发布麦克风采集的音频
+                    publishMicrophoneTrack: false,
+                    // 不发布摄像头采集的视频
+                    publishCameraTrack: false,
+                    // 自动订阅所有音频流
+                    autoSubscribeAudio: true,
+                    // 自动订阅所有视频流
+                    autoSubscribeVideo: true,
+                });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    // 定义点击离开频道按钮后调用的 leave 方法 
+    const leave = () => {
+        try {
+            // 调用 leaveChannel 方法离开频道
+            agoraEngineRef.current?.leaveChannel();
+            setRemoteUid(0);
+            setIsJoined(false);
+            showMessage('已离开频道');
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 渲染用户界面
+    return (
+        <SafeAreaView style={styles.main}>
+            <Text style={styles.head}>声网 Expo 实时音视频互动快速开始</Text>
+            <View style={styles.btnContainer}>
+                <Text onPress={join} style={styles.button}>
+                    加入频道
+                </Text>
+                <Text onPress={leave} style={styles.button}>
+                    离开频道
+                </Text>
+            </View>
+            <View style={styles.btnContainer}>
+                <Text>Audience</Text>
+                <Switch
+                    onValueChange={switchValue => {
+                        setIsHost(switchValue);
+                        if (isJoined) {
+                            leave();
+                        }
+                    }}
+                    value={isHost}
+                />
+                <Text>Host</Text>
+            </View>
+            <ScrollView
+                style={styles.scroll}
+                contentContainerStyle={styles.scrollContainer}>
+                {isJoined && isHost ? (
+                    <React.Fragment key={0}>
+                        // 使用 RtcSurfaceView 创建本地视图
+                        <RtcSurfaceView canvas={{ uid: 0 }} style={styles.videoView} />
+                        <Text>本地用户 uid: {uid}</Text>
+                    </React.Fragment>
+                ) : (
+                    <Text>加入一个频道</Text>
+                )}
+                {isJoined && remoteUid !== 0 ? (
+                    <React.Fragment key={remoteUid}>
+                        // 使用 RtcSurfaceView 创建远端视图
+                        <RtcSurfaceView
+                            canvas={{ uid: remoteUid }}
+                            style={styles.videoView}
+                        />
+                        <Text>远端用户 uid: {remoteUid}</Text>
+                    </React.Fragment>
+                ) : (
+                    <Text>{isJoined && !isHost ? '等待远端用户加入' : ''}</Text>
+                )}
+                <Text style={styles.info}>{message}</Text>
+            </ScrollView>
+        </SafeAreaView>
+    );
+
+    // 展示信息
+    function showMessage(msg: string) {
+        setMessage(msg);
+    }
+};
+
+// 定义用户界面样式
+const styles = StyleSheet.create({
+    button: {
+        paddingHorizontal: 25,
+        paddingVertical: 4,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        backgroundColor: '#0055cc',
+        margin: 5,
+    },
+    main: { flex: 1, alignItems: 'center' },
+    scroll: { flex: 1, backgroundColor: '#ddeeff', width: '100%' },
+    scrollContainer: { alignItems: 'center' },
+    videoView: { width: '90%', height: 200 },
+    btnContainer: { flexDirection: 'row', justifyContent: 'center' },
+    head: { fontSize: 20 },
+    info: { backgroundColor: '#ffffe0', paddingHorizontal: 8, color: '#0000ff' }
+});
+
+// 获取设备权限
+const getPermission = async () => {
+    // 请求相机权限
+    const cameraStatus = await Camera.requestCameraPermissionsAsync();
+    if (cameraStatus.status !== 'granted') {
+        console.error('Camera permission not granted');
+        return;
+    }
+
+    // 请求麦克风权限
+    const microphoneStatus = await Camera.requestMicrophonePermissionsAsync();
+    if (microphoneStatus.status !== 'granted') {
+        console.error('Microphone permission not granted');
+        return;
+    }
+};
+
+export default App;
+```
+
+</Accordion>
+</Accordions>
+
+:::info[信息]
+将 `<-- Insert App ID -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+### 导入声网组件
+
+导入构建 App 所需的声网组件。
+
+```typescript
+import {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    IRtcEngine,
+    RtcSurfaceView,
+} from 'react-native-agora';
+```
+
+### 定义基本信息
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```typescript
+const appId = '<-- Insert App ID -->';
+const token = '<-- Insert Token -->';
+const channelName = '<-- Insert Channel Name -->';
+const uid = 0; // 本地用户 Uid，无需修改
+```
+
+### 获取设备权限
+
+在 Expo 环境中，使用 Expo 的权限管理 API 来获得麦克风和摄像头的使用权限：
+
+```typescript
+// 导入 Expo 权限管理组件
+import { Camera } from 'expo-camera';
+
+const getPermission = async () => {
+    // 请求相机权限
+    const cameraStatus = await Camera.requestCameraPermissionsAsync();
+    if (cameraStatus.status !== 'granted') {
+        console.error('Camera permission not granted');
+        return;
+    }
+
+    // 请求麦克风权限
+    const microphoneStatus = await Camera.requestMicrophonePermissionsAsync();
+    if (microphoneStatus.status !== 'granted') {
+        console.error('Microphone permission not granted');
+        return;
+    }
+};
+```
+
+:::info[信息]
+在 Expo 项目中，权限管理通过 Expo 的 API 进行，而不是直接使用 React Native 的 `PermissionsAndroid`。这种方式可以更好地与 Expo 开发工作流集成。
+:::
+
+### 初始化引擎
+
+调用 `createAgoraRtcEngine` 方法创建一个 `RtcEngine` 实例，然后调用 `initialize` 初始化引擎。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```typescript
+agoraEngineRef.current = createAgoraRtcEngine();
+const agoraEngine = agoraEngineRef.current;
+agoraEngine.initialize({
+    appId: appId,
+});
+```
+
+### 启用视频模块
+
+按照以下步骤启用视频模块。
+
+1. 调用 `enableVideo` 方法，启用视频模块。
+2. 调用 `startPreview` 方法，开启本地视频预览。
+
+``` typescript
+agoraEngine.enableVideo();
+agoraEngineRef.current?.startPreview();
+```
+
+### 加入频道并发布音视频流
+
+调用 `joinChannel` 方法，填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并在 `options` 参数中设置频道场景、用户角色等信息。
+
+```typescript
+if (isHost) {
+// 以主播角色加入频道
+agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+    // 设置频道场景为直播场景
+    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+    // 设置用户角色为主播
+    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    // 发布麦克风采集的音频
+    publishMicrophoneTrack: true,
+    // 发布摄像头采集的视频
+    publishCameraTrack: true,
+    // 自动订阅所有音频流
+    autoSubscribeAudio: true,
+    // 自动订阅所有视频流
+    autoSubscribeVideo: true,
+    });
+} else {
+// 以观众角色加入频道
+agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+    // 设置频道场景为直播场景
+    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+    // 设置用户角色为观众
+    clientRoleType: ClientRoleType.ClientRoleAudience,
+    // 不发布麦克风采集的音频
+    publishMicrophoneTrack: false,
+    // 不发布摄像头采集的视频
+    publishCameraTrack: false,
+    // 自动订阅所有音频流
+    autoSubscribeAudio: true,
+    // 自动订阅所有视频流
+    autoSubscribeVideo: true,
+    });
+}
+```
+
+### 实现常用回调
+
+注册以下必要的回调事件可以在触发相应的事件时调用 `showMessage` 方法提示操作结果，并更新组件状态。
+
+- `onJoinChannelSuccess`：成功加入频道回调。
+- `onUserJoined`：远端用户加入当前频道回调。
+- `onUserOffline`：远端用户离开当前频道回调。
+
+```typescript
+const eventHandles = useRef<IRtcEngineEventHandler>(); 
+eventHandles.current = {
+            onJoinChannelSuccess: () => {
+                showMessage('成功加入频道：' + channelName);
+                setIsJoined(true);
+            },
+            onUserJoined: (_connection: RtcConnection, uid: number) => {
+                showMessage('远端用户 ' + uid + ' 已加入');
+                setRemoteUid(uid);
+            },
+            onUserOffline: (_connection: RtcConnection, uid: number) => {
+                showMessage('远端用户 ' + uid + '已离开频道');
+                setRemoteUid(0);
+            },
+        }
+
+// 注册回调事件
+agoraEngine.registerEventHandler(eventHandles.current);
+```
+
+### 离开频道
+
+调用 `leaveChannel` 方法离开频道并显示文字提示。如不再需要互动，再调用 `release` 方法释放引擎资源。
+
+```typescript
+// 调用 leaveChannel 方法离开频道
+agoraEngineRef.current?.leaveChannel();
+setRemoteUid(0);
+setIsJoined(false);
+showMessage('已离开频道');
+```
+
+如果你不再需要互动，调用 `release` 方法释放引擎资源。
+
+```typescript
+// 取消注册回调事件
+agoraEngineRef.current?.unregisterEventHandler(eventHandles);
+// 销毁引擎
+agoraEngineRef.current?.release();
+```
+
+:::error[警告]
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+:::
+
+## 测试项目
+
+1. 确保已经在代码中传入了有效的 `appId`、`channelName` 和 `token`。
+
+2. 确保已经完成了配置更改，运行预编译命令：
+
+   ```shell
+   npx expo prebuild
+   ```
+
+3. 运行 App。部分模拟机可能无法支持本项目的全部功能，建议你在真机中运行该项目。
+
+   - 在 Android 设备上运行：
+
+		a. 开启 Android 设备的开发者选项，通过 USB 连接线将 Android 设备接入电脑。
+
+		b. 在项目根目录下执行 `npx expo run:android`。
+
+   - 在 iOS 设备上运行：
+
+		a. 通过 USB 线将 iOS 设备接入你的电脑。
+
+		b. 在项目根目录下执行 `npx expo run:ios`。
+
+    :::info[信息]
+    - 在 Android 或 iOS 真机上运行 App 的详细步骤，请参考 [Expo 官方文档](https://docs.expo.dev/guides/local-app-development/)。
+        - 在使用 Expo 开发客户端时，每当更改原生代码或配置后，都需要重新运行 `npx expo run:android` 或 `npx expo run:ios` 来重新编译应用。
+    :::
+
+4. 启动 App，点击按钮加入频道。
+
+5. 邀请一位朋友使用第二台设备，重复以上步骤，在该设备上安装 App，并打开 App 加入频道。你的朋友加入频道后，你们可以看到彼此，并听到彼此的声音。
+
+## 后续步骤
+
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时音视频互动的基础上，通过将观众端的延时级别修改为低延时（`AudienceLatencyLevelLowLatency`）来实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/basic-features/ls-quick-start)。
+- 了解更多 Expo 的高级功能和配置，请参考 [Expo 官方文档](https://docs.expo.dev/)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的 React Native Expo 实时音视频互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="React Native Agora Expo Example" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/examples/expo" />
+  <Card title="React Native Agora Expo Example" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/expo" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理视频黑屏问题？](/faq/quality-issues/video-blank)
+- [为什么我无法打开摄像头？](/faq/quality-issues/video-camera)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+- [为什么 SDK 中使用的是动态库而不是静态库？](/faq/integration-issues/dynamic-or-static-library)
+
+### 相关文档
+
+- [Expo 开发文档](https://docs.expo.dev/)
+- [错误码](/zh-CN/realtime-media/rtc/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/basic-features/channel-connection)
+- [React Native 基础文档](https://reactnative.dev/docs/getting-started)

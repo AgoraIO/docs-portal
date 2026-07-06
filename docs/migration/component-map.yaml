@@ -1,0 +1,514 @@
+version: 1
+updatedAt: "2026-07-03"
+description: >
+  Machine-readable migration contract for legacy Shengwang docs components and
+  reusable syntax patterns. Migration scripts should load this file before
+  rewriting old MDX into docs-portal Markdown/Fumadocs content.
+
+principles:
+  - Legacy JSX must not survive migrated content.
+  - Prefer Markdown, MDX-native syntax, directives, includes, and existing Fumadocs primitives.
+  - Do not add legacy compatibility components or Docusaurus runtime shims.
+  - Treat this map as a script input and report every matched rule per migrated file.
+
+statusDefinitions:
+  automated: The rule can be applied by script without expected human judgment.
+  automated-with-review: The script can prepare the target syntax, but the file must enter needs_review.
+  needs-review: The script should report the match and stop or defer until a reviewer chooses a target.
+  report-only: The script should only report the pattern; another migration lane owns the rewrite.
+
+reporting:
+  generatedReportPattern: "docs/migration/generated/{batch}/component-usage-report.md"
+  perFileFields:
+    - source_path
+    - target_path
+    - matched_components
+    - matched_families
+    - matched_syntax_patterns
+    - automation_status
+    - review_flags
+    - notes
+
+components:
+  Admonition:
+    target: directive-callout
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    mapping: ":::note/info/tip/warning/error"
+    attrMap:
+      title: directiveLabel
+      type: directiveKind
+    rules:
+      - Map caution and warning to warning.
+      - Map danger to error.
+      - Keep title as the directive label when present.
+
+  Image:
+    target: markdown-image
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    mapping: "![alt](src)"
+    attrMap:
+      alt: alt
+      src: src
+    reviewFlags:
+      - width
+      - height
+      - caption
+      - inline
+      - nonstandard-sizing
+    rules:
+      - Preserve useful alt text.
+      - Do not keep raw img or legacy Image JSX.
+      - If width, caption, or inline placement changes meaning, mark needs_review.
+
+  Table:
+    target: gfm-table-or-slot-table
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Simple inline cells become GFM tables.
+      - Cells with lists, code blocks, callouts, or multiple paragraphs should move block content below the table or use the approved Slot/table pattern.
+      - Rowspan, colspan, and block-heavy cells require review.
+
+  Tr:
+    target: gfm-table-or-slot-table
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    aliases:
+      - table-row
+
+  Td:
+    target: gfm-table-or-slot-table
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    aliases:
+      - table-cell
+
+  Tabs:
+    target: code-fence-tabs-or-fumadocs-tabs
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    rules:
+      - Code-only alternatives become fenced code blocks with tab and optional tabGroup metadata.
+      - Mixed prose panes become existing Tabs, TabsList, TabsTrigger, and TabsContent MDX.
+      - Do not preserve Docusaurus TabItem syntax.
+
+  TabItem:
+    target: code-fence-tabs-or-fumadocs-tabs
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    parentPatterns:
+      - Tabs
+
+  Detail:
+    target: Accordions/Accordion
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    attrMap:
+      title: title
+    rules:
+      - Convert a single collapsible block into Accordions with one Accordion item.
+      - Preserve heading text and stable anchors inside the expanded body.
+
+  H2:
+    target: markdown-heading-with-id
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    mapping: "## {children} {#id}"
+    rules:
+      - Drop search and index-only classes.
+      - Preserve the legacy id as a heading-bound fragment.
+
+  H3:
+    target: markdown-heading-with-id
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    mapping: "### {children} {#id}"
+    rules:
+      - Drop search and index-only classes.
+      - Preserve the legacy id as a heading-bound fragment.
+
+  Glossary:
+    target: markdown-link-or-plain-text
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Prefer a normal Markdown link when the glossary target is known.
+      - Use plain text or inline code when the old component only styled a term.
+
+  Status:
+    target: api-reference-prose-table-or-badge-text
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Treat as API-reference content syntax, not a JS-to-MDX runtime component.
+      - Preserve status meaning in prose, tables, or existing generated-reference presentation.
+
+  Stateitem:
+    target: api-reference-prose-table-or-definition-list
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Treat as API-reference content syntax, not a JS-to-MDX runtime component.
+      - Preserve state names, descriptions, anchors, and nesting.
+
+  PlatformFilter:
+    target: split-file-or-platform-blocks
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Whole-page platform differences become separate files or folders.
+      - Mixed shared prose with repeated platform sections becomes consecutive PlatformStructured or PlatformInline blocks.
+      - Single-platform content in an already platform-specific target page becomes normal Markdown.
+    reviewFlags:
+      - platform-grouping
+      - split-targets
+      - shared-prose-boundaries
+
+  LinkCardV2:
+    target: Cards/Card
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    parentPatterns:
+      - Row
+      - Col
+    attrMap:
+      title: title
+      href: href
+      description: description
+    rules:
+      - Remove Row and Col layout wrappers when they only arrange cards.
+      - Use Markdown links or lists when card layout is not semantically needed.
+
+  Row:
+    target: remove-layout-wrapper
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    followWith:
+      - Cards/Card
+      - markdown-sections
+      - markdown-link-list
+
+  Col:
+    target: remove-layout-wrapper
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    followWith:
+      - Cards/Card
+      - markdown-sections
+      - markdown-link-list
+
+families:
+  releaseNotes:
+    components:
+      - VersionSection
+      - VersionTitle
+      - ListTitle
+    target: markdown-headings
+    targetExists: true
+    newComponentRequired: false
+    status: automated
+    mapping:
+      VersionSection: "## {version}"
+      VersionTitle: "### {children}"
+      ListTitle: "#### {children}"
+    dropAttrs:
+      - icon
+    rules:
+      - Flatten release-note JSX into ordinary Markdown heading hierarchy.
+      - Preserve the release date/version text and section order.
+      - Do not create release-note runtime components.
+
+  cards:
+    components:
+      - LinkCardV2
+      - LinkCard
+      - DocLinkCard
+      - LinkCardA
+      - LinkCardB
+      - LinkCardC
+      - LinkBlock
+      - LinkList
+      - ProductOverview
+      - QuickStartCard
+      - RecommendCard
+      - HotArticleCard
+      - InstantExperienceCard
+      - SDKDownloadCard
+      - DownloadCard
+      - HomepageBasicCard
+      - HomepageUsecaseCard
+      - MutiLinkCard
+      - MultiLinkCard
+      - Card
+    target: Cards/Card-or-markdown-link-list
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Use existing Card/Cards primitives only for real navigation card groups.
+      - Use Markdown links, lists, or headings for simple link collections.
+      - Treat legacy Card as old only in legacy source or when imported from legacy card modules.
+    reviewFlags:
+      - landing-page-normalization
+      - card-layout-semantics
+
+  platformCards:
+    components:
+      - PlatformGuideCard
+      - PlatformLinkCard
+      - PlatformLinkCardV2
+      - HomepagePlatformCard
+    target: platform-split-or-Cards/Card
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Prefer platform-specific files or folders when the card selects a platform route.
+      - Use Cards/Card only when the target page intentionally remains an overview.
+
+  apiReference:
+    components:
+      - Api
+      - ApiSectionCard
+      - OverloadMethodCollapse
+      - OverloadMethodCollapsePanel
+      - H2
+      - H3
+      - Glossary
+      - Status
+      - Stateitem
+      - Set
+      - LoginResult
+      - RenewTokenResult
+      - SetLockResult
+      - SetStateResult
+    target: markdown-heading-table-code-include-or-generated-reference-lane
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Prefer upstream structured API sources when available.
+      - Otherwise convert conservatively to headings, tables, definition lists, code fences, directives, and includes.
+      - Preserve stable IDs, inline links, code spans, notes, return values, related references, and nested lists.
+      - OverloadMethodCollapse* currently appears in dummy/test pages; report it but do not add a runtime component.
+
+  sharedInvocation:
+    components:
+      - AppId
+      - Login
+      - Project
+      - Token
+      - Auth
+      - SDKDownload
+      - Appid
+      - AppCert
+      - AppCertificate
+      - CustomerId
+      - Demotoken
+      - Temptoken
+      - EnableNcs0
+      - EnableNcs1
+      - Regulation1
+      - Regulation2
+      - Domain
+      - Certificate
+      - VideoModeration
+      - VideoModerationFaq
+    target: static-expand-or-include
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Resolve legacy shared imports before invoking these components.
+      - Use Fumadocs include only when the shared target has no runtime props or frontMatter dependency.
+      - Static-expand or split content when the old snippet depends on platform, product, or props.
+
+  proseSnippets:
+    components:
+      - MCPIntegrate
+      - SkillsIntegrate
+      - Tech
+      - Intro
+      - Pre
+      - Github
+      - Integrate
+      - Prerequisites
+      - Source
+      - Desc
+      - Advanced
+      - Resolution
+      - QuickGuide
+      - Banner
+      - Arch
+      - Basic
+      - Text
+      - HTML
+    target: markdown-prose-list-callout-code-or-include
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Convert presentational wrappers to plain Markdown structure.
+      - Use include only for reusable, already-normalized shared content.
+      - Preserve code block language and surrounding prose order.
+
+  restPlaceholders:
+    components:
+      - Region
+      - Roomuuid
+      - Code
+      - Msg
+      - Ts
+      - Useruuid
+      - SceneConfig
+      - SceneCreatorConfig
+      - ServiceConfig
+    target: parameter-table-definition-list-inline-code-or-prose
+    targetExists: true
+    newComponentRequired: false
+    status: automated-with-review
+    rules:
+      - Expand placeholders into the REST parameter table, definition list, inline code, or prose that already exists on the page.
+      - Preserve API field names exactly.
+
+syntaxPatterns:
+  sharedImports:
+    match:
+      - "import ... from '@shared/...'"
+      - "import ... from '@doc-shared/...'"
+      - "import ... from '@api-shared/...'"
+    target: include-or-static-expand
+    targetExists: true
+    status: automated-with-review
+    reviewFlags:
+      - nested-shared-chain
+      - uses-frontMatter
+      - uses-props
+
+  runtimeVariables:
+    match:
+      - "frontMatter.ag_platform"
+      - "frontMatter.ag_product"
+      - "props.*"
+    target: static-evaluate-before-write
+    targetExists: true
+    status: automated-with-review
+
+  tableHeaderExport:
+    match: "export const TableHeader* + <Table header={...}>"
+    target: gfm-table-header
+    targetExists: true
+    status: automated
+
+  legacyMetadata:
+    match:
+      - "_sidebar_.meta.js"
+      - "_platforms_.meta.js"
+      - "_products_.meta.js"
+      - "_usecase_.meta.js"
+      - "_category_.json"
+    target: meta-json-navScope-static-directory
+    targetExists: true
+    status: automated-with-review
+
+  legacyFrontmatter:
+    match:
+      - displayed_sidebar
+      - ag_product
+      - ag_platform
+      - ag_product_label
+      - ag_usecase
+      - ag_file_path
+    target: remove-or-map-to-current-frontmatter
+    targetExists: true
+    status: automated
+
+  anchors:
+    match:
+      - "<a name=\"...\">"
+      - "<a id=\"...\">"
+      - "<H2/H3 id=\"...\">"
+    target: markdown-heading-id-or-compatibility-anchor
+    targetExists: true
+    mapping: "## Title {#id}"
+    status: automated
+
+  hiddenIndexSpans:
+    match: "<span className=\"index-*\" style={{display: 'none'}}>"
+    target: drop-preserve-necessary-anchor
+    targetExists: true
+    status: automated-with-review
+
+  rawHtml:
+    match:
+      - "<img>"
+      - "<br>"
+      - "<li>"
+      - "<ul>"
+      - "<ol>"
+      - "<code>"
+      - "<a href>"
+    target: markdown-native-or-slot
+    targetExists: true
+    status: automated-with-review
+
+  docusaurusImports:
+    match:
+      - "@theme/Tabs"
+      - "@theme/TabItem"
+      - "@docusaurus/Link"
+    target: new-tabs-code-tabs-or-normal-markdown-link
+    targetExists: true
+    status: automated
+
+  restfulOpenapiRenderers:
+    match:
+      - RestfulRender
+      - OpenapiRender
+    target: openapi-lane
+    targetExists: true
+    status: report-only
+
+  generatedHtmlApi:
+    match: "html-docs/**"
+    target: generated-api-reference-lane
+    targetExists: true
+    status: report-only
+
+falsePositivePatterns:
+  angleBracketLiterals:
+    target: escape-or-code-span
+    targetExists: true
+    status: automated-with-review
+    examples:
+      - "List<String>"
+      - "ArrayList<Foo>"
+      - "<package name>"
+      - "<ProjectName>"
+      - "<YOUR_APP_ID>"
+      - "<Authorization>"
+      - "<AgoraRtcKit>"
+      - "<T>"
+    rules:
+      - Do not treat these as MDX components.
+      - Escape literal angle brackets or wrap the value in inline code.
+      - Apply before component conversion in generated API and REST reference content.

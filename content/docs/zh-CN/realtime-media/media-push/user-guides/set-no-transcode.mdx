@@ -1,0 +1,40 @@
+---
+title: "设置并更新不转码推流"
+---
+本文介绍如何设置并更新不转码推流。
+
+## 设置不转码推流
+
+在 `Create` 请求创建 Converter 开始推流时，通过 `rawOptions` 设置推流配置为不转码。
+
+```json
+{
+  "converter": {
+    "name": "string",
+    // highlight-start
+    "rawOptions": {
+      "rtcChannel": "string",
+      "rtcStreamUid": 3
+    },
+    // highlight-end
+    "rtmpUrl": "rtmp://example/live/global"
+  }
+}
+```
+
+## 更新不转码推流
+
+对于不转码推流，暂时只支持更新 CDN 推流地址。在 `Update` 请求时，按照如下示例更新 CDN 推流地址：
+
+```json
+{
+  "converter": {
+    "rtmpUrl": "rtmp://example2/live/global"
+  },
+  "fields": "rtmpUrl"
+}
+```
+
+## API 参考
+
+你可以参考 [`Create`](../media-push/operations/post-region-v1-projects-appId-rtmp-converters) 和 [`Update`](../media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId) 方法了解字段详情。

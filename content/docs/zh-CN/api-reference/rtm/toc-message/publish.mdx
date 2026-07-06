@@ -1,0 +1,188 @@
+---
+title: "发送消息"
+---
+
+## 接口描述
+
+`Publish` 接口用于向指定的频道中发送消息。
+
+:::warning[注意]
+- 消息负载限制在 32 KB 以内，否则发送会失败。
+- 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
+- 请求 Body 的 Payload 内容必须为可序列化的字符串，不支持二进制数据。
+:::
+
+## 接口方法
+
+```shell
+POST https://api.sd-rtn.com/rtm/v2/publish/{:appId}/userId/{:userId}/channelType/{:channelType}/channel/{:channelName}?storeInHistory=true&customType={:customeType}
+```
+
+| 参数 | 类型 | 必填 | 描述 |
+| --- | --- | --- | --- |
+| `appId` | string | 是 | 你的声网项目的 App ID。 |
+| `userId` | string | 是 | <Slot name="publish-restful-html-0-2-3" /> |
+| `channelType` | string | 是 | <Slot name="publish-restful-html-0-3-3" /> |
+| `channelName` | string | 是 | <Slot name="publish-restful-html-0-4-3" /> |
+| `storeInHistory` | boolean | 否 | <Slot name="publish-restful-html-0-5-3" /> |
+| `customType` | string | 否 | <Slot name="publish-restful-html-0-6-3" /> |
+
+<Slot for="publish-restful-html-0-2-3">
+
+此次操作的 User ID。
+
+以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+    :::warning[注意]
+    字符长度限制为：0 < 字符长度 &le; 64。
+    :::
+
+</Slot>
+
+<Slot for="publish-restful-html-0-3-3">
+
+频道类型：
+
+    - `message`：消息频道
+    - `user`：用户频道
+
+</Slot>
+
+<Slot for="publish-restful-html-0-4-3">
+
+频道名。
+
+以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+    :::warning[注意]
+    字符长度限制为：0 < 字符长度 &le; 64。
+    :::
+
+</Slot>
+
+<Slot for="publish-restful-html-0-5-3">
+
+此条消息是否存储到历史消息中：
+
+    - true：存储
+    - false：不存储。默认为 `false`。
+
+</Slot>
+
+<Slot for="publish-restful-html-0-6-3">
+
+用户自定义字段，可编码的字符串。
+
+    :::warning[注意]
+    字符长度限制为：0 < 字符长度 &le; 32。
+    :::
+
+</Slot>
+
+## 基本用法
+
+```shell tab="cURL" tabGroup="language"
+curl -L 'https://api.sd-rtn.com/rtm/v2/publish/{appId}/userId/Tony/channelType/message/channel/chatroom?storeInHistory=true&customType=image' \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-H 'Authorization: agora token=007xxxxx' \
+-d '{  
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+    }'
+```
+
+```javascript tab="Node.js" tabGroup="language"
+const axios = require('axios');
+let message = {
+        "type": "image",
+        "asset_url": "https://my.app/image.png",
+        "thumb_url": "https://my.app/thumbnail/image.png",
+        "mentionedUsers": ["Tony","Lily"],
+        "sender": "Max"
+    };
+ 
+let data = JSON.stringify(message);
+ 
+let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: 'https://api.sd-rtn.com/rtm/v2/publish/{:appId}/userId/Tony/channelType/message/channel/chatroom?storeInHistory=true&customType=image',
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        'Authorization': 'agora token=007xxxxx'
+        },
+    data : data
+    };
+ 
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
+## 返回值
+
+执行后将返回以下数据：
+
+```json
+{
+  "errorCode": 200,
+  "error": false,
+  "requestId": 1121_1234231,
+  "operation": "publish",
+  "reason": "xxxxxxxxxxxx",
+  "timestamp":1234567,
+  "data": {
+    "channelName": "string",
+    "channelType": "string", 
+  }
+}
+```
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `errorCode` | number | 错误码。200 表示请求成功。如果不为 200，你可以参考[错误码](/zh-CN/api-reference/rtm/toc-message/response-code)了解出错的原因并进行排障。 |
+| `error` | boolean | <Slot name="publish-restful-html-1-2-2" /> |
+| `requestId` | string | 当前请求的请求 ID。 |
+| `operation` | string | 当前请求的具体操作。 |
+| `reason` | string | 出错原因。 |
+| `timestamp` | number | 发送请求的时间戳。 |
+| `data` | object | <Slot name="publish-restful-html-1-7-2" /> |
+
+<Slot for="publish-restful-html-1-2-2">
+
+当前请求是否出错。
+
+    - `false` 代表请求成功
+    - `true` 代表请求失败
+
+</Slot>
+
+<Slot for="publish-restful-html-1-7-2">
+
+响应的具体 Payload 信息，包含如下字段：
+
+    - `channelName`：频道名；
+    - `channelType`：频道类型。
+
+</Slot>

@@ -1,0 +1,65 @@
+---
+title: "调用 API 录制"
+---
+声网服务端录制 SDK 支持使用命令行或调用 API 的方式实现录制。你可以根据自己的开发习惯选择一种方式。本文介绍如何通过调用 API 实现录制。
+
+## 前提条件
+
+开始前请确保你已经完成[集成录制 SDK](/zh-CN/realtime-media/recording/local-server-recording/legacy/integrate-sdk)，并将以下文件复制到你的项目：
+
+- 编译生成的  `librecording.so` 文件
+- SDK 包中的 `AgoraCoreService` 文件（位于 `bin` 文件夹）
+- SDK 包中的 Java 文件（位于 `samples/java/src/io/agora/recording` 目录下）
+  - `RecordingEventHandler.java`
+  - `RecordingSDK.java`
+  - `common/Common.java`
+  - `common/RecordingConfig.java`
+  - `common/RecordingEngineProperties.java`
+
+举例来说，假设项目顶层目录为 `ROOT_DIR`，将  `librecording.so` 文件复制到 `ROOT_DIR/lib` 目录下，将 `AgoraCoreService` 文件复制到 `ROOT_DIR/bin` 目录下，将上述 Java 文件复制到 `ROOT_DIR/src/io/agora/recording` 目录下。
+
+运行 Java 程序时，设置 `-Djava.library.path=ROOT_DIR/lib` 参数来指定动态库的目录地址。此外你需要在开始录制时设置 `RecordingConfig` 中的 `appliteDir` 参数为 `ROOT_DIR/bin`。
+
+## 调用 API 实现录制
+
+### 加入频道并开始录制
+
+调用 `createChannel` 方法创建并加入频道，随后开始录制。
+
+- `appId`：项目的 App ID，需要和你传入 RTC SDK 中的 App ID 一致。
+- `channelKey`：如果待录制的频道使用了 Token，你需要在该参数中传入 Token。详见[校验用户权限](/zh-CN/realtime-media/recording/local-server-recording/user-guides/generate-token)。
+- `name`：待录制频道的频道名，必填。
+- `uid`：录制使用的用户 ID，32 位无符号整数，取值范围 1 到 (232-1)，需保证唯一性，必填。
+- `config`：配置录制参数，选填，如不填则使用默认配置。详见 `RecordingConfig`。
+
+在默认情况下，录制实例加入频道后，监测到频道内有用户即开始录制。
+
+如果你在 `RecordingConfig` 中将 `triggerMode` 设为了 `MANUALLY_MODE`（手动模式），需要调用 `startService` 开始录制，开始录制后可以调用 `stopService` 暂停录制。
+
+:::info[信息]
+`startService` 和 `stopService` 必须在加入频道之后调用。
+:::
+
+### 获取录制文件路径
+
+加入频道后可以调用 `getProperties` 方法获取录制文件的存放路径。
+
+当有用户加入频道时触发的 `onUserJoined` 回调中也包含录制文件的存放路径。
+
+### 结束录制
+
+录制完成后，调用 `leaveChannel` 方法离开频道，停止录制。
+
+:::info[信息]
+录制结束后如果需要再次开始录制，必须重新创建并加入频道。
+:::
+
+在默认情况下，当频道空闲（无用户）超过 300 秒（在 `RecordingConfig` 中的 `idleLimitSec` 可以设置该时间）后，录制实例也会自动退出频道停止录制。
+
+## 相关文档
+
+在录制过程中，你还可以参考如下文档：
+
+- 录制完成后，你可能需要使用转码脚本将录制的文件进行合成，详见[使用转码脚本](/zh-CN/realtime-media/recording/local-server-recording/legacy/merge-files)。
+- 如果想了解如何通过命令行录制，可以参考[使用命令行录制](/zh-CN/realtime-media/recording/local-server-recording/legacy/record-by-cmd)。
+- 如果录制文件或状态出现异常，你还可以参考[录制文件异常](/faq/quality-issues/record-file-issues)和[录制状态异常](/faq/quality-issues/record-status-error)定位和排查问题。

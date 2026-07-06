@@ -1,0 +1,1281 @@
+---
+title: "事件同步"
+---
+
+## 查询指定类型事件
+
+查询指定课堂内指定类型的事件。
+
+你可以通过 `nextId` 分批查询，每批最多查询 100 条数据。
+
+:::info[信息]
+- 同一事件可重复查询。
+- 仅能查询未销毁课堂内的事件。默认情况下，课堂会在结束后一小时销毁。
+:::
+
+接口原型：
+
+-   方法：GET
+-   接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/sequences`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-sync-restful-html-0-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+
+<Slot for="api-sync-restful-html-0-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+#### Query 参数
+
+| 参数       | 类型    | 是否必填 | 描述                                                |
+|:---------| :------ |:-----|:--------------------------------------------------|
+| `nextId` | String   | 非必填  | 下一批数据的起始 ID。第一次查询可传 null，后续查询传入响应结果里得到的 `nextId` 的值。 |
+| `cmd`    | Integer | 非必填  | 事件类型，详见[事件枚举](#事件枚举)。 |
+
+### 请求示例
+
+```shell
+curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/sequences?cmd=20' \
+-H 'Authorization: agora token={educationToken}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-sync-restful-html-1-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+| `data` | Object | <Slot name="api-sync-restful-html-1-4-2" /> |
+
+<Slot for="api-sync-restful-html-1-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/response-code)。
+
+</Slot>
+
+<Slot for="api-sync-restful-html-1-4-2">
+
+返回数据，包含以下字段：
+
+      - `count`: Integer 型，本批数据条数。
+      - `list`: 由多个 Object 组成的数组。每个 Object 包含以下字段：
+
+        - `roomUuid`: String 型，课堂 uuid。
+        - `cmd`: Integer 型，事件类型。详见[事件枚举](#事件枚举)。
+        - `sequence`: Integer 型，事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
+        - `version`: Integer 型，版本号。
+        - `data`: Object 型，事件的具体数据，不同事件类型返回不同数据。详见[事件枚举](#事件枚举)。
+
+      - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610433913533,
+  "data": {
+    "total": 1,
+    "list": [
+      {
+        "roomUuid": "",
+        "cmd": 20,
+        "sequence": 1,
+        "version": 1,
+        "data": {}
+      }
+    ],
+    "nextId": null,
+    "count": 1
+  }
+}
+```
+
+## 查询指定 Widget 事件
+
+查询指定课堂内指定 Widget 的相关事件。
+
+你可以通过 `nextId` 分批查询，每批最多查询 100 条数据。
+
+:::info[信息]
+- 同一事件可重复查询。
+- 仅能查询未销毁课堂内的事件。默认情况下，课堂会在结束后一小时销毁。
+:::
+
+接口原型：
+
+-   方法：GET
+-   接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}/sequences`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-sync-restful-html-2-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-sync-restful-html-2-4-3" /> |
+
+<Slot for="api-sync-restful-html-2-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-sync-restful-html-2-4-3">
+
+Widget uuid。长度在 64 字符以内。 以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### Query 参数
+
+| 参数     | 类型    |  是否必填 | 描述                                                         |
+| :------- | :------ | :-----|:----------------------------------------------------------- |
+| `nextId` | String  | 非必填   | 下一批数据的起始 ID。第一次查询可传 null，后续查询传入响应结果里得到的 `nextId` 的值。 |
+
+### 请求示例
+
+```shell
+curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget/sequences' \
+-H 'Authorization: agora token={educationToken}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-sync-restful-html-3-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+| `data` | Object | <Slot name="api-sync-restful-html-3-4-2" /> |
+
+<Slot for="api-sync-restful-html-3-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/response-code)。
+
+</Slot>
+
+<Slot for="api-sync-restful-html-3-4-2">
+
+返回数据，包含以下字段：
+
+      - `count`: Integer 型，本批数据条数。
+      - `list`: 由多个 Object 组成的数组。每个 Object 包含以下内容：
+
+        - `roomUuid`: String 型，课堂 UUID。
+        - `cmd`: Integer 型，事件类型，此处为 `1110`。
+        - `sequence`: Integer 型。事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
+        - `version`: Integer 型，版本号。
+        - `data`: Object 型，事件的具体数据，包含以下字段：
+
+          - `action`: Integer 型，属性操作类型：
+
+            - `1`: 设置属性
+            - `2`: 删除属性
+
+        - `widgetUuid`: String 型，本次查询的 widget 的 uuid。
+        - `changeProperties`: Object 型，本次变更的 widget 用户属性。
+
+          - `position`: Object 型，本次变更的位置。
+          - `size`: Object 型，本次变更的大小。
+          - `extra`: Object 型，本次变更的 widget 房间属性。
+
+        - `fromUser`: Object 型，更新属性的用户。当事件为更新 widget 用户属性事件时，该字段有值。包含以下字段：
+
+          - `userUuid`: String 型，用户 UUID。
+          - `userName`: String 型，用户名。
+          - `role`: Integer 型，用户角色。
+
+        - `operator`: Object 型，操作人，包含以下字段：
+
+          - `userUuid`: String 型，用户 UUID。
+          - `userName`: String 型，用户名。
+          - `role`: Integer 型，用户角色。
+
+      - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610433913533,
+  "data": {
+    "total": 1,
+    "list": [
+      {
+        "roomUuid": "",
+        "cmd": 1110,
+        "sequence": 1,
+        "version": 1,
+        "data": {
+          "action": 1,
+          "widgetUuid": "test_widget",
+          "changeProperties": {
+            "extra": {},
+            "state": 1
+          }
+        },
+        "fromUser": {
+          "userUuid": "userUuid1",
+          "userName": "userName1",
+          "role": 1
+        },
+        "operator": {
+          "userUuid": "userUuid1",
+          "userName": "userName1",
+          "role": 1
+        }
+      }
+    ],
+    "nextId": null,
+    "count": 1
+  }
+}
+```
+
+## 查询答题器事件
+
+接口原型：
+
+-   方法：GET
+-   请求路径：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/popupQuiz/sequences`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-sync-restful-html-4-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+
+<Slot for="api-sync-restful-html-4-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+#### Query 参数
+
+| 参数     | 类型    |  是否必填 | 描述                                                         |
+| :------- | :------ |:-----| :----------------------------------------------------------- |
+| `nextId` | String  | 非必填   | 下一批数据的起始 ID。第一次查询可传 null，后续查询传入响应结果里得到的 `nextId` 的值。 |
+| `count`  | Integer | 非必填   | 本批数据条数，默认值为 100。                       |
+
+### 请求示例
+
+```shell
+curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/popupQuiz/sequences' \
+-H 'Authorization: agora token={educationToken}'
+```
+
+### 响应参数
+
+不同情况下 `data` 中返回的字段不同，具体如下。
+
+老师开启答题后，答题器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.correctItems` | Object[] | 正确选项 |
+| `changeProperties.extra.correctCount` | Integer | 本题答对人数 |
+| `changeProperties.extra.answerState` | Integer | <Slot name="api-sync-restful-html-5-7-2" /> |
+| `changeProperties.extra.receiveQuestionTime` | Long | 收到题目时间 |
+| `changeProperties.extra.popupQuizId` | String | 题目 ID |
+| `changeProperties.extra.averageAccuracy` | Float | 本题正确率 |
+| `changeProperties.extra.totalCount` | Integer | 本题回答总人数 |
+| `changeProperties.extra.items` | Object[] | 本题的所有选项 |
+| `changeProperties.state` | Integer | <Slot name="api-sync-restful-html-5-13-2" /> |
+| `cause` | Object | 属性变更原由 |
+| `cause.popQuizId` | String | 答题器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-5-16-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-5-7-2">
+
+本次答题状态：
+
+      - `1` : 答题进行中
+      - `0`: 答题结束
+
+</Slot>
+
+<Slot for="api-sync-restful-html-5-13-2">
+
+答题器状态：
+
+      - `0`: 非活跃
+      - `1`: 活跃
+
+</Slot>
+
+<Slot for="api-sync-restful-html-5-16-2">
+
+操作类型：
+
+      - `1`: 老师开始答题
+      - `2`: 老师结束答题
+      - `3`: 学生提交答案
+      - `4`: 汇总信息同步
+
+</Slot>
+
+学生提交答案后，该学生的答题数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.lastCommitTime` | Long | 最后一次提交时间 |
+| `changeProperties.popupQuizId` | String | 题目 ID |
+| `changeProperties.selectedItems` | Object[] | 该学生提交的答案 |
+| `changeProperties.isCorrect` | Boolean | 该学生提交的答案是否正确 |
+| `cause` | Object | 属性变更原由。 |
+| `cause.popQuizId` | String | 答题器 ID。 |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-6-10-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 UUID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+| `fromUser` | Object | 发起本次答题的用户 |
+| `fromUser.userUuid` | String | 用户 ID |
+| `fromUser.userName` | String | 用户名称 |
+| `fromUser.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-6-10-2">
+
+操作类型：
+
+      - `1`: 老师开始答题。
+      - `2`: 老师结束答题。
+      - `3`: 学生提交答案。
+      - `4`: 汇总信息同步。
+
+</Slot>
+
+学生提交答案后，答题器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.selectedCount` | Integer | 已经答题人数 |
+| `changeProperties.extra.correctCount` | Integer | 本题答对人数 |
+| `changeProperties.extra.averageAccuracy` | Float | 本题正确率 |
+| `changeProperties.extra.totalCount` | Integer | 本题回答总人数 |
+| `cause` | Object | 属性变更原由 |
+| `cause.popQuizId` | String | 答题器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-7-11-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-7-11-2">
+
+操作类型：
+
+      - `1`: 老师开始答题
+      - `2`: 老师结束答题
+      - `3`: 学生提交答案
+      - `4`: 汇总信息同步
+
+</Slot>
+
+老师结束答题后，答题器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.selectedCount` | Integer | 已经答题人数 |
+| `changeProperties.extra.correctCount` | Integer | 本题答对人数 |
+| `changeProperties.extra.answerState` | Integer | <Slot name="api-sync-restful-html-8-7-2" /> |
+| `changeProperties.extra.averageAccuracy` | Float | 本题正确率 |
+| `changeProperties.extra.totalCount` | Integer | 本题回答总人数 |
+| `cause` | Object | 属性变更原由 |
+| `cause.popQuizId` | String | 答题器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-8-12-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 UUID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-8-7-2">
+
+本次答题状态：
+
+      - `1`: 答题进行中
+      - `0`: 答题结束
+
+</Slot>
+
+<Slot for="api-sync-restful-html-8-12-2">
+
+操作类型：
+
+      - `1`: 老师开始答题
+      - `2`: 老师结束答题
+      - `3`: 学生提交答案
+      - `4`: 汇总信息同步
+
+</Slot>
+
+### 响应示例
+
+-   老师开启答题后，答题器的汇总数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "extra.correctItems": [
+          "A",
+          "B",
+          "D"
+        ],
+        "extra.totalCount": NumberInt("1"),
+        "extra.answerState": NumberInt("1"),
+        "state": NumberInt("1"),
+        "extra.popupQuizId": "ab5b183238a74d5a9c955dc87c6397e0",
+        "extra.averageAccuracy": 0,
+        "extra.correctCount": NumberInt("0"),
+        "extra.items": [
+          "A",
+          "C",
+          "B"
+        ],
+        "extra.receiveQuestionTime": NumberLong("1652413962895")
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+-   学生提交答案后，该学生的答题数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "selectedItems": [
+          "A",
+          "B",
+          "D"
+        ],
+        "isCorrect": true,
+        "popupQuizId": "ab5b183238a74d5a9c955dc87c6397e0",
+        "lastCommitTime": NumberLong("1652413989997")
+      },
+      "fromUser": {
+        "userName": "yerongzhe2",
+        "userUuid": "yerongzhe22",
+        "role": "audience"
+      }
+    }
+    ```
+
+-   老师结束答题后，答题器的汇总数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "extra.totalCount": NumberInt("1"),
+        "extra.answerState": NumberInt("0"),
+        "extra.selectedCount": NumberInt("1"),
+        "extra.averageAccuracy": 1,
+        "extra.correctCount": NumberInt("1")
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+## 查询投票器事件
+
+接口原型：
+
+-   方法：GET
+-   请求路径：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/poll/sequences`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-sync-restful-html-9-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/get-started/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+
+<Slot for="api-sync-restful-html-9-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+#### Query 参数
+
+| 参数     | 类型    |  是否必填 | 描述                                                         |
+| :------- | :------ |:-----| :----------------------------------------------------------- |
+| `nextId` | String  | 非必填   | 下一批数据的起始 ID。第一次查询可传 null，后续查询传入响应结果里得到的 `nextId`。 |
+| `count`  | Integer | 非必填   | 本批数据条数，默认值为 100。                       |
+
+### 请求示例
+
+```shell
+curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/popupQuiz/sequences' \
+-H 'Authorization: agora token={educationToken}'
+```
+
+### 响应参数
+
+不同情况下 `data` 中返回的字段不同，具体如下。
+
+老师开启投票后，投票器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.mode` | Integer | <Slot name="api-sync-restful-html-10-5-2" /> |
+| `changeProperties.extra.pollingState` | Integer | <Slot name="api-sync-restful-html-10-6-2" /> |
+| `changeProperties.extra.pollDetails` | Map`<String, Object>` | 投票详情，`key` 为选项索引，从 `0` 开始 |
+| `changeProperties.extra.pollDetails.num` | Integer | 选择该选项的人数 |
+| `changeProperties.extra.pollDetails.percentage` | Float | 选择该选项的人数所占百分比 |
+| `changeProperties.extra.pollId` | String | 本次投票 ID |
+| `changeProperties.extra.pollItems` | Object[] | 选项内容 |
+| `changeProperties.state` | Integer | <Slot name="api-sync-restful-html-10-12-2" /> |
+| `cause` | Object | 属性变更原由 |
+| `cause.pollId` | String | 投票器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-10-15-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-10-5-2">
+
+投票模式：
+
+      - `1`: 单选
+      - `2`: 多选
+
+</Slot>
+
+<Slot for="api-sync-restful-html-10-6-2">
+
+本次投票状态：
+
+      - `1` : 投票进行中
+      - `0`: 投票结束
+
+</Slot>
+
+<Slot for="api-sync-restful-html-10-12-2">
+
+投票器状态：
+
+      - `0`: 非活跃
+      - `1`: 活跃
+
+</Slot>
+
+<Slot for="api-sync-restful-html-10-15-2">
+
+操作类型：
+
+      - `1`: 老师开始投票
+      - `2`: 老师结束投票
+      - `3`: 学生提交投票
+      - `4`: 汇总信息同步
+
+</Slot>
+
+学生提交选项后，该学生的投票数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.pollId` | String | 本次投票 ID |
+| `changeProperties.extra.selectIndex` | Object[] | 该学生选择的选项的索引 |
+| `cause` | Object | 属性变更原由 |
+| `cause.pollId` | String | 投票器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-11-9-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+| `fromUser` | Object | 发起本次投票的用户 |
+| `fromUser.userUuid` | String | 用户 ID |
+| `fromUser.userName` | String | 用户名称 |
+| `fromUser.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-11-9-2">
+
+操作类型：
+
+      - `1`: 老师开始投票
+      - `2`: 老师结束投票
+      - `3`: 学生提交投票
+      - `4`: 汇总信息同步
+
+</Slot>
+
+学生提交选项后，投票器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.pollDetails` | Map`<String, Object>` | 投票详情，`key` 为选项索引，从 `0` 开始 |
+| `changeProperties.extra.pollDetails.num` | Integer | 选择该选项的人数 |
+| `changeProperties.extra.pollDetails.percentage` | Float | 选择该选项的人数所占百分比 |
+| `changeProperties.extra.pollId` | String | 本次投票 ID |
+| `cause` | Object | 属性变更原由 |
+| `cause.pollId` | String | 投票器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-12-11-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-12-11-2">
+
+操作类型：
+
+      - `1`: 老师开始投票
+      - `2`: 老师结束投票
+      - `3`: 学生提交投票
+      - `4`: 汇总信息同步
+
+</Slot>
+
+老师结束投票后，投票器的汇总数据会发生变化，`data` 中包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `action` | Integer | 操作类型 |
+| `widgetUuid` | String | Widget ID |
+| `changeProperties` | Object | 发生变更的属性 |
+| `changeProperties.extra` | Object | 属性补充信息 |
+| `changeProperties.extra.pollingState` | Integer | <Slot name="api-sync-restful-html-13-5-2" /> |
+| `changeProperties.extra.pollDetails` | `Map<String, Object>` | 投票详情，`key` 为选项索引，从 `0` 开始 |
+| `changeProperties.extra.pollDetails.num` | Integer | 选择该选项的人数 |
+| `changeProperties.extra.pollDetails.percentage` | Float | 选择该选项的人数所占百分比 |
+| `changeProperties.extra.pollId` | String | 本次投票 ID |
+| `cause` | Object | 属性变更原由 |
+| `cause.pollId` | String | 投票器 ID |
+| `cause.action` | Integer | <Slot name="api-sync-restful-html-13-12-2" /> |
+| `operator` | Object | 操作人 |
+| `operator.userUuid` | String | 用户 ID |
+| `operator.userName` | String | 用户名称 |
+| `operator.role` | String | 用户角色 |
+
+<Slot for="api-sync-restful-html-13-5-2">
+
+本次投票状态：
+
+      - `1` : 投票进行中
+      - `0`: 投票结束
+
+</Slot>
+
+<Slot for="api-sync-restful-html-13-12-2">
+
+操作类型：
+
+      - `1`: 老师开始投票
+      - `2`: 老师结束投票后，投票器的汇总数据会发生变化
+      - `3`: 学生提交投票
+      - `4`: 汇总信息同步
+
+</Slot>
+
+### 响应示例
+
+-   老师开启投票后，投票器的汇总数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "extra.pollId": "e556ce3df5cd4c23941b03bf54d29ba3",
+        "extra.pollState": NumberInt("1"),
+        "extra.pollItems": [
+          "aaa",
+          "bbb",
+          "ccc",
+          "ddd",
+          "eee"
+        ],
+        "extra.mode": NumberInt("2"),
+        "state": NumberInt("1"),
+        "extra.pollDetails": {
+          "0": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "1": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "2": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "3": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "4": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          }
+        }
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+-   学生提交选项后，该学生的投票数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "pollId": "e556ce3df5cd4c23941b03bf54d29ba3",
+        "selectIndex": [
+          NumberInt("1"),
+          NumberInt("2"),
+          NumberInt("4")
+        ]
+      },
+      "fromUser": {
+        "userName": "yerongzhe2",
+        "userUuid": "yerongzhe22",
+        "role": "audience"
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+-   学生提交选项后，投票器的汇总数据发生变化：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "extra.pollId": "e556ce3df5cd4c23941b03bf54d29ba3",
+        "extra.pollDetails": {
+          "0": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "1": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          },
+          "2": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          },
+          "3": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "4": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          }
+        }
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+-   老师结束投票后，投票器的汇总数据会发生变化，`data` 中包含以下字段：
+
+    ```json
+    {
+      "action": NumberInt("1"),
+      "widgetUuid": "xxxxxxxxx",
+      "changeProperties": {
+        "extra.pollId": "e556ce3df5cd4c23941b03bf54d29ba3",
+        "extra.pollState": NumberInt("0"),
+        "extra.pollDetails": {
+          "0": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "1": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          },
+          "2": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          },
+          "3": {
+            "num": NumberInt("0"),
+            "percentage": 0
+          },
+          "4": {
+            "num": NumberInt("1"),
+            "percentage": 1
+          }
+        }
+      },
+      "operator": {
+        "userName": "server",
+        "userUuid": "server",
+        "role": "server"
+      }
+    }
+    ```
+
+## 事件枚举
+
+本节列出通过灵动课堂事件同步 RESTful API 获取到的所有事件类型。
+
+### 课堂状态变更
+
+`cmd` 为 `1` 时，该事件提示课堂状态发生变更，`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `state` | Integer | <Slot name="api-sync-restful-html-14-1-2" /> |
+| `startTime` | Number | 课堂开始时间，Unix 时间戳（毫秒），UTC 时间。当state=1时，此字段有值。 |
+| `endTime` | Number | 课堂结束时间，Unix 时间戳（毫秒），UTC 时间。当state=2时，此字段有值。 |
+| `closeTime` | Number | 课堂关闭时间，Unix 时间戳（毫秒），UTC 时间。当state=3时，此字段有值。 |
+
+<Slot for="api-sync-restful-html-14-1-2">
+
+当前课堂状态：
+
+      - `0`: 未开始。
+      - `1`: 进行中。
+      - `2`: 已结束。
+      - `3`: 拖堂时间结束，房间关闭，用户无法再进入。
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "startTime": 1611561776588,
+  "state": 1
+}
+```
+
+### 用户进出课堂
+
+`cmd` 为 `20` 时，该事件提示有用户进出课堂。`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `total` | Integer | 进入和退出课堂的用户总数。 |
+| `onlineUsers` | Object 数组 | <Slot name="api-sync-restful-html-15-2-2" /> |
+| `offlineUsers` | Object 数组 | <Slot name="api-sync-restful-html-15-3-2" /> |
+
+<Slot for="api-sync-restful-html-15-2-2">
+
+进入课堂的用户，包含以下字段：
+
+      - `userName`: String 型，用户名称。
+      - `userUuid`: String 型，用户 UUID。
+      - `role`: Integer 型，用户在课堂中的角色：
+
+        - `1`: 老师
+        - `2`: 学生
+
+      - `userProperties`: Object 型，用户属性。
+      - `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
+      - `type`: Integer 型，用户进入类型：
+
+        - `1`: 正常进入
+        - `2`: 重连
+
+      - `updateTime`: Number 型，用户进入课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
+
+</Slot>
+
+<Slot for="api-sync-restful-html-15-3-2">
+
+退出课堂的用户，包含以下字段：
+
+      - `userName`: String 型，用户名称。
+      - `userUuid`: String 型，用户 UUID。
+      - `role`: Integer 型，用户在课堂中的角色：
+
+        - `1`: 老师
+        - `2`: 学生
+
+      - `userProperties`: Object 型，用户属性。
+      - `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
+      - `type`: Integer 型，用户退出类型：
+
+        - `1`: 由于客户端原因退出课堂，例如正常离开课堂、应用被强制关闭或由于网络状况不佳而断线。
+        - `2`: 被踢出课堂。
+
+      - `updateTime`: Number 型，用户退出课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "total": 3,
+  "onlineUsers": [
+    {
+      "userName": "",
+      "userUuid": "",
+      "role": "0",
+      "userProperties": {},
+      "streamUuid": "",
+      "type": 1,
+      "updateTime": 1611561776588
+    }
+  ],
+  "offlineUsers": [
+    {
+      "userName": "",
+      "userUuid": "",
+      "role": "0",
+      "userProperties": {},
+      "streamUuid": "",
+      "type": 1,
+      "updateTime": 1611561776588
+    }
+  ]
+}
+```
+
+### 录制状态变更
+
+`cmd` 为 `1001` 时，该事件提示录制状态发生变更，`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `recordId` | String | 一次录制的的唯一标识符。调用设置录制状态 API 开始录制然后结束录制视为一次录制。仅当 `state` 为 `1` 时有此字段。 |
+| `sid` | String | 声网云端录制服务的 `sid`。仅当 `state` 为 `1` 时有此字段。 |
+| `resourceId` | String | 声网云端录制服务的 `resourceId`。仅当 `state` 为 `1` 时有此字段。 |
+| `state` | Integer | <Slot name="api-sync-restful-html-16-4-2" /> |
+| `startTime` | Number | 录制开始时间，Unix 时间戳（毫秒），UTC 时间。录制开始后此字段有值。 |
+| `endTime` | Number | 录制结束时间，Unix 时间戳（毫秒），UTC 时间。录制结束后此字段有值。 |
+| `streamingUrl` | Object | 经由页面录制后推到 CDN 的流地址。学生可以通过该地址观看教学。 |
+| `retryTimes` | Integer | 当前重试次数。 |
+| `ready` | Boolean | 录制页面是否加载完成，值为 `true` 时有此字段。 |
+| `onhold` | Boolean | <Slot name="api-sync-restful-html-16-10-2" /> |
+
+<Slot for="api-sync-restful-html-16-4-2">
+
+当前录制状态：
+
+      - `0`: 录制已结束
+      - `1`: 录制中
+
+</Slot>
+
+<Slot for="api-sync-restful-html-16-10-2">
+
+是否在启动页面录制任务时暂停页面录制。
+
+      - `true`: 不录制
+      - `false`: 录制
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "recordId": "xxx",
+  "sid": "xxx",
+  "resourceId": "xxx",
+  "state": 1,
+  "startTime": 1611564500488,
+  "streamingUrl": {
+    "rtmp": "",
+    "flv": "",
+    "hls": ""
+  }
+}
+```
+
+### 录像文件上传
+
+`cmd` 为 `1002` 时，该事件提示录制文件上传成功，`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `recordId` | String | 一次录制的的唯一标识符。调用设置录制状态 API 开始录制然后结束录制视为一次录制。仅当 `state` 为 `1` 时有此字段。 |
+| `addUrl` | String | 本次新增的录像地址。 |
+| `recordDetails` | String | <Slot name="api-sync-restful-html-17-3-2" /> |
+| `allUploaded` | Boolean | 所有文件都上传完成时，该字段为 `true`，否则该字段为 `null`。 |
+
+<Slot for="api-sync-restful-html-17-3-2">
+
+JSONArray 类型。包含所有录制文件列表，包含以下字段：
+
+      - `url`: String 型，网页录制模式下录制文件的访问地址。
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "recordId": "xxx",
+  "addUrl": "https://xxxx.com/xxx.mp4",
+  "recordDetails": [
+    {
+      "url": "https://xxxx.com/xxx.mp4"
+    }
+  ],
+  "allUploaded": true
+}
+```
+
+### 奖励数量变更
+
+`cmd` 为 `1101` 时，该事件提示奖励数量发生变更，`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `rewardDetails` | Object 数组 | <Slot name="api-sync-restful-html-18-1-2" /> |
+| `updateTime` | Number | 奖励变更时间，Unix 时间戳（毫秒），UTC 时间。 |
+
+<Slot for="api-sync-restful-html-18-1-2">
+
+一个 Object 代表一个用户的奖励数量变更情况，包含以下字段：
+
+      - `userUuid`: String 型，用户 UUID。
+      - `changedReward`: Integer 型，发生变更的奖励个数。
+      - `totalReward`: Integer 型，变更后用户的奖励总数。
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "rewardDetails": [
+    {
+      "userUuid": "",
+      "changedReward": 1,
+      "totalReward": 10
+    }
+  ],
+  "updateTime": 1611564500488
+}
+```
+
+### 讲台人员变更
+
+`cmd` 为 `1501` 时，该事件提示讲台人员发生变化，`data` 中包含以下字段：
+
+| 参数                  | 类型        | 描述                                                         |
+| :-------------------- | :---------- | :----------------------------------------------------------- |
+| `acceptedUsers`       | Object 数组 | 当前台上人员列表，包含字段：`userUuid`，String 型，用户 UUID。 |
+| `addAcceptedUsers`    | Object 数组 | 本次上台人员列表，包含字段：`userUuid`，String 型，用户 UUID。 |
+| `removeAcceptedUsers` | Object 数组 | 本次下台人员列表，包含字段：`userUuid`，String 型，用户 UUID。 |
+
+#### 示例
+
+```json
+{
+  "acceptedUsers": [
+    {
+      "userUuid": ""
+    }
+  ],
+  "addAcceptedUsers": [
+    {
+      "userUuid": ""
+    }
+  ],
+  "removeAcceptedUsers": [
+    {
+      "userUuid": ""
+    }
+  ]
+}
+```
+
+### 挥手人员变更
+
+`cmd` 为 `1502` 时，该事件提示挥手人员发生变更，`data` 中包含以下字段：
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `progressUsers` | Object 数组 | <Slot name="api-sync-restful-html-19-1-2" /> |
+| `addProgressUsers` | Object 数组 | <Slot name="api-sync-restful-html-19-2-2" /> |
+| `removeProgressUsers` | Object 数组 | <Slot name="api-sync-restful-html-19-3-2" /> |
+
+<Slot for="api-sync-restful-html-19-1-2">
+
+当前举手人员列表，包含以下字段：
+
+      - `userUuid`: String 型，用户 UUID。
+      - `payload`: Object 型。
+
+</Slot>
+
+<Slot for="api-sync-restful-html-19-2-2">
+
+本次新增举手人员列表，包含以下字段：
+
+      - `userUuid`: String 型，用户 UUID。
+      - `payload`: Object 型，扩展信息。
+
+</Slot>
+
+<Slot for="api-sync-restful-html-19-3-2">
+
+本次移除举手人员列表，包含以下字段：
+
+      - `userUuid`: String 型，用户 UUID。
+      - `payload`: Object 型，扩展信息。
+
+</Slot>
+
+#### 示例
+
+```json
+{
+  "progressUsers": [
+    {
+      "userUuid": "",
+      "payload": {}
+    }
+  ],
+  "addProgressUsers": [
+    {
+      "userUuid": "",
+      "payload": {}
+    }
+  ],
+  "removeProgressUsers": [
+    {
+      "userUuid": "",
+      "payload": {}
+    }
+  ]
+}
+```

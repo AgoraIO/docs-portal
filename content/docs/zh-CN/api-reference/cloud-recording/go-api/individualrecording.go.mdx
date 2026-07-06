@@ -1,0 +1,190 @@
+---
+title: "IndividualRecording 类"
+---
+<a id="acquire"></a>
+## Acquire
+
+```go
+func (i *IndividualRecording) Acquire(ctx context.Context, cname string, uid string, enablePostpone bool, clientRequest *req.AcquireIndividualRecordingClientRequest) (*api.AcquireResp, error)
+```
+
+获取单流云录制资源 ID。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+获取资源 ID 后，需调用 [`Start`](#start) API 启动云录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `cname` | `string` | 待录制的频道名。 |
+| `uid` | `string` | 云录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `enablePostpone` | `bool` | <Slot name="individualrecording-go-html-0-4-2" /> |
+| `clientRequest` | `*AcquireIndividualRecordingClientRequest` | 请求体，详见 [`AcquireIndividualRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquireindividualrecordingclientrequest)。 |
+
+<Slot for="individualrecording-go-html-0-4-2">
+
+是否延迟开始录制：
+
+    - `true`：延迟录制。
+    - `false`：立即开始录制。
+
+</Slot>
+
+#### 返回值
+
+- `*AcquireResp`：方法调用成功时返回响应，详见 [`AcquireResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquireresp)。
+- `error`：方法调用失败时返回错误对象，包含错误信息；成功时返回 `nil`。
+
+<a id="start"></a>
+## Start
+
+```go
+func (i *IndividualRecording) Start(ctx context.Context, resourceId string, cname string, uid string, clientRequest *req.StartIndividualRecordingClientRequest) (*api.StartResp, error)
+```
+
+启动单流云端录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+该方法通过传入频道名、用户 ID、资源 ID 以及录制请求体来发起录制任务。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 用户 ID。 |
+| `clientRequest` | `*StartIndividualRecordingClientRequest` | 录制请求体，详见 [`StartIndividualRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startindividualrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*StartResp`：方法调用成功时返回的响应对象，详见 [`StartResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startresp)。
+- `error`：方法调用失败时返回的错误信息，成功时返回 `nil`。
+
+<a id="query"></a>
+## Query
+
+```go
+func (i *IndividualRecording) Query(ctx context.Context, resourceId string, sid string) (*resp.QueryIndividualRecordingResp, error)
+```
+
+查询关闭视频截图上传功能时的单流云端录制状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryIndividualRecordingResp`：方法调用成功时返回响应，详见 [`QueryIndividualRecordingResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#queryindividualrecordingresp)。
+- `error`：方法调用失败时返回错误信息，成功时返回 `nil`。
+
+<a id="queryvideoscreenshot"></a>
+## QueryVideoScreenshot
+
+```go
+func (i *IndividualRecording) QueryVideoScreenshot(ctx context.Context, resourceId string, sid string) (*resp.QueryIndividualRecordingVideoScreenshotResp, error)
+```
+
+查询开启视频截图采集功能时的单流云录制状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryIndividualRecordingVideoScreenshotResp`：方法调用成功时返回响应，详见 [`QueryIndividualRecordingVideoScreenshotResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#queryindividualrecordingvideoscreenshotresp)。
+- `error`：方法调用失败时返回错误信息，成功时为 `nil`。
+
+<a id="update"></a>
+## Update
+
+```go
+func (i *IndividualRecording) Update(ctx context.Context, resourceId string, sid string, cname string, uid string, clientRequest *req.UpdateIndividualRecordingClientRequest) (*api.UpdateResp, error)
+```
+
+更新单流录制配置。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 待录制的频道名。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `clientRequest` | `*UpdateIndividualRecordingClientRequest` | 请求体，详见 [`UpdateIndividualRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updateindividualrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*UpdateResp`：方法调用成功时返回响应，详见 [`UpdateResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updateresp)。
+- `error`：方法调用失败时返回错误信息，成功时为 `nil`。
+
+<a id="stop"></a>
+## Stop
+
+```go
+func (i *IndividualRecording) Stop(ctx context.Context, resourceId string, sid string, cname string, uid string, asyncStop bool) (*api.StopResp, error)
+```
+
+停止单流录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `asyncStop` | `bool` | <Slot name="individualrecording-go-html-5-6-2" /> |
+
+<Slot for="individualrecording-go-html-5-6-2">
+
+是否异步停止录制。
+
+    - `true`：异步停止录制。
+    - `false`：同步停止录制。
+
+</Slot>
+
+#### 返回值
+
+- `*StopResp`：方法调用成功时返回响应，详见 [`StopResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#stopresp)。
+- `error`：方法调用失败时返回错误信息，成功时返回 `nil`。

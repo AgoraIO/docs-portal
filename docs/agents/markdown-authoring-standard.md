@@ -262,7 +262,10 @@ Rules:
 - Do not put lists, callouts, code fences, images, or raw HTML lists inside a
   table cell.
 - If a cell needs block content, move that content below the table under a
-  heading or list item.
+  heading or list item, or use the approved table `Slot` pattern when preserving
+  the tabular shape matters.
+- For table slots, put `<Slot name="..." />` alone in the table cell, then put
+  the matching `<Slot for="...">...</Slot>` block immediately after the table.
 - Keep table rows single-line whenever possible.
 
 ## Agent Checklist

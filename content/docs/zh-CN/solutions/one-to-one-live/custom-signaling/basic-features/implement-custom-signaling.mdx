@@ -1,0 +1,362 @@
+---
+title: "实现自定义信令"
+---
+
+<PlatformStructured platform="android">
+
+对于使用三方信令服务构建 1v1 私密房的开发者，在集成声网 `CallAPI` 后，还需要基于使用的三方信令服务实现一个自定义的信令管理类，来实现 1v1 私密房场景中的信令管理和消息收发等功能。
+
+本文以环信为例，展示如何将三方信令服务封装为可以与 `CallAPI` 搭配使用的自定义信令管理类。
+
+:::warning[注意]
+由于自定义的信令管理类基于三方信令 SDK 实现，且只实现了 `CallAPI`
+  需要的信令协议和消息收发功能，本文步骤及示例仅供参考，不保证其可用性和完整性。
+:::
+
+## 示例项目
+
+声网基于环信即时通讯 SDK 实现了一个信令管理类 `CallEasemobSignalClient`，你可以下载体验或参考源码。
+
+<Cards>
+  <Card title="CallEasemobSignalClient" href="https://github.com/AgoraIO-Community/CallAPI/tree/main/Android/app/src/main/java/io/agora/onetoone/signalClient/CallEasemobSignalClient.kt" />
+</Cards>
+
+## 前提条件
+
+开始前，请确保满足如下前提条件：
+
+- [Git](https://git-scm.com/downloads)。
+- [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)。
+- [Android Studio](https://developer.android.com/studio/) 4.1 及以上。
+- 已参考[集成 CallAPI 和三方信令](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/integrate-third-party)将源码添加至项目中。
+- 已注册并登录第三方信令服务控制台，并获取使用相关服务所需要的项目信息。如环信即时通讯 SDK 的 `AppKey`。
+
+## 实现步骤
+
+### 1. 创建自定义信令管理类
+
+以环信为例，创建一个 `CallEasemobSignalClient` 类，用来初始化并管理自定义的信令服务。
+
+其中，`CallBaseSignalClient` 是一个基类，实现了 `ISignalClient` 的 `addListener` 和 `removeListener` 方法。
+
+```kotlin
+// 定义基于环信的自定义信令类 CallEasemobSignalClient
+class CallEasemobSignalClient(
+    private val context: Context,
+    private val appKey: String,
+    private val userId: Int = 0
+): ISignalClient, CallBaseSignalClient() {
+    // 此处省略其他初始化变量或参数
+    init {
+        val options = EMOptions()
+        options.appKey = appKey
+        // 调用环信 SDK 的 API 初始化环信信令服务
+        EMClient.getInstance().init(context, options)
+    }
+}
+```
+
+### 2. 实现登录和登出等基本操作
+
+由于 `CallAPI` 中不包含信令的连接状态，业务层还需要维护环信的状态。你可以参考如下代码，调用环信的这些方法在 `CallEasemobSignalClient` 中实现相关能力：
+
+- `login`：登录环信信令服务
+- `logout`：登出环信信令服务
+- `renewToken`：更新 Token
+
+```kotlin
+public fun login(completion: ((success: Boolean) -> Unit)?) {
+    // 实现登录操作
+}
+
+public fun logout() {
+    // 实现登出操作
+}
+
+public fun renew(token: String) {
+    // 实现更新 Token 操作
+}
+
+// 此处省略其他业务层代码
+```
+
+### 3. 实现消息发送
+
+调用环信 SDK 的代码实现消息发送功能。如下示例代码展示如何通过环信的 `sendMessage` 方法实现发送消息。
+
+```kotlin
+override fun sendMessage(
+    userId: String,
+    message: String,
+    completion: ((AGError?) -> Unit)?
+) {
+    if (userId.isEmpty() || userId == "0") {
+        val errorStr = "sendMessage fail, invalid userId[$userId]"
+        completion?.invoke(AGError(errorStr, -1))
+        return
+    }
+    innerSendMessage(userId, message, completion)
+}
+
+private fun innerSendMessage(
+    userId: String,
+    message: String,
+    completion: ((AGError?) -> Unit)?
+) {
+    if (userId.isEmpty()) {
+        completion?.invoke(AGError("send message fail! roomId is empty", -1))
+        return
+    }
+    val options = PublishOptions()
+    options.setChannelType(RtmConstants.RtmChannelType.USER)
+    val startTime = System.currentTimeMillis()
+
+    // `content` 为要发送的文本内容，`toChatUsername` 为对方的账号。
+    val msg = EMMessage.createTextSendMessage(message, userId)
+    // 会话类型：单聊为 EMMessage.ChatType.Chat
+    msg.chatType = EMMessage.ChatType.Chat
+    msg.deliverOnlineOnly(true)
+    // 发送消息时可以设置 `EMCallBack` 的实例，获得消息发送的状态。可以在该回调中更新消息的显示状态。例如消息发送失败后的提示等等。
+    msg.setMessageStatusCallback(object : EMCallBack {
+        override fun onSuccess() {
+            // 发送消息成功
+            runOnUiThread { completion?.invoke(null) }
+        }
+
+        override fun onError(code: Int, error: String) {
+            // 发送消息失败
+            runOnUiThread { completion?.invoke(AGError(error, code)) }
+        }
+
+        override fun onProgress(progress: Int, status: String) {}
+    })
+    // 发送消息
+    EMClient.getInstance().chatManager().sendMessage(msg)
+}
+```
+
+### 4. 实现消息收发回调
+
+由于消息是在回调中接收的，我们还需要注册相关的消息回调。下列示例代码展示如何通过环信 SDK 的 `EMMessageListener` 实现消息的接收和处理。
+
+```kotlin
+// ---------------- EMMessageListener ----------------
+EMClient.getInstance().chatManager().addMessageListener(this)
+override fun onMessageReceived(messages: MutableList<EMMessage>?) {
+    runOnUiThread {
+        messages?.forEach {
+            val body = it.body as EMTextMessageBody
+            listeners.forEach {
+                it.onMessageReceive(body.message)
+            }
+        }
+    }
+}
+```
+
+### 5. （可选）实现网络状态回调
+
+定义一个 `ICallEasemobSignalClientListener` 类，用于实现网络状态回调。对网络状态进行判断，可以使业务层更准确地识别和处理异常情况，从而提高系统的稳定性和效率。
+
+```kotlin
+// ---------------- EMConnectionListener ----------------
+EMClient.getInstance().addConnectionListener(this)
+override fun onConnected() {
+    isConnected = true
+}
+
+override fun onDisconnected(errorCode: Int) {
+    isConnected = false
+}
+```
+
+## 后续步骤
+
+完成自定义的信令管理类后，你可以在业务层中使用该类。参考如下文档使用该类和 `CallAPI` 共同搭建 1v1 私密房或秀场转 1v1：
+
+- [实现 1v1 私密房](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/start-one-to-one)
+- [实现秀场转 1v1](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/showroom-to-one-to-one)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+对于使用三方信令服务构建 1v1 私密房的开发者，在集成声网 `CallAPI` 后，还需要基于使用的三方信令服务实现一个自定义的信令管理类，来实现 1v1 私密房场景中的信令管理和消息收发等功能。
+
+本文以环信为例，展示如何将三方信令服务封装为可以与 `CallAPI` 搭配使用的自定义信令管理类。
+
+:::warning[注意]
+由于自定义的信令管理类基于三方信令 SDK 实现，且只实现了 `CallAPI`
+  需要的信令协议和消息收发功能，本文步骤及示例仅供参考，不保证其可用性和完整性。
+:::
+
+## 示例项目
+
+声网基于环信即时通讯 SDK 实现了一个信令管理类 `CallEasemobSignalClient`，你可以下载体验或参考源码。
+
+<Cards>
+  <Card title="CallEasemobSignalClient" href="https://github.com/AgoraIO-Community/CallAPI/tree/main/iOS/Example/CallAPI/SignalClient/CallEasemobSignalClient.swift" />
+</Cards>
+
+## 前提条件
+
+开始前，请确保满足如下前提条件：
+
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上。
+- 有效的苹果开发者账号。
+- 已参考[集成 CallAPI 和三方信令](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/integrate-third-party)将依赖添加至 iOS 项目中。
+- 已注册并登录第三方信令服务控制台，并获取使用相关服务所需要的项目信息。如环信即时通讯 SDK 的 `AppKey`。
+
+## 实现步骤
+
+### 1. 创建自定义信令管理类
+
+以环信为例，创建一个 `CallEasemobSignalClient` 类，用来初始化并管理自定义的信令服务。
+
+其中，`CallBaseSignalClient` 是一个基类，实现了 `ISignalClient` 的 `addListener` 和 `removeListener` 方法。
+
+```swift
+// 定义基于环信的自定义信令类 CallEasemobSignalClient
+public class CallEasemobSignalClient: CallBaseSignalClient {
+    // 此处省略其他初始化变量或参数
+    public init(appKey: String, userId: String) {
+        // 此处省略其他初始化变量或参数
+        super.init()
+
+        // 调用环信 SDK 的 API 初始化环信信令服务
+        let option = EMOptions(appkey: appKey)
+        EMClient.shared().initializeSDK(with: option)
+    }
+}
+```
+
+### 2. 实现登录和登出等基本操作
+
+由于 `CallAPI` 中不包含信令的连接状态，业务层还需要维护环信的状态。你可以参考如下代码，调用环信的这些方法在 `CallEasemobSignalClient` 中实现相关能力：
+
+- `login`：登录环信信令服务
+- `logout`：登出环信信令服务
+- `renewToken`：更新 Token
+
+```swift
+extension CallEasemobSignalClient {
+    public func login(completion: @escaping ((NSError?)->())) {
+        // 实现登录操作
+    }
+
+    public func logout() {
+        EMClient.shared().removeDelegate(self)
+        EMClient.shared().chatManager?.remove(self)
+        EMClient.shared().logout(false)
+    }
+
+    public func renew(token: String) {
+        EMClient.shared().renewToken(token)
+    }
+
+    // 此处省略其他业务层代码
+}
+```
+
+### 3. 实现消息发送
+
+调用环信 SDK 的代码实现消息发送功能。如下示例代码展示如何通过环信的 `sendMessage` 方法实现发送消息。
+
+```swift
+extension CallEasemobSignalClient: ISignalClient {
+    public func sendMessage(userId: String,
+                            message: String,
+                            completion: ((NSError?) -> Void)?) {
+        // 收到 CallAPI 需要发送消息，通过自定义信令发送
+
+        let body = EMTextMessageBody(text: message)
+        callMessagePrint("_sendMessage to '\(userId)', message: \(message)")
+        let emMessage = EMChatMessage(conversationID: userId, from: self.userId, to: userId, body: body, ext: nil)
+        emMessage.deliverOnlineOnly = true
+        let date = Date()
+        
+        EMClient.shared().chatManager?.send(emMessage, progress: nil, completion: {[weak self] msg, err in
+            guard let self = self else {return}
+            if let err = err {
+                let error = NSError(domain: err.errorDescription, code: err.code.rawValue)
+                self.callMessagePrint("_sendMessage fail: \(error) cost: \(date.getCostMilliseconds()) ms", 1)
+
+                completion?(error)
+                return
+            }
+            self.callMessagePrint("_sendMessage publish cost \(date.getCostMilliseconds()) ms")
+            completion?(nil)
+        })
+    }
+}
+```
+
+### 4. 实现消息收发回调
+
+由于消息是在回调中接收的，我们还需要注册相关的消息回调。下列示例代码展示如何通过环信 SDK 的 `EMChatManagerDelegate` 实现消息的接收和处理。
+
+```swift
+EMClient.shared().chatManager?.add(self, delegateQueue: nil)
+
+extension CallEasemobSignalClient: EMChatManagerDelegate {
+    public func messagesDidReceive(_ aMessages: [EMChatMessage]) {
+        for message in aMessages {
+            let from = message.from
+            let to = message.to
+            let body = message.body as? EMTextMessageBody
+            let text = body?.text
+            // 收到消息，返回给 CallAPI
+            if let text = text {
+                for element in delegates.allObjects {
+                    element.onMessageReceive(message: text)
+                }
+            }
+        }
+    }
+}
+```
+
+### 5. （可选）实现网络状态回调
+
+定义一个 `ICallEasemobSignalClientListener` 类，用于实现网络状态回调。对网络状态进行判断，可以使业务层更准确地识别和处理异常情况，从而提高系统的稳定性和效率。
+
+```swift
+// 定义 ICallEasemobSignalClientListener 回调协议
+public protocol ICallEasemobSignalClientListener: NSObjectProtocol {
+
+    // RTM 连接成功
+    func onConnected()
+
+    // RTM 连接断开
+    func onDisconnected()
+}
+
+
+// 添加 delegate
+EMClient.shared().add(self, delegateQueue: DispatchQueue.main)
+
+// 通过环信的 EMClientDelegate 类实现网络状态变化的获取
+extension CallEasemobSignalClient: EMClientDelegate {
+    public func connectionStateDidChange(_ aConnectionState: EMConnectionState) {
+        print("connectionStateDidChange: \(aConnectionState.rawValue)")
+        switch aConnectionState {
+        case .connected:
+            isConnected = true
+            self.delegate?.onConnected()
+        default:
+            isConnected = false
+            self.delegate?.onDisconnected()
+        }
+    }
+}
+```
+
+## 后续步骤
+
+完成自定义的信令管理类后，你可以在业务层中使用该类。参考如下文档使用该类和 `CallAPI` 共同搭建 1v1 私密房或秀场转 1v1：
+
+- [实现 1v1 私密房](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/start-one-to-one)
+- [实现秀场转 1v1](/zh-CN/solutions/one-to-one-live/custom-signaling/basic-features/showroom-to-one-to-one)
+
+</PlatformStructured>

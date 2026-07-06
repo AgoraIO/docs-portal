@@ -1,0 +1,265 @@
+---
+title: "计量计费 RESTful API"
+---
+服务商将插件发布在声网云市场前，需要实现一套计量计费的 RESTful API，并将对应的 URL 地址提供给声网。声网会定期调用这套 API，向插件服务商获取指定计量和计费相关信息，并通知到使用插件的 App 开发者。
+
+## 接口要求
+
+实现计量计费 RESTful API 时，请确保你的服务器满足如下要求：
+
+- 每秒钟可以处理至少 100 个请求。
+- 使用规范的 HTTP 错误信息及排查方法。
+
+每次调用后，声网服务器会等待 500 毫秒。如果等待期内没有收到响应信息，会再次调用接口。重复调用达到三次将会停止调用。
+
+## 查询用量（GET）
+
+App 开发者在声网控制台项目中启用插件后，声网会每天调用一次该 API 获取插件用量，将获取的用量求和并向上求整，然后更新控制台界面的用量信息。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&signature={signature}
+```
+
+**查询参数**
+
+| 参数 | 是否必需 | 类型 | 数据长度 | 描述 |
+| --- | --- | --- | --- | --- |
+| `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当天 UTC 时间的 0 点之后。 |
+| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当天 UTC 时间的 23:59:59 之前。 |
+| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-3-3-4" /> |
+| `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你为该字段设置了一个默认值。 |
+| `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
+| `signature` | 必需 | String | N/A | 通过[签名算法](/zh-CN/realtime-media/marketplace/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，以确认该请求是声网发送的。 |
+
+<Slot for="usage-billing-markdown-3-3-4">
+
+用量列表的页数，表示查询第几页的用量。你需要对用量列表进行分页设置，并在响应参数的 `hasNext` 字段中返回是否还有下一页。声网在每天第一次调用该方法时，会始终将该参数设为 1，并在收到响应后重复调用该方法，直到响应参数中的 `hasNext` 字段返回 `false`。
+
+</Slot>
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | Int | 请求的状态码。0 表示请求成功。 |
+| `statusReason` | String | 状态对应的原因。 |
+| `totalSize` | Int | 已启用插件的项目总数。 |
+| `pageNum` | Int | 用量列表的第几页。该字段需要和请求中的 `pageNum` 字段一致。 |
+| `hasNext` | Boolean | <Slot name="usage-billing-html-0-5-2" /> |
+| `data` | Array | <Slot name="usage-billing-html-0-6-2" /> |
+
+<Slot for="usage-billing-html-0-5-2">
+
+用量列表是否还有下一页：
+
+        - `true`: 有下一页。声网会继续发送用量请求。
+        - `false`: 没有下一页。声网会停止用量请求。
+
+</Slot>
+
+<Slot for="usage-billing-html-0-6-2">
+
+用量信息，包含如下数据：
+
+        - `projectId`：项目 ID。
+        - `amount`：用量。数据格式为 BigDecimal。单位如下：
+           - 如果按时长计算用量，单位默认为分钟。
+           - 如果按次数计算用量，单位默认为次。
+           - 如果需要其它单位，联系声网协商配置。
+        - `description`：用量的详细信息。
+
+     `projectId` 为空或者 `amount` 为 0 的数据不需要返回。
+
+</Slot>
+
+### 示例
+
+**请求行**
+
+```shell
+GET https://{host}/usage?fromTs=1619913600&toTs=1619917200&pageNum=1&apiKey=pz*************gd&signature=Q7**************************Sa HTTP/1.1
+```
+
+**响应包体**
+
+```json
+{
+    "status": 0,
+    "statusReason": "Success getting usage data",
+    "data": {
+    "totalSize": 2,
+        "pageNum": 2,
+    "hasNext": false,
+    "data": [
+        {
+            "projectId": "4****2",
+            "amount": 1,
+            "description": "1 分钟 × 声网云市场单价 (¥***/月)"
+        }
+    ]
+}
+}
+```
+
+## 查询计费（GET）
+
+App 开发者在声网控制台项目中启用插件后，声网会在每个月末调用该 API 获取使用插件产生的计费信息，将每次请求获取到的费用相加后向上取整，然后更新控制台界面的计费信息。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&signature={signature}
+```
+
+**查询参数**
+
+| 参数 | 是否必需 | 类型 | 数据长度 | 描述 |
+| --- | --- | --- | --- | --- |
+| `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当月第一天的 UTC 时间 0 点之后。 |
+| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当月最后一天的 UTC 时间 23:59:59 之前。 |
+| `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-4-3-4" /> |
+| `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你给该字段设置了一个默认值。 |
+| `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
+| `signature` | 必需 | String | N/A | 通过[签名算法](/zh-CN/realtime-media/marketplace/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，以确认该请求是声网发送的。 |
+
+<Slot for="usage-billing-markdown-4-3-4">
+
+用量列表的页数，表示查询第几页的用量。你需要对用量列表进行分页设置，并在响应参数的 `hasNext` 字段中返回是否还有下一页。声网在每天第一次调用该方法时，会始终将该参数设为 1，并在收到响应后重复调用该方法，直到响应参数中的 `hasNext` 字段返回 `false`。
+
+</Slot>
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | Int | 请求的状态码。0 表示请求成功。 |
+| `statusReason` | String | 状态对应的原因。 |
+| `totalSize` | Int | 已启用插件的项目总数。 |
+| `pageNum` | Int | 费用列表的第几页。该字段需要和请求中的 `pageNum` 字段一致。 |
+| `hasNext` | Boolean | <Slot name="usage-billing-html-1-5-2" /> |
+| `data` | Array | <Slot name="usage-billing-html-1-6-2" /> |
+
+<Slot for="usage-billing-html-1-5-2">
+
+费用列表是否还有下一页：
+
+        - `true`: 有下一页。声网会继续发送计费请求。
+        - `false`: 没有下一页。声网会停止计费请求。
+
+</Slot>
+
+<Slot for="usage-billing-html-1-6-2">
+
+费用信息，包含如下数据：
+
+        - `projectId`：项目 ID。
+        - `amount`：费用。数据格式为 BigDecimal。
+        - `description`: 费用的详细信息。
+
+      `projectId` 为空或者 `amount` 为 0 的数据不需要返回。
+
+</Slot>
+
+### 示例
+
+**请求行**
+
+```shell
+GET https://{host}/bill?fromTs=1619913600&toTs=1619917200&pageNum=1&apiKey=pz*************gd&signature=Q7**************************Sa HTTP/1.1
+```
+
+**响应示例**
+
+```json
+{
+    "status": 0,
+    "statusReason": "Success getting billing data",
+    "data": {
+    "totalSize": 2,
+        "pageNum": 2,
+    "hasNext": false,
+    "data": [
+        {
+            "projectId": "4xxxx2",
+            "amount": 1,
+            "description": "1 分钟 × 声网云市场单价 (¥***/月)"
+        }
+    ]
+}
+}
+```
+
+## 查询 License 详情（GET）
+
+:::info[信息]
+该方法适用于使用授权 License 方式对 App 开发者计费的插件服务商。
+:::
+
+该方法获取指定开发者的 License 信息。如果你使用授权 License 的方式进行计费，声网会在需要时调用该方法获取指定 License 的有效期和剩余次数。
+
+### HTTP 请求
+
+**请求 URL**
+
+```shell
+GET https://{host}/customers/{customerId}/license&apiKey={apiKey}&signature={signature}
+```
+
+**路径参数**
+
+| 参数         | 是否必需 | 类型   | 数据长度 | 描述                                                         |
+| ------------ | -------- | ------ | -------- | ------------------------------------------------------------ |
+| `customerId` | 必需       | String | N/A      | 开发者在声网控制台注册的账户 ID。                            |
+| `apiKey`     | 必需       | String | 32       | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
+| `signature`  | 必需       | String | N/A      | 通过[签名算法](/zh-CN/realtime-media/marketplace/create-extensions/signature-algorithm)生成的签名。你需要自己部署签名算法，以确认该请求是声网发送的。 |
+
+### HTTP 响应
+
+响应包体中包含以下字段：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `status` | String | <Slot name="usage-billing-html-2-1-2" /> |
+| `statusReason` | String | 状态对应的原因。 |
+| `expireDate` | String | App 开发者的 License 过期时间。 |
+| `residueCount` | String | License 剩余次数。 |
+
+<Slot for="usage-billing-html-2-1-2">
+
+请求状态：
+
+        - `success`：请求成功。
+        - `failed`：请求失败。
+
+</Slot>
+
+### 示例
+
+**请求行**
+
+```shell
+GET https://{host}/customers/1xxxx6/license&apiKey=pz*************gd&signature=Q7**************************Sa HTTP/1.1
+```
+
+**响应包体**
+
+```json
+{
+    "status": "success",
+    "statusReason": "",
+    "data": {
+    "expireDate": "2025-10-01",
+    "residueCount": "100"
+}
+}
+```

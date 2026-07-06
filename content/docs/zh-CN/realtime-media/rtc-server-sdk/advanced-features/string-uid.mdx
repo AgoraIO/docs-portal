@@ -1,0 +1,106 @@
+---
+title: "使用 String 型用户 ID"
+---
+声网服务端网关 SDK 同时支持 `int` 型用户 ID 和 `String` 型用户 ID。本文介绍如何使用 `String` 型用户 ID。
+
+## 实现方法
+
+1. 在初始化 `IAgoraService` 对象时，将 `AgoraServiceConfiguration.useStringUid` 设为 `true`。
+
+    ```cpp
+    // 创建 IAgoraService 对象
+    auto service = createAgoraService();
+    // 初始化 IAgoraService 对象
+    agora::base::AgoraServiceConfiguration scfg;
+    // 设置声网 App ID
+    scfg.appId = appid;
+    // 是否开启音频处理模块。本文设为开启。
+    scfg.enableAudioProcessor = enableAudioProcessor;
+    // 是否开启音频设备模块。此设置不适用于服务端。本文设为关闭。
+    scfg.enableAudioDevice = enableAudioDevice;
+    // 是否开启视频。本文设为开启。
+    scfg.enableVideo = enableVideo;
+    // 是否允许 String 型用户 ID（字符可以是数字、字母或特殊符号）。
+    // 本文设为 true，使用 String 型用户 ID（字符可以是数字、字母或特殊符号）。
+    scfg.useStringUid = enableuseStringUid;
+    if (service->initialize(scfg) != agora::ERR_OK) {
+        return nullptr;
+    }
+    ```
+
+2. 调用 `connect` 连接声网 RTC 频道。
+
+    ```cpp
+    if (connection->connect(options.appId.c_str(), options.channelId.c_str(), options.userId.c_str())) {
+        AG_LOG(ERROR, "Failed to connect to the channel!");
+        return -1;
+    }
+    ```
+
+## 订阅用户注意事项
+
+在初始化 `IAgoraService` 对象时开启 `String` 型用户 ID 的设置会在调用 `connect` 成功连接频道之后生效。因此，在成功连接频道之前，SDK 使用的用户 ID 模式仍然为 `int` 型。你无法订阅包含数字之外的字符的用户 ID。如果你在成功连接频道之前调用 `subscribe` 方法订阅了特定 `uid`，`uid` 的字符必须仅包含数字。`connect` 完成之后，你可以订阅包含其他字符类型的用户 ID。
+
+1. 在初始化 `AgoraService` 对象时，调用 `AgoraServiceConfiguration.setUseStringUid(1)`。
+
+    ```java
+    // Creates an AgoraService object
+    AgoraService service = new AgoraService();
+    if (null == service) {
+        System.out.printf("createAndInitAgoraService fail\n");
+        return;
+    }
+    AgoraServiceConfig config = new AgoraServiceConfig();
+    // Disables the audio device module (Normally we do not directly connect audio capture or playback devices to a server)
+    config.setEnableAudioDevice(0);
+    // Enables the audio processing module
+    config.setEnableAudioProcessor(1);
+    // Enables video
+    config.setEnableVideo(1);
+    // Enables user ID in String format
+    config.setUseStringUid(1);
+    int ret = service.initialize(config);
+    if (ret != 0) {
+        System.out.printf("createAndInitAgoraService AgoraService.initialize fail ret=%d\n", ret);
+        return;
+    }
+    service.setLogFile("agorasdk.log",10*1024);
+    ```
+
+2. 调用 `connect` 连接声网 RTC 频道。
+
+    ```java
+    RtcConnConfig ccfg = new RtcConnConfig();
+    ccfg.setAutoSubscribeAudio(0);
+    ccfg.setAutoSubscribeVideo(0);
+    ccfg.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
+    ccfg.setClientRoleType(Constants.CLIENT_ROLE_BROADCASTER);
+    AgoraRtcConn conn = service.agoraRtcConnCreate(ccfg);
+    if (conn == null) {
+        System.out.printf("AgoraService.agoraRtcConnCreate fail\n");
+        return;
+    }
+    conn.connect(token, "demo_channel", "1");
+    ```
+
+## 订阅用户注意事项
+
+在初始化 `AgoraService` 对象时开启 `String` 型用户 ID 的设置会在调用 `connect` 成功连接频道之后生效。因此，在成功连接频道之前，SDK 使用的用户 ID 模式仍然为 `int` 型。你无法订阅包含数字之外的字符的用户 ID。如果你在成功连接频道之前调用 `subscribe` 方法订阅了特定 `uid`，`uid` 的字符必须仅包含数字。`connect` 完成之后，你可以订阅包含其他字符类型的用户 ID。
+
+## 其他注意事项
+
+- `int` 型用户 ID 支持的字符集包括：
+
+  - 10 个数字 0-9
+
+- `String` 型用户 ID 支持的字符集包括：
+
+  - 26 个小写英文字母 a~z
+  - 26 个大写英文字母 A~Z
+  - 10 个数字 0-9
+  - 空格
+  - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", "&#123;", "&#125;", "|", "~", ","
+
+- `String` 型用户 ID 能且只能与 `String` 型用户 ID 互通。如果一个频道内同时存在 `String` 型用户 ID 和 `int` 型用户 ID，会导致未知的错误。
+- 和 `int` 型用户 ID 不同，在调用 `connect` 方法时，你必须给 `userId` 赋值。将其设为 `null` 会报错。
+- `String` 型用户 ID 必须是频道内唯一的。

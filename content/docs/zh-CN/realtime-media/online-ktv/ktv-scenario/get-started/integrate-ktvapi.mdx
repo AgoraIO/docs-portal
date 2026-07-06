@@ -1,0 +1,574 @@
+---
+title: "快速实现"
+---
+
+<PlatformStructured platform="android">
+
+KTV API 是声网为降低开发者的集成难度，为 K 歌房场景提供的场景化 API。KTV API 对声网实时互动 SDK 的 API 进行了一系列业务封装，提供了 K 歌业务常见的功能接口，例如，获取版权歌单、下载版权音乐、切换演唱身份等。你只需要调用简单几个场景化 API 即可实现需要通过实时互动 API 才能实现的复杂代码逻辑，从而更轻松实现 K 歌场景。声网在 GitHub 上提供 KTV 场景化 API 的源码文件 [KTVApi.kt](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/Android/lib_ktvapi/src/main/java/io/agora/ktvapi/KTVApi.kt) 和 [KTVApiImpl.kt](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/Android/lib_ktvapi/src/main/java/io/agora/ktvapi/KTVApiImpl.kt) 供你参考。
+
+在线 K 歌房内用户角色说明如下：
+
+| 角色     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| 房主     | 歌房创建者。可以收、发音频流。                               |
+|独唱|在没有伴唱加入、伴唱中途退出后，演唱的人的用户角色为独唱者。|
+| 主唱     | 如果有伴唱加入合唱，独唱成为主唱，可以收、发音频流。 |
+| 伴唱   | 独唱开始唱歌后，如有人加入合唱，则其成为合唱中的伴唱，可以收、发音频流。 |
+| 听众     | 进入歌房的倾听者，只能接收音频流。                           |
+
+K 歌场景下主唱及独唱的业务流程图如下：
+
+![独唱](/img/online-ktv/ktv-scenario-solo.png)
+
+伴唱及听众的业务流程图如下：
+
+![伴唱及观众](/img/online-ktv/ktv-scenario-audience.png)
+
+本文介绍如何集成 KTV API 并实现在线 K 歌。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- Android Studio 4.0.0 或以上版本。
+
+- Android 4.1 或以上版本的设备。
+
+- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)。
+
+:::info[信息]
+- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)获取临时 RTC Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTC Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+:::
+
+## 集成 SDK 和 KTV API
+
+参考以下步骤来集成实时互动 SDK 和 KTV API：
+
+1. 打开你的项目根目录下的 `/Gradle Scripts/settings.gradle` 文件，添加 Maven Central 依赖（如果已有可忽略）：
+
+   ```java
+   repositories {
+       ...
+       mavenCentral()
+       ...
+   }
+   ```
+
+    :::warning[注意]
+    如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+    :::
+
+2. 打开 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件，在 `dependencies` 中添加声网实时互动 SDK 的依赖。
+
+   ```java
+   ...
+   dependencies {
+      ...
+      implementation 'io.agora.rtc:agora-special-full:4.1.1.23'
+   }
+   ```
+
+3. 在工程文件中引入 [KTVApi.kt](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/Android/lib_ktvapi/src/main/java/io/agora/ktvapi/KTVApi.kt) 文件和 [KTVApiImpl.kt](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/Android/lib_ktvapi/src/main/java/io/agora/ktvapi/KTVApiImpl.kt) 文件。
+
+## 实现在线 K 歌
+
+本节介绍使用 KTV API 实现在线 K 歌的基本逻辑。
+
+### 1. 创建并初始化 KTV API 模块
+
+1. 调用 [`create`](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_create) 初始化 `RtcEngine`。
+
+   :::warning[注意]
+   为避免引发程序异常甚至崩溃，请确保 `RtcEngine` 的生命周期大于 KTV API 模块的生命周期。
+   :::
+
+   ```kotlin
+   // 初始化 RtcEngine
+   val config = RtcEngineConfig()
+   config.mContext = context.getApplicationContext()
+   // 填入你项目的 App ID，可在声网控制台获取
+   config.mAppId = "<Your_Agora_Appid>"
+   config.mEventHandler = object : IRtcEngineEventHandler() {}
+   config.mChannelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING
+   val mRtcEngine = RtcEngine.create(config) as RtcEngineEx
+   ```
+
+2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
+
+```kotlin tab="大合唱场景" tabGroup="create"
+// 创建并初始化 KTV API 实例
+val ktvApiProtocol =
+    createKTVGiantChorusApi(
+        KTVGiantChorusApiConfig(
+            // 你的 App ID
+            "<Your Agora Appid>",
+            // RTM Token，如果你使用的是本地的曲库而非声网提供的版权音乐，该参数可为空
+            "<Your Agora Rtm Token>",
+            mRtcEngine,
+            // 用户 ID
+            "<Your Uid>",
+            // 观众频道的频道名称
+            "<Audience Channel Name>",
+            // 根据观众频道名和用户 ID 生成的 Token，用于加入观众频道时鉴权
+            "<Audience Channel Token>",
+            // 演唱频道的频道名，由外部指定
+            "<Your Chorus Channel Name>",
+            // 根据演唱频道名和用户 ID 生成的 Token，用于加入演唱频道时鉴权
+            "<Your Agora Chorus Token>",
+            // 发布音乐流的用户 ID
+            "<Music Stream Uid>",
+            // 根据演唱频道名和音乐流的用户 ID 生成的 Token，用于加入演唱频道时鉴权
+            "<Music Stream Token>",
+            // 设置可缓存的音乐资源数量，最多不能超过 50
+            10,
+            // 音乐资源类型，默认为声网音乐内容中心提供的版权音乐
+            KTVMusicType.SONG_CODE
+        )
+    )
+```
+
+```kotlin tab="其他场景" tabGroup="create"
+// 创建并初始化 KTV API 实例
+val ktvApiProtocol =
+    createKTVApi(
+        KTVApiConfig(
+            // 你的 App ID
+            "<Your Agora Appid>",
+            // RTM Token，如果你使用的是本地的曲库而非声网提供的版权音乐，该参数可为空
+            "<Your Agora Rtm Token>",
+            mRtcEngine,
+            // 需加入的频道名称
+            "<Your Channel Name>",
+            // 用户 ID
+            "<Your Uid>",
+            // 合唱子频道的频道名，由外部指定
+            "<Your Chorus Channel Name>",
+            // 根据合唱子频道名和用户 ID 生成的 Token，用于加入该频道时鉴权
+            "<Your Agora Chorus Token>"
+        ),
+        // 设置可缓存的音乐资源数量，最多不能超过 50
+        10,
+        // 设置 K 歌的场景
+        KTVType.Normal,
+        // 音乐资源类型，默认为声网音乐内容中心提供的版权音乐
+        KTVMusicType.SONG_CODE
+    )
+```
+
+:::info[信息]
+- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [onTokenPrivilegeWillExpire](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/android/API/toc_channel#renewToken) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，直接调用 [KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [`onTokenPrivilegeWillExpire`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [`renewToken`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#renewtoken) 来更新 Token。
+:::
+
+### 2. 订阅事件回调
+
+调用 `addEventHandler` 订阅 KTV API 事件，KTV API 模块支持订阅多个事件。如果你需要取消订阅事件，可调用 `removeEventHandler` 方法。
+
+```kotlin
+val ktvApiEvent = object: IKTVApiEventHandler() {
+    override fun onTokenPrivilegeWillExpire() {
+    }
+}
+
+// 订阅 KTVAPI 事件
+ktvApiProtocol.addEventHandler(ktvApiEvent)
+
+// 取消订阅 KTVAPI 事件
+ktvApiProtocol.removeEventHandler(ktvApiEvent)
+```
+
+### 3. 同步数据流
+
+为同步频道内的歌词进度等状态信息，你需要在调用 `joinChannel` 成功加入频道后调用 `renewInnerDataStreamId` 来创建数据流通道。一个频道中最多只能创建 **5 个**数据流通道。
+
+```kotlin
+// 更新数据流 ID
+ktvApiProtocol.renewInnerDataStreamId();
+```
+
+:::warning[注意]
+如果退出频道后再次加入频道，你需要在加入频道成功后重新调用 `renewInnerDataStreamId` 来创建数据流通道。
+:::
+
+### 4. 加载及播放歌曲
+
+声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/get-music)。声网也支持你加载自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
+
+```kotlin
+// 加载音乐
+ktvApiProtocol.loadMusic(
+    KTVLoadMusicConfiguration(songId, mainSingerUid, KTVLoadMusicMode.LOAD_MUSIC_AND_LRC),
+    url
+)
+```
+
+:::info[信息]
+目前仅支持一次加载一首歌曲，请在一首歌曲加载完成后再加载下一首。
+:::
+
+### 5. 切换角色
+
+KTV API 初始化时默认用户角色为听众，如果需要开始独唱或加入合唱，需要调用 `switchSingerRole` 来切换至相应的角色。 KTV API 内部会根据角色的切换来控制演唱过程中音乐播放器的播放、同步，以及订阅和发布音频流的行为。你还可以通过 `ISwitchRoleStateListener` 接口类下的回调来获取切换的状态。
+
+请参考下图来进行角色切换：
+
+![角色切换流程图](https://web-cdn.agora.io/docs-files/1704340396791)
+
+```kotlin
+// 根据你的业务场景，将用户角色设为独唱、领唱、合唱、伴唱
+ktvApiProtocol.switchSingerRole(KTVSingRole.CoSinger, object: ISwitchRoleStateListener {
+    override fun onSwitchRoleSuccess() {}
+    override fun onSwitchRoleFail(reason: SwitchRoleFailReason) {}
+})
+```
+
+### 6. 监听并控制歌曲播放
+
+歌曲播放时，音乐播放器会通过 `onMusicPlayerStateChanged` 回调向业务层通知歌曲播放状态改变。收到 `onPlayerStateChanged(PLAYER_STATE_OPEN_COMPLETED)` 回调后，你可以通过 `seekSing`、`pauseSing`、`resumeSing` 等方法控制播放器。
+
+:::warning[注意]
+KTV API 模块内部会自动处理播放器同步，因此你也可以通过 `onMusicPlayerStateChanged` 回调获取远端播放器的状态。
+:::
+
+```kotlin
+// 跳转到指定时间播放歌曲。
+ktvApiProtocol.seekSing(time)
+```
+
+### 7. 销毁 KTV API 实例
+
+退出 K 歌场景时，你需要调用 `release` 释放 KTV API 模块内的资源和取消注册事件回调。请确保 `RtcEngine` 的生命周期大于 KTV API 模块。释放资源时，请在释放 KTV API 模块之后再销毁 `RtcEngine` 实例。
+
+```kotlin
+// 先释放 KTV API 模块资源
+ktvApiProtocol.release()
+
+// 再销毁 RtcEngine 实例
+RtcEngine.destroy()
+```
+
+下图展示 KTV API 的调用时序图：
+
+![实现流程](/img/online-ktv/integrate-ktvapi.android.svg)
+
+实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)方案。
+
+## 相关信息
+
+本节介绍集成 KTV API 的其他相关信息和文档。
+
+### 获取歌曲进度和音高信息
+
+1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 [ILrcView](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/lyrics-api#lyricsview)，并实现该类中的回调。
+
+   ```kotlin
+   class LrcView: ILrcView {
+       // 人声音高回调，每 20 ms 更新一次
+       override fun onUpdatePitch(pitch: Float) {
+       }
+       // 歌词播放进度回调，每 20 ms 更新一次
+       override fun onUpdateProgress(progress: Long) {
+       }
+       // 歌词下载回调，此处可以下载歌词文件
+       override fun onDownloadLrcData(url: String) {
+       }
+       // 当你播放的是歌曲副歌片段时，会触发该回调报告副歌片段的起始和结束时间
+       override fun onHighPartTime(highStartTime: Long, highEndTime: Long) {
+       }
+   }
+   ```
+
+2. 调用 `setLrcView` 方法将你的歌词组件对象传递给 KTV API 模块。
+
+### API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/rtc-api)
+
+### 相关文档
+
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+KTV API 是声网为降低开发者的集成难度，为 K 歌房场景提供的场景化 API。KTV API 对声网实时互动 SDK 的 API 进行了一系列业务封装，提供出了 K 歌业务常见的业务功能接口，例如，获取版权歌单、下载版权音乐、切换演唱身份等。你只需要调用简单几个场景化 API 即可实现需要通过实时互动 API 才能实现的复杂代码逻辑，从而更轻松实现 K 歌场景。声网在 GitHub 上提供 KTV 场景化 API 的源码文件 [KTVApi.swift](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/iOS/Classes/KTVApi.swift) 和 [KTVApiImpl.swift](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/iOS/Classes/KTVApiImpl.swift) 供你参考。
+
+在线 K 歌房内用户角色说明如下：
+
+| 角色     | 描述                                                         |
+| :------- | :----------------------------------------------------------- |
+| 房主     | 歌房创建者。可以收、发音频流。                               |
+|独唱|在没有伴唱加入、伴唱中途退出后，演唱的人的用户角色为独唱者。|
+| 主唱     | 如果有伴唱加入合唱，独唱成为主唱，可以收、发音频流。 |
+| 伴唱   | 独唱开始唱歌后，如有人加入合唱，则其成为合唱中的伴唱，可以收、发音频流。 |
+| 听众     | 进入歌房的倾听者，只能接收音频流。                           |
+
+K 歌场景下主唱及独唱的业务流程图如下：
+
+![独唱](/img/online-ktv/ktv-scenario-solo.png)
+
+伴唱及听众的业务流程图如下：
+
+![伴唱及观众](/img/online-ktv/ktv-scenario-audience.png)
+
+本文介绍如何集成 KTV API 并实现在线 K 歌。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- Xcode 13.0 或以上版本。
+- 已安装 [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+- iOS 13.0 或以上版本的设备。
+- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)。
+
+:::info[信息]
+- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)获取临时 Token 用于测试，但在正式生产环境中，你需要自己部署一个 Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+:::
+
+## 集成 SDK 和 KTV API
+
+参考以下步骤来集成实时互动 SDK 和 KTV API：
+
+1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+
+2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+    ```shell
+    platform :ios, '9.0'
+    target 'Your App' do
+      pod 'AgoraRtcEngine_Special_iOS', '4.1.1.23'
+    end
+    ```
+
+3. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`
+4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+5. 在工程文件中引入 [KTVApi.swift](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/iOS/Classes/KTVApi.swift) 和 [KTVApiImpl.swift](https://github.com/AgoraIO-Community/KTVApi/blob/main/KTVAPI/iOS/Classes/KTVApiImpl.swift) 文件。
+
+## 实现在线 K 歌
+
+本节介绍使用 KTV API 实现在线 K 歌的基本逻辑。
+
+### 1. 创建并初始化 KTV API 模块
+
+1. 调用 [`sharedEngineWithAppId`](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) 初始化 `AgoraRtcEngineKit`。请确保 `AgoraRtcEngineKit` 的生命周期大于 KTV API 模块的生命周期。
+
+   ```objc
+   // 初始化 AgoraRtcEngineKit
+   // self.RTCkit 是定义的 AgoraRtcEngineKit 全局变量
+   self.RTCkit = [AgoraRtcEngineKit sharedEngineWithAppId:<Your_Agora_Appid> delegate:self];
+   // 在独唱场景下，将音频应用场景设为 AgoraAudioScenarioGameStreaming，在合唱场景下设为 AgoraAudioScenarioChorus
+   [self.RTCkit setAudioScenario:AgoraAudioScenarioGameStreaming];
+   [self.RTCkit setAudioProfile:AgoraAudioProfileMusicHighQuality];
+   [self.RTCkit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
+   ```
+
+2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
+
+```objc tab="大合唱场景" tabGroup="create"
+// 创建 GiantChorusConfiguration 实例
+GiantChorusConfiguration *config = [[GiantChorusConfiguration alloc] init];
+config.appId = @"<Your Agora Appid>";
+config.rtmToken = @"<Your Agora Rtm Token>";
+config.engine = self.RTCkit;
+config.channelName = @"<Your Channel Name>";
+config.localUid = <Your Uid>;
+config.chorusChannelName = @"<Your Chorus Channel Name>";
+config.chorusChannelToken = @"<Your Agora Chorus Token>";
+config.maxCacheSize = 10;
+config.musicType = loadMusicTypeMcc;
+config.audienceChannelToken = @"";
+config.musicStreamUid = 0;
+config.musicChannelToken = @"";
+config.routeSelectionConfig = [[GiantChorusRouteSelectionConfig alloc] initWithType:GiantChorusRouteSelectionTypeByDelay streamNum:6];
+config.mccDomain = nil;
+
+// 创建实例
+self.ktvApi = [self createKTVGiantChorusApiWithConfig:config];
+```
+
+```objc tab="其他场景" tabGroup="create"
+// 创建 KTVApiConfig 实例
+KTVApiConfig *apiConfig = [[KTVApiConfig alloc] initWithAppId:@"<Your Agora Appid>"
+                                                     // RTM Token，如果你使用的是本地的曲库而非声网提供的版权音乐，该参数可为空
+                                                     rtmToken:@"<Your Agora Rtm Token>"
+                                                       engine:self.RTCkit
+                                               // 需加入的频道的名称
+                                               channelName:@"<Your Channel Name>"
+                                                   // 用户 ID
+                                                   localUid:@"<Your Uid>"
+                                  // 合唱子频道的频道名，由外部指定
+                                  chorusChannelName:@"<Your Chorus Channel Name>"
+                                // 根据频合唱子频道名和用户 ID 生成的 Token，用于加入该频道时鉴权
+                                chorusChannelToken:@"<Your Agora Chorus Token>"
+                                                      // 设置 K 歌的场景
+                                                      type:KTVTypeNormal
+                                               // 设置可缓存的音乐资源数量，最多不能超过 50
+                                               maxCacheSize:10
+                                                // 设置音乐资源类型，默认为声网音乐内容中心提供的版权音乐
+                                                musicType:loadMusicTypeMcc
+                                                // 音乐内容中心域名，可传空
+                                                mccDomain:nil];
+self.ktvApi = [[KTVApiImpl alloc] initWithConfig:apiConfig];
+```
+
+:::info[信息]
+- 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/ios/API/toc_channel#renewToken) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，[KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 来更新 Token。
+:::
+
+### 2. 订阅事件回调
+
+调用 `addEventHandler` 订阅 KTV API 事件，KTV API 模块支持订阅多个事件。如果你需要取消订阅事件，可调用 `removeEventHandler` 方法。
+
+```objc
+// 订阅 KTVAPI 事件
+[self.ktvapi addEventHandlerWithKtvApiEventHandler:self];
+
+
+// 取消订阅 KTVAPI 事件
+[self.ktvApi removeEventHandlerWithKtvApiEventHandler:self];
+```
+
+### 3. 同步数据流
+
+为同步频道内的歌词进度等状态信息，你需要在调用 `joinChannelByToken`[2/4] 成功加入频道后调用 `renewInnerDataStreamId` 来创建数据流通道。一个频道中最多只能创建 **5 个**数据流通道。
+
+```objc
+// 更新数据流 ID
+[self.ktvApi renewInnerDataStreamId];
+```
+
+:::warning[注意]
+如果退出频道后再次加入频道，你需要在加入频道成功后重新调用 `renewInnerDataStreamId` 来创建数据流通道。
+:::
+
+### 4. 加载及播放歌曲
+
+声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/get-music)。声网也支持加载你自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
+
+```objc
+KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
+songConfig.songIdentifier = songIdentifier;
+songConfig.mode = KTVLoadMusicModeLoadLrcMusicAndLrc;
+songConfig.mainSingerUid = mainSingerUid;
+// 通过 url 加载本地音乐
+[self.ktvApi loadMusicWithConfig:config url:@"Your music url"];
+```
+
+:::info[信息]
+目前仅支持一次加载一首歌曲，请在一首歌曲加载完成后再加载下一首。
+:::
+
+### 5. 切换角色
+
+KTV API 初始化时默认用户角色为听众，如果需要开始独唱或加入合唱，需要调用 `switchSingerRole` 来切换至相应的角色。 KTV API 内部会根据角色的切换来控制演唱过程中音乐播放器的播放、同步，以及订阅和发布音频流的行为。你还可以通过 `onSingerRoleChanged` 回调来获取切换的状态。
+
+请参考下图来进行角色切换：
+
+![](https://web-cdn.agora.io/docs-files/1704340396791)
+
+```objc
+[self.ktvApi switchSingerRoleWithNewRole:role
+                   // 通过闭包 onSwitchRoleState 返回切换角色的状态和失败原因。
+                   onSwitchRoleState:^(KTVSwitchRoleState state, KTVSwitchRoleFailReason reason) {
+    if (state == KTVSwitchRoleStateFail && reason != KTVSwitchRoleFailReasonNoPermission) {
+
+        return;
+    }
+
+}];
+
+// 角色已切换回调。
+- (void)onSingerRoleChangedWithOldRole:(KTVSingRole)oldRole newRole:(KTVSingRole)newRole {
+}
+```
+
+### 6. 监听并控制歌曲播放
+
+歌曲播放时，音乐播放器会通过 `onMusicPlayerStateChanged` 回调向业务层通知歌曲播放状态改变。收到 `onMusicPlayerStateChanged(AgoraMediaPlayerStateOpenCompleted)` 回调后，你可以使用 `seekSing`、`pauseSing`、`resumeSing` 等方法控制播放器。
+
+:::warning[注意]
+KTV API 模块内部会自动处理播放器同步，因此你也可以通过 `onMusicPlayerStateChanged` 回调获取远端播放器的状态。
+:::
+
+```objc
+// 跳转到指定时间播放歌曲
+[self.ktvApi seekSing: time];
+```
+
+### 7. 释放资源
+
+退出 K 歌场景时，你需要调用 `cleanCache` 释放 KTV API 模块内的资源和取消注册事件回调。请确保 `AgoraRtcEngineKit` 的生命周期大于 KTV API 模块。释放资源时，请在释放 KTV API 模块之后再释放 `AgoraRtcEngineKit`。
+
+```objc
+// 先释放 KTV API 模块资源
+[self.ktvApi cleanCache];
+
+// 再销毁 RtcEngine 实例
+[AgoraRtcEngineKit destroy];
+```
+
+下图展示 KTV API 的调用时序图：
+
+![实现流程](/img/online-ktv/integrate-ktvapi.ios.svg)
+
+实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)方案。
+
+## 相关信息
+
+本节介绍集成 KTV API 的其他相关信息和文档。
+
+### 获取歌曲进度和音高信息
+
+1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 `KTVLrcViewDelegate`，并实现该类中的回调。
+
+   ```objc
+   class LrcView: KTVLrcViewDelegate {
+       func onUpdatePitch(pitch: Float) {
+       // 人声音高回调，每 20 ms 更新一次
+       }
+
+       func onUpdateProgress(progress: Int) {
+       // 歌词播放进度回调，每 20 ms 更新一次
+       }
+
+       func onDownloadLrcData(url: String) {
+       // 此处可以下载歌词文件
+       }
+
+       func onHighPartTime(highStartTime: Int, highEndTime: Int) {
+       // 当你播放的是歌曲副歌片段时，会触发该回调报告副歌片段的起始和结束时间
+       }
+   }
+   ```
+
+2. 调用 `setLrcView` 方法将你的歌词组件对象传递给 KTV API 模块。
+
+### API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/rtc-api)
+
+### 相关文档
+
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)
+
+</PlatformStructured>

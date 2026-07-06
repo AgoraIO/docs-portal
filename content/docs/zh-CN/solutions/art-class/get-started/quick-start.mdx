@@ -1,0 +1,138 @@
+---
+title: "集成指引"
+---
+本文列出在线美术教学场景方案的常见功能以及对应的声网产品和集成文档。
+
+## 课前准备
+
+### 课堂管理
+
+通过[声网频道管理服务](/doc/rtc/restful/channel-management/operations/get-user-property)查询课堂相关信息，并管理学生在上课过程中发送音视频和实时消息的权限。
+
+### 课前设备和网络检测
+
+在线教育场景通常对音视频效果和稳定性要求较高，建议教师端和学生端都进行课前检测，确认麦克风、摄像头等音视频设备能否正常工作，并检查网络状况是否满足要求，详见[通话前网络和设备检测](/doc/rtc//basic-features/lastmile-quality)。
+
+## 课堂互动
+
+### 实时音视频互动
+
+使用声网 RTC 4.0.0 教育特殊版 SDK 实现实时音视频互动功能。教师对学生讲课，学生就上课内容向老师提问，形成良好的互动式课堂氛围。
+
+声网 RTC 4.0.0 教育特殊版 SDK 作为一个分支版本，与[声网 RTC SDK](/doc/rtc/homepage)功能大体相似，主要新增了一些为教育场景定制的功能。你可以[联系技术支持](https://ticket.shengwang.cn)获取声网 RTC 4.0.0 教育特殊版 SDK。对于绝大部分功能，你可以直接参考声网 RTC SDK 的官网文档：
+
+- [快速开始](/doc/rtc//get-started/quick-start)
+- [API 参考](/api-ref/rtc//API/rtc_api_overview)
+- [RTC GitHub 示例项目](https://github.com/AgoraIO/API-Examples/)
+
+### 实时消息互动
+
+使用声网云信令 SDK 实现实时消息互动功能。教师和学生在课堂中发送文字消息进行互动。详见：
+
+- [云信令 SDK 下载地址](https://docportal.shengwang.cn/cn/Real-time-Messaging/downloads?platform=All%20Platforms)
+- [云信令 GitHub 示例项目](https://github.com/AgoraIO/RTM)
+
+- [云信令 SDK 集成指引](https://docs.agora.io/cn/Real-time-Messaging/messaging_android?platform=Android)
+- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_ios?platform=iOS)
+- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_mac?platform=macOS)
+- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+
+- [云信令 SDK 集成指引](https://docportal.shengwang.cn/cn/Real-time-Messaging/messaging_cpp_windows?platform=Windows)
+- [云信令 API 参考](https://docs.agora.io/cn/Real-time-Messaging/API%20Reference/RTM_java/index.html)
+
+### 互动白板
+
+教师在白板上涂鸦、上传文件（PPT、Word 和 PDF）或播放视频，有助于提炼教学重点，帮助学生理解或记忆。学生也可使用白板与老师进行实时互动。详见：
+
+- [下载互动白板 SDK](/doc/whiteboard//whiteboard-sdk/resources-wb)
+- [开启和配置互动白板服务](/doc/whiteboard//whiteboard-sdk/get-started/enable-service)
+
+## 画质增强
+
+### 画质优先模式
+
+绘画或书法等教学场景通常对画质有较高的要求。声网提供 API 供开发者灵活设置视频编码属性，包括视频分辨率、帧率、码率等，最高支持 4K，以确保用户的视频使用体验。详见[设置视频编码属性](/doc/rtc//basic-features/video-profile)。
+
+### 透视校正
+
+在线美术教学场景中，由于学生在画纸上绘画，通常难以保证摄像头可以正对画纸中心且摄像头和纸张平面完全平行进行拍摄，导致老师看到的画面可能有明显的形变，进而无法准确评价学生绘画作品。声网提供 API 可以使老师将学生的视频进行失真矫正，自动将拍摄出来的梯形画纸调整成为长方形并使长宽比符合标准画纸比例。详见[透视校正](/zh-CN/solutions/art-class/advanced-features/trapezoid-correction)。
+
+### 明暗校正
+
+在线美术或书法教学场景中，光照环境不同会导致摄像头采集的画面光照出现差异。声网提供 API 可以在不改变摄像头的前提下明显改善不同光照效果下的视觉观感，提升对于真实画面的还原度。详见[明暗校正](/zh-CN/solutions/art-class/advanced-features/brightness-correction)。
+
+### 镜头畸变控制
+
+在线美术教学场景中，由于拍摄角度等原因，拍摄的画面相比原画可能会有变形，声网 SDK 支持通过基于 AI 技术的边缘对齐或人工调整，实现镜头畸变的优化。详见[外部视频数据 API](/api-ref/rtc//API/toc_video_custom_capturenrendering)。
+
+### 高清拍照作品
+
+老师可以在视频教学过程中截图获取高清晰的照片，常用于收集学生作业，详见[云端截图](/zh-CN/realtime-media/recording/cloud-recording/user-guides/snapshot)。
+
+## 课后回顾
+
+### 录制
+
+使用声网录制服务将课堂内容录制下来，并生成回放链接，方便学生课后复习和学校评估教学质量。详见：
+
+- [云端录制](/zh-CN/realtime-media/recording/cloud-recording)（推荐）
+- [本地服务端录制](/zh-CN/realtime-media/recording/local-server-recording)
+
+### 高光时刻
+
+在上课过程中插入 SEI，录制回放时通过解析 SEI 实现快速定位或生成精彩集锦，可用于定位学生的互动过程、教师的重点内容等。如需使用此功能，请[联系技术支持](https://ticket.shengwang.cn)。
+
+## 问题调查和课堂质量监测
+
+### 课中网络质量监测
+
+声网建议在课堂中进行网络质量监测，并在 App 界面提示用户监测结果，告知用户本地和远端的网络质量，详见[通话中质量监测](/doc/rtc//basic-features/lastmile-quality)。
+
+### 水晶球
+
+通过声网提供的全周期通话质量监测、回溯和分析工具[水晶球](https://analytics-lab.agora.io/analytics/call/search)，及时发现问题、定位原因，并最终解决问题以提升终端用户体验。
+
+## 更多功能
+
+### 屏幕共享
+
+通过声网 RTC SDK 提供的 API，教师可将自己屏幕的内容分享给学生观看，提高教学效果。详见[屏幕共享](/doc/rtc//basic-features/screen-share)。
+
+### 双摄像头支持
+
+支持同时开启移动端设备前后摄像头和桌面设备外接摄像头，实现多视角演示，便于辅导操作细节。详见 [`VideoSourceType`](/api-ref/rtc//API/enum_videosourcetype)。
+
+### 客户端播放媒体文件
+
+教师可通过[媒体播放器 API](/api-ref/rtc//API/toc_mediaplayer_initialize) 在客户端播放本地或在线的媒体资源，将媒体资源同步分享给声网频道内的远端学生观看和收听。
+
+### 服务端播放在线媒体流
+
+开发者可通过[服务端输入在线媒体流服务](/zh-CN/realtime-media/media-pull)，将事先准备的音视频素材作为一个发送端输入正在进行的课堂，教师和学生可以一起观看该媒体流并实时互动。
+
+### 监课端
+
+监课端在在线教育场景中扮演的角色类似于现实中的助教，主要处理如下任务：
+
+- 处理紧急突发问题，确保课程正常完成。
+- 管理教室、课件、教师和学生等。
+
+你可以使用 RTC Web SDK，也可以使用 RTC Native SDK 实现监课端，把监课端想象成一个上课过程中只收流、不发流的特殊客户端。
+
+监课端也可应用于家长旁听等场景。
+
+### 实时美颜
+
+通过声网 RTC SDK 提供的 API 实现基础美颜功能，调整美白、磨皮、祛痘、红润效果等美颜参数，实现自然的美颜效果。详见[美颜 API](/api-ref/rtc//API/toc_video_enhance_option#api_irtcengine_setbeautyeffectoptions)。
+
+### 动画课件支持
+
+通过老师的启发引导和动画、游戏、趣味教具等多种方式立体结合，将知识、能力、思维三者相互连接层层递进，在互动实践中培养孩子美术核心素养。详见[声网互动白板 SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk)。
+
+### 动画课件支持
+
+通过老师的启发引导和动画、游戏、趣味教具等多种方式立体结合，将知识、能力、思维三者相互连接层层递进，在互动实践中培养孩子美术核心素养。详见[声网互动白板 SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk)。

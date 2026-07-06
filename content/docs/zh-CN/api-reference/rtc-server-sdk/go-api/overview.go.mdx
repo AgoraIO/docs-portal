@@ -1,0 +1,154 @@
+---
+title: "API 概览"
+---
+## agoraservice 包
+
+| 方法 | 描述 |
+| --- | --- |
+| [Initialize](/zh-CN/api-reference/rtc-server-sdk/go-api/agoraservice.go#initialize) | 初始化 `agoraservice` 包。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/agoraservice.go#release) | 释放 `agoraservice` 包占用的资源。 |
+
+## RtcConnection 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewRtcConnection](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#newrtcconnection) | 创建一个 RTC 连接对象。 |
+| [Connect](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#connect) | 连接 RTC 频道。 |
+| [Disconnect](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#disconnect) | 与 RTC 频道断开连接。 |
+| [RenewToken](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#renewtoken) | 更新 Token。 |
+| [RegisterObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#registerobserver) | 注册 RTC 连接 observer。 |
+| [UnregisterObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#unregisterobserver) | 销毁 RTC 连接 observer。 |
+| [CreateDataStream](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) | 创建数据流。 |
+| [SendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#sendstreammessage) | 发送数据流消息。 |
+| [GetAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#getagoraparameter) | 获取 `AgoraParameter` 对象。 |
+| [GetLocalUser](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#getlocaluser) | 获取 `LocalUser` 对象。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#release) | 释放 RTC 连接。 |
+| [EnableEncryption](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#enableencryption) | 开启加密功能。 |
+
+## RtcConnectionObserver 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [OnConnected](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onconnected) | SDK 与频道的连接状态变更为 `3` 时触发。 |
+| [OnDisconnected](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ondisconnected) | SDK 与频道的连接状态变更为 `1` 时触发。 |
+| [OnTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ontokenprivilegewillexpire) | Token 服务将在 30s 内过期回调。 |
+| [OnTokenPrivilegeDidExpire](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#ontokenprivilegedidexpire) | Token 已过期回调。 |
+| [OnUserJoined](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onuserjoined) | 远端用户加入频道时触发。 |
+| [OnUserLeft](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onuserleft) | 远端用户离开频道时触发。 |
+| [OnStreamMessageError](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onstreammessageerror) | 接收数据流消息发生错误的回调。 |
+| [OnError](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onerror) | 发生错误回调。 |
+| [OnEncryptionError](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onencryptionerror) | 加密功能发生错误回调。 |
+
+## LocalUser 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [SetUserRole](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#setuserrole) | 设置用户角色。 |
+| [SetAudioEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#setaudioencoderconfiguration) | 设置音频编码。 |
+| [PublishAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#publishaudio) | 将本地音频轨道发送到频道。 |
+| [UnpublishAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unpublishaudio) | 停止将本地音频轨道发送到频道。 |
+| [PublishVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#publishvideo) | 将本地视频轨道发送到频道。 |
+| [UnpublishVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unpublishvideo) | 停止将本地视频轨道发送到频道。 |
+| [SubscribeAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#subscribeaudio) | 订阅频道中特定的远端用户发送的音频流。 |
+| [SubscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#subscribeallaudio) | 订阅频道中全部远端用户发送的音频流。 |
+| [UnsubscribeAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unsubscribeaudio) | 停止订阅频道中特定的远端用户发送的音频流。 |
+| [UnsubscribeAllAudio](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unsubscribeallaudio) | 停止订阅频道中全部远端用户发送的音频流。 |
+| [SetPlaybackAudioFrameBeforeMixingParameters](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#setplaybackaudioframeparameters) | 设置播放的音频格式。 |
+| [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#registeraudioframeobserver) | 注册音频帧观测器。 |
+| [UnregisterAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unregisteraudioframeobserver) | 销毁 [AudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/audioframeobserver.go) 对象。 |
+| [SubscribeVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#subscribevideo) | 订阅频道中指定远端用户发送的视频流。 |
+| [SubscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#subscribeallvideo) | 订阅频道中全部远端用户发送的视频流。 |
+| [UnsubscribeVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unsubscribevideo) | 停止订阅频道中指定远端用户发送的视频流。 |
+| [UnsubscribeAllVideo](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unsubscribeallvideo) | 停止订阅频道中全部远端用户发送的视频流。 |
+| [RegisterLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#registerlocaluserobserver) | 注册本地用户观测器。 |
+| [UnregisterLocalUserObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unregisterlocaluserobserver) | 销毁本地用户观测器。 |
+| [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#registervideoframeobserver) | 注册 [VideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframeobserver.go) 对象。 |
+| [UnregisterVideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#unregistervideoframeobserver) | 销毁 [VideoFrameObserver](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframeobserver.go) 对象。 |
+| [GetRtcConnection](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#getrtcconnection) | 获取 `RtcConnection` 对象。 |
+| [SendAudioMetadata](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#sendaudiometadata) | 发送音频 Metadata 数据。 |
+
+## LocalUserObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [OnUserAudioTrackStateChanged](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onuseraudiotrackstatechanged) | 在远端音频轨道状态变化时触发。 |
+| [OnStreamMessage](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) | 接收到数据流消息的回调。 |
+| [OnUserInfoUpdated](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onuserinfoupdated) | 用户媒体信息更新时触发。 |
+| [OnAudioMetadataReceived](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onaudiometadatareceived) | 接收到对方音频 Metadata 数据的回调。 |
+
+## LocalAudioTrack 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewCustomAudioTrackPcm](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#newcustomaudiotrackpcm) | 创建一个自定义 PCM 数据轨道。 |
+| [NewCustomAudioTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#newcustomaudiotrackencoded) | 创建一个自定义编码数据轨道。 |
+| [SetEnabled](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#setenabled) | 开启或关闭本地音频轨道。 |
+| [AdjustPublishVolume](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#adjustpublishvolume) | 调整音频发布音量。 |
+| [SetMaxBufferedAudioFrameNumber](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#setmaxbufferedaudioframenumber) | 设置音频发送缓冲区的最大容量。 |
+| [ClearSenderBuffer](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#clearsenderbuffer) | 清除当前音频发送缓冲区。 |
+| [SetSendDelayMs](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#setsenddelayms) | 设置音频发送缓冲区允许发送的最小数据时长。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/localaudiotrack.go#release) | 释放本地音频轨道资源。 |
+
+## LocalVideoTrack 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewCustomVideoTrackFrame](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go#newcustomvideotrackframe) | 创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。 |
+| [NewCustomVideoTrackEncoded](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go#newcustomvideotrackencoded) | 创建本地视频轨道对象，包含一个发送编码视频数据的视频源。 |
+| [SetEnabled](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go#setenabled) | 开启或关闭本地视频轨道。 |
+| [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc-server-sdk/go-api/localvideotrack.go#setvideoencoderconfiguration) | 设置视频编码属性。 |
+
+## MediaNodeFactory 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/go-api/medianodefactory.go#newmedianodefactory) | 创建一个媒体节点工厂对象。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/medianodefactory.go#release) | 释放 `MediaNodeFactory` 对象。 |
+
+## AudioEncodedFrameSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/go-api/audioencodedframesender.go#newaudioencodedframesender) | 创建一个已编码音频数据发送模块。 |
+| [SendEncodedAudioFrame](/zh-CN/api-reference/rtc-server-sdk/go-api/audioencodedframesender.go#sendencodedaudioframe) | 将已编码的音频帧发送到本地音频轨道。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/audioencodedframesender.go#release) | 释放 `AudioEncodedFrameSender` 对象。 |
+
+## AudioPcmDataSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/go-api/audiopcmdatasender.go#newaudiopcmdatasender) | 创建一个 PCM 数据发送模块。 |
+| [SendAudioPcmData](/zh-CN/api-reference/rtc-server-sdk/go-api/audiopcmdatasender.go#sendaudiopcmdata) | 将 PCM 格式的音频数据发送到本地音频轨道。 |
+| [Release](/zh-CN/api-reference/rtc-server-sdk/go-api/audiopcmdatasender.go#release) | 释放 `AudioPcmDataSender` 对象。 |
+
+## AudioFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc-server-sdk/go-api/audioframeobserver.go#onplaybackaudioframebeforemixing) | 获得播放声音混音前的数据。 |
+
+## VideoEncodedImageSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/go-api/videoencodedimagesender.go#newvideoencodedimagesender) | 创建一个已编码视频数据发送模块。 |
+| [SendEncodedVideoImage](/zh-CN/api-reference/rtc-server-sdk/go-api/videoencodedimagesender.go#sendencodedvideoimage) | 将已编码的视频帧发送到视频轨道。 |
+
+## VideoEncodedFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [OnEncodedVideoFrame](/zh-CN/api-reference/rtc-server-sdk/go-api/videoencodedframeobserver.go#onencodedvideoframe) | 每次收到已编码视频帧时触发。 |
+
+## VideoFrameSender 类
+
+| 方法 | 描述 |
+| --- | --- |
+| [NewVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframesender.go#newvideoframesender) | 创建一个原始视频数据发送模块。 |
+| [SendVideoFrame](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframesender.go#sendvideoframe) | 将 YUV 格式的视频帧发送到视频轨道。 |
+
+## VideoFrameObserver 类
+
+| 回调 | 描述 |
+| --- | --- |
+| [OnFrame](/zh-CN/api-reference/rtc-server-sdk/go-api/videoframeobserver.go#onframe) | 每次收到视频帧时触发。 |

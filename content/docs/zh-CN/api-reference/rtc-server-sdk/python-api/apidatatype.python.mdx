@@ -1,0 +1,895 @@
+---
+title: "Class 及 Enum"
+---
+<a id="agoraserviceconfig"></a>
+## Class
+### AgoraServiceConfig
+
+```python
+@dataclass(kw_only=True)
+class AgoraServiceConfig:
+    log_path: str = ""
+    log_size: int = 0
+    enable_audio_processor: int = 1
+    enable_audio_device: int = 0
+    enable_video: int = 0
+    context: object = None
+    appid: str = ""
+    area_code: int = AreaCode.AREA_CODE_GLOB.value
+    channel_profile: ChannelProfileType = ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING
+    audio_scenario: AudioScenarioType = AudioScenarioType.AUDIO_SCENARIO_CHORUS
+    use_string_uid: int = 0
+    domain_limit: int = 0
+```
+
+<span className="index-desc-agoraserviceconfig">`AgoraServiceConfig` 类的全局配置。在调用 [`initialize`](#initialize) 方法时设置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `log_path` | 日志文件的完整路径。如果该参数设为 `None`，则日志位于当前应用程序的 pwd 目录。。 |
+| `log_size` | 单个日志文件的大小，单位为 KB。默认值为 1024 KB。如果你将该参数设为 1024 KB，SDK 会最多输出总计 5 MB 的日志文件。如果你将该参数设为小于 1024 KB，设置不生效，单个日志文件最大仍为 1024 KB。 |
+| `enable_audio_processor` | <Slot name="apidatatype-python-html-0-3-1" /> |
+| `enable_audio_device` | <Slot name="apidatatype-python-html-0-4-1" /> |
+| `enable_video` | <Slot name="apidatatype-python-html-0-5-1" /> |
+| `context` | 上下文。 |
+| `appid` | 你的声网项目的 App ID。如果你的声网项目开启了 Token 鉴权，你也可以将此参数赋值为 RTC Token。详见[获取 App ID](/zh-CN/realtime-media/rtc-server-sdk/get-started/enable-service#get-app-id)。 |
+| `area_code` | 服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。详见 [`AreaCode`](#areacode)。 |
+| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](#channelprofiletype)。 |
+| `audio_scenario` | 音频编码属性。详见 [`AudioScenarioType`](#audioscenariotype)。 |
+| `use_string_uid` | <Slot name="apidatatype-python-html-0-11-1" /> |
+| `domain_limit` | <Slot name="apidatatype-python-html-0-12-1" /> |
+
+<Slot for="apidatatype-python-html-0-3-1">
+
+是否开启音频处理模块。
+
+    - `0`: 关闭音频处理模块。你将无法创建音频轨道。
+    - `1`: (默认) 开启音频处理模块。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-0-4-1">
+
+是否开启音频设备模块（Audio Device Module, ADM）。ADM 用来管理音频设备，例如录制和播放音频。
+
+    - `0`: 关闭音频设备模块。你无法录制和播放音频。
+    - `1`: (默认) 开启音频设备模块。你可以录制和播放音频。
+
+    注意：如果你将 `enable_audio_device` 设为 `0` 且将 `enable_audio_processor` 设为 `1`，你将无法使用音频设备，但你可以推送 PCM 音频数据。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-0-5-1">
+
+是否开启视频。
+
+    - `0`: (默认) 关闭视频。
+    - `1`: 开启视频。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-0-11-1">
+
+是否使用 String 用户 ID。
+
+        - `0`: 不使用。
+        - `1`: 使用。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-0-12-1">
+
+是否开启域名限制：
+
+        - `1`：仅连接被 DNS 解析过的服务器。
+        - `0`：（默认）连接服务器无限制。
+
+</Slot>
+
+<a id="audioencoderconfiguration"></a>
+### AudioEncoderConfiguration
+
+```python
+@dataclass(kw_only=True)
+class AudioEncoderConfiguration:
+    audioProfile: AudioProfileType = AudioProfileType.AUDIO_PROFILE_DEFAULT
+```
+
+<span className="index-desc-audioencoderconfiguration">音频编码设置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `audioProfile` | 音频场景。详见 [`AudioProfileType`](#audioprofiletype)。 |
+
+<a id="audioframe"></a>
+### AudioFrame
+
+```python
+@dataclass(frozen=True, kw_only=True)
+class AudioFrame:
+    type: int
+    samples_per_channel: int
+    bytes_per_sample: int
+    channels: int
+    samples_per_sec: int
+    buffer: bytearray
+    render_time_ms: int
+    avsync_type: int
+```
+
+<span className="index-desc-audioframe">`AudioFrame` 定义。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `type` | 音频帧类型。仅支持填 `0`，表示 16 位 PCM 数据。 |
+| `samples_per_channel` | 每个声道的采样点数。 |
+| `bytes_per_sample` | 每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。 |
+| `channels` | 声道数量（如果是立体声，数据是交叉的）。 |
+| `samples_per_sec` | 每声道每秒的采样点数。 |
+| `buffer` | 声音数据缓存区（如果是立体声，数据是交叉存储的）。缓存区数据大小 `buffer = samples × channels × bytes_per_sample`。 |
+| `render_time_ms` | 外部音频帧的渲染时间戳。你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。 |
+| `avsync_type` | 预留参数。 |
+
+<a id="audiosubscriptionoptions"></a>
+### AudioSubscriptionOptions
+
+```python
+@dataclass(kw_only=True)
+class AudioSubscriptionOptions:
+    packet_only: int = 0
+    pcm_data_only: int = 0
+    bytes_per_sample: int = 0
+    number_of_channels: int = 0
+    sample_rate_hz: int = 0
+```
+
+<span className="index-desc-audiosubscriptionoptions">音频订阅选项。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `packet_only` | <Slot name="apidatatype-python-html-2-1-1" /> |
+| `pcm_data_only` | <Slot name="apidatatype-python-html-2-2-1" /> |
+| `bytes_per_sample` | 每个音频采样的字节数。 |
+| `number_of_channels` | 音频声道数。 |
+| `sample_rate_hz` | 音频采样率（Hz）。 |
+
+<Slot for="apidatatype-python-html-2-1-1">
+
+是否仅订阅音频包：
+
+    - `0`: (默认) SDK 自动对音频进行解码。
+    - `1`: 仅订阅音频包。SDK 不会对音频进行解码。
+
+    注意：如果该参数设为 `1`，结构体中的其他参数无效。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-2-2-1">
+
+是否仅订阅 PCM 数据：
+
+    - `0`:（默认）SDK 自动对远端音频流进行编码。
+    - `1`: 仅订阅 PCM 数据。
+
+</Slot>
+
+<a id="encodedaudioframe"></a>
+### EncodedAudioFrame
+
+```python
+@dataclass(kw_only=True)
+class EncodedAudioFrameInfo:
+    capture_timems: int = 0
+    codec: AudioCodecType = AudioCodecType.AUDIO_CODEC_AACLC
+    number_of_channels: int = 1
+    sample_rate: int = 16000
+    samples_per_channel: int = 1024
+    send_even_if_empty: int = 1
+    speech: int = 1
+```
+
+<span className="index-desc-encodedaudioframe">已编码的音频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `capture_timems` | 音频帧的 Unix 时间戳（毫秒）。 |
+| `codec` | 音频编码类型音频编码类型。详见 [`AudioCodecType`](#audiocodectype)。 |
+| `number_of_channels` | 音频帧的声道数。 |
+| `sample_rate` | 音频帧采样率（Hz）。 |
+| `samples_per_channel` | 每个声道的样本数。对于 aac 编码格式，默认为 1024；对于 Opus 编码格式，默认为 960。 |
+| `send_even_if_empty` | <Slot name="apidatatype-python-html-3-6-1" /> |
+| `speech` | <Slot name="apidatatype-python-html-3-7-1" /> |
+
+<Slot for="apidatatype-python-html-3-6-1">
+
+是否发送空音频帧：
+
+    - `0`: 不发送空音频帧。
+    - `1`: （默认）发送空音频帧。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-3-7-1">
+
+音频源是否为语音：
+
+    - `0`: 音频源不是语音。
+    - `1`: （默认）音频源是语音。
+
+</Slot>
+
+<a id="encodedvideoframeinfo"></a>
+### EncodedVideoFrameInfo
+
+```python
+@dataclass(kw_only=True)
+class EncodedVideoFrameInfo:
+    codec_type: VideoCodecType = VideoCodecType.VIDEO_CODEC_NONE
+    width: int = 0
+    height: int = 0
+    frames_per_second: int = 0
+    frame_type: int = 0
+    rotation: int = 0
+    track_id: int = 0
+    capture_time_ms: int = 0
+    decode_time_ms: int = 0
+    uid: int = 0
+    stream_type: int = 0
+```
+
+<span className="index-desc-encodedvideoframeinfo">已编码的视频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `width` | 视频帧宽度（像素）。 |
+| `height` | 视频帧高度（像素）。 |
+| `frames_per_second` | 每秒的视频帧数量。用于计算编码视频帧的时间戳。如果设为 0，SDK 会使用真实的时间戳。 |
+| `frame_type` | <Slot name="apidatatype-python-html-4-5-1" /> |
+| `rotation` | <Slot name="apidatatype-python-html-4-6-1" /> |
+| `track_id` | 视频帧的轨道 ID。 |
+| `capture_time_ms` | 采集外部编码视频帧的 Unix 时间戳（毫秒）。 |
+| `decode_time_ms` | 将外部编码视频帧进行解码的时间戳（毫秒）。 |
+| `uid` | 用户 ID。 |
+| `stream_type` | <Slot name="apidatatype-python-html-4-11-1" /> |
+
+<Slot for="apidatatype-python-html-4-5-1">
+
+已编码视频帧类型：
+
+    - `0`: 空白帧
+    - `3`: 关键帧。对于 H.264 编码格式，SDK 把带有 sps 和 pps 信息的 I 帧归类为关键帧。
+    - `4`: Delta 帧。对于 H.264 编码格式，SDK 把 P 帧和不带 sps 和 pps 信息的 I 帧都归类为 Delta 帧。
+    - `5`: B 帧
+    - `6`: 丢弃帧
+    - `7`: 未知
+
+</Slot>
+
+<Slot for="apidatatype-python-html-4-6-1">
+
+已编码视频帧旋转信息：
+
+    - `0`: 顺时针旋转 0 度。
+    - `90`: 顺时针旋转 90 度。
+    - `180`: 顺时针旋转 180 度。
+    - `270`: 顺时针旋转 270 度。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-4-11-1">
+
+视频帧的流类型：
+
+    - `0`: 大流。分辨率和码率较高。
+    - `1`: 小流。分辨率和码率较低。
+
+</Slot>
+
+<a id="encryptionconfig"></a>
+### EncryptionConfig
+
+```python
+@dataclass(kw_only=True)
+class EncryptionConfig:
+    encryption_mode: int
+    encryption_key: str
+    encryption_kdf_salt: bytearray = None
+```
+
+加密配置项。
+
+| 参数 | 描述 |
+| --- | --- |
+| `encryption_mode` | <Slot name="apidatatype-python-html-5-1-1" /> |
+| `encryption_key` | 加密密钥，字符串类型，长度无限制。建议使用 32 字节的密钥。 |
+| `encryption_kdf_salt` | 加密的盐值，长度为 32 字节。建议你在服务端使用 OpenSSL 生成盐。 |
+
+<Slot for="apidatatype-python-html-5-1-1">
+
+加密模式：
+
+    - 1：128 位 AES 加密，XTS 模式。
+    - 2：128 位 AES 加密，ECB 模式。
+    - 3：256 位 AES 加密，XTS 模式。
+    - 4：128 位 SM4 加密，ECB 模式。
+    - 5：128 位 AES 加密，GCM 模式。
+    - 6：256 位 AES 加密，GCM 模式。x
+    - 7：（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+    - 8：256 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+
+</Slot>
+
+<a id="externalvideoframe"></a>
+### ExternalVideoFrame
+
+```python
+@dataclass(kw_only=True)
+class ExternalVideoFrame:
+    type: int = 1
+    format: int = 0
+    buffer: bytearray = None
+    stride: int = 0
+    height: int = 0
+    crop_left: int = 0
+    crop_top: int = 0
+    crop_right: int = 0
+    crop_bottom: int = 0
+    rotation: int = 0
+    timestamp: int = 0
+    egl_context: bytearray = None
+    egl_type: int = 0
+    texture_id: int = 0
+    matrix: list = field(default_factory=list)
+    metadata: bytearray = None
+    alpha_buffer: bytearray = None
+    fill_alpha_buffer: int = 0
+    alpha_mode: int = 0
+    color_space: ColorSpaceType = field(default_factory=ColorSpaceType)
+```
+
+<span className="index-desc-externalvideoframe">YUV 格式的视频数据。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `type` | <Slot name="apidatatype-python-html-6-1-1" /> |
+| `format` | <Slot name="apidatatype-python-html-6-2-1" /> |
+| `buffer` | 视频缓冲区。 |
+| `stride` | 传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。 |
+| `height` | 传入视频帧的高度。 |
+| `crop_left` | 原始数据相关字段。指定左边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `crop_top` | 原始数据相关字段。指定顶边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `crop_right` | 原始数据相关字段。指定右边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `crop_bottom` | 原始数据相关字段。指定底边裁剪掉的像素数量。默认为 0。该参数仅适用于原始视频数据。 |
+| `rotation` | 原始数据相关字段。指定是否对传入的视频组做顺时针旋转操作，可选值为 0， 90， 180， 270。默认为 0。 |
+| `timestamp` | 传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。 |
+| `egl_context` | <Slot name="apidatatype-python-html-6-12-1" /> |
+| `egl_type` | 该参数仅适用于 Texture 格式的视频数据。指该视频帧的 EGL 类型。 |
+| `texture_id` | 该参数仅适用于 Texture 格式的视频数据。指该视频帧的 Texture ID。 |
+| `matrix` | 该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。 |
+| `metadata` | 该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 `None`。 |
+| `alpha_buffer` | 采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。 |
+| `fill_alpha_buffer` | <Slot name="apidatatype-python-html-6-18-1" /> |
+| `alpha_mode` | <Slot name="apidatatype-python-html-6-19-1" /> |
+| `color_space` | <Slot name="apidatatype-python-html-6-20-1" /> |
+
+<Slot for="apidatatype-python-html-6-1-1">
+
+视频数据类型：
+
+    - `1`: 类型为原始数据。
+    - `2`: 类型为原始数据。
+    - `3`: 类型为 Texture。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-6-2-1">
+
+像素格式：
+
+    - `0`: 原始视频像素格式。
+    - `1`: I420 格式。
+    - `4`: RGBA 格式。
+    - `16`: I422 格式。
+    - `17`: ID3D11TEXTURE2D 格式。目前支持的类型有 DXGI_FORMAT_B8G8R8A8_UNORM、DXGI_FORMAT_B8G8R8A8_TYPELESS 和 DXGI_FORMAT_NV12。
+
+    注意：SDK 目前不支持 Alpha 通道。传入的 Alpha 值将被丢弃。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-6-12-1">
+
+该参数仅适用于 Texture 格式的视频数据。
+
+    - 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*)时，需要将 eglContext 设置给这个字段。
+    - 当使用 Android 定义的 OpenGL 接口 (android.opengl.*)时，需要将 eglContext 设置给这个字段。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-6-18-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置提取视频祯中的 Alpha 通道数据并自动填入到 alphaBuffer 中。
+
+    - `1`: 提取并填充 Alpha 通道数据。
+    - `0`: （默认）不提取填充 Alpha 通道数据。
+
+    对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
+
+    - 通过将该参数设置为 `1` 自动填写。
+    - 通过 `alpha_buffer` 参数设置。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-6-19-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    当视频祯中包含 Alpha 通道数据时，设置 alpha_buffer 和视频祯的相对位置：
+
+    - `0`: （默认）仅视频祯，即 alpha_buffer 不和视频祯拼接。
+    - `1`: alpha_buffer 位于视频帧的上方。
+    - `2`: alpha_buffer 位于视频帧的下方。
+    - `3`: alpha_buffer 位于视频帧的左侧。
+    - `4`: alpha_buffer 位于视频帧的右侧。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-6-20-1">
+
+:::info[自从]
+v2.2.3 起新增。
+:::
+
+    视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [`ColorSpaceType`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Slot>
+
+<a id="pcmaudioframe"></a>
+### PcmAudioFrame
+
+```python
+@dataclass(kw_only=True)
+class PcmAudioFrame:
+    data: bytearray
+    samples_per_channel: int
+    bytes_per_sample: int
+    number_of_channels: int
+    sample_rate: int
+    timestamp: int = 0
+```
+
+<span className="index-desc-pcmaudioframe">PCM 音频数据。</span>
+
+| 参数 | 描述 |
+|------|------|
+| `data` | 需要发送的 PCM 音频数据。 |
+| `timestamp` | 音频数据采集时间戳（毫秒）。 |
+| `samples_per_channel` | 对于每个声道，10 毫秒内采集的音频样本数。 |
+| `bytes_per_sample` | 每个样本的字节数。 |
+| `number_of_channels` | 每个样本的声道数。 |
+| `sample_rate` | 采样率 (Hz)。最小值是 8000。 |
+
+<a id="rtcconnconfig"></a>
+### RTCConnConfig
+
+```python
+@dataclass(kw_only=True)
+class RTCConnConfig:
+    auto_subscribe_audio: int = 0
+    auto_subscribe_video: int = 0
+    enable_audio_recording_or_playout: int = 0
+    max_send_bitrate: int = 0
+    min_port: int = 0
+    max_port: int = 0
+    audio_subs_options: 'AudioSubscriptionOptions' = AudioSubscriptionOptions()
+    client_role_type: ClientRoleType = ClientRoleType.CLIENT_ROLE_BROADCASTER
+    channel_profile: ChannelProfileType = ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING
+    audio_recv_media_packet: int = 0
+    audio_recv_encoded_frame: int = 0
+    video_recv_media_packet: int = 0
+```
+
+<span className="index-desc-rtcconnconfig">RTC 连接配置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `auto_subscribe_audio` | <Slot name="apidatatype-python-html-7-1-1" /> |
+| `auto_subscribe_video` | <Slot name="apidatatype-python-html-7-2-1" /> |
+| `enable_audio_recording_or_playout` | <Slot name="apidatatype-python-html-7-3-1" /> |
+| `max_send_bitrate` | 最大发送码率。 |
+| `min_port` | 最小端口。 |
+| `max_port` | 最大端口。 |
+| `audio_subs_options` | 音频订阅选项。详见 [`AudioSubscriptionOptions`](#audiosubscriptionoptions)。 |
+| `client_role_type` | 用户角色。详见 [`ClientRoleType`](#clientroletype)。 |
+| `channel_profile` | 频道场景。详见 [`ChannelProfileType`](#channelprofiletype)。 |
+| `audio_recv_media_packet` | <Slot name="apidatatype-python-html-7-10-1" /> |
+| `video_recv_media_packet` | <Slot name="apidatatype-python-html-7-11-1" /> |
+
+<Slot for="apidatatype-python-html-7-1-1">
+
+是否自动订阅所有音频轨道。
+
+    - `0`: 不自动订阅所有音频轨道。
+    - `1`: (默认) 自动订阅所有音频轨道。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-7-2-1">
+
+是否自动订阅所有视频轨道。
+
+    - `0`: 不自动订阅所有视频轨道。
+    - `1`: (默认) 自动订阅所有视频轨道。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-7-3-1">
+
+是否开启音频录制或播放。
+
+    - `0`: 关闭音频录制或播放。
+    - `1`: 开启音频录制或播放。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-7-10-1">
+
+是否接收音频媒体包。
+
+    - `0`: 不接收。
+    - `1`: 接收。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-7-11-1">
+
+是否接收视频媒体包。
+
+    - `0`: 不接收。
+    - `1`: 接收。
+
+</Slot>
+
+<a id="rtcconninfo"></a>
+### RTCConnInfo
+
+```python
+@dataclass(frozen=True, kw_only=True)
+class RTCConnInfo():
+    id: int
+    channel_id: str
+    state: int
+    local_user_id: str
+```
+
+<span className="index-desc-rtcconninfo">RTC 连接信息。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `id` | RTC 连接的 ID。 |
+| `channel_id` | RTC 频道 ID。 如果你没有调用 [`connect`](#connect) 方法，该参数返回 `None`。 |
+| `state` | <Slot name="apidatatype-python-html-8-3-1" /> |
+| `local_user_id` | 本地用户 ID。 |
+
+<Slot for="apidatatype-python-html-8-3-1">
+
+连接状态：
+
+    - `1`: 网络连接断开。
+    - `2`: 建立网络连接中。
+    - `3`: 网络已连接。
+    - `4`: 重新建立网络连接中 。
+    - `5`: 网络连接失败 。
+
+</Slot>
+
+<a id="senderoptions"></a>
+### SenderOptions
+
+```python
+@dataclass(kw_only=True)
+class SenderOptions:
+    target_bitrate: int
+    cc_mode: TCcMode = TCcMode.CC_ENABLED
+    codec_type: VideoCodecType = VideoCodecType.VIDEO_CODEC_NONE
+```
+
+<span className="index-desc-senderoptions">包含发送编码视频数据的视频源的本地视频轨道对象配置。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `target_bitrate` | 当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。 |
+| `cc_mode` | 拥塞控制模式。详见 [`TCcMode`](#tccmode)。 |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+
+<a id="videodimensions"></a>
+### VideoDimensions
+
+```python
+@dataclass(kw_only=True)
+class VideoDimensions:
+    width: int
+    height: int
+```
+
+<span className="index-desc-videodimensions">视频编码的分辨率。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `width` | 视频帧宽度（像素）。 |
+| `height` | 视频帧高度（像素）。 |
+
+<a id="videoencoderconfig"></a>
+### VideoEncoderConfiguration
+
+```python
+@dataclass(kw_only=True)
+class VideoEncoderConfiguration:
+    dimensions: VideoDimensions
+    codec_type: VideoCodecType = VideoCodecType.VIDEO_CODEC_NONE
+    frame_rate: int = 15
+    bitrate: int = 0
+    min_bitrate: int = 0
+    orientation_mode: int = 0
+    degradation_preference: int = 0
+    mirror_mode: int = 0
+```
+
+<span className="index-desc-videoencoderconfiguration">视频编码属性。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `codec_type` | 视频编码类型。详见 [`VideoCodecType`](#videocodectype)。 |
+| `dimensions` | 视频编码的分辨率 (px)。该参数用于衡量编码质量，以长 × 宽表示，默认值为 640 × 360。用户可以自行设置分辨率。详见 [`VideoDimensions`](#videodimensions)。 |
+| `frame_rate` | 视频编码的帧率(fps)，默认值为 15。 |
+| `bitrate` | <Slot name="apidatatype-python-html-11-4-1" /> |
+| `min_bitrate` | 最低编码码率，单位为 Kbps。SDK 会根据网络状况自动调整视频编码码率。将参数设为高于默认值可强制视频编码器输出高质量图片，但在网络状况不佳情况下可能导致网络丢包并影响视频播放的流畅度造成卡顿。因此如非对画质有特殊需求，声网建议不要修改该参数的值。 注意: 该参数仅适用于直播场景。 |
+| `orientation_mode` | <Slot name="apidatatype-python-html-11-6-1" /> |
+| `degradation_preference` | <Slot name="apidatatype-python-html-11-7-1" /> |
+| `mirror_mode` | <Slot name="apidatatype-python-html-11-8-1" /> |
+
+<Slot for="apidatatype-python-html-11-4-1">
+
+视频编码码率，单位为 Kbps。
+
+    - `0`: (推荐) 标准码率模式。该模式下，视频的码率是基准码率的两倍。
+    - `-1` : 适配码率模式。该模式下，视频码率与基准码率一致。直播时如果选择该模式，视频帧率可能会低于设置的值。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-11-6-1">
+
+视频编码的方向模式：
+
+    - `0`: （默认）该模式下 SDK 输出的视频方向与采集到的视频方向一致。接收端会根据收到的视频旋转信息对视频进行旋转。该模式适用于接收端可以调整视频方向的场景。如果采集的视频是横屏模式，则输出的视频也是横屏模式。如果采集的视频是竖屏模式，则输出的视频也是竖屏模式。
+    - `1`: 该模式下 SDK 固定输出风景（横屏）模式的视频。如果采集到的视频是竖屏模式，则视频编码器会对其进行裁剪。该模式适用于接收端无法调整视频方向的场景，如直推 CDN。
+    - `2`: 该模式下 SDK 固定输出人像（竖屏）模式的视频，如果采集到的视频是横屏模式，则视频编码器会对其进行裁剪。该模式适用于接收端无法调整视频方向的场景，如直推 CDN。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-11-7-1">
+
+带宽受限时，视频编码降级偏好：
+
+    - `0`: （默认）带宽受限时，视频编码时优先降低视频帧率，维持视频质量不变。该降级偏好适用于画质优先的场景。
+    - `1`: 带宽受限时，视频编码时优先降低视频质量，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
+    - `2`: 带宽受限时，视频编码时同时降低视频帧率和视频质量。`2` 的降幅比 `0` 和 `1` 降幅更低，适用于流畅性和画质均有限的场景。
+    - `3`: 带宽受限时，视频编码时优先降低视频帧率。
+
+</Slot>
+
+<Slot for="apidatatype-python-html-11-8-1">
+
+发送编码视频时是否开启镜像模式，只影响远端用户看到的视频画面。
+
+    - `0`: （默认）由 SDK 决定镜像模式。
+    - `1`: 启用镜像模式。
+    - `2`: 关闭镜像模式。
+
+</Slot>
+
+<a id="videoframe"></a>
+### VideoFrame
+
+```python
+@dataclass(kw_only=True)
+class VideoFrame():
+    type: int = 0
+    width: int = 0
+    height: int = 0
+    y_stride: int = 0
+    u_stride: int = 0
+    v_stride: int = 0
+    y_buffer: bytearray = None
+    u_buffer: bytearray = None
+    v_buffer: bytearray = None
+    rotation: int = 0
+    render_time_ms: int = 0
+    avsync_type: int = 0
+```
+
+<span className="index-desc-videoframe">视频帧的属性设置。视频数据的格式为 YUV420。缓冲区给出的是指向指针的指针，该接口不能修改缓冲区的指针，只能修改缓冲区的内容。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `type` | <Slot name="apidatatype-python-html-12-1-1" /> |
+| `width` | 视频帧宽度（像素）。 |
+| `height` | 视频帧高度（像素）。 |
+| `y_stride` | YUV 数据中的 Y 缓冲区的行跨度。 |
+| `u_stride` | YUV 数据中的 U 缓冲区的行跨度。 |
+| `v_stride` | YUV 数据中的 V 缓冲区的行跨度。 |
+| `y_buffer` | 指向 YUV 数据中的 Y 缓冲区指针的指针。 |
+| `u_buffer` | 指向 YUV 数据中的 U 缓冲区指针的指针。 |
+| `v_buffer` | 指向 YUV 数据中的 V 缓冲区指针的指针。 |
+| `rotation` | 在渲染视频前设置该帧的顺时针旋转角度，目前支持 0 度、90 度、180 度，和 270 度。 |
+| `render_time_ms` | 外部音频帧的时间戳。该参数为必填。你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以帮助实现音视频同步。 |
+| `avsync_type` | 预留参数。 |
+
+<Slot for="apidatatype-python-html-12-1-1">
+
+视频数据类型：
+
+    - `1`: 原始数据。
+    - `2`: 原始数据。
+    - `3`: Texture。
+
+</Slot>
+
+<a id="videosubscriptionoptions"></a>
+### VideoSubscriptionOptions
+
+```python
+@dataclass(kw_only=True)
+class VideoSubscriptionOptions:
+    type: VideoStreamType = VideoStreamType.VIDEO_STREAM_HIGH
+    encodedFrameOnly: bool = False
+```
+
+<span className="index-desc-videosubscriptionoptions">视频订阅选项。</span>
+
+| 参数 | 描述 |
+| --- | --- |
+| `type` | 订阅的视频类型。详见 [`VideoStreamType`](#videostreamtype)。 |
+| `encodedFrameOnly` | <Slot name="apidatatype-python-html-13-2-1" /> |
+
+<Slot for="apidatatype-python-html-13-2-1">
+
+是否仅订阅已编码的视频数据：
+
+    - `0`: （默认）仅订阅已解码的视频数据。
+    - `1`: 仅订阅已编码的视频数据。
+
+</Slot>
+
+<a id="areacode"></a>
+## Enum
+### AreaCode
+
+<span className="index-desc-areacode">服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。区域码支持位操作。指定访问区域后，SDK 会连接指定区域内的声网服务器。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AREA_CODE_CN` | `0x00000001`: 中国大陆。 |
+| `AREA_CODE_NA` | `0x00000002`: 北美区域。 |
+| `AREA_CODE_EU` | `0x00000004`: 欧洲区域。 |
+| `AREA_CODE_AS` | `0x00000008`: 除中国大陆以外的亚洲区域。 |
+| `AREA_CODE_JP` | `0x00000010`: 日本。 |
+| `AREA_CODE_IN` | `0x00000020`: 印度。 |
+| `AREA_CODE_GLOB` | `0xFFFFFFFF`: （默认）全球。 |
+
+<a id="audiocodectype"></a>
+### AudioCodecType
+
+<span className="index-desc-audiocodectype">音频编码类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AUDIO_CODEC_OPUS` | `1`: OPUS |
+| `AUDIO_CODEC_PCMA` | `3`: PCMA |
+| `AUDIO_CODEC_PCMU` | `4`: PCMU |
+| `AUDIO_CODEC_G722` | `5`: G722 |
+| `AUDIO_CODEC_AACLC` | `8`: AAC LC |
+| `AUDIO_CODEC_HEAAC` | `9`: HE AAC |
+| `AUDIO_CODEC_HEAAC2` | `11`: HEAAC2 |
+
+<a id="audioprofiletype"></a>
+### AudioProfileType
+
+<span className="index-desc-audioprofiletype">音频场景。</span>
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `AUDIO_PROFILE_DEFAULT` | <Slot name="apidatatype-python-markdown-14-1-1" /> |
+| `AUDIO_PROFILE_SPEECH_STANDARD` | `1`: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。 |
+| `AUDIO_PROFILE_MUSIC_STANDARD` | `2`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。 |
+| `AUDIO_PROFILE_MUSIC_STANDARD_STEREO` | `3`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。 |
+| `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` | `4`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。 |
+| `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO` | `5`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。 |
+| `AUDIO_PROFILE_IOT` | `6`: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AES。 |
+| `AUDIO_PROFILE_NUM` | `7`: 枚举值边界。 |
+
+<Slot for="apidatatype-python-markdown-14-1-1">
+
+`0`: 默认音频场景。
+
+- 通信场景下：16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
+- 直播场景下：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+
+</Slot>
+
+<a id="audioscenariotype"></a>
+### AudioScenarioType
+
+<span className="index-desc-audioscenariotype">音频编码属性。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `AUDIO_SCENARIO_DEFAULT` | `0`: （默认）自动场景，根据用户角色和音频路由自动匹配合适的音质。 |
+| `AUDIO_SCENARIO_GAME_STREAMING` | `3`: 高音质场景，适用于音乐为主的场景。 |
+| `AUDIO_SCENARIO_CHATROOM` | `5`: 聊天室场景，适用于用户需要频繁上下麦的场景。该场景下，观众会收到申请麦克风权限的弹窗提示。 |
+| `AUDIO_SCENARIO_CHORUS` | `7`: 合唱场景，适用于网络条件良好，要求极低延时的实时合唱场景。 |
+| `AUDIO_SCENARIO_MEETING` | `8`: 会议场景，适用于人声为主的多人会议。 |
+| `AUDIO_SCENARIO_NUM` | `9`: 枚举值边界。 |
+
+<a id="channelprofiletype"></a>
+### ChannelProfileType
+
+<span className="index-desc-channelprofiletype">频道使用场景。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `CHANNEL_PROFILE_COMMUNICATION` | `0`: （默认）通信场景。当频道中只有两个用户时，建议使用该场景。 |
+| `CHANNEL_PROFILE_LIVE_BROADCASTING` | `1`: 直播场景。该场景有主播和观众两种用户角色。主播可以发布和接收音视频流，观众直接接收流。适用于语聊房、视频直播、互动大班课等应用场景。 |
+
+<a id="clientroletype"></a>
+### ClientRoleType
+
+<span className="index-desc-clientroletype">用户角色。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `CLIENT_ROLE_BROADCASTER` | `1`: 主播。主播可以同时发送和接收媒体流。 |
+| `CLIENT_ROLE_AUDIENCE` | `2`: 观众。观众只能接收媒体流。 |
+
+<a id="tccmode"></a>
+### TCcMode
+
+<span className="index-desc-tccmode">拥塞控制模式。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `CC_ENABLED` | `0`: 开启拥塞控制模式。 |
+| `CC_DISABLED` | `1`: 关闭拥塞控制模式。 |
+
+<a id="videocodectype"></a>
+### VideoCodecType
+
+<span className="index-desc-videocodectype">视频编码类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VIDEO_CODEC_NONE` | `0`: 无 |
+| `VIDEO_CODEC_VP8` | `1`: VP8 |
+| `VIDEO_CODEC_H264` | `2`: H.264 |
+| `VIDEO_CODEC_H265` | `3`: H.265 |
+| `VIDEO_CODEC_GENERIC` | `6`: Generic |
+| `VIDEO_CODEC_GENERIC_H264` | `7`: Generic H264 |
+| `VIDEO_CODEC_AV1` | `12`: AV1 |
+| `VIDEO_CODEC_VP9` | `13`: VP9 |
+| `VIDEO_CODEC_GENERIC_JPEG` | `20`: JPEG |
+
+<a id="videostreamtype"></a>
+### VideoStreamType
+
+<span className="index-desc-videostreamtype">视频流类型。</span>
+
+| 枚举值 | 描述 |
+|------|------|
+| `VIDEO_STREAM_HIGH` | `0`: （默认）大流。分辨率和码率较高。 |
+| `VIDEO_STREAM_LOW` | `1`: 小流。分辨率和码率较低。 |
