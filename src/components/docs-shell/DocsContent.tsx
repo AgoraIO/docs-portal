@@ -6,6 +6,7 @@ import {
   ChevronDownIcon,
   Edit3Icon,
   ExternalLinkIcon,
+  HistoryIcon,
 } from 'lucide-react';
 import {
   type MouseEvent,
@@ -24,6 +25,10 @@ import {
   scrollDocsHashTarget,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
+import {
+  type DocsLastUpdatedMetadata,
+  ensureDocsLastUpdatedMetadata,
+} from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
@@ -73,6 +78,7 @@ export function DocsContent({
   markdownUrl,
   layoutMode = 'docs',
   hideToc = false,
+  lastUpdated,
   sidebarHeader,
   slug,
   title,
@@ -85,6 +91,7 @@ export function DocsContent({
   locale?: AppLocale | string;
   layoutMode?: DocsLayoutMode;
   hideToc?: boolean;
+  lastUpdated?: DocsLastUpdatedMetadata;
   markdownUrl?: string;
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
@@ -96,6 +103,7 @@ export function DocsContent({
   const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
+  const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
   const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
@@ -228,6 +236,26 @@ export function DocsContent({
             <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
               {displayTitle}
             </h1>
+            <p
+              className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
+              data-testid="docs-last-updated"
+            >
+              <HistoryIcon
+                aria-hidden="true"
+                className="size-3.5 shrink-0"
+                data-testid="docs-last-updated-icon"
+              />
+              {lastUpdatedMetadata.source === 'fallback' ? (
+                <span>{t('docs.lastUpdatedUnavailable')}</span>
+              ) : (
+                <>
+                  <span>{t('docs.lastUpdated')} </span>
+                  <time dateTime={lastUpdatedMetadata.iso}>
+                    {lastUpdatedMetadata.formatted}
+                  </time>
+                </>
+              )}
+            </p>
             {description ? (
               <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
                 {description}

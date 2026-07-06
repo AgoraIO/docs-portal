@@ -1,5 +1,6 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
 import { getDocsPagePayload, getDocsTabIndex } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
@@ -93,6 +94,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
 
     return {
       ...payload,
+      lastUpdated: ensureDocsLastUpdatedMetadata(payload.lastUpdated),
     };
   },
   head: ({ loaderData }) =>
@@ -107,6 +109,7 @@ function TabIndexPage() {
     breadcrumb,
     contentPath,
     description,
+    lastUpdated,
     layoutMode,
     hideToc,
     markdownUrl,
@@ -122,6 +125,7 @@ function TabIndexPage() {
       breadcrumb={breadcrumb}
       contentPath={contentPath}
       description={description}
+      lastUpdated={lastUpdated}
       layoutMode={layoutMode}
       hideToc={hideToc}
       locale={params.locale}

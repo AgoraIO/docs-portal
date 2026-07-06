@@ -1,5 +1,14 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const { resolveDocsLastUpdatedMetadataMock } = vi.hoisted(() => ({
+  resolveDocsLastUpdatedMetadataMock: vi.fn(),
+}));
+
+vi.mock('./docs-last-updated.server', () => ({
+  resolveDocsLastUpdatedMetadata: resolveDocsLastUpdatedMetadataMock,
+}));
+
 import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
@@ -1297,6 +1306,12 @@ describe('loadDocsPagePayload', () => {
   beforeEach(() => {
     const page = createPage();
 
+    resolveDocsLastUpdatedMetadataMock.mockReset();
+    resolveDocsLastUpdatedMetadataMock.mockResolvedValue({
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    });
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? undefined : page,
     );
@@ -1337,6 +1352,11 @@ describe('loadDocsPagePayload', () => {
           locale: 'zh-CN',
         },
       ],
+      lastUpdated: {
+        formatted: '2026/07/06 13:32:13',
+        iso: '2026-07-06T13:32:13.000Z',
+        source: 'git',
+      },
       markdownUrl: '/en/introduction/about-agora.md',
       slug: 'about-agora',
       title: 'About Agora',
@@ -1353,6 +1373,9 @@ describe('loadDocsPagePayload', () => {
         },
       ],
     });
+    expect(resolveDocsLastUpdatedMetadataMock).toHaveBeenCalledWith([
+      'content/docs/en/introduction/about-agora.md',
+    ]);
   });
 
   it('generates TOC from shared content plus canonical platform headings only', async () => {
@@ -1823,6 +1846,10 @@ Web body
         },
       ],
     });
+    expect(resolveDocsLastUpdatedMetadataMock).toHaveBeenCalledWith([
+      'content/docs/en/api-reference/api-ref/conversational-ai/join.mdx',
+      'content/openapi/conversational-ai/rest-api.en.yaml',
+    ]);
 
     if (!payload || 'redirectUrl' in payload) {
       throw new Error('expected an OpenAPI docs page payload');

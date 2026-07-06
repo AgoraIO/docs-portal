@@ -81,6 +81,11 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
     contentPath: 'en/realtime-media/rtm/build/presence.mdx',
     description: undefined,
     hideToc: false,
+    lastUpdated: {
+      formatted: '2026/07/06 13:32:13',
+      iso: '2026-07-06T13:32:13.000Z',
+      source: 'git',
+    },
     layoutMode: 'docs',
     localeLinks: [],
     markdownUrl: '/en/realtime-media/rtm/build/presence.md',
