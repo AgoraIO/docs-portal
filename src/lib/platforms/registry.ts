@@ -52,6 +52,20 @@ export const platformRegistry = {
     },
     order: 60,
   },
+  harmonyos: {
+    label: {
+      en: 'HarmonyOS',
+      'zh-CN': 'HarmonyOS',
+    },
+    order: 62,
+  },
+  'mini-program': {
+    label: {
+      en: 'Mini Program',
+      'zh-CN': '小程序',
+    },
+    order: 64,
+  },
   cpp: {
     label: {
       en: 'C++',
@@ -73,6 +87,13 @@ export const platformRegistry = {
     },
     order: 80,
   },
+  'electron-uos': {
+    label: {
+      en: 'Electron for UOS',
+      'zh-CN': 'Electron for 统信 OS',
+    },
+    order: 85,
+  },
   unity: {
     label: {
       en: 'Unity',
@@ -93,6 +114,13 @@ export const platformRegistry = {
       'zh-CN': 'Unreal Blueprint',
     },
     order: 110,
+  },
+  react: {
+    label: {
+      en: 'React',
+      'zh-CN': 'React',
+    },
+    order: 115,
   },
   python: {
     label: {
@@ -121,6 +149,13 @@ export const platformRegistry = {
       'zh-CN': 'Linux Java',
     },
     order: 140,
+  },
+  restful: {
+    label: {
+      en: 'RESTful',
+      'zh-CN': 'RESTful',
+    },
+    order: 150,
   },
 } as const;
 

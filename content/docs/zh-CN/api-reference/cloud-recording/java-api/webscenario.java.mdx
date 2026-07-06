@@ -1,0 +1,164 @@
+---
+title: "WebScenario 类"
+---
+<a id="acquire"></a>
+## acquire
+
+```java
+public abstract Mono<AcquireResourceRes> acquire(String cname, String uid, AcquireWebRecordingResourceClientReq clientRequest);
+```
+
+获取页面录制资源 ID。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+获取资源 ID 后，需调用 [`start`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#start) API 启动云端录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名。 |
+| `uid` | `String` | 用于标识录制服务在 RTC 频道中的用户 ID。 |
+| `clientRequest` | `AcquireWebRecordingResourceClientReq` | 请求体参数，详见 [`AcquireWebRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#acquirewebrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`AcquireResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#acquireresourceres) 对象。
+
+<a id="start"></a>
+## start
+
+```java
+public abstract Mono<StartResourceRes> start(String cname, String uid, String resourceId, StartWebRecordingResourceClientReq clientRequest);
+```
+
+启动 Web 录制。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 待录制的频道名称。 |
+| `uid` | `String` | 用于标识录制服务在 RTC 频道中的用户 ID。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `clientRequest` | `StartWebRecordingResourceClientReq` | 请求体参数，详见 [`StartWebRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startwebrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`StartResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#startresourceres) 对象。
+
+<a id="query"></a>
+## query
+
+```java
+public abstract Mono<QueryWebRecordingResourceRes> query(String resourceId, String sid);
+```
+
+查询页面录制状态。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+方法调用成功，返回 [`QueryWebRecordingResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#querywebrecordingresourceres) 对象。
+
+<a id="queryrtmppublish"></a>
+## queryRtmpPublish
+
+```java
+public abstract Mono<QueryWebRecordingRtmpPublishResourceRes> queryRtmpPublish(String resourceId, String sid);
+```
+
+查询网页录制的 CDN 推流状态。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+方法调用成功，返回 [`QueryWebRecordingRtmpPublishResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#querywebrecordingrtmppublishresourceres) 对象。
+
+<a id="update"></a>
+## update
+
+```java
+public abstract Mono<UpdateResourceRes> update(String cname, String uid, String resourceId, String sid, UpdateWebRecordingResourceClientReq clientRequest);
+```
+
+更新页面录制配置。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+| `clientRequest` | `UpdateWebRecordingResourceClientReq` | 请求体，详见 [`UpdateWebRecordingResourceClientReq`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updatewebrecordingresourceclientreq)。 |
+
+#### 返回值
+
+方法调用成功，返回 [`UpdateResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#updateresourceres) 对象。
+
+<a id="stop"></a>
+## stop
+
+```java
+public abstract Mono<StopResourceRes> stop(String cname, String uid, String resourceId, String sid, boolean asyncStop);
+```
+
+停止网页录制。
+
+:::info[信息]
+自 v0.4.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cname` | `String` | 频道名称。 |
+| `uid` | `String` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `resourceId` | `String` | 资源 ID。 |
+| `sid` | `String` | 录制 ID，用于标识一次录制周期。 |
+| `asyncStop` | `boolean` | <Slot name="webscenario-java-html-5-5-2" /> |
+
+<Slot for="webscenario-java-html-5-5-2">
+
+- `true`：异步停止录制。
+    - `false`：同步停止录制。
+
+</Slot>
+
+#### 返回值
+
+方法调用成功，返回 [`StopResourceRes`](/zh-CN/api-reference/cloud-recording/java-api/struct.java#stopresourceres) 对象。

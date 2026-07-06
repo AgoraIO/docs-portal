@@ -1,0 +1,91 @@
+---
+title: "特性列表"
+---
+本文提供 RTM 所具备的功能特性及对应 API 接口。
+
+## Setup
+
+| 功能 | API 接口 |
+| --- | --- |
+| 创建实例 | [`AgoraRtmClientKit(_ config: AgoraRtmClientConfig, delegate: (any AgoraRtmClientDelegate)?)`](/api-ref/rtm2/ios/toc-configuration/configuration#initWithConfig) |
+| 销毁实例 | [`rtm.destroy() -> AgoraRtmErrorCode`](/api-ref/rtm2/ios/toc-configuration/configuration#destroy) |
+| Token 设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `token` 参数 |
+| 端侧加密 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `encryptionConfig` 参数 |
+| Presence 超时设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`AgoraRtmLogConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmLogConfig) 中的 `level` 参数 |
+| Proxy 设置 | [`AgoraRtmProxyConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`AgoraRtmPrivateConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 事件监听 | <Slot name="feature-list-swift-html-0-10-1" /> |
+| 登录服务 | [`rtm.login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-configuration/configuration#loginByToken) |
+| 登出服务 | [`rtm.logout(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-configuration/configuration#logout) |
+
+<Slot for="feature-list-swift-html-0-10-1">
+
+- [`rtm.addDelegate(_ delegate: any AgoraRtmClientDelegate)`](/api-ref/rtm2/ios/toc-configuration/configuration#添加监听)
+    - [`rtm.removeDelegate(_ delegate: any AgoraRtmClientDelegate)`](/api-ref/rtm2/ios/toc-configuration/configuration#删除监听)
+
+</Slot>
+
+## Channel
+
+| 功能 | API 接口 |
+| --- | --- |
+| 订阅频道 | [`rtm.subscribe(channelName: String, option subscribeOption: AgoraRtmSubscribeOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#subscribeWithChannel) |
+| 取消订阅频道 | [`rtm.unsubscribe(_ channelName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#unsubscribeWithChannel) |
+| 创建 Stream Channel | [`rtm.createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel`](/api-ref/rtm2/ios/toc-channel/channel#createStreamChannel) |
+| 加入 Stream Channel | [`streamChannel.join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#joinWithOption) |
+| 离开 Stream Channel | [`streamChannel.leave(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.destroy() -> AgoraRtmErrorCode`](/api-ref/rtm2/ios/toc-channel/channel#destroy) |
+
+## Topic
+
+| 功能 | API 接口 |
+| --- | --- |
+| 加入 Topic | [`streamChannel.joinTopic(_ topic: String, option: AgoraRtmJoinTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#joinTopic) |
+| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(topic: String, message: String, option options: AgoraRtmTopicMessageOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#publishTopicMessage) |
+| 离开 Topic | [`streamChannel.leaveTopic(_ topic: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#leaveTopic) |
+| 订阅 Topic | [`streamChannel.subscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmTopicSubscriptionBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#subscribeTopic) |
+| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#unsubscribeTopic) |
+
+## Message
+
+| 功能 | API 接口 |
+| --- | --- |
+| 发送消息 | [`[rtm publish:message:option:completion]`](/api-ref/rtm2/ios/toc-message/message#publish) |
+
+## Presence
+
+| 功能 | API 接口 |
+| --- | --- |
+| 查询频道在线用户 | [`rtm.getPresence()?.whoNow(channelName: String, channelType: AgoraRtmChannelType, options: AgoraRtmPresenceOptions?, completion completionBlock: AgoraRtmWhoNowBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#whoNow) |
+| 查询用户所在频道 | [`rtm.getPresence()?.whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#whereNow) |
+| 设置用户临时状态 | [`rtm.getPresence()?.setState(channelName: String, channelType: AgoraRtmChannelType, items: [String: String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#setState) |
+| 查询用户临时状态 | [`rtm.getPresence()?.getState(channelName: String, channelType: AgoraRtmChannelType, userId: String, completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#getState) |
+| 删除用户临时状态 | [`rtm.getPresence()?.removeState(channelName: String, channelType: AgoraRtmChannelType, keys: [String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#removeState) |
+
+## Storage
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置频道属性 | [`rtm.getStorage()?.setChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
+| 获取频道属性 | [`rtm.getStorage()?.getChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#getChannelMetadata) |
+| 删除频道属性 | [`rtm.getStorage()?.removeChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#removeChannelMetadata) |
+| 更新频道属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#updateChannelMetadata) |
+| 设置用户属性 | [`rtm.getStorage()?.setUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setUserMetadata) |
+| 获取用户属性 | [`rtm.getStorage()?.getUserMetadata(userId: String, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#getUserMetadata) |
+| 删除用户属性 | [`rtm.getStorage()?.removeUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#removeUserMetadata) |
+| 更新用户属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
+| 订阅用户属性 | [`rtm.getStorage()?.subscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#subscribeUserMetadata) |
+| 取消订阅用户属性 | [`rtm.getStorage()?.unsubscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#unsubscribeUserMetadata) |
+
+## Lock
+
+| 功能 | API 接口 |
+| --- | --- |
+| 设置锁 | [`rtm.getLock()?.setLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, ttl: Int32, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#setLock) |
+| 获取锁 | [`rtm.getLock()?.acquireLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, retry: Bool, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#acquireLock) |
+| 释放锁 | [`rtm.getLock()?.releaseLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#releaseLock) |
+| 收回锁 | [`rtm.getLock()?.revokeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#revokeLock) |
+| 查询锁 | [`rtm.getLock()?.getLocks(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetLocksBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#getLocks) |
+| 删除锁 | [`rtm.getLock()?.removeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#removeLock) |

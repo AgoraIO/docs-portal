@@ -1,0 +1,308 @@
+---
+title: "枚举类"
+---
+<a id="areacode"></a>
+## RTM_AREA_CODE
+
+访问区域，即 SDK 连接的服务器所在的区域。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_AREA_CODE_CN`    |       `0x00000001`: 中国大陆。    |
+|   `RTM_AREA_CODE_NA`    |       `0x00000002`: 北美区域。    |
+|   `RTM_AREA_CODE_EU`    |       `0x00000004`: 欧洲区域。    |
+|   `RTM_AREA_CODE_AS`    |       `0x00000008`: 除中国大陆以外的亚洲区域。       |
+|   `RTM_AREA_CODE_JP`    |       `0x00000010`: 日本。    |
+|   `RTM_AREA_CODE_IN`    |       `0x00000020`: 印度。    |
+|   `RTM_AREA_CODE_GLOB`  |         `0xFFFFFFFF`: 全球。  |
+
+<a id="channeltype"></a>
+## RTM_CHANNEL_TYPE
+
+频道类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_CHANNEL_TYPE_MESSAGE`  | `1`: Message Channel         |
+|    `RTM_CHANNEL_TYPE_STREAM`  | `2`: Stream Channel       |
+| `RTM_CHANNEL_TYPE_USER` | `3`: User Channel |
+
+<a id="connectionreason"></a>
+## RTM_CONNECTION_CHANGE_REASON
+
+SDK 连接状态改变的原因。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_CONNECTION_CHANGED_CONNECTING`  | `0`: 建立网络连接中。         |
+|    `RTM_CONNECTION_CHANGED_JOIN_SUCCESS`  | `1`: 成功加入频道。         |
+|    `RTM_CONNECTION_CHANGED_INTERRUPTED`  | `2`: 网络连接中断。        |
+|    `RTM_CONNECTION_CHANGED_BANNED_BY_SERVER`  | `3`: 网络连接被服务器禁止。                    |
+|    `RTM_CONNECTION_CHANGED_JOIN_FAILED`  | `4`: SDK 连续 20 分钟无法加入频道，停止重连频道。        |
+|    `RTM_CONNECTION_CHANGED_LEAVE_CHANNEL`  | `5`: 离开频道。            |
+|    `RTM_CONNECTION_CHANGED_INVALID_APP_ID`  | `6`: 不是有效的 App ID，无法加入频道。   |
+|    `RTM_CONNECTION_CHANGED_INVALID_CHANNEL_NAME`  | `7`: 不是有效的频道名，无法加入频道。     |
+|    `RTM_CONNECTION_CHANGED_INVALID_TOKEN`  | `8`: Token 无效，无法加入频道。   |
+|    `RTM_CONNECTION_CHANGED_TOKEN_EXPIRED`  | `9`: Token 过期，无法加入频道。  |
+|    `RTM_CONNECTION_CHANGED_REJECTED_BY_SERVER`  | `10`: 被服务器禁止连接。    |
+|    `RTM_CONNECTION_CHANGED_SETTING_PROXY_SERVER`  | `11`: 由于设置了代理服务器，SDK 尝试重连。    |
+|    `RTM_CONNECTION_CHANGED_RENEW_TOKEN`  | `12`: 更新 Token 引起网络连接状态改变。        |
+|    `RTM_CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED`  | `13`: 由于网络类型，或网络运营商的 IP 或端口发生改变，客户端 IP 地址变更，SDK 尝试重连。  |
+|    `RTM_CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT`  | `14`: SDK 和服务器连接保活超时，进入自动重连状态。  |
+|    `RTM_CONNECTION_CHANGED_REJOIN_SUCCESS`  | `15`: 重新加入频道成功。  |
+|    `RTM_CONNECTION_CHANGED_LOST`  | `16`: SDK 丢失与服务器的连接。      |
+|    `RTM_CONNECTION_CHANGED_ECHO_TEST`  | `17`: 通话回声测试引起连接状态改变。       |
+|    `RTM_CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER`  | `18`: 用户变更客户端 IP 地址，SDK 尝试重连。     |
+|    `RTM_CONNECTION_CHANGED_SAME_UID_LOGIN`  | `19`: 使用相同的用户 ID 从不同的设备加入同一频道。     |
+|    `RTM_CONNECTION_CHANGED_TOO_MANY_BROADCASTERS`  | `20`: 频道内主播人数已达上限。    |
+|    `RTM_CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE`  | `21`: License 校验失败。    |
+|    `RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE`  | `22`: 服务器证书校验失败。    |
+|    `RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE`  | `23`: Stream Channel 不存在。    |
+|    `RTM_CONNECTION_CHANGED_INCONSISTENT_APPID`  | `24`: App ID 与 Token 不匹配。    |
+|    `RTM_CONNECTION_CHANGED_LOGIN_SUCCESS`  | `10001`: SDK 登录 RTM 系统成功。    |
+|    `RTM_CONNECTION_CHANGED_LOGOUT`  | `10002`: SDK 已退出 RTM 系统。    |
+|    `RTM_CONNECTION_CHANGED_PRESENCE_NOT_READY`  | `10003`: Presence 服务未就绪。你需要重新调用 `login` 方法登录 RTM 系统并重新执行对 SDK 的所有操作。    |
+
+<a id="connectionstate"></a>
+## RTM_CONNECTION_STATE
+
+SDK 连接状态。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_CONNECTION_STATE_DISCONNECTED`  | `1`: SDK 已和服务器断开连接。         |
+|    `RTM_CONNECTION_STATE_CONNECTING`  | `2`: SDK 正在连接服务器。         |
+|    `RTM_CONNECTION_STATE_CONNECTED`  | `3`: SDK 已连上服务器。         |
+|    `RTM_CONNECTION_STATE_RECONNECTING`  | `4`: SDK 和服务器断开连接，正在重新连接服务器。                     |
+|    `RTM_CONNECTION_STATE_FAILED`  | `5`: SDK 无法连接服务器。           |
+
+<a id="encryptionmode"></a>
+## RTM_ENCRYPTION_MODE
+
+加密方式。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_ENCRYPTION_MODE_NONE`  |         `0`: 不加密。                    |
+|   `RTM_ENCRYPTION_MODE_AES_128_GCM`    |      `1`: 128 位 AES 加密，GCM 模式。      |
+|   `RTM_ENCRYPTION_MODE_AES_256_GCM`    |      `2`: 256 位 AES 加密，GCM 模式。       |
+
+<a id="locktype"></a>
+## RTM_LOCK_EVENT_TYPE
+
+Lock 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_LOCK_EVENT_TYPE_SNAPSHOT`  |        `1`: 加入频道时 Lock 的快照信息。        |
+|   `RTM_LOCK_EVENT_TYPE_LOCK_SET`    |      `2`: 已设置 Lock。 |
+|   `RTM_LOCK_EVENT_TYPE_LOCK_REMOVED`  |        `3`: 已删除 Lock。       |
+|   `RTM_LOCK_EVENT_TYPE_LOCK_ACQUIRED`    |      `4`: 已获取 Lock。 |
+|   `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED`  |        `5`: 已释放 Lock。        |
+|   `RTM_LOCK_EVENT_TYPE_LOCK_EXPIRED`    |      `6`: Lock 已过期。 |
+
+<a id="loglevel"></a>
+## RTM_LOG_LEVEL
+
+日志信息的输出等级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_LOG_LEVEL_NONE`  |         `0x0000`: 不输出任何日志。                     |
+|   `RTM_LOG_LEVEL_INFO`    |       `0x0001`: 输出 `RTM_LOG_LEVEL_FATAL`、`RTM_LOG_LEVEL_ERROR`、`RTM_LOG_LEVEL_WARN`、`RTM_LOG_LEVEL_INFO` 级别的日志。我们推荐你将日志级别设为该等级。      |
+|   `RTM_LOG_LEVEL_WARN`    |       `0x0002`: 仅输出 `RTM_LOG_LEVEL_FATAL`、`RTM_LOG_LEVEL_ERROR`、`RTM_LOG_LEVEL_WARN` 级别的日志。        |
+|   `RTM_LOG_LEVEL_ERROR`    |      `0x0004`: 仅输出 `RTM_LOG_LEVEL_FATAL`、`RTM_LOG_LEVEL_ERROR` 级别的日志。      |
+|   `RTM_LOG_LEVEL_FATAL`    |      `0x0008`: 仅输出 `RTM_LOG_LEVEL_FATAL` 级别的日志。      |
+
+<a id="messagepriority"></a>
+## RTM_MESSAGE_PRIORITY
+
+消息优先级。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_MESSAGE_PRIORITY_HIGHEST` | `0`: 优先级最高。          |
+|    `RTM_MESSAGE_PRIORITY_HIGH`  | `1`: 优先级高。        |
+|    `RTM_MESSAGE_PRIORITY_NORMAL`  | `4`: 优先级正常。          |
+|    `RTM_MESSAGE_PRIORITY_LOW`  | `8`: 优先级低。        |
+
+<a id="messageqos"></a>
+## RTM_MESSAGE_QOS
+
+发送 Topic 消息时的 QoS 保障。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_MESSAGE_QOS_UNORDERED`  | `0`: 消息数据到达时不保序。          |
+|    `RTM_MESSAGE_QOS_ORDERED`  | `1`: 消息数据到达时保序。          |
+
+<a id="messagetype"></a>
+## RTM_MESSAGE_TYPE
+
+消息类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|    `RTM_MESSAGE_TYPE_BINARY`  | `0`: 二进制类型。          |
+|    `RTM_MESSAGE_TYPE_STRING`  | `1`: 字符串类型。          |
+
+<a id="presencetype"></a>
+## RTM_PRESENCE_EVENT_TYPE
+
+Presence 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_PRESENCE_EVENT_TYPE_SNAPSHOT`  |        `1`: 加入频道时 Presence 的快照信息。                   |
+|   `RTM_PRESENCE_EVENT_TYPE_INTERVAL`    |      `2`: 当频道内人数达到设定值后，频道内的事件通知将由实时通知转为定时通知。      |
+|   `RTM_PRESENCE_EVENT_TYPE_REMOTE_JOIN_CHANNEL`    |      `3`: 远端用户加入频道。      |
+|   `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL`  |        `4`: 远端用户离开频道。                   |
+|   `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT`    |      `5`: 远端用户连接超时。      |
+|   `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED`    |    `6`: 远端用户的临时用户状态改变。      |
+|   `RTM_PRESENCE_EVENT_TYPE_ERROR_OUT_OF_SERVICE`    |    `7`: 用户加入频道时未启用 Presence。      |
+
+<a id="linkoperation"></a>
+## RTM_LINK_OPERATION
+
+操作类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_LINK_OPERATION_LOGIN`  |        `0`: 登录。                  |
+|   `RTM_LINK_OPERATION_LOGOUT`    |      `1`: 登出。      |
+|   `RTM_LINK_OPERATION_JOIN`    |      `2`: 加入 Stream Channel。      |
+|   `RTM_LINK_OPERATION_LEAVE`    |      `3`: 离开 Stream Channel。      |
+|   `RTM_LINK_OPERATION_SERVER_REJECT`    |      `4`: 服务器拒绝。      |
+|   `RTM_LINK_OPERATION_AUTO_RECONNECT`    |      `5`: 自动重连。      |
+|   `RTM_LINK_OPERATION_RECONNECTED`    |      `6`: 已重连。      |
+|   `RTM_LINK_OPERATION_HEARTBEAT_LOST`    |      `7`: 超时未收到心跳包。      |
+|   `RTM_LINK_OPERATION_SERVER_TIMEOUT`    |      `8`: 服务器超时。      |
+|   `RTM_LINK_OPERATION_NETWORK_CHANGE`    |      `9`: 网络发生变化。      |
+
+<a id="linkstate"></a>
+## RTM_LINK_STATE
+
+连接状态类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_LINK_STATE_IDLE`  |        `0`: 初始状态。                  |
+|   `RTM_LINK_STATE_CONNECTING`    |      `1`: 正在连接。      |
+|   `RTM_LINK_STATE_CONNECTED`    |      `2`: 已连接。      |
+|   `RTM_LINK_STATE_DISCONNECTED`    |      `3`: 已断开连接。      |
+|   `RTM_LINK_STATE_SUSPENDED`    |      `4`: 挂起状态。     |
+|   `RTM_LINK_STATE_FAILED`    |      `5`: 连接失败。      |
+
+<a id="linkstatechangereason"></a>
+## RTM_LINK_STATE_CHANGE_REASON
+
+连接状态改变的原因。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_LINK_STATE_CHANGE_REASON_UNKNOWN`  |        `0`: 未知原因。                  |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN`    |      `1`: 正在登录。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN_SUCCESS`    |      `2`: 登录成功。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN_TIMEOUT`    |      `3`: 登录超时。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN_NOT_AUTHORIZED`    |      `4`: 登录未授权。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN_REJECTED`    |      `5`: 登录被拒绝。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_RELOGIN`    |      `6`: 重新登录。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGOUT`    |      `7`: 登出。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_AUTO_RECONNECT`    |      `8`: 自动重连。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_RECONNECT_TIMEOUT`    |      `9`: 重连超时。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_RECONNECT_SUCCESS`    |      `10`: 重连成功。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_JOIN`    |      `11`: 正在加入频道。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_JOIN_SUCCESS`    |      `12`: 加入频道成功。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_JOIN_FAILED`    |      `13`: 加入频道失败。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_REJOIN`    |      `14`: 重新加入频道。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LEAVE`    |      `15`: 离开频道。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_INVALID_TOKEN`    |      `16`: Token 无效。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_TOKEN_EXPIRED`    |      `17`: Token 过期。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_INCONSISTENT_APP_ID`    |      `18`: App ID 不一致。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_INVALID_CHANNEL_NAME`    |      `19`: 频道名无效。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_INVALID_USER_ID`    |      `20`: 用户 ID 无效。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_NOT_INITIALIZED`    |      `21`: SDK 未初始化。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_RTM_SERVICE_NOT_CONNECTED`    |      `22`: RTM 服务未连接。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_CHANNEL_INSTANCE_EXCEED_LIMITATION`    |      `23`: 频道实例超出限制。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_OPERATION_RATE_EXCEED_LIMITATION`    |      `24`: 操作频率超出限制。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_CHANNEL_IN_ERROR_STATE`    |      `25`: 频道处于错误状态。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_PRESENCE_NOT_CONNECTED`    |      `26`: Presence 服务未连接。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_SAME_UID_LOGIN`    |      `27`: 使用相同用户 ID 登录。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_KICKED_OUT_BY_SERVER`    |      `28`: 被服务器踢出。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_KEEP_ALIVE_TIMEOUT`    |      `29`: 心跳超时。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_CONNECTION_ERROR`    |      `30`: 连接错误。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_PRESENCE_NOT_READY`    |      `31`: Presence 服务未就绪。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_NETWORK_CHANGE`    |      `32`: 网络发生变化。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_SERVICE_NOT_SUPPORTED`    |      `33`: 服务不支持。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_STREAM_CHANNEL_NOT_AVAILABLE`    |      `34`: Stream Channel 不存在。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_STORAGE_NOT_AVAILABLE`    |      `35`: Storage 服务不可用。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOCK_NOT_AVAILABLE`    |      `36`: Lock 服务不可用。      |
+|   `RTM_LINK_STATE_CHANGE_REASON_LOGIN_TOO_FREQUENT`  | `37`: 登录操作太频繁。|
+
+<a id="protocoltype"></a>
+## RTM_PROTOCOL_TYPE
+
+消息传输协议类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_PROTOCOL_TYPE_TCP_UDP`  |        `0`: TCP 和 UDP 协议。                  |
+|   `RTM_PROTOCOL_TYPE_TCP_ONLY`    |      `1`: 仅 TCP 协议，即双环境都是 TCP 协议。      |
+
+<a id="rtmservicetype"></a>
+## RTM_SERVICE_TYPE
+
+服务类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_SERVICE_TYPE_MESSAGE`  |          基础服务，包含 Message Channel、User Channel、Presence、Storage 和 Lock 服务。                    |
+|   `RTM_SERVICE_TYPE_STREAM`    |       Stream Channel 服务。      |
+
+:::info[信息]
+如需使用 RTM 的全部服务，你可以使用位操作同时设置两种服务类型。
+:::
+
+<a id="proxytype"></a>
+## RTM_PROXY_TYPE
+
+代理类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_PROXY_TYPE_NONE`  |         `0`: 不开启 Proxy。                    |
+|   `RTM_PROXY_TYPE_HTTP`    |       `1`: 开启 HTTP 协议的 Proxy。      |
+|   `RTM_PROXY_TYPE_CLOUD_TCP`    |       `2`: 开启 TCP 协议的 Cloud Proxy。      |
+
+<a id="storageeventtype"></a>
+## RTM_STORAGE_EVENT_TYPE
+
+Storage 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+| `RTM_STORAGE_EVENT_TYPE_SNAPSHOT` | `1`: 用户第一次订阅 Channl Metadata 或 User Metadata，或加入频道时触发，本地用户会收到此类事件通知。 |
+|   `RTM_STORAGE_EVENT_TYPE_SET`    | `2`: 当调用 `setChannelMetadata` 或者 `setUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。 |
+|  `RTM_STORAGE_EVENT_TYPE_UPDATE`  | `3`: 当调用设置、更新或删除 Channel Metadata 或 User Metadata 的方法时会返回该类型事件。|
+|  `RTM_STORAGE_EVENT_TYPE_REMOVE`  | `4`: 当调用 `removeChannelMetadata` 或者 `removeUserMetadata` 时触发。该事件仅在增量数据更新模式下返回。  |
+
+<a id="storagetype"></a>
+## RTM_STORAGE_TYPE
+
+Storage 类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_STORAGE_TYPE_USER`  |        `1`: User Metadata 事件。         |
+|   `RTM_STORAGE_TYPE_CHANNEL`    |      `2`: Channel Metadata 事件。 |
+
+<a id="topictype"></a>
+## RTM_TOPIC_EVENT_TYPE
+
+Topic 事件类型。
+
+|       枚举值      | 描述             |
+| --------- | ----- |
+|   `RTM_TOPIC_EVENT_TYPE_SNAPSHOT`  |   `1`: 加入频道时 Topic 的快照信息。                  |
+|   `RTM_TOPIC_EVENT_TYPE_REMOTE_JOIN_TOPIC`    | `2`: 远端用户加入 Topic。      |
+|   `RTM_TOPIC_EVENT_TYPE_REMOTE_LEAVE_TOPIC`    |  `3`: 远端用户离开 Topic。      |

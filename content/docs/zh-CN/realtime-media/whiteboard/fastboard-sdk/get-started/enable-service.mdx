@@ -1,0 +1,109 @@
+---
+title: "开启和配置互动白板服务"
+---
+使用声网互动白板服务前，你需要先在[声网控制台](https://console.shengwang.cn/#onboarding)开启并配置互动白板服务。
+
+## 登录声网控制台
+
+如果你是第一次使用声网服务，点击[注册账号](https://sso.shengwang.cn/cn/v4/signup/with-sms)前往控制台进行注册。注册成功后会自动登录。
+
+如果你已经拥有声网账号，可以直接[登录控制台](https://console.shengwang.cn//)。
+
+:::info[信息]
+注册和登录过程中如果遇到疑问，可以查看[快速开始](/zh-CN/introduction/quickstart)。
+:::
+
+## 创建声网项目
+
+成功登录控制台后，按照以下步骤创建一个声网项目：
+
+1. 展开控制台左上角下拉框，点击**创建项目**按钮。
+2. 在弹出的对话框内，依次选择**项目类型**，输入**项目名称**，选择**场景标签**和**鉴权机制**。其中鉴权机制推荐选择**安全模式**，**调试模式**的安全性较低。
+
+:::warning[注意]
+为使用whiteboard服务创建项目时，项目类型选择**通用项目**。
+:::
+
+## 开启互动白板服务
+
+按照以下步骤，在声网控制台开启互动白板服务：
+
+1. 登录[声网控制台](https://console.shengwang.cn/)，在页面左上角下拉框选择需要开通互动白板服务的项目。
+2. 在左侧导航栏依次访问**全部产品**-**拓展能力**-**互动白板**。
+3. 在**互动白板**页面，进入**功能配置**，之后点击**状态**按钮启用互动白板服务。
+
+![互动白板页面中的状态开关](/img/whiteboard/enable-1.png)
+
+4. 启用后，在**功能配置**下看到如下页面，即代表该项目的互动白板服务已成功开启：
+
+![互动白板功能配置页面](/img/whiteboard/enable-2.png)
+
+<a id="securitykeys"></a>
+## 获取互动白板项目的安全密钥
+
+声网控制台会给每个开启互动白板服务的项目分配以下安全密钥：
+
+- **AppIdentifier**：也称为 App ID，即项目的唯一标识。初始化白板 SDK 时需要传入 AppIdentifier。
+- **AK** 和 **SK**：访问密钥对，用于生成互动白板 Token。
+- **sdkToken**：声网控制台生成的 SDK Token（动态密钥），一般用于项目测试。在生产环境中，你需要使用[示例代码](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#使用不同语言快速生成-token)或调用[服务端 API](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-teams)，在自己的 App 服务端生成 SDK Token。
+
+按照以下步骤获取安全密钥：
+
+1. 在声网控制台左侧导航栏依次访问**全部产品**-**拓展能力**-**互动白板**。
+2. 在互动白板的**功能配置**-**基本信息**中，点击右侧按钮分别复制白板项目的 AppIdentifier、AK 和 SK，并保存到安全的位置。
+3. 点击**生成 sdk Token**，仔细阅读弹窗提示，然后点击**复制 sdkToken**。复制后，将 SDK Token 保存到安全的位置。
+
+![生成并复制 SDK Token 的入口](/img/whiteboard/enable-3.png)
+
+:::warning[注意]
+安全密钥一旦泄露，会造成严重的安全问题。为提高项目的安全性，声网建议：
+
+- 不要将访问密钥对（即 AK 和 SK）发送给客户端，也不要将访问密钥对写死在代码里。请确保只有 App 服务端能从配置文件中读取访问密钥对。
+- 不要将声网控制台生成的 SDK Token 下发给客户端。该 Token 权限级别很高，下发给客户端会有泄露的风险。
+:::
+
+## 开启互动白板配套服务
+
+声网互动白板设立五个数据中心，每个数据中心在服务端提供以下配套服务：
+
+- 文档转换，包括文档转图片和文档转网页。开启文档转换服务后，你可以调用服务端 API [发起文档转换任务](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)或[查询转换进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)。声网会对文档转换服务收取费用，详见[计费说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/overview/billing)。
+
+- 截图。开启截图服务后，你可以调用服务端 API [生成场景截图](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms-uuid-screenshots) 。
+
+按照以下步骤在指定数据中心开启配套服务和配置存储空间：
+
+1. 在声网控制台左侧导航栏依次访问**全部产品**-**拓展能力**-**互动白板**。
+
+2. 在互动白板的**功能配置**-**配套服务**中，选择数据中心，点击**配置**。该数据中心必须与你调用[创建房间](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms) API 时在 `region` 字段中填入的数据中心一致；否则，服务配置不生效。
+
+![配套服务页面中的数据中心配置入口](/img/whiteboard/enable-4.png)
+
+3. 在弹出的配置窗口下，找到**文档转图片**、**文档转网页**或**截图**，选择**已启用**。
+
+![配置窗口中的配套服务启用选项](/img/whiteboard/enable-5.png)
+
+4. 点击**＋创建**按钮添加并设置存储空间：
+   - 点击**存储**方框右侧的箭头，在下拉列表中选择你已配置的第三方存储空间。
+   - 点击**创建**，新增一个存储空间配置。你需要填写以下信息：
+     - **名称**：（必填）存储空间的名称。
+     - **供应商**：（必填）第三方云存储服务的供应商。
+     - **区域**：（必填）创建 Bucket 时指定的数据中心所在区域。
+     - **accessKey**：（必填）存储服务供应商提供的访问密钥中的 Access Key，用于识别访问者的身份。
+     - **secretKey**：（必填）存储服务供应商提供的访问密钥中的 Secret Key，用于验证签名的密钥。
+     - **bucket**：（必填）Bucket 的名称。
+     - **存储路径**：资源在 Bucket 中的存放路径，默认为根目录。
+     - **外链域名**：对外服务的访问域名。如果使用七牛云 OSS，该字段为必填，否则声网将无法访问该存储服务内的资源。该字段必须包含协议头，比如 `https://` 或 `http://`。
+
+:::warning[注意]
+- 要获取第三方存储空间的配置信息，请参考对应的云存储服务供应商的官方文档。
+- 第三方存储空间应开启**公共读**或更高权限，以确保你的 App 客户端可以访问其中的文件。
+:::
+
+5. 点击**保存**，仔细阅读弹窗提示后点击**确定**。
+
+## 相关文档
+
+- [加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)
+- [使用文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)
+
+[使用文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files)

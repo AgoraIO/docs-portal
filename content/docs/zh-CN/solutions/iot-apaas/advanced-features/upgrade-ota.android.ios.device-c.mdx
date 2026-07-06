@@ -1,0 +1,231 @@
+---
+title: "通过 OTA 升级设备固件"
+---
+声网灵隼支持对设备端进行 OTA（Over-the-Air Technology，空中下载技术）固件升级。用户只需要对集成了客户端 API 的应用进行操作，即可实现设备端的固件升级。
+
+你可以参考以下步骤实现 OTA 升级。
+
+## 开通声网灵隼服务
+
+你需要开通声网灵隼服务并创建一个产品。参考[开通声网灵隼服务](/zh-CN/solutions/iot-apaas/get-started/enable-service)。
+
+## 在声网控制台上传固件
+
+参考以下步骤将固件上传到声网控制台。
+
+1. 在灵隼物联网页面，选择**固件升级**。
+
+![控制台选择固件升级](https://web-cdn.agora.io/docs-files/1662718099061)
+
+2. 点击**添加固件**。在弹出的窗口输入以下内容：
+
+   - **固件名称**：输入你的固件名称
+   - **固件版本**：输入你的固件版本
+   - **固件类型**：选择固件类型
+   - **固件文件**：上传固件文件
+   - **描述**：输入固件描述
+
+   输入完毕后，点击**提交**上传固件。
+
+![提交上传固件](https://web-cdn.agora.io/docs-files/1662719535698)
+
+## 验证上传的固件并开启固件升级
+
+1. 点击**详情**，进入详情页面。
+
+![固件升级详情](https://web-cdn.agora.io/docs-files/1662720279755)
+
+2. 选择一台专门用于固件升级验证的设备。点击**验证固件**进行固件验证。验证成功后，点击**验证通过**。
+
+![点击验证通过](https://web-cdn.agora.io/docs-files/1662720338658)
+
+3. 根据 MAC 地址选择单个设备，或者根据版本号批量选择设备。等待片刻之后，列表会显示处于**待升级**状态的设备。你可以选择需要升级的设备进行升级。
+
+![选择升级设备](https://web-cdn.agora.io/docs-files/1663126542181)
+
+此时，你可以使用客户端 API 通知设备端升级固件。你可以通过客户端 SDK 的 `getMcuUpgradeStatus` （Android）或 `otaQuery` （iOS）查询到最新的固件版本。
+
+## 使用客户端 API 通知设备端通过 OTA 升级固件
+
+:::info[信息]
+目前，仅全功能版本客户端 API 支持 OTA 升级固件。
+:::
+
+<PlatformStructured platform="android">
+你可以通过 `getMcuUpgradeStatus` 方法对固件升级状态进行轮询。
+
+```java
+ void onMsgUpgradeQuery() {
+   IotDevice iotDevice = AgoraApplication.getInstance().getLivingDevice();
+   int errCode = AIotAppSdkFactory.getInstance().getDeviceMgr().getMcuUpgradeStatus (
+       iotDevice,   mMcuVersionInfo.mUpgradeId);
+   mQueryCount++;
+
+   if (errCode != ErrCode.XOK) {
+     Log.e(TAG, "<onMsgUpgradeQuery> errCode=" + errCode);
+     mMsgHandler.sendEmptyMessageDelayed(MSGID_UPGRADE_QUERY, QUERY_INTERVAL);
+   }
+ }
+```
+
+如果发现了新版本，可以调用 `upgradeMcuVersion` 升级固件。
+
+```java
+// Java
+void onMsgUpgradeRequest() {
+    showUpdatingWgts();
+    progressShow();
+
+    IotDevice iotDevice = AgoraApplication.getInstance().getLivingDevice();
+
+    int errCode = AIotAppSdkFactory.getInstance().getDeviceMgr().upgradeMcuVersion(
+            iotDevice,   mMcuVersionInfo.mUpgradeId, 2);
+    if (errCode != ErrCode.XOK) {
+        popupMessage("固件版本升级失败，错误码=" + errCode);
+        progressHide();
+        finish();
+        return;
+    }
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+你可以通过 `otaQuery` 方法对固件升级状态进行轮询。如果发现了新版本，可以在客户端调用 `otaUpgrade` 升级固件。
+
+```swift
+// Swift
+AgoraIotLink.iotsdk.deviceMgr.otaUpgrade(upgradeId: upgradeId) { ec, msg in
+    if(ec != ErrCode.XOK){
+        log.e("otaUpgrade failed:" + msg)
+        AGToolHUD.disMiss()
+        AGToolHUD.showInfo(info:msg)
+        self?.warning.isHidden = true
+    }
+    else{
+            timer = Timer.scheduledTimer(withTimeInterval: 4, repeats: true, block: { [weak self](_) in
+                AgoraIotLink.iotsdk.deviceMgr.otaQuery(upgradeId: upgradeId, result:{ec,msg,status in
+                    log.i("otaQuery ret cnt:\(cnt) status:\(status?.status) msg:\(msg)")
+                    cnt = cnt + 1
+                    if(cnt > 76){//timeout exception，granwin expires in 4min
+                        timer?.invalidate()
+                        self?.warning.isHidden = true
+                        AGToolHUD.disMiss()
+                        if(ec == ErrCode.XERR_NETWORK){
+                            AGToolHUD.showInfo(info: "本地网络异常，无法获取升级状态")
+                        }
+                        else if(ec != ErrCode.XOK){
+                            AGToolHUD.showInfo(info:"更新固件失败")
+                        }
+                        else{
+                            AGToolHUD.showInfo(info:"更新固件超时")
+                        }
+                    }
+                    else{
+                        if(status?.status == 1){
+                            timer?.invalidate()
+                            AGToolHUD.disMiss()
+                            AGToolHUD.showInfo(info:"更新固件成功")
+                            self?.warning.isHidden = true
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        else if(status?.status == 2){
+                            timer?.invalidate()
+                            AGToolHUD.disMiss()
+                            AGToolHUD.showInfo(info:"更新固件失败")
+                            self?.warning.isHidden = true
+                        }
+                        else if(status?.status == 3){
+                            timer?.invalidate()
+                            AGToolHUD.disMiss()
+                            AGToolHUD.showInfo(info:"更新固件取消")
+                            self?.warning.isHidden = true
+                        }
+                        else if(status?.status == 4){
+                            timer?.invalidate()
+                            AGToolHUD.disMiss()
+                            AGToolHUD.showInfo(info:"固件待升级")
+                        }
+                        else if(status?.status == 5){
+                            //AGToolHUD.disMiss()
+                            //AGToolHUD.showInfo(info:"固件升级中")
+                        }
+                        else{
+                            timer?.invalidate()
+                            AGToolHUD.disMiss()
+                            AGToolHUD.showInfo(info:"异常返回值")
+                            self?.warning.isHidden = true
+                        }
+                    }
+                })
+            })
+        }
+    }
+}
+return view
+}()
+```
+
+</PlatformStructured>
+
+## 在设备端通过 OTA 升级固件
+
+收到客户端的升级固件请求后，你可以使用设备端 SDK 升级固件。
+
+1. 在设备端通过 `agora_iot_ota_callback_t` 回调接收客户端 SDK 发送的固件升级通知。
+
+   ```c
+   // C
+   agora_iot_ota_callback_t ota_cb;
+
+   agora_iot_config_t cfg = {
+
+       ...
+
+       .ota_cb = {
+       .fw_updated             = iot_cb_ota_update
+       },
+
+       ...
+
+   };
+
+   handle = agora_iot_init(&cfg);
+   ```
+
+2. 收到固件升级通知后，在 `agora_iot_ota_callback_t` 回调中执行固件升级。 `agora_iot_ota_callback_t` 回调会返回固件的 URL 等信息，你需要自行实现固件升级的相关逻辑。固件更新成功后，你还需要调用 `agora_iot_fw_info_update` 向灵隼云平台更新固件的版本信息。
+
+   ```c
+   void iot_cb_ota_update(const agora_iot_device_fota_info_t *info)
+   {
+   printf("-- %s --\n", __FUNCTION__);
+   printf("\ttype: %d, size: %u, versin: %s, url: %s\n",
+       info->type, info->file_size, info->file_ver, info->file_url);
+
+   int ret = -1;
+   agora_iot_device_fw_info_t fw_info = {
+       .fw_mcu_ver = "",
+       .fw_wifi_ver = ""
+   };
+   if (AGO_FW_WIFI == info->type) {
+       ret = device_set_item_string(g_dev_state, "fw_wifi_ver", info->file_ver);
+       if (0 == ret) {
+       printf("WIFI FW update successfully\n");
+       snprintf(fw_info.fw_wifi_ver, sizeof(fw_info.fw_wifi_ver), "%s", info->file_ver);
+       agora_iot_fw_info_update(g_app.iot_handle, &fw_info);
+       } else {
+       printf("WIFI FW update failure, ret=%d\n", ret);
+       }
+   } else if (AGO_FW_MCU == info->type) {
+       ret = device_set_item_string(g_dev_state, "fw_mcu_ver", info->file_ver);
+       if (0 == ret) {
+       printf("MCU FW update successfully\n");
+       snprintf(fw_info.fw_mcu_ver, sizeof(fw_info.fw_mcu_ver), "%s", info->file_ver);
+       agora_iot_fw_info_update(g_app.iot_handle, &fw_info);
+       } else {
+       printf("MCU FW update failure, ret=%d\n", ret);
+       }
+   }
+   }
+   ```

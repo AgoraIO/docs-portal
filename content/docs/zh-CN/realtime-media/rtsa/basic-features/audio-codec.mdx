@@ -1,0 +1,59 @@
+---
+title: "使用音频编解码器"
+---
+自 1.4.1 版本起，SDK 支持使用以下两种音频编解码器：
+
+- SDK 内置编解码器
+- 用户自己的编解码器
+
+两种方式的设置不同，详见下图：
+
+![音频编解码流程图](https://web-cdn.agora.io/docs-files/1658200078128)
+
+本文以使用 C API 将 PCM 数据编码为 Opus 格式为例，介绍如何使用音频编码器发送和接收数据。
+
+## 使用 SDK 内置编解码器
+
+### 发送音频数据
+
+参考以下步骤实现发送音频数据：
+
+1. 调用 `agora_rtc_join_channel` 方法加入 RTC 频道，设置 `rtc_channel_options_t.audio_codec_opt.audio_codec_type` 为 Opus、G722、G711A 或 G711U 音频编码。根据不同的 codec 设置不同的采样率和声道数。详见 [`audio_codec_type_e`](/api-ref/rtsa/c/agora__rtc__api_8h#audio_codec_type_e)。
+
+   ```c
+   // 以 Opus 为例
+   rtc_channel_options_t channel_options = { 0 };
+   channel_options.audio_codec_opt.audio_codec_type = AUDIO_CODEC_TYPE_OPUS;
+   channel_options.audio_codec_opt.pcm_sample_rate = 16000;
+   channel_options.audio_codec_opt.pcm_channel_num = 1;
+   ```
+
+2. 调用 `agora_rtc_send_audio_data` 方法发送音频数据，将 `*info_ptr.data_type` 参数设置为 `AUDIO_DATA_TYPE_PCM`，即 PCM 类型。SDK 会自动将 PCM 数据编码为 Opus 格式并传输。
+
+   ```c
+   audio_frame_info_t info = { 0 };
+   info.data_type = AUDIO_DATA_TYPE_PCM;
+
+   int rval = agora_rtc_send_audio_data(g_conn_id, data, len, &info);
+   if (rval < 0) {
+     printf("Failed to send audio data, reason: %s\n", agora_rtc_err_2_str(rval));
+     return -1;
+   }
+   ```
+
+### 接收音频数据
+
+SDK 会自动对音频数据进行解码。你可以通过 `on_audio_data` 回调获取发送端传输的 PCM 音频数据。`on_audio_data` 回调的 `*info_ptr.data_type` 参数为 `AUDIO_DATA_TYPE_PCM`。
+
+## 使用自己的编解码器
+
+### 发送音频数据
+
+参考以下步骤实现发送音频数据：
+
+1. 调用 `agora_rtc_join_channel` 方法加入 RTC 频道，设置 `rtc_channel_options_t.audio_codec_opt.audio_codec_type` 为 `AUDIO_CODEC_DISABLED`。
+2. 调用 `agora_rtc_send_audio_data` 方法发送音频数据，将 `*info_ptr.data_type` 参数设置为你的编码格式。该设置主要是为了信息同步，即接收端通过该设置可获取你发送音频数据的编码格式。SDK 不会对音频数据进行编码处理，你需要通过自己的编码器进行编码。
+
+### 接收音频数据
+
+接收端通过 `on_audio_data` 回调获取发送端传输的已编码音频数据和编码格式，并通过你自己的解码器进行解码。

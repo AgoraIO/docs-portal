@@ -1,0 +1,342 @@
+---
+title: "使用 SDK 实现空间音频"
+---
+
+<PlatformStructured platform="unity">
+
+声网支持你通过 SDK 或 Wwise 插件实现空间音效，两种方案的选型详见[适用场景](/zh-CN/solutions/game-voice/overview/product-overview#适用场景)。本文介绍如何通过声网 RTC Unity SDK 在你的项目中实现空间音频。
+
+空间音频能够将真实世界的声音体验带到虚拟数字世界，为用户提供更具吸引力的在线体验。通过声网提供的空间音频技术，你可以在虚拟互动场景下模拟声音在现实环境中的传播特点：
+
+**超拟真空间塑造效果**
+
+利用范围音频、声音模糊、空气衰减模拟等技术，完美模拟现实听觉感受。
+
+- 当声源和其他角色之间的距离、方位或朝向发生变化时，不同的角色听到的声音大小和方向均不相同。
+- 当声源和其他角色之间的距离超过设置的范围后，后者无法听到声源发出的声音。
+- 通过设置隔声区域、空气衰减、声音模糊等音效，完美模拟现实的听觉感受。
+
+**3D 高保真**
+
+- 根据面部朝向、音源朝向、3D 空间内音源的相对位置进行音效处理渲染。
+- 支持 48 kHz 全频带采样和 3D 高保真音效处理及渲染。
+
+**多平台适配**
+
+支持 iOS、Android、macOS、Windows、Web、Unity、Flutter、React Native、Electron、Unreal 等平台。
+
+**超低延时、低功耗、低成本**
+
+空间音频算法采用先进的前端处理模式，并通过云服务同步空间坐标，端云协同处理模式能够有效降低整体延时和功耗。
+
+相比传统的左右声道立体声，声网提供的空间音频技术在声音的立体感和空间感上都有明显的提升，两者区别如下所示：
+
+| 对比项   | 传统立体声                                   | 声网空间音频                                        |
+| -------- | -------------------------------------------- | --------------------------------------------------- |
+| 立体感   | 左右两个维度                           | 以世界坐标系的 x、y、z 坐标轴表示右、上、前三个维度 |
+| 空间感   | 通过调节左右声道的音量，体现具有空间感的声音 | 使用空间音频算法，通过设置距离、方位、朝向等参数，塑造声音的空间感                  |
+| 用户体验 | 平面                                         | 立体、自然、真实                                    |
+
+![跟传统立体声对比](/img/rtc/spatial-audio/comparison.png)
+
+## 适用场景
+
+#### 社交语聊
+
+在语聊房 App 界面中，以九宫格的形式展示所有用户头像，并对每个用户赋予一个坐标和朝向。在互动过程中，你可以感受到周围的用户发出的声音大小和方位跟其所在的位置有关。如果你在屏幕中拖动自己的头像，随着你跟某个用户之间的距离逐渐变远，你会听到该用户的声音也越来越小，超出一定范围后会彻底听不到，符合现实环境中声音的传播特点。
+
+![社交语聊场景](/img/rtc/spatial-audio/chatroom.png)
+
+#### 游戏 & 元宇宙
+
+在游戏和元宇宙这类 3D 场景中，你可以使用空间音频技术实现更多功能，如下表所示：
+
+| 功能 | 描述 |
+| --- | --- |
+| 声音模糊 | 对指定远端用户或媒体播放器开启声音模糊处理。 例如：在咖啡厅场景中，如果需要制造两个虚拟角色 “说悄悄话” 的效果，可以对他们开启声音模糊处理模式，其他角色会听到被处理过的、模糊的声音。 |
+| 范围音频 | <Slot name="spatial-audio-sdk-unity-html-0-2-1" /> |
+| 超拟真空间塑造 | <Slot name="spatial-audio-sdk-unity-html-0-3-1" /> |
+| 隔声区域 | 定义一个隔声区域并对隔声区域内的音源设置声音衰减系数，使区域外的接收方听区域内的音源时，会体验到类似真实环境中声音在遇到建筑隔断时的衰减效果。 例如：在 KTV 场景中，当虚拟角色在 KTV 包厢外时，只能听到来自包厢内的较小的声音；在打开包厢门的时候，会在一瞬间体验到包厢里唱歌的声音迎面扑来。 |
+
+<Slot for="spatial-audio-sdk-unity-html-0-2-1">
+
+根据当前场景的大小设置一个音频接收范围，在该范围以内，声音传播得越远，接收方听到的声音越小。你可以通过设置声音衰减系数，在不同的场景下获得更加拟真的衰减效果：
+
+      - 在丛林场景中，将衰减系数设置为 0.9，声音在传播时迅速衰减。
+      - 在平原场景中，将衰减系数设置为 0.1，声音可以传播得很远。
+
+</Slot>
+
+<Slot for="spatial-audio-sdk-unity-html-0-3-1">
+
+为全方位模拟真实场景的空间感，对每个虚拟角色赋予 4 组坐标，分别表示以下维度：
+
+        - 虚拟角色空间坐标（x,y,z）：虚拟角色在 3D 空间里的坐标。
+        - 虚拟角色面部朝向坐标（x,y,z）：虚拟角色在场景中的面部朝向坐标。
+        - 虚拟角色头顶朝向坐标（x,y,z）：虚拟角色的头顶指向的坐标，可结合面部朝向坐标确定虚拟角色的动作和姿态。例如：虚拟角色平躺的时候，面部朝向天空，头顶朝向前方。
+        - 右手朝向（x,y,z）：直角坐标系是使用左手坐标系还是右手坐标系。在一个场景中只能使用一种坐标系。
+
+</Slot>
+
+![游戏和元宇宙场景](/img/rtc/spatial-audio/meta.png)
+
+#### 在线会议
+
+在线会议场景下，你可以将所有上麦用户分布到主持人的周围，并赋予每个用户坐标。用户听到的每个声音都有方向感和空间感，模拟真实环境下的会议室体验，相比传统在线会议，能够带给用户全新的与会体验、降低用户疲惫感。
+
+![在线会议场景](/img/rtc/spatial-audio/meeting.png)
+
+## 技术原理
+
+实现用户空间音频和媒体播放器空间音频时的原理有所不同：
+
+- 用户空间音频：自行部署服务器，用于发送本地空间位置以及接收远端用户的空间位置，然后由 SDK 计算用户间的相对位置，从而计算出相应的空间音频参数。
+- 媒体播放器空间音频：通过 SDK 计算本地用户和媒体播放器的相对位置，然后计算出相应的空间音频参数。
+
+![用户空间音频](/img/rtc/spatial-audio/tech-normal.png)
+
+![媒体播放器空间音频](/img/rtc/spatial-audio/tech-mpk.png)
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时语音互动功能。详见[实现语音互动](/zh-CN/solutions/game-voice/get-started/audio-quick-start)。
+
+## 实现空间音频
+
+本节介绍如何使用 SDK 实现空间音频，API 调用时序如下图所示。
+
+![实现流程](/img/rtc/spatial-audio/spatial-audio-process.svg)
+
+### 初始化空间音频引擎
+
+调用 `IRtcEngine` 类中的 `GetLocalSpatialAudioEngine` 获取 `ILocalSpatialAudioEngine` 对象，调用 `ILocalSpatialAudioEngine` 类下的 `Initialize` 初始化对象，开启空间音频。
+
+```csharp
+SpatialAudioEngine = RtcEngine.GetLocalSpatialAudioEngine();
+var ret = SpatialAudioEngine.Initialize();
+Debug.Log("_spatialAudioEngine: Initialize " + ret);
+```
+
+### 设置音频属性和场景
+
+- 调用 `SetAudioProfile` 设置音频编码属性。
+- 调用 `SetAudioScenario` 设置音频应用场景。声网推荐你将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`。
+
+```csharp
+RtcEngine.SetAudioProfile(AUDIO_PROFILE_TYPE.AUDIO_PROFILE_DEFAULT);
+RtcEngine.SetAudioScenario(AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_GAME_STREAMING);
+```
+
+### 设置音频接收范围
+
+- 调用 `SetAudioRecvRange` 设置可接收音频的最大范围，单位为米，建议 `range` 取值 ＞ 0。
+- 调用 `SetMaxAudioRecvCount` 设置音频接收范围内最多可接收的音频流数，建议 `maxCount` 取值 ≤ 16。
+
+```csharp
+SpatialAudioEngine.SetAudioRecvRange(30);
+SpatialAudioEngine.SetMaxAudioRecvCount(10);
+```
+
+### 更新空间位置
+
+- 在用户空间音频场景下，调用 `UpdateSelfPosition` 和 `UpdateRemotePosition` 方法，分别更新本地用户和远端用户的位置。
+- 在媒体播放器空间音频场景下，调用 `UpdateSelfPosition` 和 `UpdatePlayerPositionInfo` 方法，分别更新本地用户和媒体播放器的位置。
+
+推荐的调用时机如下所示：
+
+- 当频道内有新用户加入。
+- 当本地、远端用户或媒体播放器的相对位置发生改变。
+- 根据实际需求调用。
+
+```csharp
+// 更新本地用户位置
+// 隔声区域的空间中心点
+float[] localUserPosition = new float[] { 0.0f, 0.0f, 0.0f };
+// 以 position 为起点，向前的单位向量，对应 Unity Vector3 的 z 轴
+float[] forward = new float[] { 1.0f, 0.0f, 0.0f };
+// 以 position 为起点，向右的单位向量，对应 Unity Vector3 的 x 轴
+float[] right = new float[] { 0.0f, 1.0f, 0.0f };
+// 以 position 为起点，向上的单位向量，对应 Unity Vector3 的 y 轴
+float[] up = new float[] { 0.0f, 0.0f, 1.0f };
+var ret = SpatialAudioEngine.UpdateSelfPosition(localUserPosition, forward, right, up);
+Debug.Log("UpdateSelfPosition return: " + ret);
+
+// 更新远端用户位置
+float[] positionRemote = { 0.0f, 1.0f, 0.0f };
+float[] forwardRemote = { 0, 0, 0 };
+RemoteVoicePositionInfo remoteVoicePositionInfo = new RemoteVoicePositionInfo(positionRemote, forwardRemote);
+var ret = SpatialAudioEngine.UpdateRemotePosition(UidUseInMPK, remoteVoicePositionInfo);
+Debug.Log("_spatialAudio.UpdateRemotePosition returns: " + ret);
+```
+
+### 设置空间音频参数
+
+调用 `SetRemoteUserSpatialAudioParams` 或 `SetSpatialAudioParams` 为远端用户或媒体播放器设置空间音频参数。如果要实现特定音效，可参考如下参数设置：
+
+- 空气衰减效果：即模拟声音在空气中传播的音色衰减效果。在一定的传输距离下，高频声音衰减速度快、低频声音衰减速度慢。你可以通过 `enable_air_absorb` 控制是否开启空气衰减效果。开启后需确认 `speaker_attenuation` 的值不为 `0`，否则该设置不生效。
+- 声音模糊效果：将 `enable_blur` 设置为 `true`。
+
+```csharp
+SpatialAudioParams audioParams = new SpatialAudioParams();
+// 开启空气衰减效果
+audioParams.enable_air_absorb.SetValue(true);
+// 开启声音模糊效果
+audioParams.enable_blur.SetValue(true);
+// 以设置远端用户空间音频参数为例
+RtcEngine.SetRemoteUserSpatialAudioParams(uid, audioParams);
+```
+
+### （可选）设置隔声区域
+
+1. 调用 `SetZones` 设置一个隔声区域和声音衰减系数。当音源（可以为用户或媒体播放器）跟接收方分属于隔声区域内部和外部时，会体验到类似真实环境中，声音在遇到建筑隔断时的衰减效果。
+2. 调用 `SetRemoteAudioAttenuation` 或 `SetPlayerAttenuation` 分别针对用户和媒体播放器设置声音衰减属性，并指定是否使用该设置强制覆盖 `SetZones` 中的声音衰减系数。
+
+```csharp
+SpatialAudioZone mediaPlayerLeftZone = new SpatialAudioZone();
+mediaPlayerLeftZone.zoneSetId = 1;
+mediaPlayerLeftZone.audioAttenuation = 1.0f;
+float[] voicePosition = { 0.0f, 0.0f, 0.0f };
+float[] viewRelativeSizeInAxis = { 1.0f, 1.0f, 1.0f };
+// 在世界坐标系中的坐标
+mediaPlayerLeftZone.position = new float[] { voicePosition[0], voicePosition[1], 0 };
+// 以 position 为起点，向前的单位向量，对应 Unity Vector3 的 z 轴
+mediaPlayerLeftZone.forward = new float[] { 1.0f, 0, 0 };
+// 以 position 为起点，向右的单位向量，对应 Unity Vector3 的 x 轴
+mediaPlayerLeftZone.right = new float[] { 0, 1.0f, 0 };
+// 以 position 为起点，向上的单位向量，对应 Unity Vector3 的 y 轴
+mediaPlayerLeftZone.up = new float[] { 0, 0, 1.0f };
+// 隔声区域的前向长度
+mediaPlayerLeftZone.forwardLength = viewRelativeSizeInAxis[1];
+// 隔声区域的右向长度
+mediaPlayerLeftZone.rightLength = viewRelativeSizeInAxis[0];
+// 隔声区域的上向长度
+mediaPlayerLeftZone.upLength = viewRelativeSizeInAxis[2];
+SpatialAudioEngine.SetZones(new SpatialAudioZone[] { mediaPlayerLeftZone },1);
+// 针对用户设置声音衰减属性
+SpatialAudioEngine.SetRemoteAudioAttenuation(uid, 0.5f, false);
+// 针对媒体播放器设置声音衰减属性
+SpatialAudioEngine.SetPlayerAttenuation(MediaPlayer.GetId(), 0.5f, false);
+```
+
+### （可选）设置耳机均衡效果
+
+1. 调用 `SetHeadphoneEQPreset` 方法，选择预设的耳机均衡器收听音频，以达到预期的音频体验。
+2. 如果执行上一步后仍未达到预期，你可以调用 `SetHeadphoneEQParameters` 自行调节耳机均衡效果，执行该方法后，`SetHeadphoneEQPreset` 方法设置的预设值会被覆盖。
+
+```csharp
+RtcEngine.SetHeadphoneEQPreset(HEADPHONE_EQUALIZER_PRESET.HEADPHONE_EQUALIZER_OVEREAR);
+RtcEngine.SetHeadphoneEQParameters(10, 10);
+```
+
+### 暂停或关闭空间音频
+
+在互动过程中，你可选择暂停或关闭空间音频。
+
+#### （可选）暂停指定远端用户在本地的空间音频
+
+1. 如果不想继续体验远端用户在本地的空间音频、或远端用户已退出频道，调用 `RemoveRemotePosition` 删除该用户的空间位置信息，以节省计算资源。
+
+    :::warning[注意]
+    当远端用户离开频道时，必须调用 `RemoveRemotePosition` 删除该用户的空间位置信息，否则可能导致本地听不到来自其他远端用户的空间音频。
+    :::
+
+2. 如果之后想恢复该用户在本地的空间音频，可调用 `UpdateRemotePosition` 方法重新设置远端用户的位置信息。
+
+```csharp
+// 暂停指定远端用户在本地的空间音频
+SpatialAudioEngine.RemoveRemotePosition(uid);
+
+// 恢复指定远端用户在本地的空间音频系统下的坐标和朝向
+float[] position = new float[] { 1.0f, 1.0f, 1.0f };
+// 以 position 为起点，向右的单位向量，对应 Unity Vector3 的 x 轴
+float[] forward = new float[] { 1.0f, 1.0f, 1.0f };
+RemoteVoicePositionInfo positionInfo = new RemoteVoicePositionInfo(position, forward);
+SpatialAudioEngine.UpdateRemotePosition(uid, positionInfo);
+```
+
+#### （可选）暂停所有远端用户在本地的空间音频
+
+1. 如果你不想再继续体验本地的空间音频，可以调用 `ClearRemotePositions` 删除所有远端用户的空间位置信息。
+
+   :::warning[注意]
+   调用该方法会导致本地听不到所有远端用户的音频，声网建议你谨慎调用该方法。
+   :::
+
+2. 如果之后还需要听到远端用户的音频，你需要重新调用 `ILocalSpatialAudioEngine` 中的 `MuteAllRemoteAudioStreams` 并将 `mute` 设为 `false` 恢复订阅远端用户的音频流。
+
+```csharp
+// 删除所有远端用户的空间位置信息
+SpatialAudioEngine.ClearRemotePositions();
+// 恢复订阅远端用户的音频流
+SpatialAudioEngine.MuteAllRemoteAudioStreams(false);
+```
+
+#### （可选）暂停本地用户在远端的空间音频
+
+1. 调用 `ILocalSpatialAudioEngine` 中的 `MuteLocalAudioStream` 并将 `mute` 设为 `true` 以取消发布本地音频流。
+2. 如果之后想再次开启空间音频，可再次调用该方法并将参数设置为 `false`，即可恢复空间音频。
+
+```csharp
+// 取消发布本地音频流
+SpatialAudioEngine.MuteLocalAudioStream(true);
+// 恢复发布本地音频流
+SpatialAudioEngine.MuteLocalAudioStream(false);
+```
+
+#### 关闭空间音频
+
+1. 在频道内调用 `IRtcEngine` 中的 `EnableSpatialAudio` 并将 `enabled` 参数设置为 `false`，此时所有跟空间音频相关的设置都会被重置。
+2. 如果之后想再次开启空间音频，可再次调用该方法并将参数设置为 `true`，然后重新调用相关 API 设置空间音频效果。
+3. 如果你不需要再使用空间音频功能，调用 `ILocalSpatialAudioEngine` 中的 `Dispose` 销毁 `ILocalSpatialAudioEngine` 对象。
+
+```csharp
+// 关闭空间音频
+RtcEngine.EnableSpatialAudio(false);
+// 销毁 ILocalSpatialAudioEngine 对象
+SpatialAudioEngine.Dispose();
+```
+
+## 相关文档
+
+### 示例项目
+
+声网提供了开源的实时音视频互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="SpatialAudioWithMediaPlayer" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SpatialAudioWithMediaPlayer/SpatialAudioWithMediaPlayer.cs" />
+  <Card title="SpatialAudioWithMediaPlayer" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SpatialAudioWithMediaPlayer/SpatialAudioWithMediaPlayer.cs" />
+</Cards>
+
+### API 参考
+
+- [`ILocalSpatialAudioEngine`](/api-ref/rtc/unity/API/rtc_interface_class#class_ilocalspatialaudioengine)
+    - [`Initialize`](/api-ref/rtc/unity/API/toc_spatial_audio#Initialize)
+    - [`SetMaxAudioRecvCount`](/api-ref/rtc/unity/API/toc_spatial_audio#SetMaxAudioRecvCount)
+    - [`SetAudioRecvRange`](/api-ref/rtc/unity/API/toc_spatial_audio#SetAudioRecvRange)
+    - [`UpdateSelfPosition`](/api-ref/rtc/unity/API/toc_spatial_audio#UpdateSelfPosition)
+    - [`UpdateRemotePosition`](/api-ref/rtc/unity/API/toc_spatial_audio#UpdateRemotePosition)
+    - [`UpdatePlayerPositionInfo`](/api-ref/rtc/unity/API/toc_spatial_audio#UpdatePlayerPositionInfo)
+    - [`SetRemoteUserSpatialAudioParams`](/api-ref/rtc/unity/API/toc_spatial_audio#SetRemoteUserSpatialAudioParams)
+    - [`SetZones`](/api-ref/rtc/unity/API/toc_spatial_audio#SetZones)
+    - [`SetRemoteAudioAttenuation`](/api-ref/rtc/unity/API/toc_spatial_audio#SetRemoteAudioAttenuation)
+    - [`SetPlayerAttenuation`](/api-ref/rtc/unity/API/toc_spatial_audio#SetPlayerAttenuation)
+    - [`ClearRemotePositions`](/api-ref/rtc/unity/API/toc_spatial_audio#ClearRemotePositions)
+    - [`MuteLocalAudioStream`](/api-ref/rtc/unity/API/toc_spatial_audio#MuteLocalAudioStream)
+    - [`MuteAllRemoteAudioStreams`](/api-ref/rtc/unity/API/toc_spatial_audio#MuteAllRemoteAudioStreams)
+    - [`EnableSpatialAudio`](/api-ref/rtc/unity/API/toc_spatial_audio#EnableSpatialAudio)
+    - [`Dispose`](/api-ref/rtc/unity/API/toc_spatial_audio#api_ilocalspatialaudioengine_release)
+
+- [`IMediaPlayer`](/api-ref/rtc/unity/API/rtc_interface_class#class_imediaplayer)
+    - [`SetSpatialAudioParams`](/api-ref/rtc/unity/API/toc_spatial_audio#SetSpatialAudioParams)
+
+- [`IRtcEngine`](/api-ref/rtc/unity/API/rtc_interface_class#class_irtcengine)
+    - [`GetLocalSpatialAudioEngine`](/api-ref/rtc/unity/API/toc_spatial_audio#api_irtcengine_getlocalspatialaudioengine)
+    - [`SetHeadphoneEQPreset`](/api-ref/rtc/unity/API/toc_spatial_audio#setHeadphoneEQPreset)
+    - [`SetHeadphoneEQParameters`](/api-ref/rtc/unity/API/toc_spatial_audio#setHeadphoneEQParameters)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+文档正在开发中，敬请期待。你可以先了解 [Unity 平台上使用 SDK 实现空间音频](/zh-CN/solutions/game-voice/user-guides/spatial-audio-sdk)。
+
+</PlatformStructured>

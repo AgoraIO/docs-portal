@@ -1,0 +1,59 @@
+---
+title: "集成检查清单"
+---
+参考以下表格，快速确认每条检查项是否符合集成要求，以保证 rtmp-gateway服务的可靠性。
+
+:::warning[注意]
+声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
+:::
+
+| 编号 | 重要程度 | 检查内容 |
+| --- | --- | --- |
+| 1 | 必需 | 所在频道场景为直播（`profile` 为 `BROADCASTING`）。 |
+| 2 | 必需 | [开通 RTMP 网关服务](/zh-CN/realtime-media/rtmp-gateway/get-started/enable-service)。 |
+| 3 | 必需 | 确保一个项目中的 API 调用速率低于最大限制。详见 [API 限速](/zh-CN/realtime-media/rtmp-gateway/quota#api-限速)。 |
+| 4 | 必需 | 确保一个项目中的并发任务数低于 50。详见[最大并发任务数](/zh-CN/realtime-media/rtmp-gateway/quota#pcw)。 |
+| 5 | 必需 | <Slot name="checklist-html-0-5-2" /> |
+| 6 | 可选 | <Slot name="checklist-html-0-6-2" /> |
+| 7 | 可选 | <Slot name="checklist-html-0-7-2" /> |
+| 8 | 可选 | <Slot name="checklist-html-0-8-2" /> |
+
+<Slot for="checklist-html-0-5-2">
+
+- 设置的 `region` 与你的媒体流源站在同一个区域。
+      - 传入 `region` 值为小写。
+
+</Slot>
+
+<Slot for="checklist-html-0-6-2">
+
+如果调用 RESTful API 失败，请按照如下方案进行问题排查：
+
+      - 使用退避策略。
+      - 根据[响应状态码](/zh-CN/realtime-media/rtmp-gateway/response-code)排查。
+
+      如果以上排查方法并未解决问题，请打印出响应 Header 中的 `X-Request-ID` 字段值，并联系[声网技术支持](https://ticket.shengwang.cn)。
+
+</Slot>
+
+<Slot for="checklist-html-0-7-2">
+
+如果使用 RTMP/SRT 协议推流失败，请按照如下方案进行问题排查：
+
+      - 请检查使用的推流码，是否超过有效期。
+      - 如果使用 OBS 推流软件，请检查丢帧率是否正常。
+
+      如果以上排查方法并未解决问题，请确认推流域名和推流码，并联系[声网技术支持](https://ticket.shengwang.cn)。
+
+</Slot>
+
+<Slot for="checklist-html-0-8-2">
+
+如果因为网络故障导致推流服务或 REST 服务不可用，请按照如下方案进行问题排查：
+
+      - 使用当前主域名重试一次。
+      - 更换为备份域名重试一次。
+
+      如果以上排查方法并未解决问题，请确认推流域名和推流码，并联系[声网技术支持](https://ticket.shengwang.cn)。
+
+</Slot>

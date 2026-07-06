@@ -1,0 +1,159 @@
+---
+title: "使用摄像头律动插件"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何在你的项目中集成和使用摄像头律动插件。
+
+## 前提条件
+
+在开始集成并使用律动插件前，请确保开发环境满足以下要求：
+
+- 已集成 4.2.x 或 4.3.x 版本的实时互动 SDK，并确保你已在 App 中实现了基本的实时音视频功能，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+- Android Studio 4.1 以上版本。
+- Android API 级别 16 或以上。
+- Android 4.1 或以上版本的移动设备，且前置摄像头与麦克风功能正常。
+
+## 集成摄像头律动插件
+
+开始前，你需要下载摄像头律动插件并添加插件至实时互动 SDK 中。
+
+### 下载插件
+
+前往[下载](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/resources)获取摄像头律动插件 SDK 包。
+
+解压后，你需要根据 App 集成的实时互动 SDK 版本，从摄像头律动插件 SDK 包中集成对应版本文件夹下的摄像头律动插件。例如 App 已集成 4.2.6 版本的实时互动 SDK，则需要集成 `./sdk/4.2` 目录下的插件。
+
+其中，`libagora_portrait_rhythm_extension.so` 即为律动插件动态库，目前支持 arm64-v8a 和 armeabi-v7a 两种架构。
+
+### 添加插件至 App
+
+根据你的目标开发架构，将 `libagora_portrait_rhythm_extension.so` 拷贝至实时互动 SDK 的动态库目录下，即 `/rtc/sdk/<目标架构>` 目录下。
+
+### 注册插件
+
+初始化 `RtcEngine` 后，调用 `loadExtensionProvider` 加载摄像头律动插件库，之后调用 `registerExtension` 注册摄像头律动插件。
+
+:::warning[注意]
+确保在调用 `enableVideo` 启用视频模块前加载并注册摄像头律动插件。
+:::
+
+```java
+// 加载律动动态库
+mRtcEngine.loadExtensionProvider("agora_portrait_rhythm_extension");
+// 注册律动插件
+mRtcEngine.registerExtension("agora_video_filters_portrait_rhythm","portrait_rhythm",Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+// 启用视频模块
+mRtcEngine.enableVideo();
+```
+
+## 开启摄像头律动插件
+
+确保在调用 `startPreview` 开启视频预览后，再调用 `enableExtension` 开启或关闭摄像头律动插件。
+
+```java
+// 开启摄像头律动
+mRtcEngine.enableExtension("agora_video_filters_portrait_rhythm","portrait_rhythm", true);
+```
+
+设置或切换摄像头律动效果需要调用 `setExtensionProperty` 并传入不同的 `key` 和 `value`，实现心跳律动、人像律动、前后运镜等效果，详见 [key-value 说明](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/key-value)。
+
+```java
+// 设置为心跳律动效果
+mRtcEngine.setExtensionProperty("agora_video_filters_portrait_rhythm","portrait_rhythm","mode","1");
+```
+
+## 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [插件相关 API 参考](/api-ref/rtc/android/API/toc_extension)
+- [key-value 说明](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/key-value)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何在你的项目中集成和使用摄像头律动插件。
+
+## 前提条件
+
+在开始集成并使用律动插件前，请确保开发环境满足以下要求：
+
+- 已集成 4.2.x 或 4.3.x 版本的实时互动 SDK，并确保你已在 App 中实现了基本的实时音视频功能，请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+- Xcode 12.0 或以上版本。
+- Apple 开发者账号。
+-  iOS 9.0 或以上版本的设备，且前置摄像头与麦克风功能正常。
+- 确保已安装 CocoaPods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
+
+## 集成摄像头律动插件
+
+开始前，你需要下载摄像头律动插件并添加插件至实时互动 SDK 中。
+
+### 下载插件
+
+前往[下载](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/resources)获取摄像头律动插件 SDK 包。
+
+解压后，你需要根据 App 集成的实时互动 SDK 版本，从摄像头律动插件 SDK 包中集成对应版本文件夹下的摄像头律动插件。例如 App 已集成 4.2.6 版本的实时互动 SDK，则需要集成 `./sdk/4.2` 目录下的插件。
+
+其中，`AgoraPortraitRhythmExtension.xcframework` 即为律动插件库，目前支持 arm64 和 armv7 两种架构。
+
+### 添加插件至 App
+
+根据你的目标开发架构，将 `AgoraPortraitRhythmExtension.xcframework` 拷贝至实时互动 SDK 的动态库目录下，即 `/rtc/sdk/<目标架构>` 目录下。之后，在 Xcode 中将 `AgoraPortraitRhythmExtension.xcframework` 链接至你的工程，并将 **Embed** 修改为 **Embed & Sign**，请参考 [Embedding Frameworks In An App](https://developer.apple.com/library/archive/technotes/tn2435/_index.html)。
+
+![](/img/sdk-extension/pr-ios-link-extension.png)
+
+### 注册插件
+
+初始化 `RtcEngine` 后，调用 `registerExtension` 注册摄像头律动插件。
+
+:::warning[注意]
+确保在调用 `enableVideo` 启用视频模块前注册摄像头律动插件。
+:::
+
+```swift
+// 注册摄像头律动插件
+agoraEngine.registerExtension(
+    withVendor: "agora_video_filters_portrait_rhythm", 
+    extension: "portrait_rhythm", 
+    sourceType: .primaryCamera
+)
+// 启用视频模块
+agoraEngine.enableVideo()
+```
+
+## 开启摄像头律动插件
+
+确保在调用 `startPreview` 开启视频预览后，再调用 `enableExtension` 开启或关闭摄像头律动插件。
+
+```swift
+// 开启摄像头律动
+agoraEngine.enableExtension(
+    withVendor: "agora_video_filters_portrait_rhythm", 
+    extension: "portrait_rhythm", 
+    enabled: true
+)
+```
+
+设置或切换摄像头律动效果需要调用 `setExtensionPropertyWithVendor` 并传入不同的 `key` 和 `value`，实现心跳律动、人像律动、前后运镜等功能，详见 [key-value 说明](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/key-value)。
+
+```swift
+// 设置为心跳律动效果
+agoraEngine.setExtensionPropertyWithVendor(
+    "agora_video_filters_portrait_rhythm", 
+    extension: "portrait_rhythm", 
+    key: "mode", 
+    value: "1"
+)
+```
+
+## 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+- [插件相关 API 参考](/api-ref/rtc/ios/API/toc_extension)
+- [key-value 说明](/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/key-value)
+
+</PlatformStructured>

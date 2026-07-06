@@ -1,0 +1,121 @@
+---
+title: "拼接直播 URL"
+---
+访问融合 CDN 直播服务需要使用特定规则的直播 URL。本文介绍直播 URL（分为推流 URL 和播流 URL）的拼接规则以及鉴权字符串的计算方式。
+
+## 技术原理
+
+因为 URL 中可能包含鉴权信息，声网建议在你的业务服务器上实现 URL 拼接，使用流程如下：
+
+![URL 拼接流程](/img/fusion-cdn/streaming-url.png)
+
+## 拼接推流 URL
+
+推流 URL 由四部分组成，如下图的示例 URL 所示：
+
+![推流 URL 示例](https://web-cdn.agora.io/docs-files/1642414473272)
+
+各部分说明：
+
+| URL 分段 | 是否必须 | 描述 |
+| --- | --- | --- |
+| 域名 | 是 | 推流使用的域名，必须已备案且 CNAME 配置成功。 |
+| 发布点 | 是 | 默认发布点为 `live`，每个发布点都有一套直播流相关的配置。 |
+| 流名 | 是 | 直播流名称，用于标识一路直播流，请确保直播流名称唯一。 |
+| 鉴权字符串 | 否 | <Slot name="streaming-url-markdown-0-4-2" /> |
+
+<Slot for="streaming-url-markdown-0-4-2">
+
+如果没有设置直播流鉴权，则 URL 地址中无需 `?` 及后面的内容。
+鉴权字符串由以下参数组成：
+
+- `ts`：URL 失效的 Unix 时间戳，单位为秒。该值表示鉴权字符串过期的时间，例如，`ts=1635004800` 表示鉴权字符串在 2021 年 10 月 24 日 0 点前有效。
+- `sign`：防盗链签名。字符串中的字母必须为小写。详见[计算鉴权字符串](#key)。
+**注意：**为保障安全性，声网强烈建议你在 URL 中使用鉴权字符串。
+
+</Slot>
+
+## 拼接播流 URL
+
+播流 URL 的拼接规则和推流 URL 类似，但不同的播流协议对应的 URL 路径略有差异。
+
+:::warning[注意]
+播流 URL 中的域名必须为播流域名。
+:::
+
+### 播放源流
+
+播放源流的 URL 路径如下：
+
+| 播放协议 | URL 路径规则                              | URL 示例                                                     |
+| :------- | :------------------------------------ | :----------------------------------------------------------- |
+| RTMP     | `/{entry-point}/{stream}`               | `rtmp(s)://domain/live/stream?ts=1635004800&sign=95b0a9970c593819` |
+| HTTP-FLV | `/{entry-point}/{stream}.flv`           | `http(s)://domain/live/stream**.flv**?ts=1635004800&sign=337f185b6571cd42` |
+| HLS      | `/{entry-point}/{stream}/playlist.m3u8` | `http(s)://domain/live/stream/**playlist.m3u8**?ts=1635004800&sign=a1d2d3bcce31c9fe` |
+
+### 播放转码流
+
+播放转码流的 URL 路径如下：
+
+| 播放协议 | URL 路径规则          | URL 示例         |
+| :------------- | :------------------------------- | :----------- |
+| RTMP           | `/{entry-point}/{stream}_{transcode}`               | `rtmp(s)://domain/live/stream_hd?ts=1635004800&sign=95b0a9970c593819` |
+| HTTP-FLV       | `/{entry-point}/{stream}_{transcode}.flv `          | `http(s)://domain/live/stream_hd**.flv**?ts=1635004800&sign=337f185b6571cd42` |
+| HLS            | `/{entry-point}/{stream}_{transcode}/playlist.m3u8` | `http(s)://domain/live/stream_hd/**playlist.m3u8**?ts=1635004800&sign=a1d2d3bcce31c9fe` |
+
+<a id="key"></a>
+## 计算鉴权字符串（可选）
+
+本节介绍如何生成 URL 鉴权字符串。
+
+### 1. 设置防盗链密钥
+
+防盗链密钥用于在业务服务器生成签名，以及在使用声网融合 CDN 直播服务时进行验证。
+
+防盗链密钥为不超过 128 字节的字符串，你需要自行设置。每个推流域名和播流域名都可以分别设置防盗链密钥，详见[直播流鉴权配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-domains-domain)。
+
+:::error[警告]
+不要在客户端使用防盗链密钥或者将其泄露给第三方，否则有被盗链风险。
+:::
+
+### 2. 计算失效时间戳
+
+推流/播流 URL 中的 `ts` 参数决定了该 URL 的有效时间。
+
+假设当前时间 2021-10-23 10:00:00，转换为 Unix 时间戳为 1634954400。如果我们期望 URL 的有效期为 10 分钟，即在 2021-10-23 10:10:00 前有效，转换为 Unix 时间戳为 1634955000，即 `ts` 参数为 `1634955000`。
+
+URL 的有效期不宜设置太短或者太长，声网推荐设置在 5 到 10 分钟之内。
+
+- 有效期太短，客户端断线重连后可能会推流/播流失败，需要重新生成防盗链鉴权字符串。
+- 有效期设置太长会增加被盗链的风险。
+
+### 3. 计算防盗链签名
+
+签名 (`sign`) 为防盗链密钥、推流/播流 URL 的路径、失效时间戳 `ts` 这三部分拼接后的字符串计算得到的 MD5 值。签名字符串中的字母必须为小写。
+
+例如，假设 URL 为 `http://domain/live/stream.flv`，防盗链密钥为 `z2tn3uiny0aasebz`，`ts` 为 `1634955000`，则签名的计算公式为：
+
+```
+sign=MD5(z2tn3uiny0aasebz/live/stream.flv1634955000)=b6ceec4cf7c1bd88e911b72cf39e4715
+```
+
+### 示例代码
+
+以下为用 Python3 代码计算鉴权字符串的示例：
+
+```python
+#!/usr/bin/python3
+import time
+from urllib.parse import urlparse
+import hashlib
+key = 'test_key'
+play_url_str = 'http://push.test.com/live/test.flv'
+key_expire_time = 60*15
+url = urlparse(play_url_str)
+now = int(time.time()) + key_expire_time
+sign = key + url.path + str(now)
+md5 = hashlib.md5()
+md5.update(sign.encode('utf-8'))
+play_url_str += "?ts={}&sign={}".format(now, md5.hexdigest())
+print(play_url_str)
+```

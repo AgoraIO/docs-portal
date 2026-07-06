@@ -1,0 +1,1785 @@
+---
+title: "高级美颜"
+---
+
+<PlatformStructured platform="android">
+
+声网高级美颜是与声网 RTC 深度融合的实时美颜组件，面向泛娱乐、直播等互动场景，提供低开销、高稳定的一体化美颜接入能力，在中低端机型上性能优势尤为突出。
+
+自 v4.5.2.9 起，声网提供全新的美颜 2.1 API，新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+
+本文介绍如何实现高级美颜功能。
+
+:::info[信息]
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
+  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
+  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+:::
+
+## 功能介绍
+
+### 核心功能
+
+美颜 2.1 提供了四大核心功能：
+
+- **美颜**：包含基础美颜（磨皮、美白、红润、锐化）、美型（瘦脸、大眼等脸部轮廓调整）、美肤（去眼袋、亮眼、白牙、去法令纹、去黑眼圈等）功能。
+- **风格妆**：包含口红、眼影、眉毛、修容等妆容特效的组合模板。
+- **滤镜**：提供多种滤镜效果，如奶油、ins 风、胶片等风格。
+- **贴纸**：提供多种贴纸特效，如“辫子猫”、“猪可爱”、“赛博眼镜”等贴纸。
+
+### 关键概念
+
+- **视频特效对象 (VideoEffectObject)**：特效功能的核心管理对象。管理一个视频源（如主摄像头）的所有特效。你需要先创建此对象，然后通过它来添加、删除、配置特效节点。
+- **特效节点 (Node)**：代表一类特效处理单元。API 2.1 主要提供四种节点：
+    - **BEAUTY**：美颜节点。包含基础美颜、美型、美肤功能。
+    - **STYLE_MAKEUP**：风格妆节点。
+    - **FILTER**：滤镜节点。
+    - **STICKER**：贴纸节点。
+- **模板 (Template)**：一个预设的 JSON 配置文件，定义了某个节点所需的所有参数和资源路径。使用模板可以一键启用一套精心调校的效果组合，极大简化开发。
+- **素材包 (Bundle)**：一个包含所有特效所需资源（图片、配置文件等）的压缩包。你需要将此包解压到应用的本地存储中，并在创建 `VideoEffectObject` 对象时指定其路径。
+
+### 核心优势
+
+相比旧版 API，美颜 2.1 具备以下优势：
+
+- **性能优化**：针对中低端设备深度调优，在保证画质效果的同时实现低功耗、低发热，中低端机型上也能流畅运行。
+- **简单易用**：模板化 API 设计搭配开箱即用的 UI 组件库，内置基础美颜、美型、30+ 滤镜、美妆及动态贴纸等完整能力，分钟级接入，同时支持对各项参数进行精细化的动态调整。
+- **本地化部署**：美颜资源外置为本地 bundle 文件，消除网络下载依赖，提升可靠性和启动速度。
+- **统一管理**：通过 `IVideoEffectObject` 对象统一管理所有特效节点的生命周期和参数设置。
+
+## 前提条件
+
+在实现高级美颜功能前，请确保：
+
+- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
+
+## 实现步骤
+
+本节介绍如何在你的项目中实现高级美颜功能。
+
+### 准备美颜素材包
+
+1. [联系技术支持](https://ticket.shengwang.cn)获取美颜素材包：`AgoraBeautyMaterial.zip`。
+2. 将素材包解压到应用程序可访问的本地目录（例如应用的 assets 目录或内部存储目录）。
+3. 确保应用拥有对该目录的读取权限。
+
+素材包解压后的目录结构如下：
+
+```shell
+AgoraBeautyMaterial.zip
+├── beauty_material_functional/        # 全功能版素材包
+    ├── beauty_female/                     # 美颜模板：模板女
+    ├── beauty_male/                       # 美颜模板：模板男
+    ├── beauty_natural/                    # 美颜模板：模板自然
+    ├── stylemakeup_mature/                # 风格妆模板：学姐妆
+    ├── stylemakeup_youthful/              # 风格妆模板：学妹妆
+    ├── filter_warmcolor/                  # 滤镜模板：气质
+    ├── filter_bright/                     # 滤镜模板：气色
+    ├── filter_vibrant/                    # 滤镜模板：元气
+    ├── sticker_pig/                       # 贴纸模板：小猪贴纸
+    ├── sticker_cat/                       # 贴纸模板：小猫贴纸
+    ├── config.json                        # 根配置文件
+├── resource/                         # 资源文件夹
+```
+
+### 创建视频特效对象
+
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+
+```java
+// 假设 mRtcEngine 是已初始化的 RtcEngine 对象
+private IVideoEffectObject mVideoEffectObject;
+
+// 获取应用的内部存储目录
+File filesDir = getFilesDir();
+String bundlePath = filesDir.getAbsolutePath() + "/beauty_material_functional";
+
+mVideoEffectObject = mRtcEngine.createVideoEffectObject(bundlePath, 
+                                                       Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
+```
+
+### 实现美颜效果
+
+调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+
+```java
+// 启用美颜效果，使用默认模板
+int result = mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), "");
+if (result == 0) {
+    // 美颜效果启用成功
+}
+```
+
+你也可以使用特定的美颜模板：
+
+```java
+// 使用女性美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), 
+                                         "BeautyFemale");
+
+// 使用男性美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), 
+                                         "BeautyMale");
+
+// 使用自然美颜模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), 
+                                         "BeautyNatural");
+```
+
+### 实现美妆和滤镜效果
+
+#### 启用美妆效果
+
+美妆效果通过风格妆节点 (`STYLE_MAKEUP`) 实现：
+
+```java
+// 启用学姐妆模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue(), 
+                                         "MatureMakeup");
+
+// 启用学妹妆模板
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue(), 
+                                         "YouthfulMakeup");
+```
+
+#### 启用滤镜效果
+
+滤镜效果通过滤镜节点 (`FILTER`) 实现：
+
+```java
+// 启用气质滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(), 
+                                         "WarmColor");
+
+// 启用气色滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(), 
+                                         "Bright");
+
+// 启用元气滤镜
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue(), 
+                                         "Vibrant");
+```
+
+#### 启用贴纸效果
+
+贴纸效果通过贴纸节点 (`STICKER`) 实现：
+
+```java
+// 启用小猪贴纸
+mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STICKER.getValue(), 
+                                         "StickerPig");
+```
+
+### 管理特效配置
+
+#### 移除特效节点
+
+使用 [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+
+```java
+// 移除美颜节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue());
+
+// 移除风格妆节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STYLE_MAKEUP.getValue());
+
+// 移除滤镜节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FILTER.getValue());
+
+// 移除贴纸节点
+mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.STICKER.getValue());
+```
+
+#### 保存和重置配置
+
+使用 [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+
+```java
+// 保存当前美颜节点的所有参数
+mVideoEffectObject.performVideoEffectAction(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), 
+                                           IVideoEffectObject.VIDEO_EFFECT_ACTION.SAVE);
+
+// 将美颜节点的参数重置为默认值
+mVideoEffectObject.performVideoEffectAction(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.BEAUTY.getValue(), 
+                                           IVideoEffectObject.VIDEO_EFFECT_ACTION.RESET);
+```
+
+### （可选）自定义美颜参数
+
+如果预设模板中的美颜参数不满足你的需求，你可以参考以下步骤，动态设置或获取美颜、风格妆、滤镜和贴纸效果的各项参数：
+
+1. 在[JSON 字段说明](#json-字段说明)中查看参数详情，并找到目标效果对应的行。
+2. 取该行的 ``option`` 和 ``key``，分别作为 API 的前两个参数。
+3. 根据该行的类型选择对应的 `set/get` 方法，并按取值范围传入 `value`。
+    - 类型为 float 调用 `setVideoEffectFloatParam` 和 `getVideoEffectFloatParam`
+    - 类型为 bool 调用 `setVideoEffectBoolParam` 和 `getVideoEffectBoolParam`
+    - 类型为 int 调用 `setVideoEffectIntParam` 和 `getVideoEffectIntParam`
+    - 类型为 string 调用 `setVideoEffectStringParam`
+
+**设置浮点型参数（例：磨皮强度）**
+
+```java
+// 设置磨皮强度为 0.7
+mVideoEffectObject.setVideoEffectFloatParam("beauty_effect_option", "smoothness", 0.7f);
+```
+
+**设置布尔型参数（例：关闭美颜）**
+
+```java
+// 关闭美颜效果
+mVideoEffectObject.setVideoEffectBoolParam("beauty_effect_option", "enable", false);
+```
+
+**获取当前参数值**
+
+```java
+// 获取当前磨皮强度
+float currentSmoothness = mVideoEffectObject.getVideoEffectFloatParam("beauty_effect_option", "smoothness");
+```
+
+### 销毁视频特效对象
+
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+
+```java
+mRtcEngine.destroyVideoEffectObject(mVideoEffectObject);
+mVideoEffectObject = null;
+```
+
+## 开发注意事项
+
+在使用高级美颜功能时，请注意以下事项：
+
+- **生命周期管理**：确保视频特效对象的生命周期与对应的视频源保持一致，通常在开启视频流后创建，在关闭视频流前销毁。
+- **性能考量**：启用多个特效会增加设备功耗。在低端设备上，建议酌情关闭非必要的视频特效。
+- **错误处理**：务必检查关键 API（如 `createVideoEffectObject`、`addOrUpdateVideoEffect`）的返回值，确保操作成功。
+- **路径检查**：确保传递给 `createVideoEffectObject` 的素材包路径绝对正确且应用有权限访问。
+- **权限要求**：确保应用具有存储访问权限，以便读取美颜素材包。
+
+## 参考信息
+
+### 示例项目
+
+声网提供开箱即用的 **UI 组件库**，内置基础美颜、精细美型、30+ 滤镜、美妆及动态贴纸等完整能力矩阵，无需自研 UI，分钟级接入：
+
+[ShengwangBeautyView UI 组件库](https://github.com/Shengwang-Community/ShengwangBeautyView)
+
+### JSON 字段说明
+
+本节提供美颜、风格妆、滤镜和贴纸效果的 JSON 示例和字段说明。
+
+`JSON 字段说明` 表格与 API 参数的映射关系如下：
+
+| 表格列 | 对应 API 参数 | 用法说明 |
+| --- | --- | --- |
+| ``option`` | 第 1 个参数 `option` | 例如 `beauty_effect_option`、`makeup_options` |
+| ``key`` | 第 2 个参数 `key` | 例如 `smoothness`、`enable` |
+| 类型 | 选择调用的方法 | <Slot name="advanced-beauty-windows-android-ios-macos-html-0-3-2" /> |
+| 取值范围 | 第 3 个参数 `value` 的合法范围 | 传值时建议按范围做校验 |
+
+<Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
+
+- float 用 `set/getVideoEffectFloatParam`
+    - bool 用 `set/getVideoEffectBoolParam`
+    - int 用 `set/getVideoEffectIntParam`
+    - string 用 `setVideoEffectStringParam`
+
+</Slot>
+
+你可以点击以下链接跳转至对应的 JSON 字段说明：
+
+- [美颜模板-基础](#美颜模板-基础)
+- [美颜模板-画质](#美颜模板-画质)
+- [美颜模板-美肤](#美颜模板-美肤)
+- [美颜模板-美型](#美颜模板-美型)
+- [美妆模板-风格妆](#美妆模板-风格妆)
+  - [调节妆容总体强度](#调节妆容总体强度)
+  - [精调各部位参数](#精调各部位参数)
+- [滤镜模板](#滤镜模板)
+- [贴纸模板](#贴纸模板)
+
+#### 美颜模板-基础
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
+| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
+| `lightness` | float | 美白 | 0.0-1.0 |  |
+| `redness` | float | 红润 | 0.0-1.0 |  |
+| `sharpness` | float | 锐化 | 0.0-1.0 |  |
+| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+
+#### 美颜模板-画质
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
+| `temperature` | float | 色温 | -1.0-1.0 |  |
+| `hue` | float | 色调 | -1.0-1.0 |  |
+| `brightness` | float | 亮度 | -1.0-1.0 |  |
+
+#### 美颜模板-美肤
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
+| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
+| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
+| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+
+#### 美颜模板-美型
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
+| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
+| `intensity` | int | 强度 | 0-100 |  |
+
+:::info[信息]
+目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy#微调单个部位)。
+:::
+
+#### 美妆模板-风格妆
+
+##### 调节妆容总体强度
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `style_makeup_option` | `styleIntensity` | float | 风格妆强度 | 0.0~1.0 |
+
+##### 精调各部位参数
+
+| option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- | --- |
+| `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
+| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
+| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
+| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
+| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
+| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
+| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
+| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
+| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
+| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
+| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
+| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
+| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
+| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
+| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
+| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+
+#### 滤镜模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
+| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+
+#### 贴纸模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
+| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+
+### API 参考
+
+#### 视频特效对象管理
+
+- [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+
+#### 特效节点管理
+
+- [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+
+#### 参数设置与获取
+
+- [`setVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- `setVideoEffectStringParam`
+
+:::info[信息]
+仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+
+<Accordions>
+<Accordion title="setVideoEffectStringParam">
+
+设置视频特效的字符串参数。
+
+```java
+public int setVideoEffectStringParam(String option, String key, String value)
+```
+
+**参数**
+
+| 参数名 | 类型 | 说明 |
+|---|---|---|
+| option | String | 参数类别标识符。 |
+| key | String | 参数键名。 |
+| value | String | 要设置的字符串型参数值。 |
+
+**返回值**
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+**所属接口类**
+
+`IVideoEffectObject`
+
+</Accordion>
+</Accordions>
+:::
+
+#### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网高级美颜是与声网 RTC 深度融合的实时美颜组件，面向泛娱乐、直播等互动场景，提供低开销、高稳定的一体化美颜接入能力，在中低端机型上性能优势尤为突出。
+
+自 v4.5.2.9 起，声网提供全新的美颜 2.1 API，新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+
+本文介绍如何实现高级美颜功能。
+
+:::info[信息]
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
+  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
+  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+:::
+
+## 功能介绍
+
+### 核心功能
+
+美颜 2.1 提供了四大核心功能：
+
+- **美颜**：包含基础美颜（磨皮、美白、红润、锐化）、美型（瘦脸、大眼等脸部轮廓调整）、美肤（去眼袋、亮眼、白牙、去法令纹、去黑眼圈等）功能。
+- **风格妆**：包含口红、眼影、眉毛、修容等妆容特效的组合模板。
+- **滤镜**：提供多种滤镜效果，如奶油、ins 风、胶片等风格。
+- **贴纸**：提供多种贴纸特效，如“辫子猫”、“猪可爱”、“赛博眼镜”等贴纸。
+
+### 关键概念
+
+- **视频特效对象 (VideoEffectObject)**：特效功能的核心管理对象。管理一个视频源（如主摄像头）的所有特效。你需要先创建此对象，然后通过它来添加、删除、配置特效节点。
+- **特效节点 (Node)**：代表一类特效处理单元。API 2.1 主要提供四种节点：
+    - **BEAUTY**：美颜节点。包含基础美颜、美型、美肤功能。
+    - **STYLE_MAKEUP**：风格妆节点。
+    - **FILTER**：滤镜节点。
+    - **STICKER**：贴纸节点。
+- **模板 (Template)**：一个预设的 JSON 配置文件，定义了某个节点所需的所有参数和资源路径。使用模板可以一键启用一套精心调校的效果组合，极大简化开发。
+- **素材包 (Bundle)**：一个包含所有特效所需资源（图片、配置文件等）的压缩包。你需要将此包解压到应用的本地存储中，并在创建 `VideoEffectObject` 对象时指定其路径。
+
+### 核心优势
+
+相比旧版 API，美颜 2.1 具备以下优势：
+
+- **性能优化**：针对中低端设备深度调优，在保证画质效果的同时实现低功耗、低发热，中低端机型上也能流畅运行。
+- **简单易用**：模板化 API 设计搭配开箱即用的 UI 组件库，内置基础美颜、美型、30+ 滤镜、美妆及动态贴纸等完整能力，分钟级接入，同时支持对各项参数进行精细化的动态调整。
+- **本地化部署**：美颜资源外置为本地 bundle 文件，消除网络下载依赖，提升可靠性和启动速度。
+- **统一管理**：通过 `IVideoEffectObject` 对象统一管理所有特效节点的生命周期和参数设置。
+
+## 前提条件
+
+在实现高级美颜功能前，请确保：
+
+- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
+
+## 实现步骤
+
+本节介绍如何在你的项目中实现高级美颜功能。
+
+### 准备美颜素材包
+
+1. [联系技术支持](https://ticket.shengwang.cn)获取美颜素材包：`AgoraBeautyMaterial.bundle`。
+2. 将素材包解压到应用程序可访问的本地目录（例如应用的 assets 目录或内部存储目录）。
+3. 确保应用拥有对该目录的读取权限。
+
+素材包解压后的目录结构如下：
+
+```shell
+AgoraBeautyMaterial.bundle
+├── beauty_material_functional/        # 全功能版素材包
+    ├── beauty_female/                     # 美颜模板：模板女
+    ├── beauty_male/                       # 美颜模板：模板男
+    ├── beauty_natural/                    # 美颜模板：模板自然
+    ├── stylemakeup_mature/                # 风格妆模板：学姐妆
+    ├── stylemakeup_youthful/              # 风格妆模板：学妹妆
+    ├── filter_warmcolor/                  # 滤镜模板：气质
+    ├── filter_bright/                     # 滤镜模板：气色
+    ├── filter_vibrant/                    # 滤镜模板：元气
+    ├── sticker_pig/                       # 贴纸模板：小猪贴纸
+    ├── sticker_cat/                       # 贴纸模板：小猫贴纸
+    ├── config.json                        # 根配置文件
+├── resource/                         # 资源文件夹
+```
+
+### 创建视频特效对象
+
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+
+```swift
+// 假设 agoraKit 是已初始化的 AgoraRtcEngineKit 对象
+var videoEffectObject: AgoraVideoEffectObject?
+
+// 获取 Documents 目录路径
+let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+let bundlePath = "\(documentsPath)/beauty_material_functional"
+
+videoEffectObject = agoraKit.createVideoEffectObject(bundlePath: bundlePath, 
+                                                    sourceType: .primaryCamera)
+```
+
+### 实现美颜效果
+
+调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+
+```swift
+// 启用美颜效果，使用默认模板
+let result = videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                                      templateName: "")
+if result == 0 {
+    // 美颜效果启用成功
+}
+```
+
+你也可以使用特定的美颜模板：
+
+```swift
+// 使用女性美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyFemale")
+
+// 使用男性美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyMale")
+
+// 使用自然美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyNatural")
+```
+
+### 实现美妆和滤镜效果
+
+#### 启用美妆效果
+
+美妆效果通过风格妆节点 (`STYLE_MAKEUP`) 实现：
+
+```swift
+// 启用学姐妆模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue, 
+                                         templateName: "MatureMakeup")
+
+// 启用学妹妆模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue, 
+                                         templateName: "YouthfulMakeup")
+```
+
+#### 启用滤镜效果
+
+滤镜效果通过滤镜节点 (`FILTER`) 实现：
+
+```swift
+// 启用气质滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "WarmColor")
+
+// 启用气色滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "Bright")
+
+// 启用元气滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "Vibrant")
+```
+
+#### 启用贴纸效果
+
+贴纸效果通过贴纸节点 (`STICKER`) 实现：
+
+```swift
+// 启用小猪贴纸
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.sticker.rawValue, 
+                                         templateName: "StickerPig")
+```
+
+### 管理特效配置
+
+#### 移除特效节点
+
+使用 [`removeVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+
+```swift
+// 移除美颜节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue)
+
+// 移除风格妆节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue)
+
+// 移除滤镜节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue)
+
+// 移除贴纸节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.sticker.rawValue)
+```
+
+#### 保存和重置配置
+
+使用 [`performVideoEffectAction`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+
+```swift
+// 保存当前美颜节点的所有参数
+videoEffectObject?.performVideoEffectAction(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                           actionId: AgoraVideoEffectAction.save)
+
+// 将美颜节点的参数重置为默认值
+videoEffectObject?.performVideoEffectAction(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                           actionId: AgoraVideoEffectAction.reset)
+```
+
+### （可选）自定义美颜参数
+
+如果预设模板中的美颜参数不满足你的需求，你可以参考以下步骤，动态设置或获取美颜、风格妆、滤镜和贴纸效果的各项参数：
+
+1. 在[JSON 字段说明](#json-字段说明)中查看参数详情，并找到目标效果对应的行。
+2. 取该行的 ``option`` 和 ``key``，分别作为 API 的前两个参数。
+3. 根据该行的类型选择对应的 `set/get` 方法，并按取值范围传入 `value`。
+    - 类型为 float 调用 `setVideoEffectFloatParam` 和 `getVideoEffectFloatParam`
+    - 类型为 bool 调用 `setVideoEffectBoolParam` 和 `getVideoEffectBoolParam`
+    - 类型为 int 调用 `setVideoEffectIntParam` 和 `getVideoEffectIntParam`
+    - 类型为 string 调用 `setVideoEffectStringParam`
+
+**设置浮点型参数（例：磨皮强度）**
+
+```swift
+// 设置磨皮强度为 0.7
+videoEffectObject?.setVideoEffectFloatParam("beauty_effect_option", "smoothness", 0.7)
+```
+
+**设置布尔型参数（例：关闭美颜）**
+
+```swift
+// 关闭美颜效果
+videoEffectObject?.setVideoEffectBoolParam("beauty_effect_option", "enable", false)
+```
+
+**获取当前参数值**
+
+```swift
+// 获取当前磨皮强度
+let currentSmoothness = videoEffectObject?.getVideoEffectFloatParam("beauty_effect_option", "smoothness") ?? 0.0
+```
+
+### 销毁视频特效对象
+
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+
+```swift
+agoraKit.destroyVideoEffectObject(videoEffectObject)
+videoEffectObject = nil
+```
+
+## 开发注意事项
+
+在使用高级美颜功能时，请注意以下事项：
+
+- **生命周期管理**：确保视频特效对象的生命周期与对应的视频源保持一致，通常在开启视频流后创建，在关闭视频流前销毁。
+- **性能考量**：启用多个特效会增加设备功耗。在低端设备上，建议酌情关闭非必要的视频特效。
+- **错误处理**：务必检查关键 API（如 `createVideoEffectObject`、`addOrUpdateVideoEffect`）的返回值，确保操作成功。
+- **路径检查**：确保传递给 `createVideoEffectObject` 的素材包路径绝对正确且应用有权限访问。
+- **权限要求**：确保应用具有存储访问权限，以便读取美颜素材包。
+
+## 参考信息
+
+### 示例项目
+
+声网提供开箱即用的 **UI 组件库**，内置基础美颜、精细美型、30+ 滤镜、美妆及动态贴纸等完整能力矩阵，无需自研 UI，分钟级接入：
+
+[ShengwangBeautyView UI 组件库](https://github.com/Shengwang-Community/ShengwangBeautyView)
+
+### JSON 字段说明
+
+本节提供美颜、风格妆、滤镜和贴纸效果的 JSON 示例和字段说明。
+
+`JSON 字段说明` 表格与 API 参数的映射关系如下：
+
+| 表格列 | 对应 API 参数 | 用法说明 |
+| --- | --- | --- |
+| ``option`` | 第 1 个参数 `option` | 例如 `beauty_effect_option`、`makeup_options` |
+| ``key`` | 第 2 个参数 `key` | 例如 `smoothness`、`enable` |
+| 类型 | 选择调用的方法 | <Slot name="advanced-beauty-windows-android-ios-macos-html-0-3-2" /> |
+| 取值范围 | 第 3 个参数 `value` 的合法范围 | 传值时建议按范围做校验 |
+
+<Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
+
+- float 用 `set/getVideoEffectFloatParam`
+    - bool 用 `set/getVideoEffectBoolParam`
+    - int 用 `set/getVideoEffectIntParam`
+    - string 用 `setVideoEffectStringParam`
+
+</Slot>
+
+你可以点击以下链接跳转至对应的 JSON 字段说明：
+
+- [美颜模板-基础](#美颜模板-基础)
+- [美颜模板-画质](#美颜模板-画质)
+- [美颜模板-美肤](#美颜模板-美肤)
+- [美颜模板-美型](#美颜模板-美型)
+- [美妆模板-风格妆](#美妆模板-风格妆)
+  - [调节妆容总体强度](#调节妆容总体强度)
+  - [精调各部位参数](#精调各部位参数)
+- [滤镜模板](#滤镜模板)
+- [贴纸模板](#贴纸模板)
+
+#### 美颜模板-基础
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
+| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
+| `lightness` | float | 美白 | 0.0-1.0 |  |
+| `redness` | float | 红润 | 0.0-1.0 |  |
+| `sharpness` | float | 锐化 | 0.0-1.0 |  |
+| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+
+#### 美颜模板-画质
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
+| `temperature` | float | 色温 | -1.0-1.0 |  |
+| `hue` | float | 色调 | -1.0-1.0 |  |
+| `brightness` | float | 亮度 | -1.0-1.0 |  |
+
+#### 美颜模板-美肤
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
+| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
+| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
+| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+
+#### 美颜模板-美型
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
+| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
+| `intensity` | int | 强度 | 0-100 |  |
+
+:::info[信息]
+目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy#微调单个部位)。
+:::
+
+#### 美妆模板-风格妆
+
+##### 调节妆容总体强度
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `style_makeup_option` | `styleIntensity` | float | 风格妆强度 | 0.0~1.0 |
+
+##### 精调各部位参数
+
+| option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- | --- |
+| `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
+| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
+| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
+| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
+| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
+| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
+| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
+| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
+| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
+| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
+| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
+| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
+| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
+| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
+| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
+| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+
+#### 滤镜模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
+| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+
+#### 贴纸模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
+| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+
+### API 参考
+
+#### 视频特效对象管理
+
+- [`createVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+
+#### 特效节点管理
+
+- [`addOrUpdateVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+
+#### 参数设置与获取
+
+- [`setVideoEffectFloatParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- `setVideoEffectStringParam`
+
+:::info[信息]
+仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+
+<Accordions>
+<Accordion title="setVideoEffectStringParam">
+
+设置视频特效的字符串参数。
+
+```objc
+- (int)setVideoEffectStringParamWithOption:(NSString *)option
+                                    key:(NSString *)key
+                              stringValue:(NSString *)stringValue
+NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
+```
+
+**参数**
+
+| 参数名 | 类型 | 说明 |
+|---|---|---|
+| option | NSString * | 参数类别标识符。 |
+| key | NSString * | 参数键名。 |
+| stringValue | NSString * | 要设置的字符串型参数值。 |
+
+**返回值**
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+**所属接口类**
+
+`AgoraVideoEffectObject`
+
+</Accordion>
+</Accordions>
+:::
+
+#### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+声网高级美颜是与声网 RTC 深度融合的实时美颜组件，面向泛娱乐、直播等互动场景，提供低开销、高稳定的一体化美颜接入能力，在中低端机型上性能优势尤为突出。
+
+自 v4.5.2.9 起，声网提供全新的美颜 2.1 API，新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+
+本文介绍如何实现高级美颜功能。
+
+:::info[信息]
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
+  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
+  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+:::
+
+## 功能介绍
+
+### 核心功能
+
+美颜 2.1 提供了四大核心功能：
+
+- **美颜**：包含基础美颜（磨皮、美白、红润、锐化）、美型（瘦脸、大眼等脸部轮廓调整）、美肤（去眼袋、亮眼、白牙、去法令纹、去黑眼圈等）功能。
+- **风格妆**：包含口红、眼影、眉毛、修容等妆容特效的组合模板。
+- **滤镜**：提供多种滤镜效果，如奶油、ins 风、胶片等风格。
+- **贴纸**：提供多种贴纸特效，如“辫子猫”、“猪可爱”、“赛博眼镜”等贴纸。
+
+### 关键概念
+
+- **视频特效对象 (VideoEffectObject)**：特效功能的核心管理对象。管理一个视频源（如主摄像头）的所有特效。你需要先创建此对象，然后通过它来添加、删除、配置特效节点。
+- **特效节点 (Node)**：代表一类特效处理单元。API 2.1 主要提供四种节点：
+    - **BEAUTY**：美颜节点。包含基础美颜、美型、美肤功能。
+    - **STYLE_MAKEUP**：风格妆节点。
+    - **FILTER**：滤镜节点。
+    - **STICKER**：贴纸节点。
+- **模板 (Template)**：一个预设的 JSON 配置文件，定义了某个节点所需的所有参数和资源路径。使用模板可以一键启用一套精心调校的效果组合，极大简化开发。
+- **素材包 (Bundle)**：一个包含所有特效所需资源（图片、配置文件等）的压缩包。你需要将此包解压到应用的本地存储中，并在创建 `VideoEffectObject` 对象时指定其路径。
+
+### 核心优势
+
+相比旧版 API，美颜 2.1 具备以下优势：
+
+- **性能优化**：针对中低端设备深度调优，在保证画质效果的同时实现低功耗、低发热，中低端机型上也能流畅运行。
+- **简单易用**：模板化 API 设计搭配开箱即用的 UI 组件库，内置基础美颜、美型、30+ 滤镜、美妆及动态贴纸等完整能力，分钟级接入，同时支持对各项参数进行精细化的动态调整。
+- **本地化部署**：美颜资源外置为本地 bundle 文件，消除网络下载依赖，提升可靠性和启动速度。
+- **统一管理**：通过 `IVideoEffectObject` 对象统一管理所有特效节点的生命周期和参数设置。
+
+## 前提条件
+
+在实现高级美颜功能前，请确保：
+
+- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
+
+## 实现步骤
+
+本节介绍如何在你的项目中实现高级美颜功能。
+
+### 准备美颜素材包
+
+1. [联系技术支持](https://ticket.shengwang.cn)获取美颜素材包：`AgoraBeautyMaterial.bundle`。
+2. 将素材包解压到应用程序可访问的本地目录（例如应用的 assets 目录或内部存储目录）。
+3. 确保应用拥有对该目录的读取权限。
+
+素材包解压后的目录结构如下：
+
+```shell
+AgoraBeautyMaterial.bundle
+├── beauty_material_functional/        # 全功能版素材包
+    ├── beauty_female/                     # 美颜模板：模板女
+    ├── beauty_male/                       # 美颜模板：模板男
+    ├── beauty_natural/                    # 美颜模板：模板自然
+    ├── stylemakeup_mature/                # 风格妆模板：学姐妆
+    ├── stylemakeup_youthful/              # 风格妆模板：学妹妆
+    ├── filter_warmcolor/                  # 滤镜模板：气质
+    ├── filter_bright/                     # 滤镜模板：气色
+    ├── filter_vibrant/                    # 滤镜模板：元气
+    ├── sticker_pig/                       # 贴纸模板：小猪贴纸
+    ├── sticker_cat/                       # 贴纸模板：小猫贴纸
+    ├── config.json                        # 根配置文件
+├── resource/                         # 资源文件夹
+```
+
+### 创建视频特效对象
+
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+
+```swift
+// 假设 agoraKit 是已初始化的 AgoraRtcEngineKit 对象
+var videoEffectObject: AgoraVideoEffectObject?
+
+// 获取 Documents 目录路径
+let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+let bundlePath = "\(documentsPath)/beauty_material_functional"
+
+videoEffectObject = agoraKit.createVideoEffectObject(bundlePath: bundlePath, 
+                                                    sourceType: .primaryCamera)
+```
+
+### 实现美颜效果
+
+调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+
+```swift
+// 启用美颜效果，使用默认模板
+let result = videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                                      templateName: "")
+if result == 0 {
+    // 美颜效果启用成功
+}
+```
+
+你也可以使用特定的美颜模板：
+
+```swift
+// 使用女性美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyFemale")
+
+// 使用男性美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyMale")
+
+// 使用自然美颜模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                         templateName: "BeautyNatural")
+```
+
+### 实现美妆和滤镜效果
+
+#### 启用美妆效果
+
+美妆效果通过风格妆节点 (`STYLE_MAKEUP`) 实现：
+
+```swift
+// 启用学姐妆模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue, 
+                                         templateName: "MatureMakeup")
+
+// 启用学妹妆模板
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue, 
+                                         templateName: "YouthfulMakeup")
+```
+
+#### 启用滤镜效果
+
+滤镜效果通过滤镜节点 (`FILTER`) 实现：
+
+```swift
+// 启用气质滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "WarmColor")
+
+// 启用气色滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "Bright")
+
+// 启用元气滤镜
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue, 
+                                         templateName: "Vibrant")
+```
+
+#### 启用贴纸效果
+
+贴纸效果通过贴纸节点 (`STICKER`) 实现：
+
+```swift
+// 启用小猪贴纸
+videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.sticker.rawValue, 
+                                         templateName: "StickerPig")
+```
+
+### 管理特效配置
+
+#### 移除特效节点
+
+使用 [`removeVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+
+```swift
+// 移除美颜节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.beauty.rawValue)
+
+// 移除风格妆节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.styleMakeup.rawValue)
+
+// 移除滤镜节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawValue)
+
+// 移除贴纸节点
+videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.sticker.rawValue)
+```
+
+#### 保存和重置配置
+
+使用 [`performVideoEffectAction`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+
+```swift
+// 保存当前美颜节点的所有参数
+videoEffectObject?.performVideoEffectAction(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                           actionId: AgoraVideoEffectAction.save)
+
+// 将美颜节点的参数重置为默认值
+videoEffectObject?.performVideoEffectAction(nodeId: AgoraVideoEffectNodeId.beauty.rawValue, 
+                                           actionId: AgoraVideoEffectAction.reset)
+```
+
+### （可选）自定义美颜参数
+
+如果预设模板中的美颜参数不满足你的需求，你可以参考以下步骤，动态设置或获取美颜、风格妆、滤镜和贴纸效果的各项参数：
+
+1. 在[JSON 字段说明](#json-字段说明)中查看参数详情，并找到目标效果对应的行。
+2. 取该行的 ``option`` 和 ``key``，分别作为 API 的前两个参数。
+3. 根据该行的类型选择对应的 `set/get` 方法，并按取值范围传入 `value`。
+    - 类型为 float 调用 `setVideoEffectFloatParam` 和 `getVideoEffectFloatParam`
+    - 类型为 bool 调用 `setVideoEffectBoolParam` 和 `getVideoEffectBoolParam`
+    - 类型为 int 调用 `setVideoEffectIntParam` 和 `getVideoEffectIntParam`
+    - 类型为 string 调用 `setVideoEffectStringParam`
+
+**设置浮点型参数（例：磨皮强度）**
+
+```swift
+// 设置磨皮强度为 0.7
+videoEffectObject?.setVideoEffectFloatParam("beauty_effect_option", "smoothness", 0.7)
+```
+
+**设置布尔型参数（例：关闭美颜）**
+
+```swift
+// 关闭美颜效果
+videoEffectObject?.setVideoEffectBoolParam("beauty_effect_option", "enable", false)
+```
+
+**获取当前参数值**
+
+```swift
+// 获取当前磨皮强度
+let currentSmoothness = videoEffectObject?.getVideoEffectFloatParam("beauty_effect_option", "smoothness") ?? 0.0
+```
+
+### 销毁视频特效对象
+
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+
+```swift
+agoraKit.destroyVideoEffectObject(videoEffectObject)
+videoEffectObject = nil
+```
+
+## 开发注意事项
+
+在使用高级美颜功能时，请注意以下事项：
+
+- **生命周期管理**：确保视频特效对象的生命周期与对应的视频源保持一致，通常在开启视频流后创建，在关闭视频流前销毁。
+- **性能考量**：启用多个特效会增加设备功耗。在低端设备上，建议酌情关闭非必要的视频特效。
+- **错误处理**：务必检查关键 API（如 `createVideoEffectObject`、`addOrUpdateVideoEffect`）的返回值，确保操作成功。
+- **路径检查**：确保传递给 `createVideoEffectObject` 的素材包路径绝对正确且应用有权限访问。
+- **权限要求**：确保应用具有存储访问权限，以便读取美颜素材包。
+
+## 参考信息
+
+### 示例项目
+
+声网提供开箱即用的 **UI 组件库**，内置基础美颜、精细美型、30+ 滤镜、美妆及动态贴纸等完整能力矩阵，无需自研 UI，分钟级接入：
+
+[ShengwangBeautyView UI 组件库](https://github.com/Shengwang-Community/ShengwangBeautyView)
+
+### JSON 字段说明
+
+本节提供美颜、风格妆、滤镜和贴纸效果的 JSON 示例和字段说明。
+
+`JSON 字段说明` 表格与 API 参数的映射关系如下：
+
+| 表格列 | 对应 API 参数 | 用法说明 |
+| --- | --- | --- |
+| ``option`` | 第 1 个参数 `option` | 例如 `beauty_effect_option`、`makeup_options` |
+| ``key`` | 第 2 个参数 `key` | 例如 `smoothness`、`enable` |
+| 类型 | 选择调用的方法 | <Slot name="advanced-beauty-windows-android-ios-macos-html-0-3-2" /> |
+| 取值范围 | 第 3 个参数 `value` 的合法范围 | 传值时建议按范围做校验 |
+
+<Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
+
+- float 用 `set/getVideoEffectFloatParam`
+    - bool 用 `set/getVideoEffectBoolParam`
+    - int 用 `set/getVideoEffectIntParam`
+    - string 用 `setVideoEffectStringParam`
+
+</Slot>
+
+你可以点击以下链接跳转至对应的 JSON 字段说明：
+
+- [美颜模板-基础](#美颜模板-基础)
+- [美颜模板-画质](#美颜模板-画质)
+- [美颜模板-美肤](#美颜模板-美肤)
+- [美颜模板-美型](#美颜模板-美型)
+- [美妆模板-风格妆](#美妆模板-风格妆)
+  - [调节妆容总体强度](#调节妆容总体强度)
+  - [精调各部位参数](#精调各部位参数)
+- [滤镜模板](#滤镜模板)
+- [贴纸模板](#贴纸模板)
+
+#### 美颜模板-基础
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
+| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
+| `lightness` | float | 美白 | 0.0-1.0 |  |
+| `redness` | float | 红润 | 0.0-1.0 |  |
+| `sharpness` | float | 锐化 | 0.0-1.0 |  |
+| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+
+#### 美颜模板-画质
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
+| `temperature` | float | 色温 | -1.0-1.0 |  |
+| `hue` | float | 色调 | -1.0-1.0 |  |
+| `brightness` | float | 亮度 | -1.0-1.0 |  |
+
+#### 美颜模板-美肤
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
+| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
+| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
+| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+
+#### 美颜模板-美型
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
+| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
+| `intensity` | int | 强度 | 0-100 |  |
+
+:::info[信息]
+目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy#微调单个部位)。
+:::
+
+#### 美妆模板-风格妆
+
+##### 调节妆容总体强度
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `style_makeup_option` | `styleIntensity` | float | 风格妆强度 | 0.0~1.0 |
+
+##### 精调各部位参数
+
+| option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- | --- |
+| `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
+| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
+| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
+| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
+| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
+| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
+| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
+| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
+| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
+| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
+| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
+| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
+| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
+| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
+| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
+| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+
+#### 滤镜模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
+| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+
+#### 贴纸模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
+| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+
+### API 参考
+
+#### 视频特效对象管理
+
+- [`createVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+
+#### 特效节点管理
+
+- [`addOrUpdateVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+
+#### 参数设置与获取
+
+- [`setVideoEffectFloatParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- `setVideoEffectStringParam`
+
+:::info[信息]
+仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+
+<Accordions>
+<Accordion title="setVideoEffectStringParam">
+
+设置视频特效的字符串参数。
+
+```objc
+- (int)setVideoEffectStringParamWithOption:(NSString *)option
+                                    key:(NSString *)key
+                              stringValue:(NSString *)stringValue
+NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
+```
+
+**参数**
+
+| 参数名 | 类型 | 说明 |
+|---|---|---|
+| option | NSString * | 参数类别标识符。 |
+| key | NSString * | 参数键名。 |
+| stringValue | NSString * | 要设置的字符串型参数值。 |
+
+**返回值**
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+**所属接口类**
+
+`AgoraVideoEffectObject`
+
+</Accordion>
+</Accordions>
+:::
+
+#### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+声网高级美颜是与声网 RTC 深度融合的实时美颜组件，面向泛娱乐、直播等互动场景，提供低开销、高稳定的一体化美颜接入能力，在中低端机型上性能优势尤为突出。
+
+自 v4.5.2.9 起，声网提供全新的美颜 2.1 API，新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+
+本文介绍如何实现高级美颜功能。
+
+:::info[信息]
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费策略](/zh-CN/realtime-media/rtc/billing/billing-strategy)。
+- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
+  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
+  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+:::
+
+## 功能介绍
+
+### 核心功能
+
+美颜 2.1 提供了四大核心功能：
+
+- **美颜**：包含基础美颜（磨皮、美白、红润、锐化）、美型（瘦脸、大眼等脸部轮廓调整）、美肤（去眼袋、亮眼、白牙、去法令纹、去黑眼圈等）功能。
+- **风格妆**：包含口红、眼影、眉毛、修容等妆容特效的组合模板。
+- **滤镜**：提供多种滤镜效果，如奶油、ins 风、胶片等风格。
+- **贴纸**：提供多种贴纸特效，如“辫子猫”、“猪可爱”、“赛博眼镜”等贴纸。
+
+### 关键概念
+
+- **视频特效对象 (VideoEffectObject)**：特效功能的核心管理对象。管理一个视频源（如主摄像头）的所有特效。你需要先创建此对象，然后通过它来添加、删除、配置特效节点。
+- **特效节点 (Node)**：代表一类特效处理单元。API 2.1 主要提供四种节点：
+    - **BEAUTY**：美颜节点。包含基础美颜、美型、美肤功能。
+    - **STYLE_MAKEUP**：风格妆节点。
+    - **FILTER**：滤镜节点。
+    - **STICKER**：贴纸节点。
+- **模板 (Template)**：一个预设的 JSON 配置文件，定义了某个节点所需的所有参数和资源路径。使用模板可以一键启用一套精心调校的效果组合，极大简化开发。
+- **素材包 (Bundle)**：一个包含所有特效所需资源（图片、配置文件等）的压缩包。你需要将此包解压到应用的本地存储中，并在创建 `VideoEffectObject` 对象时指定其路径。
+
+### 核心优势
+
+相比旧版 API，美颜 2.1 具备以下优势：
+
+- **性能优化**：针对中低端设备深度调优，在保证画质效果的同时实现低功耗、低发热，中低端机型上也能流畅运行。
+- **简单易用**：模板化 API 设计搭配开箱即用的 UI 组件库，内置基础美颜、美型、30+ 滤镜、美妆及动态贴纸等完整能力，分钟级接入，同时支持对各项参数进行精细化的动态调整。
+- **本地化部署**：美颜资源外置为本地 bundle 文件，消除网络下载依赖，提升可靠性和启动速度。
+- **统一管理**：通过 `IVideoEffectObject` 对象统一管理所有特效节点的生命周期和参数设置。
+
+## 前提条件
+
+在实现高级美颜功能前，请确保：
+
+- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
+
+## 实现步骤
+
+本节介绍如何在你的项目中实现高级美颜功能。
+
+### 准备美颜素材包
+
+1. [联系技术支持](https://ticket.shengwang.cn)获取美颜素材包：`AgoraBeautyMaterial.zip`。
+2. 将素材包解压到应用程序可访问的本地目录（例如应用的 assets 目录或内部存储目录）。
+3. 确保应用拥有对该目录的读取权限。
+
+素材包解压后的目录结构如下：
+
+```shell
+AgoraBeautyMaterial.zip
+├── beauty_material_functional/        # 全功能版素材包
+    ├── beauty_female/                     # 美颜模板：模板女
+    ├── beauty_male/                       # 美颜模板：模板男
+    ├── beauty_natural/                    # 美颜模板：模板自然
+    ├── stylemakeup_mature/                # 风格妆模板：学姐妆
+    ├── stylemakeup_youthful/              # 风格妆模板：学妹妆
+    ├── filter_warmcolor/                  # 滤镜模板：气质
+    ├── filter_bright/                     # 滤镜模板：气色
+    ├── filter_vibrant/                    # 滤镜模板：元气
+    ├── sticker_pig/                       # 贴纸模板：小猪贴纸
+    ├── sticker_cat/                       # 贴纸模板：小猫贴纸
+    ├── config.json                        # 根配置文件
+├── resource/                         # 资源文件夹
+```
+
+### 创建视频特效对象
+
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+
+```cpp
+// 假设 m_rtcEngine 是已初始化的 IRtcEngine 指针
+agora::agora_refptr<agora::rtc::IVideoEffectObject> m_videoEffectObject;
+m_videoEffectObject = m_rtcEngine->createVideoEffectObject("C:\\path\\to\\beauty_material_functional", 
+                                                          agora::media::PRIMARY_CAMERA_SOURCE);
+```
+
+### 实现美颜效果
+
+调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+
+```cpp
+// 启用美颜效果，使用默认模板
+int result = m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, "");
+if (result == 0) {
+    // 美颜效果启用成功
+}
+```
+
+你也可以使用特定的美颜模板：
+
+```cpp
+// 使用女性美颜模板
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, "BeautyFemale");
+
+// 使用男性美颜模板
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, "BeautyMale");
+
+// 使用自然美颜模板
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, "BeautyNatural");
+```
+
+### 实现美妆和滤镜效果
+
+#### 启用美妆效果
+
+美妆效果通过风格妆节点 (`STYLE_MAKEUP`) 实现：
+
+```cpp
+// 启用学姐妆模板
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP, "MatureMakeup");
+
+// 启用学妹妆模板
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP, "YouthfulMakeup");
+```
+
+#### 启用滤镜效果
+
+滤镜效果通过滤镜节点 (`FILTER`) 实现：
+
+```cpp
+// 启用气质滤镜
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::FILTER, "WarmColor");
+
+// 启用气色滤镜
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::FILTER, "Bright");
+
+// 启用元气滤镜
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::FILTER, "Vibrant");
+```
+
+#### 启用贴纸效果
+
+贴纸效果通过贴纸节点 (`STICKER`) 实现：
+
+```cpp
+// 启用小猪贴纸
+m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::STICKER, "StickerPig");
+```
+
+### 管理特效配置
+
+#### 移除特效节点
+
+使用 [`removeVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+
+```cpp
+// 移除美颜节点
+m_videoEffectObject->removeVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY);
+
+// 移除风格妆节点
+m_videoEffectObject->removeVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::STYLE_MAKEUP);
+
+// 移除滤镜节点
+m_videoEffectObject->removeVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::FILTER);
+
+// 移除贴纸节点
+m_videoEffectObject->removeVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::STICKER);
+```
+
+#### 保存和重置配置
+
+使用 [`performVideoEffectAction`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+
+```cpp
+// 保存当前美颜节点的所有参数
+m_videoEffectObject->performVideoEffectAction(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, 
+                                              agora::rtc::IVideoEffectObject::VIDEO_EFFECT_ACTION::SAVE);
+
+// 将美颜节点的参数重置为默认值
+m_videoEffectObject->performVideoEffectAction(agora::rtc::IVideoEffectObject::VIDEO_EFFECT_NODE_ID::BEAUTY, 
+                                              agora::rtc::IVideoEffectObject::VIDEO_EFFECT_ACTION::RESET);
+```
+
+### （可选）自定义美颜参数
+
+如果预设模板中的美颜参数不满足你的需求，你可以参考以下步骤，动态设置或获取美颜、风格妆、滤镜和贴纸效果的各项参数：
+
+1. 在[JSON 字段说明](#json-字段说明)中查看参数详情，并找到目标效果对应的行。
+2. 取该行的 ``option`` 和 ``key``，分别作为 API 的前两个参数。
+3. 根据该行的类型选择对应的 `set/get` 方法，并按取值范围传入 `value`。
+    - 类型为 float 调用 `setVideoEffectFloatParam` 和 `getVideoEffectFloatParam`
+    - 类型为 bool 调用 `setVideoEffectBoolParam` 和 `getVideoEffectBoolParam`
+    - 类型为 int 调用 `setVideoEffectIntParam` 和 `getVideoEffectIntParam`
+    - 类型为 string 调用 `setVideoEffectStringParam`
+
+**设置浮点型参数（例：磨皮强度）**
+
+```cpp
+// 设置磨皮强度为 0.7
+m_videoEffectObject->setVideoEffectFloatParam("beauty_effect_option", "smoothness", 0.7f);
+```
+
+**设置布尔型参数（例：关闭美颜）**
+
+```cpp
+// 关闭美颜效果
+m_videoEffectObject->setVideoEffectBoolParam("beauty_effect_option", "enable", false);
+```
+
+**获取当前参数值**
+
+```cpp
+// 获取当前磨皮强度
+float currentSmoothness = m_videoEffectObject->getVideoEffectFloatParam("beauty_effect_option", "smoothness");
+```
+
+### 销毁视频特效对象
+
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+
+```cpp
+m_rtcEngine->destroyVideoEffectObject(m_videoEffectObject);
+m_videoEffectObject = nullptr;
+```
+
+## 开发注意事项
+
+在使用高级美颜功能时，请注意以下事项：
+
+- **生命周期管理**：确保视频特效对象的生命周期与对应的视频源保持一致，通常在开启视频流后创建，在关闭视频流前销毁。
+- **性能考量**：启用多个特效会增加设备功耗。在低端设备上，建议酌情关闭非必要的视频特效。
+- **错误处理**：务必检查关键 API（如 `createVideoEffectObject`、`addOrUpdateVideoEffect`）的返回值，确保操作成功。
+- **路径检查**：确保传递给 `createVideoEffectObject` 的素材包路径绝对正确且应用有权限访问。
+- **权限要求**：确保应用具有存储访问权限，以便读取美颜素材包。
+
+## 参考信息
+
+### 示例项目
+
+声网提供开箱即用的 **UI 组件库**，内置基础美颜、精细美型、30+ 滤镜、美妆及动态贴纸等完整能力矩阵，无需自研 UI，分钟级接入：
+
+[ShengwangBeautyView UI 组件库](https://github.com/Shengwang-Community/ShengwangBeautyView)
+
+### JSON 字段说明
+
+本节提供美颜、风格妆、滤镜和贴纸效果的 JSON 示例和字段说明。
+
+`JSON 字段说明` 表格与 API 参数的映射关系如下：
+
+| 表格列 | 对应 API 参数 | 用法说明 |
+| --- | --- | --- |
+| ``option`` | 第 1 个参数 `option` | 例如 `beauty_effect_option`、`makeup_options` |
+| ``key`` | 第 2 个参数 `key` | 例如 `smoothness`、`enable` |
+| 类型 | 选择调用的方法 | <Slot name="advanced-beauty-windows-android-ios-macos-html-0-3-2" /> |
+| 取值范围 | 第 3 个参数 `value` 的合法范围 | 传值时建议按范围做校验 |
+
+<Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
+
+- float 用 `set/getVideoEffectFloatParam`
+    - bool 用 `set/getVideoEffectBoolParam`
+    - int 用 `set/getVideoEffectIntParam`
+    - string 用 `setVideoEffectStringParam`
+
+</Slot>
+
+你可以点击以下链接跳转至对应的 JSON 字段说明：
+
+- [美颜模板-基础](#美颜模板-基础)
+- [美颜模板-画质](#美颜模板-画质)
+- [美颜模板-美肤](#美颜模板-美肤)
+- [美颜模板-美型](#美颜模板-美型)
+- [美妆模板-风格妆](#美妆模板-风格妆)
+  - [调节妆容总体强度](#调节妆容总体强度)
+  - [精调各部位参数](#精调各部位参数)
+- [滤镜模板](#滤镜模板)
+- [贴纸模板](#贴纸模板)
+
+#### 美颜模板-基础
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
+| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
+| `lightness` | float | 美白 | 0.0-1.0 |  |
+| `redness` | float | 红润 | 0.0-1.0 |  |
+| `sharpness` | float | 锐化 | 0.0-1.0 |  |
+| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+
+#### 美颜模板-画质
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
+| `temperature` | float | 色温 | -1.0-1.0 |  |
+| `hue` | float | 色调 | -1.0-1.0 |  |
+| `brightness` | float | 亮度 | -1.0-1.0 |  |
+
+#### 美颜模板-美肤
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
+| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
+| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
+| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+
+#### 美颜模板-美型
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
+| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
+| `intensity` | int | 强度 | 0-100 |  |
+
+:::info[信息]
+目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/advanced-features/advanced-beauty-legacy#微调单个部位)。
+:::
+
+#### 美妆模板-风格妆
+
+##### 调节妆容总体强度
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `style_makeup_option` | `styleIntensity` | float | 风格妆强度 | 0.0~1.0 |
+
+##### 精调各部位参数
+
+| option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- | --- |
+| `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
+| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
+| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
+| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
+| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
+| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
+| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
+| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
+| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
+| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
+| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
+| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
+| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
+| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
+| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
+| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
+| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+
+#### 滤镜模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
+| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+
+#### 贴纸模板
+
+| option | key | 类型 | 说明 | 取值范围 |
+| --- | --- | --- | --- | --- |
+| `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
+| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+
+### API 参考
+
+#### 视频特效对象管理
+
+- [`createVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+
+#### 特效节点管理
+
+- [`addOrUpdateVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+
+#### 参数设置与获取
+
+- [`setVideoEffectFloatParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- `setVideoEffectStringParam`
+
+:::info[信息]
+仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+
+<Accordions>
+<Accordion title="setVideoEffectStringParam">
+
+设置视频特效的字符串参数。
+
+```cpp
+int setVideoEffectStringParam(const char* option, const char* key, const char* param)
+```
+
+**参数**
+
+| 参数名 | 类型 | 说明 |
+|---|---|---|
+| option | const char* | 参数类别标识符。 |
+| key | const char* | 参数键名。 |
+| param | const char* | 要设置的字符串型参数值。 |
+
+**返回值**
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+**所属接口类**
+
+`IVideoEffectObject`
+
+</Accordion>
+</Accordions>
+:::
+
+#### 相关文档
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+
+</PlatformStructured>

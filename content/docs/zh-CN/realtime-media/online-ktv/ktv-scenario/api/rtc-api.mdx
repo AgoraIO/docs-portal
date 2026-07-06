@@ -1,0 +1,85 @@
+---
+title: "实时互动 API"
+---
+
+<PlatformStructured platform="android">
+
+本页展示场景化方案中高频调用的实时互动 SDK API。
+
+| API 名称                                                     | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [create [1/2]](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_create) | 创建并初始化 [`RtcEngine`](/api-ref/rtc/android/API/rtc_interface_class#class_irtcengine)。 |
+| [create [2/2]](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_initialize) | 创建并初始化 `RtcEngine`。                                   |
+| [destroy](/api-ref/rtc/android/API/toc_initialize#api_irtcengine_release) | 销毁 RtcEngine 对象。                                        |
+| [joinChannel [1/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel) | 加入频道。                                                   |
+| [joinChannel [2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。                                     |
+| [joinChannelEx](/api-ref/rtc/android/API/toc_channel#api_irtcengineex_joinchannelex) | 加入多个频道。                                               |
+| [updateChannelMediaOptions](/api-ref/rtc/android/API/toc_channel#api_irtcengine_updatechannelmediaoptions) | 加入频道后更新频道媒体选项。                                 |
+| [updateChannelMediaOptionsEx](/api-ref/rtc/android/API/toc_channel#api_irtcengineex_updatechannelmediaoptionsex) | 加入多个频道后更新频道媒体选项。                             |
+| [leaveChannel [2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_leavechannel2) | 设置频道选项并离开频道。                                     |
+| [leaveChannelEx [2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengineex_leavechannelex2) | 设置频道选项并离开多个频道。                                 |
+| [renewToken](/api-ref/rtc/android/API/toc_channel#api_irtcengine_renewtoken) | 更新 Token。                                                 |
+| [setClientRole [1/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) | 设置用户角色。                                               |
+| [setClientRole [2/2]](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole2) | 设置直播场景下的用户角色和观众端延时级别。                   |
+| [enableAudio](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_enableaudio) | 启用音频模块。                                               |
+| [enableAudioVolumeIndication](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。                                           |
+| [setAudioProfile [2/2]](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioprofile2) | 设置音频编码属性。                                           |
+| [setAudioScenario](/api-ref/rtc/android/API/toc_audio_basic#api_irtcengine_setaudioscenario) | 设置音频场景。                                               |
+| [sendStreamMessage](/api-ref/rtc/android/API/toc_datastream#api_irtcengine_sendstreammessage) | 发送数据流。                                                 |
+| [createMediaPlayer](/api-ref/rtc/android/API/toc_mediaplayer_initialize#api_irtcengine_createmediaplayer) | 创建媒体播放器对象。媒体播放器全部接口详见 [`IMediaPlayer`](/api-ref/rtc/android/API/rtc_interface_class#class_imediaplayer)。 |
+| [selectAudioTrack](/api-ref/rtc/android/API/toc_mediaplayer_playnrender#api_imediaplayer_selectaudiotrack) | 指定当前音频文件的播放音轨。                                 |
+| [initialize](/api-ref/rtc/android/API/toc_drm#api_imusiccontentcenter_initialize) | 初始化音乐内容中心。音乐内容中心全部接口详见 [`IAgoraMusicContentCenter`](/api-ref/rtc/android/API/rtc_api_overview#%E7%89%88%E6%9D%83%E9%9F%B3%E4%B9%90)。 |
+| [onJoinChannelSuccess](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) | 成功加入频道回调。                                           |
+| [onRejoinChannelSuccess](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) | 成功重新加入频道回调。                                       |
+| [onClientRoleChanged](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onclientrolechanged) | 用户角色、观众端延时级别已切换回调。                         |
+| [onLeaveChannel](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onleavechannel) | 离开频道回调。                                               |
+| [onUserJoined](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户（通信场景）/主播（直播场景）加入当前频道回调。      |
+| [onUserOffline](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户（通信场景）/主播（直播场景）离开当前频道回调。      |
+| [onRequestToken](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onrequesttoken) | Token 已过期回调。                                           |
+| [onTokenPrivilegeWillExpire](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) | Token 即将在 30 s 内过期回调。                               |
+| [onAudioVolumeIndication](/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。                                           |
+| [onStreamMessage](/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。                                 |
+| [onStreamMessageError](/api-ref/rtc/android/API/toc_datastream#callback_irtcengineeventhandler_onstreammessageerror) | 接收对方数据流消息发生错误的回调。                           |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本页展示场景化方案中高频调用的实时互动 SDK API。
+
+| API 名称                                                     | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [sharedEngineWithAppId](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_create) | 创建并初始化 [`AgoraRtcEngineKit`](/api-ref/rtc/ios/API/rtc_interface_class#class_irtcengine)。 |
+| [sharedEngineWithConfig](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_initialize) | 创建并初始化 `AgoraRtcEngineKit`。                                     |
+| [destroy](/api-ref/rtc/ios/API/toc_initialize#api_irtcengine_release) | 销毁 `AgoraRtcEngineKit` 对象。                                        |
+| [joinChannelByToken [1/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel) | 加入频道。                                                   |
+| [joinChannelByToken [2/4]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel2) | 设置媒体选项并加入频道。                                     |
+| [joinChannelExByToken [1/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_joinchannelex) | 加入多个频道。                                               |
+| [updateChannelWithMediaOptions](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_updatechannelmediaoptions) | 加入频道后更新频道媒体选项。                                 |
+| [updateChannelExWithMediaOptions](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_updatechannelmediaoptionsex) | 加入多个频道后更新频道媒体选项。                            |
+| [leaveChannel [2/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_leavechannel2) | 设置频道选项并离开频道。                                     |
+| [leaveChannelEx [2/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengineex_leavechannelex2) | 设置频道选项并离开多个频道。                                 |
+| [renewToken](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_renewtoken) | 更新 Token。                                                 |
+| [setClientRole [1/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole) | 设置用户角色。                                               |
+| [setClientRole [2/2]](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_setclientrole2) | 设置直播场景下的用户角色和观众端延时级别。                   |
+| [enableAudio](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_enableaudio) | 启用音频模块。                                               |
+| [enableAudioVolumeIndication](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。                                           |
+| [setAudioProfile [2/2]](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioprofile2) | 设置音频编码属性。                                           |
+| [setAudioScenario](/api-ref/rtc/ios/API/toc_audio_basic#api_irtcengine_setaudioscenario) | 设置音频场景。                                               |
+| [sendStreamMessage](/api-ref/rtc/ios/API/toc_datastream#api_irtcengine_sendstreammessage) | 发送数据流。                                                 |
+| [createMediaPlayerWithDelegate](/api-ref/rtc/ios/API/toc_mediaplayer_initialize#api_irtcengine_createmediaplayer) | 创建媒体播放器实例。媒体播放器全部接口详见 [`AgoraRtcMediaPlayerProtocol`](/api-ref/rtc/ios/API/rtc_interface_class#class_imediaplayer)。 |
+| [selectAudioTrack](/api-ref/rtc/ios/API/toc_mediaplayer_playnrender#api_imediaplayer_selectaudiotrack) | 指定当前音频文件的播放音轨。                                 |
+| [sharedContentCenterWithConfig](/api-ref/rtc/ios/API/toc_drm#api_imusiccontentcenter_initialize) | 初始化音乐内容中心。音乐内容中心全部接口详见 [`AgoraMusicContentCenter`](/api-ref/rtc/ios/API/rtc_api_overview#%E7%89%88%E6%9D%83%E9%9F%B3%E4%B9%90)。 |
+| [didJoinChannel](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) | 成功加入频道回调。                                           |
+| [didRejoinChannel](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) | 成功重新加入频道回调。                                       |
+| [didClientRoleChanged](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onclientrolechanged) | 用户角色、观众端延时级别已切换回调。                         |
+| [didLeaveChannelWithStats](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onleavechannel) | 离开频道回调。                                               |
+| [didJoinedOfUid](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户（通信场景）/主播（直播场景）加入当前频道回调。      |
+| [didOfflineOfUid](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户（通信场景）/主播（直播场景）离开当前频道回调。      |
+| [rtcEngineRequestToken](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_onrequesttoken) | Token 已过期回调。                                           |
+| [tokenPrivilegeWillExpire](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) | Token 即将在 30 s 内过期回调。                                |
+| [reportAudioVolumeIndicationOfSpeakers](/api-ref/rtc/ios/API/toc_audio_basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。                                           |
+| [receiveStreamMessageFromUid](/api-ref/rtc/ios/API/toc_datastream#callback_irtcengineeventhandler_onstreammessage) | 接收到对方数据流消息的回调。                                 |
+| [didOccurStreamMessageErrorFromUid](/api-ref/rtc/ios/API/toc_datastream#callback_irtcengineeventhandler_onstreammessageerror) | 接收对方数据流消息发生错误的回调。                           |
+
+</PlatformStructured>

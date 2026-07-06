@@ -1,0 +1,161 @@
+---
+title: "渲染字幕"
+---
+## 功能描述
+
+字幕渲染是实时实时转录翻译服务中与用户直接交互的重要环节，其质量直接影响用户体验。由于自动语音识别（Automatic Speech Recognition，ASR）引擎返回的文本是处理过程数据，无法直接用于渲染，且不同 ASR 引擎返回的数据格式和结构有所不同，为简化端侧字幕渲染逻辑，声网提供字幕渲染组件来处理转写后文本的渲染。向该组件推送结构化的字幕数据后，即可输出高质量的字幕渲染效果。此外，你还可以自定义字体大小、颜色等，以满足不同应用场景的需求，显著降低端侧字幕渲染的开发难度。
+
+本文介绍如何使用声网提供的字幕渲染组件来将实时转录翻译或翻译后的文本渲染到视图上。
+
+## 示例项目
+
+声网在 GitHub 上提供开源的字幕渲染组件[示例项目](https://github.com/AgoraIO-Community/TranscriptionWidget-iOS)共你参考。
+
+## 前提条件
+
+在操作之前，请确保你已经实现基本的实时转录翻译功能，详见[开始实时转录翻译](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)。
+
+## 集成组件
+
+请按照如下步骤，使用 CocoaPods 自动集成字幕组件：
+
+开始前请确保你已安装 CocoaPods。如未安装可参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
+
+1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 Podfile 文本文件。
+
+   打开 Podfile 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+   ```ruby
+    target 'Your App' do
+       pod 'AgoraTranscriptSubtitle', '1.0.0'
+    end
+    ```
+
+2. 运行 `pod install` 命令安装字幕渲染组件。成功安装后，Terminal 中会显示 `Pod installation complete!`，表示安装成功。
+
+## 使用字幕渲染组件
+
+参考下列步骤来将转写或翻译后的文本内容渲染到视图上。
+
+### 导入组件
+
+在你的项目的主视图控制器文件导入字幕渲染组件：
+
+```swift
+import AgoraTranscriptSubtitle
+```
+
+### 创建并初始化字幕组件对象
+
+`TranscriptSubtitleView` 用于显示翻译或转写后的文字。调用 `init` 方法来创建一个 `TranscriptSubtitleView` 实例并初始化视图的初始位置和大小。如果你不向 `loggers` 传参则表示使用声网默认的日志记录器，如果你需要自定义日志记录器，可参考[自定义日志](#自定义日志)。
+
+```swift
+// 创建一个 CGRect 实例，用于指定 TranscriptSubtitleView 的初始位置和大小
+let rect = CGRect(x: 0, y: 0, width: 300, height: 400)
+
+// 使用指定的 CGRect 实例初始化 TranscriptSubtitleView，并使用默认的日志记录器
+let rttView = TranscriptSubtitleView(frame: rect)
+```
+
+### 推送转写数据给字幕组件
+
+声网通过数据流来传输转写或翻译后的 protocol buffer 格式数据。你需要在收到 `receiveStreamMessageFromUid` 回调报告接收到数据流时，调用 `pushMessageData` 把接收到数据推送给字幕组件用于渲染并显示。推送成功后，转写或翻译后的文字就会显示在视图上。
+
+```swift
+func rtcEngine(_ engine: AgoraRtcEngineKit, receiveStreamMessageFromUid uid: UInt, streamId: Int, data: Data) {
+        rttView.pushMessageData(data: data)
+}
+```
+
+### （可选）清除视图上的字幕
+
+如果你需要清除字幕组件视图上的所有字幕，可调用 `clear` 方法。
+
+```swift
+rttView.clear()
+```
+
+## 参考信息
+
+本节介绍字幕渲染组件的其他相关信息。
+
+### 自定义日志
+
+如果你想要自定义日志记录器，可以继承 `AgoraComponetLogger` 协议来实现一个你自己的日志类。你也可以参考 [AgoraComponetDDLogFileLogger](https://github.com/AgoraIO-Community/TranscriptionWidget-iOS/blob/main/AgoraRTT_Demo/MainVC/AgoraComponetDDLogFileLogger.h) 来实现。
+
+实现你自己的日志类后，在调用 `init` 方法初始化时，向 `loggers` 参数传入你自定义的日志记录器实例，例如：
+
+```swift
+// 创建一个 YourCustomLogger 类的实例，并传入域名
+let customLogger = YourCustomLogger(domainName: "ATS")
+
+// 创建并初始化 TranscriptSubtitleView，向 logger 参数传入你自定义的日志类的实例
+let rttView = TranscriptSubtitleView(frame: rect, loggers: [customLogger])
+```
+
+<a id="TranscriptSubtitleView"></a>
+### API 参考
+#### TranscriptSubtitleView
+
+```swift
+@objc public class TranscriptSubtitleView: UIView {
+    @objc public var finalTextColor: UIColor = .white
+    @objc public var nonFinalTextColor: UIColor = .gray
+    @objc public var textFont: UIFont = .systemFont(ofSize: 16)
+    @objc public var textAreaBackgroundColor: UIColor = UIColor.black.withAlphaComponent(0.25)
+    @objc public var showTranscriptContent = true
+
+    @objc public convenience init(frame: CGRect, loggers: [AgoraComponetLogger])
+
+    @objc public func pushMessageData(data: Data)
+
+    @objc public func clear()
+}
+```
+
+用于显示转写或翻译文本的视图类。
+
+**属性**
+
+- `finalTextColor`：转写或翻译最终完成后的文字颜色。默认为 `white`，表示白色。
+
+- `nonFinalTextColor`：正在转写或翻译的文字颜色。此时该语句的撰写或翻译结果尚未最终确定。默认值为 `gray`，表示灰色。
+
+- `textFont`：字体的大小，默认为 16 号。
+
+- `textAreaBackgroundColor`：文本区域的背景颜色。
+
+- `showTranscriptContent`：是否显示转写后的内容：
+  - `true`（默认）：显示转写后的内容。
+  - `false`：不显示转写后的内容。
+
+**方法**
+
+```swift
+@objc public convenience init(frame: CGRect, loggers: [AgoraComponetLogger])
+```
+
+创建并初始化一个 `TranscriptSubtitleView` 实例。
+
+- **参数**
+  - `frame`: `TranscriptSubtitleView` 视图的位置和大小。
+  - `loggers`: 用于记录调试信息的日志记录器数组。
+
+- **返回值**
+
+  一个初始化的视图对象。
+
+```swift
+@objc public func pushMessageData(data: Data)
+```
+
+ 把转写或翻译后的数据推送给字幕渲染组件用于显示。
+
+- **参数**
+  - `data`：转写或翻译后的数据。
+
+```swift
+@objc public func clear()
+```
+
+清除字幕组件视图上的所有文字。

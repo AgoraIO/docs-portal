@@ -1,0 +1,208 @@
+---
+title: "设置并更新混音音量"
+---
+本文介绍如何在转码推流时设置并更新用户的混音音量。
+
+## 设置混音音量
+
+在 `Create` 请求时，通过 `converter.transcodeOptions.audioOptions` 字段设置混音配置。
+
+### 示例一：指定混音
+
+将指定用户进行混音，并分别设置各用户混音音量。
+
+:::warning[注意]
+暂时只支持不超过 3 名用户进行混音。如果参与混音的用户人数大于 3，请联系[技术支持](https://ticket.shengwang.cn)。
+:::
+
+```json
+{
+  "converter": {
+    "name": "string",
+    "transcodeOptions": {
+      "rtcChannel": "string",
+      "audioOptions": {
+        // highlight-start
+        "rtcStreamUids": [
+          3, 4
+        ],
+        "volumes": [
+          {
+            "volume": 50,
+            "rtcStreamUid": 3
+          }
+        ]
+        // highlight-end
+      }
+    },
+    "rtmpUrl": "rtmp://example/live/global",
+  }
+}
+```
+
+在本示例中，`rtcStreamUids` 指定用户 3 和 4 进行混音。`volumes` 指定用户 3 的混音音量为 50，指定用户 4 的混音音量为 `volume` 默认值 100。
+
+### 示例二：全部混音（不推荐）
+
+:::error[警告]
+- 不推荐在全部混音场景下指定用户混音音量，可能导致未定义行为。建议你通过上述[示例一](#示例一指定混音)设置混音音量。
+- 暂时只支持不超过 3 名用户进行混音。如果参与混音的用户人数大于 3，请联系[技术支持](https://ticket.shengwang.cn)。
+:::
+
+将所有用户进行混音，并分别设置各用户混音音量。
+
+```json
+{
+  "converter": {
+    "name": "string",
+    "transcodeOptions": {
+      "rtcChannel": "string",
+      "audioOptions": {
+        // highlight-start
+        "volumes": [
+          {
+            "volume": 50,
+            "rtcStreamUid": 3
+          }
+        ]
+        // highlight-end
+      }
+    },
+   "rtmpUrl": "rtmp://example/live/global",
+  }
+}
+```
+
+在本示例中，`audioOptions` 中无 `rtcStreamUids`，代表将所有用户混音。`volumes` 指定用户 3 的混音音量为 50，其余用户的混音音量为 `volume` 默认值 100。
+
+### 注意事项
+
+只有在混音场景下，才可以设置参与混音的用户的音量。因此请注意如下事项：
+
+- 如果 `audioOptions` 中存在 `rtcStreamUids` 字段且值为空，那么代表不混合任何用户的音频流。因此这种情况下你不能设置混音音量。
+- `volumes.rtcStreamUid` 中填入的用户 ID 需要存在于 `rtcStreamUids`。
+
+## 更新混音音量
+
+在 `Update` 请求时，通过 `converter.transcodeOptions.audioOptions` 字段更新混音配置。
+
+### 示例一：更新指定音量
+
+本节介绍如何更新指定用户的音量。
+
+假设用户 3 和 4 参与混音，且设置混音音量为 `volume` 默认值 100。进行如下更新设置：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "audioOptions": {
+        // highlight-start
+        "volumes": [
+          {
+            "volume": 50,
+            "rtcStreamUid": 3
+          }
+        ]
+        // highlight-end
+      }
+    }
+  },
+  "fields": "transcodeOptions.audioOptions.volumes"
+}
+```
+
+在本示例中，用户 3 的音量更新为 50，用户 4 的音量保持为 100。然后再次进行如下更新设置：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "audioOptions": {
+        // highlight-start
+        "volumes": [
+          {
+            "volume": 50,
+            "rtcStreamUid": 3
+          },
+          {
+            "volume": 150,
+            "rtcStreamUid": 4
+          }
+        ]
+        // highlight-end
+      }
+    }
+  },
+  "fields": "transcodeOptions.audioOptions.volumes"
+}
+```
+
+在本示例中，用户 3 的音量保持为 50，用户 4 的音量更新为 150。然后再次进行如下更新设置：
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      "audioOptions": {
+        // highlight-start
+        "volumes": [
+          {
+            "volume": 50,
+            "rtcStreamUid": 4
+          }
+        ]
+        // highlight-end
+      }
+    }
+  },
+  "fields": "transcodeOptions.audioOptions.volumes"
+}
+```
+
+在本示例中，用户 3 的音量在更新请求中没有设置，会重置成 `volume` 默认值 100。用户 4 的音量更新成 50。
+
+### 示例二：重置所有音量
+
+本节介绍设置并更新音量后，将所有混音用户的音量重置成默认值 100 的更新设置。
+
+#### 方式一：将 volumes 传空
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      // highlight-start
+      "audioOptions": {
+        "volumes": null
+      }
+      // highlight-end
+    }
+  },
+  "fields": "transcodeOptions.audioOptions.volumes"
+}
+```
+
+#### 方式二：不设置 volumes
+
+```json
+{
+  "converter": {
+    "transcodeOptions": {
+      // highlight-start
+      "audioOptions": {
+      }
+      // highlight-end
+    }
+  },
+  "fields": "transcodeOptions.audioOptions.volumes"
+}
+```
+
+### 注意事项
+
+更新请求会对所有混音用户的音量进行调整。即使你只更新指定用户音量，也会引起其他用户音量被重置成默认值 100。
+
+## API 参考
+
+你可以参考 [`Create`](../media-push/operations/post-region-v1-projects-appId-rtmp-converters) 和 [`Update`](../media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId) 方法了解字段详情。

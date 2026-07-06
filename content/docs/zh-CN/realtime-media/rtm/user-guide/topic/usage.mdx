@@ -1,0 +1,664 @@
+---
+title: "使用 Topic"
+---
+Topic 的相关操作主要有加入、离开、订阅和取消订阅，可以归纳为以下两种行为：
+
+- **消息发布者行为**：加入 Topic 的目的在于注册成为该 Topic 的消息发布者，从而让用户具备发送消息的能力。同理，离开 Topic 是为了取消对该 Topic 消息发布者的注册，从而让用户失去发送消息的能力。
+- **消息订阅者行为**：订阅 Topic 的目的在于订阅 Topic 中的消息，从而让用户具备接收消息的能力。同理，取消订阅 Topic 是为了取消订阅 Topic 中的消息，从而让用户失去接收消息的能力。
+
+上述两类行为之间相互独立，即你对某个 Topic 中消息发布者的行为并不会影响你对该 Topic 中消息订阅者的行为。
+
+## 加入 Topic
+
+在 Topic 中发送消息的前提条件是加入 Topic。当前 RTM 支持单个客户端在同一个频道内同时加入不超过 8 个 Topic。加入 Topic 时，你可以设置一些预定义的属性，这将影响到后续通过此 Topic 发送消息的行为，包括消息是否保序、消息优先级、是否与共频道传输的音视频数据保持同步传输等。详细设置可以参考 [API 文档](/api-ref/rtm2//toc-topic/topic)及[发送消息](/zh-CN/realtime-media/rtm/user-guide/message/send-message)。
+
+成功加入频道后，SDK 会触发 `enumv.topictypejoin` 类型的 `config.ontopicevent` 事件，频道中所有开启 Topic 事件监听的用户都会收到此事件通知。
+
+示例代码如下：
+
+```csharp
+string topic = "Chat";
+var options = new JoinTopicOptions();
+options.qos = RTM_MESSAGE_QOS.ORDERED;
+
+var (status,response) = await streamChannel.JoinTopicAsync(topic, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User {0} joined topic {1} successfully at channel {2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+```javascript
+const topicName = "Chat";
+try {
+    const result = await streamChannel.joinTopic(topicName);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+var options = new JoinTopicOptions();
+options.messageQos = RtmMessageQos.ORDERED;
+mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join topic success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("Join topic success!!")
+    } else {
+        print("Join topic failed, errorCode: \(errorInfo?.errorCode), reason: \(errorInfo?.reason)")
+    }
+}
+```
+
+```objc
+[stream_channel joinTopic:@"your_topic" option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join topic success!!");
+    } else {
+        NSLog(@"join topic failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+```cpp
+JoinTopicOptions options;
+uint64_t requestId;
+streamChannel->joinTopic("topicName", options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onjointopicresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onJoinTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("JoinTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("JoinTopic success\n");
+        }
+    }
+};
+```
+
+```dart
+final topicName = 'topic101';
+try {
+    var (status, response) = await stChannel.joinTopic(
+        topicName,
+        priority: RtmMessagePriority.normal,
+        syncWithMedia: false);
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { JoinTopicOptions, RtmMessageQos } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "Chat";
+const options: JoinTopicOptions = {
+  qos: RtmMessageQos.ORDERED
+};
+
+try {
+  const response = await streamChannel.joinTopic(topicName, options);
+  console.log("Join topic success:", response);
+} catch (error) {
+  console.error("Join topic failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Join topic failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+## 离开 Topic
+
+当你不再需要向某个 Topic 发送消息，或者同时加入的 Topic 超出数量限制时，你可以离开某个 Topic 以释放资源。成功离开 Topic 后，SDK 会触发 `enumv.topictypeleave` 类型的 `config.ontopicevent` 事件，频道中所有开启 Topic 事件监听的用户都会收到此事件通知。
+
+示例代码如下：
+
+```csharp
+var (status,response) = await streamChannel.LeaveTopicAsync("Motion");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Leave Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+```javascript
+const topicName = "Motion";
+try {
+    const result = await streamChannel.leaveTopic(topicName);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+mStreamChannel.leaveTopic("Motion", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "leave topic success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
+                if errorInfo == nil {
+                        print("Leave topic success!!")
+                    } else {
+                        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+                            print("Leave topic failed, errorCode: \(errorCode), reason: \(reason)")
+                        }
+                    }
+            })
+```
+
+```objc
+[stream_channel leaveTopic:@"your_topic" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"leave topic success!!");
+    } else {
+        NSLog(@"leave topic failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+uint64_t requestId;
+streamChannel->leaveTopic("topicName", requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onleavetopicresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onLeaveTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, const char *meta, RTM_ERROR_CODE errorCode) override
+    {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("LeaveTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("LeaveTopic success\n");
+        }
+    }
+};
+```
+
+```dart
+final topicName = 'topic101';
+try {
+    var (status, response) = await stChannel.leaveTopic( topicName);
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "Motion";
+
+try {
+  const response = await streamChannel.leaveTopic(topicName);
+  console.log("Leave topic success:", response);
+} catch (error) {
+  console.error("Leave topic failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Leave topic failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+## 订阅 Topic
+
+加入 Topic 并不代表你能接收到该 Topic 中传输的消息，你需要订阅此 Topic 并指定消息发布者才能实现消息的接收。在单个频道中，你可以同时订阅不超过 50 个 Topic，每个 Topic 中你可以同时订阅不超过 64 个消息发布者。该限制主要是为了平衡端侧带宽和性能。
+
+订阅 Topic 中消息发布者需要填写消息发布者列表（`users`）参数。假设第一次订阅消息发布者列表为 `[UserA,UserB]`，第二次订阅消息发布者列表为 `[UserB,UserC]`，则最后成功订阅的结果是 `[UserA,UserB,UserC]`。
+
+如果你在订阅 Topic 时，不填写消息发布者列表，则默认随机订阅不超过 64 个用户：
+
+- 如果 Topic 中的用户不超过 64 人则全部订阅。
+- 如果 Topic 中的用户超过 64 人则随机订阅 64 人。
+
+示例代码如下：
+
+```csharp
+List<string> userList = new List<string>();
+userList.Add("Tony");
+userList.Add("Marry");
+
+var options = new TopicOptions();
+options.users = userList.ToArray();
+
+var topicName = "Motion";
+
+var (status,response) = await streamChannel.SubscribeTopicAsync(topicName, options);
+if (result.Status.Error)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("The user {0} successfully subscribes topic {1} at channel {2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+```javascript
+const topicName = "Motion";
+const options = {
+    users: ["Tony"],
+};
+try {
+    const result = await streamChannel.subscribeTopic(topicName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+TopicOptions options = new TopicOptions();
+options.users = new ArrayList<>(Arrays.asList("user_name"));
+
+mStreamChannel.subscribeTopic("Motion", options, new ResultCallback<SubscribeTopicResult>() {
+    @Override
+    public void onSuccess(SubscribeTopicResult responseInfo) {
+        log(CALLBACK, "subscribe topic success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+let topicOption = AgoraRtmTopicOption()
+topicOption.users = ["user1", "user2"]
+  
+streamChannel.subscribeTopic("your_topic", option: topicOption,completion: { response, errorInfo in
+                if errorInfo == nil {
+                    print("Subscribe topic success!!")
+                } else {
+                    if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+                        let successUsers = response?.succeedUsers ?? []
+                        let failedUsers = response?.failedUsers ?? []
+                        print("Subscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
+                        print("Succeeded users: \(successUsers), Failed users: \(failedUsers)")
+                    }
+                }
+            })
+```
+
+```objc
+AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
+topic_opt.users = @[@"user1", @"user2"];
+
+[stream_channel subscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmTopicSubscriptionResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe topic success!!");
+    } else {
+        NSArray<NSString *> *sucees_users = response.succeedUsers;
+        NSArray<NSString *> *fail_users = response.failedUsers;
+        NSLog(@"subscribe topic failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp
+std::vector<const char*> users;
+users.push_back("UserA");
+users.push_back("UserB");
+
+TopicOptions options;
+options.users = users.data();
+options.userCount = users.size();
+
+uint64_t requestId;
+streamChannel->subscribeTopic("topicName", options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onsubscribetopicresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeTopicResult(const uint64_t requestId, const char *channelName, const char *userId, const char *topic, UserList succeedUsers, UserList failedUsers, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SubscribeTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SubscribeTopic success\n");
+        }
+    }
+};
+```
+
+```dart
+final topicName = 'topic101';
+var users = ['Tony','Lily'];
+try {
+    var (status, response) = await stChannel.subscribeTopic(
+        topicName,
+        users: users );
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { TopicOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "Motion";
+const options: TopicOptions = {
+  users: ["Tony", "Marry"]
+};
+
+try {
+  const response = await streamChannel.subscribeTopic(topicName, options);
+  console.log("Subscribe topic success:", response);
+  console.log("Succeed users:", response.succeedUsers);
+  console.log("Failed users:", response.failedUsers);
+} catch (error) {
+  console.error("Subscribe topic failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Subscribe topic failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+## 取消订阅
+
+当你对 Topic 中某个消息发布者不再感兴趣，或者对整个 Topic 不再关注，你可以通过取消订阅停止接收相关消息。如果你在取消订阅 Topic 时不填写消息发布者列表，则默认取消对整个 Topic 的订阅。
+
+示例代码如下：
+
+```csharp
+List<string> userList = new List<string>();
+userList.Add("Tony");
+userList.Add("Marry");
+
+var options = new TopicOptions();
+topicOptions.users = userList.ToArray();
+
+var topicName = "Motion";
+
+var (status,response) = await streamChannel.UnsubscribeTopicAsync(topicName, options);
+if (result.Status.Error)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode:{1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+```javascript
+const topicName = "Motion";
+const options = {
+    users: ["Tony"],
+};
+try {
+    const result = await streamChannel.unsubscribeTopic(topicName, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java
+var topicName = "Motion";
+var options = new TopicOptions();
+options.users = new ArrayList<>(Arrays.asList("Tony"));
+
+mStreamChannel.unsubscribeTopic(topicName.toString(), options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "unsubscribe topic success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+let topicOpt = AgoraRtmTopicOption()
+topicOpt.users = ["user1", "user2"]
+
+streamChannel.unsubscribeTopic("your_topic", option: topicOpt,  completion:{ response, errorInfo in
+            if errorInfo == nil {
+                print("Unsubscribe topic success!!")
+            } else {
+                if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+                    print("Unsubscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
+                }
+            }
+        });
+```
+
+```objc
+AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
+topic_opt.users = @[@"user1", @"user2"];
+
+[stream_channel unsubscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe topic success!!");
+    } else {
+        NSLog(@"subscribe topic failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+```cpp
+std::vector<const char*> users;
+users.push_back("UserA");
+users.push_back("UserB");
+TopicOptions options;
+options.users = users.data();
+options.userCount = users.size();
+
+uint64_t requestId;
+streamChannel->unsubscribeTopic("topicName", options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onunsubscribetopicresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeTopicResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UnsubscribeTopic failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UnsubscribeTopic success\n");
+        }
+    }
+};
+```
+
+```dart
+final topicName = 'topic101';
+var users = ['Tony','Lily'];
+try {
+    var (status, response) = await stChannel.unsubscribeTopic(
+        topicName,
+        users: users );
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+import { TopicOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "Motion";
+const options: TopicOptions = {
+  users: ["Tony"]
+};
+
+try {
+  const response = await streamChannel.unsubscribeTopic(topicName, options);
+  console.log("Unsubscribe topic success:", response);
+} catch (error) {
+  console.error("Unsubscribe topic failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Unsubscribe topic failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+## 同步传输
+
+RTC 音视频数据与 RTM 消息/指令数据同步传输功能是 RTM 重要特性之一，被广泛应用在元宇宙虚拟人音画数据同步播放、平行操控数据回传等场景。当用户在加入频道时，设置 `options` 参数中 `syncWithMedia` 字段为 `true` 后，SDK 将自动为该用户的的数据通道（Stream Channel 中的 Topic ）与同名共频道的音视频媒体流（RTC）实现数据的同步传输和端侧的同步播放能力，大大简化业务逻辑。
+
+:::info[信息]
+只有融合版 SDK 才支持同步传输特性，且该特性仅对 Stream 类型频道有效。
+:::
+
+示例代码如下：
+
+```csharp
+string topic = "facialExpression";
+var options = new JoinTopicOptions();
+options.qos = RTM_MESSAGE_QOS.ORDERED;
+options.syncWithMedia = true;
+
+var (status,response) = await streamChannel.JoinTopicAsync(topic, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation,status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User {0} joined topic {1} successfully at channel {2}", response.UserId, response.Topic, response.ChannelName));
+}
+```
+
+```java
+var options = new JoinTopicOptions();
+options.messageQos = RtmMessageQos.ORDERED;
+options.syncWithMedia = true;
+mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join topic success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+let joinTopicOpt = AgoraRtmJoinTopicOption()
+joinTopicOpt.qos = .ordered
+joinTopicOpt.syncWithMedia = true
+streamChannels[channel]?.joinTopic("your_topic", option: joinTopicOpt, completion: { response, errorInfo in
+            if errorInfo == nil {
+                print("Join topic success!!")
+            } else {
+                if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+                    print("Join topic failed, errorCode: \(errorCode), reason: \(reason)")
+                }
+            }
+        })
+```
+
+```objc
+AgoraRtmJoinTopicOption* join_topic_opt = [[AgoraRtmJoinTopicOption alloc] init];
+join_topic_opt.qos = AgoraRtmMessageQosOrdered;
+join_topic_opt.syncWithMedia = true;
+
+[stream_channel joinTopic:@"your_topic" withOption:join_topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join topic success!!");
+    } else {
+        NSLog(@"join topic failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+```cpp
+JoinTopicOptions options;
+options.qos = RTM_MESSAGE_QOS_ORDERED;
+options.syncWithMedia = true;
+
+uint64_t requestId;
+streamChannel->joinTopic("topicName", options, requestId);
+```
+
+根据本地用户是否发送音频视频数据，及订阅该 Topic 的远端用户是否订阅本地用户的音视频流，远端用户的同步播放会有以下几种情况：
+
+| 发送音频数据 | 发送视频数据 | 订阅音频数据 | 订阅视频数据 | 订阅 Topic 数据 | 同步行为 |
+| --- | --- | --- | --- | --- | --- |
+| 发送端行为 | 接收端行为 | 接收端 Topic 数据行为 |  |  |  |
+| True | False | True | False | True | Topic 数据与音频数据同步 |
+| True | False | False | False | True | 实时传输 |
+| True | True | True | True | True | Topic 数据与音频数据同步 |
+| True | True | True | False | True | Topic 数据与音频数据同步 |
+| True | True | False | True | True | Topic 数据与视频数据同步 |
+| True | True | False | False | True | 实时传输 |
+| False | True | False | True | True | Topic 数据与视频数据同步 |
+| False | True | False | False | True | 实时传输 |
+| False | False | False | False | True | 实时传输 |
+
+当开启 `syncWithMedia` 后，Topic 中传输的数据因需要等待音视频流数据实现同步对齐，因而在接收端会引入一定程度的延迟。如果在接收数据的过程中，接收方突然取消音视频数据流的订阅，此时 Topic 中数据的延迟逐渐降低直到恢复实时。

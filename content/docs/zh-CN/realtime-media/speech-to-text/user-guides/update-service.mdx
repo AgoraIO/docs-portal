@@ -1,0 +1,84 @@
+---
+title: "更新服务配置"
+---
+实时转录翻译支持 `update` 命令，你可以在不中断服务的情况下修改参数。例如，仅对指定主播转写时，如果该主播掉线后以新的用户 ID 重新加入频道，需要让实时转录翻译订阅新的用户 ID 并继续转写其音频，`update` 命令即可解决此类问题。
+
+`update` 命令可用于：
+
+- 更新转写语言。
+- 更新需转写音频的指定主播的用户 ID。
+- 在转写全部主播与转写指定主播之间切换。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- 参考[开通服务](/zh-CN/realtime-media/speech-to-text/get-started/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
+- 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/user-guides/http-basic-auth)获取 `Authorization` 值。
+
+确保已为你的 App 启用实时转录翻译服务。
+
+## 实现方法
+
+按照[快速开始](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)中的 API 调用流程进行。
+
+### 请求示例
+
+- 更新转写语言：
+
+    ```shell
+    curl --location --request POST 'https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/{appId}/agents/{agentId}/update?sequenceId=1&updateMask=languages' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Basic <credentials>' \
+    --data '{
+        "languages": [
+            "en-US", 
+            "ru-RU"
+        ]
+    }'
+    ```
+
+- 更新用户 ID：
+
+    ```shell
+    curl --location --request POST 'https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/{appId}/agents/{agentId}/update?sequenceId=1&updateMask=rtcConfig.subscribeAudioUids' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Basic <credentials>' \
+    --data '{
+        "rtcConfig": {
+            "subscribeAudioUids": ["12", "23", "45"],
+        }
+    }'    
+    ```
+
+### 响应示例
+
+- 成功
+
+    ```json
+    {
+      "agent_id": "Agent ID.",
+      "create_ts": 12345678,
+      "status": "RUNNING"
+    }
+    ```
+
+- 失败
+
+    ```json
+    {
+     "message": "string" // error reason
+    }
+    ```
+
+## 注意事项
+
+- 调用 `update` 需要至少 5 秒间隔，具体如下：
+  - 调用 `start` 后，需等待至少 5 秒才能调用 `update`。
+  - 调用 `update` 后，再次调用 `update` 前需等待至少 5 秒。
+  - `update` 与 `query`、`stop` 搭配时无间隔限制。
+- 更新参数时，新的参数会完全替换旧参数，除非旧参数在 `updateMask` 中被忽略。例如，当前转写用户 ID 为 100 和 200 的主播，用户 ID 为 200 的主播掉线后以用户 ID 300 重入，则需要使用 `"subscribeAudioUids": "[ \"100\", \"300\" ]"`。如果仅使用 `"subscribeAudioUids": "[ \"300\" ]"`，则只会转写用户 ID 300 的主播音频，语言配置不会更新。
+- 如果同时更新语言和主播的用户 ID，传入 `"updateMask=languages,rtcConfig.subscribeAudioUids"`。
+- `sequenceId` 每次请求递增 1。

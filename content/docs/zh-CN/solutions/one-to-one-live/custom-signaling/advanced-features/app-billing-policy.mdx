@@ -1,0 +1,45 @@
+---
+title: "C 端用户计费策略推荐"
+---
+在 1v1 私密房和秀场转 1v1 场景中，平台方通常会设计通话付费的业务逻辑，也就是主动发起呼叫的 C 端用户需要付费呼叫，平台从通话费用中抽取一定比例分成给主播，所以通话计费的精准性会影响平台营收和用户体验。基于该需求，声网提供了便捷的状态/事件回调，方便你调用相关接口完成业务逻辑。
+
+此外，基于声网服务的海量客户经验，我们还总结出了一套通话计费的接口调用建议与最佳实践。以下计费策略仅供参考，你可以根据自身业务需求灵活调整。
+
+## 前提条件
+
+本文推荐的开始和结束计费时机，是通过声网 RTC 频道的消息通知服务触发的服务端事件回调实现的。开始前，你需要开通相关服务，并了解如何接收消息通知回调，详见[使用消息通知服务](/zh-CN/realtime-media/rtc/webhook/receive_webhook)。
+
+## 开始计费
+
+满足如下**全部**条件时，开始计费：
+
+- 使用服务端消息通知服务的事件回调 [`103`](/zh-CN/realtime-media/rtc/webhook/events#103-broadcaster-join-channel)，判断主叫方和被叫方均加入了频道。
+- 主叫用户端收到 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/custom-signaling/api/call-api#oncallstatechanged) 回调，并且 `state` 为 `connected`，表示收到了被叫方接受呼叫邀请的回执消息，且收到了对方视频首帧。
+- 被叫用户端收到 `onCallStateChanged` 回调，并且 `state` 为 `connected`，表示被叫方主动调用了 `accept` 接受呼叫邀请，且收到了主叫方视频首帧。
+
+为确保 `connected` 事件准确到达，我们推荐你实现如下逻辑：
+
+- 多次实现 `onCallStateChanged(connected)` 事件上报，确保该事件能到达你的业务服务器。
+- 在 `onCallStateChanged` 回调信息中加上上报 `connected` 事件的时间戳，以确保即便回调触发有延迟，依然可以准确计费。
+- 使用多通道上报 `connected` 事件。客户端收到 `onCallStateChanged(connected)` 后，通过信令、IM 或其它长连接将 `connected` 事件上报给自己的业务服务器，以确保事件能准时到达业务服务器。
+
+:::info[信息]
+如果你使用自己的业务信令 + RTC API 实现的场景，当信令通道通了，但是 RTC 通道因为网络、设备占用等客观原因没有出图，则理论上不推荐开始计费，否则会影响用户体验。推荐的开始计费时机为如下条件**全部**满足时：
+
+- 使用服务端事件回调 `103`，判断主叫方和被叫方均加入了频道。
+- 主叫和被叫用户端均收到对方首帧回调（即 RTC 的 [`onFirstRemoteVideoFrame`](/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onfirstremotevideoframe) 回调）。
+:::
+
+## 结束计费
+
+选择如下**一种**时机，结束计费：
+
+- 在收到服务端消息通知回调的事件回调 [`104`](/zh-CN/realtime-media/rtc/webhook/events#104-broadcaster-leave-channel)，且 `reason` 为 `1` 时，表示用户已离开频道，此时结束计费。
+
+  :::warning[注意]
+  如果服务端事件回调 `104` 的 `reason` 为其他值，可能是由 App 被关掉、手机卡住或重启、网络中断等原因导致的，不能作为结束计费的依据。你可以设置一个超时时间，例如 10 秒。如果在 10 秒内声网服务器没有接收到客户端的数据包，可以判断为结束计费的依据。
+  :::
+
+- 为避免回调事件到达延迟，你也可以使用[查询用户列表 RESTful API](/doc/rtc/restful/channel-management/operations/get-dev-v1-channel-user-appid-channelName-hosts_only) 查询指定用户是否还在频道内，来决定是否结束计费。
+
+如果你部署了信令、IM 或其它长连接监测服务，也可以通过自建心跳逻辑，来判断指定用户是否还在频道内。

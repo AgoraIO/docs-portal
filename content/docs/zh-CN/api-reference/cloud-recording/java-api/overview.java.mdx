@@ -1,0 +1,51 @@
+---
+title: "API 概览"
+---
+## CloudRecordingClient
+
+| API | 描述 |
+|---|---|
+|[`create`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java#create) | 使用指定配置创建 [`CloudRecordingClient`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java) 实例。 |
+|[`individualScenario`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java#individualscenario) | 返回 [`IndividualScenario`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java) 实例。 |
+|[`webScenario`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java#webscenario) | 返回 [`WebScenario`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java) 实例。 |
+|[`mixScenario`](/zh-CN/api-reference/cloud-recording/java-api/cloudrecordingclient.java#mixscenario) | 返回 [`MixScenario`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java) 实例。 |
+
+## IndividualScenario
+
+| API | 描述 |
+|---|---|
+|[`acquire`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#acquire) | 获取单流录制的资源 ID。 |
+|[`start`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#start) | 启动单流云端录制。 |
+|[`query`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#query) | 查询关闭视频截图采集时的单路云端录制状态。 |
+|[`queryVideoScreenshot`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#queryvideoscreenshot) | 查询开启视频截图时单路云端录制的状态。 |
+|[`update`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#update) | 更新单流录制配置。 |
+|[`stop`](/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java#stop) | 停止单流录制。 |
+
+## WebScenario
+
+| API | 描述 |
+|---|---|
+|[`acquire`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#acquire) | 获取页面录制资源 ID。 |
+|[`start`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#start) | 启动 Web 录制。 |
+|[`query`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#query) | 查询页面录制状态。 |
+|[`queryRtmpPublish`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#queryrtmppublish) | 查询网页录制的 CDN 推流状态。 |
+|[`update`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#update) | 更新页面录制配置。 |
+|[`stop`](/zh-CN/api-reference/cloud-recording/java-api/webscenario.java#stop) | 停止网页录制。 |
+
+## MixScenario
+
+| API | 描述 |
+|---|---|
+|[`acquire`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#acquire) | 获取合流录制资源 ID。 |
+|[`start`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#start) | 启动合流录制。 |
+|[`queryHLS`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#queryhls) | 查询视频文件格式为 HLS 时的合流录制状态。 |
+|[`queryHLSAndMP4`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#queryhlsandmp4) | 查询当视频文件格式为 HLS 和 MP4 时的合流云端录制状态。 |
+|[`updateLayout`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#updatelayout) | 更新合流云端录制的布局。 |
+|[`update`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#update) | 更新合流录制配置。 |
+|[`stop`](/zh-CN/api-reference/cloud-recording/java-api/mixscenario.java#stop) | 停止合流录制。 |
+
+## BasicAuthCredential
+
+| API | 描述 |
+|---|---|
+|[`BasicAuthCredential`](/zh-CN/api-reference/cloud-recording/java-api/basicauthcredential.java#basicauthcredential) | 创建一个 [`BasicAuthCredential`](/zh-CN/api-reference/cloud-recording/java-api/basicauthcredential.java) 实例。 |

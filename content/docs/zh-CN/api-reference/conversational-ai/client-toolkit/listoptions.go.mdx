@@ -1,0 +1,154 @@
+---
+title: "ListOptions 类"
+---
+<a id="withlimit"></a>
+## WithLimit
+
+```go
+func WithLimit(limit int) ListOption
+```
+
+设置每页返回的条目数量。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `limit` | `int` | 每页返回的条目数量，默认值为 20。 |
+
+#### 返回值
+
+方法调用成功，返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
+
+<a id="withstate"></a>
+## WithState
+
+```go
+func WithState(state int) ListOption
+```
+
+设置智能体的状态。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `state` | `int` | <Slot name="listoptions-go-html-1-1-2" /> |
+
+<Slot for="listoptions-go-html-1-1-2">
+
+要查询的智能体状态，支持以下状态：
+
+    - `IDLE`（0）：智能体处于空闲状态。
+    - `STARTING`（1）：智能体正在启动。
+    - `RUNNING`（2）：智能体正在运行。
+    - `STOPPING`（3）：智能体正在停止。
+    - `STOPPED`（4）：智能体已完成退出。
+    - `RECOVERING`（5）：智能体正在恢复。
+    - `FAILED`（6）：智能体已失败。
+
+</Slot>
+
+#### 返回值
+
+方法调用成功，返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
+
+<a id="withfromtime"></a>
+## WithFromTime
+
+```go
+func WithFromTime(fromTime int) ListOption
+```
+
+设置起始时间戳。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `fromTime` | `int` | 起始时间戳，单位为秒。默认值为 1 天前。 |
+
+#### 返回值
+
+方法调用成功，返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
+
+<a id="withtotime"></a>
+## WithToTime
+
+```go
+func WithToTime(toTime int) ListOption
+```
+
+设置结束时间戳。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `toTime` | `int` | 结束时间戳，单位为秒。默认值为当前时间。 |
+
+#### 返回值
+
+方法调用成功，返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
+
+<a id="withcursor"></a>
+## WithCursor
+
+```go
+func WithCursor(cursor string) ListOption
+```
+
+设置分页起始位置的游标。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cursor` | `string` | 分页游标，即分页起始位置的智能体 ID。 |
+
+#### 返回值
+
+返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
+
+<a id="withchannel"></a>
+## WithChannel
+
+```go
+func WithChannel(channel string) ListOption
+```
+
+设置频道名。
+
+:::info[信息]
+自 v0.7.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channel` | `string` | 频道名。 |
+
+#### 返回值
+
+方法调用成功，返回 [`ListOption`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.go#listoption) 函数。
