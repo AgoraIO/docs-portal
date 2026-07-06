@@ -98,7 +98,7 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
-    'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+    'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
   },
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
@@ -774,21 +774,17 @@ function resolveLegacyConversationalAiRestRedirect(
   const prefix = 'conversational-ai/rest-api';
 
   if (normalizedPath === prefix) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
   }
 
   if (normalizedPath === `${prefix}/authentication`) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai/authentication`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
   if (normalizedPath === `${prefix}/status-codes`) {
     return locale === 'en'
       ? `/${locale}/api-reference/api-ref/conversational-ai/status-codes`
-      : null;
+      : `/${locale}/api-reference/response-code`;
   }
 
   if (!normalizedPath.startsWith(`${prefix}/agent/`)) {

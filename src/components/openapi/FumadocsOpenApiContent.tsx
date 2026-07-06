@@ -17,9 +17,11 @@ import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import {
   createContext,
   type ReactNode,
+  type RefObject,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import * as JsxRuntime from 'react/jsx-runtime';
@@ -56,6 +58,7 @@ const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
 const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
+const OpenApiLocaleContext = createContext<string | undefined>(undefined);
 const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
 const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#request-body]:font-semibold',
@@ -65,6 +68,30 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
 ] as const;
 const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
 const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
+const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
+  Authorization: '鉴权',
+  'Collapse all': '折叠全部',
+  'Cookie Parameters': 'Cookie 参数',
+  'Expand all': '展开全部',
+  'Header Parameters': '请求 Header',
+  Note: '注意',
+  'Path Parameters': '路径参数',
+  'Query Parameters': '查询参数',
+  'Request Body': '请求 Body',
+  'Request Body schema fields': '请求 Body 字段',
+  'Request examples': '请求示例',
+  'Response Body': '响应 Body',
+  'Response Body schema fields': '响应 Body 字段',
+  'Response Headers': '响应 Header',
+  'Response example': '响应示例',
+  'Response schema': '响应 Schema',
+  'Response schema fields': '响应字段',
+  'This endpoint requires authentication.': '该接口需要鉴权。',
+};
+const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
+  'request-body': '请求 Body',
+  'response-body': '响应 Body',
+};
 
 const ClientAPIPage = createClientAPIPage({
   content: {
@@ -113,14 +140,18 @@ function getGeneratedCodeSampleOverrides(method: MethodInformation) {
 
 export function FumadocsOpenApiContent({
   className,
+  locale,
   pageProps,
 }: {
   className?: string;
+  locale?: string;
   pageProps: ClientApiPageProps;
 }) {
   const operation = getCurrentOperation(pageProps);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useOpenApiHashScroll();
+  useLocalizedOpenApiGeneratedChrome(containerRef, locale);
 
   return (
     <div
@@ -129,14 +160,17 @@ export function FumadocsOpenApiContent({
         ...OPENAPI_GENERATED_BODY_HEADING_CLASSES,
         className,
       )}
+      ref={containerRef}
     >
-      <OpenApiSourceOperationContext.Provider value={operation}>
-        <OpenApiDocsCallouts
-          operation={operation}
-          position="before-description"
-        />
-        <ClientAPIPage {...pageProps} />
-      </OpenApiSourceOperationContext.Provider>
+      <OpenApiLocaleContext.Provider value={locale}>
+        <OpenApiSourceOperationContext.Provider value={operation}>
+          <OpenApiDocsCallouts
+            operation={operation}
+            position="before-description"
+          />
+          <ClientAPIPage {...pageProps} />
+        </OpenApiSourceOperationContext.Provider>
+      </OpenApiLocaleContext.Provider>
     </div>
   );
 }
@@ -235,6 +269,8 @@ function OpenApiOperationLayout({
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
+
   return (
     <div className="flex flex-col gap-x-6 gap-y-4 @3xl:flex-row @3xl:items-start">
       <div className="min-w-0 flex-1">
@@ -250,7 +286,9 @@ function OpenApiOperationLayout({
           position="before-response-body"
         />
         {slots.responses}
-        <OpenApiResponseBodySchemas operation={method} />
+        {isZhCnLocale(locale) ? null : (
+          <OpenApiResponseBodySchemas operation={method} />
+        )}
         <OpenApiResponseHeaders operation={method} />
         <OpenApiDocsSections
           operation={method}
@@ -294,6 +332,50 @@ function mergeOpenApiOperationExtensions(
   } satisfies OpenApiOperation;
 }
 
+function getOpenApiLabel(label: string, locale?: string) {
+  return isZhCnLocale(locale) ? (ZH_CN_OPENAPI_LABELS[label] ?? label) : label;
+}
+
+function useLocalizedOpenApiGeneratedChrome(
+  containerRef: RefObject<HTMLDivElement | null>,
+  locale?: string,
+) {
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container || !isZhCnLocale(locale)) {
+      return;
+    }
+
+    const syncLabels = () => {
+      for (const [id, label] of Object.entries(
+        ZH_CN_OPENAPI_GENERATED_HEADING_LABELS,
+      )) {
+        const heading = container.querySelector<HTMLElement>(`h2#${id}`);
+        const link = heading?.querySelector<HTMLElement>('a');
+
+        if (link && link.textContent !== label) {
+          link.textContent = label;
+        }
+      }
+    };
+
+    syncLabels();
+
+    const observer = new MutationObserver(syncLabels);
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, [containerRef, locale]);
+}
+
+function isZhCnLocale(locale?: string) {
+  return locale === 'zh-CN';
+}
+
 function OpenApiRightExamplesLayout({
   slots,
 }: {
@@ -304,6 +386,7 @@ function OpenApiRightExamplesLayout({
   };
 }) {
   const operation = useContext(OpenApiOperationContext);
+  const locale = useContext(OpenApiLocaleContext);
   const hasGroupedSamples = getOpenApiCodeSampleGroups(operation).length > 0;
   const hasExplicitSamples =
     hasGroupedSamples || getOpenApiCodeSamples(operation).length > 0;
@@ -312,15 +395,14 @@ function OpenApiRightExamplesLayout({
     <div className="openapi-right-examples prose-no-margin space-y-3">
       <OpenApiRightSection
         className="openapi-request-examples"
-        excludeFromMarkdownParity={hasExplicitSamples}
-        title="Request examples"
+        title={getOpenApiLabel('Request examples', locale)}
       >
         {hasGroupedSamples ? null : slots.selector}
         {slots.usageTabs}
       </OpenApiRightSection>
       <OpenApiRightSection
         className="openapi-response-example"
-        title="Response example"
+        title={getOpenApiLabel('Response example', locale)}
       >
         {slots.responseTabs}
       </OpenApiRightSection>
@@ -358,7 +440,12 @@ function OpenApiAuthorizationSection({
 }: {
   operation?: OpenApiOperation;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const securityKeys = getOpenApiSecurityKeys(operation);
+
+  if (isZhCnLocale(locale)) {
+    return null;
+  }
 
   if (securityKeys.length === 0) {
     return null;
@@ -367,10 +454,10 @@ function OpenApiAuthorizationSection({
   return (
     <OpenApiRightSection
       className="openapi-authorization-section mb-3"
-      title="Authorization"
+      title={getOpenApiLabel('Authorization', locale)}
     >
       <p className="mb-2 text-fd-muted-foreground text-xs">
-        This endpoint requires authentication.
+        {getOpenApiLabel('This endpoint requires authentication.', locale)}
       </p>
       <div className="flex flex-wrap gap-1.5">
         {securityKeys.map((key) => (
@@ -481,14 +568,17 @@ function getCurrentOperation(
 }
 
 function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
+  const locale = useContext(OpenApiLocaleContext);
   const parameters = arrayOfRecords(operation?.parameters)
     .map((parameter) => resolveLocalReference(operation?.__document, parameter))
-    .filter(isDisplayableParameter) as OpenApiParameter[];
+    .filter((parameter) =>
+      isDisplayableParameter(parameter, locale),
+    ) as OpenApiParameter[];
   const groups = [
-    ['path', 'Path Parameters'],
-    ['query', 'Query Parameters'],
-    ['header', 'Header Parameters'],
-    ['cookie', 'Cookie Parameters'],
+    ['path', getOpenApiLabel('Path Parameters', locale)],
+    ['query', getOpenApiLabel('Query Parameters', locale)],
+    ['header', getOpenApiLabel('Header Parameters', locale)],
+    ['cookie', getOpenApiLabel('Cookie Parameters', locale)],
   ] as const;
 
   if (parameters.length === 0) {
@@ -531,6 +621,7 @@ function OpenApiResponseHeaders({
 }: {
   operation?: OpenApiOperation;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const responseHeaders = Object.entries(
     getRecord(operation?.responses) ?? {},
   ).flatMap(([statusCode, response]) => {
@@ -589,7 +680,7 @@ function OpenApiResponseHeaders({
         required: header.required,
         type: header.type,
       }))}
-      title="Response Headers"
+      title={getOpenApiLabel('Response Headers', locale)}
     />
   );
 }
@@ -1326,13 +1417,15 @@ function OpenApiSchemaRows({
   root: unknown;
   writeOnly?: boolean;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const rows = useMemo(
     () =>
       buildOpenApiSchemaRows(root, {
         document,
+        omitArrayItemWrapperRows: isZhCnLocale(locale),
         usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
       }),
-    [root, document, writeOnly, readOnly],
+    [root, document, writeOnly, readOnly, locale],
   );
   const anchorIds = useMemo(
     () =>
@@ -1403,12 +1496,15 @@ function OpenApiSchemaRows({
       {collapsibleAnchorIds.length > 0 ? (
         <div className="flex justify-end border-fd-border border-b px-4 py-2">
           <button
-            aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
+            aria-label={`${getOpenApiLabel(allRowsExpanded ? 'Collapse all' : 'Expand all', locale)} ${getOpenApiSchemaGroupLabel(anchorPrefix, locale)}`}
             className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
             onClick={() => setAllRowsExpanded(!allRowsExpanded)}
             type="button"
           >
-            {allRowsExpanded ? 'Collapse all' : 'Expand all'}
+            {getOpenApiLabel(
+              allRowsExpanded ? 'Collapse all' : 'Expand all',
+              locale,
+            )}
           </button>
         </div>
       ) : null}
@@ -1533,17 +1629,17 @@ function getOpenApiSchemaRowPaddingInlineStart(depth: number) {
   }px)`;
 }
 
-function getOpenApiSchemaGroupLabel(anchorPrefix: string) {
+function getOpenApiSchemaGroupLabel(anchorPrefix: string, locale?: string) {
   if (anchorPrefix === 'request-body') {
-    return 'Request Body schema fields';
+    return getOpenApiLabel('Request Body schema fields', locale);
   }
 
   if (anchorPrefix.startsWith('responses-')) {
-    return 'Response schema fields';
+    return getOpenApiLabel('Response schema fields', locale);
   }
 
   if (anchorPrefix === 'response-body') {
-    return 'Response Body schema fields';
+    return getOpenApiLabel('Response Body schema fields', locale);
   }
 
   return 'schema fields';
@@ -1811,6 +1907,22 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
+function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
+  const locale = useContext(OpenApiLocaleContext);
+
+  if (!isZhCnLocale(locale)) {
+    return <blockquote>{children}</blockquote>;
+  }
+
+  return (
+    <div className="openapi-markdown-blockquote">
+      <OpenApiCallout title={getOpenApiLabel('Note', locale)} type="info">
+        <div className="prose-no-margin">{children}</div>
+      </OpenApiCallout>
+    </div>
+  );
+}
+
 function createOpenApiMarkdownProcessor() {
   function rehypeReact(this: { compiler?: unknown }) {
     this.compiler = (
@@ -1821,7 +1933,10 @@ function createOpenApiMarkdownProcessor() {
         development: false,
         filePath: file.path,
         ...JsxRuntime,
-        components: defaultMdxComponents,
+        components: {
+          ...defaultMdxComponents,
+          blockquote: OpenApiMarkdownBlockquote,
+        },
       });
   }
 
@@ -1848,17 +1963,20 @@ function toCalloutType(type: string | undefined) {
 
 function isDisplayableParameter(
   parameter: unknown,
+  locale?: string,
 ): parameter is OpenApiParameter {
   if (!isRecord(parameter)) {
     return false;
   }
+
+  const isAuthHeader = isAuthenticationHeaderParameter(parameter);
 
   return (
     isRecord(parameter) &&
     typeof parameter.name === 'string' &&
     typeof parameter.in === 'string' &&
     ['cookie', 'header', 'path', 'query'].includes(parameter.in) &&
-    !isAuthenticationHeaderParameter(parameter) &&
+    (!isAuthHeader || locale === 'zh-CN') &&
     !isReferenceObject(parameter)
   );
 }

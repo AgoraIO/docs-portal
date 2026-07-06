@@ -1992,6 +1992,15 @@ Web body
     ).resolves.toEqual({
       redirectUrl: '/en/api-reference/api-ref/conversational-ai/join',
     });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai',
+    });
   });
 
   it('includes OpenAPI endpoint sidebar items on the real MDX parent page', async () => {
@@ -2577,7 +2586,7 @@ Web body
       loadDocsPagePayload('zh-CN', 'best-practices', ['http-basic-auth']),
     ).resolves.toEqual({
       redirectUrl:
-        '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+        '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
     });
 
     await expect(
