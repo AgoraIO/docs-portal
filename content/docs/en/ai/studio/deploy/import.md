@@ -69,8 +69,9 @@ To remove an imported phone number:
 3. From the action menu, select **Delete**.
 4. Confirm the deletion.
 
-> **Caution**
-> Deleting a phone number removes it from all agents and campaigns that use it. Ensure no active inbound agents or outbound campaigns depend on this number before deleting.
+:::caution[Caution]
+Deleting a phone number removes it from all agents and campaigns that use it. Ensure no active inbound agents or outbound campaigns depend on this number before deleting.
+:::
 
 ## Next steps
 

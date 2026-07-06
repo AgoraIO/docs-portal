@@ -23,8 +23,9 @@ After you add a credential, you can select it from the **Credential** dropdown w
 
 You can edit and delete credentials using the **Actions** column in the credential list.
 
-> **Caution**
-> Deleting a credential affects all agents that use it. Verify that no active agents depend on the credential before deleting, or update those agents to use a different credential first.
+:::caution[Caution]
+Deleting a credential affects all agents that use it. Verify that no active agents depend on the credential before deleting, or update those agents to use a different credential first.
+:::
 
 ### Credential security
 
@@ -34,10 +35,11 @@ Credentials stored in **Integrations** are:
 - Only accessible to users with access to your Agora project
 - Never exposed in agent configurations or logs
 
-> **Best practices**
-> - Use descriptive names to distinguish between development, staging, and production credentials
-> - Rotate API keys regularly according to your security policies
-> - Delete unused credentials to minimize security exposure
+:::tip[Best practices]
+- Use descriptive names to distinguish between development, staging, and production credentials
+- Rotate API keys regularly according to your security policies
+- Delete unused credentials to minimize security exposure
+:::
 
 ## Knowledge bases
 
@@ -54,8 +56,9 @@ To create a knowledge base:
 6. Upload one or more files by clicking **Browse files** or dragging and dropping files into the upload area.
 7. Click **Create**.
 
-> **Info**
-> Supported file formats: PDF, DOCX. Maximum file size: 20 MB per file.
+:::info[Info]
+Supported file formats: PDF, DOCX. Maximum file size: 20 MB per file.
+:::
 
 You can delete knowledge bases using the **Actions** column in the knowledge base list.
 

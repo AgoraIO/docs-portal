@@ -45,9 +45,9 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 
 ## Related pages
 
-- [Agora account management](../openai-realtime/get-started/manage-agora-account)
-- [OpenAI Realtime quickstart](../openai-realtime/get-started/quickstart)
-- [Core pieces](#core-pieces)
-- [Security](../openai-realtime/reference/security)
-- [Firewall requirements](../openai-realtime/reference/firewall)
-- [Glossary](../openai-realtime/reference/glossary)
+- [Conversational AI quickstart](/en/ai/get-started/quickstart)
+- [MCP integration](/en/ai/get-started/mcp-integrate)
+- [Agora skills](/en/ai/get-started/skills-integrate)
+- [Security and privacy](/en/introduction/security-privacy)
+- [Firewall requirements](/en/introduction/firewall)
+- [Glossary](/en/introduction/glossary)
