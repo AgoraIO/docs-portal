@@ -251,11 +251,25 @@ The following implementation steps apply to the latest version of the AI Noise S
 
 1. Integrate AI Noise Suppression into your app
 
-  To install the AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)), in the root of your project run the following command:
+   The AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)) requires Web SDK v4.15.1 or later. In the root of your project, run the following command to install the extension. By default, this installs the latest version (v2.0.2):
 
    ```javascript
    npm install agora-extension-ai-denoiser
    ```
+
+   To install a specific extension version, use one of the following commands:
+
+   - **v2.0.2** — Adds background voice removal, which further isolates the target voice in noisy or multi-speaker scenarios.
+
+     ```javascript
+     npm install agora-extension-ai-denoiser@2.0.2
+     ```
+
+   - **v2.0.1** — Supports low-latency mode and log-level configuration. If you need background voice removal, use v2.0.2.
+
+     ```javascript
+     npm install agora-extension-ai-denoiser@2.0.1
+     ```
 
 1. Import AI Noise Suppression
 

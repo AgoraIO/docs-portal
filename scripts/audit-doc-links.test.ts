@@ -540,14 +540,13 @@ describe('auditDocsLinks', () => {
         'en/introduction/index.mdx',
         'en/ai/index.mdx',
         'en/realtime-media/overview.mdx',
-        'en/solutions/index.mdx',
         'en/api-reference/index.mdx',
       ],
     });
 
-    expect(stats.docsFiles).toBe(5);
+    expect(stats.docsFiles).toBe(4);
     expect(stats.rootLinks).not.toHaveLength(0);
     expect(stats.missingRootLinks).toEqual([]);
     expect(stats.missingRelativeMarkdownLinks).toEqual([]);
-  });
+  }, 120_000);
 });

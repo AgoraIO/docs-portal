@@ -415,7 +415,7 @@ describe('DocsShell', () => {
     expect(mainHeaderRow).toContainElement(desktopSearch);
     expect(mainHeaderRow).toContainElement(themeControl);
     expect(within(brandHomeLink).getByText('Docs')).toBeInTheDocument();
-    expect(brandHomeLink.querySelector('svg')).toBeInTheDocument();
+    expect(brandHomeLink.querySelector('img')).toBeInTheDocument();
     expect(mainHeaderRow).not.toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsIntroductionLink);
     expect(docsTabsStrip).toContainElement(tabsAiLink);
@@ -1526,11 +1526,6 @@ describe('DocsShell', () => {
             id: 'realtime-media',
             title: 'RTC',
             url: '/en/realtime-media',
-          },
-          {
-            id: 'solutions',
-            title: 'Solutions',
-            url: '/en/solutions',
           },
           {
             id: 'api-reference',

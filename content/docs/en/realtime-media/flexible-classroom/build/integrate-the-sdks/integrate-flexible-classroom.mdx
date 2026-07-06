@@ -1,0 +1,1398 @@
+---
+title: "Classroom SDK & Proctor SDK"
+description: "Integrate the Classroom SDK or Proctor SDK into your app with the default UI or a customized UI."
+---
+
+This page introduces how to add Flexible Classroom into your app.
+
+<PlatformStructured platform="android">
+
+## Android
+
+## Understand the tech
+
+#### Module introduction
+
+The source code of Flexible Classroom contains the following packages:
+
+- `app`: (Optional) This module contains code for the classroom login interface and a client-side token generator and shows how to call APIs to join a flexible classroom. This module is an open-source project available on GitHub and for reference only.
+
+:::note
+- Specifications defined for the login interface (such as the length requirement of the user name and the room name and character restrictions) do not apply to all apps – make sure to define them according to your business requirements.
+- The client-side token generator provided by Agora is only for rapid testing. When your app goes live, to ensure security, you must deploy a server-side token generator and generate tokens on your server. For details, see [Secure authentication with tokens](/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow).
+:::
+
+- `AgoraEduUIKit`: (Optional) This module contains code for the classroom UI. It shows how to call APIs to aggregate and update UI data based on Flexible Classroom APIs and data callbacks. This module is an open-source project available on GitHub. You can develop your classroom UI based on this module.
+- `AgoraClassSDK`: (Optional) This module provides methods to configure the SDK, launch a flexible classroom, register ext apps, and the activity implementation of each teaching use-case. This module is an open-source project available on GitHub. Agora recommends integrating this module.
+- `AgoraEduCore`: (Required) The core module of Flexible Classroom. Since v2.0.0, this module is closed-source, and you can import this module only by adding a remote dependency.
+- `AgoraCloudScene`: (Optional) The cloud classroom module of the Flexible Classroom. Depends on the `AgoraEduCore` cloud classroom UI implementation of the module.
+
+## Integrated education use-case
+
+If you use the default UI of Flexible Classroom, take the following steps to add remote dependencies and integrate the whole Flexible Classroom through Maven:
+
+1. Add the following library to your project's `build.gradle` file:
+
+    ```
+    repositories {
+        maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+    ```
+
+1. Add the following dependencies in the project's `build.gradle` file to import the following modules: `AgoraEduUIKit`, `AgoraClassSDK`, and `AgoraEduCore`:
+
+    ```
+    dependencies {
+        ...
+        implementation "io.github.agora-apaas:AgoraEduCore:<version>"
+        implementation "io.github.agora-apaas:AgoraEduUIKit:<version>"
+        implementation "io.github.agora-apaas:AgoraClassSDK:<version>"
+    }
+    ```
+
+    For example, for v2.8.20:
+
+    ```
+    dependencies {
+        implementation "io.github.agora-apaas:AgoraEduCore:2.8.20"
+        implementation "io.github.agora-apaas:AgoraEduUIKit:2.8.20"
+        implementation "io.github.agora-apaas:AgoraClassSDK:2.8.20"
+     }
+    ```
+
+   To use Flexible Classroom versions equal to or earlier than 2.7.0, also add the `hyphenate` dependency inside the `dependencies` block in the project's `build.gradle` file:
+
+    ```
+    dependencies {
+        ...
+        implementation "io.github.agora-apaas:hyphenate:<version>"
+    }
+    ```
+
+
+:::note
+Click here to view the latest version of [Flexible Classroom](https://search.maven.org/search?q=io.github.agora-apaas).
+:::
+
+1. After version 2.8.70, the following code needs to be initialized in the Application `onCreate` method:
+
+    ```kotlin
+    AgoraSDKInitUtils.initSDK(this);
+    ```
+
+1. To launch a classroom, call [AgoraClassroomSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk#launch). Sample code:
+
+    ```kotlin
+    // Before starting the classroom, you need to dynamically apply for `Manifest.permission.RECORD_AUDIO` and `Manifest.permission.CAMERA` permissions
+    fun startClassRoom() {
+        val appId = "" // Your app ID
+        val rtmToken = "" // Your signaling Token
+        val userName = "Tom"   	 // Your user name
+        val roomName = "MyRoom"  // Your room name
+        val roomType = RoomType.SMALL_CLASS.value                     // Class type: 0: One-on-one, 2: Large class, 4: Small class
+        val roleType = AgoraEduRoleType.AgoraEduRoleTypeStudent.value // Role: 1: Teacher role, 2: Student role
+        val roomUuid = HashUtil.md5(roomName).plus(roomType).lowercase()
+        val userUuid = HashUtil.md5(userName).plus(roleType).lowercase()
+        val roomRegion = AgoraEduRegion.cn  // Area
+        val duration = 1800L                // Class duration
+
+        val config = AgoraEduLaunchConfig(
+            userName,
+            userUuid,
+            roomName,
+            roomUuid,
+            roleType,
+            roomType,
+            rtmToken,
+            null,
+            duration
+        )
+
+        config.appId = appId
+        config.region = roomRegion
+        // Set large window video area parameters (large stream)
+        config.videoEncoderConfig = EduContextVideoEncoderConfig(
+            FcrStreamParameters.HeightStream.width,
+            FcrStreamParameters.HeightStream.height,
+            FcrStreamParameters.HeightStream.frameRate,
+            FcrStreamParameters.HeightStream.bitRate
+        )
+
+        AgoraClassroomSDK.setConfig(AgoraClassSdkConfig(appId))
+        AgoraClassroomSDK.launch(this, config, AgoraEduLaunchCallback { event ->
+            Log.e("agora", ":launch-Class status:" + event.name)
+        })
+    }
+    ```
+
+    You can set the video parameters of the large and small windows by setting `FcrStreamParameters`, where:
+
+    - Small stream mode: When in the stage area, switch to the small stream mode. This parameter indicates the video parameters in the stage area.
+    - Large stream mode: When in the large window area, switch to the large stream mode. This parameter indicates the video parameters in the large window.
+
+    ```kotlin
+    public class FcrStreamParameters {
+        // Small stream
+        public static class LowStream {
+            public static int width = 320;
+            public static int height = 240;
+            public static int frameRate = 15;
+            public static int bitRate = 200;
+        }
+
+        // Large stream
+        public static class HeightStream {
+            public static int width = 640;
+            public static int height = 480;
+            public static int frameRate = 15;
+            public static int bitRate = 600;
+        }
+    }
+    ```
+
+1. Set up dark mode
+
+    Because switching to the dark mode requires restarting the Activity, in order to be compatible with all mobile phone models, it is recommended to set the theme directly in `Application#onCreate`. Refer to the following sample code:
+
+    ```kotlin
+    void setDarkMode() {
+        // Add the logic of whether to enable the dark mode here
+        boolean isDarkMode = ""
+        if (isDarkMode) {
+            SkinUtils.INSTANCE.setNightMode(true);
+        }
+    }
+    ```
+
+1. To prevent code obfuscation, add the following in the `/Gradle Scripts/proguard-rules.pro` file:
+
+    ```java
+    -keep class io.agora.**{*;}
+    -keep class com.agora.**{*;}
+    -keep class com.hyphenate.**{*;}
+    ```
+
+## Integrated cloud classroom
+
+If you use the default UI of Flexible Classroom Cloud Classroom, take the following steps to add remote dependencies and integrate the whole Flexible Classroom through Maven:
+
+1. Add the following code to the `build.gradle` file in the project root directory：
+
+    ```kotlin
+    repositories {
+        maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+    ```
+
+1. Add the following dependencies to the `build.gradle` file in the project root directory. Import `AgoraCloudScene` and `AgoraEduCore` module:
+
+    ```kotlin
+    dependencies {
+        implementation "io.github.agora-apaas:AgoraEduCore:<version>"
+        implementation "io.github.agora-apaas:AgoraCloudScene:<version>"
+    }
+    ```
+
+	For example, for version 2.8.70:
+
+    ```kotlin
+    dependencies {
+        implementation "io.github.agora-apaas:AgoraEduCore:2.8.70"
+        implementation "io.github.agora-apaas:AgoraCloudScene:2.8.70"
+     }
+    ```
+
+
+:::note
+Click here to view the latest version of [Flexible Classroom](https://search.maven.org/search?q=io.github.agora-apaas).
+:::
+
+1. In the Application `onCreate` method, initialize the following:
+
+    ```kotlin
+    AgoraSDKInitUtils.initSDK(this)
+    ```
+
+1. Call [AgoraOnlineClassroomSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk#launch) to start the class. The parameters of `AgoraOnlineClassroomSDK` and `AgoraClassroomSDK` are the same. Refer to the following sample code:
+
+    ```kotlin
+    // Before starting the classroom, you need to dynamically apply for `Manifest.permission.RECORD_AUDIO` and `Manifest.permission.CAMERA` permissions
+    fun startClassRoom() {
+        val appId = "" // Your app ID
+        val rtmToken = "" // Your signaling Token
+        val userName = "Tom"   	 // Your user name
+        val roomName = "MyRoom"  // Your room name
+        val roomType = RoomType.SMALL_CLASS.value                     // Class type: 4: Small classes
+        val roleType = AgoraEduRoleType.AgoraEduRoleTypeStudent.value // The role only supports 2: Student role
+        val roomUuid = HashUtil.md5(roomName).plus(roomType).lowercase()
+        val userUuid = HashUtil.md5(userName).plus(roleType).lowercase()
+        val roomRegion = AgoraEduRegion.cn  // Area
+        val duration = 1800L                // Class duration
+
+        val config = AgoraEduLaunchConfig(
+            userName,
+            userUuid,
+            roomName,
+            roomUuid,
+            roleType,
+            roomType,
+            rtmToken,
+            null,
+            duration
+        )
+
+        config.appId = appId
+        config.region = roomRegion
+        // Set large window video area parameters (large stream)
+        config.videoEncoderConfig = EduContextVideoEncoderConfig(
+            FcrStreamParameters.HeightStream.width,
+	        FcrStreamParameters.HeightStream.height,
+            FcrStreamParameters.HeightStream.frameRate,
+            FcrStreamParameters.HeightStream.bitRate
+        )
+
+        AgoraOnlineClassroomSDK.setConfig(AgoraOnlineClassSdkConfig(appId))
+        AgoraOnlineClassroomSDK.launch(this, config, AgoraEduLaunchCallback { event ->
+            Log.e("agora", ":launch-class status:" + event.name)
+        })
+    }
+    ```
+
+1. To prevent code obfuscation, add the following in the `/Gradle Scripts/proguard-rules.pro` file:
+
+    ```
+    -keep class io.agora.**{*;}
+    -keep class com.agora.**{*;}
+    ```
+
+:::note
+Cloud Classroom does not support dark mode yet.
+:::
+
+## Integration considerations
+
+#### Third-party libraries
+
+No matter which method you choose, the third-party libraries Flexible Classroom uses may conflict with the third-party libraries on which your project depends. You can use `exclude` to resolve this conflict or change the version that your project depends on.
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## iOS
+
+## Understand the tech
+
+Flexible Classroom contains the following libraries:
+
+- `AgoraClassroomSDK`: The integration layer that connects `AgoraEduUI` and `AgoraEduCore`. `AgoraClassroomSDK` is an open sourced project and is released on GitHub and CocoaPods.
+- `AgoraEduUI`: This library contains the code for the UI; it also includes all the texts and resource files used by Flexible Classroom. `AgoraEduCore` provides this library with the functionality and data in Flexible Classroom. `AgoraEduUI` is an open source project and is released on GitHub and CocoaPods.
+- `AgoraProctorSDK`: The integration layer of the Flexible Classroom proctoring use-case, connecting `AgoraProctorUI` and `AgoraEduCore`. `AgoraProctorSDK` is an open sourced project on GitHub and CocoaPods.
+- `AgoraProctorUI`: The interaction layer code for the Flexible Classroom proctoring use-case. It includes the copy information and resource files used in the interaction layer. `AgoraEduCore` provides this layer with the capabilities and data. `AgoraProctorUI` is an open sourced project on GitHub and CocoaPods.
+- `AgoraEduCore`: This library provides the capabilities and data in Flexible Classroom. `AgoraEduCore` is a closed-source library and is released on CocoaPods as a binary package.
+- `Widget`: This library provides independent plugins that include both interfaces and functions. `AgoraClassroomSDK` injects these plugins into Flexible Classroom. Widgets can communicate with each other.
+
+The following figure shows the structure of Flexible Classroom:
+
+![Flexible Classroom iOS SDK structure](https://web-cdn.agora.io/docs-files/1681291532244)
+
+## Prerequisites
+
+Use [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) v1.10 or higher for the integration methods described below.
+
+After installation, enter the following command in the terminal to see if the installation was successful:
+
+```bash
+pod --version
+```
+For example, if you install version 1.11.3, the terminal should print the following information:
+
+```bash
+1.11.3
+```
+
+## Education use-case
+
+### Flexible Classroom in the integrated education use-case (default)
+
+To use the default UI of Flexible Classroom, take the following steps to add remote dependencies and integrate the whole Flexible Classroom through CocoaPods:
+
+1. Open your project with Xcode and add the following code to the project's `Podfile`:
+
+    ```bash
+    # third-party libs
+    pod 'SwifterSwift',   '5.2.0'
+    pod 'Masonry',        '1.1.0'
+    pod 'SDWebImage',     '5.12.0'
+    pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+    pod 'Whiteboard',     :git => 'https://github.com/netless-io/Whiteboard-iOS', :branch => 'effect-mixing'
+    # open source libs
+    pod 'AgoraClassroomSDK_iOS', '2.8.111'
+    pod 'AgoraWidgets',          '2.8.111'
+    ```
+
+1. Navigate into the project directory in the terminal and run `pod install` to install the dependencies. For example,
+the following will be printed for v2.80.20:
+
+    ```bash
+    Analyzing dependencies
+    Downloading dependencies
+    Installing AgoraClassroomSDK_iOS (2.8.20)
+    Installing AgoraEduCore (2.8.20)
+    Installing AgoraEduUI (2.8.20)
+    Installing AgoraLog (1.0.2)
+    Installing AgoraMediaPlayer_iOS (1.3.0)
+    Installing AgoraRtcEngine_iOS (3.7.2)
+    Installing AgoraRtm_iOS (1.4.8)
+    Installing AgoraUIBaseViews (2.8.0)
+    Installing AgoraWidget (2.8.0)
+    Installing AgoraWidgets (2.8.20)
+    Installing Agora_Chat_iOS (1.0.6)
+    Installing AliyunOSSiOS (2.10.8)
+    Installing Armin (1.1.0)
+    Installing CocoaLumberjack (3.6.1)
+    Installing Masonry (1.1.0)
+    Installing NTLBridge (3.1.5)
+    Installing Protobuf (3.17.0)
+    Installing SDWebImage (5.12.0)
+    Installing SSZipArchive (2.4.2)
+    Installing SwifterSwift (5.2.0)
+    Installing Whiteboard (2.16.51)
+    Installing YYModel (1.0.4)
+    Generating Pods project
+    Integrating client project
+    ```
+
+1. Import the header files using the matching code for the programming language of your project:
+
+    - For Swift projects:
+        ```swift
+        // Swift
+        import AgoraClassroomSDK_iOS
+        ```
+
+    - For Objective-C projects:
+        ```objc
+        // Objective-C
+        import <AgoraClassroomSDK_iOS/AgoraClassroomSDK.h>
+        ```
+
+1. To launch the classroom in the education use-case, call [AgoraClassroomSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk#launch). Sample code:
+
+    - For Swift projects:
+        ```swift
+        let launchConfig = AgoraEduLaunchConfig(userName: userName,  // The user name
+                                                userUuid: userUuid,  // The user ID
+                                                userRole: userRole,  // User roles: 1 is teacher, 2 is student
+                                                roomName: roomName,  // The room name
+                                                roomUuid: roomUuid,  // The room ID
+                                                roomType: roomType,  // The room type, 0: One-to-one interactive teaching, 2: Big class, 4: Online interactive small class
+                                                appId: appId, // The App ID
+                                                token: token,  // In a test environment, you can use a temporary Signaling token; in a production or a security environment, Agora strongly recommends using a server-generated Signaling token instead.
+                                                startTime: nil,  // The starting time of the class
+                                                duration: nil,  // The class duration
+                                                region: region,  // The area
+                                                mediaOptions: mediaOptions,  // Media stream related settings
+                                                userProperties: nil)  // User properties defined by the developer
+
+        AgoraClassroomSDK.setDelegate(self)
+        AgoraClassroomSDK.launch(launchConfig, success: launchSuccessBlock, failure: failureBlock)
+        ```
+
+    - For Objective-C projects:
+        ```objc
+        AgoraEduLaunchConfig *launchConfig =
+        [[AgoraEduLaunchConfig alloc] initWithUserName:userName // The user name
+                                              userUuid:userUuid  // The user ID
+                                              userRole:userRole  // User roles: 1 is teacher, 2 is student
+                                              roomName:roomName  // The room name
+                                              roomUuid:roomUuid  // The room ID
+                                              roomType:roomType  // The room type, 0: One-to-one interactive teaching, 2: Big class, 4: Online interactive small class
+                                              appId:appId // The App ID
+                                              token:token  // In a test environment, you can use a temporary Signaling token; in a production or security environment,Agora strongly recommends using a server-generated Signaling token instead.
+                                              startTime:nil  // The starting time of the class
+                                              duration:nil  // The class duration
+                                              region:region  // The area
+                                              mediaOptions:mediaOptions  // Media stream-related settings
+                                              userProperties:nil];  // User properties defined by the developer
+
+        [AgoraClassroomSDK setDelegate:self];
+
+        [AgoraClassroomSDK launch:launchConfig
+                          success:successBlock
+                          failure:failureBlock];
+
+        ```
+
+    The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](/en/realtime-media/flexible-classroom/build/manage-agora-account#generate-temporary-tokens) to learn what Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. In a production environment, to ensure security, you need to deploy and generate a Token on the server. The `userId` passed in the generated token must be consistent with the `userUuid` parameter of the `launch` method. Otherwise, the generated token will be invalid.
+
+1. (Optional) Customize the display mode (bright/dark) and language (Chinese/English) of the interface for education use-case.
+
+    - For Swift projects:
+
+        ```swift
+        import AgoraUIBaseViews         /* Import the `AgoraUIBaseViews` library. The library provides two variables for customizing display mode and language: agora_ui_mode and agora_ui_language.*/
+        agora_ui_mode = .agoraLight     /* Set the interface display mode, which can be set to agoraLight or agoraDark. The default is agoraLight. */
+        agora_ui_language = "zh-Hans"   /* Set the interface language, which can be set to "zh-Hans" or "en". If not set, the interface language follows the system language. */
+        ```
+
+    - For Objective-C projects:
+
+        ```objc
+        /* Import the AgoraUIBaseViews library. The library provides two variables for customizing display mode and language: agora_ui_mode and agora_ui_language*/
+        #import <AgoraUIBaseViews/AgoraUIBaseView-Swift.h>
+        agora_ui_mode = AgoraUIModeAgoraLight              /* Set the interface display mode, which can be set to AgoraUIModeAgoraLight or AgoraUIModeAgoraDark. The default is AgoraUIModeAgoraLight.*/
+        agora_ui_language = @"zh-Hans"                     /* Set the interface language, which can be set to "zh-Hans" or "en". If not set, the interface language follows the system language.*/
+        ```
+
+1. Call the `AgoraClassroomSDK.exit()` method to close the Flexible classroom in the education use-case.
+
+    - For Swift projects:
+
+        ```swift
+        AgoraClassroomSDK.exit()
+        ```
+
+    - For Objective-C projects:
+
+        ```objc
+        [AgoraClassroomSDK exit];
+        ```
+
+### Integrate and customize
+
+To customize Flexible Classroom in the education use-case, download the source code from GitHub:
+
+1. Run the following commands to clone [CloudClass-iOS](https://github.com/AgoraIO-Community/CloudClass-iOS) and [apaas-extapp-ios](https://github.com/AgoraIO-Community/apaas-extapp-ios) projects locally. Switch to the branch of the version you need (the default is the latest version branch):
+
+	```bash
+   git clone https://github.com/AgoraIO-Community/CloudClass-iOS.git
+	```
+	```bash
+   git clone https://github.com/AgoraIO-Community/apaas-extapp-ios.git
+	```
+
+1. Use `git remote add <shortname> <url>` to add a remote repository for `CloudClass-iOS` and `apaas-extapp-ios` pointing to your project repository, and push the required branches.
+
+1. Add the following dependencies in your project `Podfile` to reference the libraries `AgoraClassroomSDK_iOS.podspec` and `AgoraEduUI.podspec` in the CloudClass-iOS project and `AgoraWidgets.podspec` in apaas-extapp-ios.
+
+    ```bash
+    # third-party libs
+    pod 'SwifterSwift',   '5.2.0'
+    pod 'Masonry',        '1.1.0'
+    pod 'SDWebImage',     '5.12.0'
+    pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+    pod 'Whiteboard',     :git => 'https://github.com/netless-io/Whiteboard-iOS', :branch => 'effect-mixing'
+    # open source libs
+    pod 'AgoraClassroomSDK_iOS', '2.8.111'
+    pod 'AgoraWidgets',          '2.8.111'
+    ```
+
+1. Enter the project directory in the terminal and run the `pod install`  command.
+
+After the installation is completed, refer to [Customize the classroom UI](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom) to understand the open source layer design ideas and modify the source code to customize the use-case.
+
+## Proctoring use-case
+
+### Flexible Classroom in the integrated proctoring use-case
+
+To use the default UI of Flexible Classroom, take the following steps to add remote dependencies and integrate the whole Flexible Classroom through CocoaPods:
+
+1. Open your project with Xcode and add the following code to the project's `Podfile`:
+
+    ```bash
+    # third-party libs
+    pod 'SwifterSwift',     '5.2.0'
+    pod 'Masonry',          '1.1.0'
+    pod 'SDWebImage',       '5.12.0'
+    pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+    # open source libs
+    pod 'AgoraProctorSDK',  '1.0.2'
+    ```
+
+1. Navigate into the project directory in the terminal and run `pod install` to install the dependencies. For example,
+the following will be printed for v2.80.20:
+
+    ```bash
+    Analyzing dependencies
+    Downloading dependencies
+    Installing AgoraProctorSDK (1.0.0)
+    Installing AgoraProctorUI (1.0.0)
+    Installing AgoraEduCore (2.8.20)
+    Installing AgoraLog (1.0.2)
+    Installing AgoraMediaPlayer_iOS (1.3.0)
+    Installing AgoraRtcEngine_iOS (3.7.2)
+    Installing AgoraRtm_iOS (1.4.8)
+    Installing AgoraUIBaseViews (2.8.0)
+    Installing AgoraWidget (2.8.0)
+    Installing AliyunOSSiOS (2.10.8)
+    Installing Armin (1.1.0)
+    Installing CocoaLumberjack (3.6.1)
+    Installing Masonry (1.1.0)
+    Installing Protobuf (3.17.0)
+    Installing SDWebImage (5.12.0)
+    Installing SSZipArchive (2.4.2)
+    Installing SwifterSwift (5.2.0)
+    Installing YYModel (1.0.4)
+    Generating Pods project
+    Integrating client project
+    ```
+
+1. Import the header files using the matching code for the programming language of your project:
+
+    - For Swift projects:
+        ```swift
+        import AgoraProctorSDK
+        ```
+
+    - For Objective-C projects:
+        ```objc
+        #import <AgoraProctorSDK/AgoraProctorSDK.h>
+        ```
+
+1. To launch the classroom in the proctoring use-case, call [AgoraProctorSDK.launch](/en/api-reference/api-ref/flexible-classroom/proctor-sdk). Sample code:
+
+    - For Swift projects:
+        ```swift
+        let launchConfig = AgoraProctorLaunchConfig(userName: userName,  // The user name
+                                                    userUuid: userUuid,  // The user ID
+                                                    userRole: userRole,  // The user roles
+                                                    roomName: roomName,  // The room name
+                                                    roomUuid: roomUuid,  // The room ID
+                                                    appId: appId, // The App ID
+                                                    token: token,  // In a test environment, you can use a temporary Signaling token; in a production or a security environment, Agora strongly recommends using a server-generated Signaling token instead.
+                                                    region: region,  // The area
+                                                    mediaOptions: mediaOptions,  // Media stream related settings
+                                                    userProperties: nil)  // User properties defined by the developer
+
+        let proctor = AgoraProctorSDK(launchConfig,
+                                          delegate: self)
+
+        proctor.launch(success: successBlock, failure: failureBlock)
+        ```
+
+    - For Objective-C projects:
+        ```objc
+        AgoraProctorLaunchConfig *launchConfig =
+        [[AgoraProctorLaunchConfig alloc] initWithUserName:userName // The user name
+                                                  userUuid:userUuid  // The user ID
+                                                  userRole:userRole  // User roles: 1 is teacher, 2 is student
+                                                  roomName:roomName  // The room name
+                                                  roomUuid:roomUuid  // The room ID
+                                                  appId:appId // The App ID
+                                                  token:token  // In a test environment, you can use a temporary Signaling token; in a production or security environment,Agora
+                                                  region:region  // The area
+                                                  mediaOptions:mediaOptions  // Media stream-related settings
+                                                  userProperties:nil];  // User properties defined by the developer
+
+        AgoraProctorSDK *proctor = [[AgoraProctorSDK alloc] init:launchConfig
+                                                                   delegate:self];
+
+        [proctor launch:successBlock
+                  failure:failureBlock];
+        ```
+
+    The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](/en/realtime-media/flexible-classroom/build/manage-agora-account#generate-temporary-tokens) to learn what Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. In a production environment, to ensure security, you need to deploy and generate a Token on the server. The `userId` passed in the generated token must be consistent with the `userUuid` parameter of the `launch` method. Otherwise, the generated token will be invalid.
+
+1. (Optional) Customize the display mode (bright/dark) and language (Chinese/English) of the interface for proctoring use-case.
+
+    - For Swift projects:
+
+        ```swift
+        import AgoraUIBaseViews         /* Import the `AgoraUIBaseViews` library. The library provides two variables for customizing display mode and language: agora_ui_mode and agora_ui_language.*/
+        agora_ui_mode = .agoraLight     /* Set the interface display mode, which can be set to agoraLight or agoraDark. The default is agoraLight. */
+        agora_ui_language = "zh-Hans"   /* Set the interface language, which can be set to "zh-Hans" or "en". If not set, the interface language follows the system language. */
+        ```
+
+    - For Objective-C projects:
+
+        ```objc
+        /* Import the AgoraUIBaseViews library. The library provides two variables for customizing display mode and language: agora_ui_mode and agora_ui_language*/
+        #import <AgoraUIBaseViews/AgoraUIBaseView-Swift.h>
+        agora_ui_mode = AgoraUIModeAgoraLight              /* Set the interface display mode, which can be set to AgoraUIModeAgoraLight or AgoraUIModeAgoraDark. The default is AgoraUIModeAgoraLight.*/
+        agora_ui_language = @"zh-Hans"                     /* Set the interface language, which can be set to "zh-Hans" or "en". If not set, the interface language follows the system language.*/
+        ```
+
+1. To close the Flexible Classroom in a proctoring scenario, release the `AgoraProctorSDK` object:
+
+    - For Objective-C projects:
+
+        ```objc
+        proctorSDK = nil;
+        ```
+
+    - For Swift projects:
+
+        ```swift
+        proctorSDK = nil
+        ```
+
+### Integrate and customize
+
+To customize Flexible Classroom in the proctoring use-case, download the source code from GitHub:
+
+1. Run the following commands to clone [proctor-ios](https://github.com/AgoraIO-Community/proctor-ios) project locally. Switch to the branch of the version you need (the default is the latest version branch):
+
+	```bash
+    git clone https://github.com/AgoraIO-Community/proctor-ios.git
+	```
+
+1. Use `git remote add <shortname> <url>` to add the remote `proctor-ios` repository pointing to your project repository, and push the required branches.
+
+1. Add the following dependencies in your project `Podfile` to reference the `AgoraProctorSDK.podspec` and `AgoraProctorUI.podspec` libraries.
+
+    ```bash
+    # third-party libs
+    pod 'SwifterSwift',     '5.2.0'
+    pod 'Masonry',          '1.1.0'
+    pod 'SDWebImage',       '5.12.0'
+    pod 'AgoraRtcEngine_Special_iOS', '3.7.2.133'
+    # open source libs
+    pod 'AgoraProctorSDK',  '1.0.2'
+    ```
+
+1. Enter the project directory in the terminal and run the `pod install`  command.
+
+    After the installation is completed, refer to [Customize the classroom UI](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom) to understand the open source layer design ideas and modify the source code to customize the use-case.
+
+## Considerations
+
+After integration, add the following keys to your project's `Info.plist` file to request the necessary permissions for running Flexible Classroom:
+
+    * **Privacy – Camera Usage Description**
+    * **Privacy – Microphone Usage Description**
+    * **Privacy – Photo Library Additions Usage Description**
+    * **Privacy – Photo Library Usage Description**
+
+In Xcode 14.0 and later:
+
+    * **If you see the `AgoraEduUI-AgoraEduUI` bundle signature error** (`bundleRequire Signature`), add the following to your `Podfile`:
+
+        ```ruby
+        post_install do |installer|
+          installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+              if target.respond_to?(:product_type) && target.product_type == "com.apple.product-type.bundle"
+                config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+              end
+            end
+          end
+        end
+        ```
+
+    * **If you see the `Symbol not found: (__ZN5swift34swift50override_conformsToProtocol...)` error in `Armin.framework/Armin`,** add the following to your `Podfile`:
+
+        ```ruby
+        low_version_target_names = ["Armin", "YYModel", "Masonry", "NTLBridge", "CocoaLumberjack", "AliyunOSSiOS"]
+
+        post_install do |installer|
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+            if low_version_target_names.include?(target.name)
+                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+            end
+            end
+        end
+        end
+        ```
+
+For more information, see [Apple's privacy manifest documentation](https://developer.apple.com/documentation/).
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+## Web
+
+:::warning
+The cloud classroom scene is included in `FcrUIScene`. If you need to integrate the cloud classroom scene UI, please refer to [FcrUIScene SDK](/en/realtime-media/flexible-classroom/build/integrate-the-sdks/integrate-flexible-classroom-fcr).
+:::
+
+## Understand the tech
+
+The following figure shows the overall technical architecture of Flexible Classroom:
+
+![Flexible Classroom technical architecture](https://web-cdn.agora.io/docs-files/1653557375318)
+
+The source code of Flexible Classroom contains the following packages:
+
+- `agora-classroom-sdk`: The Agora Classroom SDK, which contains the following modules:
+    - `/lib/externals`: Stores video-related extensions such as beautifying and noise reduction.
+    - `/src/infra/api`: SDK interface.
+    - `/src/infra/configs`: Default color and theme configuration.
+    - `/src/infra/stores`: The UI stores implement the business logic for the UI components.
+    - `/src/infra/capabilities`:
+        - `/containers`: This folder contains all the business components. A business component is implemented by combining the UI components with the UI stores.
+        - `/scenarios`: This folder contains the code for arranging the layout of business components in different scenarios.
+    - `/src/ui-kit`: Common UI components.
+- `agora-demo-app`: The Agora Classroom SDK demo app, supports Web, H5, Electron and other platforms, supports online classroom, online invigilation function, and provides code samples for online classroom before, during, and after class.
+
+- `agora-plugin-gallery`: An independent plug-in library for Agora Classroom SDK, which inherits the `AgoraWidgetBase` class and implements the `AgoraWidgetLifecycle` interface. It includes plug-ins such as interactive whiteboard, IM chat, answering machine, voting machine, and timer.
+
+- `agora-proctor-sdk`: The Agora Classroom invigilation scene SDK, including the following modules:
+    - `/src/infra/stores`: The UI stores implement the business logic for the UI components.
+    - `/src/infra/capabilities`:
+         - `/components`: Common UI components.
+         - `/containers`: This folder contains all the business components. A business component is implemented by combining the UI components with the UI stores.
+         - `/scenarios`: This folder contains the code for arranging the layout of business components in different scenarios.
+
+- `agora-common-libs`: General tool class library, including ThemeProvider, I18nProvider, and other global general tools
+
+- `agora-edu-core`: Provides upstream API calls and downstream data structure encapsulation for education and proctoring scenarios in smart classrooms.
+
+- `agora-rte-sdk`: Provides cross-end RTC adaptation capabilities as well as classroom event callbacks and data structure encapsulation.
+
+## Integration methods
+
+You can use multiple methods to integrate Flexible Classroom into your web project. Depending on whether you need to customize the classroom UI, you can choose different integration methods:
+
+- If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through [npm](https://www.npmjs.com/package/agora-classroom-sdk) or CDN.
+- If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the [source code](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.8.13) on GitHub.
+
+## Integrated education scenario
+
+<a id="default_ui_education"></a>
+### Use the default UI of Flexible Classroom
+
+If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through npm or CDN.
+
+#### Through npm
+
+1. To install the SDK, run the following command:
+
+    ```bash
+    npm install agora-classroom-sdk agora-plugin-gallery
+    ```
+
+2. To import the `AgoraEduSDK` and plugin modules, add the following code in the JavaScript code in your project.
+
+    ```javascript
+    import {AgoraEduSDK} from 'agora-classroom-sdk'
+    import {
+      AgoraSelector,
+      AgoraCountdown,
+      AgoraHXChatWidget,
+      FcrStreamMediaPlayerWidget,
+      AgoraPolling,
+      FcrWatermarkWidget,
+      FcrWebviewWidget,
+      FcrBoardWidget
+    } from 'agora-plugin-gallery/classroom'
+    ```
+
+3. To launch a classroom, call [AgoraEduSDK.config](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) and [AgoraEduSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) in the JavaScript code of the project.
+
+
+:::tip[Tip]
+Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+:::
+
+#### Through CDN
+
+1. Add the following code to the HTML file in your project:
+
+    ```html
+    <!-- Replace X.Y.Z with the Flexible Classroom version number, such as 2.9.40.
+    You can check the latest version number through the release notes or GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@X.Y.Z.bundle.js"></script>
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@X.Y.Z.bundle.js"></script>
+    ```
+
+2. To launch a classroom, call [AgoraEduSDK.config](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) and [AgoraEduSDK.launch](/en/api-reference/api-ref/flexible-classroom/classroom-sdk) in the JavaScript code of the project.
+
+#### Sample code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Introducing SDK, 2.9.40 is the sample version number, you can check the latest version number through the release notes or GitHub warehouse branch  -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_sdk@2.9.40.bundle.js"></script>
+    <!-- Introducing Widget, 2.9.40 is the sample version number. You can check the latest version number through the release notes or GitHub warehouse branch. (Widgets before 2.9.0 are packaged together with the SDK, and there is no need to introduce this library) -->
+    <script src="https://download.agora.io/edu-apaas/release/edu_widget@2.9.40.bundle.js"></script>
+</head>
+<body>
+    <style>
+        #root {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+        // Configure the SDK
+        // Replace 'Your App ID' with your App ID
+        AgoraEduSDK.config({
+                appId: 'Your App ID',
+                region: 'NA'
+        });
+        // Start online classroom
+        const unmount = AgoraEduSDK.launch(document.querySelector("#root"), {
+            userUuid: 'user id',
+            userName: 'user name',
+            roomUuid: 'room id',
+            roleType: 1, // User roles: 1 is teacher, 2 is student.
+            roomType: 0, // Room type: 0 is one-on-one, 2 is large class, and 4 is small class.
+            roomName: 'room name',
+            pretest: true, // Whether to enable pre-class equipment detection.
+            rtmToken: 'rtm token', // In a test environment, you can use a temporary RTM Token; in a production or security environment, it is strongly recommended that you use a server-generated RTM Token.
+            language: 'zh', // The language of the classroom interface. If the interface is in English, set it to 'en'.
+            duration: 60 * 30, // Course time in seconds.
+            recordUrl: 'https://solutions-apaas.agora.io/apaas/record/dev/2.8.0/record_page.html',
+            courseWareList: [],
+            virtualBackgroundImages: [], // Virtual background image resource list.
+            webrtcExtensionBaseUrl: 'https://solutions-apaas.agora.io/static', // WebRTC Plug-in deployment address.
+            uiMode: 'light', // Set the classroom interface to bright mode. If you want the interface to be in dark mode, set it to 'dark'.
+            widgets: {
+                popupQuiz: AgoraSelector,
+                countdownTimer: AgoraCountdown,
+                easemobIM: AgoraHXChatWidget,
+                mediaPlayer: FcrStreamMediaPlayerWidget,
+                poll: AgoraPolling,
+                watermark: FcrWatermarkWidget,
+                webView: FcrWebviewWidget,
+                netlessBoard: FcrBoardWidget
+            },
+            listener: (evt, args) => {
+            },
+        });
+    </script>
+</body>
+</html>
+```
+
+The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](/en/realtime-media/flexible-classroom/build/manage-agora-account#generate-temporary-tokens) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
+
+For details on the values of other parameters, see [LaunchOption](/en/api-reference/api-ref/flexible-classroom/classroom-sdk).
+
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
+
+<a id="change_default_ui_education"></a>
+### Customize the classroom UI
+
+If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
+
+:::note
+Make sure you have [set up a development environment](/en/realtime-media/flexible-classroom/quickstart).
+:::
+
+1. Clone the Flexible-Classroom-Desktop repository:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+1. [Checkout the latest release branch](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.9.20).
+
+    1. Change directory to `flexible-classroom-desktop`
+
+    1. Switch the branch, run the following commands:
+
+        ```bash
+        cd flexible-classroom-desktop
+        git checkout release/2.9.20
+        ```
+
+1. Modify the code according to your needs. See [Classroom and Proctor SDK UI customization guide](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom) for details.
+1. Debug your code.
+
+    After finishing the development, follow these steps to debug:
+
+    1. To install dependencies, run the following command:
+
+        ```bash
+        yarn install:packages
+        ```
+
+    1. To run the project in development mode, use the following command:
+
+        ```bash
+        yarn dev:classroom
+        ```
+
+1. After finishing the development, package the SDK JS file with the following command:
+
+    1. To package the SDK code:
+
+       ```bash
+       yarn pack:classroom:sdk
+       ```
+
+    1. To package the SDK plug-ins:
+
+       ```bash
+       yarn pack:classroom:plugin
+       ```
+
+:::note
+Find the output in the `packages/agora-classroom-sdk/lib/edu_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/edu_widget.bundle.js` respectively.
+:::
+
+## Integrated proctoring scenario
+
+<a id="default_ui_proctoring"></a>
+### Use the default UI of Flexible Classroom
+
+If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through npm or CDN.
+
+#### Through npm
+
+1. To install the SDK, run the following command:
+
+    ```bash
+    npm install agora-proctor-sdk agora-plugin-gallery
+    ```
+
+2. To import the `AgoraEduSDK` and plugin modules, add the following code in the JavaScript code in your project:
+
+    ```javascript
+    import { AgoraProctorSDK } from 'agora-proctor-sdk'
+    import {
+      FcrWebviewWidget
+    } from 'agora-plugin-gallery/proctor'
+    ```
+
+3. To launch a classroom, call [AgoraProctorSDK.config](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) and [AgoraProctorSDK.launch](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) in the JavaScript code of the project.
+
+
+:::tip[Tip]
+Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+:::
+
+#### Through CDN
+
+1. Add the following code to the HTML file in your project:
+
+    ```html
+    <!-- Replace X.Y.Z with the Flexible Classroom version number. For example, 1.0.40
+    You can check the latest version number through the release notes or the GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@X.Y.Z.bundle.js"></script>
+    ```
+
+2. To launch a classroom, call [AgoraProctorSDK.config](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) and [AgoraProctorSDK.launch](/en/api-reference/api-ref/flexible-classroom/proctor-sdk) in the JavaScript code of the project.
+
+#### Sample code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Introduce SDK, 1.0.40 is the sample version number. You can check the latest version number through the release notes or GitHub repository branch. -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_sdk@1.0.40.bundle.js"></script>
+    <!-- Introducing Widget, 1.0.40 is the sample version number. You can check the latest version number through the release notes or GitHub warehouse branch. (Widgets before 1.0.10 are packaged together with the SDK, so there is no need to introduce this library) -->
+    <script src="https://download.agora.io/edu-apaas/release/proctor_widget@1.0.40.bundle.js"></script>
+  </head>
+
+  <body>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="root"></div>
+    <script type="text/javascript">
+      // Configure the SDK
+      // Replace "Your App ID" with your App ID
+      AgoraProctorSDK.config({
+        appId: "Your App ID",
+        region: "NA",
+      });
+      // Start online proctoring
+      const unmount = AgoraProctorSDK.launch(document.querySelector("#root"), {
+        userUuid: "user id", // Refer to the description below to fill in userUuid
+        userName: "user name",
+        roomUuid: "room id",
+        roleType: 1, // User roles: 1 is teacher, 2 is student
+        roomType: 6, // Room type: The room type of the proctoring scene is fixed at 6
+        roomName: "room name",
+        pretest: true, // Whether to enable pre-class equipment detection
+        rtmToken: "rtm token", // In a test environment, you can use temporary RTM Token; in a production or security environment, it is strongly recommended that you use a server-generated RTM Token
+        language: "zh", // The language of the classroom interface. If the interface is in English, set it to 'en'
+        duration: 60 * 30, // Course time in seconds
+        courseWareList: [],
+        widgets: {
+          webView: FcrWebviewWidget, // 内嵌浏览器widget
+        },
+        listener: (evt, args) => {},
+      });
+    </script>
+  </body>
+</html>
+```
+
+:::note
+Calling `launch` returns `unmount`. When your App routing changes cause the unloading of a page, call `unmount` to disconnect the room and recycle resources.
+:::
+
+When being proctored online, students need to use the primary and secondary devices to access the exam. For example, the main device is a Web client used to collect students' videos and share their screens when they answer questions; the secondary device is an Android or iOS device used to capture students' bodies when they answer questions. The proctor observes students answering questions through videos from several points to prevent cheating. You need to fill in the `userUuid` on different devices. For example, for student A, pass it in the `AgoraProctorSDK.launch` parameter on the Web side, and then on the Android or iOS side. Flexible Classroom will identify them as student A's primary and secondary devices, merge their video streams, and render the merged video images in the teacher's proctoring video window.
+
+The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](/en/realtime-media/flexible-classroom/build/manage-agora-account#generate-temporary-tokens) to learn what a Signaling token is, how to get a temporary Signaling token for testing purposes, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `launch` parameters passed in the `userUuid` method; otherwise, the generated token will be invalid.
+
+For details on the values of other parameters, see [LaunchOption](/en/api-reference/api-ref/flexible-classroom/classroom-sdk).
+
+<a id="change_default_ui_education"></a>
+### Customize the classroom UI
+
+If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
+
+:::note
+Make sure you have [set up a development environment](/en/realtime-media/flexible-classroom/quickstart).
+:::
+
+1. Clone the Flexible-Classroom-Desktop repository:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   ```
+
+1. [Checkout the latest release branch](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.9.20).
+
+    1. Change directory to `flexible-classroom-desktop`
+
+    1. Switch the branch, run the following commands:
+
+        ```bash
+        cd flexible-classroom-desktop
+        git checkout release/2.9.20
+        ```
+
+1. Modify the code according to your needs. See [Classroom and Proctor SDK](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom) for details.
+1. Debug your code.
+
+    After finishing the development, follow these steps to debug:
+
+    1. To install dependencies, run the following command:
+
+        ```bash
+        yarn install:packages
+        ```
+
+    1. To run the project in development mode, use the following command:
+
+        ```bash
+        yarn dev:proctor
+        ```
+
+1. After finishing the development, package the SDK JS file with the following command:
+
+    1. To package the SDK code:
+
+       ```bash
+       yarn pack:proctor:sdk
+       ```
+
+    1. To package the SDK plug-ins:
+
+       ```bash
+       yarn pack:proctor:plugin
+       ```
+
+:::note
+Find the output in the `packages/agora-proctor-sdk/lib/proctor_sdk.bundle.js` and `packages/agora-plugin-gallery/lib/proctor_widget.bundle.js` respectively.
+:::
+
+### Set exam link
+
+After the online exam starts, candidates will load the exam papers locally through the created Webview window. The link to the exam paper is set through the `examinationUrl` field in the room properties (`roomProperties`). You can set the exam paper link as follows:
+
+- When creating a room: Call the create classroom properties interface of the RESTful API to create a class, and set the `examinationUrl` field in the request package body.
+
+    ```javascripton
+    {
+      "roomName": "jasoncai61734",
+      "roomType": 4,
+      "roomProperties": {
+        "schedule": {
+          "startTime": 1655452800000,
+          "duration": 600,
+          "closeDelay": 0
+        },
+        // Set the exam paper link for this exam
+        "examinationUrl": "your examination url"
+      }
+    }
+    ```
+
+- After creating a room: Call the update classroom attribute interface of the RESTful API, and set the `examinationUrl` field in the request package body.
+
+    ```javascripton
+    {
+      "properties": {
+        // Set the exam paper link for this exam
+        "examinationUrl": "your examination url"
+      },
+      "cause": {}
+    }
+    ```
+
+## Frequent issues
+
+### Installation of the `agora-electron-sdk` module fails
+
+If you seem unable to install the `agora-electron-sdk` module under the Linux system, it is because the current operating system of the module does not support Linux. Take the following steps to solve the problem:
+
+1. Modify the `package.json` configuration parameters: In the project's `agora_electron` root directory set `platform` as `win32`:
+
+    ```javascripton
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true,
+      "platform": "win32"
+    }
+    ```
+
+1. Install dependencies again.
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+## Electron
+
+The following figure shows the overall technical architecture of Flexible Classroom:
+
+![Flexible Classroom technical architecture](https://web-cdn.agora.io/docs-files/1653557375318)
+
+## Integration methods
+
+You can use multiple methods to integrate Flexible Classroom into your Electron project. Depending on whether you need to customize the classroom UI, you can choose different integration methods:
+
+- If you are satisfied with the default UI of Flexible Classroom and do not want to change any of it, integrate the whole Flexible Classroom through CDN.
+- If you want to customize the classroom UI based on the default UI of Flexible Classroom, download and use the [source code](https://github.com/AgoraIO-Community/flexible-classroom-desktop/tree/release/2.8.13) on GitHub to integrate Flexible Classroom.
+
+<a id="default_ui"></a>
+
+### Use the default UI of Flexible Classroom
+
+To integrate the whole Flexible Classroom through CDN if you're satisfied with the default UI of Flexible Classroom and do not want to change any of it, follow this integration method. You must have an existing Electron project using an Electron version higher than 12.0.0 to use this method.
+
+1. Add the following code to the Electron entry file:
+
+    ```javascript
+    const electron = require('electron');
+    app.allowRendererProcessReuse = false;
+    ```
+
+2. When creating a `BrowserWindow` object, pass in the following parameters:
+
+    ```javascript
+    mainWindow = new BrowserWindow({
+      ...
+      webPreferences: {
+        ...
+        autoplayPolicy: "no-user-gesture-required",
+        nodeIntegration: true,
+        contextIsolation: false,
+        webSecurity: false,
+        webviewTag: true,
+        enableRemoteModule: true,
+        nativeWindowOpen: true,
+        backgroundThrottling: false
+      }
+    });
+    ```
+
+3. Add the following dependencies and configurations to `package.json`:
+
+    ```javascripton
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true
+    },
+    "dependencies": {
+      ...
+      "agora-electron-sdk": "3.6.1-rc.9-build.817"
+      "adm-zip": "0.4.14",
+    }
+    ```
+
+4. Import the Agora Classroom SDK in the HTML file and launch a classroom.
+
+
+:::tip[Tip]
+Flexible Classroom's dependency `agora-electron-sdk` contains the native Node.js module. It is not recommended to use webpack and other construction tools for secondary compilation; otherwise, there may be an error that the Node.js module cannot be found. It is recommended to set these two libraries as external dependencies in the project configuration. For example: `externals: {'agora-electron-sdk': 'commonjs2 agora-electron-sdk'}`.
+:::
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Introduce the SDK, 2.9.40 is the sample version number, you can check the latest version number through the release notes or GitHub warehouse branch -->
+        <script src="https://download.agora.io/edu-apaas/release/edu_sdk@2.9.40.bundle.js"></script>
+        <!-- Introducing Widget, 2.9.40 is the sample version number. You can check the latest version number through the release notes or GitHub warehouse branch. (Widgets before 2.9.20 are packaged together with the SDK, and there is no need to introduce this library) -->
+        <script src="https://download.agora.io/edu-apaas/release/edu_widget@2.9.40.bundle.js"></script>
+    </head>
+    <body>
+        <style>
+            #root {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <div id="root"></div>
+        <script type="text/javascript">
+            // SDK configuration
+            // Replace 'Your App ID' with your App ID
+            AgoraEduSDK.config({
+                    appId: 'Your App ID',
+                    region: 'NA'
+            });
+            // Start online class
+            AgoraEduSDK.launch(document.querySelector('#root'), {
+                userUuid: 'user id',
+                userName: 'user name',
+                roomUuid: 'room id',
+                roleType: 1, // User roles: 1 is teacher, 2 is student
+                roomType: 0, // Room type: 0 is one-on-one, 2 is large class, and 4 is small class.
+                roomName: 'room name',
+                pretest: true, // Whether to enable pre-class equipment detection.
+                rtmToken: 'rtm token', // In a test environment, you can use a temporary RTM Token; in a production or security environment, it is strongly recommended that you use a server-generated RTM Token.
+                language: 'zh', // The language of the classroom interface. If the interface is in English, set it to 'en'.
+                duration: 60 * 30, // Course time in seconds.
+                recordUrl: 'https://solutions-apaas.agora.io/apaas/record/dev/2.8.0/record_page.html',
+                courseWareList: [],
+                virtualBackgroundImages: [], // Virtual background image resource list
+                webrtcExtensionBaseUrl: 'https://solutions-apaas.agora.io/static', // WebRTC plug-in deployment address
+                uiMode: 'light', // Set the classroom interface to the light mode. If you want the interface to be in the dark mode, set it to 'dark'.
+                widgets: {
+                    popupQuiz: AgoraSelector,
+                    countdownTimer: AgoraCountdown,
+                    easemobIM: AgoraHXChatWidget,
+                    mediaPlayer: FcrStreamMediaPlayerWidget,
+                    poll: AgoraPolling,
+                    watermark: FcrWatermarkWidget,
+                    webView: FcrWebviewWidget,
+                    netlessBoard: FcrBoardWidget
+                },
+                listener: (evt, args) => {
+                },
+            });
+        </script>
+    </body>
+    </html>
+    ```
+
+    The sample code requires passing in `rtmToken`. You can refer to [Generate a Signaling token](/en/realtime-media/flexible-classroom/build/manage-agora-account#generate-temporary-tokens) to learn what is a Signaling token, how to get a temporary Signaling token for testing purpose, and how to generate a Signaling token from the server. The generated token passed in `userId` must be consistent with the `userUuid` parameters passed in the `launch` method; otherwise, the generated token will be invalid.
+
+<a id="change_default_ui"></a>
+
+### Customize the classroom UI
+
+If you want to customize the classroom UI based on the default UI of Flexible Classroom, you need to integrate Flexible Classroom by downloading the source code on GitHub. Refer to the following steps:
+
+:::note
+Make sure you have [set up the development environment](/en/realtime-media/flexible-classroom/quickstart#prerequisites).
+:::
+
+1. To clone the Flexible-Classroom-Desktop repository and check out the latest release branch, run the following commands:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/flexible-classroom-desktop.git
+   cd flexible-classroom-desktop
+   ```
+
+1. Switch to the latest branch.
+
+    For example, if you want to switch to the branch of v2.9.40, just run the following command:
+
+    ```bash
+    git checkout release/2.9.40
+    ```
+
+   Agora recommends switching the branch to the latest release.
+
+1. Modify the code according to your needs. See [Classroom and Proctor SDK UI customization guide](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom).
+
+1. Debug your code.
+
+    After finishing the development, follow these steps to debug:
+
+    1. To install dependencies, run the following commands:
+
+        ```bash
+        yarn install:packages
+        ```
+
+    2. To run the project in development mode, use the following command:
+
+        ```bash
+        yarn dev:classroom:electron
+        ```
+
+1. After finishing the development, package the SDK or app with the following commands:
+
+    - To package the Electron macOS client:
+
+        ```bash
+        yarn pack:classroom:sdk
+        yarn pack:classroom:plugin
+        yarn ci:build
+        yarn pack:electron:mac
+        ```
+
+    - To package the Electron Windows client:
+
+        ```bash
+        yarn pack:classroom:sdk
+        yarn pack:classroom:plugin
+        yarn ci:build
+        yarn pack:electron:win
+        ```
+
+## Frequent issues
+
+### Installation of the `agora-electron-sdk` module fails
+
+If you seem unable to install the `agora-electron-sdk` module under the Linux system, it is because the current operating system of the module does not support Linux. Take the following steps to solve the problem:
+
+1. Modify the `package.json` configuration parameters: In the project's `agora_electron` root directory set `platform` as `win32`:
+
+    ```javascripton
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true,
+      "platform": "win32"
+    }
+    ```
+
+1. Install dependencies again.
+
+### How to specify the system architecture for packaging Electron applications
+
+1. Modify the commands in the `packages/agora-demo-app/package.json` file and add parameters at the end to specify the system architecture. Here we set it to 64-bit operating system architecture. If you need to package a 32-bit operating system, change it to `:pack:macpack:winarch--ia32`
+
+    ```javascripton
+    "pack:mac": "yarn electron:copy:electron:mac && electron-builder --mac -p never --x64",
+    "pack:win": "yarn electron:copy:electron:win && electron-builder --win -p never --x64",
+    ```
+
+1. Modify the `package.json` configuration parameters: In the project's `agora_electron` root directory specify `arch` as `x64`. If you need to package a 32-bit operating system, change it to `ia32`.
+
+    ```javascripton
+    "agora_electron": {
+      "electron_version": "12.0.0",
+      "prebuilt": true,
+      "arch": "x64"
+    }
+    ```
+
+1. Delete the `node_modules/agora-electron-sdk` folder and execute the `yarn install --check-files` command to reinstall the dependencies.
+
+1. Run the packaging command.
+
+</PlatformStructured>

@@ -43,7 +43,7 @@ Agora Console provides access to the following:
 
 - Agora Analytics
 
-    Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](/en/solutions/agora-analytics/product-overview).
+    Track and analyze the usage and quality data of real-time communication products through highly visualized reports in order to spot issues and find root causes. For more information, see the [Agora Analytics overview](/en/realtime-media/agora-analytics/product-overview).
 
 - Agora Extensions Marketplace
 

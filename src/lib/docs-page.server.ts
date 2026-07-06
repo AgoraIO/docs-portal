@@ -18,10 +18,12 @@ import {
   getFirstChildPageUrl,
   getFirstTabPageUrl,
   getPrevNextLinksFromNode,
+  getProductScopes,
   getSidebarBreadcrumb,
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import {
   getOpenApiEndpointUrl,
@@ -222,6 +224,18 @@ export async function loadDocsPagePayload(
   if (solutionsApiReferenceRedirect) {
     return {
       redirectUrl: solutionsApiReferenceRedirect,
+    };
+  }
+
+  const legacySolutionsRedirect = getLegacySolutionsRedirectUrl({
+    locale,
+    slugSegments,
+    tab,
+  });
+  if (legacySolutionsRedirect) {
+    return {
+      preserveSearch: true,
+      redirectUrl: legacySolutionsRedirect,
     };
   }
 
@@ -463,6 +477,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+    productScopes: getProductScopes(pageTree),
     sidebar,
     sidebarHeader,
     slug: page.slugs.at(-1),

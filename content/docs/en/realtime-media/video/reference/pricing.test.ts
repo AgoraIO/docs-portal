@@ -7,7 +7,7 @@ const englishRtcPricingPages = [
   'content/docs/en/realtime-media/video/reference/pricing.mdx',
   'content/docs/en/realtime-media/voice/reference/pricing.mdx',
   'content/docs/en/realtime-media/broadcast-streaming/reference/pricing.mdx',
-  'content/docs/en/solutions/interactive-live-streaming/reference/pricing.mdx',
+  'content/docs/en/realtime-media/interactive-live-streaming/reference/pricing.mdx',
 ];
 
 function readDocsFile(relativePath: string) {

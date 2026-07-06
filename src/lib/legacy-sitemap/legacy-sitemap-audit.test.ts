@@ -23,9 +23,20 @@ type LegacySitemapUrl = {
   search: string;
 };
 
+type DocsFilesystemIndex = {
+  contentUrls: Set<string>;
+  routeToFile: Map<string, string>;
+};
+
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
   const typedReviewReport = reviewReport as LegacySitemapReviewReport;
+  const docsFilesystemIndex = buildDocsFilesystemIndex();
+  const docsContentUrls = docsFilesystemIndex.contentUrls;
+  const docsPortalUrls = getDocsPortalUrls(docsFilesystemIndex);
+  const redirectLegacyUrls = new Set(
+    legacySitemapRedirectConfig.rules.map((rule) => rule.legacyUrl),
+  );
 
   it('keeps traceable metadata for the persisted sitemap snapshot', () => {
     expect(legacySitemapRedirectConfig.sourceSitemapUrl).toBe(
@@ -55,23 +66,23 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('classifies every legacy sitemap URL with zero broken URLs', () => {
-    const docsPaths = getDocsContentUrls();
     const broken = sitemapUrls.filter((url) => {
-      if (docsPaths.has(url.path)) {
+      if (docsContentUrls.has(url.path)) {
         return false;
       }
 
-      return !resolveLegacySitemapRedirectPath(url.path, url.search);
+      return !redirectLegacyUrls.has(url.href);
     });
 
     expect(broken).toEqual([]);
   });
 
   it('stores only non-native redirect rules in redirects.json', () => {
-    const docsPaths = getDocsContentUrls();
-    const nativeUrls = sitemapUrls.filter((url) => docsPaths.has(url.path));
+    const nativeUrls = sitemapUrls.filter((url) =>
+      docsContentUrls.has(url.path),
+    );
     const redirectedUrls = sitemapUrls.filter(
-      (url) => !docsPaths.has(url.path),
+      (url) => !docsContentUrls.has(url.path),
     );
 
     expect(nativeUrls).toHaveLength(reviewReport.summary.native);
@@ -84,19 +95,13 @@ describe('legacy sitemap compatibility audit', () => {
         reviewReport.summary.unavailable,
     );
     expect(
-      redirectedUrls.every((url) =>
-        resolveLegacySitemapRedirectPath(url.path, url.search),
-      ),
+      redirectedUrls.every((url) => redirectLegacyUrls.has(url.href)),
     ).toBe(true);
   });
 
   it('has a redirect record for every non-native sitemap URL', () => {
-    const docsPaths = getDocsContentUrls();
-    const redirectLegacyUrls = new Set(
-      legacySitemapRedirectConfig.rules.map((rule) => rule.legacyUrl),
-    );
     const missingRedirects = sitemapUrls
-      .filter((url) => !docsPaths.has(url.path))
+      .filter((url) => !docsContentUrls.has(url.path))
       .filter((url) => !redirectLegacyUrls.has(url.href));
 
     expect(missingRedirects).toEqual([]);
@@ -112,10 +117,9 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('targets existing new docs portal pages', () => {
-    const docsPaths = getDocsPortalUrls();
     const missingTargets = legacySitemapRedirectConfig.rules
       .map((rule) => rule.target)
-      .filter((target) => !docsPaths.has(target));
+      .filter((target) => !docsPortalUrls.has(target));
 
     expect(missingTargets).toEqual([]);
   });
@@ -152,9 +156,9 @@ describe('legacy sitemap compatibility audit', () => {
     expect(typedReviewReport.summary).toEqual({
       broken: 0,
       exactPath: 478,
-      exactSlug: 1942,
+      exactSlug: 1934,
       native: 0,
-      productFallback: 0,
+      productFallback: 8,
       renamedPage: 39,
       semanticPageMatch: 657,
       totalLegacyUrls: sitemapUrls.length,
@@ -349,17 +353,10 @@ const reviewedRedirectTargets = [
   },
 ];
 
-function getDocsContentUrls() {
-  return getDocsPortalUrls({ includePlatformRoutes: false });
-}
-
-function getDocsPortalUrls({
-  includePlatformRoutes = true,
-}: {
-  includePlatformRoutes?: boolean;
-} = {}) {
+function buildDocsFilesystemIndex(): DocsFilesystemIndex {
   const docsRoot = join(process.cwd(), 'content/docs');
-  const urls = new Set<string>();
+  const contentUrls = new Set<string>();
+  const routeToFile = new Map<string, string>();
   const visit = (directory: string) => {
     for (const entry of readdirSync(directory)) {
       const fullPath = `${directory}/${entry}`;
@@ -378,22 +375,49 @@ function getDocsPortalUrls({
         .slice(docsRoot.length + 1)
         .replace(/\.(md|mdx)$/, '')
         .replace(/\/index$/, '');
+      const routePath = `/${contentPath}`;
 
-      urls.add(`/${contentPath}`);
-
-      if (includePlatformRoutes) {
-        const text = readFileSync(fullPath, 'utf8');
-        for (const match of text.matchAll(
-          /<PlatformStructured\s+platform=["']([^"']+)["']/g,
-        )) {
-          const platform = normalizePlatform(match[1]);
-          urls.add(`/${contentPath}/${platform}`);
-        }
-      }
+      contentUrls.add(routePath);
+      routeToFile.set(routePath, fullPath);
     }
   };
 
   visit(docsRoot);
+
+  return { contentUrls, routeToFile };
+}
+
+function getDocsPortalUrls(docsFilesystemIndex: DocsFilesystemIndex) {
+  const urls = new Set(docsFilesystemIndex.contentUrls);
+  const missingTargets = new Set(
+    legacySitemapRedirectConfig.rules
+      .map((rule) => rule.target)
+      .filter((target) => !urls.has(target)),
+  );
+
+  for (const target of missingTargets) {
+    const parentRoute = target.split('/').slice(0, -1).join('/');
+    const sourceFilePath = docsFilesystemIndex.routeToFile.get(parentRoute);
+
+    if (!sourceFilePath) {
+      continue;
+    }
+
+    const platform = target.split('/').at(-1);
+    if (!platform) {
+      continue;
+    }
+
+    const text = readFileSync(sourceFilePath, 'utf8');
+    const hasPlatformRoute = Array.from(
+      text.matchAll(/<PlatformStructured\s+platform=["']([^"']+)["']/g),
+      (match) => normalizePlatform(match[1] ?? ''),
+    ).includes(platform);
+
+    if (hasPlatformRoute) {
+      urls.add(target);
+    }
+  }
 
   return urls;
 }

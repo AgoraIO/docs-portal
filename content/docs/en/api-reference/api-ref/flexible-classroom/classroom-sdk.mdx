@@ -190,7 +190,7 @@ downloadCoursewares(activityContext, new AgoraEduCoursewarePreloadListener() {
 public static void registerExtensionApp(List<AgoraExtAppConfiguration> apps);
 ```
 
-Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom).
+Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom).
 
 ### AgoraEduLaunchCallback
 
@@ -277,7 +277,7 @@ The SDK global configuration. Used in [setConfig](#setconfig).
 
 | Attributes | Description |
 | :-------- | :----------------------------------------------------------- |
-| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/realtime-media/flexible-classroom/build/manage-agora-account#get-the-app-id). |
 | `eyeCare` | <Slot name="eyecare" /> |
 
 <Slot for="eyecare">
@@ -322,7 +322,7 @@ The classroom launching configuration. Used in [launch](#launch).
 | `roomUuid` | <Slot name="roomuuid" /> |
 | `roleType` | The role of the user in the classroom. See  [AgoraEduRoleType](#agoraeduroletype). |
 | `roomType` | The classroom type. See [AgoraEduRoomType](#agoraeduroomtype). |
-| `rtmToken` | The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `rtmToken` | The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
 | `startTime` | The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | The duration (ms) of the class, determined by the first user joining the classroom. |
 | `region` | The region where the classrooms is located. All clients must use the same region, otherwise, they may fail to communicate with each other. See [AgoraEduRegionStr](#agoraeduregionstr). |
@@ -817,7 +817,7 @@ Pre-downloads the courseware.
 + (void)registerExtApps:(NSArray<AgoraExtAppConfiguration *> *)apps;
 ```
 
-Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom).
+Register an extension application by using the ExtApp tool. ExtApp is a tool for embedding extension applications in Flexible Classroom. For details, see [Customize Flexible Classroom with ExtApp](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom).
 
 ### AgoraEduClassroom
 
@@ -943,7 +943,7 @@ The SDK global configuration. Used in [setConfig](#setconfig).
 
 | Attributes | Description |
 | :-------- | :----------------------------------------------------------- |
-| `appId` | The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `appId` | The Agora App ID. See [Get the Agora App ID](/en/realtime-media/flexible-classroom/build/manage-agora-account#get-the-app-id). |
 | `eyeCare` | <Slot name="eyecare" /> |
 
 <Slot for="eyecare">
@@ -1001,7 +1001,7 @@ The classroom launching configuration. Used in [launch](#launch).
 | `roomUuid` | <Slot name="roomuuid" /> |
 | `roleType` | The user's role in the classroom. See `AgoraEduRoleType`. |
 | `roomType` | The classroom type. See `AgoraEduRoomType`. |
-| `token` | The Signaling token used for authentication. For details, see [Generate a Signaling Token](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `token` | The Signaling token used for authentication. For details, see [Generate a Signaling Token](/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
 | `startTime` | The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | The duration (ms) of the class, determined by the first user joining the classroom. |
 | `region` | <Slot name="region" /> |
@@ -1396,7 +1396,7 @@ export type ConfigParams = {
 
 | Attributes | Description |
 | :------- | :----------------------------------------------------------- |
-| `appId` | (Required) The Agora App ID. See [Get the Agora App ID](/en/solutions/flexible-classroom/build/manage-agora-account#get-the-app-id). |
+| `appId` | (Required) The Agora App ID. See [Get the Agora App ID](/en/realtime-media/flexible-classroom/build/manage-agora-account#get-the-app-id). |
 | `region` | <Slot name="region" /> |
 
 <Slot for="region">
@@ -1454,7 +1454,7 @@ export type LaunchOption = {
 
 | Parameter | Description |
 | :----------------------- | :----------------------------------------------------------- |
-| `rtmToken` | (Required) The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/solutions/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
+| `rtmToken` | (Required) The Signaling token used for authentication. For details, see [Secure authentication with tokens](/en/realtime-media/flexible-classroom/build/set-up-your-account-and-authentication/authentication-workflow). |
 | `userUuid` | <Slot name="useruuid" /> |
 | `userName` | (Required) The user name for display in the classroom. The string length must be less than 64 bytes. |
 | `roomUuid` | <Slot name="roomuuid" /> |
@@ -1468,7 +1468,7 @@ export type LaunchOption = {
 | `startTime` | (Required) The start time (ms) of the class, determined by the first user joining the classroom. |
 | `duration` | (Required) The duration (second) of the class, determined by the first user joining the classroom. |
 | `recordUrl` | (Optional) The URL address to be recorded. Developers need to pass in the URL of the web page deployed by themselves for page recording, such as `https://cn.bing.com/recordUrl`. |
-| `widgets` | (Optional) Extensive widgets that  extend the classroom capabilities. See [Embed a custom plugin](/en/solutions/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin) for details. |
+| `widgets` | (Optional) Extensive widgets that  extend the classroom capabilities. See [Embed a custom plugin](/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/embed-custom-plugin) for details. |
 | `courseWareList` | (Optional) The configuration of courseware assigned by the educational institution, which cannot be edited by the client. See [`CourseWareList`](#coursewarelist) for details. After passing this object, the SDK downloads the courseware from the Agora cloud storage component to the local when launching the classroom. |
 | `userFlexProperties` | (Optional) User properties customized by the developer. |
 | `mediaOptions` | (Optional) Media stream configurations, including the encryption configuration and the encoding configurations of the screen-sharing stream and the video stream captured by the camera. See `MediaOptions` for details. |

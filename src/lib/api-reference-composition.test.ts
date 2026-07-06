@@ -41,7 +41,6 @@ describe('api reference composition', () => {
       'Media Gateway',
       'Media Pull',
       'Media Push',
-      'Broadcast Streaming',
       'Speech-to-Text',
       'Analytics',
       'Console',

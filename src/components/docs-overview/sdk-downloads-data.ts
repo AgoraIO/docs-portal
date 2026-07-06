@@ -1664,8 +1664,24 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.5-video-sdk-web',
+            label: 'Version 4.24.5 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
+          },
+          {
+            id: '4.24.4-video-sdk-web',
+            label: 'Version 4.24.4',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_4_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.4',
+          },
+          {
             id: '4.24.3-video-sdk-web',
-            label: 'Version 4.24.3 (Latest)',
+            label: 'Version 4.24.3',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_3_FULL.zip',
             packageManager:

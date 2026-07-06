@@ -40,18 +40,22 @@ export function createAlgoliaDocsClient({
   indexName,
   locale,
   platform,
+  scopeFilter,
   searchApiKey,
 }: {
   appId: string;
   indexName: string;
   locale: string;
   platform?: string;
+  // Raw Algolia filter narrowing results to a product/tab scope, e.g.
+  // `product:"video"`. Derived from the nav, so no re-sync is needed.
+  scopeFilter?: string;
   searchApiKey: string;
 }): SearchClient {
   const client = liteClient(appId, searchApiKey);
 
   return {
-    deps: [appId, indexName, locale, platform, searchApiKey],
+    deps: [appId, indexName, locale, platform, scopeFilter, searchApiKey],
     async search(query) {
       if (query.trim().length === 0) {
         return [];
@@ -66,7 +70,7 @@ export function createAlgoliaDocsClient({
             // One result per page: a page's best-matching section, never the
             // same page repeated for each matching heading.
             distinct: 1,
-            filters: buildFilters({ locale, platform }),
+            filters: buildFilters({ locale, platform, scopeFilter }),
             // Demote low-signal pages so real docs rank above them. Boosting
             // via optionalFilters keeps Algolia's textual relevance intact and
             // only nudges by category: normal docs (+2) and deprecated (+1)
@@ -154,11 +158,17 @@ export function createAlgoliaDocsClient({
 function buildFilters({
   locale,
   platform,
+  scopeFilter,
 }: {
   locale: string;
   platform?: string;
+  scopeFilter?: string;
 }) {
-  return [`locale:${locale}`, platform ? `platform:${platform}` : undefined]
+  return [
+    `locale:${locale}`,
+    platform ? `platform:${platform}` : undefined,
+    scopeFilter || undefined,
+  ]
     .filter(Boolean)
     .join(' AND ');
 }

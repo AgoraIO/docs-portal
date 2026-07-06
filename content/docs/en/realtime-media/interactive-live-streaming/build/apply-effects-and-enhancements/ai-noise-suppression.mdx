@@ -1,0 +1,636 @@
+---
+title: "AI Noise Suppression"
+description: "Suppress hundreds of types of noise and reduce distortion for human voice"
+---
+
+AI Noise Suppression enables you to suppress hundreds of types of noise and reduce distortion in human voices when multiple people speak at the same time. In use cases such as online meetings, online chat rooms, video consultations with doctors, and online gaming, AI Noise Suppression makes virtual communication as smooth as face-to-face interaction.
+
+<PlatformStructured platform="android">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```java tab="Java" tabGroup="ains-android"
+// Noise reduction modes:
+// 0: Balanced mode
+// 1: Aggressive mode
+// 2: Aggressive mode with low latency
+int mode = 1;
+int result = rtcEngine.setAINSMode(true, mode);
+```
+
+```kotlin tab="Kotlin" tabGroup="ains-android"
+// Noise reduction modes:
+// 0: Balanced mode
+// 1: Aggressive mode
+// 2: Aggressive mode with low latency
+val mode = 1
+val result = rtcEngine.setAINSMode(true, mode)
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setainsmode)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```swift
+// Set AINS mode to AINS_MODE_BALANCED (0)
+// Set AINS mode to AINS_MODE_AGGRESSIVE (1)
+// Set AINS mode to AINS_MODE_ULTRALOWLATENCY (2)
+let result = agoraKit.setAINSMode(true, mode: 2)
+```
+
+When AI Noise Suppression is enabled, if Video SDK detects that device performance is insufficient, it:
+
+- Disables AI Noise Suppression.
+- Enables traditional noise reduction.
+- Throws the `WARN_APM_AINS_CLOSED` (-1054) error code.
+
+## Reference
+
+### Minimum device requirements
+
+- iPhone 6S
+- iPad Pro (2nd generation)
+- iPad mini (5th generation)
+- iPad Air (3rd generation)
+- MacBook Pro 2015
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setainsmode(_:mode:))
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```swift
+// Set AINS mode to AINS_MODE_BALANCED (0)
+// Set AINS mode to AINS_MODE_AGGRESSIVE (1)
+// Set AINS mode to AINS_MODE_ULTRALOWLATENCY (2)
+let result = agoraKit.setAINSMode(true, mode: 2)
+```
+
+When AI Noise Suppression is enabled, if Video SDK detects that device performance is insufficient, it:
+
+- Disables AI Noise Suppression.
+- Enables traditional noise reduction.
+- Throws the `WARN_APM_AINS_CLOSED` (-1054) error code.
+
+## Reference
+
+### Minimum device requirements
+
+- iPhone 6S
+- iPad Pro (2nd generation)
+- iPad mini (5th generation)
+- iPad Air (3rd generation)
+- MacBook Pro 2015
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setainsmode(_:mode:))
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+Try the [AI Noise Suppression online demo](https://webdemo-global.agora.io/example/plugin/aiDenoiser/index.html).
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+:::note
+The following implementation steps apply to the latest version of the AI Noise Suppression extension. Refer to the [extension release notes](../../reference/release-notes.mdx#ai-noise-suppression) for details.
+:::
+
+1. Install the AI Noise Suppression extension.
+
+   The AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)) requires Web SDK v4.15.1 or later. In the root of your project, run the following command to install the extension. By default, this installs the latest version (v2.0.2):
+
+   ```bash
+   npm install agora-extension-ai-denoiser
+   ```
+
+   To install a specific extension version, use one of the following commands:
+
+   - **v2.0.2** — Adds background voice removal, which further isolates the target voice in noisy or multi-speaker scenarios.
+
+     ```bash
+     npm install agora-extension-ai-denoiser@2.0.2
+     ```
+
+   - **v2.0.1** — Supports low-latency mode and log-level configuration. If you need background voice removal, use v2.0.2.
+
+     ```bash
+     npm install agora-extension-ai-denoiser@2.0.1
+     ```
+
+2. Import AI Noise Suppression in your JavaScript or TypeScript file.
+
+   ```typescript
+   import { AIDenoiserExtension } from 'agora-extension-ai-denoiser';
+   ```
+
+3. Dynamically load the Wasm dependencies.
+
+   Publish the files in `node_modules/agora-extension-ai-denoiser/external` to your CDN or static resource server, and pass the public path URL when creating an `AIDenoiserExtension` instance.
+
+   :::note
+   If the Wasm files are not hosted on the same origin as the web application, enable CORS.
+
+   Do not serve the Wasm files over HTTP when your page runs over HTTPS.
+   :::
+
+4. Register the AI Noise Suppression extension.
+
+   ```typescript
+   const denoiser = new AIDenoiserExtension({ assetsPath: './external' });
+
+   if (!denoiser.checkCompatibility()) {
+     console.error('This browser does not support AI Denoiser.');
+   }
+
+   AgoraRTC.registerExtensions([denoiser]);
+
+   denoiser.onloaderror = (error) => {
+     console.log(error);
+   };
+   ```
+
+5. Create an `IAIDenoiserProcessor` instance.
+
+   ```typescript
+   const processor = denoiser.createProcessor();
+   processor.enable();
+   ```
+
+6. Inject the extension into the audio processing pipeline.
+
+   ```typescript
+   const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+   audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+   await processor.enable();
+   ```
+
+7. Enable or disable the extension as needed.
+
+   ```typescript
+   if (processor.enabled) {
+     await processor.disable();
+   } else {
+     await processor.enable();
+   }
+   ```
+
+8. Set the noise suppression mode and level.
+
+   ```typescript
+   processor.on('overload', async () => {
+     await processor.setMode('STATIONARY_NS');
+   });
+   ```
+
+## Reference
+
+### Considerations
+
+- If only some audio tracks on the current web page enable AI Noise Suppression, audio tracks that do not enable AI Noise Suppression may be affected because the extension turns on AEC and AGC and turns off browser NS.
+- Although AI Noise Suppression supports Safari 14.1 and later, Safari may have performance issues. Best practice is not to support Safari.
+- AI Noise Suppression does not support browsers on mobile devices.
+
+### Sample project
+
+- [AI Denoiser web demo](https://webdemo.agora.io/aiDenoiser/index.html)
+- [AI Denoiser source code](https://github.com/AgoraIO/API-Examples-Web/tree/main/Demo/aiDenoiser)
+
+### API reference
+
+- [`AgoraRTC.registerExtensions`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions)
+- [`IMicrophoneAudioTrack.pipe`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```cpp
+bool enableAINS = true;
+AUDIO_AINS_MODE mode = AINS_MODE_BALANCED;
+
+int result = rtcEngine->setAINSMode(enableAINS, mode);
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/api_irtcengine_setainsmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```javascript
+const enabled = true;
+const result = rtcEngine.setAINSMode(
+  enabled,
+  AudioAinsMode.AinsModeUltralowlatency,
+);
+
+if (result !== 0) {
+  console.error('Failed to enable AI Noise Suppression');
+}
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/api_irtcengine_setainsmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```dart
+Future<void> enableNoiseSuppression() async {
+  const enabled = true;
+  const mode = AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+
+  await _engine.setAINSMode(enabled: enabled, mode: mode);
+}
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/api_irtcengine_setainsmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```typescript
+const setAINSMode = () => {
+  const enabled = true;
+  const mode = AgoraRtcEngine.AudioAinsMode.AINS_MODE_ULTRALOWLATENCY;
+
+  return rtcEngine.setAINSMode(enabled, mode);
+};
+```
+
+## Reference
+
+### API reference
+
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/api_irtcengine_setainsmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose the following noise reduction strategies:
+
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Try the [AI Noise Suppression online demo](https://webdemo.agora.io/aiDenoiser/index.html).
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify audio data in the extensions pipeline.
+
+**AI noise suppression**
+
+![AI noise suppression pipeline](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+Call `SetAINSMode` to enable AI Noise Suppression and select a noise suppression mode:
+
+```csharp
+bool enableAINS = true;
+AUDIO_AINS_MODE mode = AUDIO_AINS_MODE.AINS_MODE_BALANCED;
+
+int result = rtcEngine.SetAINSMode(enableAINS, mode);
+```
+
+## Reference
+
+### API reference
+
+- [`SetAINSMode`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setainsmode)
+
+</PlatformStructured>

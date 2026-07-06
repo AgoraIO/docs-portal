@@ -37,7 +37,11 @@ import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { buildDocPath } from '@/lib/docs-routing';
 import type { SearchEntry } from '@/lib/docs-search';
-import type { DocsSidebarNode, TabSummary } from '@/lib/docs-tree';
+import type {
+  DocsSidebarNode,
+  ProductScope,
+  TabSummary,
+} from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -126,6 +130,7 @@ export function DocsShell({
   locale,
   previous,
   next,
+  productScopes,
   sidebar,
   sidebarHeader,
   tabs,
@@ -144,6 +149,7 @@ export function DocsShell({
   locale: string;
   next?: { title: string; url: string };
   previous?: { title: string; url: string };
+  productScopes?: ProductScope[];
   sidebar: DocsSidebarNode[];
   sidebarHeader?: DocsSidebarHeader;
   tabs: TabSummary[];
@@ -373,7 +379,7 @@ export function DocsShell({
                   loadPages={loadPages}
                   locale={currentLocale}
                   mode="mobile"
-                  tabs={tabs}
+                  productScopes={productScopes}
                 />
               </div>
               <div
@@ -385,7 +391,7 @@ export function DocsShell({
                     loadPages={loadPages}
                     locale={currentLocale}
                     mode="desktop"
-                    tabs={tabs}
+                    productScopes={productScopes}
                   />
                 </div>
                 <Button

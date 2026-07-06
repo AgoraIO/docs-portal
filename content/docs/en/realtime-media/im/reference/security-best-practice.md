@@ -38,7 +38,7 @@ The communication between users and the Chat server is encrypted using transmiss
 | Data Type              | Retention Time                                                              |
 |:-----------------------------------------|:--------------------------------------------------------------------------------------|
 | Console account data  | Until the account is deleted or is not used for 180 consecutive days. |
-| Messages (Message history, roaming messages, offline messages, and so on) | Depends on the cloud storage time associated with your pricing plan:<ul><li>Free: 7 days</li><li>Starter: 90 days</li><li>Pro: 180 days</li><li>Enterprise: Customizable (180 days by default)</li></ul> |
+| Messages (Message history, roaming messages, offline messages, and so on) | Depends on the cloud storage time associated with your pricing plan:<br />Free: 7 days<br />Starter: 90 days<br />Pro: 180 days<br />Enterprise: Customizable (180 days by default) |
 
 ## Level 4 - Data center separation
 
