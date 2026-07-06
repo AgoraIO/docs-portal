@@ -113,6 +113,7 @@ export function createAlgoliaDocsClient({
           typeof hit.section_id === 'string' ? hit.section_id : undefined;
         const url = typeof hit.url === 'string' ? hit.url : '';
         const section = getString(hit.section);
+        const navBreadcrumbs = getStringArray(hit.breadcrumbs);
         const resultUrl = sectionId ? `${url}#${sectionId}` : url;
 
         if (seenUrls.has(resultUrl)) {
@@ -126,7 +127,8 @@ export function createAlgoliaDocsClient({
           content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
           id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
           objectType: getString(hit.objectType),
-          path: buildPathSegments(url),
+          path: navBreadcrumbs?.length ? navBreadcrumbs : buildPathSegments(url),
+          external: getString(hit.objectType) === 'external',
           platform: getStringArray(hit.platform),
           product: getString(hit.product),
           section: getHighlight(hit, 'section') ?? section,

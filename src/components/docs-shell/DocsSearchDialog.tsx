@@ -215,19 +215,8 @@ export function DocsSearchDialog({
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
   const platformOptions = useMemo(
     () =>
-      (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
-        [
-          'web',
-          'android',
-          'ios',
-          'javascript',
-          'flutter',
-          'react-native',
-          'windows',
-          'macos',
-          'electron',
-          'unity',
-        ].includes(platform),
+      ([...Object.keys(platformRegistry)] as PlatformKey[]).sort(
+        (a, b) => platformRegistry[a].order - platformRegistry[b].order,
       ),
     [],
   );
@@ -256,8 +245,14 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
-  async function handleSelect(url: string) {
+  async function handleSelect(url: string, external?: boolean) {
     setOpen(false);
+    // External api-ref results open externally. The absolute-URL check is a
+    // defensive fallback in case the `external` flag is ever missing.
+    if (external || /^https?:\/\//.test(url)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
     await navigate({
       to: url,
     });
@@ -523,17 +518,34 @@ export function DocsSearchDialog({
                   const stagger = staggerProps(index);
                   return (
                     <CommandItem
+                      aria-label={
+                        page.external
+                          ? `${page.title} (opens in new tab)`
+                          : undefined
+                      }
                       className={cn('items-start', stagger.className)}
                       key={page.id ?? page.url}
-                      onSelect={() => void handleSelect(page.url)}
+                      onSelect={() =>
+                        void handleSelect(page.url, page.external)
+                      }
                       style={stagger.style}
                       value={page.id ?? page.url}
                     >
                       <div className="min-w-0 flex-1 space-y-1.5">
-                        <HighlightedText
-                          className="line-clamp-1 font-medium"
-                          value={page.title}
-                        />
+                        <div className="flex items-baseline gap-1">
+                          <HighlightedText
+                            className="line-clamp-1 font-medium"
+                            value={page.title}
+                          />
+                          {page.external ? (
+                            <span
+                              aria-hidden
+                              className="shrink-0 text-[0.7rem] text-muted-foreground"
+                            >
+                              ↗
+                            </span>
+                          ) : null}
+                        </div>
                         {page.path.length > 0 ? (
                           <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
                             {page.path.join(' › ')}
@@ -581,6 +593,7 @@ export function DocsSearchDialog({
 
 type RenderedSearchEntry = SearchEntry & {
   context: string[];
+  external?: boolean;
   id?: string;
   path: string[];
   snippet?: string;
@@ -598,6 +611,7 @@ type DetailEntry = {
 function searchResultToEntry(result: {
   breadcrumbs?: unknown[];
   content: unknown;
+  external?: unknown;
   id?: unknown;
   objectType?: unknown;
   path?: unknown[];
@@ -615,7 +629,8 @@ function searchResultToEntry(result: {
 
   return {
     context: uniqueStrings([
-      objectType === 'openapi' ? 'API' : undefined,
+      objectType === 'openapi' || objectType === 'external' ? 'API' : undefined,
+      objectType === 'external' ? '↗ external' : undefined,
       ...formatPlatformContext(platforms ?? []),
     ]),
     description: truncateSearchSnippet(
@@ -623,6 +638,7 @@ function searchResultToEntry(result: {
         ? result.snippet
         : breadcrumbs?.filter(Boolean).join(' / '),
     ),
+    external: objectType === 'external',
     id: getString(result.id),
     path: getStringArray(result.path) ?? [],
     title:

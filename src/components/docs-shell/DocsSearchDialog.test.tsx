@@ -927,4 +927,54 @@ describe('DocsSearchDialog', () => {
       screen.getAllByText('Voice Activity Detection').length,
     ).toBeGreaterThan(0);
   });
+
+  it('renders the ↗ external pill and labels external results as opening a new tab', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([
+        {
+          content: 'Android SDK Reference',
+          external: true,
+          id: 'ext-android',
+          objectType: 'external',
+          path: ['API Reference', 'Voice & Video'],
+          title: 'Android',
+          type: 'page',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/index.html',
+        },
+      ]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'android' } },
+    );
+
+    // The ↗ external pill appears in the result row, and the CommandItem carries
+    // the accessible "opens in new tab" label for screen readers.
+    expect(await screen.findByText('↗ external')).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: 'Android (opens in new tab)' }),
+    ).toBeInTheDocument();
+  });
 });

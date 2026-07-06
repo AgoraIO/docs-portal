@@ -6,6 +6,7 @@ import {
   normalizePlatformKey,
   PLATFORM_CANONICAL_PRIORITY,
   PLATFORM_PREFERENCE_STORAGE_KEY,
+  platformRegistry,
 } from './registry';
 
 describe('platform registry', () => {
@@ -61,12 +62,20 @@ describe('platform registry', () => {
     expect(isKnownPlatform('linux-cpp')).toBe(true);
     expect(isKnownPlatform('linux-c')).toBe(true);
     expect(isKnownPlatform('linux-java')).toBe(true);
+    expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('typescript')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
   it('normalizes legacy platform aliases to registered keys', () => {
     expect(normalizePlatformKey('react-js')).toBe('javascript');
     expect(normalizePlatformKey('android')).toBe('android');
+  });
+
+  it('normalizes external api-ref path-token aliases to registered keys', () => {
+    expect(normalizePlatformKey('reactjs')).toBe('javascript');
+    expect(normalizePlatformKey('unreal-engine')).toBe('unreal');
+    expect(normalizePlatformKey('windows-csharp')).toBe('windows');
   });
 
   it('returns locale-specific labels from the registry', () => {
@@ -90,5 +99,29 @@ describe('platform registry', () => {
 
   it('uses a namespaced storage key', () => {
     expect(PLATFORM_PREFERENCE_STORAGE_KEY).toBe('docs-portal:platform:v1');
+  });
+});
+
+describe('platform registry — SDK languages', () => {
+  it('knows go and typescript', () => {
+    expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('typescript')).toBe(true);
+  });
+
+  it('labels them for English', () => {
+    expect(getPlatformLabel('go', 'en')).toBe('Go');
+    expect(getPlatformLabel('typescript', 'en')).toBe('TypeScript');
+  });
+
+  it('orders them next to python', () => {
+    expect(platformRegistry.go.order).toBeGreaterThan(
+      platformRegistry.python.order,
+    );
+    expect(platformRegistry.typescript.order).toBeGreaterThan(
+      platformRegistry.go.order,
+    );
+    expect(platformRegistry.typescript.order).toBeLessThan(
+      platformRegistry['linux-cpp'].order,
+    );
   });
 });

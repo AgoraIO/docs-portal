@@ -14,6 +14,11 @@ import {
 } from '../openapi/lanes';
 import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
+import {
+  buildExternalSearchText,
+  type ExternalNavEntry,
+  platformFromExternalHref,
+} from './external-refs';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
 // match almost any query; legacy/deprecated pages are rarely the intent. Both
@@ -25,7 +30,7 @@ type SearchCategory = 'glossary' | 'deprecated' | 'default';
 type AlgoliaExtraData = {
   category: SearchCategory;
   locale: AppLocale;
-  objectType: 'docs' | 'openapi';
+  objectType: 'docs' | 'openapi' | 'external';
   platform?: string[];
   product?: string;
   tab: string;
@@ -75,6 +80,33 @@ export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
   return [...docsRecords, ...openApiRecords];
 }
 
+/** Synthesize an Algolia record for an external SDK api-ref link. */
+export function buildExternalRecord(
+  entry: ExternalNavEntry,
+  locale: AppLocale,
+): AlgoliaDocsRecord {
+  const platform = platformFromExternalHref(entry.href);
+
+  return {
+    _id: `external:${entry.href}`,
+    breadcrumbs: entry.ancestry,
+    extra_data: {
+      category: 'default',
+      locale,
+      objectType: 'external',
+      platform: platform ? [platform] : [],
+      product: entry.ancestry[0],
+      tab: 'api-reference',
+    },
+    structured: {
+      contents: [{ content: buildExternalSearchText(entry), heading: undefined }],
+      headings: [],
+    },
+    title: entry.title,
+    url: entry.href,
+  } satisfies AlgoliaDocsRecord;
+}
+
 async function getContentDocsRecords() {
   const pages = await getContentDocsPages();
 
@@ -101,7 +133,7 @@ async function getContentDocsRecords() {
           category: classifySearchCategory(page.url),
           locale: route.locale,
           objectType: 'docs',
-          platform: inferPlatforms(page.url, page.content),
+          platform: [],
           product: inferProduct(route),
           tab: route.tab,
         },
@@ -311,7 +343,7 @@ async function getOpenApiRecords() {
             category: classifySearchCategory(url),
             locale,
             objectType: 'openapi',
-            platform: inferPlatforms(url, content),
+            platform: [],
             product: lane.id,
             tab: lane.tab,
           },
@@ -384,23 +416,6 @@ function inferProduct(route: { slugSegments: string[]; tab: string }) {
   return route.slugSegments[0] ?? route.tab;
 }
 
-function inferPlatforms(url: string, content: string) {
-  const sourceText = `${url}\n${content}`.toLowerCase();
-  const platforms = [
-    'android',
-    'ios',
-    'web',
-    'windows',
-    'macos',
-    'unity',
-    'flutter',
-    'react-native',
-    'electron',
-    'unreal',
-  ];
-
-  return platforms.filter((platform) => sourceText.includes(platform));
-}
 
 function schemaFieldPaths(schema: unknown) {
   return buildOpenApiSchemaTree(schema).flatMap(flattenSchemaNode);

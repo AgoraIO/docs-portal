@@ -1,6 +1,7 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { algoliasearch } from 'algoliasearch';
 import { sync } from 'fumadocs-core/search/algolia';
-import { getAlgoliaDocsRecords } from '../src/lib/search/algolia-records.server.ts';
 
 const appId = process.env.VITE_ALGOLIA_APP_ID;
 const adminApiKey = process.env.ALGOLIA_ADMIN_API_KEY;
@@ -19,7 +20,31 @@ if (!appId || !adminApiKey) {
 }
 
 const client = algoliasearch(appId, adminApiKey);
-const records = await getAlgoliaDocsRecords();
+
+const artifactPath = path.join(
+  process.cwd(),
+  'public',
+  '__static',
+  'docs-search',
+  'algolia-records.json',
+);
+
+let records;
+try {
+  records = JSON.parse(await readFile(artifactPath, 'utf8'));
+} catch (error) {
+  if (error?.code === 'ENOENT') {
+    console.error(
+      `Algolia records artifact not found at ${artifactPath}. ` +
+        'Run the build first (bun run docs:static-payload) before syncing.',
+    );
+  } else {
+    console.error(
+      `Failed to read Algolia records artifact at ${artifactPath}: ${error?.message ?? error}`,
+    );
+  }
+  process.exit(1);
+}
 
 await sync(client, {
   indexName,
