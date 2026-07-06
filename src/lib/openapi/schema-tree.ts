@@ -38,11 +38,12 @@ export type OpenApiSchemaCallout = {
 
 export function buildOpenApiSchemaTree(
   schema: unknown,
-  options: { document?: unknown } = {},
+  options: { document?: unknown; omitArrayItemWrapperRows?: boolean } = {},
 ): OpenApiSchemaTreeNode[] {
   return buildSchemaChildren(schema, {
     depth: 0,
     document: options.document,
+    omitArrayItemWrapperRows: options.omitArrayItemWrapperRows === true,
     pathPrefix: '',
     requiredNames: new Set(),
     seen: new WeakSet(),
@@ -51,9 +52,16 @@ export function buildOpenApiSchemaTree(
 
 export function buildOpenApiSchemaRows(
   schema: unknown,
-  options: { document?: unknown; usage?: 'request' | 'response' } = {},
+  options: {
+    document?: unknown;
+    omitArrayItemWrapperRows?: boolean;
+    usage?: 'request' | 'response';
+  } = {},
 ): OpenApiSchemaRow[] {
-  return buildOpenApiSchemaTree(schema, { document: options.document })
+  return buildOpenApiSchemaTree(schema, {
+    document: options.document,
+    omitArrayItemWrapperRows: options.omitArrayItemWrapperRows,
+  })
     .flatMap((node) => flattenSchemaTreeNode(node, 0))
     .filter((row) => {
       if (options.usage === 'request') {
@@ -100,6 +108,7 @@ export function getOpenApiSchemaRowLayout(
 type BuildContext = {
   depth: number;
   document?: unknown;
+  omitArrayItemWrapperRows: boolean;
   pathPrefix: string;
   requiredNames: Set<string>;
   seen: WeakSet<object>;
@@ -128,6 +137,7 @@ function buildSchemaChildren(
     buildSchemaNode(name, childSchema, {
       depth: context.depth + 1,
       document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
       pathPrefix: context.pathPrefix,
       requiredNames,
       seen: context.seen,
@@ -135,15 +145,22 @@ function buildSchemaChildren(
   );
 
   if (isRecord(merged.items)) {
-    nodes.push(
-      buildSchemaNode('items', merged.items, {
-        depth: context.depth + 1,
-        document: context.document,
-        pathPrefix: context.pathPrefix,
-        requiredNames: new Set(),
-        seen: context.seen,
-      }),
-    );
+    const itemNode = buildSchemaNode('items', merged.items, {
+      depth: context.depth + 1,
+      document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
+      pathPrefix: context.pathPrefix,
+      requiredNames: new Set(),
+      seen: context.seen,
+    });
+
+    if (hasSchemaNodeDetails(itemNode)) {
+      nodes.push(itemNode);
+    } else if (context.omitArrayItemWrapperRows) {
+      nodes.push(...itemNode.children);
+    } else {
+      nodes.push(itemNode);
+    }
   }
 
   return nodes;
@@ -165,6 +182,7 @@ function buildSchemaNode(
     children: buildSchemaChildren(value, {
       depth: context.depth,
       document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
       pathPrefix: path,
       requiredNames: new Set(arrayOfStrings(value.required)),
       seen: context.seen,
@@ -205,6 +223,26 @@ function buildSchemaNode(
     type: getSchemaType(value),
     ...(value.writeOnly === true ? { writeOnly: true } : {}),
   };
+}
+
+function hasSchemaNodeDetails(node: OpenApiSchemaTreeNode) {
+  return (
+    node.deprecated === true ||
+    node.description !== undefined ||
+    node.docsCallouts !== undefined ||
+    node.enumValues !== undefined ||
+    node.format !== undefined ||
+    node.nullable === true ||
+    node.pattern !== undefined ||
+    node.readOnly === true ||
+    node.writeOnly === true ||
+    'defaultValue' in node ||
+    'example' in node ||
+    'exclusiveMaximum' in node ||
+    'exclusiveMinimum' in node ||
+    'maximum' in node ||
+    'minimum' in node
+  );
 }
 
 function getDocsCallouts(schema: Record<string, unknown>) {

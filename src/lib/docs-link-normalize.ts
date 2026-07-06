@@ -178,15 +178,13 @@ function getLegacyConversationalAiRestPath(segments: string[]) {
   }
 
   if (!group) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
   }
 
   if (group === 'authentication' || group === 'status-codes') {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai/${group}`
-      : null;
+    return group === 'status-codes' && locale === 'zh-CN'
+      ? `/${locale}/api-reference/response-code`
+      : `/${locale}/api-reference/api-ref/conversational-ai/${group}`;
   }
 
   if (group !== 'agent' || !leaf) {
@@ -271,8 +269,7 @@ function getLegacyAiPath(segments: string[]) {
     }
 
     if (leaf === 'handle-runtime-events') {
-      const movedLeaf =
-        LEGACY_AI_BUILD_RUNTIME_EVENTS_ROUTE_LEAVES[subleaf];
+      const movedLeaf = LEGACY_AI_BUILD_RUNTIME_EVENTS_ROUTE_LEAVES[subleaf];
 
       if (movedLeaf) {
         return `/${locale}/ai/build/${movedLeaf}`;

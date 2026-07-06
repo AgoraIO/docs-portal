@@ -138,7 +138,9 @@ describe('auditMdxBuildSyntax', () => {
     expect(report.summary.filesScanned).toBe(2);
     expect(report.summary.affectedFiles).toBe(1);
     expect(report.summary.issueCount).toBe(1);
-    expect(report.summary.ruleCounts['jsx-unquoted-attribute']).toBe(1);
+    expect(report.summary.ruleCounts).toMatchObject({
+      'jsx-unquoted-attribute': 1,
+    });
     expect(report.issues[0]).toMatchObject({
       filePath: 'zh-CN/bad.mdx',
       line: 1,

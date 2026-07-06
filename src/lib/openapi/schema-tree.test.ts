@@ -99,6 +99,140 @@ describe('openapi schema tree', () => {
     );
   });
 
+  it('omits array item wrapper rows that add no details beyond their type', () => {
+    const rows = buildOpenApiSchemaRows(
+      {
+        properties: {
+          describedStringArray: {
+            items: {
+              description: 'Allowed value.',
+              type: 'string',
+            },
+            type: 'array',
+          },
+          enumStringArray: {
+            items: {
+              enum: ['auto', 'manual'],
+              type: 'string',
+            },
+            type: 'array',
+          },
+          objectArray: {
+            items: {
+              properties: {
+                name: {
+                  type: 'string',
+                },
+              },
+              type: 'object',
+            },
+            type: 'array',
+          },
+          plainIntegerArray: {
+            items: {
+              type: 'integer',
+            },
+            type: 'array',
+          },
+          plainStringArray: {
+            description: 'Subscribed user IDs.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+          rangedNumberArray: {
+            items: {
+              maximum: 1,
+              minimum: 0,
+              type: 'number',
+            },
+            type: 'array',
+          },
+          unannotatedObjectArray: {
+            items: {
+              type: 'object',
+            },
+            type: 'array',
+          },
+        },
+        required: ['plainStringArray'],
+        type: 'object',
+      },
+      {
+        omitArrayItemWrapperRows: true,
+      },
+    );
+
+    expect(rows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          path: 'plainStringArray',
+          required: true,
+          type: 'array',
+        }),
+        expect.objectContaining({
+          description: 'Allowed value.',
+          path: 'describedStringArray.items',
+          type: 'string',
+        }),
+        expect.objectContaining({
+          enumValues: ['auto', 'manual'],
+          path: 'enumStringArray.items',
+          type: 'string',
+        }),
+        expect.objectContaining({
+          path: 'objectArray.items.name',
+          type: 'string',
+        }),
+        expect.objectContaining({
+          maximum: 1,
+          minimum: 0,
+          path: 'rangedNumberArray.items',
+          type: 'number',
+        }),
+      ]),
+    );
+    const paths = rows.map((row) => row.path);
+    expect(paths).not.toContain('objectArray.items');
+    expect(paths).not.toContain('plainIntegerArray.items');
+    expect(paths).not.toContain('plainStringArray.items');
+    expect(paths).not.toContain('unannotatedObjectArray.items');
+  });
+
+  it('keeps array item wrapper rows by default', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        objectArray: {
+          items: {
+            properties: {
+              name: {
+                type: 'string',
+              },
+            },
+            type: 'object',
+          },
+          type: 'array',
+        },
+        plainStringArray: {
+          items: {
+            type: 'string',
+          },
+          type: 'array',
+        },
+      },
+      type: 'object',
+    });
+
+    expect(rows.map((row) => row.path)).toEqual(
+      expect.arrayContaining([
+        'objectArray.items',
+        'objectArray.items.name',
+        'plainStringArray.items',
+      ]),
+    );
+  });
+
   it('includes metadata used by the renderer', () => {
     const rows = buildOpenApiSchemaRows({
       properties: {
