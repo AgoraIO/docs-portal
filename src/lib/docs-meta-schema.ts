@@ -27,6 +27,8 @@ const docsMetaPageGroupSchema = z.object({
   type: z.literal('group'),
 });
 
+const sidebarGroupEndMarker = '---{flat}---';
+
 const docsMetaPageEntrySchema = z.union([
   z.string(),
   docsMetaExternalPageLinkSchema.transform(
@@ -47,7 +49,11 @@ const docsMetaPageEntrySchema = z.union([
         : `external:[${page.title}](${page.href})`,
     );
 
-    return [`---${iconPrefix}${entry.title}${flags}---`, ...resolvedPages];
+    return [
+      `---${iconPrefix}${entry.title}${flags}---`,
+      ...resolvedPages,
+      sidebarGroupEndMarker,
+    ];
   }),
 ]);
 

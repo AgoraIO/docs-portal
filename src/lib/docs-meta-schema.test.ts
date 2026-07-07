@@ -59,8 +59,10 @@ describe('docsMetaSchema', () => {
       '---[Play]Create and connect an agent{dropdown}---',
       'start-agent',
       'stop-agent',
+      '---{flat}---',
       '---Plan architecture{flat}---',
       'architecture',
+      '---{flat}---',
     ]);
   });
 

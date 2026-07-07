@@ -1252,6 +1252,56 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('ends a structured sidebar group before following plain pages', () => {
+    expect(
+      mapSidebarEntriesToTree([
+        {
+          id: 'separator-billing',
+          title: '计费说明',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          title: '计费策略',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+        },
+        {
+          id: 'separator-billing-end',
+          title: '',
+          type: 'separator',
+        },
+        {
+          id: '/zh-CN/realtime-media/rtc/reference/quota',
+          title: '配额限制',
+          type: 'page',
+          url: '/zh-CN/realtime-media/rtc/reference/quota',
+        },
+      ]),
+    ).toEqual([
+      {
+        children: [
+          {
+            id: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+            title: '计费策略',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtc/reference/billing-strategy',
+          },
+        ],
+        collapsible: false,
+        id: 'separator-billing',
+        title: '计费说明',
+        type: 'section',
+      },
+      {
+        id: '/zh-CN/realtime-media/rtc/reference/quota',
+        title: '配额限制',
+        type: 'page',
+        url: '/zh-CN/realtime-media/rtc/reference/quota',
+      },
+    ]);
+  });
+
   it('passes long labels through unchanged for UI-level truncation', () => {
     const longTitle =
       'This is a very long documentation title that should stay untouched for UI-level truncation';
