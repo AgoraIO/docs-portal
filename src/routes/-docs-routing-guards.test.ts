@@ -43,6 +43,7 @@ import {
   payloadSupportsPlatform,
 } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
+import { Route as TabLayoutRoute } from './$locale/$tab/route';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
 import { Route as LlmsTextRoute } from './llms[.]txt';
@@ -192,6 +193,52 @@ describe('docs route locale guards', () => {
     throw new Error('expected loader to reject with redirect');
   });
 
+  it(
+    'redirects tab roots without index pages to their first real page',
+    async () => {
+      try {
+        await getLoader(TabLayoutRoute)({
+          location: {
+            hash: '#section',
+            pathname: '/zh-CN/realtime-media',
+            searchStr: '?from=root',
+          },
+          params: {
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/overview?from=root#section',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected tab root to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it('leaves child docs pages to child route loaders', async () => {
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/realtime-media/usage-analytics',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
+
   it('recognizes legacy query-string platform values for docs pages', () => {
     expect(getKnownPlatformSearchParam('?platform=macos')).toBe('macos');
     expect(getKnownPlatformSearchParam('?foo=bar&platform=react-native')).toBe(
@@ -248,6 +295,66 @@ describe('docs route locale guards', () => {
       REAL_DOCS_ROUTE_TIMEOUT,
     );
   }
+
+  it(
+    'redirects moved zh-CN Introduction routes before page fallback',
+    async () => {
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'usage-analytics',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/usage-analytics',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected moved Usage Analytics route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it(
+    'redirects moved zh-CN PPT transcoding routes before page fallback',
+    async () => {
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'ppt-transcoding/get-started/quick-start',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected moved PPT transcoding route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
 
   it('serves direct .md docs page URLs as markdown', async () => {
     const response = (await getGetHandler(DocPageRoute)({

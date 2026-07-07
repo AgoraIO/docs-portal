@@ -10929,20 +10929,34 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#问题修复)。
 
-#### All
+<Tabs defaultValue="all" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="all">All</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all">
 
 - 支持超高清视频 (分辨率为 4K，帧率为 60 fps)，你可以在满足要求的设备上使用该功能。声网推荐的最低设备规格为：intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ。
 
-#### Windows
+</TabsContent>
+
+<TabsContent value="windows">
 
 - 在 [`ScreenCaptureSourceInfo`](/api-ref/rtc/electron/API/class_screencapturesourceinfo) 中增加了 `minimizeWindow` 成员，用于表示目标窗口是否已最小化。
 - 在 [`ScreenCaptureParameters`](/api-ref/rtc/electron/API/class_screencaptureparameters) 中增加了 `enableHighLight`、`highLightColor` 和 `highLightWidth` 成员，支持你在屏幕共享时对目标窗口或屏幕进行描边。
 - 兼容更多主流 App，包括但不限于：WPS Office，Microsoft Office PowerPoint，Visual Studio Code，Adobe Photoshop，Windows Media Player，Scratch。
 - 兼容更多设备和操作系统，包括但不限于：Windows 8 系统，无独立显卡的设备，双显卡设备。
 
-#### macOS
+</TabsContent>
+
+<TabsContent value="macos">
 
 - 兼容更多设备和场景，包括但不限于：双显卡设备，使用外接屏幕进行屏幕共享。
+
+</TabsContent>
+</Tabs>
 
 #### CDN 推流
 
@@ -10980,7 +10994,14 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 该版本修复了以下问题：
 
-#### All
+<Tabs defaultValue="all" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="all">All</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all">
 
 - 在频道内调用 [`setVideoEncoderConfigurationEx`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengineex_setvideoencoderconfigurationex) 将视频的分辨率调高时，偶现失效。
 - 使用媒体播放器播放视频，先调用 [`play`](/api-ref/rtc/electron/API/toc_mediaplayer_control#api_imediaplayer_play) 再调用 [`pause`](/api-ref/rtc/electron/API/toc_mediaplayer_control#api_imediaplayer_pause) 暂停播放后，调用 [`seek`](/api-ref/rtc/electron/API/toc_mediaplayer_control#api_imediaplayer_seek) 指定一个新的播放位置，偶现视频画面依然是暂停播放时的画面；调用 [`resume`](/api-ref/rtc/electron/API/toc_mediaplayer_control#api_imediaplayer_resume) 恢复播放后，偶现视频画面出现快进。
@@ -10992,7 +11013,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 在屏幕共享场景下，远端用户看到的画面偶现黑屏、卡顿、崩溃。
 - 在屏幕共享场景下，偶现 [`onNetworkQuality`](/api-ref/rtc/electron/API/toc_network#callback_irtcengineeventhandler_onnetworkquality) 回调报告频道内指定用户的上下行网络状态不准确。
 
-#### Windows
+</TabsContent>
+
+<TabsContent value="windows">
 
 - 调用 [`stopPreview`](/api-ref/rtc/electron/API/toc_video_basic#api_irtcengine_stoppreview2) 关闭本地视频预览时，导致已设置的虚拟背景一定概率失效。
 - 开启虚拟背景并设置为背景虚化效果时，多次退出频道再加入频道时偶现崩溃。
@@ -11004,12 +11027,17 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 在屏幕共享场景下，在共享窗口中看到的鼠标位置与实际位置有偏差。
 - 从普通场景切换屏幕共享场景后，由于两种场景下设置的分辨率不同导致偶现崩溃。
 
-#### macOS
+</TabsContent>
+
+<TabsContent value="macos">
 
 - 在屏幕共享场景下，将共享的窗口最小化或关闭共享窗口时，共享窗口自动切换为该 App 的其他窗口。
 - 在屏幕共享场景下，当共享的窗口为半屏模式时，对窗口的描边不正确。
 - 启动并停止音频采集设备测试后，启动音频播放设备测试时必现无声。
 - [`onVideoPublishStateChanged`](/api-ref/rtc/electron/API/toc_video_basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调报告的视频源类型不准确。
+
+</TabsContent>
+</Tabs>
 
 ### API 变更
 
@@ -14992,7 +15020,13 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 该版本对屏幕共享功能做了一系列优化，除以下列出的功能性改进之外，还有一部分可用性提升，详见[问题修复](#问题修复)。
 
-#### Windows
+<Tabs defaultValue="windows" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="windows">
 
 - 在 [`ScreenCaptureSourceInfo`](/api-ref/rtc/flutter/API/class_screencapturesourceinfo) 中增加了 `minimizeWindow` 成员，用于表示目标窗口是否已最小化。
 - 在 [`ScreenCaptureParameters`](/api-ref/rtc/flutter/API/class_screencaptureparameters) 中增加了 `enableHighLight`、`highLightColor` 和 `highLightWidth` 成员，支持你在屏幕共享时对目标窗口或屏幕进行描边。
@@ -15000,10 +15034,15 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 兼容更多设备和操作系统，包括但不限于：Windows 8 系统，无独立显卡的设备，双显卡设备。
 - 支持超高清视频 (分辨率为 4K，帧率为 60 fps)，你可以在满足要求的设备上使用该功能。声网推荐的最低设备规格为：intel(R) Core(TM) i7-9750H CPU @ 2.60GHZ。
 
-#### macOS
+</TabsContent>
+
+<TabsContent value="macos">
 
 - 兼容更多设备和场景，包括但不限于：双显卡设备，使用外接屏幕进行屏幕共享。
 - 支持超高清视频 (分辨率为 4K，帧率为 60 fps)，你可以在满足要求的设备上使用该功能。声网推荐的最低设备规格为：MacBook Pro (16 英寸，M1，2021 年)。
+
+</TabsContent>
+</Tabs>
 
 #### 蓝牙权限 (Android)
 
@@ -15046,7 +15085,16 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 该版本修复了以下问题：
 
-#### 所有平台
+<Tabs defaultValue="all" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="all">所有平台</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="windows">Windows</TabsTrigger>
+  <TabsTrigger value="macos">macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all">
 
 - 在频道内调用 [`setVideoEncoderConfigurationEx`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengineex_setvideoencoderconfigurationex) 将视频的分辨率调高时，偶现失效。
 - 使用媒体播放器播放视频，先调用 [`play`](/api-ref/rtc/flutter/API/toc_mediaplayer_control#api_imediaplayer_play) 再调用 [`pause`](/api-ref/rtc/flutter/API/toc_mediaplayer_control#api_imediaplayer_pause) 暂停播放后，调用 [`seek`](/api-ref/rtc/flutter/API/toc_mediaplayer_control#api_imediaplayer_seek) 指定一个新的播放位置，偶现视频画面依然是暂停播放时的画面；调用 [`resume`](/api-ref/rtc/flutter/API/toc_mediaplayer_control#api_imediaplayer_resume) 恢复播放后，偶现视频画面出现快进。
@@ -15054,17 +15102,23 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 调用 [`getExtensionProperty`](/api-ref/rtc/flutter/API/toc_extension#api_irtcengine_getextensionproperty2) 失败，返回空字符串。
 - 当以观众身份进入一个已播放较长时间的直播间，首帧出图时间缩短。
 
-#### Android
+</TabsContent>
+
+<TabsContent value="android">
 
 - 在多人会议场景下，本地用户接听并挂断电话后，偶现本地用户和远端用户无法听见对方的声音。
 - 调用 [`setCloudProxy`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_setcloudproxy) 设置云代理后，调用 [`joinChannelEx`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengineex_joinchannelex) 加入多频道失败。
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - 调用 [`startAudioMixing`](/api-ref/rtc/flutter/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 播放 `ipod-library://item` 路径的音乐文件失败。
 - 同时通过 [`onRecordAudioFrame`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 和 [`onCaptureVideoFrame`](/api-ref/rtc/flutter/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调分别获取的音频和视频数据时间戳不同。
 
-#### Windows
+</TabsContent>
+
+<TabsContent value="windows">
 
 - 调用 [`stopPreview`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_stoppreview2) 关闭本地视频预览时，导致已设置的虚拟背景一定概率失效。
 - 开启虚拟背景并设置为背景虚化效果时，多次退出频道再加入频道时偶现崩溃。
@@ -15081,7 +15135,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 在屏幕共享场景下，在共享窗口中看到的鼠标位置与实际位置有偏差。
 - 从普通场景切换屏幕共享场景后，由于两种场景下设置的分辨率不同导致偶现崩溃。
 
-#### macOS
+</TabsContent>
+
+<TabsContent value="macos">
 
 - 通过摄像头采集视频时，如果在 [`CameraCapturerConfiguration`](/api-ref/rtc/flutter/API/class_cameracapturerconfiguration) 中设置的视频宽高比例和在 [`setVideoEncoderConfiguration`](/api-ref/rtc/flutter/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 中设置的不一致，导致本地视频预览的画面比例未按照后者的设置呈现。
 - 在屏幕共享场景下，将共享的窗口最小化或关闭共享窗口时，共享窗口自动切换为该 App 的其他窗口。
@@ -15091,6 +15147,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - 在屏幕共享场景下，偶现 [`onNetworkQuality`](/api-ref/rtc/flutter/API/toc_network#callback_irtcengineeventhandler_onnetworkquality) 回调报告频道内指定用户的上下行网络状态不准确。
 - 启动并停止音频采集设备测试后，启动音频播放设备测试时必现无声。
 - [`onVideoPublishStateChanged`](/api-ref/rtc/flutter/API/toc_video_basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 回调报告的视频源类型不准确。
+
+</TabsContent>
+</Tabs>
 
 ### API 变更
 
@@ -16820,7 +16879,14 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 
 该版本修复了以下问题：
 
-#### 所有平台
+<Tabs defaultValue="all" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="all">所有平台</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="all">
 
 - 在频道内调用 [`setVideoEncoderConfigurationEx`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengineex_setvideoencoderconfigurationex) 将视频的分辨率调高时，偶现失效。
 - 使用媒体播放器播放视频，先调用 [`play`](/api-ref/rtc/rn/API/toc_mediaplayer_control#api_imediaplayer_play) 再调用 [`pause`](/api-ref/rtc/rn/API/toc_mediaplayer_control#api_imediaplayer_pause) 暂停播放后，调用 [`seek`](/api-ref/rtc/rn/API/toc_mediaplayer_control#api_imediaplayer_seek) 指定一个新的播放位置，偶现视频画面依然是暂停播放时的画面；调用 [`resume`](/api-ref/rtc/rn/API/toc_mediaplayer_control#api_imediaplayer_resume) 恢复播放后，偶现视频画面出现快进。
@@ -16828,15 +16894,22 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/api-ref/rtc/flutter/API/class
 - 调用 [`getExtensionProperty`](/api-ref/rtc/rn/API/toc_extension#api_irtcengine_getextensionproperty2) 失败，返回空字符串。
 - 当以观众身份进入一个已播放较长时间的直播间，首帧出图时间缩短。
 
-#### Android
+</TabsContent>
+
+<TabsContent value="android">
 
 - 在多人会议场景下，本地用户接听并挂断电话后，偶现本地用户和远端用户无法听见对方的声音。
 - 调用 [`setCloudProxy`](/api-ref/rtc/rn/API/toc_network#api_irtcengine_setcloudproxy) 设置云代理后，调用 [`joinChannelEx`](/api-ref/rtc/rn/API/toc_channel#api_irtcengineex_joinchannelex) 加入多频道失败。
 
-#### iOS
+</TabsContent>
+
+<TabsContent value="ios">
 
 - 调用 [`startAudioMixing`](/api-ref/rtc/rn/API/toc_audio_mixing#api_irtcengine_startaudiomixing2) 播放 `ipod-library://item` 路径的音乐文件失败。
 - 同时通过 [`onRecordAudioFrame`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 和 [`onCaptureVideoFrame`](/api-ref/rtc/rn/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调分别获取的音频和视频数据时间戳不同。
+
+</TabsContent>
+</Tabs>
 
 ### API 变更
 

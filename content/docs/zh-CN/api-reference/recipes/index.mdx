@@ -1,25 +1,11 @@
 ---
 title: 示例配方
-description: 浏览覆盖多个 Agora 产品的可运行示例、集成模式与端到端参考实现。
+description: Agora Recipes 是一个持续扩展的目录，集中展示可运行示例、集成模式和端到端参考实现。
+hideToc: true
 ---
 
-Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运行示例、集成模式和更完整的参考实现。
-
-当前公开的第一组集合是 Voice AI。后续如果再加入别的产品 recipes，这个页面会优先按产品分组，再在产品内按实现任务继续展开。
-
-## 产品集合
-
-<CardGrid>
-  <FeatureCard title="Voice AI">
-    当前这组集合主要覆盖对话式智能体与语音工作流。
-    当前内容按快速开始、集成模式和场景示例三类展开，后续其它产品集合也会并列放在这里。
-  </FeatureCard>
-</CardGrid>
-
-## 浏览所有配方
-
 <RecipesGallery
-  allCategoriesLabel="全部类型"
+  allCategoriesLabel="全部配方类型"
   allProductsLabel="全部产品"
   allStacksLabel="全部技术栈"
   categoryFilterLabel="配方类型"
@@ -28,10 +14,11 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
   items={[
     {
       category: "快速开始",
-      description: "默认的服务端起步路径，适合先跑通一个可运行的 Agora 语音智能体。",
+      description: "默认的服务端起步路径，适合先跑通一个可运行的声网语音智能体。",
       href: "/zh-CN/api-reference/recipes/python-quickstart",
       product: "Voice AI",
       stack: "Python",
+      tags: ["入门", "对话式 AI", "语音智能体", "Python"],
       title: "Python 快速开始",
       tone: "blue",
     },
@@ -41,6 +28,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/golang-quickstart",
       product: "Voice AI",
       stack: "Go",
+      tags: ["入门", "对话式 AI", "语音智能体", "Go"],
       title: "Golang 快速开始",
       tone: "green",
     },
@@ -50,6 +38,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/nextjs-quickstart",
       product: "Voice AI",
       stack: "Next.js",
+      tags: ["入门", "对话式 AI", "语音智能体", "Next.js"],
       title: "Next.js 快速开始",
       tone: "purple",
     },
@@ -59,6 +48,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/custom-llm",
       product: "Voice AI",
       stack: "Python",
+      tags: ["进阶", "对话式 AI", "语音智能体", "自定义 LLM"],
       title: "自定义 LLM",
       tone: "sand",
     },
@@ -68,6 +58,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/custom-modalities",
       product: "Voice AI",
       stack: "Audio",
+      tags: ["进阶", "对话式 AI", "语音智能体", "音频模态"],
       title: "自定义模态",
       tone: "blue",
     },
@@ -77,6 +68,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/wellness-coach",
       product: "Voice AI",
       stack: "Python",
+      tags: ["场景", "对话式 AI", "语音智能体", "健康管理"],
       title: "Wellness Coach",
       tone: "pink",
     },
@@ -86,6 +78,7 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
       href: "/zh-CN/api-reference/recipes/thymia-biomarkers",
       product: "Voice AI",
       stack: "Healthcare",
+      tags: ["场景", "对话式 AI", "语音智能体", "Healthcare"],
       title: "Thymia Biomarkers",
       tone: "green",
     },
@@ -94,14 +87,3 @@ Agora Recipes 是一个持续扩展的跨产品目录，用来集中整理可运
   searchPlaceholder="按名称、技术栈或场景搜索 recipes"
   stackFilterLabel="技术栈"
 />
-
-## 相关资源
-
-<CardGrid>
-  <FeatureCard title="Voice AI Recipes 目录仓库">
-    [查看源仓库](https://github.com/AgoraIO-Community/voice-ai-recipes)，了解 recipe 元数据结构和上游目录组织方式。
-  </FeatureCard>
-  <FeatureCard title="在线目录">
-    [打开独立 recipes 目录站](https://v0-voice-ai-recipes.vercel.app)，对照当前文档中的 hub 入口体验。
-  </FeatureCard>
-</CardGrid>

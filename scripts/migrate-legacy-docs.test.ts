@@ -147,6 +147,117 @@ describe('migrate-legacy-docs helpers', () => {
     expect(findLegacyResidue(migrated)).toEqual([]);
   });
 
+  it('rewrites adjacent platform headings to approved MDX tabs', () => {
+    const state = createState('docs/convoai/user-guides/realtime-sub.mdx');
+    const migrated = transformLegacyMdx(
+      `
+开始前，请确保完成以下准备工作：
+
+#### Android
+
+- 已集成 RTC SDK。
+    - 已启用 RTM 服务。
+
+#### iOS
+
+- 已集成 RTC SDK。
+    - 已启用 RTM 服务。
+
+#### Web
+
+- 已集成 RTC Web SDK。
+    - 已启用 RTM 服务。
+`,
+      state,
+    );
+
+    expect(migrated).toContain(
+      '<Tabs defaultValue="android" groupId="language" persist>',
+    );
+    expect(migrated).toContain(
+      '<TabsTrigger value="ios">iOS</TabsTrigger>',
+    );
+    expect(migrated).toContain('<TabsContent value="web">');
+    expect(migrated).toContain('- 已启用 RTM 服务。');
+    expect(migrated).not.toContain('#### Android');
+    expect(migrated).not.toContain('    - 已启用 RTM 服务。');
+    expect(state.issues).toContain('normalized-platform-heading-tabs');
+    expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('does not rewrite a single platform heading as tabs', () => {
+    const state = createState('docs/convoai/user-guides/realtime-sub.mdx');
+    const migrated = transformLegacyMdx(
+      `
+#### Android
+
+- 仅 Android 说明。
+`,
+      state,
+    );
+
+    expect(migrated).toContain('#### Android');
+    expect(migrated).not.toContain('<Tabs');
+    expect(state.issues).not.toContain('normalized-platform-heading-tabs');
+  });
+
+  it('does not absorb later non-platform headings into the last platform tab', () => {
+    const state = createState('docs/convoai/best-practice/audio-settings.mdx');
+    const migrated = transformLegacyMdx(
+      `
+##### 集成组件
+
+#### Android
+
+Android 集成说明。
+
+#### iOS
+
+iOS 集成说明。
+
+#### Web
+
+Web 集成说明。
+
+##### 初始化组件
+
+初始化说明。
+`,
+      state,
+    );
+
+    expect(migrated).toContain('<Tabs defaultValue="android"');
+    expect(migrated).toContain('</Tabs>\n\n##### 初始化组件');
+    expect(migrated).not.toContain(
+      '<TabsContent value="web">\n\nWeb 集成说明。\n\n##### 初始化组件',
+    );
+  });
+
+  it('uses a platform tab group for All and desktop platform headings', () => {
+    const state = createState('docs/rtc/overview/release-notes.electron.mdx');
+    const migrated = transformLegacyMdx(
+      `
+#### All
+
+- 通用说明。
+
+#### Windows
+
+- Windows 说明。
+
+#### macOS
+
+- macOS 说明。
+`,
+      state,
+    );
+
+    expect(migrated).toContain(
+      '<Tabs defaultValue="all" groupId="platform" persist>',
+    );
+    expect(migrated).toContain('<TabsTrigger value="macos">macOS</TabsTrigger>');
+  });
+
   it('outdents legacy Tabs that were nested under list items', () => {
     const state = createState('docs/rtm2/get-started/quick-start.ios.mdx');
     const migrated = transformLegacyMdx(
