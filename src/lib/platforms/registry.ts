@@ -101,6 +101,13 @@ export const platformRegistry = {
     },
     order: 120,
   },
+  go: {
+    label: {
+      en: 'Go',
+      'zh-CN': 'Go',
+    },
+    order: 122,
+  },
   'linux-cpp': {
     label: {
       en: 'Linux C++',
