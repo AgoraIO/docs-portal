@@ -5,6 +5,14 @@ title: 实时音视频加速概览
 
 媒体流加速不包含音视频采集和视频编解码模块。主要适用于 IoT 场景，如实时监控、电话手表等仅需媒体流传输互通的单主播、一对一场景。
 
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/rtsa/get-started/run-example" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtsa/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
 ## 功能描述
 
 RTSA SDK 支持以下功能：
@@ -47,66 +55,3 @@ RTSA SDK 具有以下性能：
 | 连通率 | 连通率 > 99% |
 | 数据传输速率 | 单个频道单个用户的码率 &le; 50 Mbps |
 | 网络适应性 | 50% 丢包下可无感知恢复 |
-
-## 平台兼容
-
-媒体流加速 C 语言支持 Linux、Android 和 HarmonyOS 平台。
-
-RTSA SDK 具体的兼容性要求见下表：
-
-| 平台 | 支持版本 |
-| --- | --- |
-| Linux | <Slot name="product-overview-html-3-1-1" /> |
-| HarmonyOS | ARM 架构：arm-liteos-eabi 内核 liteOS 2.0 |
-| Android | <Slot name="product-overview-html-3-3-1" /> |
-
-<Slot for="product-overview-html-3-1-1">
-
-- X86 / X86_64架构：gcc 内核 2.6.35 及以上
-    - ARM 架构：
-      - arm-linux-gnueabi 4.4.x 及以上
-      - arm-linux-gnueabihf 4.8.x 及以上
-      - aarch64-linux-gnu 4.8.x 及以上
-      - arm-linux-musleabihf 5.2.x 及以上
-      - arm-linux-musleabi 5.5.x 及以上
-      - aarch64-linux-musl 5.5.x 及以上
-      - arm-linux-uclibceabi 4.4.x 及以上
-      - arm-linux-uclibceabihf 4.8.x 及以上
-    - MIPS 架构：mips-linux-uclibceabihf 4.7.x 及以上
-
-</Slot>
-
-<Slot for="product-overview-html-3-3-1">
-
-Android 版本 ≥ 4.1
-
-    Android SDK 支持如下 ABI：
-
-    - armeabi-v7a
-    - arm64-v8a
-    - x86
-    - x86-64
-
-</Slot>
-
-媒体流加速 Java 语言支持 Android 和 HarmonyOS 平台。
-
-RTSA SDK 具体的兼容性要求见下表：
-
-| 平台 | 支持版本 |
-| --- | --- |
-| HarmonyOS | ARM 架构：arm-liteos-eabi 内核 liteOS 2.0 |
-| Android | <Slot name="product-overview-html-4-2-1" /> |
-
-<Slot for="product-overview-html-4-2-1">
-
-Android 版本 ≥ 4.1
-
-    Android SDK 支持如下 ABI：
-
-    - armeabi-v7a
-    - arm64-v8a
-    - x86
-    - x86-64
-
-</Slot>
