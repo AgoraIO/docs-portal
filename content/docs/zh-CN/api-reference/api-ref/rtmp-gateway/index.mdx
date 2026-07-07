@@ -1,0 +1,44 @@
+---
+title: RTMP 网关概览
+description: 使用 RTMP 网关 RESTful API 管理推流码、在线流、流配置模板和消息通知服务器 IP。
+---
+
+RTMP 网关 RESTful API 用于将 RTMP 和 SRT 推流接入声网频道，并通过服务端接口管理推流码、在线流、流配置模板和消息通知服务器 IP。
+
+## API 基础
+
+大多数请求发送至 `https://api.sd-rtn.com`。
+
+- **认证**：RESTful API 请求需要使用 HTTP 基本认证或 HMAC 认证。
+- **请求**：请求 URL 和请求包体大小写敏感。
+- **响应**：响应内容为 JSON 格式。
+- **Base URL**：`https://api.sd-rtn.com/{region}/v1/projects/{appId}`
+
+:::info
+请在业务服务器上调用 RTMP 网关 RESTful API，不要在客户端暴露认证信息。
+:::
+
+## REST API
+
+**推流码 API**
+
+- [创建推流码](create-streaming-key)：创建用于将媒体流推送到指定频道和主播 UID 的推流码。
+- [查询推流码信息](query-streaming-key)：查询指定推流码绑定的频道、UID 和有效期等信息。
+- [更新推流码信息](update-streaming-key)：更新指定推流码关联的流配置模板。
+- [销毁推流码](delete-streaming-key)：销毁不再使用的推流码。
+- [列出指定 App ID 下所有推流码](list-streaming-keys)：分页列出指定 App ID 下的推流码。
+
+**在推流 API**
+
+- [查询当前在推流列表](query-streaming-list)：查询当前正在推送到 RTMP 网关的流列表。
+- [使用 SID 查询在推流信息](query-streaming-information)：使用推流会话 ID 查询当前在推流的信息。
+- [使用 SID 强制断开推流](force-disconnection)：使用推流会话 ID 强制断开正在进行的推流。
+- [对在推流进行 mute/unmute 操作](mute-streaming)：对当前在推流执行 mute 或 unmute 操作。
+
+**流配置模板和消息通知 API**
+
+- [创建或重置流配置模板](create-reset-template)：创建或重置指定的流配置模板。
+- [更新流配置模板](update-template)：更新已创建的流配置模板。
+- [删除流配置模板](delete-template)：删除指定的流配置模板。
+- [设置全局流配置模板](set-global-template)：为指定 App ID 设置全局流配置模板。
+- [查询消息通知服务器 IP](query-ip-address)：查询声网消息通知服务器的 IP 地址。

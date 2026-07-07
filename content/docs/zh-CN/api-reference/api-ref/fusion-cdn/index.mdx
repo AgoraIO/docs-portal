@@ -1,0 +1,43 @@
+---
+title: 融合 CDN 直播 RESTful API 概览
+description: 使用 RESTful API 管理融合 CDN 直播的域名、发布点、直播流和内容处理配置。
+---
+
+声网融合 CDN 直播 RESTful API 可用于从业务服务器配置和管理直播能力，包括域名及发布点管理、直播流管理、录制、截图、转码、水印、延播、回源拉流和消息通知服务。
+
+## API 基础
+
+- **鉴权**：所有请求都需要使用 [HTTP HMAC 鉴权](authentication)。
+- **请求**：请求包体使用 JSON，具体格式见各 API 的请求示例。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
+
+:::info
+融合 CDN 直播 RESTful API 仅支持 HTTPS。所有请求 URL 和请求包体内容均区分大小写。
+:::
+
+## 主要流程
+
+1. 添加推流域名和播流域名。
+2. 按需添加发布点。声网提供默认发布点 `live`，可以直接使用。
+3. 为发布点配置录制、截图、转码、水印、转推、回源拉流等能力，或查询和管理直播流。
+
+## REST API
+
+- [获取域名列表](domain-list)：查询项目下所有直播域名。
+- [增加域名](domain-create)：添加推流域名或播流域名。
+- [获取域名属性](domain-get)：查询指定直播域名的属性。
+- [删除域名](domain-delete)：删除指定直播域名。
+- [获取发布点列表](entry-point-list)：查询项目下所有发布点。
+- [增加发布点](entry-point-create)：创建用于分组直播流的发布点。
+- [删除发布点](entry-point-delete)：删除指定发布点。
+- [封禁直播流](ban-stream)：封禁指定发布点下的直播流。
+- [取消封禁直播流](unban-stream)：取消指定直播流的封禁状态。
+- [获取封禁的流列表](banned-stream-list)：查询指定发布点下被封禁的直播流。
+- [查询在线流列表](online-stream-list)：查询指定发布点下的在线流。
+- [获取在线流信息](online-stream-get)：查询指定在线流的信息。
+- [获取推流历史](publish-history)：查询指定时间范围内的推流历史。
+- [获取推流质量数据](publish-quality)：查询指定流的推流质量数据。
+- [获取播流统计数据](play-statistics)：查询指定流的播流统计数据。
+- [查询消息通知服务器的 IP 地址](ncs-ip-list)：获取消息通知服务器 IP 地址，用于配置防火墙白名单。
+
