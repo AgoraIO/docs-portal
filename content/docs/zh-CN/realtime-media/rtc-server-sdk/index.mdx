@@ -1,39 +1,41 @@
 ---
-title: "RTC Server SDK"
+title: "RTC Server SDK 概览"
+description: "在服务端应用与集成声网语音、视频 SDK 的客户端之间收发实时音视频流。"
 ---
 
-声网 RTC 服务端 SDK 部署在服务端，可与集成了声网 RTC 客户端 SDK 的 App 通过 SD-RTN™ 进行实时通信，实现收发音视频流的功能。
+声网 RTC Server SDK 部署在你的服务端环境中，可通过声网实时网络与客户端 SDK 互通，实现服务端发送、接收和处理音视频流。它适合云端媒体处理、呼叫中心、自动化测试、AI 互动课堂等需要服务端参与实时频道的场景。
 
-## 立即体验
+RTC Server SDK 支持 YUV、PCM、编码音视频等多种媒体格式，并支持按需配置发送、接收、多频道处理、合图、媒体加密和区域访问限制等能力，帮助你在服务端保持更灵活的媒体控制。
 
-    - 实时音视频核心功能
+## 开始构建
 
-## 快速入门
+<Cards>
+  <Card title="SDK 快速开始" href="get-started/send-receive" description="集成 RTC Server SDK 并与 RTC 频道交换媒体流。" />
+  <Card title="运行示例项目" href="get-started/run-example" description="编译并运行示例项目，验证服务端收发媒体流。" />
+  <Card title="开通服务" href="get-started/enable-service" description="在控制台中开通并配置 RTC Server SDK 所需服务。" />
+  <Card title="API 参考" href="/zh-CN/api-reference/rtc-server-sdk/go-api/overview.go" description="查看 RTC Server SDK API 概览和接口定义。" />
+  <Card title="下载与资源" href="resources" description="获取 SDK 包、示例和相关资源。" />
+</Cards>
 
-    - 实现发送和接收媒体流
+## 产品特性
 
-## 热门文档
-
-    - 最新版发布
-
-    - 合图
-
-    - 应对防火墙限制
-
-    - 使用 String 型用户 ID
-
-<PlatformStructured platform="python">
-
-声网 RTC 服务端 SDK 部署在服务端，可与集成了声网 RTC 客户端 SDK 的 App 通过 SD-RTN™ 进行实时通信，实现收发音视频流的功能。
-
-## 快速入门
-
-    - 实现发送和接收媒体流
-
-## 推荐阅读
-
-    - 最新版发布
-
-    - 区域访问限制
-
-</PlatformStructured>
+<CardGrid>
+  <FeatureCard title="支持多类服务端场景">
+    适用于呼叫中心、在线教育、网络测试和 AI 互动等服务端需要加入 RTC 频道的场景。
+  </FeatureCard>
+  <FeatureCard title="多格式收发媒体流">
+    支持收发 YUV、PCM、编码音视频等多种媒体格式，便于在服务端接入自定义媒体处理链路。
+  </FeatureCard>
+  <FeatureCard title="灵活配置收发流程">
+    可同时发送和接收媒体流，也可以只发送或只接收音频、视频流，满足不同服务端工作流。
+  </FeatureCard>
+  <FeatureCard title="多频道能力">
+    支持同时向多个频道发送媒体流，或从多个频道接收媒体流。
+  </FeatureCard>
+  <FeatureCard title="合图与媒体加密">
+    支持合图、音频混音和媒体加密，帮助你在服务端完成更复杂的媒体处理。
+  </FeatureCard>
+  <FeatureCard title="区域访问限制">
+    支持限制媒体连接区域，满足特定地区访问、合规或部署要求。
+  </FeatureCard>
+</CardGrid>

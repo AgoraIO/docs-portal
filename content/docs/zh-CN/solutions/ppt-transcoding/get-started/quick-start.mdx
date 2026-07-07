@@ -1,0 +1,161 @@
+---
+title: "实现 PPT 转码"
+---
+本文介绍如何调用服务端 API 发起 PPT 转码。
+
+下图展示了使用 PPT 转码服务的基本流程：
+
+![](/img/conversion-ppt/quick-start.svg)
+
+## 前提条件
+
+开始前，确保你已参考[开通服务](/zh-CN/solutions/ppt-transcoding/get-started/enable-service)完成以下步骤：
+
+- 开通 PPT 转码服务
+- 获取 SDK Token
+- 配置第三方云存储
+
+## 上传文件
+
+发起 PPT 转码前，你需要将待转换的文档上传至第三方云存储空间或你自己的 Nginx 服务器，生成一个声网 PPT 转码服务可访问的 URL 地址，确保可通过该 URL 地址访问待转换的文档。
+
+## 实现 PPT 转码
+
+PPT 转码服务由声网服务端提供，需要由你的业务服务端根据 App 客户端的需求，调用 RESTful API 向声网服务端发起 PPT 转码请求。
+
+:::info[信息]
+声网推荐你在阅读本节的同时在新标签页打开 [PPT 转码服务端 API 参考](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)以获得最佳的快速开始体验：
+
+- 详细的 API 参数说明、调用示例和调用注意事项
+- 使用 API 文档右侧的“Try it”功能快捷调用 RESTful API
+- 一键生成不同语言的 RESTful API 调用代码
+:::
+
+### 发起 PPT 转码
+
+发起文档转换任务需要传入 SDK Token、待转换文件的 URL 地址、转换任务类型等参数，详见[发起 PPT 转码](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks)。以 JavaScript 为例：
+
+```javascript
+const url = "https://api.netless.link/v5/projector/tasks";
+const options = {
+  method: "POST",
+  headers: {
+    // 填入处理请求的数据中心，与控制台中一致
+    "region": "cn-hz",
+    // 填入项目的 SDK Token
+    "token": "<YourSDKToken>",
+    "Content-Type": "application/json",
+    "Accept": "application/json, application/xml",
+  },
+  // 以动态转换为例
+  body: `{
+    "resource": "https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx",
+    "type": "dynamic",
+    "preview": true
+  }`,
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+成功调用该 API 后，响应包体中会返回本次转码任务的 UUID (`uuid`)，即转码任务的唯一标识符，用于后续渲染 PPT 页面。
+
+### 生成 Task Token
+
+使用上一步中获得的转码任务 UUID 生成 Task Token，详见[生成 Task Token](/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-tokens-tasks-uuid)。以 JavaScript 为例：
+
+```javascript
+// 替换 url 中的 uuid 为步骤 1 中获取的转码任务 UUID
+const url = "https://api.netless.link/v5/tokens/tasks/uuid";
+const options = {
+  method: "POST",
+  headers: {
+    // 填入处理请求的数据中心，与控制台中一致
+    "region": "cn-hz",
+    // 填入项目的 SDK Token
+    "token": "",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
+  body: '{"role":"admin","lifespan":36000,"ak":"T9Cxxxxxxxxxxxxxkk"}',
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+成功调用该 API 后，响应包体中会返回本次转码任务对应的 Task Token，用于后续调用其他转码服务端 API。
+
+### 查询转码任务进度
+
+查询七天内创建的转码任务的进度需要传入[发起 PPT 转码](#发起-ppt-转码)中返回的任务 UUID，详见[查询转码任务进度](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks-uuid)。以 JavaScript 为例：
+
+:::info[信息]
+声网建议你设计轮询机制定时调用查询转码任务进度 API，以实时获取转换任务的状态。
+:::
+
+```javascript
+// 替换 url 中的 uuid 为步骤 1 中获取的转码任务 UUID
+const url = "https://api.netless.link/v5/projector/tasks/uuid";
+const options = {
+  method: "GET",
+  headers: {
+    // 填入步骤 2 中生成的 Task Token
+    token: "",
+    // 填入处理请求的数据中心，与控制台中一致
+    region: "cn-hz",
+    Accept: "application/json",
+  },
+};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+成功调用该 API 后，响应包体中会返回转换结果文件地址前缀路径 (`prefixUrl`)，用于后续渲染 PPT 页面。
+
+### 按需调用其他 API
+
+声网还提供了以下 PPT 转码服务端 API，你可以根据业务需要选择调用：
+
+- [查询待转码任务](/doc/conversion-ppt/restful/restful-ppt/operations/get-v5-projector-tasks)：列出未完成转换的所有任务。
+- [取消指定的转码任务](/doc/conversion-ppt/restful/restful-ppt/operations/delete-v5-projector-tasks-uuid)：取消指定任务 UUID 对应的转码任务。
+- [设置转码任务优先级](/doc/conversion-ppt/restful/restful-ppt/operations/put-v5-projector-tasks-uuid-priority)：将待进行的指定转码任务移动至任务队列最前或最后面。
+
+## 后续步骤
+
+完成 PPT 转码并获取转码任务的 UUID（`uuid`）和转换结果文件地址前缀路径（`prefixUrl`）后，你可以继续阅读以下文档：
+
+<Cards>
+  <Card
+    title="渲染转码后文档"
+    href="./render-ppt"
+    description="了解如何使用 @netless/slide 渲染转码后文档。"
+  />
+</Cards>
+
+## 参考信息
+
+<Cards>
+  <Card
+    title="API 参考"
+    href="/doc/conversion-ppt/restful/restful-ppt/operations/post-v5-projector-tasks"
+    description="查看 PPT 转码服务 RESTful API 参考文档。"
+  />
+</Cards>

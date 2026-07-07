@@ -60,6 +60,60 @@ const PLATFORM_LABELS = new Map([
   ['wechat', '微信小程序'],
   ['windows', 'Windows'],
 ]);
+const PLATFORM_HEADING_TAB_VALUES = new Map([
+  ['all', 'all'],
+  ['android', 'android'],
+  ['c', 'c'],
+  ['c#', 'csharp'],
+  ['c++', 'cpp'],
+  ['electron', 'electron'],
+  ['flutter', 'flutter'],
+  ['go', 'go'],
+  ['golang', 'go'],
+  ['harmonyos', 'harmonyos'],
+  ['ios', 'ios'],
+  ['java', 'java'],
+  ['javascript', 'javascript'],
+  ['kotlin', 'kotlin'],
+  ['macos', 'macos'],
+  ['node.js', 'nodejs'],
+  ['objective-c', 'objc'],
+  ['php', 'php'],
+  ['python', 'python'],
+  ['react native', 'react-native'],
+  ['rest api', 'rest-api'],
+  ['restful', 'restful'],
+  ['restful api', 'restful-api'],
+  ['swift', 'swift'],
+  ['typescript', 'typescript'],
+  ['unity', 'unity'],
+  ['unreal', 'unreal'],
+  ['web', 'web'],
+  ['windows', 'windows'],
+  ['所有平台', 'all'],
+  ['微信小程序', 'wechat'],
+]);
+const LANGUAGE_GROUP_TAB_VALUES = new Set([
+  'android',
+  'c',
+  'cpp',
+  'csharp',
+  'go',
+  'ios',
+  'java',
+  'javascript',
+  'kotlin',
+  'nodejs',
+  'objc',
+  'php',
+  'python',
+  'rest-api',
+  'restful',
+  'restful-api',
+  'swift',
+  'typescript',
+  'web',
+]);
 const ALLOWED_MDX_TAGS = new Set([
   'Accordion',
   'Accordions',
@@ -437,6 +491,7 @@ export function transformLegacyMdx(body, state) {
     value = transformLegacyLandingComponents(value, state);
     value = transformTabs(value);
     value = transformRemainingTabItems(value, state);
+    value = transformPlatformHeadingTabs(value, state);
     value = transformAdjacentCodeFenceTabs(value, state);
     value = transformHtmlTables(value, state);
     value = transformMarkdownTableSlots(value, state);
@@ -1834,6 +1889,212 @@ function transformRemainingTabItems(value, state) {
       return `\n#### ${title}\n\n${trimCommonIndent(body).trim()}\n`;
     },
   );
+}
+
+export function transformPlatformHeadingTabs(value, state = { issues: [] }) {
+  const lines = value.split('\n');
+  const inCodeFence = markCodeFenceLines(lines);
+  const output = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const run = collectPlatformHeadingRun(lines, inCodeFence, index);
+    if (!run) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+
+    output.push(renderPlatformHeadingTabs(run.items));
+    state.issues.push('normalized-platform-heading-tabs');
+    index = run.endIndex;
+  }
+
+  return output.join('\n');
+}
+
+function markCodeFenceLines(lines) {
+  const inCodeFence = [];
+  let fenced = false;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    inCodeFence[index] = fenced;
+
+    if (/^[ \t]*```/.test(lines[index])) {
+      fenced = !fenced;
+    }
+  }
+
+  return inCodeFence;
+}
+
+function collectPlatformHeadingRun(lines, inCodeFence, startIndex) {
+  const first = parsePlatformHeadingLine(lines[startIndex], inCodeFence[startIndex]);
+  if (!first) {
+    return null;
+  }
+
+  const items = [];
+  const values = new Set();
+  let currentIndex = startIndex;
+
+  while (currentIndex < lines.length) {
+    const heading = parsePlatformHeadingLine(
+      lines[currentIndex],
+      inCodeFence[currentIndex],
+    );
+    if (!heading || heading.depth !== first.depth || values.has(heading.value)) {
+      break;
+    }
+
+    const nextHeadingIndex = findNextMarkdownHeading({
+      inCodeFence,
+      lines,
+      startIndex: currentIndex + 1,
+    });
+    items.push({
+      ...heading,
+      content: lines.slice(currentIndex + 1, nextHeadingIndex).join('\n'),
+    });
+    values.add(heading.value);
+
+    const nextHeading = parsePlatformHeadingLine(
+      lines[nextHeadingIndex],
+      inCodeFence[nextHeadingIndex],
+    );
+    if (!nextHeading || nextHeading.depth !== first.depth) {
+      return items.length >= 2
+        ? {
+            endIndex: nextHeadingIndex,
+            items,
+          }
+        : null;
+    }
+
+    currentIndex = nextHeadingIndex;
+  }
+
+  return items.length >= 2
+    ? {
+        endIndex: currentIndex,
+        items,
+      }
+    : null;
+}
+
+function parsePlatformHeadingLine(line, inCodeFence) {
+  if (inCodeFence || typeof line !== 'string') {
+    return null;
+  }
+
+  const match = line.match(/^(#{4,6})\s+(.+?)\s*$/);
+  if (!match) {
+    return null;
+  }
+
+  const label = collapseInline(match[2]);
+  const value = PLATFORM_HEADING_TAB_VALUES.get(label.toLowerCase());
+  if (!value) {
+    return null;
+  }
+
+  return {
+    depth: match[1].length,
+    label,
+    value,
+  };
+}
+
+function findNextMarkdownHeading({ inCodeFence, lines, startIndex }) {
+  for (let index = startIndex; index < lines.length; index += 1) {
+    if (inCodeFence[index]) {
+      continue;
+    }
+
+    if (/^#{1,6}\s+\S/.test(lines[index])) {
+      return index;
+    }
+  }
+
+  return lines.length;
+}
+
+function renderPlatformHeadingTabs(items) {
+  const groupId = items.every((item) =>
+    LANGUAGE_GROUP_TAB_VALUES.has(item.value),
+  )
+    ? 'language'
+    : 'platform';
+  const triggers = items
+    .map(
+      (item) =>
+        `  <TabsTrigger value="${item.value}">${item.label}</TabsTrigger>`,
+    )
+    .join('\n');
+  const contents = items
+    .map((item) => {
+      const content = normalizePlatformHeadingTabContent(item.content);
+      return `<TabsContent value="${item.value}">\n\n${content}\n\n</TabsContent>`;
+    })
+    .join('\n\n');
+
+  return [
+    `<Tabs defaultValue="${items[0].value}" groupId="${groupId}" persist>`,
+    '<TabsList>',
+    triggers,
+    '</TabsList>',
+    '',
+    contents,
+    '</Tabs>',
+  ].join('\n') + '\n';
+}
+
+function normalizePlatformHeadingTabContent(value) {
+  const content = trimCommonIndent(value).trim();
+  if (!hasLegacyTabItemIndent(content)) {
+    return content;
+  }
+
+  return outdentLegacyTabItemContent(content);
+}
+
+function hasLegacyTabItemIndent(content) {
+  const lines = content.split('\n');
+  const firstNonBlank = lines.find((line) => line.trim());
+  if (!firstNonBlank || /^[ \t]/.test(firstNonBlank)) {
+    return false;
+  }
+
+  return lines.some((line) => /^ {4}\S/.test(line));
+}
+
+function outdentLegacyTabItemContent(content) {
+  const output = [];
+  let fenced = false;
+  let outdentFence = false;
+
+  for (const line of content.split('\n')) {
+    const fence = line.match(/^([ \t]*)```/);
+
+    if (!fenced) {
+      if (fence) {
+        outdentFence = fence[1].length >= 4;
+        fenced = true;
+      }
+
+      output.push(line.startsWith('    ') ? line.slice(4) : line);
+      continue;
+    }
+
+    output.push(outdentFence && line.startsWith('    ') ? line.slice(4) : line);
+
+    if (fence) {
+      fenced = false;
+      outdentFence = false;
+    }
+  }
+
+  return output.join('\n').trim();
 }
 
 function renderCodeFenceTabs(items, groupId) {

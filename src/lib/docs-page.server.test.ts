@@ -1119,6 +1119,19 @@ Why teams use it.`,
   } as unknown as PageWithSource;
 }
 
+function mockPagesByRequestedSlugs() {
+  mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+    const slugPath = slugs.join('/');
+
+    return {
+      ...createPage(),
+      path: `${locale}/${slugPath}.md`,
+      slugs: [locale, ...slugs],
+      url: `/${locale}/${slugPath}`,
+    };
+  });
+}
+
 function createOpenApiPage(): PageWithSource {
   return {
     data: {
@@ -1225,6 +1238,18 @@ function createPlatformPanelPage(platform: 'android' | 'ios'): PageWithSource {
 
 describe('loadDocsTabIndex', () => {
   beforeEach(() => {
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'en' || slugs.join('/') !== 'ai') {
+        return undefined;
+      }
+
+      return {
+        ...createPage(),
+        path: 'en/ai/index.md',
+        slugs: ['en', 'ai', 'index'],
+        url: '/en/ai',
+      };
+    });
     mockedGetPages.mockReturnValue([]);
     mockedGetPageTree.mockReturnValue(pageTree);
   });
@@ -1245,6 +1270,52 @@ describe('loadDocsTabIndex', () => {
         url: '/en/introduction/about-agora',
       },
     );
+  });
+
+  it('redirects tab roots without index content to the first descendant page', async () => {
+    const nestedProductTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-media-folder',
+              children: [
+                {
+                  $id: 'rtc-folder',
+                  children: [],
+                  index: {
+                    $id: 'rtc-index',
+                    name: 'RTC',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc',
+                  },
+                  name: 'RTC',
+                  type: 'folder',
+                },
+              ],
+              name: 'Realtime Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(undefined);
+    mockedGetPageTree.mockReturnValue(nestedProductTree);
+
+    await expect(
+      loadDocsTabIndex('en', 'realtime-media'),
+    ).resolves.toMatchObject({
+      locale: 'en',
+      tab: 'realtime-media',
+      url: '/en/realtime-media/rtc',
+    });
   });
 });
 
@@ -2529,7 +2600,7 @@ Web body
 
       if (
         normalizedSlugs ===
-        'en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools'
+        'realtime-media/rtc/quick-start/android/integrate-with-ai-tools'
       ) {
         return androidPage;
       }
@@ -2583,6 +2654,8 @@ Web body
   });
 
   it('redirects the legacy video quickstart path to the get-started-sdk path', async () => {
+    mockPagesByRequestedSlugs();
+
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
     ).resolves.toEqual({
@@ -3478,7 +3551,43 @@ Web body
     });
   });
 
+  it('redirects moved zh-CN pages to their new product tabs', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', ['usage-analytics']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/usage-analytics',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', [
+        'usage-analytics',
+        'rtc',
+        'monitor',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/usage-analytics/rtc/monitor',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', ['ppt-transcoding']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/solutions/ppt-transcoding',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', [
+        'ppt-transcoding',
+        'get-started',
+        'quick-start',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+    });
+  });
+
   it('redirects moved Reference pages to their new product paths', async () => {
+    mockPagesByRequestedSlugs();
+
     await expect(
       loadDocsPagePayload('en', 'realtime-media', [
         'cloud-recording',
