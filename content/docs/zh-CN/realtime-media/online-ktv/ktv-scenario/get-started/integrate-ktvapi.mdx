@@ -34,11 +34,11 @@ K 歌场景下主唱及独唱的业务流程图如下：
 
 - Android 4.1 或以上版本的设备。
 
-- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)。
+- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/setup-and-access/enable-service)。
 
 :::info[信息]
-- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)获取临时 RTC Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTC Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
-- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/setup-and-access/enable-service)获取临时 RTC Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTC Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 :::
 
 ## 集成 SDK 和 KTV API
@@ -94,7 +94,7 @@ K 歌场景下主唱及独唱的业务流程图如下：
    val mRtcEngine = RtcEngine.create(config) as RtcEngineEx
    ```
 
-2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
+2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
 
 ```kotlin tab="大合唱场景" tabGroup="create"
 // 创建并初始化 KTV API 实例
@@ -158,8 +158,8 @@ val ktvApiProtocol =
 
 :::info[信息]
 - 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [onTokenPrivilegeWillExpire](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/android/API/toc_channel#renewToken) 来更新 Token。
-- 如需更新加入合唱子频道的 Token，直接调用 [KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 下的 `renewToken` 来更新 Token。
-- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [`onTokenPrivilegeWillExpire`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [`renewToken`](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#renewtoken) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，直接调用 [KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [`onTokenPrivilegeWillExpire`](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [`renewToken`](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api#renewtoken) 来更新 Token。
 :::
 
 ### 2. 订阅事件回调
@@ -194,7 +194,7 @@ ktvApiProtocol.renewInnerDataStreamId();
 
 ### 4. 加载及播放歌曲
 
-声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/get-music)。声网也支持你加载自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
+声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。声网也支持你加载自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
 
 ```kotlin
 // 加载音乐
@@ -253,7 +253,7 @@ RtcEngine.destroy()
 
 ![实现流程](/img/online-ktv/integrate-ktvapi.android.svg)
 
-实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)方案。
+实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)方案。
 
 ## 相关信息
 
@@ -261,7 +261,7 @@ RtcEngine.destroy()
 
 ### 获取歌曲进度和音高信息
 
-1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 [ILrcView](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/lyrics-api#lyricsview)，并实现该类中的回调。
+1. 为实时获取歌曲进度、人声音高等信息来渲染歌词及音高线，你的歌词组件类需要继承 [ILrcView](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api#lyricsview)，并实现该类中的回调。
 
    ```kotlin
    class LrcView: ILrcView {
@@ -286,15 +286,15 @@ RtcEngine.destroy()
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api)
-- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/rtc-api)
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/rtc-api)
 
 ### 相关文档
 
-- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)
-- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)
-- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)
-- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)
 
 </PlatformStructured>
 
@@ -329,11 +329,11 @@ K 歌场景下主唱及独唱的业务流程图如下：
 - Xcode 13.0 或以上版本。
 - 已安装 [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)。
 - iOS 13.0 或以上版本的设备。
-- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)。
+- 有效的声网开发者账号、声网项目，并获取项目的 App ID、RTC Token，详情请参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/setup-and-access/enable-service)。
 
 :::info[信息]
-- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/enable-service)获取临时 Token 用于测试，但在正式生产环境中，你需要自己部署一个 Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/basic-features/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
-- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/basic-features/firewall)以正常使用声网服务。
+- 你可以参考[开通服务](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/setup-and-access/enable-service)获取临时 Token 用于测试，但在正式生产环境中，你需要自己部署一个 Token 服务器来生成、更新 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。如果你使用了声网的版权音乐，你还需要使用 RTM Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 :::
 
 ## 集成 SDK 和 KTV API
@@ -374,7 +374,7 @@ K 歌场景下主唱及独唱的业务流程图如下：
    [self.RTCkit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
    ```
 
-2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
+2. 调用 `createKTVApi` 创建并初始化 KTV API 实例。在[大合唱场景](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)下，你需要调用 `createKTVGiantChorusApi` 来创建大合唱场景下的 KTV API 实例。
 
 ```objc tab="大合唱场景" tabGroup="create"
 // 创建 GiantChorusConfiguration 实例
@@ -425,8 +425,8 @@ self.ktvApi = [[KTVApiImpl alloc] initWithConfig:apiConfig];
 
 :::info[信息]
 - 当用于加入主频道的 Token 即将过期前，你会收到 `IRtcEngineEventHandler` 类下的 [`onTokenPrivilegeWillExpire`](/api-ref/rtc/ios/API/toc_channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调，你需要调用 `IRtcEngine` 下的 [`renewToken`](/api-ref/rtc/ios/API/toc_channel#renewToken) 来更新 Token。
-- 如需更新加入合唱子频道的 Token，[KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 下的 `renewToken` 来更新 Token。
-- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api) 来更新 Token。
+- 如需更新加入合唱子频道的 Token，[KTVApi](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api) 下的 `renewToken` 来更新 Token。
+- 如果你使用了声网的版权音乐，当用于鉴权的 RTM Token、用于加入合唱子频道的 Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api#ontokenprivilegewillexpire) 回调。如需更新 RTM Token，你需要调用 `KTVApi` 下的 [renewToken](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api) 来更新 Token。
 :::
 
 ### 2. 订阅事件回调
@@ -457,7 +457,7 @@ self.ktvApi = [[KTVApiImpl alloc] initWithConfig:apiConfig];
 
 ### 4. 加载及播放歌曲
 
-声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/get-music)。声网也支持加载你自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
+声网提供正版版权音乐库，如需加载版权歌单，请参考[获取版权音乐](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/get-music)。声网也支持加载你自己本地的歌曲曲库。你可以调用 `loadMusic`[2/2] 来加载并播放你本地的音乐文件。
 
 ```objc
 KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
@@ -525,7 +525,7 @@ KTV API 模块内部会自动处理播放器同步，因此你也可以通过 `o
 
 ![实现流程](/img/online-ktv/integrate-ktvapi.ios.svg)
 
-实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)方案。
+实现上述基本的业务逻辑后，你可以根据你实际的业务场景，选择[独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)、[合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)、[大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)或[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)方案。
 
 ## 相关信息
 
@@ -561,14 +561,14 @@ KTV API 模块内部会自动处理播放器同步，因此你也可以通过 `o
 
 本文集成步骤中使用如下 API：
 
-- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/ktv-api)
-- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/api/rtc-api)
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/rtc-api)
 
 ### 相关文档
 
-- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/solo)
-- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/chorus)
-- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/gaming)
-- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/implementation/relay)
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)
 
 </PlatformStructured>

@@ -28,9 +28,9 @@ title: "构建智能手表场景"
 
 ### 将已编码的音视频信号发送到客户端
 
-你需要在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/resources)，将音视频帧发送到客户端。
+你需要在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/reference/downloads)，将音视频帧发送到客户端。
 
-设备端调用 RTSA Lite SDK 中的 `agora_rtc_join_channel` 加入 RTC 频道。收到 `on_join_channel_success` 回调后，就可以开始发送音视频数据。下面的示例代码展示了设备端 RTSA Lite SDK 的调用逻辑。设备端与客户端必须使用同一个[声网 App ID](./enable-service/#获取-app-id) 且加入同一个 RTC 频道才能互通。
+设备端调用 RTSA Lite SDK 中的 `agora_rtc_join_channel` 加入 RTC 频道。收到 `on_join_channel_success` 回调后，就可以开始发送音视频数据。下面的示例代码展示了设备端 RTSA Lite SDK 的调用逻辑。设备端与客户端必须使用同一个[声网 App ID](../build/setup-and-access/enable-service#获取-app-id) 且加入同一个 RTC 频道才能互通。
 
 ```c
 // 示例代码基于 1.8.0 版本的 RTSA Lite SDK
@@ -75,7 +75,7 @@ pthread_join(audio_thread_id, NULL);
 
 ### 接收并渲染客户端发送的音视频信号
 
-你需要在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/resources)，接收客户端发送的音视频帧。
+你需要在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa/reference/downloads)，接收客户端发送的音视频帧。
 
 - 监听 `on_audio_data` 回调接收所有你已加入的频道内的音频数据流。
 - 监听 `on_video_data` 回调接收所有你已加入的频道内的视频数据流。
@@ -92,7 +92,7 @@ static void __on_video_data(connection_id_t conn_id, const uint32_t uid, uint16_
 
 <TabsContent value="android">
 
-你需要在 Android 设备端集成 [RTC SDK](/zh-CN/realtime-media/rtc/resources)，直接实现音视频采集、编码、传输、解码、渲染等功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+你需要在 Android 设备端集成 [RTC SDK](/zh-CN/realtime-media/rtc/reference/downloads)，直接实现音视频采集、编码、传输、解码、渲染等功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 
 </TabsContent>
 </Tabs>
@@ -101,6 +101,6 @@ static void __on_video_data(connection_id_t conn_id, const uint32_t uid, uint16_
 
 客户端可以是 Android、iOS 等移动端设备或 macOS、Windows 等桌面端设备。
 
-你需要在客户端集成 [RTC SDK](/zh-CN/realtime-media/rtc/resources)，直接实现音视频采集、编码、传输、解码、渲染等功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+你需要在客户端集成 [RTC SDK](/zh-CN/realtime-media/rtc/reference/downloads)，直接实现音视频采集、编码、传输、解码、渲染等功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 
-在传输指定格式的音视频数据时，RTSA Lite SDK 与 RTC SDK 可以实现互通。详见[与 RTC SDK 互通音视频数据](/zh-CN/realtime-media/rtsa/best-practices/interoperate-rtc)。
+在传输指定格式的音视频数据时，RTSA Lite SDK 与 RTC SDK 可以实现互通。详见[与 RTC SDK 互通音视频数据](/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc)。

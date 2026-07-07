@@ -1,0 +1,97 @@
+---
+title: "实现原理"
+---
+秒开和秒切可以优化直播体验，让观众能够更快速地进入直播间并切换直播间，提升观看的连贯性和流畅度，详见[什么是秒开秒切](/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/overview)。本文介绍实现秒开秒切功能的原理和关键逻辑。
+
+:::info[信息]
+如果你对原理性内容不感兴趣，可以直接参考[实现秒开秒切](/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/integrate)进行开发。
+:::
+
+## 秒开
+
+秒开是指在观众进入直播间时，画面能够在最短的时间内加载并显示出来，没有明显的加载过程。观众可以即刻看到直播内容，不会有长时间的等待。
+
+![](/img/showroom/video-render.png)
+
+秒开的关键逻辑主要体现在如下环节：
+
+### 1. 在直播间列表页面
+
+在直播间列表页面，对用户视野范围内的直播间进行预加载，并按需使用[通配 Token](/doc/rtc//best-practice/wildcard-token)。
+
+具体操作如下：
+
+- 如果房间总数量不超过 20，通过 [`preloadChannel`](/api-ref/rtc//API/toc_channel#api_irtcengine_preloadchannel) 方法对所有房间进行频道预加载。
+
+- 如果房间总数量超过 20，通过 `preloadChannel` 方法对仅前 20 个房间进行频道预加载。如果用户滑动直播间列表，那么当滑动停止时，再通过 `preloadChannel` 方法对视野范围内的房间进行预加载。
+
+- `preloadChannel` 方法的 `token` 参数可以使用[通配 Token](/doc/rtc//best-practice/wildcard-token)，以加快后续加入频道的速度。
+
+### 2. 与单个直播间入口交互
+
+在直播间列表页面，用户通过手势触碰其中某个直播间的入口。对于不同的手势交互动作，你需要为秒开做的具体操作如下：
+
+#### 2.1 进入直播间前
+
+用户刚触碰到某个直播间的入口时，进入直播间前，建议提前加入频道，订阅音视频流，设置音频静音。为加快视频首帧出图时间，提前创建视图并监听首帧解码事件。
+
+具体操作如下：
+
+- 调用 [`joinChannelEx`](/api-ref/rtc//API/toc_channel#api_irtcengineex_joinchannelex) 加入频道，并订阅主播的音视频流。
+
+- `joinChannelEx` 方法的 `token` 参数可以使用[通配 Token](/doc/rtc//best-practice/wildcard-token)，以加快加入频道的速度。
+
+- 订阅视频流后立即调用 [`setupRemoteVideoEx`](/api-ref/rtc//API/toc_video_rendering#api_irtcengineex_setupremotevideoex) 为 SDK 创建一个 `View`（视图），以避免错过首个视频 I 帧解码，从而确保视频首帧能够快速渲染。在直播间内页面创建完成后，你需要优先将该 `View` 添加到视频准备显示的区域容器上，以确保视频能够第一时间被渲染出来；其次再处理其他业务的 UI 渲染逻辑。
+
+- 通过 [`onFirstRemoteVideoDecoded`](/api-ref/rtc//API/toc_video_basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调监听视频首帧已解码事件。在 SDK 触发该回调前，播放一个视频正在载入的动画；在 SDK 触发该回调后，立即将直播视频画面设为可见。
+
+- 调用 [`adjustUserPlaybackSignalVolumeEx`](/api-ref/rtc//API/toc_audio_basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) 并设置音量为 0，以将接收到的主播的音频流进行静音。
+
+#### 2.2 进入直播间
+
+如果用户触碰直播间入口后，完成有效点击，进入直播间，那么建议操作如下：
+
+- 当用户完成有效点击时，App 界面应该从“直播间列表页面”切换到“单个直播间页面”，建议你增加页面切换动画。
+
+- 调用 `adjustUserPlaybackSignalVolumeEx` 并设置音量为 100，以解除对主播的静音。
+
+#### 2.3 不进入直播间
+
+如果用户触碰直播间入口后，移开手指，未完成有效点击，不进入直播间，那么建议操作：调用 [`leaveChannelEx`](/api-ref/rtc//API/toc_channel#api_irtcengineex_leavechannelex) 离开频道。
+
+## 秒切
+
+秒切是指在观众已经在一个直播间内时，切换到下一个房间或者上一个房间时，能够迅速加载并显示对应直播间的画面。观众可以无缝切换直播间，不会出现明显的卡顿或加载延迟。
+
+![](/img/showroom/video-switch.png)
+
+秒切的关键逻辑主要为缩短切换房间时用户进入房间的时间，以及目标房间音视频出图、出声的时间。主要体现在如下环节：
+
+### 1. 在单个直播间内
+
+在当前直播间内，进行频道预加载和预加入，并且不订阅上下房间的音视频流，按需使用通配 Token。
+
+具体操作如下：
+
+- 对于直播间滑动列表中上下不超过 20 个房间，建议使用 `preloadChannel` 方法进行频道预加载。
+
+- 对于直播间滑动列表中的上一个和下一个房间，建议使用 `joinChannelEx` 方法预先加入频道，但不订阅音视频流。
+
+- `preloadChannel` 和 `joinChannelEx` 方法的 `token` 参数可以使用[通配 Token](/doc/rtc//best-practice/wildcard-token)，以加快加入频道的速度。
+
+### 2. 滑动切换直播间
+
+滑动切换直播间时，你需要恢复订阅音视频流，并提前设置视频视图。
+
+具体操作如下：
+
+- 对当前直播间的上下房间进行了加入频道且不订阅音视频流的操作后，根据业务逻辑的时机，在用户滑动列表时，订阅目标房间的音视频流。
+
+    举例来说，假设用户当前在房间 2，并且滑动列表中的上下房间分别是房间 1 和房间 3。你需要对房间 1 和房间 3 使用 `joinChannelEx` 方法加入频道，但不订阅音视频流。当用户滑动到房间 1 时，你需要订阅房间 1 的音视频流。然后，预先加入房间 1 的上下房间的频道，但不订阅上下房间的音视频流。根据用户的滑动操作，调整后续的音视频流订阅逻辑和预先加入频道的逻辑。
+
+- 在订阅视频流后，建议立即调用 `setupRemoteVideoEx` 为 SDK 创建一个 `View`（视图），以避免错过首个视频 I 帧解码，从而确保视频首帧能够快速渲染。在直播间内页面创建完成后，你需要优先将该 `View` 添加到视频准备显示的区域容器上，以确保视频能够第一时间被渲染出来；其次再处理其他业务的 UI 渲染逻辑。
+
+## 注意事项
+
+- [通配 Token](/doc/rtc//best-practice/wildcard-token) 可以加快加入频道的速度，但是可能会引起“炸房”风险，请结合具体需求决定是否使用通配 Token。
+- 预先加入上下房间的频道会增加额外的费用，请在使用时注意。详见[音视频实时互动服务计费说明](/doc/rtc//billing/billing-strategy)。

@@ -16,7 +16,7 @@ title: "跑通示例项目"
 
 开始前，请确保满足如下前提条件：
 
-- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service)在控制台创建项目，获取 App ID 和 App 证书，并[开通三方信令服务的权限](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务)
+- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书，并[开通三方信令服务的权限](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务)
 - [Git](https://git-scm.com/downloads)
 - [Java Development Kit](https://www.oracle.com/java/technologies/javase-downloads.html)
 - [Android Studio](https://developer.android.com/studio/) 4.1 及以上
@@ -44,20 +44,20 @@ AG_APP_CERTIFICATE=
 IM_APP_KEY=
 ```
 
-填入你在[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service)时获取的声网项目的 App ID、App 证书和环信项目的 App Key：
+填入你在[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)时获取的声网项目的 App ID、App 证书和环信项目的 App Key：
 
 | 参数 | 描述   | 获取方式 |
 |----|----|----|
-| `AG_APP_ID`    | 声网项目的 App ID     | [获取 App ID](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#获取-app-id)  |
-| `AG_APP_CERTIFICATE` | 声网项目的 App 证书 |[获取 App 证书](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#获取-app-证书)   |
-| `IM_APP_KEY` | 环信项目的 App Key | [获取 App Key](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务) |
+| `AG_APP_ID`    | 声网项目的 App ID     | [获取 App ID](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#获取-app-id)  |
+| `AG_APP_CERTIFICATE` | 声网项目的 App 证书 |[获取 App 证书](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#获取-app-证书)   |
+| `IM_APP_KEY` | 环信项目的 App Key | [获取 App Key](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务) |
 
 ## 编译并运行示例项目
 
 按照如下步骤进行操作：
 
 :::warning[注意]
-声网自定义信令方案的 1v1 私密房和秀场转 1v1 示例项目基于 CallAPI 和三方信令服务共同开发。运行前请确保你的项目已[开通三方信令服务权限](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务)。
+声网自定义信令方案的 1v1 私密房和秀场转 1v1 示例项目基于 CallAPI 和三方信令服务共同开发。运行前请确保你的项目已[开通三方信令服务权限](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务)。
 :::
 
 1. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑。
@@ -90,7 +90,7 @@ IM_APP_KEY=
 
 开始前，请确保满足如下前提条件：
 
-- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service)在控制台创建项目，获取 App ID 和 App 证书，并[开通三方信令服务的权限](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务)
+- 参考[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)在控制台创建项目，获取 App ID 和 App 证书，并[开通三方信令服务的权限](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务)
 - [Git](https://git-scm.com/downloads)
 - [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started)
 - [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上
@@ -121,13 +121,13 @@ git clone git@github.com:AgoraIO-Community/CallAPI.git
     static var IMAppKey: String = <#Your EaseMob AppKey#>
     ```
 
-    填入你在[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service)时获取的声网项目的 App ID、App 证书和环信项目的 App Key：
+    填入你在[开通服务](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service)时获取的声网项目的 App ID、App 证书和环信项目的 App Key：
 
     | 参数 | 描述   | 获取方式 |
     |----|----|----|
-    | `AppId`    | 声网项目的 App ID     | [获取 App ID](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#获取-app-id)  |
-    | `Certificate` | 声网项目的 App 证书 |[获取 App 证书](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#获取-app-证书)   |
-    | `IMAppKey` | 环信项目的 App Key | [获取 App Key](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务) |
+    | `AppId`    | 声网项目的 App ID     | [获取 App ID](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#获取-app-id)  |
+    | `Certificate` | 声网项目的 App 证书 |[获取 App 证书](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#获取-app-证书)   |
+    | `IMAppKey` | 环信项目的 App Key | [获取 App Key](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务) |
 
 2. 在 `/CallAPI/iOS/Example` 目录下运行 `pod install`，然后等待依赖库安装完成。
 
@@ -136,7 +136,7 @@ git clone git@github.com:AgoraIO-Community/CallAPI.git
 按照如下步骤进行操作：
 
 :::warning[注意]
-声网自定义信令方案的 1v1 私密房和秀场转 1v1 示例项目基于 CallAPI 和三方信令服务共同开发。运行前请确保你的项目已[开通三方信令服务权限](/zh-CN/solutions/one-to-one-live/custom-signaling/get-started/enable-service#开通第三方信令服务)。
+声网自定义信令方案的 1v1 私密房和秀场转 1v1 示例项目基于 CallAPI 和三方信令服务共同开发。运行前请确保你的项目已[开通三方信令服务权限](/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service#开通第三方信令服务)。
 :::
 
 ![](https://web-cdn.agora.io/docs-files/1685431554693)

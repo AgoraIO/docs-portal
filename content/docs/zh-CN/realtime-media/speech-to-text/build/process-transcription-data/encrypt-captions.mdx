@@ -1,0 +1,60 @@
+---
+title: "加密字幕"
+---
+在某些安全场景下，音视频流会先进行加密。此时，实时转录翻译会使用密钥解密音频流以完成转写，并在数据流负载中对字幕文本进行加密；客户端再使用同一密钥解密数据流负载，从而在本地解析出字幕文本。
+
+本文介绍如何在你的应用中实现字幕文本加密。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- 参考[开通服务](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
+- 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth)获取 `Authorization` 值。
+
+- 使用原生平台 v4.2.6.3 或 Web v4.20.1 及以上版本的 Video SDK，并支持 `datastreamEncryptionEnabled`。
+
+## 实现方法
+
+要对字幕进行加密，请按照[快速开始](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)中的 API 调用流程，并在 `start` 请求中加入加密参数，如下所示：
+
+```shell
+curl --location --request POST 'https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/{appId}/join' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic <credentials>' \
+--data '{
+  "name": "unique-agent-id",
+  "languages": [
+    "en-US"
+  ],
+  "maxIdleTime": 50,
+  "rtcConfig": {
+    "channelName": "<YourChannelName>",
+    "subBotUid": "<YourSubscribeUid>",
+    "subBotToken": "<YourSubscribeToken>",
+    "pubBotUid": "<YourPublishUid>",
+    "pubBotToken": "<PublishToken-IfRequired>",
+    "cryptionMode": 7,
+    "secret": "32-byte-encryption-key",
+    "salt": "base64-encoded-32-byte-salt-if-mode-7-or-8"
+  }
+}'
+```
+
+## 加密模式
+
+`cryptionMode` 支持以下加密模式：
+
+|Code|加密方式|说明|
+|---|---|---|
+| 0 |  No Encryption | 不加密。 |
+| 1 | `AES_128_XTS` | 128-bit AES 加密，XTS 模式。 |
+| 2 | `AES_128_ECB` | 128-bit AES 加密，ECB 模式。 |
+| 3 | `AES_256_XTS` | 256-bit AES 加密，XTS 模式。 |
+| 4 | `SM4_128_ECB` | 128-bit SM4 加密，ECB 模式。 |
+| 5 | `AES_128_GCM` | 128-bit AES 加密，GCM 模式。 |
+| 6 | `AES_256_GCM` | 256-bit AES 加密，GCM 模式。 |
+| 7 | `AES_128_GCM2` | 128-bit AES 加密，GCM 模式。需要设置 salt。 |
+| 8 | `AES_256_GCM2` | 256-bit AES 加密，GCM 模式。需要设置 salt。 |

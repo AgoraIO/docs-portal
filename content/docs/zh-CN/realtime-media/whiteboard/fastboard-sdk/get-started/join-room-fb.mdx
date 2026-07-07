@@ -27,7 +27,7 @@ title: "加入白板房间"
 - Android Studio 4.1.0 及以上版本
 - Android SDK API level ≥ 21
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 <a id="createroom"></a>
 ## 服务端实现
 ### 1. 创建房间
@@ -82,7 +82,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -155,7 +155,7 @@ request(options, function (error, response) {
     ```
 
 :::info[信息]
-本文使用 Fastboard Android SDK 1.2.0 版本。更多版本详见[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/release-notes-fb)。
+本文使用 Fastboard Android SDK 1.2.0 版本。更多版本详见[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb)。
 :::
 
 ### 2. 实现用户界面
@@ -187,7 +187,7 @@ Fastboard SDK 提供带 UI 的白板界面 `FastboardView`，只需将其添加�
 
 1. 调用 `FastboardView` 类的 `getFastboard` 方法获取 `Fastboard` 对象。
 2. 调用 `Fastboard` 类的 `createFastRoom` 方法创建 `FastRoom` 对象。调用该方法时，你需要通过 `roomOptions` 参数传入以下房间配置信息：
-   - `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+   - `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
    - `uuid`：String。房间的 UUID，详见[创建房间](#createroom)。
    - `token`：String。用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#roomtoken)。
    - `uid`：String。用户 UID，即用户的唯一标识符，字符串格式，长度不能超过 1024 字节。
@@ -251,7 +251,7 @@ class MainActivity : AppCompatActivity() {
 
 ## 后续步骤
 
-体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/present-files-fb)。
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
 
 </PlatformStructured>
 
@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
 - iOS 10.0+
 - CocoaPods [最新版本](https://cocoapods.org/)。
 - 有效的声网[开发者账号](/zh-CN/introduction/quickstart#注册账号)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
 <a id="createroom"></a>
 ## 服务端实现
@@ -337,7 +337,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -440,7 +440,7 @@ request(options, function (error, response) {
 
 调用 `createFastRoom` 创建 `FastRoom` 实例，需要通过 `config` 参数传入以下白板房间配置信息：
 
-- `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - `roomUUID`：String。房间的 UUID，详见[创建房间](#createroom)。
 - `roomToken`：String。用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#roomtoken)。
 - `region`：数据中心，必须和创建房间时设置的数据中心一致。
@@ -494,7 +494,7 @@ class ViewController: UIViewController {
 
 ## 后续步骤
 
-体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/present-files-fb)。
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
 
 </PlatformStructured>
 
@@ -524,9 +524,9 @@ class ViewController: UIViewController {
 
 ## 前提条件
 
-- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard/fastboard-sdk/solution-compare)。
+- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/solution-compare)。
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
 
 ## 服务端实现
@@ -590,7 +590,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -714,13 +714,13 @@ request(options, function (error, response) {
 调用 `createFastboard` 方法时，你需要填入以下参数：
 
 - 在 `sdkConfig` 中传入 SDK 配置参数：
-  - `appIdentifier`: 互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+  - `appIdentifier`: 互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
   - `region`：数据中心，必须和创建房间时设置的数据中心一致。
 
 - 在 `joinRoom` 中传入房间配置参数：
   - `uid`: 用户的唯一标识符，字符串格式，长度不能超过 1024 字节。
   - `uuid`: 房间 UUID，即房间的唯一标识符。详见[创建房间](#createroom)。
-  - `roomToken`: 用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+  - `roomToken`: 用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
 
 将以下代码复制到 `main.js` 实现加入白板房间的逻辑：
 
@@ -776,6 +776,6 @@ mountFastboard(document.getElementById("app"));
 
 ## 后续步骤
 
-体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/present-files-fb)。
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
 
 </PlatformStructured>

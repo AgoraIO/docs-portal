@@ -1,0 +1,256 @@
+---
+title: "Webhook 回调事件"
+---
+
+本文介绍灵动会议 Webhook 回调事件。
+
+Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送数据。当你订阅的事件发生时，声网灵动会议服务器会将事件消息发送给声网消息通知服务器，然后声网消息通知服务器会通过 HTTPS POST 请求将事件通知投递给你的服务器。
+
+调用[创建房间](/zh-CN/solutions/meeting/reference/create-room) API 时，通过 `roomProperties.webhookConfig` 字段设置接收 Webhook 事件的服务器地址和订阅事件列表后，你可以在这些事件发生后收到回调通知。
+
+## 回调格式
+
+回调会通过 HTTPS POST 请求发送到你的服务器，因此你的服务器必须提供 HTTPS 地址，并支持接收 POST 请求。
+
+回调请求的 Header 中包含以下字段：
+
+- `Content-Type`：`application/json`。代表指定请求 Body 的类型为 JSON，以 `UTF-8` 字符编码进行编码。
+
+回调请求的 Body 中包含以下字段：
+
+|字段|类型|描述|
+|---|---|---|
+|`roomUuid`|String|会议房间 UUID。|
+|`cmd`|Integer| [事件类型](#事件类型)|
+|`sequence`|Integer|事件序号，用于标识同一个房间内发生的事件。在同一个房间内，`sequence` 不会重复，并且会自动递增，以确保事件的有序性。|
+|`version`|Integer|事件版本号。|
+|`ts`|Integer|事件发生的 Unix 时间戳。UTC 时间，单位为毫秒。|
+|`data`|Object|事件的具体数据，不同事件会包含不同数据，详见[事件类型](#事件类型)。|
+
+```json
+{
+  "roomUuid": "xxx",
+  // highlight-start
+  "cmd": 1,
+  // highlight-end
+  "sequence": 1,
+  "version": 1,
+  "ts": 1611564500488,
+  // highlight-start
+  "data": {
+    ...
+  }
+  // highlight-end
+}
+```
+
+## 事件类型
+
+`cmd` 的不同数值代表不同的事件，每个事件的具体数据在 `data` 字段中展示。
+
+### 会议状态变更事件
+
+cmd = 1，代表会议状态变更事件。
+
+```json
+{
+  ...
+  "data": {
+    "startTime": 1611561776588,
+    "state": 1
+  }
+}
+```
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `state` | Integer | <Slot name="webhook-events-restful-html-0-1-2" /> |
+| `startTime` | Number | 会议开始时间，Unix 时间戳（毫秒），UTC 时间。仅当会议进行中（state = 1）时有该字段。 |
+| `endTime` | Number | 会议结束时间，Unix 时间戳（毫秒），UTC 时间。仅当会议已结束（state = 2）时有该字段。 |
+| `closeTime` | Number | 会议关闭时间，Unix 时间戳（毫秒），UTC 时间。仅当会议房间已关闭（state = 3）时有该字段。 |
+
+<Slot for="webhook-events-restful-html-0-1-2">
+
+当前会议状态：
+
+    - `0`：会议未开始。
+    - `1`：会议进行中。
+    - `2`：会议已结束。会议持续时长结束时，当前会议进入该状态，此时用户依然可以正常进入会议和逗留。
+    - `3`：会议房间关闭。会议持续时长结束后，会议拖堂时间也结束时，当前会议进入该状态，此时会议内用户会被踢出，用户也无法再进入会议。
+
+</Slot>
+
+### 用户进出会议事件
+
+cmd = 20，代表用户进出会议事件。
+
+```json
+{
+  ...
+  "data": {
+    "total": 2,
+    "onlineUsers": [
+      {
+        "userName": "user_name_1",
+        "userUuid": "uuid_1",
+        "role": "host",
+        "userProperties": {},
+        "streamUuid": "stream_uuid_1",
+        "type": 1,
+        "updateTime": 1611561776588
+      }
+    ],
+    "offlineUsers": [
+      {
+        "userName": "user_name_2",
+        "userUuid": "uuid_2",
+        "role": "participant",
+        "userProperties": {},
+        "streamUuid": "stream_uuid_2",
+        "type": 1,
+        "updateTime": 1611561776588
+      }
+    ]
+  }
+}
+```
+
+|字段|类型|描述|
+|---|---|---|
+|`total`|Integer|进入和退出会议的用户总数。|
+|`onlineUsers`|Object Array|进入会议的用户的具体信息。|
+|`offlineUsers`|Object Array|退出会议的用户的具体信息。|
+
+进出会议的用户具体信息如下：
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `userName` | String | 用户在会议房间中的名称。 |
+| `userUuid` | String | 用户 UUID。 |
+| `role` | String | <Slot name="webhook-events-restful-html-1-3-2" /> |
+| `userProperties` | Object | 用户属性。 |
+| `streamUuid` | String | 用户流的 UUID。 |
+| `type` | Integer | <Slot name="webhook-events-restful-html-1-6-2" /> |
+| `updateTime` | Number | 用户进出会议时的 Unix 时间戳，单位为毫秒，UTC 时间。 |
+
+<Slot for="webhook-events-restful-html-1-3-2">
+
+用户在会议房间中的角色：
+
+    - `host`：主持人。
+    - `cohost`：助理主持人。
+    - `participant`：参会人。
+
+</Slot>
+
+<Slot for="webhook-events-restful-html-1-6-2">
+
+对于进入房间的用户，该字段表示用户进入的方式：
+
+    - `1`：正常进入。
+
+    对于退出房间的用户，该字段标识用户退出的方式：
+
+    - `1`：由于客户端原因退出会议，例如正常离开会议、应用被强制关闭或网络状况不佳导致断线。
+    - `2`：被踢出会议。
+
+</Slot>
+
+### 页面录制状态变更事件
+
+cmd = 1001，代表页面录制状态变更事件。
+
+```json
+{
+  ...
+  "data": {
+    "recordId": "record_id",
+    "sid": "session_id",
+    "resourceId": "resource_id",
+    "state": 1,
+    "startTime": 1611564500488,
+    "onhold": false
+  }
+}
+```
+
+| 字段 | 类型 | 描述 |
+| --- | --- | --- |
+| `recordId` | String | 一次录制的唯一标识符。调用设置录制状态 API 开始录制并结束录制，视为一次录制。仅当录制进行中（state = 1）时有该字段。 |
+| `sid` | String | 声网云端录制服务的 `sid`。仅当录制进行中（state = 1）时有该字段。 |
+| `resourceId` | String | 声网云端录制服务的 `resourceId`。仅当录制进行中（state = 1）时有该字段。 |
+| `state` | Integer | <Slot name="webhook-events-restful-html-2-4-2" /> |
+| `startTime` | Number | 录制开始时间，Unix 时间戳（毫秒），UTC 时间。录制开始后该字段有值。 |
+| `endTime` | Number | 录制结束时间，Unix 时间戳（毫秒），UTC 时间。录制结束后有该字段。 |
+| `retryTimes` | Integer | 当前重试次数。设置过重试次数后，才有该字段。 |
+| `ready` | Boolean | 待录制的页面加载完成时，该字段为 `true`；否则，没有该字段。 |
+| `onhold` | Boolean | <Slot name="webhook-events-restful-html-2-9-2" /> |
+
+<Slot for="webhook-events-restful-html-2-4-2">
+
+当前录制状态：
+
+    - `0`：录制已结束。
+    - `1`：录制进行中。
+
+</Slot>
+
+<Slot for="webhook-events-restful-html-2-9-2">
+
+启动录制任务时是否暂停了录制：
+
+    - `true`：暂停录制中。
+    - `false`：正常录制中。
+
+</Slot>
+
+### 页面录制文件上传成功事件
+
+cmd = 1002，代表页面录制文件上传成功事件。
+
+```json
+{
+  ...
+  "data": {
+    "recordId": "record_id",
+    "addUrl": "https://example1.com/example1.mp4",
+    "recordDetails": [
+      {
+        "url": "https://example2.com/example2.mp4"
+      }
+    ],
+    "allUploaded": true
+  }
+}
+```
+
+|字段|类型|描述|
+|---|---|---|
+|`recordId`|String|一次录制的唯一标识符。|
+|`addUrl`|String|本次新增的录制文件地址。|
+|`recordDetails`|Object Array| 录制文件列表。|
+|`recordDetails.url`|String| 当前所有录制文件地址（含本次新增的录制文件地址）。|
+|`allUploaded`|Boolean|所有文件都上传完成时，该字段为 `true`；否则，没有该字段。|
+
+### AI 会议纪要生成成功事件
+
+cmd = 1003，代表 AI 会议纪要生成成功事件。
+
+```json
+{
+  ...
+  "data": {
+    "agentId": "agent_id",
+    "startTime": 1611564500488,
+    "endTime": 1611564500488,
+    "summary": ""
+  }
+}
+```
+
+| 字段  | 类型  | 描述  |
+|---|---|---|
+|`agentId`|String|AI 会议纪要的任务 ID。|
+|`startTime`|Long|AI 会议纪要开始时的 Unix 时间戳。UTC 时间，单位为毫秒。|
+|`endTime`|Long|AI 会议纪要结束时的 Unix 时间戳。UTC 时间，单位为毫秒。|
+|`summary`|String|AI 会议纪要的内容。|

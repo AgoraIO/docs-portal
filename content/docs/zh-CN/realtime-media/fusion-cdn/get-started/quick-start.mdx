@@ -26,7 +26,7 @@ title: "开始融合 CDN 直播"
 
 ## 前提条件
 
-开始前，请确保你已经[开通服务](/zh-CN/realtime-media/fusion-cdn/get-started/enable-service)。
+开始前，请确保你已经[开通服务](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/enable-service)。
 
 ## 配置服务
 
@@ -44,7 +44,7 @@ title: "开始融合 CDN 直播"
 
 :::info[信息]
 - 如果需要用于测试的域名，请[联系技术支持](https://ticket.shengwang.cn/)。
-- 为保障安全性，声网强烈建议你对每个推流域名和播放域名都设置防盗链密钥。防盗链密钥需要你自行提供，用于生成 URL 中的鉴权字符串。详见[计算鉴权字符串](/zh-CN/realtime-media/fusion-cdn/user-guides/streaming-url#key)。
+- 为保障安全性，声网强烈建议你对每个推流域名和播放域名都设置防盗链密钥。防盗链密钥需要你自行提供，用于生成 URL 中的鉴权字符串。详见[计算鉴权字符串](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#key)。
 :::
 
 根据你需要的服务模式添加域名配置：
@@ -116,22 +116,22 @@ title: "开始融合 CDN 直播"
 
 ## 拼接推流 URL
 
-推流支持 RTMP 和 RTMPS 协议。详见[拼接推流 URL](/zh-CN/realtime-media/fusion-cdn/user-guides/streaming-url#拼接推流-url)。
+推流支持 RTMP 和 RTMPS 协议。详见[拼接推流 URL](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#拼接推流-url)。
 
 ## 开始推流
 
 你可以通过以下方式开始推流：
 
-- 使用 OBS 等推流软件。详见[推流软件配置](/zh-CN/realtime-media/fusion-cdn/user-guides/obs-config)。
+- 使用 OBS 等推流软件。详见[推流软件配置](/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/obs-config)。
 - 使用旁路推流 RESTful API 将声网频道内的流转换成 RTMP/RTMPS 协议的流。详见[旁路推流](/zh-CN/realtime-media/media-push)。
 
 ## 拼接播流 URL
 
-播流支持 RTMP、HTTP-FLV、HLS 协议。详见[拼接播流 URL](/zh-CN/realtime-media/fusion-cdn/user-guides/streaming-url#拼接播流-url)。
+播流支持 RTMP、HTTP-FLV、HLS 协议。详见[拼接播流 URL](/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url#拼接播流-url)。
 
 ## 开始播放
 
-播流可以使用[声网 RTC SDK 的媒体播放器](/zh-CN/realtime-media/rtc/advanced-features/media-player)，也可以使用你自己的播放器。
+播流可以使用[声网 RTC SDK 的媒体播放器](/zh-CN/realtime-media/rtc/build/media/media-player)，也可以使用你自己的播放器。
 
 ## 后续步骤
 
@@ -391,4 +391,4 @@ pm.request.headers.add({key: 'authorization', value: authorization})
 
 ### 使用消息通知服务
 
-如果你需要接收推流、录制、截图等业务事件的通知，你还可以[使用消息通知服务](/zh-CN/realtime-media/fusion-cdn/webhook/enable-ncs)。
+如果你需要接收推流、录制、截图等业务事件的通知，你还可以[使用消息通知服务](/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs)。

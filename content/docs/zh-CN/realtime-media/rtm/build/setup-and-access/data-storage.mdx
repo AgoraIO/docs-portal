@@ -1,0 +1,39 @@
+---
+title: "数据存储"
+---
+根据你为项目开通的功能和实际使用情况，RTM 可能会临时存储数据并产生相应的存储占用费用，计费规则详见[计量计费](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。你随时可以删除这些临时存储的数据。各功能的数据存储使用方式如下：
+
+| 功能 | 产生存储的 API | 存储的数据 | 删除数据存储的方式 |
+| --- | --- | --- | --- |
+| Presence | `presence.setstate` | 用户临时状态 | 调用 `presence.removestate` 方法删除相关存储数据。 |
+| Storage | <Slot name="data-storage-html-0-2-1" /> | <Slot name="data-storage-html-0-2-2" /> | <Slot name="data-storage-html-0-2-3" /> |
+| Lock | `lock.set` | 锁的设置和状态 | <Slot name="data-storage-html-0-3-3" /> |
+
+<Slot for="data-storage-html-0-2-1">
+
+- `storage.setchannel`
+      - `storage.setuser`
+
+</Slot>
+
+<Slot for="data-storage-html-0-2-2">
+
+- Channel Metadata
+      - User Metadata
+
+</Slot>
+
+<Slot for="data-storage-html-0-2-3">
+
+- 在声网控制台的项目配置页面中关闭 Storage 功能。
+    - 调用 `storage.removechannel` 或 `storage.removeuser` 方法删除相关存储数据。
+    - 联系声网 RTM 团队（rtm-support@shengwang.cn）删除相关存储数据。
+
+</Slot>
+
+<Slot for="data-storage-html-0-3-3">
+
+- 在声网控制台的项目配置页面中关闭 Lock 功能。
+    - 调用 `lock.remove` 方法删除相关存储数据。
+
+</Slot>
