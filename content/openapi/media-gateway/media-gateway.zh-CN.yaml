@@ -1,0 +1,1692 @@
+openapi: 3.1.0
+info:
+  version: ''
+  title: RTMP 网关 RESTful API
+  summary: ''
+  description: "RTMP 网关服务能够把使用标准推流协议（RTMP 和 SRT）的媒体流推送到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。RTMP 网关服务包含以下三套 API：\n1. **推流码 API**\n\n    开始推流前，你需要先创建推流码，它能够确保媒体流被推送到正确的频道与主播 uid 下。这套 RESTful API 可供你创建、查询和删除推流码。\n2. **流配置模板 API**\n\n    在使用 RTMP 网关推流进频道时，你可以自行控制网关将流推送到频道之前的处理，比如开启音频或视频转码，并指定相应的转码参数。同时，一个流配置模板，既可以用于所属 App ID 的全局配置，也可以只关联到指定的推流码。你可以使用这套 RESTful API 来创建、查询和删除流配置模板。\n3. **查询在推流信息 API**\n\n    你可以使用这套 RESTful API 来查询指定 App ID 下当前正在推送到 RTMP 网关的流列表信息，包括使用的推流域名、推流码和音视频流的基础参数（分辨率、码率、声道数、采样率、GOP 等信息），也可以强制断开正在推送的流。\n\n> 请确保声网频道的场景为直播，而非通信，否则 RTMP 网关服务会失败。有关直播与通信场景的信息，请参考[设置频道场景](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_channel#setChannelProfile)。\n为方便你监听 RTMP 网关的状态，声网提供[消息通知服务](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)。开通该服务后，你可以通过 Webhook 接收相关的[事件回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)。\n\n因为声网会动态调整消息通知服务器的 IP 地址，为了不影响你接收事件，你需要定期[查询 IP 地址](https://doc.shengwang.cn/doc/rtmp-gateway/restful/rtmp-gateway/operations/get-v1-ncs-ip)并更新防火墙白名单配置。\n\
+    \n在使用过程如果遇到问题，你可以参考[最佳实践](https://doc.shengwang.cn/doc/rtmp-gateway/restful/best-practices)检查各项设置和限制是否已正确处理。"
+servers:
+- url: https://api.sd-rtn.com/
+paths:
+  /{region}/v1/projects/{appId}/rtls/ingress/streamkeys:
+    post:
+      tags:
+      - 推流码
+      summary: 创建推流码
+      description: 创建用于将媒体流推送到指定频道和主播 UID 的推流码。
+      operationId: post-region-v1-projects-appId-rtls-ingress-streamkeys
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: 请求包体为 JSON Object 类型的 `settings` 字段。
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/settings'
+            examples:
+              Example 1:
+                value:
+                  settings:
+                    channel: shx001
+                    uid: '1001'
+                    expiresAfter: 0
+      responses:
+        2XX:
+          $ref: '#/components/responses/success'
+        default:
+          $ref: '#/components/responses/failure'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '该接口创建一个推流码。
+
+
+          推流码也叫推流密钥，能够确保媒体流被推送到正确的频道与主播 uid 下。在开启推流前，你需要先创建推流码。'
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 请合理保管已创建的推流码，不要暴露，否则任何人都可以凭借该推流码推流到频道内。
+    get:
+      tags:
+      - 推流码
+      summary: 列出指定 App ID 下所有推流码
+      description: 分页列出指定 App ID 下的推流码。
+      operationId: get-region-v1-projects-appId-rtls-ingress-streamkeys-limit-cursor
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/cursor'
+      responses:
+        default:
+          description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](http://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)了解可能的原因。
+        2XX:
+          description: 如果状态码为 `2XX`，则请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 请求状态，值为 `success`。
+                  data:
+                    type: object
+                    properties:
+                      hasMore:
+                        type: boolean
+                        description: 表示是否有更多数据未返回。如果为 `true`，则需要执行下一次请求。
+                      streamKeys:
+                        type: array
+                        description: 包含本次返回的推流码信息列表。每个数组元素为 Object 型，包含下列字段：
+                        items:
+                          type: object
+                          properties:
+                            streamKey:
+                              type: string
+                              description: 返回的推流码。
+                            channel:
+                              type: string
+                              description: 推流码绑定的声网频道名称。
+                            uid:
+                              type: string
+                              description: 推流码绑定的声网频道内的用户 UID。
+                            expiresAfter:
+                              type: number
+                              description: 推流码的有效时长，从创建时开始计算，单位为秒。
+                            createdAt:
+                              type: string
+                              description: 推流码创建的 Unix 时间戳，单位为秒。
+                      cursor:
+                        type: string
+                        description: '下次查询时的起始位置值。
+
+
+                          > 请根据 `hasMore` 字段决定是否需要进行下一次查询，而不是仅依据 `cursor` 字段是否为空。'
+              examples:
+                Example 1:
+                  value:
+                    status: success
+                    data:
+                      hasMore: false
+                      streamKeys:
+                      - streamKey: 2waAf2n****JSXpJQ
+                        channel: test001
+                        uid: '100'
+                        expiresAfter: 0
+                        createdAt: '1714297679'
+                      cursor: 662e1****72e026
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+  /{region}/v1/projects/{appId}/rtls/ingress/streamkeys/{streamkey}:
+    get:
+      tags:
+      - 推流码
+      summary: 查询推流码信息
+      description: 查询指定推流码绑定的频道、UID 和有效期等信息。
+      operationId: get-region-v1-projects-appId-rtls-ingress-streamkeys-streamkey
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/appId'
+      - name: streamkey
+        in: path
+        description: 要查询的推流码。
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+    put:
+      tags:
+      - 推流码
+      summary: 更新推流码信息
+      description: 更新指定推流码关联的流配置模板。
+      operationId: put-region-v1-projects-appId-rtls-ingress-streamkeys-streamkey
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/appId'
+      - name: streamkey
+        in: path
+        description: 要更新的推流码。
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: 请求包体为 JSON Object 类型的 `settings` 字段。
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  properties:
+                    templateId:
+                      type: string
+                      nullable: true
+                      description: '关联的流配置模板 ID，具体请见[流配置模板](https://doc.shengwang.cn/doc/rtmp-gateway/restful/rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId)。请确保它已经被创建。
+
+
+                        如果想要解除之前绑定的模板，且不再绑定新的模板，可以设置为 `null`。'
+                  required:
+                  - templateId
+              required:
+              - settings
+            examples:
+              更新模板 ID:
+                value:
+                  settings:
+                    templateId: test
+              解除绑定模板:
+                value:
+                  settings:
+                    templateId: null
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 该接口仅支持更新已绑定的流配置模板。
+    delete:
+      tags:
+      - 推流码
+      summary: 销毁推流码
+      description: 销毁不再使用的推流码。
+      operationId: delete-region-v1-projects-appId-rtls-ingress-streamkeys-streamkey
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/streamkey'
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '调用该接口销毁不再使用的推流码。
+
+
+          销毁后，你无法再使用该推流码进行推流。但如果推流码正在使用中，销毁推流码并不会影响当前正在推送的流。如果要立即禁用该条流，请搭配调用[使用 SID 强制断开推流 API](force-disconnection)。'
+  /{region}/v1/projects/{appId}/rtls/ingress/stream-templates/{templateId}:
+    put:
+      tags:
+      - 流配置模板
+      summary: 创建或重置流配置模板
+      description: 创建或重置指定的流配置模板。
+      operationId: put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region2'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/templateId'
+      requestBody:
+        description: '请求包体为 JSON Object 类型的 `settings` 字段。
+
+
+          > 为确保请求成功，请不要将必填字段设为 `null` 或 `""`。'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transcoding:
+                  $ref: '#/components/schemas/transcoding'
+                jitterBuffer:
+                  $ref: '#/components/schemas/jitterBuffer'
+            examples:
+              Example 1:
+                value:
+                  settings:
+                    transcoding:
+                      video:
+                        enabled: true
+                        codec: H.264
+                        width: 1280
+                        height: 720
+                        fps: 24
+                        bitrate: 2200
+                        simulcastStream:
+                          width: 960
+                          height: 540
+                          fps: 24
+                          bitrate: 1670
+                      audio:
+                        enabled: true
+                        profile: 3
+                    jitterBuffer:
+                      size: 500
+                      maxSize: 800
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '该方法创建一个流配置模板（Stream Template）。在流配置模板中，你可以配置视频或音频流的转码参数，以及用于缓解网络延迟的参数。
+
+
+          每个 App ID 下最多可以创建 10 个流配置模板，每个流配置模板都有唯一的 ID 标识（templatedId）。在创建流配置模板时，你需要为其指定一个 templateId。如果该 templateId 对应的模板已经存在，则会以传入的 Body 数据重置整个流配置模板的值。
+
+
+          流配置模板有两种使用方式，可结合使用：
+
+
+          - **为 App ID 指定全局的流配置模板**：该 App ID 下所有的推流码（Stream Key），默认都会使用该模板；
+
+          - **为特定的推流码指定特定的流配置模板**：使用该推流码推流时，就会使用特定的流配置模板。'
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 所有 App ID 默认情况下不设置流配置模板，即不会默认开启视频转码。
+    patch:
+      tags:
+      - 流配置模板
+      summary: 更新流配置模板
+      description: 更新已创建的流配置模板。
+      operationId: patch-region-v1-projects-appId-rtls-ingress-stream-templates-templateId
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region2'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/templateId'
+      requestBody:
+        description: '请求包体为 JSON Object 类型的 `settings` 字段。
+
+
+          > - 为确保请求成功，请不要将必填字段设为 `null` 或 `""`。
+
+          > - 更新支持的最小单元为：
+
+          >   - `transcoding.video`
+
+          >   - `transcoding.audio`
+
+          >   - `jitterBuffer`
+
+          >   举例来说，如果只希望更新 `transcoding.video` 中的 `fps` 字段，也需要再次传入整个 `transcoding.video` ，仅修改 `fps` 字段，其他字段保持不变一起传入。不能单独传入 `fps` 字段。
+
+          > - `transcoding.video`、`transcoding.audio`、`jitterBuffer` 之间相互独立，互不影响。如果只传入 `transcoding.video`，那么就只会更新它的参数，不会影响 `transcoding.audio` 和 `jitterBuffer` 的参数值。'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transcoding:
+                  $ref: '#/components/schemas/transcoding'
+                jitterBuffer:
+                  $ref: '#/components/schemas/jitterBuffer'
+            examples:
+              仅修改视频转码参数:
+                value:
+                  settings:
+                    transcoding:
+                      video:
+                        enabled: true
+                        codec: H.264
+                        width: 1280
+                        height: 720
+                        fps: 24
+                        bitrate: 2200
+                        simulcastStream:
+                          width: 960
+                          height: 540
+                          fps: 24
+                          bitrate: 1670
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: '- 该接口只能在流配置模板已经存在的情况下调用。
+
+          - 流配置模板的修改只有在重新推流后才会生效，且考虑到网关与数据库之间的同步延迟，请在调用该接口 3 分钟后再重新推流。'
+    delete:
+      tags:
+      - 流配置模板
+      summary: 删除流配置模板
+      description: 删除指定的流配置模板。
+      operationId: delete-region-v1-projects-appId-rtls-ingress-stream-templates-templateId
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region2'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/templateId'
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: '- 删除后，当前正在使用该模板推送的流不受影响，仍然按照模板参数完成推送。删除从下一次推流开始生效（包括正常推流和断线重连）。
+
+          - 如果删除了推流码关联的模板，则默认使用该 App ID 下的全局模板。若未配置全局模板，则推流将按照无模板设置进行，即不开启视频转码。'
+  /{region}/v1/projects/{appId}/rtls/ingress/appconfig:
+    put:
+      tags:
+      - 流配置模板
+      summary: 设置全局流配置模板
+      description: 为指定 App ID 设置全局流配置模板。
+      operationId: put-region-v1-projects-appId-rtls-ingress-appconfig
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region2'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: 请求包体为 JSON Object 类型的 `settings` 字段。
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  properties:
+                    defaultStreamTemplate:
+                      type: string
+                      description: '流配置模板 ID，必须已经创建。
+
+
+                        如果将 `defaultStreamTemplate` 的值设为 `null`，那么会清除之前为该 App ID 设置的全局流配置模板。该 App ID 下的所有推流都将按照无模板设置进行，即默认不开启视频转码。
+
+
+                        > 针对使用过 Beta 版本的用户：在 Beta 版本中，此 API 还可以设置 `transcoding` 转码参数，现在建议你改用[创建或重置流配置模板 API](create-reset-template) 设置。
+
+
+                        > 如果你之前使用此 API 设置过 `transcoding`，目前的生效机制如下：
+
+                        >   - 如果现在重新设置 `defaultStreamTemplate`，那么之前通过此 API 设置的 `transcoding` 就会自动失效，以新模板中的参数为准。
+
+                        >   - 如果现在不设置新的 `defaultStreamTemplate`，那么之前通过此 API 设置的 `transcoding` 仍会保留，作为此 App ID 的默认全局配置参数。'
+      responses:
+        default:
+          $ref: '#/components/responses/failure'
+        2XX:
+          $ref: '#/components/responses/success-with-status'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 调用该接口前，必须有一个已创建的模板，可参考[创建或重置流配置模板 API](create-reset-template) 来创建模板。
+  /{region}/{version}/projects/{appId}/rtls/ingress/online-streams:
+    get:
+      summary: 查询当前在推流列表
+      description: 查询当前正在推送到 RTMP 网关的流列表。
+      operationId: get-region-v1-projects-appId-rtls-ingress-online-streams
+      parameters:
+      - schema:
+          type: string
+        name: region
+        in: path
+        required: true
+        description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
+
+          - `cn`：中国大陆
+
+          - `ap`：除中国大陆以外的亚洲区域
+
+          - `na`：北美
+
+          - `eu`：欧洲
+
+
+          > - 请确保设置的 `region` 与输出的源流在同一个区域。
+
+          > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
+
+          > - 请确保传入的 `region` 的值为小写。'
+      - schema:
+          type: string
+        name: version
+        in: path
+        required: true
+        description: 查询信息的版本，可以设为 `v1` 或 `v2`。不同版本返回的结果详见**响应**。
+      - schema:
+          type: string
+        name: appId
+        in: path
+        required: true
+        description: 声网为每个开发者提供的 App ID。在声网控制台创建一个项目后即可得到一个 App ID。App ID 是一个项目的唯一标识。
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - schema:
+          type: string
+        in: query
+        name: channel
+        description: 查询在推流所在的频道名。如果指定 channel，那么只返回推往指定频道内的在线流信息。注意，因为声网频道名允许包含一些特殊字符，因此需要先进行 URL转义。
+      responses:
+        2XX:
+          description: 如果状态码为 `2XX`，则请求成功。
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/query-body'
+                - $ref: '#/components/schemas/query-body-v2'
+              examples:
+                v1 版本:
+                  value:
+                    status: success
+                    data:
+                    - sid: eba0c189-15ab-b852-b51d-6705****00ce
+                      channel: shx1013001
+                      uid: '123'
+                      url: shxtest1-rtcpush-test-cn.agoramdn.com/live/pIdY42WEm5****fblM-Q8M1vMMXQ
+                      status: Running
+                      beginAt: '2023-10-16 11:36:12.293'
+                      bitrate: 4147
+                      video:
+                        width: 1920
+                        height: 1080
+                        fps: 30
+                      audio:
+                        channels: 2
+                        sampleRate: 48000
+                v2 版本:
+                  value:
+                    status: success
+                    data:
+                    - sid: 48de7de5-4326-1be5-fc70-46ce****2aed
+                      channel: shxtest
+                      uid: '100'
+                      url: rtls-ingress-test-cn.agoramdn.com/live/xTm0FSTJ****cZ20QE4rq
+                      status: Running
+                      beginAt: '2024-08-28 04:06:05.597'
+                      input:
+                        video:
+                          codec: H.264
+                          width: 1280
+                          height: 720
+                          fps: 30
+                          bitrate: 2509
+                          gop: 2000
+                        audio:
+                          codec: AAC
+                          channels: 2
+                          sampleRate: 48000
+                          bitrate: 166
+                      output:
+                        video:
+                          codec: H.264
+                          width: 1280
+                          height: 720
+                          fps: 29
+                          bitrate: 2447
+                          gop: 2000
+                        audio:
+                          codec: OPUS
+                          channels: 2
+                          sampleRate: 48000
+                          bitrate: 80
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: '本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+                - 如果请求出错，请在日志中打印出该值，排查问题。
+
+                - 如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应头部中无该字段。'
+        default:
+          $ref: '#/components/responses/failure'
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: '本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+                - 如果请求出错，请在日志中打印出该值，排查问题。
+
+                - 如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应头部中无该字段。'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      tags:
+      - 对在推流进行操作
+  /{region}/{version}/projects/{appId}/rtls/ingress/online-streams/{sid}:
+    get:
+      summary: 使用 SID 查询在推流信息
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: X-Request-ID
+        description: UUID（通用唯一识别码），标识本次请求。传入该字段后，声网服务器会在响应 header 中返回该字段。  声网推荐用户对 X-Request-ID 赋值。如果用户不赋值，声网服务器会自动生成一个 UUID 传入。
+      - schema:
+          type: string
+        name: region
+        in: path
+        required: true
+        description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
+
+          - `cn`：中国大陆
+
+          - `ap`：除中国大陆以外的亚洲区域
+
+          - `na`：北美
+
+          - `eu`：欧洲
+
+
+          > - 请确保设置的 `region` 与输出的源流在同一个区域。
+
+          > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
+
+          > - 请确保传入的 `region` 的值为小写。'
+      - schema:
+          type: string
+        name: version
+        in: path
+        required: true
+        description: 查询信息的版本，可以设为 `v1` 或 `v2`。不同版本返回的结果详见**响应**。
+      - schema:
+          type: string
+        name: appId
+        in: path
+        required: true
+        description: 声网为每个开发者提供的 App ID。在声网控制台创建一个项目后即可得到一个 App ID。App ID 是一个项目的唯一标识。
+      - schema:
+          type: string
+        name: sid
+        in: path
+        required: true
+        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)的 Payload 获取。
+      responses:
+        '200':
+          description: 如果状态码为 200，则请求成功。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 header 中 X-Request-ID。如果请求出错，请在日志中打印出该值，排查问题。 如果本次请求的响应状态码为 401(Unauthorized)，那么响应头部中无该字段。
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/sid-query-body'
+                - $ref: '#/components/schemas/sid-query-body-v2'
+              examples:
+                v1 版本响应示例:
+                  value:
+                    status: success
+                    data:
+                      sid: eba0c189-15ab-b852-b51d-6705****00ce
+                      channel: shx1013001
+                      uid: '123'
+                      url: shxtest1-rtcpush-test-cn.agoramdn.com/live/pIdY42WEm57****blM-Q8M1vMMXQ
+                      status: Running
+                      beginAt: '2023-10-16 11:36:12.293'
+                      bitrate: 4147
+                      video:
+                        width: 1920
+                        height: 1080
+                        fps: 30
+                      audio:
+                        channels: 2
+                        sampleRate: 48000
+                v2 版本响应示例:
+                  value:
+                    status: success
+                    data:
+                      sid: 48de7de5-4326-1be5-fc70-46ce1c****ed
+                      channel: shxtest
+                      uid: '100'
+                      url: rtls-ingress-test-cn.agoramdn.com/live/xTm0FS****ZcZ20QE4rq
+                      status: Running
+                      beginAt: '2024-08-28 04:06:05.597'
+                      input:
+                        video:
+                          codec: H.264
+                          width: 1280
+                          height: 720
+                          fps: 30
+                          bitrate: 2499
+                          gop: 2000
+                        audio:
+                          codec: AAC
+                          channels: 2
+                          sampleRate: 48000
+                          bitrate: 163
+                      output:
+                        video:
+                          codec: H.264
+                          width: 1280
+                          height: 720
+                          fps: 30
+                          bitrate: 2437
+                          gop: 2000
+                        audio:
+                          codec: OPUS
+                          channels: 2
+                          sampleRate: 48000
+                          bitrate: 80
+        default:
+          description: 如果状态码不为 2XX，请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)排查问题。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 header 中 X-Request-ID。如果请求出错，请在日志中打印出该值，排查问题。 如果本次请求的响应状态码为 401(Unauthorized)，那么响应头部中无该字段。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: 请求失败的具体原因。
+      operationId: get-region-version-projects-appId-rtls-ingress-online-streams-sid
+      security:
+      - Basic Auth: []
+      - API Key: []
+      tags:
+      - 对在推流进行操作
+      description: 使用推流会话 ID 查询当前在推流的信息。
+  /{region}/v1/projects/{appId}/rtls/ingress/online-streams/{sid}:
+    delete:
+      summary: 使用 SID 强制断开推流
+      description: 使用推流会话 ID 强制断开正在进行的推流。
+      operationId: delete-region-v1-projects-appId-rtls-ingress-online-streams-sid
+      parameters:
+      - $ref: '#/components/parameters/Rtmp-gateway_X-request-id'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/sid'
+      responses:
+        2XX:
+          description: 如果状态码为 `2XX`，则请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 请求状态，值为 `success`。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: '本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+                - 如果请求出错，请在日志中打印出该值，排查问题。
+
+                - 如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应头部中无该字段。'
+        default:
+          $ref: '#/components/responses/failure'
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: '本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+                - 如果请求出错，请在日志中打印出该值，排查问题。
+
+                - 如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应头部中无该字段。'
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      - API Key: []
+      tags:
+      - 对在推流进行操作
+      x-docs-sections:
+      - position: after-description
+        markdown: '使用推流会话 ID（SID）断开指定的正在进行的推流。
+
+
+          你可以结合该接口和[销毁推流码 API](delete-streaming-key)，实现禁用流的功能。销毁推流码只会将推流码从数据库删除，之后就不能再使用该推流码，但不能断开正在进行的推流。如需断开正在进行的推流，你可以参考如下操作：
+
+
+          - 方法一：先调用[销毁推流码 API](delete-streaming-key)，再使用本接口断开正在进行的推流。
+
+          - 方法二：使用声网[封禁用户权限：将用户一次性踢出频道 API](https://doc.shengwang.cn/doc/rtc/restful/channel-management/operations/post-dev-v1-kicking-rule) 同样也可以强制断开推流，如果已经集成过踢人接口，可以继续使用踢人接口来断开推流。'
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 一定要先销毁推流码，否则单独使用本接口强制断开后，推流软件会立即重连上来，此时会生成一个新的推流会话（对应一个新的 `sid`），断开失败。
+  /{region}/{version}/projects/{appId}/rtls/ingress/online-streams/{sid}/mute:
+    post:
+      summary: 对在推流进行 mute/unmute 操作
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: X-Request-ID
+        description: UUID（通用唯一识别码），标识本次请求。传入该字段后，声网服务器会在响应 header 中返回该字段。  声网推荐用户对 X-Request-ID 赋值。如果不赋值，声网服务器会自动生成一个 UUID 传入。
+      - schema:
+          type: string
+        name: region
+        in: path
+        required: true
+        description: '使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
+
+          - `cn`：中国大陆
+
+          - `ap`：除中国大陆以外的亚洲区域
+
+          - `na`：北美
+
+          - `eu`：欧洲
+
+
+          > - 请确保设置的 `region` 与输入的源流在同一个区域。
+
+          > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
+
+          > - 请确保传入 `region` 的值为小写。'
+      - schema:
+          type: string
+        name: version
+        in: path
+        required: true
+        description: 查询信息的版本，填 `v1`。
+      - schema:
+          type: string
+        name: appId
+        in: path
+        required: true
+        description: 声网为每个开发者提供的 App ID。在声网控制台创建一个项目后即可得到一个 App ID。App ID 是一个项目的唯一标识。
+      - schema:
+          type: string
+        name: sid
+        in: path
+        required: true
+        description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过[接收消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/enable-ncs)的 Payload 获取。
+      responses:
+        '200':
+          description: 如果状态码为 200，则请求成功。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 header 中 X-Request-ID。如果请求出错，请在日志中打印出该值，排查问题。 如果本次请求的响应状态码为 401(Unauthorized)，那么响应 Header 中无该字段。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 值为 `"success"`。
+              examples:
+                Example 1:
+                  value:
+                    status: success
+        default:
+          description: 如果状态码不为 2XX，表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)排查问题。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 header 中 X-Request-ID。如果请求出错，请在日志中打印出该值，排查问题。 如果本次请求的响应状态码为 401(Unauthorized)，那么响应 Header 中无该字段。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 本次请求状态，值为 `"fail"` 或者 `"error"`。
+                  message:
+                    type: string
+                    description: 失败的具体原因。
+      operationId: post-region-version-projects-appId-rtls-ingress-online-streams-sid-mute
+      description: 对当前在推流执行 mute 或 unmute 操作。
+      security:
+      - Basic Auth: []
+      - API Key: []
+      requestBody:
+        description: '请求 Body 为 JSON Object 类型的 settings 字段。
+
+
+          > - 为确保请求成功，请不要将必填字段设为 `null` 或者 `""`。
+
+          > - 如果某条流当前已经处于 muted （或 unmuted）状态，那么重复设置为 muted（或 unmuted），请求仍然会执行成功，但是不会执行任何操作。'
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - videoMuted
+              - audioMuted
+              properties:
+                videoMuted:
+                  type: boolean
+                  description: '是否 mute 视频流：
+
+                    - true：是，mute 在推视频流。
+
+                    - false：否，unmute 在推视频流。'
+                audioMuted:
+                  type: boolean
+                  description: '是否 mute 音频流：
+
+                    - true：是，mute 在推音频流。
+
+                    - false：否，unmute 在推音频流。'
+            examples:
+              Example 1:
+                value:
+                  settings:
+                    videoMuted: true
+                    audioMuted: false
+      tags:
+      - 对在推流进行操作
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: '- 本请求执行成功，仅表示将指令成功发送到推流所在的网关节点，并不表示 mute/unmute 操作成功生效。实际的 mute/unmute 操作会在后台异步执行。
+
+          - 正常情况下，从发出请求到实际生效的延时在 1s 左右。如果发现操作没有按预期生效，可以重新调用一次接口。
+
+          - 每条流的初始状态都是 unmuted（即音视频都正常 publish 到频道内）。每次调用 API，操作的对象是当前在推流，当该主播发生断流重推后，新的流会重新变成初始状态。'
+  /v1/ncs/ip:
+    get:
+      tags:
+      - 消息通知服务
+      summary: 查询消息通知服务器 IP
+      description: 查询声网消息通知服务器的 IP 地址。
+      operationId: get-v1-ncs-ip
+      responses:
+        2XX:
+          description: '如果返回的 HTTP 状态码为 `2XX`，表示请求成功。
+
+
+            你只需关心响应 Body 中的 `primaryIP` 字段，无需关心响应 Header 以及响应 Body 中的其他字段。'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: 声网消息通知服务器的 IP 地址。
+      servers:
+      - url: https://api.sd-rtn.com/
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '查询消息通知服务器的 IP 地址或 IP 地址列表。
+
+
+          **背景**：开通消息通知服务后，声网消息通知服务可以将云端转码业务中的发生的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP 地址，周期为 24 小时。
+
+
+          **用法**：你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址（或 IP 地址列表）添加到白名单中。'
+      x-docs-callouts:
+      - type: warning
+        title: 注意
+        position: after-description
+        markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
+tags:
+- name: 流配置模板
+- name: 推流码
+- name: 对在推流进行操作
+- name: 消息通知服务
+components:
+  parameters:
+    appId:
+      name: appId
+      in: path
+      description: 声网为每个开发者提供的 App ID。在声网控制台创建一个项目后即可得到一个 App ID。App ID 是一个项目的唯一标识。
+      required: true
+      schema:
+        type: string
+    region:
+      name: region
+      in: path
+      description: '创建推流码的区域。声网支持分区域创建推流码，目前支持以下区域：
+
+        - `cn`：中国大陆
+
+        - `ap`：除中国大陆以外的亚洲区域
+
+        - `na`：北美
+
+        - `eu`：欧洲
+
+
+        > - 请确保设置的 `region` 与输入的源流在同一个区域。
+
+        > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
+
+        > - 请确保传入 `region` 的值为小写。'
+      required: true
+      schema:
+        type: string
+    streamkey:
+      name: streamkey
+      in: path
+      description: 待销毁的推流码。
+      required: true
+      schema:
+        type: string
+    templateId:
+      name: templateId
+      in: path
+      description: 流配置模板 ID。取值只能为 a-z，A-Z，0-9，且长度不能超过 12 个字节。流配置模板 ID 的值，可根据业务场景需求设置。比如可以根据目标分辨率的不同取值为 "720p", "1080p"；也可以根据不同的游戏场景取值为 "gameA"，"gameB" 等等。
+      required: true
+      schema:
+        type: string
+    region2:
+      name: region
+      in: path
+      description: '使用 RTMP 网关的区域。声网支持分区域创建推流码，目前支持以下区域：
+
+        - `cn`：中国大陆
+
+        - `ap`：除中国大陆以外的亚洲区域
+
+        - `na`：北美
+
+        - `eu`：欧洲
+
+
+        > - 请确保设置的 `region` 与输入的源流在同一个区域。
+
+        > - 请确保设置的 `region` 与推流使用的域名在同一个区域。
+
+        > - 请确保传入 `region` 的值为小写。'
+      required: true
+      schema:
+        type: string
+    sid:
+      name: sid
+      in: path
+      description: 推流会话 ID（Session ID），是每次发起的推流任务的唯一标识。可以通过[查询当前在推流列表 API](query-streaming-list) 获得，也可通过接收[消息通知回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)的 Payload 获取。
+      required: true
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: path
+      description: 指定每次查询最多返回的数据条目数，默认值为 20，最大值为 50。如果大于 50，则按 50 来执行查询。
+      schema:
+        type: string
+    cursor:
+      name: cursor
+      in: path
+      description: 指定本次查询的起始位置。通过上一次查询返回的结果获取本次查询的 `cursor` 值。默认值为空，适用于分页查询的首次查询。
+      schema:
+        type: string
+    Rtmp-gateway_X-request-id:
+      name: X-Request-ID
+      in: header
+      description: 本次请求的 UUID（通用唯一识别码）。传入该字段后，声网服务器会在响应 Header 中返回该字段。声网推荐你对 `X-Request-ID` 赋值。如果不赋值，声网服务器会自动生成一个 UUID 传入。
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    Basic Auth:
+      type: http
+      description: '**HTTP 基本认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](https://doc.shengwang.cn/doc/rtmp-gateway/restful/user-guides/http-auth#实现-http-基本认证)。'
+      scheme: basic
+    API Key:
+      type: apiKey
+      description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization` 字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](https://doc.shengwang.cn/doc/rtmp-gateway/restful/user-guides/http-auth#实现-http-hmac-认证)。'
+      name: API Key
+      in: header
+  responses:
+    success:
+      description: 如果状态码为 `2XX`，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: 请求状态，值为 `success`。
+              data:
+                type: object
+                properties:
+                  streamKey:
+                    type: string
+                    description: 新创建的推流码。
+                  channel:
+                    type: string
+                    description: 推流码绑定的声网频道名称。
+                  uid:
+                    type: string
+                    description: 推流码绑定的声网频道内的用户 UID。
+                  expiresAfter:
+                    type: integer
+                    description: 推流码的有效时长，从创建时开始计算，单位为秒。
+                  createdAt:
+                    type: string
+                    description: 推流码创建时的 Unix 时间戳，单位为秒。
+          examples:
+            Example 1:
+              value:
+                status: success
+                data:
+                  streamKey: 2dfMTR****fys
+                  channel: shx001
+                  uid: '1001'
+                  expiresAfter: 0
+                  createdAt: '1686820170'
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: 本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+    failure:
+      description: 如果状态码不为 `2XX`，则请求失败。你可以参考[响应状态码](http://doc.shengwang.cn/doc/rtmp-gateway/restful/response-code)了解可能的原因。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 请求失败的具体原因。
+          examples:
+            Example 1:
+              value:
+                message: string
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: '本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+
+            - 如果请求出错，请在日志中打印出该值，排查问题。
+
+            - 如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应头部中无该字段。'
+    success-with-status:
+      description: 如果状态码为 `2XX`，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: 请求状态，值为 `success`。
+          examples:
+            Example 1:
+              value:
+                status: success
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: 本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+    query-success:
+      description: 如果状态码为 `2XX`，则请求成功。
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/query-body'
+          examples:
+            Example 1:
+              value:
+                status: success
+                data:
+                - sid: eba0c189-15ab-b852-b51d-67051a9c00ce
+                  channel: shx1013001
+                  uid: '123'
+                  url: shxtest1-rtcpush-test-cn.agoramdn.com/live/pIdY42WEm57pSlfblM-Q8M1vMMXQ
+                  status: Running
+                  beginAt: '2023-10-16 11:36:12.293'
+                  bitrate: 4147
+                  video:
+                    width: 1920
+                    height: 1080
+                    fps: 30
+                  audio:
+                    channels: 2
+                    sampleRate: 48000
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: 本次请求的 UUID（通用唯一识别码）。该值为本次请求 Header 中的 `X-Request-ID`。
+  schemas:
+    settings:
+      type: object
+      properties:
+        settings:
+          type: object
+          properties:
+            channel:
+              type: string
+              description: '声网频道名称，字符串长度必须在 64 字节以内，支持以下字符集（共 89 个字符）：
+
+                - 所有小写英文字母（a-z）
+
+                - 所有大写英文字母（A-Z）
+
+                - 数字 0-9
+
+                - 空格
+
+                - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`。'
+            uid:
+              type: string
+              description: 'RTMP 网关在声网频道内的主播用户 UID，可以为数字 ID 或[字符串 ID](https://doc.shengwang.cn/faq/integration-issues/string-uid)。如果为数字 ID，取值范围为 1 到 2^32 - 1（即 4294967295，大于此数值则会被识别为字符串）；如果为字符串 ID，不能超过 255 字节。支持以下字符集（共 89 个字符）：
+
+                - 所有小写英文字母（a-z）
+
+                - 所有大写英文字母（A-Z）
+
+                - 数字 0-9
+
+                - 空格
+
+                - `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+                允许填 "" 或者 "0"，此时会使用随机的整型 uid 进入频道。具体 uid 的值可通过[查询在推流列表 API](query-streaming-list)  或[接收 NCS 回调](https://doc.shengwang.cn/doc/rtmp-gateway/restful/webhook/ncs-events)获得。
+
+                > `uid` 和 `channel` 不能同时为空，即在 `channel` 为 "" 的情况下，`uid` 就不能为 "0" 或 ""。
+
+                输入的 `uid` 与实际识别值举例：
+
+                > - "123" → 整型 uid，123
+
+                > - "0123" → 整型 uid，123
+
+                > - "4294967295" → 整型 uid，4294967295
+
+                > - "4294967296" → 字符串 uid，"4294967296"
+
+                > - "123abc" → 字符串 uid，"123abc"'
+            expiresAfter:
+              type: number
+              description: '创建的推流码的有效时长，单位为秒。从创建时开始计算。如果填 `0`，则推流码永远有效。
+
+                > 为确保请求成功，请不要将该必填字段设为 `null` 或 `""`。'
+            templateId:
+              type: string
+              description: 关联的流配置模板 ID，具体请见[流配置模板](create-reset-template)。如果你不确定它的作用，请不要提供此字段。
+          required:
+          - channel
+          - uid
+          - expiresAfter
+    transcoding:
+      type: object
+      description: 音视频转码参数配置。
+      properties:
+        video:
+          $ref: '#/components/schemas/video'
+        audio:
+          $ref: '#/components/schemas/audio'
+    video:
+      type: object
+      description: 视频转码参数。
+      properties:
+        enabled:
+          type: boolean
+          description: 是否开启视频转码，默认关闭。
+          default: false
+        mode:
+          type: string
+          description: "转码模式。\n- `force`（默认）：强制开启转码。\n- `adaptive`：自适应开启转码。\n    - 当源流有 B 帧时，则开启转码。\n    - 如果推流开始的 2 秒内有 B 帧，则以转码模式开始推流。\n    - 如果推流中途出现 B 帧，则先以不转码模式推流，待有 B 帧后再切换为转码模式，切换过程观众端会感知到主播先暂停发流，再恢复发流。"
+          default: force
+        codec:
+          type: string
+          description: 转码的编解码格式。支持取值：`H.264`，`VP8`。
+          default: H.264
+        width:
+          type: number
+          description: 视频编码宽度，单位为 px。如不填或填 `0`，则跟随源流的宽度。
+          minimum: 0
+          maximum: 1920
+        height:
+          type: number
+          description: '视频编码高度，单位为 px。如不填或填 `0`，则跟随源流的高度。
+
+
+            > width 和 height 需要同时填入或同时都不填，目前暂不支持只填其中 1 个。'
+          minimum: 0
+          maximum: 1920
+        fps:
+          type: number
+          description: 视频编码帧率，单位为 fps。如不填或填 `0`，则跟随源流的帧率。
+          minimum: 0
+          maximum: 60
+        bitrate:
+          type: number
+          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](https://doc.shengwang.cn/doc/rtmp-gateway/restful/api/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
+          minimum: 0
+          maximum: 14000
+        simulcastStream:
+          $ref: '#/components/schemas/simulcastStream'
+          description: 视频小流配置项。如果提供，则开启小流，并指定小流的转码参数。
+      required:
+      - enabled
+    simulcastStream:
+      type: object
+      properties:
+        width:
+          type: number
+          description: 视频小流的宽度，单位为 px。该参数的值需要小于上面 `video.width` 的值。如不填或填 `0`，则采用 `video.width` ÷ 2 的值。
+          minimum: 0
+          maximum: 1920
+        height:
+          type: number
+          description: 视频小流的高度，单位为 px。该参数的值需要小于上面 `video.height` 的值。如不填或填 `0`，则采用 `video.height` ÷ 2 的值。
+          minimum: 0
+          maximum: 1920
+        fps:
+          type: number
+          description: 视频小流的帧率，单位为 fps。该参数的值需要小于等于 `video.fps` 的值。如不填或填 `0`，则使用 `15` 作为默认值。
+          minimum: 0
+          maximum: 60
+          default: 15
+        bitrate:
+          type: number
+          description: '视频小流的码率，单位为 Kbps。该参数的值需要小于上面 `video.bitrate` 的值。如果不填或填 `0`，则根据 `video.bitrate`、小流的分辨率和 fps，自动计算声网推荐码率。
+
+            > 当开启小流且指定小流 bitrate 时，需要同时指定 `video.bitrate`。'
+    audio:
+      type: object
+      description: 音频转码参数。
+      properties:
+        enabled:
+          type: boolean
+          description: 是否开启音频转码，默认开启。
+          default: true
+        profile:
+          type: number
+          description: 编码音频场景。默认值为 `0`，表示 48 KHz 采样率、音乐编码、单声道、编码码率最大值为 64 Kbps。如果要设置其他 `profile`，请[联系技术支持](https://ticket.shengwang.cn)。
+          default: 0
+        bitrate:
+          type: number
+          description: 编码码率，单位为 Kbps。如果不填，则码率由 `profile` 的值确定。
+          minimum: 64
+          maximum: 320
+      required:
+      - enabled
+    jitterBuffer:
+      type: object
+      description: 网络抖动缓冲，仅在开启视频转码时生效。
+      properties:
+        size:
+          type: number
+          description: '`jitterBuffer` 的数据长谷，单位 ms。默认值为 500，表示 RTMP 网关会增加 500 ms 的端到端延迟，以降低网络抖动带来的卡顿。'
+          default: 500
+        maxSize:
+          type: number
+          description: '`jitterBuffer` 的最大长度，单位 ms，默认值为1000。请确保该字段的值大于 `jitterBuffer.size`。当 `jitterBuffer` 长度超过此值时，网关就会开启加速，直到恢复至 `jitterBuffer.size`。'
+          default: 1000
+    query-body:
+      title: v1 版本
+      type: object
+      description: 如果请求路径中 `version` 填 `v1`，则返回如下字段。
+      properties:
+        status:
+          type: string
+          description: 本次请求的状态。值为 `"success"`。
+        data:
+          type: array
+          description: 在线流的信息组成的数组。每个元素表示一条在线流的信息。
+          items:
+            type: object
+            properties:
+              sid:
+                type: string
+                description: 推流会话 ID，每次推流都会生成一个唯一的 `sid`。
+              channel:
+                type: string
+                description: 推流的目标声网频道名称。
+              uid:
+                type: string
+                description: 推流使用的声网频道内的主播用户 UID。
+              url:
+                type: string
+                description: 推流的地址，格式为 `{domain}/live/{streamkey}`。
+              status:
+                type: string
+                description: '表示流状态，可能的值有：
+
+                  - `"Started"`：RTMP 连接已建立，等待推送音视频。
+
+                  - `"Running"`：正在推流中。'
+              beginAt:
+                type: string
+                description: 推流开始时间，格式为 `"2024-01-01 01:01:01.001"`。
+              bitrate:
+                type: integer
+                description: 推流的源流码率（音频+视频），单位 Kbps。
+              video:
+                $ref: '#/components/schemas/query-video'
+              audio:
+                $ref: '#/components/schemas/query-audio'
+    query-video:
+      type: object
+      description: 视频流参数，仅在 `status` 为 `"Running"` 时才会返回。
+      properties:
+        width:
+          type: number
+          description: 视频宽，单位为 px。
+        height:
+          type: number
+          description: 视频高，单位为 px。
+        fps:
+          type: number
+          description: 视频帧率，单位为 fps。
+    query-audio:
+      type: object
+      description: 音频流参数，仅在 `status` 为 `"Running"` 时才会返回。
+      properties:
+        channels:
+          type: number
+          description: 音频声道数。
+        sampleRate:
+          type: number
+          description: 音频采样率，单位为 Hz。
+    query-body-v2:
+      title: v2 版本
+      type: object
+      description: 如果请求路径中 `version` 填 `v2`，则返回如下字段。
+      properties:
+        status:
+          type: string
+          description: 当前请求状态，值为 `"success"`。
+        data:
+          type: array
+          description: 每个元素为一个 JSON Object，表示一条在线流的信息。
+          items:
+            type: object
+            properties:
+              sid:
+                type: string
+                description: 推流会话 ID，每次推流都会生成一个唯一的 sid。
+              channel:
+                type: string
+                description: 推流的目标声网频道名称。
+              uid:
+                type: string
+                description: 推流使用的声网频道内的主播用户 UID。
+              url:
+                type: string
+                description: 推流的地址，格式为 `{domain}/live/{streamkey}`。
+              status:
+                type: string
+                description: '流状态。可能的值有：
+
+                  - `"Started"`：RTMP 连接已建立，等待推送音视频。
+
+                  - `"Running"`：正在推流中。'
+              beginAt:
+                type: string
+                description: 推流开始时间，格式为 `"2024-01-01 01:01:01.001"`。
+              input:
+                $ref: '#/components/schemas/input'
+              output:
+                $ref: '#/components/schemas/output'
+    input:
+      title: ''
+      type: object
+      description: 输入流的参数。只有在 `"status"` 为 `"Running"` 时才返回。
+      properties:
+        video:
+          $ref: '#/components/schemas/input-video'
+        audio:
+          $ref: '#/components/schemas/input-audio'
+    input-video:
+      title: ''
+      type: object
+      description: 视频流参数。只有在输入流中存在视频流才会返回。
+      properties:
+        codec:
+          type: string
+          description: 视频编码类型，可选值 "H.264", "H.265" 等。
+        bitrate:
+          type: number
+          description: 视频码率，单位 Kbps。
+        width:
+          type: number
+          description: 视频宽度，单位为 px。
+        height:
+          type: number
+          description: 视频高度，单位为 px。
+        fps:
+          type: number
+          description: 视频帧率。
+        gop:
+          type: number
+          description: 视频 GOP，单位为毫秒。
+    input-audio:
+      title: ''
+      type: object
+      description: 音频流参数。只有在输入流中存在音频流时才返回。
+      properties:
+        codec:
+          type: string
+          description: 音频编码类型，可选值 `"AAC"`, `"HE-AAC"`, `"HE-AAC-V2"` 等。
+        channels:
+          type: number
+          description: 音频声道数。
+        sampleRate:
+          type: number
+          description: 音频采样率。
+        bitrate:
+          type: number
+          description: 推流的源流音频码率，单位为 Kbps。
+    output:
+      title: ''
+      type: object
+      description: 表示网关推送进大网的流参数。只有在 `"status"` 为 `"Running"` 时才返回。
+      properties:
+        video:
+          $ref: '#/components/schemas/output-video'
+        audio:
+          $ref: '#/components/schemas/output-audio'
+    output-video:
+      title: ''
+      type: object
+      description: 视频大流参数。只有在输入流中存在视频流才会返回。
+      properties:
+        codec:
+          type: string
+          description: '视频编码类型，可选值 `"NONE"`, `"H.264"`, `"H.265"`,`"VP8"` 等。
+
+            > 如果 `codec` 值为 `"None"`，则表示本条流为开始视频转码或音频转码。'
+        bitrate:
+          type: number
+          description: '视频大流码率，单位为 Kbps。
+
+            > 如果开启了视频转码，则 `bitrate` 的值为实际编码输出的码率。当画面复杂度较低时，输出码率可能低于设定的编码目标码率。原因是在保证相同画质的条件下，编码器认为不需要达到那么高的码率。'
+        width:
+          type: number
+          description: 视频大流宽度，单位为 px。
+        height:
+          type: number
+          description: 视频大流高度，单位为 px。
+        fps:
+          type: number
+          description: 视频大流帧率。
+        gop:
+          type: number
+          description: 视频大流 GOP，单位为毫秒。
+        simulcastStream:
+          type: object
+          description: 表示视频小流参数。只有实际开启了小流才会返回。
+          properties:
+            bitrate:
+              type: number
+              description: 视频小流码率，单位为 Kbps。
+    output-audio:
+      title: ''
+      type: object
+      description: 音频流参数，只有在输入流中存在音频流才会返回。
+      properties:
+        codec:
+          type: string
+          description: 音频编码类型，可选值 `"NONE"`, `"OPUS"` 等。
+        channels:
+          type: number
+          description: 音频声道数。
+        sampleRate:
+          type: number
+          description: 音频采样率。
+        bitrate:
+          type: number
+          description: '推流的源流音频码率，单位为 Kbps。
+
+            > 如果开启了音频转码，`bitrate` 的值是根据源流声道数和设置的 `profile` 值计算所得，是编码输出的目标码率，非实际码率。通常情况下，银瀑呢输出码率会保持设定码率。'
+    sid-query-body:
+      title: v1 版本
+      type: object
+      description: 如果请求路径中 `version` 填 `v1`，则返回如下字段。
+      properties:
+        status:
+          type: string
+          description: 当前请求的状态，值为 `success`。
+        data:
+          type: object
+          description: 在线流的信息。
+          properties:
+            sid:
+              type: string
+              description: 推流会话 ID。每次推流都会生成一个唯一的 SID。
+            channel:
+              type: string
+              description: 推流的目标声网频道名称。
+            uid:
+              type: string
+              description: 推流使用的声网频道内的主播用户 UID。
+            url:
+              type: string
+              description: 推流的地址，格式为 `$domain/live/$streamkey`。
+            status:
+              type: string
+              description: '表示流状态，可能的值有：
+
+                - `Started`: RTMP 连接已建立，等待推送音视频。
+
+                - `Running`: 正在推流中。'
+            beginAt:
+              type: string
+              description: 推流开始时间，格式为 `"2024-01-01 01:01:01.001"`。
+            bitrate:
+              type: number
+              description: 推流的源流码率（音频+视频），单位为 Kbps。
+            video:
+              $ref: '#/components/schemas/query-video'
+            audio:
+              $ref: '#/components/schemas/query-audio'
+    sid-query-body-v2:
+      title: v2 版本
+      type: object
+      description: 如果请求路径中 `version` 填 `v2`，则返回如下字段。
+      properties:
+        status:
+          type: string
+          description: 请求的状态，值为 "success"。
+        data:
+          type: object
+          description: 在线流的信息。
+          properties:
+            sid:
+              type: string
+              description: 推流会话 ID，每次推流都会生成一个唯一的 SID。
+            channel:
+              type: string
+              description: 推流的目标声网频道名称。
+            uid:
+              type: string
+              description: 推流使用的声网频道内的主播用户 UID。
+            url:
+              type: string
+              description: 推流的地址，格式为 `$domain/live/$streamkey`。
+            status:
+              type: string
+              description: '表示流状态，可能的值有：
+
+                - `"Started"`：RTMP连接已建立，等待推送音视频。
+
+                - `"Running"`：正在推流中。'
+            beginAt:
+              type: string
+              description: 推流开始时间，格式为 `"2024-01-01 01:01:01.001"`。
+            input:
+              $ref: '#/components/schemas/input'
+            output:
+              $ref: '#/components/schemas/output'
+security:
+- Basic Auth: []
+- API Key: []

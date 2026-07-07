@@ -1,0 +1,32 @@
+---
+title: RESTful API 鉴权
+description: 配置 PPT 转码服务 RESTful API 所需的 Token。
+---
+
+PPT 转码服务 RESTful API 使用 Token 进行鉴权。不同接口需要的 Token 类型不同：
+
+- **SDK Token**：用于生成 Task Token、发起转码、查询待转码任务和设置任务优先级。
+- **Task Token**：用于查询指定转码任务进度。
+- **AK 和 SK**：用于调用[生成 SDK Token](generate-sdk-token) 接口。
+
+## 获取 SDK Token
+
+你可以通过以下方式获取 SDK Token：
+
+- 在声网控制台生成用于测试的 SDK Token。详见[开通服务](/zh-CN/introduction/ppt-transcoding/get-started/enable-service)。
+- 调用[生成 SDK Token](generate-sdk-token) 接口。
+- 在 app 服务端用代码生成。详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+
+:::warning
+请在服务端保存 AK、SK 和 Token，避免在客户端代码或公开仓库中暴露凭证。
+:::
+
+## 获取 Task Token
+
+调用[生成 Task Token](generate-task-token) 接口，为指定转码任务生成 Task Token。
+
+## 相关页面
+
+- [PPT 转码服务概览](index)
+- [生成 SDK Token](generate-sdk-token)
+- [生成 Task Token](generate-task-token)

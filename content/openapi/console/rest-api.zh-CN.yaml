@@ -1,0 +1,537 @@
+openapi: 3.1.0
+info:
+  version: ''
+  title: 控制台 RESTful API
+  summary: ''
+  description: "你可以使用[控制台](https://console.shengwang.cn/)的图形化用户界面或声网提供的控制台 RESTful API 来创建和管理项目。在调用控制台 RESTful API 之前，我们建议你先试用控制台相关功能，以便对各项参数和数据指标有更直观的了解。\n\n你可以使用控制台 RESTful API 实现以下功能：\n- [创建项目](create-project)。\n- 获取项目信息：[获取指定项目信息](get-project)和[获取所有项目信息](list-projects)。\n- 管理项目：[禁用或启用项目](update-project-status)。\n- 管理 App 证书：[启用或禁用主要 App 证书](update-primary-app-certificate)或[重置主要 App 证书](reset-primary-app-certificate)。\n\n### 认证方式\n\n声网控制台 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段中。详见 [HTTP 基本认证](authentication)。\n\n### 数据格式\n\n所有 HTTP 请求头部的 `Content-Type` 类型为 `application/json`。所有请求和响应内容的格式均为 JSON。所有的请求 URL 和请求包体内容都区分大小写。\n\n### 调用频率限制\n\n对于每个声网账号（非每个 App ID），本页每个 API 的调用频率上限为每秒 10 次。如果调用频率超出限制，请参考[如何处理服务端 RESTful API 调用超出频率限制](https://doc.shengwang.cn/faq/integration-issues/restful-api-call-frequency)优化调用频率。\n"
+servers:
+  - url: https://api.sd-rtn.com
+paths:
+  /dev/v1/project:
+    post:
+      summary: 创建项目
+      description: 创建一个新的声网项目。
+      operationId: post-dev-v1-project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/name'
+                enable_sign_key:
+                  $ref: '#/components/schemas/enable_sign_key'
+              required:
+                - name
+                - enable_sign_key
+            examples:
+              示例:
+                value:
+                  name: project1
+                  enable_sign_key: true
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-project'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+      x-docs-callouts:
+        - position: after-description
+          markdown: "- 一个账户最多可创建 20 个项目，包括已删除的项目。如果需要创建更多项目，请通过[工单系统](https://ticket.shengwang.cn)申请。\n- 在 2021 年 10 月 1 日前注册的账户最多可创建 10 个项目，包括已删除的项目。如果需要创建更多项目，请通过[工单系统](https://ticket.shengwang.cn)申请。"
+    get:
+      summary: 获取指定项目信息
+      description: 获取指定声网项目的信息。
+      operationId: get-dev-v1-project
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/name'
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-project'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+  /dev/v1/projects:
+    get:
+      summary: 获取所有项目信息
+      description: 获取所有声网项目的信息。
+      operationId: get-dev-v1-projects
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-projects'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+  /dev/v1/project_status:
+    post:
+      summary: 禁用或启用项目
+      description: 禁用或启用指定的声网项目。
+      operationId: post-dev-v1-project_status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 项目 ID，可以通过调用获取所有项目信息 API 获取。
+                status:
+                  type: number
+                  description: "想要设置的项目状态：\n- `0`：禁用。\n- `1`：启用。"
+              required:
+                - id
+                - status
+            examples:
+              Example 1:
+                value:
+                  id: string
+                  status: 0
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-project'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+  /dev/v1/signkey:
+    post:
+      summary: 启用或禁用主要 App 证书
+      description: 启用或禁用指定项目的主要 App 证书。
+      operationId: post-dev-v1-signkey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 项目 ID，可以通过调用获取所有项目信息 API 获取。
+                enable:
+                  type: boolean
+                  description: "是否启用项目的主要 App 证书：\n- `true`：（默认）启用。\n- `false`：不启用。"
+              required:
+                - id
+                - enable
+            examples:
+              Example 1:
+                value:
+                  id: xxxx
+                  enable: true
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-project'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+  /dev/v1/reset_signkey:
+    post:
+      summary: 重置主要 App 证书
+      description: 重置指定项目的主要 App 证书。
+      operationId: post-dev-v1-reset_signkey
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 项目 ID，可以通过调用获取所有项目信息 API 获取。
+              required:
+                - id
+            examples:
+              Example 1:
+                value:
+                  id: xxxx
+      responses:
+        '201':
+          $ref: '#/components/responses/create-success-project'
+        非 201:
+          $ref: '#/components/responses/create-failure'
+      security:
+        - Authorization: []
+      servers:
+        - url: https://api.sd-rtn.com
+      x-docs-callouts:
+        - position: after-description
+          markdown: "- 如果原来的主要 App 证书泄漏了，你可以使用该方法对主要 App 证书进行重置。\n- 如果该项目的主要 App 证书尚未启用，调用该方法会启用主要 App 证书。"
+components:
+  parameters:
+    id:
+      name: id
+      in: query
+      description: 项目 ID，可以通过调用[获取所有项目信息 API](list-projects) 获取。
+      required: true
+      schema:
+        type: string
+    name:
+      name: name
+      in: query
+      description: 项目名称。
+      required: true
+      schema:
+        type: string
+    status:
+      name: status
+      in: query
+      description: "想要设置的项目状态：\n- `0`：禁用。\n- `1`：启用。"
+      required: true
+      schema:
+        type: number
+    project_id:
+      name: project_id
+      in: query
+      description: 项目 ID，可以通过调用获取所有项目信息 API 获取。
+      required: true
+      schema:
+        type: string
+    from_date:
+      name: from_date
+      in: query
+      description: 查询开始日期，格式为 YYYY-MM-DD。
+      required: true
+      schema:
+        type: string
+        examples:
+          - '2024-02-14'
+    to_date:
+      name: to_date
+      in: query
+      description: 查询结束日期，格式为 YYYY-MM-DD。
+      required: true
+      schema:
+        type: string
+    business:
+      name: business
+      in: query
+      description: "指定业务类型。可设为以下值：\n- `default`：音视频，不包括小程序的用量。\n- `transcodeDuration`：转码。\n- `recording`：本地服务端录制。\n- `cloudRecording`：云端录制。\n- `miniapp`：小程序。"
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Authorization:
+      type: http
+      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。详见[使用 HTTP 认证](authentication)。
+      scheme: basic
+  responses:
+    create-failure:
+      description: 如果状态码不为 201，请求失败。请根据[响应状态码](response-codes)和 `message` 字段进行排查。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/status'
+              message:
+                $ref: '#/components/schemas/message'
+          examples:
+            Example 1:
+              value:
+                status: error
+                message: string
+    create-success-project:
+      description: 如果状态码为 201，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            title: project
+            properties:
+              project:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: 项目 ID。
+                    name:
+                      type: string
+                      description: 项目名称。
+                    vendor_key:
+                      type: string
+                      description: 项目的 App ID。
+                    status:
+                      type: number
+                      description: "项目状态。\n- `1`：启用\n- `0`：禁用"
+                    created:
+                      type: number
+                      description: 项目的创建时间，Unix 时间戳，单位为秒。
+          examples:
+            请求成功的响应示例:
+              value:
+                project:
+                  - id: xxxx
+                    name: project1
+                    vendor_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+                    status: 1
+                    created: 1464165672
+    create-success-projects:
+      description: 如果状态码为 201，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            title: projects
+            description: 项目的信息。由多个 Object 组成的数组，一个 Object 表示一个项目的信息。
+            properties:
+              projects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: 项目 ID。
+                    name:
+                      type: string
+                      description: 项目名称。
+                    vendor_key:
+                      type: string
+                      description: 项目的 App ID。
+                    status:
+                      type: number
+                      description: "项目状态。\n- `1`：启用\n- `0`：禁用"
+                    created:
+                      type: number
+                      description: 项目的创建时间，Unix 时间戳，单位为秒。
+          examples:
+            请求成功的响应示例:
+              value:
+                projects:
+                  - id: xxxx
+                    name: project1
+                    vendor_key: 4855xxxxxxxxxxxxxxxxxxxxxxxxeae2
+                    status: 1
+                    created: 1464165672
+                  - id: xxxx
+                    name: project1
+                    vendor_key: eb00cd2b222a4eeaa24fc6046d90xxxx
+                    status: 1
+                    created: 1637153755
+    get-usage-success:
+      description: 如果状态码为 200，则请求成功，响应包体包含如下参数：
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                type: object
+                description: 元数据，解释 `usage` 参数中 `durationAudioAll`, `durationVideo1080P`, `durationVideo2K`, `durationVideo4K`， `durationVideoHd` 和 `durationVideoHdp` 的含义。
+                properties:
+                  durationAudioAll:
+                    type: object
+                    description: 总音频时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationAudioAll` 的中文含义，即“总音频时长”。'
+                      en:
+                        type: string
+                        description: '`durationAudioAll` 的英文含义，即 “Total Audio Duration”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+                  durationVideo1080P:
+                    type: object
+                    description: 全高清（Full HD）视频的时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationVideo1080P` 的中文含义，即 “1080P视频时长（含录制）”。'
+                      en:
+                        type: string
+                        description: '`durationVideo1080P` 的英文含义，即 “Full HD Video Duration（including Recording)”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+                  durationVideo2K:
+                    type: object
+                    description: 2K 视频的时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationVideo2K` 的中文含义，即 “2K视频时长（含录制）”。'
+                      en:
+                        type: string
+                        description: '`durationVideo2K` 的英文含义，即 “2K Video Duration（including Recording)”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+                  durationVideo4K:
+                    type: object
+                    description: 2K+ 视频的时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationVideo4K` 的中文含义，即 “2K+视频时长（含录制）”。'
+                      en:
+                        type: string
+                        description: '`durationVideo4K` 的英文含义，即 “2K+ Video Duration（including Recording)”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+                  durationVideoHd:
+                    type: object
+                    description: 高清视频的时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationVideoHd` 的中文含义，即 “HD视频时长（含录制）”。'
+                      en:
+                        type: string
+                        description: '`durationVideoHd` 的英文含义，即 “HD Video Duration (including On-premise Recording)”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+                  durationVideoHdp:
+                    type: object
+                    description: 超高清视频的时长。
+                    properties:
+                      cn:
+                        type: string
+                        description: '`durationVideoHdp` 的中文含义，即 “HDP视频时长（含录制）”。'
+                      en:
+                        type: string
+                        description: '`durationVideoHdp` 的英文含义，即 “HDP Video Duration（including Recording)”。'
+                      unit:
+                        type: string
+                        description: 时长单位，秒。
+              usages:
+                type: array
+                description: 指定项目在查询时间段内的用量。由多个 Object 组成，一个 Object 表示一天的用量。每个 Object 包含以下字段：
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: number
+                      description: 日期，使用 UTC 时间和 Unix 时间戳
+                    usage:
+                      type: object
+                      description: 日用量。
+                      properties:
+                        durationAudioAll:
+                          type: number
+                          description: 音频总时长，单位为秒
+                        durationVideo1080P:
+                          type: number
+                          description: 全高清（Full HD）视频的时长，单位为秒。
+                        durationVideo2K:
+                          type: number
+                          description: 2K 视频的时长，单位为秒。
+                        durationVideo4K:
+                          type: number
+                          description: 2K+ 视频的时长，单位为秒。
+                        durationVideoHd:
+                          type: number
+                          description: 高清视频的时长，单位为秒。
+                        durationVideoHdp:
+                          type: number
+                          description: 超高清视频的时长，单位为秒。
+          examples:
+            Example 1:
+              value:
+                meta:
+                  durationAudioAll:
+                    cn: 总音频时长
+                    en: Total Audio Duration
+                    unit: second
+                  durationVideo1080P:
+                    cn: 1080P视频时长（含录制）
+                    en: Full HD Video Duration（including Recording)
+                    unit: second
+                  durationVideo2K:
+                    cn: 2K视频时长（含录制）
+                    en: 2K Video Duration（including Recording)
+                    unit: second
+                  durationVideo4K:
+                    cn: 4K视频时长（含录制）
+                    en: 4K Video Duration（including Recording)
+                    unit: second
+                  durationVideoHd:
+                    cn: HD视频时长（含录制）
+                    en: HD Video Duration（including Recording）
+                    unit: second
+                  durationVideoHdp:
+                    cn: HDP视频时长（含录制）
+                    en: HDP Video Duration（including Recording)
+                    unit: second
+                usages:
+                  - date: '2021-10-12T00:00:00.000Z'
+                    usage:
+                      durationAudioAll: 0
+                      durationVideo1080P: 0
+                      durationVideo2K: 0
+                      durationVideo4K: 0
+                      durationVideoHd: 0
+                      durationVideoHdp: 0
+                  - date: '2021-10-13T00:00:00.000Z'
+                    usage:
+                      durationAudioAll: 779
+                      durationVideo1080P: 0
+                      durationVideo2K: 0
+                      durationVideo4K: 0
+                      durationVideoHd: 60
+                      durationVideoHdp: 0
+                  - date: '2021-10-14T00:00:00.000Z'
+                    usage:
+                      durationAudioAll: 0
+                      durationVideo1080P: 0
+                      durationVideo2K: 0
+                      durationVideo4K: 0
+                      durationVideoHd: 0
+                      durationVideoHdp: 0
+    get-usage-failure:
+      description: 如果状态码不为 200，请求失败。请根据[响应状态码](response-codes)和 `message` 字段进行排查。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/status'
+              message:
+                $ref: '#/components/schemas/message'
+          examples:
+            Example 1:
+              value:
+                status: error
+                message: string
+  schemas:
+    name:
+      type: string
+      title: name
+      description: 项目名称，长度为 1 ~ 255 个字符。
+    enable_sign_key:
+      type: boolean
+      title: enable_sign_key
+      description: "是否启用主要 App 证书：\n- `true`：启用\n- `false`：（默认）不启用\n\n创建项目后，你可以调用[启用或禁用主要 App 证书](update-primary-app-certificate)，或调用[重置主要 App 证书](reset-primary-app-certificate)。"
+    status:
+      type: string
+      title: status
+      description: "本次请求的状态：\n- `success`：请求成功。\n- `error`：请求失败。\n"
+    message:
+      type: string
+      title: mesasge
+      description: 描述请求失败的原因。
+security:
+  - Authorization: []
