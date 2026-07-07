@@ -50,6 +50,11 @@ const PlatformTabsPlacementContext = createContext<{
 });
 const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = ['android', 'ios', 'web'];
 const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
+  'cpp',
+  'swift',
+  'c',
+  'java',
+  'python',
   'macos',
   'windows',
   'flutter',

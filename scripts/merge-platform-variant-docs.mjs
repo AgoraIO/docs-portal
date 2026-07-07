@@ -15,11 +15,17 @@ const DEFAULT_REPORT = 'docs/migration/generated/platform-variant-merge-report';
 const PLATFORM_ORDER = [
   { platform: 'android', suffixes: ['android'] },
   { platform: 'ios', suffixes: ['ios'] },
+  { platform: 'device-c', suffixes: ['device-c'] },
   { platform: 'macos', suffixes: ['macos'] },
   { platform: 'web', suffixes: ['javascript', 'web'] },
   { platform: 'windows', suffixes: ['windows'] },
   { platform: 'harmonyos', suffixes: ['harmonyos'] },
   { platform: 'mini-program', suffixes: ['mini-program', 'wechat'] },
+  { platform: 'cpp', suffixes: ['cpp'] },
+  { platform: 'swift', suffixes: ['swift'] },
+  { platform: 'c', suffixes: ['c'] },
+  { platform: 'java', suffixes: ['java'] },
+  { platform: 'python', suffixes: ['python'] },
   { platform: 'electron', suffixes: ['electron'] },
   { platform: 'unity', suffixes: ['unity'] },
   { platform: 'flutter', suffixes: ['flutter'] },
@@ -142,26 +148,49 @@ function parseVariantFile(filePath) {
   }
 
   const stem = path.basename(filePath, extension);
-  const dotIndex = stem.lastIndexOf('.');
+  let baseSlug = stem;
+  const platforms = [];
+  const suffixes = [];
 
-  if (dotIndex === -1) {
+  while (true) {
+    const dotIndex = baseSlug.lastIndexOf('.');
+
+    if (dotIndex === -1) {
+      break;
+    }
+
+    const suffix = baseSlug.slice(dotIndex + 1);
+    const platform = SUFFIX_TO_PLATFORM.get(suffix);
+
+    if (!platform) {
+      break;
+    }
+
+    platforms.unshift(platform);
+    suffixes.unshift(suffix);
+    baseSlug = baseSlug.slice(0, dotIndex);
+  }
+
+  if (platforms.length === 0) {
     return null;
   }
 
-  const suffix = stem.slice(dotIndex + 1);
-  const platform = SUFFIX_TO_PLATFORM.get(suffix);
-
-  if (!platform) {
-    return null;
-  }
+  const platform =
+    platforms.length === 1 ? platforms[0] : platforms.join('+');
 
   return {
-    baseSlug: stem.slice(0, dotIndex),
+    baseSlug,
     extension,
     platform,
-    rank: PLATFORM_RANK.get(platform) ?? Number.MAX_SAFE_INTEGER,
+    platforms,
+    rank: Math.min(
+      ...platforms.map(
+        (item) => PLATFORM_RANK.get(item) ?? Number.MAX_SAFE_INTEGER,
+      ),
+    ),
     slug: stem,
-    suffix,
+    suffix: suffixes.join('.'),
+    suffixes,
   };
 }
 

@@ -21,7 +21,7 @@ title: "设备端实现 (Linux)"
 
 - 准备平行操控所需的 Linux 开发环境。详见[准备开发环境](/zh-CN/solutions/teleoperation/get-started/run-example#准备开发环境)。
 - 联系 sales@shengwang.cn 获取平行操控 Linux SDK。
-- 初始化 SDK 并与声网 RTC 频道建立连接。详见[准备工作](/zh-CN/realtime-media/rtc-server-sdk/get-started/send-receive.cpp#准备工作)。
+- 初始化 SDK 并与声网 RTC 频道建立连接。详见[准备工作](/zh-CN/realtime-media/rtc-server-sdk/get-started/send-receive#准备工作)。
 
 ## 实现流程
 
@@ -64,7 +64,7 @@ title: "设备端实现 (Linux)"
 
 4. 发送采集的视频数据。
 
-   从摄像头采集到视频数据后，调用 `sendVideoFrame` 发送 YUV 格式的原始视频数据，或调用 `sendEncodedVideoImage` 发送自编码后的 H.264 格式视频数据，详细步骤可以参考[向操控端发送媒体流](/zh-CN/realtime-media/rtc-server-sdk/get-started/send-receive.cpp#向客户端发送媒体流)。
+   从摄像头采集到视频数据后，调用 `sendVideoFrame` 发送 YUV 格式的原始视频数据，或调用 `sendEncodedVideoImage` 发送自编码后的 H.264 格式视频数据，详细步骤可以参考[向操控端发送媒体流](/zh-CN/realtime-media/rtc-server-sdk/get-started/send-receive#向客户端发送媒体流)。
 
     ```cpp
     // 发送 YUV 格式的原始视频数据
