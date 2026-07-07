@@ -7,9 +7,11 @@ import {
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -48,17 +50,28 @@ const PlatformTabsPlacementContext = createContext<{
 }>({
   placement: 'inline',
 });
-const HEADER_PRIMARY_PLATFORMS: PlatformKey[] = ['android', 'ios', 'web'];
-const HEADER_OVERFLOW_PLATFORMS: PlatformKey[] = [
-  'macos',
-  'windows',
-  'flutter',
-  'react-native',
-  'unity',
-  'unreal',
-  'javascript',
-  'electron',
-];
+const useBrowserLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
+const HEADER_TAB_GAP_WIDTH = 24;
+const HEADER_MORE_GAP_WIDTH = 16;
+const HEADER_WIDTH_EPSILON = 0.5;
+const HEADER_TAB_BUTTON_CLASS =
+  'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
+const HEADER_MORE_BUTTON_CLASS =
+  'relative flex h-12 shrink-0 items-center gap-1.5 px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
+
+type HeaderPlatformBuckets = {
+  overflowPlatforms: PlatformKey[];
+  primaryPlatforms: PlatformKey[];
+};
+
+type HeaderPlatformMeasurement = {
+  availableWidth?: number;
+  moreButtonWidth?: number;
+  moreGapWidth?: number;
+  tabGapWidth?: number;
+  tabWidths?: Partial<Record<PlatformKey, number>>;
+};
 
 export function PlatformTabsPlacementProvider({
   children,
@@ -211,10 +224,14 @@ function PlatformHeaderTabsList({
   onValueChange: (value: string) => void;
   platforms: PlatformKey[];
 }) {
-  const { overflowPlatforms, primaryPlatforms } = getHeaderPlatformBuckets(
-    platforms,
-    activePlatform,
+  const [headerBuckets, setHeaderBuckets] = useState<HeaderPlatformBuckets>(
+    () => getHeaderPlatformBuckets(platforms, activePlatform),
   );
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const measurementTabsRef = useRef<HTMLDivElement | null>(null);
+  const measurementMoreRef = useRef<HTMLButtonElement | null>(null);
+  const measurementTabRefs = useRef(new Map<PlatformKey, HTMLButtonElement>());
+  const { overflowPlatforms, primaryPlatforms } = headerBuckets;
   const moreActive = overflowPlatforms.includes(activePlatform);
   const moreLabel = moreActive
     ? getPlatformLabel(activePlatform, locale)
@@ -223,6 +240,85 @@ function PlatformHeaderTabsList({
   const activeTabRef = useRef<HTMLButtonElement | null>(null);
   const menuId = useId();
   const overflowMenuRef = useRef<HTMLDivElement | null>(null);
+  const setMeasurementTabRef = useCallback(
+    (platform: PlatformKey) => (node: HTMLButtonElement | null) => {
+      if (node) {
+        measurementTabRefs.current.set(platform, node);
+        return;
+      }
+
+      measurementTabRefs.current.delete(platform);
+    },
+    [],
+  );
+  const updateHeaderBuckets = useCallback(() => {
+    const container = containerRef.current;
+    const measurementTabs = measurementTabsRef.current;
+    const measurementMore = measurementMoreRef.current;
+
+    const tabWidths = platforms.reduce<Partial<Record<PlatformKey, number>>>(
+      (widths, platform) => {
+        const node = measurementTabRefs.current.get(platform);
+        widths[platform] = node?.getBoundingClientRect().width;
+        return widths;
+      },
+      {},
+    );
+    const containerRect = container?.getBoundingClientRect();
+    const viewportWidth =
+      typeof window === 'undefined' ? undefined : window.innerWidth;
+    const availableWidth =
+      containerRect && viewportWidth
+        ? Math.min(containerRect.width, viewportWidth - containerRect.left)
+        : containerRect?.width;
+
+    const nextBuckets = getHeaderPlatformBuckets(platforms, activePlatform, {
+      availableWidth,
+      moreButtonWidth: measurementMore?.getBoundingClientRect().width,
+      moreGapWidth: readFlexGapWidth(container, HEADER_MORE_GAP_WIDTH),
+      tabGapWidth: readFlexGapWidth(measurementTabs, HEADER_TAB_GAP_WIDTH),
+      tabWidths,
+    });
+
+    setHeaderBuckets((currentBuckets) =>
+      areHeaderPlatformBucketsEqual(currentBuckets, nextBuckets)
+        ? currentBuckets
+        : nextBuckets,
+    );
+  }, [activePlatform, platforms]);
+
+  useBrowserLayoutEffect(() => {
+    updateHeaderBuckets();
+  }, [updateHeaderBuckets]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateHeaderBuckets);
+
+      return () => {
+        window.removeEventListener('resize', updateHeaderBuckets);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(updateHeaderBuckets);
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [updateHeaderBuckets]);
+
+  useEffect(() => {
+    if (overflowPlatforms.length === 0) {
+      setIsMoreOpen(false);
+    }
+  }, [overflowPlatforms.length]);
 
   useEffect(() => {
     if (activeTabRef.current?.dataset.platformTab !== activePlatform) {
@@ -268,20 +364,20 @@ function PlatformHeaderTabsList({
 
   return (
     <div
-      className="inline-flex max-w-full min-w-0 items-stretch gap-4 overflow-visible"
+      className="relative flex w-full max-w-full min-w-0 items-stretch gap-4 overflow-visible"
       data-platform-header-tabs="true"
+      ref={containerRef}
     >
       <div
         aria-label="Platform"
-        className="docs-scrollbar flex min-w-0 flex-1 items-stretch gap-6 overflow-x-auto overflow-y-hidden pr-1"
+        className="flex min-w-0 flex-1 items-stretch gap-6 overflow-hidden pr-1"
         role="tablist"
       >
         {primaryPlatforms.map((platform) => (
           <button
             aria-selected={activePlatform === platform}
             className={cn(
-              'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
-              'after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
+              HEADER_TAB_BUTTON_CLASS,
               activePlatform === platform &&
                 'text-[color:var(--ink-1)] after:opacity-100',
             )}
@@ -304,8 +400,7 @@ function PlatformHeaderTabsList({
             aria-haspopup="menu"
             aria-label="More platforms"
             className={cn(
-              'relative flex h-12 items-center gap-1.5 px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)]',
-              'after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity',
+              HEADER_MORE_BUTTON_CLASS,
               moreActive && 'text-[color:var(--ink-1)] after:opacity-100',
             )}
             data-state={moreActive ? 'active' : 'inactive'}
@@ -349,28 +444,114 @@ function PlatformHeaderTabsList({
           ) : null}
         </div>
       ) : null}
+      <div
+        aria-hidden="true"
+        className="invisible pointer-events-none absolute inset-0 flex items-stretch gap-6 overflow-hidden"
+        data-platform-header-measurement="true"
+        ref={measurementTabsRef}
+      >
+        {platforms.map((platform) => (
+          <button
+            className={HEADER_TAB_BUTTON_CLASS}
+            data-platform-tab-measure={platform}
+            key={platform}
+            ref={setMeasurementTabRef(platform)}
+            tabIndex={-1}
+            type="button"
+          >
+            {getPlatformLabel(platform, locale)}
+          </button>
+        ))}
+        <button
+          className={HEADER_MORE_BUTTON_CLASS}
+          data-platform-more-measure="true"
+          ref={measurementMoreRef}
+          tabIndex={-1}
+          type="button"
+        >
+          More
+          <ChevronDownIcon aria-hidden="true" className="size-4" />
+        </button>
+      </div>
     </div>
   );
 }
 
-function getHeaderPlatformBuckets(
+export function getHeaderPlatformBuckets(
   platforms: PlatformKey[],
   activePlatform: PlatformKey,
-) {
-  const defaultPrimaryPlatforms = HEADER_PRIMARY_PLATFORMS.filter((platform) =>
-    platforms.includes(platform),
-  );
-  const primaryPlatforms = [...defaultPrimaryPlatforms];
-
-  if (
-    platforms.includes(activePlatform) &&
-    !primaryPlatforms.includes(activePlatform)
-  ) {
-    primaryPlatforms.push(activePlatform);
+  measurement: HeaderPlatformMeasurement = {},
+): HeaderPlatformBuckets {
+  if (platforms.length <= 1) {
+    return {
+      overflowPlatforms: [],
+      primaryPlatforms: platforms,
+    };
   }
 
-  const overflowPlatforms = sortHeaderOverflowPlatforms(
-    platforms.filter((platform) => !primaryPlatforms.includes(platform)),
+  const { availableWidth, moreButtonWidth, tabWidths } = measurement;
+  if (
+    typeof availableWidth !== 'number' ||
+    availableWidth <= 0 ||
+    typeof moreButtonWidth !== 'number' ||
+    moreButtonWidth <= 0 ||
+    !tabWidths ||
+    !platforms.every((platform) => {
+      const width = tabWidths?.[platform];
+      return typeof width === 'number' && width > 0;
+    })
+  ) {
+    return {
+      overflowPlatforms: [],
+      primaryPlatforms: platforms,
+    };
+  }
+
+  const tabGapWidth = measurement.tabGapWidth ?? HEADER_TAB_GAP_WIDTH;
+  const allTabsWidth = getHeaderTabsWidth(platforms, tabWidths, tabGapWidth);
+
+  if (fitsHeaderWidth(allTabsWidth, availableWidth)) {
+    return {
+      overflowPlatforms: [],
+      primaryPlatforms: platforms,
+    };
+  }
+
+  const moreGapWidth = measurement.moreGapWidth ?? HEADER_MORE_GAP_WIDTH;
+  const visibleTabsWidth = Math.max(
+    0,
+    availableWidth - moreButtonWidth - moreGapWidth,
+  );
+  const visiblePlatforms = new Set<PlatformKey>();
+
+  if (platforms.includes(activePlatform)) {
+    visiblePlatforms.add(activePlatform);
+  }
+
+  for (const platform of platforms) {
+    if (visiblePlatforms.has(platform)) {
+      continue;
+    }
+
+    const candidatePlatforms = platforms.filter(
+      (candidate) => visiblePlatforms.has(candidate) || candidate === platform,
+    );
+    const candidateWidth = getHeaderTabsWidth(
+      candidatePlatforms,
+      tabWidths,
+      tabGapWidth,
+    );
+
+    if (fitsHeaderWidth(candidateWidth, visibleTabsWidth)) {
+      visiblePlatforms.add(platform);
+    }
+  }
+
+  const primaryPlatforms = platforms.filter((platform) =>
+    visiblePlatforms.has(platform),
+  );
+  const overflowPlatforms = platforms.filter(
+    (platform) => !visiblePlatforms.has(platform),
   );
 
   return {
@@ -379,15 +560,63 @@ function getHeaderPlatformBuckets(
   };
 }
 
-function sortHeaderOverflowPlatforms(platforms: PlatformKey[]) {
-  const preferred = HEADER_OVERFLOW_PLATFORMS.filter((platform) =>
-    platforms.includes(platform),
-  );
-  const remaining = platforms.filter(
-    (platform) => !preferred.includes(platform),
+function getHeaderTabsWidth(
+  platforms: PlatformKey[],
+  tabWidths: Partial<Record<PlatformKey, number>>,
+  tabGapWidth: number,
+) {
+  const tabWidth = platforms.reduce(
+    (width, platform) => width + (tabWidths[platform] ?? 0),
+    0,
   );
 
-  return [...preferred, ...remaining];
+  return tabWidth + Math.max(0, platforms.length - 1) * tabGapWidth;
+}
+
+function fitsHeaderWidth(width: number, availableWidth: number) {
+  return width <= availableWidth + HEADER_WIDTH_EPSILON;
+}
+
+function areHeaderPlatformBucketsEqual(
+  currentBuckets: HeaderPlatformBuckets,
+  nextBuckets: HeaderPlatformBuckets,
+) {
+  return (
+    arePlatformListsEqual(
+      currentBuckets.primaryPlatforms,
+      nextBuckets.primaryPlatforms,
+    ) &&
+    arePlatformListsEqual(
+      currentBuckets.overflowPlatforms,
+      nextBuckets.overflowPlatforms,
+    )
+  );
+}
+
+function arePlatformListsEqual(
+  currentPlatforms: PlatformKey[],
+  nextPlatforms: PlatformKey[],
+) {
+  return (
+    currentPlatforms.length === nextPlatforms.length &&
+    currentPlatforms.every(
+      (platform, index) => platform === nextPlatforms[index],
+    )
+  );
+}
+
+function readFlexGapWidth(
+  element: Element | null | undefined,
+  fallback: number,
+) {
+  if (!element || typeof window === 'undefined') {
+    return fallback;
+  }
+
+  const styles = window.getComputedStyle(element);
+  const gap = Number.parseFloat(styles.columnGap || styles.gap);
+
+  return Number.isFinite(gap) ? gap : fallback;
 }
 
 function PlatformTabs({
@@ -448,33 +677,33 @@ function usePlatformSelection({
       stored && isKnownPlatform(stored) ? stored : null;
   }
 
-  const [activePlatform, setActivePlatform] = useState<
-    PlatformKey | undefined
-  >(() => {
-    if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
-      return undefined;
-    }
+  const [activePlatform, setActivePlatform] = useState<PlatformKey | undefined>(
+    () => {
+      if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
+        return undefined;
+      }
 
-    if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
-      return initialPlatform;
-    }
+      if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
+        return initialPlatform;
+      }
 
-    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-      return defaultPlatform;
-    }
+      if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
+        return defaultPlatform;
+      }
 
-    const stored = storedPlatformPreferenceRef.current;
+      const stored = storedPlatformPreferenceRef.current;
 
-    if (stored && parsedPlatforms.includes(stored)) {
-      return stored;
-    }
+      if (stored && parsedPlatforms.includes(stored)) {
+        return stored;
+      }
 
-    return getDefaultPlatform(
-      parsedPlatforms,
-      canonicalPlatform,
-      defaultPlatform,
-    );
-  });
+      return getDefaultPlatform(
+        parsedPlatforms,
+        canonicalPlatform,
+        defaultPlatform,
+      );
+    },
+  );
   const activePlatformRef = useRef(activePlatform);
   const previousDefaultPlatformRef = useRef(defaultPlatform);
 

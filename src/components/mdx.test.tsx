@@ -155,6 +155,53 @@ function renderWithMdxRouter(children: ReactNode, initialEntry = '/en/ai') {
   };
 }
 
+function createRect(width: number, height = 48): DOMRect {
+  return {
+    bottom: height,
+    height,
+    left: 0,
+    right: width,
+    top: 0,
+    width,
+    x: 0,
+    y: 0,
+    toJSON: () => ({}),
+  } as DOMRect;
+}
+
+function mockPlatformHeaderMeasurements({
+  availableWidth,
+  moreButtonWidth = 64,
+  tabWidths,
+}: {
+  availableWidth: number;
+  moreButtonWidth?: number;
+  tabWidths: Record<string, number>;
+}) {
+  const originalGetBoundingClientRect =
+    window.HTMLElement.prototype.getBoundingClientRect;
+
+  return vi
+    .spyOn(window.HTMLElement.prototype, 'getBoundingClientRect')
+    .mockImplementation(function getBoundingClientRect(this: HTMLElement) {
+      const measuredPlatform = this.dataset.platformTabMeasure;
+
+      if (this.dataset.platformHeaderTabs === 'true') {
+        return createRect(availableWidth);
+      }
+
+      if (this.dataset.platformMoreMeasure === 'true') {
+        return createRect(moreButtonWidth);
+      }
+
+      if (measuredPlatform) {
+        return createRect(tabWidths[measuredPlatform] ?? 0);
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+}
+
 describe('common MDX registry', () => {
   beforeEach(() => {
     window.history.replaceState({}, '', '/en/introduction/about-agora');
@@ -681,101 +728,159 @@ describe('common MDX registry', () => {
     ).not.toBeVisible();
   });
 
-  it('renders compact header platforms, defaults to the first platform, and moves overflow into More', async () => {
+  it('renders measured header platforms, defaults to the first platform, and moves overflow into More', async () => {
+    const measurements = mockPlatformHeaderMeasurements({
+      availableWidth: 320,
+      tabWidths: {
+        android: 70,
+        flutter: 72,
+        ios: 34,
+        macos: 62,
+        'react-native': 112,
+        unity: 52,
+        web: 44,
+        windows: 78,
+      },
+    });
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
     const Panel = components._PlatformPanel as PlatformPanelComponent;
 
-    render(
-      <>
+    try {
+      render(
+        <>
+          <PlatformHeaderTabs
+            canonicalPlatform="web"
+            defaultPlatform="android"
+            platforms='["android","ios","web","macos","windows","flutter","react-native","unity"]'
+          />
+          <Group
+            canonicalPlatform="web"
+            defaultPlatform="android"
+            groupMode="structured"
+            platforms='["android","ios","web","macos","windows","flutter","react-native","unity"]'
+            tabsPlacement="header"
+          >
+            <Panel platform="android">Android instructions</Panel>
+            <Panel platform="web">Web instructions</Panel>
+            <Panel platform="flutter">Flutter instructions</Panel>
+          </Group>
+        </>,
+      );
+
+      await waitFor(() => {
+        expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
+      });
+
+      const tablist = screen.getByRole('tablist', { name: 'Platform' });
+      const headerGroup = tablist.closest('[data-platform-header-tabs="true"]');
+      const moreButton = screen.getByRole('button', {
+        name: 'More platforms',
+      });
+
+      expect(headerGroup).toHaveClass('flex');
+      expect(headerGroup).toHaveClass('w-full');
+      expect(headerGroup).toHaveClass('max-w-full');
+      expect(headerGroup).toHaveClass('gap-4');
+      expect(headerGroup).toHaveClass('overflow-visible');
+      expect(tablist).toHaveClass('flex-1');
+      expect(tablist).toHaveClass('overflow-hidden');
+      expect(moreButton.parentElement).toHaveClass('relative');
+      expect(moreButton.parentElement).toHaveClass('shrink-0');
+      expect(moreButton).not.toHaveClass('border-l');
+      expect(moreButton).not.toHaveClass('pl-6');
+      expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      );
+      expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
+      expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
+      expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
+
+      fireEvent.click(moreButton);
+
+      const flutterItem = await screen.findByRole('menuitem', {
+        name: 'Flutter',
+      });
+
+      expect(screen.getByRole('menu')).toBeVisible();
+      expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+      expect(screen.getByRole('menuitem', { name: 'Windows' })).toBeVisible();
+      expect(
+        screen.getByRole('menuitem', { name: 'React Native' }),
+      ).toBeVisible();
+      expect(
+        screen.getByText('Android instructions').closest('section'),
+      ).toBeVisible();
+      expect(
+        screen.getByText('Flutter instructions').closest('section'),
+      ).not.toBeVisible();
+      expect(
+        screen.getByRole('button', { name: 'More platforms' }),
+      ).toHaveAttribute('data-state', 'inactive');
+
+      fireEvent.click(flutterItem);
+
+      await waitFor(() => {
+        expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
+          'aria-selected',
+          'true',
+        );
+      });
+      expect(
+        screen.getByText('Flutter instructions').closest('section'),
+      ).toBeVisible();
+      expect(
+        screen.getByText('Android instructions').closest('section'),
+      ).not.toBeVisible();
+      expect(
+        screen.getByRole('button', { name: 'More platforms' }),
+      ).toHaveAttribute('data-state', 'inactive');
+
+      fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+
+      expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
+      expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+    } finally {
+      measurements.mockRestore();
+    }
+  });
+
+  it('does not show More when measured header platforms all fit', async () => {
+    const measurements = mockPlatformHeaderMeasurements({
+      availableWidth: 400,
+      tabWidths: {
+        android: 70,
+        flutter: 72,
+        ios: 34,
+        web: 44,
+      },
+    });
+
+    try {
+      render(
         <PlatformHeaderTabs
           canonicalPlatform="web"
           defaultPlatform="android"
-          platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
-        />
-        <Group
-          canonicalPlatform="web"
-          defaultPlatform="android"
-          groupMode="structured"
-          platforms='["android","ios","macos","web","windows","flutter","react-native","unity"]'
-          tabsPlacement="header"
-        >
-          <Panel platform="android">Android instructions</Panel>
-          <Panel platform="web">Web instructions</Panel>
-          <Panel platform="flutter">Flutter instructions</Panel>
-        </Group>
-      </>,
-    );
+          platforms='["android","ios","web","flutter"]'
+        />,
+      );
 
-    const tablist = screen.getByRole('tablist', { name: 'Platform' });
-    const headerGroup = tablist.closest('[data-platform-header-tabs="true"]');
-    const moreButton = screen.getByRole('button', { name: 'More platforms' });
+      await waitFor(() => {
+        expect(
+          screen.queryByRole('button', { name: 'More platforms' }),
+        ).toBeNull();
+      });
 
-    expect(headerGroup).toHaveClass('inline-flex');
-    expect(headerGroup).toHaveClass('max-w-full');
-    expect(headerGroup).toHaveClass('gap-4');
-    expect(headerGroup).toHaveClass('overflow-visible');
-    expect(tablist).toHaveClass('flex-1');
-    expect(tablist).toHaveClass('overflow-x-auto');
-    expect(tablist).toHaveClass('overflow-y-hidden');
-    expect(tablist).toHaveClass('docs-scrollbar');
-    expect(moreButton.parentElement).toHaveClass('relative');
-    expect(moreButton.parentElement).toHaveClass('shrink-0');
-    expect(moreButton).not.toHaveClass('border-l');
-    expect(moreButton).not.toHaveClass('pl-6');
-    expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
-    expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
-    expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
-    expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
-    expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
-
-    fireEvent.click(moreButton);
-
-    const flutterItem = await screen.findByRole('menuitem', {
-      name: 'Flutter',
-    });
-
-    expect(screen.getByRole('menu')).toBeVisible();
-    expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
-    expect(screen.getByRole('menuitem', { name: 'Windows' })).toBeVisible();
-    expect(
-      screen.getByRole('menuitem', { name: 'React Native' }),
-    ).toBeVisible();
-    expect(
-      screen.getByText('Android instructions').closest('section'),
-    ).toBeVisible();
-    expect(
-      screen.getByText('Flutter instructions').closest('section'),
-    ).not.toBeVisible();
-    expect(
-      screen.getByRole('button', { name: 'More platforms' }),
-    ).toHaveAttribute('data-state', 'inactive');
-
-    fireEvent.click(flutterItem);
-
-    expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
-    expect(
-      screen.getByText('Flutter instructions').closest('section'),
-    ).toBeVisible();
-    expect(
-      screen.getByText('Android instructions').closest('section'),
-    ).not.toBeVisible();
-    expect(
-      screen.getByRole('button', { name: 'More platforms' }),
-    ).toHaveAttribute('data-state', 'inactive');
-
-    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
-
-    expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
-    expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+      expect(screen.getByRole('tab', { name: 'Android' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'Flutter' })).toBeInTheDocument();
+    } finally {
+      measurements.mockRestore();
+    }
   });
 
   it('uses the canonical page default before stored preference without overwriting it', () => {
@@ -831,6 +936,16 @@ describe('common MDX registry', () => {
   it('keeps an initial overflow platform visible as a selected header tab', () => {
     const originalScrollIntoView = window.HTMLElement.prototype.scrollIntoView;
     const scrollIntoView = vi.fn();
+    const measurements = mockPlatformHeaderMeasurements({
+      availableWidth: 304,
+      tabWidths: {
+        android: 70,
+        flutter: 72,
+        ios: 34,
+        unity: 52,
+        web: 44,
+      },
+    });
     window.HTMLElement.prototype.scrollIntoView = scrollIntoView;
 
     try {
@@ -841,7 +956,22 @@ describe('common MDX registry', () => {
           platforms='["android","ios","web","flutter","unity"]'
         />,
       );
+
+      expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      );
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+
+      fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
+
+      expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
+      expect(screen.getByRole('menuitem', { name: 'Unity' })).toBeVisible();
     } finally {
+      measurements.mockRestore();
       if (originalScrollIntoView) {
         window.HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
       } else {
@@ -849,20 +979,6 @@ describe('common MDX registry', () => {
           .scrollIntoView;
       }
     }
-
-    expect(screen.getByRole('tab', { name: 'Flutter' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
-    expect(scrollIntoView).toHaveBeenCalledWith({
-      block: 'nearest',
-      inline: 'nearest',
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'More platforms' }));
-
-    expect(screen.queryByRole('menuitem', { name: 'Flutter' })).toBeNull();
-    expect(screen.getByRole('menuitem', { name: 'Unity' })).toBeVisible();
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {
