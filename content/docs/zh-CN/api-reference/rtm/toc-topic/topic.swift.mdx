@@ -22,7 +22,7 @@ Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，�
 - 在执行此操作之前，用户需要首先创建 `AgoraRtmStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `remoteJoinTopic` 类型的 `didReceiveTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `remoteJoinTopic` 类型的 `didReceiveTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -62,8 +62,8 @@ joinTopic(
 
 | 属性            | 类型                  | 必填 | 默认值               | 描述   |
 | -------------- | ---------------- | --- | --------------- | ------------ |
-| `qos`           | `AgoraRtmMessageQos` | 选填 | `.ordered` | 定义此 Topic 中传输数据是否保序。详见 [`AgoraRtmMessageQos`](/zh-CN/api-reference/rtm/enumv.android.swift#messageqos)。            |
-| `priority`      | `AgoraRtmMessagePriority`   | 选填 | `.normal`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`AgoraRtmMessagePriority`](/zh-CN/api-reference/rtm/enumv.android.swift#messagepriority)。 |
+| `qos`           | `AgoraRtmMessageQos` | 选填 | `.ordered` | 定义此 Topic 中传输数据是否保序。详见 [`AgoraRtmMessageQos`](/zh-CN/api-reference/rtm/enumv#messageqos)。            |
+| `priority`      | `AgoraRtmMessagePriority`   | 选填 | `.normal`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`AgoraRtmMessagePriority`](/zh-CN/api-reference/rtm/enumv#messagepriority)。 |
 | `meta`          | String              | 选填 | -                    | 加入 Topic 时携带的其他辅助信息。                |
 | `syncWithMedia` | Bool                  | 选填 | `false`              | 此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。    |
 
@@ -116,7 +116,7 @@ stChannel.joinTopic(topic, option: joinOption) { (response, error) in
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
 
 ### 接口方法
 
@@ -297,7 +297,7 @@ stChannel.publishTopicMessage(
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `remoteLeaveTopic` 类型的 `didReceiveTopicEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `remoteLeaveTopic` 类型的 `didReceiveTopicEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 

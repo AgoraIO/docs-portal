@@ -11,7 +11,7 @@ title: "Lock"
 
 ### 接口描述
 
-你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `lockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+你需要配置锁的名称、过期时间 TTL 等属性，然后调用 `setLock` 方法进行配置。配置成功后，频道中的所有用户会收到 `lockSet` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -39,7 +39,7 @@ setLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `ttl` | Int32 | 选填 | `10` | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `lockReleased` 事件。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-0-5-4" /> |
@@ -111,7 +111,7 @@ rtmClient.setLock(
 
 ### 接口描述
 
-成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `lockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功配置 Lock 后，你可以在客户端调用 `acquireLock` 方法获取锁的使用权。成功获取锁后，频道中的其他用户会收到 `lockAcquired` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -139,7 +139,7 @@ acquireLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `retry` | Bool | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-1-5-4" /> |
@@ -213,7 +213,7 @@ rtmClient.acquireLock(
 
 ### 接口描述
 
-当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+当用户不再需要持有某把锁时，用户可以在客户端调用 `releaseLock` 方法主动释放锁。成功释放后，频道中的其他用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -241,7 +241,7 @@ releaseLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-2-4-4" /> |
 
@@ -308,7 +308,7 @@ rtmClient.releaseLock(
 
 ### 接口描述
 
-当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+当锁被占用时，为保证你的业务不受影响，你可能需要收回该锁，并让其他用户有机会获取该锁。调用 `revokeLock` 收回被占用的锁。成功收回后，频道中的所有用户会收到 `lockReleased` 类型的 `didReceiveLockEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 此时，如果其他用户想要获取该锁，可以在客户端调用 `acquireLock` 方法参与竞争。新参与获取锁的用户和之前设置 `retry` 属性自动尝试获取锁的用户的竞争优先级相同。
 
@@ -338,7 +338,7 @@ revokeLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `userId` | String | 必填 | - | 拥有锁的用户 ID。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-3-5-4" /> |
@@ -431,7 +431,7 @@ getLocks(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `completion` | `AgoraRtmGetLocksBlock` | 选填 | - | <Slot name="lock-swift-html-4-3-4" /> |
 
 <Slot for="lock-swift-html-4-3-4">
@@ -506,7 +506,7 @@ rtmClient.getLocks(
 
 ### 接口描述
 
-如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `lockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+如果你不再需要频道中的某把锁，你可以调用 `removeLock` 方法删除该锁。成功删除锁后，频道中的所有用户会收到 `lockRemoved` 类型的 `didReceiveLockEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -533,7 +533,7 @@ removeLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-swift-html-5-4-4" /> |
 
