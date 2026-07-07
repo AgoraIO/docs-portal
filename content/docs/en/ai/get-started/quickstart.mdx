@@ -37,21 +37,21 @@ curl -fsSL https://agoraio.github.io/cli/install.sh | sh
 agora --help
 ```
 
-If the `agora` command is not found after installation, manually add the install
-directory to your shell profile.
+If the `agora` command is not found after installation, re-run with `--add-to-path` or
+manually add the install directory to your shell profile.
 
 </TabsContent>
 
 <TabsContent value="windows-powershell">
 
-```text
-irm https://raw.githubusercontent.com/AgoraIO/cli/main/install.ps1 | iex
+```powershell
+irm https://agoraio.github.io/cli/install.ps1 | iex
 agora --help
 ```
 
 If your execution policy blocks inline scripts, download `install.ps1` and run:
 
-```text
+```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
