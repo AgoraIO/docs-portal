@@ -18,11 +18,12 @@ The following table lists the support of Agora products for the two solutions:
 - When using the firewall whitelist, add the domains and ports to the firewall whitelist, and do not set restrictions on IP addresses.
 - When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy)
 
-###  Video SDK (Web)
+### Video SDK (Web)
 
 Add the following destination domains and the corresponding ports to your firewall whitelist.
 
 #### Domains
+
 ```text
 .agora.io
 .edge.agora.io
@@ -31,7 +32,15 @@ Add the following destination domains and the corresponding ports to your firewa
 .ap.sd-rtn.com
 .statscollector.sd-rtn.com
 .webrtc-cloud-proxy.sd-rtn.com
+.rtnsvc.com
+.edge.rtnsvc.com
+.rtesvc.com
+.edge.rtesvc.com
 ```
+
+:::info
+To improve connectivity over public networks, we recommend adding the domains listed above to your firewall allowlist.
+:::
 
 #### Ports
 
