@@ -6,6 +6,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import {
@@ -44,6 +45,17 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
+    const movedDocsRedirect = resolveMovedDocsRedirect(
+      params.locale,
+      params.tab,
+      slugSegments,
+    );
+
+    if (movedDocsRedirect) {
+      throw redirect({
+        href: preserveRedirectSearch(movedDocsRedirect, location),
+      });
+    }
 
     if (shouldUseStaticDocsPayload()) {
       const legacyRedirect = resolveStaticLegacySitemapRedirect(
