@@ -87,11 +87,7 @@ const NON_SCOPE_TAB_IDS = new Set(['introduction', 'best-practices']);
 export function getProductScopes(root: Root): ProductScope[] {
   return getTabNodes(root).flatMap((node): ProductScope[] => {
     const item = getTabIndex(node);
-    if (!item) {
-      return [];
-    }
-
-    const tabId = getTabIdFromUrl(item.url);
+    const tabId = getTabIdFromNode(node);
     if (!tabId || NON_SCOPE_TAB_IDS.has(tabId)) {
       return [];
     }
@@ -99,7 +95,7 @@ export function getProductScopes(root: Root): ProductScope[] {
     const tabLabel =
       node.type === 'folder'
         ? normalizeLabel(node.name, tabId)
-        : normalizeLabel(item.name, tabId);
+        : normalizeLabel(item?.name, tabId);
 
     if (PRODUCT_SCOPE_TAB_IDS.has(tabId) && node.type === 'folder') {
       return node.children.flatMap((child): ProductScope[] => {
@@ -137,7 +133,7 @@ export function getProductScopes(root: Root): ProductScope[] {
       scope: { field: 'tab', value: tabId },
     };
 
-    if (typeof item.description === 'string') {
+    if (typeof item?.description === 'string') {
       scope.description = item.description;
     }
 
@@ -148,13 +144,15 @@ export function getProductScopes(root: Root): ProductScope[] {
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
-
-    if (!item) {
+    const id = getTabIdFromNode(node);
+    if (!id) {
       return [];
     }
 
-    const id = getTabIdFromUrl(item.url);
-    if (!id) {
+    const url =
+      item?.url ??
+      (node.type === 'folder' ? getFirstDescendantPageUrl(node) : null);
+    if (!url) {
       return [];
     }
 
@@ -163,11 +161,11 @@ export function getTabSummaries(root: Root): TabSummary[] {
       title:
         node.type === 'folder'
           ? normalizeLabel(node.name, id)
-          : normalizeLabel(item.name, id),
-      url: item.url,
+          : normalizeLabel(item?.name, id),
+      url,
     };
 
-    if (typeof item.description === 'string') {
+    if (typeof item?.description === 'string') {
       summary.description = item.description;
     }
 
@@ -617,12 +615,7 @@ function getTabIndex(node: Node): Item | undefined {
 
 function findTabNode(root: Root, activeTab: string): Node | undefined {
   return getTabNodes(root).find((node) => {
-    const item = getTabIndex(node);
-    if (!item) {
-      return false;
-    }
-
-    return getTabIdFromUrl(item.url) === activeTab;
+    return getTabIdFromNode(node) === activeTab;
   });
 }
 
@@ -821,6 +814,58 @@ function findSidebarBreadcrumb(
 function getTabIdFromUrl(url: string) {
   const segments = url.split('/').filter(Boolean);
   return segments[1];
+}
+
+const KNOWN_ROOT_TAB_IDS = [
+  'api-reference',
+  'best-practices',
+  'realtime-media',
+  'introduction',
+  'solutions',
+  'sdks',
+  'ai',
+] as const;
+
+const ROOT_TAB_IDS_BY_TITLE: Record<string, (typeof KNOWN_ROOT_TAB_IDS)[number]> =
+  {
+    'API 参考': 'api-reference',
+    AI: 'ai',
+    介绍: 'introduction',
+    实时与媒体: 'realtime-media',
+    解决方案: 'solutions',
+  };
+
+function getTabIdFromNode(node: Node) {
+  const item = getTabIndex(node);
+  const urlTabId = item ? getTabIdFromUrl(item.url) : undefined;
+
+  if (urlTabId) {
+    return urlTabId;
+  }
+
+  if (node.type !== 'folder') {
+    return undefined;
+  }
+
+  const nodeId = typeof node.$id === 'string' ? node.$id : '';
+  const idTab = KNOWN_ROOT_TAB_IDS.find(
+    (tabId) =>
+      nodeId === tabId ||
+      nodeId === `${tabId}-folder` ||
+      nodeId.endsWith(`-${tabId}`) ||
+      nodeId.endsWith(`-${tabId}-folder`),
+  );
+
+  if (idTab) {
+    return idTab;
+  }
+
+  if (typeof node.name === 'string' && ROOT_TAB_IDS_BY_TITLE[node.name]) {
+    return ROOT_TAB_IDS_BY_TITLE[node.name];
+  }
+
+  const nameSlug = folderSlug(node.name);
+  return /^[a-z0-9-]+$/.test(nameSlug) ? nameSlug : undefined;
 }
 
 function getTabNodes(root: Root): Node[] {

@@ -296,6 +296,49 @@ describe('docs tree helpers', () => {
     ]);
   });
 
+  it('uses the first descendant page for root folders without index pages', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'zh-CN-root',
+          children: [
+            {
+              $id: 'zh-CN-root-tab-1',
+              children: [
+                {
+                  $id: 'zh-CN-rtc-folder',
+                  children: [],
+                  index: {
+                    $id: 'zh-CN-rtc-index',
+                    name: '实时音视频',
+                    type: 'page',
+                    url: '/zh-CN/realtime-media/rtc',
+                  },
+                  name: '实时音视频',
+                  type: 'folder',
+                },
+              ],
+              name: '实时与媒体',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    expect(getTabSummaries(tree)).toEqual([
+      {
+        id: 'realtime-media',
+        title: '实时与媒体',
+        url: '/zh-CN/realtime-media/rtc',
+      },
+    ]);
+  });
+
   it('preserves configured tab and section icons from the page tree', () => {
     const tree: Root = {
       children: [
@@ -1116,10 +1159,10 @@ describe('docs tree helpers', () => {
           url: '/zh-CN/introduction/recording',
         },
         {
-          id: '/zh-CN/introduction/ppt-transcoding',
+          id: '/zh-CN/solutions/ppt-transcoding',
           title: 'PPT 转码',
           type: 'page',
-          url: '/zh-CN/introduction/ppt-transcoding',
+          url: '/zh-CN/solutions/ppt-transcoding',
         },
       ]),
     ).toEqual([
@@ -1138,10 +1181,10 @@ describe('docs tree helpers', () => {
             url: '/zh-CN/introduction/recording',
           },
           {
-            id: '/zh-CN/introduction/ppt-transcoding',
+            id: '/zh-CN/solutions/ppt-transcoding',
             title: 'PPT 转码',
             type: 'page',
-            url: '/zh-CN/introduction/ppt-transcoding',
+            url: '/zh-CN/solutions/ppt-transcoding',
           },
         ],
         collapsible: true,
