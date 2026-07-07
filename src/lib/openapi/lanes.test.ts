@@ -45,7 +45,15 @@ describe('openapi lanes', () => {
       }),
       expect.objectContaining({
         id: 'cloud-recording-rest',
+        publicSourceUrl: {
+          en: '/openapi/cloud-recording/cloud-recording.en.yaml',
+          'zh-CN': '/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
+        },
         routePrefix: 'api-reference/api-ref/cloud-recording',
+        sourcePath: {
+          en: 'content/openapi/cloud-recording/cloud-recording.en.yaml',
+          'zh-CN': 'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
+        },
         tab: 'api-reference',
       }),
       expect.objectContaining({
@@ -197,22 +205,28 @@ describe('openapi lanes', () => {
 
     expect(route?.lane.operations).toMatchObject({
       'acquire-cloud-recording-resource': {
-        title: { en: 'Acquire a resource ID' },
+        title: { en: 'Acquire a resource ID', 'zh-CN': '获取云端录制资源' },
       },
       'start-cloud-recording': {
-        title: { en: 'Start a cloud recording task' },
+        title: { en: 'Start a cloud recording task', 'zh-CN': '开始云端录制' },
       },
       'update-cloud-recording': {
-        title: { en: 'Update task settings' },
+        title: { en: 'Update task settings', 'zh-CN': '更新云端录制设置' },
       },
       'update-cloud-recording-layout': {
-        title: { en: 'Update layout' },
+        title: { en: 'Update layout', 'zh-CN': '更新云端录制合流布局' },
       },
       'query-cloud-recording': {
-        title: { en: 'Query status' },
+        title: { en: 'Query status', 'zh-CN': '查询云端录制状态' },
       },
       'stop-cloud-recording': {
-        title: { en: 'Stop a cloud recording task' },
+        title: { en: 'Stop a cloud recording task', 'zh-CN': '停止云端录制' },
+      },
+      'get-ncs-ip': {
+        title: {
+          en: 'Query message notification server IP addresses',
+          'zh-CN': '查询消息通知服务器 IP',
+        },
       },
     });
   });

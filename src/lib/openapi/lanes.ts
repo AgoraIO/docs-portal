@@ -252,12 +252,12 @@ export const OPENAPI_LANES = [
     },
     publicSourceUrl: {
       en: '/openapi/cloud-recording/cloud-recording.en.yaml',
-      'zh-CN': '/openapi/cloud-recording/cloud-recording.en.yaml',
+      'zh-CN': '/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
     },
     routePrefix: 'api-reference/api-ref/cloud-recording',
     sourcePath: {
       en: 'content/openapi/cloud-recording/cloud-recording.en.yaml',
-      'zh-CN': 'content/openapi/cloud-recording/cloud-recording.en.yaml',
+      'zh-CN': 'content/openapi/cloud-recording/cloud-recording.zh-CN.yaml',
     },
     tab: 'api-reference',
     operations: {
@@ -265,49 +265,49 @@ export const OPENAPI_LANES = [
         routeLeaf: 'acquire',
         title: {
           en: 'Acquire a resource ID',
-          'zh-CN': 'Acquire a resource ID',
+          'zh-CN': '获取云端录制资源',
         },
       },
       'start-cloud-recording': {
         routeLeaf: 'start',
         title: {
           en: 'Start a cloud recording task',
-          'zh-CN': 'Start a cloud recording task',
+          'zh-CN': '开始云端录制',
         },
       },
       'update-cloud-recording': {
         routeLeaf: 'update',
         title: {
           en: 'Update task settings',
-          'zh-CN': 'Update task settings',
+          'zh-CN': '更新云端录制设置',
         },
       },
       'update-cloud-recording-layout': {
         routeLeaf: 'update-layout',
         title: {
           en: 'Update layout',
-          'zh-CN': 'Update layout',
+          'zh-CN': '更新云端录制合流布局',
         },
       },
       'query-cloud-recording': {
         routeLeaf: 'query',
         title: {
           en: 'Query status',
-          'zh-CN': 'Query status',
+          'zh-CN': '查询云端录制状态',
         },
       },
       'stop-cloud-recording': {
         routeLeaf: 'stop',
         title: {
           en: 'Stop a cloud recording task',
-          'zh-CN': 'Stop a cloud recording task',
+          'zh-CN': '停止云端录制',
         },
       },
       'get-ncs-ip': {
         routeLeaf: 'get-ncs-ip',
         title: {
           en: 'Query message notification server IP addresses',
-          'zh-CN': 'Query message notification server IP addresses',
+          'zh-CN': '查询消息通知服务器 IP',
         },
       },
     },
