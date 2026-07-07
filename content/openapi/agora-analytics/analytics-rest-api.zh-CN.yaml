@@ -1,0 +1,1846 @@
+openapi: 3.1.0
+x-stoplight:
+  id: 9r0isom11hvse
+info:
+  version: ''
+  title: API 概述
+  description: '水晶球为实时音视频（RTC）产品提供 RESTful API，让你直接通过网络请求获取水晶球里的数据，在自己的网页或应用中灵活使用。
+
+
+    调用水晶球 RESTful API 之前，我们推荐你先在[控制台](https://console.shengwang.cn)中试用水晶球，以便对各项参数和数据指标有更直观的了解。详情可参考以下使用指南：
+
+
+    - [通话调查](https://doc.shengwang.cn/doc/analytics/general/rtc/call-search/overview)
+
+    - [数据洞察普通版](https://doc.shengwang.cn/doc/analytics/general/rtc/data-insight/basic)
+
+    - [数据洞察 Plus](https://doc.shengwang.cn/doc/analytics/general/rtc/data-insight/plus)
+
+    - [实时监控](https://doc.shengwang.cn/doc/analytics/general/rtc/monitor)
+
+
+    ## 认证方式
+
+
+    水晶球 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 Authorization 字段中。详见[使用 HTTP 认证](https://doc.shengwang.cn/doc/rtc/restful/user-guides/http-basic-auth)。
+
+
+    ## 数据格式
+
+
+    为了提高请求的响应速度，你需要根据业务服务器所在的地址选择发送请求的域名：
+
+    - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 `api.sd-rtn.com`。
+
+    - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 `api.agora.io`。
+
+
+    > 水晶球 RESTful API 参考文档将以 `api.sd-rtn.com` 为例。
+
+
+    请求直接在 URL 中使用查询字符串参数（query String）；响应内容的格式为 JSON。
+
+
+    ## 调用限制
+
+
+    水晶球 RESTful API 根据项目订阅的水晶球套餐包具有不同的调用限制，包括请求频率、查询范围、数据延迟等，详见[调用限制](https://doc.shengwang.cn/doc/analytics/general/rtc/api-limits)。'
+servers:
+- url: https://api.sd-rtn.com
+paths:
+  /beta/analytics/call/lists:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取频道通话列表
+      description: 获取符合指定条件的通话及其基本信息。
+      operationId: get-beta-analytics-call-lists
+      parameters:
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/cname'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/page_no'
+      - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  total_size:
+                    $ref: '#/components/schemas/total_size'
+                  page_no:
+                    $ref: '#/components/schemas/page_no'
+                  page_size:
+                    $ref: '#/components/schemas/page_size'
+                  has_more:
+                    $ref: '#/components/schemas/has_more'
+                  call_lists:
+                    $ref: '#/components/schemas/call_lists'
+              examples:
+                Example 1:
+                  value:
+                    code: 0
+                    message: string
+                    requestId: 15c99xxxxxxxxxxx9be9b
+                    total_size: 101
+                    page_no: 1
+                    page_size: 20
+                    has_more: true
+                    call_lists:
+                    - call_id: cxxxxxxxxxxxxxxxxxxxx
+                      cname: cname1
+                      created_ts: 1547448383
+                      destroyed_ts: 1547448483
+                      finished: true
+                      call_pcu: 2
+                      call_acu: 2
+                      call_audio_freeze_rate: 0.12
+                      call_video_freeze_rate: 0.07
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: bzhtqvod450p9
+  /beta/analytics/call/sessions:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取用户通话详情
+      description: 通过指定通话 ID 来获取用户的通话详情。
+      operationId: get-beta-analytics-call-sessions
+      parameters:
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/call_id'
+      - $ref: '#/components/parameters/page_no'
+      - $ref: '#/components/parameters/page_size'
+      - $ref: '#/components/parameters/uids'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/exclude_server_user'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  has_more:
+                    $ref: '#/components/schemas/has_more'
+                  total_size:
+                    $ref: '#/components/schemas/total_size'
+                  page_no:
+                    $ref: '#/components/schemas/page_no'
+                  page_size:
+                    $ref: '#/components/schemas/page_size'
+                  call_info:
+                    $ref: '#/components/schemas/call_info'
+              examples:
+                Example 1:
+                  value:
+                    code: 0
+                    message: string
+                    requestId: 15c99xxxxxxxxxxx9be9b
+                    total_size: 101
+                    page_no: 1
+                    page_size: 20
+                    call_info:
+                    - sid: xxxxxxxxxxxxxxxxxxx
+                      cname: cname1
+                      uid: '1234567'
+                      account: UserA
+                      network: LAN
+                      platform: Linux
+                      speaker: false
+                      roles:
+                      - SPEAKER
+                      - SCREEN_SHARER
+                      sdk_version: 2.3.3.150
+                      device_type: Linux version 4.14.255-311-248.529.amzn2.x86_64 (mockbuild@ip-10
+                      join_ts: 1692584005
+                      leave_ts: 1692584015
+                      finished: true
+                      user_audio_freeze_rate: 0.01
+                      user_video_freeze_rate: 0.03
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: crp9vv3y50dhm
+  /beta/analytics/call/metrics:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取通话质量指标
+      description: 获取指定通话的质量指标数据。
+      operationId: get-beta-analytics-call-metrics
+      parameters:
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/call_id'
+      - $ref: '#/components/parameters/sids'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  metrics:
+                    $ref: '#/components/schemas/metrics'
+                x-examples:
+                  Example 1:
+                    code: 200
+                    message: 'Success request: /beta/analytics/call/metrics'
+                    requestId: 11cc652bd1d58b14548184d81be99dbdee65e
+                    metrics:
+                    - sid: AFC3A9C2013C41BCA574F76A51DE0DF5
+                      data:
+                      - mid: 20004
+                        kvs:
+                        - - 1692584338
+                          - 36
+                        - - 1692584342
+                          - 39
+                        - - 1692584344
+                          - 42
+                        - - 1692584350
+                          - 31
+                        - - 1692584356
+                          - 35
+                        peer_uid: 1
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: lnpyhy4u4x6do
+  /beta/analytics/call/statistics:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取通话统计数据
+      description: 获取指定通话在指定时间范围内、指定维度下的音频卡顿率或视频卡顿率统计数据。
+      operationId: get-beta-analytics-call-statistics
+      parameters:
+      - $ref: '#/components/parameters/call_id'
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/appid'
+      - name: metric
+        in: query
+        description: '要查询的指标，支持设为以下值：
+
+          - `audio_freeze_rate`：音频卡顿率。
+
+          - `video_freeze_rate`：视频卡顿率。'
+        required: true
+        schema:
+          type: string
+      - name: dimension
+        in: query
+        description: '统计维度，支持设为以下值：
+
+          - `country`：国家。
+
+          - `region`：地区。
+
+          - `net`：网络类型。
+
+          - `sdk`：SDK 版本。
+
+          - `os`：操作系统。
+
+          - `device`：设备型号。'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  data:
+                    type: array
+                    description: 由纬度、用户数和指标值组成的数组。
+                    items:
+                      type: object
+                      properties:
+                        dimension_value:
+                          type: string
+                          description: 统计维度的值，对应请求时传入的 `dimension`。
+                        user_count:
+                          type: number
+                          description: 用户数。
+                        value:
+                          type: number
+                          description: 查询时间范围内的平均指标值，对应请求时传入的 `metric`。
+                x-examples:
+                  Example 1:
+                    code: 200
+                    message: 'Success request: /beta/analytics/call/statistics'
+                    requestId: 191356c1318c8714b6b1800b1269b6084860f
+                    data:
+                    - dimension_value: 3.7.1.247
+                      user_count: 6
+                      value: 0.007
+              examples:
+                以统计维度为 SDK 版:
+                  value:
+                    code: 200
+                    message: 'Success request: /beta/analytics/call/statistics'
+                    requestId: 191xxxxxxxxxxxxxxxx0f
+                    data:
+                    - dimension_value: 3.7.1.247
+                      user_count: 6
+                      value: 0.007
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: bafyc73rgbpl6
+  /beta/analytics/call/freeze/bucket:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取通话卡顿率分桶数据
+      description: 获取指定通话在指定时间范围内的音频卡顿率或视频卡顿率分桶统计数据。
+      operationId: get-beta-analytics-call-freeze-bucket
+      parameters:
+      - $ref: '#/components/parameters/call_id'
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/appid'
+      - name: metric
+        in: query
+        description: '要查询的指标，支持设为以下值：
+
+          - `audio_freeze_rate`：音频卡顿率。
+
+          - `video_freeze_rate`：视频卡顿率。'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  data:
+                    type: array
+                    description: 由分桶和人数组成的数组。
+                    items:
+                      type: object
+                      properties:
+                        bucket:
+                          type: string
+                          description: '通话卡顿率分桶，体现了卡顿率的分布情况。包括以下值：
+
+                            - [0%,3%)
+
+                            - [3%,5%)
+
+                            - [5%,10%)
+
+                            - [10%,100%)'
+                        user_count:
+                          type: number
+                          description: 该分桶下的人数。
+              examples:
+                Example 1:
+                  value:
+                    code: 200
+                    message: 'Success request: /beta/analytics/call/freeze/bucket'
+                    requestId: 1f7a7xxxxxxxxxxxxxxxe89d
+                    data:
+                    - bucket: '[3%,5%)'
+                      user_count: 1
+                    - bucket: '[0%,3%)'
+                      user_count: 19
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: qnygkksqbrbef
+  /beta/analytics/call/statistics/time:
+    get:
+      tags:
+      - 通话调查
+      summary: 获取频道时序指标
+      description: 获取指定通话的洞察统计数据
+      operationId: get-beta-analytics-call-statistics-time
+      parameters:
+      - $ref: '#/components/parameters/call_id'
+      - $ref: '#/components/parameters/start_ts'
+      - $ref: '#/components/parameters/end_ts'
+      - $ref: '#/components/parameters/appid'
+      - name: metric
+        in: query
+        description: '要查询的指标，支持设为以下值：
+
+          - `user_count`：通话人数，一个用户 ID 在一个频道中计为一人，在多个频道中计为多人。
+
+          - `audio_freeze_rate`：音频卡顿率。
+
+          - `video_freeze_rate`：视频卡顿率。
+
+          - `audio_freeze_user_count`：音频卡顿人数。
+
+          - `video_freeze_user_count`：视频卡顿人数。'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  requestId:
+                    $ref: '#/components/schemas/requestId'
+                  data:
+                    type: array
+                    description: 由时间戳和指标值组成的数组。
+                    items:
+                      type: object
+                      properties:
+                        ts:
+                          $ref: '#/components/schemas/ts'
+                        value:
+                          type: number
+                          description: 当前时间的指标值。
+              examples:
+                Example 1:
+                  value:
+                    code: 200
+                    message: 'Success request: /beta/analytics/call/statistics/time'
+                    requestId: 139dxxxxxxxxxxxxxxxxe968
+                    data:
+                    - ts: 1692584160
+                      value: 0
+                    - ts: 1692584520
+                      value: 0
+                    - ts: 1692584340
+                      value: 0.007
+                    - ts: 1692584220
+                      value: 0
+                    - ts: 1692584100
+                      value: 0
+                    - ts: 1692584280
+                      value: 0
+                    - ts: 1692584460
+                      value: 0.003
+                    - ts: 1692584400
+                      value: 0.005
+                    - ts: 1692584580
+                      value: 0.05
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: o1pu6dblv4730
+  /beta/insight/usage/by_time:
+    get:
+      tags:
+      - 数据洞察
+      summary: 查询时序用量指标
+      description: 按小时或天的时间粒度获取指定时间范围内的用量指标，包括通话人数、通话人次、频道数、同时在线频道数、同时在线人数。
+      operationId: get-beta-insight-usage-by_time
+      parameters:
+      - $ref: '#/components/parameters/startTs-realtime'
+      - $ref: '#/components/parameters/endTs-realtime'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/metric'
+      - $ref: '#/components/parameters/aggregateGranularity'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userCount:
+                          type: number
+                          description: 请求的指标名称，此处示例为通话人数。
+                        ts:
+                          $ref: '#/components/schemas/ts'
+              examples:
+                查询通话人数:
+                  value:
+                    code: 200
+                    message: success
+                    data:
+                    - userCount: 42
+                      ts: 1625155200
+                    - userCount: 37
+                      ts: 1625241600
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: iqkwiz1k7z5cr
+  /beta/insight/quality/by_time:
+    get:
+      tags:
+      - 数据洞察
+      summary: 查询时序质量指标
+      description: 按分钟、小时或天的时间粒度获取指定时间范围内的质量指标，包括加入频道成功率、5s 加入频道成功率、音频卡顿率、视频卡顿率、网络延迟率。
+      operationId: get-beta-insight-quality-by_time
+      parameters:
+      - $ref: '#/components/parameters/startTs-realtime'
+      - $ref: '#/components/parameters/endTs-realtime'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/metric-quality'
+      - $ref: '#/components/parameters/aggregateGranularity'
+      - $ref: '#/components/parameters/productType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        networkDelay:
+                          type: number
+                          description: 请求的指标名称，此处示例为网络延迟率。
+                        ts:
+                          $ref: '#/components/schemas/ts'
+              examples:
+                查询网络延迟率:
+                  value:
+                    code: 200
+                    message: success
+                    data:
+                    - networkDelay: 0.064762
+                      ts: 1625097600
+                    - networkDelay: 0.028156
+                      ts: 1625101200
+                    - networkDelay: 0.03765
+                      ts: 1625184000
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: yeekbmudm0n82
+  /beta/insight/usage/aggregation:
+    post:
+      tags:
+      - 数据洞察
+      summary: 查询聚合用量指标
+      description: 获取指定时间范围内、指定维度下的聚合用量指标，包括通话人数、通话人次、频道数、同时在线频道数、同时在线人数等。
+      operationId: post-beta-insight-usage-aggregation
+      parameters:
+      - $ref: '#/components/parameters/appid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                startTs:
+                  $ref: '#/components/schemas/startTs'
+                endTs:
+                  $ref: '#/components/schemas/endTs'
+                metric:
+                  $ref: '#/components/schemas/metric'
+                dimension:
+                  $ref: '#/components/schemas/dimension'
+                dimensionValues:
+                  $ref: '#/components/schemas/dimensionValues'
+                filters:
+                  $ref: '#/components/schemas/filters'
+              required:
+              - startTs
+              - endTs
+              - metric
+              x-examples:
+                Example 1:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: userCount
+                  dimension: country
+            examples:
+              示例 1：请求查询通话人数 TOP 20 的国家和各国通话人数:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: userCount
+                  dimension: country
+              示例 2：请求查询 SDK 版本为 "3.6.1.1" 和 "4.1.1"  的通话人数:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: userCount
+                  dimension: sdkVersion
+                  dimensionValues:
+                  - 3.6.1.1
+                  - 4.1.1
+              示例 3：请求查询中国通话人数 TOP 20 的地区和这些地区的通话人数:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: userCount
+                  dimension: region
+                  filters:
+                  - name: country
+                    value: China
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: '- 请求中没有填入 `dimension` 字段：返回 App ID 维度的指标数据。
+
+                      - 请求中填入了 `dimension` 字段：由维度和指标数据组成的数组。'
+                    items:
+                      type: object
+              examples:
+                示例 1：请求查询通话人数 TOP 20 的国家和各国通话人数:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - country: China
+                      userCount: 42
+                    - country: United States
+                      userCount: 37
+                示例 2：请求查询 SDK 版本为`"3.6.1.1"` 和 `"4.1.1"` 的通话人数:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - sdkVersion: 3.6.1.1
+                      userCount: 42
+                    - sdkVersion: 4.1.1
+                      userCount: 37
+                示例 3：请求查询中国通话人数 TOP 20 的地区和这些地区的通话人数:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - region: Shanghai
+                      userCount: 42
+                    - region: Beijing
+                      userCount: 37
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: tm9800swf0g57
+  /beta/insight/quality/aggregation:
+    post:
+      tags:
+      - 数据洞察
+      summary: 查询聚合质量指标
+      description: 获取指定时间范围内、指定维度下的聚合质量指标，包括加入频道成功率、5s 加入频道成功率、音频卡顿率、视频卡顿率、网络延迟率。
+      operationId: post-beta-insight-quality-aggregation
+      parameters:
+      - $ref: '#/components/parameters/appid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: audioFreezeRate
+                  dimension: country
+              required:
+              - startTs
+              - endTs
+              - metric
+              - productType
+              properties:
+                startTs:
+                  $ref: '#/components/schemas/startTs'
+                endTs:
+                  $ref: '#/components/schemas/endTs'
+                metric:
+                  $ref: '#/components/schemas/metric-quality'
+                productType:
+                  $ref: '#/components/schemas/productType'
+                  x-stoplight:
+                    id: l7ys1zs33s3xi
+                dimension:
+                  $ref: '#/components/schemas/dimension_quality'
+                dimensionValues:
+                  type: string
+                  description: '统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
+
+                    > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+                filters:
+                  $ref: '#/components/schemas/filters'
+            examples:
+              示例 1：请求查询音频卡顿率 TOP 20 的国家和各国音频卡顿率:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: audioFreezeRate
+                  dimension: country
+                  productType: Native
+              示例 2：请求查询 SDK 版本为"3.6.1.1" 和 "4.1.1" 的音频卡顿率:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: audioFreezeRate
+                  dimension: sdkVersion
+                  dimensionValues:
+                  - 3.6.1.1
+                  - 4.1.1
+                  productType: Native
+              示例 3：请求查询音频卡顿率 TOP 20 的中国地区和各地区音频卡顿率:
+                value:
+                  startTs: 1625097600
+                  endTs: 1625184000
+                  metric: audioFreezeRate
+                  dimension: region
+                  filters:
+                  - name: country
+                    value: China
+                  productType: Native
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: "- 请求中没有填入 `dimension` 字段：返回 App ID 维度的指标数据。\n- 请求中填入了 `dimension` 字段：由维度、`refUsage` 和指标数据组成的数组。\n    - `refUsage`：辅助用量数据。每组返回数据中，每个 `metric` 将对应返回一个辅助用量数据，用于辅助判断数据的有效性。以下为 `metric` 和 `refUsage` 对应关系：\n        - `metric` 为 `joinSuccessRate` 时，`refUsage` 表示尝试加入频道次数。\n        - `metric` 为 `joinSuccessIn5sRate` 时，`refUsage` 表示尝试加入频道次数。\n        - `metric` 为 `audioFreezeRate` 时，`refUsage` 表示音频通话时长（分钟）。\n        - `metric` 为 `videoFreezeRate` 时，`refUsage` 表示视频通话时长（分钟）。\n        - `metric` 为 `networkDelay`  时，`refUsage` 表示音视频总通话时长（分钟）。"
+                    items:
+                      type: object
+              examples:
+                示例 1：请求查询音频卡顿率 TOP 20 的国家和各国音频卡顿率:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - country: China
+                      refUsage: 231234
+                      audioFreezeRate: 0.0017
+                    - country: United States
+                      refUsage: 213212
+                      audioFreezeRate: 0.0014
+                示例 2：请求查询 SDK 版本为`"3.6.1.1"` 和 `"4.1.1"` 的音频卡顿率:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - sdkVersion: 3.6.1.1
+                      refUsage: 231234
+                      audioFreezeRate: 0.0017
+                    - sdkVersion: 4.1.1
+                      refUsage: 213212
+                      audioFreezeRate: 0.0014
+                示例 3：请求查询音频卡顿率 TOP 20 的中国地区和各地区音频卡顿率:
+                  value:
+                    code: 200
+                    message: 'null'
+                    data:
+                    - region: Shanghai
+                      refUsage: 231234
+                      audioFreezeRate: 0.0017
+                    - region: Beijing
+                      refUsage: 213212
+                      audioFreezeRate: 0.0014
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: pwrvuezqcyq0i
+  /beta/realtime/usage/by_time_20sec:
+    get:
+      tags:
+      - 实时监控
+      summary: 查询实时规模
+      description: 获取实时的通话人数和频道数。
+      operationId: get-beta-realtime-usage-by_time_20sec
+      parameters:
+      - $ref: '#/components/parameters/startTs-realtime'
+      - $ref: '#/components/parameters/endTs-realtime'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/productType'
+      - $ref: '#/components/parameters/metric-realtime'
+      - name: dimension
+        in: query
+        description: '统计维度，仅支持单维度指定。仅在 `metric` 为 `userCount` 时生效。支持设为以下值：
+
+          - `country`：国家。
+
+          - `region`：地区。
+
+          - `net`：网络类型。
+
+          - `sdk`：SDK 版本。
+
+          - `os`：操作系统。
+
+          - `device`：设备型号。 你可以通过[获取实时规模 TOP 20 分组](realtime-usage-top20)获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+      - name: dimensionValues
+        in: query
+        description: 统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。
+      - name: cname
+        in: query
+        description: 频道名称。如果不填，代表查询该项目的整体指标。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: 由指标数据、维度和 Unix 时间戳（秒）组成的数组。
+                    items:
+                      type: object
+              examples:
+                查询 SDK 版本为 "3.6.1.1" 和 "4.1.1" 的实时通话人数:
+                  value:
+                    code: 200
+                    message: null
+                    data:
+                    - userCount: 236
+                      sdk: 3.6.1.1
+                      ts: 1631837400
+                    - userCount: 82
+                      sdk: 4.1.1
+                      ts: 1631837400
+                    - userCount: 235
+                      sdk: 3.6.1.1
+                      ts: 1631837420
+                    - userCount: 85
+                      sdk: 4.1.1
+                      ts: 1631837420
+                    - userCount: 252
+                      sdk: 3.6.1.1
+                      ts: 1631837440
+                    - userCount: 90
+                      sdk: 4.1.1
+                      ts: 1631837440
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-extension-1: null
+      x-stoplight:
+        id: crfoe8ypw3664
+  /beta/realtime/quality/by_time_20sec:
+    get:
+      tags:
+      - 实时监控
+      summary: 查询实时质量
+      description: 获取实时的加入频道成功率、5s 加入频道成功率、音频卡顿率、视频卡顿率、网络延迟率。
+      operationId: get-beta-realtime-quality-by_time_20sec
+      parameters:
+      - $ref: '#/components/parameters/startTs-realtime'
+      - $ref: '#/components/parameters/endTs-realtime'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/productType'
+      - $ref: '#/components/parameters/metric-quality'
+      - name: dimension
+        in: query
+        description: '统计维度，仅支持单维度指定。支持设为以下值：
+
+          - `country`：国家。
+
+          - `region`：地区。
+
+          - `net`：网络类型。
+
+          - `sdk`：SDK 版本。
+
+          - `os`：操作系统。
+
+          - `device`：设备型号。 你可以通过[获取实时质量 TOP 20 分组](realtime-quality-top20)获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+        schema:
+          type: string
+      - name: dimensionValues
+        in: query
+        description: 统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。
+      - name: cname
+        in: query
+        description: 频道名称。如果不填，代表查询该项目的整体指标。
+        schema:
+          type: string
+      - name: uids
+        in: query
+        description: '请求的用户 uid 列表，多个 uid 用逗号隔开（如 `uids=10001,10002,10003`），最多可以指定 10 个 uid。
+
+
+          如果填写了 `uids` 字段，请确保  `cname` 字段不为空，否则 `uids` 字段不生效。'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: '- 请求中没有填入 `uids` 字段：由指标数据和 Unix 时间戳（秒）组成的数组。
+
+                      - 请求中填入了 `uids` 字段：由 `uid`、指标数据、Unix 时间戳（秒）组成的数组。
+
+                      - 请求中填入了 `dimension` 和 `dimensionValues` 字段：由指标数据、维度和 Unix 时间戳（秒）组成的数组。'
+                    items:
+                      type: object
+              examples:
+                示例 1：请求中不填 `uids` 字段:
+                  value:
+                    code: 200
+                    message: success
+                    data:
+                    - networkDelay: 0.012
+                      ts: 1631837400
+                    - networkDelay: 0.0057
+                      ts: 1631837420
+                    - networkDelay: 0.0039
+                      ts: 1631837440
+                示例 2：请求中指定 `uid` 为 2303692334 和 2963430861:
+                  value:
+                    code: 200
+                    message: success
+                    data:
+                    - uid: 2303692334
+                      values:
+                      - ts: 1631837400
+                        networkDelay: 0.389
+                      - ts: 1631837420
+                        networkDelay: 0.389
+                      - ts: 1631837440
+                        networkDelay: 0.389
+                    - uid: 2963430861
+                      values:
+                      - ts: 1631837400
+                        networkDelay: 0.389
+                      - ts: 1631837420
+                        networkDelay: 0.389
+                      - ts: 1631837440
+                        networkDelay: 0.389
+                示例 3：请求中指定 `dimension` 为 `sdkVersion`，`dimensionValues` 为 "3.6.1.1" 和 "4.1.1":
+                  value:
+                    code: 200
+                    message: null
+                    data:
+                    - networkDelay: 0.389
+                      sdk: 3.6.1.1
+                      ts: 1631837400
+                    - networkDelay: 0.411
+                      sdk: 4.1.1
+                      ts: 1631837400
+                    - networkDelay: 0.343
+                      sdk: 3.6.1.1
+                      ts: 1631837420
+                    - networkDelay: 0.363
+                      sdk: 4.1.1
+                      ts: 1631837420
+                    - networkDelay: 0.511
+                      sdk: 3.6.1.1
+                      ts: 1631837440
+                    - networkDelay: 0.436
+                      sdk: 4.1.1
+                      ts: 1631837440
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 84sn9v50tpk60
+  /beta/realtime/usage/dimension/top20:
+    get:
+      tags:
+      - 实时监控
+      summary: 查询实时规模 TOP 20 分组
+      description: 获取指定维度下实时通话人数排名前 20 的分组数据。
+      operationId: get-beta-realtime-usage-dimension-top20
+      parameters:
+      - $ref: '#/components/parameters/ts'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/productType'
+      - name: metric
+        in: query
+        description: 要查询的指标，仅支持设为 `userCount`，即通话人数，一个用户 ID 在一个频道中计为一人，在多个频道中计为多人。
+        required: true
+      - $ref: '#/components/parameters/dimension'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: 由维度、指标数据和时间窗口的起止 Unix 时间戳（秒）组成的数组。
+                    items:
+                      type: object
+              examples:
+                查询各 SDK 版本下通话人数的 TOP 20 数据:
+                  value:
+                    code: 200
+                    message: null
+                    data:
+                      list:
+                      - sdk: 3.6.1.1
+                        userCount: 236
+                        windowStartTs: 1631837410
+                        windowEndTs: 1631837430
+                      - sdk: 4.1.1
+                        userCount: 82
+                        windowStartTs: 1631837410
+                        windowEndTs: 1631837430
+                      - sdk: 2.9.1
+                        userCount: 68
+                        windowStartTs: 1631837410
+                        windowEndTs: 1631837430
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: bnj3hk197rbvs
+      x-docs-sections:
+      - position: after-description
+        markdown: 该接口可为[查询实时规模](realtime-usage)接口的 `dimensionValues` 参数提供内容输入。
+  /beta/realtime/quality/dimension/top20:
+    get:
+      tags:
+      - 实时监控
+      summary: 查询实时质量 TOP 20 分组
+      description: 获取指定维度下实时质量指标排名前 20 的分组数据。
+      operationId: get-beta-realtime-quality-dimension-top20
+      parameters:
+      - $ref: '#/components/parameters/ts'
+      - $ref: '#/components/parameters/appid'
+      - $ref: '#/components/parameters/productType'
+      - $ref: '#/components/parameters/metric-quality'
+      - $ref: '#/components/parameters/dimension'
+      - name: extraMetrics
+        in: query
+        description: 额外指标，用于辅助判断数据的有效性。仅支持设为 `userCount`，即当前维度下的用户数。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    $ref: '#/components/schemas/code'
+                  message:
+                    $ref: '#/components/schemas/message'
+                  data:
+                    type: array
+                    description: 由维度、指标数据和时间窗口的起止 Unix 时间戳（秒）组成的数组。
+                    items:
+                      type: object
+              examples:
+                查询各设备型号下的音频卡顿率 TOP 50 数据:
+                  value:
+                    code: 200
+                    message: null
+                    data:
+                      list:
+                      - audioFreezeRate: 0.050833333333333335
+                        windowStartTs: 1671624000
+                        userCount: 2
+                        device: ldn-al00
+                        windowEndTs: 1671624020
+                      - audioFreezeRate: 0
+                        windowStartTs: 1671624000
+                        userCount: 2
+                        device: 80HH
+                        windowEndTs: 1671624020
+                      - audioFreezeRate: 0
+                        windowStartTs: 1671624000
+                        userCount: 1
+                        device: 20KNA004CD
+                        windowEndTs: 1671624020
+      security:
+      - Authorization: []
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 89gf6vujn9bj7
+      x-docs-sections:
+      - position: after-description
+        markdown: 该接口可为[查询实时质量](realtime-quality)接口的 `dimensionValues` 参数提供内容输入。
+tags:
+- name: 通话调查
+- name: 数据洞察
+- name: 实时监控
+components:
+  parameters:
+    start_ts:
+      name: start_ts
+      in: query
+      description: 查询的时间范围起点。Unix 时间戳（秒）。
+      required: true
+      schema:
+        type: number
+        examples:
+        - 1550024508
+    end_ts:
+      name: end_ts
+      in: query
+      description: 查询的时间范围终点。Unix 时间戳（秒）。
+      required: true
+      schema:
+        type: number
+        examples:
+        - '1550025508'
+    cname:
+      name: cname
+      in: query
+      description: 频道名称
+      required: false
+      schema:
+        type: string
+    appid:
+      name: appid
+      in: query
+      description: 你的项目使用的 [App ID](https://doc.shengwang.cn/basics/glossary#appid)。
+      required: true
+      schema:
+        type: string
+    page_no:
+      name: page_no
+      in: query
+      description: 翻页序号。
+      required: false
+      schema:
+        type: number
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: 每页的用户通话数，最大不能超过 100。如果指定的值超过 100，每页的用户通话数最多仍为 100 个。
+      required: false
+      schema:
+        type: number
+        default: '20'
+    call_id:
+      name: call_id
+      in: query
+      description: 通话 ID，即通话的唯一标识。
+      required: true
+      schema:
+        type: string
+        examples:
+        - 15c995xxxxxxxxxxxd39be9b
+    uids:
+      name: uids
+      in: query
+      description: 请求的用户 uid 列表，多个 uid 用逗号隔开（如 `uids=10001,10002,10003`），最多可以指定 10 个 uid。用户 ID 根据实际的场景会存在复用的情况，如果请求指定 10 个 uid，那么返回的用户通话数会大于等于 10。
+      required: false
+      schema:
+        type: string
+    exclude_server_user:
+      name: exclude_server_user
+      in: query
+      description: '是否排除 Linux 用户。
+
+        - `true`: 排除 Linux 用户。
+
+        - `false`: 不排除 Linux 用户。'
+      required: false
+      schema:
+        type: boolean
+        default: true
+    sids:
+      name: sids
+      in: query
+      description: 请求的用户通话 sid 列表。最多可以指定 20 个 sid，多个 sid 用逗号隔开。
+      required: true
+      schema:
+        type: string
+        examples:
+        - sids=SXXXXXXXXXXXXXXXX1,SXXXXXXXXXXXXXXXX2
+    metric:
+      name: metric
+      in: query
+      description: '要查询的指标，支持设为以下值：
+
+        - `userCount`：通话人数，一个用户 ID 在一个频道中计为一人，在多个频道中计为多人。
+
+        - `sessionCount`：通话进出人次，用户每加入一次频道计为一个通话人次。
+
+        - `channelCount`：频道数，从有用户加入频道到所有用户离开频道计为一个通话频道。
+
+        - `peakConcurrentChannels`：最大同时在线频道数。
+
+        - `peakConcurrentUsers`：最大同时在线人数。
+
+        - `totalDuration`：音视频通话时长（分钟）。
+
+        - `totalVideoDuration`：视频通话时长（分钟）。
+
+        - `totalAudioDuration`：音频通话时长（分钟）。'
+      required: true
+      schema:
+        type: string
+    aggregateGranularity:
+      name: aggregateGranularity
+      in: query
+      description: '返回数据的粒度，支持设为以下值：
+
+        - `1d`：按天。此时返回查询时间范围内以  UTC 时间为零点起始的一整天的数据。
+
+        - `1h`：按小时。此时返回查询时间范围内 UTC 时间为整小时的数据。'
+      required: true
+      schema:
+        type: string
+    metric-quality:
+      name: metric
+      in: query
+      description: '要查询的指标，支持设为以下值：
+
+        - `joinSuccessRate`：加入频道成功率。
+
+        - `joinSuccessIn5sRate`：5s 内加入频道成功率。
+
+        - `audioFreezeRate`：音频卡顿率。
+
+        - `videoFreezeRate`：视频卡顿率。
+
+        - `networkDelay` ：网络延迟率。'
+      required: true
+      schema:
+        type: string
+    productType:
+      name: productType
+      in: query
+      description: '要查询的产品类型，支持设为以下值：
+
+        - `Native`：指 Android、iOS、macOS、Windows 平台的声网 RTC SDK。
+
+        - `WebRTC`：指 Web 平台的声网 RTC SDK。'
+      required: true
+      schema:
+        type: string
+    startTs-realtime:
+      name: startTs
+      in: query
+      description: 查询的时间范围起点，Unix 时间戳（秒）。响应中会包含起点所在的时间窗口。
+      required: true
+      schema:
+        type: number
+        examples:
+        - 1631837410
+    endTs-realtime:
+      name: endTs
+      in: query
+      description: 查询的时间范围终点，Unix 时间戳（秒）。响应中不会包含终点所在的时间窗口。
+      required: true
+      schema:
+        type: number
+        examples:
+        - 1631837470
+    metric-realtime:
+      name: metric
+      in: query
+      description: '要查询的指标，支持设为以下值：
+
+        - `userCount`：通话人数，一个用户 ID 在一个频道中计为一人，在多个频道中计为多人。
+
+        - `channelCount`：频道数，从有用户加入频道到所有用户离开频道计为一个通话频道。'
+      required: true
+      schema:
+        type: string
+    dimension-realtime:
+      name: dimension
+      in: query
+      description: '统计维度，仅支持单维度指定。仅在 `metric` 为 `userCount` 时生效。支持设为以下值：
+
+        - `country`：国家。
+
+        - `region`：地区。
+
+        - `net`：网络类型。
+
+        - `sdk`：SDK 版本。
+
+        - `os`：操作系统。
+
+        - `device`：设备型号。 你可以通过[获取实时规模 TOP 20 分组](realtime-usage-top20)获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+      required: false
+      schema:
+        type: string
+    dimensionValues:
+      name: dimensionValues
+      in: query
+      description: 统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。
+      required: false
+      schema:
+        type: string
+    ts:
+      name: ts
+      in: query
+      description: 查询的时间范围起点，Unix 时间戳（秒）。实际查询范围为 [`ts`, `ts` + 20s ]。
+      required: true
+      schema:
+        type: number
+        examples:
+        - 1631837410
+    dimension:
+      name: dimension
+      in: query
+      description: '统计维度，仅支持单维度指定。支持设为以下值：
+
+        - `country`：国家。
+
+        - `region`：地区。
+
+        - `net`：网络类型。
+
+        - `sdk`：SDK 版本。
+
+        - `os`：操作系统。
+
+        - `device`：设备型号。将默认返回维度对应 TOP 20 的值（仅当 `dimension` 为 `device` 时，将默认返回 TOP 50 的值）。'
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Authorization:
+      type: http
+      description: 使用声网 RESTful API 的凭证。发送请求时，你需要使用声网提供的**客户 ID** 和**客户密钥**生成一个使用 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段。详见[使用 HTTP 认证](https://doc.shengwang.cn/doc/rtc/restful/user-guides/http-basic-auth)
+      scheme: basic
+  schemas:
+    code:
+      type: number
+      title: code
+      description: 响应状态码。200 表示请求成功，详见[响应状态码](https://doc.shengwang.cn/doc/analytics/general/rtc/response-code)。
+      examples:
+      - 200
+      x-stoplight:
+        id: tcizr98cke5fs
+    message:
+      type: string
+      title: message
+      description: 错误消息。
+      examples:
+      - 'Success request: /beta/analytics/xxx/xxx'
+      x-stoplight:
+        id: tku7v69j2f4he
+    requestId:
+      type: string
+      title: requestId
+      description: 对应请求的 ID。
+      examples:
+      - 15c99xxxxxxxxxxx9be9b
+      x-stoplight:
+        id: h3vflmepsjjwa
+    total_size:
+      type: number
+      title: total_size
+      description: 返回的用户通话总数。
+      examples:
+      - 101
+      x-stoplight:
+        id: xp0x54vhtyxen
+    page_no:
+      type: number
+      title: page_no
+      description: 翻页序号。
+      examples:
+      - 1
+      x-stoplight:
+        id: pl26czys9dgz1
+    page_size:
+      type: number
+      title: page_size
+      description: 每页的用户通话数。
+      examples:
+      - 20
+      x-stoplight:
+        id: mtvviy6l6wo2l
+    has_more:
+      type: boolean
+      title: has_more
+      description: '是否还有通话未列出。
+
+        - `true`：表示符合查询条件的通话没有在 `call_lists` 中全部列出。
+
+        - `false`：表示符合查询条件的通话已全部列出。
+
+        如果你要查找的通话未列出，请修改查询条件重新发送请求。'
+      x-stoplight:
+        id: 5zpgubdm06b6y
+    call_lists:
+      type: array
+      title: call_lists
+      items:
+        type: object
+        properties:
+          call_id:
+            type: string
+            description: 通话 ID，即通话的唯一标识。
+            examples:
+            - cxxxxxxxxxxxxxxxxxxxx
+          cname:
+            $ref: '#/components/schemas/cname'
+          created_ts:
+            type: number
+            description: 通话开始的时间。Unix 时间戳（秒）。
+            examples:
+            - 1547448383
+          destroyed_ts:
+            type: number
+            examples:
+            - 1547448483
+          finished:
+            type: boolean
+          call_pcu:
+            type: number
+            description: 通话级别峰值人数。
+            examples:
+            - 2
+          call_acu:
+            type: number
+            examples:
+            - 2
+          call_audio_freeze_rate:
+            type: number
+            examples:
+            - 0.12
+          call_video_freeze_rate:
+            type: number
+            examples:
+            - 0.07
+      x-stoplight:
+        id: u63qz65kddmrg
+    cname:
+      type: string
+      title: cname
+      description: 频道名称。
+      examples:
+      - cname1
+      x-stoplight:
+        id: 8b85qbdwjb8z3
+    call_info:
+      type: array
+      title: call_info
+      x-stoplight:
+        id: nhm3yf0v2mrlb
+      items:
+        type: object
+        properties:
+          sid:
+            type: string
+            description: 用户通话的唯一标识。
+          cname:
+            $ref: '#/components/schemas/cname'
+          uid:
+            type: number
+            description: 用户 ID。
+          account:
+            type: string
+            description: 用户自定义的昵称。
+          network:
+            type: string
+            description: 网络类型。
+          platform:
+            type: string
+            description: 平台信息。
+          speaker:
+            type: boolean
+            description: 用户在通话中是否发送音视频。
+          sdk_version:
+            type: string
+            description: SDK 版本信息。
+          device_type:
+            type: string
+            description: 设备信息。
+          join_ts:
+            type: number
+            description: 用户加入频道的时间。Unix 时间戳（秒）。
+          leave_ts:
+            type: number
+            description: 用户离开频道的时间。Unix 时间戳（秒）。
+          finished:
+            type: boolean
+            description: 用户是否已离开频道。
+          roles:
+            type: string
+            description: '用户角色标识，体现了该用户的角色和本次通话中用到的功能。
+
+              - `Audience`：接收端用户。
+
+              - `Host`：发送端用户。
+
+              - `Screen Share`：屏幕共享。
+
+              - `Interative Live Streaming(ILS)`：互动直播。
+
+              - `Broadcast Streaming(BS)`：极速直播。
+
+              - `Streaming robot`：推流机器人。
+
+              - `On-Premise Recording`：本地录制。
+
+              - `Cloud Recording`：云录制。
+
+              - `WebPage Recording`：页面录制。'
+          user_video_freeze_rate:
+            type: number
+            description: 用户级别视频卡顿率。
+          user_audio_freeze_rate:
+            type: number
+            description: 用户级别音频卡顿率。
+    metrics:
+      type: array
+      title: metrics
+      description: 各个用户通话（`sid`）的具体指标数据。
+      items:
+        type: object
+        properties:
+          sid:
+            type: string
+            description: 用户在该通话中的唯一标识。
+          data:
+            type: array
+            description: 用户通话的质量指标数据。
+            items:
+              type: object
+              properties:
+                mid:
+                  type: number
+                  description: '指标 ID。详见下表：
+
+                    | `mid` | 描述                                     | 单位 | 举例       |
+
+                    | ----- | ---------------------------------------- | ---- | ---------- |
+
+                    | 20001 | App 的 CPU 使用率                        | %    | 27%        |
+
+                    | 20002 | 系统 CPU 使用率                          | %    | 15%        |
+
+                    | 20003 | 音频发送码率                             | Kbps | 126 Kbps   |
+
+                    | 20004 | 音频接收码率                             | Kbps | 108 Kbps   |
+
+                    | 20005 | 音频渲染卡顿时间                         | ms   | 106.67 ms  |
+
+                    | 20006 | 视频小流发送码率                         | Kbps | 472 Kbps   |
+
+                    | 20007 | 视频采集帧率                             | fps  | 16 fps     |
+
+                    | 20008 | 视频大流发送帧率                         | fps  | 12 fps     |
+
+                    | 20009 | 视频大流接收码率                          | Kbps | 309 Kbps   |
+
+                    | 20030 | 视频小流接收码率                       | Kbps | 100 Kbps   |
+
+                    | 20010 | 视频大流接收帧率                             | fps  | 6 fps      |
+
+                    | 20031 | 视频小流接收帧率                             | fps  | 6 fps      |
+
+                    | 20011 | 视频渲染卡顿时间                         | ms   | 2000.50 ms |
+
+                    | 20015 | 音频上行丢包率                           | %    | 1%         |
+
+                    | 20016 | 音频端到端丢包率                         | %    | 3%         |
+
+                    | 20017 | 视频上行丢包率                           | %    | 5%         |
+
+                    | 20018 | 视频端到端丢包率                         | %    | 7%         |
+
+                    | 20019 | 视频大流接收分辨率的宽                       | px   | 360        |
+
+                    | 20020 | 视频大流接收分辨率的高                       | px   | 640        |
+
+                    | 20032 | 视频小流接收分辨率的宽                       | px   | 360        |
+
+                    | 20033 | 视频小流接收分辨率的高                       | px   | 640        |
+
+                    | 20021 | SDK 任务调度延迟                         | ms   | 2 ms       |
+
+                    | 20022 | 客户端到本地路由器的往返时延（表征 Wi-Fi 信号质量）             | ms   | 3 ms       |
+
+                    | 20023 | 视频小流发送帧率                         | fps  | 108 fps    |
+
+                    | 20024 | 视频大流发送码率                         | Kbps | 126 Kbps   |
+
+                    | 20025 | 采集音量                                 | dB   | 105 dB     |
+
+                    | 20026 | 播放音量                                 | dB   | 98 dB      |
+
+                    | 20027 | 视频大流发送分辨率的宽                       | px   | 360        |
+
+                    | 20028 | 视频大流发送分辨率的高                       | px   | 640        |
+
+                    | 20034 | 视频小流发送分辨率的宽                       | px   | 360        |
+
+                    | 20035 | 视频小流发送分辨率的高                       | px   | 640        |
+
+                    | 20036 | WebRTC 下行视频丢包率                       | /   | /        |
+
+                    | 20037 | WebRTC 上行音频丢包率                       | /   | /        |
+
+                    | 20038 | WebRTC 上行视频丢包率                       | /   | /        |
+
+                    | 20039 | APP 内存占用                               | %    | 50%      |
+
+                    | 20040 | 系统内存占用                               | %    | 70%      |'
+                kvs:
+                  type: array
+                  description: 时间戳及相应时间的指标数值。
+                peer_uid:
+                  type: number
+                  description: 远端用户的 ID。如果为 `0`，表示收到的是本地用户的指标数据。
+      x-stoplight:
+        id: b8fs7ug8ifhp7
+    ts:
+      type: number
+      title: ts
+      description: Unix 时间戳（秒）。
+      x-stoplight:
+        id: 2z0a3n3151c6e
+    startTs:
+      type: number
+      title: startTs
+      description: 查询的时间范围起点，Unix 时间戳（秒）。
+      examples:
+      - 1625097600
+      x-stoplight:
+        id: 1sppkkbr8dzos
+    endTs:
+      type: number
+      title: endTs
+      description: 查询的时间范围终点，Unix 时间戳（秒）。
+      examples:
+      - 1625184000
+      x-stoplight:
+        id: ckp39z3tt8ofs
+    metric:
+      type: string
+      title: metric
+      description: '要查询的指标，支持设为以下值：
+
+        - `userCount`：通话人数，一个用户 ID 在一个频道中计为一人，在多个频道中计为多人。
+
+        - `sessionCount`：通话进出人次，用户每加入一次频道计为一个通话人次。
+
+        - `channelCount`：频道数，从有用户加入频道到所有用户离开频道计为一个通话频道。
+
+        - `peakConcurrentChannels`：最大同时在线频道数。
+
+        - `peakConcurrentUsers`：最大同时在线人数。
+
+        - `totalDuration`：音视频通话时长（分钟）。
+
+        - `totalVideoDuration`：视频通话时长（分钟）。
+
+        - `totalAudioDuration`：音频通话时长（分钟）。'
+      x-stoplight:
+        id: g57d6p4jka5a4
+    dimension:
+      type: string
+      title: dimension
+      description: '统计维度，仅支持单维度指定。支持设为以下值：
+
+        - `country`：国家。
+
+        - `region`：地区。
+
+        - `net`：网络类型。
+
+        - `sdk`：SDK 版本。
+
+        - `os`：操作系统。
+
+        - `device`：设备型号。将默认返回维度对应 TOP 20 的值（仅当 `dimension` 为 `device` 时，将默认返回 TOP 50 的值）。
+
+        > 当 `metric` 为 `peakConcurrentUsers` 或 `peakConcurrentChannels` 时，不支持传 `dimension` 和 `dimensionValues`，仅返回 App ID 维度的聚合结果。'
+      x-stoplight:
+        id: 9cydve2ke713f
+    dimensionValues:
+      type: string
+      title: dimensionValues
+      description: '统计维度的值 ，即对 `dimension` 中设定的维度指定取值，仅在传入 `dimension` 时有效。所有值必须用双引号包括，并以逗号分隔。设置该参数后，将返回 `dimensionValues` 中传入的值对应的聚合指标数据。
+
+        > 你可以在首次请求时，通过不传 `dimensionValues` 来获取当前 `dimension` 下的 TOP 值，再根据业务需要从中选取几个值，来作为下次请求时传入 `dimensionValues` 的值。'
+      x-stoplight:
+        id: 4hx6oik5kly9r
+    filters:
+      type: array
+      title: filters
+      description: 地区筛选器，仅在 `dimension` 为 `region` 时生效，用于从地区维度的返回结果中筛选出属于指定国家的结果。
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: 仅支持传入 `country`。
+          value:
+            type: string
+            description: 需要筛选的国家，仅支持传入一个国家值。
+      x-stoplight:
+        id: 8h1w4e4l2zljv
+    metric-quality:
+      type: string
+      title: metric
+      description: '要查询的指标，支持设为以下值：
+
+        - `joinSuccessRate`：加入频道成功率。
+
+        - `joinSuccessIn5sRate`：5s 内加入频道成功率。
+
+        - `audioFreezeRate`：音频卡顿率。
+
+        - `videoFreezeRate`：视频卡顿率。
+
+        - `networkDelay` ：网络延迟率。'
+      x-stoplight:
+        id: sip9yb762uhdo
+    dimension_quality:
+      type: string
+      title: dimension
+      description: '统计维度，仅支持单维度指定。支持设为以下值：
+
+        - `country`：国家。
+
+        - `region`：地区。
+
+        - `network`：网络类型。
+
+        - `sdkVersion`：SDK 版本。
+
+        - `os`：操作系统。
+
+        - `device`：设备型号。
+
+        设置该参数后，将默认返回对应维度中 TOP 20 的值（仅 `device` 维度返回 TOP 50 的值）。'
+      x-stoplight:
+        id: bt3ll42y28088
+    productType:
+      title: productType
+      x-stoplight:
+        id: 03oi8wfcem2br
+      type: string
+      description: '要查询的产品类型，支持设为以下值：
+
+        - `Native`：指 Android、iOS、macOS、Windows 平台的声网 RTC SDK。
+
+        - `WebRTC`：指 Web 平台的声网 RTC SDK。'
+security:
+- Authorization: []
+x-internal: false

@@ -1,0 +1,35 @@
+---
+title: HTTP HMAC 鉴权
+description: 配置融合 CDN 直播 RESTful API 请求所需的 HMAC-SHA256 签名。
+---
+
+融合 CDN 直播 RESTful API 使用 HTTP HMAC 鉴权。发送请求时，你需要使用 HMAC-SHA256 算法生成签名，并在请求头的 `Authorization` 字段中传入签名和相关信息。
+
+## 准备信息
+
+生成鉴权字段前，准备以下信息：
+
+- 声网项目的 App ID。
+- 声网控制台 RESTful API 中的客户 ID。
+- 声网控制台 RESTful API 中的客户密钥。
+
+:::warning
+请在服务端保存客户 ID 和客户密钥，避免在客户端代码或公开仓库中暴露凭证。
+:::
+
+## Authorization 格式
+
+请求头中的 `Authorization` 字段使用以下格式：
+
+```text
+hmac username="<customer_id>", algorithm="hmac-sha256", headers="host date request-line digest", signature="<signature>"
+```
+
+生成签名时，需要参与签名的字段包括 `host`、`date`、请求行和请求包体的 `digest`。请求包体为空时，也需要对空字符串计算 SHA-256 摘要。
+
+## 相关页面
+
+- [融合 CDN 直播 RESTful API 概览](index)
+- [获取域名列表](domain-list)
+- [设置时间戳鉴权密钥](timestamp-auth-key-update)
+

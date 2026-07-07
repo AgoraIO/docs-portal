@@ -1,0 +1,38 @@
+---
+title: 弹幕玩法 RESTful API 概览
+description: 使用 RESTful API 管理弹幕玩法云游戏开播和直播间消息推送。
+---
+
+弹幕玩法 RESTful API 可用于从服务端获取云游戏信息、启动或关闭游戏服务、查询任务状态、更新推流 Token，并向直播间推送礼物、评论和点赞消息。
+
+## API 基础
+
+- **鉴权**：所有请求都需要使用 [HTTP 基本认证](/zh-CN/realtime-media/danmaku/get-started/authorization)。
+- **请求**：请求包体和响应包体均使用 JSON。
+- **Base URL**：`https://{domain}/v2/projects/{appid}`。
+
+:::info
+`domain` 可使用正式环境域名 `api.sd-rtn.com` 或测试环境域名 `api-test.agora.io`。正式环境会按照礼物消息进行计量计费。
+:::
+
+## 移动端云开播
+
+- [获取云游戏列表](get-cloud-game-list)：获取指定游戏的游戏商、支持的礼物列表和弹幕指令等信息。
+- [获取云游戏详情](get-cloud-game-detail)：获取指定云游戏的详情、礼物列表和弹幕指令等信息。
+- [启动云游戏服务](start-cloud-game)：启动移动端云游戏服务。
+- [关闭云游戏服务](stop-cloud-game)：关闭移动端云游戏服务。
+- [查询云游戏任务状态](get-cloud-game-status)：查询指定云游戏任务的当前状态。
+- [更新云游戏推流 Token](renew-cloud-game-token)：更新指定云游戏任务使用的 RTC Token。
+- [推送直播间消息](push-message)：向直播间推送礼物、评论和点赞消息。
+
+## Windows 端开播
+
+- [启动游戏服务](start-pc-game)：启动 Windows 端游戏服务。
+- [关闭游戏服务](stop-pc-game)：关闭 Windows 端游戏服务。
+- [推送直播间消息](push-message)：向直播间推送礼物、评论和点赞消息。
+
+## 相关页面
+
+- [开通弹幕玩法服务](/zh-CN/realtime-media/danmaku/get-started/enable-service)
+- [调用限制](/zh-CN/realtime-media/danmaku/api/api-limits)
+- [响应状态码](/zh-CN/realtime-media/danmaku/response-code)
