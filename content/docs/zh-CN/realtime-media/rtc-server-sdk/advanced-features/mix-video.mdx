@@ -1,0 +1,58 @@
+---
+title: "合图"
+---
+
+声网提供合图功能，可以混合多路远端或本地视频轨道并进行自定义格式输出。你可以通过合图功能实现水印、画中画等场景。
+
+## 实现方法
+
+参考以下步骤实现合图功能。
+
+1. 创建一个 `IVideoMixerSource` 对象。
+
+   ```cpp
+   agora::agora_refptr<agora::rtc::IVideoMixerSource> videoMixer = factory->createVideoMixer();
+   ```
+
+2. 调用 `createMixedVideoTrack` 创建合图轨道。通过合图轨道注册视频帧观测器获取视频。
+
+   ```cpp
+   agora::agora_refptr<agora::rtc::ILocalVideoTrack> mixVideoTrack =
+      service->createMixedVideoTrack(videoMixer);
+   if (!mixVideoTrack) {
+      AG_LOG(ERROR, "Failed to create video track!");
+      return -1;
+   }
+   agora::rtc::VideoEncoderConfiguration encoderConfig;
+   encoderConfig.codecType = agora::rtc::VIDEO_CODEC_H264;
+   encoderConfig.dimensions.width = 1920;
+   encoderConfig.dimensions.height = 1080;
+   encoderConfig.frameRate = 15;
+
+   mixVideoTrack->setVideoEncoderConfiguration(encoderConfig);
+
+   // Register video frame observer to receive video stream
+   agora::agora_refptr<agora::rtc::IVideoSinkBase> yuvFrameObserver = new agora::RefCountedObject<YuvFrameObserver>(options.videoFile);
+
+   mixVideoTrack->addRenderer(yuvFrameObserver.get());
+   ```
+
+3. 将视频轨道加入 `IVideoMixerSource` 对象，用于合图。
+
+   ```cpp
+   if (remote_video_track_ && video_mixer_ && enable_video_mix_) {
+      video_mixer_->addVideoTrack(userId, remote_video_track_);
+      remote_video_track_map_[std::string(userId)] = remote_video_track_;
+   }
+   ```
+
+4. 当第一个 YUV 帧解码后，先调用 `setBackground` 设置背景，再调用 `refresh` 刷新 `IVideoMixerSource` 对象。
+
+   ```cpp
+   remote_source_map_[std::string(userId)] = calculate_layout(width, height);
+   for (auto it = remote_source_map_.begin(); it != remote_source_map_.end(); it++) {
+      video_mixer_->setStreamLayout(it->first.c_str(), it->second);
+   }
+   video_mixer_->setBackground(1920, 1080, 15);
+   video_mixer_->refresh();
+   ```

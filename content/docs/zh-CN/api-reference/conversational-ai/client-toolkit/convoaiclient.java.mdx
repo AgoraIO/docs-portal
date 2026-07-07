@@ -18,7 +18,7 @@ public static synchronized ConvoAIClient create(ConvoAIConfig convoAIConfig)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `convoAIConfig` | `ConvoAIConfig` | 会话式 AI 引擎的配置参数。详见 [`ConvoAIConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#convoaiconfig)。 |
+| `convoAIConfig` | `ConvoAIConfig` | 会话式 AI 引擎的配置参数。详见 [`ConvoAIConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#convoaiconfig)。 |
 
 #### 返回值
 
@@ -41,11 +41,11 @@ public abstract Mono<JoinConvoAIRes> join(JoinConvoAIReq request);
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `request` | `JoinConvoAIReq` | 加入对话式 AI 引擎的请求参数。详见 [`JoinConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#joinconvoaireq)。 |
+| `request` | `JoinConvoAIReq` | 加入对话式 AI 引擎的请求参数。详见 [`JoinConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#joinconvoaireq)。 |
 
 #### 返回值
 
-方法调用成功，返回 [`JoinConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#joinconvoaires) 实例。
+方法调用成功，返回 [`JoinConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#joinconvoaires) 实例。
 
 <a id="leave"></a>
 ## leave
@@ -87,11 +87,11 @@ public abstract Mono<ListConvoAIRes> list(ListConvoAIReq request);
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `request` | `ListConvoAIReq` | 用于列出智能体的参数。详见 [`ListConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#listconvoaireq)。 |
+| `request` | `ListConvoAIReq` | 用于列出智能体的参数。详见 [`ListConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#listconvoaireq)。 |
 
 #### 返回值
 
-方法调用成功，返回 [`ListConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#listconvoaires) 对象。
+方法调用成功，返回 [`ListConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#listconvoaires) 对象。
 
 <a id="query"></a>
 ## query
@@ -118,7 +118,7 @@ public abstract Mono<QueryConvoAIRes> query(String agentId);
 
 #### 返回值
 
-方法调用成功，返回 [`QueryConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#queryconvoaires) 实例。
+方法调用成功，返回 [`QueryConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#queryconvoaires) 实例。
 
 <a id="update"></a>
 ## update
@@ -142,11 +142,11 @@ public abstract Mono<UpdateConvoAIRes> update(String agentId, UpdateConvoAIReq r
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `agentId` | `String` | 智能体 ID。 |
-| `request` | `UpdateConvoAIReq` | 用于更新智能体的参数，详见 [`UpdateConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updateconvoaireq)。 |
+| `request` | `UpdateConvoAIReq` | 用于更新智能体的参数，详见 [`UpdateConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#updateconvoaireq)。 |
 
 #### 返回值
 
-方法调用成功，返回 [`UpdateConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updateconvoaires) 对象。
+方法调用成功，返回 [`UpdateConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#updateconvoaires) 对象。
 
 <a id="interrupt"></a>
 ## interrupt
@@ -169,7 +169,7 @@ public abstract Mono<InterruptConvoAIRes> interrupt(String agentId);
 
 #### 返回值
 
-方法调用成功，返回中断响应结果，详见 [`InterruptConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#interruptconvoaires)。
+方法调用成功，返回中断响应结果，详见 [`InterruptConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#interruptconvoaires)。
 
 <a id="speak"></a>
 ## speak
@@ -189,8 +189,8 @@ public abstract Mono<SpeakConvoAIRes> speak(String agentId, SpeakConvoAIReq requ
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `agentId` | `String` | 智能体 ID。 |
-| `request` | `SpeakConvoAIReq` | 播报自定义消息的请求体，详见 [`SpeakConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#speakconvoaireq)。 |
+| `request` | `SpeakConvoAIReq` | 播报自定义消息的请求体，详见 [`SpeakConvoAIReq`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#speakconvoaireq)。 |
 
 #### 返回值
 
-方法调用成功，返回响应对象 [`SpeakConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#speakconvoaires)。详见 [`SpeakConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#speakconvoaires)。
+方法调用成功，返回响应对象 [`SpeakConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#speakconvoaires)。详见 [`SpeakConvoAIRes`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#speakconvoaires)。

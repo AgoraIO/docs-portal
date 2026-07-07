@@ -77,6 +77,24 @@ Web body
     });
   });
 
+  it('keeps device C as a structured platform tab', () => {
+    const processedText = `
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="android" />
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="device-c" />
+Device body
+<_PlatformProcessedMarker close="true" />
+`;
+
+    expect(extractStructuredPlatformTabs(processedText)).toEqual({
+      canonicalPlatform: 'android',
+      defaultPlatform: 'android',
+      platforms: ['android', 'device-c'],
+    });
+  });
+
   it('does not expose header platform tabs for a single structured platform', () => {
     const processedText = `
 <_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />

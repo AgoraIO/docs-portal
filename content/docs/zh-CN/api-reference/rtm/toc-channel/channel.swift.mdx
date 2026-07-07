@@ -17,9 +17,9 @@ title: "频道"
 
 ### 接口描述
 
-RTM 提供消息、状态、事件变更等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)章节。
+RTM 提供消息、状态、事件变更等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
 
-通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteJoinChannel` 类型的 `didReceivePresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteJoinChannel` 类型的 `didReceivePresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Message Channel。
@@ -98,7 +98,7 @@ rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions) { r
 
 ### 接口描述
 
-如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Message Channel。
@@ -294,7 +294,7 @@ streamChannel.join(joinOptions, completion: { (res, error) in
 
 如果你不再需要待在某个频道中，你可以调用 `leave` 方法离开该频道。离开后你将不再会接收到此频道中的任何消息、状态及事件通知，你在该频道中创建的 Topic 发布者的角色及你与所有 Topic 的订阅关系都将自动解除。如果想再次恢复之前的发布者角色和订阅关系，你需要调用 `join` 方法再次进入该频道并自行调用 `joinTopic` 和 `subscribeTopic` 方法进行设置。
 
-成功离开频道后，频道中的远端用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功离开频道后，频道中的远端用户会收到 `remoteLeaveChannel` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Stream Channel。
