@@ -74,7 +74,7 @@
 | `status-page` | Status Page | `solutions/status-page` | `mapped` | 已确认放入 solutions |
 | `console` | 控制台 | `introduction` | `mapped` | 普通文档按平台基础信息拆入 introduction；API 另进 `api-reference/console` |
 | `analytics` | 水晶球 | `introduction/usage-analytics` | `mapped` | API 另进 `api-reference/analytics` |
-| `conversion-ppt` | PPT 转码服务 | `introduction/ppt-transcoding` | `mapped` | API 另进 `api-reference/ppt-conversion-service` |
+| `conversion-ppt` | PPT 转码服务 | `solutions/ppt-transcoding` | `mapped` | API 另进 `api-reference/ppt-conversion-service` |
 | `terms` | 条款 | `introduction/terms` | `mapped` | 已确认纳入新站文档 |
 | `multi-usecase` | 多场景/方案 | `solutions/multi-usecase` | `mapped` | 已确认迁移到 solutions 下 |
 | `agora-product` | 声网范文 | 不迁移 | `ignore` | 示例目录 |
@@ -129,7 +129,7 @@
 | --- | --- |
 | `docs/rtc/landing-page.mdx` | `content/docs/zh-CN/realtime-media/rtc/index.md` |
 | `docs/rtc/landing-page.javascript.mdx` | `content/docs/zh-CN/realtime-media/rtc/index.javascript.md` |
-| `docs/rtc-server-sdk/landing-page.python.go.mdx` | `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.python.md` 和 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.go.md` |
+| `docs/rtc-server-sdk/landing-page.python.go.mdx` | Python 入口收敛到 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.mdx`，Go 保留 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.go.md` |
 | `docs/chatroom/sdk/landing-page.mdx` | `content/docs/zh-CN/solutions/chatroom/sdk/index.md` |
 | `docs/online-ktv/auikaraoke/landing-page.mdx` | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/index.md` |
 | `docs/rtc/basic-features/audio-profile.android.mdx` | `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-profile.android.mdx` |

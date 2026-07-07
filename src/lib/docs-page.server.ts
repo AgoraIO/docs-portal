@@ -3,6 +3,7 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
+import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
@@ -116,7 +117,8 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
   const tabSummaries = getTabSummaries(pageTree);
   const tabSummary = tabSummaries.find((item) => item.id === tab);
 
-  if (tabSummary?.url === `/${locale}/${tab}`) {
+  const tabUrl = `/${locale}/${tab}`;
+  if (tabSummary?.url === tabUrl && hasDocsPageForUrl(source, tabUrl)) {
     return {
       locale,
       url: tabSummary.url,
@@ -124,7 +126,12 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
     };
   }
 
-  const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const indexedPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const firstDescendantPageUrl = getFirstChildPageUrl(pageTree, tab, []);
+  const firstPageUrl =
+    indexedPageUrl === tabUrl && !hasDocsPageForUrl(source, tabUrl)
+      ? firstDescendantPageUrl
+      : (indexedPageUrl ?? firstDescendantPageUrl);
 
   if (!firstPageUrl) {
     return null;
@@ -143,6 +150,17 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
+  const movedDocsRedirect = resolveMovedDocsRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (movedDocsRedirect) {
+    return {
+      redirectUrl: movedDocsRedirect,
+    };
+  }
+
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
     tab,
@@ -1041,7 +1059,9 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
   );
 
   return Boolean(
-    page && !isPlatformGroupPanelPage(page, source.getPages(locale)),
+    page &&
+      page.url === url &&
+      !isPlatformGroupPanelPage(page, source.getPages(locale)),
   );
 }
 

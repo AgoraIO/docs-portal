@@ -52,10 +52,10 @@
 | 22 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/get-started/integrate.mdx` | `133:4-133:16` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 23 | `content/docs/zh-CN/realtime-media/rtc/advanced-features/extensions/virtual-background.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
 | 24 | `content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 25 | `content/docs/zh-CN/introduction/usage-analytics/overview/release-notes.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 26 | `content/docs/zh-CN/introduction/usage-analytics/rtc/api-limits.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 27 | `content/docs/zh-CN/introduction/usage-analytics/rtc/call-search/overview.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `77:1-77:37`. |
-| 28 | `content/docs/zh-CN/introduction/usage-analytics/rtc/data-insight/basic.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 25 | `content/docs/zh-CN/realtime-media/usage-analytics/overview/release-notes.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 26 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/api-limits.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 27 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/call-search/overview.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `77:1-77:37`. |
+| 28 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/data-insight/basic.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
 | 29 | `content/docs/zh-CN/realtime-media/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 30 | `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-quick-start.mdx` | `5557:5-5557:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 31 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-go.mdx` | `26:5-26:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
