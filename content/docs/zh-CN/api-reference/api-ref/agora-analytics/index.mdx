@@ -1,0 +1,42 @@
+---
+title: 水晶球 REST API 概览
+description: 使用水晶球 REST API 查询通话调查、数据洞察和实时监控数据。
+---
+
+水晶球 REST API 可用于从服务端获取实时音视频项目的质量、用量和实时监控数据，并将这些数据接入你自己的网页、应用或运维系统。
+
+调用 API 之前，建议先在[控制台](https://console.shengwang.cn)中查看水晶球的数据维度和筛选方式。
+
+## API 基础
+
+- **鉴权**：所有请求都需要使用 [Basic HTTP 认证](analytics-restful-authentication)。
+- **请求**：请求参数通过 URL 查询字符串传入。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
+
+:::info
+如果业务服务器 DNS 地址位于中国大陆以外的国家或地区，可以使用 `https://api.agora.io` 作为请求域名。
+:::
+
+## 通话调查
+
+- [获取频道通话列表](call-list)：获取符合指定条件的通话及其基本信息。
+- [获取用户通话详情](call-sessions)：通过指定通话 ID 获取用户的通话详情。
+- [获取通话质量指标](call-metrics)：获取指定通话的质量指标数据。
+- [获取通话统计数据](call-statistics)：获取指定通话在指定时间范围内、指定维度下的卡顿率统计数据。
+- [获取通话卡顿率分桶数据](call-freeze-bucket)：获取指定通话在指定时间范围内的卡顿率分桶统计数据。
+- [获取频道时序指标](call-statistics-time)：获取指定通话的洞察统计数据。
+
+## 数据洞察
+
+- [查询时序用量指标](insight-usage-time)：按小时或天获取指定时间范围内的用量指标。
+- [查询时序质量指标](insight-quality-time)：按分钟、小时或天获取指定时间范围内的质量指标。
+- [查询聚合用量指标](insight-usage-aggregation)：获取指定时间范围内、指定维度下的聚合用量指标。
+- [查询聚合质量指标](insight-quality-aggregation)：获取指定时间范围内、指定维度下的聚合质量指标。
+
+## 实时监控
+
+- [查询实时规模](realtime-usage)：获取实时的通话人数和频道数。
+- [查询实时质量](realtime-quality)：获取实时的加入频道成功率、卡顿率和网络延迟率。
+- [查询实时规模 TOP 20 分组](realtime-usage-top20)：获取指定维度下实时通话人数排名前 20 的分组数据。
+- [查询实时质量 TOP 20 分组](realtime-quality-top20)：获取指定维度下实时质量指标排名前 20 的分组数据。

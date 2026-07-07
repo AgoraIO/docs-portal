@@ -1,0 +1,2899 @@
+openapi: 3.1.0
+x-stoplight:
+  id: ozevdrr1c8adi
+info:
+  version: ''
+  title: API 概览
+  description: "声网融合 CDN 直播提供 RESTful API，你可以通过你的业务服务器向声网服务器发送 HTTP 请求，在服务端配置和管理直播。\n\n本文介绍融合 CDN 直播 RESTful API 的基础信息。\n\n## 主要功能\n\n融合 CDN 直播 RESTful API 主要功能如下：\n\n### 域名及发布点管理\n\n- 域名分为推流域名和播流域名两种，主要影响流的接入区域、调度等行为。同一条直播流可以通过多个不同的域名进行推流和播流。\n- 发布点用于对直播流进行分组。你可以针对一个发布点配置录制、转码、截图等功能，这些配置适用于这个发布点下的所有流。\n\n### 直播流录制\n\n录制指定发布点下的全部直播流或单条直播流，可以设置录制文件的类型、第三方云存储服务厂商等。\n\n### 直播流内容处理\n\n- 截图及存储：对指定发布点的直播流开启/关闭截图功能。支持设置截图间隔，将截图上传至第三方云存储服务。\n- 转码：对指定发布点的直播流转码，修改音视频编码配置。支持多种预置的转码配置及自定义转码配置。\n- 水印：对指定发布点的直播流增加水印，源流和转码流都会带上水印。\n\n### 直播流管理\n\n封禁/取消封禁直播流，查询推流/播流信息。\n\n### 推流/播流鉴权\n\n- 时间戳鉴权：对指定推流/播流域名设置鉴权密钥。\n- 回源鉴权：回源到你的服务器进行鉴权，支持同步和异步鉴权以及缓存鉴权结果。\n\n### 录制内容处理\n\n使用标准录制时，支持从单个录制文件中截取片段和定点截图。\n\n## 实现流程\n\n调用融合 CDN 直播 RESTful API 的主要流程如下：\n\n1. 添加推流和播流域名。\n2. （可选）添加发布点。\n   该步骤为可选操作。声网提供一个默认发布点，你可以直接使用。\n3. 对发布点进行直播流的功能配置、推流信息查询、管理直播流等操作。\n\n## 请求结构\n\n### 认证方式\n\n融合 CDN 直播 RESTful API 使用 HTTP HMAC (Hash-based Message Authentication Code) 认证。\n\n在发送 HTTP 请求时，你需要通过 HMAC-SHA256 算法生成一个签名，并在请求头部的 `authorization`\
+    \ 字段传入签名及相关信息。\n\n在生成认证字段过程中，你需要用到以下声网账号的信息：\n\n- 声网项目的 App ID，详见[获取 App ID](https://doc.shengwang.cn/doc/fusion-cdn/restful/get-started/enable-service)。\n- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[生成客户 ID 和密钥](https://doc.shengwang.cn/doc/fusion-cdn/restful/get-started/enable-service)。\n\n下面的 Python 代码（Python 3.7+）以获取域名列表的 API 为例，演示如何生成 `authorization` 字段的值：\n\n```python\nimport hmac\nimport base64\nimport datetime\nfrom hashlib import sha256\n \n# 你的声网项目的 App ID\nappid = ''\n#声网控制台 RESTful API 中获取的客户 ID\ncustomer_username = ''\n#声网控制台 RESTful API 中获取的客户密钥\ncustomer_secret = ''\n# 请求包体\ndata = \"\"\n \n# 请求域名\nhost = \"api.sd-rtn.com\"\n# 请求方法和 endpoint\nreq_metd = 'GET'\npath = f'/v1/projects/{appid}/fls/domains'\n \nbody_sha256 = sha256(data.encode('utf-8')).digest()\nbody_sha256_base64 = base64.b64encode(body_sha256)\ndate = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')\nrequest_line = \"{} {} {}\".format(req_metd, path, \"HTTP/1.1\")\ndigest = \"SHA-256={}\".format(body_sha256_base64.decode(\"\
+    utf-8\"))\nsigning_string = \"host: {}\\ndate: {}\\n{}\\ndigest: {}\".format(host, date, request_line, digest)\nsignature = base64.b64encode(\n    hmac.new(customer_secret.encode(\"utf-8\"), signing_string.encode(\"utf-8\"), sha256).digest())\nauthorization = 'hmac username=\"{}\", algorithm=\"hmac-sha256\", headers=\"host date request-line digest\", signature=\"{}\"'.format(\n    customer_username, signature.decode(\"utf-8\"))\n```\n\n### 服务器地址\n\n所有的请求均发送给域名：`api.sd-rtn.com`。\n\n### 通信协议\n\n为了保障通信安全，融合 CDN 直播 RESTful API 仅支持 HTTPS 协议。\n\n### 数据格式\n\n- 请求：请求的格式详见具体 API 中的示例。\n- 响应：响应内容的格式为 JSON。\n\n> 所有的请求 URL 和请求包体内容都是区分大小写的。\n\n## API 限制\n\n融合 CDN 直播 RESTful API 调用频率上限为 50 次/秒。如果调用频率超出上限，请参考[如何处理服务端 RESTful API 调用超出频率限制](https://doc.shengwang.cn/faq/integration-issues/restful-api-call-frequency)。\n\n## 调用示例\n\n本节提供调用融合 CDN 直播 RESTful API 的完整示例代码。\n\n### Python 2\n\n```python\nimport hmac\nimport base64\nimport datetime\nimport requests\nimport json\nfrom hashlib import sha256\n\n\
+    # username\ncustomer_username = \"hmac_user_name\"\n# secret\ncustomer_secret = \"hmac_user_secret\"\n# appid\nappid = \"your_appid\"\n# streamName\nstream_name = \"stream_name\"\n# content\ncustomer_data = json.dumps({\"resumeTime\":\"2023-11-29T19:00:00+08:00\"})\n\nbody_sha256 = sha256(customer_data.encode('utf-8')).digest()\nbody_sha256_base64 = base64.b64encode(body_sha256)\n\nhost = \"api.sd-rtn.com\"\npath = \"/v1/projects/%s/fls/entry_points/live/admin/banned_streams/%s\" % (appid, stream_name)\ndate = datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')\nrequest_line = \"{} {} {}\".format(\"PATCH\", path, \"HTTP/1.1\")\ndigest = \"SHA-256={}\".format(body_sha256_base64.decode(\"utf-8\"))\n\nsigning_string = \"host: {}\\ndate: {}\\n{}\\ndigest: {}\".format(host, date, request_line, digest)\nsignature = base64.b64encode(hmac.new(customer_secret.encode(\"utf-8\"), signing_string.encode(\"utf-8\"), sha256).digest())\nauthorization = 'hmac username=\"{}\", algorithm=\"\
+    hmac-sha256\", headers=\"host date request-line digest\", signature=\"{}\"'.format(customer_username, signature.decode(\"utf-8\"))\nprint (authorization)\n\nheaders = {\n    \"host\": host,\n    \"date\": date,\n    \"digest\": digest,\n    \"authorization\": authorization,\n}\n\nprint(signing_string)\n\nresponse = requests.patch(\"https://{}{}\".format(host, path), headers=headers, data=customer_data)\nprint(response.status_code, response.content.decode())\nprint(response.headers)\n```\n\n### Java\n\n```java\nimport javax.crypto.Mac;\nimport javax.crypto.spec.SecretKeySpec;\nimport java.io.*;\nimport java.net.HttpURLConnection;\nimport java.net.MalformedURLException;\nimport java.net.URL;\nimport java.nio.charset.StandardCharsets;\nimport java.security.InvalidKeyException;\nimport java.security.MessageDigest;\nimport java.security.NoSuchAlgorithmException;\nimport java.text.SimpleDateFormat;\nimport java.util.*;\n\n\npublic class GatewayKey {\n\n    public static void main(String[]\
+    \ args) throws NoSuchAlgorithmException, IOException, InvalidKeyException {\n\n        String customerUsername = \"hmac_user_name\";\n        String customerSecret = \"hmac_user_secret\";\n        String customerData = \"\";\n\n        String appid = \"your_appid\";\n        String requestMethod = \"GET\";\n\n        MessageDigest messageDigest;\n        messageDigest = MessageDigest.getInstance(\"SHA-256\");\n        messageDigest.update(customerData.getBytes(\"UTF-8\"));\n        String base64encodedString = Base64.getEncoder().encodeToString(messageDigest.digest());\n        String digest = \"SHA-256=\" + base64encodedString;\n\n        String host = \"api.sd-rtn.com\";\n        String path = String.format(\"/v1/projects/%s/fls/entry_points/live/reports/online_streams\", appid);\n        String requestLine = requestMethod + \" \" + path + \" \" + \"HTTP/1.1\";\n\n        final Date currentTime = new Date();\n        final SimpleDateFormat sdf = new SimpleDateFormat(\"EEE, dd MMM yyyy\
+    \ HH:mm:ss z\", Locale.ENGLISH);\n        sdf.setTimeZone(TimeZone.getTimeZone(\"GMT\"));\n        String date = sdf.format(currentTime);\n\n        String signingString = String.format(\"host: %s\\ndate: %s\\n%s\\ndigest: %s\", host, date, requestLine, digest);\n\n        Mac sha256_HMAC = Mac.getInstance(\"HmacSHA256\");\n        SecretKeySpec secret_key = new SecretKeySpec(customerSecret.getBytes(\"UTF-8\"), \"HmacSHA256\");\n        sha256_HMAC.init(secret_key);\n        String signature = Base64.getEncoder().encodeToString(sha256_HMAC.doFinal(signingString.getBytes(\"UTF-8\")));\n        String authorization = String.format(\"hmac username=\\\"%s\\\", algorithm=\\\"hmac-sha256\\\", headers=\\\"host date request-line digest\\\", signature=\\\"%s\\\"\",\n                                                customerUsername, signature);\n\n        System.out.println(authorization);\n        System.out.println(signingString);\n\n        URL url = new URL(\"https://\" + host + path);\n  \
+    \      HttpURLConnection http = (HttpURLConnection)url.openConnection();\n        http.setRequestMethod(\"GET\");\n        http.setDoOutput(true);\n        http.setRequestProperty(\"host\", host);\n        http.setRequestProperty(\"date\", date);\n        http.setRequestProperty(\"digest\", digest);\n        http.setRequestProperty(\"authorization\", authorization);\n\n        InputStream stream = http.getInputStream();\n\n        System.out.println(http.getResponseCode() + \" \" + http.getResponseMessage());\n\n        BufferedReader br = null;\n        if (http.getResponseCode() == 200) {\n            br = new BufferedReader(new InputStreamReader(http.getInputStream()));\n            String strCurrentLine;\n            while ((strCurrentLine = br.readLine()) != null) {\n                System.out.println(strCurrentLine);\n            }\n        } else {\n            br = new BufferedReader(new InputStreamReader(http.getErrorStream()));\n            String strCurrentLine;\n        \
+    \    while ((strCurrentLine = br.readLine()) != null) {\n                System.out.println(strCurrentLine);\n            }\n        }\n\n        http.disconnect();\n    }\n}\n```\n\n### Node.js\n\n```javascript\nvar crypto = require(\"crypto\");\nvar request = require(\"request\");\n\nvar customer_username = \"{your_hmac_key}\";\nvar customer_secret = \"{your_hmac_secret}\";\n\nvar host = \"api.sd-rtn.com\";\nvar path = \"/v1/projects/{appid}/fls/entry_points/live/admin/banned_streams/{streamName}\";\nvar method = \"PATCH\";\n\nvar content = {};\ncontent.resumeTime = \"2023-11-29T19:00:00+08:00\";\nvar contentString = JSON.stringify(content);\n\ngmt_date = new Date().toGMTString();\n\ndigest = \"SHA-256=\" + Buffer.from(crypto.createHash(\"sha256\").update(contentString).digest()).toString(\"base64\");\nrequest_line = method + \" \" + path + \" \" + \"HTTP/1.1\";\n\nsigning_string = \"host: \" + host;\nsigning_string = signing_string + \"\\ndate: \" + gmt_date;\nsigning_string = signing_string\
+    \ + \"\\n\" + request_line;\nsigning_string = signing_string + \"\\ndigest: \" + digest;\nsignature = crypto.createHmac(\"sha256\", customer_secret).update(signing_string).digest();\nsignature = Buffer.from(signature).toString(\"base64\");\n\nauthorization = 'hmac username=\"' + customer_username + '\", ';\nauthorization = authorization + 'algorithm=\"hmac-sha256\", headers=\"host date request-line digest\", signature=\"';\nauthorization = authorization + signature + '\"';\n\nrequest.patch(\n    {\n        url: \"https://\" + host + path,\n        headers: {\"content-type\": \"application/json\", date: gmt_date, digest: digest, authorization: authorization},\n        body: contentString,\n    },\n    function (err, res, body) {\n        console.log(\"err:\", err);\n        console.log(\"status:\", res.statusCode);\n        console.log(\"body:\", body);\n    },\n);\n```\n\n### PHP\n```php\n<?php\n\n#声网控制台 RESTful API 中获取的客户 ID\n$customer_username = \"{your username}\";\n#声网控制台 RESTful\
+    \ API 中获取的客户密钥\n$customer_secret = \"{your secret}\";\n# 你的声网项目的 App ID\n$appid = \"{your appid}\";\n# 请求方法\n$request_method = \"PATCH\";\n# 请求包体\n$data = \"\";\n# 请求域名\n$host = \"api.sd-rtn.com\";\n# 发布点\n$entry_point = \"live\";\n# 请求路径\n$path = sprintf(\"/v1/projects/%s/fls/entry_points/%s/reports/online_streams\", $appid, $entry_point);\n# 日期\n$date = gmDate(\"D, d M Y H:i:s \", time()) . \"GMT\";\n\n$request_lint = sprintf(\"%s %s %s\", $request_method, $path, \"HTTP/1.1\");\n\n$data = trim($data);\n$digest = 'SHA-256=' . base64_encode(pack(\"H*\", hash(\"sha256\", $data)));\n$signing_string = sprintf(\"host: %s\\ndate: %s\\n%s\\ndigest: %s\", $host,$date,$request_lint,$digest);\n\n$signature = base64_encode(pack('H*', hash_hmac('sha256', $signing_string, $customer_secret)));\n$authorization = sprintf('hmac username=\"%s\", algorithm=\"hmac-sha256\", headers=\"host date request-line digest\", signature=\"%s\"', $customer_username, $signature);\n\n$header = [\n\t\"host: $host\",\n\
+    \    \"date: $date\",\n    \"digest: $digest\",\n    \"authorization: $authorization\",\n];\n\nvar_dump($header);\nvar_dump(getCurl(\"https://$host$path\", $header, $request_method, $data));\n\n\n\nfunction getCurl($url, $headerArray, $method, $data){\n    $ch = curl_init();\n    curl_setopt($ch, CURLOPT_URL, $url);\n    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);\n    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);\n    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);\n    curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, $method);\n    curl_setopt($ch,CURLOPT_HTTPHEADER,$headerArray);\n    curl_setopt($ch, CURLOPT_POSTFIELDS,$data);\n    $output = curl_exec($ch);\n    curl_close($ch);\n    $output = json_decode($output,true);\n    return $output;\n}\n```\n\n### Postman 预请求脚本\n```javascript\nvar customer_username = \"hmac_user_name\"\nvar customer_secret = \"hmac_user_secret\"\n\n\ngmt_date = new Date().toGMTString()\ndigest = \"SHA-256=\" + CryptoJS.enc.Base64.stringify(CryptoJS.SHA256(pm.request.body.raw))\n\
+    request_line = pm.request.method + \" \" + pm.request.url.getPath() + \" \" + \"HTTP/1.1\"\n\nsigning_string = \"host: \" + pm.request.url.getHost()\nsigning_string = signing_string + \"\\ndate: \" + gmt_date\nsigning_string = signing_string + \"\\n\" + request_line \nsigning_string = signing_string + \"\\ndigest: \" + digest\nsignature = CryptoJS.HmacSHA256(signing_string, customer_secret)\nsignature = CryptoJS.enc.Base64.stringify(signature)\n\nauthorization = 'hmac username=\"' + customer_username + '\", '\nauthorization = authorization + 'algorithm=\"hmac-sha256\", headers=\"host date request-line digest\", signature=\"'\nauthorization = authorization + signature + '\"'\n\npm.request.headers.add({key: 'date', value: gmt_date})\npm.request.headers.add({key: 'digest', value: digest})\npm.request.headers.add({key: 'authorization', value: authorization})\n```\n\n\n"
+servers:
+- url: https://api.sd-rtn.com
+  description: ''
+paths:
+  /v1/projects/{appid}/fls/domains:
+    get:
+      tags:
+      - 域名管理
+      summary: 获取域名列表
+      description: 该方法获取一个声网项目下所有的直播域名。
+      operationId: get-domain-list
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domainList:
+                    type: array
+                    description: 域名列表。一个域名对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        appid:
+                          type: string
+                          description: 声网项目的 App ID。
+                        authKey:
+                          type: string
+                          description: 防盗链密钥。
+                        name:
+                          type: string
+                          description: 域名名称。
+                        type:
+                          type: string
+                          description: '域名类型。
+
+                            - `"publish"`：推流域名。
+
+                            - `"play"`：播流域名。'
+                        region:
+                          type: string
+                          description: 域名使用的声网服务器所在区域。仅在 `type` 为 `"publish"` 时返回。
+                x-examples:
+                  Example 1:
+                    domainList:
+                    - appid: '{your appid}'
+                      authKey: '{your auth key}'
+                      name: '{your play domain}'
+                      type: play
+                    - appid: '{your appid}'
+                      authKey: '{your auth key}'
+                      name: '{your publish domain}'
+                      region: cn
+                      type: publish
+              examples:
+                响应 body:
+                  value:
+                    domainList:
+                    - appid: '{your appid}'
+                      authKey: '{your auth key}'
+                      name: '{your play domain}'
+                      type: play
+                    - appid: '{your appid}'
+                      authKey: '{your auth key}'
+                      name: '{your publish domain}'
+                      region: cn
+                      type: publish
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: wa4yyjgtnitg3
+      security:
+      - API Key: []
+    post:
+      tags:
+      - 域名管理
+      summary: 增加域名
+      description: 该方法增加一个直播域名。
+      operationId: post-v1-projects-appid-fls-domains
+      parameters:
+      - name: id
+        in: query
+        description: 要增加的域名名称，不支持泛域名。
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: 请求包体为 JSON Object 类型的 `data` 字段。
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  description: '域名名称：
+
+                    - `"publish"`：推流域名。
+
+                    - `"play"`：播流域名。'
+                region:
+                  type: string
+                  description: '域名类型设置为 `"publish"` 时必填。该参数仅适用于推流域名。推流域名使用的声网服务器所在区域如下：
+
+                    - `"cn"`：中国
+
+                    - `"ap"`：除中国大陆以外的亚洲区域
+
+                    - `"eu"`：欧洲
+
+                    - `"na"`：北美'
+              required:
+              - type
+      responses:
+        '201':
+          description: 如果返回的 HTTP 状态码为 201，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appid:
+                    type: string
+                    description: 声网项目的 App ID。
+                  cname:
+                    type: string
+                    description: 域名对应的 cname，你需要在自己的 DNS 托管商处进行配置。
+                  region:
+                    type: string
+                    description: 设置的声网服务器所在区域。仅在 `type` 为 `"publish"` 时返回。
+                  type:
+                    type: string
+                    description: '设置的域名类型：
+
+                      - `"publish"`：推流域名。
+
+                      - `"play"`：播流域名。'
+                  authKey:
+                    type: string
+                    description: 防盗链密钥。
+                x-examples:
+                  Example 1:
+                    appid: '{your appid}'
+                    cname: '{your domain}'
+                    region: cn
+                    type: publish
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: o5xgcombhkx4d
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 域名分为推流域名和播流域名两种，主要影响流的介入区域、调度等行为。同一条直播流可以通过多个不同的域名进行推流和播流。
+    parameters:
+    - $ref: '#/components/parameters/appId'
+  /v1/projects/{appid}/fls/entry_points:
+    get:
+      tags:
+      - 发布点管理
+      summary: 获取发布点列表
+      description: 该方法获取一个声网项目下所有的发布点。
+      operationId: get-entry-point-list
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entryPointList:
+                    type: array
+                    description: 发布点列表。一个发布点对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 发布点名称。
+                x-examples:
+                  Example 1:
+                    entryPointList:
+                    - name: live
+              examples:
+                响应 body:
+                  value:
+                    entryPointList:
+                    - name: live
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: h3ziiq66jwply
+      security:
+      - API Key: []
+    post:
+      tags:
+      - 发布点管理
+      summary: 增加发布点
+      description: 该方法增加一个发布点。
+      operationId: post-v1-projects-appid-fls-entry_points
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - name: id
+        in: query
+        description: 要增加的发布点名称。
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: 如果返回的 HTTP 状态码为 201，表示请求成功。
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: ga14qeabr6txc
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '发布点用于对直播流进行分组。你可以针对一个发布点配置录制、转码、截图等功能，这些配置适用于这个发布点下的所有流。
+
+
+          声网提供一个默认分布点 `live`，你可以直接使用。'
+  /v1/projects/{appid}/fls/entry_points/{entry_point}:
+    delete:
+      tags:
+      - 发布点管理
+      summary: 删除发布点
+      description: 该方法删除一个发布点。
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - schema:
+          type: string
+        name: entry_point
+        in: path
+        required: true
+        description: 要删除的发布点名称。默认的发布点 `live` 不可删除。
+      operationId: delete-a-entry-point
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: m8fb8in1an1e2
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/banned_streams/{stream_name}:
+    patch:
+      tags:
+      - 直播流管理
+      summary: 封禁直播流
+      description: 该方法封禁指定的直播流。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-admin-banned_streams-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/stream_name'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resumeTime:
+                  type: string
+                  description: '恢复流的时间，RFC3339 格式，例如：`2018-1129T19:00:00+08:00`。默认恢复时间为封禁后 7 天。
+
+                    '
+              x-examples:
+                Example 1:
+                  resumeTime: '2021-11-29T19:00:00+08:00'
+            examples:
+              请求 body:
+                value:
+                  resumeTime: '2021-11-29T19:00:00+08:00'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 4fjqrz5xyq8a4
+      security:
+      - API Key: []
+    delete:
+      tags:
+      - 直播流管理
+      summary: 取消封禁直播流
+      description: 该方法取消封禁指定的直播流。
+      operationId: delete-v1-projects-appid-fls-entry_points-entry_point-admin-banned_streams-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/stream_name'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: l7sf2kjlic6jy
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/banned_streams:
+    get:
+      tags:
+      - 直播流管理
+      summary: 获取封禁的流列表
+      description: 该方法获取指定发布点下所有被封禁的直播流的列表。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-admin-banned_streams
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: '如果返回的 HTTP 状态码为 200，表示请求成功。
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bannedStreamList:
+                    type: array
+                    description: 已被封禁的直播流列表。一个直播流对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 流的名称。
+                        resumeTime:
+                          type: string
+                          description: 恢复流的时间。
+                x-examples:
+                  Example 1:
+                    bannedStreamList:
+                    - name: '{your_stream_namename1}'
+                      resumeTime: '2021-11-29T19:00:00+08:00'
+                    - name: '{your_stream_name2}'
+                      resumeTime: '2021-11-28T19:00:00+08:00'
+              examples:
+                响应 body:
+                  value:
+                    bannedStreamList:
+                    - name: '{your_stream_namename1}'
+                      resumeTime: '2021-11-29T19:00:00+08:00'
+                    - name: '{your_stream_name2}'
+                      resumeTime: '2021-11-28T19:00:00+08:00'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: gs6lmllywr258
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/reports/online_streams:
+    get:
+      tags:
+      - 推流和播流数据
+      summary: 查询在线流列表
+      description: 该方法分页查询指定发布点下的在线流列表。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-reports-online_streams
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  streamList:
+                    type: array
+                    description: 在线流列表。一个直播流对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 流的名称。
+                        startTime:
+                          type: string
+                          description: 推流的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00Z"`。
+              examples:
+                响应 body:
+                  value:
+                    streamList:
+                    - name: '{your_stream_name_1}'
+                      startTime: '2021-11-29T19:00:00+08:00'
+                    - name: '{your_stream_name_2}'
+                      startTime: '2021-11-29T19:00:00+08:00'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: hye9zaxk354ua
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/reports/online_streams/{stream_name}:
+    get:
+      tags:
+      - 推流和播流数据
+      summary: 获取在线流信息
+      description: 该方法获取指定在线流的信息。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-reports-online_streams-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/stream_name'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  startTime:
+                    type: string
+                    description: 推流开始的时间，RFC3339 格式，例如 `"2019-01-07T12:00:00Z"`。
+                x-examples:
+                  Example 1:
+                    startTime: '2021-10-11T04:08:52Z'
+              examples:
+                响应 body:
+                  value:
+                    startTime: '2021-10-11T04:08:52Z'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: di7cdk3ay822s
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/reports/publish_history:
+    get:
+      tags:
+      - 推流和播流数据
+      summary: 获取推流历史
+      description: 该方法获取指定发布点下指定时间范围内的推流历史，只能查询到已经结束的流的历史。
+      operationId: get-streaming-history
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - name: start_time
+        in: query
+        description: 查询推流历史的开始时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。开始时间不能早于当前时间 60 天前的时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 7 天的推流历史。
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: 查询推流历史的结束时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。结束时间不能晚于当前时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 7 天的推流历史。
+        schema:
+          type: string
+      - name: stream_name
+        in: query
+        description: 要查询历史的直播流名称。如果不填，代表查询指定发布点下所有的直播流。
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishHistory:
+                    type: array
+                    description: 推流历史信息列表，按照推流结束时间从晚到早排序。一条推流记录对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 流的名称。
+                        startTime:
+                          type: string
+                          description: 推流开始的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00+08:00"`。
+                        endTime:
+                          type: string
+                          description: 推流结束的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00+08:00"`。
+                        duration:
+                          type: integer
+                          description: 推流持续的时长，单位为秒。
+                x-examples:
+                  Example 1:
+                    publishHistory:
+                    - name: '{your_stream_name_1}'
+                      startTime: '2021-08-25T12:19:23+08:00'
+                      endTime: '2021-08-25T14:42:58+08:00'
+                      duration: 8616
+                    - name: '{your_stream_name_2}'
+                      startTime: '2021-08-25T10:44:40+08:00'
+                      endTime: '2021-08-25T11:01:49+08:00'
+                      duration: 1030
+              examples:
+                响应 body:
+                  value:
+                    publishHistory:
+                    - name: '{your_stream_name_1}'
+                      startTime: '2021-08-25T12:19:23+08:00'
+                      endTime: '2021-08-25T14:42:58+08:00'
+                      duration: 8616
+                    - name: '{your_stream_name_2}'
+                      startTime: '2021-08-25T10:44:40+08:00'
+                      endTime: '2021-08-25T11:01:49+08:00'
+                      duration: 1030
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 2b0ia12ysaa2x
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 推流历史数据有约两小时的延时，支持查询 60 天内的推流记录，单次查询范围不能超过 30 天。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/reports/publish_quality:
+    get:
+      tags:
+      - 推流和播流数据
+      summary: 获取推流质量数据
+      description: 该方法获取指定流在指定时间范围内的推流质量数据。
+      operationId: get-streaming-quality-stats
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - name: start_time
+        in: query
+        description: 查询推流质量数据的开始时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。开始时间不能早于当前时间 6 天前的时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 6 小时的推流质量数据。
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: 查询推流质量数据的结束时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。结束时间不能晚于当前时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 6 小时的推流质量数据。
+        schema:
+          type: string
+      - name: stream_name
+        in: query
+        description: 要查询推流质量的直播流名称。
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  QualityHistory:
+                    type: array
+                    description: 推流质量数据列表，按照推流质量数据时间从晚到早排序。一条推流记录对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 流的名称。
+                        time:
+                          type: string
+                          description: 推流质量数据的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00+08:00"`。
+                        bitrate:
+                          type: integer
+                          description: 推流码率，单位为 bps。
+                        framerate:
+                          type: integer
+                          description: 推流帧率，单位为 fps。
+                        cdnIp:
+                          type: string
+                          description: 推流 CDN 节点的 IP 地址。
+                        clientIp:
+                          type: string
+                          description: 推流客户端的 IP 地址。
+                x-examples:
+                  Example 1:
+                    QualityHistory:
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:19:00+08:00'
+                      bitrate: 1123388
+                      framerate: 31
+                      cdnIp: 58.220.74.80
+                      clientIp: 218.19.252.82
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:18:00+08:00'
+                      bitrate: 1177908
+                      framerate: 30
+                      cdnIp: 58.220.74.80
+                      clientIp: 218.19.252.82
+              examples:
+                响应 body:
+                  value:
+                    QualityHistory:
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:19:00+08:00'
+                      bitrate: 1123388
+                      framerate: 31
+                      cdnIp: 58.220.74.80
+                      clientIp: 218.19.252.82
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:18:00+08:00'
+                      bitrate: 1177908
+                      framerate: 30
+                      cdnIp: 58.220.74.80
+                      clientIp: 218.19.252.82
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: kh5uixy9izk6h
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 推流质量数据有约 3 分钟的延时，支持查询 6 天内的推流记录，单次查询范围不能超过 6 小时。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/reports/stream_play_statistic:
+    get:
+      tags:
+      - 推流和播流数据
+      summary: 获取播流统计数据
+      description: 该方法获取指定流在指定时间范围内的播流统计数据。
+      operationId: get-streaming-play-stats
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - name: start_time
+        in: query
+        description: 查询播流统计数据的开始时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。开始时间不能早于当前时间 30 天前的时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 2 小时的播流统计数据。
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: 查询播流统计数据的结束时间，格式为 RFC3339 时间格式对应的 URL 编码，例如 `2019-01-07T12:00:00+08:00` 对应 `2019-01-07T12%3A00%3A00%2B08%3A00`。结束时间不能晚于当前时间。如果 `start_time` 和 `end_time` 都不填，默认查询最近 2 小时的播流统计数据。
+        schema:
+          type: string
+      - name: stream_name
+        in: query
+        description: 要查询播流统计的直播流名称。
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  playStatistic:
+                    type: array
+                    description: 播流统计数据列表，按照播流统计数据时间从晚到早排序。一条推流记录对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 流的名称。
+                        time:
+                          type: string
+                          description: 播流统计数据的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00+08:00"`。播流统计数据按分钟统计。
+                        linkNum:
+                          type: integer
+                          description: 连接数，即播流客户端的数量。
+                x-examples:
+                  Example 1:
+                    playStatistic:
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:19:00+08:00'
+                      linkNum: 3
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:18:00+08:00'
+                      linkNum: 5
+              examples:
+                响应 body:
+                  value:
+                    playStatistic:
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:19:00+08:00'
+                      linkNum: 3
+                    - name: '{your_stream_name}'
+                      time: '2021-08-25T12:18:00+08:00'
+                      linkNum: 5
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: evczg3e20e2cd
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 播流统计数据有约 3 分钟的延迟，支持查询 30 天内的播流记录，单次查询范围不能超过 2 个小时。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/record/custom/regions/{region}:
+    patch:
+      tags:
+      - 自定义录制
+      summary: 设置自定义录制配置
+      description: 该方法设置指定发布点下的直播流的自定义录制选项。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-custom-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hlsConfig:
+                  type: object
+                  description: HLS 录制文件的配置。
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: 是否启用 HLS 格式的录制。
+                mp4Config:
+                  type: object
+                  description: MP4 录制文件的配置。
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: 是否启用 MP4 格式的录制。
+                storageConfig:
+                  $ref: '#/components/schemas/StorageConfig'
+                  description: 录制文件的存储设置。
+              x-examples:
+                Example 1:
+                  hlsConfig:
+                    enabled: true
+                  mp4Config:
+                    enabled: true
+                  storageConfig:
+                    accessKey: '{your access key}'
+                    bucket: '{your bucket}'
+                    region: 3
+                    secretKey: '{your secret key}'
+                    vendor: 2
+            examples:
+              请求 body:
+                value:
+                  hlsConfig:
+                    enabled: true
+                  mp4Config:
+                    enabled: true
+                  storageConfig:
+                    accessKey: '{your access key}'
+                    bucket: '{your bucket}'
+                    region: 3
+                    secretKey: '{your secret key}'
+                    vendor: 2
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: q8lafgqp4n0kr
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 自定义录制与标准录制的区别在于，自定义录制支持使用第三方云存储服务。
+    get:
+      tags:
+      - 自定义录制
+      summary: 获取自定义录制配置
+      description: 该方法获取指定发布点的自定义录制配置。
+      operationId: get-customized-recording-configuration
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hlsConfig:
+                    type: object
+                    description: HLS 录制文件的配置。
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: 是否启用 HLS 格式的录制。
+                  mp4Config:
+                    type: object
+                    description: MP4 录制文件的配置。
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: 是否启用 MP4 格式的录制。
+                  storageConfig:
+                    $ref: '#/components/schemas/StorageConfig'
+                    description: 录制文件的存储设置。
+                x-examples:
+                  Example 1:
+                    hlsConfig:
+                      enabled: true
+                    mp4Config:
+                      enabled: true
+                    storageConfig:
+                      accessKey: '{your accesskey}'
+                      region: 3
+                      bucket: '{your bucket}'
+                      secretKey: '{your secretkey}'
+                      vendor: 2
+              examples:
+                响应 body:
+                  value:
+                    hlsConfig:
+                      enabled: true
+                    mp4Config:
+                      enabled: true
+                    storageConfig:
+                      accessKey: '{your accesskey}'
+                      region: 3
+                      bucket: '{your bucket}'
+                      secretKey: '{your secretkey}'
+                      vendor: 2
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: kczgkw186yeol
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/record/custom/auto:
+    patch:
+      tags:
+      - 自定义录制
+      summary: 开启/关闭发布点的自定义录制
+      description: 该方法为指定发布点下的所有直播流开启或者关闭自定义录制。
+      operationId: enable-disable-customized-recording
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: false
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  description: 是否为指定发布点下的所有直播流开启自定义录制。
+            examples:
+              请求 body:
+                value:
+                  enabled: false
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: lpa316vzd1e6x
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 调用[设置自定义录制配置 API](custom-recording-config-update) 后，会自动为该发布点下的所有直播流开启自定义录制。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/custom/regions/{region}/tasks:
+    put:
+      tags:
+      - 自定义录制
+      summary: 开启单条流的自定义录制
+      description: 该方法为指定发布点下的单条直播流开启自定义录制。
+      operationId: enable-customized-recording-for-a-stream
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - name: id
+        in: query
+        description: 直播流名称。
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: ojqa7sp3egrql
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 调用该 API 只能录制一条正在推的流，或者接下来 24 小时内会推的流。录制会在推流停止时结束。
+      x-docs-callouts:
+      - position: after-description
+        markdown: 调用该 API 之前，请确保已经调用[开启/结束发布点的自定义录制 API](custom-recording-auto-update)，结束对该直播流所属发布点的自定义录制。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/custom/regions/{region}/tasks/{stream_name}:
+    delete:
+      tags:
+      - 自定义录制
+      summary: 关闭单条流的自定义录制
+      description: 该方法关闭单条直播流的自定义录制。
+      operationId: disable-customized-recording-for-a-stream
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/stream_name'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 2aaal4dv02ztd
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/record/standard/regions/{region}:
+    patch:
+      tags:
+      - 标准录制
+      summary: 设置标准录制配置
+      description: 该方法设置指定发布点下的直播流的标准录制选项。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hlsConfig:
+                  type: object
+                  description: HLS 录制文件的配置
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: 是否启用 HLS 格式的录制。
+                mp4Config:
+                  type: object
+                  description: MP4 录制文件的配置。
+                  properties:
+                    enabled:
+                      type: boolean
+                      description: 是否启用 MP4 格式的录制。
+              x-examples:
+                Example 1:
+                  hlsConfig:
+                    enabled: true
+                  mp4Config:
+                    enabled: true
+            examples:
+              请求 body:
+                value:
+                  hlsConfig:
+                    enabled: true
+                  mp4Config:
+                    enabled: true
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: u5q9xe39ftp0i
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 自定义录制与标准录制的区别在于，自定义录制支持使用第三方云存储服务。
+    get:
+      tags:
+      - 标准录制
+      summary: 获取标准录制配置
+      description: 该方法获取指定发布点的标准录制配置。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hlsConfig:
+                    type: object
+                    description: HLS 录制文件的配置。
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: 是否启用 HLS 格式的录制。
+                  mp4Config:
+                    type: object
+                    description: MP4 录制文件的配置。
+                    properties:
+                      enabled:
+                        type: boolean
+                        description: 是否启用 MP4 格式的录制。
+                x-examples:
+                  Example 1:
+                    hlsConfig:
+                      enabled: true
+                    mp4Config:
+                      enabled: true
+              examples:
+                响应 body:
+                  value:
+                    hlsConfig:
+                      enabled: true
+                    mp4Config:
+                      enabled: true
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: bmlzjpyjrgmg2
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/record/standard/auto:
+    patch:
+      tags:
+      - 标准录制
+      summary: 开启/关闭发布点的标准录制
+      description: 该方法为指定发布点下的所有直播流开启或者关闭标准录制。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-auto
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: false
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  description: 是否为指定发布点下的所有直播流开启标准录制。
+            examples:
+              请求 body:
+                value:
+                  enabled: false
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: yqn3b2rvnljw0
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 调用[设置标准录制配置 API](standard-recording-config-update) 后，会自动为该发布点下的所有直播流开启标准录制。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/tasks:
+    put:
+      tags:
+      - 标准录制
+      summary: 开启单条流的标准录制
+      description: 该方法为指定发布点下的单条直播流开启标准录制。
+      operationId: put-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-tasks
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - name: id
+        in: query
+        description: 直播流名称。
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: k8ht2pxz4sr3c
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 调用该 API 只能录制一条正在推的流，或者接下来 24 小时内会推的流。录制会在推流停止时结束。
+      x-docs-callouts:
+      - position: after-description
+        markdown: 调用该 API 之前，请确保已经调用[开启/结束发布点的标准录制 API](standard-recording-auto-update)，结束该直播流所属发布点的标准录制。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/tasks/{stream_name}:
+    delete:
+      tags:
+      - 标准录制
+      summary: 关闭单条流的标准录制
+      description: 该方法关闭单条直播流的标准录制。
+      operationId: delete-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-tasks-stream_name
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 86f2serx6qf0s
+      security:
+      - API Key: []
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/stream_name'
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/cutting/{stream_name}:
+    post:
+      tags:
+      - 标准录制
+      summary: 截取片段
+      description: 标准录制支持从单个录制文件中截取片段。
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/stream_name'
+      operationId: post-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-cutting-stream_name
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  startTime: '2019-01-07T12:00:00+08:00'
+                  endTime: '2019-01-07T12:30:00+08:00'
+                  fileName: test.m3u8
+              required:
+              - startTime
+              - fileName
+              properties:
+                startTime:
+                  type: string
+                  description: 截取片段的开始时间，时间格式为 RFC3339，例如：`2019-01-07T12:00:00+08:00`。
+                endTime:
+                  type: string
+                  description: 截取片段的终止时间，时间格式为 RFC3339，例如：`2019-01-07T12:30:00+08:00` 。该字段不能超过当前时间。如果不填，将使用最新录制文件的创建时间点。
+                fileName:
+                  type: string
+                  description: 生成的 M3U8 文件的名称。你需要保证该字段的唯一性。
+            examples:
+              请求 body:
+                value:
+                  startTime: '2019-01-07T12:00:00+08:00'
+                  endTime: '2019-01-07T12:30:00+08:00'
+                  fileName: test.m3u8
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 19mccomvlm61h
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 该方法从指定流的录制文件中截取片段并生成 M3U8 文件。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/snapshot/{stream_name}:
+    post:
+      tags:
+      - 标准录制
+      summary: 定点截图
+      description: 标准录制支持从单个录制文件中定点截图。
+      operationId: post-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-snapshot-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/stream_name'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                time:
+                  type: string
+                  description: 截图时间点，时间格式为 RFC3339，例如：`2019-01-07T12:00:00+08:00`。该字段不能超过当前时间。如果不填，将使用最新录制文件的创建时间点。
+                fileName:
+                  type: string
+                  description: 生成的 JPEG 文件的名称。你需要保证该字段的唯一性。
+              required:
+              - fileName
+              x-examples:
+                Example 1:
+                  time: '2019-01-07T12:30:00+08:00'
+                  fileName: test.jpg
+            examples:
+              请求 body:
+                value:
+                  time: '2019-01-07T12:30:00+08:00'
+                  fileName: test.jpg
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 07uohdugulzfz
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 该方法从指定流的录制文件中截图并生成 JPEG 文件。
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/record/standard/regions/{region}/preview_list:
+    get:
+      tags:
+      - 标准录制
+      summary: 查询录制文件列表
+      description: 该方法查询指定流在指定时间范围内的录制文件。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-preview_list
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      - name: start_time
+        in: query
+        description: 查询范围的起始时间，RFC3339 格式，例如：`2019-01-07T12:00:00Z`。
+        required: true
+        schema:
+          type: string
+      - name: end_time
+        in: query
+        description: 查询范围的结束时间，RFC3339 格式，例如：`2019-01-07T12:00:00Z`。
+        required: true
+        schema:
+          type: string
+      - name: stream_name
+        in: query
+        description: 流名称。
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        fileName:
+                          type: string
+                          description: 录制文件的存储路径。
+                        startTime:
+                          type: string
+                          description: 录制开始的时间，RFC3339 格式，例如 `"2019-01-07T12:00:00Z"`。
+                        endTime:
+                          type: string
+                          description: 录制结束的时间。RFC3339 格式，例如 `"2019-01-07T12:00:00Z"`。
+                        position:
+                          type: integer
+                          description: 播放位置相对于录制开始时间的偏移，单位为秒。
+                x-examples:
+                  Example 1:
+                    list:
+                    - fileName: record/{entry_point}/{stream_name}/{m3u8_file_name}
+                      startTime: '2021-08-25T10:44:40+08:00'
+                      endTime: '2021-08-25T11:01:49+08:00'
+                      position: 3
+                    - fileName: record/{entry_point}/{stream_name}/{m3u8_file_name}
+                      startTime: '2021-08-25T12:19:23+08:00'
+                      endTime: '2021-08-25T14:42:58+08:00'
+                      position: 2
+              examples:
+                Example 1:
+                  value:
+                    list:
+                    - fileName: record/{entry_point}/{stream_name}/{m3u8_file_name}
+                      startTime: '2021-08-25T10:44:40+08:00'
+                      endTime: '2021-08-25T11:01:49+08:00'
+                      position: 3
+                    - fileName: record/{entry_point}/{stream_name}/{m3u8_file_name}
+                      startTime: '2021-08-25T12:19:23+08:00'
+                      endTime: '2021-08-25T14:42:58+08:00'
+                      position: 2
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: ul7p9tva5y4jw
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/snapshot/custom/regions/{region}:
+    patch:
+      summary: 设置自定义截图及存储配置
+      description: 该方法为指定发布点下的直播流设置自定义截图及存储配置。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-snapshot-custom-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: true
+                  snapshotInterval: 30
+                  storageConfig:
+                    accessKey: '{your access key}'
+                    bucket: '{your bucket}'
+                    region: 3
+                    secretKey: '{your secret key}'
+                    vendor: 2
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  description: '是否启用截图功能：
+
+                    - `true`：启用截图。
+
+                    - `false`：关闭截图。'
+                snapshotInterval:
+                  type: integer
+                  description: 截图的间隔，单位为秒。
+                  minimum: 5
+                  maximum: 300
+                  default: 10
+                storageConfig:
+                  $ref: '#/components/schemas/StorageConfig'
+                  description: 截图文件的存储设置。
+            examples:
+              请求 body:
+                value:
+                  enabled: true
+                  snapshotInterval: 30
+                  storageConfig:
+                    accessKey: '{your access key}'
+                    bucket: '{your bucket}'
+                    region: 3
+                    secretKey: '{your secret key}'
+                    vendor: 2
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: nr7muyox3b2pk
+      tags:
+      - 截图与存储
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 自定义截图及存储与标准截图及存储的区别在于，自定义截图及存储支持使用第三方云存储服务。
+    get:
+      summary: 获取自定义截图及存储配置
+      description: 该方法获取指定发布点的自定义截图及存储配置。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-snapshot-custom-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: '是否启用了截图功能：
+
+                      - `true`：已启用截图。
+
+                      - `false`：未启用截图。'
+                  snapshotInterval:
+                    type: integer
+                    description: 截图的间隔，单位为秒。
+                  storageConfig:
+                    $ref: '#/components/schemas/StorageConfig'
+                    description: 截图文件的存储设置。
+                x-examples:
+                  Example 1:
+                    enabled: true
+                    snapshotInterval: 30
+                    storageConfig:
+                      accessKey: test acces key
+                      region: 3
+                      bucket: test bucket
+                      secretKey: test secret key
+                      vendor: 2
+              examples:
+                响应 body:
+                  value:
+                    enabled: true
+                    snapshotInterval: 30
+                    storageConfig:
+                      accessKey: test acces key
+                      region: 3
+                      bucket: test bucket
+                      secretKey: test secret key
+                      vendor: 2
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 2ezzhjex34b77
+      tags:
+      - 截图与存储
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/snapshot/standard/regions/{region}:
+    patch:
+      summary: 设置标准截图及存储配置
+      description: 该方法为指定发布点下的直播流设置标准截图及存储配置。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-snapshot-standard-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: '是否启用截图功能：
+
+                    - `true`：启用截图。
+
+                    - `false`：关闭截图。'
+                snapshotInterval:
+                  type: integer
+                  description: 截图的间隔，单位为秒。
+                  minimum: 5
+                  maximum: 300
+                  default: 10
+              required:
+              - enabled
+              x-examples:
+                Example 1:
+                  enabled: true
+                  snapshotInterval: 30
+            examples:
+              请求 body:
+                value:
+                  enabled: true
+                  snapshotInterval: 30
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: r4hfcb0i789z6
+      tags:
+      - 截图与存储
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 自定义截图及存储与标准截图及存储的区别在于，自定义截图及存储支持使用第三方云存储服务。
+    get:
+      summary: 获取标准截图及存储配置
+      description: 该方法获取指定发布点的标准截图及存储配置。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-snapshot-standard-regions-region
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: '是否启用了截图功能：
+
+                      - `true`：已启用截图。
+
+                      - `false`：未启用截图。'
+                  snapshotInterval:
+                    type: integer
+                    description: 截图的间隔，单位为秒。
+                x-examples:
+                  Example 1:
+                    enabled: true
+                    snapshotInterval: 30
+              examples:
+                响应 body:
+                  value:
+                    enabled: true
+                    snapshotInterval: 30
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 4n1rtfjlp5ffl
+      tags:
+      - 截图与存储
+      security:
+      - API Key: []
+  /v1/projects/fls/settings/streamauth/webhook:
+    patch:
+      tags:
+      - 直播流鉴权
+      summary: 设置回源鉴权配置
+      description: 该方法设置回源鉴权的配置信息。
+      operationId: patch-v1-projects-appid-fls-settings-streamauth-webhook
+      parameters: null
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: true
+                  url: www.test.com/auth/callback
+                  secret: '{ncs_secret}'
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  description: 是否开启回源鉴权。
+                url:
+                  type: string
+                  description: 回源鉴权服务器的地址。声网向你的回源鉴权服务器发送请求的格式详见[回源与转推回调格式](https://doc.shengwang.cn/api-ref/fusion-cdn/restful/callback-format)。
+                secret:
+                  type: string
+                  description: 回源鉴权密钥。使用回源鉴权密钥生成签名的流程与消息通知服务一致，详见[验证签名](https://doc.shengwang.cn/doc/fusion-cdn/restful/advanced-features/enable-ncs)。
+            examples:
+              请求 body:
+                value:
+                  enabled: true
+                  url: www.test.com/auth/callback
+                  secret: '{ncs_secret}'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: saibgada3m8sb
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
+    get:
+      tags:
+      - 直播流鉴权
+      summary: 获取回源鉴权配置
+      description: 该方法获取回源鉴权的配置信息。
+      operationId: get-v1-projects-appid-fls-settings-streamauth-webhook
+      parameters: null
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: 是否开启回源鉴权。
+                  url:
+                    type: string
+                    description: 回源鉴权服务器的地址。
+                  secret:
+                    type: string
+                    description: 回源鉴权密钥。使用回源鉴权密钥生成签名的流程与消息通知服务一致。详见[验证签名](https://doc.shengwang.cn/doc/fusion-cdn/restful/advanced-features/enable-ncs#验证签名)。
+                x-examples:
+                  Example 1:
+                    enabled: true
+                    url: www.test.com/auth/callback
+                    secret: '{ncs_secret}'
+              examples:
+                响应 body:
+                  value:
+                    enabled: true
+                    url: www.test.com/auth/callback
+                    secret: '{ncs_secret}'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: vt6vfdascamyk
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
+    parameters:
+    - $ref: '#/components/parameters/appId'
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transcode/custom:
+    post:
+      summary: 创建自定义转码模版
+      description: 该方法为指定发布点创建自定义转码模版。
+      operationId: post-transcode-custom
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - name: id
+        in: query
+        description: 自定义转码模版的名字。不能与[预置转码模版](preset-transcode-template-set)的 `name` 相同，否则会报错。
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/custom-transcode'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: n25jfqx9n89q1
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+    get:
+      summary: 获取自定义转码模版列表
+      description: 该方法获取指定发布点的自定义转码模版列表。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-transcode-custom
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transcodeList:
+                    type: array
+                    description: 该发布点的自定义转码模版列表。一个自定义转码模版对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 转码模版的名称。
+                        width:
+                          type: integer
+                          description: 视频的宽。
+                        height:
+                          type: integer
+                          description: 视频的高。
+                        videoCodec:
+                          type: string
+                          description: 视频编码格式。
+                        videoBitrate:
+                          type: integer
+                          description: 视频码率（Kbps）。
+                        profile:
+                          type: string
+                          description: '编码级别。
+
+                            - `base`：基础级别，适合移动设备。
+
+                            - `main`：标准级别，适合标准分辨率设备。
+
+                            - `high`：高等级别，适合高分辨率设备。'
+                        audioCodec:
+                          type: string
+                          description: 音频编码格式。
+                        audioBitrate:
+                          type: integer
+                          description: 音频码率（Kbps）。
+                        audioSampleRate:
+                          type: integer
+                          description: 音频采样率（Hz）。
+                        advancedTranscode:
+                          type: boolean
+                          description: 低码高清服务是否已经开启。
+                x-examples:
+                  Example 1:
+                    transcodeList:
+                    - name: '{your_transcode_name}'
+                      width: 0
+                      height: 360
+                      videoCodec: h264
+                      videoBitrate: 1200
+                      profile: base
+                      audioCodec: aac
+                      audioBitrate: 320
+                      audioSampleRate: 44100
+                      advancedTranscode: true
+              examples:
+                响应 body:
+                  value:
+                    transcodeList:
+                    - name: '{your_transcode_name}'
+                      width: 0
+                      height: 360
+                      videoCodec: h264
+                      videoBitrate: 1200
+                      profile: base
+                      audioCodec: aac
+                      audioBitrate: 320
+                      audioSampleRate: 44100
+                      advancedTranscode: true
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: gg6ie65zi36fn
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transcode/custom/{name}:
+    patch:
+      summary: 更新自定义转码模版
+      description: 该方法更新指定发布点的自定义转码模版。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-transcode-custom-name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/name'
+      requestBody:
+        $ref: '#/components/requestBodies/custom-transcode-put'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 7zfyv4zmqmim1
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+    delete:
+      summary: 删除自定义转码模版
+      description: 该方法删除指定发布点的自定义转码模版。
+      operationId: delete-v1-projects-appid-fls-entry_points-entry_point-settings-transcode-custom-name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/name'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: g9j5o3uusdbry
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transcode/standard/{name}:
+    patch:
+      summary: 设置预置的转码模版
+      description: 该方法为指定发布点设置预置的转码模版。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-transcode-standard-name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/name_standard'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: true
+                  advancedTranscode: true
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+                  description: '是否启用转码模版。
+
+                    - `true`：启用转码模版。
+
+                    - `false`：不启用转码模版。'
+            examples:
+              响应 body:
+                value:
+                  enabled: true
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 9z0fo3j13rxzo
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transcode/standard:
+    get:
+      summary: 获取转码模版列表
+      description: 该方法获取指定发布点的转码模版列表。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-transcode-standard
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    transcodeList:
+                    - enabled: true
+                      name: sd1
+                      advancedTranscode: true
+                    - enabled: true
+                      name: sd2
+                      advancedTranscode: true
+                    - enabled: true
+                      name: sd3
+                      advancedTranscode: false
+                properties:
+                  transcodeList:
+                    type: array
+                    description: 转码模版列表。一个转码模版对应一个 JSON Object。
+                    items:
+                      type: object
+                      properties:
+                        enabled:
+                          type: boolean
+                          description: 转码模版是否已启用。
+                        name:
+                          type: string
+                          description: 转码模版的名称。
+              examples:
+                响应 body:
+                  value:
+                    transcodeList:
+                    - enabled: true
+                      name: sd1
+                    - enabled: true
+                      name: sd2
+                    - enabled: true
+                      name: sd3
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: i4e8jldm949u9
+      tags:
+      - 直播流转码
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/watermark:
+    patch:
+      tags:
+      - 水印配置
+      summary: 设置水印模版
+      description: 该方法为指定发布点设置水印模版。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-watermark
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                waterMarkSet:
+                  type: array
+                  description: 水印配置集，一次最多可以添加 5 个。
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        description: '水印图片 URL，目前只支持 PNG 格式的图片。为了方便给不同发布点或者直播流设置不同的水印，你可以在水印图片 URL 中使用以下参数：
+
+                          - `{entry_point}`：该参数会被替换成指定的发布点。
+
+                          - `{stream_name}`：该参数会被替换成指定的流名称。'
+                      x:
+                        type: integer
+                        description: 水印的 x 坐标。
+                        minimum: 0
+                        maximum: 1920
+                      y:
+                        type: integer
+                        description: 水印的 y 坐标。
+                        minimum: 0
+                        maximum: 1920
+                      width:
+                        type: integer
+                        description: 水印的宽。
+                        minimum: 0
+                        maximum: 1920
+                      height:
+                        type: integer
+                        description: 水印的高。
+                        minimum: 0
+                        maximum: 1920
+                      zOrder:
+                        type: integer
+                        description: 水印位于的图层。取值范围 [0,100]。0 代表水印位于最底层，100 代表水印位于最上层。
+                        minimum: 0
+                        maximum: 100
+                    required:
+                    - url
+                    - x
+                    - y
+                    - width
+                    - height
+                    - zOrder
+              required:
+              - waterMarkSet
+              x-examples:
+                Example 1:
+                  waterMarkSet:
+                  - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                    x: 0
+                    y: 0
+                    width: 200
+                    height: 200
+                    zOrder: 2
+                  - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                    x: 0
+                    y: 0
+                    width: 300
+                    height: 300
+                    zOrder: 3
+            examples:
+              请求 body:
+                value:
+                  waterMarkSet:
+                  - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                    x: 0
+                    y: 0
+                    width: 200
+                    height: 200
+                    zOrder: 2
+                  - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                    x: 0
+                    y: 0
+                    width: 300
+                    height: 300
+                    zOrder: 3
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: lc1d1qizmlag7
+      security:
+      - API Key: []
+    get:
+      tags:
+      - 水印配置
+      summary: 获取水印模版
+      description: 该方法获取指定发布点的水印模版。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-watermark
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  waterMarkSet:
+                    type: array
+                    description: 水印模版列表。
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: 水印图片 URL。
+                        x:
+                          type: integer
+                          description: 水印的 x 坐标。
+                        y:
+                          type: integer
+                          description: 水印的 y 坐标。
+                        width:
+                          type: integer
+                          description: 水印的宽。
+                        height:
+                          type: integer
+                          description: 水印的高。
+                        zOrder:
+                          type: integer
+                          description: 水印位于的图层。0 代表水印位于最底层，100 代表水印位于最上层。
+                x-examples:
+                  Example 1:
+                    waterMarkSet:
+                    - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                      x: 0
+                      y: 0
+                      width: 200
+                      height: 200
+                      zOrder: 2
+                    - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                      x: 0
+                      y: 0
+                      width: 300
+                      height: 300
+                      zOrder: 3
+              examples:
+                响应 body:
+                  value:
+                    waterMarkSet:
+                    - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                      x: 0
+                      y: 0
+                      width: 200
+                      height: 200
+                      zOrder: 2
+                    - url: http://pngimg.com/uploads/egg/egg_PNG40777.png
+                      x: 0
+                      y: 0
+                      width: 300
+                      height: 300
+                      zOrder: 3
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: ts74id26j4pbn
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/transfer:
+    patch:
+      tags:
+      - 直播转推配置
+      summary: 设置转推到第三方平台配置
+      description: 该方法为指定发布点设置转推到第三方平台的配置。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-transfer
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: '是否启用直播转推：
+
+                    - `true`：启用直播转推。
+
+                    - `false`：（默认）关闭直播转推。'
+                callbackUrl:
+                  type: string
+                  description: 你的回调 URL。启用直播转推后，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](https://doc.shengwang.cn/api-ref/fusion-cdn/restful/callback-format#%E7%9B%B4%E6%92%AD%E8%BD%AC%E6%8E%A8%E5%9B%9E%E8%B0%83%E6%A0%BC%E5%BC%8F)。
+              x-examples:
+                Example 1:
+                  enabled: true
+                  callbackUrl: https://example.transfer.com/callback
+            examples:
+              请求 body:
+                value:
+                  enabled: true
+                  callbackUrl: https://example.transfer.com/callback
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: eor63z988ozqv
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 转推是指当你向声网推流时，声网会将流转推到你指定的第三方平台。
+    get:
+      tags:
+      - 直播转推配置
+      summary: 获取转推到第三方平台的配置
+      description: 该方法获取指定发布点转推到第三方平台的配置。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-transfer
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    enabled: true
+                    callbackUrl: https://example.transfer.com/callback
+                properties:
+                  enabled:
+                    type: boolean
+                    description: '直播转推是否已经启用：
+
+                      - `true`：已启用直播转推。
+
+                      - `false`：未启用直播转推。'
+                  callbackUrl:
+                    type: string
+                    description: 你的回调 URL。如果设置了该字段，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](https://doc.shengwang.cn/api-ref/fusion-cdn/restful/callback-format#%E7%9B%B4%E6%92%AD%E8%BD%AC%E6%8E%A8%E5%9B%9E%E8%B0%83%E6%A0%BC%E5%BC%8F)。
+              examples:
+                响应 body:
+                  value:
+                    enabled: true
+                    callbackUrl: https://example.transfer.com/callback
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 7jd3b2v9cnsya
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/admin/delayed_streams/{stream_name}:
+    patch:
+      tags:
+      - 延播管理
+      summary: 设置延播时长
+      description: 该方法为指定直播流设置延迟播放时长。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-admin-delayed_streams-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/stream_name'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delay:
+                  type: integer
+                  description: 延播时长，单位为秒，上限为 600 秒。
+                  maximum: 600
+              required:
+              - delay
+            examples:
+              请求 body:
+                value:
+                  delay: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: po2xnh36ootyr
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 延迟播放（简称“延播”）是指认为设置一个时间间隔，让用户看到的播放画面落后于直播现场画面。
+      x-docs-callouts:
+      - position: after-description
+        markdown: 延播功能目前仅支持[推流 & 播放模式](https://doc.shengwang.cn/doc/fusion-cdn/restful/get-started/quick-start)。
+    delete:
+      tags:
+      - 延播管理
+      summary: 取消延播
+      description: 该方法取消指定直播流的延迟播放。
+      operationId: delete-v1-projects-appid-fls-entry_points-entry_point-admin-delayed_streams-stream_name
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      - $ref: '#/components/parameters/stream_name'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: xydd7l3hujc3q
+      security:
+      - API Key: []
+  /v1/projects/{appid}/fls/entry_points/{entry_point}/settings/origin_site:
+    patch:
+      tags:
+      - 回源拉流配置
+      summary: 设置回源拉流配置
+      description: 该方法设置指定发布点的回源拉流配置。
+      operationId: patch-v1-projects-appid-fls-entry_points-entry_point-settings-origin_site
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  enabled: true
+                  domain: '{your_domain}'
+              properties:
+                enabled:
+                  type: boolean
+                  description: 是否开启回源拉流。
+                domain:
+                  type: string
+                  description: 你的源站域名，用于定向回源。该字段与 `callbackUrl` 字段不能同时设置。
+                app:
+                  type: string
+                  description: 源站域名的发布点（也叫应用名、AppName）。该字段必须与 `domain` 字段一起设置。如果不填或者设置为空，将使用播流 URL 中的发布点。
+                callbackUrl:
+                  type: string
+                  description: 你的回调 URL，用于动态回源。该字段与 `domain` 字段不能同时设置。
+            examples:
+              请求 body:
+                value:
+                  enabled: true
+                  domain: '{your_domain}'
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: aucywpsrd59nw
+      security:
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '回源拉流是指声网服务器收到观众的播放请求时，主动从你的源站拉取直播流数据并分发给观众。回源拉流支持以下两种方式：
+
+          - 定向回源：收到播放请求时，始终从你配置的源站地址拉流。
+
+          - 动态回源：收到播放请求时，先访问你配置的回调 URL 获取源站地址，然后从该地址拉流。'
+    get:
+      tags:
+      - 回源拉流配置
+      summary: 获取回源拉流配置
+      description: 该方法获取指定发布点的回源配置。
+      operationId: get-v1-projects-appid-fls-entry_points-entry_point-settings-origin_site
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/entry_point'
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    description: 回源拉流是否已经开启。
+                  domain:
+                    type: string
+                    description: 你的源站域名，用于定向回源。
+                  app:
+                    type: string
+                    description: 源站域名的发布点。
+                  callbackUrl:
+                    type: string
+                    description: 你的回调 URL，用于动态回源。
+                x-examples:
+                  Example 1:
+                    enabled: true
+                    domain: '{your_domain}'
+              examples:
+                响应 body:
+                  value:
+                    enabled: true
+                    domain: '{your_domain}'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: rdhvsg18rc83f
+      security:
+      - API Key: []
+  /v2/ncs/ip:
+    get:
+      tags:
+      - 消息通知服务
+      summary: 查询消息通知服务器的 IP 地址
+      description: 查询声网消息通知服务器的 IP 地址。
+      operationId: get-v2-ncs-ip
+      parameters: []
+      responses:
+        '200':
+          description: 请求成功时返回。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: 声网消息通知服务器的 IP 地址。收到响应时，你仅需关心该字段，并将 IP 地址（或 IP 地址列表）添加到白名单中。
+                x-examples:
+                  Example 1:
+                    data:
+                      service:
+                        hosts:
+                        - primaryIP: xxx.xxx.xxx.xxx
+                        - primaryIP: xxx.xxx.xxx.xxx
+              examples:
+                响应 body:
+                  value:
+                    data:
+                      service:
+                        hosts:
+                        - primaryIP: xxx.xxx.xxx.xxx
+                        - primaryIP: xxx.xxx.xxx.xxx
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: autp7ltkwm73k
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '声网消息通知服务用于接收融合 CDN 直播业务中的推流、录制、截图等事件。开通消息通知服务后，当你订阅的事件发生时，声网消息通知服务器会将事件通知投递给你的消息接收服务器。
+
+
+          如果你的消息接收服务器受防火墙限制，你需要调用该方法查询声网消息通知服务器的 IP 地址并将获取到的所有 IP 地址都添加到防火墙白名单。
+
+
+          声网可能会调整消息通知服务器的 IP 地址。因此，强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。'
+  /v1/projects/{appid}/fls/domains/{domain}:
+    parameters:
+    - $ref: '#/components/parameters/appId'
+    - $ref: '#/components/parameters/domain'
+    patch:
+      summary: 设置时间戳鉴权密钥
+      tags:
+      - 直播流鉴权
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      operationId: patch-v1-projects-appid-fls-domains-domain
+      x-stoplight:
+        id: ew0zs85lt27ke
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/domain'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - authKey
+              properties:
+                authKey:
+                  type: string
+                  x-stoplight:
+                    id: i3ii55elgvuf8
+                  description: 时间戳鉴权密钥。长度不超过 128 个字符。
+      description: 该方法为指定的域名设置时间戳鉴权密钥。
+      security:
+      - API Key: []
+      x-docs-callouts:
+      - position: after-description
+        markdown: 该功能处于内测阶段，使用前请联系 sales@shengwang.cn。
+    delete:
+      summary: 删除域名
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/domain'
+      tags:
+      - 域名管理
+      responses:
+        '200':
+          $ref: '#/components/responses/response-200'
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      operationId: delete-v1-projects-appid-fls-domains-domain
+      x-stoplight:
+        id: zbizgfyak9gwj
+      security:
+      - API Key: []
+    get:
+      summary: 获取域名属性
+      parameters:
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/domain'
+      tags:
+      - 域名管理
+      responses:
+        '200':
+          description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appid:
+                    type: string
+                    x-stoplight:
+                      id: gq4r27725dkvj
+                    description: 声网项目的 App ID。
+                  name:
+                    type: string
+                    x-stoplight:
+                      id: l5lmo9ol31s0s
+                    description: 域名名称。
+                  type:
+                    type: string
+                    x-stoplight:
+                      id: 1ja6lvwuud6yh
+                    description: '域名类型。
+
+                      - `"publish"`：推流域名。
+
+                      - `"play"`：播流域名。'
+                  region:
+                    type: string
+                    x-stoplight:
+                      id: qhnt5akj7v5d4
+                    description: 域名使用的声网服务器所在区域。仅在 `type` 为 `"publish"` 时返回。
+                  authKey:
+                    type: string
+                    x-stoplight:
+                      id: ltpwix9a3b327
+                    description: 防盗链密钥。
+              examples:
+                Example 1:
+                  value:
+                    appid: '{your appid}'
+                    authKey: '{your auth key}'
+                    name: '{your domain}'
+                    region: cn
+                    type: publish
+        非 2XX:
+          $ref: '#/components/responses/response-not-201'
+      operationId: get-v1-projects-appid-fls-domains-domain
+      x-stoplight:
+        id: o5xokxv9dh604
+      security:
+      - API Key: []
+tags:
+- name: 域名管理
+- name: 发布点管理
+- name: 直播流管理
+- name: 推流和播流数据
+- name: 自定义录制
+- name: 标准录制
+- name: 截图与存储
+- name: 直播流鉴权
+- name: 直播流转码
+- name: 水印配置
+- name: 直播转推配置
+- name: 延播管理
+- name: 回源拉流配置
+- name: 消息通知服务
+components:
+  parameters:
+    appId:
+      name: appid
+      in: path
+      description: 声网为每个开发者提供的 App ID。在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。
+      required: true
+      schema:
+        type: string
+    domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 域名名称。
+    entry_point:
+      name: entry_point
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 发布点名称。
+    stream_name:
+      name: stream_name
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 直播流名称。
+    region:
+      name: region
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 添加推流域名时设置的区域。
+    name:
+      name: name
+      in: path
+      required: true
+      schema:
+        type: string
+      description: 自定义转码模版的名称。
+    name_standard:
+      name: name
+      in: path
+      required: true
+      schema:
+        type: string
+      description: '预置转码模版的名称。各名称对应的预置转码模版如下：
+
+
+        - `ld`，流畅，高度 240 px，宽度自适应，码率 400 Kbps，编码格式 H.264
+
+        - `sd1`，标清一 ，高度 360 px，宽度自适应，码率 640 Kbps，编码格式 H.264
+
+        - `sd2`，标清二，高度 480 px，宽度自适应，码率 800 Kbps，编码格式 H.264
+
+        - `sd3`，标清三，高度 540 px，宽度自适应，码率 1,200 Kbps，编码格式 H.264
+
+        - `hd`，高清，高度 720 px，宽度自适应，码率 1,500 Kbps，编码格式 H.264
+
+        - `fhd`，超清，高度 1080 px，宽度自适应，码率 2,100 Kbps，编码格式 H.264'
+  requestBodies:
+    custom-transcode:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                width: 0
+                height: 360
+                videoCodec: h264
+                videoBitrate: 1200
+                profile: base
+                audioCodec: aac
+                audioBitrate: 320
+                audioSampleRate: 44100
+                advancedTranscode: true
+            required:
+            - width
+            - height
+            properties:
+              width:
+                type: integer
+                description: 视频的宽，取值范围 [0,1920]，0 表示按原视频比例自适应。
+                minimum: 0
+                maximum: 1920
+              height:
+                type: integer
+                description: 视频的高，取值范围 [0,1920]，0 表示按原视频比例自适应。
+                minimum: 0
+                maximum: 1920
+              videoCodec:
+                type: string
+                description: 视频编码格式，目前只支持 H.264。如果 `videoBitrate` 和 `profile` 指定了值，该字段必填。
+              videoBitrate:
+                type: integer
+                description: 视频码率（Kbps）。
+                minimum: 200
+                maximum: 6000
+              profile:
+                type: string
+                description: '编码级别，每个级别对应一组特定的编码参数。一般来说级别越高，画面质量越好，同时编解码消耗的资源也越高。取值包括：
+
+                  - `base`：基础级别，适合移动设备。
+
+                  - `main`：标准级别，适合标准分辨率设备。
+
+                  - `high`：高等级别，适合高分辨率设备。'
+              audioCodec:
+                type: string
+                description: 音频编码格式，目前只支持 AAC。如果指定了 `audioBitrate` 和 `audioSampleRate`，该字段必填。
+              audioBitrate:
+                type: integer
+                description: 音频码率（Kbps）。
+                minimum: 100
+                maximum: 500
+              audioSampleRate:
+                type: integer
+                description: 音频采样率（Hz）。取值包括：96000、88200、64000、48000、44100、32000、16000。
+          examples:
+            请求 body:
+              value:
+                width: 0
+                height: 360
+                videoCodec: h264
+                videoBitrate: 1200
+                profile: base
+                audioCodec: aac
+                audioBitrate: 320
+                audioSampleRate: 44100
+    custom-transcode-put:
+      content:
+        application/json:
+          schema:
+            type: object
+            x-examples:
+              Example 1:
+                width: 0
+                height: 360
+                videoCodec: h264
+                videoBitrate: 1200
+                profile: base
+                audioCodec: aac
+                audioBitrate: 320
+                audioSampleRate: 44100
+                advancedTranscode: true
+            properties:
+              width:
+                type: integer
+                description: 视频的宽，取值范围 [0,1920]，0 表示按原视频比例自适应。如果指定了 `height`，该字段必填。
+                minimum: 0
+                maximum: 1920
+              height:
+                type: integer
+                description: 视频的高，取值范围 [0,1920]，0 表示按原视频比例自适应。如果指定了 `width`，该字段必填。
+                minimum: 0
+                maximum: 1920
+              videoCodec:
+                type: string
+                description: 视频编码格式，目前只支持 H.264。如果 `videoBitrate` 和 `profile` 指定了值，该字段必填。
+              videoBitrate:
+                type: integer
+                description: 视频码率（bit/s），取值范围 [200,6000]。
+                minimum: 200
+                maximum: 6000
+              profile:
+                type: string
+                description: '编码级别，每个级别对应一组特定的编码参数。一般来说级别越高，画面质量越好，同时编解码消耗的资源也越高。取值包括：
+
+                  - `base`：基础级别，适合移动设备。
+
+                  - `main`：标准级别，适合标准分辨率设备。
+
+                  - `high`：高等级别，适合高分辨率设备。'
+              audioCodec:
+                type: string
+                description: 音频编码格式，目前只支持 AAC。如果指定了 `audioBitrate` 和 `audioSampleRate`，该字段必填。
+              audioBitrate:
+                type: integer
+                description: 音频码率（bit/s），取值范围 [100,500]。
+                minimum: 100
+                maximum: 500
+              audioSampleRate:
+                type: integer
+                description: 音频采样率（Hz），取值包括：96000、88200、64000、48000、44100、32000、16000。
+          examples:
+            Example 1:
+              value:
+                width: 0
+                height: 360
+                videoCodec: h264
+                videoBitrate: 1200
+                profile: base
+                audioCodec: aac
+                audioBitrate: 320
+                audioSampleRate: 44100
+  securitySchemes:
+    API Key:
+      name: API Key
+      type: apiKey
+      in: header
+      description: '融合 CDN 直播 RESTful API 使用 HTTP HMAC (Hash-based Message Authentication Code) 认证。
+
+
+        在发送 HTTP 请求时，你需要通过 HMAC-SHA256 算法生成一个签名，并在请求头部的 `Authorization` 字段传入签名及相关信息。详见[认证方式](https://doc.shengwang.cn/doc/fusion-cdn/restful/user-guides/http-hmac-auth)。'
+    Basic Auth:
+      type: http
+      scheme: basic
+      description: 声网频道管理 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 Authorization 字段中。详见[使用 HTTP 认证](https://doc.shengwang.cn/doc/rtc/restful/user-guides/http-basic-auth)。
+  responses:
+    response-201:
+      description: 如果返回的 HTTP 状态码为 2XX，表示请求成功。
+    response-200:
+      description: 如果返回的 HTTP 状态码为 200，表示请求成功。
+    response-not-201:
+      description: 如果返回的 HTTP 状态码非 2XX，表示请求失败。你可以参考 [HTTP 状态码](https://doc.shengwang.cn/api-ref/fusion-cdn/restful/state-code)了解可能的原因。
+  schemas:
+    StorageConfig:
+      type: object
+      x-stoplight:
+        id: do2ayq8us3ydc
+      properties:
+        vendor:
+          type: number
+          description: '第三方云存储平台。可设为：
+
+            - `1`：[Amazon S3](https://aws.amazon.com/cn/s3/?c=s&sec=srv)
+
+            - `2`：[阿里云](https://www.aliyun.com/product/oss)
+
+            - `3`：[腾讯云](https://cloud.tencent.com/product/cos)
+
+            - `5`：[Microsoft Azure](https://azure.microsoft.com/zh-cn/services/storage/blobs/)
+
+            - `6`：[谷歌云](https://cloud.google.com/storage)
+
+            - `7`：[华为云](https://www.huaweicloud.com/product/obs.html)
+
+            - `8`：[百度智能云](https://cloud.baidu.com/product/bos.html)
+
+            该参数对 `region` 的设置有限制作用。详见[第三方云存储地区说明](http://doc.shengwang.cn/doc/fusion-cdn/restful/reference/region-vendor)。'
+        region:
+          type: number
+          description: '第三方云存储指定的地区信息。为了确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的应用服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。
+
+            该参数受 `vendor` 参数设置的限制。详见[第三方云存储地区说明](http://doc.shengwang.cn/doc/fusion-cdn/restful/reference/region-vendor)。'
+        bucket:
+          type: string
+          description: 第三方云存储的 bucket，bucket 名称需要符合对应第三方云存储服务的命名规则。
+        accessKey:
+          type: string
+          description: 第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。如需延时转码，则访问密钥必须同时具备读写权限。
+        secretKey:
+          type: string
+          description: 第三方云存储的 secret key。
+x-internal: false
+security:
+- API Key: []

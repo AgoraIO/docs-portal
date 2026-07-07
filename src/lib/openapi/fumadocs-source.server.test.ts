@@ -21,7 +21,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
     expect(pagePaths).toContain(
@@ -36,13 +36,16 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).toContain(
+      'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
+    );
+    expect(pagePaths).toHaveLength(237);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -69,6 +72,36 @@ describe('fumadocs openapi source', () => {
     expect(props.payload.bundled.info?.title).toBe(
       'Conversational AI RESTful API',
     );
+  });
+
+  it('omits empty request bodies from generated whiteboard GET operation payloads', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const page = source.files.find(
+      (file) =>
+        file.type === 'page' &&
+        file.path ===
+          'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
+    );
+
+    expect(page?.type).toBe('page');
+    if (page?.type !== 'page') {
+      throw new Error('Missing Chinese Whiteboard get-room page');
+    }
+
+    const props = await page.data.getClientAPIPageProps();
+    const operation = props.payload.bundled.paths?.['/v5/rooms/{uuid}']?.get as
+      | { requestBody?: unknown; responses?: unknown }
+      | undefined;
+
+    expect(operation).toBeDefined();
+    expect(operation?.requestBody).toBeUndefined();
+    expect(operation?.responses).toMatchObject({
+      '200': {
+        content: {
+          'application/json': expect.any(Object),
+        },
+      },
+    });
   });
 
   it('keeps Cloud Recording legacy-visible prose in generated endpoint payloads', async () => {
@@ -148,9 +181,7 @@ describe('fumadocs openapi source', () => {
       ]),
     );
     expect(updateLayoutRecord['x-docs-callouts']).toBeUndefined();
-    expect(
-      schemas?.['updateLayout-clientRequest']?.properties,
-    ).toMatchObject({
+    expect(schemas?.['updateLayout-clientRequest']?.properties).toMatchObject({
       maxResolutionUid: expect.objectContaining({
         description: expect.stringContaining('from 1 to (2³²−1)'),
       }),
@@ -341,7 +372,8 @@ describe('fumadocs openapi source', () => {
         'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
         {
           description: '停止实时转录翻译任务并离开频道。',
-          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+          prose:
+            '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
         },
       ],
       [

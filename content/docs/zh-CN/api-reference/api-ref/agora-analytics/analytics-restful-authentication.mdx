@@ -1,0 +1,45 @@
+---
+title: 水晶球 REST API 鉴权
+description: 使用客户 ID 和客户密钥生成 Basic HTTP 认证凭证。
+---
+
+水晶球 REST API 使用 Basic HTTP 认证。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并将凭证填入 HTTP 请求头的 `Authorization` 字段。
+
+:::warning
+请在服务端完成鉴权凭证生成和 API 调用，不要在客户端保存或暴露客户 ID、客户密钥。
+:::
+
+## 获取客户 ID 和客户密钥
+
+1. 登录[控制台](https://console.shengwang.cn)，进入 **RESTful API** 页面。
+
+2. 创建或查看一组客户 ID 和客户密钥。
+
+3. 下载并妥善保存客户密钥。客户密钥只会显示或下载一次。
+
+## 生成 Authorization 请求头
+
+将客户 ID 和客户密钥用英文冒号拼接为 `customerId:customerSecret`，再进行 Base64 编码。
+
+```bash
+printf '%s' '<customerId>:<customerSecret>' | base64
+```
+
+将生成结果拼接到 `Basic ` 后，作为 `Authorization` 请求头的值。
+
+```text
+Authorization: Basic <base64-encoded-credential>
+```
+
+## 请求示例
+
+```bash
+curl --request GET \
+  --url 'https://api.sd-rtn.com/beta/analytics/call/lists?appid=<appid>&start_ts=1550024508&end_ts=1550025508' \
+  --header 'Authorization: Basic <base64-encoded-credential>' \
+  --header 'Accept: application/json'
+```
+
+:::info
+水晶球 REST API 仅支持 HTTPS 请求。
+:::

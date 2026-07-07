@@ -1,0 +1,75 @@
+---
+title: 响应状态码
+description: 查看 PPT 转码服务 RESTful API 的 HTTP 状态码和错误码。
+---
+
+调用 PPT 转码服务 RESTful API 时，如果状态码为 `200` 或 `201`，表示请求成功。如果状态码不为 `200` 或 `201`，表示请求失败，响应包体中可能包含 `error.code`、`error.title` 等字段。
+
+```json
+{
+  "error": {
+    "code": "2010201",
+    "title": "unsupported file format",
+    "messages": [],
+    "requestId": "iUxxxXS_gGxxxXWw",
+    "region": "cn-hz",
+    "traceStack": ["cn-hz-shunt-api-7bxxxxxx8d-67stw"]
+  }
+}
+```
+
+## HTTP 响应状态码
+
+| HTTP 状态码 | 描述 | 处理建议 |
+| --- | --- | --- |
+| `200 OK` | 请求成功，服务器成功返回请求的数据。 | 无需处理。 |
+| `201 Created` | 请求成功，服务器成功新建或修改数据。 | 无需处理。 |
+| `400 Invalid request` | 请求参数错误，服务器没有进行新建或修改数据的操作。 | 根据响应包体中的 `code` 和 `message` 处理。 |
+| `401 Unauthorized` | 用户没有权限，通常是 Token 错误。 | 重新生成拥有对应权限的 Token。 |
+| `403 Forbidden` | 用户已认证，但没有访问对应资源的权限。 | 检查房间或资源的访问权限。 |
+| `404 Not found` | 服务器无法找到请求的资源。 | 检查请求路径和资源 ID 是否正确。 |
+| `500 Internal server error` | 服务器内部错误，无法完成请求。 | 重试或[联系技术支持](https://ticket.shengwang.cn/)。 |
+
+## PPT 转码服务错误码
+
+| `code` | `message` | 描述 | 处理方法 |
+| --- | --- | --- | --- |
+| `2010201` | `unsupported file format` | 用户上传了不支持的文件格式（如 PNG、JPG、JPEG、MP3、MP4 等）。 | 上传支持的文件。 |
+| `2010202` | `dynamic conversion only support pptx` | 用户上传的文件格式不支持动态转换。 | 上传 PPTX 格式的文件。 |
+| `2010203` | `resource invalid` | 资源无效。 | 检查资源链接是否可以访问。 |
+| `2010203` | `the number of tasks exceeds limit` | 转换队列中的任务过多。 | 调用[取消指定的转码任务](cancel-task)减少队列中的任务数量，或等待已有任务完成。 |
+| `2010605` | `task not found` | 未找到要查询的任务。 | 查询任务参数是否正确。 |
+| `2011201` | `task timeout` | 任务超时。 | 检查网络连接或压缩文件体积。 |
+| `2010606` | `team not found` | 找不到用户信息。 | 查询 Token 是否正确。在控制台中确认数据中心和文档转网页服务是否正确配置。 |
+| `2010607` | `modify priority for running task is not allowed` | 无法修改正在运行的任务优先级。 | 确保所修改的任务正在排队中。 |
+| `2011301` | `task not found` | 传入的 taskid 查询不到任务。 | 查询任务参数是否正确。 |
+| `2030100` | `download from OSS file failed` | 源文件下载失败。 | 检查文件是否已经上传。 |
+| `2030101` | `unzip file failed, unsupported file in PPT` | 不支持的 PPT 格式。 | 检查是否能使用 PowerPoint 打开此文件。 |
+| `2030102` | `can't find media file from unzip PPT` | 解压后找不到媒体文件。 | 检查 PPT 媒体文件位置是否正确，是否使用了外链。 |
+| `2030200` | `read xml file failed` | 解压后的 XML 文件异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2030201` | `formula resolve failed, please check animation of PPT` | XML 中的公式解析错误。 | 检查或删除 PPT 内的动画并重试。 |
+| `2030202` | `unsupported formula type, please check animation of PPT` | XML 中的公式类型错误。 | 检查或删除 PPT 内的动画并重试。 |
+| `2030801` | `Invalid parsing of display object (Type: slide; Page: 45; Object Name: Img 3)` | 解析某个元素时出错。 | [联系技术支持](https://ticket.shengwang.cn/)或者将错误元素删除后重新发起转换。 |
+| `2030802` | `Invalid parsing of slide (Page: 11;)` | 解析某个页面时出错。 | [联系技术支持](https://ticket.shengwang.cn/)或者将错误页面删除后重新发起转换。 |
+| `2040005` | `task timeout` | 图片转换任务超时。 | 文档内的图片可能异常或者体积过大，[联系技术支持](https://ticket.shengwang.cn/)定位。 |
+| `2050099` | `unknown error` | 未知的文档转图片异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2050100` | `unsupported file type` | 不支持的文件格式。 | 上传 PPT 或 PPTX 文件。 |
+| `2050101` | `file download failed` | 源文件下载失败。 | 检查网络连接。 |
+| `2050102` | `file is empty` | 文件内容为空。 | 本地打开检查文件是否有内容。 |
+| `2050107` | `file url encode failed` | 文件 URL 编码失败。 | 检查文件路径是否正常。 |
+| `2050201` | `init presentation parser failed` | 初始化 PPT 解析异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2050299` | `unknown parsing error` | 未知的文档解析异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2050401` | `generate preview failed` | 预览图生成失败。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2060402` | `fonts in the rules that are not provided` | 找不到指定字体。 | [联系技术支持](https://ticket.shengwang.cn/)。 |
+| `2090304` | `upload file to custom storage failed` | 上传文件到用户存储失败。 | 检查存储配置是否正确。 |
+| `2090305` | `not supported storage provider` | 不支持的云存储服务商。 | 检查服务商链接是否正确或更换服务商。 |
+| `2110099` | `unknown error` | 未知的文档转图片异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2110100` | `unsupported file type` | 用户传入了无法支持的文件格式。 | 上传静态转换支持的文件（ppt/pptx/doc/docx/pdf）。 |
+| `2110101` | `download file failed` | 文件下载失败。 | 检查文件地址是否有效。 |
+| `2110102` | `file is empty` | 文件内容为空。 | 本地打开文件，检查是否有内容。 |
+| `2110107` | `file url encode failed` | 文件 URL 编码失败。 | 检查文件路径是否正常。 |
+| `2110108` | `get file extension failed` | 获取文件格式失败。 | 检查上传的文件是否直接修改过扩展名，但文件本身不支持。 |
+| `2110201` | `init presentation parser failed` | 未知的 PPT 文档解析异常。 | 检查上传的文件是否为非 PowerPoint 软件编辑（例如 WPS）。 |
+| `2110202` | `init word parser failed` | 未知的 DOC 文档解析异常。 | 检查上传的文件是否为非 Word 软件编辑（例如 WPS）。 |
+| `2120201` | `file is empty` | PDF 文件内容为空。 | 本地打开文件，检查是否有内容。 |
+| `2120301` | `download file failed` | PDF 文件下载失败。 | 检查文件地址是否有效。 |
