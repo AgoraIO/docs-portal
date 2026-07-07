@@ -10,7 +10,7 @@ title: "开始录制音视频"
 
 开始前请确保你的本地开发环境满足以下条件：
 
-* 参考[开通服务](/zh-CN/realtime-media/recording/local-server-recording/get-started/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
+* 参考[开通服务](/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
 * 在项目中实现了基础的音视频互动场景。
 * 服务器硬件条件：
   * CPU：8 核，1.8 GHz 主频
@@ -26,7 +26,7 @@ title: "开始录制音视频"
 
 ## 集成 SDK
 
-1. 前往[下载](/zh-CN/realtime-media/recording/local-server-recording/resources)获取最新的声网本地服务端录制 SDK 软件包。解压后的 SDK 包目录结构如下：
+1. 前往[下载](/zh-CN/realtime-media/recording/local-server-recording/reference/downloads)获取最新的声网本地服务端录制 SDK 软件包。解压后的 SDK 包目录结构如下：
 
     ```shell
     .
@@ -227,10 +227,10 @@ service->release();
 
 完成基本录制功能后，你可以进一步探索以下功能：
 
-- [单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode)
-- [自定义合流录制视频布局](/zh-CN/realtime-media/recording/local-server-recording/user-guides/set-layout)
-- [配置水印](/zh-CN/realtime-media/recording/local-server-recording/user-guides/watermark)
-- [录制崩溃后修复录制文件](/zh-CN/realtime-media/recording/local-server-recording/best-practice/restore-files)
+- [单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode)
+- [自定义合流录制视频布局](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-layout)
+- [配置水印](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/watermark)
+- [录制崩溃后修复录制文件](/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/restore-files)
 
 <a id="run-example"></a>
 ## 参考信息
@@ -256,7 +256,7 @@ service->release();
    export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
    ```
 
-4. 按照场景需要填写 `recorder.json`（合流录制的配置文件）或 `singleVideo.json`（单流录制的配置文件）。单流和合流的场景区别可以参考[单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode)。
+4. 按照场景需要填写 `recorder.json`（合流录制的配置文件）或 `singleVideo.json`（单流录制的配置文件）。单流和合流的场景区别可以参考[单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode)。
 
 5. 运行如下命令行，示例程序会根据你在指定 json 文件中的配置进行录制：
 
@@ -279,7 +279,7 @@ service->release();
 
 开始前请确保你的本地开发环境满足以下条件：
 
-- 参考[开通服务](/zh-CN/realtime-media/recording/local-server-recording/get-started/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
+- 参考[开通服务](/zh-CN/realtime-media/recording/local-server-recording/build/setup-and-access/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
 - 在项目中实现了基础的音视频互动场景。
 - 服务器硬件条件：
   - CPU：8 核，1.8 GHz 主频
@@ -335,7 +335,7 @@ Maven 依赖包含了所需的 JAR 文件，但仍需手动处理 `.so` 库文�
 
 <TabsContent value="local">
 
-1. 前往[下载](/zh-CN/realtime-media/recording/local-server-recording/resources)获取最新的声网本地服务端录制 SDK 软件包。
+1. 前往[下载](/zh-CN/realtime-media/recording/local-server-recording/reference/downloads)获取最新的声网本地服务端录制 SDK 软件包。
 
     本地 SDK 是一个包含所有必要文件的完整包，适合需要更灵活控制的场景。从官网下载的 SDK 包（zip 格式）包含以下内容：
 
@@ -717,10 +717,10 @@ agoraService.release();
 
 完成基本录制功能后，你可以进一步探索以下功能：
 
-- [单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/user-guides/recording-mode)
-- [自定义合流录制视频布局](/zh-CN/realtime-media/recording/local-server-recording/user-guides/set-layout)
-- [配置水印](/zh-CN/realtime-media/recording/local-server-recording/user-guides/watermark)
-- [录制崩溃后修复录制文件](/zh-CN/realtime-media/recording/local-server-recording/best-practice/restore-files)
+- [单流录制和合流录制](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/recording-mode)
+- [自定义合流录制视频布局](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/set-layout)
+- [配置水印](/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/watermark)
+- [录制崩溃后修复录制文件](/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/restore-files)
 
 <a id="run-example"></a>
 ## 参考信息

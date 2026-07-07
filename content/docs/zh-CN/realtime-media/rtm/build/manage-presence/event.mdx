@@ -1,0 +1,844 @@
+---
+title: "事件通知"
+---
+## 添加事件监听
+
+接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)。除此之外，在订阅或加入频道时还需将 `features` 参数设为 `enumv.joinchannelfeaturepresence` 或 `enumv.subscribechannelfeaturepresence`你需要在订阅或加入频道时将 `withPresence` 参数设置成 `true`。`config.presenceevent` 数据结构包含以下属性：
+
+|     参数      | 描述                                                                                                                                        |
+| ----------- | -------------- |
+|   `presence.eventtype`     | Presence 事件类型。详见 [`enumv.presencetype`](/api-ref/rtm2/unity/enumv#presencetype)。详见 [API 参考](/api-ref/rtm2/javascript/enumv#presence-事件类型)。 |
+| `channelType` | 频道类型，可能是 Message Channel 或 Stream Channel。                                                                                        |
+| `channelName` | 事件发生的频道名称。                                                                                                                        |
+|  `publisher`  | 触发此事件的用户 ID。                                                                                                                       |
+| `presence.states`  | 用户临时状态信息列表，`enumv.presencetypechange` 事件发生时有效。                                     |
+|  `interval`   | Interval 模式下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。                                             |
+|  `snapshot`   | 快照详情。用户首次加入或订阅频道触发了 `enumv.presencetypesnap` 事件时有效。                          |
+
+|     参数      | 描述                                                                                                                                        |
+| ----------- | ----
+|   `presence.eventtype`     | Presence 事件类型。详见 [`enumv.presencetype`](/api-ref/rtm2/unity/enumv#presencetype)。详见 [API 参考](/api-ref/rtm2/javascript/enumv#presence-事件类型)。 |
+| `channelType` | 频道类型，可能是 Message Channel 或 Stream Channel。                                                                                        |
+| `channelName` | 事件发生的频道名称。                                                                                                                        |
+|  `publisher`  | 触发此事件的用户 ID。                                                                                                                       |
+| `presence.states`  | 用户临时状态信息列表，`enumv.presencetypechange` 事件发生时有效。                                     |
+|  `interval`   | Interval 模式下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。                                             |
+|  `snapshot`   | 快照详情。用户首次加入或订阅频道触发了 `enumv.presencetypesnap` 事件时有效。                          |
+|  `timestamp`   | 事件触发时间戳。                          |
+
+## 事件通知类型
+
+Presence 事件通知有七种类型，它们分别是：
+
+|                              枚举值                               | 描述                                                                      |
+| ------- | ----------------- |
+|  `enumv.presencetypesnap`   | `1`: 用户第一次订阅或加入频道时触发，本地用户会收到此类事件通知。         |
+|   `enumv.presencetypeint`   | `2`: 当频道内人数达到设定值后，频道内的事件通知将由实时通知转为定时通知。 |
+|  `enumv.presencetypejoin`   | `3`: 当用户订阅或加入频道时触发，频道中的其他人会收到此类通知。           |
+|  `enumv.presencetypeleave`  | `4`: 当用户取消订阅或离开频道时触发，频道中的其他人会收到此类通知。       |
+| `enumv.presencetypetimeout` | `5`: 当用户掉线超时时触发，频道中的其他人会收到此类通知。                 |
+| `enumv.presencetypechange`  | `6`: 当用户临时状态数据发生变更时触发，频道中的其他人会收到此类通知。     |
+|   `enumv.presencetypeout`   | `7`: 用户加入频道时未启用 Presence，本地用户会收到此类事件通知。          |
+
+|                              枚举值                               | 描述                                                                      |
+| ------- | ----------------- |
+|  `enumv.presencetypesnap`   | `1`: 用户第一次订阅或加入频道时触发，本地用户会收到此类事件通知。         |
+|   `enumv.presencetypeint`   | `2`: 当频道内人数达到设定值后，频道内的事件通知将由实时通知转为定时通知。 |
+|  `enumv.presencetypejoin`   | `3`: 当用户订阅或加入频道时触发，频道中的其他人会收到此类通知。           |
+|  `enumv.presencetypeleave`  | `4`: 当用户取消订阅或离开频道时触发，频道中的其他人会收到此类通知。       |
+| `enumv.presencetypetimeout` | `5`: 当用户掉线超时时触发，频道中的其他人会收到此类通知。                 |
+| `enumv.presencetypechange`  | `6`: 当用户临时状态数据发生变更时触发，频道中的其他人会收到此类通知。     |
+|   `enumv.presencetypeout`   | `7`: 用户加入频道时未启用 Presence，本地用户会收到此类事件通知。          |
+
+## 事件通知模式
+
+Presence 事件通知模式是指在频道中如何将 Presence 事件通知到订阅用户。有两种模式：**实时通知模式（Announce）** 和 **定时通知模式（Interval）**。用户可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。定时通知模式可防止频道内在线用户过多而导致的事件嘈杂。实时通知最大人数可以设置的范围为 [8,128]，如果你的需求超出此范围，需要联系声网 RTM 团队（rtm-support@shengwang.cn）另行调整。
+
+### 实时通知模式
+
+如果频道中的在线人数小于实时通知最大人数参数设定的值（默认值为 50），则 Presence 事件通知处于实时通知模式。在此模式下，`enumv.presencetypejoin`、`enumv.presencetypeleave`、`enumv.presencetypetimeout`、`enumv.presencetypechange` 事件在触发时会立即发送到客户端。
+
+```csharp tab="Join"
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_JOIN,
+    "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+}
+```
+
+```csharp tab="Leave"
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_LEAVE,
+    "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+}
+```
+
+```csharp tab="Timeout"
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_TIMEOUT,
+    "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+}
+```
+
+```csharp tab="State Change"
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_STATE_CHANGED,
+    "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+    "stateItems" : [{"Mic":"False"},{"Position":" Beijing"}],
+    "stateItemCount" : 2
+}
+```
+
+```javascript tab="Join"
+{
+    eventType: "REMOTE_JOIN";
+    channelType: "MESSAGE";
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: {};
+    interval: null;
+    snapshot: null;
+}
+```
+
+```javascript tab="Leave"
+{
+    eventType: "REMOTE_LEAVE";
+    channelType: "MESSAGE";
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: {};
+    interval: null;
+    snapshot: null;
+}
+```
+
+```javascript tab="Timeout"
+{
+    eventType: "REMOTE_TIMEOUT";
+    channelType: "MESSAGE";
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: {};
+    interval: null;
+    snapshot: null;
+}
+```
+
+```javascript tab="Snapshot"
+{
+    eventType: "SNAPSHOT";
+    channelType: "MESSAGE";
+    channelName: "test_channel";
+    publisher: "";
+    stateChanged: {};
+    interval: null;
+    snapshot: [
+        { userId: "user_a", states: {}, statesCount: 0 },
+        { userId: "user_b", states: { key_1: "value_1" }, statesCount: 1 },
+        { userId: "yourSelf", states: {}, statesCount: 0 },
+    ];
+}
+```
+
+```javascript tab="State Change"
+{
+    eventType: "REMOTE_STATE_CHANGED";
+    channelType: "MESSAGE";
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: {
+      "key_1": "value_1",
+    };
+    interval: null;
+    snapshot: null;
+}
+```
+
+```java tab="Join"
+{
+    eventType: RtmPresenceEventType.REMOTE_JOIN;
+    channelType: RtmChannelType.MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateItems: {};
+    interval: {
+        joinUserList:[],
+        leaveUserList:[],
+        timeoutUserList:[],
+        userStateList:[],
+    };
+    snapshot: {
+        userStateList:[]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```java tab="Leave"
+{
+    eventType: RtmPresenceEventType.REMOTE_LEAVE;
+    channelType: RtmChannelType.MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateItems: {};
+    interval: {
+        joinUserList:[],
+        leaveUserList:[],
+        timeoutUserList:[],
+        userStateList:[],
+    };
+    snapshot: {
+        userStateList:[]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```java tab="Timeout"
+{
+    eventType: RtmPresenceEventType.REMOTE_TIMEOUT;
+    channelType: RtmChannelType.MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateItems: {};
+    interval: {
+        joinUserList:[],
+        leaveUserList:[],
+        timeoutUserList:[],
+        userStateList:[],
+    };
+    snapshot: {
+        userStateList:[]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```java tab="Snapshot"
+{
+    eventType: RtmPresenceEventType.SNAPSHOT;
+    channelType: RtmChannelType.MESSAGE;
+    channelName: "test_channel";
+    publisher: "";
+    stateItems: {};
+    interval: {
+        joinUserList:[],
+        leaveUserList:[],
+        timeoutUserList:[],
+        userStateList:[],
+    };
+    snapshot: {
+        userStateList:[
+            {
+                userId: "user_a",
+                states: {}
+            },
+            {
+                userId: "user_b",
+                states: {
+                    key: "key_1";
+                    value: "value_1";
+                }
+            },
+            {
+                userId: "yourSelf",
+                states: {}
+            },
+        ]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```java tab="State Change"
+{
+    eventType: RtmPresenceEventType.REMOTE_STATE_CHANGED;
+    channelType: RtmChannelType.MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateItems: {
+        "key_1":"value_1";
+    };
+    interval: {
+        joinUserList:[],
+        leaveUserList:[],
+        timeoutUserList:[],
+        userStateList:[],
+    };
+    snapshot: {
+        userStateList:[]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```swift tab="Join"
+{
+    type: .remoteJoinChannel;
+    channelType: .message;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```swift tab="Leave"
+{
+    eventType: .remoteLeaveChannel;
+    channelType: .message;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```swift tab="Timeout"
+{
+    eventType: .remoteConnectionTimeout;
+    channelType: .message;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```swift tab="Snapshot"
+{
+    eventType: .snapshot;
+    channelType: .message;
+    channelName: "test_channel";
+    publisher: "";
+    stateChanged: [];
+    interval: [];
+    snapshot: [
+        { userId: "user_a", states: {}},
+        { userId: "user_b", states: { key_1: "value_1" }},
+        { userId: "yourSelf", states: {}},
+    ];
+    timestamp: 1710487149497;
+}
+```
+
+```swift tab="State Change"
+{
+    eventType: .remoteStateChanged;
+    channelType: .message;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: {
+        "key_1": "value_1",
+    };
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```objc tab="Join"
+{
+    type: AgoraRtmPresenceEventTypeRemoteJoinChannel;
+    channelType: AgoraRtmChannelTypeMessage;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```objc tab="Leave"
+{
+    eventType: AgoraRtmPresenceEventTypeRemoteLeaveChannel;
+    channelType: AgoraRtmChannelTypeMessage;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```objc tab="Timeout"
+{
+    eventType: AgoraRtmPresenceEventTypeRemoteConnectionTimeout;
+    channelType: AgoraRtmChannelTypeMessage;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```objc tab="Snapshot"
+{
+    eventType: AgoraRtmPresenceEventTypeSnapshot;
+    channelType: AgoraRtmChannelTypeMessage;
+    channelName: "test_channel";
+    publisher: "";
+    stateChanged: [];
+    interval: [];
+    snapshot: [
+        { userId: "user_a", states: {}},
+        { userId: "user_b", states: { key_1: "value_1" }},
+        { userId: "yourSelf", states: {}},
+    ];
+    timestamp: 1710487149497;
+}
+```
+
+```objc tab="State Change"
+{
+    eventType: AgoraRtmPresenceEventTypeRemoteStateChanged;
+    channelType: AgoraRtmChannelTypeMessage;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: {
+        "key_1": "value_1",
+    };
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```cpp tab="Join"
+{
+    type: RTM_PRESENCE_EVENT_TYPE_REMOTE_JOIN_CHANNEL;
+    channelType: RTM_CHANNEL_TYPE_MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```cpp tab="Leave"
+{
+    eventType: RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL;
+    channelType: RTM_CHANNEL_TYPE_MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```cpp tab="Timeout"
+{
+    eventType: RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT;
+    channelType: RTM_CHANNEL_TYPE_MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    stateChanged: [];
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```cpp tab="Snapshot"
+{
+    eventType: RTM_PRESENCE_EVENT_TYPE_SNAPSHOT;
+    channelType: RTM_CHANNEL_TYPE_MESSAGE;
+    channelName: "test_channel";
+    publisher: "";
+    stateChanged: [];
+    interval: [];
+    snapshot: [
+        { userId: "user_a", states: {}},
+        { userId: "user_b", states: { key_1: "value_1" }},
+        { userId: "yourSelf", states: {}},
+    ];
+    timestamp: 1710487149497;
+}
+```
+
+```cpp tab="State Change"
+{
+    eventType: RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED;
+    channelType: RTM_CHANNEL_TYPE_MESSAGE;
+    channelName: "test_channel";
+    publisher: "publisher_name";
+    states: {
+        "key_1": "value_1",
+    };
+    interval: [];
+    snapshot: [];
+    timestamp: 1710487149497;
+}
+```
+
+```dart tab="Join"
+{
+    type: RtmPresenceEventType.remoteJoinChannel,
+    channelType: RtmChannelType.message,
+    channelName: 'chat_room',
+    publisher: 'Tony',
+    stateItems: [],
+    interval: [],
+    snapshot: [],
+    timestamp: 1710487149497,
+}
+```
+
+```dart tab="Leave"
+{
+    type: RtmPresenceEventType.remoteLeaveChannel,
+    channelType: RtmChannelType.message,
+    channelName: 'chat_room',
+    publisher: 'Tony',
+    stateItems: [],
+    interval: [],
+    snapshot: [],
+    timestamp: 1710487149497,
+}
+```
+
+```dart tab="Timeout"
+{
+    type: RtmPresenceEventType.remoteTimeout,
+    channelType: RtmChannelType.message,
+    channelName: 'chat_room',
+    publisher: 'Tony',
+    stateItems: [],
+    interval: [],
+    snapshot: [],
+    timestamp: 1710487149497,
+}
+```
+
+```dart tab="Snapshot"
+{
+    type: RtmPresenceEventType.snapshot,
+    channelType: RtmChannelType.message,
+    channelName: 'chat_room',
+    publisher: 'Tony',
+    stateItems: [],
+    interval: [],
+    snapshot: {[
+        { userId: "user_a", states: []},
+        { userId: "user_b", states: [{ key: 'mic', value : 'on'}]},
+        { userId: "yourSelf", states: [{}]},
+    ]},
+    timestamp: 1710487149497
+}
+```
+
+```dart tab="State Change"
+{
+    type: RtmPresenceEventType.remoteStateChanged,
+    channelType: RtmChannelType.message,
+    channelName: 'chat_room',
+    publisher: 'Tony',
+    stateItems: [{ key: 'mic', value : 'on'},{ key: 'mode', value : 'happy'}],
+    interval: [],
+    snapshot: [],
+    timestamp: 1710487149497
+}
+```
+
+```typescript tab="Join"
+{
+    eventType: RtmPresenceEventType.REMOTE_JOIN_CHANNEL,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "Tony",
+    stateChanged: [],
+    interval: null,
+    snapshot: null,
+    timestamp: 1710487149497
+}
+```
+
+```typescript tab="Leave"
+{
+    eventType: RtmPresenceEventType.REMOTE_LEAVE_CHANNEL,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "Tony",
+    stateChanged: [],
+    interval: null,
+    snapshot: null,
+    timestamp: 1710487149497
+}
+```
+
+```typescript tab="Timeout"
+{
+    eventType: RtmPresenceEventType.REMOTE_TIMEOUT,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "Tony",
+    stateChanged: [],
+    interval: null,
+    snapshot: null,
+    timestamp: 1710487149497
+}
+```
+
+```typescript tab="Snapshot"
+{
+    eventType: RtmPresenceEventType.SNAPSHOT,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "",
+    stateChanged: [],
+    interval: null,
+    snapshot: [
+        { userId: "user_a", states: [] },
+        { userId: "user_b", states: [{ key: "key_1", value: "value_1" }] },
+        { userId: "yourSelf", states: [] }
+    ],
+    timestamp: 1710487149497
+}
+```
+
+```typescript tab="State Change"
+{
+    eventType: RtmPresenceEventType.REMOTE_STATE_CHANGED,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "Tony",
+    stateChanged: [
+        { key: "key_1", value: "value_1" }
+    ],
+    interval: null,
+    snapshot: null,
+    timestamp: 1710487149497
+}
+```
+
+### 定时通知模式
+
+当频道中的在线人数超过实时通知最大人数的值时，频道会进入定时通知模式。在这种模式下，`enumv.presencetypejoin`、`enumv.presencetypeleave`、`enumv.presencetypetimeout`、`enumv.presencetypechange` 事件会被 `enumv.presencetypeint` 事件代替，并以一定的时间间隔发送给频道中所有用户。
+
+```csharp showLineNumbers
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE.INTERVAL,
+    "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+    "interval" : {
+        "joinUserList" : ["Tony","Lily"],
+        "leaveUserList" : ["Jason"],
+        "timeoutUserList" : ["Wang"],
+        "userStateList" : [
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            },
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            }
+        ]
+    }
+}
+```
+
+```java
+{
+    eventType : RtmPresenceEventType.INTERVAL,
+    channelType : RtmChannelType.MESSAGE,
+    channelName : "Chat_room",
+    publisher : "",
+    stateItems: {},
+    interval : {
+        joinUserList : ["Tony","Lily"],
+        leaveUserList : ["Jason"],
+        timeoutUserList : ["Wang"],
+        userStateList : [
+            {
+                userId : "Harvard",
+                states :  [
+                    {
+                        key: "Mic",
+                        value : "False"
+                    },
+                    {
+                        key: "Position",
+                        value: " Beijing"
+                    }
+                ],
+            }
+        ]
+    }
+    snapshot: {
+        userStateList:[]
+    };
+    timestamp: 1710487149497;
+}
+```
+
+```swift
+{
+    "type" : AgoraRtmPresenceEventTypeInterval,
+    "channelType" : AgoraRtmChannelTypeMessages,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+    "interval" : {
+        "remote_join" : ["Tony","Lily"],
+        "remote_leave" : ["Jason"],
+        "remote_timeout" : ["Wang"],
+        "remote_state_change" : [
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            },
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            }
+            ]
+    }
+}
+```
+
+```objc
+{
+    "type" : AgoraRtmPresenceEventTypeInterval,
+    "channelType" : AgoraRtmChannelTypeMessages,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+    "interval" : {
+        "remote_join" : ["Tony","Lily"],
+        "remote_leave" : ["Jason"],
+        "remote_timeout" : ["Wang"],
+        "remote_state_change" : [
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            },
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            }
+            ]
+    }
+}
+```
+
+```javascript
+interval: {
+    join: { users: ["Tony", "Lily"], userCount: 2 },
+    leave: { users: ["Jason"], userCount: 1 },
+    timeout: { users: ["Wang"], userCount: 1 },
+    userStateList: [
+        {
+            userId: "Harvard",
+            states: { "Mic": "False", "Position": "Beijing" },
+            statesCount: 2,
+        },
+    ],
+},
+```
+
+```cpp
+{
+    "type" : RTM_PRESENCE_EVENT_TYPE_INTERVAL,
+    "channelType" : RTM_CHANNEL_TYPE_MESSAGE,
+    "channelName" : "Chat_room",
+    "publisher" : "Tony",
+    "interval" : {
+        "remote_join" : ["Tony","Lily"],
+        "remote_leave" : ["Jason"],
+        "remote_timeout" : ["Wang"],
+        "remote_state_change" : [
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            },
+            {
+                "userId" : "Harvard",
+                "states" :  [{"Mic":"False"},{"Position":" Beijing"}],
+            }
+        ]
+    },
+    snapshot: {
+        userStateList:[]
+    },
+    timestamp: 1710487149497,
+}
+```
+
+```dart
+{
+    type : RtmPresenceEventType.interval,
+    channelType : RtmChannelType.message,,
+    channelName : 'chat_room',
+    publisher : 'Tony',
+    interval : {
+        joinUserList : {users:['Tony','Lily']},
+        leaveUserList :{users:['Jason']},
+        timeoutUserList : {users:['Wang']},
+        userStateList : [
+            {
+                userId : 'Harvard',
+                states :  [{ key: 'mic', value : 'on'},{ key: 'mode', value : 'happy'}],
+            },
+            {
+                userId : 'Harvard',
+                states :  [{ key: 'mic', value : 'off'},{ key: 'mode', value : 'sad'}],
+            }
+        ]
+    }
+}
+```
+
+```typescript
+{
+    eventType: RtmPresenceEventType.INTERVAL,
+    channelType: RtmChannelType.MESSAGE,
+    channelName: "chat_room",
+    publisher: "",
+    stateChanged: [],
+    interval: {
+        join: ["Tony", "Lily"],
+        leave: ["Jason"],
+        timeout: ["Wang"],
+        userStateList: [
+            {
+                userId: "Harvard",
+                states: [
+                    { key: "Mic", value: "False" },
+                    { key: "Position", value: "Beijing" }
+                ]
+            },
+            {
+                userId: "Alice",
+                states: [
+                    { key: "Mic", value: "True" },
+                    { key: "Position", value: "Shanghai" }
+                ]
+            }
+        ]
+    },
+    snapshot: null,
+    timestamp: 1710487149497
+}
+```

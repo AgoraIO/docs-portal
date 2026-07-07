@@ -1,0 +1,155 @@
+---
+title: "更新转码推流"
+---
+本文介绍如何更新转码推流。
+
+[设置转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-transcode)后，你可以调用 `Update` 方法更新转码推流，例如更新推流地址、用户视频画面布局、混音音量等配置。
+
+## 示例一：更新 rtmpUrl
+
+更新转码推流的 CDN 地址。
+
+```json
+{
+    "converter": {
+        "rtmpUrl": "rtmp://example.agora.io/live/show68_backup"
+    },
+    "fields": "rtmpUrl"
+}
+```
+
+## 示例二：更新 layout
+
+更新转码推流的自定义布局。
+
+更新时，请求 Body 中的 `layout` object array 需要全量设置，不能仅设置 object array 中的某个字段。
+
+```json
+{
+    "converter": {
+        "transcodeOptions": {
+            "videoOptions": {
+                // highlight-start
+                "layout": [
+                    {   "rtcStreamUid": 201,
+                        "region": {
+                            "xPos": 0,
+                            "yPos": 0,
+                            "zIndex": 1,
+                            "width": 360,
+                            "height": 320
+                        },
+                        "placeholderImageUrl": "http://example.agora.io/host_placeholder.jpg"
+                    },
+                    {   "rtcStreamUid": 703,
+                        "region": {
+                            "xPos": 0,
+                            "yPos": 320,
+                            "zIndex": 1,
+                            "width": 360,
+                            "height": 320
+                        },
+                        "placeholderImageUrl": "http://example.agora.io/guest_placehoder.jpg"
+                    }
+                ]
+                // highlight-end
+            }
+        }
+    },
+    // highlight-start
+    "fields": "transcodeOptions.videoOptions.layout"
+    // highlight-end
+}
+```
+
+## 示例三：更新 canvas
+
+更新转码推流的画布。
+
+更新时，请求 Body 中的 `canvas` object 需要全量设置，不能仅设置 object 中的某个字段。
+
+```json
+{
+    "converter": {
+        "transcodeOptions": {
+            "videoOptions": {
+                // highlight-start
+                "canvas": {
+                    "width": 360,
+                    "height": 640,
+                    "color": 0
+                }
+                // highlight-end
+            }
+        }
+    },
+    // highlight-start
+    "fields": "transcodeOptions.videoOptions.canvas"
+    // highlight-end
+}
+```
+
+## 示例四：更新 canvas 和 layout
+
+更新转码推流的自定义布局和画布。
+
+更新多个字段时，`fields` 中填写的各字段必须用英文逗号分隔，且逗号后无空格。例如，`"fields": "a,b"`。
+
+```json
+{
+    "converter": {
+        "transcodeOptions": {
+            "videoOptions": {
+                // highlight-start
+                "canvas": {
+                    "width": 360,
+                    "height": 640,
+                    "color": 0
+                },
+                "layout": [
+                    {
+                        "rtcStreamUid": 201,
+                        "region": {
+                            "xPos": 0,
+                            "yPos": 0,
+                            "zIndex": 1,
+                            "width": 360,
+                            "height": 320
+                        },
+                        "fillMode": "fill",
+                        "placeholderImageUrl": "http://example/host_placeholder.jpg"
+                    }
+                ]
+                // highlight-end
+            }
+        }
+    },
+    // highlight-start
+    "fields": "transcodeOptions.videoOptions.canvas,transcodeOptions.videoOptions.layout"
+    // highlight-end
+}
+```
+
+## 其他示例
+
+其他更新示例可参考[更新混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume#更新音量)和[更新 SEI 信息](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei#更新-sei)。
+
+## 注意事项
+
+- 如果你通过 `Create` 请求创建一个只转码输出视频（或音频）的 Converter，那么你无法通过 `Update` 请求将 Converter 更新成只输出音频（或视频）。这种情况建议你重新创建一个 Converter。
+- 如果你通过 `layoutType` 设置布局类型为垂直布局，那么通过 `Update` 请求只能更新 `rtmpUrl`。
+- `Update` 方法不支持更新 Converter 的如下配置：
+    - `converter.name`
+    - `converter.idleTimeOut`
+    - `converter.transcodeOptions.rtcChannel`
+    - `converter.transcodeOptions.audioOptions.codecProfile`
+    - `converter.transcodeOptions.audioOptions.sampleRate`
+    - `converter.transcodeOptions.audioOptions.bitrate`
+    - `converter.transcodeOptions.audioOptions.audioChannels`
+    - `converter.transcodeOptions.videoOptions.layoutType`
+    - `converter.transcodeOptions.videoOptions.codec`
+    - `converter.transcodeOptions.videoOptions.codecProfile`
+
+## API 参考
+
+你可以参考 [`Update`](../media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId) 方法了解字段详情。

@@ -1,0 +1,115 @@
+---
+title: "管理房间业务状态"
+---
+
+声网互动白板 SDK 在 `room` 接口中提供 `state` 属性，表示当前房间的业务状态。通过读取或修改当前 `room` 对象中的 `state` 属性，可以获取或修改当前房间的业务状态，从而改变白板的行为，或承载自定义的业务逻辑。
+
+本文介绍互动白板实时房间中包含的具体业务状态以及如何监听业务状态的变化。
+
+## 功能介绍
+
+在声网互动白板实时房间中，业务状态包含以下字段：
+
+- `MemberState`：当前使用的白板工具，详见 [`MemberState`](/api-ref/whiteboard/javascript/globals#memberstate)。通过修改当前房间的 `memberState`，可以切换白板工具。详见[使用白板工具](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb)。
+- `BroadcastState`：当前用户的视角模式以及房间中主播模式用户的用户 ID，详见 [`BroadcastState`](/api-ref/whiteboard/javascript/globals#broadcaststate)。
+- `CameraState`：视角状态，包含视角的中心点坐标、宽高和缩放比例等，详见 [`CameraState`](/api-ref/whiteboard/javascript/globals#camerastate)。
+- `RoomMember`：房间内所有互动模式（具有读写权限）用户的状态，详见 [`RoomMember`](/api-ref/whiteboard/javascript/globals#roommember)。
+- `SceneState`：当前场景的信息，包含场景名称、场景索引号和场景路径等，详见 [`SceneState`](/api-ref/whiteboard/javascript/globals#scenestate)。通过修改当前房间的 `SceneState`，可以切换场景。详见[管理场景](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-scene)。
+- `GlobalState`：房间的全局状态，详见 [`GlobalState`](/api-ref/whiteboard/javascript/globals#globalstate)。使用 `GlobalState` 可以实现自定义业务逻辑。
+
+你可以直接读取各字段的值以获取业务状态，也可以通过注册回调监听业务状态的变化。
+
+## 前提条件
+
+开始前，请确保你已在项目中集成声网互动白板 SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+下面继续在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的示例项目基础上添加代码，展示如何读取或监听业务状态。
+
+## 实现方法
+
+本节介绍管理房间业务状态的两种实现方式。
+
+### 读取业务状态的值
+
+成功加入白板房间后，你可以直接通过读取当前 `room` 对象 `state` 属性的某个字段，获取相应的业务状态。
+
+例如，加入房间后要获取当前场景的信息（`sceneState`），你可以在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行：
+
+```javascript
+whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+ 
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+ 
+    // 添加如下行，获取场景的路径、名称和索引
+    var sceneState = room.state.sceneState;
+    console.log("scene path:", sceneState.scenePath);
+    console.log("scene name:", sceneState.sceneName);
+    console.log("scene index:", sceneState.index);
+ 
+}).catch(function(err) {
+ 
+    console.error(err);
+});
+```
+
+保存修改后，刷新 `index.html` 页面，打开浏览器的控制台，可以看到如下信息：
+
+```text
+[White] join room success
+scene path: /init
+scene name: init
+scene index: 0
+```
+
+### 注册回调监听业务状态变化
+
+互动白板 SDK 在 `RoomCallbacks` 中提供 `onRoomStateChanged` 回调方法，用于报告当前房间内发生变化的业务状态。你可以在调用 `joinRoom` 时注册该回调，以实时监听业务状态的变化。
+
+例如，你可以在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下代码，监听 `broadcastState` 的变化：
+
+```javascript
+var whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "RMmxxxQ",
+});
+
+var joinRoomParams = {
+    uuid: "a7exxxa69",
+    roomToken: "NETLESSROOM_YWs9xxxNjk",
+};
+ 
+// 定义需要监听的回调事件
+var roomCallbacks = {
+    onRoomStateChanged: function onStateChanged(modifyState) {
+    // 当 broadcastState 发生变化时，输出当前的 broadcastState
+    if (modifyState.broadcastState) {
+        console.log(modifyState);
+    } else {
+        // 当其他字段发生改变时，不做处理
+    }
+ },
+};
+// 加入房间时注册回调
+whiteWebSdk.joinRoom(joinRoomParams, roomCallbacks).then(function(room) {
+ 
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+    // 将视角模式切换为主播模式
+    room.setViewMode("broadcaster");
+ 
+}).catch(function(err) {
+ 
+    console.error(err);
+});
+```
+
+保存修改后，刷新 `index.html` 页面，打开浏览器的控制台，可以看到如下信息：
+
+```text
+broadcasterId: 409
+mode: "broadcaster"
+```
+
+## API 参考
+
+- [`state`](/api-ref/whiteboard/javascript/interfaces/room#state)
+- [`joinRoom`](/api-ref/whiteboard/javascript/classes/whitewebsdk#joinRoom)
+- [`RoomCallbacks`](/api-ref/whiteboard/javascript/globals#roomcallbacks)

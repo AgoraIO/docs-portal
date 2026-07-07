@@ -1,0 +1,424 @@
+---
+title: "消息通知事件"
+---
+声网消息通知服务器以 HTTPS POST 请求方法向你的服务器发送融合 CDN 直播的消息通知回调。数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+## 请求的 Header
+
+消息通知回调的 `header` 中包含以下字段：
+
+| 字段名               | 值                                                                                                                                                              |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Type`       | `application/json;charset=utf-8`                                                                                                                                |
+| `Agora-Signature`    | 声网用密钥（**secret**）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（**secret**）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs#验证签名)。     |
+| `Agora-Signature-V2` | 声网用密钥（**secret**）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（**secret**）和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs#验证签名)。 |
+
+## 请求的 Body
+
+消息通知回调的请求包体包含以下字段：
+
+| 字段        | 类型        | 描述                                                                                          |
+| :---------- | :---------- | :-------------------------------------------------------------------------------------------- |
+| `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。                                               |
+| `productId` | Integer     | 业务 ID。值为 7 表示融合 CDN 直播业务。                                                       |
+| `eventType` | Integer     | 通知的事件类型。详见[融合 CDN 直播事件类型](#event-type)。                                    |
+| `notifyMs`  | Integer     | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。通知**重试**时该值会更新。         |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[融合 CDN 直播事件类型](#event-type)。 |
+
+消息通知回调的请求包体示例：
+
+```json
+{
+  "noticeId": "2000001428:4330:107",
+  "productId": 7,
+  "eventType": 0,
+  "notifyMs": 1611566412672,
+  "payload": {...}
+}
+```
+
+<a id="event-type"></a>
+## 融合 CDN 直播事件类型
+
+声网消息通知服务可以通知融合 CDN 直播业务中的以下事件类型：
+
+| eventType   | event_name                         | 事件描述               |
+| :---------- | :--------------------------------- | :--------------------- |
+| [1](#1)     | `publish_start`                    | 推流开始。             |
+| [2](#2)     | `publish_end`                      | 推流结束。             |
+| [11](#11)   | `publish_media_info`               | 报告推流的媒体信息。   |
+| [3](#3)     | `new_custom_record_file`           | 生成自定义录制文件。   |
+| [4](#4)     | `new_custom_snapshot_file`         | 生成自定义截图文件。   |
+| [6](#6)     | `new_record_start`                 | 录制开始。             |
+| [7](#7)     | `new_record_end`                   | 录制结束。             |
+| [8](#8)     | `transfer_result`                  | 收到转推结果。         |
+| [101](#101) | `new_standard_record_file`         | 生成标准录制文件。     |
+| [102](#102) | `new_standard_snapshot_file`       | 生成标准截图文件。     |
+| [104](#104) | `new_standard_record_cutting`      | 完成录制截取。         |
+| [105](#105) | `new_standard_preview_transform`   | 预览文件转换成功。     |
+| [106](#106) | `new_encrypt_record_file`          | 生成 DRM 加密文件。    |
+| [107](#107) | `new_encrypt_original_record_file` | 生成新的源流加密文件。 |
+
+<a id="1"></a>
+### 1 publish_start
+
+`eventType` 为 1 表示推流开始，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                           |
+| :----------- | :------- | :----------------------------- |
+| `eventName`  | String   | 事件名称，即 `publish_start`。 |
+| `domain`     | String   | 推流域名。                     |
+| `entryPoint` | String   | 发布点名称。                   |
+| `streamName` | String   | 直播流名称。                   |
+| `clientIp`   | String   | 推流客户端 IP。                |
+| `nodeIp`     | String   | 节点服务器 IP。                |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "publish_start",
+  "domain": "test.agora.io",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "clientIp": "253.199.199.199",
+  "nodeIp": "253.199.199.199"
+}
+```
+
+<a id="2"></a>
+### 2 publish_end
+
+`eventType` 为 2 表示推流结束，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                         |
+| :----------- | :------- | :--------------------------- |
+| `eventName`  | String   | 事件名称，即 `publish_end`。 |
+| `domain`     | String   | 推流域名。                   |
+| `entryPoint` | String   | 发布点名称。                 |
+| `streamName` | String   | 直播流名称。                 |
+| `clientIp`   | String   | 推流客户端 IP。              |
+| `nodeIp`     | String   | 节点服务器 IP。              |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "publish_end",
+  "domain": "test.agora.io",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "clientIp": "253.199.199.199",
+  "nodeIp": "253.199.199.199"
+}
+```
+
+<a id="11"></a>
+### 11 publish_media_info
+
+`eventType` 为 11 表示推流的媒体信息，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                |
+| :----------- | :------- | :---------------------------------- |
+| `eventName`  | String   | 事件名称，即 `publish_media_info`。 |
+| `domain`     | String   | 推流域名。                          |
+| `entryPoint` | String   | 发布点名称。                        |
+| `streamName` | String   | 直播流名称。                        |
+| `videoCodec` | String   | 视频编码格式。                      |
+| `videoFps`   | Integer  | 视频帧率（fps）。                   |
+| `videoRate`  | Integer  | 视频码率（bps）。                   |
+| `height`     | Integer  | 视频的高。                          |
+| `width`      | Integer  | 视频的宽。                          |
+| `audioCodec` | String   | 音频编码格式。                      |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "publish_media_info",
+  "domain": "test.agora.io",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "videoCodec": "H264",
+  "videoFps": "29",
+  "videoRate": "1216568",
+  "height": "720",
+  "width": "1080",
+  "audioCodec": "AAC"
+}
+```
+
+<a id="3"></a>
+### 3 new_custom_record_file
+
+`eventType` 为 3 表示自定义录制文件已生成，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                    |
+| :----------- | :------- | :-------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_custom_record_file`。 |
+| `entryPoint` | String   | 发布点名称。                            |
+| `streamName` | String   | 直播流名称。                            |
+| `fileName`   | String   | 录制文件名。                            |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_custom_record_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "live/test_stream/20221116055451967_20221116075538229_1d36ec7c1247ff63fcb574a1afd09afe_0.mp4"
+}
+```
+
+<a id="4"></a>
+### 4 new_custom_snapshot_file
+
+`eventType` 为 4 表示自定义截图文件已生成，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                      |
+| :----------- | :------- | :---------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_custom_snapshot_file`。 |
+| `entryPoint` | String   | 发布点名称。                              |
+| `streamName` | String   | 直播流名称。                              |
+| `fileName`   | String   | 截图文件名。                              |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_custom_snapshot_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "live/test_stream/20221116034605046_20221116070556_d22ccc5f124bac8c60f294a4ff71baab.jpg"
+}
+```
+
+<a id="6"></a>
+### 6 new_record_start
+
+`eventType` 为 6 表示自定义录制已开始，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                              |
+| :----------- | :------- | :-------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_record_start`。 |
+| `entryPoint` | String   | 发布点名称。                      |
+| `streamName` | String   | 直播流名称。                      |
+| `fileName`   | String   | M3U8 录制文件名。                 |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_record_start",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "live/test_stream/20221116072901278_b7c6cab84b4b576361c812a60ba07053.m3u8"
+}
+```
+
+<a id="7"></a>
+### 7 new_record_end
+
+`eventType` 为 7 表示自定义录制已结束，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                            |
+| :----------- | :------- | :------------------------------ |
+| `eventName`  | String   | 事件名称，即 `new_record_end`。 |
+| `entryPoint` | String   | 发布点名称。                    |
+| `streamName` | String   | 直播流名称。                    |
+| `fileName`   | String   | M3U8 录制文件名。               |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_record_end",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "live/test_stream/20221116072901278_b7c6cab84b4b576361c812a60ba07053.m3u8"
+}
+```
+
+<a id="8"></a>
+### 8 transfer_result
+
+`eventType` 为 8 表示收到流转推结果，`payload` 中包含以下字段：
+
+| 字段         | 数据类型         | 含义                             |
+| :----------- | :--------------- | :------------------------------- |
+| `eventName`  | String           | 事件名称，即 `transfer_result`。 |
+| `entryPoint` | String           | 发布点名称。                     |
+| `streamName` | String           | 直播流名称。                     |
+| `result`     | []TransferResult | 转推结果。                       |
+
+`TransferResult` 定义：
+
+| 名称     | 数据类型 | 含义                                |
+| -------- | -------- | ----------------------------------- |
+| `status` | int      | 0 代表转推成功；非 0 表示转推失败。 |
+| `url`    | String   | 转推地址。                          |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "transfer_result",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "result": [{
+    "status": 0,
+    "url": "rtmp://test.agoramdn.com/live/test_stream"
+  }]
+}
+```
+
+### 101 new_standard_record_file
+
+`eventType` 为 101 表示标准录制文件已生成，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                      |
+| :----------- | :------- | :---------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_standard_record_file`。 |
+| `entryPoint` | String   | 发布点名称。                              |
+| `streamName` | String   | 直播流名称。                              |
+| `fileName`   | String   | 录制文件名。                              |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_standard_record_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "record/live/test_stream/20221116055451967_20221116075538229_1d36ec7c1247ff63fcb574a1afd09afe_0.mp4"
+}
+```
+
+### 102 new_standard_snapshot_file
+
+`eventType` 为 102 表示标准截图文件已生成，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                        |
+| :----------- | :------- | :------------------------------------------ |
+| `eventName`  | String   | 事件名称，即 `new_standard_snapshot_file`。 |
+| `entryPoint` | String   | 发布点名称。                                |
+| `streamName` | String   | 直播流名称。                                |
+| `fileName`   | String   | 截图文件名。                                |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_standard_snapshot_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "snapshot/live/test_stream/20221116034605046_20221116070556_d22ccc5f124bac8c60f294a4ff71baab.jpg"
+}
+```
+
+<a id="104"></a>
+### 104 new_standard_record_cutting
+
+`eventType` 为 104 表示录制截取已生成，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `eventName`  | String   | 事件名称，即 `new_standard_record_cutting`。 |
+| `entryPoint` | String   | 发布点名称。                             |
+| `streamName` | String   | 直播流名称。                             |
+| `fileName`   | String   | 录制生成的文件名。        |
+| `format` | String | 录制文件格式。 |
+| `region` | String | 截取的存储区域。|
+| `success` | Bool | 录制截取是否成功。|
+| `reason` | String | 失败原因。|
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_standard_record_cutting",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "test.mp4",
+  "format": "mp4",
+  "region": "cn",
+  "success": true
+}
+```
+
+<a id="105"></a>
+### 105 new_standard_preview_transform
+
+`eventType` 为 105 表示预览文件转换成功，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                     |
+| :----------- | :------- | :--------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_standard_preview_transform`。 |
+| `entryPoint` | String   | 发布点名称。                             |
+| `streamName` | String   | 直播流名称。                             |
+| `fileName`   | String   | 预览生成的文件名。        |
+| `format` | String | 预览生成的文件格式。 |
+| `region` | String | 预览生成的存储区域。|
+| `success` | Bool | 预览生成是否成功。|
+| `reason` | String | 失败原因。|
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_standard_preview_transform",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "test.mp4",
+  "format": "mp4",
+  "region": "cn",
+  "success": true
+}
+```
+
+<a id="106"></a>
+### 106 new_encrypt_record_file
+
+`eventType` 为 106 表示已生成经过 DRM 加密的录制文件，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                     |
+| :----------- | :------- | :--------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_encrypt_record_file`。 |
+| `entryPoint` | String   | 发布点名称。                             |
+| `streamName` | String   | 直播流名称。                             |
+| `fileName`   | String   | 经过 DRM 加密的 M3U8 录制文件名。        |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_encrypt_record_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "encrypt/live/test_stream/20221116072901278_b7c6cab84b4b576361c812a60ba07053.m3u8"
+}
+```
+
+<a id="107"></a>
+### 107 new_encrypt_original_record_file
+
+`eventType` 为 107 表示源流加密录制文件已生成，`payload` 中包含以下字段：
+
+| 字段         | 数据类型 | 含义                                     |
+| :----------- | :------- | :--------------------------------------- |
+| `eventName`  | String   | 事件名称，即 `new_encrypt_original_record_file`。 |
+| `entryPoint` | String   | 发布点名称。                             |
+| `streamName` | String   | 直播流名称。                             |
+| `fileName`   | String   | 经过源流加密的 M3U8 录制文件名。        |
+
+`payload` 示例：
+
+```json
+{
+  "eventName": "new_encrypt_original_record_file",
+  "entryPoint": "live",
+  "streamName": "test_stream",
+  "fileName": "encrypt_original/live/test_stream/20221116072901278_b7c6cab84b4b576361c812a60ba07053.m3u8"
+}
+```

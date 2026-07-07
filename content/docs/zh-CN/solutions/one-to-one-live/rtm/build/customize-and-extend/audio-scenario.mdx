@@ -1,0 +1,118 @@
+---
+title: "设置优质音频体验"
+---
+one-to-one-live中，优质的音频体验至关重要。声网基于自主研发的音频算法，推出了 Audio Scenario API，只需几行代码即可让你在该场景中实现最佳的音频体验，包括如下效果：
+
+- **美声**：加入 AI 调音师功能，根据讲话者的声音特点，自动美化声音。
+- **防打扰，更降噪**：使用凤鸣 AI 引擎，屏蔽环境噪音，显著提升双讲效果。
+- **更流畅**：优化音频传输配置，保证主播和观众之间的流畅交流。
+
+## 示例项目
+
+声网在 GitHub 上提供开源 `AudioScenarioAPI` 示例项目供你参考。
+
+<Cards>
+  <Card title="AudioScenarioAPI" href="https://github.com/AgoraIO-Community/AudioScenarioAPI" />
+</Cards>
+
+## 准备开发环境
+
+### 前提条件
+
+在设置优质音频体验之前，请确保你已在 App 中实现 1v1 私密房场景，可参考[集成 CallAPI](/zh-CN/solutions/one-to-one-live/rtm/get-started/integrate-callapi) 和[实现 1v1 私密房](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/start-one-to-one)。
+
+### 集成 RTC 和 Audio Scenario API
+
+按照如下步骤进行集成：
+
+1. 在项目的 `build.gradle` 文件内，集成声网 RTC SDK，版本设置为 4.1.1.29。
+
+     ```groovy
+     ...
+     dependencies {
+         implementation "io.agora.rtc:agora-special-full:4.1.1.29"
+     }
+     ```
+
+2. 将 [lib_audioscenarioapi](https://github.com/AgoraIO-Community/AudioScenarioAPI/tree/main/Android/lib_audioscenarioapi) 文件夹复制到项目的根目录中，集成声网 Audio Scenario API。
+
+3. 在 Android Studio 顶部工具栏中，点击 **Sync Project With Gradle File**，将 RTC SDK 集成到项目中。
+
+### 集成 RTC 和 Audio Scenario API
+
+按照如下步骤进行集成：
+
+1. 将声网 RTC SDK 集成到你的项目，版本设置为 4.1.1.29。
+
+    1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+    2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+         ```ruby
+         platform :ios, '9.0'
+         # 替换成你的 target 名称
+         target 'Your App' do
+             pod 'AgoraRtcEngine_iOS', '4.1.1.29'
+         end
+         ```
+
+2. 将 [Classes](https://github.com/AgoraIO-Community/AudioScenarioAPI/tree/main/iOS/Classes) 文件夹内的所有文件添加到你的项目中，集成声网 Audio Scenario API。
+
+3. 在终端内运行 `pod install` 命令安装声网 RTC SDK。
+
+4. 成功安装后，Terminal 中会显示 `Pod installation complete!`。项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+## 实现优质音频体验
+
+本节介绍如何使用声网 Audio Scenario API 实现优质音频体验。声网 RTC SDK 承担实时音视频业务，搭配 Audio Scenario API，可帮助你快速提升通话音频体验。
+
+### 1. 初始化实例并加载插件
+
+1. 调用声网 RTC SDK 中的 `create` 创建并初始化 `RtcEngine` 对象，然后加载回声消除和降噪音频算法插件。
+
+    ```kotlin
+    // 配置 RtcEngine 的 config 参数
+    val config = RtcEngineConfig()
+    config.mContext = MyApplication.app()
+    config.mAppId = BuildConfig.AGORA_APP_ID
+    config.mEventHandler = object : IRtcEngineEventHandler() {}
+    // highlight-start
+    // 加载回声消除和降噪插件
+    config.addExtension("agora_ai_echo_cancellation_extension")
+    config.addExtension("agora_ai_noise_suppression_extension")
+    // highlight-end
+    // 初始化 RtcEngine
+    val mRtcEngine = RtcEngine.create(config)
+    ```
+
+2. 在初始化 `RtcEngine` 后，创建 `AudioScenarioApi` 实例。
+
+    ```kotlin
+    val audioScenarioApi = AudioScenarioApi(mRtcEngine)
+    ```
+
+初始化 `AgoraRtcEngineKit` 实例，然后创建 `AudioScenarioApi` 实例。
+
+```swift
+// 初始化 AgoraRtcEngineKit
+let mRtcEngine = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCenter.AppId, delegate: strongSelf)
+// 创建 AudioScenarioApi
+let audioScenarioApi = AudioScenarioApi(rtcEngine: rtc)
+```
+
+### 2. 配置音频优化体验
+
+加入频道前，调用 `setAudioScenario`，根据 1v1 通话的身份来配置音频优化体验。在加入频道前配置一次即可，音频配置不随加入/退出频道而发生改变。
+
+```kotlin
+// 1v1 场景，身份为主叫（发起呼叫方）
+audioScenarioApi.setAudioScenario(SceneType.Chat, AudioScenarioType.Chat_Caller)
+// 1v1 场景，身份为被叫（接受呼叫方）
+audioScenarioApi.setAudioScenario(SceneType.Chat, AudioScenarioType.Chat_Callee)
+```
+
+```swift
+// 1v1 场景，身份为主叫（发起呼叫方）
+audioScenarioApi.setAudioScenario(sceneType: .Chat, audioScenarioType: .Chat_Caller)
+// 1v1 场景，身份为被叫（接受呼叫方）
+audioScenarioApi.setAudioScenario(sceneType: .Chat, audioScenarioType: .Chat_Callee)
+```

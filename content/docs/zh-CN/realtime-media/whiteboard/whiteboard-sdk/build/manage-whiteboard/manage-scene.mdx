@@ -1,0 +1,211 @@
+---
+title: "管理场景"
+---
+
+在[基本概念](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#场景)中了解场景的结构、标识和增删改规则后，你可以调用互动白板 SDK 的 API 管理场景，并根据业务需要构建多场景的白板应用。
+
+本页面介绍如何调用互动白板 SDK 提供的 API 获取场景信息，插入新场景，切换、移动、删除场景，以及清除场景内容。
+
+## 功能介绍
+
+声网互动白板 SDK 在 `Room` 接口中提供以下方法，用于获取场景信息和管理场景：
+
+| 方法                | 描述                           |
+| :------------------ | :----------------------------- |
+| [`SceneState`](/api-ref/whiteboard/javascript/globals.html#scenestate)        | 获取当前场景的场景信息         |
+| [`entireScenes`](/api-ref/whiteboard/javascript/interfaces/displayer#entireScenes)      | 获取当前房间内所有场景的信息   |
+| [`scenePathType`](/api-ref/whiteboard/javascript/interfaces/displayer#scenePathType)     | 查询场景路径类型               |
+| [`putScenes`](/api-ref/whiteboard/javascript/interfaces/room#putScenes)         | 在指定场景目录下插入多个场景   |
+| [`setScenePath`](/api-ref/whiteboard/javascript/interfaces/room#setScenePath)      | 切换至指定的场景               |
+| [`setSceneIndex`](/api-ref/whiteboard/javascript/interfaces/room#setSceneIndex)     | 切换至当前场景目录下的指定场景 |
+| [`moveScene`](/api-ref/whiteboard/javascript/interfaces/room#moveScene)         | 移动或重命名场景               |
+| [`removeScenes`](/api-ref/whiteboard/javascript/interfaces/room#removeScenes)      | 删除场景或者场景目录           |
+| [`cleanCurrentScene`](/api-ref/whiteboard/javascript/interfaces/room#cleanCurrentScene) | 清除当前场景的所有内容         |
+
+## 前提条件
+
+开始前，请确保你已在项目中集成声网互动白板 SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+下面继续在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的示例项目基础上添加代码，展示如何实现场景管理。
+
+## 实现场景管理
+
+### 获取场景信息
+
+成功加入白板房间后，你可以调用以下方法来获取场景信息：
+
+- `SceneState`：获取当前场景的信息，包括场景路径、名称和索引等。
+- `entireScenes`：获取当前房间内所有场景的信息。
+
+例如，你可以在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行，获取当前场景的信息：
+
+```javascript
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 添加如下行，获取场景的路径、名称和索引
+    var sceneState = room.state.sceneState;
+    console.log("scene path:", sceneState.scenePath);
+    console.log("scene name:", sceneState.sceneName);
+    console.log("scene index:", sceneState.index);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+保存修改后，刷新 `index.html` 页面，打开浏览器的控制台，可以看到如下信息：
+
+```html
+[White] join room success
+scene path: /init
+scene name: init
+scene index: 0
+```
+
+在新创建的白板房间中，只有一个默认的初始场景，路径为 `/init`，名称为 `init`，索引号为 `0`。
+
+<a id="add"></a>
+### 新增场景
+
+互动白板 SDK 提供 `putScenes` 方法，用于在指定场景目录下插入新场景并在场景上展示指定的图片或网页。
+
+调用 `putScenes` 时你需要传入以下参数：
+
+- `path`：场景目录的路径，必须以 `/` 开头，不能为场景的路径。详见[场景标识](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/concepts#场景标识)。
+- `scenes`：由多个场景构成的数组。单个场景包含以下字段：
+  - `name`：场景名称。
+  - `ppt`：（可选）在场景中展示的图片或网页。每个场景中可以展示一张图片或网页。你可以通过 [`PptDescription`](/api-ref/whiteboard/javascript/globals#pptdescription) 设置待插入图片或网页的宽、高、资源路径或预览图等。
+- `index.html`：（可选）待插入的多个场景中，第一个场景在该场景目录中的索引号，其后场景的索引号依次递增。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。
+
+例如，在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行，在根场景目录中插入两个新场景，分别为带图片的 `new-page5` 和不带图片的 `new-page6`。
+
+```javascript
+whiteWebSdk
+  .joinRoom(joinRoomParams)
+  .then(function (room) {
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+    // 构建新场景并插入指定场景目录中。
+    var scenes = [
+      {
+        name: "new-page5",
+        ppt: {
+          width: 720,
+          height: 640,
+          src: "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticPic/2fdxxx67e/1.jpeg",
+        },
+      },
+      {
+        name: "new-page6",
+      },
+    ];
+    room.putScenes("/", scenes);
+
+    // 输出房间内的所有场景列表。
+    var scenemap = room.entireScenes();
+    console.log("scene map:", scenemap);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
+```
+
+保存修改并刷新 `index.html` 页面，打开浏览器的控制台，可以看到 `scene map` 下包含如下场景：
+
+```text
+{
+    "/": [
+        {name: "init", ppt: undefined},
+        {name: "new-page5", ppt: {width: 720, height: 640, src: "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticPic/2fdxxx67e/1.jpeg"}},
+        {name: "new-page6", ppt: undefined},
+    ],
+}
+```
+
+但是，调用 `putScenes` 插入新场景后白板不会直接切换到新插入的场景，你还需要调用 `setScenePath` 或 `setSceneIndex` 切换至指定场景。
+
+### 切换场景
+
+互动白板 SDK 提供以下方法，用于切换场景：
+
+- `setScenePath`：通过指定场景路径切换场景。该方法可切换至当前房间中的任一场景。
+- `setSceneIndex`：通过指定场景索引号切换场景。该方法只能切换至当前场景目录下的任一场景。
+
+在[新增场景](#add)小节中，我们插入了两个新场景，现在，我们可以尝试调用上述两种方法切换至新场景。
+
+在前面示例代码的 `room.putScenes("/", scenes);` 后添加如下行：
+
+```javascript
+room.setScenePath("/new-page5");
+```
+
+保存修改后刷新 `index.html` 页面，你可以看到新的场景和指定的图片。此时，控制台输出的当前场景信息如下：
+
+```html
+[White] join room success
+scene path: /new-page5
+scene name: new-page5
+scene index: 1
+```
+
+你可以调用 `setSceneIndex`，并传入索引号 `2`，切换至场景 `new-page6`：
+
+```javascript
+room.setSceneIndex(2);
+```
+
+再次保存修改并刷新 `index.html` 页面，可以看到白板房间内展示的空白新场景。同样地，你可以查看控制台的输出当前场景信息验证是否切换成功。
+
+### 移动场景
+
+调用 `moveScene` 并指定原场景路径和目标场景路径，可以移动场景的位置或更改场景的名称。
+
+例如，在 `room.putScenes("/", scenes);` 后添加如下代码，将场景 `new-page5` 移至场景目录 `sceneC` 下：
+
+```javascript
+room.moveScene("/new-page5", "/sceneC/new-page5");
+```
+
+保存修改并刷新 `index.html` 页面后，通过浏览器控制台输出的 `scene map` 信息，可以看到 `new-page5` 已经移至场景目录 `sceneC` 下：
+
+```json
+{
+    "/": [
+        {name: "init", ppt: undefined},
+        {name: "new-page6", ppt: undefined},
+    ],
+    "/sceneC": [
+        {name: "new-page5", ppt: {width: 720, height: 640, src: "https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticPic/2fdxxx67e/1.jpeg"}},
+    ],
+}
+```
+
+### 清除场景内容
+
+调用 `cleanCurrentScene` 可以清除当前场景中除图片和动态 PPT 以外的所有内容。如果需要连图片和 PPT 也一起清除，可以调用 `cleanCurrentScene(false)`。
+
+例如，添加如下代码，清除当前场景中的内容：
+
+```javascript
+room.cleanCurrentScene();
+```
+
+保存修改并刷新 `index.html` 页面后，可以看到场景被清空。
+
+### 删除场景
+
+调用 `removeScenes` 并传入场景路径或场景目录路径，可以删除指定场景或指定场景组下的所有场景。
+
+例如，添加如下代码，删除根场景目录下的所有场景：
+
+```javascript
+room.removeScenes("/");
+```
+
+保存修改并刷新 `index.html` 页面后，通过控制台输出 `scene map` 信息，房间内只有一个路径为 `/init` 的场景。该场景是房间内所有场景都被删除后，SDK 自动创建的初始场景。
+
+## 参考信息
+
+了解场景的基本操作后，你可以参考[展示文件](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/present-files-wb)了解如何创建一组场景展示完整的文件。

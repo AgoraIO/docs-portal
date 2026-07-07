@@ -1,0 +1,6132 @@
+---
+title: "实现纯语音互动"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- Android Studio 4.1 以上版本。
+- Android API 级别 16 或以上。
+- 两台运行 Android 4.1 或以上版本的移动设备。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+本小节介绍如何创建项目并为项目添加体验实时音频互动所需的权限。
+
+1. (可选) 创建新项目。详见 [Create a project](https://developer.android.com/studio/projects/create-project)。
+
+    1. 打开 **Android Studio**，选择 **New Project**。
+    2. 选择 **Phone and Tablet > Empty Views Activity**，点击 **Next**。
+    3. 设置项目名称和存储路径，选择语言为 **Java**，点击 **Finish** 创建 Android 项目。
+
+        :::warning[注意]
+        创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻，待同步成功后再进行下一步操作。
+        :::
+
+2. 添加网络及设备权限。
+
+    打开 `/app/src/main/AndroidManifest.xml` 文件，在 `</application>` 后面添加如下权限：
+
+    ```xml
+    <!--必要权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--可选权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <!-- 对于 Android 12.0 及以上且集成 v4.1.0 以下 SDK 的设备，还需要添加以下权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- 对于 Android 12.0 及以上设备，还需要添加以下权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    ```
+
+3. 防止代码混淆。
+
+    打开 `/app/proguard-rules.pro` 文件，添加如下行以防止声网 SDK 的代码被混淆：
+
+    ```java
+    -keep class io.agora.**{*;}
+    -dontwarn io.agora.**
+    ```
+
+## 集成 SDK
+
+你可以选用以下任一方式集成声网实时互动 SDK。
+
+<Tabs defaultValue="maven" groupId="integrate-sdk" persist>
+<TabsList>
+  <TabsTrigger value="maven">通过 Maven Central 集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+1. 打开项目根目录下的 `settings.gradle` 文件，添加 Maven Central 依赖 (如果已有可忽略)：
+
+    ```groovy
+    repositories {
+        ...
+        mavenCentral()
+        ...
+    }
+    ```
+
+    :::warning[注意]
+    如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+    :::
+
+2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
+
+    ```groovy
+    ...
+    dependencies {
+        ...
+        // 对于 4.6.0 及之后的版本
+        // x.y.z 替换为具体的 SDK 版本号，如：4.6.1
+        implementation 'cn.shengwang.rtc:voice-sdk:x.y.z'
+
+        // 对于 4.6.0 之前的版本
+        // x.y.z 替换为具体的 SDK 版本号，如：4.5.2
+        implementation 'io.agora.rtc:voice-sdk:x.y.z'
+    }
+    ```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+1. 在[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面下载最新版本的 Android 实时互动 SDK，并解压。
+
+2. 打开解压文件，将以下文件或子文件夹复制到你的项目路径中。
+
+    | 文件或子文件夹                        | 项目路径                 |
+    | :------------------------------------ | :----------------------- |
+    | `agora-rtc-sdk.jar` 文件              | `/app/libs/`             |
+    | `arm64-v8a` 文件夹                      | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹                  | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹                          | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹                       | `/app/src/main/jniLibs/` |
+    | `high_level_api` 中的`include` 文件夹 | `/app/src/main/jniLibs/` |
+
+   :::warning[注意]
+   自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `libaosl.so` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `libaosl.so` 库。4.6.0 RTC SDK `libaosl.so` 库版本为 1.3.0。
+   :::
+
+3. 在 **Android Studio** 的左侧导航栏上选择 `Project Files/app/libs/agora-rtc-sdk.jar` 文件，右键单击，在下拉菜单中选择 `add as a library`。
+
+</TabsContent>
+</Tabs>
+
+## 创建用户界面
+
+复制以下代码到 `/app/src/main/res/layout/activity_main.xml` 文件中替换原有内容，即可快速创建实时音频互动场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical|start"
+            android:text="Welcome to the Agora Voice Call channel."/>
+
+    </FrameLayout>
+</RelativeLayout>
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本小节介绍如何实现一个实时音频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音频互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现实时互动基本流程的完整代码以供参考。复制以下代码到 `/app/src/main/java/com/example/<projectname>/MainActivity.java` 文件中替换 `package com.example.<projectname>` 后的全部内容，即可快速体验实时互动基础功能。
+
+:::info[信息]
+在 `appId`、`token` 和 `channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现实时音频互动示例代码">
+
+```java
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+
+public class MainActivity extends AppCompatActivity {
+
+    // 填写声网控制台中获取的 App ID
+    private String appId = "<#Your App ID#>";
+    // 填写频道名
+    private String channelName = "<#Your channel name#>";
+    // 填写声网控制台中生成的临时 Token
+    private String token = "<#Your Token#>";
+
+    private RtcEngine mRtcEngine;
+
+    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+        // 成功加入频道回调
+        @Override
+        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onJoinChannelSuccess(channel, uid, elapsed);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "Join channel success", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        // 远端用户或主播加入当前频道回调
+        @Override
+        public void onUserJoined(int uid, int elapsed) {
+            super.onUserJoined(uid, elapsed);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "User joined: " + uid, Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        // 远端用户或主播离开当前频道回调
+        @Override
+        public void onUserOffline(int uid, int reason) {
+            super.onUserOffline(uid, reason);
+            runOnUiThread(() -> {
+                Toast.makeText(MainActivity.this, "User offline: " + uid, Toast.LENGTH_SHORT).show();
+            });
+        }
+    };
+
+    private void initializeAndJoinChannel() {
+        try {
+            // 创建 RtcEngineConfig 对象，并进行配置
+            RtcEngineConfig config = new RtcEngineConfig();
+            config.mContext = getBaseContext();
+            config.mAppId = appId;
+            config.mEventHandler = mRtcEventHandler;
+            // 创建并初始化 RtcEngine
+            mRtcEngine = RtcEngine.create(config);
+        } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+        }
+
+        // 创建 ChannelMediaOptions 对象，并进行配置
+        ChannelMediaOptions options = new ChannelMediaOptions();
+        // 设置用户角色为 BROADCASTER (主播) 或 AUDIENCE (观众)
+        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+        // 设置频道场景为 BROADCASTING (直播场景)
+        options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // 发布麦克风采集的音频
+        options.publishMicrophoneTrack = true;
+        // 自动订阅所有音频流
+        options.autoSubscribeAudio = true;
+        // 使用临时 Token 和频道名加入频道，uid 为 0 表示引擎内部随机生成用户名
+        // 成功后会触发 onJoinChannelSuccess 回调
+        mRtcEngine.joinChannel(token, channelName, 0, options);
+    }
+
+    private static final int PERMISSION_REQ_ID = 22;
+
+    // 获取体验实时音频互动所需的权限
+    private String[] getRequiredPermissions(){
+        // 判断 targetSDKVersion 31 及以上时所需的权限
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO, // 录音权限
+                    Manifest.permission.READ_PHONE_STATE, // 读取电话状态权限
+                    Manifest.permission.BLUETOOTH_CONNECT // 蓝牙连接权限
+            };
+        } else {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+            };
+        }
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // 如果已经授权，则初始化 RtcEngine 并加入频道
+        if (checkPermissions()) {
+            initializeAndJoinChannel();
+        } else {
+            ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+        }
+    }
+
+    // 系统权限申请回调
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (checkPermissions()) {
+            initializeAndJoinChannel();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mRtcEngine != null) {
+            // 离开频道
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+            // 销毁引擎
+            RtcEngine.destroy();
+        }
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 处理权限请求
+
+本小节介绍如何导入 Android 相关的类并获取实时音频互动所需的权限。
+
+1. 导入 Android 相关的类
+
+    ```java
+    import android.Manifest;
+    import android.content.pm.PackageManager;
+    import android.os.Bundle;
+    import android.widget.Toast;
+
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.core.app.ActivityCompat;
+    import androidx.core.content.ContextCompat;
+    ```
+
+2. 获取 Android 权限
+
+    启动应用程序时，检查是否已在 App 中授予了实现实时互动所需的权限。
+
+    ```java
+    private static final int PERMISSION_REQ_ID = 22;
+
+    // 获取体验实时音频互动所需的权限
+    private String[] getRequiredPermissions(){
+        // 判断 targetSDKVersion 31 及以上时所需的权限
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO, // 录音权限
+                    Manifest.permission.READ_PHONE_STATE, // 读取电话状态权限
+                    Manifest.permission.BLUETOOTH_CONNECT // 蓝牙连接权限
+            };
+        } else {
+            return new String[]{
+                    Manifest.permission.RECORD_AUDIO,
+            };
+        }
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    ```
+
+### 导入声网相关的类
+
+导入声网 RTC SDK 相关的类和接口：
+
+```java
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+```
+
+### 定义 App ID 和 Token
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```java
+// 填写声网控制台中获取的 App ID
+private String appId = "<#Your App ID#>";
+// 填写频道名
+private String channelName = "<#Your channel name#>";
+// 填写声网控制台中生成的临时 Token
+private String token = "<#Your Token#>";
+```
+
+### 初始化引擎
+
+调用 `create` [2/2] 方法初始化 `RtcEngine`。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```java
+private RtcEngine mRtcEngine;
+
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+    ...
+};
+
+// 创建 RtcEngineConfig 对象，并进行配置
+RtcEngineConfig config = new RtcEngineConfig();
+config.mContext = getBaseContext();
+config.mAppId = appId;
+config.mEventHandler = mRtcEventHandler;
+// 创建并初始化 RtcEngine
+mRtcEngine = RtcEngine.create(config);
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` [2/2] 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置频道场景为 `BROADCASTING` (直播场景) 并设置用户角色设置为 `BROADCASTER` (主播) 或 `AUDIENCE` (观众)。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频。
+- 将 `autoSubscribeAudio` 设置为 `true`，自动订阅所有音频流。
+
+```java
+// 创建 ChannelMediaOptions 对象，并进行配置
+ChannelMediaOptions options = new ChannelMediaOptions();
+// 设置用户角色为 BROADCASTER (主播) 或 AUDIENCE (观众)
+options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+// 设置频道场景为 BROADCASTING (直播场景)
+options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 发布麦克风采集的音频
+options.publishMicrophoneTrack = true;
+// 自动订阅所有音频流
+options.autoSubscribeAudio = true;
+// 使用临时 Token 和频道名加入频道，uid 为 0 表示引擎内部随机生成用户名
+// 成功后会触发 onJoinChannelSuccess 回调
+mRtcEngine.joinChannel(token, channelName, 0, options);
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示如何实现 `onJoinChannelSuccess`、 `onUserJoined` 和 `onUserOffline` 回调。
+
+```java
+// 成功加入频道回调
+@Override
+public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+    super.onJoinChannelSuccess(channel, uid, elapsed);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "Join channel success", Toast.LENGTH_SHORT).show();
+    });
+}
+
+// 远端用户或主播加入当前频道回调
+@Override
+public void onUserJoined(int uid, int elapsed) {
+    super.onUserJoined(uid, elapsed);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "User joined: " + uid, Toast.LENGTH_SHORT).show();
+    });
+}
+
+// 远端用户或主播离开当前频道回调
+@Override
+public void onUserOffline(int uid, int reason) {
+    super.onUserOffline(uid, reason);
+    runOnUiThread(() -> {
+        Toast.makeText(MainActivity.this, "User offline: " + uid, Toast.LENGTH_SHORT).show();
+    });
+}
+```
+
+### 开始音频互动
+
+在 `onCreate` 中调用一系列方法加载界面布局、检查 App 是否获取实时互动所需权限，并加入频道开始音频互动。
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    // 如果已经授权，则初始化 RtcEngine 并加入频道
+    if (checkPermissions()) {
+        initializeAndJoinChannel();
+    } else {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+    }
+}
+```
+
+### 结束音频互动
+
+按照以下步骤结束音频互动：
+
+1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
+2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+
+   :::warning[注意]
+   - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+      - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+   :::
+
+    ```java
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mRtcEngine != null) {
+            // 离开频道
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+            // 销毁引擎
+            RtcEngine.destroy();
+        }
+    }
+    ```
+
+## 调试 App
+
+按照以下步骤测试纯语音互动 App：
+
+1. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+2. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。
+
+3. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) (**Run 'app'**) 开始编译。片刻后，App 便会安装到你的 Android 设备上。
+
+4. 启动 App，授予录音权限。
+
+5. 使用第二台 Android 设备，重复以上步骤，在该设备上安装 App、打开 App 加入频道，观察测试结果，双方可以听到彼此的声音。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- Xcode 12.0 或以上版本。
+- Apple 开发者账号。
+- 如需使用 Cocoapods 集成 SDK，则确保已安装 Cocoapods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
+- 两台 iOS 9.0 或以上版本的设备。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+按照以下步骤，在 Xcode 中创建一个项目：
+
+1. 参考 [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) 创建一个新的项目。**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
+
+ :::info[信息]
+ 如果你没有添加过开发团队信息，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示登入 Apple ID，点击 **Next**，完成后即可选择你的 Apple 账户作为开发团队。
+ :::
+
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。
+
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+
+4. 添加项目的设备权限。
+
+    在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加实时互动所需的录音权限。
+
+    :::info[信息]
+    - 下表中列出的权限为必需权限；如果不添加所列权限，你将无法使用麦克风进行实时纯语音互动。
+        - 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+        - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+    :::
+
+    | Key                                    | Type   | Value                                                        |
+    | -------------------------------------- | ------ | ------------------------------------------------------------ |
+    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+
+## 集成 SDK
+为了减小集成 SDK 后的 App 体积，声网推荐你集成音频 SDK 来实现纯语音互动。
+
+根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
+
+<Tabs defaultValue="cocoapods" groupId="integrate-sdk" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">通过 CocoaPods 集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+  <TabsTrigger value="swift-package">通过 Swift Package Manager 集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+    ```ruby
+    platform :ios, '9.0'
+    target 'Your App' do
+        # 对于 4.6.0 及之后的版本
+        # x.y.z 请填写具体的 SDK 版本号，如 4.6.0。可通过发版说明获取最新版本号
+        pod 'ShengwangAudio_iOS', 'x.y.z'
+
+        # 对于 4.6.0 之前的版本
+        # x.y.z 请填写具体的 SDK 版本号，如 4.5.2。可通过发版说明获取最新版本号
+        pod 'AgoraAudio_iOS', 'x.y.z'
+    end
+    ```
+
+3. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+
+4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，获取最新版的 SDK，然后解压。
+2. 将 SDK 包内 `libs` 路径下的文件，拷贝到你的项目路径下。
+3. 打开 Xcode，[添加对应动态库](https://help.apple.com/xcode/mac/current/#/dev51a648b07)，确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
+
+    :::info[信息]
+    声网 SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+    :::
+
+</TabsContent>
+
+<TabsContent value="swift-package">
+
+1. 在 Xcode 中，进入 **File > Swift Packages > Add Package Dependencies...**，粘贴如下 URL：
+
+    ```text
+    // 对于 4.6.0 及之后的版本
+    github:git@github.com:Shengwang-Lab/ShengwangAudio_iOS.git 
+
+    // 对于 4.6.0 之前的版本
+    https://github.com/AgoraIO/AgoraAudio_iOS.git
+    ```
+
+2. 在 **Choose Package Options** 中指定你想集成的 SDK 版本。你也可以参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)进行设置。
+
+</TabsContent>
+</Tabs>
+
+:::warning[注意]
+自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。4.6.0 RTC SDK `aosl.xcframework` 库版本为 1.3.0。你可以通过查看 `aosl.xcframework` 文件的属性来得知库的版本信息。
+:::
+
+## 创建用户界面
+
+根据使用场景，为你的项目创建一个用户界面。用以下代码替换 `ViewController.swift` 文件中的内容：
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```swift
+import UIKit
+import AgoraRtcKit
+
+class ViewController: UIViewController {
+    // RTC 引擎
+    var agoraKit: AgoraRtcEngineKit!
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
+
+:::info[信息]
+在 `appId`、`token` 和 `channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```swift
+//  ViewController.swift
+
+import UIKit
+import AgoraRtcKit
+
+class ViewController: UIViewController {
+    // RTC 引擎
+    var agoraKit: AgoraRtcEngineKit!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // 初始化 RTC 实例
+        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId:<#Your App ID#>, delegate: self)
+        joinChannel()
+    }
+
+    deinit {
+        agoraKit.leaveChannel(nil)
+        AgoraRtcEngineKit.destroy()
+    }
+    func joinChannel() {
+        let options = AgoraRtcChannelMediaOptions()
+        // 设置用户角色为主播
+        options.clientRoleType = .broadcaster
+        // 发布麦克风采集的音频
+        options.publishMicrophoneTrack = true
+        // 自动订阅所有音频流
+        options.autoSubscribeAudio = true
+        // 使用临时 Token 加入频道，在这里传入你的项目的 Token 和频道名
+        // uid 为 0 表示由引擎内部随机生成; 成功后会触发 didJoinChannel 回调
+        agoraKit.joinChannel(byToken: <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions: options)
+    }
+}
+
+extension ViewController: AgoraRtcEngineDelegate {
+    // 成功加入频道回调
+    func rtcEngine(
+        _ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int
+    ) {
+        print("didJoinChannel: \(channel), uid: \(uid)")
+    }
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+    }
+
+    // 远端用户或主播离开当前频道回调
+    func rtcEngine(
+        _ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason
+    ) {
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 导入声网组件
+
+在 `ViewController.swift` 文件中引入 `AgoraRtcKit`。
+
+```swift
+import AgoraRtcKit
+```
+
+### 初始化引擎
+
+调用 `sharedEngineWithConfig` 方法，创建并初始化 `AgoraRtcEngineKit`。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```swift
+// 在这里输入你在声网控制台中获取的 App ID
+agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId:<#Your App ID#>, delegate: self)
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannelByToken`[2/4] 方法、填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并设置用户角色。
+
+```swift
+let options = AgoraRtcChannelMediaOptions()
+    // 设置用户角色为主播
+    options.clientRoleType = .broadcaster
+    // 发布麦克风采集的音频
+    options.publishMicrophoneTrack = true
+    // 自动订阅所有音频流
+    options.autoSubscribeAudio = true
+    // 使用临时 Token 加入频道，在这里传入你的项目的 Token 和频道名
+    // uid 为 0 表示由引擎内部随机生成; 成功后会触发 didJoinChannel 回调
+    agoraKit.joinChannel(byToken: <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions: options)
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示了如何实现 `didJoinChannel` 和 `didOfflineOfUid` 回调。
+
+```swift
+// 成功加入频道回调
+func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
+    print("didJoinChannel: \(channel), uid: \(uid)")
+}
+// 远端用户或主播离开当前频道回调
+func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+}
+```
+
+### 开始音频互动
+
+当视图加载完成后，在 `viewDidLoad` 中调用一系列方法加入频道，开始音频互动。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    // 当加载视图后，你可以进行其他其他设置
+    // 当调用声网 API 时，以下函数会被调用
+    initializeAgoraEngine()
+    joinChannel()
+}
+```
+
+### 结束音频互动
+
+1. 调用 `leaveChannel` 方法离开频道，与会话相关的资源也会被释放。
+
+    ```swift
+    agoraKit.leaveChannel(nil)
+    ```
+
+2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+
+    ```swift
+    AgoraRtcEngineKit.destroy()
+    ```
+
+    :::error[警告]
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    :::
+
+## 调试 App
+
+参考以下步骤来测试你的 App：
+
+1. 将 iOS 设备连接至计算机。
+2. 点击 **Build** 来运行你的项目，需等待几秒至 App 安装完成。
+3. 允许 App 访问设备的麦克风权限。
+4. （可选）如果设备上弹出**不受信任的开发者**提示，则首先点击**取消**关闭该提示，然后在 iOS 设备上打开**设置 > 通用 > VPN 与设备管理**，在**开发者 APP** 中选择信任该开发者。
+5. 使用第二台 iOS 设备，重复以上步骤，在该设备上安装 App，并打开 App 加入频道，观察测试结果：双方可以听到对方的声音。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理 CocoaPods 常见问题？](/faq/integration-issues/cocoapods-problems)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何判断一个通话是语音通话还是视频通话？](/faq/integration-issues/judge-voice-video-call)
+- [如何处理无声问题？](/faq/quality-issues/no-audio)
+- [为什么部分 iOS 版本 App 锁屏或切后台后音视频采集无效？](/faq/quality-issues/ios-background)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的实时互动 App，适用于互动直播和视频通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现音视频互动的基本工作流程：
+
+![实现音视频互动](/img/rtc/quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并根据需要设置用户角色：
+
+   - 互动直播：如果用户需要在频道中发流，则设为主播；如果用户只需要收流，则设为观众。
+   - 视频通话：将所有用户的角色都设为主播。
+2. 加入频道后，不同角色的用户具备不同的行为：
+
+   - 所有用户默认都可以接收频道中的音视频流。
+   - 主播可以在频道内发布音视频流。
+   - 观众如果需要发流，可在频道内调用 `setClientRole` 方法修改用户角色，使其具备发流权限。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- Xcode 12.0 或以上版本。
+- Apple 开发者账号。
+- 如需使用 Cocoapods 集成 SDK，则确保已安装 Cocoapods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
+- 两台 macOS 10.10 或以上版本的设备。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+按照以下步骤，在 Xcode 中创建一个项目：
+
+1. 参考 [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578) 创建一个新的项目。**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
+
+    :::info[信息]
+    如果你没有添加过开发团队信息，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示登入 Apple ID，点击 **Next**，完成后即可选择你的 Apple 账户作为开发团队。
+    :::
+
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。
+
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+
+4. 添加项目的设备权限。
+
+    在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
+     :::warning[注意]
+     - 下表中列出的权限均为可选权限。但如果不添加所列权限，你将无法使用麦克风进行实时音频互动。
+             - 如果你的项目中需要添加第三方插件或库，且该插件或库的签名与项目的签名不一致，你还需勾选 **Hardened Runtime** > **Runtime Exceptions** 中的 **Disable Library Validation**。
+             - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
+     :::
+
+    | Key                                    | Type   | Value                                                        |
+    | -------------------------------------- | ------ | ------------------------------------------------------------ |
+    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+
+    进入 **TARGETS > Project Name > Signing & Capabilities**，在 **App Sandbox** 和 **Hardened Runtime** 中添加如下权限：
+
+    | Capability | Category | Permission |
+    | --- | --- | --- |
+    | App Sandbox | Network | Incoming Connections (Server)<br />Outgoing Connections (Client) |
+    | App Sandbox | Hardware | Camera<br />Audio Input |
+    | Hardened Runtime | Resource Access | Camera<br />Audio Input |
+
+## 集成 SDK
+根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
+
+<Tabs defaultValue="cocoapods" groupId="integrate-sdk" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">通过 CocoaPods 集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+  <TabsTrigger value="swift-package">通过 Swift Package Manager 集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+1. 在终端里进入项目根目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+2. 打开 `Podfile` 文件，修改文件为如下内容。注意将 `Your App` 替换为你的 Target 名称。
+
+    ```ruby
+    platform :macos, '10.11'
+    target 'Your App' do
+      # 对于 4.6.0 及之后的版本
+      # x.y.z 请填写具体的 SDK 版本号，如 4.6.0。可通过发版说明获取最新版本号
+      pod 'ShengwangRtcEngine_macOS', 'x.y.z'
+
+      # 对于 4.6.0 之前的版本
+      # x.y.z 请填写具体的 SDK 版本号，如 4.5.2。可通过发版说明获取最新版本号
+      pod 'AgoraRtcEngine_macOS', 'x.y.z'
+    end
+    ```
+
+3. 在终端内运行 `pod install` 命令安装声网 SDK。成功安装后，Terminal 中会显示 `Pod installation complete!`。
+
+4. 成功安装后，项目文件夹下会生成一个后缀为 `.xcworkspace` 的文件，通过 Xcode 打开该文件进行后续操作。
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，获取最新版的 SDK，然后解压。
+2. 将 SDK 包内 `libs` 路径下的文件，拷贝到你的项目路径下。
+3. 打开 Xcode，[添加对应动态库](https://help.apple.com/xcode/mac/current/#/dev51a648b07)，确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
+
+    :::info[信息]
+    声网 SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+    :::
+
+</TabsContent>
+
+<TabsContent value="swift-package">
+
+1. 在 Xcode 中，进入 **File > Swift Packages > Add Package Dependencies...**，粘贴如下 URL：
+
+    ```text
+    // 对于 4.6.0 及之后的版本
+    github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_macOS.git
+
+    // 对于 4.6.0 之前的版本
+    https://github.com/AgoraIO/AgoraRtcEngine_macOS.git
+    ```
+
+2. 在 **Choose Package Options** 中指定你想集成的 SDK 版本。你也可以参考 [Apple 官方文档](https://help.apple.com/xcode/mac/current/#/devb83d64851)进行设置。
+
+</TabsContent>
+</Tabs>
+
+:::warning[注意]
+自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `aosl.xcframework` 库。如果你手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `aosl.xcframework` 库。4.6.0 RTC SDK `aosl.xcframework` 库版本为 1.3.0。你可以通过查看 `aosl.xcframework` 文件的属性来得知库的版本信息。
+:::
+
+## 实现步骤
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `ViewController.swift` 文件中替换原有内容即可。
+
+:::info[信息]
+在 `appId`、`token` 和 `channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```swift
+//  ViewController.swift
+import AgoraRtcKit
+import Cocoa
+
+class ViewController: NSViewController {
+
+    // RTC 引擎
+    var agoraKit: AgoraRtcEngineKit!
+
+    func initView(){
+
+        // 初始化 RTC 实例
+        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: <#Your App ID#>, delegate: self)
+    }
+}
+
+    deinit {
+        agoraKit.leaveChannel(nil)
+        AgoraRtcEngineKit.destroy()
+    }
+
+
+    func joinChannel(){
+        let options = AgoraRtcChannelMediaOptions()
+
+        options.channelProfile = .liveBroadcasting
+        // 设置用户角色为主播；如果要将用户角色设置为观众，保持默认值即可
+        options.clientRoleType = .broadcaster
+        // 发布麦克风采集的音频
+        options.publishMicrophoneTrack = true
+        // 自动订阅所有音频流
+        options.autoSubscribeAudio = true
+        // 使用临时 Token 加入频道，在这里传入你的项目的 Token 和频道名
+        // uid 为 0 表示由引擎内部随机生成; 成功后会触发 didJoinChannel 回调
+        agoraKit.joinChannel(byToken: <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions: options)
+      }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initView()
+        joinChannel()
+    }
+
+}
+
+extension ViewController: AgoraRtcEngineDelegate{
+    // 成功加入频道回调
+   func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int){
+   }
+    // 远端用户加入当前频道回调
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int){
+        // 打印调试信息
+        print("User \(uid) joined after \(elapsed) milliseconds")
+    }
+
+    // 远端用户离开当前频道回调
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+
+        // 打印调试信息
+        print("User \(uid) went offline due to \(reason)")
+    }
+
+
+}
+
+```
+
+</Accordion>
+</Accordions>
+
+### 导入声网组件
+
+在 `ViewController.swift` 文件中引入 `AgoraRtcKit`。
+
+```swift
+import AgoraRtcKit
+```
+
+### 初始化引擎
+
+调用 `sharedEngineWithConfig` 方法，创建并初始化 `AgoraRtcEngineKit`。
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```swift
+agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannelByToken`[2/4] 方法、填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并设置用户角色。
+
+```swift
+let options = AgoraRtcChannelMediaOptions()
+// 设置频道场景为直播
+options.channelProfile = .liveBroadcasting
+// 设置用户角色为主播
+// 如果要将用户角色设置为观众，则修改下一行代码为 options.clientRoleType = .audience
+options.clientRoleType = .broadcaster
+// 发布麦克风采集的音频
+options.publishMicrophoneTrack = true
+// 自动订阅所有音频流
+options.autoSubscribeAudio = true
+// 使用临时 Token 加入频道，在这里传入你的项目的 Token 和频道名
+// uid 为 0 表示由引擎内部随机生成; 成功后会触发 didJoinChannel 回调
+agoraKit.joinChannel(byToken: <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions: options)
+```
+
+### 实现常用回调
+
+根据使用场景，定义你所需的回调。以下示例代码展示了如何实现 `didJoinChannel` 和 `didOfflineOfUid` 回调。
+
+```swift
+// 成功加入频道回调
+func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
+    print("didJoinChannel: \(channel), uid: \(uid)")
+}
+
+// 远端用户离开当前频道回调
+func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+
+    // 打印调试信息
+    print("User \(uid) went offline due to \(reason)")
+}
+```
+
+### 开始纯语音互动
+
+当视图加载完成后，在 `viewDidLoad` 中调用一系列方法加入频道，开始音视频互动。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+    // 当加载视图后，你可以进行其他设置
+    // 当调用声网 API 时，以下函数会被调用
+    joinChannel()
+}
+```
+
+### 结束纯语音互动
+
+1. 调用 `leaveChannel` 方法离开频道，与会话相关的资源也会被释放。
+
+    ```swift
+    agoraKit.leaveChannel(nil)
+    ```
+
+2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+
+    ```swift
+    AgoraRtcEngineKit.destroy()
+    ```
+
+    :::error[警告]
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    :::
+
+## 调试 App
+
+参考以下步骤来测试你的 App：
+
+1. 将 macOS 设备连接至计算机。
+2. 点击 **Build** 来运行你的项目，需等待几秒至 App 安装完成。
+3. 允许 App 访问设备的麦克风权限。
+4. 使用第二台 macOS 设备，重复以上步骤，在该设备上安装 App，并打开 App 加入频道，观察测试结果：双方可以听到对方的声音。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/Shengwang-Community/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理 CocoaPods 常见问题？](/faq/integration-issues/cocoapods-problems)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [编译 Xcode 项目时遇到 “无法打开 framework” 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+- [如何判断一个通话是语音通话还是视频通话？](/faq/integration-issues/judge-voice-video-call)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+## 前提条件
+
+- Windows 或 macOS 计算机，需满足以下要求：
+  - 下载满足声网 [Web SDK 兼容性的浏览器](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。声网强烈推荐使用[最新稳定版 Google Chrome 浏览器](https://www.google.com/chrome/)。
+  - 具备物理音视频采集设备。
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+
+- 有效的声网账户和声网项目，请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，在声网控制台注册、登录并创建声网项目，然后获取项目的 App ID 和 临时 Token。
+- 安装 [Node.js](https://nodejs.org/en/download/) 18 或更高版本。
+
+  :::info[信息]
+  有些框架模板可能需要更高版本的 Node.js 才能工作，如果你的包管理器发出警告，请升级你的 Node.js 版本。
+  :::
+
+## 创建 Web 项目
+
+创建一个名为 `agora_web_quickstart` 的文件夹。一个 Web 客户端项目至少需包含以下文件：
+
+- `index.html`: 用于设计 Web 应用的用户界面。
+- `basicVoiceCall.js`: 通过 `AgoraRTCClient` 实现具体应用逻辑的代码。
+- `package.json`: 安装并管理项目依赖。你可以通过命令行进入 `agora_web_quickstart` 目录并运行 `npm init` 命令来创建 `package.json` 文件。
+
+## 实现步骤
+
+下文介绍通过声网 RTC SDK 在你的 Web 应用中实现语音通话的详细步骤。
+
+### 1. 集成 SDK
+
+参考以下步骤通过 npm 将声网 Web SDK 集成到你的项目中：
+
+1. 在 `package.json` 文件的 `dependencies` 字段中添加 `agora-rtc-sdk-ng` 及版本号：
+
+    ```json
+    {
+        "name": "agora_web_quickstart",
+        "version": "1.0.0",
+        "description": "",
+        "main": "basicVoiceCall.js",
+        "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "dependencies": {
+            // highlight-start
+            "agora-rtc-sdk-ng": "latest"
+            // highlight-end
+        },
+        "author": "",
+        "license": "ISC"
+    }
+    ```
+
+2. 将以下代码复制到 `basicVoiceCall.js` 文件中，在你的项目中导入 `AgoraRTC` 模块。
+
+   ```javascript
+   import AgoraRTC from "agora-rtc-sdk-ng"
+   ```
+
+### 2. 实现用户界面
+
+将以下代码复制到 `index.html` 实现客户端用户界面：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web SDK Voice Quickstart</title>
+    <!--
+      This line is used to refer to the bundle.js file packaged by webpack. A sample webpack configuration is shown in the later step of running your app.
+    -->
+    <script src="./dist/bundle.js"></script>
+</head>
+<body>
+    <h2 class="left-align">Web SDK Voice Quickstart</h2>
+        <div class="row">
+            <div>
+                <button type="button" id="join">JOIN</button>
+                <button type="button" id="leave">LEAVE</button>
+            </div>
+        </div>
+</body>
+</html>
+```
+
+### 3. 实现纯语音互动逻辑
+
+参考以下步骤实现纯语音互动的逻辑：
+
+1. 调用 [`createClient`](/api-ref/rtc/javascript/interfaces/iagorartc#createClient) 方法创建 `AgoraRTCClient` 对象。
+2. 调用 [`join`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#join) 方法加入一个 RTC 频道，你需要在该方法中传入 App ID、用户 ID、Token 和频道名。
+3. 先调用 [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc#createmicrophoneaudiotrack) 通过麦克风采集的音频创建本地音频轨道对象，然后调用 [`publish`](/api-ref/rtc/javascript/interfaces/iagorartcclient#publish) 方法，将这些本地音频轨道对象当作参数即可将音频发布到频道中。
+4. 当一个远端用户加入频道并发布音频轨道时：
+   1. 监听 [client.on("user-published")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件。当 SDK 触发该事件时，在这个事件回调函数的参数中你可以获取远端用户 `AgoraRTCRemoteUser` 对象 。
+   2. 调用 [`subscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#subscribe) 方法订阅远端用户 `AgoraRTCRemoteUser` 对象，获取远端用户的远端音频轨道 `RemoteAudioTrack` 对象。
+   3. 调用 `play` 方法播放远端音频轨道。
+
+下图展示了实现音频互动的 API 调用流程。注意图中的方法是对不同的对象调用的。
+
+![实现流程](/img/rtc/js-audio-quick-start.svg)
+
+将以下代码复制到 `basicVoiceCall.js` 文件中，注意将 `appId` 和 `token` 参数替换为[你自己的 App ID 和临时 Token](#前提条件)。
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng";
+
+let rtc = {
+    localAudioTrack: null,
+    client: null
+};
+
+let options = {
+    // Pass your App ID here.
+    appId: "Your App ID",
+    // Set the channel name.
+    channel: "test",
+    // Pass your temp token here.
+    token: "Your temp token",
+    // Set the user ID.
+    uid: 123456,
+};
+
+async function startBasicCall() {
+    // Create an AgoraRTCClient object.
+    rtc.client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+
+    // Listen for the "user-published" event, from which you can get an AgoraRTCRemoteUser object.
+    rtc.client.on("user-published", async (user, mediaType) => {
+        // Subscribe to the remote user when the SDK triggers the "user-published" event
+        await rtc.client.subscribe(user, mediaType);
+        console.log("subscribe success");
+
+        // If the remote user publishes an audio track.
+        if (mediaType === "audio") {
+            // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
+            const remoteAudioTrack = user.audioTrack;
+            // Play the remote audio track.
+            remoteAudioTrack.play();
+        }
+        });
+        // Listen for the "user-unpublished" event
+        rtc.client.on("user-unpublished", async (user) => {
+            // Unsubscribe from the tracks of the remote user.
+            await rtc.client.unsubscribe(user);
+        });
+
+
+    window.onload = function () {
+
+        document.getElementById("join").onclick = async function () {
+            // Join an RTC channel.
+            await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+            // Create a local audio track from the audio sampled by a microphone.
+            rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+            // Publish the local audio tracks to the RTC channel.
+            await rtc.client.publish([rtc.localAudioTrack]);
+
+            console.log("publish success!");
+        }
+
+        document.getElementById("leave").onclick = async function () {
+            // Destroy the local audio track.
+            rtc.localAudioTrack.close();
+
+            // Leave the channel.
+            await rtc.client.leave();
+        }
+    }
+}
+
+startBasicCall();
+```
+
+## 调试 App
+
+本文使用 [webpack](https://webpack.js.org/) 打包项目，使用 `webpack-dev-server` 运行项目。参考以下步骤来测试你的 App：
+
+1. 在 `package.json` 的 `dependencies` 中添加 `webpack-cli` 和 `webpack-dev-server` 字段中，在 `scripts` 字段中添加 `build` 和 `start:dev` 字段。
+
+    ```json
+    {
+        "name": "agora_web_quickstart",
+        "version": "1.0.0",
+        "description": "",
+        "main": "basicVoiceCall.js",
+        "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1",
+            // highlight-start
+            "build": "webpack --config webpack.config.js",
+            "start:dev": "webpack serve --open --config webpack.config.js"
+            // highlight-end
+        },
+        "dependencies": {
+            "agora-rtc-sdk-ng": "latest",
+            // highlight-start
+            "webpack": "5.28.0",
+            "webpack-dev-server": "3.11.2",
+            "webpack-cli": "4.10.0"
+            // highlight-end
+        },
+        "author": "",
+        "license": "ISC"
+    }
+
+    ```
+
+2. 在项目目录中创建一个名为 `webpack.config.js` 的文件，将以下代码复制到 `webpack.config.js` 配置 webpack：
+
+   ```javascript
+   const path = require("path");
+
+   module.exports = {
+       entry: "./basicVoiceCall.js",
+       output: {
+           filename: "bundle.js",
+           path: path.resolve(__dirname, "./dist"),
+       },
+       devServer: {
+           compress: true,
+           port: 9000,
+       },
+   };
+
+   ```
+
+3. 运行下列命令安装依赖：
+
+   ```shell
+   npm install
+   ```
+
+4. 运行下列命令通过 webpack 编译项目：
+
+   ```shell
+   # Use webpack to package the project
+   npm run build
+   ```
+
+5. 通过 webpack-dev-server 运行项目：
+
+   ```shell
+   npm run start:dev
+   ```
+
+   你的浏览器会自动打开以下页面：
+
+   ![](https://web-cdn.agora.io/docs-files/1629367212930)
+
+点击 **JOIN** 加入频道。你还可以邀请朋友克隆 [Gitee 示例项目](https://gitee.com/agoraio-community/API-Examples-Web) 或 [Github 示例项目](https://github.com/Shengwang-Lab/API-Examples-Web) 到本地。在浏览器中打开 `src/index.html` 文件，并输入相同的 App ID、频道名称和临时 Token。你的朋友加入频道后，你们可以听到彼此的声音。
+
+:::info[信息]
+- 在本地服务器（localhost）运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
+- 由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网 Web SDK 仅支持 HTTPS 协议、 http://localhost（http://127.0.0.1） 。请勿使用 HTTP 协议在 http://localhost（http://127.0.0.1） 之外访问你的项目。
+:::
+
+## 后续步骤
+
+为保障通信安全，在正式生产环境中，你需要在自己的 App 服务端生成 Token。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="示例项目" href="https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example" />
+  <Card title="示例项目" href="https://github.com/Shengwang-Lab/API-Examples-Web/tree/main/src/example" />
+</Cards>
+
+### 其它集成方式
+
+使用 npm 集成 Web SDK 还支持开启 Tree shaking 来减小集成 SDK 后的 App 体积，详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
+
+除使用 npm 获取 Web SDK 之外，你还可以使用以下方法获取 SDK：
+
+- 在项目 HTML 文件中，添加如下代码，使用 CDN 方法获取 SDK：
+
+  ```html
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
+  ```
+
+- 下载[声网 Web SDK 4.x 版本 SDK 包](/zh-CN/realtime-media/rtc/reference/downloads)至本地，将 SDK 包中的 `.js` 文件保存到项目文件所在的目录下，然后在项目 HTML 文件中添加如下代码：
+
+  ```html
+  <script src="./AgoraRTC_N-4.24.5.js"></script>
+  ```
+
+:::info[信息]
+在以上方法中，SDK 都会在全局导出一个 `AgoraRTC` 对象，直接访问这个对象即可操作 SDK。
+:::
+
+### 常见问题
+
+**为什么在本地运行快速开始项目时会报错 `digital envelope routines::unsupported`？**
+
+本文中的快速开始项目通过 webpack 打包并在本地运行。由于 Node.js 16 及以上版本更改了对 OpenSSL 的依赖（详见 [node issue](https://github.com/nodejs/node/issues/29817)），影响了项目中本地开发环境的依赖（详见 [webpack issue](https://github.com/webpack/webpack/issues/14532)），运行项目会发生错误。解决方案如下：
+
+- （推荐）运行如下命令，设置临时的环境变量：
+
+    ```shell
+    export NODE_OPTIONS=--openssl-legacy-provider
+    ```
+
+- 暂时换用低版本的 Node.js。
+
+然后再次尝试运行项目。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- Windows 7 或以上版本的设备。
+- Microsoft Visual Studio 2017 或以上版本。
+- C++ 11 或以上版本。
+- 如果使用 C# 开发，还需要 [.NET 桌面开发组件](https://learn.microsoft.com/en-us/dotnet/framework/install/guide-for-developers)。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+<a id="project"></a>
+<Tabs defaultValue="windows" groupId="release" persist>
+<TabsList>
+  <TabsTrigger value="windows">C++</TabsTrigger>
+  <TabsTrigger value="csharp">C#</TabsTrigger>
+</TabsList>
+
+<TabsContent value="windows">
+
+## 创建项目
+
+    以 Windows 11 为例，参考以下操作或[官方文档](https://learn.microsoft.com/en-us/visualstudio/ide/create-new-project?view=vs-2022)在 Visual Studio 2022 中创建一个项目来实现实时音频互动功能，如果你已有自己的项目，可跳过这一步骤。
+
+    1. 在 Visual Studio 中，选择**文件** > **新建** > **项目** 来创建一个新项目。在弹出的窗口中，选择 **MFC 应用**作为项目模板，点击**下一步**将项目名称设为 **AgoraQuickStart** 并设置项目储存位置，然后点击**创建**。
+
+    2. 在弹出的 MFC 应用程序窗口中，将**应用程序类型**设为**基于对话框**，将**使用 MFC** 设为**在共享 DLL 中使用 MFC**。进入**生成的类**，将**生成的类**设为 **Dlg**，将**基类**设为 **CDialog**，最后点击**完成**。
+
+    ## 集成 SDK
+
+    1. 从[下载](/zh-CN/realtime-media/rtc/reference/downloads)获取最新的 Windows SDK，解压并打开。
+    2. 打开已下载的 SDK 文件，并将其中的 `sdk` 文件夹复制到你的项目路径下。保证 `sdk` 文件夹和你的 `sln` 文件处于同一目录。
+
+    :::warning[注意]
+    自 4.5.0 起，RTC SDK 和 RTM SDK (2.2.0 及以上版本) 都包含 `libaosl.dll` 库。如果你通过 CDN 手动集成 RTC SDK 且同时集成了 RTM SDK，为避免冲突，请手动删除版本较低的 `libaosl.dll` 库。4.6.0 RTC SDK `libaosl.dll` 库版本为 1.3.0。你可以通过查看 `libaosl.dll` 文件的属性来得知库的版本信息。
+    :::
+
+    ## 配置项目属性
+
+    在**解决方案资源管理器**窗口中，右击项目名称并点击**属性**进行以下配置：
+
+    1. 进入 **C/C++ > 常规 > 附加包含目录**菜单，输入 `$(SolutionDir)sdk\high_level_api\include`。
+    2. 进入**链接器 > 常规 > 附加库目录**菜单，输入 `$(SolutionDir)sdk\x86_64`。
+
+       :::info[信息]
+       如果你是 x86 的 Windows 操作系统，请输入 `$(SolutionDir)sdk\x86`。
+       :::
+
+    3. 进入**链接器 > 输入 > 附加依赖项**菜单，输入 `$(SolutionDir)sdk\x86_64\agora_rtc_sdk.dll.lib`。
+
+       :::info[信息]
+       如果你是 x86 的 Windows 操作系统，请输入 `$(SolutionDir)sdk\x86\agora_rtc_sdk.dll.lib`。
+       :::
+
+    4. 进入**高级**菜单，在**高级属性**中，把**将内容复制到 OutDir** 和**将 C++ 运行时复制到输出目录**设为**是**。
+    5. 进入**生成事件 > 生成后事件 >命令行** 菜单，输入 `copy $(SolutionDir)sdk\x86_64\*.dll $(SolutionDir)$(Platform)\$(Configuration)`。
+
+    6. 完成上述配置后点击**应用**。
+
+    ## 创建用户界面
+
+    根据纯语音互动的场景需要，你需要在你的应用中添加如下 UI：
+
+    - 输入频道名称的输入框
+    - 加入和离开频道按钮
+
+    你可以参考下列步骤来创建用户界面。
+**创建用户界面步骤**
+
+1. 在右侧菜单栏将项目切换为资源视图，然后打开 `.Dialog` 文件，此时你的界面如下图所示：
+
+![ui](/img/rtc/windows-quickstart-ui1.png)
+
+    2. 添加输入频道名称的输入框。在**视图 > 工具箱**中，选择添加 **Static Text** 控件，在**属性**中将**描述文字**改为**频道名**。然后再添加一个 **Edit Control** 控件作为输入框，在**属性 > 杂项**中，将该控件的 ID 设为 **IDC_EDIT_CHANNEL**。
+
+    3. 添加加入和离开频道按钮。在**视图 > 工具箱**中，选择添加两个 **Button** 控件，在**属性 > 杂项**中，将控件的 ID 分设为 **ID_BTN_JOIN** 和 **ID_BTN_LEAVE**，将**描述文字**分别设为**加入**、**离开**。
+
+       此时的用户界面如下图所示：
+
+![ui](/img/rtc/windows-audio-quickstart.png)
+
+
+    ## 实现步骤
+
+    本小节介绍如何实现一个实时音频互动应用。你可以先复制完整的示例代码到你的项目中，快速体验基础的纯语音互动功能，再按照实现步骤了解核心 API 调用。
+
+    下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+    以下展示实现实时互动基本流程的完整示例代码：
+    :::warning[注意]
+    复制完整示例代码到你的项目之后，你需要将代码中的 `APP_ID` 和 `token` 替换成你在声网控制台获取的 App ID 和临时 Token。
+    :::
+<Accordions>
+<Accordion title="AgoraQuickStartDlg.h">
+
+```cpp
+// AgoraQuickStartDlg.h: 头文件
+
+#pragma once
+#include <string>
+// 引入相关头文件
+#include <IAgoraRtcEngine.h>
+using namespace agora;
+using namespace agora::rtc;
+using namespace agora::media;
+using namespace agora::media::base;
+
+// 定义消息 ID
+#define WM_MSGID(code) (WM_USER+0x200+code)
+#define EID_JOIN_CHANNEL_SUCCESS        0x00000002
+#define EID_USER_JOINED        0x00000004
+#define EID_USER_OFFLINE        0x00000004
+
+// 定义 CAgoraQuickStartRtcEngineEventHandler 类，用于处理用户加入、离开频道等回调事件
+class CAgoraQuickStartRtcEngineEventHandler
+    : public IRtcEngineEventHandler
+{
+public:
+    // 设置消息接收窗口的句柄
+    void SetMsgReceiver(HWND hWnd) {
+        m_hMsgHanlder = hWnd;
+    }
+
+    // 注册 onJoinChannelSuccess 回调
+    // 本地用户成功加入频道时，会触发该回调
+    virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed) {
+        if (m_hMsgHanlder) {
+            ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_JOIN_CHANNEL_SUCCESS), uid, 0);
+        }
+    }
+
+    // 注册 onUserJoined 回调
+    // 远端主播成功加入频道时，会触发该回调
+    virtual void onUserJoined(uid_t uid, int elapsed) {
+        if (m_hMsgHanlder) {
+            ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_USER_JOINED), uid, 0);
+        }
+    }
+
+    // 注册 onUserOffline 回调
+    // 远端主播离开频道或掉线时，会触发该回调
+    virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) {
+        if (m_hMsgHanlder) {
+            ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_USER_OFFLINE), uid, 0);
+        }
+    }
+
+
+private:
+    HWND m_hMsgHanlder;
+};
+
+// CAgoraQuickStartDlg 对话框
+class CAgoraQuickStartDlg : public CDialog
+{
+    // 构造
+public:
+    CAgoraQuickStartDlg(CWnd* pParent = nullptr);        // 标准构造函数
+
+    virtual ~CAgoraQuickStartDlg();
+
+    // 对话框数据
+#ifdef AFX_DESIGN_TIME
+    enum { IDD = IDD_AGORAQUICKSTART_DIALOG };
+#endif
+
+    // 处理加入/离开按钮点击事件
+    afx_msg void OnBnClickedBtnJoin();
+    afx_msg void OnBnClickedBtnLeave();
+    // 处理用户加入/用户离开等回调事件
+    afx_msg LRESULT OnEIDJoinChannelSuccess(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnEIDUserJoined(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnEIDUserOffline(WPARAM wParam, LPARAM lParam);
+
+protected:
+    HICON m_hIcon;
+
+    CEdit                m_edtChannelName;
+
+    // DDX/DDV 支持
+    virtual void DoDataExchange(CDataExchange* pDX);
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
+    DECLARE_MESSAGE_MAP()
+
+    std::string cs2utf8(CString str);
+
+private:
+    IRtcEngine* m_rtcEngine = nullptr;
+    CAgoraQuickStartRtcEngineEventHandler m_eventHandler;
+    bool m_initialize = false;
+};
+```
+
+</Accordion>
+
+<Accordion title="AgoraQuickStartDlg.cpp">
+
+```cpp
+// AgoraQuickStartDlg.cpp: 实现文件
+//
+
+#include "pch.h"
+#include "framework.h"
+#include "AgoraQuickStart.h"
+#include "AgoraQuickStartDlg.h"
+#include "afxdialogex.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
+// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
+
+class CAboutDlg : public CDialogEx
+{
+public:
+    CAboutDlg();
+
+    // 对话框数据
+#ifdef AFX_DESIGN_TIME
+    enum { IDD = IDD_ABOUTBOX };
+#endif
+
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+    // 实现
+protected:
+    DECLARE_MESSAGE_MAP()
+};
+
+CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
+{
+}
+
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+    CDialogEx::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+END_MESSAGE_MAP()
+
+// CAgoraQuickStartDlg 对话框，用于处理主要的用户交互和回调事件
+CAgoraQuickStartDlg::CAgoraQuickStartDlg(CWnd* pParent /*=nullptr*/)
+    : CDialog(IDD_AGORAQUICKSTART_DIALOG, pParent)
+{
+    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+CAgoraQuickStartDlg::~CAgoraQuickStartDlg()
+{
+    CDialog::~CDialog();
+    // 在删除 CAgoraQuickStartDlg 对象时，释放引擎和相关资源
+    if (m_rtcEngine) {
+        m_rtcEngine->release(true);
+        m_rtcEngine = NULL;
+    }
+}
+
+void CAgoraQuickStartDlg::DoDataExchange(CDataExchange* pDX)
+{
+    CDialog::DoDataExchange(pDX);
+    // 将控件和变量关联起来，以便于读写控件的数据
+    DDX_Control(pDX, IDC_EDIT_CHANNEL, m_edtChannelName);
+}
+
+BEGIN_MESSAGE_MAP(CAgoraQuickStartDlg, CDialog)
+    // 声明消息映射，用于处理 Windows 消息和用户加入、离开频道等事件
+    ON_WM_SYSCOMMAND()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
+    ON_BN_CLICKED(ID_BTN_JOIN, &CAgoraQuickStartDlg::OnBnClickedBtnJoin)
+    ON_BN_CLICKED(ID_BTN_LEAVE, &CAgoraQuickStartDlg::OnBnClickedBtnLeave)
+    ON_MESSAGE(WM_MSGID(EID_JOIN_CHANNEL_SUCCESS), &CAgoraQuickStartDlg::OnEIDJoinChannelSuccess)
+    ON_MESSAGE(WM_MSGID(EID_USER_JOINED), &CAgoraQuickStartDlg::OnEIDUserJoined)
+    ON_MESSAGE(WM_MSGID(EID_USER_OFFLINE), &CAgoraQuickStartDlg::OnEIDUserOffline)
+
+END_MESSAGE_MAP()
+
+
+// CAgoraQuickStartDlg 消息处理程序
+// 填入你项目的 App ID，在声网控制台获取
+#define "<APP_ID>"
+// 填入你在声网控制台获取的临时 Token
+#define "<token>"
+
+BOOL CAgoraQuickStartDlg::OnInitDialog()
+{
+    CDialog::OnInitDialog();
+
+    // 将“关于...”菜单项添加到系统菜单中
+
+    // IDM_ABOUTBOX 必须在系统命令范围内
+    ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+    ASSERT(IDM_ABOUTBOX < 0xF000);
+
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (pSysMenu != nullptr)
+    {
+        BOOL bNameValid;
+        CString strAboutMenu;
+        bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+        ASSERT(bNameValid);
+        if (!strAboutMenu.IsEmpty())
+        {
+            pSysMenu->AppendMenu(MF_SEPARATOR);
+            pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+        }
+    }
+
+    // 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动执行此操作
+    SetIcon(m_hIcon, TRUE);			// 设置大图标
+    SetIcon(m_hIcon, FALSE);		// 设置小图
+
+    m_eventHandler.SetMsgReceiver(m_hWnd);
+    // 创建 rtcEngine 对象
+    m_rtcEngine = createAgoraRtcEngine();
+
+    RtcEngineContext context;
+    context.appId = APP_ID;
+    context.eventHandler = &m_eventHandler;
+    //初始化
+    int ret = m_rtcEngine->initialize(context);
+    if (ret == 0) {
+        m_initialize = true;
+    }
+    else {
+        m_initialize = false;
+    }
+
+    return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
+}
+
+void CAgoraQuickStartDlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+    {
+        CAboutDlg dlgAbout;
+        dlgAbout.DoModal();
+    }
+    else
+    {
+        CDialog::OnSysCommand(nID, lParam);
+    }
+}
+
+// 如果向对话框添加最小化按钮，则需要下面的代码
+// 来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，这将由框架自动完成
+
+void CAgoraQuickStartDlg::OnPaint()
+{
+    if (IsIconic())
+    {
+        CPaintDC dc(this); // 用于绘制的设备上下文
+
+        SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+
+        // 使图标在工作区矩形中居中
+        int cxIcon = GetSystemMetrics(SM_CXICON);
+        int cyIcon = GetSystemMetrics(SM_CYICON);
+        CRect rect;
+        GetClientRect(&rect);
+        int x = (rect.Width() - cxIcon + 1) / 2;
+        int y = (rect.Height() - cyIcon + 1) / 2;
+
+        // 绘制图标
+        dc.DrawIcon(x, y, m_hIcon);
+    }
+    else
+    {
+        CDialog::OnPaint();
+    }
+}
+
+//当用户拖动最小化窗口时系统调用此函数取得光标
+HCURSOR CAgoraQuickStartDlg::OnQueryDragIcon()
+{
+    return static_cast<HCURSOR>(m_hIcon);
+}
+
+
+std::string CAgoraQuickStartDlg::cs2utf8(CString str)
+{
+    char szBuf[2 * MAX_PATH] = { 0 };
+    WideCharToMultiByte(CP_UTF8, 0, str.GetBuffer(0), str.GetLength(), szBuf, 2 * MAX_PATH, NULL, NULL);
+    return szBuf;
+}
+
+void CAgoraQuickStartDlg::OnBnClickedBtnJoin()
+{
+    // 加入频道
+    // 获取频道名
+    CString strChannelName;
+    m_edtChannelName.GetWindowText(strChannelName);
+    if (strChannelName.IsEmpty()) {
+        AfxMessageBox(_T("Fill channel name first"));
+        return;
+    }
+
+    ChannelMediaOptions option;
+    // 设置频道场景为直播
+    option.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+    // 设置用户角色为主播
+    option.clientRoleType = CLIENT_ROLE_BROADCASTER;
+    // 发布麦克风采集的音频流
+    option.publishMicrophoneTrack = true;
+    // 自动订阅频道内的音频流
+    option.autoSubscribeAudio = true;
+    // 填入你在控制台获取的临时 Token 加入频道
+    int ret = m_rtcEngine->joinChannel(token, cs2utf8(strChannelName).c_str(), 0, option);
+
+}
+
+
+void CAgoraQuickStartDlg::OnBnClickedBtnLeave()
+{
+    // 离开频道
+    m_rtcEngine->leaveChannel();
+}
+
+
+LRESULT CAgoraQuickStartDlg::OnEIDJoinChannelSuccess(WPARAM wParam, LPARAM lParam) {
+    // 加入频道成功回调
+    uid_t localUid = wParam;
+    return 0;
+}
+
+LRESULT CAgoraQuickStartDlg::OnEIDUserJoined(WPARAM wParam, LPARAM lParam) {
+    // 远端用户加入回调
+    uid_t remoteUid = wParam;
+    return 0;
+}
+
+LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
+    // 远端用户离开回调
+    uid_t remoteUid = wParam;
+    return 0;
+}
+
+```
+
+</Accordion>
+</Accordions>
+
+    参考下列步骤来在你的应用中实现实时互动：
+
+    ### 创建并初始化 IRtcEngine
+
+    在调用其他声网 API 前，你需要调用 `createAgoraRtcEngine` 创建一个`IRtcEngine` 对象，然后调用 `initialize` 并传入 App ID，初始化 `IRtcEngine`。
+
+    :::warning[注意]
+    在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+    :::
+
+    ```cpp
+    // 创建 IRtcEngine 对象
+    m_rtcEngine = createAgoraRtcEngine();
+    // 创建 IRtcEngine 上下文对象
+    RtcEngineContext context;
+    // 输入你的 App ID。你可以在声网控制台获取你的项目的 App ID
+    context.appId = APP_ID;
+    // 添加注册回调和事件
+    context.eventHandler = &m_eventHandler;
+    // 初始化
+    int ret = m_rtcEngine->initialize(context);
+    if (ret == 0) {
+        m_initialize = true;
+    }
+    else {
+        m_initialize = false;
+    }
+    ```
+
+    ### 加入频道并发布音频流
+
+    调用 `joinChannel`[2/2] 方法、填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并设置用户角色。
+
+    ```cpp
+    void CAgoraQuickStartDlg::OnBnClickedBtnJoin()
+    {
+
+        CString strChannelName;
+        // 获取频道名
+        m_edtChannelName.GetWindowText(strChannelName);
+        if (strChannelName.IsEmpty()) {
+            AfxMessageBox(_T("Fill channel name first"));
+            return;
+        }
+
+        ChannelMediaOptions option;
+        // 设置频道场景为直播场景
+        option.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // 设置用户角色为主播；如果要将用户角色设置为观众，保持默认值即可
+        option.clientRoleType = CLIENT_ROLE_BROADCASTER;
+        // 发布麦克风采集的音频流
+        option.publishMicrophoneTrack = true;
+        // 自动订阅所有音频流
+        option.autoSubscribeAudio = true;
+        // 填入你在控制台获取的临时 Token 加入频道
+        m_rtcEngine->joinChannel(token, cs2utf8(strChannelName).c_str(), 0, option);
+
+    }
+    ```
+
+    ### 实现常用回调
+
+    你可以根据需求，在初始化时实现其他功能，如注册用户加入、离开频道等回调。
+
+    ```cpp
+    class CAgoraQuickStartRtcEngineEventHandler
+        : public IRtcEngineEventHandler
+    {
+    public:
+        // 注册 onJoinChannelSuccess 回调
+        // 本地用户成功加入频道时，会触发该回调
+        virtual void onJoinChannelSuccess(const char* channel, uid_t uid, int elapsed) {
+            if (m_hMsgHanlder) {
+                ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_JOIN_CHANNEL_SUCCESS), uid, 0);
+            }
+        }
+        // 注册 onUserJoined 回调
+        // 远端主播成功加入频道时，会触发该回调
+        virtual void onUserJoined(uid_t uid, int elapsed) {
+            if (m_hMsgHanlder) {
+                ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_USER_JOINED), uid, 0);
+            }
+        }
+        // 注册 onUserOffline 回调
+        // 远端主播离开频道或掉线时，会触发该回调
+        virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason) {
+            if (m_hMsgHanlder) {
+                ::PostMessage(m_hMsgHanlder, WM_MSGID(EID_USER_OFFLINE), uid, 0);
+            }
+        }
+
+    private:
+        HWND m_hMsgHanlder;
+    };
+    ```
+
+    ### 离开频道
+
+    根据场景需要，如关闭应用或应用切换至后台时，调用 `leaveChannel` 离开当前频道。
+
+    ```cpp
+    void CAgoraQuickStartDlg::OnBnClickedBtnLeave()
+    {
+        // 离开频道
+        m_rtcEngine->leaveChannel()
+    }
+    ```
+
+    如果你不再需要互动，调用 `release` 方法释放引擎资源。
+
+    :::warning[注意]
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    :::
+
+    ```cpp
+    CDialog::~CDialog();
+
+    // 在对象被销毁时释放资源
+    if(m_rtcEngine) {
+        m_rtcEngine->release(true);
+        m_rtcEngine = NULL;
+    }
+    ```
+
+    ## 调试应用
+
+    按照以下步骤来测试你的应用：
+
+    1. 在 Visual Studio 中，选择**本地 Windows 调试器**开始编译应用。
+    2. 在输入框中输入你要加入的频道名，并点击**加入**按钮加入频道。
+    3. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名、Token 加入频道。你的朋友加入频道后，你们可以听见对方。
+
+</TabsContent>
+
+<TabsContent value="csharp">
+
+## 创建项目
+
+    参考以下操作，在 Visual Studio 中创建一个 Windows 项目：
+
+    1. 在 Visual Studio 上创建一个 Windows Forms 应用项目，详见 [Create a Windows Forms app in Visual Studio with C#](https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2017/ide/create-csharp-winform-visual-studio?view=vs-2017)。
+    2. 打开 **Configuration Manager** 窗口，在 **Active solution platform** 下拉菜单中选择 **New**，在弹出的窗口中选择 **x64** 或 **x86** 作为目标平台。
+
+    ## 集成 SDK
+
+    使用 Visual Studio 中的 NuGet 包管理器，将 SDK 集成到项目中。详见[快速入门：在 Visual Studio 中安装和使用包](https://learn.microsoft.com/zh-cn/nuget/quickstart/install-and-use-a-package-in-visual-studio)。
+
+    :::info[信息]
+    你可以在 [agora_rtc_sdk](https://www.nuget.org/packages/agora_rtc_sdk/#versions-body-tab) 中获取最新发布的 SDK 的版本信息。
+    :::
+
+    ## 创建用户界面
+
+    为直观地体验音频互动，你需要根据应用场景创建用户界面（UI）。若你的项目中已有用户界面，可略过此步骤。
+
+    推荐在 UI 上添加以下控件：
+
+    - 加入频道按钮
+    - 离开频道按钮
+
+    参考以下步骤创建 UI。
+
+    1. 创建 **Join** 和 **Leave** 按钮
+
+       1. 在你的项目中，打开 **Solution Explorer** 窗口，双击 **Form1.cs**，打开 **Toolbox** 窗口，选择 **Button** 控件，依次添加两个按钮，并将两个按钮拖放至合适位置。
+       1. 将鼠标移至其中一个按钮上，点击鼠标右键，选中 **Properties**，在打开的 **Properties** 窗口中修改 **Text** 属性为 **Join**，修改 **Name** 属性为 **btnJoin**。
+       1. 重复上一个步骤来修改另一个按钮的属性：修改 **Text** 为 **Leave**；修改 **Name** 为 **btnLeave**。
+
+    2. 创建频道名输入框
+
+       1. 打开 **Toolbox** 窗口，选中 **TextBox** 控件，然后将其拖拽至合适位置。
+       1. 将鼠标移至添加好的输入框控件上，点击鼠标右键，选中 **Properties** ，修改其属性 **Name** 为 **txChannelName**。
+
+    3. 保存上述步骤的更改。
+
+    4. 分别双击 **Join** 和 **Leave** 按钮，IDE 会自动关联点击事件处理函数。
+
+    ## 实现步骤
+
+    本小节介绍如何实现一个纯语音互动 App。你可以先复制完整的示例代码到你的项目中，快速体验纯语音互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+    下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+    下面列出了一段实现实时互动基本流程的完整代码以供参考。
+
+    :::info[信息]
+    在 `APP_ID` 和 `Token` 字段中传入你在控制台获取到的 App ID 和临时 Token。
+    :::
+
+**实现纯语音互动示例代码**
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Agora.Rtc;
+
+
+namespace WindowsFormsApp2
+{
+    public partial class Form1 : Form
+    {
+        private readonly string APP_ID = "<APP_ID>";
+        private readonly String APP_TOKEN = "<Token>";
+        private IRtcEngine engine_ = null;
+        private RtcEventHandler handler_ = null;
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            // 创建引擎
+            engine_ = RtcEngine.CreateAgoraRtcEngine();
+
+            // 配置引擎实例
+            RtcEngineContext ctx = new RtcEngineContext()
+            {
+                appId = APP_ID,
+                areaCode = AREA_CODE.AREA_CODE_GLOB,
+                logConfig = { filePath = "rtc.log" }
+            };
+
+            // 初始化引擎
+            var ret = engine_.Initialize(ctx);
+            if (ret != 0)
+            {
+                Console.WriteLine("=====>Initialize failed {0}", ret);
+                return;
+            }
+            // 注册事件句柄
+            handler_ = new RtcEventHandler();
+            engine_.InitEventHandler(handler_);
+        }
+
+        private void btnJoin_Click(object sender, EventArgs e)
+        {
+            if (null != engine_)
+            {
+                ChannelMediaOptions options = new ChannelMediaOptions();
+                // 设置频道场景为直播
+                options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+                // 设置用户角色为主播
+                options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+
+                // 发布麦克风采集的音频流
+                options.publishMicrophoneTrack = true;
+                // 自动订阅所有音频流
+                options.autoSubscribeAudio = true;
+
+                var ret = engine_.JoinChannel(APP_TOKEN, txChannelName.Text, 0, options);
+
+                Console.WriteLine("=====>JoinChannel result {0}", ret);
+            }
+        }
+
+        private void btnLeave_Click(object sender, EventArgs e)
+        {
+            if (null != engine_)
+            {
+                var ret = engine_.LeaveChannel();
+                Console.WriteLine("=====>LeaveChannel result {0}", ret);
+            }
+        }
+    }
+
+    internal class RtcEventHandler : IRtcEngineEventHandler
+    {
+        public delegate void OnUserJoinedHandler(
+            RtcConnection connection,
+            uint remoteUid,
+            int elapsed
+        );
+
+        // 声明 OnUserJoined 回调
+        public event OnUserJoinedHandler EventOnUserJoined;
+
+        public RtcEventHandler() { }
+
+        public override void OnError(int error, string msg)
+        {
+            Console.WriteLine("=====>OnError {0} {1}", error, msg);
+        }
+
+        public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+        {
+            Console.WriteLine("----->OnJoinChannelSuccess channel={0} uid={1}", connection.channelId,connection.localUid);
+        }
+
+        public override void OnLeaveChannel(RtcConnection connection, RtcStats stats)
+        {
+            Console.WriteLine("----->OnLeaveChannel duration={0}", stats.duration);
+        }
+
+        public override void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed)
+        {
+            Console.WriteLine("----->OnUserJoined uid={0}", remoteUid);
+
+            if (EventOnUserJoined != null)
+                EventOnUserJoined.Invoke(connection, remoteUid, elapsed);
+        }
+
+        public override void OnUserOffline(
+            RtcConnection connection,
+            uint remoteUid,
+            USER_OFFLINE_REASON_TYPE reason
+        )
+        {
+            Console.WriteLine("----->OnUserOffline, channel={0}, remoteUid={1}, reason={2}", connection.channelId, remoteUid, reason);
+        }
+
+    }
+}
+```
+
+
+    ### 导入声网相关的类
+
+    导入声网 RTC SDK 相关的类。
+
+    ```csharp
+    using Agora.Rtc;
+    ```
+
+    <a id="cs-initialize"></a>
+### 初始化引擎
+
+    调用 `CreateAgoraRtcEngine` 方法创建一个 `RtcEngine` 对象，然后调用 `initialize` 初始化 `RtcEngine`。
+
+    ```csharp
+    // 创建引擎
+    engine_ = RtcEngine.CreateAgoraRtcEngine();
+
+    // 配置引擎实例
+    RtcEngineContext ctx = new RtcEngineContext()
+    {
+        appId = APP_ID,
+        areaCode = AREA_CODE.AREA_CODE_GLOB,
+        logConfig = { filePath = "rtc.log" }
+    };
+
+    //  初始化引擎
+    var ret = engine_.Initialize(ctx);
+    if (ret != 0)
+    {
+        Console.WriteLine("=====>Initialize failed {0}", ret);
+        return;
+    }
+    ```
+
+    ### 加入频道并发布音频流
+
+    调用 `JoinChannel`[2/2] 加入频道,填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并设置用户角色。
+
+    ```csharp
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    // 设置频道场景为直播
+    options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+    // 设置用户角色为主播
+    options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+
+    // 发布麦克风采集的音频流
+    options.publishMicrophoneTrack = true;
+    // 自动订阅所有音频流
+    options.autoSubscribeAudio = true;
+
+    var ret = engine_.JoinChannel(APP_TOKEN, txChannelName.Text, 0, options);
+    ```
+
+    ### 实现常用回调
+
+    根据使用场景，定义必要的回调。以下示例代码展示如何实现 `OnJoinChannelSuccess`、`OnUserJoined` 和 `OnUserOffline` 回调。
+
+    ```csharp
+    public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+    {
+        Console.WriteLine("----->OnJoinChannelSuccess channel={0} uid={1}", connection.channelId,connection.localUid);
+    }
+    public override void OnUserJoined(RtcConnection connection, uint remoteUid, int elapsed)
+    {
+        Console.WriteLine("----->OnUserJoined uid={0}", remoteUid);
+        if (EventOnUserJoined != null)
+            EventOnUserJoined.Invoke(connection, remoteUid, elapsed);
+    }
+    public override void OnUserOffline(
+        RtcConnection connection,
+        uint remoteUid,
+        USER_OFFLINE_REASON_TYPE reason
+    )
+
+    ```
+
+    ### 开始纯语音互动
+
+    在 `btnJoin_Click` 函数中调用 `JoinChannel`[2/2] 方法，当用户点击 **Join** 按钮时开始纯语音互动。
+
+    ```csharp
+    private void btnJoin_Click(object sender, EventArgs e)
+    {
+        if (null != engine_)
+        {
+            ...
+            var ret = engine_.JoinChannel(APP_TOKEN, txChannelName.Text, 0, options);
+            Console.WriteLine("=====>JoinChannel result {0}", ret);
+        }
+    }
+
+    ```
+
+    ### 结束纯语音互动
+
+    1. 在 **btnLeave_Click** 函数中调用 `LeaveChannel` 方法，当用户点击 **Leave** 按钮时结束纯语音互动。
+
+        ```csharp
+        private void btnLeave_Click(object sender, EventArgs e)
+        {
+            if (null != engine_)
+            {
+                var ret = engine_.LeaveChannel();
+                Console.WriteLine("=====>LeaveChannel result {0}", ret);
+            }
+        }
+        ```
+
+    2. 调用 `Dispose` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+
+        ```csharp
+        engine_.Dispose()
+        ```
+
+        :::warning[注意]
+        - 调用 `Dispose` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用纯语音互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#cs-initialize)。
+                - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+        :::
+
+    ## 测试你的项目
+    按照以下步骤来测试你的项目：
+
+    1. 将你从声网控制台获取的 App ID 和临时 Token 分别填入到 `Form1.cs` 文件的 `APP_ID` 和 `APP_TOKEN` 中。
+    2. 在 Visual Studio 中点击 **Start** 按钮运行你的项目，然后等待片刻。
+    3. 在应用的输入框中输入你在声网控制台获取的频道名，并点击 **Join** 按钮加入频道。
+    4. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名、Token 加入频道。你的朋友加入频道后，你们可以听见对方。
+
+</TabsContent>
+</Tabs>
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Tabs defaultValue="windows" groupId="example" persist>
+<TabsList>
+  <TabsTrigger value="windows">C++</TabsTrigger>
+  <TabsTrigger value="csharp">C#</TabsTrigger>
+</TabsList>
+
+<TabsContent value="windows">
+
+<Cards>
+  <Card title="LiveBroadcasting" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
+  <Card title="LiveBroadcasting" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Basic/LiveBroadcasting" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="csharp">
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Agora-C_Sharp-SDK/tree/main/Agora-C_Sharp-RTC-SDK-API_Example/src/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample/src/Basic/JoinChannelAudio" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+### 常见问题
+
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件](/faq/integration-issues/set-log-file)
+- [如何判断一个通话是语音通话还是视频通话？](/faq/integration-issues/judge-voice-video-call)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [如何设置日志文件](/faq/integration-issues/set-log-file)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- DevEco Studio NEXT Beta1 及以上版本。
+- API Version 11 的 HarmonyOS NEXT SDK 及以上版本。
+- API Version 11 的 HarmonyOS NEXT 2.0.0.59 操作系统及以上版本。
+- 华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
+- 两台支持 HarmonyOS 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+本小节介绍如何创建项目并为项目添加体验实时互动所需的权限。
+
+1. 参考[创建和运行 Hello World](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/hello_world-0000001054516888-V2)，创建一个新工程。
+
+2. 打开 **entry/src/main** 中的 `module.json5` 文件，在 `module` 模块中声明网络和设备权限：
+
+    ```json5
+    "requestPermissions": [
+      // 访问互联网的权限
+      {
+        "name": "ohos.permission.INTERNET",
+        "reason": "$string:Internet_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"  // 始终需要该权限
+        }
+      },
+      // 访问麦克风的权限
+      {
+        "name": "ohos.permission.MICROPHONE",
+        "reason": "$string:Audio_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "always"  // 始终需要该权限
+        }
+      },
+    ]
+    ```
+
+3. 打开 **src/main/resources/base/element** 中的 `string.json` 文件，添加如下代码，定义所需要的权限。
+
+    ```json
+    {
+      "name": "Internet_reason",
+      "value": "access internet"
+    },
+    {
+      "name": "Audio_reason",
+      "value": "access audio"
+    }
+    ```
+
+## 集成 SDK
+
+1. 在[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面下载最新版本的鸿蒙音频 SDK，并在本地解压。
+2. 打开解压文件，将 `AgoraRtcSdk.har` 文件复制到项目 **entry -> libs** 目录下（libs 文件夹需要手动创建）。
+3. 在 **entry** 下的 `oh-pacakge.json5` 文件中添加如下依赖，然后点击 **Sync** 开始同步。
+
+    ```json
+    "dependencies": {
+      "@shengwang/rtc-voice":"file:./libs/AgoraRtcSdk.har"
+    }
+    ```
+
+## 实现方法
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现纯语音互动基本流程的完整代码以供参考。复制以下代码到 `pages/Index.ets` 文件中替换原有内容，即可快速体验纯语音互动。
+
+:::info[信息]
+在 `appId`、`token` 和 `channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```arkts
+import {
+    ChannelMediaOptions,
+    Constants,
+    RtcEngine,
+    RtcEngineConfig,
+    RtcStats,
+} from "AgoraRtcSdk"
+import { common } from '@kit.AbilityKit';
+
+@Entry
+@Component
+struct Index {
+    private rtcEngine: RtcEngine | null = null;
+    @State isJoined: boolean = false;
+    private channel = "hmostest";
+
+    build() {
+        Flex({ direction: FlexDirection.Column }) {
+            Row() {
+                Button("Join")
+                    .enabled(!this.isJoined)
+                    .fontSize(20)
+                    .width("40%")
+                    .margin({ left: "5%", right: "5%" })
+                    .align(Alignment.Center)
+                    .onClick(() => {
+                        this.initEngineAndJoinChannel();
+                    })
+                Button("Leave")
+                    .enabled(this.isJoined)
+                    .fontSize(20)
+                    .width("40%")
+                    .align(Alignment.Center)
+                    .onClick(() => {
+                        this.rtcEngine!.leaveChannel();
+                    })
+                    .margin({ left: "5%", right: "5%" })
+            }.align(Alignment.Center)
+            .margin({ top: "5%", bottom: "5%" })
+        }
+    }
+
+    initEngineAndJoinChannel() {
+        if (this.rtcEngine === null) {
+            let config: RtcEngineConfig = new RtcEngineConfig();
+            let context = getContext(this) as common.UIAbilityContext;
+            config.mContext = context;
+            config.mAppId = "<#Your App ID#>";
+            config.mEventHandler = {};
+            config.mEventHandler.onUserJoined = (uid: number, collapse: number) => {
+                console.info("mEventHandler.onUserJoined: " + uid + " , " + collapse);
+            };
+            config.mEventHandler.onUserOffline = (uid: number, reason: number) => {
+                console.info("mEventHandler.onUserOffline: " + uid + " , " + reason);
+            };
+            config.mEventHandler.onJoinChannelSuccess = (cid: string, uid: number, elapsed: number) => {
+                console.info("mEventHandler.onJoinChannelSuccess: " + cid + " , " + uid);
+                this.isJoined = true;
+            };
+            config.mEventHandler.onLeaveChannel = (stats: RtcStats | null) => {
+                console.info("mEventHandler.onLeaveChannel ");
+                this.isJoined = false;
+            };
+
+            this.rtcEngine = RtcEngine.create(config);
+        }
+
+        let option: ChannelMediaOptions = new ChannelMediaOptions();
+        option.autoSubscribeAudio = true;
+        option.publishMicrophoneTrack = true;
+        option.channelProfile = Constants.ChannelProfile.LIVE_BROADCASTING;
+        option.clientRoleType = Constants.ClientRole.BROADCASTER;
+
+        // joinChannelWithOptions(token:string, channelId:string, uid:number, options:ChannelMediaOptions)
+        // uid 为 0，表示由服务器分配 uid，分配的 uid 将通过 onJoinChannelSuccess 回调返回
+        this.rtcEngine.joinChannelWithOptions("<#Your Token#>", this.channel, 0, option);
+    }
+
+    aboutToDisappear(): void {
+        if (this.rtcEngine != null) {
+            RtcEngine.destroy();
+            this.rtcEngine = null;
+        }
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 处理权限请求
+
+本小节介绍如何获取设备的录音权限。
+
+1. 在 **entryablility** -> `EntryAbility.ets` 中的 `onCreate` 函数中添加权限申请。
+
+    启动应用程序时，检查是否已在 App 中授予了实现实时互动所需的权限。
+
+    ```arkts
+    // 仅保留录音权限
+    const permissions: Array<Permissions> = ['ohos.permission.INTERNET', 'ohos.permission.MICROPHONE'];
+
+    async function checkAccessToken(permission: Permissions): Promise<abilityAccessCtrl.GrantStatus> {
+        let atManager = abilityAccessCtrl.createAtManager();
+        let grantStatus: abilityAccessCtrl.GrantStatus = abilityAccessCtrl.GrantStatus.PERMISSION_DENIED;
+        // 获取应用程序的 accessTokenID
+        let tokenId: number = 0;
+        try {
+            let bundleInfo: bundleManager.BundleInfo = await bundleManager.getBundleInfoForSelf(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION);
+            let appInfo: bundleManager.ApplicationInfo = bundleInfo.appInfo;
+            tokenId = appInfo.accessTokenId;
+        } catch (error) {
+            let err: BusinessError = error as BusinessError;
+            console.error(`Failed to get bundle info for self. Code is ${err.code}, message is ${err.message}`);
+        }
+        // 校验 App 是否被授予权限
+        try {
+            grantStatus = await atManager.checkAccessToken(tokenId, permission);
+        } catch (error) {
+            let err: BusinessError = error as BusinessError;
+            console.error(`Failed to check access token. Code is ${err.code}, message is ${err.message}`);
+        }
+        return grantStatus;
+    }
+
+    export default class EntryAbility extends UIAbility {
+        onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
+            hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+            let context = this.context;
+            let atManager = abilityAccessCtrl.createAtManager();
+            // requestPermissionsFromUser 会判断权限的授权状态来决定是否唤起弹窗
+            for (let i = 0; i < permissions.length; i++) {
+                let permission: Permissions = permissions[i];
+                let granted: boolean = false;
+                let toGrantedPerm: Array<Permissions> = new Array<Permissions>();
+                toGrantedPerm.push(permission);
+                checkAccessToken(permission).then((value) => {
+                    if (value == abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {
+                        granted = true;
+                        hilog.info(0x0000, 'testTag', '%{public}s', 'Permission granted');
+                    } else {
+                        atManager.requestPermissionsFromUser(context, toGrantedPerm).then((data) => {
+                            let grantStatus: Array<number> = data.authResults;
+                            let length: number = grantStatus.length;
+                            for (let i = 0; i < length; i++) {
+                                if (grantStatus[i] === 0) {
+                                    // 用户授权，可以继续访问目标操作
+                                } else {
+                                    // 用户拒绝授权，提示用户必须授权才能访问当前页面的功能，并引导用户到系统设置中打开相应的权限
+                                    hilog.info(0x0000, 'testTag', '%{public}s', 'Permission denied');
+                                    return;
+                                }
+                            }
+                            // 授权成功
+                        }).catch((err: BusinessError) => {
+                            hilog.info(0x0000, 'testTag', '%{public}s', `Failed to request permissions from user. Code is ${err.code}, message is ${err.message}`);
+                        });
+                    }
+                });
+            }
+        }
+    }
+    ```
+
+### 导入声网组件
+
+打开 `pages/Index.ets` 文件，导入声网 SDK 组件。
+
+```arkts
+import {
+    ChannelMediaOptions,
+    Constants,
+    RtcEngine,
+    RtcEngineConfig,
+    RtcStats,
+} from "@shengwang/rtc-voice"
+```
+
+### 初始化引擎
+
+调用 `create` 方法初始化 `RtcEngine`。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```arkts
+let config:RtcEngineConfig = new RtcEngineConfig();
+let context = getContext(this) as common.UIAbilityContext;
+config.mContext = context;
+// 在这里输入你在声网控制台中获取的 App ID
+config.mAppId = "<#Your App ID#>";
+config.mEventHandler = {};
+
+// 创建并初始化 RtcEngine
+this.rtcEngine = RtcEngine.create(config);
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannelWithOptions` 加入频道。在 `options` 中进行如下配置：
+
+- 设置频道场景为 `BROADCASTING` (直播场景) 并设置用户角色设置为 `BROADCASTER` (主播)。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频。
+- 将 `autoSubscribeAudio` 和 `autoSubscribeVideo` 设置为 `true`，自动订阅所有音频流。
+
+```arkts
+let option:ChannelMediaOptions  = new ChannelMediaOptions();
+// 自动订阅所有音频流
+option.autoSubscribeAudio = true;
+// 发布麦克风采集的音频
+option.publishMicrophoneTrack = true;
+// 设置频道场景为直播
+option.channelProfile = Constants.ChannelProfile.LIVE_BROADCASTING;
+// 设置用户角色为主播
+option.clientRoleType = Constants.ClientRole.BROADCASTER;
+// 使用临时 Token 加入频道，在这里传入你的项目的 Token 和频道名
+// uid 为 0，表示由服务器分配 uid，分配的 uid 将通过 onJoinChannelSuccess 回调返回
+this.rtcEngine.joinChannelWithOptions(<#Your Token#>, <#Your Channel Name#>, 0,option);
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示如何实现 `onJoinChannelSuccess` 和 `onUserOffline` 回调。
+
+```arkts
+config.mEventHandler.onUserJoined = (uid: number, collapse: number) => {
+    console.info("mEventHandler.onUserJoined: " + uid + " , " + collapse);
+};
+
+config.mEventHandler.onJoinChannelSuccess = (cid: string, uid: number, elapsed: number) => {
+  console.info("mEventHandler.onJoinChannelSuccess: " + cid + " , " + uid);
+};
+
+config.mEventHandler.onUserOffline = (uid: number, reason: number) => {
+  console.info("mEventHandler.onUserOffline: " + uid + " , " + reason);
+};
+```
+
+### 开始音频互动
+
+在 `onClick` 中调用一系列方法加载界面布局、检查 App 是否获取实时互动所需权限，并加入频道开始音频互动。
+
+```arkts
+Button("Join")
+.enabled(!this.isJoined)
+.fontSize(20)
+.width("40%")
+.margin({ left: "5%", right: "5%" })
+.align(Alignment.Center)
+.onClick(() => {
+    this.initEngineAndJoinChannel();
+})
+```
+
+### 结束音频互动
+
+按照以下步骤结束音频互动：
+
+1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
+2. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+   :::warning[注意]
+   - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+       - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+   :::
+
+    ```arkts
+    this.rtcEngine!.leaveChannel();
+    RtcEngine.destroy();
+    this.rtcEngine = null;
+    ```
+
+## 测试 App
+
+按照以下步骤测试直播 App：
+
+1. 开启鸿蒙 NEXT 设备的开发者选项，打开 USB 调试，通过 USB 连接线将鸿蒙 NEXT 设备接入电脑。
+
+2. 在 DevEcho Studio 中，点击 **Sync and Refresh Project**进行同步。
+
+3. 待同步成功后，点击 **Run 'app'** 开始编译。片刻后，App 便会安装到你的鸿蒙 NEXT 设备上。
+
+4. 启动 App，授予录音权限。
+
+5. 使用第二台鸿蒙 NEXT 设备，重复以上步骤，在该设备上安装 App、打开 App 加入频道，观察测试结果：双方可以听到彼此的声音。
+
+## 后续步骤
+
+在完成音频互动后，你可以阅读以下文档进一步了解：
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为保证通信安全，声网推荐从服务器中获取 Token，详情请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 相关信息
+
+本节提供了额外的信息供参考。
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinAudioChannel" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+  <Card title="JoinAudioChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/basic/JoinAudioChannel.ets" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分鸿蒙版本 App 锁屏或切后台音视频采集无效？](/faq/quality-issues/harmonyos-background)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+- [Node.js](https://nodejs.org/en/download/) 6.9.1 或更高版本。
+- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+
+<a id="project"></a>
+## 创建项目
+
+在本地文件夹中为 Electron 项目新建一个目录，并在项目根目录下创建以下文件：
+
+- `package.json`: 用于安装和管理项目依赖项。
+- `index.html`：用于设计 App 的用户界面。
+- `main.js`：主进程文件。
+- `renderer.js`：渲染进程文件，用于实现与声网 Electron SDK 的交互。
+
+## 集成 SDK
+
+根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
+
+<Tabs defaultValue="npm" groupId="integrate" persist>
+<TabsList>
+  <TabsTrigger value="npm">npm 集成</TabsTrigger>
+  <TabsTrigger value="manual">手动集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+1. 在 `package.json` 文件中添加以下代码：
+
+  - macOS:
+
+    ```json
+    {
+      "name": "electron-demo-app",
+      "version": "0.1.0",
+      "author": "your name",
+      "description": "My Electron app",
+      "main": "main.js",
+      "scripts": {
+        "start": "electron ."
+      },
+      "agora_electron": {
+        "platform": "darwin",
+        "prebuilt": true
+      },
+      "dependencies": { "agora-electron-sdk": "latest" },
+      "devDependencies": {"electron": "latest" }
+    }
+    ```
+
+  - Windows:
+
+    ```json
+    {
+      "name": "electron-demo-app",
+      "version": "0.1.0",
+      "author": "your name",
+      "description": "My Electron app",
+      "main": "main.js",
+      "scripts": {
+        "start": "electron ."
+      },
+      "agora_electron": {
+        "platform": "win32",
+        "prebuilt": true,
+        "arch": "ia32"
+      },
+      "dependencies": { "agora-electron-sdk": "latest" },
+      "devDependencies": {"electron": "latest" }
+    }
+    ```
+
+  字段的具体含义如下：
+
+  - `agora-electron-sdk`：声网 Electron SDK 的版本号。设为 `latest` 表示获取最新版本的 SDK，其它版本可在 [agora-electron-sdk](https://www.npmjs.com/package/agora-electron-sdk) 中查看。
+  - `electron`：Electron 的版本号，支持 5.0.0 及以上版本（包括最新版本）。如果使用搭载 M1 芯片的 macOS 设备，Electron 的版本号需要设为 11.0.0 或以上。
+  - （可选）`platform`：默认根据系统选择，macOS 为 `darwin`，Windows 为 `win32`。
+  - （可选）`prebuilt`：默认设为 `true`，防止出现 Electron 或 Node.js 版本与 SDK 不兼容的问题。
+  - （可选）`arch`：默认根据系统选择。
+
+:::warning[注意]
+由于不同版本的 Electron 对本地环境的要求有差异，运行项目时可能因环境不匹配报错。声网推荐你参考 [Electron 官方文档](https://releases.electronjs.org/releases/stable)选择合适的 Electron 和 Node.js 版本。
+:::
+
+2. 在终端中进入项目根目录，运行如下命令安装依赖项：
+
+   ```shell
+   # macOS
+   npm install
+
+   # Windows
+   npm install -D --arch=ia32 electron
+   npm install
+   ```
+
+  :::info[信息]
+  - Windows 平台需要先运行 `npm install -D --arch=ia32 electron` 安装 32 位的 Electron，然后运行 `npm install`。否则会收到报错：`Not a valid win32 application`。
+    - 如果项目根目录下已有 `node_modules` 文件夹，建议先删除该文件夹，再运行 `npm install`，以免出现报错。
+  :::
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+除了使用 npm 集成以外，你也可以进入 [Electron-SDK](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/) 手动编译最新的 SDK，集成到应用中。
+
+</TabsContent>
+</Tabs>
+
+## 创建用户界面
+
+在 `index.html` 文件中添加以下代码，创建一个只包含简单文字的用户界面：
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Electron Quickstart</title>
+    </head>
+    <body>
+        <h1>Electron Quickstart</h1>
+        Congratulations! You have started a voice call.<br />
+        Ask a friend to join and chat
+    </body>
+    <script src="./renderer.js"></script>
+</html>
+```
+
+## 实现步骤
+
+本节介绍如何实现一个纯语音互动 App。
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![实时互动快速开始流程图](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了实现纯语音互动基本流程的完整代码以供参考，你可以先将 `main.js` 和 `renderer.js` 文件的全部内容分别替换为以下代码，参考[测试项目](#测试项目)中的步骤快速体验实时纯语音互动的基础功能，再按照实现流程了解其中的核心 API 调用。
+
+<Accordions>
+<Accordion title="main.js 示例代码">
+
+```javascript
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+
+// 如果使用 Electron 9.x 及以上版本，需要将 allowRendererProcessReuse 设为 false
+app.allowRendererProcessReuse = false;
+
+function createWindow() {
+    // 创建浏览器窗口
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            // preload: path.join(__dirname, "renderer.js"),
+            // 将 nodeIntegration 设置 true 以及 contextIsolation 设为 false
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
+
+    // 加载 index.html 文件的内容
+    mainWindow.loadFile("./index.html");
+    // 开启开发者工具
+    mainWindow.webContents.openDevTools();
+}
+
+// 管理 Electron 应用的浏览器窗口
+app.whenReady().then(() => {
+    createWindow();
+    // 如果当前没有窗口打开，则新建一个窗口（适用于 macOS）
+    app.on("activate", function () {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+
+// 如果所有窗口都已关闭，则退出 Electron 应用（适用于 Windows）
+app.on("window-all-closed", function () {
+    if (process.platform !== "darwin") app.quit();
+});
+```
+
+</Accordion>
+
+<Accordion title="renderer.js 示例代码">
+
+```javascript
+const {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+} = require("agora-electron-sdk");
+
+let rtcEngine;
+let localVideoContainer;
+let remoteVideoContainer;
+// 填入你的 App ID
+const APPID = "<-- Insert App Id -->";
+// 填入你的临时 Token
+let token = "<-- Insert Token -->";
+// 填入生成 Token 时使用的频道名
+const channel = "<-- Insert Channel Name -->";
+// 用户 ID，并确保其在频道内的唯一性
+let uid = 123;
+
+const EventHandles = {
+    // 监听本地用户加入频道事件
+    onJoinChannelSuccess: ({ channelId, localUid }, elapsed) => {
+        console.log('成功加入频道：' + channelId);
+    },
+
+    // 监听远端用户加入频道事件
+    onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+        console.log('远端用户 ' + remoteUid + ' 已加入');
+    },
+    
+        // 监听用户离开频道事件
+    onUserOffline: ( { channelId, localUid }, remoteUid, reason ) => {
+        console.log('远端用户 ' + remoteUid + ' 已离开频道');
+    },
+};
+
+
+window.onload = () => {
+    const os = require("os");
+    const path = require("path");
+
+    localVideoContainer = document.getElementById("join-channel-local-video");
+    remoteVideoContainer = document.getElementById("join-channel-remote-video");
+    const sdkLogPath = path.resolve(os.homedir(), "./test.log");
+
+    // 创建 RtcEngine 实例
+    rtcEngine = createAgoraRtcEngine();
+
+    // 初始化 RtcEngine 实例
+    rtcEngine.initialize({
+        appId: APPID,
+        logConfig: { filePath: sdkLogPath }
+    });
+
+    // 注册事件回调
+    rtcEngine.registerEventHandler(EventHandles);
+
+    // 使用临时 Token 加入频道
+    rtcEngine.joinChannel(token, channel, uid, {
+        // 设置频道场景为直播场景
+        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+        // 设置用户角色为主播；如果要将用户角色设置为观众，保持默认值即可
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+        // 发布麦克风采集的音频
+        publishMicrophoneTrack: true,
+        // 自动订阅所有音频流
+        autoSubscribeAudio: true,
+    });
+};
+```
+
+</Accordion>
+</Accordions>
+
+:::info[信息]
+- 将 `renderer.js` 文件中的 `<-- Insert App Id -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+- 如果你的目标平台为 macOS v10.14 及以上，还需参考[获取设备权限](#获取设备权限)在 `main.js` 中补充设备权限相关代码。
+:::
+
+### 设计主进程
+
+使用 Electron 框架创建一个应用程序，实现基本的 Electron 项目主进程。主进程中的行为包括：
+
+1. 导入所需模块
+2. 创建浏览器窗口
+3. 加载 `index.html` 文件
+4. 处理应用程序生命周期事件
+
+将以下代码复制到 `main.js` 文件中：
+
+```javascript
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+
+// 如果使用 Electron 9.x 及以上版本，需要将 allowRendererProcessReuse 设为 false
+app.allowRendererProcessReuse = false;
+
+function createWindow() {
+    // 创建浏览器窗口
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            // preload: path.join(__dirname, "renderer.js"),
+            // 将 nodeIntegration 设置 true 以及 contextIsolation 设为 false
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
+
+    // 加载 index.html 文件的内容
+    mainWindow.loadFile("./index.html");
+    // 开启开发者工具
+    mainWindow.webContents.openDevTools();
+}
+
+// 管理 Electron 应用的浏览器窗口
+app.whenReady().then(() => {
+    createWindow();
+    // 如果当前没有窗口打开，则新建一个窗口（适用于 macOS）
+    app.on("activate", function () {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+
+// 如果所有窗口都已关闭，则退出 Electron 应用（适用于 Windows）
+app.on("window-all-closed", function () {
+    if (process.platform !== "darwin") app.quit();
+});
+```
+
+### 获取设备权限 (macOS)
+
+（可选）该步骤仅在目标平台为 macOS 时需要执行。macOS 自 v10.14 起，使用麦克风前需要检查并获取设备的使用权限，你需要在主进程中调用 Electron 原生的 [`askForMediaAccess`](https://www.electronjs.org/docs/latest/api/system-preferences#systempreferencesaskformediaaccessmediatype-macos) 方法，来向用户请求麦克风权限。
+
+在 `main.js` 文件中添加如下代码：
+
+```javascript
+async function checkAndApplyDeviceAccessPrivilege() {
+    // 检查并获取麦克风权限
+    const micPrivilege = systemPreferences.getMediaAccessStatus('microphone');
+    console.log(`Microphone privilege before applying: ${micPrivilege}`);
+    if (micPrivilege !== 'granted') {
+        await systemPreferences.askForMediaAccess('microphone');
+        console.log('Requested microphone access from user');
+    }
+}
+
+checkAndApplyDeviceAccessPrivilege();
+```
+
+### 导入依赖项
+
+在 `renderer.js` 中导入声网 SDK 中构建 App 所需的模块和函数。
+
+```javascript
+const {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+} = require("agora-electron-sdk");
+```
+
+### 定义基本信息
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```javascript
+// 填入你的 App ID
+const APPID = "<-- Insert App Id -->";
+// 填入你的临时 Token
+let token = "<-- Insert Token -->";
+// 填入生成 Token 时使用的频道名
+const channel = "<-- Insert Channel Name -->";
+// 用户 ID，并确保其在频道内的唯一性
+let uid = 123;
+```
+
+### 初始化引擎
+
+在 `renderer.js` 中调用 `createAgoraRtcEngine` 方法创建一个 `RtcEngine` 实例，然后调用 `initialize` 初始化引擎。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```javascript
+let rtcEngine;
+const os = require("os");
+const path = require("path");
+const sdkLogPath = path.resolve(os.homedir(), "./test.log");
+
+// 创建 RtcEngine 实例
+rtcEngine = createAgoraRtcEngine();
+
+// 初始化 RtcEngine 实例
+rtcEngine.initialize({
+    appId: APPID,
+    logConfig: { filePath: sdkLogPath }
+});
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` 方法，填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并在 `options` 参数中设置频道场景、用户角色等信息。
+
+```javascript
+// 使用临时 Token 加入频道
+rtcEngine.joinChannel(token, channel, uid, {
+    // 设置频道场景为直播场景
+    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+    // 设置用户角色为主播；如果要将用户角色设置为观众，保持默认值即可
+    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    // 发布麦克风采集的音频
+    publishMicrophoneTrack: true,
+    // 自动订阅所有音频流
+    autoSubscribeAudio: true,
+});
+```
+
+### 实现常用回调
+
+调用 `registerEventHandler` 方法注册以下回调事件，触发事件时使用 `console.log` 方法提示结果：
+
+- `onJoinChannelSuccess`：成功加入频道回调。
+- `onUserJoined`：远端用户加入当前频道回调。
+- `onUserOffline`：远端用户离开当前频道回调。
+
+```javascript
+const EventHandles = {
+    // 监听本地用户加入频道事件
+    onJoinChannelSuccess: ({ channelId, localUid }, elapsed) => {
+        console.log('成功加入频道：' + channelId);
+    },
+
+    // 监听远端用户加入频道事件
+    onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+        console.log('远端用户 ' + remoteUid + ' 已加入');
+    },
+    
+        // 监听用户离开频道事件
+    onUserOffline: ( { channelId, localUid }, remoteUid, reason ) => {
+        console.log('远端用户 ' + remoteUid + ' 已离开频道');
+    },
+};
+
+// 注册事件回调
+rtcEngine.registerEventHandler(EventHandles);
+```
+
+### 离开频道
+
+根据场景需要，如关闭应用或应用切换至后台时，调用 `leaveChannel` 离开当前频道。
+
+```javascript
+// 离开频道
+rtcEngine.leaveChannel();
+```
+
+如果你不再需要互动，调用 `release` 方法释放引擎资源。
+
+```javascript
+// 取消注册回调
+rtcEngine.unregisterEventHandler(EventHandles);
+// 销毁引擎
+rtcEngine.release();
+```
+
+:::error[警告]
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+:::
+
+##  测试项目
+
+参考以下步骤测试你的 Electron 项目：
+
+1. 确保已经在代码中传入了有效的 `appId`，`channelName` 和 `token`。详见[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+
+2. 在终端中进入项目根目录，运行以下命令：
+
+    ```shell
+    npm start
+    ```
+
+    项目成功运行后，你会看到一个自动弹出的窗口：
+
+    ![](https://web-cdn.agora.io/docs-files/1626950109383)
+
+3. 邀请一位朋友使用第二台设备，重复以上步骤，在该设备上安装 App，并打开 App 加入频道，观察测试结果：双方可以听到对方的声音。
+
+4. 你的朋友成功加入后，你们可以听见对方。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+</Cards>
+
+### 常见问题
+
+- [Electron 平台常见开发问题](/faq/integration-issues/electron-faq)
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [编译 Xcode 项目时遇到无法打开 framework 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- 已下载 [Unity Hub](https://unity.com/download)。
+
+- Unity 2018.4.0 或以上版本。
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+
+- 不同开发平台的操作系统与编译器需满足下列版本要求：
+
+  | 开发平台 | 操作系统版本 | 编译器版本 |
+| --- | --- | --- |
+| Android | Android 4.1 或以上 | Android Studio 3.0 或以上 |
+| iOS | iOS 9.0 或以上 | Xcode 9.0 或以上 |
+| macOS | macOS 10.10 或以上 | Xcode 9.0 或以上 |
+| Windows | Windows 7 或以上 | Microsoft Visual Studio 2017 或以上 |
+
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+  :::warning[注意]
+  临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+  :::
+
+## 创建项目
+
+参考以下步骤或 [Unity 官方文档](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects)创建一个 **Unity** 项目。若已有 **Unity** 项目，可略过此步骤至下一步[集成 SDK](#integrate)。
+
+1. 开始前确保你已安装 Unity。若未安装，点击[此处](https://unity.com/cn/products#plans-individual)下载。
+2. 打开 Unity Editor，点击 **New** 新建一个项目。
+3. 依次填入以下内容后，点击 **Create project** 创建一个 Unity 项目。
+   - **Project name**：项目名称。
+    - **Location**：项目存储路径。
+    - **Template**：项目类型。选择 **3D**。
+
+<a id="integrate"></a>
+## 集成 SDK
+
+参考下列步骤来集成声网实时互动 SDK：
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 Unity 音频 SDK。
+2. 下载完成后在你的 Unity 编辑器中打开下载好的 SDK 包并取消勾选不需要的插件（默认会勾选 SDK 包含的所有插件），然后点击 **Import** 来导入 SDK。
+
+## 创建用户界面
+
+为直观地体验语音互动，需根据应用场景创建用户界面（UI）。
+
+如果你想实现语音互动，推荐在 UI 上添加以下控件：
+
+- 加入语音互动按钮
+- 结束语音互动按钮
+
+创建好的用户界面如下图所示：
+
+![](https://web-cdn.agora.io/docs-files/1694586790453)
+
+你可以参考以下步骤创建 UI。若你的项目中已有用户界面可略过此步骤。
+
+<Accordions>
+<Accordion title="创建用户界面">
+
+1. 创建结束通话按钮
+
+   a. 在你的 Unity 项目中，右击 **Sample Scene**，选择 **Game Object** > **UI** > **Button**。此时你可以在场景画布中看到你刚刚创建的按钮。
+
+   b. 在 **Inspector** 面板中，将 **Button** 重命名为 **Leave**，并调整按钮的位置，例如：
+
+   - Pos X：`- 350`
+   - Pos Y：`- 172`
+
+   c. 选中 **Leave** 按钮的 **Text** 控件，在 **Inspector** 面板中将 **Text** 的文本内容修改为 **Leave**。
+
+   d. 重复上述步骤再创建一个 **Join** 按钮来加入语音互动。
+
+2. 保存上述步骤的更改。
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本节介绍如何使用声网实时互动 SDK 在你的项目中实现纯语音互动功能。
+
+下图展示了实现纯语音互动的基本流程。
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现实时纯语音互动基本流程的完整代码以供参考。复制以下代码到 `JoinChannelAudio.cs` 文件中替换原有内容即可。
+
+:::info[信息]
+在 `_appId`、`_token` 和 `_channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Agora.Rtc;
+
+#if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+using UnityEngine.Android;
+#endif
+
+public class JoinChannelAudio : MonoBehaviour
+{
+    // 填入你的 app ID
+    private string _appID= "";
+    // 填入你的频道名
+    private string _channelName = "";
+    // 填入 Token
+    private string _token = "";
+    internal IRtcEngine RtcEngine;
+
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList() { Permission.Microphone };
+    #endif
+
+    void Start()
+    {
+        SetupAudioSDKEngine();
+        InitEventHandler();
+        SetupUI();
+    }
+
+
+    void Update()
+    {
+        CheckPermissions();
+    }
+
+    void OnApplicationQuit()
+    {
+        if (RtcEngine != null)
+        {
+            Leave();
+            // 销毁 IRtcEngine
+            RtcEngine.Dispose();
+            RtcEngine = null;
+        }
+    }
+
+    private void CheckPermissions() {
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+            foreach (string permission in permissionList)
+            {
+                if (!Permission.HasUserAuthorizedPermission(permission))
+                {
+                    Permission.RequestUserPermission(permission);
+                }
+            }
+    #endif
+    }
+
+    private void SetupUI()
+    {
+        GameObject go = GameObject.Find("Leave");
+        go.GetComponent<Button>().onClick.AddListener(Leave);
+        go = GameObject.Find("Join");
+        go.GetComponent<Button>().onClick.AddListener(Join);
+    }
+
+    private void SetupAudioSDKEngine()
+    {
+        // 创建 IRtcEngine 实例
+        RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+        RtcEngineContext context = new RtcEngineContext();
+            context.appId = _appID;
+            context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+            context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+        // 初始化 IRtcEngine
+        RtcEngine.Initialize(context);
+    }
+
+    // 创建用户回调类实例，并设置回调
+    private void InitEventHandler()
+    {
+       UserEventHandler handler = new UserEventHandler(this);
+       RtcEngine.InitEventHandler(handler);
+    }
+
+    public void Join()
+    {
+        Debug.Log("Joining _channelName");
+        // 启用音频模块
+        RtcEngine.EnableAudio();
+        // 设置频道媒体选项
+        ChannelMediaOptions options = new ChannelMediaOptions();
+        // 发布麦克风采集的音频流
+        options.publishMicrophoneTrack.SetValue(true);
+        // 自动订阅所有音频流
+        options.autoSubscribeAudio.SetValue(true);
+        // 将频道场景设为直播
+        options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+        // 将用户角色设为主播
+        options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+        // 加入频道
+      RtcEngine.JoinChannel(_token, _channelName, 0, options);
+    }
+
+    public void Leave()
+    {
+        Debug.Log("Leaving _channelName");
+        // 离开频道
+        RtcEngine.LeaveChannel();
+        // 关闭音频模块
+        RtcEngine.DisableAudio();
+    }
+
+    // 实现你自己的回调类，可以继承 IRtcEngineEventHandler 接口类实现
+    internal class UserEventHandler : IRtcEngineEventHandler
+    {
+        private readonly JoinChannelAudio _audioSample;
+
+       internal UserEventHandler(JoinChannelAudio audioSample)
+       {
+           _audioSample = audioSample;
+       }
+
+        // 本地用户成功加入频道时，会触发该回调
+        public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+        {
+                      Debug.Log("OnJoinChannelSuccess _channelName");
+        }
+        // 远端用户成功加入频道时，会触发该回调
+        public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+                {
+                   Debug.Log("Remote user joined");
+                }
+        // 远端用户离开当前频道时会触发该回调
+        public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason) {
+           }
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 导入类
+
+新建脚本并导入 Unity 相关的类和声网 RTC Unity SDK 相关的类和接口。
+
+1. 在 **Project** 中，打开 **Assets** > **Agora-Unity-RTC-SDK** > **Code** >**Rtc**，右击然后选择 **Create** > **C# Script**，此时你的 **Assets** 中会有一个 `NewBehaviourScript.cs` 文件，将这个文件重新命名为 `JoinChannelAudio.cs`。后续步骤中的示例代码均指该文件中的代码。
+
+2. 将脚本和 Canvas 绑定。在 `Assets/Agora-Unity-RTC-SDK/Code/Rtc`  中，选择 `JoinChannelAudio.cs` 文件，将其拖至 Canvas。在 **Inspector** 面板中你可以看到该文件已经和 Canvas 绑定。
+
+3. 导入 Unity 相关的类。
+
+   ```csharp
+   using UnityEngine;
+   using UnityEngine.UI;
+   ```
+
+4. 导入 `Agora.Rtc` 命名空间，其中包含了实现实时音视频功能所需的各种类和接口。
+
+   ```csharp
+   using Agora.Rtc;
+   ```
+
+### 处理权限请求
+
+本小节介绍如何获取设备的摄像头、麦克风等权限。在 Unity 2018.3 或以上版本中，Unity 不会主动向用户获取麦克风和相机权限，因此你需要请求获取权限。
+
+:::warning[注意]
+Windows 系统会在应用程序首次尝试使用摄像头或麦克风等功能时，自动向用户弹出权限请求提示，因此你无需额外处理权限请求。
+:::
+
+<Tabs defaultValue="android" groupId="permission" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="apple">iOS 和 macOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+如果你开发的目标平台是 Android，Unity 提供了权限请求的 API `CheckPermission`。你可以调用该方法来获取相关权限。参考下列步骤来获取安卓权限：
+
+1. 导入 Unity 的 Android 命名空间。
+
+   ```csharp
+   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+   using UnityEngine.Android;
+   #endif
+   ```
+
+2. 创建需要获取的权限列表，包括摄像头和麦克风。
+
+   ```csharp
+   #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+   private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
+   #endif
+   ```
+
+3. 检查是否已获取权限。
+
+   ```csharp
+   private void CheckPermissions() {
+       #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+       foreach (string permission in permissionList) {
+           if (!Permission.HasUserAuthorizedPermission(permission)) {
+               Permission.RequestUserPermission(permission);
+           }
+       }
+       #endif
+   }
+   ```
+
+</TabsContent>
+
+<TabsContent value="apple">
+
+如果你开发的目标平台是 iOS 或 macOS，声网 RTC Unity SDK 在 `Editor` 文件夹下提供一个构建后处理脚本 `BL_BuildPostProcess.cs`。在你将项目从 Unity Editor 中构建并导出为 iOS 项目后，该脚本会自动向 `Info.plist` 文件添加摄像头和麦克风权限，无需你手动处理。
+
+</TabsContent>
+</Tabs>
+
+### 定义 App ID 和 Token
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```csharp
+// 填入你的 App ID
+private string _appID= "";
+// 填入你的频道名
+private string _channelName = "";
+// 填入 Token
+private string _token = "";
+```
+
+<a id="init"></a>
+### 初始化引擎
+
+在调用其他声网 API 前，需要创建并初始化 `IRtcEngine` 实例。调用 `CreateAgoraRtcEngine` 来创建 `IRtcEngine` 实例，调用 `Initialize` 进行初始化。
+
+:::warning[注意]
+你需要在用户同意 App 的隐私政策之后再调用下列代码来初始化 SDK。
+:::
+
+```csharp
+private void SetupVideoSDKEngine()
+{
+    // 创建 IRtcEngine 实例
+    RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+    RtcEngineContext context = new RtcEngineContext();
+        context.appId = _appID;
+        context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+        context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+    // 初始化 IRtcEngine
+    RtcEngine.Initialize(context);
+}
+```
+
+### 设置 UI 元素
+
+将 UI 组件与代码进行绑定，包括加入频道、离开频道按钮的点击事件等。
+
+```csharp
+private void SetupUI()
+{
+    GameObject go = GameObject.Find("Leave");
+    go.GetComponent<Button>().onClick.AddListener(Leave);
+    go = GameObject.Find("Join");
+    go.GetComponent<Button>().onClick.AddListener(Join);
+}
+```
+
+### 加入频道并发布音频流
+
+调用 `JoinChannel`[2/2] 方法加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置频道场景为 `CHANNEL_PROFILE_LIVE_BROADCASTING` (直播场景) 并设置用户角色设置为 `BROADCASTER` (主播)。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频流。
+- 将 `autoSubscribeAudio` 设置为 `true`，自动订阅所有音频流。
+
+```csharp
+public void Join() {
+    Debug.Log("Joining _channelName");
+    // 启用音频模块
+    RtcEngine.EnableAudio();
+    // 设置频道媒体选项
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    // 发布麦克风采集的音频流
+    options.publishMicrophoneTrack.SetValue(true);
+    // 自动订阅所有音频流
+    options.autoSubscribeAudio.SetValue(true);
+    // 将频道场景设为直播
+    options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+    // 将用户角色设为主播
+    options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    // 加入频道
+    RtcEngine.JoinChannel(_token, _channelName, 0, options);
+}
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。下列示例代码展示本地用户加入频道、远端用户加入、离开频道的回调。
+
+```csharp
+// 创建用户回调类实例，并设置回调
+private void InitEventHandler() {
+    UserEventHandler handler = new UserEventHandler(this);
+    RtcEngine.InitEventHandler(handler);
+}
+// 实现你自己的回调类，可以继承 IRtcEngineEventHandler 接口类实现
+internal class UserEventHandler : IRtcEngineEventHandler {
+    private readonly JoinChannelAudio _audioSample;
+    internal UserEventHandler(JoinChannelAudio audioSample) {
+        _audioSample = audioSample;
+    }
+    // 本地用户成功加入频道时，会触发该回调
+    public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed) {
+        Debug.Log("OnJoinChannelSuccess _channelName");
+    }
+    // 远端用户成功加入频道时，会触发该回调
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed) {
+        Debug.Log("Remote user joined");
+    }
+    // 远端用户离开当前频道时，会触发该回调
+    public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason) {
+    }
+}
+```
+
+### 开始音频互动
+
+在开始音频互动前，先检查是否已获取设备权限，然后在 `Start` 中调用一系列方法来初始化引擎、注册事件回调、加入频道，开始音频互动。
+
+1. 检查是否已获取设备权限。调用 `CheckPermissions` 方法检查是否已获取实现语音互动所需的权限。
+
+   ```csharp
+   void Update() {
+       CheckPermissions();
+   }
+   ```
+
+2. 开始语音互动。在 `Start` 方法中初始化引擎并开始实时音频互动。
+
+   ```csharp
+   void Start()
+   {
+       SetupAudioSDKEngine();
+       InitEventHandler();
+       SetupUI();
+   }
+   ```
+
+### 结束音频互动
+
+如果你需要退出频道，调用 `LeaveChannel` 离开当前频道，调用 `DisableAudio` 关闭音频模块。
+
+```csharp
+public void Leave() {
+    Debug.Log("Leaving _channelName");
+    // 离开频道
+    RtcEngine.LeaveChannel();
+    // 关闭音频模块
+    RtcEngine.DisableAudio();
+}
+```
+
+如果你需要退出应用或者释放 `IRtcEngine` 内存，调用 `Dispose` 方法销毁 `IRtcEngine`。
+
+:::warning[注意]
+- 调用 `Dispose` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#init)。
+- 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+:::
+
+```csharp
+void OnApplicationQuit()
+    {
+        if (RtcEngine != null)
+        {
+            Leave();
+		       // 销毁 IRtcEngine
+            RtcEngine.Dispose();
+            RtcEngine = null;
+        }
+    }
+```
+
+## 测试你的项目
+
+按照以下步骤来测试你的语音互动项目：
+
+1. 在声网控制台获取一个临时 Token。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)获取。
+3. 在 `Assets/Agora-Unity-RTC-SDK/Code/Rtc/JoinChannelAudio.cs` 中，将你的项目的 App ID、频道名以及临时 Token 分别填入到 `_appID`、`_channelName`、`_token` 之后。
+4. 在 Unity 编辑器中，点击播放按钮来运行你的项目，然后点击 **Join** 按钮加入语音互动。
+6. 邀请一位朋友通过另一台设备来使用相同的 App ID、Token、频道名加入频道。你的朋友加入频道后，你们可以听见对方。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelAudio" />
+</Cards>
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+- [如何设置日志文件](/faq/integration-issues/set-log-file)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+在实现功能以前，请按照以下要求准备开发环境：
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得 App ID 和临时 Token。
+
+:::warning[注意]
+      临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+      :::
+
+## 创建项目
+
+根据你选用的 IDE 不同，创建 Flutter 项目有多种方式，详见 [Create the app](https://docs.flutter.dev/get-started/test-drive?tab=vscode#create-app)。在本文中，以在终端中运行 `flutter create` 命令创建 Flutter 项目为例。
+
+  ```shell
+  # 将 <Project Name> 替换为项目名
+  flutter create <Project Name>
+  ```
+
+## 集成 SDK
+
+1. 打开 `pubspec.yaml` 文件，添加以下依赖：
+
+    - 添加 `agora_rtc_engine` 依赖项，集成声网 Flutter SDK。关于 `agora_rtc_engine` 的最新版本可以查询 [https://pub.dev/packages/agora_rtc_engine](https://pub.dev/packages/agora_rtc_engine)
+    - 添加 `permission_handler` 依赖项，安装权限处理插件。
+
+    ```yaml
+    environment:
+      sdk: ">=2.12.0 <3.0.0"
+    # 依赖项
+    dependencies:
+      flutter:
+        sdk: flutter
+      # The following adds the Cupertino Icons font to your application.
+      # Use with the CupertinoIcons class for iOS style icons.
+      cupertino_icons: ^0.1.3
+      # 声网 Flutter SDK 依赖项，请使用最新版本的 agora_rtc_engine
+      agora_rtc_engine: ^6.0.0
+      #  权限处理插件依赖项
+      permission_handler: ^8.3.0
+    ```
+
+2. 添加依赖并保存文件后，打开终端，在项目路径下执行以下命令获取并安装依赖：
+
+    ```shell
+    flutter pub get
+    ```
+
+## 创建用户界面
+
+复制以下代码即可快速创建实时音频互动场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```dart
+// 构建 UI
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Agora Voice Call',
+    home: Scaffold(
+      appBar: AppBar(
+        title: Text('Agora Voice Call'),
+      ),
+      body: Center(
+        child: Text('Have a voice call!'),
+      ),
+    ),
+  );
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本小节介绍如何实现一个实时音频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音频互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+下图展示了使用声网 RTC SDK 实现音频互动的基本流程：
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现实时音频互动基本流程的完整代码以供参考。复制以下代码替换 `/lib/main.dart` 文件的全部内容，即可快速体验实时音频互动基础功能。
+
+:::info[信息]
+将 `<-- Insert App Id -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="实现实时音频互动示例代码">
+
+```dart
+import 'dart:async';
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+void main() => runApp(MyApp());
+
+// 填写声网控制台中获取的 App ID
+const appId = "<-- Insert App Id -->";
+// 填写声网控制台中生成的临时 Token
+const token = "<-- Insert Token -->";
+// 填写频道名
+const channel = "<-- Insert Channel Name -->";
+
+// 应用类
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+// 应用状态类
+class _MyAppState extends State<MyApp> {
+  int? _remoteUid;
+  bool _localUserJoined = false;
+  late RtcEngine _engine;
+
+  @override
+  void initState() {
+    super.initState();
+    initAgora();
+  }
+
+  // 初始化应用
+  Future<void> initAgora() async {
+    // 获取权限
+    await [Permission.microphone].request();
+
+    // 创建 RtcEngine
+    _engine = await createAgoraRtcEngine();
+
+    // 初始化 RtcEngine，设置频道场景为 channelProfileLiveBroadcasting（直播场景）
+    await _engine.initialize(const RtcEngineContext(
+      appId: appId,
+      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+    ));
+
+    // 添加回调事件
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        // 成功加入频道回调
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          debugPrint("local user ${connection.localUid} joined");
+          setState(() {
+            _localUserJoined = true;
+          });
+        },
+        // 远端用户或主播加入当前频道回调
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          debugPrint("remote user $remoteUid joined");
+          setState(() {
+            _remoteUid = remoteUid;
+          });
+        },
+        // 远端用户或主播离开当前频道回调
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          debugPrint("remote user $remoteUid left channel");
+          setState(() {
+            _remoteUid = null;
+          });
+        },
+      ),
+    );
+
+    // 加入频道
+    await _engine.joinChannel(
+      token: token,
+      channelId: channel,
+      options: const ChannelMediaOptions(
+        // 自动订阅所有音频流
+        autoSubscribeAudio: true,
+        // 发布麦克风采集的音频
+        publishMicrophoneTrack: true,
+        // 设置用户角色为 clientRoleBroadcaster（主播）或 clientRoleAudience（观众）
+        clientRoleType: ClientRoleType.clientRoleBroadcaster),
+      uid: 0,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dispose();
+  }
+
+  Future<void> _dispose() async {
+    await _engine.leaveChannel(); // 离开频道
+    await _engine.release(); // 释放资源
+  }
+
+  // 构建 UI
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Agora Voice Call',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Agora Voice Call'),
+        ),
+        body: Center(
+          child: Text('Have a voice call!'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 导入 package
+
+导入构建 App 所需的 package。
+
+```dart
+import 'dart:async';
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+```
+
+### 定义 App ID 和 Token
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```dart
+// 填写声网控制台中获取的 App ID
+const appId = "<-- Insert App Id -->";
+// 填写声网控制台中生成的临时 Token
+const token = "<-- Insert Token -->";
+// 填写频道名
+const channel = "<-- Insert Channel Name -->";
+```
+
+### 处理权限请求
+
+获取体验实时音频所需的麦克风权限。
+
+```dart
+await [Permission.microphone].request();
+```
+
+:::info[信息]
+如果你的目标平台是 iOS 或 macOS，需要在 [`Info.plist`](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6) 中添加实时互动所需的麦克风权限声明，`key` 为 `Privacy - Microphone Usage Description`，`value` 填写使用目的，如：for a voice call。
+:::
+
+### 初始化引擎
+
+调用 `createAgoraRtcEngine` 方法创建一个 `RtcEngine` 对象，然后调用 `initialize` 初始化引擎并设置频道场景为 `channelProfileLiveBroadcasting`（直播场景）。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```dart
+// 创建 RtcEngine
+_engine = await createAgoraRtcEngine();
+
+// 初始化 RtcEngine，设置频道场景为 channelProfileLiveBroadcasting（直播场景）
+await _engine.initialize(const RtcEngineContext(
+  appId: appId,
+  channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+));
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` 加入频道。在 `ChannelMediaOptions` 中进行如下配置：
+
+- 设置用户角色为 `clientRoleBroadcaster`（主播）或 `clientRoleAudience`（观众）。
+- 将 `publishMicrophoneTrack` 设置为 `true`，发布麦克风采集的音频。
+- 将 `autoSubscribeAudio` 设置为 `true`，自动订阅所有音频流。
+
+```dart
+await _engine.joinChannel(
+  // 使用临时 Token 和频道名加入频道
+  token: token,
+  channelId: channel,
+  options: const ChannelMediaOptions(
+    // 自动订阅所有音频流
+    autoSubscribeAudio: true,
+    // 发布麦克风采集的音频
+    publishMicrophoneTrack: true,
+    // 设置用户角色为 clientRoleBroadcaster（主播）或 clientRoleAudience（观众）
+    clientRoleType: ClientRoleType.clientRoleBroadcaster),
+  // uid 为 0 表示引擎内部随机生成用户名
+  uid: 0,
+);
+```
+
+### 实现常用回调
+
+根据使用场景，定义必要的回调。以下示例代码展示如何调用 `registerEventHandler` 添加并实现 `onJoinChannelSuccess`、 `onUserJoined` 和 `onUserOffline` 回调。
+
+```dart
+// 添加回调事件
+_engine.registerEventHandler(
+  RtcEngineEventHandler(
+    // 成功加入频道回调
+    onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+      debugPrint("local user ${connection.localUid} joined");
+      setState(() {
+        _localUserJoined = true;
+      });
+    },
+    // 远端用户或主播加入当前频道回调
+    onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+      debugPrint("remote user $remoteUid joined");
+      setState(() {
+        _remoteUid = remoteUid;
+      });
+    },
+    // 远端用户或主播离开当前频道回调
+    onUserOffline: (RtcConnection connection, int remoteUid,
+        UserOfflineReasonType reason) {
+      debugPrint("remote user $remoteUid left channel");
+      setState(() {
+        _remoteUid = null;
+      });
+    },
+  ),
+);
+```
+
+### 开始音频互动
+
+在 `initState()` 方法中初始化声网音频功能并开始实时音频互动。
+
+```dart
+@override
+void initState() {
+  super.initState();
+  initAgora();
+}
+```
+
+### 结束音频互动
+
+按照以下步骤结束音频互动：
+
+1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
+2. 调用 `release` 销毁引擎，并释放声网 SDK 中使用的所有资源。
+    :::warning[注意]
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+    :::
+
+```dart
+Future<void> _dispose() async {
+  await _engine.leaveChannel(); // 离开频道
+  await _engine.release(); // 释放资源
+}
+```
+
+## 调试 App
+
+按照以下步骤测试语音 App：
+
+  1. 将目标设备连接到电脑。
+
+  2. 打开终端，在项目路径下执行以下命令在目标设备上运行示例项目：
+
+      ```shell
+      flutter run
+      ```
+
+  3. 启动 App，授予麦克风权限。
+
+  4. 使用第二台设备，重复以上步骤，在该设备上安装 App、打开 App 加入频道，观察测试结果，双方可以听到彼此的声音。
+
+## 后续步骤
+
+- 本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+- 如果你想要实现极速直播场景，可以在互动直播的基础上，通过修改观众端的延时级别为低延时 (`audienceLatencyLevelLowLatency`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="join_channel_audio.dart" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+  <Card title="join_channel_audio.dart" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_audio" />
+</Cards>
+
+### 常见问题
+
+- [如何解决 Flutter 上 iOS release 包初始化时报 symbol not found 的问题？](/faq/integration-issues/flutter-ios-build)
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+- [编译 Xcode 项目时遇到无法打开 framework 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+<Tabs defaultValue="android" groupId="preq" persist>
+<TabsList>
+  <TabsTrigger value="android">目标平台为 Android</TabsTrigger>
+  <TabsTrigger value="ios">目标平台为 iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- 已参考 [React Native 官方文档](https://reactnative.dev/docs/environment-setup)搭建好开发环境。
+- macOS、Windows 或 Linux 操作系统
+- Android 5.0 或以上设备
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- 已参考 [React Native 官方文档](https://reactnative.dev/docs/environment-setup)搭建好开发环境。
+- macOS 操作系统
+- iOS 9.0 或以上设备。如果你使用 React Native 0.63 或以上版本，请确保 iOS 的版本高于 10.0。
+- 已安装 CocoaPods，否则请参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 进行安装。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+</Tabs>
+
+## 创建项目
+
+参考以下步骤，创建一个 React Native 项目。
+
+1. 运行以下命令，在 `ProjectName` 处填入你的项目名称，创建并初始化一个新项目。
+
+   ```shell
+   # 初始化 package.json 文件
+   npm init
+   # 安装 React Native
+   npm install react-native
+   # 创建 React Native 项目
+   npx react-native init ProjectName
+   ```
+
+   运行完成后，会在执行该命令的路径下自动生成一个简单的示例项目。
+
+2. 执行 `npx react-native run-android` 运行 Android 应用或执行 `npx react-native run-ios` 运行 iOS 应用。
+
+如果配置没有问题，你可以看到模拟器被打开，App 自动安装到模拟器上并开始运行。你也可以在 Android 或 iOS 真机上运行应用，详见[在设备上运行](https://reactnative.dev/docs/running-on-device)。
+
+现在你已经成功运行了项目，可以开始尝试集成声网 SDK 并修改项目。
+
+## 集成 SDK
+
+本节介绍如何在 React Native 0.60 或以上版本集成声网 React Native SDK。
+
+根据你的目标开发平台，执行以下步骤：
+
+<Tabs defaultValue="android" groupId="integrate" persist>
+<TabsList>
+  <TabsTrigger value="android">目标平台为 Android</TabsTrigger>
+  <TabsTrigger value="ios">目标平台为 iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+在项目根目录下，使用以下任意一种方法下载最新版的声网 React Native SDK：
+
+   - **方法一**：使用 npm 下载
+
+     ```shell
+     npm i --save react-native-agora
+     ```
+
+   - **方法二**：使用 yarn 下载
+
+     ```shell
+     # 安装 yarn
+     npm install -g yarn
+     # 使用 yarn 下载声网 React Native SDK
+     yarn add react-native-agora
+     ```
+
+:::info[信息]
+React Native 0.60.0 或以上版本支持自动链接原生模块，请勿手动链接。详见 [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md)。
+:::
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. 在项目根目录下，使用以下任意一种方法下载最新版的声网 React Native SDK：
+
+ - **方法一**：使用 npm 下载
+
+   ```shell
+   npm i --save react-native-agora
+   ```
+
+ - **方法二**：使用 yarn 下载
+
+   ```shell
+   # 安装 yarn
+   npm install -g yarn
+   # 使用 yarn 下载声网 React Native SDK
+   yarn add react-native-agora
+   ```
+
+ :::info[信息]
+ React Native 0.60.0 或以上版本支持自动链接原生模块，请勿手动链接。详见 [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md)。
+ :::
+
+2. 进入 React Native 项目自动创建的 `ios` 文件夹，运行以下命令安装 SDK：
+
+  ```shell
+  cd ios
+  npx pod-install
+  ```
+
+</TabsContent>
+</Tabs>
+
+## 创建用户界面
+
+根据纯语音互动的场景需要，为你的项目创建加入频道和离开频道按钮。复制以下代码即可快速创建场景所需的用户界面。
+
+<Accordions>
+<Accordion title="创建用户界面示例代码">
+
+```typescript
+// 导入 React Hooks
+import React, {useRef, useState, useEffect} from 'react';
+// 导入用户界面元素
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
+
+const App = () => {
+    const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine 实例
+    const [isJoined, setIsJoined] = useState(false); // 本地用户是否已加入频道
+    const [remoteUid, setRemoteUid] = useState(0); // 远端用户的 Uid
+    const [message, setMessage] = useState(''); // 用户提示信息
+    
+    // 渲染用户界面
+    return (
+        <SafeAreaView style={styles.main}>
+          <Text style={styles.head}>声网语音通话快速开始</Text>
+          <View style={styles.btnContainer}>
+            <Text onPress={join} style={styles.button}>
+              加入频道
+            </Text>
+            <Text onPress={leave} style={styles.button}>
+              离开频道
+            </Text>
+          </View>
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContainer}>
+            {isJoined ? (
+              <Text>本地用户 uid: {uid}</Text>
+            ) : (
+              <Text>加入一个频道</Text>
+            )}
+            {isJoined && remoteUid !== 0 ? (
+              <Text>远端用户 uid: {remoteUid}</Text>
+            ) : (
+              <Text>等待远端用户加入</Text>
+            )}
+            <Text>{message}</Text>
+          </ScrollView>
+        </SafeAreaView>
+    );
+
+	// 展示信息
+    function showMessage(msg: string) {
+        setMessage(msg);
+    }
+};
+
+// 定义用户界面样式
+const styles = StyleSheet.create({
+    button: {
+        paddingHorizontal: 25,
+        paddingVertical: 4,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        backgroundColor: '#0055cc',
+        margin: 5,
+    },
+    main: {flex: 1, alignItems: 'center'},
+    scroll: {flex: 1, backgroundColor: '#ddeeff', width: '100%'},
+    scrollContainer: {alignItems: 'center'},
+    videoView: {width: '90%', height: 200},
+    btnContainer: {flexDirection: 'row', justifyContent: 'center'},
+    head: {fontSize: 20},
+});
+
+export default App;
+
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+本节介绍如何实现一个纯语音互动 App。
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程。
+
+![纯语音通话快速开始流程图](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了一段实现纯语音互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[调试项目](#调试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
+
+复制以下代码替换 `App.tsx` 文件的全部内容，即可快速体验纯语音互动基础功能。
+
+<Accordions>
+<Accordion title="实现纯语音互动示例代码">
+
+```typescript
+// 导入 React Hooks
+import React, { useRef, useState, useEffect } from 'react';
+// 导入用户界面元素
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
+// 导入获取 Android 设备权限相关组件
+import { PermissionsAndroid, Platform } from 'react-native';
+// 导入声网 SDK
+import {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    IRtcEngine,
+    RtcConnection,
+    IRtcEngineEventHandler
+} from 'react-native-agora';
+
+
+// 定义基本信息
+const appId = '<-- Insert App ID -->';
+const token = '<-- Insert Token -->';
+const channelName = '<-- Insert Channel Name -->';
+const uid = 0; // 本地用户 Uid，无需修改
+
+const App = () => {
+    const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine 实例
+    const [isJoined, setIsJoined] = useState(false); // 本地用户是否已加入频道
+    const [isHost, setIsHost] = useState(true); // 用户角色
+    const [remoteUid, setRemoteUid] = useState(0); // 远端用户的 Uid
+    const [message, setMessage] = useState(''); // 用户提示信息
+    const eventHandles = useRef<IRtcEngineEventHandler>(); // 回调函数
+
+    useEffect(() => {
+        // 启动 App 时初始化引擎
+        setupVideoSDKEngine();
+        // 关闭 App 时释放内存
+        return () => {
+            agoraEngineRef.current?.unregisterEventHandler(eventHandles.current!);
+            agoraEngineRef.current?.release();
+        };
+    }, []);
+
+    // 定义启动 App 时调用的 setupVideoSDKEngine 方法 
+    const setupVideoSDKEngine = async () => {
+        try {
+            // 获取设备权限后创建 RtcEngine
+            if (Platform.OS === 'android') {
+                await getPermission()
+            };
+            agoraEngineRef.current = createAgoraRtcEngine();
+            const agoraEngine = agoraEngineRef.current;
+            eventHandles.current = {
+                onJoinChannelSuccess: () => {
+                    showMessage('成功加入频道：' + channelName);
+                    setIsJoined(true);
+                },
+                onUserJoined: (_connection: RtcConnection, uid: number) => {
+                    showMessage('远端用户 ' + uid + ' 已加入');
+                    setRemoteUid(uid);
+                },
+                onUserOffline: (_connection: RtcConnection, uid: number) => {
+                    showMessage('远端用户 ' + uid + '已离开频道');
+                    setRemoteUid(0);
+                },
+            }
+
+            // 注册回调事件
+            agoraEngine.registerEventHandler(eventHandles.current);
+            // 初始化引擎
+            agoraEngine.initialize({
+                appId: appId,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 定义点击加入频道按钮后调用的 join 方法 
+    const join = async () => {
+        if (isJoined) {
+            return;
+        }
+        try {
+            if (isHost) {
+                // 以主播角色加入频道
+                agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+                    // 设置频道场景为直播场景
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+                    // 设置用户角色为主播
+                    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+                    // 发布麦克风采集的音频
+                    publishMicrophoneTrack: true,
+                    // 自动订阅所有音频流
+                    autoSubscribeAudio: true,
+                });
+            } else {
+                // 以观众角色加入频道
+                agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+                    // 设置频道场景为直播场景
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+                    // 设置用户角色为观众
+                    clientRoleType: ClientRoleType.ClientRoleAudience,
+                    // 不发布麦克风采集的音频
+                    publishMicrophoneTrack: false,
+                    // 自动订阅所有音频流
+                    autoSubscribeAudio: true,
+                });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    // 定义点击离开频道按钮后调用的 leave 方法 
+    const leave = () => {
+        try {
+            // 调用 leaveChannel 方法离开频道
+            agoraEngineRef.current?.leaveChannel();
+            setRemoteUid(0);
+            setIsJoined(false);
+            showMessage('已离开频道');
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 渲染用户界面
+    return (
+        <SafeAreaView style={styles.main}>
+            <Text style={styles.head}>声网语音通话快速开始</Text>
+            <View style={styles.btnContainer}>
+                <Text onPress={join} style={styles.button}>
+                    加入频道
+                </Text>
+                <Text onPress={leave} style={styles.button}>
+                    离开频道
+                </Text>
+            </View>
+            <ScrollView
+                style={styles.scroll}
+                contentContainerStyle={styles.scrollContainer}>
+                {isJoined ? (
+                    <Text>本地用户 uid: {uid}</Text>
+                ) : (
+                    <Text>加入一个频道</Text>
+                )}
+                {isJoined && remoteUid !== 0 ? (
+                    <Text>远端用户 uid: {remoteUid}</Text>
+                ) : (
+                    <Text>等待远端用户加入</Text>
+                )}
+                <Text>{message}</Text>
+            </ScrollView>
+        </SafeAreaView>
+    );
+
+    // 展示信息
+    function showMessage(msg: string) {
+        setMessage(msg);
+    }
+};
+
+// 定义用户界面样式
+const styles = StyleSheet.create({
+    button: {
+        paddingHorizontal: 25,
+        paddingVertical: 4,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        backgroundColor: '#0055cc',
+        margin: 5,
+    },
+    main: { flex: 1, alignItems: 'center' },
+    scroll: { flex: 1, backgroundColor: '#ddeeff', width: '100%' },
+    scrollContainer: { alignItems: 'center' },
+    videoView: { width: '90%', height: 200 },
+    btnContainer: { flexDirection: 'row', justifyContent: 'center' },
+    head: { fontSize: 20 },
+});
+
+const getPermission = async () => {
+    if (Platform.OS === 'android') {
+        await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        ]);
+    }
+};
+
+export default App;
+```
+
+</Accordion>
+</Accordions>
+
+## 在客户端实现语音通话
+
+本节展示如何使用声网 React Native SDK 为你的 App 添加语音通话功能。
+
+### 导入声网组件
+
+导入构建 App 所需的声网组件。
+
+```typescript
+// 导入声网 SDK
+import {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    IRtcEngine,
+    RtcConnection,
+    IRtcEngineEventHandler
+} from 'react-native-agora';
+```
+
+### 定义基本信息
+
+传入从声网控制台获取的 App ID、临时 Token，以及生成临时 Token 时填入的频道名，用于后续初始化引擎和加入频道。
+
+```typescript
+const appId = '<-- Insert App ID -->';
+const token = '<-- Insert Token -->';
+const channelName = '<-- Insert Channel Name -->';
+const uid = 0; // 本地用户 ID，无需修改
+```
+
+### 获取设备权限
+
+根据你的目标平台选择获得麦克风和摄像头的使用权限的方式：
+
+<Tabs defaultValue="android" groupId="permission" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+在 Android 设备上，要获得麦克风和摄像头的使用权限，需要弹出提示框供用户选择。
+
+```typescript
+// 导入获取 Android 设备权限相关组件
+import {PermissionsAndroid, Platform} from 'react-native';
+
+const getPermission = async () => {
+    if (Platform.OS === 'android') {
+        await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        ]);
+    }
+};
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+在 Xcode 中，打开 `info.plist` 文件。在右侧列表中添加如下内容，获取相应的设备权限：
+
+| Key                                    | Type   | Value                                                        |
+| :------------------------------------- | :----- | :----------------------------------------------------------- |
+| Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
+
+</TabsContent>
+</Tabs>
+
+### 初始化引擎
+
+调用 `createAgoraRtcEngine` 方法创建一个 `RtcEngine` 实例，然后调用 `initialize` 初始化引擎。
+
+```typescript
+agoraEngineRef.current = createAgoraRtcEngine();
+const agoraEngine = agoraEngineRef.current;
+agoraEngine.initialize({
+    appId: appId,
+});
+```
+
+### 加入频道并发布音频流
+
+调用 `joinChannel` 方法，填入你在控制台获取的临时 Token，以及获取 Token 时填入的频道名加入频道，并在 `options` 参数中设置频道场景、用户角色等信息。
+
+```typescript
+if (isHost) {
+    // 以主播角色加入频道
+    agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+        // 设置频道场景为直播场景
+        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+        // 设置用户角色为主播
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+        // 发布麦克风采集的音频
+        publishMicrophoneTrack: true,
+        // 自动订阅所有音频流
+        autoSubscribeAudio: true,
+    });
+} else {
+    // 以观众角色加入频道
+    agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+        // 设置频道场景为直播场景
+        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+        // 设置用户角色为观众
+        clientRoleType: ClientRoleType.ClientRoleAudience,
+        // 不发布麦克风采集的音频
+        publishMicrophoneTrack: false,
+        // 自动订阅所有音频流
+        autoSubscribeAudio: true,
+    });
+}
+```
+
+### 实现常用回调
+
+注册以下必要的回调事件可以在触发相应的事件时调用 `showMessage` 方法提示操作结果，并更新组件状态。
+
+- `onJoinChannelSuccess`：成功加入频道回调。
+- `onUserJoined`：远端用户加入当前频道回调。
+- `onUserOffline`：远端用户离开当前频道回调。
+
+```typescript
+const eventHandles = useRef<IRtcEngineEventHandler>(); 
+
+eventHandles.current = {
+    onJoinChannelSuccess: () => {
+        showMessage('成功加入频道：' + channelName);
+        setIsJoined(true);
+    },
+    onUserJoined: (_connection: RtcConnection, uid: number) => {
+        showMessage('远端用户 ' + uid + ' 已加入');
+        setRemoteUid(uid);
+    },
+    onUserOffline: (_connection: RtcConnection, uid: number) => {
+        showMessage('远端用户 ' + uid + '已离开频道');
+        setRemoteUid(0);
+    },
+}
+
+// 注册回调事件
+agoraEngine.registerEventHandler(eventHandles.current);
+```
+
+### 离开频道
+
+调用 `leaveChannel` 方法离开频道、释放资源并显示文字提示。
+
+```typescript
+// 调用 leaveChannel 方法离开频道
+agoraEngineRef.current?.leaveChannel();
+setRemoteUid(0);
+setIsJoined(false);
+showMessage('已离开频道');
+```
+
+如果你不再需要互动，调用 `release` 方法释放引擎资源。
+
+```javascript
+// 取消注册回调
+agoraEngineRef.current?.unregisterEventHandler(eventHandles.current!);
+// 销毁引擎
+agoraEngineRef.current?.release();
+```
+
+:::error[警告]
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+:::
+
+## 调试项目
+
+1. 确保已经在快速开始代码中传入了有效的 `appId`，`channelName` 和 `token`。
+2. 运行 App。部分模拟机可能无法支持本项目的全部功能，建议你在真机中运行该项目。
+
+   - 在 Android 设备上运行：
+
+		a. 开启 Android 设备的开发者选项，通过 USB 连接线将 Android 设备接入电脑。
+
+		b. 在项目根目录下执行 `npx react-native run-android`。
+
+   - 在 iOS 设备上运行：
+
+		a. 使用 Xcode 打开 `ProjectName/ios/ProjectName.xcworkspace` 文件夹。
+
+		b. 通过 USB 线将 iOS 设备接入你的电脑。
+
+		c. 在 Xcode 中，点击 **Build and run** 按钮。
+
+    :::info[信息]
+    在 Android 或 iOS 真机上运行 App 的详细步骤，请参考 [Running On Device](https://reactnative.dev/docs/running-on-device)。
+    :::
+
+3. 启动 App，点击按钮加入频道。
+
+4. 使用第二台设备，重复以上步骤，在该设备上安装 App，并打开 App 加入频道，观察测试结果：双方可以听到对方的声音。
+
+## 后续步骤
+
+本文的示例使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的纯语音互动示例项目供你参考，你可以前往下载或查看其中的源代码。
+<Cards>
+  <Card title="JoinChannelAudio" href="https://gitee.com/agoraio-community/react-native-agora/blob/3.x/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+  <Card title="JoinChannelAudio" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelAudio/JoinChannelAudio.tsx" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+- [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
+- 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
+  | 开发平台 | 参考文档  | 备注    |
+  | :--- | :------ | :------------------------------ |
+  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 创建项目
+
+参考以下步骤或 [Unreal 官方操作指南](https://docs.unrealengine.com/5.1/en-US/onboarding-guide-for-unreal-engine-games-licensees/)创建一个 **Unreal** 项目。若已有 **Unreal** 项目，可以直接查看[集成 SDK](#integration)。
+
+1. 打开 **Unreal Engine**，点击 **Games**。
+2. 依次填入以下内容后，点击 **Create**。
+    - **Template**：项目类型。选择 **Blank**。
+    - **Project Defaults**：项目默认设置。
+        - **Language**：开发语言。选择 **C++**。
+        - **Target Platform**：目标平台。选择 **Desktop**。
+    - **Project Location**：项目存储路径。
+    - **Project Name**：项目名称。
+
+![](https://web-cdn.agora.io/docs-files/1672739315112)
+
+<a id="integration"></a>
+## 集成 SDK
+
+1. 前往[下载](https://docs.agora.io/cn/All/downloads?platform=Unreal)，下载最新版本的 Unreal SDK，并解压缩。
+2. 在你的项目根目录文件夹下，创建名为 `Plugins` 的文件夹。
+3. 将 Unreal SDK 文件夹中的 `AgoraPlugin` 拷贝到 `Plugins` 中。
+
+## 创建用户界面
+
+为直观地体验语音通话，需根据应用场景创建用户界面（UI）。
+
+如果你想实现一个语音通话，推荐在 UI 上添加以下控件：
+
+- 加入语音通话按钮
+- 结束语音通话按钮
+
+参考以下步骤创建 UI。若你的项目中已有用户界面可略过此步骤。
+
+1. 创建 **Widget Blueprint**
+
+    在 **Unreal Editor** 中，点击 **Content Drawer** > **Content**，右击选择 **User Interface** > **Widget Blueprint**。将创建的 **Widget Blueprint** 命名为 **AgoraWidget**，双击 **AgoraWidget** 进入蓝图。
+
+![](https://web-cdn.agora.io/docs-files/1672126795296)
+
+2. 在 **Widget Blueprint** 中创建加入和离开频道按钮
+
+   1. 在 **AgoraWidget** 中，选择 **COMMON** > **Button**，将其拖至 **Canvas Panel** 中，重命名为 **JoinBtn**，并调整按钮在画布中的位置。设置示例如下：
+        - **Position X**：300
+        - **Position Y**：700
+        - **size X**：240
+        - **Size Y**：120
+
+   2. 选择 **COMMON** > **Text**，将其拖至 **JoinBtn** 中。选中 **JoinBtn** 的 **Text** 控件，在 **Details** 面板中将 **Text** 的文本内容修改为 **Join**。
+
+   3. 重复上述步骤来创建一个 **LeaveBtn**。你可以根据自己的需求调整按钮位置。
+
+3. 保存上述步骤的更改。
+
+4. 创建 **Level Blueprint**，并关联已创建的 **Widget Blueprint**
+
+    1. 在 **Unreal Editor** 中，点击 **Content Drawer**，右击选择 **Level** 并命名为 **agoraLevel**。
+
+    2. 双击打开 **agoraLevel**，点击 **Open Level Blueprint**。
+
+![](https://web-cdn.agora.io/docs-files/1672127126823)
+
+    3. 右击在搜索框中输入 **Create Widget**，选择已创建的 **AgoraWidget** 按照同样的方式依次创建 **Event BeginPlay** 和 **Add to Viewport**，并按照下图进行连接：
+
+![](https://web-cdn.agora.io/docs-files/1672127234668)
+
+    4. 保存上述步骤的更改，并运行项目。
+
+## 实现步骤
+
+本小节介绍如何实现一个实时音频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音频互动的基础功能，再按照实现步骤了解核心 API 调用。
+
+下图展示了使用声网 RTC SDK 实现纯语音互动的基本流程：
+
+![实现流程](/img/rtc/audio-quick-start-sequence.svg)
+
+下面列出了实现实时互动基本流程的完整代码以供参考。复制以下代码即可快速体验实时互动基础功能。
+
+:::info[信息]
+在 `_appID`、`_token` 和 `_channelName` 字段中传入你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
+:::
+
+<Accordions>
+<Accordion title="Project/Source/Project/AgoraWidget.h">
+
+```cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "Blueprint/UserWidget.h"
+#if PLATFORM_ANDROID
+#include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+#endif
+#include "AgoraPluginInterface.h"
+#include "Components/Image.h"
+#include "Components/Button.h"
+#include "AgoraWidget.generated.h"
+UCLASS()
+class UNREALLEARNING_API UAgoraWidget : public UUserWidget,public agora::rtc::IRtcEngineEventHandler
+{
+    GENERATED_BODY()
+public:
+    // 填入你的 App ID
+    FString _appID = "";
+    // 填入你的频道名
+    FString _channelName = "";
+    // 填入 Token
+    FString _token = "";
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget))
+    UButton* JoinBtn = nullptr;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+    UButton* LeaveBtn = nullptr;
+    UFUNCTION(BlueprintCallable)
+    void Join();
+    UFUNCTION(BlueprintCallable)
+    void Leave();
+    agora::rtc::IRtcEngine* RtcEngineProxy;
+    // 本地用户离开频道时，会触发该回调
+    void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
+    // 远端主播成功加入频道时，会触发该回调
+    void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
+    // 远端主播离开频道时，会触发该回调
+    void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
+    // 本地用户加入频道时，会触发该回调
+    void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
+private:
+    // 获取安卓权限
+    void CheckAndroidPermission();
+    // 创建并初始化 IRtcEngine
+    void SetupSDKEngine();
+    // 设置 UI 元素
+    void SetupUI();
+protected:
+    // 初始化自定义的 Widget
+    void NativeConstruct() override;
+    // 清理所有会话相关的资源
+    void NativeDestruct() override;
+};
+```
+
+</Accordion>
+
+<Accordion title="Project/Source/Project/AgoraWidget.cpp">
+
+```cpp
+#include "AgoraWidget.h"
+void UAgoraWidget::CheckAndroidPermission()
+{
+#if PLATFORM_ANDROID
+    FString pathfromName = UGameplayStatics::GetPlatformName();
+    if (pathfromName == "Android")
+    {
+        TArray AndroidPermission;
+        AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+        AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+        AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+        UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+    }
+#endif
+}
+void UAgoraWidget::SetupSDKEngine()
+{
+    agora::rtc::RtcEngineContext RtcEngineContext;
+    RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
+    RtcEngineContext.eventHandler = this;
+    RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
+    RtcEngineProxy->initialize(RtcEngineContext);
+}
+void UAgoraWidget::SetupUI()
+{
+    JoinBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Join);
+    LeaveBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Leave);
+}
+void UAgoraWidget::Join()
+{
+    // 设置频道媒体选项
+    agora::rtc::ChannelMediaOptions options;
+    // 自动订阅所有音频流
+    options.autoSubscribeAudio = true;
+    // 发布麦克风采集的音频
+    options.publishMicrophoneTrack = true;
+    // 将频道场景设为直播
+    options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+    // 将用户角色设为主播
+    options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+    // 加入频道
+    RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(_token), TCHAR_TO_ANSI(_channelName), 0, options);
+}
+void UAgoraWidget::Leave()
+{
+    // 离开频道
+    RtcEngineProxy->leaveChannel();
+}
+void UAgoraWidget::NativeConstruct()
+{
+    Super::NativeConstruct();
+#if PLATFORM_ANDROID
+    CheckAndroidPermission()
+#endif
+    SetupUI();
+    SetupSDKEngine();
+}
+void UAgoraWidget::NativeDestruct()
+{
+    Super::NativeDestruct();
+    if (RtcEngineProxy != nullptr)
+    {
+        RtcEngineProxy->unregisterEventHandler(this);
+        RtcEngineProxy->release();
+        delete RtcEngineProxy;
+    RtcEngineProxy = nullptr;
+    }
+}
+void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
+{
+    agora::rtc::RtcConnection connection;
+    connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
+{
+    agora::rtc::RtcConnection connection;
+    connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
+{
+    AsyncTask(ENamedThreads::GameThread, =
+    {
+        UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
+    });
+}
+```
+
+</Accordion>
+
+<Accordion title="Project/Source/Project/Project.Build.cs">
+
+```cpp
+using UnrealBuildTool;
+public class UnrealLearning : ModuleRules
+{
+    public UnrealLearning(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+    PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","AgoraPlugin" });
+    if (Target.Platform == UnrealTargetPlatform.Android)
+    {
+        PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+    }
+    PrivateDependencyModuleNames.AddRange(new string[] {  });
+    // Uncomment if you are using Slate UI
+    // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+    // Uncomment if you are using online features
+    // PrivateDependencyModuleNames.Add("OnlineSubsystem");
+    // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 处理系统逻辑
+
+本节介绍如何导入实现语音通话所需的 C++ 库，并获取摄像头及麦克风设备权限。
+
+1. 新建 C++ 类，生成头文件和库文件
+
+    在 **Unreal Editor** 中，选择 **Tools** > **New C++ Class**，然后选择 **All Classes**，找到 **UserWidget** 并命名为 **AgoraWidget**，点击 **Create Class** 创建类。此时一个新的 C++ 类将添加到你的项目中，你可以看到一个 `AgoraWidget.h` 文件和一个 `AgoraWidget.cpp` 文件。
+
+2. 添加声网依赖库
+
+    在 `Project/Source/Project/Project.Build.cs` 文件中，向 `PublicDependencyModuleNames.AddRange()` 添加声网依赖库。
+
+    ```cpp
+    // 添加 AgoraPlugin 依赖库
+    PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","AgoraPlugin" });
+    ```
+
+3. 初始化自定义的 Widget
+
+    在 `Project/Source/Project/AgoraWidget.h` 文件中添加以下代码：
+
+    ```cpp
+    protected:
+        // 初始化自定义的 Widget
+        void NativeConstruct() override;
+    ```
+
+4. 添加系统所需权限
+
+**Android**
+
+如果目标平台为 Android，则添加 AndroidPermission 库并获取设备及网络权限：
+
+    1. 在 `Project/Source/Project/AgoraWidget.h` 文件中添加以下 include 代码：
+
+        ```cpp
+        #if PLATFORM_ANDROID
+        #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+        #endif
+        ```
+
+    2. 在 `Project/Source/Project/Project.Build.cs` 文件中添加 AndroidPermission 库：
+
+        ```cpp
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+        }
+        ```
+
+    3. 检查是否已获取安卓权限。在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中添加 `NativeConstruct` 和 `CheckAndroidPermission` 方法和实现，并在 `NativeConstruct` 中调用 `CheckAndroidPermission` 方法来检查是否已获取安卓系统所需权限。示例代码如下：
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+private:
+    // 获取安卓权限
+    void CheckAndroidPermission();
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+// 在 #include "AgoraWidget.h" 后添加如下代码
+void UAgoraWidget::CheckAndroidPermission()
+{
+#if PLATFORM_ANDROID
+    FString pathfromName = UGameplayStatics::GetPlatformName();
+    if (pathfromName == "Android")
+    {
+        TArray<FString> AndroidPermission;
+        AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+        AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+        AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+        AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
+        AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
+        UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+    }
+#endif
+}
+
+void UAgoraWidget::NativeConstruct()
+{
+    Super::NativeConstruct();
+#if PLATFORM_ANDROID
+    CheckAndroidPermission()
+#endif
+}
+```
+
+**iOS & macOS**
+
+1. 如果目标平台为 iOS/macOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/faq/integration-issues/unreal-permissions)
+
+2. 在 `Project/Source/Project.Target.cs` 中，添加如下代码：
+
+    ```cpp
+    public class ProjectTarget : TargetRules
+    {
+        public ProjectTarget( TargetInfo Target) : base(Target)
+        {
+            Type = TargetType.Game;
+            DefaultBuildSettings = BuildSettingsVersion.V2;
+            if (Target.Platform == UnrealTargetPlatform.IOS)
+            {
+                bOverrideBuildEnvironment = true;
+                GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
+            }
+            ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
+        }
+    }
+    ```
+
+5. 关联 C++ 类和 Widget
+
+    在 **Unreal Editor** 中，点击 **Content Drawer**，选择 **Class Settings** > **Graph**，将 **Class Options** 下的 **Parent Class** 设置为 **AgoraWidget**。
+
+![](https://web-cdn.agora.io/docs-files/1672129397404)
+
+### 导入声网库
+
+在 `AgoraWidget.h` 中添加如下 include 代码：
+
+   ```cpp
+   #include "AgoraPluginInterface.h"
+   ```
+
+### 定义 App ID 和 Token
+
+1. 导入变量相关库
+
+    在 `AgoraWidget.h` 中添加如下 include 代码：
+
+        ```cpp
+        #include "Components/Image.h"
+        #include "Components/Button.h"
+        ```
+
+2. 创建变量，用于创建和加入频道。
+
+    在 `GENERATED_BODY()` 后添加如下代码，变量名称必须与创建 UI 的控件名称一致：
+
+        ```cpp
+        // 填入你的 App ID
+        FString _appID = "";
+        // 填入你的频道名
+        FString _channelName = "";
+        // 填入 Token
+        FString _token = "";
+
+        // 定义变量属性
+        UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget))
+        UButton* JoinBtn = nullptr;
+
+        UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+        UButton* LeaveBtn = nullptr;
+
+        // 定义 IRtcEngine 全局变量
+        agora::rtc::IRtcEngine* RtcEngineProxy;
+        ```
+
+### 初始化引擎
+
+在调用其他声网 API 前，需要创建并初始化 `IRtcEngine` 实例。在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中添加 `SetupSDKEngine` 的方法和实现。
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+// 在 private: 后添加代码
+private:
+// 获取安卓权限（仅安卓平台需要）
+void CheckAndroidPermission();
+// 创建并初始化 IRtcEngine
+void SetupSDKEngine();
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+// 在 include 后添加代码
+void UAgoraWidget::SetupVideoSDKEngine()
+{
+    agora::rtc::RtcEngineContext RtcEngineContext;
+
+    RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
+    RtcEngineContext.eventHandler = this;
+
+    // 创建 IRtcEngine 实例
+    RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
+    // 初始化 IRtcEngine
+    RtcEngineProxy->initialize(RtcEngineContext);
+}
+```
+
+### 引用 UI 元素
+
+在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中的 `SetupSDKEngine()` 后添加设置 UI 元素的方法和实现。示例代码如下：
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+private:
+    // 获取安卓权限
+    void CheckAndroidPermission();
+    // 创建并初始化 IRtcEngine
+    void SetupSDKEngine();
+    // 设置 UI 元素
+    void SetupUI();
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+void UAgoraWidget::SetupUI()
+{
+    JoinBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Join);
+    LeaveBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Leave);
+}
+```
+
+### 加入和离开频道
+
+在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中添加本地用户加入和离开频道的方法和实现。示例代码如下：
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+// 在 UPROPERTY 后添加如下代码：
+UFUNCTION(BlueprintCallable)
+void Join();
+UFUNCTION(BlueprintCallable)
+void Leave();
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+// 在 SetupUI() 后添加如下代码：
+void UAgoraWidget::Join()
+{
+    // 设置频道媒体选项
+    agora::rtc::ChannelMediaOptions options;
+    // 自动订阅所有音频流
+    options.autoSubscribeAudio = true;
+    // 发布麦克风采集的音频
+    options.publishMicrophoneTrack = true;
+    // 将频道场景设为直播
+    options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
+    // 将用户角色设为主播
+    options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_AUDIENCE;
+    // 加入频道
+    RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName), 0 , options);
+}
+
+void UAgoraWidget::Leave()
+{
+    // 离开频道
+    RtcEngineProxy->leaveChannel();
+}
+```
+
+### 实现回调
+
+在项目中实现以下常用回调。在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中添加回调的方法和实现。示例代码如下：
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+// 在 agora::rtc::IRtcEngine* RtcEngineProxy; 后添加如下代码：
+// 本地主播离开频道时，会触发该回调
+void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
+
+// 远端主播加入频道时，会触发该回调
+void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
+
+// 远端主播离开频道时，会触发该回调
+void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
+
+// 本地主播加入频道时，会触发该回调
+void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+// 在 SetupSDKEngine() 后添加如下代码：
+// 设置远端主播加入频道后触发的回调
+void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
+{
+    agora::rtc::RtcConnection connection;
+    connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+
+// 设置远端主播离开频道时触发的回调
+void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
+{
+    agora::rtc::RtcConnection connection;
+    connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+
+// 设置本地用户加入频道时触发的回调
+void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
+{
+    AsyncTask(ENamedThreads::GameThread, [=]()
+    {
+        UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
+    });
+}
+```
+
+### 清理所有会话相关的资源
+
+离开频道后，如果你想退出应用或者释放 `IRtcEngine` 内存，需调用 `release` 方法销毁 `IRtcEngine`。在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中的 `NativeConstruct()` 后添加 `NativeDestruct()` 的方法和实现。
+
+:::warning[注意]
+- 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+:::
+
+```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
+void NativeDestruct() override;
+```
+
+```cpp tab="AgoraWidget.cpp" tabGroup="ue-quickstart"
+void UAgoraWidget::NativeDestruct()
+{
+    Super::NativeDestruct();
+    if (RtcEngineProxy != nullptr)
+    {
+        RtcEngineProxy->unregisterEventHandler(this);
+        RtcEngineProxy->release();
+        delete RtcEngineProxy;
+
+        RtcEngineProxy = nullptr;
+    }
+}
+```
+
+## 测试你的项目
+
+按照以下步骤来测试你的音频互动项目：
+
+1. 在 `AgoraWidget.h` 中，将你的项目的 App ID、频道名以及临时 Token 分别填入到 `_appID`、`_channelName`、`_token` 之后。
+2. 在 **Unreal Editor** 中，点击播放按钮来运行你的项目，然后点击 **Join** 来加入语音通话。
+3. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名、Token 加入频道。你的朋友以主播身份加入，你们可以听见对方。
+
+## 后续步骤
+
+- 如果你的目标平台是 macOS 或 iOS，则需要在打包时添加实时互动所需的摄像头和麦克风等权限，详见[如何为 Unreal Engine 项目添加实时互动所需的权限？](/faq/integration-issues/unreal-permissions)
+- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Unreal C++ 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example" />
+  <Card title="Unreal Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+- [编译 Xcode 项目时遇到无法打开 framework 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的纯语音互动 App，适用于语音通话场景。
+
+首先，你需要了解以下有关音视频实时互动的基础概念：
+
+- 声网实时互动 SDK：由声网开发的、帮助开发者在 App 中实现实时音视频互动的 SDK。
+- 频道：用于传输数据的通道，在同一个频道内的用户可以进行实时互动。
+- 主播：可以在频道内**发布**音视频，同时也可以**订阅**其他主播发布的音视频。
+- 观众：可以在频道内**订阅**音视频，不具备**发布**音视频权限。
+
+更多概念详见[关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+
+下图展示在 App 中实现纯语音互动的基本工作流程：
+
+![实现音频互动](/img/rtc/audio-quick-start-tech.png)
+
+1. 所有用户调用 `joinChannel` 方法加入频道，并将所有用户角色都设置为主播。
+2. 加入频道后，所有用户都可以在频道内发布音频流，并订阅对方的音频流。
+
+## 前提条件
+
+- [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
+- 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
+  | 开发平台 | 参考文档  | 备注    |
+  | :--- | :------ | :------------------------------ |
+  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 创建项目
+
+参考以下步骤或 [Unreal 官方操作指南](https://docs.unrealengine.com/4.27/zh-CN/Basics/Projects/Browser/)创建一个 **Unreal** 项目。如果已有 **Unreal** 项目，可进行下一步[集成 SDK](#集成-sdk)。
+
+1. 打开 **Unreal Engine**，在 **New Project Categories** 下选择 **Games**，点击 **Next**。
+2. 在 **SelectTemplate** 页面，选择 **Blank**，点击 **Next**。
+3. 在 **Project Settings** 页面，进行如下设置：
+    1. 选择 **Blueprint** 或 **C++**。
+    2. 根据你开发的目标平台选择 **Desktop/Console** 或 **Mobile/Tablet**。
+    3. 选择项目存储路径，并为项目命名。
+    4. 点击 **Create Project** 完成创建。
+
+![](https://web-cdn.agora.io/docs-files/1689850102339)
+
+## 集成 SDK
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版本的 Unreal 音频 SDK，并解压缩。
+2. 在你的项目根目录文件夹下，创建名为 `Plugins` 的文件夹。
+3. 将 Unreal SDK 文件夹中的 `AgoraPlugin` 拷贝到 `Plugins` 中。
+
+![](https://web-cdn.agora.io/docs-files/1689830211462)
+
+## 实现步骤
+
+本节介绍如何使用声网音频 SDK 在你的项目中实现语音通话功能。
+
+### 创建 UMG
+
+为直观地体验语音通话，需根据应用场景创建以下控件：
+
+   - 加入频道按钮
+   - 离开频道按钮
+
+![](https://web-cdn.agora.io/docs-files/1689850125716)
+
+参考以下步骤创建上图所示 UI 界面。如果你的项目中已有用户界面，可进行下一步[创建关卡](#创建关卡)。
+
+1. 创建 **Widget Blueprint**。
+    1. 在 **Content Browser** 的 **Content** 文件夹中，右击选择 **User Interface** > **Widget Blueprint** 创建 **Widget Blueprint**，并将其命名为 **BP_AudioWidget**。
+    2. 双击打开 **BP_AudioWidget**。此时可以在 **Hierarchy** 面板中看到 **BP_AudioWidget** > **Canvas Panel**。
+    3. 创建视图背景。在 **Palette** 面板中，选择 **Common** > **Image**，将其拖至 **Canvas Panel** 中，命名为 **background**。通过拖拽调整至画布大小，在 **Details** 面板中调整背景颜色。
+
+2. 在 **Widget Blueprint** 中创建加入和离开频道的按钮。
+    1. 创建加入频道按钮。在 **Palette** 面板中，选择 **Common** > **Button**，将其拖至 **Canvas Panel** 中，重命名为 **Btn_JoinChannel**，并调整其在画布中的位置和大小：
+        - **Position X**：-400
+        - **Position Y**：0
+        - **Size X**：300
+        - **Size Y**：50
+    2. 选择 **Common** > **Text**，将其拖至 **Btn_JoinChannel** 中，并在 **Details** 面板中将 **Text** 文本内容修改为 **JoinChannel**。
+    3. 重复上述步骤创建离开频道按钮，将其命名为 **Btn_LeaveChannel**，并将 **Text** 文本内容修改为 **LeaveChannel**。调整按钮在画布中的位置和大小：
+        - **Position X**：100
+        - **Position Y**：0
+        - **Size X**：300
+        - **Size Y**：50
+
+3. 保存上述更改。
+
+### 创建关卡
+
+1. 在 **Content Browser** 的 **Content** 文件夹中，右击选择 **Level** 创建 **Level Blueprint**，并将其命名为 **BasicAudioCallScene**。
+2. 双击 **BasicAudioCallScene**，点击编辑器上方的 **Blueprints** > **Open Level Blueprint** 打开关卡蓝图。
+
+![](https://web-cdn.agora.io/docs-files/1689850139388)
+
+### 实现基础流程
+
+在 **My Blueprint** 面板中，双击 **Graphs** > **EventGraph** 打开事件图表，其中已有 **Event BeginPlay** (游戏开始) 和 **Event End Play** (游戏结束) 两个事件节点。接下来，创建语音通话相关的事件节点以及对应的函数和变量，并将它们连接起来以实现语音通话的逻辑和交互，如下图所示：
+
+![](https://web-cdn.agora.io/docs-files/1689863064982)
+
+其中主要节点如下：
+
+| 序号 | 节点 | 类型 | 描述 |
+| --- | --- | --- | --- |
+| 1 | **Set Show Mouse Cursor** | 原生* | (可选) 设置是否显示鼠标光标，勾选代表显示。<br />该节点仅适用于 Windows 和 macOS。<br />如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。<br />![](https://web-cdn.agora.io/docs-files/1689863102745) |
+| 2 | **Load Agora Config** | 自定义** | 加载声网配置。用于后续在创建和加入频道时验证用户身份。 |
+| 3 | **Create BP Audio Widget** | 原生 | 创建用户界面。步骤如下：<br />1. 创建 **Create Widget** 节点。<br />2. 选择该节点的 **Class** 为 **BP_AudioWidget**，将该节点关联至已经创建好的用户界面。 |
+| 4 | **Set Basic Audio Call Widget** | 自定义 | 设置用户界面。步骤如下：<br />1. 创建 **BasicAudioCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_AudioWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。<br />2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicAudioCallWidget** 和 **Get BasicAudioCallWidget** 两个选项，选择 **Set BasicAudioCallWidget** 创建节点，用于访问并设置用户界面。 |
+| 5 | **Bind UIEvent** | 自定义 | 绑定 UI 事件，用于处理点击 **JoinChannel** 和 **LeaveChannel** 按钮后的事件逻辑。 |
+| 6 | **Add to Viewport** | 原生 | 将用户界面添加到视口。 |
+| 7 | **Check Permission** | 自定义 | (可选) 检查是否已获取语音通话所需的系统权限，如访问麦克风等。<br />如果你的目标平台是 Android，需要创建该节点用于检查系统权限。 |
+| 8 | **Init Rtc Engine** | 自定义 | 创建并初始化 RTC 引擎。 |
+| 9 | **UnInitRtcEngine** | 自定义 | 离开频道并释放资源。 |
+
+
+*原生节点为蓝图内置的节点，无需额外配置即可直接添加调用。
+
+**自定义节点非蓝图内置，需要在创建自定义函数后才能添加对应节点。
+
+### 加入频道相关变量
+
+1. 创建 **Token**、**ChannelId** 和 **AppId** 三个变量，选择 **Variable Type** 为 **String**。
+2. 在 **Load Agora Config** 函数中，添加 **Sequence** 节点，然后分别连接 **Set Token**、**Set Channel Id** 和 **Set App Id**，在其中填入从声网控制台获取的 Token、频道名和 App ID，用于后续创建和加入频道时验证用户身份。
+
+![](https://web-cdn.agora.io/docs-files/1689863340147)
+
+### 初始化 RTC 引擎
+
+:::warning[注意]
+在初始化 SDK 前，需确保终端用户已经充分了解并同意相关的隐私政策。
+:::
+
+1. (可选) 如果你的目标平台是 Android，在初始化 RTC 引擎前，需要检查是否已获取 Android 系统权限。在 **CheckPermission** 函数中，参照下图创建节点，用于添加 Android 系统中访问麦克风等权限。
+
+![](https://web-cdn.agora.io/docs-files/1689862339398)
+
+    :::info[信息]
+    如果你的目标平台是 macOS 或 iOS，请参考[如何为 Unreal Engine 项目添加实时互动所需的权限？](/faq/integration-issues/unreal-permissions)
+    :::
+
+2. 在 **InitRtcEngine** 函数中，参照下图创建并连接节点以初始化 RTC 引擎。
+
+![](https://web-cdn.agora.io/docs-files/1689862357748)
+
+    主要步骤如下：
+
+    1. 创建 `IRtcEngine` 和 `IRtcEngineEventHandler`。
+        1. 创建 **RtcEngine** 和 **EventHandler** 变量，将 **Variable Type** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，即声网 SDK 的基础功能类和事件回调类，用于在蓝图中存储对这两个接口类的引用。
+        2. 添加两个 **Construct Object From Class** 节点，将 **Class** 分别设置为 **Agora Rtc Engine** 和 **IRtc Engine Event Handler**，并分别连接 **Set Rtc Engine** 和 **Set Event Handler**。
+
+   2. 绑定 `IRtcEngineEventHandler` 类相关的回调函数。
+        1. 创建 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数。参考下表配置回调的输入参数：
+
+            | 回调函数 | 描述 | 输入参数 |
+| --- | --- | --- |
+| `FOnJoinChannelSuccess` | 成功加入频道回调。 | `channel`: (String) 频道名。<br />`uid`: (Integer64) 加入频道的本地用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
+| `FOnUserJoined` | 远端用户加入当前频道回调。 | `uid`: (Integer64) 新加入频道的远端用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnUserOffline` | 远端用户离开当前频道回调。 | `uid`: (Integer64) 离线用户的用户 ID。<br />`reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。 |
+
+
+        2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。
+
+![](https://web-cdn.agora.io/docs-files/1689862369064)
+
+   3. 初始化 `IRtcEngine`。
+        1. 调用 **Initialize** 初始化 RTC 引擎。
+        2. 连接 **RtcEngineContext** 配置 `IRtcEngine` 实例，注意将 **Channel Profile** 选为 **CHANNEL_PROFILE_LIVE_BROADCASTING** (直播场景)。
+
+### 绑定 UI 事件
+
+:::info[信息]
+你也可以在 UMG 中绑定 UI 事件，本文仅展示使用 **Bind UIEvent** 函数进行绑定。
+:::
+
+1. 创建并实现 **OnJoinChannelClicked** 事件回调。
+
+![](https://web-cdn.agora.io/docs-files/1689861266481)
+
+    主要步骤如下：
+
+    1. 调用 **Enable Audio** 启用音频模块。
+    2. 调用 **Join Channel** 加入频道。
+    3. 在 **Make ChannelMediaOptions** 中设置以下参数：
+        - 设置 **Publish Microphone Track** 为 **AGORA TRUE VALUE**，发布麦克风采集的音频流。
+        - 设置 **Auto Subscribe Audio** 为 **AGORA TRUE VALUE**，自动订阅所有音频流。
+        - 勾选 **Client Role Type Set Value** 并设置 **Client Role Type** 为 **CLIENT_ROLE_BROADCASTER**，设置用户角色为主播。
+        - 勾选 **Channel Profile Set Value** 并设置 **Channel Profile** 为 **CHANNEL_PROFILE_LIVE_BROADCASTING**，设置频道场景为直播场景。
+
+2. 创建并实现 **OnLeaveChannelClicked** 事件回调。当事件触发时，调用 **Leave Channel** 离开频道。
+
+![](https://web-cdn.agora.io/docs-files/1689861284734)
+
+3. 在 **Bind UIEvent** 函数中，参考下图将 **OnJoinChannelClicked** 和 **OnLeaveChannelClicked** 回调函数分别绑定 **JoinChannel** 和 **LeaveChannel** 按钮。点击按钮时，会触发对应的事件回调。
+
+![](https://web-cdn.agora.io/docs-files/1689861304018)
+
+### 实现回调函数
+
+将之前创建的 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调函数按照以下实现步骤进行配置：
+
+1. 本地用户成功加入频道后，触发 **onJoinChannelSuccess** 回调。
+
+![](https://web-cdn.agora.io/docs-files/1689860677797)
+
+2. 本地用户离开频道后，触发 **onLeaveChannel** 回调。
+
+![](https://web-cdn.agora.io/docs-files/1689860690896)
+
+3. 远端用户加入频道时，触发 **onUserJoined** 回调。
+
+![](https://web-cdn.agora.io/docs-files/1689860704441)
+
+4. 远端用户离开频道时，触发 **onUserOffline** 回调。
+
+![](https://web-cdn.agora.io/docs-files/1689860714410)
+
+### 离开频道并释放资源
+
+参考下图实现 **UnInitRtcEngine** 函数。
+
+![](https://web-cdn.agora.io/docs-files/1689860658599)
+
+主要步骤如下：
+
+    1. 离开频道。
+    2. 取消注册 RTC 事件回调。
+    3. 销毁 `IRtcEngine` 对象，释放声网 SDK 使用的所有资源。
+
+## 测试你的项目
+
+按照以下步骤来测试你的语音通话项目：
+
+1. 在 **Load Agora Config** 函数中，分别填入你的项目的 App ID、频道名以及临时 Token。
+    2. 在 **Unreal Editor** 中，点击 ![](https://web-cdn.agora.io/docs-files/1690867946685) 来运行你的项目，然后点击 **JoinChannel** 加入语音通话。
+    3. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名、Token 加入频道。你们可以听见对方。
+
+## 后续步骤
+
+- 如果你的目标平台是 macOS 或 iOS，则需要在打包时添加实时互动所需的摄像头和麦克风等权限，详见[如何为 Unreal Engine 项目添加实时互动所需的权限？](/faq/integration-issues/unreal-permissions)
+- 在本文示例中，使用了临时 Token 加入频道。在测试或生产环境中，为确保通信安全，声网推荐使用 Token 服务器来生成 Token，详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication)。
+- 如果你想要实现极速直播场景，可以在实时互动直播的基础上，通过修改观众端的延时级别为低延时 (`AUDIENCE_LATENCY_LEVEL_LOW_LATENCY`)实现。详见[实现极速直播](/zh-CN/realtime-media/rtc/build/implement-core-features/ls-quick-start)。
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Unreal Blueprint 示例项目" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+</Cards>
+
+### 常见问题
+
+- [直播场景下，如何监听远端观众角色用户加入/离开频道的事件？](/faq/integration-issues/audience-event)
+- [如何处理频道相关常见问题？](/faq/integration-issues/channel-issues)
+- [如何设置日志文件？](/faq/integration-issues/set-log-file)
+- [为什么部分 Android 版本应用锁屏或切后台后采集音视频无效？](/faq/quality-issues/android-background)
+- [编译 Xcode 项目时遇到无法打开 framework 的弹窗警告怎么办？](/faq/integration-issues/framework-cannot-be-opened)
+
+### 相关文档
+
+- [错误码](/zh-CN/realtime-media/rtc/reference/error-code)
+- [频道连接状态管理](/zh-CN/realtime-media/rtc/build/channel-and-connection/channel-connection)
+
+</PlatformStructured>

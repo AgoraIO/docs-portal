@@ -1,0 +1,70 @@
+---
+title: "与 Google Assistant 互通"
+---
+声网 RTSA Lite SDK 支持与内置 Google Assistant 的设备进行音频互通。你可以通过这种方式为smart-doorbell场景增加智能设备。
+
+![互通流程图](/img/smart-doorbell/cooperate-with-ga.png)
+
+你需要为 Google Assistant 创建 smart home Action，将 Fulfillment URL 设置为 AWS Lambda 服务接口，并部署相应的 AWS Lambda。其余操作和 Amazon Alexa 完全相同，可参考[与 Amazon Alexa 互通](/zh-CN/solutions/smart-doorbell/build/paas/value-added-feature/amazon-alexa)。
+
+## 前提条件
+
+- 有效的 [AWS 账户](https://www.amazonaws.cn/)
+- 有效的 [Google 开发者账户](https://play.google.com/console/u/0/signup)
+- 有效的[声网账户](/zh-CN/solutions/smart-doorbell/build/setup-and-access/enable-service#登录声网控制台)
+- 安装 Google Assistant 的设备
+- 连接麦克风的设备端，用于与安装 Google Assistant 的设备互通
+
+## 跑通示例项目
+
+参考以下步骤跑通示例项目。
+
+### 1. 创建 smart home Action
+
+参考如下步骤：
+
+1. 创建一个 smart home Action。详见 [Create a smart home Action](https://developers.google.com/assistant/smarthome/develop/create)。
+2. 设置 **Fulfillment URL** 为 AWS Lambda 服务接口。
+
+![Fulfillment URL 设置](https://web-cdn.agora.io/docs-files/1660041306293)
+
+### 2. 创建 AWS Lambda API
+
+由于 Google Assistant 中的 WebRTC 流程与 Amazon Alexa 存在差异，你需要在 AWS Lambda 中创建两个 API，分别用于设备信令服务 (AgoraCallForGA) 和 WEBRTC-Signalering 服务 (GACORS)：
+
+- AgoraCallForGA：
+
+![AgoraCallForGA 设置](https://web-cdn.agora.io/docs-files/1660041381148)
+
+- GACORS：
+
+![GACORS 设置](https://web-cdn.agora.io/docs-files/1660041384961)
+
+创建 AWS Lambda API 时指定的 Fulfillment URL 指向 AgoraCallForGA 接口。GACORS 的 URL 需要作为内容在设备信令处理时回传给 Google Assistant。
+
+### 3. 将 Lambda 工程部署到 AWS Lambda
+
+参考以下步骤使用 AWS Toolkit 将 Lambda 工程部署到 AWS Lambda：
+
+:::warning[注意]
+- 你需要联系 sales@shengwang.cn 获取 Lambda 工程。
+- 由于本示例 Lambda 与设备通过 MQTT 通信，你需要自行修改 Lambda 端和设备端的 MQTT Topic，避免造成冲突。
+:::
+
+1. 下载安装 AWS Toolkit 的 Visual Studio 插件。下载安装完成后，必须在 Visual Studio AWS Toolkit 插件中绑定你的 AWS 账户。否则无法正确部署工程到 AWS Lambda。
+
+2. 导入 Lambda 工程并部署到 AWS Lambda。
+
+![部署 Lambda 工程到 AWS Lambda](https://web-cdn.agora.io/docs-files/1660041623065)
+
+   在部署 AgoraCallForGA 服务时，确保以下参数填写正确：
+
+![部署 AgoraCallForGA 服务的参数界面](https://web-cdn.agora.io/docs-files/1660041743242)
+
+   在部署 WEBRTC-Signalering 服务时，确保以下参数填写正确：
+
+![部署 WEBRTC-Signalering 服务的参数界面](https://web-cdn.agora.io/docs-files/1660041747548)
+
+### 4. 后续步骤
+
+参考[设备端部署](/zh-CN/solutions/smart-doorbell/build/paas/value-added-feature/amazon-alexa#3-设备端部署)完成设备端部署工作。
