@@ -1,0 +1,99 @@
+---
+title: RESTful 鉴权
+description: 配置 RTC 频道管理 REST API 请求所需的 Basic HTTP 鉴权。
+---
+
+RTC 频道管理 REST API 需要使用 Basic HTTP 鉴权。你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并将该凭证添加到 `Authorization` 请求头中。
+
+:::info
+为降低凭证泄露风险，请在服务端实现鉴权逻辑。
+:::
+
+## 生成客户 ID 和客户密钥
+
+1. 登录[声网控制台](https://console.shengwang.cn/)，点击 **开发者工具** > **RESTful API**。
+2. 点击 **添加密钥**，然后点击 **确定**。声网会生成客户 ID 和客户密钥。
+3. 在 **客户密钥** 列中点击 **下载**。请仔细阅读提示，并将下载的 `key_and_secret.txt` 文件保存在安全位置。
+4. 使用客户 ID 和客户密钥生成 Base64 编码凭证，并将其传入 `Authorization` 请求头。
+
+客户密钥只能从声网控制台下载一次，请妥善保管。
+
+## Authorization 请求头
+
+将客户 ID 和客户密钥用英文冒号拼接，对拼接后的字符串进行 Base64 编码，然后加上 `Basic` 前缀。
+
+```text
+Authorization: Basic <base64(customer_id:customer_secret)>
+```
+
+测试和调试时，你可以使用 Basic Auth Header 生成工具。将客户 ID 作为用户名，客户密钥作为密码。
+
+## Basic 鉴权示例
+
+以下示例使用 Basic HTTP 鉴权查询指定项目下的频道列表。
+
+```bash tab="cURL" tabGroup="rtc-basic-auth"
+customer_key="Your customer ID"
+customer_secret="Your customer secret"
+authorization=$(printf "%s:%s" "$customer_key" "$customer_secret" | base64)
+
+curl --request GET 'https://api.sd-rtn.com/dev/v1/channel/<appid>?page_no=0&page_size=100' \
+  --header "Authorization: Basic $authorization" \
+  --header 'Accept: application/json'
+```
+
+```js tab="Node.js" tabGroup="rtc-basic-auth"
+const https = require('https');
+
+const customerKey = 'Your customer ID';
+const customerSecret = 'Your customer secret';
+const encodedCredential = Buffer.from(
+  `${customerKey}:${customerSecret}`,
+).toString('base64');
+
+const req = https.request(
+  {
+    hostname: 'api.sd-rtn.com',
+    port: 443,
+    path: '/dev/v1/channel/<appid>?page_no=0&page_size=100',
+    method: 'GET',
+    headers: {
+      Authorization: `Basic ${encodedCredential}`,
+      Accept: 'application/json',
+    },
+  },
+  (res) => {
+    console.log(`Status code: ${res.statusCode}`);
+    res.on('data', (chunk) => process.stdout.write(chunk));
+  },
+);
+
+req.on('error', console.error);
+req.end();
+```
+
+```python tab="Python" tabGroup="rtc-basic-auth"
+import base64
+import http.client
+
+customer_key = "Your customer ID"
+customer_secret = "Your customer secret"
+credential = base64.b64encode(
+    f"{customer_key}:{customer_secret}".encode("utf-8")
+).decode("utf-8")
+
+conn = http.client.HTTPSConnection("api.sd-rtn.com")
+headers = {
+    "Authorization": f"Basic {credential}",
+    "Accept": "application/json",
+}
+
+conn.request("GET", "/dev/v1/channel/<appid>?page_no=0&page_size=100", "", headers)
+res = conn.getresponse()
+print(res.read().decode("utf-8"))
+```
+
+## 相关页面
+
+- [RTC 频道管理概览](index)
+- [查询项目的频道列表](query-channel-list)

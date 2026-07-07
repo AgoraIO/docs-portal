@@ -1,0 +1,1662 @@
+openapi: 3.1.0
+info:
+  version: ''
+  title: API 概述
+  description: |-
+    本文介绍声网互动白板服务端 RESTful API 的基本信息。
+
+    ## 数据格式
+
+    所有 HTTP 请求 Header 的 Content-Type 类型为 `application/json`。所有请求和响应内容的格式均为 JSON。所有的请求 URL 和请求 Body 内容都是区分大小写的。
+
+    > 互动白板服务器会对部分请求格式做兼容，但是无法保证完全兼容。当请求参数填写正确，但请求仍然失败时，请确认请求格式是否正确。
+
+    ## 主要功能
+
+    声网互动白板服务端 RESTful API 提供以下功能：
+
+    - **生成 Token**：生成互动白板的 Token，包括 SDK Token、Room Token 和 Task Token。
+
+    - **房间管理**：互动白板房间的相关操作，包括创建房间、获取房间信息、获取房间列表和封禁房间。
+
+    - **截图管理**：对指定场景或指定场景组下的所有场景进行截图，生成 PNG 格式的图片并上传至你提供的第三方云存储空间中。在调用截图管理 API 之前，请确保：
+
+      - 已开通第三方云存储账号，并创建了存储空间。目前互动白板支持的第三方云存储包括：[阿里云存储](https://help.aliyun.com/product/31815.html?spm=5176.7933691.J_1309819.8.2e392a66QiJZD3)、[七牛云存储](https://www.qiniu.com/products/kodo)和 [AWS 云存储](https://amazonaws-china.com/cn/products/storage/?nc2=h_ql_prod_st)。
+      - 已在声网控制台开启截图服务，并添加了存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+    - **场景管理**：互动白板场景的相关操作，包括插入新场景、场景跳转和获取场景地址列表。
+
+    - **文档转换**：文档转换服务支持将 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成静态图片，将 PPT 和 PPTX 的文件转换为动态 HTML 网页，转换后的图片或网页可作为演示资料在互动白板中展示。详见[文档转换服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/advanced-features/convert-files)。
+
+      调用文档转换 API 前，请确保：
+
+      - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+      - 已为待转换的文档生成一个公网可访问的 URL 地址。
+
+    > 本文仅适用于新版文档转换服务。新版本和旧版本的差异详见[文档转换服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/advanced-features/convert-files#新旧版本对比)。如果使用旧版文档转换服务，请查看[旧版文档转换服务 API 参考](https://docportal.shengwang.cn/cn/whiteboard/whiteboard_file_conversion_old?platform=RESTful) 。
+
+    ## 响应状态码
+
+    调用互动白板 RESTful API 可能返回的响应状态码包括**通用响应状态码**和**文档转换错误码**，详见[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)。
+servers:
+- url: https://api.netless.link
+  description: ''
+paths:
+  /v5/tokens/teams:
+    post:
+      tags:
+      - 生成 Token
+      summary: 生成 SDK Token
+      description: 生成一个 SDK Token。
+      operationId: post-v5-tokens-teams
+      parameters:
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessKey:
+                  $ref: '#/components/schemas/ak'
+                secretAccessKey:
+                  $ref: '#/components/schemas/sk'
+                lifespan:
+                  $ref: '#/components/schemas/lifespan'
+                role:
+                  $ref: '#/components/schemas/role'
+              required:
+              - accessKey
+              - secretAccessKey
+              - lifespan
+              - role
+            examples:
+              Example 1:
+                value:
+                  accessKey: BUxxxxxxrc
+                  secretAccessKey: CxxxxxxxauY3
+                  lifespan: 3600000
+                  role: admin
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/tokens/rooms/{uuid}:
+    post:
+      tags:
+      - 生成 Token
+      summary: 生成 Room Token
+      description: 生成一个 Room Token。
+      operationId: post-v5-tokens-rooms-uuid
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lifespan:
+                  $ref: '#/components/schemas/lifespan'
+                role:
+                  $ref: '#/components/schemas/role'
+              required:
+              - lifespan
+              - role
+              x-examples:
+                Example 1:
+                  lifespan: 3600000
+                  role: admin
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/tokens/tasks/{uuid}:
+    post:
+      tags:
+      - 生成 Token
+      summary: 生成 Task Token
+      description: 生成一个 Task Token。
+      operationId: post-v5-tokens-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid-convert'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                role:
+                  $ref: '#/components/schemas/role'
+                lifespan:
+                  $ref: '#/components/schemas/lifespan'
+                ak:
+                  $ref: '#/components/schemas/ak'
+              required:
+              - role
+              - lifespan
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/rooms:
+    post:
+      tags:
+      - 房间管理
+      summary: 创建房间
+      description: 创建一个实时互动房间。
+      operationId: post-v5-rooms
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isRecord:
+                  $ref: '#/components/schemas/isRecord'
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid'
+                  teamUUID:
+                    $ref: '#/components/schemas/teamUUID'
+                  appUUID:
+                    $ref: '#/components/schemas/appUUID'
+                  isRecord:
+                    $ref: '#/components/schemas/R-isRecord'
+                  isBan:
+                    $ref: '#/components/schemas/isBan'
+                  createdAt:
+                    $ref: '#/components/schemas/createAt'
+                  limit:
+                    $ref: '#/components/schemas/R-limit'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+    get:
+      tags:
+      - 房间管理
+      summary: 获取房间列表
+      description: 获取房间列表。
+      operationId: get-v5-rooms
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/beginUUID'
+      - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid'
+                  teamUUID:
+                    $ref: '#/components/schemas/teamUUID'
+                  appUUID:
+                    $ref: '#/components/schemas/appUUID'
+                  isRecord:
+                    $ref: '#/components/schemas/R-isRecord'
+                  isBan:
+                    $ref: '#/components/schemas/isBan'
+                  createdAt:
+                    $ref: '#/components/schemas/createAt'
+                  limit:
+                    $ref: '#/components/schemas/R-limit'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/rooms/{uuid}:
+    get:
+      tags:
+      - 房间管理
+      summary: 获取房间信息
+      description: 获取指定房间的信息。
+      operationId: get-v5-rooms-uuid
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid'
+                  teamUUID:
+                    $ref: '#/components/schemas/teamUUID'
+                  appUUID:
+                    $ref: '#/components/schemas/appUUID'
+                  isRecord:
+                    $ref: '#/components/schemas/R-isRecord'
+                  isBan:
+                    $ref: '#/components/schemas/isBan'
+                  createdAt:
+                    $ref: '#/components/schemas/createAt'
+                  limit:
+                    $ref: '#/components/schemas/R-limit'
+                x-examples:
+                  Example 1:
+                    uuid: 4axxxxx96b
+                    teamUUID: RMmxxxxx5aw
+                    appUUID: i5xxxxx1AQ
+                    isRecord: true
+                    isBan: false
+                    createdAt: '2021-01-18T06:56:29.432Z'
+                    limit: 0
+              examples:
+                Example 1:
+                  value:
+                    uuid: 4axxxxx96b
+                    teamUUID: RMmxxxxx5aw
+                    appUUID: i5xxxxx1AQ
+                    isRecord: true
+                    isBan: false
+                    createdAt: '2021-01-18T06:56:29.432Z'
+                    limit: 0
+      servers:
+      - url: https://api.netless.link
+        description: ''
+    patch:
+      tags:
+      - 房间管理
+      summary: 封禁房间
+      description: 封禁或取消封禁指定的房间。
+      operationId: patch-v5-rooms-uuid
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isBan:
+                  $ref: '#/components/schemas/P-isBan'
+              required:
+              - isBan
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid'
+                  teamUUID:
+                    $ref: '#/components/schemas/teamUUID'
+                  appUUID:
+                    $ref: '#/components/schemas/appUUID'
+                  isRecord:
+                    $ref: '#/components/schemas/R-isRecord'
+                  isBan:
+                    $ref: '#/components/schemas/isBan'
+                  createdAt:
+                    $ref: '#/components/schemas/createAt'
+                  limit:
+                    $ref: '#/components/schemas/R-limit'
+                x-examples:
+                  Example 1:
+                    uuid: 0e6xxxxxx95
+                    teamUUID: RMxxxxxaw
+                    appUUID: vVxxxxxJF-A
+                    isRecord: true
+                    isBan: true
+                    createdAt: '2020-12-20T14:02:54.846Z'
+                    limit: 0
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          房间被封禁后，互动白板服务会移除房间内的用户并禁止新用户加入该房间。
+
+          你可以再次调用该 API，并在请求 Body 中将 `isBan` 设为 `false`，取消对房间的封禁。
+  /v5/rooms/{uuid}/scenes:
+    get:
+      tags:
+      - 场景管理
+      summary: 获取场景地址列表
+      description: 获取指定房间的场景地址列表。
+      operationId: get-v5-rooms-uuid-scenes
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/sceneDir'
+      - $ref: '#/components/parameters/uuid'
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+    post:
+      tags:
+      - 场景管理
+      summary: 插入新场景
+      description: 插入新场景。
+      operationId: post-v5-rooms-uuid-scenes
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scenes:
+                  $ref: '#/components/schemas/scenes'
+                path:
+                  $ref: '#/components/schemas/path-scene'
+              required:
+              - scenes
+              - path
+              x-examples:
+                Example 1:
+                  scenes:
+                  - name: page1
+                    ppt:
+                      src: xxxx
+                      width: 640
+                      height: 360
+                  - name: page2
+                    ppt:
+                      src: xxxx
+                      width: 640
+                      height: 360
+                  path: /test
+            examples:
+              Example 1:
+                value:
+                  scenes:
+                  - name: page1
+                    ppt:
+                      src: xxxx
+                      width: 640
+                      height: 360
+                  - name: page2
+                    ppt:
+                      src: xxxx
+                      width: 640
+                      height: 360
+                  path: /test
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/rooms/{uuid}/scene-state:
+    patch:
+      tags:
+      - 场景管理
+      summary: 场景跳转
+      description: 当房间内存在多个场景或场景组，可调用该 API 切换场景。
+      operationId: patch-v5-rooms-uuid-scene-state
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ? ''
+                : $ref: '#/components/schemas/scenePath'
+              required:
+              - ''
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentScenePath:
+                    $ref: '#/components/schemas/currentScenePath'
+              examples:
+                Example 1:
+                  value:
+                    currentScenePath:
+                    - test
+                    - page1
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/rooms/{uuid}/screenshots:
+    post:
+      tags:
+      - 截图管理
+      summary: 生成场景截图
+      description: 对指定场景进行截图。
+      operationId: post-v5-rooms-uuid-screenshots
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                width:
+                  $ref: '#/components/schemas/width'
+                height:
+                  $ref: '#/components/schemas/height'
+                path:
+                  $ref: '#/components/schemas/path'
+              required:
+              - width
+              - height
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    $ref: '#/components/schemas/url'
+                  key:
+                    $ref: '#/components/schemas/key'
+                  bucket:
+                    $ref: '#/components/schemas/bucket'
+                  region:
+                    $ref: '#/components/schemas/region-screenshot'
+                x-examples:
+                  Example 1:
+                    url: https://white-cover.oss-cn-hangzhou.aliyuncs.com/room_cover/2811/a7exxxxca69undefined.png
+                    key: room_cover/2811/a7exxxxxca69undefined.png
+                    bucket: white-cover
+                    region: oss-cn-hangzhou
+              examples:
+                Example 1:
+                  value:
+                    url: https://white-cover.oss-cn-hangzhou.aliyuncs.com/room_cover/2811/a7exxxxca69undefined.png
+                    key: room_cover/2811/a7exxxxxca69undefined.png
+                    bucket: white-cover
+                    region: oss-cn-hangzhou
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync)。
+  /v5/rooms/{uuid}/screenshot-list:
+    post:
+      tags:
+      - 截图管理
+      summary: 生成场景截图列表
+      description: 对指定场景组下的所有场景进行截图。
+      operationId: post-v5-rooms-uuid-screenshot-list
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                width:
+                  $ref: '#/components/schemas/width'
+                height:
+                  $ref: '#/components/schemas/height'
+                path:
+                  $ref: '#/components/schemas/path'
+              x-examples:
+                Example 1:
+                  width: 640
+                  height: 480
+                  path: /test
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    $ref: '#/components/schemas/url'
+                  key:
+                    $ref: '#/components/schemas/key'
+                  bucket:
+                    $ref: '#/components/schemas/bucket'
+                  region:
+                    $ref: '#/components/schemas/region-screenshot'
+                x-examples:
+                  Example 1:
+                    url: https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/room_cover/2811/faxxxxx47c/test/page1.png
+                    key: room_cover/2811/faxxxxx47c/test/page1.png
+                    bucket: docs-test-xxx
+                    region: oss-cn-hangzhou
+              examples:
+                Example 1:
+                  value:
+                    url: https://white-cover.oss-cn-hangzhou.aliyuncs.com/room_cover/2811/a7exxxxca69undefined.png
+                    key: room_cover/2811/a7exxxxxca69undefined.png
+                    bucket: white-cover
+                    region: oss-cn-hangzhou
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: 后端截图相关 API 已废弃，请改用前端截图 API：[`screenshotToCanvasAsync`](https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/displayer#screenshottocanvasasync)。
+  /v5/projector/tasks:
+    post:
+      tags:
+      - 文档转换
+      summary: 发起文档转换
+      description: 发起一个文档转换任务。
+      operationId: post-v5-projector-tasks
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: dynamic
+                  preview: true
+                  webhookEndpoint: https://example.com/agoracallback
+                  webhookRetry: 1
+              required:
+              - resource
+              properties:
+                resource:
+                  $ref: '#/components/schemas/resource'
+                type:
+                  $ref: '#/components/schemas/type'
+                preview:
+                  $ref: '#/components/schemas/preview'
+                scale:
+                  $ref: '#/components/schemas/scale'
+                outputFormat:
+                  $ref: '#/components/schemas/outputFormat'
+                webhookEndpoint:
+                  $ref: '#/components/schemas/webhookEndpoint'
+                webhookRetry:
+                  $ref: '#/components/schemas/webhookRetry'
+                imageCompressionLevel:
+                  $ref: '#/components/schemas/imageCompressionLevel'
+                buildSpa:
+                  type: boolean
+                  x-stoplight:
+                    id: 2xlwdh8i39o3w
+                  default: true
+                  description: |-
+                    是否在转换完成后构建一个可独立渲染的单页应用程序 (SPA, Single-page Application)：
+
+                    - `true`：（默认）构建 SPA 文件。文件为 HTML 格式，其中包含渲染 PPT 的所有资源，可用于单页预览，但服务器需要耗时（约 3 至 300 秒）下载所需资源和编译文件。
+
+                    - `false`：不构建 SPA 文件。
+            examples:
+              Example 1:
+                value:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: dynamic
+                  preview: true
+                  webhookEndpoint: https://example.com/agoracallback
+                  webhookRetry: 3
+                  imageCompressionLevel: 0
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  type:
+                    $ref: '#/components/schemas/type-response'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                x-examples:
+                  Example 1:
+                    uuid: 2fd2dxxxxx367e
+                    status: Waiting
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fd2dxxxxx367e
+                    type: dynamic
+                    status: Waiting
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-extension-1: null
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          调用文档转换 API 前，请确保：
+
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+          - 已为待转换的文档生成一个公网可访问的 URL 地址。
+    get:
+      tags:
+      - 文档转换
+      summary: 查询待转换任务
+      description: 列出未完成转换的所有任务。
+      operationId: get-v5-projector-tasks
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    taskId:
+                      $ref: '#/components/schemas/taskId'
+                    status:
+                      type: number
+                      description: |-
+                        转换任务的状态：
+
+                        - `1`：任务进行中。
+
+                        - `0`：任务正在排队。
+              examples:
+                Example 1:
+                  value:
+                  - taskId: xxx
+                    status: 1
+                  - taskId: xxx
+                    status: 0
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          调用文档转换 API 前，请确保：
+
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+          - 已为待转换的文档生成一个公网可访问的 URL 地址。
+  /v5/projector/tasks/{uuid}:
+    get:
+      tags:
+      - 文档转换
+      summary: 查询转换任务进度
+      description: 查询七天内创建的文档转换任务的进度。
+      operationId: get-v5-projector-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/taskToken'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid-convert'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                  type:
+                    $ref: '#/components/schemas/type'
+                  convertedPercentage:
+                    $ref: '#/components/schemas/convertedPercentage'
+                  prefix:
+                    $ref: '#/components/schemas/prefix'
+                  pageCount:
+                    $ref: '#/components/schemas/pageCount'
+                  previews:
+                    $ref: '#/components/schemas/previews'
+                  note:
+                    $ref: '#/components/schemas/note'
+                  images:
+                    $ref: '#/components/schemas/images'
+                  errorCode:
+                    $ref: '#/components/schemas/errorCode'
+                  errorMessage:
+                    $ref: '#/components/schemas/errorMessage'
+                  zip:
+                    type: string
+                    x-stoplight:
+                      id: 1166u0lvdugh1
+                    description: 该链接可下载一个包含 ppt 的转换结果全部集合的压缩包，其中包括 PPT 预览图和渲染需要的所有资源，可配合 SDK 提供的 API 重定向到本地资源，实现全部预加载，而不是每次加载 PPT 资源时向服务器请求，从而减少用户查看 PPT 和切页时的等待时间。
+                  resources:
+                    type: array
+                    x-stoplight:
+                      id: puhzq944dth8y
+                    description: 所有渲染所需资源的下载链接列表，可用于私有云存储做批量链接签名，以便安全地分享或访问这些资源。
+                    items:
+                      x-stoplight:
+                        id: r9p9hq5cnutll
+                      type: string
+              examples:
+                动态转换已完成:
+                  value:
+                    uuid: dc11fe9e1xxxxxx7cd7ca3670a
+                    type: dynamic
+                    status: Finished
+                    convertedPercentage: 100
+                    pageCount: 2
+                    previews:
+                      '1': https://xxx/flat/dynamicConvert/xxx/1.png
+                      '2': https://xxx/flat/dynamicConvertxxx/2.png
+                    note: https://xxx/jsonOutput/note.json
+                    prefix: https://xxx/flat/dynamicConvert
+                    zip: https://xxx.com/flat/dynamicConvert/xxx.zip
+                    resources:
+                    - https://xxx/jsonOutput/note.json
+                    - https://xxx/flat/dynamicConvert/xxx/1.png
+                    - https://xxx/flat/dynamicConvert/xxx/2.png
+                静态转换已完成:
+                  value:
+                    uuid: b5ec7c26ebxxxx217b8e2fb4dc5
+                    type: static
+                    status: Finished
+                    convertedPercentage: 100
+                    pageCount: 2
+                    images:
+                      '1':
+                        width: 1440
+                        height: 810
+                        url: https:/xxx/flat/staticConvert/xxxx/1.png
+                      '2':
+                        width: 1440
+                        height: 810
+                        url: https://xxx/flat/staticConvert/xxxx/2.png
+                    prefix: https://xxx/flat/
+                转换中任务:
+                  value:
+                    uuid: b5ec7c26exxxxb8e2fb4dc5
+                    type: static
+                    status: Converting
+                    convertedPercentage: 0
+                    prefix: https://xxx/flat/
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          调用文档转换 API 前，请确保：
+
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+          - 已为待转换的文档生成一个公网可访问的 URL 地址。
+    delete:
+      tags:
+      - 文档转换
+      summary: 取消指定的文档转换任务
+      description: 取消指定的文档转换任务。
+      operationId: delete-v5-projector-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/uuid-convert'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  taskId:
+                    $ref: '#/components/schemas/taskId'
+                  success:
+                    type: boolean
+                    description: |-
+                      是否成功取消转换任务：
+
+                      - `true`：取消成功。
+
+                      - `false`：取消失败。
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          调用文档转换 API 前，请确保：
+
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+          - 已为待转换的文档生成一个公网可访问的 URL 地址。
+  /v5/projector/tasks/{uuid}/priority:
+    put:
+      tags:
+      - 文档转换
+      summary: 设置任务优先级
+      description: 将待进行的指定任务移动至任务队列最前面或最后面。
+      operationId: put-v5-projector-tasks-uuid-priority
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid-convert'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: string
+                  description: |-
+                    设定优先级，取值如下：
+
+                    - `highest`：最高，即移动至任务队列最前。
+
+                    - `lowest`：最低，即移动至任务队列末尾。
+              required:
+              - priority
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  success:
+                    type: boolean
+                    description: |-
+                      是否成功设置优先级：
+
+                      - `true`：设置成功。
+
+                      - `false`：设置失败。
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fd2dxxxxx367e"
+                    success: true
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          调用文档转换 API 前，请确保：
+
+          - 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开启互动白板配套服务](https://doc.shengwang.cn/doc/whiteboard/javascript/fastboard-sdk/get-started/enable-service#开启互动白板配套服务)。
+
+          - 已为待转换的文档生成一个公网可访问的 URL 地址。
+  /v5/services/conversion/tasks:
+    post:
+      tags:
+      - 旧版文档转换
+      summary: 发起文档转换
+      description: 发起一个文档转换任务。
+      operationId: post-v5-services-conversion-tasks
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resource:
+                  $ref: '#/components/schemas/resource'
+                type:
+                  $ref: '#/components/schemas/type'
+                preview:
+                  $ref: '#/components/schemas/preview'
+                scale:
+                  $ref: '#/components/schemas/scale'
+                outputFormat:
+                  $ref: '#/components/schemas/outputFormat'
+                pack:
+                  type: boolean
+                  description: |-
+                    进行静态文档转换时，是否生成资源包：
+
+                    - `true`：生成资源包。该参数设为 `true` 时，声网服务端会将所有转换后的图片打包成 `{uuid}.zip` 文件，并上传到你指定的存储路径中。
+
+                    - `false`：（默认）不生成资源包。
+
+                    > 该参数仅在 `type` 设为 `static` 时生效。当 `type` 设为 `dynamic` 时，声网服务端会自动生成 `{uuid}.zip` 资源包。
+                canvasVersion:
+                  type: boolean
+                  description: |-
+                    进行动态文档转换时，除将源文档转换为常规的 DOM 元素外，是否额外转换为 `canvas` 元素：
+
+                    - `true`：将源文档转换为常规的 DOM 元素和 `canvas` 元素。
+                     该选项适用于源文档包含复杂动画效果的情况，例如，切页动画。转换为 `canvas` 元素后，动画的渲染效果和性能更佳，但是转换速度会降低。
+                    设置 `canvasVersion` 为 `true` 后，你可以使用 Whiteboard SDK，也可以使用 Fastboard SDK 渲染并展示转换后的文档。使用 Whiteboard SDK 可以读取转换结果中的 DOM 元素，并将其渲染为 DOM 网页，部分动画效果可能无法被渲染；使用 Fastboard SDK 可以读取转换结果中的 `canvas` 元素，并将其渲染为 canvas 页面，并保留完整的动画效果。
+
+                    - `false`：（默认）仅将源文档转换为 DOM 元素。
+                    该选项适用于除源文档包含复杂动画效果外的几乎所有情况，且转换速度快。但是，当源文档包含复杂动画时（例如，切页动画），转换为 DOM 元素后，部分动画效果可能无法被渲染，且渲染时可能出现卡顿。
+                     未设置 `canvasVersion` 参数或设置 `canvasVersion` 为 `false` 后，仅可以使用 Whiteboard SDK 渲染并展示转换后的文档。使用 Fastboard SDK 将无法读取转换结果。
+
+                    > 该参数仅在 `type` 设为 `dynamic` 时生效。
+              required:
+              - resource
+              - type
+              x-examples:
+                Example 1:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: static
+                  preview: true
+                  scale: 1
+                  outputFormat: jpg
+            examples:
+              Example 1:
+                value:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: static
+                  preview: true
+                  scale: 1
+                  outputFormat: jpg
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  type:
+                    $ref: '#/components/schemas/type'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                x-examples:
+                  Example 1:
+                    uuid: 2fd2dxxxxx367e
+                    type: static
+                    status: Waiting
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fd2dxxxxx367e
+                    type: static
+                    status: Waiting
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-internal: true
+  /v5/services/conversion/tasks/{uuid}:
+    get:
+      tags:
+      - 旧版文档转换
+      summary: 查询转换任务的进度
+      description: 查询文档转换任务的进度。
+      operationId: get-v5-services-conversion-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid-convert'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  type:
+                    $ref: '#/components/schemas/type'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                  failedReason:
+                    type: string
+                    description: 转换任务失败的原因。只有当 `status` 为 `Fail` 时，才会返回该字段。
+                  progress:
+                    type: object
+                    description: 转换任务的进度。
+                    properties:
+                      totalPageSize:
+                        type: number
+                        description: 转换文档总页数。
+                      convertedPageSize:
+                        type: number
+                        description: 已经完成转换的页数。
+                      convertedPercentage:
+                        type: number
+                        description: 转换进度百分比。
+                      convertedFileList:
+                        type: array
+                        description: 已完成转换的文件列表。
+                        items:
+                          type: object
+                          properties:
+                            width:
+                              type: number
+                              description: 图片或动态 PPT 的宽度，单位为像素。
+                            height:
+                              type: number
+                              description: 图片或动态 PPT 的高度，单位为像素。
+                            conversionFileUrl:
+                              type: string
+                              description: 转换文件的 URL。
+                            preview:
+                              type: string
+                              description: 预览图地址。当发起转换时请求 Body 中 preview 设为 true 且 type 为 dynamic 时，才会返回该字段。
+                      currentStep:
+                        type: string
+                        description: |-
+                          动态转换任务当前的步骤，返回值包括：
+
+                          -  `Extracting`：提取资源。
+
+                          - `Packaging`：打包资源。
+
+                          - `GeneratingPreview`：生成预览图。
+
+                          - `MediaTranscode`：媒体转码。
+                          当发起转换时请求 Body 中 `type` 为 `dynamic` 时，才会返回 `currentStep` 字段。
+                x-examples:
+                  Example 1:
+                    uuid: 2fdxxxx7e
+                    type: static
+                    status: Finished
+                    progress:
+                      totalPageSize: 2
+                      convertedPageSize: 2
+                      convertedPercentage: 100
+                      convertedFileList:
+                      - width: 1333
+                        height: 750
+                        conversionFileUrl: https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg
+                      - width: 1333
+                        height: 750
+                        conversionFileUrl: https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/2.jpeg
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fdxxxx7e
+                    type: static
+                    status: Finished
+                    progress:
+                      totalPageSize: 2
+                      convertedPageSize: 2
+                      convertedPercentage: 100
+                      convertedFileList:
+                      - width: 1333
+                        height: 750
+                        conversionFileUrl: https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg
+                      - width: 1333
+                        height: 750
+                        conversionFileUrl: https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/2.jpeg
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-internal: true
+tags:
+- name: 生成 Token
+- name: 房间管理
+- name: 场景管理
+- name: 截图管理
+- name: 文档转换
+- name: 旧版文档转换
+components:
+  parameters:
+    beginUUID:
+      name: beginUUID
+      in: query
+      description: 查询的起始房间的 UUID。
+      required: false
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      description: 返回的房间列表的最大长度，取值范围为 (0,1000]。如果不填，则最多返回 100 条房间信息。
+      required: false
+      schema:
+        type: string
+        default: '100'
+    sceneDir:
+      name: sceneDir
+      in: query
+      description: 场景组的路径地址，以 `/` 开头。如果填入该参数，则返回指定场景组下的场景地址列表；如果不填，则返回当前所在场景组下的场景地址列表。
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: string
+    uuid:
+      name: uuid
+      in: path
+      description: 房间的 UUID, 即房间的全局唯一标识符，可通过调用[创建房间 API](create-room) 或[获取房间信息 API](get-room) 获取。
+      required: true
+      schema:
+        type: string
+    uuid-convert:
+      name: uuid
+      in: path
+      description: 转换任务的 UUID，即转换任务的唯一标识符，可通过调用[发起文档转换 API](start-file-conversion) 获取。
+      required: true
+      schema:
+        type: string
+        examples:
+        - 2fxxxxxx367e
+    region:
+      name: region
+      in: header
+      description: |-
+        指定处理该请求的数据中心，取值如下：
+
+        - `cn-hz`：中国杭州，服务区覆盖中国大陆地区及其他数据中心未覆盖的区域。
+
+        - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
+
+        - `sg`：新加坡，服务区覆盖新加坡、东亚、东南亚。
+
+        - `in-mum`：印度孟买，服务区覆盖印度。
+
+        - `eu`：欧洲（法兰克福），服务区覆盖欧洲。
+      required: true
+      schema:
+        type: string
+        enum:
+        - cn-hz
+        - us-sv
+        - sg
+        - in-mum
+        - eu
+    token:
+      name: token
+      in: header
+      description: |-
+        SDK Token，可以通过以下方式获取：
+
+        - 在声网控制台生成用于测试的 SDK Token，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+
+        - 调用服务端 RESTful API， 详见[生成 SDK Token](generate-sdk-token)。
+
+        - 在 App 服务端用代码生成，详见[在 App 服务端生成 Token](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+      required: true
+      schema:
+        type: string
+        examples:
+        - NETLESSSDK_YWs9xxxxxxM2MjRi
+    taskToken:
+      name: token
+      in: header
+      description: |-
+        Task Token，可通过以下方式获取：
+
+        - 调用服务端 RESTful API， 详见[生成 Task Token](generate-task-token)。
+
+        - 在 app 服务端用代码生成，详见[在 App 服务端生成 Token](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: |-
+        若返回的状态码为 `200` 则表示请求成功。响应 Body 中包含包含 String 型的场景地址。
+
+        若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+            x-examples:
+              Example 1:
+              - /test/cover
+              - /test/page1
+          examples:
+            Example 1:
+              value:
+              - /test/cover
+              - /test/page1
+    '201':
+      description: |-
+        若返回的状态码为 `201` 则表示请求成功。响应 Body 为空对象。
+
+        若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)了解可能的原因。
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            Example 1:
+              value: {}
+  schemas:
+    ak:
+      type: string
+      title: ak
+      description: 访问密钥 Access Key (AK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。
+    sk:
+      type: string
+      title: sk
+      description: 私有访问密钥 Secret Access Key (SK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/get-started/enable-service#%E8%8E%B7%E5%8F%96%E4%BA%92%E5%8A%A8%E7%99%BD%E6%9D%BF%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E5%85%A8%E5%AF%86%E9%92%A5)。
+    lifespan:
+      type: integer
+      title: lifespan
+      description: Token 的有效时间（ms）。设为 `0` 表示永久有效。
+      examples:
+      - 36000
+    role:
+      type: string
+      title: role
+      description: |-
+        权限角色，取值如下：
+
+        - `admin`
+
+        - `writer`
+
+        - `reader`
+        详见 [Token 的类型与权限](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/overview/concepts#token)。
+    isRecord:
+      type: boolean
+      title: isRecord
+      description: |-
+        是否开启录制：
+
+        - `true`：开启。
+
+        - `false`: 不开启。
+        仅 `cn-hz` 区域的 `isRecord` 字段默认值为 `true`。开启白板录制将产生费用，如果你没有录制需求，需手动传入 `false`。
+      default: true
+    uuid:
+      type: string
+      title: uuid
+      description: 房间的 UUID，即房间的全局唯一标识符。
+    teamUUID:
+      type: string
+      title: teamUUID
+      description: 互动白板控制台账号的唯一标识符。
+    appUUID:
+      type: string
+      title: appUUID
+      description: 互动白板项目的唯一标识符。
+    R-isRecord:
+      type: boolean
+      title: R-isRecord
+      description: |-
+        房间是否开启录制：
+
+        - `true`：开启。
+
+        - `false`: 不开启。
+    isBan:
+      type: boolean
+      title: isBan
+      description: |-
+        房间是否被封禁：
+
+        - `true`：已封禁。
+
+        - `false`: 未封禁。
+    createAt:
+      type: string
+      title: createdAt
+      description: 创建房间的 UTC 时间。
+      examples:
+      - '2021-01-18T06:56:29.432Z'
+    R-limit:
+      type: integer
+      title: R-limit
+      description: 已废弃，值固定为 `0`。
+    P-isBan:
+      type: boolean
+      title: P-isBan
+      description: |-
+        是否封禁房间：
+
+        - `true`：封禁。
+
+        - `false`: （默认值）不封禁。
+      default: false
+    scenes:
+      type: array
+      title: scenes
+      description: 由场景组成的数组。
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: 场景名称，不能与所属场景组下的其他场景重名，不能包含 `/`。
+          ppt:
+            $ref: '#/components/schemas/ppt'
+        required:
+        - name
+        - ppt
+    ppt:
+      type: object
+      title: ppt
+      description: 场景背景图的属性。
+      properties:
+        src:
+          type: string
+          description: |-
+            图片的 URL。
+
+            > 请确保你的浏览器可以访问并支持展示该图片，否则，该图片可能无法显示在白板场景中。
+        width:
+          type: number
+          description: 图片的宽度，单位像素。
+        height:
+          type: number
+          description: 图片的高度，单位像素。
+    path-scene:
+      type: string
+      title: path-scene
+      description: |-
+        场景组的地址。
+
+        > 如果传入的场景组地址已经存在，则在已有的场景组下插入指定的新场景；如果传入的场景组地址不存在，则自动新建一个场景组并在该场景组下插入指定的新场景。
+    scenePath:
+      type: string
+      title: scenePath
+      description: 要切换到的场景的地址。
+      examples:
+      - /test/page1
+    currentScenePath:
+      type: array
+      title: currentScenePath
+      description: 当前的场景地址，由场景组和场景名组成的数组。
+      examples:
+      - - test
+        - page1
+      items:
+        type: string
+    width:
+      type: number
+      title: width
+      description: 截图的宽度，单位为像素。
+      examples:
+      - 640
+    height:
+      type: number
+      title: height
+      description: 截图的高度，单位为像素。
+      examples:
+      - 480
+    path:
+      type: string
+      title: path
+      description: 需要截图的场景路径，以 `/` 开头。如果不传，默认获取 `/init` 场景的截图。
+      default: /init
+    url:
+      type: string
+      title: url
+      description: 截图的 URL。
+      examples:
+      - https://white-cover.oss-cn-hangzhou.aliyuncs.com/room_cover/2811/a7exxxxca69undefined.png
+    key:
+      type: string
+      title: key
+      description: 截图在存储空间内的文件名。
+      examples:
+      - room_cover/2811/a7exxxxxca69undefined.png
+    bucket:
+      type: string
+      title: bucket
+      description: 截图存放的存储空间名称。
+      examples:
+      - white-cover
+    region-screenshot:
+      type: string
+      title: region-screenshot
+      description: 截图存放的存储空间所属地域。
+      examples:
+      - oss-cn-hangzhou
+    resource:
+      type: string
+      title: resource
+      description: 待转换的源文件 URL。
+      examples:
+      - https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+    type:
+      type: string
+      title: type
+      description: |-
+        转换任务类型，取值如下：
+
+        - `dynamic`：动态文档转换，即文档转网页。
+
+        - `static`：静态文档转换，即文档转图片。
+      default: dynamic
+    preview:
+      type: boolean
+      title: preview
+      description: |-
+        是否需要生成预览图：
+
+        - `true`：是。
+
+        - `false`：否。
+        该参数仅在 `type` 设为 `dynamic` 时生效。
+    scale:
+      type: number
+      title: scale
+      description: 图片缩放比例。数值越大，图片越清晰。该参数仅在 `type` 设为 `static` 时生效。
+      minimum: 0.1
+      maximum: 3
+      default: 1.2
+    outputFormat:
+      type: string
+      title: outputFormat
+      description: |-
+        输出图片格式，取值如下：
+
+        - `png`：PNG 格式。
+
+        - `jpg`：JPG 格式。
+
+        -  `jpeg`：JPEG 格式。
+
+        -  `qpdf`：QPDF 格式。仅 PDF 文件（以 `%PDF` 开头的文件）支持转换为 QPDF 格式。你可以使用 [@netless-app-pdfjs](https://github.com/netless-io/netless-app-pdfjs) 插件展示到基于 Fastboard SDK 的互动白板 App 中。
+         该参数仅在 `type` 设为 `static` 时生效。
+      default: png
+    webhookEndpoint:
+      type: string
+      title: webhookEndpoint
+      description: |-
+        Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。Webhook 配置方式和签名验证详见[接收文档转换 Webhook 事件](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/conversion-webhook)。
+
+        > Webhook 回调有一定概率重复回调，为保证 app 服务端在接到相同响应时的处理方式保持一致，需要做好幂等处理。
+      examples:
+      - https://example.com/agoracallback
+    webhookRetry:
+      type: number
+      title: webhookRetry
+      description: Webhook 回调失败时的重试次数。
+      maximum: 10
+      default: 3
+    imageCompressionLevel:
+      type: number
+      title: imageCompressionLevel
+      description: |-
+        动态转换输出图片的压缩等级，仅能传入以下值：
+
+        - `0`：（默认）输出原图。
+
+        - `1`：输出图片使用的最大颜色数量限制为 256。
+
+        - `2`：输出图片使用的最大颜色数量限制为 192。
+
+        - `3`：输出图片使用的最大颜色数量限制为 128。
+
+        - `4`：输出图片使用的最大颜色数量限制为 64。
+        该参数仅在 `type` 设为 `dynamic` 时生效。
+
+        > 通常，在保证画质不受明显影响的前提下，输出图片的体积最高可以压缩至原图的 10%。压缩图片体积可在弱网环境下改善转换后 PPT 的首次加载时间。
+      default: 0
+    uuid-convert:
+      type: string
+      title: uuid
+      description: 转换任务的 UUID，即转换任务的唯一标识符。
+      examples:
+      - 2fd2dxxxxx367e"
+    type-response:
+      type: string
+      title: type
+      description: |-
+        转换任务类型，取值如下：
+
+        - `dynamic`：动态文档转换，即文档转网页。
+
+        - `static`：静态文档转换，即文档转图片。
+    status-convert:
+      type: string
+      title: status
+      description: |-
+        转换任务的状态：
+
+        - `Waiting`：等待转换。
+
+        - `Converting`：转换中。
+
+        - `Finished`：已完成。
+
+        - `Fail`：失败。
+    taskId:
+      type: string
+      title: taskId
+      description: 转换任务的 UUID，即转换任务的唯一标识符。
+    convertedPercentage:
+      type: number
+      title: convertedPercentage
+      description: 转换进度百分比。
+    prefix:
+      type: string
+      title: prefix
+      description: 转换结果文件地址前缀路径。
+      examples:
+      - https://xxxx.com/dynamicConvert
+    pageCount:
+      type: number
+      title: pageCount
+      description: 文档页数，转换任务失败时没有该字段。
+    previews:
+      type: object
+      title: previews
+      description: 转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](start-file-conversion)时，请求 Body 中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
+      properties:
+        id:
+          type: string
+          examples:
+          - https://xxxx.xx.xx/id.png
+      examples: []
+    note:
+      type: string
+      title: note
+      description: 从文档中提取出的备注内容，只包含有备注的页面。
+    images:
+      type: object
+      title: images
+      description: 文档转图片结果的地址，每页对应一张图片。该参数仅在该参数仅在[发起文档转换](start-file-conversion)时，请求 Body 中的 `type` 设为 `static` 时才生效。
+      properties:
+        id:
+          type: string
+          examples:
+          - https://xxxx.xx.xx/id.xxx
+    errorCode:
+      type: string
+      title: errorCode
+      description: 错误码。仅在转换任务失败时，才会返回该字段。所有可能的错误码详见[文档转换错误码](https://doc.shengwang.cn/doc/whiteboard/restful/fastboard-sdk/response-code)。
+    errorMessage:
+      type: string
+      title: errorMessage
+      description: 错误码对应的错误消息，描述出错的原因。仅在转换任务失败时，才会返回该字段。

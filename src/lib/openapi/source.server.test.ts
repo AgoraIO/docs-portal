@@ -12,6 +12,9 @@ import { getOpenApiOperation, getOpenApiOperations } from './source.server';
 describe('openapi source loader', () => {
   const lane = OPENAPI_LANES[0];
   const rtcLane = OPENAPI_LANES.find((item) => item.id === 'rtc-rest');
+  const cloudRecordingLane = OPENAPI_LANES.find(
+    (item) => item.id === 'cloud-recording-rest',
+  );
 
   it('loads lane operations by operationId', async () => {
     const operations = await getOpenApiOperations(lane);
@@ -131,6 +134,30 @@ describe('openapi source loader', () => {
         url: 'https://api.agora.io/cn/api/conversational-ai-agent',
       },
     ]);
+  });
+
+  it('loads localized Cloud Recording summaries from the Chinese YAML', async () => {
+    expect(cloudRecordingLane).toBeDefined();
+
+    const english = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'en',
+    );
+    const chinese = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'zh-CN',
+    );
+    const ncsIp = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'get-ncs-ip',
+      'zh-CN',
+    );
+
+    expect(english.summary).toBe('Acquire a resource ID');
+    expect(chinese.summary).toBe('获取云端录制资源');
+    expect(ncsIp.path).toBe('/v2/ncs/ip');
   });
 
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {

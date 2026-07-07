@@ -51,3 +51,7 @@ This is a single-context repo with root `CONTEXT.md` and optional ADRs under `do
 ### Markdown authoring
 
 Docs content uses the minimum Markdown/Fumadocs syntax standard in `docs/agents/markdown-authoring-standard.md`. Check it before editing or migrating `content/docs/**`.
+
+### OpenAPI migration
+
+RESTful API YAML migration follows `docs/openapi-migration-playbook.md`. Check it before moving OpenAPI sources into `content/openapi/**` or exposing generated endpoint pages in the docs site.

@@ -287,6 +287,7 @@ function OpenApiOperationLayout({
         <OpenApiEndpointBar operation={method} />
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
+        <OpenApiInlineAuthorizationSection operation={method} />
         <OpenApiParameters operation={method} />
         <OpenApiDocsSections operation={method} position="after-parameters" />
         {slots.body}
@@ -483,6 +484,50 @@ function OpenApiAuthorizationSection({
   );
 }
 
+function OpenApiInlineAuthorizationSection({
+  operation,
+}: {
+  operation?: OpenApiOperation;
+}) {
+  const locale = useContext(OpenApiLocaleContext);
+  const schemes = getOpenApiSecuritySchemes(operation);
+
+  if (
+    !isZhCnLocale(locale) ||
+    schemes.length === 0 ||
+    hasOpenApiAuthorizationHeaderParameter(operation)
+  ) {
+    return null;
+  }
+
+  return (
+    <section className="mt-8">
+      <h2
+        className="mb-3 scroll-mt-24 font-semibold text-2xl"
+        id="authorization"
+      >
+        {getOpenApiLabel('Authorization', locale)}
+      </h2>
+      <div className="space-y-4 rounded-xl border border-fd-border bg-fd-card p-4 text-fd-card-foreground">
+        {schemes.map((scheme) => (
+          <div key={scheme.key}>
+            <h3 className="mb-2 font-semibold text-fd-foreground text-base">
+              {scheme.key}
+            </h3>
+            {scheme.description ? (
+              <div className="prose-no-margin text-fd-muted-foreground">
+                {renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(scheme.description),
+                )}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
   const method = typeof operation.method === 'string' ? operation.method : '';
@@ -552,6 +597,40 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
       ),
     ),
   ];
+}
+
+function getOpenApiSecuritySchemes(operation?: OpenApiOperation) {
+  const schemes = getRecord(
+    getRecord(operation?.__document?.components)?.securitySchemes,
+  );
+
+  if (!schemes) {
+    return [];
+  }
+
+  return getOpenApiSecurityKeys(operation).flatMap((key) => {
+    const scheme = getRecord(schemes[key]);
+
+    if (!scheme) {
+      return [];
+    }
+
+    return [
+      {
+        description: getString(scheme?.description),
+        key,
+      },
+    ];
+  });
+}
+
+function hasOpenApiAuthorizationHeaderParameter(operation?: OpenApiOperation) {
+  return arrayOfRecords(operation?.parameters)
+    .map((parameter) => resolveLocalReference(operation?.__document, parameter))
+    .some(
+      (parameter) =>
+        isRecord(parameter) && isAuthenticationHeaderParameter(parameter),
+    );
 }
 
 function getCurrentOperation(

@@ -268,7 +268,91 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows localized OpenAPI chrome in zh-CN without the auth sidebar', async () => {
+  it('renders localized operation security before parameters in zh-CN when no Authorization header parameter exists', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/apps/{appid}/cloud_recording/acquire',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Cloud Recording API',
+              },
+              openapi: '3.2.0',
+              components: {
+                securitySchemes: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
+                    scheme: 'basic',
+                    type: 'http',
+                  },
+                },
+              },
+              security: [
+                {
+                  'Basic Auth': [],
+                },
+              ],
+              paths: {
+                '/v1/apps/{appid}/cloud_recording/acquire': {
+                  post: {
+                    operationId: 'acquire',
+                    parameters: [
+                      {
+                        description: '项目的 App ID。',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '获取云端录制资源',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '路径参数' }),
+    ).toBeInTheDocument();
+    const authHeading = screen.getByRole('heading', { name: '鉴权' });
+    expect(authHeading).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Basic Auth' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/客户 ID 和客户密钥/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '实现 HTTP 基本认证' }),
+    ).toHaveAttribute(
+      'href',
+      'https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/http-basic-auth',
+    );
+    const pathHeading = screen.getByRole('heading', { name: '路径参数' });
+    expect(
+      authHeading.compareDocumentPosition(pathHeading) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('prefers an explicit Authorization header parameter over localized securitySchemes in zh-CN', async () => {
     render(
       <FumadocsOpenApiContent
         locale="zh-CN"
@@ -287,7 +371,9 @@ describe('FumadocsOpenApiContent', () => {
               openapi: '3.2.0',
               components: {
                 securitySchemes: {
-                  basicAuth: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
                     scheme: 'basic',
                     type: 'http',
                   },
@@ -295,7 +381,7 @@ describe('FumadocsOpenApiContent', () => {
               },
               security: [
                 {
-                  basicAuth: [],
+                  'Basic Auth': [],
                 },
               ],
               paths: {
@@ -370,6 +456,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       await screen.findByRole('heading', { name: '路径参数' }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '鉴权' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Basic Auth' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/客户 ID 和客户密钥/)).not.toBeInTheDocument();
     const headerSection = screen
       .getByRole('heading', { name: '请求 Header' })
       .closest('section') as HTMLElement;
@@ -379,11 +472,6 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(headerSection).getByText(/支持 RTC Token/),
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('heading', { name: '鉴权' }),
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('该接口需要鉴权。')).not.toBeInTheDocument();
-    expect(screen.queryByText('basicAuth')).not.toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: '请求 Body' }),
     ).toBeInTheDocument();

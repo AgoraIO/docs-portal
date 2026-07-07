@@ -2390,21 +2390,36 @@ function getOpenApiRouteLanesForAudit() {
 
   return extractTopLevelObjects(source).map((block) => {
     const routePrefix = block.match(/routePrefix:\s*'([^']+)'/)?.[1];
+    const sourcePathsBlock = extractObjectProperty(block, 'sourcePath');
+    const hasSingleSourcePath = sourcePathsBlock.length === 0;
     const locales =
       block
         .match(/locales:\s*\[([^\]]+)\]/)?.[1]
         ?.match(/'([^']+)'/g)
-        ?.map((value) => value.slice(1, -1)) ?? SUPPORTED_LOCALES;
-    const sourcePathsBlock = extractObjectProperty(block, 'sourcePath');
-    const sourcePaths = Object.fromEntries(
-      [...sourcePathsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
-        (match) => [match[1], match[2]],
-      ),
-    );
+        ?.map((value) => value.slice(1, -1)) ??
+      (hasSingleSourcePath ? ['zh-CN'] : SUPPORTED_LOCALES);
+    const sourcePaths =
+      sourcePathsBlock.length > 0
+        ? Object.fromEntries(
+            [
+              ...sourcePathsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g),
+            ].map((match) => [match[1], match[2]]),
+          )
+        : Object.fromEntries(
+            locales.map((locale) => [
+              locale,
+              block.match(/sourcePath:\s*'([^']+)'/)?.[1],
+            ]),
+          );
     const operationsBlock = extractObjectProperty(block, 'operations');
-    const routeLeaves = [
-      ...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g),
-    ].map((match) => match[1]);
+    const routeLeaves =
+      operationsBlock.length > 0
+        ? [...operationsBlock.matchAll(/routeLeaf:\s*'([^']+)'/g)].map(
+            (match) => match[1],
+          )
+        : extractTupleOperationRouteLeaves(
+            extractArrayProperty(block, 'operations'),
+          );
 
     if (!routePrefix || routeLeaves.length === 0) {
       throw new Error(
@@ -2414,6 +2429,14 @@ function getOpenApiRouteLanesForAudit() {
 
     return { locales, routePrefix, routeLeaves, sourcePaths };
   });
+}
+
+function extractTupleOperationRouteLeaves(raw) {
+  return [
+    ...raw.matchAll(
+      /\[\s*'[^']+'\s*,\s*'([^']+)'\s*,\s*'[^']*'\s*,\s*'[^']*'\s*,?\s*\]/g,
+    ),
+  ].map((match) => match[1]);
 }
 
 function extractTopLevelObjects(raw) {
@@ -2501,6 +2524,52 @@ function extractObjectProperty(raw, propertyName) {
     if (char === '}') {
       depth -= 1;
       if (depth === 0) return raw.slice(start, index + 1);
+    }
+  }
+
+  return '';
+}
+
+function extractArrayProperty(raw, propertyName) {
+  const propIndex = raw.indexOf(`${propertyName}:`);
+  if (propIndex < 0) return '';
+  const start = raw.indexOf('[', propIndex);
+  if (start < 0) return '';
+  let depth = 0;
+  let inString = false;
+  let stringQuote = '';
+  let escaped = false;
+
+  for (let index = start; index < raw.length; index += 1) {
+    const char = raw[index];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === '\\') {
+        escaped = true;
+      } else if (char === stringQuote) {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (char === "'" || char === '"' || char === '`') {
+      inString = true;
+      stringQuote = char;
+      continue;
+    }
+
+    if (char === '[') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        return raw.slice(start, index + 1);
+      }
     }
   }
 
