@@ -22,7 +22,7 @@ Topic 只存在于 Stream Channel。所以用户在使用相关特性之前，�
 - 在执行此操作之前，用户需要首先创建 `IStreamChannel` 对象实例，并调用 `join` 方法加入频道，详见[频道](/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic)。
 :::
 
-成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_JOIN_TOPIC` 类型的 `onTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功加入 Topic 后，订阅该 Topic 并添加事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_JOIN_TOPIC` 类型的 `onTopicEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -42,8 +42,8 @@ virtual void joinTopic(const char* topic, const JoinTopicOptions& options, uint6
 
 |      属性       |     类型     | 是否必填 | 默认值               |    描述    |
 | ------------ | -------------- | ----- | ---------------- | ----------- |
-|  `qos`   | `RTM_MESSAGE_QOS` |   选填   | `RTM_MESSAGE_QOS_UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RTM_MESSAGE_QOS`](/zh-CN/api-reference/rtm/enumv.android.cpp#messageqos)。                  |
-|   `priority`    |  `RTM_MESSAGE_PRIORITY`  |   选填   | `RTM_MESSAGE_PRIORITY_NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RTM_MESSAGE_PRIORITY`](/zh-CN/api-reference/rtm/enumv.android.cpp#messagepriority)。 |
+|  `qos`   | `RTM_MESSAGE_QOS` |   选填   | `RTM_MESSAGE_QOS_UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RTM_MESSAGE_QOS`](/zh-CN/api-reference/rtm/enumv#messageqos)。                  |
+|   `priority`    |  `RTM_MESSAGE_PRIORITY`  |   选填   | `RTM_MESSAGE_PRIORITY_NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RTM_MESSAGE_PRIORITY`](/zh-CN/api-reference/rtm/enumv#messagepriority)。 |
 |   `meta`   |    const char*    |   选填   | `NULL`                    |         加入 Topic 时携带的其他辅助信息。          |
 | `syncWithMedia` |   bool    |   选填   | `false`              |        此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。        |
 
@@ -58,7 +58,7 @@ virtual void joinTopic(const char* topic, const JoinTopicOptions& options, uint6
 | `userId` | const char* | 用户 ID。 |
 | `topic` | const char* | Topic 名称。 |
 | `meta` | const char* | 加入 Topic 时携带的其他辅助信息。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -90,7 +90,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 `publishTopicMessage` 方法用于向 Topic 发送消息，频道中订阅此 Topic 及此消息发布者的用户会在 100 毫秒内收到此消息。调用 `publishTopicMessage` 方法需要用户首先加入 Stream Channel 并且通过调用 `joinTopic` 方法注册成为该 Topic 的消息发布者。
 
-用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp)。
+用户发送的消息在传输的过程中会被 TLS 加密，数据链路加密默认开启且无法关闭。用户也可以在出初始化的时候开启端侧加密，以获得更高的数据安全等级，详见[初始配置](/zh-CN/api-reference/rtm/toc-configuration/configuration)。
 
 ### 接口方法
 
@@ -111,7 +111,7 @@ virtual void publishTopicMessage(const char* topic, const char* message, size_t 
 
 |     属性     |  类型  | 是否必填 | 默认值 | 描述          |
 | --------- | --- | ----- | --- | -------- |
-| `messageType`  | `RTM_MESSAGE_TYPE` |   选填   |  `RTM_MESSAGE_TYPE_BINARY`   | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#messagetype)。 |
+| `messageType`  | `RTM_MESSAGE_TYPE` |   选填   |  `RTM_MESSAGE_TYPE_BINARY`   | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv#messagetype)。 |
 |   `sendTs`   |  uint64_t  |   选填   |  `0`   | 消息发送时间戳。只有在 `joinTopic` 中设置 `syncWithMedia = true` 时，该参数才有效，SDK 会根据此时间戳与 RTC 音视频数据流进行数据同步。 |
 | `customType` | const char* |   选填   |   `NULL`    | 用户自定义字段。仅支持 String 型。     |
 
@@ -124,7 +124,7 @@ virtual void publishTopicMessage(const char* topic, const char* message, size_t 
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
 | `topic` | const char* | Topic 名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 接口方法
 
@@ -159,7 +159,7 @@ stream_channel->publishTopicMessage("topic_name", message, 5, options, requestId
 
 当你不再需要向某个 Topic 发布消息，你可以调用 `leaveTopic` 方法取消注册为该 Topic 的消息发布者，从而释放资源。该方法不影响你是否订阅该 Topic，也不影响其他用户对该 Topic 的任何操作。
 
-成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_LEAVE_TOPIC` 类型的 `onTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功调用该方法后，订阅该频道并开启事件监听的用户会收到 `RTM_TOPIC_EVENT_TYPE_REMOTE_LEAVE_TOPIC` 类型的 `onTopicEvent` 事件通知，详见 [事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -185,7 +185,7 @@ virtual void leaveTopic(const char* topic, uint64_t& requestId) = 0;
 | `userId` | const char* | 用户 ID。 |
 | `topic` | const char* | Topic 名称。 |
 | `meta` | const char* | 加入 Topic 时携带的其他辅助信息。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -252,7 +252,7 @@ virtual void subscribeTopic(const char* topic, const TopicOptions& options, uint
 | `topic` | const char* | Topic 名称。 |
 | `succeedUsers` | `UserList` | 订阅成功的用户列表。 |
 | `failedUsers` | `UserList` | 订阅失败的用户列表。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 `UserList` 数据类型包含以下属性：
 
@@ -338,7 +338,7 @@ virtual void unsubscribeTopic(const char* topic, const TopicOptions& options, ui
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
 | `topic` | const char* | Topic 名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 

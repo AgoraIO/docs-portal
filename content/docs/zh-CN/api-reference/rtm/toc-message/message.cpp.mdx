@@ -28,7 +28,7 @@ RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream 
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -57,8 +57,8 @@ virtual void publish(const char* channelName, const char* message, const size_t 
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `RTM_CHANNEL_TYPE` | 选填 | `RTM_CHANNEL_TYPE_MESSAGE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
-| `messageType` | `RTM_MESSAGE_TYPE` | 选填 | `RTM_MESSAGE_TYPE_BINARY` | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#messagetype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 选填 | `RTM_CHANNEL_TYPE_MESSAGE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `messageType` | `RTM_MESSAGE_TYPE` | 选填 | `RTM_MESSAGE_TYPE_BINARY` | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv#messagetype)。 |
 | `customType` | const char* | 选填 | `NULL` | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | bool | 选填 | `false` | <Slot name="message-cpp-html-1-4-4" /> |
 
@@ -79,7 +79,7 @@ virtual void publish(const char* channelName, const char* message, const size_t 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -172,7 +172,7 @@ virtual void getMessages(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `options` | `const GetHistoryMessagesOptions&` | 必填 | - | 查询选项。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
@@ -203,7 +203,7 @@ RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设�
 | `messageList` | `const HistoryMessage*` | 历史消息列表。 |
 | `count` | const size_t | 历史消息数量。 |
 | `newStart` | const uint64_t | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -254,4 +254,4 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。

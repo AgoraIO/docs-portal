@@ -1,0 +1,283 @@
+---
+title: "单流录制和合流录制"
+---
+
+<PlatformStructured platform="cpp">
+
+## 功能简介
+
+为支持不同的录制业务需求，本地服务端录制 SDK 支持单流和合流两种录制模式，其中：
+
+- **单流录制**，指对频道内不同的主播发出的流，根据用户 ID 进行区分并分别录制，产生不同的录制文件。
+- **合流录制**，指将频道内全部主播的音视频合流录制到一起，只生成一个录制文件。
+
+本文介绍如何使用录制 4.x SDK 分别实现单流录制和合流录制。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording)集成了录制 SDK，并实现了极简的录制功能。
+
+实现单流或合流录制的步骤，和快速开始中一致，不同的是参数的设置，以及不同录制模式下可以调用的 API。因此开始前请确保你了解实现基础录制功能所需要的步骤。
+
+## 实现单流录制
+
+单流录制完整的 API 时序如下图所示：
+
+![单流录制时序图](/img/recording/individual-recording.svg)
+
+其中，关键步骤和参数设置如下：
+
+- 初始化录制实例时，将 `enable_mix` 参数设为 `false`，表示使用单流录制；
+- 调用 `subscribe` 系列方法订阅你想要录制的用户；
+- 加入频道，并接收远端用户加入频道的回调 `onUserJoined`，获取其中的 `uid` 参数用于后续设置；
+- 根据需求，调用 [`setRecorderConfigByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#setrecorderconfigbyuid) 设置单流录制的配置项；调用 [`enableAndUpdateUpdateVideoWatermarksByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarksbyuid) 添加录制水印；
+- 调用单流录制对应的 API 开始/结束单流录制：
+  - [`startSingleRecordingByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#startsinglerecordingbyuid)：开始单流录制
+  - [`stopSingleRecordingByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#stopsinglerecordingbyuid)：停止单流录制
+
+示例代码如下：
+
+```cpp
+// ...
+// highlight-start
+// enable_mix 设为false，启用单流录制模式
+recorder->initialize(service, false);
+// highlight-end
+// 设置音频订阅逻辑
+recorder->subscribeAllAudio();
+recorder->subscribeAllVideo(options);
+// 加入频道
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+// 在收到 onUserjoined 回调后，可以针对 uid 设置 recorder config
+agora::media::MediaRecorderConfiguration config;
+config.fps = config_.video.fps;
+config.width = config_.video.width;
+config.height = config_.video.height;
+config.channel_num = config_.audio.numOfChannels;
+config.sample_rate = config_.audio.sampleRate;
+std::string curTime = getCurrentTimeAsString();
+std::string storagePath = config_.recorderPath + std::string(uid) + "_" + curTime + ".mp4";
+config.storagePath = storagePath.c_str();
+config.streamType = static_cast<agora::media::MediaRecorderStreamType>(config_.recorderStreamType) ;
+config.maxDurationMs = config_.maxDuration * 1000;
+// highlight-start
+recorder_->setRecorderConfigByUid(config, uid);
+// 设置水印 
+recorder_->enableAndUpdateVideoWatermarksByUid(watermarks, config_.waterMarks.size(), uid);
+// 开始录制
+recorder_->startSingleRecordingByUid(uid);
+// ...
+// 停止录制
+recorder_->stopSingleRecordingByUid(uid);
+// highlight-end
+```
+
+## 实现合流录制
+
+合流录制完整 API 时序如下图所示：
+
+![合流录制时序图](/img/recording/composite-recording.svg)
+
+其中，关键步骤和参数设置如下：
+
+- 初始化录制实例时，将 `enable_mix` 参数设为 `true`，表示使用合流录制；
+- 调用 `subscribe` 系列方法订阅你想要录制的用户；
+- 加入频道后，根据需求调用 [`setRecroderConfig`](/api-ref/recording/cpp/iagoramediartcrecorder#setrecorderconfig)、[`setVideoMixingLayout`](/api-ref/recording/cpp/iagoramediartcrecorder#setvideomixinglayout)、[`enableAndUpdateVideoWatermarks`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarks) 设置合流录制的配置项、合流布局、水印等；
+- 调用合流录制对应的 API 开始/结束合流录制：
+  - [`startRecording`](/api-ref/recording/cpp/iagoramediartcrecorder#startrecording)：开始合流录制
+  - [`stopRecording`](/api-ref/recording/cpp/iagoramediartcrecorder#stoprecording)：停止合流录制
+
+示例代码如下：
+
+```cpp
+// ...
+// highlight-start
+// enable_mix 设为 true，启用合流录制模式
+recorder->initialize(service, true);
+// highlight-end
+// 设置订阅逻辑
+recorder->subscribeAllAudio();
+recorder->subscribeAllVideo();
+// 加入频道
+recorder->joinChannel(config.token.c_str(), config.ChannelName.c_str(), config.UserId.c_str());
+// highlight-start
+// 设置合流录制 config、水印 config、合流的渲染布局
+recorder->setRecorderConfig(recorder_config);
+recorder->enableAndUpdateVideoWatermarks(watermarks, config.waterMarks.size());
+recorder->setVideoMixingLayout(layout);
+// highlight-end
+// 开始录制
+recorder->startRecording();
+// ...
+// 停止录制
+recorder->stopRecording();
+```
+
+## 开发注意事项
+
+如果你使用了单流录制模式，调用如下方法不生效：
+
+- `setRecorderConfig`
+- `enableAndUpdateVideoWatermarks`
+- `setVideoMixingLayout`
+- `startRecording`
+- `stopRecording`
+
+如果你使用了合流录制模式，调用如下方法不生效：
+
+- `setRecorderConfigByUid`
+- `enableAndUpdateVideoWatermarksByUid`
+- `startRecordingByUid`
+- `stopRecordingByUid`
+
+## 参考信息
+
+- [设置合流布局](/zh-CN/realtime-media/recording/local-server-recording/user-guides/set-layout)
+- [录制 API 参考](/api-ref/recording/cpp/api-overview)
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+## 功能简介
+
+为支持不同的录制业务需求，本地服务端录制 SDK 支持单流和合流两种录制模式，其中：
+
+- **单流录制**，指对频道内不同的主播发出的流，根据用户 ID 进行区分并分别录制，产生不同的录制文件。
+- **合流录制**，指将频道内全部主播的音视频合流录制到一起，只生成一个录制文件。
+
+本文介绍如何使用录制 4.x SDK 分别实现单流录制和合流录制。
+
+## 前提条件
+
+开始前，请确保你已参考[快速开始](/zh-CN/realtime-media/recording/local-server-recording/get-started/start-recording)集成了录制 SDK，并实现了极简的录制功能。
+
+实现单流或合流录制的步骤，和快速开始中一致，不同的是参数的设置，以及不同录制模式下可以调用的 API。因此开始前请确保你了解实现基础录制功能所需要的步骤。
+
+## 实现单流录制
+
+单流录制完整的 API 时序如下图所示：
+
+![单流录制时序图](/img/recording/individual-recording-java.svg)
+
+其中，关键步骤和参数设置如下：
+
+- 初始化录制实例时，将 `enableMix` 参数设为 `false`，表示使用单流录制；
+- 调用 `subscribe` 系列方法订阅你想要录制的用户；
+- 加入频道，并接收远端用户加入频道的回调 `onUserJoined`，获取其中的 `userId` 参数用于后续设置；
+- 根据需求，调用 [`setRecorderConfigByUid`](/api-ref/recording/java/agoramediartcrecorder#setrecorderconfigbyuid) 设置单流录制的配置项；调用 [`enableAndUpdateVideoWatermarksByUid`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarksbyuid) 添加录制水印；
+- 调用单流录制对应的 API 开始/结束单流录制：
+  - [`startSingleRecordingByUid`](/api-ref/recording/java/agoramediartcrecorder#startsinglerecordingbyuid)：开始单流录制
+  - [`stopSingleRecordingByUid`](/api-ref/recording/java/agoramediartcrecorder#stopsinglerecordingbyuid)：停止单流录制
+
+示例代码如下：
+
+```java
+// ...
+// highlight-start
+// enableMix 设为false，启用单流录制模式
+agoraMediaRtcRecorder.initialize(agoraService, false);
+// highlight-end
+// 设置音频订阅逻辑
+agoraMediaRtcRecorder.subscribeAllAudio();
+VideoSubscriptionOptions options = new VideoSubscriptionOptions();
+options.setEncodedFrameOnly(false);
+options.setType(Constants.VideoStreamType.VIDEO_STREAM_HIGH);
+agoraMediaRtcRecorder.subscribeAllVideo(options);
+// 加入频道
+agoraMediaRtcRecorder.joinChannel(recorderConfig.getToken(),
+                recorderConfig.getChannelName(),
+                recorderConfig.getUserId());
+// 在收到 onUserJoined 回调后，可以针对 uid 设置 recorder config
+MediaRecorderConfiguration config = new MediaRecorderConfiguration();
+config.setFps(recorderConfig.getVideo().getFps());
+config.setWidth(recorderConfig.getVideo().getWidth());
+config.setHeight(recorderConfig.getVideo().getHeight());
+config.setChannelNum(recorderConfig.getAudio().getNumOfChannels());
+config.setSampleRate(recorderConfig.getAudio().getSampleRate());
+String curTime = getCurrentTimeAsString();
+String storagePath = recorderConfig.getRecorderPath() + uid + "_" + curTime + ".mp4";
+config.setStoragePath(storagePath);
+config.setStreamType(Constants.MediaRecorderStreamType.STREAM_TYPE_BOTH);
+config.setMaxDurationMs(recorderConfig.getMaxDuration() * 1000);
+// highlight-start
+agoraMediaRtcRecorder.setRecorderConfigByUid(config, uid);
+// 设置水印
+agoraMediaRtcRecorder.enableAndUpdateVideoWatermarksByUid(watermarks, uid);
+// 开始录制
+agoraMediaRtcRecorder.startSingleRecordingByUid(uid);
+// ...
+// 停止录制
+agoraMediaRtcRecorder.stopSingleRecordingByUid(uid);
+// highlight-end
+```
+
+## 实现合流录制
+
+合流录制完整 API 时序如下图所示：
+
+![合流录制时序图](/img/recording/composite-recording-java.svg)
+
+其中，关键步骤和参数设置如下：
+
+- 初始化录制实例时，将 `enableMix` 参数设为 `true`，表示使用合流录制；
+- 调用 `subscribe` 系列方法订阅你想要录制的用户；
+- 加入频道后，根据需求调用 [`setRecorderConfig`](/api-ref/recording/java/agoramediartcrecorder#setrecorderconfig)、[`setVideoMixingLayout`](/api-ref/recording/java/agoramediartcrecorder#setvideomixinglayout)、[`enableAndUpdateVideoWatermarks`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarks) 设置合流录制的配置项、合流布局、水印等；
+- 调用合流录制对应的 API 开始/结束合流录制：
+  - [`startRecording`](/api-ref/recording/java/agoramediartcrecorder#startrecording)：开始合流录制
+  - [`stopRecording`](/api-ref/recording/java/agoramediartcrecorder#stoprecording)：停止合流录制
+
+示例代码如下：
+
+```java
+// ...
+// highlight-start
+// enableMix 设为 true，启用合流录制模式
+agoraMediaRtcRecorder.initialize(agoraService, true);
+// highlight-end
+// 设置订阅逻辑
+agoraMediaRtcRecorder.subscribeAllAudio();
+VideoSubscriptionOptions options = new VideoSubscriptionOptions();
+options.setEncodedFrameOnly(false);
+options.setType(Constants.VideoStreamType.VIDEO_STREAM_HIGH);
+agoraMediaRtcRecorder.subscribeAllVideo(options);
+// 加入频道
+agoraMediaRtcRecorder.joinChannel(recorderConfig.getToken(),
+                recorderConfig.getChannelName(),
+                recorderConfig.getUserId());
+// highlight-start
+// 设置合流录制 config、水印 config、合流的渲染布局
+agoraMediaRtcRecorder.setRecorderConfig(recorderConfig);
+agoraMediaRtcRecorder.enableAndUpdateVideoWatermarks(watermarks);
+agoraMediaRtcRecorder.setVideoMixingLayout(layout);
+// 开始录制
+agoraMediaRtcRecorder.startRecording();
+// ...
+// 停止录制
+agoraMediaRtcRecorder.stopRecording();
+// highlight-end
+```
+
+## 开发注意事项
+
+如果你使用了单流录制模式，调用如下方法不生效：
+
+- `setRecorderConfig`
+- `enableAndUpdateVideoWatermarks`
+- `setVideoMixingLayout`
+- `startRecording`
+- `stopRecording`
+
+如果你使用了合流录制模式，调用如下方法不生效：
+
+- `setRecorderConfigByUid`
+- `enableAndUpdateVideoWatermarksByUid`
+- `startSingleRecordingByUid`
+- `stopSingleRecordingByUid`
+
+## 参考信息
+
+- [设置合流布局](/zh-CN/realtime-media/recording/local-server-recording/user-guides/set-layout)
+- [录制 API 参考](/api-ref/recording/java/api-overview)
+
+</PlatformStructured>

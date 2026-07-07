@@ -17,9 +17,9 @@ title: "频道"
 
 ### 接口描述
 
-RTM 提供消息、状态等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)章节。
+RTM 提供消息、状态等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
 
-通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_JOIN_CHANNEL` 类型的 `onPresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_JOIN_CHANNEL` 类型的 `onPresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Message Channel。
@@ -68,7 +68,7 @@ virtual void subscribe(const char* channelName, const SubscribeOptions& options,
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -102,7 +102,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 ### 接口描述
 
-如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Message Channel。
@@ -129,7 +129,7 @@ virtual void unsubscribe(const char* channelName, uint64_t& requestId) = 0;
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -172,7 +172,7 @@ virtual IStreamChannel* createStreamChannel(const char* channelName, int& errorC
 |     参数      |  类型  | 是否必填 | 默认值 | 描述       |
 | ---------- | --- | ----- | --- | ---------- |
 | `channelName` | const char* |   必填   |   -    | 频道名称。 |
-| `errorCode` | int& |   必填   |   -    | （输出参数）[错误码](/zh-CN/realtime-media/rtm/error-codes.android.cpp#errorcode)。 |
+| `errorCode` | int& |   必填   |   -    | （输出参数）[错误码](/zh-CN/realtime-media/rtm/error-codes#errorcode)。 |
 
 ### 基本用法
 
@@ -260,7 +260,7 @@ virtual void join(const JoinChannelOptions& options, uint64_t& requestId) = 0;
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -296,7 +296,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 如果你不再需要待在某个频道中，你可以调用 `leave` 方法离开该频道。离开后你将不再会接收到此频道中的任何消息、状态及事件通知，你在该频道中创建的 Topic 发布者的角色及你与所有 Topic 的订阅关系都将自动解除。如果想再次恢复之前的发布者角色和订阅关系，你需要调用 `join` 方法再次进入该频道并自行调用 `joinTopic` 和 `subscribeTopic` 方法进行设置。
 
-成功离开频道后，频道中的远端用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功离开频道后，频道中的远端用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_LEAVE_CHANNEL` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法仅适用于 Stream Channel。
@@ -323,7 +323,7 @@ virtual void leave(uint64_t& requestId) = 0;
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 

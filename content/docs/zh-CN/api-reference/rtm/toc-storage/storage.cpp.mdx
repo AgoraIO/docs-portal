@@ -22,7 +22,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -38,7 +38,7 @@ virtual void setChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -59,8 +59,8 @@ virtual void setChannelMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 接口方法
 
@@ -113,7 +113,7 @@ virtual void getChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
 ### 异步回调
@@ -124,9 +124,9 @@ virtual void getChannelMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#Metadata)。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 接口方法
 
@@ -163,7 +163,7 @@ class RtmEventHandler : public IRtmEventHandler {
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -179,7 +179,7 @@ virtual void removeChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -200,8 +200,8 @@ virtual void removeChannelMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 接口方法
 
@@ -241,7 +241,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_CHANNEL` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -261,7 +261,7 @@ virtual void updateChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `const Metadata&` | 必填 | - | Metadata Item。详见 [`Metadata`](#Metadata)。 |
 | `options` | `const MetadataOptions&` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | const char* | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -282,8 +282,8 @@ virtual void updateChannelMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channelName` | const char* | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型，详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -326,7 +326,7 @@ class RtmEventHandler : public IRtmEventHandler {
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -370,7 +370,7 @@ virtual void setUserMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -433,7 +433,7 @@ virtual void getUserMetadata(const char* userId, uint64_t& requestId) = 0;
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
 | `data` | `const Metadata&` | Metadata Item。详见 [`Metadata`](#Metadata)。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -465,7 +465,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -499,7 +499,7 @@ virtual void removeUserMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -538,7 +538,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 `updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。
 
-成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -576,7 +576,7 @@ virtual void updateUserMetadata(
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -616,7 +616,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 `subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。
 
-成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `RTM_STORAGE_TYPE_USER` 类型的 `onStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -639,7 +639,7 @@ virtual void subscribeUserMetadata(const char* userId, uint64_t& requestId) = 0;
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -689,7 +689,7 @@ virtual void unsubscribeUserMetadata(const char* userId, uint64_t& requestId) = 
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `userId` | const char* | 用户 ID。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
