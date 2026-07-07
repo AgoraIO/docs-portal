@@ -1,0 +1,1788 @@
+---
+title: "自定义课堂 UI"
+---
+
+<PlatformStructured platform="android">
+
+# 教室和 UI 组件介绍
+
+## 数据交互流程
+
+在声网 Classroom SDK 中，灵动课堂的 UI 层代码和核心业务逻辑相隔离，独立成 **AgoraEduUIKit** 和 **AgoraEduCore** 两个库，两者通过 [Agora Edu Context](/api-ref/flexible-classroom/android/API/edu_context_api_overview) 产生关联。具体逻辑如下：
+
+![](https://web-cdn.agora.io/docs-files/1650273644082)
+
+## UI 组件结构介绍
+
+教室的类结构示意图如下：
+
+![](https://web-cdn.agora.io/docs-files/1650362684444)
+
+每种班型的 UI 在对应的 XML 文件中定义，这些文件中包含多个独立的 UI 组件 。UI 组件(Component)的结构示意图如下：
+
+![](https://web-cdn.agora.io/docs-files/1680494605655)
+
+开发者可自由组合 UI 组件搭建自定义界面，也可以修改预定义的 UI 组件或自定义新的 UI 组件。
+
+UI 组件列表：
+
+| 组件（Component） | 插件（Widget） | 描述 |
+| --- | --- | --- |
+| AgoraEduChatComponent | AgoraEduEaseChatWidget | IM 聊天 |
+| AgoraEduHeadComponent | / | 顶部栏 |
+| AgoraEduSettingComponent | / | 设置 |
+| AgoraEduVideoComponent | / | 视频窗口 |
+| AgoraEduVideoListComponent | / | 台上学生的视频列表 |
+| AgoraEduWhiteBoardComponent | AgoraWhiteBoardWidget | 白板 |
+| AgoraEduWhiteboardOptionsComponent | / | 白板上一页/下一页工具 |
+| AgoraEduApplianceComponent | / | 白板教具 |
+| AgoraEduTeachAidContainerComponent | <Slot name="custom-ui-android-markdown-0-9-1" /> | 答题器、倒计时、投票器 |
+| AgoraEduScreenShareComponent | / | 屏幕共享 |
+| AgoraEduRosterComponent | / | 花名册 |
+| AgoraEduOptionsComponent | / | 选项按钮 |
+| AgoraEduTeachAidContainerComponent | FCRCloudDiskWidget | 网盘 |
+
+<Slot for="custom-ui-android-markdown-0-9-1">
+
+AgoraEduIClickerWidget
+AgoraTeachAidCountDownWidget
+AgoraTeachAidVoteWidget
+
+</Slot>
+
+如果要在 UI 上使用插件，需要在相应的 XML 文件中创建对应的组件。
+
+## 自定义 UI 步骤
+
+本节介绍自定义课堂 UI 的具体步骤。
+
+###  下载源码
+
+如需修改灵动课堂的默认 UI，你首先需要通过下载 [GitHub 源码](https://github.com/AgoraIO-Community/CloudClass-Android)的方式集成灵动课堂，步骤如下：
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone https://github.com/AgoraIO-Community/CloudClass-Android.git
+    ```
+
+2. 运行以下命令进入 `CloudClass-Android` 目录并切换分支至指定版本。将 `{VERSION}` 替换为要切换的版本号：
+
+    ```shell
+    cd CloudClass-Android
+    ```
+
+    ```shell
+    git checkout release/{VERSION}
+    ```
+
+    例如要切换到 2.8.20 版本分支，执行以下命令：
+
+    ```shell
+    git checkout release/2.8.20
+    ```
+
+    声网建议你切换到最新发版分支。参考下图在 GitHub 仓库中查看最新发版分支：
+
+![查看发版分支](https://web-cdn.agora.io/docs-files/1675999719789)
+
+如果你[通过 Maven 集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate#maven-依赖集成)，需要修改 `AgoraEduUIKit` 和 `AgoraClassSDK` 模块的引用方式。
+
+在 `build.gradle` 文件中进行如下修改：
+
+   ```kotlin
+   dependencies {
+    // ...
+    implementation "io.github.agora-apaas:AgoraEduCore:版本号"
+    // implementation "io.github.agora-apaas:AgoraEduUIKit:版本号"
+    // implementation "io.github.agora-apaas:AgoraClassSDK:版本号"
+    implementation project(path: ':AgoraClassSDK')
+    implementation project(path: ':AgoraEduUIKit')
+   }
+   ```
+
+:::warning[注意]
+此处填写的 Maven 引用的版本号需要和 GitHub 源码的版本号保持一致。
+:::
+
+自定义 UI 主要涉及以下目录：
+
+- `/AgoraClassSDK`：教室页面布局。
+- `/AgoraEduUIKit`：教室使用到的所有 UI 组件。
+
+### 修改已有 UI 组件
+
+#### UI 组件目录
+
+所有 UI 组件都位于 `AgoraEduUIKit` 模块的 `com.agora.edu.component` 包目录下，找到对应的组件就可以修改 UI。
+
+![](https://web-cdn.agora.io/docs-files/1650365793677)
+
+#### 示例
+
+本示例以小班课为例，介绍如何修改顶部导航栏的高度、标题以及背景色。具体步骤如下：
+
+1. 在 Android Studio 中，打开并构建灵动课堂项目。
+
+2. 打开 `AgoraClassSDK/src/main/java/io.agora.classroom.ui` 包，找到小班课的主页面 `AgoraClassSmallActivity.kt` 文件。
+
+3. 在 `AgoraClassSmallActivity.kt` 文件中，找到 `private lateinit var binding: ActivityAgoraClassSmallBinding` 这行代码，按下 cmd 键的同时选中 `ActivityAgoraClassSmallBinding`，即可打开小班课的布局文件 `activity_agora_class_small.xml` 并跳转到 `AgoraEduHeadComponent` 组件标签。
+   :::info[信息]
+   `Activity` 与 `.xml` 文件之间的跳转是通过 `View Binding` 实现的。
+   :::
+
+![](https://web-cdn.agora.io/docs-files/1650438722532)
+
+4. 在  `AgoraEduHeadComponent` 组件标签，按下 cmd 键的同时选中 `AgoraEduHeadComponent`,即可打开定义该组件的文件 `AgoraEduHeadComponent.kt`。
+
+5. 在 `AgoraEduHeadComponent.kt` 文件中，按下 cmd 键的同时选中 `AgoraEduHeadComponentBinding` ，即可打开该组件的布局文件 `agora_edu_head_component.xml`。
+
+![](https://web-cdn.agora.io/docs-files/1650438755866)
+
+   在这个文件中，你可以通过点击预览时图中对应的内容，定位到对应的属性，来修改导航栏的高度，标题，背景色，文字等。例如，你想要修改导航栏的文字，就可以点击预览视图中的 `myclassroom`，定位到 `<androidx.appcompat.widget.AppCompatTextView`，修改 `tools:text="myclassroom"` 即可。
+
+![](https://web-cdn.agora.io/docs-files/1681892447185)
+
+### 新增自定义 UI 组件
+
+#### UI 组件的基类
+
+如果想要组件具备 `EduCore` 的能力，需要继承 `AbsAgoraEduComponent`，并且调用 `initView(agoraUIProvider: IAgoraUIProvider)` 方法初始化 UI 组件。
+
+UI 组件可通过 `IAgoraUIProvider` 接口获取 EduCore 层的数据。
+
+```kotlin
+interface IAgoraUIProvider {
+    /**
+     * 获取 EduCore 数据
+     */
+    fun getAgoraEduCore(): AgoraEduCore?
+
+    /**
+     * 可以自定义需要使用的数据
+     */
+    fun getUIDataProvider(): UIDataProvider?
+}
+```
+
+#### 示例
+
+本示例为 1 对 1 班型新增一个 `AgoraEduMyComponent` 组件。具体步骤如下：
+
+1. 定义 `AgoraEduMyComponent`类：
+
+   ```kotlin
+   class AgoraEduMyComponent : AbsAgoraEduComponent {
+       constructor(context: Context) : super(context)
+       constructor(context: Context, attr: AttributeSet) : super(context, attr)
+       constructor(context: Context, attr: AttributeSet, defStyleAttr: Int) : super(context, attr, defStyleAttr)
+
+       // 把 `xxxxBinding` 替换成你自己定义的名称
+       private var binding: xxxxBinding = xxxxBinding.inflate(LayoutInflater.from(context), this, true)
+
+       override fun initView(agoraUIProvider: IAgoraUIProvider) {
+          super.initView(agoraUIProvider)
+          // 在这里添加处理 View 的逻辑
+          // agoraUIProvider 提供教室数据能力和 View 需要的数据，你可自行定义其他逻辑
+       }
+
+   }
+   ```
+
+2. 在你想要使用该组件的页面对应的布局文件 `.xml` 中使用定义好的组件：
+
+   ```xml
+   <!--  把 `xxxx.xxx.xxxx.AgoraEduMyComponent` 替换为你定义的组件的实际包名 -->
+   <xxxx.xxx.xxxx.AgoraEduMyComponent
+       android:id="@+id/agora_class_head"
+       android:layout_width="match_parent"
+       android:layout_height="@dimen/agora_head_h_small"
+       android:gravity="center"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintTop_toTopOf="parent" />
+   ```
+
+3. 在 `AgoraClass1V1Activity` 中初始化组件：
+
+   ```kotlin
+   class AgoraClass1V1Activity : AgoraEduClassActivity() {
+       private val TAG = "AgoraClass1V1Activity"
+       lateinit var binding: ActivityAgoraClass1v1Binding
+
+       override fun onCreate(savedInstanceState: Bundle?) {
+           super.onCreate(savedInstanceState)
+           binding = ActivityAgoraClass1v1Binding.inflate(layoutInflater)
+           setContentView(binding.root)
+
+           // 创建教室对象
+           createEduCore(object : EduContextCallback<Unit> {
+               override fun onSuccess(target: Unit?) {
+                   // 教室资源加载完成后
+                   joinClassRoom()
+               }
+
+               override fun onFailure(error: EduContextError?) {
+                   error?.let {
+                       ToastManager.showShort(it.msg)
+                   }
+                   finish()
+               }
+           })
+       }
+
+       private fun joinClassRoom() {
+           runOnUiThread {
+               eduCore()?.eduContextPool()?.let { context ->
+                   // 增加这行代码初始化你定义的组件
+                   binding.agoraEduMyComponent.initView(this)
+               }
+               join()
+           }
+       }
+   }
+   ```
+
+## 组件间通信
+
+实现组件之间通信的方式主要有以下几种：
+
+- 自定义系统 API - Broadcast 通信
+- 自定义接口，通过接口传递
+- 通过 `AgoraTransportManager` 通信
+
+在灵动课堂，可以通过 AgoraTransportManager 类来实现 UI 组件间通信。你可以在定义组件的代码中加上以下示例代码：
+
+**发送信息**
+
+```kotlin
+val event = AgoraTransportEvent(AgoraTransportEventId.EVENT_ID_ALL)
+event.arg1 = 123     // 自定义消息事件的 ID
+event.extra = "data" // 消息包含的数据
+AgoraTransportManager.notify(event)
+```
+
+**接收信息**
+
+```kotlin
+AgoraTransportManager.addListener(AgoraTransportEventId.EVENT_ID_ALL, object : OnAgoraTransportListener {
+    override fun onTransport(event: AgoraTransportEvent) {
+        if (event.eventId == AgoraTransportEventId.EVENT_ID_ALL) {
+            if (event.arg1 == 123) {
+                val data = event.extra
+            }
+        }
+    }
+})
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+Classroom SDK（AgoraEduUI）和 Proctor SDK（AgoraProctorUI）原理相同，本文以 Classroom SDK 为例。
+
+在声网 Classroom SDK 中，灵动课堂的 UI 层代码和核心业务逻辑相隔离，独立成 **AgoraEduUI** 和 **AgoraEduCore** 两个库，两者通过 [Agora Edu Context](/api-ref/flexible-classroom/ios/API/edu_context_api_overview) 产生关联。
+
+如果你需要自定义课堂 UI，需要下载并修改灵动课堂源码。具体步骤参照[集成教育场景下灵动课堂并自定义](/zh-CN/solutions/flexible-classroom/get-started/integrate#集成教育场景下灵动课堂并自定义)和[集成监考场景下灵动课堂并自定义](/zh-CN/solutions/flexible-classroom/get-started/integrate#集成监考场景下灵动课堂并自定义)。
+
+## 文件夹介绍
+`AgoraEduUI` 的源码位于 `CloudClass-iOS` 仓库 `/SDKs/AgoraEduUI/Classes` 目录下，核心结构介绍如下：
+
+| 文件夹         | 描述                                                         |
+| :------------- | :----------------------------------------------------------- |
+| `/Scenes`       | 灵动课堂班型场景的组件 `UIScene`，适用于一对一课堂、小班课等班型。 |
+| `/Components`  | 灵动课堂的 UI 组件 `UIComponent`，可用于花名册、状态栏等 UI 设计。 |
+| `/Configs`      | 灵动课堂的 UI 配置，用于设置颜色，字体，图片等。 |
+| `/Views` | 灵动课堂使用的 UI 元素，如视频渲染窗口、设置界面等。         |
+| `/Models` | 用于 `AgoraEduUI` 的数据模型。 |
+
+## 交互层架构
+灵动课堂的交互层和逻辑层是相互分离，交互层的架构与设计模式如下图所示：
+
+![](https://web-cdn.agora.io/docs-files/1670308423580)
+
+## UIScene
+
+业务场景的抽象，例如一对一课堂场景对应 `FcrOneToOneUIScene`。UIScene 管理所有的 UIComponent。
+
+## UIComponent
+
+业务功能的抽象，例如一对一教学课堂中的视频列表窗口对应 `FcrOneToOneTachedWindowUIComponent`。
+
+UIComponent 管理 View Object 与 Logic Object。
+
+![](https://web-cdn.agora.io/docs-files/1680863775387)
+
+## View Object
+视图对象，负责视图数据的显示与响应用户交互，例如 `FcrWindowRenderView`。
+
+## Logic Object
+逻辑对象，提供功能 API 给 UIComponent 调用，例如媒体模块中的打开本地设备对应 `AgoraEduMediaContext.openLocalDevice`。
+
+## Logic Data
+由 Logic Object 输出的逻辑数据，例如媒体流数据对应 `AgoraEduContextStreamInfo`。
+
+## View Data
+由 Logic Data 转换而来，为视图展示所需要的数据，例如媒体流窗口数据对应  `FcrStreamWindowViewData`。
+
+## UIConfig
+UI 配置，用于设置颜色、字体、图片等。源文件位于 `SDKs/AgoraEduUI/Classes/Configs` 下，分为两个文件夹 Scenes 与 Theme。
+
+### Theme 文件夹
+
+提供与主题相关的设置，例如明亮模式与暗黑模式，前景色，字体样式等。
+
+| Theme              | 说明                   |
+| :-------------     | :-------------        |
+| `FcrUIMode`        | 明亮模式和暗夜模式。       |
+| `FcrUIColorGroup ` | 灵动课堂所使用的通用颜色。  |
+| `FcrUIFontGroup `  | 灵动课堂所使用的通用字体。  |
+| `FcrUIFrameGroup ` | 灵动课堂所使用的通用尺寸。  |
+
+例如，你想要修改明亮模式下的系统背景色，可参考以下代码：
+
+```swift
+struct FcrUIColorGroup {
+    ...
+    static var systemBackgroundColor: UIColor {
+        switch UIMode {
+            // 明亮模式下的系统背景色设置为绿色
+            case .agoraLight: return .green
+            case .agoraDark:  return UIColor(hex: 0x262626)!
+        }
+    }
+    ...
+}
+```
+
+效果如下图所示：
+
+![](https://web-cdn.agora.io/docs-files/1680863801830)
+
+### Scenes 文件夹
+
+提供每个 UIScene、UIComponent、View Object 具体的配置属性，大部分属性的值会来自 Theme 下定义好的通用属性值。例如，`FcrUIComponents.swift` 文件中配置状态栏对应的 UI Component 的背景颜色：
+
+```swift
+struct FcrUIComponentStateBar: FcrUIComponentProtocol {
+    ...
+    var backgroundColor: UIColor = FcrUIColorGroup.systemForegroundColor
+    ...    
+}
+```
+
+| 配置文件          | 交互层级          | 例子 |
+| :-------------   | :-------------  |:------------- |
+| `FcrLectureUIConfig.swift`，`FcrOneToOneUIConfig.swift`，`FcrSmallUIConfig.swift`       | UIScene      | `FcrOneToOneConfig.swift` 对应 `FcrOneToOneScene` |
+| `FcrUIComponents.swift`   | UIComponent   | `FcrUIComponentStateBar` 对应 `FcrRoomStateUIComponent`  |
+| `FcrUIItems.swift`         | View Object   | `FcrUIItemStateBarNetworkState` 对应 `AgoraRoomStateBar.netStateView` |
+
+例如，你想要修改状态栏的背景颜色为蓝色，可参考以下代码：
+
+```swift
+struct FcrUIComponentStateBar: FcrUIComponentProtocol {
+	...
+    var backgroundColor: UIColor = .blue
+	...   
+}
+```
+
+![](https://web-cdn.agora.io/docs-files/1680863821711)
+
+## 资源文件
+灵动课堂所使用的图片、动图、UI 文字等资源文件都位于 `SDKs/AgoraEduUI/Assets/` 下
+
+| 文件夹              | 说明                        |
+| :-------------     | :-------------             |
+| `images.xcassets`  | 存放所有的 PNG 文件               |
+| `others `          | 非 PNG 文件，包括动图、文案等  |
+
+## 增加新语言
+
+参考如下步骤在项目中添加新语言：
+
+1. 在 `others ` 文件夹下，复制一个原有的语言文件夹（例如 `en.Iproj`），重命名为新语言对应的名称（例如 `jp.Iproj`）。
+2. 把文件夹内的 `Localizable.strings` 文件里的 `value` 都替换为新增语言对应的值。
+3. 在进入房间前，将 `AgoraUIBaseViews` 里的全局变量 `agora_ui_language` 的值设置为新增语言对应的文件夹名，再进入房间即可生效。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+:::warning[注意]
+云课堂场景包含在 FcrUIScene 内，若需自定义云课堂场景 UI，请参考[自定义云课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new)。
+:::
+
+## UI 组件介绍
+
+灵动课堂的 UI 组件可分为功能组件、业务组件和场景组件三种。
+
+### 功能组件
+
+功能组件是灵动课堂中最基础的 UI 组件，不和业务逻辑绑定。一个功能组件维护一个功能的内部状态和逻辑，例如 `Button`、`Modal`、`Select`、 `Tree` 等。
+
+功能组件位于 `packages/agora-classroom-sdk/src/ui-kit` (灵动课堂教育场景)和 `packages/agora-proctor-sdk/src/ui-kit` (灵动课堂监考场景)目录中，采用 React + TypeScript + Storybook 的架构。每个功能组件文件夹均包含以下三个文件：
+
+-   `.tsx`: 实现 UI 组件的功能。
+-   `.css`: 实现 UI 组件的样式。
+-   `.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。你可通过 `yarn dev:ui-kit:classroom ` 或 `npm run dev:ui-kit:classroom` 命令启动项目，在 Storybook 中查看各功能组件。
+
+下表详细介绍灵动课堂中使用的功能组件：
+
+| 文件夹          | 功能组件                                                     |
+| :-------------- | :----------------------------------------------------------- |
+| `/button`       | 按钮组件。                                                   |
+| `/card`         | 通用卡片容器。                                               |
+| `/checkbox`     | 复选框。                                                     |
+| `/input`        | 输入框。                                                     |
+| `/layout`       | 布局组件，协助进行页面级整体布局。                           |
+| `/loading`      | 加载组件，用于加入教室的加载、文件上传中的加载等。           |
+| `/modal`        | 模态对话框，用于不打断当前工作流程的用户操作。               |
+| `/pagination`   | 分页组件，采用分页的形式分隔长列表，每次只加载一个页面。     |
+| `/placeholder`  | 占位图，用于视频占位图、云盘空文件占位图等。                 |
+| `/popover`      | 气泡卡片，用于点击/鼠标移入元素、弹出气泡式的卡片浮层等。    |
+| `/radio`        | 单选框。                                                     |
+| `/root-box`     | 根容器，最外层包裹页面元素的组件。                           |
+| `/roster`       | 花名册，用于展示学生列表，可进行邀请学生上讲台、发放奖励、踢出教室等操作。 |
+| `/select`       | 下拉框组件。                                                 |
+| `/sound-player` | 播放音频文件的组件。                                         |
+| `/svg-img`      | SVG 图标。                                                   |
+| `/table`        | 表格组件。                                                   |
+| `/tabs`         | 选项卡切换组件。                                             |
+| `/toast`        | 全局提示组件。                                               |
+| `/toolbar`      | 工具栏，用于展示老师学生教具。                               |
+| `/tooltip`      | 简单的文字提示气泡框。                                       |
+| `/tree`         | 树型选择组件。                                               |
+| `/volume`       | 显示说话声音的组件。                                         |
+
+### 业务组件
+
+业务组件指灵动课堂中和业务逻辑绑定的 UI 组件。业务组件大部分是由多个功能组件组合并注入相关的业务逻辑。业务组件依赖于 UI Store 中注入的 Observable 对象和行为函数来自动更新 UI 和调用 API。以举手上讲台功能为例，此功能对应的业务组件可以根据当前举手数据展示举手的用户列表，并提供按钮供用户点击，业务组件内部会调用 API 发送举手请求。
+
+![](https://web-cdn.agora.io/docs-files/1680581169965)
+
+业务组件位于  `packages/agora-classroom-sdk/src/infra/capabilities/containers`(灵动课堂教育场景) 和 `packages/agora-proctor-sdk/src/infra/capabilities/containers`(灵动课堂监考场景) 目录下。
+
+下表详细介绍灵动课堂中使用的业务组件：
+
+#### 教育场景
+| 文件夹                         | 对应的业务                                                   |
+| :-------------------------    | :----------------------------------------------------------- |
+| `/aside`                      | 大班课和小班课右侧视频和聊天框容器。                     |
+| `/award`                      | 奖励组件，实现老师发放奖励给学生的业务，当学生收到奖励时展示在视频框。                     |
+| `/cloud-driver`               | 云盘组件，实现文件上传、文件删除等业务。                     |
+| `/device-setting`             | 设备设置，实现获取摄像头、麦克风、扬声器列表以及切换设备等业务。 |
+| `/dialog`                     | Dialog 窗口，实现课中弹窗的功能。                            |
+| `/hand-up`                    | 举手组件，实现学生举手上讲台、老师接受或拒绝的业务。         |
+| `/loading`                    | 加载组件，处理加载逻辑。                                     |
+| `/nav`                        | 导航组件，处理网络状态、上课状态等。                         |
+| `/pretest`                    | 设备预检组件，实现进入课堂前设备预检业务，包含获取设备列表信息、切换设备等功能。 |
+| `/root-box`                   | 根容器，整个课堂的根组件，用于保持教室 16:9 的宽高比，比例以外的区域显示黑色背景。                                   |
+| `/roster`                     | 花名册组件，实现查看学生信息、处理上讲台请求、发奖励等业务。 |
+| `/scene-switch`               | 场景切换组件，处理分组相关业务。                             |
+| `/scenes-controller`          | 白板场景控制组件，实现新增或删除白板页。                     |
+| `/screen-share`               | 屏幕共享组件，负责渲染屏幕共享画面和屏幕共享控制栏。                             |
+| `/stream`                     | 音视频流组件，处理各班型音视频渲染，小班课轮播组件。                         |
+| `/stream-window`              | 可拖拽窗口容器组件，处理视频窗口拖拽和视频排布逻辑。                         |
+| `/toast`                      | Toast 提示组件。                                             |
+| `/toolbar`                    | 工具栏，实现白板老师学生教具相关业务。                       |
+| `/widget`                     | Widget 容器组件，负责处理自定义 Widget 的渲染和移动轨迹同步等逻辑。                    |
+| `/camera-preview`              | 视频墙功能开启时右下角所展示的本地视频画面。                                          |
+
+#### 监考场景
+| 文件夹                         | 对应的业务                                                   |
+| :-------------------------    | :----------------------------------------------------------- |
+| `/dialog`                     | Dialog 窗口，实现课中弹窗的功能。                            |
+| `/pretest`                    | 设备预检组件，实现进入课堂前设备预检业务，包含获取设备列表信息、切换设备等功能。 |
+| `/root-box`                   | 根容器，整个课堂的根组件。                                   |
+| `/stream`                     | 音视频流组件，处理各班型音视频渲染。                         |
+| `/toast`                      | Toast 提示组件。                                             |
+| `/widget`                     | Widget 组件，处理 Widget 渲染加载等逻辑。                    |
+
+### 场景组件
+#### 教育场景
+
+场景组件由多个业务组件组合而成。灵动课堂支持一对一互动教学、在线互动小班课、互动直播大班课和监考四个预设场景。场景组件位于 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios`(灵动课堂教育场景) 和 `packages/agora-proctor-sdk/src/infra/capabilities/scenarios`(灵动课堂监考场景) 目录。如果你想改动某一个场景的布局，找到对应的场景组件修改即可。
+
+| 文件夹          | 场景组件                     |
+| :-------------- | :--------------------------- |
+| `/1v1`          | 1 对 1 互动教学场景          |
+| `/big-class`    | 互动直播大班课场景           |
+| `/big-class-mobile` | 针对 Web 移动端的互动直播大班课场景 |
+| `/mid-class`    | 在线互动小班课场景           |
+
+#### 监考场景
+| 文件夹          | 场景组件                     |
+| :-------------- | :--------------------------- |
+| `/proctor`          |     监考老师端场景          |
+| `/examinee`         |     监考学生端场景          |
+
+### UI 组件关系示意图
+
+![](https://web-cdn.agora.io/docs-files/1649917558727)
+
+## 自定义功能组件
+
+### 项目集成
+
+如需自定义组件，你需要先集成灵动课堂到你的项目中，参考[集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate)。
+
+### 新增功能组件
+
+你可参考以下步骤在灵动课堂中新增功能组件，下面以灵动课堂教育场景举例：
+
+1. 在 `packages/agora-classroom-sdk/src/ui-kit/components` 目录下新建文件夹，用于存放你所需要新增的功能组件。请注意，文件夹中需包含以下三个文件：
+
+    - `index.tsx`: 实现 UI 组件的功能。
+    - `index.css`: 实现 UI 组件的样式。
+    - `index.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。
+
+2. 添加功能组件的文件夹后，在 `packages/agora-classroom-sdk/src/ui-kit/components/index.ts` 下导出该组件，以便后续在你自己的项目中导入新写的组件。
+
+以下示例展示了如何新增一个名为 `agora-demo` 的功能组件，用于展示文字：
+
+1. 在 `packages/agora-classroom-sdk/src/ui-kit/components` 目录下新建了一个 `agora-demo` 的文件夹，包含对应的 `index.tsx`，`index.css` 和 `index.stories.tsx` 文件。
+
+![](https://web-cdn.agora.io/docs-files/1649913888493)
+
+    文件内容如下：
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        color: red
+    }
+    // index.tsx
+    import React from 'react'
+    import './index.css'
+
+    export const AgoraDemo = () => {
+      return (
+        <div className="agora-demo">AgoraDemo</div>
+      )
+    }
+    // index.stories.tsx
+    import React from 'react';
+    import { Meta } from '@storybook/react';
+    import { AgoraDemo } from './index';
+
+    const meta: Meta = {
+        title: 'Components/AgoraDemo',
+        component: AgoraDemo,
+    };
+    export default meta;
+
+    export const Docs = () => (
+        <AgoraDemo />
+    )
+    ```
+
+2. 在 `packages/agora-classroom-sdk/src/ui-kit/components/index.ts` 中添加这行代码：`export * from './agora-demo';`。
+
+该功能组件在 Storybook 中的效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1649914019254)
+
+### 修改功能组件
+
+如果你想修改某个功能组件的功能和样式，找到该组件所在的文件夹并修改代码即可。以下提供几个修改示例。
+
+#### 修改 input 组件占位文字的颜色
+
+你可以通过修改 `packages/agora-classroom-sdk/src/ui-kit/components/input/index.css` 文件来修改 Input 组件中占位文字的颜色。
+
+**修改前**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #7b88a0;
+    font-size: 14px;
+}
+```
+
+![](https://web-cdn.agora.io/docs-files/1649914809363)
+
+**修改后**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: skyblue;
+    font-size: 14px;
+}
+```
+
+![](https://web-cdn.agora.io/docs-files/1649914885119)
+
+## 自定义业务组件
+
+### 新增业务组件
+
+如需新增业务组件，你可以在 `packages/agora-classroom-sdk/src/infra/capabilities/containers` 下新建文件夹，包含以下文件：
+
+-   `index.tsx`: 组合你的功能组件，注入业务逻辑，实现业务功能。
+-   `index.css`: 实现业务组件的样式。
+
+添加对应的文件夹后，你可直接导入该业务组件，启动项目查看效果。
+
+以下示例展示了如何新增一个实现在课堂中间显示上课状态及网络状态的业务组件 `agora-demo`：
+
+1. 在 `packages/agora-classroom-sdk/src/infra/capabilities/containers` 下新建文件夹 `agora-demo`，包含 `index.tsx` 文件和 `index.css` 文件。
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        width: 50%;
+        height: 50%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999;
+    }
+    .agora-demo-title {
+        color: red;
+    }
+
+    // index.tsx
+    import React from 'react';
+    import { observer } from 'mobx-react';
+    import { useStore } from '@classroom/infra/hooks/ui-store';
+    import './index.css';
+
+    export default observer(function AgoraDemo() {
+      const { navigationBarUIStore } = useStore();
+      const { classStatusText, networkQualityLabel, delay, packetLoss } = navigationBarUIStore;
+      return (
+        <div className="agora-demo">
+          <h1 className="agora-demo-title">这是我们新写的业务组件</h1>
+          <h2>用于展示网络状态和课堂状态</h2>
+          <div>
+            网络状态: {networkQualityLabel} 网络延迟: {delay} 丢包率：{packetLoss}
+          </div>
+          <div>课堂状态: {classStatusText}</div>
+        </div>
+      );
+    });
+    ```
+
+2. 在小班课场景 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/mid-class/index.tsx` 文件中导入该组件：
+
+    ```tsx
+    ...
+    // 导入定义好的 AgoraDemo 组件
+    import AgoraDemo from '@classroom/infra/capabilities/containers/agora-demo';
+    ...
+
+    export const MidClassScenario = () => {
+
+      const layoutCls = classnames('edu-room', 'mid-class-room');
+      const { shareUIStore } = useStore();
+
+      return (
+        <Room>
+          // 使用 AgoraDemo 组件
+          <AgoraDemo/>
+          ...
+        </Room>
+      );
+    };
+    ```
+
+该业务组件在灵动课堂中的效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1670308239474)
+
+### 修改业务组件
+
+如果你想修改某个业务组件的功能和样式，找到该组件所在的文件夹并修改代码即可。以下提供几个修改示例。
+
+#### 在设备设置弹窗上显示摄像头设备个数
+
+在 `packages/agora-classroom-sdk/src/infra/capabilities/containers/pretest/pretest-video.tsx` 文件中做以下修改：
+
+```tsx
+const VideoDeviceList = observer(() => {
+  const {
+    pretestUIStore: { setCameraDevice, currentCameraDeviceId, cameraDevicesList },
+  } = useStore();
+  const t = useI18n();
+  return (
+    <VideoDeviceListPanel>
+      // 添加以下这行代码，显示设备个数。这里 -1 是因为要减去默认的禁用选项 
+      <div className="-mt-10">{`${t('device.camera')} 设备个数: ${
+        cameraDevicesList.length - 1
+      }`}</div>
+      <Field
+        label=""
+        type="select"
+        value={currentCameraDeviceId}
+        options={cameraDevicesList.map((value) => ({
+          text: value.label,
+          value: value.value,
+        }))}
+        onChange={(value) => {
+          setCameraDevice(value);
+        }}
+      />
+    </VideoDeviceListPanel>
+  );
+```
+
+**修改前**
+
+![](https://web-cdn.agora.io/docs-files/1670307845321)
+
+**修改后**
+
+![](https://web-cdn.agora.io/docs-files/1670307959016)
+
+## 自定义场景布局
+
+如果你想修改场景布局，找到该场景所在的文件夹并修改代码即可。
+
+#### 移动视频区域和聊天区域的位置
+
+以下示例演示了如何将灵动课堂右侧的视频区域和聊天区域移动到左侧。这是一个跨组件的调整，因此需要修改这两个组件的父容器，也就是一对一互动教学场景容器 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/1v1/index.tsx` 文件。
+
+**修改前**
+
+```tsx
+export const OneToOneScenario = () => {
+  const layoutCls = classnames('edu-room', 'one-on-one-class-room');
+  const { shareUIStore } = useStore();
+  return (
+    <Room>
+      ...
+      <Layout className="flex-grow items-stretch fcr-room-bg h-full">
+        <Layout
+          className="flex-grow items-stretch relative"
+          direction="col"
+          style={{ paddingTop: 2 }}>
+          <Whiteboard />
+          <ScreenShareContainer />
+          <WhiteboardToolbar />
+          <ScenesController />
+          <RemoteControlContainer />
+          <StreamWindowsContainer />
+          <RemoteControlToolbar />
+        </Layout>
+        // 视频区域和聊天区域
+        <Aside>
+          <Room1v1StreamsContainer />
+          <Chat />
+        </Aside>
+      </Layout>
+      ...
+  );
+};
+```
+
+![](https://web-cdn.agora.io/docs-files/1670308259047)
+
+**修改后**
+
+```tsx
+export const OneToOneScenario = () => {
+  const layoutCls = classnames('edu-room', 'one-on-one-class-room');
+  const { shareUIStore } = useStore();
+  return (
+    <Room>
+      ...
+        <Layout className="flex-grow items-stretch fcr-room-bg h-full">
+          // 视频区域和聊天区域
+          <Aside>
+            <Room1v1StreamsContainer />
+            <Chat />
+          </Aside>
+          <Layout>
+            className="flex-grow items-stretch relative"
+            direction="col"
+            style={{ paddingTop: 2 }}>
+            <Whiteboard />
+            <ScreenShareContainer />
+            <WhiteboardToolbar />
+            <ScenesController />
+            <RemoteControlContainer />
+            <StreamWindowsContainer />
+            <RemoteControlToolbar />
+          </Layout>
+        </Layout>
+            ...
+  );
+};
+```
+
+![](https://web-cdn.agora.io/docs-files/1670308274433)
+
+#### 添加 Logo
+
+如果你想在右侧 `<Aside>` 添加一个 logo，你需要先实现 `Logo`组件，然后在 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/1v1/index.tsx` 文件中做以下修改：
+
+```tsx
+...
+<Aside>
+    // 使用 Logo 组件
+    <Logo/>
+    <Room1v1StreamsContainer />
+    <ChatWidgetPC />
+</Aside>
+...
+```
+
+## 修改 UI Store
+
+业务组件由多个功能组件组合且依赖 UI Store。如果你新增或修改了业务组件，就需要修改 UI Store。本节介绍如何修改业务组件所依赖的 UI Store。
+
+UI Store 位于 `packages/agora-classroom-sdk/src/infra/stores` 目录下，具体介绍如下：
+
+| 文件夹         | 说明                        |
+| :------------- | :-------------------------- |
+| `/common`      | 各场景通用的 UI Store       |
+| `/interactive` | 为小班课定制的 UI Store     |
+| `/lecture`     | 为大班课定制的 UI Store     |
+| `/lecture-h5`  | 为 H5 大班课定制的 UI Store |
+| `/one-on-one`  | 为一对一场景定制的 UI Store |
+
+`/common` 中的 `EduClassroomUIStore` 为基类。如果你需要定制某个场景的某个功能，则需要继承该类，并重写对应的 UI Store。
+
+例如，你需要修改大班课的 UI Store，就需要在 `packages/agora-classroom-sdk/src/infra/stores/lecture/index.ts` 文件中继承 `EduClassroomUIStore` 类并重写对应的 UI Store。可参照以下示例代码：
+
+```typescript
+import { EduClassroomStore } from 'agora-edu-core';
+import { EduClassroomUIStore } from '../common';
+import { LectureBoardUIStore } from './board';
+import { LectureRosterUIStore } from './roster';
+import { LectureRoomStreamUIStore } from './stream';
+import { LectrueToolbarUIStore } from './toolbar';
+
+export class EduLectureUIStore extends EduClassroomUIStore {
+  constructor(store: EduClassroomStore) {
+    super(store);
+    //重写 Stream UI Store
+    this._streamUIStore = new LectureRoomStreamUIStore(store, this.shareUIStore, this._getters);
+    //重写 Roster UI Store
+    this._rosterUIStore = new LectureRosterUIStore(store, this.shareUIStore, this._getters);
+    //重写 Board UI Store
+    this._boardUIStore = new LectureBoardUIStore(store, this.shareUIStore, this._getters);
+    //重写 Toolbar UI Store
+    this._toolbarUIStore = new LectrueToolbarUIStore(store, this.shareUIStore, this._getters);
+  }
+
+  get streamUIStore() {
+    return this._streamUIStore as LectureRoomStreamUIStore;
+  }
+
+  get rosterUIStore() {
+    return this._rosterUIStore as LectureRosterUIStore;
+  }
+}
+```
+
+### 修改老师授权后学生的教具
+
+如果你想在所有场景中修改老师授权后学生的教具，修改 `/common` 下的 `toolbar/index.ts` 文件即可。如果你只想修改某个场景中老师授权后学生的教具，可以在对应的场景目录下，修改 `toolbar.ts` 文件（如果没有该文件，需要新建一个文件）并重写方法。
+
+例如，你想从一对一场景的教具中去掉花名册，则需要在 `packages/agora-classroom-sdk/src/infra/stores/one-on-one/toolbar.ts` 文件中做以下修改：
+
+修改前：
+
+```typescript
+...
+// 继承基类 Toolbar UI Store
+export class OneToOneToolbarUIStore extends ToolbarUIStore {
+  readonly allowedCabinetItems: string[] = [
+    CabinetItemEnum.Whiteboard,
+    CabinetItemEnum.ScreenShare,
+    CabinetItemEnum.Laser,
+  ];
+  @computed
+  get teacherTools(): ToolbarItem[] {
+  ...
+
+  @computed
+  get studentTools(): ToolbarItem[] {
+    ...
+    return [
+      ...
+      ToolbarItem.fromData({
+        value: 'eraser',
+        label: 'scaffold.eraser',
+        icon: 'eraser',
+        category: ToolbarItemCategory.Eraser,
+      }),
+      {
+          value: 'register',
+          label: 'scaffold.register',
+          icon: 'register',
+          category: ToolbarItemCategory.Roster,
+      },
+    ];
+  }
+}
+```
+
+修改后：
+
+```typescript
+...
+// 继承基类 Toolbar UI Store
+export class OneToOneToolbarUIStore extends ToolbarUIStore {
+  readonly allowedCabinetItems: string[] = [
+    CabinetItemEnum.Whiteboard,
+    CabinetItemEnum.ScreenShare,
+    CabinetItemEnum.Laser,
+  ];
+  @computed
+  get teacherTools(): ToolbarItem[] {
+  ...
+
+  @computed
+  get studentTools(): ToolbarItem[] {
+    ...
+    return [
+      ...
+      ToolbarItem.fromData({
+        value: 'eraser',
+        label: 'scaffold.eraser',
+        icon: 'eraser',
+        category: ToolbarItemCategory.Eraser,
+      }),
+    ];
+  }
+}
+```
+
+效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1670308289675)
+
+![](https://web-cdn.agora.io/docs-files/1670308305757)
+
+## 更多示例
+
+### 修改教室背景色
+
+如需修改教室背景色，可修改 `packages/agora-classroom-sdk/src/infra/capabilities/containers/root-box/fixed-aspect-ratio.tsx` 文件中的代码。
+
+```tsx
+const FixedAspectRatioContainer: React.FC<FixedAspectRatioProps> = observer(
+    ({children, minimumWidth = 0, minimumHeight = 0}) => {
+        const style = useClassroomStyle({minimumHeight, minimumWidth});
+
+        const {shareUIStore} = useStore();
+
+        return (
+            <div
+                // 可以使用 tailwind 类名
+                className="flex bg-black justify-center items-center h-screen w-screen"
+                // 或者设置 CSS 属性
+                style={{backgroundColor: "red"}}>
+                <div style={style} className={`w-full h-full relative ${shareUIStore.classroomViewportClassName}`}>
+                    {children}
+                </div>
+            </div>
+        );
+    },
+);
+```
+
+### 修改白板背景色
+
+如需修改白板背景色，可修改 `packages/agora-plugin-gallery/src/gallery/whiteboard/style.css` 文件中的代码。
+
+```css
+.netless-whiteboard-wrapper {
+  height: 100%;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 4px;
+  @apply bg-foreground border-divider;
+  background: #000; /* 这行设置白板颜色背景色为黑色 */
+}
+```
+
+### 修改白板布局比例
+
+如需调整白板布局，可修改 `packages/agora-classroom-sdk/src/infra/stores/common/board/index.ts` 文件中的代码。灵动课堂会先按照 `packages/agora-classroom-sdk/src/infra/stores/common/share/index.ts` 中的 `viewportAspectRatio` 计算出整体教室区域的宽高, 再计算出白板容器的高度，最后根据白板占白板容器的比例 `heightRatio` 动态设置白板的大小。
+
+```typescript
+// packages/agora-classroom-sdk/src/infra/stores/common/share/index.ts
+...
+//设置教室尺寸
+updateClassroomViewportSize() {
+  ...
+    //获取当前窗口宽高
+    const { width, height } = getRootDimensions(this._containerNode);
+
+    const aspectRatio = this._viewportAspectRatio;
+
+    const curAspectRatio = height / width;
+
+    const scopeSize = { height, width };
+    //计算教室保持固定宽高比
+    if (curAspectRatio > aspectRatio) {
+      // 缩短高度
+      scopeSize.height = width * aspectRatio;
+    } else if (curAspectRatio < aspectRatio) {
+      // 缩短宽度
+      scopeSize.width = height / aspectRatio;
+    }
+  ...
+}
+...
+// packages/agora-classroom-sdk/src/infra/stores/common/board/index.ts
+//设置白板比例
+...
+  protected get uiOverrides() {
+    return {
+      ...super.uiOverrides,
+      heightRatio: 1
+    };
+  }
+
+  /**
+   * 白板容器高度
+   * @returns
+   */
+  @computed
+  get boardAreaHeight() {
+    //设置白板交互区高度（减去导航栏高度）
+    const viewportHeight =
+      this.shareUIStore.classroomViewportSize.height - this.shareUIStore.navHeight;
+    //设置白板比例
+    const heightRatio = this.getters.stageVisible ? this.uiOverrides.heightRatio : 1;
+    //设置白板高度
+    const height = heightRatio * viewportHeight;
+
+    return height;
+  }
+...
+```
+
+上述改动会应用于所有场景。如果你只想修改一对一场景中的白板高度，则可在 `packages/agora-classroom-sdk/src/infra/stores/one-on-one` 目录下新建 `board.ts` 文件，代码如下：
+
+```typescript
+// packages/agora-classroom-sdk/src/infra/stores/one-on-one/board.ts
+import {BoardUIStore} from "../common/board-ui";
+
+export class OneToOneBoardUIStore extends BoardUIStore {
+    protected get uiOverrides() {
+        return {
+            ...super.uiOverrides,
+            heightRatio: 1,
+        };
+    }
+}
+```
+
+### 修改屏幕共享背景颜色
+
+如果你想要修改屏幕共享的背景颜色，在 `packages/agora-classroom-sdk/src/infra/capabilities/containers/screen-share/index.css` 中 `remote-screen-share-container` 下面一行增加以下代码即可：
+
+```typescript
+/* 覆盖屏幕共享背景样式 */
+div {
+  background-color: unset!important;
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+:::warning[注意]
+云课堂场景包含在 FcrUIScene 内，若需自定义云课堂场景 UI，请参考[自定义云课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new)。
+:::
+
+## UI 组件介绍
+
+灵动课堂的 UI 组件可分为功能组件、业务组件和场景组件三种。
+
+### 功能组件
+
+功能组件是灵动课堂中最基础的 UI 组件，不和业务逻辑绑定。一个功能组件维护一个功能的内部状态和逻辑，例如 `Button`、`Modal`、`Select`、 `Tree` 等。
+
+功能组件位于 `packages/agora-classroom-sdk/src/ui-kit` (灵动课堂教育场景)和 `packages/agora-proctor-sdk/src/ui-kit` (灵动课堂监考场景)目录中，采用 React + TypeScript + Storybook 的架构。每个功能组件文件夹均包含以下三个文件：
+
+-   `.tsx`: 实现 UI 组件的功能。
+-   `.css`: 实现 UI 组件的样式。
+-   `.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。你可通过 `yarn dev:ui-kit:classroom ` 或 `npm run dev:ui-kit:classroom` 命令启动项目，在 Storybook 中查看各功能组件。
+
+下表详细介绍灵动课堂中使用的功能组件：
+
+| 文件夹          | 功能组件                                                     |
+| :-------------- | :----------------------------------------------------------- |
+| `/button`       | 按钮组件。                                                   |
+| `/card`         | 通用卡片容器。                                               |
+| `/checkbox`     | 复选框。                                                     |
+| `/input`        | 输入框。                                                     |
+| `/layout`       | 布局组件，协助进行页面级整体布局。                           |
+| `/loading`      | 加载组件，用于加入教室的加载、文件上传中的加载等。           |
+| `/modal`        | 模态对话框，用于不打断当前工作流程的用户操作。               |
+| `/pagination`   | 分页组件，采用分页的形式分隔长列表，每次只加载一个页面。     |
+| `/placeholder`  | 占位图，用于视频占位图、云盘空文件占位图等。                 |
+| `/popover`      | 气泡卡片，用于点击/鼠标移入元素、弹出气泡式的卡片浮层等。    |
+| `/radio`        | 单选框。                                                     |
+| `/root-box`     | 根容器，最外层包裹页面元素的组件。                           |
+| `/roster`       | 花名册，用于展示学生列表，可进行邀请学生上讲台、发放奖励、踢出教室等操作。 |
+| `/select`       | 下拉框组件。                                                 |
+| `/sound-player` | 播放音频文件的组件。                                         |
+| `/svg-img`      | SVG 图标。                                                   |
+| `/table`        | 表格组件。                                                   |
+| `/tabs`         | 选项卡切换组件。                                             |
+| `/toast`        | 全局提示组件。                                               |
+| `/toolbar`      | 工具栏，用于展示老师学生教具。                               |
+| `/tooltip`      | 简单的文字提示气泡框。                                       |
+| `/tree`         | 树型选择组件。                                               |
+| `/volume`       | 显示说话声音的组件。                                         |
+
+### 业务组件
+
+业务组件指灵动课堂中和业务逻辑绑定的 UI 组件。业务组件大部分是由多个功能组件组合并注入相关的业务逻辑。业务组件依赖于 UI Store 中注入的 Observable 对象和行为函数来自动更新 UI 和调用 API。以举手上讲台功能为例，此功能对应的业务组件可以根据当前举手数据展示举手的用户列表，并提供按钮供用户点击，业务组件内部会调用 API 发送举手请求。
+
+![](https://web-cdn.agora.io/docs-files/1680581169965)
+
+业务组件位于  `packages/agora-classroom-sdk/src/infra/capabilities/containers`(灵动课堂教育场景) 和 `packages/agora-proctor-sdk/src/infra/capabilities/containers`(灵动课堂监考场景) 目录下。
+
+下表详细介绍灵动课堂中使用的业务组件：
+
+#### 教育场景
+| 文件夹                         | 对应的业务                                                   |
+| :-------------------------    | :----------------------------------------------------------- |
+| `/aside`                      | 大班课和小班课右侧视频和聊天框容器。                     |
+| `/award`                      | 奖励组件，实现老师发放奖励给学生的业务，当学生收到奖励时展示在视频框。                     |
+| `/cloud-driver`               | 云盘组件，实现文件上传、文件删除等业务。                     |
+| `/device-setting`             | 设备设置，实现获取摄像头、麦克风、扬声器列表以及切换设备等业务。 |
+| `/dialog`                     | Dialog 窗口，实现课中弹窗的功能。                            |
+| `/hand-up`                    | 举手组件，实现学生举手上讲台、老师接受或拒绝的业务。         |
+| `/loading`                    | 加载组件，处理加载逻辑。                                     |
+| `/nav`                        | 导航组件，处理网络状态、上课状态等。                         |
+| `/pretest`                    | 设备预检组件，实现进入课堂前设备预检业务，包含获取设备列表信息、切换设备等功能。 |
+| `/root-box`                   | 根容器，整个课堂的根组件，用于保持教室 16:9 的宽高比，比例以外的区域显示黑色背景。                                   |
+| `/roster`                     | 花名册组件，实现查看学生信息、处理上讲台请求、发奖励等业务。 |
+| `/scene-switch`               | 场景切换组件，处理分组相关业务。                             |
+| `/scenes-controller`          | 白板场景控制组件，实现新增或删除白板页。                     |
+| `/screen-share`               | 屏幕共享组件，负责渲染屏幕共享画面和屏幕共享控制栏。                             |
+| `/stream`                     | 音视频流组件，处理各班型音视频渲染，小班课轮播组件。                         |
+| `/stream-window`              | 可拖拽窗口容器组件，处理视频窗口拖拽和视频排布逻辑。                         |
+| `/toast`                      | Toast 提示组件。                                             |
+| `/toolbar`                    | 工具栏，实现白板老师学生教具相关业务。                       |
+| `/widget`                     | Widget 容器组件，负责处理自定义 Widget 的渲染和移动轨迹同步等逻辑。                    |
+| `/camera-preview`              | 视频墙功能开启时右下角所展示的本地视频画面。                                          |
+
+#### 监考场景
+| 文件夹                         | 对应的业务                                                   |
+| :-------------------------    | :----------------------------------------------------------- |
+| `/dialog`                     | Dialog 窗口，实现课中弹窗的功能。                            |
+| `/pretest`                    | 设备预检组件，实现进入课堂前设备预检业务，包含获取设备列表信息、切换设备等功能。 |
+| `/root-box`                   | 根容器，整个课堂的根组件。                                   |
+| `/stream`                     | 音视频流组件，处理各班型音视频渲染。                         |
+| `/toast`                      | Toast 提示组件。                                             |
+| `/widget`                     | Widget 组件，处理 Widget 渲染加载等逻辑。                    |
+
+### 场景组件
+#### 教育场景
+
+场景组件由多个业务组件组合而成。灵动课堂支持一对一互动教学、在线互动小班课、互动直播大班课和监考四个预设场景。场景组件位于 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios`(灵动课堂教育场景) 和 `packages/agora-proctor-sdk/src/infra/capabilities/scenarios`(灵动课堂监考场景) 目录。如果你想改动某一个场景的布局，找到对应的场景组件修改即可。
+
+| 文件夹          | 场景组件                     |
+| :-------------- | :--------------------------- |
+| `/1v1`          | 1 对 1 互动教学场景          |
+| `/big-class`    | 互动直播大班课场景           |
+| `/big-class-mobile` | 针对 Web 移动端的互动直播大班课场景 |
+| `/mid-class`    | 在线互动小班课场景           |
+
+#### 监考场景
+| 文件夹          | 场景组件                     |
+| :-------------- | :--------------------------- |
+| `/proctor`          |     监考老师端场景          |
+| `/examinee`         |     监考学生端场景          |
+
+### UI 组件关系示意图
+
+![](https://web-cdn.agora.io/docs-files/1649917558727)
+
+## 自定义功能组件
+
+### 项目集成
+
+如需自定义组件，你需要先集成灵动课堂到你的项目中，参考[集成灵动课堂](/zh-CN/solutions/flexible-classroom/get-started/integrate)。
+
+### 新增功能组件
+
+你可参考以下步骤在灵动课堂中新增功能组件，下面以灵动课堂教育场景举例：
+
+1. 在 `packages/agora-classroom-sdk/src/ui-kit/components` 目录下新建文件夹，用于存放你所需要新增的功能组件。请注意，文件夹中需包含以下三个文件：
+
+    - `index.tsx`: 实现 UI 组件的功能。
+    - `index.css`: 实现 UI 组件的样式。
+    - `index.stories.tsx`: 用于 UI 组件在 Storybook 中的预览和调试。
+
+2. 添加功能组件的文件夹后，在 `packages/agora-classroom-sdk/src/ui-kit/components/index.ts` 下导出该组件，以便后续在你自己的项目中导入新写的组件。
+
+以下示例展示了如何新增一个名为 `agora-demo` 的功能组件，用于展示文字：
+
+1. 在 `packages/agora-classroom-sdk/src/ui-kit/components` 目录下新建了一个 `agora-demo` 的文件夹，包含对应的 `index.tsx`，`index.css` 和 `index.stories.tsx` 文件。
+
+![](https://web-cdn.agora.io/docs-files/1649913888493)
+
+    文件内容如下：
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        color: red
+    }
+    // index.tsx
+    import React from 'react'
+    import './index.css'
+
+    export const AgoraDemo = () => {
+      return (
+        <div className="agora-demo">AgoraDemo</div>
+      )
+    }
+    // index.stories.tsx
+    import React from 'react';
+    import { Meta } from '@storybook/react';
+    import { AgoraDemo } from './index';
+
+    const meta: Meta = {
+        title: 'Components/AgoraDemo',
+        component: AgoraDemo,
+    };
+    export default meta;
+
+    export const Docs = () => (
+        <AgoraDemo />
+    )
+    ```
+
+2. 在 `packages/agora-classroom-sdk/src/ui-kit/components/index.ts` 中添加这行代码：`export * from './agora-demo';`。
+
+该功能组件在 Storybook 中的效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1649914019254)
+
+### 修改功能组件
+
+如果你想修改某个功能组件的功能和样式，找到该组件所在的文件夹并修改代码即可。以下提供几个修改示例。
+
+#### 修改 input 组件占位文字的颜色
+
+你可以通过修改 `packages/agora-classroom-sdk/src/ui-kit/components/input/index.css` 文件来修改 Input 组件中占位文字的颜色。
+
+**修改前**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #7b88a0;
+    font-size: 14px;
+}
+```
+
+![](https://web-cdn.agora.io/docs-files/1649914809363)
+
+**修改后**
+
+```css
+.fcr-input-wrapper input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: skyblue;
+    font-size: 14px;
+}
+```
+
+![](https://web-cdn.agora.io/docs-files/1649914885119)
+
+## 自定义业务组件
+
+### 新增业务组件
+
+如需新增业务组件，你可以在 `packages/agora-classroom-sdk/src/infra/capabilities/containers` 下新建文件夹，包含以下文件：
+
+-   `index.tsx`: 组合你的功能组件，注入业务逻辑，实现业务功能。
+-   `index.css`: 实现业务组件的样式。
+
+添加对应的文件夹后，你可直接导入该业务组件，启动项目查看效果。
+
+以下示例展示了如何新增一个实现在课堂中间显示上课状态及网络状态的业务组件 `agora-demo`：
+
+1. 在 `packages/agora-classroom-sdk/src/infra/capabilities/containers` 下新建文件夹 `agora-demo`，包含 `index.tsx` 文件和 `index.css` 文件。
+
+    ```tsx
+    // index.css
+    .agora-demo {
+        width: 50%;
+        height: 50%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999999;
+    }
+    .agora-demo-title {
+        color: red;
+    }
+
+    // index.tsx
+    import React from 'react';
+    import { observer } from 'mobx-react';
+    import { useStore } from '@classroom/infra/hooks/ui-store';
+    import './index.css';
+
+    export default observer(function AgoraDemo() {
+      const { navigationBarUIStore } = useStore();
+      const { classStatusText, networkQualityLabel, delay, packetLoss } = navigationBarUIStore;
+      return (
+        <div className="agora-demo">
+          <h1 className="agora-demo-title">这是我们新写的业务组件</h1>
+          <h2>用于展示网络状态和课堂状态</h2>
+          <div>
+            网络状态: {networkQualityLabel} 网络延迟: {delay} 丢包率：{packetLoss}
+          </div>
+          <div>课堂状态: {classStatusText}</div>
+        </div>
+      );
+    });
+    ```
+
+2. 在小班课场景 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/mid-class/index.tsx` 文件中导入该组件：
+
+    ```tsx
+    ...
+    // 导入定义好的 AgoraDemo 组件
+    import AgoraDemo from '@classroom/infra/capabilities/containers/agora-demo';
+    ...
+
+    export const MidClassScenario = () => {
+
+      const layoutCls = classnames('edu-room', 'mid-class-room');
+      const { shareUIStore } = useStore();
+
+      return (
+        <Room>
+          // 使用 AgoraDemo 组件
+          <AgoraDemo/>
+          ...
+        </Room>
+      );
+    };
+    ```
+
+该业务组件在灵动课堂中的效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1670308239474)
+
+### 修改业务组件
+
+如果你想修改某个业务组件的功能和样式，找到该组件所在的文件夹并修改代码即可。以下提供几个修改示例。
+
+#### 在设备设置弹窗上显示摄像头设备个数
+
+在 `packages/agora-classroom-sdk/src/infra/capabilities/containers/pretest/pretest-video.tsx` 文件中做以下修改：
+
+```tsx
+const VideoDeviceList = observer(() => {
+  const {
+    pretestUIStore: { setCameraDevice, currentCameraDeviceId, cameraDevicesList },
+  } = useStore();
+  const t = useI18n();
+  return (
+    <VideoDeviceListPanel>
+      // 添加以下这行代码，显示设备个数。这里 -1 是因为要减去默认的禁用选项 
+      <div className="-mt-10">{`${t('device.camera')} 设备个数: ${
+        cameraDevicesList.length - 1
+      }`}</div>
+      <Field
+        label=""
+        type="select"
+        value={currentCameraDeviceId}
+        options={cameraDevicesList.map((value) => ({
+          text: value.label,
+          value: value.value,
+        }))}
+        onChange={(value) => {
+          setCameraDevice(value);
+        }}
+      />
+    </VideoDeviceListPanel>
+  );
+```
+
+**修改前**
+
+![](https://web-cdn.agora.io/docs-files/1670307845321)
+
+**修改后**
+
+![](https://web-cdn.agora.io/docs-files/1670307959016)
+
+## 自定义场景布局
+
+如果你想修改场景布局，找到该场景所在的文件夹并修改代码即可。
+
+#### 移动视频区域和聊天区域的位置
+
+以下示例演示了如何将灵动课堂右侧的视频区域和聊天区域移动到左侧。这是一个跨组件的调整，因此需要修改这两个组件的父容器，也就是一对一互动教学场景容器 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/1v1/index.tsx` 文件。
+
+**修改前**
+
+```tsx
+export const OneToOneScenario = () => {
+  const layoutCls = classnames('edu-room', 'one-on-one-class-room');
+  const { shareUIStore } = useStore();
+  return (
+    <Room>
+      ...
+      <Layout className="flex-grow items-stretch fcr-room-bg h-full">
+        <Layout
+          className="flex-grow items-stretch relative"
+          direction="col"
+          style={{ paddingTop: 2 }}>
+          <Whiteboard />
+          <ScreenShareContainer />
+          <WhiteboardToolbar />
+          <ScenesController />
+          <RemoteControlContainer />
+          <StreamWindowsContainer />
+          <RemoteControlToolbar />
+        </Layout>
+        // 视频区域和聊天区域
+        <Aside>
+          <Room1v1StreamsContainer />
+          <Chat />
+        </Aside>
+      </Layout>
+      ...
+  );
+};
+```
+
+![](https://web-cdn.agora.io/docs-files/1670308259047)
+
+**修改后**
+
+```tsx
+export const OneToOneScenario = () => {
+  const layoutCls = classnames('edu-room', 'one-on-one-class-room');
+  const { shareUIStore } = useStore();
+  return (
+    <Room>
+      ...
+        <Layout className="flex-grow items-stretch fcr-room-bg h-full">
+          // 视频区域和聊天区域
+          <Aside>
+            <Room1v1StreamsContainer />
+            <Chat />
+          </Aside>
+          <Layout>
+            className="flex-grow items-stretch relative"
+            direction="col"
+            style={{ paddingTop: 2 }}>
+            <Whiteboard />
+            <ScreenShareContainer />
+            <WhiteboardToolbar />
+            <ScenesController />
+            <RemoteControlContainer />
+            <StreamWindowsContainer />
+            <RemoteControlToolbar />
+          </Layout>
+        </Layout>
+            ...
+  );
+};
+```
+
+![](https://web-cdn.agora.io/docs-files/1670308274433)
+
+#### 添加 Logo
+
+如果你想在右侧 `<Aside>` 添加一个 logo，你需要先实现 `Logo`组件，然后在 `packages/agora-classroom-sdk/src/infra/capabilities/scenarios/1v1/index.tsx` 文件中做以下修改：
+
+```tsx
+...
+<Aside>
+    // 使用 Logo 组件
+    <Logo/>
+    <Room1v1StreamsContainer />
+    <ChatWidgetPC />
+</Aside>
+...
+```
+
+## 修改 UI Store
+
+业务组件由多个功能组件组合且依赖 UI Store。如果你新增或修改了业务组件，就需要修改 UI Store。本节介绍如何修改业务组件所依赖的 UI Store。
+
+UI Store 位于 `packages/agora-classroom-sdk/src/infra/stores` 目录下，具体介绍如下：
+
+| 文件夹         | 说明                        |
+| :------------- | :-------------------------- |
+| `/common`      | 各场景通用的 UI Store       |
+| `/interactive` | 为小班课定制的 UI Store     |
+| `/lecture`     | 为大班课定制的 UI Store     |
+| `/lecture-h5`  | 为 H5 大班课定制的 UI Store |
+| `/one-on-one`  | 为一对一场景定制的 UI Store |
+
+`/common` 中的 `EduClassroomUIStore` 为基类。如果你需要定制某个场景的某个功能，则需要继承该类，并重写对应的 UI Store。
+
+例如，你需要修改大班课的 UI Store，就需要在 `packages/agora-classroom-sdk/src/infra/stores/lecture/index.ts` 文件中继承 `EduClassroomUIStore` 类并重写对应的 UI Store。可参照以下示例代码：
+
+```typescript
+import { EduClassroomStore } from 'agora-edu-core';
+import { EduClassroomUIStore } from '../common';
+import { LectureBoardUIStore } from './board';
+import { LectureRosterUIStore } from './roster';
+import { LectureRoomStreamUIStore } from './stream';
+import { LectrueToolbarUIStore } from './toolbar';
+
+export class EduLectureUIStore extends EduClassroomUIStore {
+  constructor(store: EduClassroomStore) {
+    super(store);
+    //重写 Stream UI Store
+    this._streamUIStore = new LectureRoomStreamUIStore(store, this.shareUIStore, this._getters);
+    //重写 Roster UI Store
+    this._rosterUIStore = new LectureRosterUIStore(store, this.shareUIStore, this._getters);
+    //重写 Board UI Store
+    this._boardUIStore = new LectureBoardUIStore(store, this.shareUIStore, this._getters);
+    //重写 Toolbar UI Store
+    this._toolbarUIStore = new LectrueToolbarUIStore(store, this.shareUIStore, this._getters);
+  }
+
+  get streamUIStore() {
+    return this._streamUIStore as LectureRoomStreamUIStore;
+  }
+
+  get rosterUIStore() {
+    return this._rosterUIStore as LectureRosterUIStore;
+  }
+}
+```
+
+### 修改老师授权后学生的教具
+
+如果你想在所有场景中修改老师授权后学生的教具，修改 `/common` 下的 `toolbar/index.ts` 文件即可。如果你只想修改某个场景中老师授权后学生的教具，可以在对应的场景目录下，修改 `toolbar.ts` 文件（如果没有该文件，需要新建一个文件）并重写方法。
+
+例如，你想从一对一场景的教具中去掉花名册，则需要在 `packages/agora-classroom-sdk/src/infra/stores/one-on-one/toolbar.ts` 文件中做以下修改：
+
+修改前：
+
+```typescript
+...
+// 继承基类 Toolbar UI Store
+export class OneToOneToolbarUIStore extends ToolbarUIStore {
+  readonly allowedCabinetItems: string[] = [
+    CabinetItemEnum.Whiteboard,
+    CabinetItemEnum.ScreenShare,
+    CabinetItemEnum.Laser,
+  ];
+  @computed
+  get teacherTools(): ToolbarItem[] {
+  ...
+
+  @computed
+  get studentTools(): ToolbarItem[] {
+    ...
+    return [
+      ...
+      ToolbarItem.fromData({
+        value: 'eraser',
+        label: 'scaffold.eraser',
+        icon: 'eraser',
+        category: ToolbarItemCategory.Eraser,
+      }),
+      {
+          value: 'register',
+          label: 'scaffold.register',
+          icon: 'register',
+          category: ToolbarItemCategory.Roster,
+      },
+    ];
+  }
+}
+```
+
+修改后：
+
+```typescript
+...
+// 继承基类 Toolbar UI Store
+export class OneToOneToolbarUIStore extends ToolbarUIStore {
+  readonly allowedCabinetItems: string[] = [
+    CabinetItemEnum.Whiteboard,
+    CabinetItemEnum.ScreenShare,
+    CabinetItemEnum.Laser,
+  ];
+  @computed
+  get teacherTools(): ToolbarItem[] {
+  ...
+
+  @computed
+  get studentTools(): ToolbarItem[] {
+    ...
+    return [
+      ...
+      ToolbarItem.fromData({
+        value: 'eraser',
+        label: 'scaffold.eraser',
+        icon: 'eraser',
+        category: ToolbarItemCategory.Eraser,
+      }),
+    ];
+  }
+}
+```
+
+效果如下：
+
+![](https://web-cdn.agora.io/docs-files/1670308289675)
+
+![](https://web-cdn.agora.io/docs-files/1670308305757)
+
+## 更多示例
+
+### 修改教室背景色
+
+如需修改教室背景色，可修改 `packages/agora-classroom-sdk/src/infra/capabilities/containers/root-box/fixed-aspect-ratio.tsx` 文件中的代码。
+
+```tsx
+const FixedAspectRatioContainer: React.FC<FixedAspectRatioProps> = observer(
+    ({children, minimumWidth = 0, minimumHeight = 0}) => {
+        const style = useClassroomStyle({minimumHeight, minimumWidth});
+
+        const {shareUIStore} = useStore();
+
+        return (
+            <div
+                // 可以使用 tailwind 类名
+                className="flex bg-black justify-center items-center h-screen w-screen"
+                // 或者设置 CSS 属性
+                style={{backgroundColor: "red"}}>
+                <div style={style} className={`w-full h-full relative ${shareUIStore.classroomViewportClassName}`}>
+                    {children}
+                </div>
+            </div>
+        );
+    },
+);
+```
+
+### 修改白板背景色
+
+如需修改白板背景色，可修改 `packages/agora-plugin-gallery/src/gallery/whiteboard/style.css` 文件中的代码。
+
+```css
+.netless-whiteboard-wrapper {
+  height: 100%;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 4px;
+  @apply bg-foreground border-divider;
+  background: #000; /* 这行设置白板颜色背景色为黑色 */
+}
+```
+
+### 修改白板布局比例
+
+如需调整白板布局，可修改 `packages/agora-classroom-sdk/src/infra/stores/common/board/index.ts` 文件中的代码。灵动课堂会先按照 `packages/agora-classroom-sdk/src/infra/stores/common/share/index.ts` 中的 `viewportAspectRatio` 计算出整体教室区域的宽高, 再计算出白板容器的高度，最后根据白板占白板容器的比例 `heightRatio` 动态设置白板的大小。
+
+```typescript
+// packages/agora-classroom-sdk/src/infra/stores/common/share/index.ts
+...
+//设置教室尺寸
+updateClassroomViewportSize() {
+  ...
+    //获取当前窗口宽高
+    const { width, height } = getRootDimensions(this._containerNode);
+
+    const aspectRatio = this._viewportAspectRatio;
+
+    const curAspectRatio = height / width;
+
+    const scopeSize = { height, width };
+    //计算教室保持固定宽高比
+    if (curAspectRatio > aspectRatio) {
+      // 缩短高度
+      scopeSize.height = width * aspectRatio;
+    } else if (curAspectRatio < aspectRatio) {
+      // 缩短宽度
+      scopeSize.width = height / aspectRatio;
+    }
+  ...
+}
+...
+// packages/agora-classroom-sdk/src/infra/stores/common/board/index.ts
+//设置白板比例
+...
+  protected get uiOverrides() {
+    return {
+      ...super.uiOverrides,
+      heightRatio: 1
+    };
+  }
+
+  /**
+   * 白板容器高度
+   * @returns
+   */
+  @computed
+  get boardAreaHeight() {
+    //设置白板交互区高度（减去导航栏高度）
+    const viewportHeight =
+      this.shareUIStore.classroomViewportSize.height - this.shareUIStore.navHeight;
+    //设置白板比例
+    const heightRatio = this.getters.stageVisible ? this.uiOverrides.heightRatio : 1;
+    //设置白板高度
+    const height = heightRatio * viewportHeight;
+
+    return height;
+  }
+...
+```
+
+上述改动会应用于所有场景。如果你只想修改一对一场景中的白板高度，则可在 `packages/agora-classroom-sdk/src/infra/stores/one-on-one` 目录下新建 `board.ts` 文件，代码如下：
+
+```typescript
+// packages/agora-classroom-sdk/src/infra/stores/one-on-one/board.ts
+import {BoardUIStore} from "../common/board-ui";
+
+export class OneToOneBoardUIStore extends BoardUIStore {
+    protected get uiOverrides() {
+        return {
+            ...super.uiOverrides,
+            heightRatio: 1,
+        };
+    }
+}
+```
+
+### 修改屏幕共享背景颜色
+
+如果你想要修改屏幕共享的背景颜色，在 `packages/agora-classroom-sdk/src/infra/capabilities/containers/screen-share/index.css` 中 `remote-screen-share-container` 下面一行增加以下代码即可：
+
+```typescript
+/* 覆盖屏幕共享背景样式 */
+div {
+  background-color: unset!important;
+}
+```
+
+</PlatformStructured>

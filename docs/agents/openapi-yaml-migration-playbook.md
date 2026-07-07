@@ -119,7 +119,7 @@ OpenAPI description 里常有旧站链接，例如 `/doc/convoai/...` 或
 | `/doc/convoai/restful/convoai/operations/stop-agent` | `/zh-CN/api-reference/api-ref/conversational-ai/leave` |
 | `/doc/convoai/restful/convoai/operations/agent-speak` | `/zh-CN/api-reference/api-ref/conversational-ai/speak` |
 | `/doc/convoai/restful/convoai/operations/agent-interrupt` | `/zh-CN/api-reference/api-ref/conversational-ai/interrupt` |
-| `https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/basic-features/token-authentication` |
+| `https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication` | `/zh-CN/realtime-media/rtc/build/security-and-auth/token-authentication` |
 
 不要猜测无法确认的外链。第三方服务文档、控制台链接和 FAQ 可暂时保留。
 

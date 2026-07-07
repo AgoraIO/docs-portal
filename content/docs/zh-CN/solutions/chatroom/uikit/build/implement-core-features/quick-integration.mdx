@@ -1,0 +1,1353 @@
+---
+title: "实现语聊房"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何集成语聊 UIKit 来实现语聊房间的创建和销毁、用户进房和退房等功能。
+
+## 示例项目
+
+`API-Examples-AUIKit` 是极简语聊项目。你可以参考该项目了解本文提供的集成步骤和代码逻辑。
+
+<Cards>
+  <Card title="API-Examples-AUIKit" href="https://github.com/AgoraIO-Community/API-Examples-AUIKit/tree/main/Android/VoiceRoomApp" />
+</Cards>
+
+## 准备开发环境
+
+### 前提条件
+
+- [Android Studio](https://developer.android.com/studio/) 3.5 及以上。本文以 [Android Studio Giraffe | 2022.3.1](https://developer.android.google.cn/studio/releases?hl=zh-cn) 和 JBR 17.0.6 为例。
+- Android 手机，版本 Android 5.0（API Level 21）及以上。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- [开通服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)。
+
+### 创建项目
+
+如需创建新项目，在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
+
+:::warning[注意]
+创建项目后，**Android Studio** 会自动开始同步 gradle，稍等片刻至同步成功后再进行下一步操作。
+:::
+
+### 集成依赖
+
+本节介绍如何集成语聊项目所需的依赖库：
+
+1. 下载声网提供的 [AUIVoiceRoom](https://github.com/AgoraIO-Community/AUIVoiceRoom) 仓库：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Community/AUIVoiceRoom.git
+    ```
+
+2. 将 `AUIVoiceRoom/Android/asceneskit` 文件夹复制到与你的 `app` 文件夹同层级的位置。
+
+3. 将 `AUIVoiceRoom/Android/app-voice/src/main/java/io/agora/app/voice/kit/AUIVoiceRoomUIKit.kt` 文件复制到你的 `<your_app>/app/src/main/java/<package_name>` 文件夹中
+
+4. 在 `<your_app>/setting.gradle.kts` 文件中添加如下行：
+
+    ```kotlin
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            google()
+            mavenCentral()
+            // 添加 jitpack 仓库，拉取 auikit 库
+            maven { url = java.net.URI.create("https://www.jitpack.io") }
+        }
+    }
+
+    // 项目名需为你的 Android Studio 项目的真实名称
+    rootProject.name = "VoiceRoomApp"
+    include(":app")
+    // 添加 asceneskit 库到项目里
+    include(":asceneskit")
+    ```
+
+5. 在 `<your_app>/app/build.gradle.kts` 文件中添加如下行：
+
+    ```kotlin
+    dependencies {
+        ...
+
+        // 添加 asceneskit 依赖
+        implementation(project(":asceneskit"))
+    }
+    ```
+
+6. 点击 **Sync Now** 按钮，等待 gradle 同步完成。
+
+![Android Studio 同步项目按钮示意图](/img/chatroom/sync.png)
+
+### 配置权限
+
+在 `<your_app>/app/Manifests/AndroidManifest.xml` 文件中添加如下行，以完成如下设置：
+
+- 设置允许 App 访问网络、录音等权限。
+- （可选）如果你的后端服务 Host URL 不是 https 开头，设置允许 App 使用非加密的网络通信。
+- 声明 `MainActivity` 活动，即 App 的主要活动。
+- 声明 `RoomActivity` 活动，即 App 中语聊房房间的详情界面活动。同时，指定语聊房的窗口保持原始大小和布局，不受到软键盘的影响。
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 允许 App 访问互联网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许 App 录音 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 允许 App 修改音频设置 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- 允许 App 访问网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 允许 App 访问 Wi-Fi 状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许 App 拨打电话 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- 允许 App 使用非加密的网络通信-->
+    <!-- 仅在你的后端服务 host url 不是 https 开头时需要设置该权限 -->
+    <application
+        android:usesCleartextTraffic="true">
+
+        <!-- 声明 MainActivity 活动 -->
+        <activity
+            android:name=".MainActivity">
+        </activity>
+
+        <!-- 声明 RoomActivity 活动 -->
+        <activity
+            android:name=".RoomActivity"
+            android:windowSoftInputMode="adjustNothing" />
+            android:screenOrientation="portrait" />
+
+    </application>
+
+</manifest>
+```
+
+### 配置主题
+
+在 `<your_app>/app/src/main/res/values/themes.xml` 文件中添加如下行配置语聊房 UI 主题：
+
+```xml
+<resources>
+    <!-- 将 VoiceRoomApp 改成你实际的项目名 -->
+    <style name="Theme.VoiceRoomApp" parent="Theme.VoiceRoom.Light" />
+</resources>
+```
+
+### （可选）防止代码混淆
+
+在 `<your_app>/app/proguard-rules.pro` 文件中添加如下行，以防止声网 SDK 的代码被混淆：
+
+```kotlin
+-keep class io.agora.**{*;}
+-dontwarn javax.**
+-dontwarn com.google.devtools.build.android.**
+```
+
+## 实现语聊房
+
+`AUIVoiceRoomUIKit` 基于声网 RTC、RTM 引擎、AUIKit 等模块封装，帮助你轻松管理语聊房。
+
+你可以使用 `AUIVoiceRoomUIKit` 类中的 API 实现语聊房间的创建和销毁、用户进房和退房等功能。
+
+### 1. 初始化 AUIVoiceRoomUIKit
+
+在 `MainActivity.kt` 文件中添加 `onCreate` 函数。在该函数中调用 `AUIVoiceRoomUIKit` 类的 `init` 方法并传入如下参数，以初始化 `AUIVoiceRoomUIKit`：
+
+- `AUICommonConfig`：基础配置，包含如下参数：
+    - `context`：应用程序的上下文。
+    - `owner`：设置你的业务的用户信息。
+    - 声网项目的 App ID。
+    - 声网项目的 App 证书。
+    - 用于 HTTP 基本认证的 `Authorization`。
+    - 环信 IM 服务的 App Key。
+    - 环信 IM 服务的 Client ID。
+    - 环信 IM 服务的 Client Secret。
+    - 语聊后端服务的 Host URL。
+
+    App ID 等参数取值可参考[配置示例项目](/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project#配置示例项目)。
+
+- `AUIAPIConfig`：声网 API 实例结构体，包含 RTC 引擎和 RTM 引擎实例。如需使用其中任一一个实例，请通过该结构体进行传入，如果未传入，系统内部会自动创建。
+
+```kotlin
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // 初始化 AUIVoiceRoomUIKit
+        AUIVoiceRoomUIKit.init(
+            // 设置基础配置
+            AUICommonConfig().apply {
+                // 设置应用程序的上下文
+                context = applicationContext
+
+                // 设置开通服务后获取到的参数
+                host = <your_host_url>
+                appId = <your_app_id>
+                appCert = <your_app_cert>
+                basicAuth = <your_http_basic_auth>
+                imAppKey = <your_easemob_app_key>
+                imClientId = <your_easemob_client_id>
+                imClientSecret = <your_easemob_client_secret>
+
+                // 设置你的业务的用户信息
+                owner = AUIUserThumbnailInfo().apply {
+                    // 生成一个随机的用户 ID
+                    userId = (Random().nextInt(1000) + 10000).toString()
+                    // 设置用户名
+                    userName = "User-$userId"
+                    // 设置用户头像
+                    userAvatar = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+                }
+            },
+            AUIAPIConfig()
+        )
+    }
+}
+```
+
+### 2. 房主创建并加入房间
+
+本节展示如何让房主创建并加入语聊房。
+
+#### 2.1 添加按钮：创建房间
+
+:::info[信息]
+Android Studio Giraffe 默认使用 Jetpack Compose 构建 UI，但依然兼容 XML 布局。本文以 XML 布局为例进行演示。
+:::
+
+参考如下步骤添加**创建房间**按钮：
+
+1. 新建 `<your_app>/app/src/main/res/layout/main_activity.xml` 文件并在该文件中添加如下行，以增加一个**创建房间**按钮，用于让房主点击创建：
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnCreateRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="创建房间"/>
+
+    </LinearLayout>
+    ```
+
+2. 在 `MainActivity.kt` 文件中，添加如下高亮的几行，设置当前 Activity 使用 XML 布局，并为**创建房间**按钮设置点击事件的监听器。
+
+    ```kotlin
+    class MainActivity : ComponentActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            // highlight-start
+            // 设置使用 XML 布局
+            setContentView(R.layout.main_activity)
+            // highlight-end
+
+            // 初始化 AUIVoiceRoomUIKit
+            AUIVoiceRoomUIKit.init(
+                ...
+            )
+
+            // highlight-start
+            // 添加点击创建房间按钮的事件
+            findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {
+
+            }
+            // highlight-end
+        }
+    }
+    ```
+
+3. 在上一步的 `setOnClickListener` 函数中添加如下高亮行，创建 `roomInfo`（房间信息）参数，启动 `RoomActivity` 活动。
+
+    在后续步骤中会创建 `RoomActivity` 并添加代码逻辑，用 `RoomActivity` 来显示房间详情界面，同时调用创建房间逻辑。
+
+    ```kotlin
+    // 添加点击创建房间按钮的事件
+    findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {
+        // highlight-start
+        // 随机生成房间名
+        val roomName = "${Random().nextInt(100) + 1000}"
+        // 创建房间
+        val roomInfo = AUIRoomInfo()
+        roomInfo.owner = AUIRoomContext.shared().currentUserInfo
+        roomInfo.roomId = UUID.randomUUID().toString()
+        roomInfo.thumbnail = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+        roomInfo.roomName = roomName
+        roomInfo.micSeatCount = 8
+        roomInfo.micSeatStyle = MicSeatType.EightTag.value.toString()
+        // 跳转到房间详情页
+        RoomActivity.launch(this@MainActivity, roomInfo, isCreate = true)
+        // highlight-end
+    }
+    ```
+
+#### 2.2 创建房间详情页
+
+参考如下步骤创建房间详情页：
+
+1. 新建 `<your_app>/app/src/main/res/layout/room_activity.xml` 文件并在该文件中添加如下行，以添加语聊房的详情页面。
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <io.agora.asceneskit.voice.AUIVoiceRoomView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/roomView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    ```
+
+2. 在 `MainActivity.kt` 文件所位于的目录下，新建 `RoomActivity.kt` 文件，并在该文件中添加如下行，从而实现一个房间详情页的活动类 `RoomActivity`。
+
+    `RoomActivity` 通过接收传递的房间信息，在 `onCreate` 方法中显示房间的详细信息。通过使用静态方法 `launch`，可以方便地启动 `RoomActivity` 并传递房间信息。
+
+    ```kotlin
+    class RoomActivity : FragmentActivity() {
+
+        companion object {
+            const val EXTRA_ROOM_INFO = "RoomInfo"
+            const val EXTRA_IS_CREATE = "isCreate"
+
+            // 启动 RoomActivity
+            fun launch(context: Context, roomInfo: AUIRoomInfo, isCreate: Boolean){
+                // 创建一个 Intent 对象，指定启动 RoomActivity 的目标上下文和 RoomActivity 类名
+                val intent = Intent(context, RoomActivity::class.java)
+                // 将房间信息作为额外的数据添加到 Intent 中，使用 EXTRA_ROOM_INFO 作为键名
+                intent.putExtra(EXTRA_ROOM_INFO, roomInfo)
+                // 将是否创建房间信息作为额外的数据添加到 Intent 中，使用 EXTRA_IS_CREATE 作为键名
+                intent.putExtra(EXTRA_IS_CREATE, isCreate)
+                // 使用目标上下文启动 RoomActivity
+                context.startActivity(intent)
+            }
+        }
+
+        // 房间信息
+        private val roomInfo by lazy {
+            // 从 Intent 中获取传递的房间信息
+            intent.getSerializableExtra(EXTRA_ROOM_INFO) as AUIRoomInfo
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            // 设置使用 XML 布局
+            setContentView(R.layout.room_activity)
+            // 初始化房间详情页布局
+            val roomView = findViewById<AUIVoiceRoomView>(R.id.roomView)
+            roomView.setFragmentActivity(this@RoomActivity)
+            // 是否创建房间信息
+            val isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+        }
+    }
+    ```
+
+#### 2.3 启动房间
+
+在 `RoomActivity` 的 `onCreate` 函数中增加如下高亮的几行。调用 `AUIVoiceRoomUIKit` 类的 `createRoom` 方法并传入以下参数，以启动语聊房：
+
+- `roomInfo`：房间信息。包含如下：
+  - `roomId`：房间 ID，每个房间的唯一标识。
+  - `roomName`：房间名称。不同房间的名称可以重名。
+  - `owner`：房主信息。
+- `roomConfig`：房间配置，包含房间名、Token 等配置。你可以使用 `AUIVoiceRoomUIKit.generateToken` 方法生成 Token，也可以使用自己的 Token 后台服务生成 Token。
+- `roomView`：房间的 UI View。
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    // 设置使用 XML 布局
+    setContentView(R.layout.room_activity)
+    // 初始化房间详情页布局
+    val roomView = findViewById<AUIVoiceRoomView>(R.id.roomView)
+    roomView.setFragmentActivity(this@RoomActivity)
+    // 是否创建房间信息
+    val isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+
+    // highlight-start
+    // 检查并申请运行时权限
+    PermissionHelp(this).checkMicPerm(
+        // 获取到权限
+        granted = {
+            // 生成 Token
+            AUIVoiceRoomUIKit.generateToken(roomInfo.roomId,
+                onSuccess = { roomConfig ->
+                    // 启动房间
+                    if (isCreate) {
+                        // 房主创建并加入房间
+                        AUIVoiceRoomUIKit.createRoom(roomInfo, roomConfig, roomView) { error, _ ->
+                            if (error != null) {
+                                // 创建并加入房间失败
+                                finish()
+                            }
+                        }
+                    }
+                },
+                onFailure = {
+                    // 生成 Token 失败
+                    finish()
+                }
+            )
+        },
+        unGranted = {
+            // 没有获取到权限
+            finish()
+        }
+    )
+    // highlight-end
+}
+```
+
+### 3. （可选）听众加入房间
+
+本节展示如何让听众加入已存在的房间。
+
+#### 3.1 添加按钮：加入房间
+
+参考如下步骤添加**加入房间**按钮：
+
+1. 在 `main_activity.xml` 中添加如下高亮的几行，添加一个**加入房间**的按钮，以用于让听众点击加入房间。
+
+    ```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+
+        <Button
+            android:id="@+id/btnCreateRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="创建房间"/>
+
+        <!-- highlight-start -->
+        <Button
+            android:id="@+id/btnJoinRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="加入房间"/>
+        <!-- highlight-end -->
+
+    </LinearLayout>
+    ```
+
+2. 在 `findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {...}` 函数后添加如下高亮的几行，为**加入房间**按钮设置点击事件的监听器。
+
+    ```kotlin
+    class MainActivity : ComponentActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            ...
+            // 初始化 AUIVoiceRoomUIKit
+            AUIVoiceRoomUIKit.init(
+                ...
+            )
+
+            // 添加点击创建房间按钮的事件
+            findViewById<Button>(R.id.btnCreateRoom).setOnClickListener {
+                ...
+            }
+
+            // highlight-start
+            // 添加点击加入房间按钮的事件
+            findViewById<Button>(R.id.btnJoinRoom).setOnClickListener {
+                // 弹出房间名输入弹窗
+                val input = EditText(this@MainActivity)
+                input.hint = "Room Name"
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("Launch Room")
+                    .setView(input)
+                    .setPositiveButton("Confirm") { dialog: DialogInterface, i: Int ->
+                        ...
+                    }
+                    .setNegativeButton("Cancel") { dialog: DialogInterface, i: Int ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+            // highlight-end
+        }
+    }
+    ```
+
+#### 3.2 获取房间列表
+
+在 `findViewById<Button>(R.id.btnJoinRoom).setOnClickListener {` 代码中添加如下高亮的几行，调用 `AUIVoiceRoomUIKit` 类的 `getRoomList` 方法并传入如下参数，以获取语聊房间列表：
+
+- `lastCreateTime`：房间列表的起始时间（毫秒）。例如，1681879844085。
+- `pageSize`：每一页房间列表所展示的房间数量。
+
+如果在房间列表中找到匹配的房间名，并获取到对应的 `roomInfo` 信息，则执行 `launch` 函数启动 `RoomActivity`，让听众进入到房间详情页。
+
+```kotlin
+// 添加点击加入房间按钮的事件
+findViewById<Button>(R.id.btnJoinRoom).setOnClickListener {
+    // 弹出房间名输入弹窗
+    val input = EditText(this@MainActivity)
+    input.hint = "Room Name"
+    AlertDialog.Builder(this@MainActivity)
+        .setTitle("Launch Room")
+        .setView(input)
+        .setPositiveButton("Confirm") { dialog: DialogInterface, i: Int ->
+            // highlight-start
+            // 确认加入房间
+            val roomName = input.text.toString()
+            if (TextUtils.isEmpty(roomName)) {
+                Toast.makeText(this@MainActivity, "Room name is empty", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                return@setPositiveButton
+            }
+            // 查询房间信息
+            AUIVoiceRoomUIKit.getRoomList(0, 50,
+                success = { list ->
+                    val roomInfo = list.findLast { it.roomName == roomName }
+                    if (roomInfo == null) {
+                        Toast.makeText(this@MainActivity, "The room is unavailable. RoomName=$roomName", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        return@getRoomList
+                    }
+                    // 跳转到房间详情页
+                    RoomActivity.launch(this@MainActivity, roomInfo, false)
+                },
+                failure = {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Get room list failed. ${it.code} - ${it.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    dialog.dismiss()
+                }
+            )
+            // highlight-end
+        }
+        .setNegativeButton("Cancel") { dialog: DialogInterface, i: Int ->
+            dialog.dismiss()
+        }
+        .show()
+}
+```
+
+#### 3.3 听众加入房间
+
+在[启动房间](#23-启动房间)中 `AUIVoiceRoomUIKit.generateToken(` 代码中添加如下高亮的几行代码。在判断用户为听众时，调用 `AUIVoiceRoomUIKit` 类的 `launchRoom` 方法并传入以下参数，以让听众加入房间：
+
+- `roomInfo`：房间信息。包含如下：
+  - `roomId`：房间 ID，每个房间的唯一标识。
+  - `roomName`：房间名称。不同房间的名称可以重名。
+  - `owner`：房主信息。
+- `roomConfig`：房间配置，包含房间名、Token 等配置。你可以使用 `AUIVoiceRoomUIKit.generateToken` 方法生成 Token，也可以使用自己的 Token 后台服务生成 Token。
+- `roomView`：房间的 UI View。
+
+``` kotlin
+AUIVoiceRoomUIKit.generateToken(roomInfo.roomId,
+    onSuccess = { roomConfig ->
+        // 启动房间
+        if (isCreate) {
+            // 房主创建并加入房间
+            AUIVoiceRoomUIKit.createRoom(roomInfo, roomConfig, roomView) { error, _ ->
+                if (error != null) {
+                    // 创建并加入房间失败
+                    finish()
+                }
+            }
+        }
+        // highlight-start
+        else {
+            // 听众加入房间
+            AUIVoiceRoomUIKit.launchRoom(roomInfo, roomConfig, roomView) { error, _ ->
+                if (error != null) {
+                    // 加入房间失败
+                    finish()
+                }
+            }
+        }
+        // highlight-end
+    },
+    onFailure = {
+        // 生成 Token 失败
+        finish()
+    }
+)
+```
+
+### 4. （可选）退出或销毁房间
+
+本节展示如何退出并销毁房间。
+
+在语聊房中，房主可以主动销毁房间，房间销毁时听众会被动退出房间。房间存在时，听众可以主动退出房间，也可以被房主踢出房间。下面从主动和被动的角度展示代码逻辑：
+
+#### 4.1 主动退出或销毁房间
+
+在 `RoomActivity` 中添加如下高亮的几行，即可实现通过点击按钮或使用 Android 系统键盘主动退出房间（听众）或销毁房间（房主）。
+
+```kotlin
+class RoomActivity : FragmentActivity() {
+    ...
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // 设置使用 XML 布局
+        setContentView(R.layout.room_activity)
+        // 初始化房间详情页布局
+        val roomView = findViewById<AUIVoiceRoomView>(R.id.roomView)
+        roomView.setFragmentActivity(this@RoomActivity)
+
+        // highlight-start
+        // 点击退出房间按钮时
+        roomView.setOnShutDownClick {
+            // 主动退出房间
+            destroyRoom()
+            finish()
+        }
+        // highlight-end
+
+        // 是否创建房间信息
+        val isCreate = intent.getBooleanExtra(EXTRA_IS_CREATE, false)
+
+        // 检查并申请运行时权限
+        PermissionHelp(this).checkMicPerm(
+            ...
+        )
+    }
+
+    // highlight-start
+    // 使用 Android 系统键盘返回主页时
+    override fun onBackPressed() {
+        // 主动退出房间
+        destroyRoom()
+        super.onBackPressed()
+    }
+    // highlight-end
+}
+```
+
+#### 4.2 被动退出房间
+
+在 `RoomActivity` 中添加如下高亮的几行。通过 `AUIVoiceRoomUIKit` 类的 `registerRespObserver` 方法注册房间事件观测器。在观测器中添加 `onRoomDestroy` 回调来监听房间销毁事件。当房间销毁事件发生时，执行 `destroyRoom` 函数。
+
+在 `destroyRoom` 函数中，调用 `AUIVoiceRoomUIKit` 类的 `unRegisterRespObserver` 方法取消注册房间事件观测器。这样，在房间销毁时，观测器将不再接收房间相关事件。
+
+```kotlin
+class RoomActivity : FragmentActivity() {
+    ...
+
+    // 房间信息
+    private val roomInfo by lazy {
+        // 从 Intent 中获取传递的房间信息
+        intent.getSerializableExtra(EXTRA_ROOM_INFO) as AUIRoomInfo
+    }
+
+    // highlight-start
+    // 房间事件观察者
+    private val roomManagerRespObserver = object : AUIVoiceRoomObserver {
+        override fun onRoomDestroy(roomId: String) {
+            super.onRoomDestroy(roomId)
+            // 房间被销毁
+            destroyRoom()
+            finish()
+        }
+    }
+    // highlight-end
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+        // 检查并申请运行时权限
+        PermissionHelp(this).checkMicPerm(
+            ...
+        )
+        // highlight-start
+        // 注册房间事件观察者
+        AUIVoiceRoomUIKit.registerRespObserver(roomInfo.roomId, roomManagerRespObserver)
+        // highlight-end
+    }
+
+    // 系统键盘返回主动退出房间时
+    override fun onBackPressed() {
+        destroyRoom()
+        super.onBackPressed()
+    }
+
+    // highlight-start
+    private fun destroyRoom() {
+        // 取消注册房间事件观察者
+        AUIVoiceRoomUIKit.unRegisterRespObserver(roomInfo.roomId, roomManagerRespObserver)
+    }
+    // highlight-end
+}
+```
+
+#### 4.3 补全销毁逻辑
+
+在[主动退出或销毁房间](#41-主动退出或销毁房间)、[被动退出房间](#42-被动退出房间)的情况下，都会执行 `destroyRoom` 函数。
+
+在 `destroyRoom` 函数中，添加如下高亮的几行。调用 `AUIVoiceRoomUIKit` 类的 `destroyRoom` 方法并传入房间 ID，以退出或销毁房间。至此，`destroyRoom` 函数的代码补全。
+
+```kotlin
+private fun destroyRoom() {
+    // highlight-start
+    // 退出或销毁房间
+    AUIVoiceRoomUIKit.destroyRoom(roomInfo.roomId)
+    // highlight-end
+    // 取消注册房间事件观察者
+    AUIVoiceRoomUIKit.unRegisterRespObserver(roomInfo.roomId, roomManagerRespObserver)
+}
+```
+
+## 注意事项
+
+声网在示例项目中提供的后端服务 Host URL（`https://service.shengwang.cn/uikit-v2`）仅供测试和快速集成语聊房使用，请勿用于商业用途。如需商用，请自行部署后端服务，并将客户端代码中的声网后端服务 Host URL 更新为你的服务 Host URL，详见[部署后端服务](/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project-backend)。
+
+## 下一步
+
+在创建、进入房间后，你可以参考如下业务流程图开发后续的麦位管理、聊天、礼物等功能。
+
+![语聊房后续功能业务流程图](/img/chatroom/uivoice_flowchart.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何集成语聊 UIKit 来实现语聊房间的创建和销毁、用户进房和退房等功能。
+
+## 示例项目
+
+`API-Examples-AUIKit` 是极简语聊项目。你可以参考该项目了解本文提供的集成步骤和代码逻辑。
+
+<Cards>
+  <Card title="API-Examples-AUIKit" href="https://github.com/AgoraIO-Community/API-Examples-AUIKit/tree/main/iOS/VoiceChatApp" />
+</Cards>
+
+## 准备开发环境
+
+### 前提条件
+
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 14.0 及以上。
+- iOS 设备，版本 13.0 及以上。
+- 有效的苹果开发者账号。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- [开通服务](/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service)。
+
+### 创建项目
+
+本节介绍如何在 Xcode 创建项目：
+
+1. [创建一个新的项目](https://help.apple.com/xcode/mac/current/#/dev07db0e578)，**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
+
+    :::warning[注意]
+    如果你没有添加过开发团队信息，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示登入 Apple ID，点击 **Next**，完成后即可选择你的 Apple 账户作为开发团队。
+    :::
+
+2. 为你的项目设置[自动签名](https://help.apple.com/xcode/mac/current/#/dev23aab79b4)。本文假设项目名为 `AUIKitDemo`。
+
+3. 设置部署你的 App 的[目标设备](https://help.apple.com/xcode/mac/current/#/deve69552ee5)。
+
+4. 设置 **Minimum Deployments** 为 iOS 13.0。
+
+    ![Xcode Minimum Deployments 设置示意图](https://web-cdn.agora.io/docs-files/1697686309702)
+
+5. 添加项目的设备权限。在项目导航栏中打开 `info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
+
+    | key                                    | type   | value                                                        |
+    | -------------------------------------- | ------ | ------------------------------------------------------------ |
+    | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如 for a live interactive streaming |
+
+### 集成依赖
+
+本节介绍如何集成语聊项目所需的依赖库：
+
+1. 开始前请确保你已安装 CocoaPods，如尚未安装 CocoaPods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
+
+2. 下载声网提供的 [AUIVoiceRoom](https://github.com/AgoraIO-Community/AUIVoiceRoom) 仓库：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Community/AUIVoiceRoom.git
+    ```
+
+3. 将 `AUIVoiceRoom/iOS/AScenesKit/AScenesKit` 文件夹复制到与你的 `*.xcodeproj` 文件同层级的位置。
+
+4. 将 `AUIVoiceRoom/iOS/AUIVoiceRoom/AUIVoiceRoom/VoiceChatUIKit.swift` 文件复制到与 `*.xcodeproj` 文件同层级的 Demo 文件夹里。具体步骤如下：
+
+    1. 在 Xcode 里打开 `*.xcodeproj` 文件。选中项目下 `AUIKitDemo` 文件夹，右键选择 **Add Files to "AUIKitDemo" ...**。
+
+![在 Xcode 中添加文件的入口示意图](/img/chatroom/import-1.png)
+
+    2. 指定 `AUIVoiceRoom/iOS/AUIVoiceRoom/AUIVoiceRoom/VoiceChatUIKit.swift` 文件，勾选 **Destination: Copy items if neeed**，点击右下角 **Add**。
+
+![选择 VoiceChatUIKit.swift 并添加到项目的示意图](/img/chatroom/import-2.png)
+
+5. 在终端里进入 `*.xcodeproj` 文件所在目录，并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
+
+6. 打开 `Podfile` 文件，修改文件为如下内容。注意 `target` 和 `path` 的填写。
+
+    ```ruby
+    source 'https://github.com/CocoaPods/Specs.git'
+    platform :ios, '13.0'
+
+    # target 需改为你的项目中实际的 Target 名称
+    target 'AUIKitDemo' do
+      use_frameworks!
+
+      # path 需为 AScenesKit 依赖库的实际路径
+      pod 'AScenesKit', :path => './AScenesKit'
+      # 推荐你指定 RTC SDK 版本为 4.1.1.20
+      pod 'AgoraRtcEngine_Special_iOS', '4.1.1.20'
+    end
+
+    post_install do |installer|
+      installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        end
+      end
+    end
+    ```
+
+7. 在终端里进入 `*.xcodeproj` 文件所在目录，运行如下命令安装 AUIKit 依赖：
+
+    ```shell
+    pod update --verbose
+    ```
+
+**安装过程截图**
+
+![](https://web-cdn.agora.io/docs-files/1697696810206)
+![](https://web-cdn.agora.io/docs-files/1697696820778)
+![](https://web-cdn.agora.io/docs-files/1697696829568)
+
+
+    如果等待安装的时间太久，请参考[加速 Pod](#加速-pod)。依赖库安装成功后，与 `*.xcodeproj` 文件所在的同一级目录下会出现一个 `*.xcworkspace` 文件。打开该文件即可体验安装了 AScenesKit 和 AUIKit 等依赖的项目。
+
+    完成上述步骤后，你的项目文件夹结构如下：
+
+![iOS 示例项目目录结构示意图](/img/chatroom/demo-folder.png)
+
+## 实现语聊房
+
+`VoiceChatUIKit` 基于声网 RTC、RTM 引擎、AUIKit 等模块封装，帮助你轻松管理语聊房。
+
+你可以使用 `VoiceChatUIKit` 类中的 API 实现语聊房间的创建和销毁、用户进房和退房等功能。
+
+### 1. 初始化 VoiceChatUIKit
+
+本节展示初始化 `VoiceChatUIKit` 的代码逻辑：
+
+1. 在 `AppDelegate.swift` 文件里导入依赖库：
+
+    ```swift
+    import AUIKitCore
+    import AScenesKit
+    ```
+
+2. 在 `AppDelegate` 类中调用 `VoiceChatUIKit` 类的 `setup` 方法并传入如下参数，初始化 `VoiceChatUIKit`：
+
+    - `commonConfig`：基础配置，包含如下参数：
+        - `ownerInfo`：设置你的业务的用户信息。
+        - 声网项目的 App ID。
+        - 声网项目的 App 证书。
+        - 用于 HTTP 基本认证的 `Authorization`。
+        - 环信 IM 服务的 App Key。
+        - 环信 IM 服务的 Client ID。
+        - 环信 IM 服务的 Client Secret。
+        - 语聊后端服务的 Host URL。
+
+        App ID 等参数取值可参考[配置示例项目](/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project#配置示例项目)。
+
+    - `apiConfig`：声网 API 实例结构体，包含 RTC 引擎和 RTM 引擎实例。如需使用其中任一一个实例，请通过该结构体进行传入，如果未传入，系统内部会自动创建。
+
+    ```swift
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // 生成一个随机的用户 ID
+        let uid = Int(arc4random_uniform(99999999))
+
+        // 将基础配置信息传入 VoiceChatUIKit
+        let commonConfig = AUICommonConfig()
+        commonConfig.appId = KeyCenter.AppId
+        commonConfig.appCert = KeyCenter.AppCertificate
+        commonConfig.basicAuth = KeyCenter.AppBasicAuth
+        commonConfig.imAppKey = KeyCenter.IMAppKey
+        commonConfig.imClientId = KeyCenter.IMClientId
+        commonConfig.imClientSecret = KeyCenter.IMClientSecret
+        commonConfig.host = KeyCenter.HostUrl
+
+        let ownerInfo = AUIUserThumbnailInfo()
+        ownerInfo.userId = "\(uid)"
+        ownerInfo.userName = "user_\(uid)"
+        ownerInfo.userAvatar = "https://accktvpic.oss-cn-beijing.aliyuncs.com/pic/sample_avatar/sample_avatar_1.png"
+        commonConfig.owner = ownerInfo
+
+        VoiceChatUIKit.shared.setup(commonConfig: commonConfig,
+                                    apiConfig: nil)
+        ...
+
+        return true
+    }
+    ```
+
+### 2. 房主创建并加入房间
+
+本节展示如何让房主创建并加入语聊房。
+
+#### 2.1 添加按钮：创建房间
+
+在 `ViewController.swift` 文件里导入依赖库：
+
+```swift
+import AUIKitCore
+import AScenesKit
+```
+
+在 `ViewController` 类中，通过 iOS 原生方法增加一个**创建房间**按钮，用于让房主点击创建。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // 作为房主创建房间的按钮
+    let createButton = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 60))
+    createButton.setTitle("创建房间", for: .normal)
+    createButton.setTitleColor(.red, for: .normal)
+    createButton.addTarget(self, action: #selector(onCreateAction), for: .touchUpInside)
+    view.addSubview(createButton)
+}
+```
+
+#### 2.2 声明属性
+
+在 `ViewController` 类中声明了一个可选属性，用于存储 `AUIVoiceChatRoomView` 实例以显示语聊房的详情界面。
+
+```swift
+class ViewController: UIViewController {
+    var voiceChatView: AUIVoiceChatRoomView?
+    ...
+}
+```
+
+#### 2.3 创建房间详情页并启动房间
+
+在 `ViewController` 中，创建一个 `AUIVoiceChatRoomView` 实例，并将它设置为 `voiceChatView` 属性，用于显示语聊房的详情界面。
+
+在 `ViewController` 的创建房间点击回调（`onCreateAction`）里，调用 `VoiceChatUIKit` 类的 `createRoom` 方法，并传入以下参数，以启动语聊房：
+
+- `roomInfo`：房间信息。包含如下：
+  - `roomId`：房间 ID，每个房间的唯一标识。
+  - `roomName`：房间名称。不同房间的名称可以重名。
+  - `owner`：房主信息。
+- `roomConfig`：房间配置，包含房间名、Token 等配置。你可以使用自己的 Token 后台服务生成 Token。
+- `voiceChatView`：房间的 UI View。
+
+```swift
+@objc func onCreateAction(_ button: UIButton) {
+    // 禁用按钮，防止重复点击
+    button.isEnabled = false
+
+    // 生成一个随机的房间 ID
+    let roomId = Int(arc4random_uniform(99999999))
+    // 创建一个 RoomInfo 实例
+    let roomInfo = AUIRoomInfo()
+    roomInfo.roomId = "\(roomId)"
+    roomInfo.roomName = "\(roomId)"
+    roomInfo.owner = AUIRoomContext.shared.currentUserInfo
+
+    let roomConfig = AUIRoomConfig()
+    // 创建房间容器
+    let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)
+
+    generateToken(channelName: "\(roomId)",
+                  roomConfig: roomConfig,
+                  completion: {[weak self] error in
+        guard let self = self else { return }
+        defer {
+            // 恢复按钮可用状态
+            button.isEnabled = true
+        }
+        if let error = error {
+            self.navigationController?.popViewController(animated: true)
+            AUIToast.show(text: error.localizedDescription)
+            return
+        }
+        // 创建房间
+        VoiceChatUIKit.shared.createRoom(roomInfo: roomInfo,
+                                         roomConfig: roomConfig,
+                                         chatView: voiceChatView) {[weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                // 创建房间失败
+                AUIToast.show(text: error.localizedDescription)
+                return
+            }
+        }
+    })
+
+    self.view.addSubview(voiceChatView)
+    self.voiceChatView = voiceChatView
+}
+
+private func generateToken(channelName: String,
+                           roomConfig: AUIRoomConfig,
+                           completion: @escaping ((Error?) -> Void)) {
+    let uid = VoiceChatUIKit.shared.commonConfig?.owner?.userId ?? ""
+    let rtcChorusChannelName = "\(channelName)_rtc_ex"
+    roomConfig.channelName = channelName
+    roomConfig.rtcChorusChannelName = rtcChorusChannelName
+    print("generateTokens: \(uid)")
+
+    let group = DispatchGroup()
+
+    var err: Error?
+    group.enter()
+    let tokenModel1 = AUITokenGenerateNetworkModel()
+    tokenModel1.channelName = channelName
+    tokenModel1.userId = uid
+    tokenModel1.request { error, result in
+        defer {
+            if err == nil {
+                err = error
+            }
+            group.leave()
+        }
+        guard let tokenMap = result as? [String: String], tokenMap.count >= 2 else { return }
+        roomConfig.rtcToken = tokenMap["rtcToken"] ?? ""
+        roomConfig.rtmToken = tokenMap["rtmToken"] ?? ""
+    }
+
+    group.enter()
+    let tokenModel2 = AUITokenGenerateNetworkModel()
+    tokenModel2.channelName = rtcChorusChannelName
+    tokenModel2.userId = uid
+    tokenModel2.request { error, result in
+        defer {
+            if err == nil {
+                err = error
+            }
+            group.leave()
+        }
+
+        guard let tokenMap = result as? [String: String], tokenMap.count >= 2 else { return }
+
+        roomConfig.rtcChorusRtcToken = tokenMap["rtcToken"] ?? ""
+    }
+
+    group.notify(queue: DispatchQueue.main) {
+        completion(err)
+    }
+}
+```
+
+### 3. （可选）听众加入房间
+
+本节展示如何让听众加入已存在的房间。
+
+#### 3.1 添加按钮：加入房间
+
+在 `ViewController` 类中，通过 iOS 原生方法增加一个**加入房间**按钮，用于让听众点击加入。
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // 作为房主创建房间的按钮
+    let createButton = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 60))
+    createButton.setTitle("创建房间", for: .normal)
+    createButton.setTitleColor(.red, for: .normal)
+    createButton.addTarget(self, action: #selector(onCreateAction), for: .touchUpInside)
+    view.addSubview(createButton)
+
+    // highlight-start
+    // 作为听众加入房间的按钮
+    let joinButton = UIButton(frame: CGRect(x: 10, y: 160, width: 100, height: 60))
+    joinButton.setTitle("加入房间", for: .normal)
+    joinButton.setTitleColor(.red, for: .normal)
+    joinButton.addTarget(self, action: #selector(onJoinAction), for: .touchUpInside)
+    view.addSubview(joinButton)
+    // highlight-end
+}
+```
+
+#### 3.2 获取房间列表
+
+在 `ViewController` 类中，调用 `VoiceChatUIKit` 类的 `getRoomInfoList` 方法并传入如下参数，以获取语聊房间列表：
+
+- `lastCreateTime`：房间列表的起始时间（毫秒）。例如，1681879844085。
+- `pageSize`：每一页房间列表所展示的房间数量。
+
+如果在房间列表中找到匹配的房间名，并获取到对应的 `roomInfo` 信息，则执行 `enterRoom` 函数。
+
+```swift
+@objc func onJoinAction() {
+    // 创建 UIAlertController 实例，用于显示弹出对话框
+    let alertController = UIAlertController(title: "房间名", message: "", preferredStyle: .alert)
+    alertController.addTextField { (textField) in
+        textField.placeholder = "请输入"
+    }
+
+    // 创建一个「取消」按钮，并指定点击事件
+    let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (_) in
+
+    }
+
+    // 创建一个「确认」按钮，并指定点击事件
+    let saveAction = UIAlertAction(title: "确认", style: .default) { (_) in
+        // 获取用户输入的文本内容
+        if let inputText = alertController.textFields?.first?.text {
+            // 处理用户输入的内容
+            VoiceChatUIKit.shared.getRoomInfoList(lastCreateTime: 0, pageSize: 50) { error, roomList in
+                // 检查是否有错误发生，并确保成功获取到了房间列表
+                guard let roomList = roomList else { return }
+                // 遍历房间列表
+                for room in roomList {
+                    // 比对房间名与用户输入的文本内容是否匹配
+                    if room.roomName == inputText {
+                        // 找到匹配的房间名，执行 enterRoom 函数
+                        self.enterRoom(roomInfo: room)
+                        // 结束循环
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    // 将「取消」按钮添加到弹出对话框
+    alertController.addAction(cancelAction)
+    // 将「确认」按钮添加到弹出对话框
+    alertController.addAction(saveAction)
+    // 在当前视图上显示弹出对话框
+    present(alertController, animated: true, completion: nil)
+}
+```
+
+#### 3.3 听众加入房间
+
+在上一步获取到房间信息后，调用 `VoiceChatUIKit` 类的 `enterRoom` 方法并传入如下参数，即可加入房间并显示房间数据：
+
+- `roomId`：房间 ID，每个房间的唯一标识。
+- `roomConfig`：房间配置，包含房间名、Token 等配置。你可以使用自己的 Token 后台服务生成 Token。
+- `chatView`：房间的 UI View。
+
+```swift
+func enterRoom(roomInfo: AUIRoomInfo) {
+    // 创建一个 AUIVoiceChatRoomView 实例，并设置其 frame 为当前视图的边界
+    let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)
+
+    let roomId = roomInfo.roomId
+    let roomConfig = AUIRoomConfig()
+    generateToken(channelName: roomId,
+                  roomConfig: roomConfig) {[weak self] err  in
+        guard let self = self else {return}
+        // 调用 enterRoom 方法加入房间
+        VoiceChatUIKit.shared.enterRoom(roomId: roomId,
+                                        roomConfig: roomConfig,
+                                        chatView: self.voiceChatView!) {[weak self] roomInfo, error in
+            guard let self = self else {return}
+            if let error = error {
+                // 如果出现错误，直接返回
+                self.navigationController?.popViewController(animated: true)
+                AUIToast.show(text: error.localizedDescription)
+                return
+            }
+        }
+    }
+
+    self.view.addSubview(voiceChatView)
+    self.voiceChatView = voiceChatView
+}
+```
+
+### 4. （可选）退出或销毁房间
+
+本节展示如何退出并销毁房间。
+
+在语聊房中，房主可以主动销毁房间，房间销毁时听众会被动退出房间。房间存在时，听众可以主动退出房间，也可以被房主踢出房间。下面从主动和被动的角度展示代码逻辑：
+
+#### 4.1 主动退出或销毁房间
+
+在 `ViewController` 类里 `enterRoom` 函数中，`let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)` 代码后添加如下高亮的几行，以实现通过点击按钮，让听众主动退出房间。
+
+```swift
+func enterRoom(roomInfo: AUIRoomInfo) {
+    // 创建一个 AUIVoiceChatRoomView 实例，并设置其 frame 为当前视图的边界
+    let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)
+    // highlight-start
+    // 听众点击按钮主动退出房间
+    voiceChatView.onClickOffButton = { [weak self] in
+        self?.destroyRoom(roomId: roomInfo.roomId)
+    }
+    // highlight-end
+    ...
+}
+```
+
+在 `ViewController` 类里 `onCreateAction` 函数中，`let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)` 代码后添加如下高亮的几行，以实现通过点击按钮，让房主销毁房间。
+
+```swift
+@objc func onCreateAction(_ button: UIButton) {
+    ...
+    // 创建房间容器
+    let voiceChatView = AUIVoiceChatRoomView(frame: self.view.bounds)
+    // highlight-start
+    // 房主点击按钮销毁房间
+    voiceChatView.onClickOffButton = { [weak self] in
+        self?.destroyRoom(roomId: roomInfo.roomId)
+    }
+    // highlight-end
+    ...
+}
+```
+
+#### 4.2 被动退出房间
+
+听众被动退出房间的代码逻辑如下：
+
+1. 在 `ViewController` 类里 `onCreateAction` 函数中，`createRoom` 方法后添加如下高亮行。调用 `VoiceChatUIKit` 类的 `bindRespDelegate` 方法，订阅房间被销毁的回调。
+
+    ```swift
+    @objc func onCreateAction(_ button: UIButton) {
+        ...
+        generateToken(channelName: "\(roomId)",
+                      roomConfig: roomConfig,
+                      completion: {[weak self] error in
+            ...
+
+            VoiceChatUIKit.shared.createRoom(roomInfo: roomInfo,
+                                             roomConfig: roomConfig,
+                                             chatView: voiceChatView) {[weak self] error in
+                ...
+            }
+
+            // highlight-start
+            // 订阅房间被销毁回调
+            VoiceChatUIKit.shared.bindRespDelegate(delegate: self)
+            // highlight-end
+        })
+        ...
+    }
+    ```
+
+2. 在 `ViewController` 类里 `enterRoom` 函数中，`VoiceChatUIKit.shared.enterRoom(...){...}` 代码后添加如下高亮行。调用 `VoiceChatUIKit` 类的 `bindRespDelegate` 方法，订阅房间被销毁的回调。
+
+    ```swift
+    func enterRoom(roomInfo: AUIRoomInfo) {
+        ...
+        generateToken(channelName: roomId,
+                      roomConfig: roomConfig) {[weak self] err  in
+            guard let self = self else {return}
+            VoiceChatUIKit.shared.enterRoom(roomId: roomId,
+                                            roomConfig: roomConfig,
+                                            chatView: self.voiceChatView!) {[weak self] roomInfo, error in
+                ...
+            }
+
+            // highlight-start
+            // 订阅房间被销毁回调
+            VoiceChatUIKit.shared.bindRespDelegate(delegate: self)
+            // highlight-end
+        }
+        ...
+    }
+    ```
+
+3. 在 `ViewController` 文件中，通过 `AUIVoiceChatRoomServiceRespDelegate` 监听如下事件：
+
+    - `onRoomDestroy`：房间被房主销毁事件。
+    - `onRoomUserBeKicked`：听众被房主踢出房间时间。
+
+    当监听到这些事件时，执行 `destroyRoom` 函数。
+
+    ```swift
+    extension ViewController: AUIVoiceChatRoomServiceRespDelegate {
+        // 房间销毁回调
+        @objc func onRoomDestroy(roomId: String) {
+            self.destroyRoom(roomId: roomId)
+        }
+        // 听众被房主踢出房间回调
+        @objc func onRoomUserBeKicked(roomId: String, userId: String) {
+            self.destroyRoom(roomId: roomId)
+        }
+    }
+    ```
+
+4. 在 `ViewController` 类中，增加 `destroyRoom` 函数。在该函数中，调用 `VoiceChatUIKit` 类的 `unbindRespDelegate` 方法，取消订阅房间被销毁的回调。这样，在房间销毁时，将不再接收房间相关事件。
+
+    ```swift
+    func destroyRoom(roomId: String) {
+        // 在退出房间时取消订阅，调用 VoiceChatUIKit 的 unbindRespDelegate 方法
+        VoiceChatUIKit.shared.unbindRespDelegate(delegate: self)
+    }
+    ```
+
+#### 4.3 补全销毁逻辑
+
+在[主动退出或销毁房间](#41-主动退出或销毁房间)、[被动退出房间](#42-被动退出房间)的情况下，都会执行 `destroyRoom` 函数。
+
+在 `destroyRoom` 函数中，添加如下高亮的几行。调用 `VoiceChatUIKit` 类的 `leaveRoom` 方法并传入房间 ID，以退出或销毁房间。至此，`destroyRoom` 函数的代码补全。
+
+```swift
+func destroyRoom(roomId: String) {
+    // highlight-start
+    // 点击退出，调用 VoiceChatView 的 onBackAction 方法
+    self.voiceChatView?.onBackAction()
+
+    // 将 VoiceChatView 从父视图中移除
+    self.voiceChatView?.removeFromSuperview()
+
+    // 调用 VoiceChatUIKit 的 leaveRoom 方法退出房间（听众）或销毁房间（主播）
+    VoiceChatUIKit.shared.leaveRoom(roomId: roomId)
+    // highlight-end
+
+    // 在退出房间时取消订阅，调用 VoiceChatUIKit 的 unbindRespDelegate 方法
+    VoiceChatUIKit.shared.unbindRespDelegate(delegate: self)
+}
+```
+
+## 注意事项
+
+### 加速 Pod
+
+为加速 Pod 命令的执行结果，建议你使用国内镜像源，步骤如下：
+
+1. 打开 `Podfile` 文件，更改 source 为国内镜像源
+
+    ```shell
+    # 移除官方源
+    # source 'https://github.com/CocoaPods/Specs.git'
+
+    # 使用国内镜像源
+    source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+    ```
+
+2. 保存并退出 `Podfile`，重新执行 Pod 命令安装依赖库。
+
+### 问题排查
+
+如果在 Xcode 15 编译项目时遇到 `Sandbox: rsync.samba(47334) deny(1) file-write-create...` 报错信息，你可以依次进行如下操作：
+
+1. 在 Xcode 中选中 **PROJECT**，点击 **Build Settings**，在 Filter 搜索框中搜索 User Script Sandboxing，将该选项设为 **No**。
+2. 选中 **TARGETS**，检查并确保 **User Script Sandboxing** 的设置为 **No**。
+
+![Xcode User Script Sandboxing 设置示意图](https://web-cdn.agora.io/docs-files/1697685882007)
+
+### 后端部署
+
+声网在示例项目中提供的后端服务 Host URL（`https://service.shengwang.cn/uikit-v2`）仅供测试和快速集成语聊房使用，请勿用于商业用途。如需商用，请自行部署后端服务，并将客户端代码中的声网后端服务 Host URL 更新为你的服务 Host URL，详见[部署后端服务](/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project-backend)。
+
+## 下一步
+
+在创建、进入房间后，你可以参考如下业务流程图开发后续的麦位管理、聊天、礼物等功能。
+
+![语聊房后续功能业务流程图](/img/chatroom/uivoice_flowchart.svg)
+
+</PlatformStructured>

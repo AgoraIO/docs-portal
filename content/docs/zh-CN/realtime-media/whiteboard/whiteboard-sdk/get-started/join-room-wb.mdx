@@ -27,7 +27,7 @@ title: "加入白板房间"
 - Android Studio
 - Android SDK API level 19+
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
 ## 创建 Android 项目
 
@@ -90,7 +90,7 @@ dependencies {
 }
 ```
 
-> 关于声网互动白板 SDK 的最新版本，详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb)。
+> 关于声网互动白板 SDK 的最新版本，详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)。
 
 ## 防止代码混淆
 
@@ -158,7 +158,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -225,7 +225,7 @@ request(options, function (error, response) {
 
 编辑 `MainActivity.java`，实现从初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
 
-- `appId`：互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `appId`：互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - `uuid`：房间的 UUID。详见[创建房间](#1-创建房间)。
 - `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
 - `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token)。
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
 - iOS 9.0+
 - CocoaPods [最新版本](https://cocoapods.org/)。
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
 ## 创建项目
 
@@ -473,7 +473,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -517,7 +517,7 @@ request(options, function (error, response) {
 
 编辑 `ViewController.m`，实现从添加 View、初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
 
-- `appIdentifier`：互动白板项目的唯一标识符。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `appIdentifier`：互动白板项目的唯一标识符。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - `uuid`：房间的唯一标识符。详见[创建房间](#1-创建房间)。
 - `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
 - `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token)。
@@ -691,9 +691,9 @@ class ViewController: UIViewController {
 
 ## 前提条件
 
-- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/solution-compare)。
+- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/solution-compare)。
 - 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
-- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
 
 ## 创建 Web 项目
@@ -769,7 +769,7 @@ class ViewController: UIViewController {
 
 :::info[信息]
 - 本文的示例使用方法二获取 SDK。
-- 关于声网互动白板 SDK 的最新版本，详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/release-notes-wb)。
+- 关于声网互动白板 SDK 的最新版本，详见[发版说明](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/release-notes-wb)。
 :::
 
 ## 实现步骤
@@ -829,7 +829,7 @@ request(options, function (error, response) {
 
 你可以通过以下方式在 App 服务端生成 Room Token：
 
-- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/basic-features/generate-token#在-app-服务端生成-token)。（推荐）
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
 - 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
@@ -873,7 +873,7 @@ request(options, function (error, response) {
 
 创建并初始化一个客户端 `WhiteWebSdk` 实例。初始化 `WhiteWebSdk` 时，你需要填入以下参数：
 
-- `appIdentifier`: 互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/enable-service#获取互动白板项目的安全密钥)。
+- `appIdentifier`: 互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - `region`：数据中心，必须和创建房间时设置的数据中心一致。
 
 将以下代码复制到 `index.js` 文件中：

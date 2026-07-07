@@ -15,7 +15,7 @@ Java SDK 旨在帮助开发者更轻松集成声网 RESTful API。该 SDK 具有
 开始前请确保你的本地开发环境满足如下条件：
 
 - [Java 1.8](https://www.oracle.com/cn/java/technologies/downloads/) 或以上版本。
-- 参考[开通服务](/zh-CN/realtime-media/recording/cloud-recording/get-started/enable-service)在声网控制台开通云端录制，并复制保存 App ID、临时 Token、客户 ID 和客户密钥。
+- 参考[开通服务](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service)在声网控制台开通云端录制，并复制保存 App ID、临时 Token、客户 ID 和客户密钥。
 
   :::warning[注意]
   临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
@@ -87,7 +87,7 @@ public class Main {
 其中，
 
 - `cname` 值设为 `show`，表示加入录制实时音视频互动所在的频道。
-- `vendor` 值设为 `2` 代表使用阿里云；`region` 值设为 `1` 表示 `CN_Shanghai`。如果你使用其他云存储厂商，参考[第三方云存储地区说明](/zh-CN/realtime-media/recording/cloud-recording/api/reference#第三方云存储地区说明)赋值。
+- `vendor` 值设为 `2` 代表使用阿里云；`region` 值设为 `1` 表示 `CN_Shanghai`。如果你使用其他云存储厂商，参考[第三方云存储地区说明](/zh-CN/realtime-media/recording/cloud-recording/reference/api-reference#第三方云存储地区说明)赋值。
 
 ### 创建并初始化 Client
 
@@ -423,7 +423,7 @@ public class Main {
 └── <sid>_testchannel_20241119070642248.ts
 ```
 
-根据你在 `start` 方法中设置的录制时间，云存储中可能会有多个 .ts 文件。录制文件介绍请参考[录制文件命名和切片规则](/zh-CN/realtime-media/recording/cloud-recording/user-guides/manage-file/introduce-recorded-files#合流和页面录制模式)。
+根据你在 `start` 方法中设置的录制时间，云存储中可能会有多个 .ts 文件。录制文件介绍请参考[录制文件命名和切片规则](/zh-CN/realtime-media/recording/cloud-recording/build/manage-recorded-files/introduce-recorded-files#合流和页面录制模式)。
 
 ## 进阶设置
 
@@ -471,7 +471,7 @@ StartMixRecordingResourceClientReq startResourceReq = StartMixRecordingResourceC
 
 ### 排查错误
 
-- [响应状态码和错误码](/zh-CN/realtime-media/recording/cloud-recording/response-code)
+- [响应状态码和错误码](/zh-CN/realtime-media/recording/cloud-recording/reference/response-code)
 - [为什么成功开启云端录制后调用 query 方法返回 404？](/faq/integration-issues/return-404)
 - [如何选择云存储 bucket 区域及处理跨区上传问题？](/faq/integration-issues/bucket-region)
 - [为什么第三方云存储中没有录制文件？](/faq/integration-issues/fail-to-upload)

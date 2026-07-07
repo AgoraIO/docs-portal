@@ -1,0 +1,156 @@
+---
+title: "抢唱"
+---
+
+<PlatformStructured platform="android">
+
+本文介绍如何实现歌曲副歌片段抢唱。在此之前，请确保你已参考[实现文档](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)集成 KTV API。
+
+## 方案介绍
+
+默认由房主播放副歌片段（播放的实现逻辑同独唱），听众可以上麦进行抢唱，抢到麦后房主停止播放，抢到麦的人播放副歌片段并进行独唱，K 歌房内的听众都可以听到其演唱。
+
+抢唱场景下存在两种角色：
+
+- **独唱者**：加入频道，加载并播放歌曲。KTV API 模块内部控制音乐播放器播放音乐，发布音乐到远端，将音乐播放进度同步到远端，让歌词组件进入歌词滚动状态等逻辑。
+- **听众**：加入频道，加载歌词。KTV API 模块内部控制听众订阅独唱者的人声和音乐的音频合流，同步独唱者的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。如果听众需要上麦聊天，可以更新媒体选项。
+
+下图为抢唱方案的技术原理图：
+
+![抢唱](/img/online-ktv/gaming.png)
+
+## 抢唱实现
+
+与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](#play)有差异。因此，你可以参考[独唱方案](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
+
+<a id="play"></a>
+### 加载及播放
+
+在播放副歌片段之前，你需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic` 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
+
+### 获取副歌片段总分
+
+抢唱场景下播放和演唱的音乐资源为副歌片段，你可以参考下列步骤来获取副歌片段的总分：
+
+1. 通过 `onHighPartTime` 回调获取副歌片段开始和结束时间。
+
+2. 调用歌词组件中的 [`parseLyricsData`](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api#parselyricsdata) 方法解析歌词文件数据，获取歌词数据模型。
+
+3. 通过歌词的行数来计算副歌片段的总分，示例代码如下：
+
+   ```java
+   // 变量，用于保存副歌片段的总分
+   int totalScore = 0;
+   // 计数器，用于统计处于副歌片段开始和结束时间之间的歌词行数
+   AtomicInteger lineCount = new AtomicInteger();
+   // 遍历歌词数据模型中的每一行歌词，检查每行歌词是否处于副歌片段开始和结束时间的范围内
+   lyricsModel.lines.forEach(line -> {
+       if (line.getStartTime() >= highStartTime && line.getEndTime() <= highEndTime) {
+           // 计算出处于开始和结束时间之间的歌词行数
+           lineCount.getAndIncrement();
+       }
+   });
+   // 总分=行数*100
+   totalScore = lineCount.get() * 100;
+   ```
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/rtc-api)
+- [歌词打分组件 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api)
+
+## 相关文档
+
+- [快速实现](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)
+- [大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何实现歌曲副歌片段抢唱。在此之前，请确保你已参考[实现文档](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)集成 KTV API。
+
+## 方案介绍
+
+默认由房主播放副歌片段（播放的实现逻辑同独唱），听众可以上麦进行抢唱，抢到麦后房主停止播放，抢到麦的人播放副歌片段并进行独唱，K 歌房内的听众都可以听到其演唱。
+
+抢唱场景下存在两种角色：
+
+- **独唱者**：加入频道，加载并播放歌曲。KTV API 模块内部控制音乐播放器播放音乐，发布音乐到远端，将音乐播放进度同步到远端，让歌词组件进入歌词滚动状态等逻辑。
+- **听众**：加入频道，加载歌词。KTV API 模块内部控制听众订阅独唱者的人声和音乐的音频合流，同步独唱者的音乐播放进度，让歌词组件进入歌词滚动状态等逻辑。如果听众需要上麦聊天，可以更新媒体选项。
+
+下图为抢唱方案的技术原理图：
+
+![抢唱](/img/online-ktv/gaming.png)
+
+## 抢唱实现
+
+与独唱方案相比，抢唱方案中仅需在 `KTVApiConfig` 中将 `KTVType` 设为 `SingBattle`（抢唱场景），独唱者实现和听众实现基本仅在[加载及播放](#play)有差异。因此，你可以参考[独唱方案](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)来实现独唱者和听众逻辑。
+
+<a id="play"></a>
+### 加载及播放
+
+在播放副歌片段之前，你需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic` 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
+
+### 获取副歌片段总分
+
+抢唱场景下播放和演唱的音乐资源为副歌片段，你可以参考下列步骤来获取副歌片段的总分：
+
+1. 通过 `onHighPartTime` 回调获取副歌片段开始和结束时间。
+2. 调用歌词组件中的 [`parseLyricData`](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api#parselyricdata) 方法解析歌词文件数据，获取歌词数据模型。
+3. 通过歌词的行数来计算副歌片段的总分，示例代码如下：
+
+   ```objc
+	 - (void)dealWithBattleSong:(LyricModel *)lyricsModel {
+    // 确保传入的歌词模型不为空
+    if (!lyricsModel) {
+        return;
+    }
+
+    // 初始化行数计数器
+    NSInteger lineCount = 0;
+
+    // 遍历歌词数据模型中的每一行歌词
+    for (NSInteger index = 0; index < lyricsModel.lines.count; index++) {
+        // 获取当前歌词的行数
+        LyricLine *line = lyricsModel.lines[index];
+
+        // 检查当前歌词行的开始时间是否处于副歌片段开始和结束时间的范围内
+        if (line.beginTime >= highStartTime && highEndTime >= line.beginTime + line.duration) {
+            // 打印匹配的行信息，并增加行数计数
+            NSLog(@"%ld -> s: %f, e: %f", (long)index, line.beginTime, line.beginTime + line.duration);
+            lineCount++;
+        }
+    }
+
+    // 总分=行数*100
+    localTotalScore = lineCount * 100;
+    }
+
+   ```
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api)
+- [实时互动 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/rtc-api)
+- [歌词打分组件 API](/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/lyrics-api)
+
+## 相关文档
+
+- [快速实现](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [独唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/solo)
+- [合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/chorus)
+- [大合唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/grand-chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [歌词打分组件](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-scoring)
+
+</PlatformStructured>

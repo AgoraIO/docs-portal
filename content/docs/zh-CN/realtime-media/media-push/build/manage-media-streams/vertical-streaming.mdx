@@ -1,0 +1,164 @@
+---
+title: "设置垂直布局"
+---
+本文介绍如何设置垂直布局，并介绍垂直布局下用户视频画面的布局效果。
+
+## 设置垂直布局
+
+垂直布局是转码推流时用户视频画面布局的一种样式。相比[自定义布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-transcode#设置自定义布局)，垂直布局需要你设置的字段较少。设置垂直布局时，你需要调用 `Create` 方法并设置 `canvas`、`layoutType(1)`、`vertical` 字段。
+
+如下示例展示如何将 `show68` 频道内用户的画面按垂直布局合图后推送到 CDN：
+
+```json
+{
+  "converter": {
+    "name": "show68_vertical",
+    "transcodeOptions": {
+      "rtcChannel": "show68",
+      "audioOptions": {
+      },
+      "videoOptions": {
+        // highlight-start
+        "canvas": {
+          "width": 360,
+          "height": 640,
+          "color": 0
+        },
+        // highlight-end
+        "codec": "H.264",
+        "codecProfile": "high",
+        "frameRate": 15,
+        "gop": 30,
+        "bitrate": 400,
+        // highlight-start
+        "layoutType": 1,
+        "vertical": {
+          "maxResolutionUid": 201,
+          "fillMode": "fill",
+          "refreshIntervalSec": 4
+        },
+        // highlight-end
+        "defaultPlaceholderImageUrl": "http://example/host_placeholder.jpg",
+        "seiOptions": {
+          "source": {
+            "metadata": true,
+            "datastream": true,
+            "customized": {
+              "payload": "example"
+            }
+          },
+          "sink": {
+            "type": 100
+          }
+        }
+      }
+    },
+    "rtmpUrl": "rtmp://example/live/show68",
+    "idleTimeout": 300
+  }
+}
+```
+
+## 视窗画面说明
+
+垂直布局的画面类型分为大视窗、小视窗和空视窗。空视窗指没有用户视频画面的视窗，具体说明如下：
+
+### 大视窗画面
+
+- 指定 UID
+
+  你可以在开始推流时通过 `maxResolutionUid` 参数指定一个 UID 作为大视窗画面。如果该用户停止发流或退出频道，画面先显示为该用户视频最后一帧，布局刷新（默认每三秒刷新一次）后显示为画布背景色。
+
+- 未指定 UID
+
+  布局刷新时（默认每三秒刷新一次）音量最大的用户显示为大视窗画面。
+
+### 小视窗画面
+
+小视窗画面按照频道内其他用户加入频道的时间先后顺序显示。如果小视窗用户 1 退出频道，小视窗用户 2 会占据小视窗用户 1 的视窗，依次替补。
+
+### 空视窗画面
+
+当布局位上的用户仅发送音频流，或停止发布视频流，或人数不足导致存在空视窗（无用户视频画面），该布局位画面显示如下：
+
+- 设置了 `defaultPlaceholderImageUrl` 字段，则显示默认背景图。
+- 未设置 `defaultPlaceholderImageUrl` 字段，则先显示为该用户视频最后一帧，布局刷新后显示为画布背景色。
+
+## 画面布局效果
+
+不同人数范围的实际布局效果如下图所示：
+
+<Tabs defaultValue="1" groupId="composit" persist>
+<TabsList>
+  <TabsTrigger value="1">1 人</TabsTrigger>
+  <TabsTrigger value="1-5">1-5 人</TabsTrigger>
+  <TabsTrigger value="6-7">6-7 人</TabsTrigger>
+  <TabsTrigger value="10-17">10-17 人</TabsTrigger>
+  <TabsTrigger value="18-33">18-33 人</TabsTrigger>
+  <TabsTrigger value="34-49">34-49 人</TabsTrigger>
+</TabsList>
+
+<TabsContent value="1">
+
+若未设置 `maxResolutionUid`，1 人的布局样式是铺满全屏。若设置了 `maxResolutionUid`，但该用户还未加入频道，其他用户加入频道时按照 1-5 人的布局展示在右侧。
+
+布局效果如图：
+
+![1 人布局效果](https://web-cdn.agora.io/docs-files/1640154271819)
+
+</TabsContent>
+
+<TabsContent value="1-5">
+
+你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-5。右侧小视窗宽度占总宽度的 1/5，高度占总高度的 1/4。
+
+布局效果如图：
+
+![1-5 人布局效果](https://web-cdn.agora.io/docs-files/1640154332281)
+
+</TabsContent>
+
+<TabsContent value="6-7">
+
+你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-7。右侧小视窗宽度占总宽度的 1/7，高度占总高度的 1/6。
+
+布局效果如图：
+
+![6-7 人布局效果](https://web-cdn.agora.io/docs-files/1640154345739)
+
+</TabsContent>
+
+<TabsContent value="10-17">
+
+你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-17。右侧小视窗宽度占总宽度的 1/10，高度占总高度的 1/8。
+
+布局效果如图：
+
+![10-17 人布局效果](https://web-cdn.agora.io/docs-files/1640154367436)
+
+</TabsContent>
+
+<TabsContent value="18-33">
+
+你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-33。右侧小视窗宽度占总宽度的 1/10，高度占总高度的 1/8。
+
+布局效果如图：
+
+![18-33 人布局效果](https://web-cdn.agora.io/docs-files/1640154378251)
+
+</TabsContent>
+
+<TabsContent value="34-49">
+
+你可以指定用户作为大视窗 1，频道内其他用户按照加入频道的时间顺序显示为视窗 2-49。右侧小视窗宽度占总宽度的 1/14，高度占总高度的 1/12。
+
+布局效果如图：
+
+![34-49 人渲染效果](https://web-cdn.agora.io/docs-files/1640154393232)
+
+</TabsContent>
+</Tabs>
+
+## API 参考
+
+你可以参考 [`Create`](../media-push/operations/post-region-v1-projects-appId-rtmp-converters) 方法了解字段详情。

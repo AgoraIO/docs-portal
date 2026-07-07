@@ -129,11 +129,11 @@
 | --- | --- |
 | `docs/rtc/landing-page.mdx` | `content/docs/zh-CN/realtime-media/rtc/index.md` |
 | `docs/rtc/landing-page.javascript.mdx` | `content/docs/zh-CN/realtime-media/rtc/index.javascript.md` |
-| `docs/rtc-server-sdk/landing-page.python.go.mdx` | Python 入口收敛到 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.mdx`，Go 保留 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.go.md` |
+| `docs/rtc-server-sdk/landing-page.python.go.mdx` | Python 入口收敛到 `content/docs/zh-CN/realtime-media/rtc-server-sdk/index.mdx`，Go 保留 `content/docs/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/index.go.md` |
 | `docs/chatroom/sdk/landing-page.mdx` | `content/docs/zh-CN/solutions/chatroom/sdk/index.md` |
 | `docs/online-ktv/auikaraoke/landing-page.mdx` | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/index.md` |
-| `docs/rtc/basic-features/audio-profile.android.mdx` | `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-profile.android.mdx` |
-| `docs/rtc/basic-features/audio-profile.ios.macos.mdx` | `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-profile.ios.mdx` 和 `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-profile.macos.mdx` |
+| `docs/rtc/basic-features/audio-profile.android.mdx` | `content/docs/zh-CN/realtime-media/rtc/build/audio/audio-profile.android.mdx` |
+| `docs/rtc/basic-features/audio-profile.ios.macos.mdx` | `content/docs/zh-CN/realtime-media/rtc/build/audio/audio-profile.ios.mdx` 和 `content/docs/zh-CN/realtime-media/rtc/build/audio/audio-profile.macos.mdx` |
 
 ## API Reference 路径转换规则
 
@@ -165,9 +165,9 @@
 | 旧文件或模式 | 新目标/状态 | 状态 | 备注 |
 | --- | --- | --- | --- |
 | `docs/flexible-classroom/_resources.mdx` | `fallback-default/defer` | `fallback-default/defer` | 同级已有 `resources.android.mdx`、`resources.ios.mdx`、`resources.javascript.mdx`、`resources.electron.mdx` |
-| `docs/iot-apaas/_resources.mdx` | `content/docs/zh-CN/solutions/iot-apaas/resources.mdx` | `mapped` | 同级无平台资源页 |
-| `docs/meeting/_resources.mdx` | `content/docs/zh-CN/solutions/meeting/resources.mdx` | `mapped` | 同级无平台资源页 |
-| `docs/rtm2/_resources.mdx` | `content/docs/zh-CN/realtime-media/rtm/resources.mdx` | `mapped` | 同级无平台资源页 |
+| `docs/iot-apaas/_resources.mdx` | `content/docs/zh-CN/solutions/iot-apaas/reference/downloads.mdx` | `mapped` | 同级无平台资源页 |
+| `docs/meeting/_resources.mdx` | `content/docs/zh-CN/solutions/meeting/reference/downloads.mdx` | `mapped` | 同级无平台资源页 |
+| `docs/rtm2/_resources.mdx` | `content/docs/zh-CN/realtime-media/rtm/reference/downloads.mdx` | `mapped` | 同级无平台资源页 |
 | `docs/toybox/_resources.mdx` | `content/docs/zh-CN/ai/device-kit/resources.mdx` | `mapped` | 同级无平台资源页 |
 | `docs/rtc/api/_reference.mdx` | 不迁移 | `ignore-empty` | 空文件 |
 | `docs/rtc/basic-features/_token-authentication.mdx` | `fallback-default/defer` | `fallback-default/defer` | 同级已有 10 个平台正式稿 |

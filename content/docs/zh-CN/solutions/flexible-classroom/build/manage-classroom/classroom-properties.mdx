@@ -1,0 +1,220 @@
+---
+title: "灵动课堂房间属性最佳实践"
+---
+
+<PlatformStructured platform="android">
+
+灵动课堂提供新增或更新指定课堂的自定义属性的能力。
+
+你可以结合自身的业务需求，设置任意课堂自定义属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现用户自己的扩展业务。
+
+## 同步少量数据到房间
+
+同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
+
+1. 调用 [`updateRoomProperties`](/api-ref/flexible-classroom/android/API/class_roomcontext#api_updateroomproperties) 方法更新房间自定义属性。
+
+   ```kotlin
+   abstract fun updateRoomProperties(properties: MutableMap<String, Any>,
+                                     cause: MutableMap<String, Any>?,
+                                     callback: EduContextCallback<Unit>? = null)
+   ```
+
+2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/android/API/class_roomhandler#onRoomPropertiesUpdated) 来更新数据。
+
+   ```kotlin
+   fun onRoomPropertiesUpdated(properties: Map<String, Any>,
+                               cause: Map<String, Any>?,
+                               operator: AgoraEduContextUserInfo?)
+   ```
+
+## 同步大量或者频繁同步数据到房间中
+
+如果要大规模或者重复多次同步数据，直接同步每个人的数据到各端就不适合了，你可以参考如下步骤：
+
+1. 在你的服务端对排序后的数据进行汇总。
+
+2. 调用声网后端的[更新房间属性 RESTful 接口](/zh-CN/solutions/flexible-classroom/reference/api-classroom#更新课堂自定义属性)，将数据同步到房间中。RESTful 接口详情如下：
+
+   - 方法：PUT
+   - 接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/properties`
+
+3. SDK 侧通过监听房间属性进行数据更新。
+
+   通过 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/android/API/class_roomhandler#onRoomPropertiesUpdated) 来实现监听。
+
+   ```kotlin
+   fun onRoomPropertiesUpdated(properties: Map<String, Any>,
+                               cause: Map<String, Any>?,
+                               operator: AgoraEduContextUserInfo?)
+   ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+灵动课堂提供新增或更新指定课堂的自定义属性的能力。
+
+你可以结合自身的业务需求，设置任意课堂自定义属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现用户自己的扩展业务。
+
+## 同步少量数据到房间
+
+同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
+
+1. 调用 [`updateRoomProperties`](/api-ref/flexible-classroom/ios/API/class_roomcontext#updateRoomProperties) 方法更新房间自定义属性。
+
+   ```objc
+   void updateRoomProperties(Map<String, Any> properties,
+                             Map<String, Any> cause,
+                             Callback<Void> success,
+                             Callback<AgoraEduContextError> fail)
+   ```
+
+2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/ios/API/class_roomhandler#onRoomPropertiesUpdated) 来更新数据。
+
+   ```objc
+   void onRoomPropertiesUpdated(Map<String, Any> changedProperties,
+                                Map<String, Any> cause,
+                                AgoraEduContextUserInfo operator)
+   ```
+
+## 同步大量或者频繁同步数据到房间中
+
+如果要大规模或者重复多次同步数据，直接同步每个人的数据到各端就不适合了，你可以参考如下步骤：
+
+1. 在你的服务端对排序后的数据进行汇总。
+
+2. 调用声网后端的[更新房间属性 RESTful 接口](/zh-CN/solutions/flexible-classroom/reference/api-classroom#更新课堂自定义属性)，将数据同步到房间中。RESTful 接口详情如下：
+
+   - 方法：PUT
+   - 接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/properties`
+
+3. SDK 侧通过监听房间属性进行数据更新。
+
+   通过 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/ios/API/class_roomhandler#onRoomPropertiesUpdated) 来实现监听。
+
+   ```objc
+   void onRoomPropertiesUpdated(Map<String, Any> changedProperties,
+                                Map<String, Any> cause,
+                                AgoraEduContextUserInfo operator)
+   ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+灵动课堂提供新增或更新指定课堂的自定义属性的能力。
+
+你可以结合自身的业务需求，设置任意课堂自定义属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现用户自己的扩展业务。
+
+## 同步少量数据到房间
+
+同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
+
+1. 调用 [`updateFlexProperties`](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore#updateFlexProperties) 方法更新房间自定义属性。
+
+   方法原型：
+
+   ```javascript
+   updateFlexProperties(properties: any, cause: any): Promise<void>
+   ```
+
+   示例代码：
+
+   ```javascript
+   this.classroomStore.roomStore.updateFlexProperties({ "xxx": xxxxxx }, null);
+   ```
+
+2. 通过监听房间属性来更新数据：`this.classroomStore.roomStore.flexProps`。示例代码如下：
+
+   ```javascript
+   reaction(
+       () => this.classroomStore.roomStore.flexProps,
+       () => {
+           this.xxxxx = this.classroomStore.roomStore.flexProps['xxxxxxxxx'];
+       }),
+   ```
+
+## 同步大量或者频繁同步数据到房间中
+
+如果要大规模或者重复多次同步数据，直接同步每个人的数据到各端就不适合了，你可以参考如下步骤：
+
+1. 在你的服务端对排序后的数据进行汇总。
+
+2. 调用声网后端的[更新房间属性 RESTful 接口](/zh-CN/solutions/flexible-classroom/reference/api-classroom#更新课堂自定义属性)，将数据同步到房间中。RESTful 接口详情如下：
+
+   - 方法：PUT
+   - 接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/properties`
+
+3. SDK 侧通过监听房间属性进行数据更新。
+
+   调用 `this.classroomStore.roomStore.flexProps` 监听房间属性更新事件。示例代码如下：
+
+   ```javascript
+   reaction(
+       () => this.classroomStore.roomStore.flexProps,
+       () => {
+           this.xxxxx = this.classroomStore.roomStore.flexProps['xxxxxxxxx'];
+       }),
+   ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+灵动课堂提供新增或更新指定课堂的自定义属性的能力。
+
+你可以结合自身的业务需求，设置任意课堂自定义属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现用户自己的扩展业务。
+
+## 同步少量数据到房间
+
+同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
+
+1. 调用 [`updateFlexProperties`](/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore#updateFlexProperties) 方法更新房间自定义属性。
+
+   方法原型：
+
+   ```javascript
+   updateFlexProperties(properties: any, cause: any): Promise<void>
+   ```
+
+   示例代码：
+
+   ```javascript
+   this.classroomStore.roomStore.updateFlexProperties({ "xxx": xxxxxx }, null);
+   ```
+
+2. 通过监听房间属性来更新数据：`this.classroomStore.roomStore.flexProps`。示例代码如下：
+
+   ```javascript
+   reaction(
+       () => this.classroomStore.roomStore.flexProps,
+       () => {
+           this.xxxxx = this.classroomStore.roomStore.flexProps['xxxxxxxxx'];
+       }),
+   ```
+
+## 同步大量或者频繁同步数据到房间中
+
+如果要大规模或者重复多次同步数据，直接同步每个人的数据到各端就不适合了，你可以参考如下步骤：
+
+1. 在你的服务端对排序后的数据进行汇总。
+
+2. 调用声网后端的[更新房间属性 RESTful 接口](/zh-CN/solutions/flexible-classroom/reference/api-classroom#更新课堂自定义属性)，将数据同步到房间中。RESTful 接口详情如下：
+
+   - 方法：PUT
+   - 接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/properties`
+
+3. SDK 侧通过监听房间属性进行数据更新。
+
+   调用 `this.classroomStore.roomStore.flexProps` 监听房间属性更新事件。示例代码如下：
+
+   ```javascript
+   reaction(
+       () => this.classroomStore.roomStore.flexProps,
+       () => {
+           this.xxxxx = this.classroomStore.roomStore.flexProps['xxxxxxxxx'];
+       }),
+   ```
+
+</PlatformStructured>

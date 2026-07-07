@@ -1,0 +1,78 @@
+---
+title: "响应状态码"
+---
+在调用输入在线媒体流 API 过程中，你可能收到如下 HTTP 响应状态码：
+
+- 如果 HTTP 状态码为 2XX，则请求成功。
+
+- 如果 HTTP 状态码不为 2XX，则请求失败。你可以根据对应的响应体中可能出现的 `message` 以及 `reason` 字段排查问题。
+
+例如，请求失败时，你可能收到如下响应：
+
+```json
+# 400 Bad Request
+# 仅有 message
+{
+  "message": "appid is invalid"
+}
+```
+
+```json
+# 403 Forbidden
+# 仅有 reason
+{
+  "reason": "No invalid permission to use this function. Contact us."
+}
+```
+
+下表列出调用输入在线媒体流 API 时，可能收到的响应状态码、`message` 或 `reason` 字段内容以及建议措施：
+
+| 状态码 | 可能的 `message` 或 `reason` 字段内容 | 建议措施 |
+| --- | --- | --- |
+| `200 OK` | 无该字段。 | 无需排查。 |
+| `400 Bad Request` | <Slot name="response-code-markdown-0-2-1" /> | 检查报错的字段是否符合 API 文档的描述。 |
+| `401 Unauthorized` | Invalid authentication credentials. | 检查 [HTTP 基本认证](/zh-CN/realtime-media/media-pull/build/setup-and-access/http-basic-auth)是否符合要求。 |
+| `403 Forbidden` | <Slot name="response-code-markdown-0-4-1" /> | 检查是否已[开通服务](/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service)。 |
+| `404 Not Found` | Resource is not found and destroyed. | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability#使用退避重试策略)。 |
+| `409 Conflict` | Resource with the same name already exists. | 删除已存在的同名云端播放器，然后重新请求创建。 |
+| `429 Too Many Requests` | <Slot name="response-code-markdown-0-7-1" /> | 超出配额限制，等待一段时间再重试。 |
+| `500 Internal Server Error` | Some internal error happened. Contact us to help fix it. | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability#使用退避重试策略)。 |
+| `503 Service Unavailable` | <Slot name="response-code-markdown-0-9-1" /> | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability#使用退避重试策略)。 |
+| `504 Gateway Timeout` | Gateway timeout. Query to check whether the player has been created, or to create another one instead. | 使用[退避重试策略](/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability#使用退避重试策略)。 |
+
+<Slot for="response-code-markdown-0-2-1">
+
+- Parameter 'streamUrl' is invalid formatted.
+- Parameter channelName is invalid. Fix it in your request and retry.
+
+</Slot>
+
+<Slot for="response-code-markdown-0-4-1">
+
+- This project has not enabled Cloud Player product yet. Contact us to enable it.
+- This project's permission to use Cloud Player was revoked. Contact us for details.
+
+</Slot>
+
+<Slot for="response-code-markdown-0-7-1">
+
+- Request rate limit exceeded.
+- Resources quota limit exceeded.
+- No available resources.
+
+</Slot>
+
+<Slot for="response-code-markdown-0-9-1">
+
+- Service overload. Retry with back off strategy, and contact us to help fix it.
+- Service unavailable temporarily. Retry with back off strategy.
+
+</Slot>
+
+:::info[信息]
+如果以上排查方法并未解决问题，请务必在日志中打印出响应 Header 中的 `X-Request-ID` 和 `X-Resource-ID` 字段值，并请[联系技术支持](https://docs.agora.io/cn/Agora%20Platform/ticket?platform=All%20Platforms)。
+:::
+
+以下是一个排查问题的示例：
+
+使用 `Create` 创建云端播放器时，如果响应状态码为 `409 Conflict`，`message` 为 `"Resource with the same name already exists."`，则代表本次请求想创建的播放器和已经创建的播放器名字（`name`）重复，响应 Header 中的 `X-Resource-ID` 字段为那个同名播放器的 ID。请检查并修改本次请求填写的播放器名字，然后重新创建播放器。

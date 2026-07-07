@@ -1,0 +1,69 @@
+---
+title: "回调事件概览"
+---
+开通[消息通知服务](/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/enable-ncs)后，当你指定要接收通知的事件发生时，声网消息通知服务器会以 HTTP 请求形式向你发送回调。回调的具体内容在请求 Body 中以 JSON 对象形式返回，根据事件不同，请求 Body 中 JSON 对象所包含的字段也不一样。
+
+下面以一个示例说明请求 Body 中的字段：
+
+![消息通知请求 Body](https://web-cdn.agora.io/docs-files/1567589432439)
+
+上图中红色框内字段为消息通知服务请求 Body 的公共字段，所有回调中都包含这些字段，公共字段的含义详见[消息通知回调格式](/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/enable-ncs)。其中 `eventType` 表示云端录制回调事件的类型。
+
+蓝色框内字段为云端录制事件 `payload` 中的公共字段，所有的云端录制事件的回调中 `payload` 都包含这些字段。其中 `serviceType` 表示该事件与云端录制的哪个服务模块有关，`details` 则包含具体的事件信息。`payload` 中包含的字段及详细含义见下文。
+
+## payload 字段说明
+
+ `payload` 字段是一个 JSON Object，包含事件的具体内容。云端录制每种类型的事件通知中 `payload` 都会包含以下字段：
+
+  - `cname`：String 类型，录制的频道名称。
+  - `uid`：String 类型，录制使用的用户 ID。
+  - `sid`：String 类型，录制 ID，一次云端录制的唯一标识。
+  - `sequence`：Number 类型，消息序列号，从 0 开始计数。消息可能乱序到达或者丢失重发，可以通过该参数标识消息。
+  - `serviceScene`：String 类型，当前运行的录制场景或录制阶段：
+    - `"rtc_record"`：实时录制。
+    - `"rtc_snapshot"`：截图。
+    - `"web_record"`：页面录制。
+  - `sendts`：Number 类型， 事件发生的时间 （UTC 时间）。Unix 时间戳，精确到毫秒。
+  - `serviceType`：Number 类型，回调事件服务的类型。
+    - `0`：云端录制服务
+    - `1`：录制模块
+    - `2`：上传模块
+    - `6`：页面录制
+  - `details`：JSON Object，具体的消息内容，详见每个事件的描述。消息通知服务可能会在 `details` 中新增字段，但为保证兼容，不会改变现有字段的数据格式。
+
+## 回调事件概览
+
+本节详细介绍云端录制每种回调事件的相关字段。
+
+| `eventType`     | `serviceType`       | 事件描述                                                     |
+| ------------- | ----------------- | ------------------------------------------------------------ |
+| [`1`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#1)       | `0`，表示云端录制服务 | 云端录制服务发生错误                                         |
+| [`2`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#2)       | `0`，表示云端录制服务 | 云端录制服务发生警告                                         |
+| [`3`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#3)       | `0`，表示云端录制服务 | 云端录制服务状态发生变化                                     |
+| [`4`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#4)       | `0`，表示云端录制服务 | 生成录制索引文件                                             |
+| [`11`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#11)     | `0`，表示云端录制服务 | 云端录制服务结束任务并退出                                   |
+| [`12`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service#12)     | `0`，表示云端录制服务 | 云端录制[启用高可用机制](https://docs.agora.io/cn/faq/high-availability) |
+| [`30`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading#30)     | `2`，表示上传模块     | 上传服务已启动                                               |
+| [`31`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading#31)     | `2`，表示上传模块     | 所有录制文件已上传至指定的第三方云存储                       |
+| [`32`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading#32)     | `2`，表示上传模块     | 所有录制文件已经全部上传完成，但至少有一片上传到声网备份云 |
+| [`33`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading#33)     | `2`，表示上传模块     | 录制文件上传到第三方云存储的进度                             |
+| [`40`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status#40)     | `1`，表示录制模块     | 录制服务已启动                                               |
+| [`41`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status#41)     | `1`，表示录制模块     | 录制服务已退出                                               |
+| [`42`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status#42)     | `1`，表示录制模块     | 同步录制文件信息                                             |
+| [`43`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status#43)     | `1`，表示录制模块     | 音频流状态变化                                               |
+| [`44`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status#44)     | `1`，表示录制模块     | 视频流状态变化                                               |
+| [`45`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading#45)     | `2`，表示上传模块     | 云端截图成功                                        |
+| [`70`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#70)     | `6`，表示页面录制     | 页面录制已启动                                               |
+| [`71`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#71)     | `6`，表示页面录制     | 页面录制已停止                                               |
+| [`72`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#72)     | `6`，表示页面录制     | 待录制页面使用了不受支持的功能，录制即将停止                 |
+| [`73`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#73)     | `6`，表示页面录制     | 待录制页面重新加载          |
+| [`100`](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage#100)     | `6`，表示页面录制     | 页面录制 CDN 推流状态变化                                            |
+
+## 回调事件详情
+
+你可以参考如下文档，按照业务需要查看云端录制各模块的回调事件：
+
+- [录制服务事件](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/service)
+- [上传模块事件](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/uploading)
+- [录制模块事件](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/status)
+- [页面录制事件](/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/webpage)

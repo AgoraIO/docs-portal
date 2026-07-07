@@ -1,0 +1,1139 @@
+---
+title: "加快首帧出图"
+---
+
+<PlatformStructured platform="android">
+
+在实时音视频互动中，首帧出图耗时是指 App 用户加入频道至首次看到远端视频画面的时间间隔。首帧出图时间是影响用户体验的关键因素。首帧出图时间越短，用户能越快看到远端视频画面，减少等待时间，拥有更好的用户体验。
+
+本文介绍缩短首帧出图耗时的两种最佳实践方案。
+
+:::info[信息]
+本文的 API 和示例代码均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
+:::
+
+## 前提条件
+
+主播已成功加入频道并正常推送视频流，观众加入频道时，主播的视频流已处于可订阅状态。可参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)来实现基本的音视频互动功能。
+
+## 实现方案
+
+- 方案一：在加入频道前提前执行部分耗时任务，如预加载频道、设置渲染视图、设置音视频帧加速渲染等。
+- 方案二：提前加入频道但不订阅音视频流，在 App 用户触发加入频道的操作时再订阅主播的音视频流并立即开始渲染。
+
+两种优化方案的关键差异对比如下：
+
+| 特性 | 方案一 | 方案二 |
+| --- | --- | --- |
+| 适用场景 | 大多数音视频场景 | 对首帧出图速度要求极高的场景 |
+| 核心实现 | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1" /> | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2" /> |
+| 费用 | 正常计费 | 可能产生额外频道使用费 |
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1">
+
+- 尽早在加入频道前进行初始化、视频场景设置等操作
+- 加入频道时开始视频渲染数据打点
+
+</Slot>
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2">
+
+- 提前加入频道不订阅媒体流，App 用户实际加入频道时再订阅
+- 订阅媒体流时开始视频渲染数据打点
+
+</Slot>
+
+下图展示优化前、以及方案一、方案二中首帧出图的耗时：
+
+![](/img/rtc/video-rendering/video-rendering-allinone.png)
+
+<Tabs defaultValue="solution 1" groupId="rendering-video-frames" persist>
+<TabsList>
+  <TabsTrigger value="solution 1">方案一：提前执行耗时任务</TabsTrigger>
+  <TabsTrigger value="sample1">方案二：提前加入频道但不订阅流</TabsTrigger>
+</TabsList>
+
+<TabsContent value="solution 1">
+
+下图展示方案一的 API 调用时序：
+
+![加快首帧出图 API 调用时序](/img/rtc/video-rendering/video-rendering.svg)
+
+### 创建并初始化引擎
+
+调用 [`createAgoraRtcEngine`](/api-ref/rtc/windows/API/toc_initialize#api_createagorartcengine) 创建 RTC 引擎，调用 [`initialize`](/api-ref/rtc/windows/API/toc_initialize#initialize) 初始化引擎。
+
+:::info[信息]
+- 创建、初始化引擎需要一定的时间，如需加快首帧出图的速度，声网推荐在模块的初始化时完成 RTC 引擎的创建和初始化，不建议在用到 SDK 相关功能时才进行初始化。
+- 在用户使用期间，引擎的创建和初始化只需要进行一次即可，不建议频繁进行引擎的创建和销毁。
+:::
+
+```cpp
+class LiveBroadcastingDlg {
+private:
+    IRtcEngine* m_rtcEngine;
+
+public:
+    // 在对话框初始化时创建和初始化引擎
+    LiveBroadcastingDlg() {
+        m_rtcEngine = createAgoraRtcEngine();
+        RtcEngineContext context;
+        // 配置 context 参数
+        context.appId = "Your App ID";
+        context.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // ... 其他必要配置
+
+        // 初始化引擎
+        m_rtcEngine->initialize(context);
+    }
+};
+```
+
+### 开启音视频帧加速渲染
+
+调用 [`enableInstantMediaRendering`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。在调用该方法时请注意：
+
+- 该方法需要在加入频道前调用，声网推荐在引擎初始化完成后立即调用该方法。
+- 主播端和观众端均需要调用该方法才可以体验音视频帧加速渲染。
+- 如需关闭该功能，需要先调用 [`release`](/api-ref/rtc/windows/API/toc_initialize#release) 释放引擎、然后再重新创建并初始化。
+
+```cpp
+// 设置加速出图、出声，需要在加入频道前调用
+m_rtcEngine->enableInstantMediaRendering();
+```
+
+### 设置视频业务场景
+
+根据你实际的业务需求，调用 [`setVideoScenarios`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoscenario) 来设置视频场景。设置后，SDK 会在特定的场景下启用该场景对应的最佳实践策略，自动调整关键性能指标。例如，在 1V1 通话场景下，推荐将 `scenarioType` 设为 `APPLICATION_SCENARIO_1V1`，以获得最佳视频通话体验。
+
+```cpp
+// 设置视频业务场景
+m_rtcEngine->setVideoScenarios(agora::rtc::APPLICATION_SCENARIO_1V1);
+```
+
+### 预加载频道
+
+加入频道的过程主要可以分为获取服务器资源和连接服务器两个阶段。调用 [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#preloadChannel) 预加载频道，可以提前获取服务器资源，从而节省加入频道过程中获取服务器资源的耗时。
+
+:::warning[注意]
+- 请确保预加载频道时传入的频道名、用户 ID、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 声网建议在获取到频道的 Token、频道名等信息后，尽早调用该方法进行预加载，不建议调用该方法后立即调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 加入频道。
+:::
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+	m_uid = get_uid();
+	m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+    // 预加载频道
+	m_rtcEngine->preloadChannel(m_token, m_channelId, m_uid);
+}
+```
+
+### 设置渲染视图
+
+渲染视图初始化需要一定时间，提前设置渲染视图可提前将初始化工作完成，避免首帧解码后未设置视图导致该帧无法渲染，错过最佳渲染时机。App 可以通过自有信令系统来获取主播的用户 ID，然后立即调用 [`setupRemoteVideo`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 立即设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，也可以通过监听 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调来获取。
+
+```cpp
+// App 通过自有途径获取到频道信息和远端主播的用户 ID
+void LiveBroadcastingDlg::onShowChannels(const char* channelId, uid_t remoteUid) {
+    // 及时设置渲染视图
+    VideoCanvas canvas;
+    canvas.uid = remoteUid;
+    // 设置 canvas 其他内容
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    // 由于已提前设置过 view，这里不需要再设置
+}
+```
+
+```cpp
+// 通过 onUserJoined 回调获取远端主播的用户 ID
+void EventHandler::onUserJoined(uid_t uid, int elapsed) {
+	// 触发LiveBroadcastingDlg::onEIDUserJoined
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+	VideoCanvas canvas;
+	canvas.uid = uid;
+	// 渲染主播的视图
+	m_rtcEngine->setupRemoteVideo(canvas);
+}
+```
+
+### 观测视频帧渲染数据
+
+调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 开始视频渲染数据打点。成功调用后，SDK 默认以调用该方法的时刻为起始点，自动跟踪视频渲染事件，并通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息来观察首帧出图的相关数据，从而针对指标进行专项优化。
+
+声网建议在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。你也可以根据实际的业务场景，在合适的时机调用该方法，进行自定义打点。
+
+```cpp
+// 用户点击加入频道按钮时
+void on_join_clicked() {
+    // 立即开启渲染数据打点，在用户操作的第一时刻开始计时
+    m_rtcEngine->startMediaRenderingTracing();
+
+    // 执行加入频道等其他操作
+    m_rtcEngine->joinChannel(token, channelId, uid, options);
+}
+```
+
+### 加入频道
+
+调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 方法加入频道。如需缩短音视频首帧出声、出图的时间，建议不要在该方法中添加额外的耗时操作，比如获取 Token、频道名、用户 ID 等信息。如果无法提前获取 Token，可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token) 来加入频道。
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+    m_uid = get_uid();
+    m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+}
+
+int LiveBroadcastingDlg::joinChannel() {
+    ChannelMediaOptions options;
+    // 加入频道
+    return m_rtcEngine->joinChannel(m_token, m_channelId, m_uid, options);
+}
+```
+
+### 优化回调处理
+
+SDK 的运行状态、错误信息和各类事件会通过 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 接口中的相关回调进行通知。SDK 回调在同一线程串行执行，任何耗时操作都会阻塞后续回调处理。例如，在 [`onJoinChannelSuccess`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中执行耗时任务会阻塞 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调，导致视图设置延迟，影响视频首帧渲染速度。因此在实现 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 回调接口时，需注意：
+
+- 避免在回调函数中执行耗时任务（如网络请求、文件读写、复杂计算）。
+- 与视频相关的回调，如 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined)，不应被其他回调中的耗时操作阻塞。
+- 将复杂业务逻辑分发到其他工作线程处理，保持回调线程高效运行。
+
+</TabsContent>
+
+<TabsContent value="sample1">
+
+方案二和方案一的主要区别在于方案二会提前加入频道，但加入频道后会先取消订阅主播的音视频流。当 App 用户在 App 上触发加入频道的操作时，再订阅音视频流并进行音视频帧渲染。
+
+下图展示方案二的 API 调用时序：
+
+![方案二 API 调用时序](/img/rtc/video-rendering/video-rendering-advanced.svg)
+
+:::info[信息]
+- 创建并初始化引擎、设置音视频帧加速渲染、视频场景、优化回调处理的实现逻辑步骤同方案一一致，可直接参考方案一的实现。
+- 本方案可能会产生**额外费用**，推荐在对首帧出图速度要求极高的场景下使用。
+:::
+
+### 设置渲染视图
+
+在加入频道前，如果可以获取到主播的用户 ID，则调用 [`setupRemoteVideoEx`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 尽早设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，可以在收到 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调时再调用该方法。
+
+```cpp
+// 设置主播的渲染视图
+VideoCanvas canvas;
+canvas.uid = far_next_channel.remoteUid;
+canvas.view = getView();
+m_rtcEngine->setupRemoteVideoEx(canvas, connection);
+```
+
+### 加入频道但不订阅音视频流
+
+加入频道是首帧出图的主要耗时环节，如果你的业务场景对首帧出图时间要求很高（例如在不同直播间频繁切换），你可以先调用 [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel#joinChannelEx) 加入多个频道并通过 `options` 参数将 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 和 `autoSubscribeVideo` 设为 `false`，表示加入频道后不自动订阅音视频流，等到 App 用户实际触发加入频道操作时，再订阅主播的音视频流即可大幅减小首帧出图耗时，提升用户观看体验。
+
+```cpp
+//  设置频道媒体选项
+ChannelMediaOptions options;
+// 频道场景设为直播
+options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 用户角色为观众
+options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
+// 加入频道后不自动订阅音频流
+options.autoSubscribeAudio = false;
+// 加入频道后不自动订阅视频流
+options.autoSubscribeVideo = false;
+RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
+// 加入频道
+m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
+```
+
+### 订阅流并获取渲染数据
+
+当 App 用户在 App 上触发加入频道的操作时：
+
+1. 调用 [`startMediaRenderingTracingEx`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex) 开始视频渲染数据打点。成功调用后，SDK 会通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息得到首帧出图各阶段耗时的相关数据，从而对各阶段的耗时进行专项优化。
+2. 调用 [`muteRemoteVideoStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengineex_muteremotevideostreamex) 和 [`muteRemoteAudioStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#muteRemoteAudioStreamEx) 恢复订阅主播音视频流。
+
+  ```cpp
+  void LiveBroadcastingDlg::switchNextChannel() {
+      // 开始视频渲染打点
+  	m_rtcEngine->startMediaRenderingTracingEx(connection);
+  	// ......
+  	RtcConnection connection(next_channel.channel_id.c_str(), localUid));
+      // 恢复订阅远端主播的视频流
+      m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
+      // 恢复订阅远端主播的音频流
+      m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
+  }
+  ```
+
+:::info[信息]
+声网针对秀场直播场景提供了完整的秒开秒切方案，详见[实现秒开秒切](https://doc.shengwang.cn/doc/showroom/android/advanced-features/video-loader/integrate)。
+:::
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+如果首帧出图时间较慢，你可以参考[如何调查首帧出图时间较长的问题](/faq/integration-issues/video-frame-rendering)进行问题排查。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在实时音视频互动中，首帧出图耗时是指 App 用户加入频道至首次看到远端视频画面的时间间隔。首帧出图时间是影响用户体验的关键因素。首帧出图时间越短，用户能越快看到远端视频画面，减少等待时间，拥有更好的用户体验。
+
+本文介绍缩短首帧出图耗时的两种最佳实践方案。
+
+:::info[信息]
+本文的 API 和示例代码均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
+:::
+
+## 前提条件
+
+主播已成功加入频道并正常推送视频流，观众加入频道时，主播的视频流已处于可订阅状态。可参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)来实现基本的音视频互动功能。
+
+## 实现方案
+
+- 方案一：在加入频道前提前执行部分耗时任务，如预加载频道、设置渲染视图、设置音视频帧加速渲染等。
+- 方案二：提前加入频道但不订阅音视频流，在 App 用户触发加入频道的操作时再订阅主播的音视频流并立即开始渲染。
+
+两种优化方案的关键差异对比如下：
+
+| 特性 | 方案一 | 方案二 |
+| --- | --- | --- |
+| 适用场景 | 大多数音视频场景 | 对首帧出图速度要求极高的场景 |
+| 核心实现 | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1" /> | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2" /> |
+| 费用 | 正常计费 | 可能产生额外频道使用费 |
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1">
+
+- 尽早在加入频道前进行初始化、视频场景设置等操作
+- 加入频道时开始视频渲染数据打点
+
+</Slot>
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2">
+
+- 提前加入频道不订阅媒体流，App 用户实际加入频道时再订阅
+- 订阅媒体流时开始视频渲染数据打点
+
+</Slot>
+
+下图展示优化前、以及方案一、方案二中首帧出图的耗时：
+
+![](/img/rtc/video-rendering/video-rendering-allinone.png)
+
+<Tabs defaultValue="solution 1" groupId="rendering-video-frames" persist>
+<TabsList>
+  <TabsTrigger value="solution 1">方案一：提前执行耗时任务</TabsTrigger>
+  <TabsTrigger value="sample1">方案二：提前加入频道但不订阅流</TabsTrigger>
+</TabsList>
+
+<TabsContent value="solution 1">
+
+下图展示方案一的 API 调用时序：
+
+![加快首帧出图 API 调用时序](/img/rtc/video-rendering/video-rendering.svg)
+
+### 创建并初始化引擎
+
+调用 [`createAgoraRtcEngine`](/api-ref/rtc/windows/API/toc_initialize#api_createagorartcengine) 创建 RTC 引擎，调用 [`initialize`](/api-ref/rtc/windows/API/toc_initialize#initialize) 初始化引擎。
+
+:::info[信息]
+- 创建、初始化引擎需要一定的时间，如需加快首帧出图的速度，声网推荐在模块的初始化时完成 RTC 引擎的创建和初始化，不建议在用到 SDK 相关功能时才进行初始化。
+- 在用户使用期间，引擎的创建和初始化只需要进行一次即可，不建议频繁进行引擎的创建和销毁。
+:::
+
+```cpp
+class LiveBroadcastingDlg {
+private:
+    IRtcEngine* m_rtcEngine;
+
+public:
+    // 在对话框初始化时创建和初始化引擎
+    LiveBroadcastingDlg() {
+        m_rtcEngine = createAgoraRtcEngine();
+        RtcEngineContext context;
+        // 配置 context 参数
+        context.appId = "Your App ID";
+        context.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // ... 其他必要配置
+
+        // 初始化引擎
+        m_rtcEngine->initialize(context);
+    }
+};
+```
+
+### 开启音视频帧加速渲染
+
+调用 [`enableInstantMediaRendering`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。在调用该方法时请注意：
+
+- 该方法需要在加入频道前调用，声网推荐在引擎初始化完成后立即调用该方法。
+- 主播端和观众端均需要调用该方法才可以体验音视频帧加速渲染。
+- 如需关闭该功能，需要先调用 [`release`](/api-ref/rtc/windows/API/toc_initialize#release) 释放引擎、然后再重新创建并初始化。
+
+```cpp
+// 设置加速出图、出声，需要在加入频道前调用
+m_rtcEngine->enableInstantMediaRendering();
+```
+
+### 设置视频业务场景
+
+根据你实际的业务需求，调用 [`setVideoScenarios`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoscenario) 来设置视频场景。设置后，SDK 会在特定的场景下启用该场景对应的最佳实践策略，自动调整关键性能指标。例如，在 1V1 通话场景下，推荐将 `scenarioType` 设为 `APPLICATION_SCENARIO_1V1`，以获得最佳视频通话体验。
+
+```cpp
+// 设置视频业务场景
+m_rtcEngine->setVideoScenarios(agora::rtc::APPLICATION_SCENARIO_1V1);
+```
+
+### 预加载频道
+
+加入频道的过程主要可以分为获取服务器资源和连接服务器两个阶段。调用 [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#preloadChannel) 预加载频道，可以提前获取服务器资源，从而节省加入频道过程中获取服务器资源的耗时。
+
+:::warning[注意]
+- 请确保预加载频道时传入的频道名、用户 ID、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 声网建议在获取到频道的 Token、频道名等信息后，尽早调用该方法进行预加载，不建议调用该方法后立即调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 加入频道。
+:::
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+	m_uid = get_uid();
+	m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+    // 预加载频道
+	m_rtcEngine->preloadChannel(m_token, m_channelId, m_uid);
+}
+```
+
+### 设置渲染视图
+
+渲染视图初始化需要一定时间，提前设置渲染视图可提前将初始化工作完成，避免首帧解码后未设置视图导致该帧无法渲染，错过最佳渲染时机。App 可以通过自有信令系统来获取主播的用户 ID，然后立即调用 [`setupRemoteVideo`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 立即设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，也可以通过监听 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调来获取。
+
+```cpp
+// App 通过自有途径获取到频道信息和远端主播的用户 ID
+void LiveBroadcastingDlg::onShowChannels(const char* channelId, uid_t remoteUid) {
+    // 及时设置渲染视图
+    VideoCanvas canvas;
+    canvas.uid = remoteUid;
+    // 设置 canvas 其他内容
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    // 由于已提前设置过 view，这里不需要再设置
+}
+```
+
+```cpp
+// 通过 onUserJoined 回调获取远端主播的用户 ID
+void EventHandler::onUserJoined(uid_t uid, int elapsed) {
+	// 触发LiveBroadcastingDlg::onEIDUserJoined
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+	VideoCanvas canvas;
+	canvas.uid = uid;
+	// 渲染主播的视图
+	m_rtcEngine->setupRemoteVideo(canvas);
+}
+```
+
+### 观测视频帧渲染数据
+
+调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 开始视频渲染数据打点。成功调用后，SDK 默认以调用该方法的时刻为起始点，自动跟踪视频渲染事件，并通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息来观察首帧出图的相关数据，从而针对指标进行专项优化。
+
+声网建议在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。你也可以根据实际的业务场景，在合适的时机调用该方法，进行自定义打点。
+
+```cpp
+// 用户点击加入频道按钮时
+void on_join_clicked() {
+    // 立即开启渲染数据打点，在用户操作的第一时刻开始计时
+    m_rtcEngine->startMediaRenderingTracing();
+
+    // 执行加入频道等其他操作
+    m_rtcEngine->joinChannel(token, channelId, uid, options);
+}
+```
+
+### 加入频道
+
+调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 方法加入频道。如需缩短音视频首帧出声、出图的时间，建议不要在该方法中添加额外的耗时操作，比如获取 Token、频道名、用户 ID 等信息。如果无法提前获取 Token，可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token) 来加入频道。
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+    m_uid = get_uid();
+    m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+}
+
+int LiveBroadcastingDlg::joinChannel() {
+    ChannelMediaOptions options;
+    // 加入频道
+    return m_rtcEngine->joinChannel(m_token, m_channelId, m_uid, options);
+}
+```
+
+### 优化回调处理
+
+SDK 的运行状态、错误信息和各类事件会通过 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 接口中的相关回调进行通知。SDK 回调在同一线程串行执行，任何耗时操作都会阻塞后续回调处理。例如，在 [`onJoinChannelSuccess`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中执行耗时任务会阻塞 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调，导致视图设置延迟，影响视频首帧渲染速度。因此在实现 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 回调接口时，需注意：
+
+- 避免在回调函数中执行耗时任务（如网络请求、文件读写、复杂计算）。
+- 与视频相关的回调，如 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined)，不应被其他回调中的耗时操作阻塞。
+- 将复杂业务逻辑分发到其他工作线程处理，保持回调线程高效运行。
+
+</TabsContent>
+
+<TabsContent value="sample1">
+
+方案二和方案一的主要区别在于方案二会提前加入频道，但加入频道后会先取消订阅主播的音视频流。当 App 用户在 App 上触发加入频道的操作时，再订阅音视频流并进行音视频帧渲染。
+
+下图展示方案二的 API 调用时序：
+
+![方案二 API 调用时序](/img/rtc/video-rendering/video-rendering-advanced.svg)
+
+:::info[信息]
+- 创建并初始化引擎、设置音视频帧加速渲染、视频场景、优化回调处理的实现逻辑步骤同方案一一致，可直接参考方案一的实现。
+- 本方案可能会产生**额外费用**，推荐在对首帧出图速度要求极高的场景下使用。
+:::
+
+### 设置渲染视图
+
+在加入频道前，如果可以获取到主播的用户 ID，则调用 [`setupRemoteVideoEx`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 尽早设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，可以在收到 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调时再调用该方法。
+
+```cpp
+// 设置主播的渲染视图
+VideoCanvas canvas;
+canvas.uid = far_next_channel.remoteUid;
+canvas.view = getView();
+m_rtcEngine->setupRemoteVideoEx(canvas, connection);
+```
+
+### 加入频道但不订阅音视频流
+
+加入频道是首帧出图的主要耗时环节，如果你的业务场景对首帧出图时间要求很高（例如在不同直播间频繁切换），你可以先调用 [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel#joinChannelEx) 加入多个频道并通过 `options` 参数将 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 和 `autoSubscribeVideo` 设为 `false`，表示加入频道后不自动订阅音视频流，等到 App 用户实际触发加入频道操作时，再订阅主播的音视频流即可大幅减小首帧出图耗时，提升用户观看体验。
+
+```cpp
+//  设置频道媒体选项
+ChannelMediaOptions options;
+// 频道场景设为直播
+options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 用户角色为观众
+options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
+// 加入频道后不自动订阅音频流
+options.autoSubscribeAudio = false;
+// 加入频道后不自动订阅视频流
+options.autoSubscribeVideo = false;
+RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
+// 加入频道
+m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
+```
+
+### 订阅流并获取渲染数据
+
+当 App 用户在 App 上触发加入频道的操作时：
+
+1. 调用 [`startMediaRenderingTracingEx`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex) 开始视频渲染数据打点。成功调用后，SDK 会通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息得到首帧出图各阶段耗时的相关数据，从而对各阶段的耗时进行专项优化。
+2. 调用 [`muteRemoteVideoStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengineex_muteremotevideostreamex) 和 [`muteRemoteAudioStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#muteRemoteAudioStreamEx) 恢复订阅主播音视频流。
+
+  ```cpp
+  void LiveBroadcastingDlg::switchNextChannel() {
+      // 开始视频渲染打点
+  	m_rtcEngine->startMediaRenderingTracingEx(connection);
+  	// ......
+  	RtcConnection connection(next_channel.channel_id.c_str(), localUid));
+      // 恢复订阅远端主播的视频流
+      m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
+      // 恢复订阅远端主播的音频流
+      m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
+  }
+  ```
+
+:::info[信息]
+声网针对秀场直播场景提供了完整的秒开秒切方案，详见[实现秒开秒切](https://doc.shengwang.cn/doc/showroom/android/advanced-features/video-loader/integrate)。
+:::
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+如果首帧出图时间较慢，你可以参考[如何调查首帧出图时间较长的问题](/faq/integration-issues/video-frame-rendering)进行问题排查。
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+在实时音视频互动中，首帧出图耗时是指 App 用户加入频道至首次看到远端视频画面的时间间隔。首帧出图时间是影响用户体验的关键因素。首帧出图时间越短，用户能越快看到远端视频画面，减少等待时间，拥有更好的用户体验。
+
+本文介绍缩短首帧出图耗时的两种最佳实践方案。
+
+:::info[信息]
+本文的 API 和示例代码均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
+:::
+
+## 前提条件
+
+主播已成功加入频道并正常推送视频流，观众加入频道时，主播的视频流已处于可订阅状态。可参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)来实现基本的音视频互动功能。
+
+## 实现方案
+
+- 方案一：在加入频道前提前执行部分耗时任务，如预加载频道、设置渲染视图、设置音视频帧加速渲染等。
+- 方案二：提前加入频道但不订阅音视频流，在 App 用户触发加入频道的操作时再订阅主播的音视频流并立即开始渲染。
+
+两种优化方案的关键差异对比如下：
+
+| 特性 | 方案一 | 方案二 |
+| --- | --- | --- |
+| 适用场景 | 大多数音视频场景 | 对首帧出图速度要求极高的场景 |
+| 核心实现 | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1" /> | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2" /> |
+| 费用 | 正常计费 | 可能产生额外频道使用费 |
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1">
+
+- 尽早在加入频道前进行初始化、视频场景设置等操作
+- 加入频道时开始视频渲染数据打点
+
+</Slot>
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2">
+
+- 提前加入频道不订阅媒体流，App 用户实际加入频道时再订阅
+- 订阅媒体流时开始视频渲染数据打点
+
+</Slot>
+
+下图展示优化前、以及方案一、方案二中首帧出图的耗时：
+
+![](/img/rtc/video-rendering/video-rendering-allinone.png)
+
+<Tabs defaultValue="solution 1" groupId="rendering-video-frames" persist>
+<TabsList>
+  <TabsTrigger value="solution 1">方案一：提前执行耗时任务</TabsTrigger>
+  <TabsTrigger value="sample1">方案二：提前加入频道但不订阅流</TabsTrigger>
+</TabsList>
+
+<TabsContent value="solution 1">
+
+下图展示方案一的 API 调用时序：
+
+![加快首帧出图 API 调用时序](/img/rtc/video-rendering/video-rendering.svg)
+
+### 创建并初始化引擎
+
+调用 [`createAgoraRtcEngine`](/api-ref/rtc/windows/API/toc_initialize#api_createagorartcengine) 创建 RTC 引擎，调用 [`initialize`](/api-ref/rtc/windows/API/toc_initialize#initialize) 初始化引擎。
+
+:::info[信息]
+- 创建、初始化引擎需要一定的时间，如需加快首帧出图的速度，声网推荐在模块的初始化时完成 RTC 引擎的创建和初始化，不建议在用到 SDK 相关功能时才进行初始化。
+- 在用户使用期间，引擎的创建和初始化只需要进行一次即可，不建议频繁进行引擎的创建和销毁。
+:::
+
+```cpp
+class LiveBroadcastingDlg {
+private:
+    IRtcEngine* m_rtcEngine;
+
+public:
+    // 在对话框初始化时创建和初始化引擎
+    LiveBroadcastingDlg() {
+        m_rtcEngine = createAgoraRtcEngine();
+        RtcEngineContext context;
+        // 配置 context 参数
+        context.appId = "Your App ID";
+        context.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // ... 其他必要配置
+
+        // 初始化引擎
+        m_rtcEngine->initialize(context);
+    }
+};
+```
+
+### 开启音视频帧加速渲染
+
+调用 [`enableInstantMediaRendering`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。在调用该方法时请注意：
+
+- 该方法需要在加入频道前调用，声网推荐在引擎初始化完成后立即调用该方法。
+- 主播端和观众端均需要调用该方法才可以体验音视频帧加速渲染。
+- 如需关闭该功能，需要先调用 [`release`](/api-ref/rtc/windows/API/toc_initialize#release) 释放引擎、然后再重新创建并初始化。
+
+```cpp
+// 设置加速出图、出声，需要在加入频道前调用
+m_rtcEngine->enableInstantMediaRendering();
+```
+
+### 设置视频业务场景
+
+根据你实际的业务需求，调用 [`setVideoScenarios`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoscenario) 来设置视频场景。设置后，SDK 会在特定的场景下启用该场景对应的最佳实践策略，自动调整关键性能指标。例如，在 1V1 通话场景下，推荐将 `scenarioType` 设为 `APPLICATION_SCENARIO_1V1`，以获得最佳视频通话体验。
+
+```cpp
+// 设置视频业务场景
+m_rtcEngine->setVideoScenarios(agora::rtc::APPLICATION_SCENARIO_1V1);
+```
+
+### 预加载频道
+
+加入频道的过程主要可以分为获取服务器资源和连接服务器两个阶段。调用 [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#preloadChannel) 预加载频道，可以提前获取服务器资源，从而节省加入频道过程中获取服务器资源的耗时。
+
+:::warning[注意]
+- 请确保预加载频道时传入的频道名、用户 ID、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 声网建议在获取到频道的 Token、频道名等信息后，尽早调用该方法进行预加载，不建议调用该方法后立即调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 加入频道。
+:::
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+	m_uid = get_uid();
+	m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+    // 预加载频道
+	m_rtcEngine->preloadChannel(m_token, m_channelId, m_uid);
+}
+```
+
+### 设置渲染视图
+
+渲染视图初始化需要一定时间，提前设置渲染视图可提前将初始化工作完成，避免首帧解码后未设置视图导致该帧无法渲染，错过最佳渲染时机。App 可以通过自有信令系统来获取主播的用户 ID，然后立即调用 [`setupRemoteVideo`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 立即设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，也可以通过监听 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调来获取。
+
+```cpp
+// App 通过自有途径获取到频道信息和远端主播的用户 ID
+void LiveBroadcastingDlg::onShowChannels(const char* channelId, uid_t remoteUid) {
+    // 及时设置渲染视图
+    VideoCanvas canvas;
+    canvas.uid = remoteUid;
+    // 设置 canvas 其他内容
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    // 由于已提前设置过 view，这里不需要再设置
+}
+```
+
+```cpp
+// 通过 onUserJoined 回调获取远端主播的用户 ID
+void EventHandler::onUserJoined(uid_t uid, int elapsed) {
+	// 触发LiveBroadcastingDlg::onEIDUserJoined
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+	VideoCanvas canvas;
+	canvas.uid = uid;
+	// 渲染主播的视图
+	m_rtcEngine->setupRemoteVideo(canvas);
+}
+```
+
+### 观测视频帧渲染数据
+
+调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 开始视频渲染数据打点。成功调用后，SDK 默认以调用该方法的时刻为起始点，自动跟踪视频渲染事件，并通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息来观察首帧出图的相关数据，从而针对指标进行专项优化。
+
+声网建议在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。你也可以根据实际的业务场景，在合适的时机调用该方法，进行自定义打点。
+
+```cpp
+// 用户点击加入频道按钮时
+void on_join_clicked() {
+    // 立即开启渲染数据打点，在用户操作的第一时刻开始计时
+    m_rtcEngine->startMediaRenderingTracing();
+
+    // 执行加入频道等其他操作
+    m_rtcEngine->joinChannel(token, channelId, uid, options);
+}
+```
+
+### 加入频道
+
+调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 方法加入频道。如需缩短音视频首帧出声、出图的时间，建议不要在该方法中添加额外的耗时操作，比如获取 Token、频道名、用户 ID 等信息。如果无法提前获取 Token，可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token) 来加入频道。
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+    m_uid = get_uid();
+    m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+}
+
+int LiveBroadcastingDlg::joinChannel() {
+    ChannelMediaOptions options;
+    // 加入频道
+    return m_rtcEngine->joinChannel(m_token, m_channelId, m_uid, options);
+}
+```
+
+### 优化回调处理
+
+SDK 的运行状态、错误信息和各类事件会通过 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 接口中的相关回调进行通知。SDK 回调在同一线程串行执行，任何耗时操作都会阻塞后续回调处理。例如，在 [`onJoinChannelSuccess`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中执行耗时任务会阻塞 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调，导致视图设置延迟，影响视频首帧渲染速度。因此在实现 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 回调接口时，需注意：
+
+- 避免在回调函数中执行耗时任务（如网络请求、文件读写、复杂计算）。
+- 与视频相关的回调，如 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined)，不应被其他回调中的耗时操作阻塞。
+- 将复杂业务逻辑分发到其他工作线程处理，保持回调线程高效运行。
+
+</TabsContent>
+
+<TabsContent value="sample1">
+
+方案二和方案一的主要区别在于方案二会提前加入频道，但加入频道后会先取消订阅主播的音视频流。当 App 用户在 App 上触发加入频道的操作时，再订阅音视频流并进行音视频帧渲染。
+
+下图展示方案二的 API 调用时序：
+
+![方案二 API 调用时序](/img/rtc/video-rendering/video-rendering-advanced.svg)
+
+:::info[信息]
+- 创建并初始化引擎、设置音视频帧加速渲染、视频场景、优化回调处理的实现逻辑步骤同方案一一致，可直接参考方案一的实现。
+- 本方案可能会产生**额外费用**，推荐在对首帧出图速度要求极高的场景下使用。
+:::
+
+### 设置渲染视图
+
+在加入频道前，如果可以获取到主播的用户 ID，则调用 [`setupRemoteVideoEx`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 尽早设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，可以在收到 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调时再调用该方法。
+
+```cpp
+// 设置主播的渲染视图
+VideoCanvas canvas;
+canvas.uid = far_next_channel.remoteUid;
+canvas.view = getView();
+m_rtcEngine->setupRemoteVideoEx(canvas, connection);
+```
+
+### 加入频道但不订阅音视频流
+
+加入频道是首帧出图的主要耗时环节，如果你的业务场景对首帧出图时间要求很高（例如在不同直播间频繁切换），你可以先调用 [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel#joinChannelEx) 加入多个频道并通过 `options` 参数将 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 和 `autoSubscribeVideo` 设为 `false`，表示加入频道后不自动订阅音视频流，等到 App 用户实际触发加入频道操作时，再订阅主播的音视频流即可大幅减小首帧出图耗时，提升用户观看体验。
+
+```cpp
+//  设置频道媒体选项
+ChannelMediaOptions options;
+// 频道场景设为直播
+options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 用户角色为观众
+options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
+// 加入频道后不自动订阅音频流
+options.autoSubscribeAudio = false;
+// 加入频道后不自动订阅视频流
+options.autoSubscribeVideo = false;
+RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
+// 加入频道
+m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
+```
+
+### 订阅流并获取渲染数据
+
+当 App 用户在 App 上触发加入频道的操作时：
+
+1. 调用 [`startMediaRenderingTracingEx`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex) 开始视频渲染数据打点。成功调用后，SDK 会通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息得到首帧出图各阶段耗时的相关数据，从而对各阶段的耗时进行专项优化。
+2. 调用 [`muteRemoteVideoStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengineex_muteremotevideostreamex) 和 [`muteRemoteAudioStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#muteRemoteAudioStreamEx) 恢复订阅主播音视频流。
+
+  ```cpp
+  void LiveBroadcastingDlg::switchNextChannel() {
+      // 开始视频渲染打点
+  	m_rtcEngine->startMediaRenderingTracingEx(connection);
+  	// ......
+  	RtcConnection connection(next_channel.channel_id.c_str(), localUid));
+      // 恢复订阅远端主播的视频流
+      m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
+      // 恢复订阅远端主播的音频流
+      m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
+  }
+  ```
+
+:::info[信息]
+声网针对秀场直播场景提供了完整的秒开秒切方案，详见[实现秒开秒切](https://doc.shengwang.cn/doc/showroom/android/advanced-features/video-loader/integrate)。
+:::
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+如果首帧出图时间较慢，你可以参考[如何调查首帧出图时间较长的问题](/faq/integration-issues/video-frame-rendering)进行问题排查。
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+在实时音视频互动中，首帧出图耗时是指 App 用户加入频道至首次看到远端视频画面的时间间隔。首帧出图时间是影响用户体验的关键因素。首帧出图时间越短，用户能越快看到远端视频画面，减少等待时间，拥有更好的用户体验。
+
+本文介绍缩短首帧出图耗时的两种最佳实践方案。
+
+:::info[信息]
+本文的 API 和示例代码均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
+:::
+
+## 前提条件
+
+主播已成功加入频道并正常推送视频流，观众加入频道时，主播的视频流已处于可订阅状态。可参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)来实现基本的音视频互动功能。
+
+## 实现方案
+
+- 方案一：在加入频道前提前执行部分耗时任务，如预加载频道、设置渲染视图、设置音视频帧加速渲染等。
+- 方案二：提前加入频道但不订阅音视频流，在 App 用户触发加入频道的操作时再订阅主播的音视频流并立即开始渲染。
+
+两种优化方案的关键差异对比如下：
+
+| 特性 | 方案一 | 方案二 |
+| --- | --- | --- |
+| 适用场景 | 大多数音视频场景 | 对首帧出图速度要求极高的场景 |
+| 核心实现 | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1" /> | <Slot name="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2" /> |
+| 费用 | 正常计费 | 可能产生额外频道使用费 |
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-1">
+
+- 尽早在加入频道前进行初始化、视频场景设置等操作
+- 加入频道时开始视频渲染数据打点
+
+</Slot>
+
+<Slot for="first-frame-rendering-windows-ios-macos-android-markdown-0-2-2">
+
+- 提前加入频道不订阅媒体流，App 用户实际加入频道时再订阅
+- 订阅媒体流时开始视频渲染数据打点
+
+</Slot>
+
+下图展示优化前、以及方案一、方案二中首帧出图的耗时：
+
+![](/img/rtc/video-rendering/video-rendering-allinone.png)
+
+<Tabs defaultValue="solution 1" groupId="rendering-video-frames" persist>
+<TabsList>
+  <TabsTrigger value="solution 1">方案一：提前执行耗时任务</TabsTrigger>
+  <TabsTrigger value="sample1">方案二：提前加入频道但不订阅流</TabsTrigger>
+</TabsList>
+
+<TabsContent value="solution 1">
+
+下图展示方案一的 API 调用时序：
+
+![加快首帧出图 API 调用时序](/img/rtc/video-rendering/video-rendering.svg)
+
+### 创建并初始化引擎
+
+调用 [`createAgoraRtcEngine`](/api-ref/rtc/windows/API/toc_initialize#api_createagorartcengine) 创建 RTC 引擎，调用 [`initialize`](/api-ref/rtc/windows/API/toc_initialize#initialize) 初始化引擎。
+
+:::info[信息]
+- 创建、初始化引擎需要一定的时间，如需加快首帧出图的速度，声网推荐在模块的初始化时完成 RTC 引擎的创建和初始化，不建议在用到 SDK 相关功能时才进行初始化。
+- 在用户使用期间，引擎的创建和初始化只需要进行一次即可，不建议频繁进行引擎的创建和销毁。
+:::
+
+```cpp
+class LiveBroadcastingDlg {
+private:
+    IRtcEngine* m_rtcEngine;
+
+public:
+    // 在对话框初始化时创建和初始化引擎
+    LiveBroadcastingDlg() {
+        m_rtcEngine = createAgoraRtcEngine();
+        RtcEngineContext context;
+        // 配置 context 参数
+        context.appId = "Your App ID";
+        context.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // ... 其他必要配置
+
+        // 初始化引擎
+        m_rtcEngine->initialize(context);
+    }
+};
+```
+
+### 开启音视频帧加速渲染
+
+调用 [`enableInstantMediaRendering`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_enableinstantmediarendering) 开启加速出图和出声模式，可加快用户加入频道后的首帧出图与出声速度。在调用该方法时请注意：
+
+- 该方法需要在加入频道前调用，声网推荐在引擎初始化完成后立即调用该方法。
+- 主播端和观众端均需要调用该方法才可以体验音视频帧加速渲染。
+- 如需关闭该功能，需要先调用 [`release`](/api-ref/rtc/windows/API/toc_initialize#release) 释放引擎、然后再重新创建并初始化。
+
+```cpp
+// 设置加速出图、出声，需要在加入频道前调用
+m_rtcEngine->enableInstantMediaRendering();
+```
+
+### 设置视频业务场景
+
+根据你实际的业务需求，调用 [`setVideoScenarios`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoscenario) 来设置视频场景。设置后，SDK 会在特定的场景下启用该场景对应的最佳实践策略，自动调整关键性能指标。例如，在 1V1 通话场景下，推荐将 `scenarioType` 设为 `APPLICATION_SCENARIO_1V1`，以获得最佳视频通话体验。
+
+```cpp
+// 设置视频业务场景
+m_rtcEngine->setVideoScenarios(agora::rtc::APPLICATION_SCENARIO_1V1);
+```
+
+### 预加载频道
+
+加入频道的过程主要可以分为获取服务器资源和连接服务器两个阶段。调用 [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#preloadChannel) 预加载频道，可以提前获取服务器资源，从而节省加入频道过程中获取服务器资源的耗时。
+
+:::warning[注意]
+- 请确保预加载频道时传入的频道名、用户 ID、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 声网建议在获取到频道的 Token、频道名等信息后，尽早调用该方法进行预加载，不建议调用该方法后立即调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 加入频道。
+:::
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+	m_uid = get_uid();
+	m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+    // 预加载频道
+	m_rtcEngine->preloadChannel(m_token, m_channelId, m_uid);
+}
+```
+
+### 设置渲染视图
+
+渲染视图初始化需要一定时间，提前设置渲染视图可提前将初始化工作完成，避免首帧解码后未设置视图导致该帧无法渲染，错过最佳渲染时机。App 可以通过自有信令系统来获取主播的用户 ID，然后立即调用 [`setupRemoteVideo`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 立即设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，也可以通过监听 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调来获取。
+
+```cpp
+// App 通过自有途径获取到频道信息和远端主播的用户 ID
+void LiveBroadcastingDlg::onShowChannels(const char* channelId, uid_t remoteUid) {
+    // 及时设置渲染视图
+    VideoCanvas canvas;
+    canvas.uid = remoteUid;
+    // 设置 canvas 其他内容
+    m_rtcEngine->setupRemoteVideo(canvas);
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+    // 由于已提前设置过 view，这里不需要再设置
+}
+```
+
+```cpp
+// 通过 onUserJoined 回调获取远端主播的用户 ID
+void EventHandler::onUserJoined(uid_t uid, int elapsed) {
+	// 触发LiveBroadcastingDlg::onEIDUserJoined
+}
+
+void LiveBroadcastingDlg::onEIDUserJoined(uid_t uid, int elapsed) {
+	VideoCanvas canvas;
+	canvas.uid = uid;
+	// 渲染主播的视图
+	m_rtcEngine->setupRemoteVideo(canvas);
+}
+```
+
+### 观测视频帧渲染数据
+
+调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 开始视频渲染数据打点。成功调用后，SDK 默认以调用该方法的时刻为起始点，自动跟踪视频渲染事件，并通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息来观察首帧出图的相关数据，从而针对指标进行专项优化。
+
+声网建议在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing) 方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。你也可以根据实际的业务场景，在合适的时机调用该方法，进行自定义打点。
+
+```cpp
+// 用户点击加入频道按钮时
+void on_join_clicked() {
+    // 立即开启渲染数据打点，在用户操作的第一时刻开始计时
+    m_rtcEngine->startMediaRenderingTracing();
+
+    // 执行加入频道等其他操作
+    m_rtcEngine->joinChannel(token, channelId, uid, options);
+}
+```
+
+### 加入频道
+
+调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2]) 方法加入频道。如需缩短音视频首帧出声、出图的时间，建议不要在该方法中添加额外的耗时操作，比如获取 Token、频道名、用户 ID 等信息。如果无法提前获取 Token，可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token) 来加入频道。
+
+```cpp
+int LiveBroadcastingDlg::prepareChannelInfo() {
+    m_uid = get_uid();
+    m_channelId = get_channel_info();
+    m_token = getTokenFromServer(m_channelId, m_uid);
+}
+
+int LiveBroadcastingDlg::joinChannel() {
+    ChannelMediaOptions options;
+    // 加入频道
+    return m_rtcEngine->joinChannel(m_token, m_channelId, m_uid, options);
+}
+```
+
+### 优化回调处理
+
+SDK 的运行状态、错误信息和各类事件会通过 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 接口中的相关回调进行通知。SDK 回调在同一线程串行执行，任何耗时操作都会阻塞后续回调处理。例如，在 [`onJoinChannelSuccess`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 回调中执行耗时任务会阻塞 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调，导致视图设置延迟，影响视频首帧渲染速度。因此在实现 [`IRtcEngineEventHandler`](/api-ref/rtc/windows/API/rtc_interface_class#class_irtcengineeventhandler) 回调接口时，需注意：
+
+- 避免在回调函数中执行耗时任务（如网络请求、文件读写、复杂计算）。
+- 与视频相关的回调，如 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined)，不应被其他回调中的耗时操作阻塞。
+- 将复杂业务逻辑分发到其他工作线程处理，保持回调线程高效运行。
+
+</TabsContent>
+
+<TabsContent value="sample1">
+
+方案二和方案一的主要区别在于方案二会提前加入频道，但加入频道后会先取消订阅主播的音视频流。当 App 用户在 App 上触发加入频道的操作时，再订阅音视频流并进行音视频帧渲染。
+
+下图展示方案二的 API 调用时序：
+
+![方案二 API 调用时序](/img/rtc/video-rendering/video-rendering-advanced.svg)
+
+:::info[信息]
+- 创建并初始化引擎、设置音视频帧加速渲染、视频场景、优化回调处理的实现逻辑步骤同方案一一致，可直接参考方案一的实现。
+- 本方案可能会产生**额外费用**，推荐在对首帧出图速度要求极高的场景下使用。
+:::
+
+### 设置渲染视图
+
+在加入频道前，如果可以获取到主播的用户 ID，则调用 [`setupRemoteVideoEx`](/api-ref/rtc/windows/API/toc_video_rendering#setupRemoteVideo) 尽早设置主播的渲染视图。如果无法在加入频道前获取到主播的用户 ID，可以在收到 [`onUserJoined`](/api-ref/rtc/windows/API/toc_channel#callback_irtcengineeventhandler_onuserjoined) 回调时再调用该方法。
+
+```cpp
+// 设置主播的渲染视图
+VideoCanvas canvas;
+canvas.uid = far_next_channel.remoteUid;
+canvas.view = getView();
+m_rtcEngine->setupRemoteVideoEx(canvas, connection);
+```
+
+### 加入频道但不订阅音视频流
+
+加入频道是首帧出图的主要耗时环节，如果你的业务场景对首帧出图时间要求很高（例如在不同直播间频繁切换），你可以先调用 [`joinChannelEx`](/api-ref/rtc/windows/API/toc_channel#joinChannelEx) 加入多个频道并通过 `options` 参数将 `ChannelMediaOptions` 中的 `autoSubscribeAudio` 和 `autoSubscribeVideo` 设为 `false`，表示加入频道后不自动订阅音视频流，等到 App 用户实际触发加入频道操作时，再订阅主播的音视频流即可大幅减小首帧出图耗时，提升用户观看体验。
+
+```cpp
+//  设置频道媒体选项
+ChannelMediaOptions options;
+// 频道场景设为直播
+options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
+// 用户角色为观众
+options.clientRoleType = CHANNEL_ROLE_AUDIENCE;
+// 加入频道后不自动订阅音频流
+options.autoSubscribeAudio = false;
+// 加入频道后不自动订阅视频流
+options.autoSubscribeVideo = false;
+RtcConnection connection(far_next_channel.channel_id.c_str(), m_localUid);
+// 加入频道
+m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options, m_handler);
+```
+
+### 订阅流并获取渲染数据
+
+当 App 用户在 App 上触发加入频道的操作时：
+
+1. 调用 [`startMediaRenderingTracingEx`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengineex_startmediarenderingtracingex) 开始视频渲染数据打点。成功调用后，SDK 会通过 [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调报告视频帧渲染过程中的耗时信息。你可以通过这个信息得到首帧出图各阶段耗时的相关数据，从而对各阶段的耗时进行专项优化。
+2. 调用 [`muteRemoteVideoStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#api_irtcengineex_muteremotevideostreamex) 和 [`muteRemoteAudioStreamEx`](/api-ref/rtc/windows/API/toc_publishnsubscribe#muteRemoteAudioStreamEx) 恢复订阅主播音视频流。
+
+  ```cpp
+  void LiveBroadcastingDlg::switchNextChannel() {
+      // 开始视频渲染打点
+  	m_rtcEngine->startMediaRenderingTracingEx(connection);
+  	// ......
+  	RtcConnection connection(next_channel.channel_id.c_str(), localUid));
+      // 恢复订阅远端主播的视频流
+      m_rtcEngine->muteRemoteVideoStreamEx(next_channel.remoteUid, false, connection);
+      // 恢复订阅远端主播的音频流
+      m_rtcEngine->muteRemoteAudioStreamEx(next_channel.remoteUid, false, connection);
+  }
+  ```
+
+:::info[信息]
+声网针对秀场直播场景提供了完整的秒开秒切方案，详见[实现秒开秒切](https://doc.shengwang.cn/doc/showroom/android/advanced-features/video-loader/integrate)。
+:::
+
+</TabsContent>
+</Tabs>
+
+## 参考信息
+
+如果首帧出图时间较慢，你可以参考[如何调查首帧出图时间较长的问题](/faq/integration-issues/video-frame-rendering)进行问题排查。
+
+</PlatformStructured>
