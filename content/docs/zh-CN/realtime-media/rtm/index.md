@@ -1,6 +1,15 @@
 ---
 title: Signaling概览
 ---
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/rtm/get-started/quick-start" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtm/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
 ## RTM 是什么？
 
 **实时消息**（Real-Time Messaging，RTM）为开发者提供一整套低延时、高并发、可扩展、高可靠的实时消息及状态同步解决方案。RTM 负责管理应用程序实时通信层所需的基础设施。为方便用户开发与创新，RTM 在保障 99.95% 的 SLA 正常运行时间的同时，提供丰富的 Demo App 及开放的第三方 API 扩展。
