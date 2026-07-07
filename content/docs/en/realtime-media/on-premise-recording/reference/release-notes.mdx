@@ -3,13 +3,13 @@ title: "Release notes"
 description: "The release notes for On-Premise Recording."
 ---
 
+<PlatformStructured platform="linux-cpp">
+
 The On-Premise Recording SDK provides recording functionality for the Agora Realtime Communication SDK. For more information see [Product overview](/en/realtime-media/on-premise-recording/product-overview).
 
 ## v4.x
 
 With the 4.x release, the On Premise Recording SDK version 3.x and earlier have entered the retirement phase. For detailed retirement schedule and migration plan, refer to [Service Sunset Plans](/en/realtime-media/on-premise-recording/reference/sunset).
-
-<PlatformStructured platform="linux-cpp">
 
 ### v4.4.151
 
@@ -48,54 +48,6 @@ This is the first release of the On-Premise Recording 4.x SDK. It includes the f
 :::info
 With this release, On-Premise Recording SDK v3.x and earlier enters the retirement phase. For the detailed retirement schedule and migration plan, refer to [Service Sunset Plans](/en/realtime-media/on-premise-recording/reference/sunset).
 :::
-
-</PlatformStructured>
-
-<PlatformStructured platform="linux-java">
-
-### v4.4.151
-
-Released on September 30, 2025.
-
-#### Compatibility changes
-
-This release removes the `AgoraMediaComponentFactory` interface class and moves the original `createMediaRtcRecorder` method into the `AgoraService` class. If you upgrade from v4.4.150 to v4.4.151, update your integration logic accordingly.
-
-#### New Features
-
-##### Video frame screenshots
-
-This release adds the video frame screenshot feature. After initialization, call `enableRecorderVideoFrameCapture` to enable and configure video frame screenshots. You can then get the captured video data in callbacks of `IRecorderVideoFrameObserver`.
-
-For implementation details, see [Local screenshots](/en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot).
-
-##### Single-stream recording without transcoding
-
-This release adds an overloaded `initialize` method to `AgoraMediaRtcRecorder`. Use the `recordEncodedOnly` parameter to enable single-stream recording without transcoding. After you enable this parameter, the server writes remote H.264 or H.265 video data directly to MP4 files.
-
-This parameter is mainly for high-concurrency recording scenarios. Use it with `VideoSubscriptionOptions.encodedFrameOnly` set to `true` to maximize concurrency.
-
-:::warning
-When single-stream recording without transcoding is enabled, watermarking and composite recording are unavailable.
-:::
-
-### v4.4.150
-
-Released on June 30, 2025.
-
-This is the first release of the On-Premise Recording 4.x SDK. It includes the following features:
-
-- Record real-time audio and video.
-- Record audio and video content from all participants in a single channel.
-- Record audio and video content from all participants in multiple channels simultaneously.
-- Record audio-only content from all participants in one or more channels simultaneously.
-- Support recording of encrypted channels using the built-in encryption of the Agora SDK.
-
-:::info
-With this release, On-Premise Recording SDK v3.x and earlier enters the retirement phase. For the detailed retirement schedule and migration plan, refer to [Service Sunset Plans](/en/realtime-media/on-premise-recording/reference/sunset).
-:::
-
-</PlatformStructured>
 
 ## v3.x
 
@@ -588,3 +540,57 @@ This is the first release of the On-Premise Recording SDK with the following fun
 - Recording the voice and video of all users in multiple channels simultaneously.
 - Recording the voice of all users in a channel or in multiple channels simultaneously.
 - Recording an encrypted channel if the application has integrated the Agora built-in encryption.
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+The On-Premise Recording SDK provides recording functionality for the Agora Realtime Communication SDK. For more information see [Product overview](/en/realtime-media/on-premise-recording/product-overview).
+
+## v4.x
+
+With the 4.x release, the On Premise Recording SDK version 3.x and earlier have entered the retirement phase. For detailed retirement schedule and migration plan, refer to [Service Sunset Plans](/en/realtime-media/on-premise-recording/reference/sunset).
+
+### v4.4.151
+
+Released on September 30, 2025.
+
+#### Compatibility changes
+
+This release removes the `AgoraMediaComponentFactory` interface class and moves the original `createMediaRtcRecorder` method into the `AgoraService` class. If you upgrade from v4.4.150 to v4.4.151, update your integration logic accordingly.
+
+#### New Features
+
+##### Video frame screenshots
+
+This release adds the video frame screenshot feature. After initialization, call `enableRecorderVideoFrameCapture` to enable and configure video frame screenshots. You can then get the captured video data in callbacks of `IRecorderVideoFrameObserver`.
+
+For implementation details, see [Local screenshots](/en/realtime-media/on-premise-recording/build/customize-the-recording/local-screenshot).
+
+##### Single-stream recording without transcoding
+
+This release adds an overloaded `initialize` method to `AgoraMediaRtcRecorder`. Use the `recordEncodedOnly` parameter to enable single-stream recording without transcoding. After you enable this parameter, the server writes remote H.264 or H.265 video data directly to MP4 files.
+
+This parameter is mainly for high-concurrency recording scenarios. Use it with `VideoSubscriptionOptions.encodedFrameOnly` set to `true` to maximize concurrency.
+
+:::warning
+When single-stream recording without transcoding is enabled, watermarking and composite recording are unavailable.
+:::
+
+### v4.4.150
+
+Released on June 30, 2025.
+
+This is the first release of the On-Premise Recording 4.x SDK. It includes the following features:
+
+- Record real-time audio and video.
+- Record audio and video content from all participants in a single channel.
+- Record audio and video content from all participants in multiple channels simultaneously.
+- Record audio-only content from all participants in one or more channels simultaneously.
+- Support recording of encrypted channels using the built-in encryption of the Agora SDK.
+
+:::info
+With this release, On-Premise Recording SDK v3.x and earlier enters the retirement phase. For the detailed retirement schedule and migration plan, refer to [Service Sunset Plans](/en/realtime-media/on-premise-recording/reference/sunset).
+:::
+
+</PlatformStructured>
