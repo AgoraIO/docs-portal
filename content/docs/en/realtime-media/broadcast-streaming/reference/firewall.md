@@ -40,7 +40,7 @@ Add the following destination domains and the corresponding ports to your firewa
 ```
 
 :::info
-`.rtnsvc.com`, `.edge.rtnsvc.com`, `.rtesvc.com`, and `.edge.rtesvc.com` are Simulcast-related domains added in SDK v4.24.5. Only apps that use the Simulcast feature need to add these domains to the firewall allowlist.
+To improve connectivity over public networks, we recommend adding the domains listed above to your firewall allowlist.
 :::
 
 #### Ports
