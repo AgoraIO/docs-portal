@@ -15,7 +15,7 @@ title: "实现收发消息"
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -883,7 +883,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -1506,7 +1506,7 @@ self.channelMsg = self.GroupMsgTextField.text;
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 获取 SDK
 
@@ -2022,7 +2022,7 @@ try {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -2837,7 +2837,7 @@ rtmManager.release();
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
 
 - [Unity Hub](https://unity.com/download) 任意版本
 
@@ -3122,7 +3122,7 @@ byte[] message = System.Text.Encoding.Default.GetBytes("This message will be con
 
 根据你的应用场景需要，你可以选择字符串类型消息格式或者二进制类型消息格式，收到消息后通过 `MessageEvent` 中 `messageType` 字段加以区分。
 
-你也可以使用 `JSON` 或 `Protobuf` 等方式来构建你的负载结构以便于简化业务逻辑，此部分内容可以参考[消息负载序列化](/zh-CN/realtime-media/rtm/user-guide/message/serialized)。但请记住在把消息负载转交给 RTM 发送前，需要对消息负载进行序列化。
+你也可以使用 `JSON` 或 `Protobuf` 等方式来构建你的负载结构以便于简化业务逻辑，此部分内容可以参考[消息负载序列化](/zh-CN/realtime-media/rtm/build/manage-messages/serialized)。但请记住在把消息负载转交给 RTM 发送前，需要对消息负载进行序列化。
 
 ## 初始化 RTM
 在 **HelloWorld.cs** 中调用 `CreateAgoraRtmClient` 方法初始化 `IRtmClient`。你需要提供如下信息：
@@ -3438,7 +3438,7 @@ if (streamChannel != null)
 
 ### 订阅 Topic 中的发布者
 
-你可以通过调用 `SubscribeTopicAsync` 方法订阅某个 Topic 中的一位或多位消息发布者以便于接收他们发送的消息。单个客户端在单个 Topic 中最多只能订阅 64 个消息发布者，详见 [API 使用限制](/zh-CN/realtime-media/rtm/user-guide/setup/api-limits)。
+你可以通过调用 `SubscribeTopicAsync` 方法订阅某个 Topic 中的一位或多位消息发布者以便于接收他们发送的消息。单个客户端在单个 Topic 中最多只能订阅 64 个消息发布者，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
 
 将以下代码添加到程序中：
 
@@ -4086,7 +4086,7 @@ public class HelloWorld : MonoBehaviour
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -4498,7 +4498,7 @@ void main() async {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -5129,7 +5129,7 @@ int main(int argc, const char * argv[]) {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/get-started/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/overview/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 

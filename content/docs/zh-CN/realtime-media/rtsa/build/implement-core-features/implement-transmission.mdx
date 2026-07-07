@@ -1,0 +1,904 @@
+---
+title: "实现媒体流和信令传输"
+---
+
+<PlatformStructured platform="c">
+
+本文介绍通过 RTSA SDK 实现媒体流和信令传输涉及的 API 方法和调用流程。
+
+## 前提条件
+
+开始前，请确保满足如下要求：
+
+- 一个有效的 License。RTSA 通过 License 对设备鉴权，详见[申请和使用 License](/zh-CN/realtime-media/rtsa/build/setup-and-access/license)。
+- 一台开发机，可以是电脑或嵌入式设备。环境要求见[平台兼容](/zh-CN/realtime-media/rtsa#平台兼容)。本文以安装 Ubuntu 18.04 系统的电脑为例。
+- 参考[开通服务](/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service)获取 App ID、RTC 和 RTM 临时 Token。
+
+## 实现流程
+
+### 1. 初始化
+
+开始媒体流或信令传输前，你需要调用 `agora_rtc_init` 方法初始化 RTSA SDK。初始化操作只需要进行一次，成功初始化后，你可以根据实际需求选择只传输媒体流或信令，还是二者都传输。
+
+在该方法中，你需要进行如下操作：
+
+- 填入获取到的 App ID。只有 App ID 相同的应用程序才能进入同一个频道进行互通。
+- 设置 RTC 事件回调，用以通知 SDK 在运行过程中发生的事件。
+  - 如果需要传输媒体流，则需在 `agora_rtc_event_handler_t` 中设置事件回调，详见[监听事件](#eventlistener)。
+  - 如果无需传输媒体流，则需设置 `agora_rtc_event_handler_t` 为 `0`。示例代码如下：
+
+    ```c
+    agora_rtc_event_handler_t rtc_event_handler = { 0 };
+    rtc_service_option_t service_options = { 0 };
+    agora_rtc_init(appid, &rtc_event_handler, &service_options);
+    ```
+
+- （可选）通过 `rtc_service_option_t` 结构体设置 RTSA 服务选项。
+
+<a id="eventlistener"></a>
+### 2. 传输媒体流
+#### 2.1 监听事件
+
+设置 `agora_rtc_event_handler_t` 中的 RTC 事件回调。
+
+示例代码如下：
+
+```c
+// 初始化事件回调
+static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed) {
+    g_connected_flag = true;
+    agora_rtc_get_connection_info(conn_id, &g_conn_info);
+    printf("[conn-%u] Join the channel %s successfully, uid %u elapsed %d ms\n", conn_id, g_conn_info.channel_name, uid, elapsed);
+}
+
+static void __on_reconnecting(connection_id_t conn_id) {
+    g_connected_flag = false;
+    printf("[conn-%u] connection timeout, reconnecting\n", conn_id);
+}
+
+static void __on_connection_lost(connection_id_t conn_id) {
+    g_connected_flag = false;
+    printf("[conn-%u] Lost connection from the channel\n", conn_id);
+}
+
+static void __on_rejoin_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed_ms) {
+    g_connected_flag = true;
+    printf("[conn-%u] Rejoin the channel successfully, uid %u elapsed %d ms\n", conn_id, uid, elapsed_ms);
+}
+
+static void __on_user_joined(connection_id_t conn_id, uint32_t uid, int elapsed_ms) {
+    printf("[conn-%u] Remote user \"%u\" has joined the channel, elapsed %d ms\n", uid, conn_id, elapsed_ms);
+}
+
+static void __on_user_offline(connection_id_t conn_id, uint32_t uid, int reason) {
+    printf("[conn-%u] Remote user \"%u\" has left the channel, reason %d\n", conn_id, uid, reason);
+}
+
+static void __on_user_mute_audio(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] audio: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+
+static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] video: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+
+static void __on_error(connection_id_t conn_id, int code, const char *msg) {
+    if (code == ERR_SEND_VIDEO_OVER_BANDWIDTH_LIMIT) {
+        printf("Not enough uplink bandwdith. Error msg \"%s\"\n", msg);
+        return;
+    }
+
+    if (code == ERR_INVALID_APP_ID) {
+        printf("Invalid App ID. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_INVALID_CHANNEL_NAME) {
+        printf("Invalid channel name. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_INVALID_TOKEN || code == ERR_TOKEN_EXPIRED) {
+        printf("Invalid token. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY) {
+        printf("Dynamic token is enabled but is not provided. Error msg \"%s\"\n", msg);
+    } else {
+        printf("Error %d is captured. Error msg \"%s\"\n", code, msg);
+    }
+
+    g_stop_flag = true;
+}
+
+static void __on_audio_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const audio_frame_info_t *info_ptr) {}
+
+static void __on_mixed_audio_data(connection_id_t conn_id, const void *data, size_t len,
+                                  const audio_frame_info_t *info_ptr) {}
+
+static void __on_video_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const video_frame_info_t *info_ptr) {}
+
+static void __on_target_bitrate_changed(connection_id_t conn_id, uint32_t target_bps) {
+    printf("[conn-%u] Bandwidth change detected. Please adjust encoder bitrate to %u kbps\n", conn_id, target_bps / 1000);
+}
+
+static void __on_key_frame_gen_req(connection_id_t conn_id, uint32_t uid, video_stream_type_e stream_type) {
+    printf("[conn-%u] Frame loss detected. Please notify the encoder to generate key frame immediately\n", conn_id);
+}
+
+static void app_init_event_handler(agora_rtc_event_handler_t *event_handler) {
+    event_handler->on_join_channel_success = __on_join_channel_success;
+    event_handler->on_reconnecting = __on_reconnecting;
+    event_handler->on_connection_lost = __on_connection_lost;
+    event_handler->on_rejoin_channel_success = __on_rejoin_channel_success;
+
+    event_handler->on_user_joined = __on_user_joined;
+    event_handler->on_user_offline = __on_user_offline;
+    event_handler->on_user_mute_audio = __on_user_mute_audio;
+    event_handler->on_user_mute_video = __on_user_mute_video;
+
+    event_handler->on_target_bitrate_changed = __on_target_bitrate_changed;
+    event_handler->on_key_frame_gen_req = __on_key_frame_gen_req;
+    event_handler->on_video_data = __on_video_data;
+
+    event_handler->on_error = __on_error;
+    event_handler->on_mixed_audio_data = __on_mixed_audio_data;
+    event_handler->on_audio_data = __on_audio_data;
+}
+
+agora_rtc_event_handler_t event_handler = {0};
+app_init_event_handler(&event_handler);
+rtc_service_option_t service_opt = {0};
+service_opt.area_code = DEFAULT_AREA_CODE;
+service_opt.log_cfg.log_path = DEFAULT_SDK_LOG_PATH;
+
+rval = agora_rtc_init(AGORA_APP_ID_FOR_TEST, &event_handler, &service_opt);
+if (rval < 0) {
+    printf("Failed to initialize声网sdk, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+```
+
+#### 2.2 创建 Connection 并加入 RTC 频道
+
+调用 `agora_rtc_create_connection` 方法创建 Connection。调用 `agora_rtc_join_channel` 方法关联 Connection 并加入 RTC 频道。
+
+在该方法中，你需要传入如下信息：
+
+- Connection ID。一个 Connection 可以连接多个 RTC 频道。
+- 能标识 RTC 频道的频道名称。输入相同 RTC 频道名称的用户会进入同一个 RTC 频道。
+- 能标识 RTC 频道用户的用户 ID。
+- 能标识用户角色和权限的 RTC Token。如果安全要求不高，使用的是 App ID，可以将 `token` 设为空。
+
+  :::warning[注意]
+  RTM Token 与 RTC Token 生成机制不同，作用范围也不同，不能混用。
+  :::
+
+用户与 RTC 频道的关系如下：
+
+- 一个 RTC 频道内的用户可以互相传输数据。
+- 一个用户可以同时加入多个 RTC 频道。该用户加入的所有 RTC 频道都能接收到他发送的音视频数据。
+
+成功加入 RTC 频道后，SDK 会触发 `on_join_channel_success` 回调。
+
+示例代码如下：
+
+```c
+// 创建 Connection
+rval = agora_rtc_create_connection(&g_conn_id);
+if (rval < 0) {
+    printf("Failed to create connection, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+rtc_channel_options_t channel_options = { 0 };
+channel_options.auto_subscribe_audio = true;
+channel_options.auto_subscribe_video = true;
+
+// 示例使用 SDK 内置编码器，编码格式为 Opus
+channel_options.audio_codec_opt.audio_codec_type = AUDIO_CODEC_TYPE_OPUS;
+channel_options.audio_codec_opt.pcm_sample_rate = 16000;
+channel_options.audio_codec_opt.pcm_channel_num = 1;
+
+// 加入 RTC 频道
+rval = agora_rtc_join_channel(g_conn_id, DEFAULT_CHANNEL_NAME, DEFAULT_USER_ID, DEFAULT_TOKEN, &channel_options);
+if (rval < 0) {
+    printf("Failed to join channel \"%s\", reason: %s\n", DEFAULT_CHANNEL_NAME, agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+while (!g_connected_flag) {
+    usleep(100 * 1000);
+}
+```
+
+#### 2.3 发送和接收音视频流
+
+成功加入 RTC 频道后，可以开始发送和接收音视频流：
+
+- 通过 `on_audio_data` 回调接收已加入频道的**音频**数据流。
+- 通过 `on_video_data` 回调接收已加入频道的**视频**数据流。
+- 调用 `agora_rtc_send_audio_data` 方法向任意已加入频道发送**音频**数据流。
+- 调用 `agora_rtc_send_video_data` 方法向任意已加入频道发送**视频**数据流。
+
+示例代码如下：
+
+```c
+static void __on_audio_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const audio_frame_info_t *info_ptr) {}
+
+static void __on_video_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const video_frame_info_t *info_ptr) {}
+
+// 发送音频数据流
+static int send_audio_frame(uint8_t *data, uint32_t len) {
+    audio_frame_info_t info = {0};
+    info.data_type = AUDIO_DATA_TYPE_PCM;
+
+    int rval = agora_rtc_send_audio_data(g_conn_id, data, len, &info);
+    if (rval < 0) {
+        printf("Failed to send audio data, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+
+    return 0;
+}
+
+// 发送视频数据流
+static int send_video_frame(uint8_t *data, uint32_t len) {
+    video_frame_info_t info = {0};
+    info.frame_type = VIDEO_FRAME_KEY;
+    info.frame_rate = CONFIG_SEND_FRAME_RATE;
+    info.stream_type = VIDEO_STREAM_HIGH;
+    info.data_type = VIDEO_DATA_TYPE_H264;
+
+    int rval = agora_rtc_send_video_data(g_conn_id, data, len, &info);
+    if (rval < 0) {
+        printf("Failed to send video data, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+
+    return 0;
+}
+```
+
+发送音视频数据时，需要设置发送间隔。对于视频，发送间隔长度需要和帧率一致；对于音频，发送间隔长度需要和音频帧长度一致。
+
+```c
+// 视频发送线程
+static void *video_send_thread(void *threadid) {
+    int video_send_interval_ms = 1000 / CONFIG_SEND_FRAME_RATE;
+    void *pacer = pacer_create(video_send_interval_ms);
+    uint32_t frame_count = 0;
+
+    int num_frames = sizeof(test_video_frames) / sizeof(test_video_frames[0]);
+    while (g_connected_flag && !g_stop_flag) {
+        int i = (frame_count++ % num_frames);
+        send_video_frame(test_video_frames[i].data, test_video_frames[i].len);
+
+        wait_for_next_pace(pacer);
+    }
+    pacer_destroy(pacer);
+    return NULL;
+}
+// 示例为 640 KB，实际值取决于 PCM 数据的采集设备
+#define CONFIG_PCM_FRAME_LEN (640)
+#define CONFIG_PCM_SAMPLE_RATE (16000)
+#define CONFIG_PCM_CHANNEL_NUM (1)
+#define CONFIG_AUDIO_FRAME_DURATION_MS                                               \
+    (CONFIG_PCM_FRAME_LEN * 1000 / CONFIG_PCM_SAMPLE_RATE / CONFIG_PCM_CHANNEL_NUM / sizeof(int16_t))
+// 音频发送线程
+static void *audio_send_thread(void *threadid) {
+    int audio_send_interval_ms = CONFIG_AUDIO_FRAME_DURATION_MS;
+    void *pacer = pacer_create(audio_send_interval_ms);
+    uint32_t pcm_offset = 0;
+
+    while (g_connected_flag && !g_stop_flag) {
+        send_audio_frame((uint8_t *)pcm_test_data + pcm_offset, CONFIG_PCM_FRAME_LEN);
+        pcm_offset += CONFIG_PCM_FRAME_LEN;
+        if ((pcm_offset + CONFIG_PCM_FRAME_LEN) > sizeof(pcm_test_data)) {
+            pcm_offset = 0;
+        }
+        wait_for_next_pace(pacer);
+    }
+    pacer_destroy(pacer);
+    return NULL;
+}
+```
+
+#### 2.4 离开频道并销毁 Connection
+
+调用 `agora_rtc_leave_channel` 方法离开指定频道，结束在该频道的数据传输。如果不再需要在 Connection 中传输数据，调用 `agora_rtc_destroy_connection` 方法销毁 Connection。
+
+示例代码如下：
+
+```c
+agora_rtc_leave_channel(g_conn_id);
+agora_rtc_destroy_connection(g_conn_id);
+```
+
+### 3. 传输信令
+
+#### 3.1 登录 RTM 系统
+
+调用 `agora_rtc_login_rtm` 方法登录 RTM 系统。登录成功之后，你可以发送和接收信令。
+
+在该方法中，你需要进行如下操作：
+
+- 传入能标识 RTM 系统用户的 RTM 用户 ID。
+- 传入能标识 RTM 系统用户角色和权限的 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm?platform=All%20Platforms)。如果安全要求不高，使用的是 App ID，可以将 `token` 设为空。
+- 在 `agora_rtm_handler_t` 结构体中设置 RTM 事件回调。
+
+:::warning[注意]
+RTM Token 与 RTC Token 生成机制不同，作用范围也不同，不能混用。
+:::
+
+示例代码如下：
+
+```c
+agora_rtm_handler_t rtm_handler = {0};
+rtm_handler.on_rtm_data = __on_rtm_data;
+rtm_handler.on_rtm_event = __on_rtm_event;
+rtm_handler.on_send_rtm_data_result = __on_send_rtm_data_result;
+
+rval = agora_rtc_login_rtm(rtm_uid, token, &rtm_handler);
+if (rval < 0) {
+    printf("login rtm failed\n");
+    goto EXIT;
+}
+```
+
+#### 3.2 发送和接收信令
+
+成功登录 RTM 系统后，你可以开始发送和接收信令：
+
+- 通过 `on_rtm_data` 回调接收远端发送给你的信令。
+- 通过 `on_rtm_event` 回调监听本地用户状态。
+- 通过 `on_send_rtm_data_result` 回调监听本地信令发送结果。
+- 调用 `agora_rtc_send_rtm_data` 方法向指定 RTM 用户发送信令。
+
+示例代码如下：
+
+```c
+// 接收你登录的 RTM 系统中远端发送的信令
+static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
+    printf("Receive data[%s] from user[%s] length[%lu]\n", (char *)data, user_id, data_len);
+}
+// 监听本地用户状态
+static void __on_rtm_event(const char *user_id, uint32_t event_id, uint32_t event_code) {
+    printf("%s event id[%u], event code[%u]\n", user_id, event_id, event_code);
+    if (event_id == 0 && event_code == 0) {
+        g_rtm_login_success_flag = 1;
+    }
+}
+// 监听本地信令发送结果
+static void __on_rtm_send_data_res(const char *user_id, uint32_t msg_id, uint32_t error_code) {
+    printf("user [%s] msg_id [%u], error_code[%u]\n", user_id, msg_id, error_code);
+}
+// 向指定 RTM 用户发送信令
+uint32_t g_message_id = 0;
+rval = agora_rtc_send_rtm_data(peer_uid, buffer, rval, &g_message_id);
+if (rval < 0) {
+    printf("send data failed, rval=%d\n", rval);
+    goto EXIT;
+}
+printf("send message_id=%u successfully\n");
+```
+
+#### 3.3 登出 RTM 系统
+
+调用 `agora_rtc_logout_rtm` 方法登出 RTM，结束在 RTM 系统中的消息传输。
+
+示例代码如下：
+
+```c
+agora_rtc_logout_rtm();
+```
+
+### 4. 销毁 SDK 实例
+
+当你不再需要使用 RTSA SDK 的任何功能时，调用 `agora_rtc_fini` 销毁 SDK 实例释放资源。
+
+示例代码如下：
+
+```c
+agora_rtc_fini();
+```
+
+## 参考信息
+
+### API 时序图
+
+下图展示了从设备端向客户端发送实时音视频的 API 时序：
+
+![实时音视频 API 时序图](/img/rtsa/quickstart-c-rtc.svg)
+
+### API 参考
+
+你可以通过 API 参考文档了解更多信息。
+
+- [API 参考](/api-ref/rtsa/c/overview)
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+本文介绍通过 RTSA SDK 实现媒体流和信令传输涉及的 API 方法和调用流程。
+
+## 前提条件
+
+开始前，请确保满足如下要求：
+
+- 一个有效的 License。RTSA 通过 License 对设备鉴权，详见[申请和使用 License](/zh-CN/realtime-media/rtsa/build/setup-and-access/license)。
+- 一台开发机，安装 Windows、macOS 或 Linux 系统，并安装 Android Studio 最新版。
+- 一台 Android 设备或虚拟机。Android 版本 4.1 或以上。
+- 参考[开通服务](/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service)获取 App ID、RTC 和 RTM 临时 Token。
+
+## 实现流程
+
+### 1. 初始化和监听事件
+
+调用 `init` 方法初始化 RTSA 服务。
+
+在该方法中，你需要进行如下操作：
+
+- 填入获取到的 App ID。只有 App ID 相同的应用程序才能进入同一个频道进行互通。
+- 设置事件回调 `AgoraRtcEvents`，用于通知 SDK 在运行过程中发生的事件。
+- （可选）通过 `RtcServiceOptions` 结构体设置 RTSA 服务选项。
+
+示例代码如下：
+
+```java
+// 初始化
+RtcServiceOptions options = new RtcServiceOptions();
+options.areaCode = AreaCode.AREA_CODE_GLOB;
+options.productId = "MyDevice01";
+options.licenseValue = "xxx";
+options.logCfg.logDisable = false;
+options.logCfg.logDisableDesensitize = false;
+options.logCfg.logLevel = LogLevel.RTC_LOG_DEFAULT;
+options.logCfg.logPath = "./rtcsdk.log";
+MyRtcEvent rtcEvent = new MyRtcEvent();
+rtcEvent.mRtcService = mRtcService;
+
+int ret = mRtcService.init(APPID, rtcEvent, options);
+if (ret != ErrorCode.ERR_OKAY) {
+    RtsaLiteDemo.e(TAG, "<main> fail to init(), ret=" + ret);
+    return;
+}
+
+// 注册音视频事件回调
+class MyRtcEvent implements AgoraRtcEvents {
+    private final static String TAG = "DEMO/MyRtcEvent";
+    public AgoraRtcService mRtcService = null;
+    public ConnectionInfo connInfo = new ConnectionInfo();
+
+    @Override
+    public void onJoinChannelSuccess(int connId, int uid, int elapsed_ms) {
+        RtsaLiteDemo.d(TAG, "<onJoinChannelSuccess> connId=" + connId +
+                " uid=" + uid + " elapsed_ms=" + elapsed_ms);
+
+        if (mRtcService.getConnectionInfo(connId, connInfo) == 0) {
+            RtsaLiteDemo.d(TAG, "get connInfo: connId=" + connInfo.connId +
+                    " uid=" + connInfo.uid + " cname=" + connInfo.channelName);
+        }
+
+        synchronized (RtsaLiteDemo.mJoinedEvent) {
+            RtsaLiteDemo.mJoinedEvent.notify(); // 事件通知
+        }
+    }
+
+    @Override
+    public void onReconnecting(int connId) {
+        RtsaLiteDemo.d(TAG, "<onReconnecting> connId=" + connId);
+    }
+
+    @Override
+    public void onConnectionLost(int connId) {
+        RtsaLiteDemo.d(TAG, "<onConnectionLost> connId=" + connId);
+    }
+
+    @Override
+    public void onRejoinChannelSuccess(int connId, int uid, int elapsed_ms) {
+        RtsaLiteDemo.d(TAG,
+                "<onRejoinChannelSuccess> connId=" + connId + ", elapsed_ms=" + elapsed_ms);
+        synchronized (RtsaLiteDemo.mJoinedEvent) {
+            RtsaLiteDemo.mJoinedEvent.notify(); // 事件通知
+        }
+    }
+
+    @Override
+    public void onError(int connId, int code, String msg) {
+        RtsaLiteDemo.d(TAG, "<onError> connId=" + connId + ", code=" + code + ", msg=" + msg);
+    }
+
+    @Override
+    public void onUserJoined(int connId, int uid, int elapsed_ms) {
+        RtsaLiteDemo.d(TAG, "<onUserJoined> connId=" + connId + ", uid=" + uid + ", elapsed_ms="
+                + elapsed_ms);
+    }
+
+    @Override
+    public void onUserOffline(int connId, int uid, int reason) {
+        RtsaLiteDemo.d(TAG,
+                "<onUserOffline> connId=" + connId + ", uid=" + uid + ", reason=" + reason);
+    }
+
+    @Override
+    public void onUserMuteAudio(int connId, int uid, boolean muted) {
+        RtsaLiteDemo.d(TAG,
+                "<onUserMuteAudio> connId=" + connId + ", uid=" + uid + ", muted=" + muted);
+    }
+
+    @Override
+    public void onUserMuteVideo(int connId, int uid, boolean muted) {
+        RtsaLiteDemo.d(TAG,
+                "<onUserMuteVideo> connId=" + connId + ", uid=" + uid + ", muted=" + muted);
+    }
+
+    @Override
+    public void onKeyFrameGenReq(int connId, int requestedUid, int streamType) {
+
+    }
+
+    @Override
+    public void onAudioData(int connId, int uid, int sent_ts, byte[] data, AudioFrameInfo info) {
+        RtsaLiteDemo.d(TAG, "<onAudioData> connId=" + connId + " uid=" + uid
+                + " dataType=" + info.dataType);
+    }
+
+    @Override
+    public void onMixedAudioData(int connId, byte[] data, AudioFrameInfo info) {
+        RtsaLiteDemo.d(TAG, "<onMixedAudioData> connId=" + connId
+                + " dataType=" + info.dataType);
+    }
+
+    @Override
+    public void onVideoData(int connId, int uid, int sent_ts, byte[] data, VideoFrameInfo info) {
+        RtsaLiteDemo.d(TAG, "<onVideoData> connId=" + connId + " uid=" + uid
+                + " dataType=" + info.dataType + " streamType=" + info.streamType
+                + " frameType=" + info.frameType + " frameRate=" + info.frameRate);
+    }
+
+    @Override
+    public void onTargetBitrateChanged(int connId, int targetBps) {
+
+    }
+
+    @Override
+    public void onTokenPrivilegeWillExpire(int connId, String token) {
+        RtsaLiteDemo.d(TAG, "<onTokenPrivilegeWillExpire> token=" + token);
+    }
+
+    @Override
+    public void onMediaCtrlReceive(int connId, int uid, byte[] payload) {
+        RtsaLiteDemo.d(TAG, "<onMediaCtrlReceive> connId=" + connId + ", uid=" + uid);
+    }
+}
+// 注册云信令事件回调
+class MyRtmEvent implements AgoraRtmEvents {
+    private final static String TAG = "DEMO/MyRtmEvent";
+
+    @Override
+    public void onRtmData(String rtm_uid, byte[] data) {
+        String dataText = "";
+        for (int i = 0; i < data.length; i++) {
+            dataText = dataText + data[i] + "  ";
+        }
+        RtsaLiteDemo.d(TAG, "<onRtmData> rtm_uid=" + rtm_uid + ", dataSize=" + data.length
+                + ", data=" + dataText);
+    }
+
+    @Override
+    public void onRtmEvent(String rtm_uid, int event_type, int err_code) {
+        RtsaLiteDemo.d(TAG, "<onRtmEvent> rtm_uid=" + rtm_uid + ", event_type=" + event_type
+                + ", err_code=" + err_code);
+
+        if (event_type == AgoraRtmEvents.RtmEventType.RTM_EVENT_TYPE_LOGIN) {
+            synchronized (RtsaLiteDemo.mRtmLoginEvent) {
+                RtsaLiteDemo.mRtmLoginEvent.notify(); // 事件通知
+            }
+        }
+    }
+
+    @Override
+    public void onSendRtmDataResult(String rtm_uid, int message_id, int err_code) {
+        RtsaLiteDemo.d(TAG,
+                "<onSendRtmDataResult> rtm_uid=" + rtm_uid + ", message_id=" + message_id + ", err_code=" + err_code);
+    }
+}
+```
+
+### 2. 媒体流传输
+
+#### 2.1 创建 Connection 并加入 RTC 频道
+
+调用 `createConnection` 方法创建 Connection。调用 `joinChannel` 方法关联 Connection 并加入 RTC 频道。
+
+在该方法中，你需要传入如下信息：
+
+- Connection ID。一个 Connection 可以连接多个 RTC 频道。
+- 能标识 RTC 频道的频道名称。输入相同 RTC 频道名称的用户会进入同一个 RTC 频道。
+- 能标识 RTC 频道用户的用户 ID。
+- 能标识用户角色和权限的 RTC Token。如果安全要求不高，使用的是 App ID，可以将 `token` 设为空。
+
+  :::warning[注意]
+  RTM Token 与 RTC Token 生成机制不同，作用范围也不同，不能混用。
+  :::
+
+用户与 RTC 频道的关系如下：
+
+- 一个 RTC 频道内的用户可以互相传输数据。
+- 一个用户可以同时加入多个 RTC 频道。该用户加入的所有 RTC 频道都能接收到他发送的音视频数据。
+
+成功加入 RTC 频道后，SDK 会触发 `onJoinChannelSuccess` 回调。
+
+示例代码如下：
+
+```java
+// 创建 Connection
+ CONN_ID = mRtcService.createConnection();
+if (CONN_ID == ConnectionIdSepcial.CONNECTION_ID_INVALID) {
+    RtsaLiteDemo.e(TAG, "<main> fail to createConnection(), ret=" + CONN_ID);
+    return;
+}
+
+// 设置 RTC 频道属性
+ChannelOptions chnlOption = new ChannelOptions();
+chnlOption.autoSubscribeAudio = true;
+chnlOption.autoSubscribeVideo = true;
+// 示例使用 SDK 内置编码器，编码格式为 Opus
+chnlOption.audioCodecOpt.audioCodecType = AudioCodecType.AUDIO_CODEC_TYPE_OPUS;
+chnlOption.audioCodecOpt.pcmSampleRate = 16000;
+chnlOption.audioCodecOpt.pcmChannelNum = 1;
+// 加入 RTC 频道
+ret = mRtcService.joinChannel(CONN_ID, CHANNEL_NAME, RTC_HOST_USER_ID, RTC_TOKEN,
+        chnlOption);
+if (ret != ErrorCode.ERR_OKAY) {
+    RtsaLiteDemo.e(TAG, "<main> fail to joinChannel(), ret=" + ret);
+    mRtcService.fini();
+    return;
+}
+synchronized (mJoinedEvent) {
+    try {
+        mJoinedEvent.wait(10000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+        RtsaLiteDemo.e(TAG, "<main> join channel timeout");
+        return;
+    }
+}
+RtsaLiteDemo.d(TAG, "<main> join channel: " + CHANNEL_NAME + " successful");
+```
+
+#### 2.2 发送和接收音视频流
+
+成功加入 RTC 频道后，可以开始发送和接收音视频流：
+
+- 通过 `onAudioData` 回调接收已加入频道的**音频**数据流。
+- 通过 `onVideoData` 回调接收已加入频道的**视频**数据流。
+- 调用 `sendAudioData` 方法向任意已加入频道发送**音频**数据流。
+- 调用 `sendVideoData` 方法向任意已加入频道发送**视频**数据流。
+
+发送音视频数据时，需要设置发送间隔。对于视频，发送间隔长度需要和帧率一致；对于音频，发送间隔长度需要和音频帧长度一致。示例代码如下：
+
+```java
+@Override
+public void onAudioData(int connId, int uid, int sent_ts, byte[] data, AudioFrameInfo info) {
+    RtsaLiteDemo.d(TAG, "<onAudioData> connId=" + connId + " uid=" + uid
+            + " dataType=" + info.dataType);
+}
+
+@Override
+public void onVideoData(int connId, int uid, int sent_ts, byte[] data, VideoFrameInfo info) {
+    RtsaLiteDemo.d(TAG, "<onVideoData> connId=" + connId + " uid=" + uid
+            + " dataType=" + info.dataType + " streamType=" + info.streamType
+            + " frameType=" + info.frameType + " frameRate=" + info.frameRate);
+}
+
+// 发送视频
+@Override
+public void run() {
+    RtsaLiteDemo.d(TAG, "<VideoSendThread.run> ==>Enter");
+
+    StreamFile videoStream = new StreamFile();
+    videoStream.open(VIDEO_FILE);
+
+    int frameIndex = 0;
+    while (mVideoSending && (videoStream.isOpened())) {
+        if (frameIndex >= FRAME_COUNT) {
+            RtsaLiteDemo.d(TAG, "<VideoSendThread.run> read video frame EOF");
+            mVideoSending = false;
+            break;
+        }
+        int frameSize = FRAME_SIZE_ARR[frameIndex];
+        byte[] videoBuffer = new byte[frameSize];
+        int readSize = videoStream.readData(videoBuffer);
+        if (readSize <= 0) {
+            RtsaLiteDemo.e(TAG,
+                    "<VideoSendThread.run> read video frame error, readSize=" + readSize);
+        }
+
+        // 发送视频
+        VideoFrameInfo videoFrameInfo = new VideoFrameInfo();
+        videoFrameInfo.dataType = VideoDataType.VIDEO_DATA_TYPE_H264;
+        videoFrameInfo.streamType = VideoStreamType.VIDEO_STREAM_HIGH;
+        videoFrameInfo.frameType = VideoFrameType.VIDEO_FRAME_KEY;
+        videoFrameInfo.frameRate = 15;
+        int ret = mRtcService.sendVideoData(CONN_ID, videoBuffer, videoFrameInfo);
+        if (ret < 0) {
+            RtsaLiteDemo.e(TAG, "<VideoSendThread.run> sendVideoData() failure, ret=" + ret
+                    + ", dataSize=" + videoBuffer.length);
+        } else {
+        }
+
+        frameIndex++;
+        videoBuffer = null;
+
+        // 线程每个循环 sleep 66 ms，即 1000/15，15 为视频的帧
+        sleepCurrThread(66);
+    }
+    videoStream.close();
+    RtsaLiteDemo.d(TAG, "<VideoSendThread.run> <==Exit");
+
+    // 退出视频线程
+    synchronized (mVideoExitEvent) {
+        mVideoExitEvent.notify();
+    }
+}
+
+// 发送音频
+private final static int PCM_SAMPLE_RATE = 16000;
+private final static int PCM_CHNL_NUMBER = 1;
+private final static int PCM_SMPL_BYTES = 2;
+
+@Override
+public void run() {
+
+    RtsaLiteDemo.d(TAG, "<AudioSendThread.run> ==>Enter");
+    StreamFile audioStream = new StreamFile();
+    audioStream.open(AUDIO_FILE);
+
+    int bytesPerSec = PCM_SAMPLE_RATE * PCM_CHNL_NUMBER * PCM_SMPL_BYTES;
+    // 假设每个音频帧的字节数为 640，则发送间隔为 640/32000 s = 20 ms，
+    // 那么一秒钟需要发送 50 次，因此需要长度为 50 的 byte array
+    int bufferSize = bytesPerSec / 50;
+    byte[] readBuffer = new byte[bufferSize];
+    byte[] sendBuffer = new byte[bufferSize];
+
+    while (mAudioSending) {
+
+        int readSize = audioStream.readData(readBuffer);
+        if (readSize <= 0) {
+            RtsaLiteDemo.d(TAG, "<AudioSendThread.run> read audio frame EOF");
+            mAudioSending = false;
+            break;
+        }
+
+        if (readSize != sendBuffer.length) {
+            sendBuffer = new byte[readSize];
+        }
+        System.arraycopy(readBuffer, 0, sendBuffer, 0, readSize);
+
+        AudioFrameInfo audioFrameInfo = new AudioFrameInfo();
+        audioFrameInfo.dataType = AudioDataType.AUDIO_DATA_TYPE_PCM;
+        int ret = mRtcService.sendAudioData(CONN_ID, sendBuffer, audioFrameInfo);
+        if (ret < 0) {
+            RtsaLiteDemo.e(TAG,
+                    "<AudioSendThread.run> sendAudioData() failure, ret=" + ret);
+        }
+        // 线程每个循环 sleep 20 ms，即每次发送音频数据长度为 20 ms
+        sleepCurrThread(20);
+    }
+    audioStream.close();
+    RtsaLiteDemo.d(TAG, "<AudioSendThread.run> <==Exit");
+
+    synchronized (mAudioExitEvent) {
+        mAudioExitEvent.notify();
+    }
+}
+```
+
+#### 2.3 离开频道并销毁 Connection
+
+调用 `leaveChannel` 方法离开指定频道，结束在该频道的数据传输。如果不再需要在 Connection 中传输数据，调用 `destroyConnection` 方法销毁 Connection。
+
+示例代码如下：
+
+```java
+ret = mRtcService.leaveChannel(CONN_ID);
+if (ret != ErrorCode.ERR_OKAY) {
+    RtsaLiteDemo.e(TAG, "<main> fail to leaveChannel(), ret=" + ret);
+}
+
+ret = mRtcService.destroyConnection(CONN_ID);
+CONN_ID = ConnectionIdSepcial.CONNECTION_ID_INVALID;
+```
+
+### 3. 信令传输
+
+#### 3.1 登录 RTM 系统
+
+调用 `loginRtm` 方法登录 RTM 系统。登录成功之后，你可以发送和接收信令。
+
+在该方法中，你需要传入如下信息：
+
+- 传入能标识 RTM 系统用户的 RTM 用户 ID。
+- 传入能标识 RTM 系统用户角色和权限的 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm?platform=All%20Platforms)。如果安全要求不高，使用的是 App ID，可以将 `token` 设为空。
+
+:::warning[注意]
+RTM Token 与 RTC Token 生成机制不同，作用范围也不同，不能混用。
+:::
+
+示例代码如下：
+
+```java
+MyRtmEvent rtmEvent = new MyRtmEvent();
+int rtmRet = mRtcService.loginRtm(RTM_HOST_USER_ID, token, rtmEvent);
+```
+
+#### 3.2 发送和接收信令
+
+成功登录 RTM 系统后，你可以开始发送和接收信令：
+
+- 通过 `onRtmData` 回调接收远端发送给你的信令。
+- 通过 `onRtmEvent` 回调监听本地用户状态。
+- 通过 `onSendRtmDataResult` 回调监听本地信令发送结果。
+- 调用 `sendRtm` 方法向指定 RTM 用户发送信令。
+
+示例代码如下：
+
+```java
+// 向指定 RTM 用户发送信令
+int [] message_id = new int [1];
+rtmRet = mRtcService.sendRtm(RTM_PEER_USER_ID, message, message_id);
+if (rtmRet != RtmErrCode.ERR_RTM_OK) {
+    RtsaLiteDemo.e(TAG, "<main> sendRtm() failure, rtmRet=" + rtmRet
+            + ", message_id=" + message_id[0]);
+} else {
+    RtsaLiteDemo.d(TAG, "<main> sendRtm() success, rtmRet=" + rtmRet
+            + ", message_id=" + message_id[0]);
+}
+// 注册云信令事件回调
+class MyRtmEvent implements AgoraRtmEvents {
+    private final static String TAG = "DEMO/MyRtmEvent";
+
+    // 接收你登录的 RTM 系统中远端发送的信令
+  @Override
+    public void onRtmData(String rtm_uid, byte[] data) {
+    }
+    // 监听本地用户状态
+    @Override
+    public void onRtmEvent(String rtm_uid, int event_type, int err_code) {
+    }
+    // 监听本地信令发送结果
+    @Override
+    public void onSendRtmDataResult(String rtm_uid, int message_id, int err_code) {
+    }
+}
+```
+
+#### 3.3 登出 RTM 系统
+
+调用 `logoutRtm` 方法登出 RTM，结束在 RTM 系统中的消息传输。
+
+示例代码如下：
+
+```java
+ret = mRtcService.logoutRtm();
+if (ret != RtmErrCode.ERR_RTM_OK) {
+  RtsaLiteDemo.e(TAG, "<main> fail to logoutRtm(), ret=" + ret);
+}
+```
+
+### 4. 销毁 SDK 实例
+
+当你不再需要使用 RTSA SDK 的功能时，调用 `fini` 方法销毁 SDK 实例释放资源。
+
+示例代码如下：
+
+```java
+mRtcService.fini();
+```
+
+## 参考信息
+
+你可以通过 API 参考文档了解更多信息。
+
+- [API 参考](/api-ref/rtsa/java/overview)
+
+</PlatformStructured>

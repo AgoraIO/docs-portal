@@ -1,0 +1,275 @@
+---
+title: "使用美颜插件 (Beta)"
+---
+
+声网提供美颜插件 `agora-extension-beauty-effect`，可以与 Web SDK（建议 v4.12.0 或以上）搭配使用。用户可以开启美颜，调节美白、磨皮、祛痘、红润程度，实现自然的美颜效果。
+
+点击[在线链接](https://webdemo.agora.io/example/plugin/beauty/index.html)立即体验美颜功能。
+
+具体效果可参考下图：
+
+![美颜插件效果示意图](https://web-cdn.agora.io/docs-files/1654605553546)
+
+## 实现原理
+
+声网 Web SDK 的媒体传输管道包含采集、前处理、编码、传输、解码、后处理和播放等环节。在前处理阶段，插件可以对管道中的音视频数据进行处理，从而实现虚拟背景、降噪、美颜、语音活动检测等功能。
+
+![处理插件原理](https://web-cdn.agora.io/doc-cms/uploads/1728974154162-web-extension-update.png)
+
+## 前提条件
+
+使用美颜插件需要满足以下前提条件：
+
+- 使用最新版本的桌面端 Chrome（推荐）、Firefox 或 Safari 浏览器。
+- 已集成 v4.12.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../../get-started/quick-start)文档。
+
+## 示例代码
+
+以下是一段使用美颜插件的完整代码，供开发者参考。
+
+<Accordions>
+<Accordion title="完整示例代码">
+
+```typescript
+import AgoraRTC from "agora-rtc-sdk-ng";
+import BeautyExtension from "agora-extension-beauty-effect";
+
+// 创建 Client
+var client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+// 创建 BeautyExtension 实例
+const extension = new BeautyExtension();
+// 注册插件
+AgoraRTC.registerExtensions([extension]);
+// 创建 BeautyProcessor 实例
+const processor = extension .createProcessor();
+
+var localTracks = {
+  videoTrack: null,
+  audioTrack: null
+};
+
+async function start() {
+  // 创建本地麦克风轨道和摄像头轨道
+  localTracks.audioTrack = localTracks.audioTrack ||
+                           await AgoraRTC.createMicrophoneAudioTrack();
+  localTracks.videoTrack = localTracks.videoTrack ||
+                           await AgoraRTC.createCameraVideoTrack({cameraId: videoSelect.value, encoderConfig: '720p_2'});
+
+  localTracks.videoTrack.play("local-player");
+
+  if (processor && localTracks.videoTrack) {
+    // 将插件注入 SDK 内的视频处理管道
+    localTracks.videoTrack.pipe(processor).pipe(localTracks.videoTrack.processorDestination);
+    // 开启美颜
+    await processor.enable();
+  }
+}
+
+// 设置各项美颜参数
+async function setBeautyOptions() {
+  processor.setOptions({
+    lighteningContrastLevel: 2,
+    lighteningLevel: 0.7,
+    smoothnessLevel: 0.6,
+    sharpnessLevel: 0.5,
+    rednessLevel: 0.5
+  });
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+按照以下步骤集成美颜插件并实现美颜功能。
+
+### 1. 集成插件
+
+通过 npm 将美颜插件 [agora-extension-beauty-effect](https://www.npmjs.com/package/agora-extension-beauty-effect) 集成到你的项目中。
+
+1. 运行以下命令安装美颜插件：
+
+    ```bash
+    npm install agora-extension-beauty-effect
+    ```
+
+2. 通过以下任意一种方式引入美颜插件。
+
+    - 方式一：在 JavaScript 文件中加入以下代码引入。
+
+        ```typescript
+        import BeautyExtension from "agora-extension-beauty-effect";
+        ```
+
+    - 方式二：在 HTML 文件中通过 `<script>` 标签引入。引入后即可在 JavaScript 文件中直接使用 `BeautyExtension` 对象。
+
+        ```html
+        <script src="./agora-extension-beauty-effect.js"></script>
+        ```
+
+### 2. 注册插件
+
+调用 `AgoraRTC.createClient` 创建 Client 对象后，新建一个 `BeautyExtension` 对象，然后调用 `AgoraRTC.registerExtensions` 并传入创建的 `BeautyExtension` 对象，注册美颜插件。
+
+```typescript
+// 创建 Client
+var client = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+// 创建 BeautyExtension 实例
+const extension = new BeautyExtension();
+// 注册插件
+AgoraRTC.registerExtensions([extension]);
+```
+
+### 3. 开启插件
+
+按照以下步骤开启插件：
+
+1. 调用 `extension.createProcessor` 创建 `BeautyProcessor` 实例。
+
+    ```typescript
+    const processor = extension.createProcessor();
+    ```
+
+2. 在创建本地摄像头视频轨道后，调用 `videoTrack.pipe` 并指定 `videoTrack.processorDestination`，将插件注入到 SDK 的媒体处理管道中。
+
+    ```typescript
+    localTracks.videoTrack.pipe(processor).pipe(localTracks.videoTrack.processorDestination);
+    ```
+
+3. 调用 `processor.enable` 开启美颜。
+
+   ```typescript
+   await processor.enable();
+   ```
+
+   如果调用此方法前未调用 `setOptions`，SDK 会使用 [BeautyEffectOptions](#beautyeffectoptions) 中各项美颜参数的默认值。
+
+### 4. 设置美颜
+
+调用 `processor.setOptions` 设置美颜参数：
+
+     ```typescript
+     processor.setOptions({
+       // 对比度
+       lighteningContrastLevel: 2,
+       // 亮度
+       lighteningLevel: 0.7,
+       // 平滑度
+       smoothnessLevel: 0.6,
+       // 锐化程度
+       sharpnessLevel: 0.5,
+       // 红润度
+       rednessLevel: 0.5
+     });
+     ```
+
+## 开发注意事项
+
+- 美颜插件的浏览器支持如下：
+  - 支持最新版本的 Chrome、Firefox 和 Safari。
+  - 为了获得更好的美颜体验，声网推荐在桌面端 Chrome 最新版上使用此功能。
+  - 不支持 Safari 15.4 以下版本，因为 [WebKit 已知问题](https://bugs.webkit.org/show_bug.cgi?id=181663)会导致黑屏现象。
+  - 不建议在移动端上开启美颜。
+- 美颜插件对设备性能要求较高，声网建议满足以下要求：
+  - Intel Core i5 2 核或以上的处理器
+  - RAM 8GB 或以上
+  - 64 位操作系统
+- 使用美颜插件时，请确保开启浏览器硬件加速功能。
+- 美颜插件封装了 Web SDK 4.x 内置的美颜功能（通过 `setBeautyEffect` 开启），并且升级了美颜算法。如果你使用了 SDK 内置的美颜功能，声网建议你升级到 v4.12.0 或以上，改用美颜插件的实现方案。SDK 内置的美颜功能将逐步停止更新。
+- 如需同时使用多个媒体处理插件，声网建议你使用 Intel Core i5 4 核或以上的处理器。同时开启多个插件后，如果其它正在运行的程序占用了较高的系统资源，你的 App 可能会出现音视频卡顿。
+
+## API 参考
+
+本节提供美颜插件的 API 参考。
+
+### IBeautyExtension
+
+**createProcessor**
+
+```typescript
+createProcessor(): IBeautyProcessor;
+```
+
+创建 `IBeautyProcessor` 对象。
+
+### IBeautyProcessor
+
+#### setOptions
+
+```typescript
+setOptions(options: BeautyEffectOptions): void;
+```
+
+设置美颜参数。
+
+参数：
+
+- `options`: 美颜参数，详见 [BeautyEffectOptions](#beautyeffectoptions)。
+
+#### enable
+
+```typescript
+enable(): void | Promise<void>;
+```
+
+开启美颜。
+
+如果调用此方法前未调用 `setOptions`，SDK 会使用 [BeautyEffectOptions](#beautyeffectoptions) 中各项美颜参数的默认值。
+
+#### disable
+
+```typescript
+disable(): void | Promise<void>;
+```
+
+关闭美颜。
+
+#### release
+
+```typescript
+release(): Promise<void>;
+```
+
+释放插件占用的所有资源，包括创建的 Web Worker。
+
+如果反复创建插件对象 `IBeautyProcessor` 但不释放插件占用资源，可能会导致内存耗尽。
+
+#### onoverload
+
+```typescript
+onoverload?: () => void;
+```
+
+当系统运算性能无法满足处理要求时，SDK 会触发 `onoverload`。
+
+声网建议在此事件回调函数中调用 `disable` 停止美颜，并添加 UI 提示。
+
+### 类型定义
+
+#### BeautyEffectOptions
+
+```typescript
+export type BeautyEffectOptions = {
+  lighteningContrastLevel: 0 | 1 | 2;
+  lighteningLevel: Number,
+  smoothnessLevel?: Number;
+  sharpnessLevel?: Number;
+  rednessLevel?: Number;
+};
+```
+
+美颜参数。用于 [setOptions](#setoptions) 方法。
+
+- `lighteningContrastLevel`: 对比度，与 `lighteningLevel` 参数搭配使用。取值越大，明暗对比越强烈。取值包括：
+  - `0`: 低对比度。
+  - `1`: （默认）正常对比度。
+  - `2`: 高对比度。
+
+- `lighteningLevel`: Number 型。亮度，取值范围为 [0.0,1.0]，其中 0.0 表示原始亮度。默认值为 0.6。用于实现美白效果，取值越大，美白程度越大。
+
+- `smoothnessLevel`: Number 型。平滑度，取值范围为 [0.0,1.0]，其中 0.0 表示原始磨皮程度。默认值为 0.5。用于实现祛痘、磨皮等效果，取值越大，磨皮程度越大。
+
+- `sharpnessLevel`: Number 型。锐化程度，取值范围为 [0.0,1.0]，其中 0.0 表示原始锐度。默认值为 0.3。用于实现提升画面清晰度的效果，取值越大，锐化程度越大。
+
+- `rednessLevel`: Number 型。红润度，取值范围为 [0.0,1.0]，其中 0.0 表示原始红润度。默认值为 0.1。用于实现红润肤色等效果，取值越大，红润程度越大。

@@ -1,0 +1,230 @@
+---
+title: "使用 Token 鉴权"
+---
+本文介绍如何在服务端为灵动会议生成一个 Token，并使用 Token 完成鉴权。
+
+鉴权是指在用户访问你的系统前，对用户权限进行校验，声网用 Token 对用户鉴权。Token 也称为动态密钥，是在创建、启动、或管理会议房间时用于校验用户权限的字符串。当 App 用户使用声网服务，例如启动会议房间时传入 Token，声网服务端会根据 Token 中的信息验证用户的权限。
+
+## 灵动会议 Token 类型
+
+灵动会议包含客户端 SDK 和服务端 RESTful API。根据不同的鉴权场景，灵动会议 Token 分为如下两种类型：
+
+| Token 使用场景           | Token 生成器函数                      | Token 作用域                                       |
+| ------------------ | ----------------------------------- | ------------------------------------------- |
+| 在客户端会议 SDK 启动会议时传入 Token 进行鉴权。 | 通过 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成。 | 指定房间中的指定用户。                 |
+| 在服务端 RESTful API 发起请求时传入 Token 进行鉴权。 | 通过 [`BuildAppToken`](#buildapptoken) 函数生成。       | 全局房间的操作，如创建房间，配置房间和查询房间等。 |
+
+## 1. 服务端生成 Token
+
+本节以 Golang 语言为例，展示如何部署 Token 生成器。
+
+本节展示的 Token 为 `BuildRoomUserToken` 函数生成，你可按需替换成 `BuildAppToken` 函数。两者区别详见[灵动会议 Token 类型](#灵动会议-token-类型)。
+
+:::warning[注意]
+Token 需要在你的服务端部署生成。不要在客户端生成 Token。
+:::
+
+### 开发环境要求
+
+[Golang](https://golang.org/) 1.14 以上版本，且确保 `GO111MODULE` 已开启。
+
+:::info[信息]
+在 Go 1.16 及以上版本中，`GO111MODULE` 默认开启，无需手动设置。详见 [Go 1.16 官方文档](https://blog.golang.org/go116-module-changes)。
+:::
+
+### 部署 Token 服务器
+
+1. 创建一个 `server.go` 文件，并将本步骤的示例代码复制到该文件中。示例代码使用 `BuildRoomUserToken` 函数生成 Token。函数中需设置如下参数：
+
+    | 参数           | 描述              |
+    | -------------- | --------------- |
+    | `appID`          | App ID，详见[获取 App ID](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-id)。                       |
+    | `appCertificate` | App 证书，详见[获取 App 证书](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-证书)。                      |
+    | `roomUuid`       | 房间 ID。和[灵动会议 API](/api-ref/meeting/android/client-api#fcruisceneconfig) 中 `roomId` 一致。                                                  |
+    | `userUuid`       | 用户 ID。此处填写的值必须和[启动会议](/api-ref/meeting/android/client-api#fcruiscenecreatorconfig)时传入的 `userId` 一致。 |
+    | `role`           | 房间内用户角色。和[灵动会议 API](/api-ref/meeting/android/client-api#fcruisceneconfig) 中 `userRole` 一致。    |
+    | `expire`         | 设置 Token 的有效期，单位为秒。最长有效期为 24 小时。假设你设值为 600，Token 会在生成后 10 分钟过期。假设你设值超过 24 小时，Token 的有效期依然为 24 小时。假设你设值为 0，Token 一经生成立即过期。   |
+
+    ```go
+    package main
+
+    import (
+        apaastokenbuilder "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/apaastokenbuilder"
+        "fmt"
+        "log"
+        "net/http"
+        "time"
+        "encoding/json"
+        "errors"
+        "strconv"
+    )
+    // highlight-start
+    type apaas_token_struct struct {
+        // 房间 ID
+        roomUuid string `json:"roomUuid"`
+        // 用户 ID，是用户的唯一标识符
+        userUuid string `json:"userUuid"`
+        // 用户角色
+        role int `json:"role"`
+    }
+
+    var apaasToken string
+
+    func generateApaasToken(roomUuid string, userUuid string, role int) {
+        // 获取环境变量 AGORA_APP_ID 的值
+        // 请确保你将该变量设为你在控制台获取的 App ID
+        appID := os.Getenv("AGORA_APP_ID")
+        // 获取环境变量 AGORA_APP_CERTIFICATE 的值
+        // 请确保你将该变量设为你在控制台获取的 App 证书
+        appCertificate := os.Getenv("AGORA_APP_CERTIFICATE")
+        // Token 的有效时间，单位为秒
+        expire := uint32(3600)
+
+        // 使用 BuildRoomUserToken 函数生成 Token
+        result, err := apaastokenbuilder.BuildRoomUserToken(appID, appCertificate, roomUuid, userUuid, role, expire)
+        // highlight-end
+
+        if err != nil {
+            fmt.Println(err)
+        } else {
+            fmt.Printf("ApaasToken: %s\n", result)
+            apaasToken = result
+        }
+    }
+
+    func apaasTokenHandler(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json;charset=UTF-8")
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS");
+        w.Header().Set("Access-Control-Allow-Headers", "*");
+
+        if r.Method == "OPTIONS" {
+            w.WriteHeader(http.StatusOK)
+            return
+        }
+
+        if r.Method != "POST" && r.Method != "OPTIONS" {
+            http.Error(w, "Unsupported method. Please check.", http.StatusNotFound)
+            return
+        }
+
+        var t_apaas_str apaas_token_struct
+        var unmarshalErr *json.UnmarshalTypeError
+        str_decoder := json.NewDecoder(r.Body)
+        apaas_err := str_decoder.Decode(&t_apaas_str)
+
+        if (apaas_err != nil) {
+            if errors.As(apaas_err, &unmarshalErr) {
+                errorResponse(w, "Bad request. Please check your params.", http.StatusBadRequest)
+            } else {
+                errorResponse(w, "Bad request.", http.StatusBadRequest)
+            }
+            return
+        }
+
+        generateRtmToken(t_apaas_str.roomUuid,t_apaas_str.userUuid,t_apaas_str.role)
+        errorResponse(w, apaasToken, http.StatusOK)
+        log.Println(w, r)
+    }
+
+    func errorResponse(w http.ResponseWriter, message string, httpStatusCode int) {
+        w.Header().Set("Content-Type", "application/json")
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        w.WriteHeader(httpStatusCode)
+        resp := make(map[string]string)
+        resp["token"] = message
+        resp["code"] = strconv.Itoa(httpStatusCode)
+        jsonResp, _ := json.Marshal(resp)
+        w.Write(jsonResp)
+    }
+
+    func main() {
+        // 处理路由
+        http.HandleFunc("/fetch_apaas_token", apaasTokenHandler)
+
+        fmt.Printf("Starting server at port 8082\n")
+
+        if err := http.ListenAndServe(":8082", nil); err != nil {
+            log.Fatal(err)
+        }
+    }
+    ```
+
+2. `go.mod` 文件定义导入路径及依赖项。运行如下命令来为你的 Token 服务器创建 `go.mod` 文件：
+
+   ```shell
+   $ go mod init sampleServer
+   ```
+
+3. 运行如下命令行安装依赖：
+
+   ```shell
+   $ go get
+   ```
+
+4. 运行如下命令行启动服务器：
+
+   ```shell
+   $ go run server.go
+   ```
+
+## 2. 传入 Token 实现鉴权
+
+针对 Token 的类型，你可以将服务端生成的 Token 赋值给相应的参数，以实现鉴权：
+
+- 对于 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见[启动灵动会议](/doc/meeting//get-started/integrate-meeting#启动灵动会议)。
+
+- 对于 [`BuildRoomUserToken`](#buildroomusertoken) 函数生成的 Token，你需在使用客户端会议 SDK 启动会议时传入。详见[启动灵动会议](/zh-CN/solutions/meeting/get-started/integrate-meeting#启动灵动会议)。
+
+- 对于 [`BuildAppToken`](#buildapptoken) 函数生成的 Token，你需在使用服务端 RESTful API 发起请求时传入。详见[实现 HTTP Token 认证](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
+
+## 参考信息
+
+本节展示灵动会议使用的两种 Token 生成器函数：`BuildRoomUserToken` 和 `BuildAppToken`。两者区别详见[灵动会议 Token 类型](#灵动会议-token-类型)。同时，声网提供 GitHub 开源示例代码教你如何在服务端生成 Token。示例代码覆盖 Golang、Java、Node.js、PHP、Python 等语言。
+
+### BuildRoomUserToken
+
+```go
+func BuildRoomUserToken(
+    appId string,
+    appCertificate string,
+    roomUuid string,
+    userUuid string,
+    role int16,
+    expire uint32
+) (string, error)
+```
+
+`BuildRoomUserToken` 函数生成的 Token 作用域为指定房间中的指定用户，需在使用客户端会议 SDK 启动会议时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](#部署-token-服务器)。
+
+| 语言 | 算法 | 核心方法       | 示例代码 |
+| -------- | ----------- | --------------- | --------------- |
+| C++ | HMAC-SHA256 | [BuildRoomUserToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/ApaasTokenBuilder.h)                                  |  N/A  |
+| Golang | HMAC-SHA256 | [BuildRoomUserToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/go/src/apaastokenbuilder/apaastokenbuilder.go)             | [sample.go](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/go/sample/apaastokenbuilder/sample.go) |
+| Java | HMAC-SHA256 | [buildRoomUserToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/apaas/ApaasTokenBuilder.java) | [ApaasTokenBuilderSample.java](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/sample/ApaasTokenBuilderSample.java) |
+| Node.js | HMAC-SHA256 | [buildRoomUserToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/nodejs/src/ApaasTokenBuilder.js)                               | [ApaasTokenSample.js](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/nodejs/sample/ApaasTokenSample.js) |
+| PHP | HMAC-SHA256 | [buildRoomUserToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/php/src/ApaasTokenBuilder.php)                                 | [ApaasTokenBuilderSample.php](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/php/sample/ApaasTokenBuilderSample.php) |
+| Python 2 | HMAC-SHA256 | [build_room_user_token](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python/src/apaas_token_builder.py)                        | [apaas_token_builder_sample.py](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python/sample/apaas_token_builder_sample.py) |
+| Python 3 | HMAC-SHA256 | [build_room_user_token](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python3/src/apaas_token_builder.py)                               | [apaas_token_builder_sample.py](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python3/sample/apaas_token_builder_sample.py) |
+
+### BuildAppToken
+
+```go
+func BuildAppToken(
+    appId string,
+    appCertificate string,
+    expire uint32
+) (string, error)
+```
+
+`BuildAppToken` 函数生成的 Token 作用域为全局房间的操作，如创建房间，配置房间和查询房间等，需在使用服务端 RESTful API 发起请求时传入。`appId`、`appCertificate` 等参数说明详见[部署 Token 服务器](#部署-token-服务器)。
+
+| 语言 | 算法 | 核心方法       | 示例代码 |
+| -------- | ----------- |----------------| ---------------- |
+| C++ | HMAC-SHA256 | [BuildAppToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/cpp/src/ApaasTokenBuilder.h)                                  | N/A |
+| Golang | HMAC-SHA256 | [BuildAppToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/go/src/apaastokenbuilder/apaastokenbuilder.go)             | [sample.go](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/go/sample/apaastokenbuilder/sample.go) |
+| Java | HMAC-SHA256 | [buildAppToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/apaas/ApaasTokenBuilder.java) | [ApaasTokenBuilderSample.java](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/java/src/main/java/io/agora/sample/ApaasTokenBuilderSample.java) |
+| Node.js | HMAC-SHA256 | [buildAppToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/nodejs/src/ApaasTokenBuilder.js)                                    | [ApaasTokenSample.js](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/nodejs/sample/ApaasTokenSample.js) |
+| PHP | HMAC-SHA256 | [buildAppToken](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/php/src/ApaasTokenBuilder.php)                                      | [ApaasTokenBuilderSample.php](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/php/sample/ApaasTokenBuilderSample.php) |
+| Python 2 | HMAC-SHA256 | [build_app_token](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python/src/apaas_token_builder.py)                                    | [apaas_token_builder_sample.py](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python/sample/apaas_token_builder_sample.py) |
+| Python 3 | HMAC-SHA256 | [build_app_token](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python3/src/apaas_token_builder.py)                                   | [apaas_token_builder_sample.py](https://github.com/AgoraIO/Tools/blob/master/DynamicKey/AgoraDynamicKey/python3/sample/apaas_token_builder_sample.py) |

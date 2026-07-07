@@ -25,8 +25,8 @@ title: "实现和小程序互通"
 
 ### 开通微呼叫和 NCS 服务
 
-1. 参考[开通服务](/zh-CN/solutions/voip-call/get-started/enable-service)在声网控制台开通微呼叫服务，并完成授权。
-2. 声网微呼叫使用 License 校验呼叫的合法性。如果 License 不合法，会使用消息通知服务 NCS 将相关事件回调给开发者。因此在开发前，你还需要开通[声网消息通知服务](/zh-CN/solutions/voip-call/webhook/receive-webhook)。
+1. 参考[开通服务](/zh-CN/solutions/voip-call/build/setup-and-access/enable-service)在声网控制台开通微呼叫服务，并完成授权。
+2. 声网微呼叫使用 License 校验呼叫的合法性。如果 License 不合法，会使用消息通知服务 NCS 将相关事件回调给开发者。因此在开发前，你还需要开通[声网消息通知服务](/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook)。
 
 ### 熟悉开发参数
 
@@ -52,7 +52,7 @@ title: "实现和小程序互通"
 
 ### 1. 获取并激活 License
 
-联系商务[申请并获取 License](/zh-CN/solutions/voip-call/user-guide/license#1-申请-license)。然后调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活申请到的 License：
+联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/setup-and-access/license#1-申请-license)。然后调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活申请到的 License：
 
 :::warning[注意]
 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
@@ -97,7 +97,7 @@ License 激活成功的响应示例如下：
 
 #### 2.1 设备端实现呼叫和挂断
 
-设备端进行音视频通话，需要先集成声网媒体流加速 RTSA SDK。你可以参考 [RTSA 快速开始](/zh-CN/realtime-media/rtsa/get-started/implement-transmission)集成 SDK 并实现基础的媒体流互通。
+设备端进行音视频通话，需要先集成声网媒体流加速 RTSA SDK。你可以参考 [RTSA 快速开始](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission)集成 SDK 并实现基础的媒体流互通。
 
 设备端在集成 RTSA SDK 后，自行实现如下逻辑：
 
@@ -302,4 +302,4 @@ curl --location --request DELETE 'https://api.sd-rtn.com/v1/miniapp/aabxxxxxxxxx
 
 - [呼叫小程序 RESTful API](/doc/voip-callkit/restful/call/operations/callMiniApp)
 - [License 管理 RESTful API](/doc/voip-callkit/restful/call/operations/activateLicense)
-- [NCS 事件类型](/zh-CN/solutions/voip-call/webhook/voip-events)
+- [NCS 事件类型](/zh-CN/solutions/voip-call/reference/voip-events)

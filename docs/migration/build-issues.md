@@ -31,45 +31,45 @@
 | 1 | `content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp.mdx` | `250:83` Unexpected character `o` before attribute value; likely unquoted HTML attribute in table cell. |
 | 2 | `content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx` | `253:87` Unexpected character `o` before attribute value; likely unquoted HTML attribute in table cell. |
 | 3 | `content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.swift.mdx` | `237:83` Unexpected character `d` before attribute value; likely unquoted HTML attribute in table cell. |
-| 4 | `content/docs/zh-CN/realtime-media/fusion-cdn/webhook/enable-ncs.mdx` | `35:4-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 5 | `content/docs/zh-CN/realtime-media/marketplace/integrate-extensions/faceunity-ar.mdx` | `496:1-498:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 6 | `content/docs/zh-CN/realtime-media/marketplace/integrate-extensions/audio-moderation-api.mdx` | Unexpected end of file in expression; expected closing brace for `{`. |
-| 7 | `content/docs/zh-CN/realtime-media/rtm/overview/migration-guide.mdx` | Unexpected character `m` before attribute value; likely unquoted HTML attribute. |
-| 8 | `content/docs/zh-CN/realtime-media/rtmp-gateway/webhook/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 4 | `content/docs/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs.mdx` | `35:4-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 5 | `content/docs/zh-CN/realtime-media/marketplace/build/integrate-extensions/faceunity-ar.mdx` | `496:1-498:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 6 | `content/docs/zh-CN/realtime-media/marketplace/build/integrate-extensions/audio-moderation-api.mdx` | Unexpected end of file in expression; expected closing brace for `{`. |
+| 7 | `content/docs/zh-CN/realtime-media/rtm/reference/migration-guide.mdx` | Unexpected character `m` before attribute value; likely unquoted HTML attribute. |
+| 8 | `content/docs/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 9 | `content/docs/zh-CN/realtime-media/speech-to-text/webhook/receive-webhook.mdx` | `37:6-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 10 | `content/docs/zh-CN/realtime-media/whiteboard/fastboard-sdk/conversion-webhook.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `425:1-425:55`. |
-| 11 | `content/docs/zh-CN/realtime-media/media-pull/webhook/enable-event-notification.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 12 | `content/docs/zh-CN/realtime-media/whiteboard/whiteboard-sdk/conversion-webhook.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `402:1-402:55`. |
-| 13 | `content/docs/zh-CN/solutions/game-voice/user-guides/spatial-audio-wwise.mdx` | `631:4-631:16` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 14 | `content/docs/zh-CN/solutions/game-voice/overview/billing.mdx` | `75:5-75:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 15 | `content/docs/zh-CN/solutions/chatroom/uikit/get-started/quick-integration.mdx` | `825:5-825:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 16 | `content/docs/zh-CN/solutions/iot-apaas/advanced-features/alarm.android.ios.device-c.mdx` | `118:73-118:108` Expected closing tag for `<PlatformInline>` before end of `paragraph`. |
-| 17 | `content/docs/zh-CN/solutions/meeting/get-started/configure-meeting.mdx` | `27:5-27:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 10 | `content/docs/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/conversion-webhook.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `425:1-425:55`. |
+| 11 | `content/docs/zh-CN/realtime-media/media-pull/build/monitor-events/enable-event-notification.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 12 | `content/docs/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/conversion-webhook.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `402:1-402:55`. |
+| 13 | `content/docs/zh-CN/solutions/game-voice/build/customize-and-extend/spatial-audio-wwise.mdx` | `631:4-631:16` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 14 | `content/docs/zh-CN/solutions/game-voice/reference/billing.mdx` | `75:5-75:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 15 | `content/docs/zh-CN/solutions/chatroom/uikit/build/implement-core-features/quick-integration.mdx` | `825:5-825:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 16 | `content/docs/zh-CN/solutions/iot-apaas/build/customize-and-extend/alarm.android.ios.device-c.mdx` | `118:73-118:108` Expected closing tag for `<PlatformInline>` before end of `paragraph`. |
+| 17 | `content/docs/zh-CN/solutions/meeting/build/manage-classroom/configure-meeting.mdx` | `27:5-27:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 18 | `content/docs/zh-CN/solutions/meeting/get-started/integrate-meeting.mdx` | `377:5-377:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 19 | `content/docs/zh-CN/realtime-media/media-push/webhook/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 20 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 21 | `content/docs/zh-CN/solutions/voip-call/webhook/receive-webhook.mdx` | `37:6-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 19 | `content/docs/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 20 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/build/extend-karaoke/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 21 | `content/docs/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook.mdx` | `37:6-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 22 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/get-started/integrate.mdx` | `133:4-133:16` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 23 | `content/docs/zh-CN/realtime-media/rtc/advanced-features/extensions/virtual-background.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 24 | `content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/advanced-features/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 25 | `content/docs/zh-CN/realtime-media/usage-analytics/overview/release-notes.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 26 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/api-limits.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 27 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/call-search/overview.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `77:1-77:37`. |
-| 28 | `content/docs/zh-CN/realtime-media/usage-analytics/rtc/data-insight/basic.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
-| 29 | `content/docs/zh-CN/realtime-media/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 30 | `content/docs/zh-CN/realtime-media/rtc/basic-features/audio-quick-start.mdx` | `5557:5-5557:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 23 | `content/docs/zh-CN/realtime-media/rtc/build/extensions/virtual-background.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 24 | `content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 25 | `content/docs/zh-CN/realtime-media/usage-analytics/reference/release-notes.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 26 | `content/docs/zh-CN/realtime-media/usage-analytics/reference/api-limits.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 27 | `content/docs/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview.mdx` | Unexpected closing tag `</li>`; expected corresponding closing tag for `<Slot>` at `77:1-77:37`. |
+| 28 | `content/docs/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 29 | `content/docs/zh-CN/realtime-media/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 30 | `content/docs/zh-CN/realtime-media/rtc/build/audio/audio-quick-start.mdx` | `5557:5-5557:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 31 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-go.mdx` | `26:5-26:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 32 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-java.mdx` | `26:5-26:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 33 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/get-started/quick-start-nodejs.mdx` | `26:5-26:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 33 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/build/implement-core-features/quick-start-nodejs.mdx` | `26:5-26:17` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 34 | `content/docs/zh-CN/realtime-media/rtc/get-started/quick-start.mdx` | `1812:1-1812:15` Unexpected closing tag `</TabsContent>`; expected corresponding closing tag for `<Tabs>` at `1806:1-1806:33`. |
-| 35 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/user-guides/mix-mode/set-composite-layout.mdx` | Unexpected character `=` before name; expected a valid JSX name character. |
-| 36 | `content/docs/zh-CN/realtime-media/rtc/best-practice/playing-url.mdx` | Expected closing tag for `<Slot>` at `99:5-99:44` before end of `listItem`. |
-| 37 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/webhook/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 38 | `content/docs/zh-CN/realtime-media/rtc/webhook/receive_webhook.mdx` | `45:6-45:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 39 | `content/docs/zh-CN/realtime-media/marketplace/create-extensions/publish.mdx` | `<Slot name="..."> must be used inside a table cell.` |
-| 40 | `content/docs/zh-CN/realtime-media/sdk-extensions/metakit/quick-start.mdx` | `<Slot name="..."> must be used inside a table cell.` |
-| 41 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/get-started/run-github-project-backend.mdx` | `<Slot name="..."> must be used inside a table cell.` |
-| 42 | `content/docs/zh-CN/solutions/chatroom/uikit/get-started/run-github-project-backend.mdx` | `<Slot name="..."> must be used inside a table cell.` |
+| 35 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/build/recording-modes/mix-mode/set-composite-layout.mdx` | Unexpected character `=` before name; expected a valid JSX name character. |
+| 36 | `content/docs/zh-CN/realtime-media/rtc/build/optimize-and-operate/playing-url.mdx` | Expected closing tag for `<Slot>` at `99:5-99:44` before end of `listItem`. |
+| 37 | `content/docs/zh-CN/realtime-media/recording/cloud-recording/build/monitor-events/enable-ncs.mdx` | `30:6-30:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 38 | `content/docs/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook.mdx` | `45:6-45:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
+| 39 | `content/docs/zh-CN/realtime-media/marketplace/build/create-extensions/publish.mdx` | `<Slot name="..."> must be used inside a table cell.` |
+| 40 | `content/docs/zh-CN/realtime-media/sdk-extensions/metakit/build/implement-core-features/quick-start.mdx` | `<Slot name="..."> must be used inside a table cell.` |
+| 41 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend.mdx` | `<Slot name="..."> must be used inside a table cell.` |
+| 42 | `content/docs/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project-backend.mdx` | `<Slot name="..."> must be used inside a table cell.` |
 
 ## 代表性证据
 

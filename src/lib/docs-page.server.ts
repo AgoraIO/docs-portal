@@ -57,6 +57,7 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
+import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
@@ -64,6 +65,10 @@ const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
 const SDKS_ROOT_SLUG = 'sdks';
+const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
+  'mcp-integrate',
+  'skills-integrate',
+]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
@@ -149,11 +154,7 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
-  const movedDocsRedirect = resolveMovedDocsRedirect(
-    locale,
-    tab,
-    slugSegments,
-  );
+  const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
   if (movedDocsRedirect) {
     return {
       redirectUrl: movedDocsRedirect,
@@ -223,6 +224,28 @@ export async function loadDocsPagePayload(
   if (legacyRedirect) {
     return {
       redirectUrl: legacyRedirect,
+    };
+  }
+
+  const sharedConceptRedirect = resolveZhCnSharedConceptRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (sharedConceptRedirect) {
+    return {
+      redirectUrl: sharedConceptRedirect,
+    };
+  }
+
+  const zhCnProductIaRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (zhCnProductIaRedirect) {
+    return {
+      redirectUrl: zhCnProductIaRedirect,
     };
   }
 
@@ -558,6 +581,27 @@ function resolveLegacyBestPracticesRedirect(
   return redirect;
 }
 
+function resolveZhCnSharedConceptRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const leafSlug = slugSegments.at(-1);
+  if (!leafSlug || !ZH_CN_SHARED_CONCEPT_SLUGS.has(leafSlug)) {
+    return null;
+  }
+
+  if (tab === 'introduction' && slugSegments.length === 1) {
+    return null;
+  }
+
+  return `/zh-CN/introduction/${leafSlug}`;
+}
+
 function resolveDeviceKitRedirect(
   locale: string,
   tab: string,
@@ -878,6 +922,36 @@ function resolveRealtimeMediaRedirect(
 
   const normalizedPath = slugSegments.join('/');
 
+  const zhCnSpeechToTextRedirects: Record<string, string> =
+    locale === 'zh-CN'
+      ? {
+          'speech-to-text/overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/product-overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/release-notes': `/${locale}/realtime-media/speech-to-text/reference/release-notes`,
+          'speech-to-text/overview/billing': `/${locale}/realtime-media/speech-to-text/reference/billing`,
+          'speech-to-text/get-started/enable-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides/http-basic-auth': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth`,
+          'speech-to-text/user-guides/transcribe-specified-hosts': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts`,
+          'speech-to-text/user-guides/translation': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/translation`,
+          'speech-to-text/user-guides/update-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service`,
+          'speech-to-text/user-guides/how-to-use-protobuf': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf`,
+          'speech-to-text/user-guides/render-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/render-captions`,
+          'speech-to-text/user-guides/record-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/record-captions`,
+          'speech-to-text/user-guides/encrypt-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions`,
+          'speech-to-text/best-practices': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/enable-from-client': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/optimize-quality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/optimize-quality`,
+          'speech-to-text/audio-modality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/audio-modality`,
+          'speech-to-text/api': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/api/supported-languages': `/${locale}/realtime-media/speech-to-text/reference/supported-languages`,
+          'speech-to-text/api/response-code': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/receive-webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/ncs-events': `/${locale}/realtime-media/speech-to-text/reference/ncs-events`,
+        }
+      : {};
+
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
@@ -893,6 +967,7 @@ function resolveRealtimeMediaRedirect(
     'whiteboard/overview/release-notes-uikit': `/${locale}/realtime-media/whiteboard/reference/release-notes-uikit`,
     'whiteboard/overview/supported-platforms': `/${locale}/realtime-media/whiteboard/reference/supported-platforms`,
     'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
+    ...zhCnSpeechToTextRedirects,
   };
 
   return redirects[normalizedPath] ?? null;

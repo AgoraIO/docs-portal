@@ -1,0 +1,812 @@
+---
+title: "下载"
+---
+
+<PlatformStructured platform="android">
+
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 Maven Central 集成 SDK
+
+打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。
+
+```groovy tab="视频 SDK" tabGroup="integrate-sdk"
+...
+dependencies {
+    ...
+    // 集成 Full SDK
+    implementation 'cn.shengwang.rtc:full-sdk:4.6.3'
+    // 集成 Lite SDK
+    implementation 'cn.shengwang.rtc:lite-sdk:4.6.3'
+}
+```
+
+```groovy tab="音频 SDK" tabGroup="integrate-sdk"
+...
+dependencies {
+    ...
+    // 集成音频 SDK
+    implementation 'cn.shengwang.rtc:voice-sdk:4.6.3'
+}
+```
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+      - 集成 SDK 后增加的实际包体积数据会根据集成的动态库的不同而有所差异，本页提供的数据仅供参考。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Android Full](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip)
+
+    - [Android Lite](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_LITE.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Android](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_VOICE.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取 Demo
+
+本节提供 Demo，你可以下载体验 RTC SDK 的最新功能。
+
+    - 声网实验室
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 Cocoapods 集成 SDK
+
+本节提供通过 Cocoapods 集成 SDK 的方式。
+
+```ruby tab="视频 SDK" tabGroup="integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    # 集成 Full SDK
+    pod 'ShengwangRtcEngine_iOS', '4.6.2'
+    # 选择性集成 Full SDK 中的基础库和指定动态库
+    pod 'ShengwangRtcEngine_iOS', '4.6.2', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
+    # 集成 Lite SDK
+    pod 'ShengwangLite_iOS', '4.6.2',
+end
+```
+
+```ruby tab="音频 SDK" tabGroup="integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    # 集成音频 SDK
+    pod 'ShengwangAudio_iOS', '4.6.2'
+    # 选择性集成音频 SDK 中的基础库和指定动态库
+    pod 'ShengwangAudio_iOS', '4.6.2', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
+end
+```
+
+## 通过 SPM 集成 SDK
+
+本节提供通过 SPM (Swift Package Manager) 集成 SDK 的方式。
+
+```text tab="视频 SDK" tabGroup="integrate-sdk"
+// 集成 Full SDK
+github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_iOS.git | tag:4.6.2
+
+// 集成 Lite SDK
+github:git@github.com:Shengwang-Lab/ShengwangLite_iOS.git | tag:4.6.2
+```
+
+```text tab="音频 SDK" tabGroup="integrate-sdk"
+github:git@github.com:Shengwang-Lab/ShengwangAudio_iOS.git | tag:4.6.2
+```
+
+## 下载 SDK
+
+本节提供 SDK 最新版本的 CDN 下载链接。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+      - 集成 SDK 后增加的实际包体积数据会根据集成的动态库的不同而有所差异，本页提供的数据仅供参考。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [iOS Full](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_FULL.zip)
+
+    - [iOS Lite](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_LITE.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [iOS Audio](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_VOICE.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取 Demo
+
+本节提供 Demo，你可以下载体验 RTC SDK 的最新功能。
+
+    - 声网实验室
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 通过 Cocoapods 集成 SDK
+
+本节提供通过 Cocoapods 集成 SDK 的方式。
+
+```ruby
+platform :macos, '10.11'
+target 'Your App' do
+    # 集成 SDK
+    pod 'ShengwangRtcEngine_macOS', '4.6.2'
+    # 选择性集成 SDK 中的基础库和指定动态库
+    pod 'ShengwangRtcEngine_macOS', '4.6.2', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
+
+end
+    ```
+
+## 通过 SPM 集成 SDK
+
+本节提供通过 SPM (Swift Package Manager) 集成 SDK 的方式。
+
+```text
+github:git@github.com:Shengwang-Lab/ShengwangRtcEngine_macOS.git | tag:4.6.2
+```
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+      - [macOS](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Mac_v4.6.2_FULL.zip)
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 npm 集成 SDK
+
+声网推荐通过 npm 在项目中集成 SDK。
+
+```shell
+npm install agora-rtc-sdk-ng
+```
+
+使用 npm 集成 Web SDK 还支持开启 Tree shaking 来减小集成 SDK 后的 App 体积，详见[使用 Tree shaking](/zh-CN/realtime-media/rtc/build/implement-core-features/tree-shaking)。
+
+## 下载 SDK
+
+本节提供 SDK 最新版本的下载链接。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+ 视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Web](https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip)
+
+## 获取 Demo
+
+本节提供 Demo，你可以快速体验 Web SDK 的最新功能。
+
+    - Web Demo
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples-Web" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO/API-Examples-Web" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK (C++)
+
+本节提供最新版本的 C++ SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+      - [Windows](https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Windows_v4.6.2_FULL.zip)
+
+## 通过 NuGet 集成 SDK (C#)
+
+本节提供 NuGet 包管理器集成 C# SDK 的方式。
+
+在 [agora_rtc_sdk](https://www.nuget.org/packages/agora_rtc_sdk/#versions-body-tab) 中获取 SDK 的版本信息。
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples (C++)" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample" />
+  <Card title="API-Examples (C++)" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample" />
+
+  <Card title="API-Examples (C#)" href="https://gitee.com/agoraio-community/Agora-C_Sharp-SDK" />
+  <Card title="API-Examples (C#)" href="https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK
+
+本节提供 SDK 最新版本的 CDN 下载链接。
+
+:::info[信息]
+- 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+  - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+:::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+  - [HarmonyOS NEXT Full](https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_v4.4.2_FULL.har)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+  - [HarmonyOS NEXT Audio](https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_V4.4.2_VOICE.har)
+
+</TabsContent>
+</Tabs>
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 npm 集成 SDK
+
+在项目的 `package.json` 文件中通过如下行引入最新版本的小程序 SDK（仅适用于 v2.6.0 及以上版本）。详细步骤参考[集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#5-集成-sdk)。
+
+```json
+"dependencies": {
+  "agora-miniapp-sdk": "latest"
+},
+```
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+      - [微信/QQ 小程序](https://download.agora.io/sdk/release/Agora_Miniapp_SDK_for_WeChat_v2.6.5.zip)
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="Agora-Miniapp-Tutorial" href="https://github.com/AgoraIO/Agora-Miniapp-Tutorial" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+<Tabs defaultValue="electron" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="tongxin">Electron for 统信 OS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="electron">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Electron](https://www.npmjs.com/package/shengwang-electron-sdk/v/4.6.2)
+
+</TabsContent>
+
+<TabsContent value="tongxin">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+    - [Electron for 统信 OS](https://www.npmjs.com/package/agora-electron-sdk/v/4.5.40-rc.2)
+
+</TabsContent>
+</Tabs>
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Tabs defaultValue="electron" groupId="platform" persist>
+<TabsList>
+  <TabsTrigger value="electron">Electron</TabsTrigger>
+  <TabsTrigger value="tongxin">Electron for 统信 OS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="electron">
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Electron-SDK" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/" />
+</Cards>
+
+</TabsContent>
+
+<TabsContent value="tongxin">
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Electron-SDK/tree/v4.5.40-rc.2/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Electron-SDK/tree/v4.5.40-rc.2/example" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unity](https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_FULL_20260212_633_4.6.2-build.1.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unity](https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_VOICE_20260212_634_4.6.2-build.1.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="Agora-Unity-Quickstart" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples" />
+  <Card title="Agora-Unity-Quickstart" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+      - [Flutter](https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.2)
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="Agora-Flutter-SDK" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK" />
+  <Card title="Agora-Flutter-SDK" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+      - [React Native](https://www.npmjs.com/package/react-native-shengwang/v/4.6.2)
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/react-native-agora" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  :::warning[注意]
+  声网 Unreal SDK 支持 C++ 和 Blueprint 两种集成方式，当前推荐使用稳定性更优的 C++ 版本。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unreal](https://download.agora.io/sdk/release/Agora_RTC_FULL_SDK_4.5.1_Unreal.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unreal](https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.5.1_Unreal.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="Agora-Unreal-RTC-SDK" href="https://gitee.com/agoraio-community/Agora-Unreal-RTC-SDK" />
+  <Card title="Agora-Unreal-RTC-SDK" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+本文提供获取 SDK 和示例项目的方式。
+
+## 下载 SDK
+
+本节提供最新版本的 SDK。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+  :::warning[注意]
+  声网 Unreal SDK 支持 C++ 和 Blueprint 两种集成方式，当前推荐使用稳定性更优的 C++ 版本。
+  :::
+
+<Tabs defaultValue="video" groupId="sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+
+视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+- SDK 名称：视频 SDK
+- 开发者：上海声网科技有限公司
+- 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unreal](https://download.agora.io/sdk/release/Agora_RTC_FULL_SDK_4.5.1_Unreal.zip)
+
+</TabsContent>
+
+<TabsContent value="audio">
+
+音频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建纯语音互动场景。
+
+- SDK 名称：音频 SDK
+- 开发者：上海声网科技有限公司
+- 音频 SDK 合规使用说明请参考[音频 SDK 合规使用说明](/basics/security/voice-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [Unreal](https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.5.1_Unreal.zip)
+
+</TabsContent>
+</Tabs>
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="Agora-Unreal-RTC-SDK" href="https://gitee.com/agoraio-community/Agora-Unreal-RTC-SDK" />
+  <Card title="Agora-Unreal-RTC-SDK" href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="react">
+
+本文提供获取 SDK、Demo 和示例项目的方式。
+
+## 通过 npm 集成 SDK
+
+声网推荐通过 npm 在项目中集成 SDK。
+
+```shell
+npm install agora-rtc-react
+```
+
+## 通过 CDN 集成 SDK
+
+在你的 HTML 文件中添加如下代码，使用 CDN 方法获取 SDK：
+
+```html
+<!-- 必须按照以下顺序依次引入 -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+<!-- 如果以上依赖库都已经通过 npm 集成，只需要添加这一行 -->
+<script src="https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js"></script>
+```
+
+## 下载 SDK
+
+本节提供 SDK 最新版本的 CDN 下载链接。
+
+  :::info[信息]
+  - SDK 默认使用 libc++ (LLVM)，如需使用 libstdc++ (GNU)，请联系 sales@shengwang.cn。SDK 提供的库是 FAT Image，包含 32/64 位模拟器、32/64 位真机版本。
+      - 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+      - 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+  :::
+
+ 视频 SDK 中提供了简单易用的 API，帮助开发者在 App 中构建各种实时音视频互动场景。
+
+  - SDK 名称：视频 SDK
+  - 开发者：上海声网科技有限公司
+  - 视频 SDK 合规使用说明请参考[视频 SDK 合规使用说明](/basics/security/video-sdk)，个人信息处理规则请参考 [SDK 个人信息处理规则](https://www.shengwang.cn/SDK-privacy-policy/)。
+
+    - [React](https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js)
+
+## 获取 Demo
+
+本节提供 Demo，你可以快速体验 React SDK 的最新功能。
+
+    - CodeSandbox 体验
+
+## 获取示例项目
+
+本节提供 API 示例项目，你可以下载或查看源码。
+
+<Cards>
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/agora-rtc-react" />
+</Cards>
+
+</PlatformStructured>

@@ -1,0 +1,242 @@
+---
+title: "录制字幕"
+---
+实时转录翻译支持录制字幕文本，生成 `.vtt` 文件并保存到配置的云存储中。录制的字幕可与音视频录制文件同步播放，也可用于生成会议纪要与主题摘要、情感分析和内容审核。录制字幕不收取额外费用。
+
+本文介绍如何录制字幕，并将字幕与云端录制生成的音视频文件同步。
+
+:::warning[注意]
+云端录制与转写任务运行在不同服务器上，要同步时间戳，必须在云端录制中开启 NTP 时间戳。
+:::
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- 参考[开通服务](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
+- 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth)获取 `Authorization` 值。
+- 使用原生平台 v4.2.6.3 或 Web v4.20.1 及以上版本的 Video SDK，并支持 `datastreamEncryptionEnabled`。
+- 在云端录制的 `start` 请求体中将 `enableNTPtimestamp` 参数设置为 `true`，以便与转写时间戳对齐。
+
+  <details>
+  <summary>云端录制 `start` 请求体示例</summary>
+
+  ```json
+  "recordingConfig": {
+      "maxIdleTime": 30,
+      "streamTypes": 2,
+      "channelType": 1,
+      "extensionParams": {
+          "enableNTPtimestamp": true
+      },
+      "transcodingConfig": {
+          "width": 1280,
+          "height": 720,
+          "fps": 15,
+          "bitrate": 2400,
+          "mixedVideoLayout": 3,
+          "layoutConfig": [
+              {
+                  "alpha": 1,
+                  "height": 1,
+                  "render_mode": 1,
+                  "uid": "22228",
+                  "width": 1,
+                  "x_axis": 0,
+                  "y_axis": 0
+              }
+          ]
+      }
+  },
+  ```
+
+  </details>
+
+## 实现方法
+
+按照以下步骤录制字幕，并与对应录制文件同步以便顺畅回放。
+
+### 录制字幕
+
+按照[快速开始](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)中的 API 调用流程，并在 `start` 请求中加入字幕录制参数，如下所示：
+
+```shell
+curl --location --request POST 'https://api.sd-rtn.com/cn/api/speech-to-text/v1/projects/{appId}/join' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic <credentials>' \
+--data '{
+    "name": "unique-agent-id",
+    "languages": [
+        "en-US"
+    ],
+    "maxIdleTime": 50,
+    "rtcConfig": {
+        "channelName": "<YourChannelName>",
+        "subBotUid": "<YourSubscribeUid>",
+        "subBotToken": "<YourSubscribeToken>",
+        "pubBotUid": "<YourPublishUid>",
+        "pubBotToken": "<PublishToken-IfRequired>"
+    },
+    "captionConfig": {
+        "storage": {
+            "accessKey": "<YourOssAccessKey>",       
+            "secretKey": "<YourOssSecretKey>",       
+            "bucket": "<YourOssBucketName>",         
+            "vendor": <YourOssVendorCode>,               
+            "region": <YourOssRegionCode>,               
+            "fileNamePrefix": ["folder","sub-folder"]  
+        },
+        "extensionParams": {
+            "endpoint": endpoint,
+            "type": type,
+            "provider": provider, 
+        }
+    }
+}'
+```
+
+:::info[信息]
+当 `captionConfig.storage.vendor` 为 `11` 时，你需要在 `captionConfig.extensionParams` 中补充标准 S3 存储的接入信息。
+:::
+
+### extensionParams 字段说明
+
+| 字段 | JSON 类型 | 必填 | 含义与作用 | 生效范围与注意 |
+| --- | --- | --- | --- | --- |
+| `endpoint` | `string` | 视场景 | 兼容 S3 存储服务的访问地址，需要填写完整 URL，例如 `http://host:9002`。 | 当 `vendor` 为 `11` 时必填。它用于明确告诉系统文件要上传到哪个存储地址。若使用自签 HTTPS 证书，需要先在运行环境中信任该证书，否则可能连接失败。 |
+| `provider` | `string` | 建议填写 | 兼容 S3 存储服务的供应商名称，例如 MinIO 对应 `Minio`。 | 通常与 `endpoint` 一起填写，用于说明连接的是哪家兼容 S3 服务。注意大小写需要与供应商名称要求保持一致。 |
+| `type` | `string` | 建议填写 | 存储类型。标准 S3 场景固定填写为 `s3`。 | 通常与 `storage.vendor = 11` 配合使用，用于告诉系统按 S3 协议处理该存储。 |
+| `region` | `string` | 否 | 存储区域标识。供 AWS SDK 兼容客户端使用。 | 如果同时在 `storage.region` 和 `extensionParams.region` 中填写，系统会优先使用 `extensionParams.region`。|
+| `tag` | `string` | 否 | 上传到云存储后的对象标签基础值。 | 仅当 `storage.vendor` 为腾讯云、阿里云或 Amazon S3 时生效；`vendor = 11` 时当前不生效。 |
+| `tagByRule` | `array` | 否 | 按文件名规则自动追加对象标签，例如给不同类型文件打不同标签。 | 与 `tag` 同时存在时优先按规则生成标签；仅腾讯云、阿里云和 Amazon S3 生效，`vendor = 11` 不生效。 |
+| `sse` | `string` | 否 | 服务端加密方式。`aes256` 表示 AES256，`kms` 表示 AWS KMS。 | 仅 Amazon S3 生效；`vendor = 11` 时当前不读取该字段。 |
+| `overwritekeys` | `array<object>` | 否 | 按上传文件扩展名映射目标对象名，也就是控制文件上传后在云存储中的名字。 | 适用于需要按规则重命名上传文件的场景，不受上述 `tag` 类字段的厂商限制。 |
+
+### 同步文件
+
+实时转录翻译生成的 `m3u8+vtt` 与云端录制生成的 `m3u8+ts` 是两套独立文件，时间戳不同：云端录制时间戳从 `0` 开始，实时转录翻译使用系统时间戳。如果任一过程异常启动，可能导致播放时音视频与字幕不同步。
+
+声网提供了后处理脚本用于同步 `m3u8+ts` 与 `m3u8+vtt` 文件。运行步骤如下：
+
+1. 解压[后处理脚本](https://github.com/AgoraIO/Docs-Source/files/10931258/add_webvtt.zip)到本地目录。
+1. 对转写文件运行脚本：
+
+    ```python
+    python3 insert_subtitle.py --av audio_dir/audio_ts.m3u8 --subtitle subtitle_dir/subtitle.m3u8 --output output_dir/ --overwrite
+    ```
+
+    如果 `ffmpeg/ffprobe` 不在 `PATH` 中，可通过 `-ffmpeg_path` 指定路径。
+
+1. 播放同步后的文件：
+
+    1. 运行下列命令启动 HTTP 服务器：
+
+        ```python
+        python3 -m http.server --bind 127.0.0.1 -d output_dir
+        ```
+
+    1. 在浏览器访问：
+
+        ```bash
+        http://127.0.0.1:8000/player_demo.html
+        ```
+
+## 支持的云存储厂商
+
+`vendor`：Number，第三方云存储厂商，支持以下取值：
+
+- `1`： [Amazon S3](https://aws.amazon.com/s3/?nc1=h_ls)
+- `5`： [Microsoft Azure](https://azure.microsoft.com/en-us/services/storage/blobs/)
+- `6`： [Google Cloud](https://cloud.google.com/storage)
+- `11`：其他兼容 S3 协议的标准对象存储（如 MinIO 及部分自建云存储）
+
+`region`：Number，第三方云存储的地域信息，仅支持以下列表：
+
+- 阿里云 (`vendor` = `2`):
+    - `0`: `CN_Hangzhou`
+    - `1`: `CN_Shanghai`
+    - `2`: `CN_Qingdao`
+    - `3`: `CN_Beijing`
+    - `4`: `CN_Zhangjiakou`
+    - `5`: `CN_Huhehaote`
+    - `6`: `CN_Shenzhen`
+    - `7`: `CN_Hongkong`
+    - `8`: `US_West_1`
+    - `9`: `US_East_1`
+    - `10`: `AP_Southeast_1`
+    - `11`: `AP_Southeast_2`
+    - `12`: `AP_Southeast_3`
+    - `13`: `AP_Southeast_5`
+    - `14`: `AP_Northeast_1`
+    - `15`: `AP_South_1`
+    - `16`: `EU_Central_1`
+    - `17`: `EU_West_1`
+    - `18`: `EU_East_1`
+    - `19`: `AP_Southeast_6`
+    - `20`: `CN_Heyuan`
+    - `21`: `CN_Guangzhou`
+    - `22`: `CN_Chengdu`
+    - `23`: `CN_Nanjing`
+    - `24`: `CN_Fuzhou`
+    - `25`: `CN_Wulanchabu`
+    - `26`: `CN_Northeast_2`
+    - `27`: `CN_Southeast_7`
+
+    详见[阿里云官方文档](https://www.alibabacloud.com/help/en/oss/user-guide/regions-and-endpoints).
+
+- 腾讯云 (`vendor` = `3`):
+
+    - `0`: `AP_Beijing_1`
+    - `1`: `AP_Beijing`
+    - `2`: `AP_Shanghai`
+    - `3`: `AP_Guangzhou`
+    - `4`: `AP_Chengdu`
+    - `5`: `AP_Chongqing`
+    - `6`: `AP_Shenzhen_FSI`
+    - `7`: `AP_Shanghai_FSI`
+    - `8`: `AP_Beijing_FSI`
+    - `9`: `AP_Hongkong`
+    - `10`: `AP_Singapore`
+    - `11`: `AP_Mumbai`
+    - `12`: `AP_Seoul`
+    - `13`: `AP_Bangkok`
+    - `14`: `AP_Tokyo`
+    - `15`: `NA_Siliconvalley`
+    - `16`: `NA_Ashburn`
+    - `17`: `NA_Toronto`
+    - `18`: `EU_Frankfurt`
+    - `19`: `EU_Moscow`
+
+- 金山云 (`vendor` = `4`):
+
+    - `0`: `CN_Hangzhou`
+    - `1`: `CN_Shanghai`
+    - `2`: `CN_Qingdao`
+    - `3`: `CN_Beijing`
+    - `4`: `CN_Guangzhou`
+    - `5`: `CN_Hongkong`
+    - `6`: `JR_Beijing`
+    - `7`: `JR_Shanghai`
+    - `8`: `NA_Russia_1`
+    - `9`: `NA_Singapore_1`
+
+- 华为云 (`vendor` = `7`):
+
+    - `0`: `CN_North_1`
+    - `1`: `CN_North_4`
+    - `2`: `CN_East_2`
+    - `3`: `CN_East_3`
+    - `4`: `CN_South_1`
+    - `5`: `CN_Southwest_2`
+    - `6`: `AP_Southeast_1`
+    - `7`: `AP_Southeast_2`
+    - `8`: `AP_Southeast_3`
+    - `9`: `AF_South_1`
+    - `10`: `SA_Argentina_1`
+    - `11`: `SA_Peru_1`
+    - `12`: `NA_Mexico_1`
+    - `13`: `SA_Brazil_1`
+    - `14`: `LA_South_2`
+    - `15`: `SA_Chile_1`

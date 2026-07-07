@@ -1,0 +1,372 @@
+---
+title: "获取版权音乐"
+---
+
+<PlatformStructured platform="android">
+
+声网提供 K 歌热门曲库，涵盖 20 多万首正版歌曲。本文介绍如何使用 KTV 场景化 API 加载版权音乐并进行播放。
+
+:::warning[注意]
+- 在使用获取版权音乐前，请联系[技术支持](https://ticket.shengwang.cn)开通权限。
+- 本文仅适用于 K 歌场景化 API v4.0.0。
+:::
+
+## 前提条件
+
+- 已参考集成 KTV API 并实现基本的在线 K 歌逻辑，详情请参考[集成 KTV API](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)。
+- 有效的声网项目、获取项目的 RTM Token，详情请参考[开通服务](/doc/online-ktv/android/overview/enable-service)。
+
+:::info[信息]
+- 加载版权音乐时声网使用 RTM Token 进行鉴权，不会产生云信令服务费用。
+- 你可以参考[开通服务](/doc/online-ktv/android/overview/enable-service)获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+:::
+
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+
+## 实现流程
+
+本节介绍如何获取版权歌单、加载并播放版权音乐。
+
+### 1. 初始化设置
+
+调用 `createKTVApi` 创建并初始化 KTV API 实例时，确保 `KTVApiConfig`中的 `musicType` 设为 `SONG_CODE`（表示使用声网音乐内容中心提供的版权音乐）并填入 RTM Token 进行鉴权。
+
+```kotlin
+// 创建并初始化 KTVAPI 模块
+val ktvApiProtocol =
+    createKTVApi(
+        KTVApiConfig(
+            // 你的 App ID
+            "<Your Agora Appid>",
+            // RTM Token，如果你使用的是本地的曲库而非声网提供的版权音乐，该参数可为空
+            "<Your Agora Rtm Token>",
+            mRtcEngine,
+            // 需加入的频道名称
+            "<Your Channel Name>",
+            // 用户 ID
+            "<Your Uid>",
+            // 合唱子频道的频道名，由外部指定
+            "<Your Chorus Channel Name>",
+            // 根据频合唱子频道名和用户 ID 生成的 Token，用于加入该频道时鉴权
+            "<Your Agora Chorus Token>"
+        ),
+        // 设置可缓存的音乐资源数量，最多不能超过 50
+        10,
+        // 设置 K 歌的场景
+        KTVType.Normal,
+        // 音乐资源类型，默认为声网音乐内容中心提供的版权音乐
+        KTVMusicType.SONG_CODE
+    )
+```
+
+:::info[信息]
+当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/api-ref/online-ktv/android/ktvapi#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/api-ref/online-ktv/android/ktvapi#renewtoken) 来更新 Token。
+:::
+
+<a id="步骤2"></a>
+### 2. 获取歌曲列表
+
+你可以调用 `searchSong` 来通过关键词搜索歌曲，也可以调用 `fetchMusicCharts` 来获取音乐榜单，然后再调用 `searchMusicByMusicChartId` 来通过歌曲榜单的 ID 获取指定榜单的歌曲资源列表。
+
+```kotlin tab="用关键词搜索歌曲"
+// 用关键词搜索歌曲
+fun searchSong(condition: String, page: Int) {
+    val jsonOption = "{\"pitchType\":1,\"needLyric\":true}" // 搜索过滤条件。
+    ktvApiProtocol.searchMusicByKeyword(condition, page, 50, jsonOption) {
+        requestId,
+        status,
+        page,
+        pageSize,
+        total,
+        list ->
+        // 回调内直接处理异步调用结果
+    }
+}
+```
+
+```kotlin tab="获取音乐榜单"
+// 获取音乐榜单
+fun fetchMusicCharts() {
+    ktvApiProtocol.fetchMusicCharts() { requestId, status, list ->
+        // 回调内直接处理异步调用结果
+    }
+}
+
+// 通过榜单号获取歌曲列表
+fun searchSongWithRankingChartId(type: Int, page: Int) {
+    val jsonOption = "{\"pitchType\":1,\"needLyric\":true}" // 过滤条件
+    ktvApiProtocol.searchMusicByMusicChartId(type, page, 50, jsonOption) {
+        requestId,
+        status,
+        page,
+        pageSize,
+        total,
+        list ->
+        // 回调内直接处理异步调用结果
+    }
+}
+```
+
+:::warning[注意]
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusicByKeyword](/api-ref/online-ktv/android/ktvapi#searchmusicbykeyword) 及 [searchMusicByMusicChartId](/api-ref/online-ktv/android/ktvapi#searchmusicbymusicchartid) 的 API 文档。
+:::
+
+### 3. 加载及播放版权音乐
+
+调用 `loadMusic`[1/2] 加载声网的版权音乐。该方法中你需要传入歌曲编号并进行歌曲加载配置。歌曲加载结果会通过 `IMusicLoadStateListener` 接口类下的回调通知你。在调用该方法时，你需要传入下列参数：
+
+- `songCode`：歌曲编号。如果你需要播放歌曲的副歌片段，需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic`[1/2] 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
+- `config`：歌曲加载配置，包含下列参数：
+  - `songIdentifier`：歌曲的唯一标识。如果你使用的是自行维护的曲库，你需要传入该参数，并需确保唯一性。如果你使用的是声网提供的版权音乐，向 `songCode` 传参即可，此参数传空。
+  - `mode`：歌曲加载的模式，默认为加载歌曲及歌词。
+  - `mainSingerUid`：独唱者的用户 ID。
+- `IMusicLoadStateListener`：监听歌曲加载状态的接口类。
+
+:::info[信息]
+目前仅支持一次加载一首歌曲，请在一首歌曲加载完成后再加载下一首。
+:::
+
+```kotlin
+// 下列示例代码以独唱者为例，展示如何加载、播放版权音乐
+// 歌曲加载成功后需要在 onMusicLoadSuccess 回调内调用 switchSingerRole 切换用户角色为独唱者，再调用 startSing 开始演唱
+ktvApiProtocol.loadMusic(
+    songCode,
+    KTVLoadMusicConfiguration(songId, mainSingerUid, KTVLoadMusicMode.LOAD_MUSIC_AND_LRC),
+    object : IMusicLoadStateListener {
+        override fun onMusicLoadSuccess(songCode: Long, lyricUrl: String) {
+            // 歌曲加载成功后，调用 switchSingerRole 将用户角色设为独唱者
+            ktvApiProtocol.switchSingerRole(SoloSinger)
+            // 开始唱歌
+            ktvApiProtocol.startSing(songCode, 0)
+        }
+        // 加载失败
+        override fun onMusicLoadFail(songCode: Long, reason: KTVLoadSongFailReason) {
+        }
+        // 报告加载进度
+        override fun onMusicLoadProgress(
+            songCode: Long,
+            percent: Int,
+            status: MusicLoadStatus,
+            msg: String?,
+            lyricUrl: String?
+        ) {
+        }
+    }
+```
+
+如果你需要取消当前正在加载的版权音乐、或者清除已加载的缓存，可以调用 `removeMusic` 方法。
+
+```kotlin
+
+ktvApiProtocol.removeMusic(songCode)
+
+```
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/api-ref/online-ktv/android/ktvapi)
+- [实时互动 API](/api-ref/rtc/android/API/rtc_api_overview)
+
+## 相关文档
+
+- [集成 KTV API](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [独唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/solo)
+- [合唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网提供 K 歌热门曲库，涵盖 20 多万首正版歌曲。本文介绍如何使用 KTV 场景化 API 加载版权音乐并进行播放。
+
+:::warning[注意]
+- 在使用获取版权音乐前，请联系[技术支持](https://ticket.shengwang.cn)开通权限。
+- 本文仅适用于 K 歌场景化 API v4.0.0。
+:::
+
+## 前提条件
+
+- 已参考集成 KTV API 并实现基本的在线 K 歌逻辑，详情请参考[集成 KTV API](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)。
+- 有效的声网项目、获取项目的 RTM Token，详情请参考[开通服务](/doc/online-ktv/ios/overview/enable-service)。
+
+:::info[信息]
+- 加载版权音乐时声网使用 RTM Token 进行鉴权，不会产生云信令服务费用。
+- 你可以参考[开通服务](/doc/online-ktv/ios/overview/enable-service)获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见[部署 RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+:::
+
+- 如果你的网络环境部署了防火墙，请参考[应用企业防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
+
+## 实现流程
+
+本节介绍如何获取版权歌单、加载并播放版权音乐。
+
+### 1. 初始化设置
+
+调用 `init` 初始化 KTV API 实例时，确保 `KTVApiConfig`中的 `musicType` 设为 `loadMusicTypelocal`（表示使用声网音乐内容中心提供的版权音乐）并填入 RTM Token 进行鉴权。
+
+```objc
+KTVApiConfig *apiConfig = [[KTVApiConfig alloc]initWithAppId:[[AppContext shared] appId]
+                                                              // RTM Token，仅在使用声网版权音乐时需要填该参数
+                                                              rtmToken:VLUserCenter.user.agoraRTMToken
+                                                                engine:self.RTCkit
+                                                            // 需加入的频道名称
+                                                            channelName:@“”]
+                                                        // 合唱子频道的频道名，由外部指定
+                                                        chorusChannelName:@""
+                                                        // 根据频合唱子频道名和用户 ID 生成的 Token，用于加入该频道时鉴权
+                                                        chorusChannelToken:@""
+                                                                    // 设置 K 歌的场景
+                                                                    type:KTVTypeNormal
+                                                            // 设置可缓存的音乐资源数量，最多不能超过 50
+                                                            maxCacheSize:10
+                                                                // 设置音乐资源类型为版权音乐
+                                                                musicType:loadMusicTypelocal
+                                                                // mcc域名
+                                                                mccDomain:nil];
+[self.ktvApi loadMusicWithConfig:config url:@"Your music url"];
+```
+
+:::info[信息]
+当用于音乐内容中心鉴权的的 RTM Token 即将过期时，你会收到 [onTokenPrivilegeWillExpire](/api-ref/online-ktv/ios/ktvapi#ontokenprivilegewillexpire) 回调。你需要调用 `KTVApi` 下的 [renewToken](/api-ref/online-ktv/ios/ktvapi#renewtoken) 来更新 Token。
+:::
+
+<a id="步骤2"></a>
+### 2. 获取歌曲列表
+
+你可以调用 `searchMusic`[2/2] 来通过关键词搜索歌曲，也可以调用 `fetchMusicCharts` 来获取音乐榜单，然后再调用 `searchMusic`[1/2] 来通过歌曲榜单的 ID 获取指定榜单的歌曲资源列表。
+
+```objc tab="通过关键词搜索歌曲"
+// 通过关键词搜索歌曲
+- (void)loadSearchDataWithKeyWord:(NSString *)keyWord {
+    NSDictionary *dict = @{
+        @"pitchType" : @(1),
+        // 用来过滤没有歌词的歌曲
+        @"needLyric" : @(YES),
+    };
+    NSString *extra = [NSString convertToJsonData:dict];
+    [self.ktvApi searchMusicWithKeyword:keyWord ? keyWord : @""
+                                   page:self.page
+                               pageSize:50
+                             jsonOption:extra
+                             completion:^(NSString *_Nonnull, AgoraMusicContentCenterStatusCode,
+                                          AgoraMusicCollection *_Nonnull){
+                             }];
+}
+```
+
+```objc tab="获取榜单之前先要获取榜单 ID"
+// 获取榜单之前先要获取榜单 ID
+[self.ktvApi
+    fetchMusicChartsWithCompletion:^(NSString *requestId, AgoraMusicContentCenterStatusCode code,
+                                     NSArray<AgoraMusicChartInfo *> *info){
+    }];
+
+- (void)loadDataWithIndex:(NSInteger)pageType {
+    NSArray *chartIds = @[ @(3), @(4), @(2), @(6) ];
+    NSInteger chartId = [[chartIds objectAtIndex:MIN(pageType - 1, chartIds.count - 1)] intValue];
+    NSDictionary *dict = @{
+        @"pitchType" : @(1),
+        //用来过滤没有歌词的歌曲
+        @"needLyric" : @(YES),
+    };
+    NSString *extra = [NSString convertToJsonData:dict];
+    // 根据榜单 ID 获取歌曲列表
+    [self.ktvApi
+        searchMusicWithMusicChartId:chartId
+                               page:self.page
+                           pageSize:20
+                         jsonOption:extra
+                         completion:^(NSString *_Nonnull, AgoraMusicContentCenterStatusCode,
+                                      AgoraMusicCollection *_Nonnull){
+                         //结果返回
+
+                         }];
+}
+```
+
+:::warning[注意]
+你可以通过 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见 [searchMusic[1/2]](/api-ref/online-ktv/ios/ktvapi#searchmusic) 及 [searchMusic[2/2]](/api-ref/online-ktv/ios/ktvapi#searchmusic2) 的 API 文档。
+:::
+
+### 3. 加载及播放版权音乐
+
+调用 `loadMusic`[1/2] 加载歌曲。该方法中你需要传入歌曲编号并进行歌曲加载配置。歌曲加载结果会通过 `IMusicLoadStateListener` 接口类下的回调通知你。在调用 `loadMusic`[1/2] 时，你需要传入下列参数：
+
+- `songCode`：歌曲编号，可参考[步骤 2](#步骤2)获取。如果你需要播放歌曲的副歌片段，需要先调用 `getInternalSongCode` 方法为该片段创建一个编号，作为该片段的唯一标识。当你获取到该片段的编号后，调用 `loadMusic` 并将获取到的副歌片段编号传入 `songCode` 参数来加载该副歌片段。
+
+- `config`：歌曲加载配置，包含下列参数：
+  - `songIdentifier`：歌曲的唯一标识。如果你使用的是自行维护的曲库，你需要传入该参数，并需确保唯一性。如果你使用的是声网提供的版权音乐，向 `songCode` 传参即可，此参数传空。
+  - `mode`：歌曲加载的模式，默认为加载歌曲及歌词。
+  - `mainSingerUid`：独唱者的用户 ID。
+- `IMusicLoadStateListener`：监听歌曲加载状态的协议。
+
+:::info[信息]
+目前仅支持一次加载一首歌曲，请在一首歌曲加载完成后再加载下一首。
+:::
+
+```objc
+// 下列示例代码以独唱者为例，展示如何加载、播放版权音乐
+// 歌曲加载成功后需要在 onMusicLoadSuccess 回调内调用 switchSingerRole 切换用户角色为独唱者，再调用 startSing 开始演唱
+KTVSongConfiguration *songConfig = [[KTVSongConfiguration alloc] init];
+// 同时加载歌曲和歌词
+songCode.songIdentifier = songIdentifier;
+songConfig.mode = KTVLoadMusicModeLoadMusicAndLrc;
+songConfig.mainSingerUid = mainSingerUid;
+
+// 歌曲加载失败的原因
+- (void)onMusicLoadFailWithSongCode:(NSInteger)songCode reason:(enum KTVLoadSongFailReason)reason {
+}
+
+// 歌曲加载成功的回调，在此回调内调用 switchSingerRole 切换角色，调用 startSing 开始播放歌曲
+- (void)onMusicLoadSuccessWithSongCode:(NSInteger)songCode lyricUrl:(NSString *_Nonnull)lyricUrl {
+    // 切换角色
+    [weakSelf.ktvApi
+        switchSingerRoleWithNewRole:KTVSingRoleSoloSinger
+                  onSwitchRoleState:^(KTVSwitchRoleState state, KTVSwitchRoleFailReason reason){
+                      // 切换角色状态回调
+                  }];
+    // 开始播放歌曲
+    [weakSelf.ktvApi startSingWithSongCode:songCode startPos:0];
+}
+
+[self.ktvApi loadMusicWithSongCode:songCode config:songConfig onMusicLoadStateListener:self];
+
+// 歌曲加载进度回调
+- (void)onMusicLoadProgressWithSongCode:(NSInteger)songCode
+                                percent:(NSInteger)percent
+                                 status:(AgoraMusicContentCenterPreloadStatus)status
+                                    msg:(NSString *)msg
+                               lyricUrl:(NSString *)lyricUrl {
+}
+```
+
+如果你需要取消当前正在加载的版权音乐、或者清除已加载的缓存，可以调用 `removeMusic` 方法。
+
+```objc
+
+[self.ktvApi removeMusicWithSongCode:songCode];
+
+```
+
+获取版权音乐后，你可以根据你实际的业务场景，进行[独唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/solo)、[合唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/chorus)、[抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)、[接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)。
+
+## API 参考
+
+本文集成步骤中使用如下 API：
+
+- [K 歌房场景化 API](/api-ref/online-ktv/android/ktvapi)
+- [实时互动 API](/api-ref/rtc/android/API/rtc_api_overview)
+
+## 相关文档
+
+- [集成 KTV API](/zh-CN/realtime-media/online-ktv/ktv-scenario/get-started/integrate-ktvapi)
+- [独唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/solo)
+- [合唱](/zh-CN/solutions/multi-usecase/scenario-based/build/implement-core-features/chorus)
+- [抢唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/gaming)
+- [接唱](/zh-CN/realtime-media/online-ktv/ktv-scenario/build/implementation/relay)
+
+</PlatformStructured>

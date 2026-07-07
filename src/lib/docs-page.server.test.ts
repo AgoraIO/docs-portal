@@ -3468,7 +3468,7 @@ Web body
         'monitor',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/realtime-media/usage-analytics/rtc/monitor',
+      redirectUrl: '/zh-CN/realtime-media/usage-analytics/build/rtc/monitor',
     });
 
     await expect(
