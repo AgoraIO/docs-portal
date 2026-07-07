@@ -29,7 +29,7 @@ virtual void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `options` | `const PresenceOptions&` | 必填 | - | 查询附加选项。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
@@ -51,7 +51,7 @@ virtual void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const
 | `userStateList` | `const UserState*` | 频道在线用户及其临时状态信息列表。 |
 | `count` | const size_t | `UserState` 列表长度，当 `whoNow` 属性中 `includeUserId`、`includeState` 属性都设置为 `false` 时，此值表示频道当前总在线人数。 |
 | `nextPage` | const char* | <Slot name="presence-cpp-html-1-4-2" /> |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 <Slot for="presence-cpp-html-1-4-2">
 
@@ -137,14 +137,14 @@ virtual void whereNow(const char* userId, uint64_t& requestId) = 0;
 | `requestId` | const uint64_t | 请求标识符。 |
 | `channels` | `const ChannelInfo*` | 频道信息。 |
 | `count` | const size_t | 频道数量。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 `ChannelInfo` 数据类型包含以下属性：
 
 |  属性  |  类型  | 描述      |
 | ---- | ----- | --------- |
 | `channelName`     | const char* |  频道名称。         |
-| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -191,7 +191,7 @@ virtual void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `items` | `const StateItem*` | 必填 | - | 用户状态。 |
 | `count` | size_t | 必填 | - | 用户状态的数量。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
@@ -210,7 +210,7 @@ virtual void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -256,7 +256,7 @@ virtual void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称。 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `userId` | const char* | 必填 | - | 用户 ID。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
 
@@ -268,7 +268,7 @@ virtual void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
 | `state` | `const UserState&` | 频道在线用户及其临时状态信息列表。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 `UserState` 数据类型包含以下属性：
 
@@ -315,7 +315,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。
 
-成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。
+成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -328,7 +328,7 @@ virtual void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | const char* | 必填 | - | 频道名称 |
-| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` | 必填 | - | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `keys` | const char** | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
 | `count` | size_t | 必填 | - | `key` 的数量。 |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
@@ -340,7 +340,7 @@ virtual void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 

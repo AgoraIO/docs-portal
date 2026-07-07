@@ -12,7 +12,7 @@ RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者�
 - 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
 
-成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -52,7 +52,7 @@ setChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -185,7 +185,7 @@ getChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `completion` | `AgoraRtmGetMetadataBlock` | 选填 | - | <Slot name="storage-swift-html-1-3-4" /> |
 
 <Slot for="storage-swift-html-1-3-4">
@@ -268,7 +268,7 @@ rtmClient.getChannelMetadata(
 - 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
 - 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
 
-成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -298,7 +298,7 @@ removeChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -395,7 +395,7 @@ rtmClient.removeChannelMetadata(
 
 `updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
 
-成功更新后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功更新后，订阅该频道且开启事件监听的用户会收到 `channel` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -427,7 +427,7 @@ updateChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#AgoraRtmMetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | String | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -537,7 +537,7 @@ rtmClient.updateChannelMetadata(
 - 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
 - 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
 
-成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
@@ -759,7 +759,7 @@ rtmClient.getUserMetadata(userId: userId) { (response, error) in
 
 `removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
 
-成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -870,7 +870,7 @@ rtmClient.removeUserMetadata(userId: userId, data: metadata, options: nil) { (re
 
 ### 接口描述
 
-`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 :::info[信息]
 该方法不能对不存在的 Metadata Item 进行操作。
@@ -993,7 +993,7 @@ rtmClient.updateUserMetadata(userId: userId, data: metadata, options: metadataOp
 
 ### 接口描述
 
-`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `user` 类型的 `didReceiveStorageEvent` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 

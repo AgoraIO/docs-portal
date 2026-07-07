@@ -39,8 +39,8 @@ config.privateConfig = privateConfig;
 | --- | --- | --- | --- | --- |
 | `appId` | const char* | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
 | `userId` | const char* | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
-| `areaCode` | `RTM_AREA_CODE` | 选填 | `RTM_AREA_CODE_GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RTM_AREA_CODE`](/zh-CN/api-reference/rtm/enumv.android.cpp#areacode)。 |
-| `protocolType` | `RTM_PROTOCOL_TYPE` | 选填 | `RTM_PROTOCOL_TYPE_TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RTM_PROTOCOL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#protocoltype)。 |
+| `areaCode` | `RTM_AREA_CODE` | 选填 | `RTM_AREA_CODE_GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RTM_AREA_CODE`](/zh-CN/api-reference/rtm/enumv#areacode)。 |
+| `protocolType` | `RTM_PROTOCOL_TYPE` | 选填 | `RTM_PROTOCOL_TYPE_TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RTM_PROTOCOL_TYPE`](/zh-CN/api-reference/rtm/enumv#protocoltype)。 |
 | `presenceTimeout` | uint32_t | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
 | `heartbeatInterval` | int | 选填 | `5` | <Slot name="configuration-cpp-html-0-6-4" /> |
 | `reconnectTimeout` | uint32_t | 选填 | `0` | <Slot name="configuration-cpp-html-0-7-4" /> |
@@ -108,7 +108,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | --- | --- | --- | --- | --- |
 | `filePath` | const char* | 选填 | `NULL` | 日志存储路径。 |
 | `fileSizeInKB` | uint32_t | 选填 | `1024` | <Slot name="configuration-cpp-html-1-2-4" /> |
-| `level` | `RTM_LOG_LEVEL` | 选填 | `RTM_LOG_LEVEL_INFO` | 日志信息的输出等级，详见 [`RTM_LOG_LEVEL`](/zh-CN/api-reference/rtm/enumv.android.cpp#loglevel)。 |
+| `level` | `RTM_LOG_LEVEL` | 选填 | `RTM_LOG_LEVEL_INFO` | 日志信息的输出等级，详见 [`RTM_LOG_LEVEL`](/zh-CN/api-reference/rtm/enumv#loglevel)。 |
 
 <Slot for="configuration-cpp-html-1-2-4">
 
@@ -134,7 +134,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | `server`    | const char*           |  必填  | -             | Proxy 服务器域名或 IP 地址。                |
 | `account`   | const char*           |  必填  | -            | Proxy 登录账号。   |
 | `password`  | const char*           |  必填  | -            | Proxy 登录密码。   |
-| `proxyType` | `RTM_PROXY_TYPE` |  选填  | `RTM_PROXY_TYPE_NONE` | Proxy 协议类型。详见 [`RTM_PROXY_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#proxytype)。 |
+| `proxyType` | `RTM_PROXY_TYPE` |  选填  | `RTM_PROXY_TYPE_NONE` | Proxy 协议类型。详见 [`RTM_PROXY_TYPE`](/zh-CN/api-reference/rtm/enumv#proxytype)。 |
 | `port`      | uint16_t              |  选填  | `0`             | Proxy 监听端口。   |
 
 #### RtmEncryptionConfig
@@ -149,7 +149,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `encryptionMode` | `RTM_ENCRYPTION_MODE` | 选填 | `RTM_ENCRYPTION_MODE_NONE` | 加密方式。详见 [`RTM_ENCRYPTION_MODE`](/zh-CN/api-reference/rtm/enumv.android.cpp#encryptionmode)。 |
+| `encryptionMode` | `RTM_ENCRYPTION_MODE` | 选填 | `RTM_ENCRYPTION_MODE_NONE` | 加密方式。详见 [`RTM_ENCRYPTION_MODE`](/zh-CN/api-reference/rtm/enumv#encryptionmode)。 |
 | `encryptionKey` | const char* | 选填 | `NULL` | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。 |
 | `encryptionSalt` | uint8_t | 选填 | - | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。 |
 
@@ -161,7 +161,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述                      |
 |-----|-------|--------|------------| ---------------- |
-| `serviceType`    | `RTM_SERVICE_TYPE` |  选填  | - | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#rtmservicetype)。 |
+| `serviceType`    | `RTM_SERVICE_TYPE` |  选填  | - | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv#rtmservicetype)。 |
 | `accessPointHosts`    | const char** |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
 
 ### 基本用法
@@ -216,7 +216,7 @@ AGORA_API IRtmClient* AGORA_CALL createAgoraRtmClient(const RtmConfig& config, i
 |   参数   |  类型  | 是否必填 | 默认值 | 描述          |
 | ------ | --------- | ------ | ---- | -------------- |
 | `config` | `RtmConfig` |   必填   |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。 |
-| `errorCode` | int& |   必填   |   -    | （输出参数）[错误码](/zh-CN/realtime-media/rtm/error-codes.android.cpp#errorcode)。 |
+| `errorCode` | int& |   必填   |   -    | （输出参数）[错误码](/zh-CN/realtime-media/rtm/error-codes#errorcode)。 |
 
 ### 基本用法
 
@@ -252,7 +252,7 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 | <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code> | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/enumv.android.cpp#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/enumv.android.cpp#connectionreason)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code> | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/enumv#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/enumv#connectionreason)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#LinkStateEvent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="onTokenPrivilegeWillExpire">onTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span> |
 
@@ -285,8 +285,8 @@ config.eventHandler = new RtmEventHandler();
 
 | 属性        |  类型  |   描述     |
 |----|-----| ----------------- |
-| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。   |
-| `messageType`            | `RTM_MESSAGE_TYPE`    |  消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#messagetype)。   |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。   |
+| `messageType`            | `RTM_MESSAGE_TYPE`    |  消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/enumv#messagetype)。   |
 | `channelName`            | const char*                |  频道名称。   |
 | `channelTopic`           | const char*                |  Topic 名称。   |
 | `message`                | const char*                |  消息。   |
@@ -405,8 +405,8 @@ Lock 事件。
 
 | 属性        |  类型  |   描述                |
 |----|-----| ----- |
-| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#channeltype)。   |
-| `eventType`            | `RTM_LOCK_EVENT_TYPE`    |  Lock 事件类型。详见 [`RTM_LOCK_EVENT_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#locktype)。    |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/enumv#channeltype)。   |
+| `eventType`            | `RTM_LOCK_EVENT_TYPE`    |  Lock 事件类型。详见 [`RTM_LOCK_EVENT_TYPE`](/zh-CN/api-reference/rtm/enumv#locktype)。    |
 | `channelName`              | const char*                |  频道名称。   |
 | `lockDetailList`            | `const LockDetail*`               |  Lock 的详情。   |
 | `count`            | size_t               |  Lock 的数量。   |
@@ -468,7 +468,7 @@ virtual void login(const char* token, uint64_t& requestId) = 0;
 
 登录 RTM 系统的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.android.cpp)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/get-started/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/user-guide/token/token-generation)。
     - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -479,7 +479,7 @@ virtual void login(const char* token, uint64_t& requestId) = 0;
 
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -527,7 +527,7 @@ virtual void logout(uint64_t& requestId) = 0;
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 

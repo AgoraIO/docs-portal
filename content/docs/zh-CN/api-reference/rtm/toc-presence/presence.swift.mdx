@@ -42,7 +42,7 @@ whoNow(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `options` | `AgoraRtmPresenceOptions` | 选填 | - | 查询附加选项。 |
 | `completion` | `AgoraRtmWhoNowBlock` | 选填 | - | <Slot name="presence-swift-html-0-4-4" /> |
 
@@ -174,7 +174,7 @@ whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = ni
 | 属性          | 类型                   | 描述                          |
 | ------------ | ----------------- | --------- |
 | `channelName` | String               | 频道名称。                    |
-| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -237,7 +237,7 @@ setState(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `items` | `[String: String]` | 必填 | - | 用户状态，类型为 `StateItem` 数组。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-3-4-4" /> |
 
@@ -319,7 +319,7 @@ getState(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `userId` | String | 必填 | - | 用户 ID。 |
 | `completion` | `AgoraRtmPresenceGetStateBlock` | 选填 | - | <Slot name="presence-swift-html-4-4-4" /> |
 
@@ -387,7 +387,7 @@ rtmClient.getPresence()?.getState(
 
 ### 接口描述
 
-当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.swift#事件监听)。
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
 
 ### 接口方法
 
@@ -413,7 +413,7 @@ removeState(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv.android.swift#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/enumv#channeltype)。 |
 | `keys` | `[String]` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-5-4-4" /> |
 

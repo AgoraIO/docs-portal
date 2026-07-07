@@ -31,6 +31,13 @@ export const platformRegistry = {
     },
     order: 30,
   },
+  'device-c': {
+    label: {
+      en: 'Device C',
+      'zh-CN': '设备端 C',
+    },
+    order: 35,
+  },
   flutter: {
     label: {
       en: 'Flutter',
@@ -72,6 +79,27 @@ export const platformRegistry = {
       'zh-CN': 'C++',
     },
     order: 65,
+  },
+  swift: {
+    label: {
+      en: 'Swift',
+      'zh-CN': 'Swift',
+    },
+    order: 67,
+  },
+  c: {
+    label: {
+      en: 'C',
+      'zh-CN': 'C',
+    },
+    order: 68,
+  },
+  java: {
+    label: {
+      en: 'Java',
+      'zh-CN': 'Java',
+    },
+    order: 69,
   },
   macos: {
     label: {

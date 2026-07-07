@@ -68,9 +68,9 @@ public class ConvoAIConfig {
 | --- | --- | --- |
 | `appId` | `String` | 声网 App ID。 |
 | `credential` | `Credential` | <Slot name="struct-java-html-0-2-2" /> |
-| `domainArea` | `DomainArea` | REST Client 的域名区域，详见 [`DomainArea`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#domainarea)。 |
-| `httpProperty` | `HttpProperty` | REST Client 的 HTTP 属性。详见 [`HttpProperty`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#httpproperty)。 |
-| `serviceRegion` | `ConvoAIServiceRegionEnum` | 对话式智能体引擎的服务区域，详见 [`ConvoAIServiceRegionEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#convoaiserviceregionenum)。 |
+| `domainArea` | `DomainArea` | REST Client 的域名区域，详见 [`DomainArea`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum#domainarea)。 |
+| `httpProperty` | `HttpProperty` | REST Client 的 HTTP 属性。详见 [`HttpProperty`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#httpproperty)。 |
+| `serviceRegion` | `ConvoAIServiceRegionEnum` | 对话式智能体引擎的服务区域，详见 [`ConvoAIServiceRegionEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum#convoaiserviceregionenum)。 |
 
 <Slot for="struct-java-html-0-2-2">
 
@@ -131,11 +131,11 @@ private Map<String, Object> parameters;
 | `enableStringUId` | `Boolean` | <Slot name="struct-java-html-1-5-2" /> |
 | `idleTimeout` | `Integer` | （可选）频道的最大空闲时间（秒）。当 `remote_rtc_uids` 中所有用户离开频道后开始计时，若超过设定的最大值，智能体将自动停止并退出频道。设为 0 表示仅在手动退出时智能体才停止。 |
 | `agentRtmUId` | `String` | 智能体在实时消息频道中的用户 ID。仅当 `advancedFeatures.enable_rtm` 为 `true` 时有效。 |
-| `advancedFeatures` | `AdvancedFeatures` | （可选）高级功能配置。详见 [`AdvancedFeatures`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#advancedfeatures)。 |
-| `llmPayload` | `LLMPayload` | （必填）自定义语言模型（LLM）配置。详见 [`LLMPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#llmpayload)。 |
-| `ttsPayload` | `TTSPayload` | （可选）文本转语音（TTS）模块配置。详见 [`TTSPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#ttspayload)。 |
-| `vadPayload` | `VADPayload` | （可选）语音活动检测（VAD）配置。详见 [`VADPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#vadpayload)。 |
-| `asrPayload` | `ASRPayload` | （可选）自动语音识别（ASR）配置。详见 [`ASRPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#asrpayload)。 |
+| `advancedFeatures` | `AdvancedFeatures` | （可选）高级功能配置。详见 [`AdvancedFeatures`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#advancedfeatures)。 |
+| `llmPayload` | `LLMPayload` | （必填）自定义语言模型（LLM）配置。详见 [`LLMPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#llmpayload)。 |
+| `ttsPayload` | `TTSPayload` | （可选）文本转语音（TTS）模块配置。详见 [`TTSPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#ttspayload)。 |
+| `vadPayload` | `VADPayload` | （可选）语音活动检测（VAD）配置。详见 [`VADPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#vadpayload)。 |
+| `asrPayload` | `ASRPayload` | （可选）自动语音识别（ASR）配置。详见 [`ASRPayload`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#asrpayload)。 |
 | `parameters` | `Map<String, Object>` | 自定义参数配置。 |
 
 <Slot for="struct-java-html-1-5-2">
@@ -296,8 +296,8 @@ public static class TTSPayload {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `vendor` | `TTSVendorEnum` | TTS 服务商。详见 [`TTSVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#ttsvendorenum)。 |
-| `params` | `TTSVendorParams` | TTS 服务商参数说明。详见 [`MinimaxTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendorparams)、[`TencentTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#tencentttsvendorparams)、[`BytedanceTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#bytedancettsvendorparams) 和 [`MicrosoftTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#microsoftttsvendorparams)。 |
+| `vendor` | `TTSVendorEnum` | TTS 服务商。详见 [`TTSVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum#ttsvendorenum)。 |
+| `params` | `TTSVendorParams` | TTS 服务商参数说明。详见 [`MinimaxTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#minimaxttsvendorparams)、[`TencentTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#tencentttsvendorparams)、[`BytedanceTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#bytedancettsvendorparams) 和 [`MicrosoftTTSVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#microsoftttsvendorparams)。 |
 | `skipPatterns` | `List<Integer>` | <Slot name="struct-java-html-4-3-2" /> |
 
 <Slot for="struct-java-html-4-3-2">
@@ -427,8 +427,8 @@ public static class ASRPayload {
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `language` | `String` | <Slot name="struct-java-html-7-1-2" /> |
-| `vendor` | `ASRVendorEnum` | ASR 服务提供商，详见 [`ASRVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum.java#asrvendorenum)。 |
-| `params` | `ASRVendorParams` | ASR 服务参数说明，详见 [`FengmingASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#fengmingasrvendorparams)、[`TencentASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#tencentasrvendorparams) 和 [`MicrosoftASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#microsoftasrvendorparams)。 |
+| `vendor` | `ASRVendorEnum` | ASR 服务提供商，详见 [`ASRVendorEnum`](/zh-CN/api-reference/conversational-ai/client-toolkit/enum#asrvendorenum)。 |
+| `params` | `ASRVendorParams` | ASR 服务参数说明，详见 [`FengmingASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#fengmingasrvendorparams)、[`TencentASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#tencentasrvendorparams) 和 [`MicrosoftASRVendorParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#microsoftasrvendorparams)。 |
 
 <Slot for="struct-java-html-7-1-2">
 
@@ -489,7 +489,7 @@ public class JoinConvoAIReq {
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `name` | `String` | 智能体的唯一标识符，不可重复。 |
-| `properties` | `Properties` | 智能体的配置属性。详见 [`Properties`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#properties)。 |
+| `properties` | `Properties` | 智能体的配置属性。详见 [`Properties`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#properties)。 |
 
 <a id="minimaxttsvendorparams"></a>
 ## MinimaxTTSVendorParams
@@ -537,10 +537,10 @@ public static class MinimaxTTSVendorParams implements TTSVendorParams {
 | `groupId` | `String` | Group ID。 |
 | `key` | `String` | API 密钥。 |
 | `model` | `String` | 使用的模型标识。 |
-| `audioSetting` | `MinimaxTTSVendorAudioSettingParam` | 音频配置参数，详见 [`MinimaxTTSVendorAudioSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendoraudiosettingparam)。 |
-| `voiceSetting` | `MinimaxTTSVendorVoiceSettingParam` | 语音配置参数，详见 [`MinimaxTTSVendorVoiceSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendorvoicesettingparam)。 |
-| `pronunciationDict` | `PronunciationDictParam` | 发音词典参数。详见 [`PronunciationDictParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#pronunciationdictparam)。 |
-| `timberWeights` | `List<MinimaxTTSVendorTimberWeightParam>` | 音色权重参数。详见 [`MinimaxTTSVendorTimberWeightParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#minimaxttsvendortimberweightparam)。 |
+| `audioSetting` | `MinimaxTTSVendorAudioSettingParam` | 音频配置参数，详见 [`MinimaxTTSVendorAudioSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#minimaxttsvendoraudiosettingparam)。 |
+| `voiceSetting` | `MinimaxTTSVendorVoiceSettingParam` | 语音配置参数，详见 [`MinimaxTTSVendorVoiceSettingParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#minimaxttsvendorvoicesettingparam)。 |
+| `pronunciationDict` | `PronunciationDictParam` | 发音词典参数。详见 [`PronunciationDictParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#pronunciationdictparam)。 |
+| `timberWeights` | `List<MinimaxTTSVendorTimberWeightParam>` | 音色权重参数。详见 [`MinimaxTTSVendorTimberWeightParam`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#minimaxttsvendortimberweightparam)。 |
 | `languageBoost` | `String` | 语言增强设置。 |
 
 <a id="minimaxttsvendoraudiosettingparam"></a>
@@ -1309,7 +1309,7 @@ return new Parameters(this);
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `fixedParams` | `FixedParams` | 智能体的固定参数。详见 [`FixedParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#fixedparams)。 |
+| `fixedParams` | `FixedParams` | 智能体的固定参数。详见 [`FixedParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#fixedparams)。 |
 | `extraParams` | `Map<String, Object>` | 智能体的额外参数。 |
 
 <a id="fixedparams"></a>
@@ -1338,7 +1338,7 @@ public static class FixedParams {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `silenceConfig` | `SilenceConfig` | 静音配置。详见 [`SilenceConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#silenceconfig)。 |
+| `silenceConfig` | `SilenceConfig` | 静音配置。详见 [`SilenceConfig`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#silenceconfig)。 |
 | `dataChannel` | `String` | <Slot name="struct-java-html-21-2-2" /> |
 | `enableMetrics` | `Boolean` | <Slot name="struct-java-html-21-3-2" /> |
 | `enableErrorMessage` | `Boolean` | <Slot name="struct-java-html-21-4-2" /> |
@@ -1451,11 +1451,11 @@ public static class Data {
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `count` | `Integer` | 本次响应中返回的智能体数量。 |
-| `list` | `List<Agent>` | 符合条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
+| `list` | `List<Agent>` | 符合条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#agent)。 |
 | `getCount` | `Integer` | 获取响应中返回的智能体数量。 |
 | `setCount` | `Integer` | 设置响应中返回的智能体数量。 |
-| `getList` | `List<Agent>` | 获取满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
-| `setList` | `List<Agent>` | 设置满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#agent)。 |
+| `getList` | `List<Agent>` | 获取满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#agent)。 |
+| `setList` | `List<Agent>` | 设置满足条件的智能体列表。详见 [`Agent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#agent)。 |
 
 <a id="agent"></a>
 ## Agent
@@ -1561,13 +1561,13 @@ public class ListConvoAIRes {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `data` | `Data` | 智能体数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
-| `meta` | `Meta` | 返回列表的元数据信息。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
+| `data` | `Data` | 智能体数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#data)。 |
+| `meta` | `Meta` | 返回列表的元数据信息。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#meta)。 |
 | `status` | `String` | 请求状态。 |
-| `getData` | `Data` | 获取智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
-| `setData` | `Data` | 设置智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#data)。 |
-| `getMeta` | `Meta` | 获取返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
-| `setMeta` | `Meta` | 设置返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#meta)。 |
+| `getData` | `Data` | 获取智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#data)。 |
+| `setData` | `Data` | 设置智能体的数据信息。详见 [`Data`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#data)。 |
+| `getMeta` | `Meta` | 获取返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#meta)。 |
+| `setMeta` | `Meta` | 设置返回列表的元数据。详见 [`Meta`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#meta)。 |
 | `getStatus` | `String` | 获取请求的状态信息。 |
 | `setStatus` | `String` | 设置请求的状态信息。 |
 
@@ -1796,7 +1796,7 @@ public class HistoryConvoAIRes {
 | `startTs` | `Long` | 智能体的创建时间戳。 |
 | `agentId` | `String` | 智能体的唯一标识符。 |
 | `status` | `String` | 智能体的运行状态。 |
-| `contents` | `List<HistoryContent>` | 智能体的短期记忆内容。详见 [`HistoryContent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#historycontent)。 |
+| `contents` | `List<HistoryContent>` | 智能体的短期记忆内容。详见 [`HistoryContent`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#historycontent)。 |
 
 <a id="interruptconvoaires"></a>
 ## InterruptConvoAIRes
@@ -2014,7 +2014,7 @@ public class UpdateConvoAIReq {
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `token` | `String` | 用于鉴权的动态密钥 Token。如果你的项目启用了 App 证书，必须在此字段中传入 Token。 |
-| `llm` | `UpdateLLMParams` | `LLM` 参数。详见 [`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updatellmparams)。 |
+| `llm` | `UpdateLLMParams` | `LLM` 参数。详见 [`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#updatellmparams)。 |
 
 <a id="updatellmparams"></a>
 ## UpdateLLMParams
@@ -2029,7 +2029,7 @@ public static class UpdateLLMParams {
 }
 ```
 
-[`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.java#updatellmparams) 用于定义大语言模型的参数。
+[`UpdateLLMParams`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct#updatellmparams) 用于定义大语言模型的参数。
 
 :::info[信息]
 自 v0.6.0 版本新增。

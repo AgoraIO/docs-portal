@@ -12,7 +12,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 想要了解生成和使用 Token 的更多信息，可以查看：
 
-- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication.android.cpp)
+- [用户鉴权](/zh-CN/realtime-media/rtm/user-guide/token/user-authentication)
 
 ## IRtmClient::renewToken
 
@@ -20,7 +20,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 调用 `IRtmClient::renewToken` 方法更新 RTM Token。
 
-为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
 
 ### 接口方法
 
@@ -42,9 +42,9 @@ virtual void renewToken(const char* token, uint64_t& requestId) = 0;
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `serverType` | `RTM_SERVICE_TYPE` | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#rtmservicetype)。 |
+| `serverType` | `RTM_SERVICE_TYPE` | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv#rtmservicetype)。 |
 | `channelName` | const char* | 频道名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
@@ -58,7 +58,7 @@ rtmClient->renewToken("your token");
 
 调用 `IStreamChannel::renewToken` 方法更新 RTC Token。
 
-为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration.cpp#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
 
 ### 接口方法
 
@@ -80,9 +80,9 @@ virtual void renewToken(const char* token, uint64_t& requestId) = 0;
 | 参数 | 类型 | 描述 |
 | --- | --- | --- |
 | `requestId` | const uint64_t | 请求标识符。 |
-| `serverType` | `RTM_SERVICE_TYPE` | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv.android.cpp#rtmservicetype)。 |
+| `serverType` | `RTM_SERVICE_TYPE` | 服务类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/enumv#rtmservicetype)。 |
 | `channelName` | const char* | 频道名称。 |
-| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes.android.cpp)。 |
+| `errorCode` | `RTM_ERROR_CODE` | 错误码，详见[错误排查](/zh-CN/realtime-media/rtm/error-codes)。 |
 
 ### 基本用法
 
