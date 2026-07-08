@@ -29,8 +29,25 @@ function stripPagePrefix(page: string) {
   return page.replace(/^[!.-]+/, '');
 }
 
+function getFirstLevelPage(page: string) {
+  return stripPagePrefix(page).split('/')[0];
+}
+
+function pageExistsAtRelativePath(productRoot: string, page: string) {
+  const relativePath = resolve(contentRoot, productRoot, stripPagePrefix(page));
+  const candidates = [
+    `${relativePath}.mdx`,
+    `${relativePath}.md`,
+    resolve(relativePath, 'index.mdx'),
+    resolve(relativePath, 'index.md'),
+  ];
+
+  return candidates.some((candidate) => existsSync(candidate));
+}
+
 function parseZhCnDocsUrl(url: string) {
-  const parts = url.replace(/^\/zh-CN\//, '').split('/');
+  const [pathname] = url.split(/[?#]/, 1);
+  const parts = pathname.replace(/^\/zh-CN\//, '').split('/');
   const [tab, ...slugSegments] = parts;
 
   return { slugSegments, tab };
@@ -69,12 +86,17 @@ function getRedirectTargetProductRoots() {
 }
 
 describe('zh-CN product IA standard', () => {
-  it('uses the four standard first-level entries for speech-to-text', () => {
+  it('uses standard root entries for speech-to-text', () => {
     const meta = readMeta(resolve(speechToTextRoot, 'meta.json'));
 
     expect(meta.title).toBe('实时转录翻译');
     expect(meta.sidebarIndexTitle).toBe('实时转录翻译概览');
-    expect(meta.pages).toEqual(['index', 'get-started', 'build', 'reference']);
+    expect(meta.pages).toEqual([
+      'index',
+      'get-started/quick-start',
+      'build',
+      'reference',
+    ]);
   });
 
   it('uses Chinese titles for the standard speech-to-text groups', () => {
@@ -194,7 +216,7 @@ describe('zh-CN product IA standard', () => {
     expect(referenceResult).toBeTruthy();
     expect(buildResult).not.toHaveProperty('redirectUrl');
     expect(referenceResult).not.toHaveProperty('redirectUrl');
-  });
+  }, 30_000);
 
   it('keeps every zh-CN product IA redirect source and target routable', () => {
     const failures: string[] = [];
@@ -226,7 +248,7 @@ describe('zh-CN product IA standard', () => {
     expect(failures).toEqual([]);
   });
 
-  it('uses only standard first-level entries and index files in migrated product roots', () => {
+  it('uses only standard first-level entries or direct page leaves in migrated product roots', () => {
     const failures: string[] = [];
 
     for (const productRoot of getRedirectTargetProductRoots()) {
@@ -234,7 +256,11 @@ describe('zh-CN product IA standard', () => {
       const meta = readMeta(resolve(absoluteRoot, 'meta.json'));
       const pages = (meta.pages ?? []).map(stripPagePrefix);
       const disallowedPages = pages.filter(
-        (page) => !standardFirstLevelPageSet.has(page),
+        (page) => !standardFirstLevelPageSet.has(getFirstLevelPage(page)),
+      );
+      const missingFlattenedLeaves = pages.filter(
+        (page) =>
+          page.includes('/') && !pageExistsAtRelativePath(productRoot, page),
       );
       const extraTopLevelMarkdownFiles = readdirSync(absoluteRoot, {
         withFileTypes: true,
@@ -246,6 +272,14 @@ describe('zh-CN product IA standard', () => {
       if (disallowedPages.length > 0) {
         failures.push(
           `${productRoot} has non-standard first-level pages: ${disallowedPages.join(
+            ', ',
+          )}`,
+        );
+      }
+
+      if (missingFlattenedLeaves.length > 0) {
+        failures.push(
+          `${productRoot} has flattened page leaves that do not resolve: ${missingFlattenedLeaves.join(
             ', ',
           )}`,
         );

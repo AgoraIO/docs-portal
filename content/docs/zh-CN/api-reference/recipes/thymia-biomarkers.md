@@ -1,5 +1,5 @@
 ---
-title: Thymia Biomarkers
+title: Thymia 生物标志物
 description: 将 Thymia 生物标志物分析接入 Agora 语音 AI 工作流。
 ---
 

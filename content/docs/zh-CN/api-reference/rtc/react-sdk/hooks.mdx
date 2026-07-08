@@ -1,5 +1,5 @@
 ---
-title: "Hooks"
+title: "钩子"
 ---
 
 <a id="useconnectionstate"></a>
@@ -46,7 +46,14 @@ function App() {
 
 | 类型              | 描述   |
 | ----------------- | ---------------------|
-| `boolean` | <li>`true`：SDK 已连接到服务器。</li><li>`false`：SDK 没有连接到服务器。</li> |
+| `boolean` | <Slot name="hooks-slot-3-2-1" /> |
+
+<Slot for="hooks-slot-3-2-1">
+
+- `true`：SDK 已连接到服务器。
+- `false`：SDK 没有连接到服务器。
+
+</Slot>
 
 #### 使用示例
 
@@ -199,9 +206,23 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `data` | `UID` | 成功加入频道的用户 ID。如果你在传入 `  fetchArgs` 时没有指定 `uid`，则返回默认值 `0`。|
-| `isLoading` | `boolean` |<li>`true`：正在执行加入频道相关操作。</li><li>`false`：已经执行加入频道相关操作，但不代表成功加入频道。</li> |
-| `isConnected` | `boolean` | <li>`true`：SDK 已连接到服务器。即加入频道成功。</li><li>`false`：SDK 没有连接到服务器。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-13-3-2" /> |
+| `isConnected` | `boolean` | <Slot name="hooks-slot-13-4-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 加入频道成功则返回 `null`，加入频道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-13-3-2">
+
+- `true`：正在执行加入频道相关操作。
+- `false`：已经执行加入频道相关操作，但不代表成功加入频道。
+
+</Slot>
+
+<Slot for="hooks-slot-13-4-2">
+
+- `true`：SDK 已连接到服务器。即加入频道成功。
+- `false`：SDK 没有连接到服务器。
+
+</Slot>
 
 #### 使用示例
 
@@ -248,8 +269,15 @@ function App() {
 
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
-| `isLoading` | `boolean` |<li>`true`：正在执行发布相关操作。</li><li>`false`：已经执行发布相关操作，但不代表成功发布。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-15-2-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 发布成功则返回 `null`，发布失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-15-2-2">
+
+- `true`：正在执行发布相关操作。
+- `false`：已经执行发布相关操作，但不代表成功发布。
+
+</Slot>
 
 #### 使用示例
 
@@ -288,8 +316,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `localMicrophoneTrack` | `IMicrophoneAudioTrack` &VerticalLine; `null` | 创建的本地麦克风音频轨道对象。 |
-| `isLoading` | `boolean` |<li>`true`：正在执行创建轨道相关操作。</li><li>`false`：已经执行创建轨道相关操作，但不代表成功创建轨道。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-17-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 创建轨道成功则返回 `null`，创建轨道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-17-3-2">
+
+- `true`：正在执行创建轨道相关操作。
+- `false`：已经执行创建轨道相关操作，但不代表成功创建轨道。
+
+</Slot>
 
 #### 使用示例
 
@@ -325,8 +360,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `localCameraTrack` | `ICameraVideoTrack` &VerticalLine; `null` | 创建的摄像头视频轨道对象。 |
-| `isLoading` | `boolean` |<li>`true`：正在执行创建轨道相关操作。</li><li>`false`：已经执行创建轨道相关操作，但不代表成功创建轨道。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-19-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 创建轨道成功则返回 `null`，创建轨道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-19-3-2">
+
+- `true`：正在执行创建轨道相关操作。
+- `false`：已经执行创建轨道相关操作，但不代表成功创建轨道。
+
+</Slot>
 
 #### 使用示例
 
@@ -363,8 +405,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `screenTrack` | `[ILocalVideoTrack, ILocalAudioTrack]` &VerticalLine; `ILocalVideoTrack` &VerticalLine; `null` | 根据传入的 `withAudio`，返回创建的屏幕共享视频轨道或者屏幕共享视频轨道和音频轨道。详见 [`createScreenVideoTrack`](/api-ref/rtc/react/interfaces/iagorartc.html#createscreenvideotrack)的返回值。  |
-| `isLoading` | `boolean` |<li>`true`：正在执行创建轨道相关操作。</li><li>`false`：已经执行创建轨道相关操作，但不代表成功创建轨道。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-21-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 创建轨道成功则返回 `null`，创建轨道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-21-3-2">
+
+- `true`：正在执行创建轨道相关操作。
+- `false`：已经执行创建轨道相关操作，但不代表成功创建轨道。
+
+</Slot>
 
 #### 注意事项
 
@@ -432,8 +481,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `videoTracks` | `IRemoteVideoTrack[]` | 已订阅的远端用户视频轨道列表。 |
-| `isLoading` | `boolean` |<li>`true`：正在执行订阅相关操作。</li><li>`false`：已经执行订阅相关操作，但不代表成功订阅。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-23-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 订阅成功则返回 `null`，订阅失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-23-3-2">
+
+- `true`：正在执行订阅相关操作。
+- `false`：已经执行订阅相关操作，但不代表成功订阅。
+
+</Slot>
 
 #### 使用示例
 
@@ -470,8 +526,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `audioTracks` | `IRemoteAudioTrack[]` | 已订阅的远端用户音频轨道列表。 |
-| `isLoading` | `boolean` |<li>`true`：正在执行订阅相关操作。</li><li>`false`：已经执行订阅相关操作，但不代表成功订阅。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-25-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 订阅成功则返回 `null`，订阅失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。 |
+
+<Slot for="hooks-slot-25-3-2">
+
+- `true`：正在执行订阅相关操作。
+- `false`：已经执行订阅相关操作，但不代表成功订阅。
+
+</Slot>
 
 #### 使用示例
 
@@ -507,8 +570,15 @@ function App() {
 | 属性              | 类型                   | 描述  |
 | ----------------------| ---------------------- | ------------------------ |
 | `track` | `IRemoteVideoTrack` &VerticalLine; `IRemoteAudioTrack` &VerticalLine; `undefined` | 远端用户的音频或视频轨道（取决于传入的 `mediaType`）。如果远端用户或音频、视频轨道不存在，则返回 `undefined`。 |
-| `isLoading` | `boolean` |<li>`true`：正在执行获取轨道相关操作。</li><li>`false`：已经执行获取轨道相关操作，但不代表成功获取轨道。</li> |
+| `isLoading` | `boolean` | <Slot name="hooks-slot-27-3-2" /> |
 | `error` | `AgoraRTCReactError` &VerticalLine; `null` | 获取轨道成功则返回 `null`，获取轨道失败则抛出错误。错误详见 [`AgoraRTCReactError`](/zh-CN/api-reference/rtc/react-sdk/data-types#agorartcreacterror)。|
+
+<Slot for="hooks-slot-27-3-2">
+
+- `true`：正在执行获取轨道相关操作。
+- `false`：已经执行获取轨道相关操作，但不代表成功获取轨道。
+
+</Slot>
 
 #### 使用示例
 
@@ -573,9 +643,16 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `track` | `IRemoteVideoTrack` &VerticalLine; `ILocalVideoTrack` | 必选     | 远端视频轨道对象或本地视频轨道对象。                                                                   |
-| `play`  | `boolean`          | 可选              | <li>`true`：播放该轨道。</li><li>`false`：停止播放该轨道。</li> |
+| `play` | `boolean` | 可选 | <Slot name="hooks-slot-30-3-3" /> |
 | `videoPlayerConfig`  |`VideoPlayerConfig` | 可选 | 视频轨道的播放配置。可以设置播放参数（镜像/显示模式），详见 [`VideoPlayerConfig`](/api-ref/rtc/react/interfaces/videoplayerconfig.html)。对于本地视频轨道，镜像模式默认开启。|
 | `div`   | `HTMLElement` &VerticalLine; `null`            | 可选      | 用于渲染视频轨道的 HTML 元素。只有在 `play` 为 `true` 并且传入 `div` 参数的情况下，视频才会在该元素中自动播放。其它情况则不会自动播放视频。 |
+
+<Slot for="hooks-slot-30-3-3">
+
+- `true`：播放该轨道。
+- `false`：停止播放该轨道。
+
+</Slot>
 
 #### 返回值
 
@@ -607,7 +684,14 @@ function App() {
 | 参数名   | 类型             | 是否必选 | 描述 |
 | -------- | ---------------- | -------- | ---- |
 | `track` | `IRemoteAudioTrack` &VerticalLine; `ILocalAudioTrack` | 必选               | 远端音频轨道对象或本地音频轨道对象。 |
-| `play`  | `boolean`          | 可选               | <li>`true`：播放该轨道。</li><li>`false`：停止播放该轨道。</li> |
+| `play` | `boolean` | 可选 | <Slot name="hooks-slot-31-3-3" /> |
+
+<Slot for="hooks-slot-31-3-3">
+
+- `true`：播放该轨道。
+- `false`：停止播放该轨道。
+
+</Slot>
 
 #### 返回值
 

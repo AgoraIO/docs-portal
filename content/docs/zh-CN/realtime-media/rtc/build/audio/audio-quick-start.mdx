@@ -130,13 +130,13 @@ title: "实现纯语音互动"
 
 2. 打开解压文件，将以下文件或子文件夹复制到你的项目路径中。
 
-    | 文件或子文件夹                        | 项目路径                 |
+    | 文件或子文件夹 | 项目路径 |
     | :------------------------------------ | :----------------------- |
-    | `agora-rtc-sdk.jar` 文件              | `/app/libs/`             |
-    | `arm64-v8a` 文件夹                      | `/app/src/main/jniLibs/` |
-    | `armeabi-v7a` 文件夹                  | `/app/src/main/jniLibs/` |
-    | `x86` 文件夹                          | `/app/src/main/jniLibs/` |
-    | `x86_64` 文件夹                       | `/app/src/main/jniLibs/` |
+    | `agora-rtc-sdk.jar` 文件 | `/app/libs/` |
+    | `arm64-v8a` 文件夹 | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` 文件夹 | `/app/src/main/jniLibs/` |
+    | `x86` 文件夹 | `/app/src/main/jniLibs/` |
+    | `x86_64` 文件夹 | `/app/src/main/jniLibs/` |
     | `high_level_api` 中的`include` 文件夹 | `/app/src/main/jniLibs/` |
 
    :::warning[注意]
@@ -657,7 +657,7 @@ protected void onCreate(Bundle savedInstanceState) {
         - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
     :::
 
-    | Key                                    | Type   | Value                                                        |
+    | Key | Type | Value |
     | -------------------------------------- | ------ | ------------------------------------------------------------ |
     | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
 
@@ -1011,7 +1011,7 @@ override func viewDidLoad() {
              - 更多注意事项，可以参考 [Preparing Your App for Distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution)。
      :::
 
-    | Key                                    | Type   | Value                                                        |
+    | Key | Type | Value |
     | -------------------------------------- | ------ | ------------------------------------------------------------ |
     | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
 
@@ -1019,9 +1019,30 @@ override func viewDidLoad() {
 
     | Capability | Category | Permission |
     | --- | --- | --- |
-    | App Sandbox | Network | Incoming Connections (Server)<br />Outgoing Connections (Client) |
-    | App Sandbox | Hardware | Camera<br />Audio Input |
-    | Hardened Runtime | Resource Access | Camera<br />Audio Input |
+    | App Sandbox | Network | <Slot name="audio-quick-start-1020-2-2" /> |
+    | App Sandbox | Hardware | <Slot name="audio-quick-start-1020-3-2" /> |
+    | Hardened Runtime | Resource Access | <Slot name="audio-quick-start-1020-4-2" /> |
+
+    <Slot for="audio-quick-start-1020-2-2">
+
+    - Incoming Connections (Server)
+    - Outgoing Connections (Client)
+
+    </Slot>
+
+    <Slot for="audio-quick-start-1020-3-2">
+
+    - Camera
+    - Audio Input
+
+    </Slot>
+
+    <Slot for="audio-quick-start-1020-4-2">
+
+    - Camera
+    - Audio Input
+
+    </Slot>
 
 ## 集成 SDK
 根据实际情况，在以下集成方式中任选一种，在你的项目中集成 SDK。
@@ -5039,7 +5060,7 @@ const getPermission = async () => {
 
 在 Xcode 中，打开 `info.plist` 文件。在右侧列表中添加如下内容，获取相应的设备权限：
 
-| Key                                    | Type   | Value                                                        |
+| Key | Type | Value |
 | :------------------------------------- | :----- | :----------------------------------------------------------- |
 | Privacy - Microphone Usage Description | String | 使用麦克风的目的，例如：for a call or live interactive streaming。 |
 
@@ -5225,11 +5246,11 @@ agoraEngineRef.current?.release();
 
 - [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
 - 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
-  | 开发平台 | 参考文档  | 备注    |
+  | 开发平台 | 参考文档 | 备注 |
   | :--- | :------ | :------------------------------ |
-  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
-  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
-  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Android | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无 |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -5881,11 +5902,11 @@ void UAgoraWidget::NativeDestruct()
 
 - [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
 - 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
-  | 开发平台 | 参考文档  | 备注    |
+  | 开发平台 | 参考文档 | 备注 |
   | :--- | :------ | :------------------------------ |
-  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
-  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
-  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Android | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无 |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。 |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。 |
   | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
 - 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/security-and-auth/firewall)以正常使用声网服务。
 - 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
@@ -5967,15 +5988,50 @@ void UAgoraWidget::NativeDestruct()
 
 | 序号 | 节点 | 类型 | 描述 |
 | --- | --- | --- | --- |
-| 1 | **Set Show Mouse Cursor** | 原生* | (可选) 设置是否显示鼠标光标，勾选代表显示。<br />该节点仅适用于 Windows 和 macOS。<br />如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。<br />![](https://web-cdn.agora.io/docs-files/1689863102745) |
+| 1 | **Set Show Mouse Cursor** | 原生* | <Slot name="audio-quick-start-5968-2-3" /> |
 | 2 | **Load Agora Config** | 自定义** | 加载声网配置。用于后续在创建和加入频道时验证用户身份。 |
-| 3 | **Create BP Audio Widget** | 原生 | 创建用户界面。步骤如下：<br />1. 创建 **Create Widget** 节点。<br />2. 选择该节点的 **Class** 为 **BP_AudioWidget**，将该节点关联至已经创建好的用户界面。 |
-| 4 | **Set Basic Audio Call Widget** | 自定义 | 设置用户界面。步骤如下：<br />1. 创建 **BasicAudioCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_AudioWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。<br />2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicAudioCallWidget** 和 **Get BasicAudioCallWidget** 两个选项，选择 **Set BasicAudioCallWidget** 创建节点，用于访问并设置用户界面。 |
+| 3 | **Create BP Audio Widget** | 原生 | <Slot name="audio-quick-start-5968-4-3" /> |
+| 4 | **Set Basic Audio Call Widget** | 自定义 | <Slot name="audio-quick-start-5968-5-3" /> |
 | 5 | **Bind UIEvent** | 自定义 | 绑定 UI 事件，用于处理点击 **JoinChannel** 和 **LeaveChannel** 按钮后的事件逻辑。 |
 | 6 | **Add to Viewport** | 原生 | 将用户界面添加到视口。 |
-| 7 | **Check Permission** | 自定义 | (可选) 检查是否已获取语音通话所需的系统权限，如访问麦克风等。<br />如果你的目标平台是 Android，需要创建该节点用于检查系统权限。 |
+| 7 | **Check Permission** | 自定义 | <Slot name="audio-quick-start-5968-8-3" /> |
 | 8 | **Init Rtc Engine** | 自定义 | 创建并初始化 RTC 引擎。 |
 | 9 | **UnInitRtcEngine** | 自定义 | 离开频道并释放资源。 |
+
+<Slot for="audio-quick-start-5968-2-3">
+
+- (可选) 设置是否显示鼠标光标，勾选代表显示。
+- 该节点仅适用于 Windows 和 macOS。
+- 如果在创建时检索不到该节点，可以取消勾选 **Context Sensitive**。
+
+![](https://web-cdn.agora.io/docs-files/1689863102745)
+
+</Slot>
+
+<Slot for="audio-quick-start-5968-4-3">
+
+创建用户界面。步骤如下：
+
+1. 创建 **Create Widget** 节点。
+2. 选择该节点的 **Class** 为 **BP_AudioWidget**，将该节点关联至已经创建好的用户界面。
+
+</Slot>
+
+<Slot for="audio-quick-start-5968-5-3">
+
+设置用户界面。步骤如下：
+
+1. 创建 **BasicAudioCallWidget** 变量，选择变量的 **Variable Type** 为 **BP_AudioWidget**，即已经创建好的用户界面，用于在蓝图中存储对用户界面的引用。
+2. 拖拽创建好的变量到 **EventGraph** 后，会出现 **Set BasicAudioCallWidget** 和 **Get BasicAudioCallWidget** 两个选项，选择 **Set BasicAudioCallWidget** 创建节点，用于访问并设置用户界面。
+
+</Slot>
+
+<Slot for="audio-quick-start-5968-8-3">
+
+- (可选) 检查是否已获取语音通话所需的系统权限，如访问麦克风等。
+- 如果你的目标平台是 Android，需要创建该节点用于检查系统权限。
+
+</Slot>
 
 
 *原生节点为蓝图内置的节点，无需额外配置即可直接添加调用。
@@ -6018,10 +6074,32 @@ void UAgoraWidget::NativeDestruct()
 
             | 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
-| `FOnJoinChannelSuccess` | 成功加入频道回调。 | `channel`: (String) 频道名。<br />`uid`: (Integer64) 加入频道的本地用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
+| `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="audio-quick-start-6019-2-2" /> |
 | `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
-| `FOnUserJoined` | 远端用户加入当前频道回调。 | `uid`: (Integer64) 新加入频道的远端用户的用户 ID。<br />`elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。 |
-| `FOnUserOffline` | 远端用户离开当前频道回调。 | `uid`: (Integer64) 离线用户的用户 ID。<br />`reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。 |
+| `FOnUserJoined` | 远端用户加入当前频道回调。 | <Slot name="audio-quick-start-6019-4-2" /> |
+| `FOnUserOffline` | 远端用户离开当前频道回调。 | <Slot name="audio-quick-start-6019-5-2" /> |
+
+<Slot for="audio-quick-start-6019-2-2">
+
+- `channel`: (String) 频道名。
+- `uid`: (Integer64) 加入频道的本地用户的用户 ID。
+- `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
+
+</Slot>
+
+<Slot for="audio-quick-start-6019-4-2">
+
+- `uid`: (Integer64) 新加入频道的远端用户的用户 ID。
+- `elapsed`: (Integer) 从本地调用 `JoinChannel` 开始到发生此事件过去的时间（毫秒）。
+
+</Slot>
+
+<Slot for="audio-quick-start-6019-5-2">
+
+- `uid`: (Integer64) 离线用户的用户 ID。
+- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。
+
+</Slot>
 
 
         2. 创建 **Bind Event** 函数，在该函数中，添加 **Sequence** 节点，然后分别绑定 **onJoinChannelSuccess**、**onLeaveChannel**、**onUserJoined** 和 **onUserOffline** 回调事件。

@@ -161,67 +161,43 @@ title: 语音与视频概览
 带宽计算公式为：PCU × 主播的发送码率 × 并发主播数（单个频道）
 :::
 
-<table>
-  <thead>
-    <tr>
-      <th>服务</th>
-      <th>PCU/PCW/带宽</th>
-      <th>中国大陆</th>
-      <th>欧洲</th>
-      <th>美洲</th>
-      <th>亚洲（除中国大陆）</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowSpan={2} style={{ verticalAlign: 'middle' }}>实时互动</td>
-      <td style={{ verticalAlign: 'middle' }}>PCU</td>
-      <td>10 K</td>
-      <td>10 K</td>
-      <td>10 K</td>
-      <td>10 K</td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>带宽</td>
-      <td>10 Gbps</td>
-      <td>10 Gbps</td>
-      <td>10 Gbps</td>
-      <td>10 Gbps</td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>旁路推流</td>
-      <td style={{ verticalAlign: 'middle' }}>PCW</td>
-      <td>
-        <ul>
-          <li>SD：200</li>
-          <li>HD：50</li>
-          <li>FHD：20</li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>SD：50</li>
-          <li>HD：20</li>
-          <li>FHD：5</li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>SD：50</li>
-          <li>HD：20</li>
-          <li>FHD：5</li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li>SD：50</li>
-          <li>HD：20</li>
-          <li>FHD：5</li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+| 服务 | PCU/PCW/带宽 | 中国大陆 | 欧洲 | 美洲 | 亚洲（除中国大陆） |
+| --- | --- | --- | --- | --- | --- |
+| 实时互动 | PCU | 10 K | 10 K | 10 K | 10 K |
+| 实时互动 | 带宽 | 10 Gbps | 10 Gbps | 10 Gbps | 10 Gbps |
+| 旁路推流 | PCW | <Slot name="rtc-quota-mainland" /> | <Slot name="rtc-quota-europe" /> | <Slot name="rtc-quota-americas" /> | <Slot name="rtc-quota-asia" /> |
+
+<Slot for="rtc-quota-mainland">
+
+- SD：200
+- HD：50
+- FHD：20
+
+</Slot>
+
+<Slot for="rtc-quota-europe">
+
+- SD：50
+- HD：20
+- FHD：5
+
+</Slot>
+
+<Slot for="rtc-quota-americas">
+
+- SD：50
+- HD：20
+- FHD：5
+
+</Slot>
+
+<Slot for="rtc-quota-asia">
+
+- SD：50
+- HD：20
+- FHD：5
+
+</Slot>
 
 :::info[信息]
 视频分辨率说明：

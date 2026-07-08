@@ -3271,7 +3271,7 @@ else
 你需要在登录时传入 Token。在测试阶段，为快速验证功能，我们建议你在创建声网项目时将鉴权模式设置为调试模式，然后在登录时只需传入项目的 App ID。
 :::
 
-## Message Channel 中收发消息
+## 在消息频道中收发消息
 
 调用 `PublishAsync` 方法向 Message Channel 发送消息后，RTM 会把该消息分发给该频道的所有订阅者，以下代码演示如何发送 String 类型的消息，将此代码片段添加到程序中：
 
@@ -3324,11 +3324,11 @@ else
 
 成功订阅后，你可以通过之前监听的 `OnMessageEvent` 事件通知接收消息。
 
-## Stream Channel 中收发消息
+## 在流频道中收发消息
 
 在 Stream Channel 中的消息需要依赖 Topic 功能，你需要依次完成以下步骤：
 
-### 创建 Stream Channel
+### 创建流频道
 
 调用 Stream Channel 的所有方法前，你需要创建频道并获得 `IStreamChannel` 对象实例。将以下代码添加到程序中：
 
@@ -3344,7 +3344,7 @@ if (rtmClient != null)
 }
 ```
 
-### 加入 Stream Channel
+### 加入流频道
 
 加入 Stream Channel 才可以在后续进行发布和订阅消息的操作。调用 `JoinAsync` 方法并在 `options` 中传入 `token` 参数以验证身份。
 

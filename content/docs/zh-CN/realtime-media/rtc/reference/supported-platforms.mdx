@@ -5,855 +5,1611 @@ description: "RTC SDK 支持的平台、系统版本和架构要求。"
 
 <PlatformStructured platform="android">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-0-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-0-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-0-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-0-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-0-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-0-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-0-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-0-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-0-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-0-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-1-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-1-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-1-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-1-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-1-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-1-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-1-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-1-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-1-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-1-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-1-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-2-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-2-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-2-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-2-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-2-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-2-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-2-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-2-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-2-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-2-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-2-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="harmonyos">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-3-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-3-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-3-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-3-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-3-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-3-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-3-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-3-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-3-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-3-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-3-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-4-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-4-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-4-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-4-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-4-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-4-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-4-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-4-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-4-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-4-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-4-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-5-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-5-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-5-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-5-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-5-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-5-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-5-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-5-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-5-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-5-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-5-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-6-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-6-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-6-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-6-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-6-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-6-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-6-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-6-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-6-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-6-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-6-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-7-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-7-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-7-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-7-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-7-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-7-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-7-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-7-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-7-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-7-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-7-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-8-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-8-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-8-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-8-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-8-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-8-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-8-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-8-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-8-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-8-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-8-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 5.0</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-9-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-9-2-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-9-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-9-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-9-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-9-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-9-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-9-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-9-10-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-9-0-1">
+
+≥ 5.0
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-3-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-7-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-9-10-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="web">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS NEXT</td>
-      <td><div><p>≥ Beta1</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64-v8a</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-10-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-10-2-1" /> |
+| 鸿蒙 HarmonyOS NEXT | <Slot name="supported-platforms-html-10-3-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-10-5-1" /> |
+| Unity | <Slot name="supported-platforms-html-10-6-1" /> |
+| Electron | <Slot name="supported-platforms-html-10-7-1" /> |
+| Flutter | <Slot name="supported-platforms-html-10-8-1" /> |
+| React Native | <Slot name="supported-platforms-html-10-9-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-10-10-1" /> |
+| React | ≥ React 16.8 |
+
+<Slot for="supported-platforms-html-10-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-3-1">
+
+≥ Beta1
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64-v8a
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-5-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-6-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-7-1">
+
+≥ 1.8.3
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-8-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-9-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-10-10-1">
+
+≥ 4.27
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="react">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1</p><p>Android SDK 支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| Android | <Slot name="supported-platforms-html-11-0-1" /> |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-11-2-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-11-4-1" /> |
+| Unity | <Slot name="supported-platforms-html-11-5-1" /> |
+| Electron | <Slot name="supported-platforms-html-11-6-1" /> |
+| Flutter | <Slot name="supported-platforms-html-11-7-1" /> |
+| React Native | <Slot name="supported-platforms-html-11-8-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-11-9-1" /> |
+| React | ≥ React 16.8 |
+
+<Slot for="supported-platforms-html-11-0-1">
+
+≥ 4.1
+
+Android SDK 支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-2-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-4-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-5-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-6-1">
+
+≥ 1.8.3
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-7-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-8-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-11-9-1">
+
+≥ 4.27
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>支持版本</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>iOS</td>
-      <td><div><p>≥ 9.0</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>macOS</td>
-      <td><div><p>≥ 10.10</p><p>macOS SDK 支持如下架构：</p><ul><li>x86-64</li><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>鸿蒙 HarmonyOS</td>
-      <td><div><p>≥ 2.0.0</p><p>HarmonyOS SDK 支持如下架构：</p><ul><li>arm64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Web</td>
-      <td><div><p><a href="/zh-CN/realtime-media/rtc/reference/browser-compatibility">详见浏览器兼容性</a></p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Windows</td>
-      <td><div><p>≥ Windows 7</p><p>Windows SDK 支持如下架构：</p><ul><li>x86</li><li>x86-64</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unity</td>
-      <td><div><p>≥ 2017</p><p>Unity SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86、x86-64）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Electron</td>
-      <td><div><p>≥ 1.8.3，＜ 25</p><p>Electron SDK 支持如下平台：</p><ul><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Flutter</td>
-      <td><div><p>≥ 2.10.5</p><p>Flutter SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React Native</td>
-      <td><div><p>≥ 0.59.10</p><p>React Native SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Unreal (C++/Blueprint)</td>
-      <td><div><p>≥ 4.27，≤ 5.2</p><p>Unreal SDK 支持如下平台：</p><ul><li>Android（armeabi-v7a、arm64-v8a、x86）</li><li>iOS</li><li>Windows（x86、x86-64）</li><li>macOS</li></ul></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>React</td>
-      <td><div><p>≥ React 16.8</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>小程序</td>
-      <td><div><p>N/A</p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 支持版本 |
+| --- | --- |
+| iOS | ≥ 9.0 |
+| macOS | <Slot name="supported-platforms-html-12-1-1" /> |
+| 鸿蒙 HarmonyOS | <Slot name="supported-platforms-html-12-2-1" /> |
+| Web | [详见浏览器兼容性](/zh-CN/realtime-media/rtc/reference/browser-compatibility) |
+| Windows | <Slot name="supported-platforms-html-12-4-1" /> |
+| Unity | <Slot name="supported-platforms-html-12-5-1" /> |
+| Electron | <Slot name="supported-platforms-html-12-6-1" /> |
+| Flutter | <Slot name="supported-platforms-html-12-7-1" /> |
+| React Native | <Slot name="supported-platforms-html-12-8-1" /> |
+| Unreal (C++/Blueprint) | <Slot name="supported-platforms-html-12-9-1" /> |
+| React | ≥ React 16.8 |
+| 小程序 | N/A |
+
+<Slot for="supported-platforms-html-12-1-1">
+
+≥ 10.10
+
+macOS SDK 支持如下架构：
+
+- x86-64
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-2-1">
+
+≥ 2.0.0
+
+HarmonyOS SDK 支持如下架构：
+
+- arm64
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-4-1">
+
+≥ Windows 7
+
+Windows SDK 支持如下架构：
+
+- x86
+- x86-64
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-5-1">
+
+≥ 2017
+
+Unity SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86、x86-64）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-6-1">
+
+≥ 1.8.3，＜ 25
+
+Electron SDK 支持如下平台：
+
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-7-1">
+
+≥ 2.10.5
+
+Flutter SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-8-1">
+
+≥ 0.59.10
+
+React Native SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+
+</Slot>
+
+<Slot for="supported-platforms-html-12-9-1">
+
+≥ 4.27，≤ 5.2
+
+Unreal SDK 支持如下平台：
+
+- Android（armeabi-v7a、arm64-v8a、x86）
+- iOS
+- Windows（x86、x86-64）
+- macOS
+
+</Slot>
 
 </PlatformStructured>
