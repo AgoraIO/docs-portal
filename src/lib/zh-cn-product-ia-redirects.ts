@@ -383,7 +383,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc-server-sdk/get-started/send-receive':
     '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive',
   'realtime-media/rtc-server-sdk/get-started/send-receive.go':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive.go',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive?platform=go',
   'realtime-media/rtc-server-sdk/index.go':
     '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/index.go',
   'realtime-media/rtc-server-sdk/overview/product-overview':
@@ -391,7 +391,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc-server-sdk/overview/release-notes':
     '/zh-CN/realtime-media/rtc-server-sdk/reference/release-notes',
   'realtime-media/rtc-server-sdk/overview/release-notes.go':
-    '/zh-CN/realtime-media/rtc-server-sdk/reference/release-notes.go',
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/release-notes?platform=go',
   'realtime-media/rtc-server-sdk/resources':
     '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads',
   'realtime-media/rtc/advanced-features/advanced-beauty':
@@ -561,7 +561,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/overview/key-concept':
     '/zh-CN/realtime-media/rtc/reference/key-concept',
   'realtime-media/rtc/overview/key-concept.csharp':
-    '/zh-CN/realtime-media/rtc/reference/key-concept.csharp',
+    '/zh-CN/realtime-media/rtc/reference/key-concept?platform=csharp',
   'realtime-media/rtc/overview/migration-guide':
     '/zh-CN/realtime-media/rtc/reference/migration-guide',
   'realtime-media/rtc/overview/product-overview': '/zh-CN/realtime-media/rtc',

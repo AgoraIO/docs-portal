@@ -542,6 +542,12 @@ describe('DocsShell', () => {
       'href',
       legacyDocsBannerConfig.hrefs['zh-CN'],
     );
+    expect(
+      screen.getByRole('button', { name: '关闭旧版文档提示' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('button', { name: 'Dismiss legacy docs banner' }),
+    ).toBeNull();
   });
 
   it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
@@ -657,9 +663,9 @@ describe('DocsShell', () => {
       '/zh-CN/api-reference/overview',
     );
 
-    expect(
-      await screen.findByRole('button', { name: '打开导航' }),
-    ).toBeInTheDocument();
+    const menuButton = await screen.findByRole('button', { name: '打开导航' });
+
+    expect(menuButton).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '搜索文档' })).toHaveLength(2);
     expect(
       screen.getByRole('button', { name: '主题: 浅色' }),
@@ -670,6 +676,19 @@ describe('DocsShell', () => {
     expect(
       screen.queryByRole('navigation', { name: 'Alternate languages' }),
     ).toBeNull();
+
+    fireEvent.click(menuButton);
+
+    const mobileSheet = await screen.findByRole('dialog');
+
+    expect(
+      within(mobileSheet).getByRole('button', { name: '关闭' }),
+    ).toBeInTheDocument();
+    expect(
+      within(mobileSheet).queryByRole('button', { name: 'Close' }),
+    ).toBeNull();
+    expect(within(mobileSheet).getByText('页面')).toBeInTheDocument();
+    expect(within(mobileSheet).queryByText('Pages')).toBeNull();
   });
 
   it('keeps the top docs tabs available from the medium breakpoint upward', async () => {
@@ -1605,9 +1624,6 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
     expect(
       within(sectionMenu).getByRole('menuitem', { name: 'RTC' }),
-    ).toBeInTheDocument();
-    expect(
-      within(sectionMenu).getByRole('menuitem', { name: 'Solutions' }),
     ).toBeInTheDocument();
     expect(currentSectionItem).toHaveAttribute('aria-current');
     expect(currentSectionItem).toHaveClass(

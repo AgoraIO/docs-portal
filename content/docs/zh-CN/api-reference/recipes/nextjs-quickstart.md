@@ -1,5 +1,5 @@
 ---
-title: NextJS 快速开始
+title: Next.js 快速开始
 description: 使用 Next.js 构建一个基础的 Agora Conversational AI 智能体。
 ---
 

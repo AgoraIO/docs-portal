@@ -1,7 +1,7 @@
 ---
-title: "申请和使用 License"
+title: "申请和使用许可证"
 ---
-## License 介绍
+## 许可证介绍
 
 License 是声网服务的一种计费模式。在 IoT 场景中，声网通过设备 License 对单个设备进行收费，每个设备的 License 是唯一的。在 License 有效期内，不再对通话时长进行收费。
 
@@ -11,7 +11,7 @@ License 是声网服务的一种计费模式。在 IoT 场景中，声网通过�
 
 <a id="applyfor"></a>
 ## 使用流程
-### 1. 申请 License
+### 1. 申请许可证
 
 声网为每位开发者提供 10 个有效期为 6 个月的免费测试 License。如需申请使用 License，联系 sales@shengwang.cn 并提供以下信息：
 
@@ -71,7 +71,7 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 为保障 License 的安全性，降低被盗用的风险，声网提供预授权功能。你需要向 sales@shengwang.cn 提供项目 App ID 和 `licenseKey` 进行预授权，将设备加入白名单。预授权完成后，License 额度会被消耗，只有白名单中的设备才能通过校验激活 License。
 
 <a id="activate"></a>
-### 3. 激活 License
+### 3. 激活许可证
 
 完成预授权后，调用 `activate` 接口激活 License。
 
@@ -185,7 +185,7 @@ SKU 能力集，包含如下字段：
 ```
 
 <a id="use"></a>
-### 4. 使用 License
+### 4. 使用许可证
 
 成功激活 License 后，你需要在 SDK 中使用 License 并在设备中烧录 License，流程图如下：
 
@@ -216,7 +216,7 @@ SKU 能力集，包含如下字段：
    - 如果 License 验证成功，则用户可以正常使用 SDK 的功能。
    - 如果 License 验证失败，则用户会被踢出频道并收到 `on_license_validation_failure``onLicenseValidationFailure` 回调，你可以根据收到的错误码处理问题。
 
-### 5. 查询即将到期的 License 列表
+### 5. 查询即将到期的许可证列表
 
 能正常使用 License 后，你可以调用 `expiringLicense` 接口查询即将到期的 License 列表。
 
@@ -317,7 +317,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 ```
 
 <a id="renew"></a>
-### 6. License 续期
+### 6. 许可证续期
 
 如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 `renew` 接口续期 License。
 
@@ -410,7 +410,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxx
 }
 ```
 
-### 7. 查询 License 续期订单
+### 7. 查询许可证续期订单
 
 该方法可以查询指定 PID 下所有的续期订单，方便用户根据剩余数量和有效期等信息，确定使用哪一个 `renewId` 进行续期。
 
@@ -603,7 +603,7 @@ licenseKey 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。�
 用户需要先进行[预授权](#preauthenticate)，将设备的 `licenseKey` 添加到白名单，然后才能调用[激活接口](#activate)为某个设备激活 License。
 
 <a id="licensetype"></a>
-#### 测试 License 和正式 License
+#### 测试许可证和正式许可证
 
 为方便你测试和使用 SDK，声网提供测试 License 和正式 License，区别如下：
 

@@ -1,9 +1,9 @@
 ---
-title: "获取并使用 License"
+title: "获取并使用许可证"
 ---
 License 是声网服务的一种计费模式。本文介绍设备 License 的整体使用流程。
 
-## License 介绍
+## 许可证介绍
 
 在 IoT 场景中，声网通过设备 License 对单个设备进行收费，每个设备的 License 是唯一的。在 License 有效期内，不再对通话时长进行收费。
 
@@ -13,7 +13,7 @@ License 是声网服务的一种计费模式。本文介绍设备 License 的整
 
 <a id="apply"></a>
 ## 使用流程
-### 1. 申请 License
+### 1. 申请许可证
 
 声网为每位开发者提供 10 个有效期为 6 个月的免费测试 License。如需申请使用 License，联系 sales@shengwang.cn 并提供以下信息：
 
@@ -68,7 +68,7 @@ License 的有效期：
 License 申请通过后，License 激活标识（PID）会关联到你的 CID 下，你可以在[控制台](https://console.shengwang.cn/license/usage)的 License 用量页面查看 License 的 PID 和使用情况。
 
 <a id="activate"></a>
-### 2. 激活 License
+### 2. 激活许可证
 
 调用 [`/active`](/doc/voip-callkit/restful/call/operations/activateLicense) 接口激活 License。
 
@@ -103,7 +103,7 @@ License 激活成功的响应示例如下：
 }
 ```
 
-### 3. 使用 License
+### 3. 使用许可证
 
 在使用微呼叫服务过程中，你需要在接口中传入 License 参数。声网服务端会始终对你所使用的 License 进行校验，并返回校验结果。完整的校验流程如下图所示：
 
@@ -111,7 +111,7 @@ License 激活成功的响应示例如下：
 
 服务端会通过 NCS [事件 98](/zh-CN/solutions/voip-call/reference/voip-events#98-api_error) 中的 `errorCode` 字段返回校验结果。
 
-### 4. 查询即将到期的 License 列表
+### 4. 查询即将到期的许可证列表
 
 能正常使用 License 后，你可以调用 [`/expiringLicenses`](/doc/voip-callkit/restful/call/operations/getExpiringLicenses) 接口查询即将到期的 License 列表。
 
@@ -139,7 +139,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 }
 ```
 
-### 5. License 续期
+### 5. 许可证续期
 
 如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 [`/renew`](/doc/voip-callkit/restful/call/operations/renewLicense) 接口续期 License。
 
@@ -165,7 +165,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxx
 }
 ```
 
-### 6. 查询 License 续期
+### 6. 查询许可证续期
 
 如果想查询所有的续期订单，可以调用 [`/renewals`](/doc/voip-callkit/restful/call/operations/getLicenseRenewals) 接口。
 
@@ -224,7 +224,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 - `licenseKey` 是设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。在调用微呼叫的相关接口时，声网服务端会比对该 `licenseKey` 和 `wechat.deviceId` 是否一致。如果一致则校验成功，否则校验失败。
 
 <a id="licensetype"></a>
-#### 测试 License 和正式 License
+#### 测试许可证和正式许可证
 
 为方便你测试和使用 SDK，声网提供测试 License 和正式 License，区别如下：
 

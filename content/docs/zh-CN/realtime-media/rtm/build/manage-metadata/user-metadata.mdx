@@ -1,11 +1,11 @@
 ---
-title: "User Metadata"
+title: "用户元数据"
 ---
 `Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
 
 需要注意的是，User Metadata 属于永久存储，一旦被设置将会长期保存在 RTM 数据库，不会因为你的用户注销而丢失，直到你手动删除它们为止。知道这一点非常重要，因为它将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
-## 设置 User Metadata
+## 设置用户元数据
 
 你可以为指定的用户设置一组 User Metadata 用以实现业务上用户级别的数据存储和实时通知，例如用户的姓名、年级、头像链接、自我介绍等任何自定义数据。每个用户只能有一组 User Metadata，但每组 User Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。每个 Metadata Item 包含有 `key`、`value`、`revision` 预定义字段。
 
@@ -268,7 +268,7 @@ public void onSuccess(Void responseInfo) {
 
 同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/manage-metadata/event)。
 
-## 获取 User Metadata
+## 获取用户元数据
 
 你可以通过调用 `storage.getuser` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
 
@@ -631,7 +631,7 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
 }
 ```
 
-## 更新 User Metadata
+## 更新用户元数据
 
 你可以使用 `storage.updateuser` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
 
@@ -835,7 +835,7 @@ public void onSuccess(Void responseInfo) {
 
 同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`config.onstorageevent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/manage-metadata/event)。
 
-## 删除 User Metadata
+## 删除用户元数据
 
 当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `storage.removeuser` 进行删除操作：
 
@@ -1094,7 +1094,7 @@ try {
 
 同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`config.onstorageevent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/manage-metadata/event)。
 
-## 订阅 User Metadata
+## 订阅用户元数据
 
 与订阅 Channel Metadata 类似，如果你需要关注某个用户的属性更新，那么你可以订阅该用户的 User Metadata，参照以下示例代码：
 
@@ -1194,7 +1194,7 @@ try {
 
 以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100 ms 内通知到你。
 
-## 取消订阅 User Metadata
+## 取消订阅用户元数据
 
 如果你对不再关注某个用户的 User Metadata 变更，可以取消订阅，参照以下示例代码：
 

@@ -2001,14 +2001,14 @@ describe('docs content regressions', () => {
 
     const processed = await page.data.getText('processed');
 
-    expect(processed).toContain('<_PlatformTabsGroup');
-    expect(processed).toContain('<_PlatformPanel platform="java">');
-    expect(processed).toContain('<_PlatformPanel platform="kotlin">');
+    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
+    expect(processed).toContain('<CodeBlockTab value="java">');
+    expect(processed).toContain('<CodeBlockTab value="kotlin">');
     expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
     expect(processed).not.toContain('&lt;CodeBlockTab');
   }, SOURCE_LOADER_TEST_TIMEOUT);
 
-  it('renders stream channel code tabs as MDX components', async () => {
+  it('renders stream channel platform sections as MDX components', async () => {
     const { source } = await import('./source.server');
     const page = source.getPage(
       [
@@ -2035,10 +2035,12 @@ describe('docs content regressions', () => {
 
     const processed = await page.data.getText('processed');
 
-    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
-    expect(processed).toContain('<CodeBlockTab value="java">');
-    expect(processed).toContain('<CodeBlockTab value="kotlin">');
+    expect(processed).toContain('<_PlatformTabsGroup');
+    expect(processed).toContain('<_PlatformPanel platform="web">');
+    expect(processed).toContain('<_PlatformPanel platform="android">');
+    expect(processed).toContain('<_PlatformPanel platform="ios">');
     expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
     expect(processed).not.toContain('&lt;CodeBlockTab');
+    expect(processed).not.toContain('&lt;PlatformStructured');
   }, SOURCE_LOADER_TEST_TIMEOUT);
 });

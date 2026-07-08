@@ -11,26 +11,30 @@ description: "智能手表场景化解决方案支持的客户端和设备端平
 
 设备端支持如下平台：
 
-<table>
-  <thead>
-    <tr>
-      <th>平台</th>
-      <th>兼容芯片或版本</th>
-      <th>获取 SDK</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>实时操作系统 (RTOS)</td>
-      <td><div><p>展锐芯片，包括：</p><ul><li>W3X7</li><li>T1X7</li><li>8910</li></ul></div></td>
-      <td><div><p>联系 sales@shengwang.cn 获取 RTOS 平台的 RTSA Lite SDK</p></div></td>
-    </tr>
-    <tr>
-      <td style={{ verticalAlign: 'middle' }}>Android</td>
-      <td><div><p>≥ 4.1，支持如下 ABI：</p><ul><li>armeabi-v7a</li><li>arm64-v8a</li><li>x86</li><li>x86-64</li></ul></div></td>
-      <td><div><p>下载 Android 平台的 <a href="/zh-CN/realtime-media/rtc/reference/downloads">RTC SDK</a></p></div></td>
-    </tr>
-  </tbody>
-</table>
+| 平台 | 兼容芯片或版本 | 获取 SDK |
+| --- | --- | --- |
+| 实时操作系统 (RTOS) | <Slot name="supported-platforms-html-0-0-1" /> | 联系 sales@shengwang.cn 获取 RTOS 平台的 RTSA Lite SDK |
+| Android | <Slot name="supported-platforms-html-0-1-1" /> | 下载 Android 平台的 [RTC SDK](/zh-CN/realtime-media/rtc/reference/downloads) |
+
+<Slot for="supported-platforms-html-0-0-1">
+
+展锐芯片，包括：
+
+- W3X7
+- T1X7
+- 8910
+
+</Slot>
+
+<Slot for="supported-platforms-html-0-1-1">
+
+≥ 4.1，支持如下 ABI：
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+- x86-64
+
+</Slot>
 
 如需使用其它平台，联系 sales@shengwang.cn。
