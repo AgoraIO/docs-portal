@@ -1,0 +1,91 @@
+---
+title: "PlayerStreamInfo"
+description: "播放器媒体流的所有信息。"
+---
+<a id="class_playerstreaminfo__prototype"></a>
+
+```cpp
+struct PlayerStreamInfo {
+  int streamIndex;
+  MEDIA_STREAM_TYPE streamType;
+  char codecName[kMaxCharBufferLength];
+  char language[kMaxCharBufferLength];
+  int videoFrameRate;
+  int videoBitRate;
+  int videoWidth;
+  int videoHeight;
+  int videoRotation;
+  int audioSampleRate;
+  int audioChannels;
+  int audioBitsPerSample;
+  int64_t duration;
+  PlayerStreamInfo() : streamIndex(0),
+                       streamType(STREAM_TYPE_UNKNOWN),
+                       videoFrameRate(0),
+                       videoBitRate(0),
+                       videoWidth(0),
+                       videoHeight(0),
+                       videoRotation(0),
+                       audioSampleRate(0),
+                       audioChannels(0),
+                       audioBitsPerSample(0),
+                       duration(0) {
+    memset(codecName, 0, sizeof(codecName));
+    memset(language, 0, sizeof(language));
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+## 属性
+
+### `streamIndex`
+
+媒体流的索引值。
+
+### `streamType`
+
+此条媒体流的类型。 详见 [MEDIA_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediastreamtype)。
+
+### `codecName`
+
+此条媒体流的编码规格。
+
+### `language`
+
+此条媒体流的语言。
+
+### `videoFrameRate`
+
+该参数仅对视频流生效，表示视频帧率 (fps)。
+
+### `videoBitRate`
+
+该参数仅对视频流生效，表示视频码率 (bps)。
+
+### `videoWidth`
+
+该参数仅对视频流生效，表示视频宽度 (px)。
+
+### `videoHeight`
+
+该参数仅对视频流生效，表示视频高度 (px)。
+
+### `videoRotation`
+
+该参数仅对视频流生效，表示旋转角度。
+
+### `audioSampleRate`
+
+该参数仅对音频流生效，表示音频采样率 (Hz)。
+
+### `audioChannels`
+
+该参数仅对音频流生效，表示声道数。
+
+### `audioBitsPerSample`
+
+该参数仅对音频流生效，表示每个音频采样点的位数 (bit)。
+
+### `duration`
+
+媒体流的时长（毫秒）。

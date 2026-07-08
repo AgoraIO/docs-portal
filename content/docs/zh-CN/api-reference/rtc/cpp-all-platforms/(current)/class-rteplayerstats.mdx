@@ -1,0 +1,40 @@
+---
+title: "RtePlayerStats"
+description: "用于统计当前播放媒体资源的相关信息。"
+---
+<a id="class_rteplayerstats__prototype"></a>
+
+```cpp
+typedef struct RtePlayerStats {
+  int video_decode_frame_rate;
+  int video_render_frame_rate;
+  int video_bitrate;
+  int audio_bitrate;
+} RtePlayerStats;
+```
+
+<a id="class_rteplayerstats__detailed_desc"></a>
+
+### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="class_rteplayerstats__parameters"></a>
+
+## 属性
+
+### `video_decode_frame_rate`
+
+视频解码帧率，单位为 fps。
+
+### `video_render_frame_rate`
+
+视频渲染帧率，单位为 fps。
+
+### `video_bitrate`
+
+视频码率，单位为 Kbps。
+
+### `audio_bitrate`
+
+音频码率，单位为 Kbps。

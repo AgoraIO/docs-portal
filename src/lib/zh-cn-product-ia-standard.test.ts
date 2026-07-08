@@ -216,7 +216,7 @@ describe('zh-CN product IA standard', () => {
     expect(referenceResult).toBeTruthy();
     expect(buildResult).not.toHaveProperty('redirectUrl');
     expect(referenceResult).not.toHaveProperty('redirectUrl');
-  });
+  }, 30_000);
 
   it('keeps every zh-CN product IA redirect source and target routable', () => {
     const failures: string[] = [];

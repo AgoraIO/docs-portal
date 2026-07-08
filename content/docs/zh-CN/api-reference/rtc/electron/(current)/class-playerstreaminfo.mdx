@@ -1,0 +1,92 @@
+---
+title: "PlayerStreamInfo"
+description: "播放器媒体流的所有信息。"
+---
+<a id="class_playerstreaminfo__prototype"></a>
+
+```typescript
+export class PlayerStreamInfo {
+
+  streamIndex?: number;
+
+  streamType?: MediaStreamType;
+
+  codecName?: string;
+
+  language?: string;
+
+  videoFrameRate?: number;
+
+  videoBitRate?: number;
+
+  videoWidth?: number;
+
+  videoHeight?: number;
+
+  videoRotation?: number;
+
+  audioSampleRate?: number;
+
+  audioChannels?: number;
+
+  audioBitsPerSample?: number;
+
+  duration?: number;
+}
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+## 属性
+
+### `streamIndex`
+
+媒体流的索引值。
+
+### `streamType`
+
+此条媒体流的类型。详见 [MediaStreamType](/zh-CN/api-reference/rtc/electron/enum-mediastreamtype)。
+
+### `codecName`
+
+此条媒体流的编码规格。
+
+### `language`
+
+此条媒体流的语言。
+
+### `videoFrameRate`
+
+该参数仅对视频流生效，表示视频帧率 (fps)。
+
+### `videoBitRate`
+
+该参数仅对视频流生效，表示视频码率 (bps)。
+
+### `videoWidth`
+
+该参数仅对视频流生效，表示视频宽度 (px)。
+
+### `videoHeight`
+
+该参数仅对视频流生效，表示视频高度 (px)。
+
+### `videoRotation`
+
+该参数仅对视频流生效，表示旋转角度。
+
+### `audioSampleRate`
+
+该参数仅对音频流生效，表示音频采样率 (Hz)。
+
+### `audioChannels`
+
+该参数仅对音频流生效，表示声道数。
+
+### `audioBitsPerSample`
+
+该参数仅对音频流生效，表示每个音频采样点的位数 (bit)。
+
+### `duration`
+
+媒体流的时长（毫秒）。

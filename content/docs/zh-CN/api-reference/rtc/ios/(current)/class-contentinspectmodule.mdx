@@ -1,0 +1,29 @@
+---
+title: "AgoraContentInspectModule"
+description: "用于配置视频截图和上传频率的结构体。"
+---
+<a id="class_contentinspectmodule__prototype"></a>
+
+```objectivec
+@interface AgoraContentInspectModule: NSObject
+@property (assign, nonatomic) AgoraContentInspectType type;
+@property (assign, nonatomic) NSInteger interval;
+@property (assign, nonatomic) AgoraVideoModulePosition position;
+@end
+```
+
+<a id="class_contentinspectmodule__parameters"></a>
+
+## 属性
+
+### `type`
+
+功能模块的类型，详见 [AgoraContentInspectType](/zh-CN/api-reference/rtc/ios/enum-contentinspecttype)。
+
+### `interval`
+
+视频截图和上传的频率（单位为秒）。该值必须大于 0。默认值为 0，表示 SDK 不进行截图。建议设置为 10 秒，可根据业务需求进行调整。
+
+### `position`
+
+视频观察者的位置，详见 [AgoraVideoModulePosition](/zh-CN/api-reference/rtc/ios/enum-videomoduleposition)。

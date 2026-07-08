@@ -1,0 +1,75 @@
+---
+title: "AgoraRtmpStreamingReason"
+description: "RTMP 或 RTMPS 推流状态变更的原因。"
+---
+<a id="enum_rtmpstreampublishreason__parameters"></a>
+
+## 枚举值
+
+### `AgoraRtmpStreamingReasonOK`
+
+（0）：RTMP 或 RTMPS 推流尚未开始或已结束。
+
+### `AgoraRtmpStreamingReasonInvalidParameters`
+
+（1）：参数无效。请检查参数设置是否正确。
+
+### `AgoraRtmpStreamingReasonEncryptedStreamNotAllowed`
+
+（2）：推流为加密流，无法发布。
+
+### `AgoraRtmpStreamingReasonConnectionTimeout`
+
+（3）：RTMP 或 RTMPS 推流连接超时。
+
+### `AgoraRtmpStreamingReasonInternalServerError`
+
+（4）：声网推流服务器发生错误。
+
+### `AgoraRtmpStreamingReasonRtmpServerError`
+
+（5）：CDN 服务器发生错误。
+
+### `AgoraRtmpStreamingReasonTooOften`
+
+（6）：推流操作过于频繁。
+
+### `AgoraRtmpStreamingReasonReachLimit`
+
+（7）：主播发布的 URL 超过 10 个。请删除不必要的 URL 后再添加新 URL。
+
+### `AgoraRtmpStreamingReasonNotAuthorized`
+
+（8）：主播操作了其他主播的 URL，例如更新或停止其他主播的流。请检查应用逻辑。
+
+### `AgoraRtmpStreamingReasonStreamNotFound`
+
+（9）：声网服务器未找到对应的 RTMP 或 RTMPS 推流。
+
+### `AgoraRtmpStreamingReasonFormatNotSupported`
+
+（10）：推流地址格式不支持。请检查 URL 格式是否正确。
+
+### `AgoraRtmpStreamingReasonNotBroadcaster`
+
+（11）：用户角色不是主播，无法使用 CDN 推流功能。请检查应用代码逻辑。
+
+### `AgoraRtmpStreamingReasonTranscodingNoMixStream`
+
+（13）：在无转码推流场景中调用了 [updateRtmpTranscoding:](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) 方法更新转码配置。请检查应用代码逻辑。
+
+### `AgoraRtmpStreamingReasonNetDown`
+
+（14）：主播网络发生错误。
+
+### `AgoraRtmpStreamingReasonInvalidAppId`
+
+（15）：用户的 AppId 未被授权推流。
+
+### `AgoraRtmpStreamingReasonInvalidPrivilege`
+
+（16）：项目无权限使用推流服务。
+
+### `AgoraRtmpStreamingReasonUnpublishOK`
+
+（100）：推流已正常停止。调用停止推流后，SDK 返回该值。

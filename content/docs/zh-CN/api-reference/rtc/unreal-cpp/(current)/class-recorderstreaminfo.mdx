@@ -1,0 +1,36 @@
+---
+title: "RecorderStreamInfo"
+description: "需录制的音视频流的相关信息。"
+---
+<a id="class_recorderstreaminfo__prototype"></a>
+
+```cpp
+struct RecorderStreamInfo {
+  const char* channelId;
+  uid_t uid;
+  RecorderStreamType type;
+  RecorderStreamInfo() : channelId(NULL), uid(0), type(RTC) {}
+  RecorderStreamInfo(const char* channelId, uid_t uid)
+      : channelId(channelId), uid(uid), type(RTC) {}
+  RecorderStreamInfo(const char* channelId, uid_t uid, RecorderStreamType)
+      : channelId(channelId), uid(uid), type(RTC) {}
+};
+```
+
+<a id="class_recorderstreaminfo__detailed_desc"></a>
+
+<a id="class_recorderstreaminfo__parameters"></a>
+
+## 属性
+
+### `channelId`
+
+需录制的频道名称。
+
+### `uid`
+
+需录制的用户 ID。
+
+### `type`
+
+需录制的视频流类型，详见 [RecorderStreamType](/zh-CN/api-reference/rtc/unreal-cpp/enum-recorderstreamtype)。

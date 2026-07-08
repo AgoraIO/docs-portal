@@ -1,0 +1,28 @@
+---
+title: "UserInfo"
+description: "用户的信息。"
+---
+<a id="class_userinfo__prototype"></a>
+
+```cpp
+struct UserInfo {
+                    uid_t uid;
+                    char userAccount[MAX_USER_ACCOUNT_LENGTH];
+                    UserInfo()
+                    : uid(0) {
+                    userAccount[0] = '\0';
+                    }
+                    };
+```
+
+<a id="class_userinfo__parameters"></a>
+
+## 属性
+
+### `uid`
+
+用户 ID。
+
+### `userAccount`
+
+用户 Account。 长度限制为 [MAX_USER_ACCOUNT_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-maxuseraccountlengthtype)。

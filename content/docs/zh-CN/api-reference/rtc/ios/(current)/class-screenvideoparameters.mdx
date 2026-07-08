@@ -1,0 +1,34 @@
+---
+title: "AgoraScreenVideoParameters"
+description: "共享屏幕流的视频配置。"
+---
+<a id="class_screenvideoparameters__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraScreenVideoParameters : NSObject
+@property(assign, nonatomic) CGSize dimensions;
+@property(assign, nonatomic) NSInteger frameRate;
+@property(assign, nonatomic) NSInteger bitrate;
+@property(assign, nonatomic) AgoraVideoContentHint contentHint;
+@end
+```
+
+<a id="class_screenvideoparameters__parameters"></a>
+
+## 属性
+
+### `dimensions`
+
+视频编码的分辨率。默认值为 1280 × 720。
+
+### `frameRate`
+
+视频编码的帧率（fps）。默认值为 15。
+
+### `bitrate`
+
+视频编码的码率（Kbps）。
+
+### `contentHint`
+
+屏幕共享的内容提示，详见 [AgoraVideoContentHint](/zh-CN/api-reference/rtc/ios/enum-videocontenthint)。

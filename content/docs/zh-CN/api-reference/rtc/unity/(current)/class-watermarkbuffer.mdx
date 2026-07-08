@@ -1,0 +1,68 @@
+---
+title: "WatermarkBuffer"
+description: "用于配置水印图像的格式、尺寸和像素缓冲区。"
+---
+<a id="class_watermarkbuffer__prototype"></a>
+
+```csharp
+    public class WatermarkBuffer
+    {
+        public int width;
+
+        public int height;
+
+        public int length;
+
+        public VIDEO_PIXEL_FORMAT format;
+
+        public IntPtr buffer;
+
+        public WatermarkBuffer()
+        {
+            this.buffer = IntPtr.Zero;
+            this.width = 0;
+            this.height = 0;
+            this.length = 0;
+            this.format = VIDEO_PIXEL_FORMAT.VIDEO_PIXEL_I420;
+        }
+
+        public WatermarkBuffer(int width, int height, int length, VIDEO_PIXEL_FORMAT format, IntPtr buffer)
+        {
+            this.width = width;
+            this.height = height;
+            this.length = length;
+            this.format = format;
+            this.buffer = buffer;
+        }
+    }
+```
+
+<a id="class_watermarkbuffer__detailed_desc"></a>
+
+### `自从`
+
+自 v4.6.2 版本新增。
+
+<a id="class_watermarkbuffer__parameters"></a>
+
+## 属性
+
+### `width`
+
+水印图像的宽度，单位为像素。
+
+### `height`
+
+水印图像的高度，单位为像素。
+
+### `length`
+
+水印图像缓冲区的长度，单位为字节。
+
+### `format`
+
+水印图像的像素格式，详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/unity/enum-videopixelformat)。默认值为 `VIDEO_PIXEL_I420`。当前支持的格式包括： `VIDEO_PIXEL_I420`、 `VIDEO_PIXEL_RGBA`、 `VIDEO_PIXEL_BGRA` 和 `VIDEO_PIXEL_NV21`。
+
+### `buffer`
+
+水印图像的像素缓冲区数据。

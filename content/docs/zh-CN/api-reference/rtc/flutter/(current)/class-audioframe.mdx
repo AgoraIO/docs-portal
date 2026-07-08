@@ -1,0 +1,57 @@
+---
+title: "AudioFrame"
+description: "原始音频数据。"
+---
+<a id="class_audioframe__prototype"></a>
+
+```dart
+class AudioFrame {
+  const AudioFrame(
+      {this.type,
+      this.samplesPerChannel,
+      this.bytesPerSample,
+      this.channels,
+      this.samplesPerSec,
+      this.buffer,
+      this.renderTimeMs,
+      this.avsyncType});
+```
+
+<a id="class_audioframe__parameters"></a>
+
+## 属性
+
+### `type`
+
+音频帧类型，详见 [AudioFrameType](/zh-CN/api-reference/rtc/flutter/enum-audioframetype)。
+
+### `samplesPerChannel`
+
+每个声道的采样点数。
+
+### `bytesPerSample`
+
+每个采样点的字节数。对于 PCM 来说，一般使用 16 bit，即两个字节。
+
+### `channels`
+
+声道数量(如果是立体声，数据是交叉的)。
+
+- 1: 单声道
+- 2: 双声道
+
+### `samplesPerSec`
+
+每声道每秒的采样点数。
+
+### `buffer`
+
+声音数据缓存区（如果是立体声，数据是交叉存储的）。 缓存区数据大小 `buffer` = `samples` × `channels` × `bytesPerSample`。
+
+### `renderTimeMs`
+
+外部音频帧的渲染时间戳。 你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以用于实现音视频同步。
+
+### `avsyncType`
+
+保留参数。

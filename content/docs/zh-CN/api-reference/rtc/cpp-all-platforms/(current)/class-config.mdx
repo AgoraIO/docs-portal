@@ -1,0 +1,48 @@
+---
+title: "Config"
+description: "用于配置 RTE 对象。"
+---
+<a id="class_config__prototype"></a>
+
+```cpp
+class Config {
+ public:
+    RteConfigSetAppId(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetLogFolder(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetCloudProxy(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetJsonParameter(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+
+ private:
+  ::RteConfig* get_underlying_impl() { return &c_rte_config; }
+
+ private:
+  friend class Rte;
+  ::RteConfig c_rte_config;
+};
+```
+
+<a id="class_config__detailed_desc"></a>
+
+### `自从`
+
+自 v4.4.0 版本新增。
+
+<a id="class_config__parameters"></a>
+
+## 属性
+
+### `RteConfigSetAppId`
+
+设置 App ID，用于标识应用。
+
+### `RteConfigSetLogFolder`
+
+设置日志文件的存储目录。
+
+### `RteConfigSetCloudProxy`
+
+设置云代理地址。
+
+### `RteConfigSetJsonParameter`
+
+设置 JSON 格式的自定义参数。

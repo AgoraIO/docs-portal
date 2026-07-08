@@ -1,0 +1,65 @@
+---
+title: "EncodedVideoFrameInfo"
+description: "描述外部编码视频帧的信息。"
+---
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```cpp
+struct EncodedVideoFrameInfo {
+  VIDEO_CODEC_TYPE codecType;
+  int width;
+  int height;
+  int framesPerSecond;
+  VIDEO_FRAME_TYPE frameType;
+  VIDEO_ORIENTATION rotation;
+  int trackId;
+  int64_t captureTimeMs;
+  int64_t decodeTimeMs;
+  VIDEO_STREAM_TYPE streamType;
+  int64_t presentationMs;
+};
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+本地视频流的首选编码器类型。详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocodectype)。
+
+### `width`
+
+视频帧的宽度（单位为像素）。
+
+### `height`
+
+视频帧的高度（单位为像素）。
+
+### `framesPerSecond`
+
+视频帧的每秒帧数。当该参数不为 0 时，可用于计算外部编码视频帧的 Unix 时间戳。
+
+### `frameType`
+
+视频帧的类型。详见 [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoframetype)。
+
+### `rotation`
+
+视频帧的旋转信息。详见 [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videoorientation)。
+
+### `trackId`
+
+预留参数，用于未来支持多个视频轨道。
+
+### `captureTimeMs`
+
+外部编码视频帧的采集时间戳（单位为毫秒，Unix 时间戳）。
+
+### `decodeTimeMs`
+
+外部编码视频帧的解码时间戳（单位为毫秒，Unix 时间戳）。
+
+### `streamType`
+
+视频流的类型。详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videostreamtype)。

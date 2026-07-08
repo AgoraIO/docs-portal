@@ -1,0 +1,153 @@
+---
+title: "已编码音频数据"
+description: "已编码音频数据 API reference."
+---
+<a id="toc_audio_encoded"></a>
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
+
+## onMixedAudioEncodedFrame
+
+获取本地和所有远端用户混音后的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onMixedAudioEncodedFrame(const uint8_t* frameBuffer,  int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_MIXED 后，你可以通过该回调获取本地和所有远端用户混音、编码后的音频数据。
+
+<a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="api_irtcengine_registeraudioencodedframeobserver"></a>
+
+## registerAudioEncodedFrameObserver
+
+注册音频编码数据观测器。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__prototype"></a>
+
+```cpp
+virtual int registerAudioEncodedFrameObserver(const AudioEncodedFrameObserverConfig& config,  IAudioEncodedFrameObserver *observer) = 0;
+```
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__detailed_desc"></a>
+
+### 详情
+
+:::warning[注意]
+- 请在加入频道后调用该方法。
+- 由于该方法和 startAudioRecording [3/3] 都会设置音频内容和音质，不建议该方法和 startAudioRecording [3/3] 一起使用。否则，只有后调用的方法会生效。
+:::
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
+
+### 参数
+
+#### `config`
+
+编码后音频的观测器设置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-audioencodedframeobserverconfig)。
+
+#### `observer`
+
+编码后音频的观测器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+<a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/error-code) 了解详情和解决建议。
+
+### 所属接口类
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
+
+## onPlaybackAudioEncodedFrame
+
+获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onPlaybackAudioEncodedFrame(const uint8_t* frameBuffer,  int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_PLAYBACK 后，你可以通过该回调获取所有远端用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioencodedframeobserver)
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
+
+## onRecordAudioEncodedFrame
+
+获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__prototype"></a>
+
+```cpp
+virtual void onRecordAudioEncodedFrame(const uint8_t* frameBuffer,  int length, const EncodedAudioFrameInfo& audioEncodedFrameInfo) = 0;
+```
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__detailed_desc"></a>
+
+调用 [registerAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) 并将音频编码内容设为 AUDIO_ENCODED_FRAME_OBSERVER_POSITION_RECORD 后，你可以通过该回调获取本地用户的音频编码数据。
+
+<a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__parameters"></a>
+
+### 参数
+
+#### `frameBuffer`
+
+音频 buffer。
+
+#### `length`
+
+音频数据长度，单位为字节。
+
+#### `audioEncodedFrameInfo`
+
+编码后音频的信息。详见 [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-encodedaudioframeinfo)。
+
+### 所属接口类
+- [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudioencodedframeobserver)

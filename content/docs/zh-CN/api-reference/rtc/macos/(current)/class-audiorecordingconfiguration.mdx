@@ -1,0 +1,63 @@
+---
+title: "AgoraAudioRecordingConfiguration"
+description: "录音配置。"
+---
+<a id="class_audiorecordingconfiguration__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraAudioRecordingConfiguration: NSObject
+@property (copy, nonatomic) NSString * _Nullable filePath;
+@property (assign, nonatomic) NSUInteger sampleRate;
+@property (assign, nonatomic) AgoraAudioFileRecordingType fileRecordOption;
+@property (assign, nonatomic) AgoraAudioRecordingQuality quality;
+@property (assign, nonatomic) NSInteger recordingChannel;
+@end
+```
+
+<a id="class_audiorecordingconfiguration__parameters"></a>
+
+## 属性
+
+### `filePath`
+
+录音文件的绝对路径（包括文件扩展名）。例如： /var/mobile/Containers/Data/audio.aac。
+
+:::info[注]
+请确保日志文件目录存在且可写。
+:::
+
+### `sampleRate`
+
+录音采样率（Hz）。支持以下取值：16000、32000（默认）、44100、48000。
+
+:::info[注]
+如果将该参数设置为 44100 或 48000，声网建议录制 WAV 文件，或录制 `quality` 设置为 `AgoraAudioRecordingQualityMedium` 或 `AgoraAudioRecordingQualityHigh` 的 AAC 文件，以获得更好的录音质量。
+:::
+
+### `fileRecordOption`
+
+录音内容。详见 [AgoraAudioFileRecordingType](/zh-CN/api-reference/rtc/macos/enum-audiofilerecordingtype)。
+
+### `quality`
+
+录音质量。详见 [AgoraAudioRecordingQuality](/zh-CN/api-reference/rtc/macos/enum-audiorecordingqualitytype)。
+
+:::info[注]
+该参数仅适用于 AAC 文件。
+:::
+
+### `recordingChannel`
+
+:::info[注]
+实际录制的音频声道与采集的音频声道有关：
+
+- 如果采集的是单声道，且 recordingChannel 为 2，则录制的音频是从单声道复制的双声道数据，而非真正的立体声；
+- 如果采集的是双声道，且 recordingChannel 为 1，则录制的音频是由双声道混合而成的单声道数据。
+
+集成方案也会影响最终录制的音频声道。如果需要录制立体声，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+录音的音频声道数。支持以下取值：
+
+- 1：（默认）单声道。
+- 2：立体声。

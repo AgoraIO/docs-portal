@@ -1,0 +1,59 @@
+---
+title: "FCodecCapInfo"
+description: "SDK 支持的编解码能力信息。"
+---
+<a id="class_codeccapinfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FCodecCapInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CodecCapInfo")
+	EVIDEO_CODEC_TYPE codecType = EVIDEO_CODEC_TYPE::VIDEO_CODEC_NONE;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CodecCapInfo")
+	int codecCapMask = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|CodecCapInfo")
+	FCodecCapLevels codecLevels;
+	FCodecCapInfo(){}
+	FCodecCapInfo(const agora::rtc::CodecCapInfo & AgoraData){
+		codecType = static_cast<EVIDEO_CODEC_TYPE>(AgoraData.codecType);
+		codecCapMask = AgoraData.codecCapMask;
+		codecLevels = AgoraData.codecLevels;
+	}
+	agora::rtc::CodecCapInfo CreateAgoraData() const {
+		agora::rtc::CodecCapInfo AgoraData;
+		AgoraData.codecType = static_cast<agora::rtc::VIDEO_CODEC_TYPE>(codecType);
+		AgoraData.codecCapMask = codecCapMask;
+		AgoraData.codecLevels = codecLevels.CreateAgoraData();
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::CodecCapInfo& AgoraData) const {
+		codecLevels.FreeAgoraData(AgoraData.codecLevels);
+	}
+};
+```
+
+<a id="class_codeccapinfo__detailed_desc"></a>
+
+<a id="class_codeccapinfo__parameters"></a>
+
+## 属性
+
+### `codecType`
+
+视频编解码类型。详见 [EUABT_VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodectype)。
+
+### `codecCapMask`
+
+编解码类型的 bit mask：
+
+- 0：不支持编解码。
+- 1 &lt;&lt; 0：支持硬件解码。
+- 1 &lt;&lt; 1：支持硬件编码。
+- 1 &lt;&lt; 2：支持软件解码。
+- 1 &lt;&lt; 3：支持软件编码。
+
+### `codecLevels`
+
+SDK 支持的编解码能力等级。详见 [FCodecCapLevels](/zh-CN/api-reference/rtc/unreal-blueprint/class-codeccaplevels)。

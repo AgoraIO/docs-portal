@@ -1,0 +1,288 @@
+---
+title: "FCRGroupContext"
+description: "FCRGroupContext 类。"
+---
+<a id="class_groupcontext"></a>
+
+FCRGroupContext 类。
+
+<a id="class_groupcontext__detailed_desc"></a>
+
+FCRGroupContext 类提供的方法用于管理所有的子房间。可通过该类实现分组讨论功能。
+
+<a id="api_getgroupinfo"></a>
+
+## getGroupInfo
+
+获取分组信息。
+
+<a id="api_getgroupinfo__prototype"></a>
+
+```kotlin
+abstract fun getGroupInfo(): FCREduContextGroupInfo?
+```
+
+<a id="api_getgroupinfo__return_values"></a>
+
+### 返回值
+
+返回分组信息对象 [FCREduContextGroupInfo](/zh-CN/api-reference/flexible-classroom/android/class-groupinfo)。
+
+<a id="api_addsubroomlist"></a>
+
+## addSubRoomList
+
+创建子房间，
+
+<a id="api_addsubroomlist__prototype"></a>
+
+```kotlin
+abstract fun addSubRoomList(
+        appId: String,
+        roomUuid: String,
+        groupWithInProgress: GroupWithInProgress,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_addsubroomlist__parameters"></a>
+
+### 参数
+
+<a id="api_removesubroomlist"></a>
+
+## removeSubRoomList
+
+移除子房间。
+
+<a id="api_removesubroomlist__prototype"></a>
+
+```kotlin
+abstract fun removeSubRoomList(
+        appId: String,
+        roomUuid: String,
+        subRoomList: List<String>,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_removesubroomlist__parameters"></a>
+
+### 参数
+
+#### `subRoomList`
+
+子房间 ID 列表。
+
+<a id="api_removeallsubroomlist"></a>
+
+## removeAllSubRoomList
+
+移除所有子房间。
+
+<a id="api_removeallsubroomlist__prototype"></a>
+
+```kotlin
+abstract fun removeAllSubRooms(
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_removeallsubroomlist__parameters"></a>
+
+### 参数
+
+<a id="api_getsubroomlist"></a>
+
+## getSubRoomList
+
+获取子房间列表。
+
+<a id="api_getsubroomlist__prototype"></a>
+
+```kotlin
+abstract fun getSubRoomList(): AgoraEduContextSubRoomInfo
+```
+
+<a id="api_getsubroomlist__return_values"></a>
+
+### 返回值
+
+调用成功，则返回子房间信息 [AgoraEduContextSubRoomInfo](/zh-CN/api-reference/flexible-classroom/android/class-subroominfo) 列表。
+
+<a id="api_getuserlistfromsubRoom"></a>
+
+## getUserListFrom
+
+获取指定子房间内的用户列表。
+
+<a id="api_getuserlistfromsubRoom__prototype"></a>
+
+```kotlin
+abstract fun getUserListFrom(subRoomUuid: String): List<String>
+```
+
+<a id="api_getuserlistfromsubRoom__parameters"></a>
+
+### 参数
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+<a id="api_getuserlistfromsubRoom__return_values"></a>
+
+### 返回值
+
+用户 ID 列表。
+
+<a id="api_inviteuserlisttosubroom"></a>
+
+## inviteUserListToSubRoom
+
+邀请用户加入子房间。
+
+<a id="api_inviteuserlisttosubroom__prototype"></a>
+
+```kotlin
+abstract fun inviteUserListToSubRoom(
+        userList: List<String>,
+        appId: String,
+        roomUuid: String,
+        groupUuid: String,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_inviteuserlisttosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+<a id="api_userlistacceptinvitationtosubRoom"></a>
+
+## userListAcceptInvitationToSubRoom
+
+用户接受邀请进入自房间。
+
+<a id="api_userlistacceptinvitationtosubRoom__prototype"></a>
+
+```kotlin
+abstract fun userListAcceptInvitationToSubRoom(
+        userList: List<String>, subRoomUuid: String,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_userlistacceptinvitationtosubRoom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+<a id="api_userlistrejectinvitationtosubroom"></a>
+
+## userListRejectInvitationToSubRoom
+
+用户拒绝加入子房间的邀请。
+
+<a id="api_userlistrejectinvitationtosubroom__prototype"></a>
+
+```kotlin
+abstract fun userListRemoveFromSubRoom(
+        userList: List<String>,
+        appId: String,
+        roomUuid: String,
+        groupUuid: String,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_userlistrejectinvitationtosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+<a id="api_adduserlisttosubroom"></a>
+
+## addUserListToSubRoom
+
+将用户移入子房间。
+
+<a id="api_adduserlisttosubroom__prototype"></a>
+
+```kotlin
+abstract fun addUserListToSubRoom(
+        userList: List<String>, subRoomUuid: String,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_adduserlisttosubroom__detailed_desc"></a>
+
+该方法跳过邀请步骤，直接将用户移入子房间。
+
+<a id="api_adduserlisttosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `subRoomUuid`
+
+子房间 ID。
+
+<a id="api_moveuserlisttosubroom"></a>
+
+## moveUserListToSubRoom
+
+将用户从某子房间移动至另一子房间。
+
+<a id="api_moveuserlisttosubroom__prototype"></a>
+
+```kotlin
+abstract fun moveUserListToSubRoom(
+        userList: List<String>, 
+        fromSubRoomUuid: String, 
+        toSubRoomUuid: String,
+        callback: HttpCallback<HttpBaseRes<String>>?
+)
+```
+
+<a id="api_moveuserlisttosubroom__parameters"></a>
+
+### 参数
+
+#### `userList`
+
+用户 ID 列表。
+
+#### `fromSubRoomUuid`
+
+源子房间 ID。
+
+#### `toSubRoomUuid`
+
+目标子房间 ID。

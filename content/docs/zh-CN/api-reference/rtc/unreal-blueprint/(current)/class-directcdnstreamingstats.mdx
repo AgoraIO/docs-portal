@@ -1,0 +1,66 @@
+---
+title: "FDirectCdnStreamingStats"
+description: "当前 CDN 推流的统计数据。"
+---
+<a id="class_directcdnstreamingstats__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FDirectCdnStreamingStats {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DirectCdnStreamingStats")
+	int videoWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DirectCdnStreamingStats")
+	int videoHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DirectCdnStreamingStats")
+	int fps = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DirectCdnStreamingStats")
+	int videoBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DirectCdnStreamingStats")
+	int audioBitrate = 0;
+	FDirectCdnStreamingStats(){}
+	FDirectCdnStreamingStats(const agora::rtc::DirectCdnStreamingStats & AgoraData){
+		videoWidth = AgoraData.videoWidth;
+		videoHeight = AgoraData.videoHeight;
+		fps = AgoraData.fps;
+		videoBitrate = AgoraData.videoBitrate;
+		audioBitrate = AgoraData.audioBitrate;
+	}
+	agora::rtc::DirectCdnStreamingStats CreateAgoraData() const {
+		agora::rtc::DirectCdnStreamingStats AgoraData;
+		AgoraData.videoWidth = videoWidth;
+		AgoraData.videoHeight = videoHeight;
+		AgoraData.fps = fps;
+		AgoraData.videoBitrate = videoBitrate;
+		AgoraData.audioBitrate = audioBitrate;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::DirectCdnStreamingStats & AgoraData) const {
+	}
+};
+```
+
+<a id="class_directcdnstreamingstats__parameters"></a>
+
+## 属性
+
+### `videoWidth`
+
+视频的宽度（px）。
+
+### `videoHeight`
+
+视频的高度（px）。
+
+### `fps`
+
+当前视频帧率（fps）。
+
+### `videoBitrate`
+
+当前视频码率（bps）。
+
+### `audioBitrate`
+
+当前音频码率（bps）。

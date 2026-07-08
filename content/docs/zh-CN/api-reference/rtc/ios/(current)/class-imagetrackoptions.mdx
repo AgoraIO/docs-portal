@@ -1,0 +1,29 @@
+---
+title: "AgoraImageTrackOptions"
+description: "图像配置。"
+---
+<a id="class_imagetrackoptions__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraImageTrackOptions : NSObject
+@property(copy, nonatomic) NSString *_Nullable imageUrl;
+@property(assign, nonatomic) int fps;
+@property(assign, nonatomic) AgoraVideoMirrorMode mirrorMode;
+@end
+```
+
+<a id="class_imagetrackoptions__parameters"></a>
+
+## 属性
+
+### `imageUrl`
+
+图像的 URL。支持的图像格式包括 JPEG、JPG、PNG 和 GIF。支持从本地的绝对路径或相对路径添加图像。
+
+### `fps`
+
+发布视频流的帧率。取值范围为 [1, 30]，默认值为 1。
+
+### `mirrorMode`
+
+镜像模式。详见 [AgoraVideoMirrorMode](/zh-CN/api-reference/rtc/ios/enum-videomirrormodetype)。

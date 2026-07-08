@@ -1,0 +1,34 @@
+---
+title: "LastmileProbeResult"
+description: "表示上下行 Last-mile 网络探测的结果。"
+---
+<a id="class_lastmileproberesult__prototype"></a>
+
+```cpp
+struct LastmileProbeResult {
+  LASTMILE_PROBE_RESULT_STATE state;
+  LastmileProbeOneWayResult uplinkReport;
+  LastmileProbeOneWayResult downlinkReport;
+  unsigned int rtt;
+};
+```
+
+<a id="class_lastmileproberesult__parameters"></a>
+
+## 属性
+
+### `state`
+
+Last-mile 网络探测的状态。详见 [LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-lastmileproberesultstate)。
+
+### `uplinkReport`
+
+上行 Last-mile 网络探测的结果。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeonewayresult)。
+
+### `downlinkReport`
+
+下行 Last-mile 网络探测的结果。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeonewayresult)。
+
+### `rtt`
+
+往返时延（毫秒）。

@@ -1,0 +1,129 @@
+---
+title: "AudioEffectPreset"
+description: "预设的音效选项。"
+---
+<a id="enum_audioeffectpreset__detailed_desc"></a>
+
+[setAudioProfile](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#api_irtcengine_setaudioprofile) `profile` 预设音效 `profile`
+
+- RoomAcousticsVirtualStereo
+- RoomAcoustics3dVoice
+- RoomAcousticsVirtualSurroundSound
+
+`AudioProfileMusicHighQualityStereo` 或 `AudioProfileMusicStandardStereo` 其他预设音效（除 `AudioEffectOff` 以外） `AudioProfileMusicHighQuality` 或 `AudioProfileMusicHighQualityStereo`
+
+<a id="enum_audioeffectpreset__parameters"></a>
+
+## 枚举值
+
+### `AudioEffectOff`
+
+原声，即关闭人声音效。
+
+### `RoomAcousticsKtv`
+
+KTV。
+
+### `RoomAcousticsVocalConcert`
+
+演唱会。
+
+### `RoomAcousticsStudio`
+
+录音棚。
+
+### `RoomAcousticsPhonograph`
+
+留声机。
+
+### `RoomAcousticsVirtualStereo`
+
+虚拟立体声，即 SDK 将单声道的音频渲染出双声道的音效。
+
+### `RoomAcousticsSpacial`
+
+空旷。
+
+### `RoomAcousticsEthereal`
+
+空灵。
+
+### `RoomAcousticsVirtualSurroundSound`
+
+虚拟环绕声，即 SDK 在双声道的基础上产生仿真的环绕声场，从而营造出具有环绕感的音效。
+
+:::info[注]
+启用虚拟环绕声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::
+
+### `RoomAcousticsChorus`
+
+合唱。声网推荐你在合唱场景下使用，使人声更具空间立体感。
+
+### `RoomAcoustics3dVoice`
+
+3D 人声，即 SDK 将音频渲染出在用户周围环绕的效果。环绕周期默认为 10 秒。设置该音效后，你还可以调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 修改环绕周期。
+
+:::info[注]
+启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
+:::
+
+### `VoiceChangerEffectUncle`
+
+大叔。
+
+:::info[注]
+建议用于处理男声，否则无法达到预期效果。
+:::
+
+### `VoiceChangerEffectOldman`
+
+老年男性。
+
+:::info[注]
+建议用于处理男声，否则无法达到预期效果。
+:::
+
+### `VoiceChangerEffectBoy`
+
+男孩。
+
+:::info[注]
+建议用于处理男声，否则无法达到预期效果。
+:::
+
+### `VoiceChangerEffectSister`
+
+少女。
+
+:::info[注]
+建议用于处理女声，否则无法达到预期效果。
+:::
+
+### `VoiceChangerEffectGirl`
+
+女孩。
+
+:::info[注]
+建议用于处理女声，否则无法达到预期效果。
+:::
+
+### `VoiceChangerEffectPigking`
+
+猪八戒。
+
+### `VoiceChangerEffectHulk`
+
+绿巨人。
+
+### `StyleTransformationRnb`
+
+R&B。
+
+### `StyleTransformationPopular`
+
+流行。
+
+### `PitchCorrection`
+
+电音，即 SDK 以主音音高为 C 的自然大调为基础修正音频的实际音高。设置该音效后，你还可以调用 [setAudioEffectParameters](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) 调整修音的基础调式和主音音高。

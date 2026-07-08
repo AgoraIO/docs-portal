@@ -1,0 +1,43 @@
+---
+title: "SetLocalVideoDataSourcePosition"
+description: "设置本地视频帧的观测位置。"
+---
+<a id="api_irtcengine_setlocalvideodatasourceposition__prototype"></a>
+
+```csharp
+public abstract int SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION position);
+```
+
+<a id="api_irtcengine_setlocalvideodatasourceposition__detailed_desc"></a>
+
+<a id="api_irtcengine_setlocalvideodatasourceposition__timing"></a>
+
+## 调用时机
+
+该方法需要在创建第一个 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 视图之前调用。
+
+<a id="api_irtcengine_setlocalvideodatasourceposition__restriction"></a>
+
+## 调用限制
+
+该方法仅支持观测通过 [VideoSurface](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_videosurface) 及其子类渲染的本地视频数据。
+
+<a id="api_irtcengine_setlocalvideodatasourceposition__parameters"></a>
+
+## 参数
+
+### `position`
+
+视频帧的观测位置，详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/csharp-windows/enum-videomoduleposition)。
+
+:::warning[注意]
+- 该方法目前仅支持将观测位置设为 POSITION_POST_CAPTURER 或 POSITION_PRE_ENCODER。
+- 在 POSITION_POST_CAPTURER 处获取的视频帧未经裁剪且帧率较高， POSITION_PRE_ENCODER 位置获取的视频帧经过发送前的裁剪，帧率小于或等于摄像头采集的帧率。
+:::
+
+<a id="api_irtcengine_setlocalvideodatasourceposition__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

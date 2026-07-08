@@ -1,0 +1,23 @@
+---
+title: "USER_OFFLINE_REASON_TYPE"
+description: "用户离线原因。"
+---
+<a id="enum_userofflinereasontype__parameters"></a>
+
+## 枚举值
+
+### `USER_OFFLINE_QUIT`
+
+0: 用户主动离开。
+
+### `USER_OFFLINE_DROPPED`
+
+1: 因过长时间收不到对方数据包，超时掉线。
+
+:::warning[注意]
+由于 SDK 使用的是不可靠通道，也有可能对方主动离开频道，但是本地没收到对方离开消息而误判为超时掉线。
+:::
+
+### `USER_OFFLINE_BECOME_AUDIENCE`
+
+2: 用户身份从主播切换为观众。

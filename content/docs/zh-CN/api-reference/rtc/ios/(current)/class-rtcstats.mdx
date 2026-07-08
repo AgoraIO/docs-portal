@@ -1,0 +1,179 @@
+---
+title: "AgoraChannelStats"
+description: "通话会话的统计信息。"
+---
+<a id="class_rtcstats__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraChannelStats : NSObject
+@property(assign, nonatomic) NSUInteger duration;
+@property(assign, nonatomic) NSUInteger txBytes;
+@property(assign, nonatomic) NSUInteger rxBytes;
+@property(assign, nonatomic) NSUInteger txAudioKBitrate;
+@property(assign, nonatomic) NSUInteger rxAudioKBitrate;
+@property(assign, nonatomic) NSUInteger txVideoKBitrate;
+@property(assign, nonatomic) NSUInteger rxVideoKBitrate;
+@property(assign, nonatomic) NSUInteger txAudioBytes;
+@property(assign, nonatomic) NSUInteger txVideoBytes;
+@property(assign, nonatomic) NSUInteger rxAudioBytes;
+@property(assign, nonatomic) NSUInteger rxVideoBytes;
+@property(assign, nonatomic) NSUInteger lastmileDelay;
+@property(assign, nonatomic) NSUInteger userCount;
+@property(assign, nonatomic) double cpuAppUsage;
+@property(assign, nonatomic) double cpuTotalUsage;
+@property(assign, nonatomic) NSInteger gatewayRtt;
+@property(assign, nonatomic) double memoryAppUsageRatio;
+@property(assign, nonatomic) double memoryTotalUsageRatio;
+@property(assign, nonatomic) NSInteger memoryAppUsageInKbytes;
+@property(assign, nonatomic) NSInteger connectTimeMs;
+@property(assign, nonatomic) NSUInteger txKBitrate;
+@property(assign, nonatomic) NSUInteger rxKBitrate;
+@property(assign, nonatomic) NSInteger firstAudioPacketDuration;
+@property(assign, nonatomic) NSInteger firstVideoPacketDuration;
+@property(assign, nonatomic) NSInteger firstVideoKeyFramePacketDuration;
+@property(assign, nonatomic) NSInteger packetsBeforeFirstKeyFramePacket;
+@property(assign, nonatomic) NSInteger txPacketLossRate;
+@property(assign, nonatomic) NSInteger rxPacketLossRate;
+@property(assign, nonatomic) NSInteger lanAccelerateState;
+@end
+```
+
+<a id="class_rtcstats__parameters"></a>
+
+## 属性
+
+### `duration`
+
+本地用户通话时长，单位为秒，表示为累计值。
+
+### `txBytes`
+
+发送的字节数。
+
+### `rxBytes`
+
+接收的字节数。
+
+### `txAudioKBitrate`
+
+音频发送码率，单位为 Kbps。
+
+### `rxAudioKBitrate`
+
+音频接收码率，单位为 Kbps。
+
+### `txVideoKBitrate`
+
+视频发送码率，单位为 Kbps。
+
+### `rxVideoKBitrate`
+
+视频接收码率，单位为 Kbps。
+
+### `txAudioBytes`
+
+发送的音频字节总数，表示为累计值。
+
+### `txVideoBytes`
+
+发送的视频字节总数，表示为累计值。
+
+### `rxAudioBytes`
+
+接收的音频字节总数，表示为累计值。
+
+### `rxVideoBytes`
+
+接收的视频字节总数，表示为累计值。
+
+### `lastmileDelay`
+
+客户端到服务器的延迟，单位为毫秒。
+
+### `userCount`
+
+频道中的用户数。
+
+### `cpuAppUsage`
+
+应用程序的 CPU 使用率（%）。
+
+:::info[注]
+在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::
+
+### `cpuTotalUsage`
+
+系统的 CPU 使用率（%）。
+
+:::info[注]
+在 [rtcEngine:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+:::
+
+### `gatewayRtt`
+
+客户端到本地路由器的往返时延，单位为毫秒。
+
+:::info[注]
+该属性在运行 iOS 14 或更高版本的设备上默认禁用，在运行早期版本的设备上默认启用。要在 iOS 14 或更高版本的设备上启用该属性，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+### `memoryAppUsageRatio`
+
+应用程序占用的内存比例（%）。
+
+:::info[注]
+该值仅供参考。由于系统限制，可能无法获取该值。
+:::
+
+### `memoryTotalUsageRatio`
+
+系统占用的内存比例（%）。
+
+:::info[注]
+该值仅供参考。由于系统限制，可能无法获取该值。
+:::
+
+### `memoryAppUsageInKbytes`
+
+应用程序占用的内存大小，单位为 KB。
+
+:::info[注]
+该值仅供参考。由于系统限制，可能无法获取该值。
+:::
+
+### `connectTimeMs`
+
+从 SDK 开始连接到连接建立之间的耗时，单位为毫秒。若值为 0，表示无效。
+
+### `txKBitrate`
+
+本地视频流发送时的实际码率，单位为 Kbps。
+
+### `rxKBitrate`
+
+接收码率，单位为 Kbps。
+
+### `firstAudioPacketDuration`
+
+从连接开始到接收到首个音频包的耗时，单位为毫秒。若值为 0，表示无效。
+
+### `firstVideoPacketDuration`
+
+从连接开始到接收到首个视频包的耗时，单位为毫秒。若值为 0，表示无效。
+
+### `firstVideoKeyFramePacketDuration`
+
+从连接开始到接收到首个视频关键帧的耗时，单位为毫秒。若值为 0，表示无效。
+
+### `packetsBeforeFirstKeyFramePacket`
+
+在接收到首个视频关键帧前接收到的视频包数量。若值为 0，表示无效。
+
+### `txPacketLossRate`
+
+应用抗丢包算法前，客户端到声网服务器的丢包率（%）。
+
+### `rxPacketLossRate`
+
+使用抗丢包方法前，声网服务器到客户端的丢包率（%）。

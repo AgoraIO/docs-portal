@@ -1,0 +1,38 @@
+---
+title: "GetRecordingDeviceInfo [2/2]"
+description: "获取音频采集设备信息及其类型。"
+---
+<a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__prototype"></a>
+
+```csharp
+public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string deviceName, ref string deviceTypeName);
+```
+
+<a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__detailed_desc"></a>
+
+## 详情
+
+该方法仅适用于 macOS。
+
+<a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__parameters"></a>
+
+## 参数
+
+### `deviceId`
+
+输出参数，播放设备的设备 ID。
+
+### `deviceName`
+
+输出参数，播放设备的设备名称。
+
+### `deviceTypeName`
+
+输出参数，音频采集设备类型，如：built-in、USB、HDMI 等。
+
+<a id="api_iaudiodevicemanager_getrecordingdeviceinfo2__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

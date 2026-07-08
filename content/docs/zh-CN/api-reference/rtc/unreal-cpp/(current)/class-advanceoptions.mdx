@@ -1,0 +1,50 @@
+---
+title: "AdvanceOptions"
+description: "视频编码的高级选项。"
+---
+<a id="class_advanceoptions__prototype"></a>
+
+```cpp
+struct AdvanceOptions {
+  ENCODING_PREFERENCE encodingPreference;
+  COMPRESSION_PREFERENCE compressionPreference;
+  bool encodeAlpha;
+  AdvanceOptions() : encodingPreference(PREFER_AUTO), 
+                     compressionPreference(PREFER_LOW_LATENCY),
+                     encodeAlpha(false) {}
+
+  AdvanceOptions(ENCODING_PREFERENCE encoding_preference, 
+                 COMPRESSION_PREFERENCE compression_preference,
+                 bool encode_alpha) : 
+                 encodingPreference(encoding_preference),
+                 compressionPreference(compression_preference),
+                 encodeAlpha(encode_alpha) {}
+
+  bool operator==(const AdvanceOptions& rhs) const {
+    return encodingPreference == rhs.encodingPreference && 
+           compressionPreference == rhs.compressionPreference &&
+           encodeAlpha == rhs.encodeAlpha;
+  }
+};
+```
+
+<a id="class_advanceoptions__detailed_desc"></a>
+
+<a id="class_advanceoptions__parameters"></a>
+
+## 属性
+
+### `encodingPreference`
+
+视频编码器偏好。详见 [ENCODING_PREFERENCE](/zh-CN/api-reference/rtc/unreal-cpp/enum-encodingpreference)。
+
+### `compressionPreference`
+
+视频编码的压缩偏好。详见 [COMPRESSION_PREFERENCE](/zh-CN/api-reference/rtc/unreal-cpp/enum-compressionpreference)。
+
+### `encodeAlpha`
+
+当视频帧包含 Alpha 通道数据时，设置是否将 Alpha 数据编码并发送至远端：
+
+- true：对 Alpha 数据进行编码发送。
+- false：（默认）不对 Alpha 数据进行编码发送。

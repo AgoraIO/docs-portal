@@ -1,0 +1,44 @@
+---
+title: "FDeviceInfo"
+description: "音频设备信息。"
+---
+<a id="class_deviceinfo__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FDeviceInfo
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|DeviceInfo")
+	bool isLowLatencyAudioSupported = false;
+	FDeviceInfo(){}
+	FDeviceInfo(const agora::rtc::DeviceInfo & AgoraData){
+		isLowLatencyAudioSupported = AgoraData.isLowLatencyAudioSupported;
+	}
+	agora::rtc::DeviceInfo CreateAgoraData() const {
+		agora::rtc::DeviceInfo AgoraData;
+		AgoraData.isLowLatencyAudioSupported = isLowLatencyAudioSupported;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::DeviceInfo& AgoraData) const {
+	}
+};
+```
+
+<a id="class_deviceinfo__detailed_desc"></a>
+
+:::warning[注意]
+该类仅适用于 Android 平台。
+:::
+
+<a id="class_deviceinfo__parameters"></a>
+
+## 属性
+
+### `isLowLatencyAudioSupported`
+
+是否支持极低延时音频采集和播放：
+
+- true: 支持
+- false: 不支持

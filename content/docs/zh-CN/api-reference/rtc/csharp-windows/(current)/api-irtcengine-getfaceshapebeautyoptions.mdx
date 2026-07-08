@@ -1,0 +1,57 @@
+---
+title: "GetFaceShapeBeautyOptions"
+description: "获取美型效果选项。"
+---
+<a id="api_irtcengine_getfaceshapebeautyoptions__prototype"></a>
+
+```csharp
+public abstract int GetFaceShapeBeautyOptions(ref FaceShapeBeautyOptions options, MEDIA_SOURCE_TYPE type = MEDIA_SOURCE_TYPE.PRIMARY_CAMERA_SOURCE);
+```
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__detailed_desc"></a>
+
+调用该方法可以获取美型效果当前设置的参数信息。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__scenario"></a>
+
+## 适用场景
+
+用户在 App 中打开美型风格和风格强度菜单时，你可以调用该方法获取当前的美型效果选项，然后根据结果刷新用户界面中的菜单，并更新 UI。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__timing"></a>
+
+## 调用时机
+
+请在 [EnableVideo](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#api_irtcengine_enablevideo) 之后调用该方法。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__parameters"></a>
+
+## 参数
+
+### `options`
+
+美型风格选项，详见 [FaceShapeBeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/class-faceshapebeautyoptions)。
+
+### `type`
+
+效果应用的媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediasourcetype)。
+
+:::warning[注意]
+在该方法中，该参数仅支持以下两种设置：
+
+- 使用摄像头采集本地视频时，请保持默认值 PRIMARY_CAMERA_SOURCE。
+- 如果要使用自定义采集的视频，将该参数设置为 CUSTOM_VIDEO_SOURCE。
+:::
+
+<a id="api_irtcengine_getfaceshapebeautyoptions__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](https://doc.shengwang.cn/api-ref/rtc/unity/error-code) 了解详情和解决建议。

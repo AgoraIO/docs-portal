@@ -1,0 +1,46 @@
+---
+title: "ScreenAudioParameters"
+description: "共享屏幕流的音频配置。"
+---
+<a id="class_screenaudioparameters__prototype"></a>
+
+```dart
+class ScreenAudioParameters {
+  const ScreenAudioParameters(
+      {this.sampleRate, this.channels, this.captureSignalVolume});
+
+  @JsonKey(name: 'sampleRate')
+  final int? sampleRate;
+
+  @JsonKey(name: 'channels')
+  final int? channels;
+
+  @JsonKey(name: 'captureSignalVolume')
+  final int? captureSignalVolume;
+
+  factory ScreenAudioParameters.fromJson(Map<String, dynamic> json) =>
+      _$ScreenAudioParametersFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ScreenAudioParametersToJson(this);
+}
+```
+
+<a id="class_screenaudioparameters__detailed_desc"></a>
+
+仅适用于 `captureAudio` 为 true 的场景。
+
+<a id="class_screenaudioparameters__parameters"></a>
+
+## 属性
+
+### `sampleRate`
+
+音频采样率 (Hz)。默认值为 16000。
+
+### `channels`
+
+声道数。默认值为 2，表示双声道。
+
+### `captureSignalVolume`
+
+采集的系统音量。取值范围为 [0,100]。默认值为 100。

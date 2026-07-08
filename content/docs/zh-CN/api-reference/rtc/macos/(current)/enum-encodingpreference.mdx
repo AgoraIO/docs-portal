@@ -1,0 +1,19 @@
+---
+title: "AgoraEncodingPreference"
+description: "视频编码器偏好。"
+---
+<a id="enum_encodingpreference__parameters"></a>
+
+## 枚举值
+
+### `AgoraEncodingPreferAuto`
+
+（-1）：自适应偏好。SDK 会根据平台和设备类型等因素自动选择最优的视频编码方式。
+
+### `AgoraEncodingPrefersoftware`
+
+（0）：软件编码偏好。SDK 优先使用软件编码器进行视频编码。
+
+### `AgoraEncodingPreferhardware`
+
+（1）：硬件编码偏好。SDK 优先使用硬件编码器进行视频编码。当设备不支持硬件编码时，SDK 会自动使用软件编码，并通过 [rtcEngine:localVideoStats:sourceType:](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调中的 `hwEncoderAccelerating` 报告当前使用的视频编码器类型。

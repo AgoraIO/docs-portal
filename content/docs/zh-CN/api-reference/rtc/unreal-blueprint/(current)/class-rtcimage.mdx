@@ -1,0 +1,97 @@
+---
+title: "FRtcImage"
+description: "图像属性。"
+---
+<a id="class_rtcimage__prototype"></a>
+
+```cpp
+USTRUCT(BlueprintType)
+struct FRtcImage
+{
+	GENERATED_BODY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	FString url = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	int x = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	int y = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	int width = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	int height = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	int zOrder = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|RtcImage")
+	float alpha = 0;
+	FRtcImage() {}
+	FRtcImage(const agora::rtc::RtcImage& AgoraData) {
+		url = UTF8_TO_TCHAR(AgoraData.url);
+		x = AgoraData.x;
+		y = AgoraData.y;
+		width = AgoraData.width;
+		height = AgoraData.height;
+		zOrder = AgoraData.zOrder;
+		alpha = AgoraData.alpha;
+	}
+	agora::rtc::RtcImage CreateAgoraData() const {
+		agora::rtc::RtcImage AgoraData;
+		
+		char* URLCharPtr = new char[url.Len() + 1];
+		FMemory::Memcpy(URLCharPtr, TCHAR_TO_UTF8(*url), url.Len());
+		URLCharPtr[url.Len()] = '\0';
+		AgoraData.url = URLCharPtr;
+		AgoraData.x = x;
+		AgoraData.y = y;
+		AgoraData.width = width;
+		AgoraData.height = height;
+		AgoraData.zOrder = zOrder;
+		AgoraData.alpha = alpha;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::RtcImage& AgoraData) const {
+		if (AgoraData.url) {
+			delete[] AgoraData.url;
+			AgoraData.url = nullptr;
+		}
+	}
+};
+```
+
+<a id="class_rtcimage__detailed_desc"></a>
+
+用于设置直播视频的水印和背景图片的属性。
+
+<a id="class_rtcimage__parameters"></a>
+
+## 属性
+
+### `url`
+
+直播视频上图片的 HTTP/HTTPS 地址。字符长度不得超过 1024 字节。
+
+### `x`
+
+图片在视频画面上的 x 坐标 (px)，以输出视频画面的左上角为原点。
+
+### `y`
+
+图片在视频画面上的 y 坐标 (px)，以输出视频画面的左上角为原点。
+
+### `width`
+
+图片在视频画面上的宽度 (px)。
+
+### `height`
+
+图片在视频画面上的高度 (px)。
+
+### `zOrder`
+
+水印或背景图的图层编号。使用水印数组添加单张或多张水印时，必须向 zOrder 传值，取值范围为 [1,255]，否则 SDK 会报错。其余情况， zOrder 可选传值，取值范围为 [0,255]，0 为默认值。0 代表图层的最下层，255 代表图层的最上层。
+
+### `alpha`
+
+水印或背景图片的透明度。取值范围为 [0.0,1.0]：
+
+- 0.0: 完全透明。
+- 1.0:（默认）完全不透明。

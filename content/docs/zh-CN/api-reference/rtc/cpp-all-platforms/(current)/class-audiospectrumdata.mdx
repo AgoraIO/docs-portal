@@ -1,0 +1,24 @@
+---
+title: "AudioSpectrumData"
+description: "表示音频频谱数据。"
+---
+<a id="class_audiospectrumdata__prototype"></a>
+
+```cpp
+struct AudioSpectrumData {
+  const float* audioSpectrumData;
+  int dataLength;
+};
+```
+
+<a id="class_audiospectrumdata__parameters"></a>
+
+## 属性
+
+### `audioSpectrumData`
+
+音频频谱数据。声网将音频频率划分为 256 个频域，并通过该参数上报每个频域的能量值。每个能量值的取值范围为 [-300, 1]，单位为 dBFS。
+
+### `dataLength`
+
+音频频谱数据的长度为 256。

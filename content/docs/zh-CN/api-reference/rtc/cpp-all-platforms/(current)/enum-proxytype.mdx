@@ -1,0 +1,35 @@
+---
+title: "PROXY_TYPE"
+description: "云代理类型。"
+---
+<a id="enum_proxytype__parameters"></a>
+
+## 枚举值
+
+### `NONE_PROXY_TYPE`
+
+（0）：预留，供未来使用。
+
+### `UDP_PROXY_TYPE`
+
+（1）：UDP 协议云代理，强制使用 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
+
+### `TCP_PROXY_TYPE`
+
+（2）：TCP（加密）协议云代理，强制使用 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+
+### `LOCAL_PROXY_TYPE`
+
+（3）：预留，供未来使用。
+
+### `TCP_PROXY_AUTO_FALLBACK_TYPE`
+
+（4）：自动模式。SDK 会尝试直接连接 SD-RTN™，若连接失败则自动切换为 TCP/TLS 443。
+
+### `HTTP_PROXY_TYPE`
+
+（5）：HTTP 代理。
+
+### `HTTPS_PROXY_TYPE`
+
+（6）：HTTPS 代理。

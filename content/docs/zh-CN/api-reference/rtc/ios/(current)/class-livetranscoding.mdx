@@ -1,0 +1,119 @@
+---
+title: "AgoraLiveTranscoding"
+description: "媒体推流的转码配置。"
+---
+<a id="class_livetranscoding__prototype"></a>
+
+```objectivec
+__attribute__((visibility("default"))) @interface AgoraLiveTranscoding : NSObject
+@property(copy, nonatomic) NSArray<AgoraLiveTranscodingUser*>* _Nullable transcodingUsers;
+@property(assign, nonatomic) CGSize size;
+@property(assign, nonatomic) NSInteger videoBitrate;
+@property(assign, nonatomic) NSInteger videoFramerate;
+@property(assign, nonatomic) BOOL lowLatency;
+@property(assign, nonatomic) NSInteger videoGop;
+@property(assign, nonatomic) AgoraVideoCodecProfileType videoCodecProfile;
+@property(assign, nonatomic) AgoraVideoCodecTypeForStream videoCodecType;
+@property(copy, nonatomic) NSString* _Nullable transcodingExtraInfo;
+@property(copy, nonatomic) NSArray<AgoraImage*>* _Nullable watermarkArray;
+@property(copy, nonatomic) NSArray<AgoraImage*>* _Nullable backgroundImageArray;
+@property(strong, nonatomic) COLOR_CLASS* _Nullable backgroundColor;
+@property(assign, nonatomic) AgoraAudioSampleRateType audioSampleRate;
+@property(assign, nonatomic) NSInteger audioBitrate;
+@property(assign, nonatomic) NSInteger audioChannels;
+@property(assign, nonatomic) AgoraAudioCodecProfileType audioCodecProfile;
+@end
+```
+
+<a id="class_livetranscoding__parameters"></a>
+
+## 属性
+
+### `transcodingUsers`
+
+媒体推流中的用户布局配置。最多支持添加 17 个转码用户。详见 [AgoraLiveTranscodingUser](/zh-CN/api-reference/rtc/ios/class-transcodinguser)。
+
+### `size`
+
+视频的尺寸（单位为像素）。
+
+- 推送视频流到 CDN 时：
+  - 宽度范围为 [64,1920]，小于 64 会被自动调整为 64，大于 1920 会被自动调整为 1920。
+  - 高度范围为 [64,1080]，小于 64 会被自动调整为 64，大于 1080 会被自动调整为 1080。
+- 推送音频流到 CDN 时，请将宽度和高度设置为 0。
+
+### `videoBitrate`
+
+视频的编码码率（Kbps）。无需设置该参数，保持默认值 AgoraVideoBitrateStandard 即可。SDK 会根据你设置的视频分辨率和帧率自动匹配最合适的码率。分辨率与帧率的对应关系详见 `Video profile`。
+
+### `videoFramerate`
+
+媒体推流的视频输出帧率（fps）。默认值为 15，取值范围为 (0,30]。
+
+:::info[注]
+声网服务器会将超过 30 的值自动调整为 30。
+:::
+
+### `lowLatency`
+
+延迟模式：
+
+- YES：低延迟但画质无法保证。
+- NO：（默认）高延迟但画质有保障。
+
+### `videoGop`
+
+媒体推流的视频帧的 GOP（图像组）帧率，单位为 fps。默认值为 30。
+
+### `videoCodecProfile`
+
+媒体推流的视频编解码器配置文件类型。可设置为 66、77 或 100（默认）。详见 [AgoraVideoCodecProfileType](/zh-CN/api-reference/rtc/ios/enum-videocodecprofiletype)。
+
+:::info[注]
+如果设置为其他值，声网会自动调整为默认值。
+:::
+
+### `videoCodecType`
+
+媒体推流的视频编解码器类型。详见 [AgoraVideoCodecTypeForStream](/zh-CN/api-reference/rtc/ios/enum-videocodectypeforstream)。
+
+### `transcodingExtraInfo`
+
+保留字段。用于通过 SEI 将用户自定义的额外信息发送到 CDN 直播客户端，适用于 H.264/H.265 视频流。最大长度为 4096 字节。
+
+### `watermarkArray`
+
+直播视频中的水印数组。你可以使用该属性添加一个或多个 PNG 格式的水印。直播视频中的水印和背景图总数必须在 0 到 10 之间。详见 [AgoraImage](/zh-CN/api-reference/rtc/ios/class-rtcimage)。
+
+### `backgroundImageArray`
+
+直播视频中的背景图数组。你可以使用该属性添加一个或多个 PNG 格式的背景图。直播视频中的水印和背景图总数必须在 0 到 10 之间。详见 [AgoraImage](/zh-CN/api-reference/rtc/ios/class-rtcimage)。
+
+### `backgroundColor`
+
+媒体推流的背景颜色。颜色格式为 RGB 十六进制整数，不带 # 符号，例如浅粉色为 0xFFB6C1，默认值为 0x000000（黑色）。COLOR_CLASS 是通用类型名：
+
+- iOS：UIColor
+- macOS：NSColor
+
+### `audioSampleRate`
+
+输出媒体流的音频采样率（Hz）。详见 [AgoraAudioSampleRateType](/zh-CN/api-reference/rtc/ios/enum-audiosampleratetype)。
+
+### `audioBitrate`
+
+媒体推流的音频输出码率（Kbps）。默认值为 48，最大值为 128。
+
+### `audioChannels`
+
+媒体推流的音频声道数。推荐设置为 1（单声道）或 2（立体声）。如设置为 3、4 或 5，则需使用支持的播放器。
+
+- 1：（默认）单声道。
+- 2：立体声。
+- 3：三声道。
+- 4：四声道。
+- 5：五声道。
+
+### `audioCodecProfile`
+
+媒体推流的音频编解码器配置文件类型。详见 [AgoraAudioCodecProfileType](/zh-CN/api-reference/rtc/ios/enum-audiocodecprofiletype)。

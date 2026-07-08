@@ -1,0 +1,75 @@
+---
+title: "WatermarkOptions"
+description: "配置水印图像。"
+---
+<a id="class_watermarkoptions__prototype"></a>
+
+```dart
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class WatermarkOptions {
+  const WatermarkOptions(
+      {this.visibleInPreview,
+      this.positionInLandscapeMode,
+      this.positionInPortraitMode,
+      this.watermarkRatio,
+      this.mode, this.zOrder});
+
+  @JsonKey(name: 'visibleInPreview')
+  final bool? visibleInPreview;
+
+  @JsonKey(name: 'positionInLandscapeMode')
+  final Rectangle? positionInLandscapeMode;
+
+  @JsonKey(name: 'positionInPortraitMode')
+  final Rectangle? positionInPortraitMode;
+
+  @JsonKey(name: 'watermarkRatio')
+  final WatermarkRatio? watermarkRatio;
+
+  @JsonKey(name: 'mode')
+  final WatermarkFitMode? mode;
+
+  @JsonKey(name: 'zOrder')
+  final int? zOrder;
+
+  factory WatermarkOptions.fromJson(Map<String, dynamic> json) =>
+      _$WatermarkOptionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WatermarkOptionsToJson(this);
+}
+```
+
+<a id="class_watermarkoptions__detailed_desc"></a>
+
+用于设置要添加的水印图像的相关配置项。
+
+<a id="class_watermarkoptions__parameters"></a>
+
+## 属性
+
+### `visibleInPreview`
+
+水印是否在本地预览视图中可见：
+
+- true: （默认）水印在本地预览视图中可见。
+- false: 水印在本地预览视图中不可见。
+
+### `positionInLandscapeMode`
+
+水印的适配模式为 fitModeCoverPosition 时，用于设置横屏模式下水印图片的区域。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
+
+### `positionInPortraitMode`
+
+水印的适配模式为 fitModeCoverPosition 时，用于设置竖屏模式下水印图片的区域。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
+
+### `watermarkRatio`
+
+水印的适配模式为 fitModeUseImageRatio 时，该参数可设置缩放模式下的水印坐标。详见 [WatermarkRatio](/zh-CN/api-reference/rtc/flutter/class-watermarkratio)。
+
+### `mode`
+
+水印的适配模式。详见 [WatermarkFitMode](/zh-CN/api-reference/rtc/flutter/enum-watermarkfitmode)。
+
+### `zOrder`
+
+水印图像的图层顺序，默认值为 0。

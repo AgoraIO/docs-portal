@@ -1,0 +1,235 @@
+---
+title: "LiveTranscoding"
+description: "旁路推流的转码属性。"
+---
+<a id="class_livetranscoding__prototype"></a>
+
+```dart
+class LiveTranscoding {
+  const LiveTranscoding(
+      {this.width,
+      this.height,
+      this.videoBitrate,
+      this.videoFramerate,
+      this.lowLatency,
+      this.videoGop,
+      this.videoCodecProfile,
+      this.backgroundColor,
+      this.videoCodecType,
+      this.userCount,
+      this.transcodingUsers,
+      this.transcodingExtraInfo,
+      this.metadata,
+      this.watermark,
+      this.watermarkCount,
+      this.backgroundImage,
+      this.backgroundImageCount,
+      this.audioSampleRate,
+      this.audioBitrate,
+      this.audioChannels,
+      this.audioCodecProfile,
+      this.advancedFeatures,
+      this.advancedFeatureCount});
+
+  @JsonKey(name: 'width')
+  final int? width;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'videoBitrate')
+  final int? videoBitrate;
+
+  @JsonKey(name: 'videoFramerate')
+  final int? videoFramerate;
+
+  @JsonKey(name: 'lowLatency')
+  final bool? lowLatency;
+
+  @JsonKey(name: 'videoGop')
+  final int? videoGop;
+
+  @JsonKey(name: 'videoCodecProfile')
+  final VideoCodecProfileType? videoCodecProfile;
+
+  @JsonKey(name: 'backgroundColor')
+  final int? backgroundColor;
+
+  @JsonKey(name: 'videoCodecType')
+  final VideoCodecTypeForStream? videoCodecType;
+
+  @JsonKey(name: 'userCount')
+  final int? userCount;
+
+  @JsonKey(name: 'transcodingUsers')
+  final List<TranscodingUser>? transcodingUsers;
+
+  @JsonKey(name: 'transcodingExtraInfo')
+  final String? transcodingExtraInfo;
+
+  @JsonKey(name: 'metadata')
+  final String? metadata;
+
+  @JsonKey(name: 'watermark')
+  final List<RtcImage>? watermark;
+
+  @JsonKey(name: 'watermarkCount')
+  final int? watermarkCount;
+
+  @JsonKey(name: 'backgroundImage')
+  final List<RtcImage>? backgroundImage;
+
+  @JsonKey(name: 'backgroundImageCount')
+  final int? backgroundImageCount;
+
+  @JsonKey(name: 'audioSampleRate')
+  final AudioSampleRateType? audioSampleRate;
+
+  @JsonKey(name: 'audioBitrate')
+  final int? audioBitrate;
+
+  @JsonKey(name: 'audioChannels')
+  final int? audioChannels;
+
+  @JsonKey(name: 'audioCodecProfile')
+  final AudioCodecProfileType? audioCodecProfile;
+
+  @JsonKey(name: 'advancedFeatures')
+  final List<LiveStreamAdvancedFeature>? advancedFeatures;
+
+  @JsonKey(name: 'advancedFeatureCount')
+  final int? advancedFeatureCount;
+
+  factory LiveTranscoding.fromJson(Map<String, dynamic> json) =>
+      _$LiveTranscodingFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LiveTranscodingToJson(this);
+}
+```
+
+<a id="class_livetranscoding__parameters"></a>
+
+## 属性
+
+### `width`
+
+推流视频的总宽度，默认值 360，单位为像素。
+
+- 如果推视频流， width 取值范围为 [64,1920]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1920，声网服务器会自动调整为 1920。
+- 如果推音频流，请将 width 和 height 设为 0。
+
+### `height`
+
+推流视频的总高度，默认值 640，单位为像素。
+
+- 如果推视频流， height 取值范围为 [64,1080]。如果取值低于 64，声网服务器会自动调整为 64； 如果取值高于 1080，声网服务器会自动调整为 1080。
+- 如果推音频流，请将 width 和 height 设为 0。
+
+### `videoBitrate`
+
+视频编码码率，单位为 Kbps。该参数无需设置，保留默认值 `standardBitrate` 即可，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。有关视频分辨率和帧率的对应关系，详见[视频属性](https://doc.shengwang.cn/doc/rtc/flutter/basic-features/video-profile#%E8%A7%86%E9%A2%91%E5%B1%9E%E6%80%A7%E5%8F%82%E8%80%83)。
+
+### `videoFramerate`
+
+用于旁路直播的输出视频的帧率。取值范围是 (0,30]，单位为 fps。15 fps 为默认值。
+
+:::info[注]
+声网服务器会将高于 30 fps 的帧率统一调整为 30 fps。
+:::
+
+### `lowLatency`
+
+:::info[注]
+弃用不建议使用。
+:::
+
+低延时模式
+
+- true: 低延时，不保证画质。
+- false:（默认值）高延时，保证画质。
+
+### `videoGop`
+
+用于旁路直播的输出视频的 GOP (Group of Pictures)。单位为帧。默认值为 30。
+
+### `videoCodecProfile`
+
+用于旁路直播的输出视频的编码规格。可以设置为 66、77 或 100，详见 [VideoCodecProfileType](/zh-CN/api-reference/rtc/flutter/enum-videocodecprofiletype)。
+
+:::info[注]
+如果你把这个参数设为其他值，声网服务器会将其调整为默认值。
+:::
+
+### `videoCodecType`
+
+用于旁路直播的输出视频的编解码类型。详见 [VideoCodecTypeForStream](/zh-CN/api-reference/rtc/flutter/enum-videocodectypeforstream)。
+
+### `transcodingUsers`
+
+用于管理参与旁路直播的视频转码合图的用户。最多支持 17 人同时参与转码合图。详见 [TranscodingUser](/zh-CN/api-reference/rtc/flutter/class-transcodinguser)。
+
+### `transcodingExtraInfo`
+
+预留参数：用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。长度限制：4096 字节。关于 SEI 的详细信息，详见 [SEI 帧相关问题](https://doc.shengwang.cn/faq/quality-issues/sei)。
+
+### `backgroundColor`
+
+用于旁路直播的输出视频的背景色，格式为 RGB 定义下的十六进制整数，不要带 # 号，如 0xFFB6C1 表示浅粉色。默认0x000000，黑色。
+
+### `userCount`
+
+参与合图的用户数量，默认 0。取值范围为 [0,17]。
+
+### `metadata`
+
+发送给 CDN 客户端的 metadata。
+
+:::info[注]
+弃用已废弃，不建议使用。
+:::
+
+### `watermark`
+
+直播视频上的水印。图片格式需为 PNG。详见 [RtcImage](/zh-CN/api-reference/rtc/flutter/class-rtcimage)。 你可以添加一个水印，或使用数组的方式添加多个水印。
+
+### `backgroundImage`
+
+直播视频上的背景图。图片格式需为 PNG。详见 [RtcImage](/zh-CN/api-reference/rtc/flutter/class-rtcimage)。 你可以添加一张背景图，或使用数组的方式添加多张背景图。该参数与 `backgroundImageCount` 搭配使用。
+
+### `audioSampleRate`
+
+用于旁路推流的输出媒体流的音频采样率 (Hz)，详见 [AudioSampleRateType](/zh-CN/api-reference/rtc/flutter/enum-audiosampleratetype)。
+
+### `audioBitrate`
+
+用于旁路直播的输出音频的码率。单位为 Kbps，默认值为 48，最大值为 128。
+
+### `audioChannels`
+
+用于旁路直播的输出音频的声道数，默认值为 1。取值范围为 [1,5] 中的整型，建议取 1 或 2。3、4、5 需要特殊播放器支持：
+
+- 1: （默认）单声道
+- 2: 双声道
+- 3: 三声道
+- 4: 四声道
+- 5: 五声道
+
+### `audioCodecProfile`
+
+用于旁路直播输出音频的编码规格。详见 [AudioCodecProfileType](/zh-CN/api-reference/rtc/flutter/enum-audiocodecprofiletype)。
+
+### `watermarkCount`
+
+直播视频上的水印的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 `watermark` 搭配使用。
+
+### `backgroundImageCount`
+
+直播视频上的背景图的数量。水印和背景图的总数量需大于等于 0 且小于等于 10。该参数与 `backgroundImage` 搭配使用。
+
+### `advancedFeatures`
+
+转码推流的高级功能。详见 [LiveStreamAdvancedFeature](/zh-CN/api-reference/rtc/flutter/class-livestreamadvancedfeature)。
+
+### `advancedFeatureCount`
+
+开启的高级功能数量。默认值为 0。

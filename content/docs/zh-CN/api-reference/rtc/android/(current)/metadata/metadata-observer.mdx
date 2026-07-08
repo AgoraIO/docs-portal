@@ -1,6 +1,6 @@
 ---
 title: "媒体流附属信息分发"
-description: RTC Android API 参考迁移页。
+description: "媒体流附属信息分发 API reference."
 ---
 <a id="toc_metadata_observer"></a>
 
@@ -27,7 +27,7 @@ public abstract int getMaxMetadataSize()
 方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。请确保设置返回值。
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
 
@@ -43,7 +43,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 
 <a id="api_irtcengine_registermediametadataobserver__detailed_desc"></a>
 
-你需要实现 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver) 类，并在该方法中指定元数据类型。该方法支持你在视频流中添加同步元数据，以实现更丰富的互动直播场景，例如发送购物链接、数字优惠券和在线问答。成功调用该方法后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调。
+你需要实现 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver) 类，并在该方法中指定元数据类型。该方法支持你在视频流中添加同步元数据，以实现更丰富的互动直播场景，例如发送购物链接、数字优惠券和在线问答。成功调用该方法后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调。
 
 :::info[注]
 请在调用 `joinChannel` 之前调用此方法。
@@ -55,7 +55,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 
 #### `observer`
 
-元数据观察器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)。
+元数据观察器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
 #### `type`
 
@@ -71,7 +71,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
 
@@ -93,7 +93,7 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 
 #### `observer`
 
-元数据观察者。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)。
+元数据观察者。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
 #### `type`
 
@@ -109,7 +109,7 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 - &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
 
@@ -137,10 +137,10 @@ public abstract void onMetadataReceived(AgoraMetadata metadata)
 
 #### `metadata`
 
-接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-metadata)。
+接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-metadata)。
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
 
@@ -176,7 +176,7 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 #### `sourceType`
 
-视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-videosourcetype)。
+视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
 
@@ -185,4 +185,4 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 方法调用成功时，返回希望发送的元数据，格式为字节数组。
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)

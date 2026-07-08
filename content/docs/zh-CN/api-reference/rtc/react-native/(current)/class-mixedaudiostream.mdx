@@ -1,0 +1,38 @@
+---
+title: "MixedAudioStream"
+description: "在本地进行合流的音频源。"
+---
+<a id="class_mixedaudiostream__prototype"></a>
+
+```typescript
+export class MixedAudioStream {
+  sourceType?: AudioSourceType;
+  remoteUserUid?: number;
+  channelId?: string;
+  trackId?: number;
+}
+```
+
+<a id="class_mixedaudiostream__parameters"></a>
+
+## 属性
+
+### `sourceType`
+
+音频源的类型。详见 [AudioSourceType](/zh-CN/api-reference/rtc/react-native/enum-audiosourcetype)。
+
+### `remoteUserUid`
+
+远端用户 ID。
+
+:::info[注]
+当参与本地音频合流的音频源类型为 AudioSourceRemoteUser 时，需要设置该参数。
+:::
+
+### `trackId`
+
+音频轨道 ID。将该参数设置为调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/react-native/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+:::info[注]
+当参与本地本地音频合流的音频源类型为 AudioSourceCustom 时，需要设置该参数。
+:::

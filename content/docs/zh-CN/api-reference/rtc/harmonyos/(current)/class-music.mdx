@@ -1,0 +1,88 @@
+---
+title: "Music"
+description: "音乐资源的详细信息。"
+---
+<a id="class_music__prototype"></a>
+
+```arkts
+export class Music
+{
+  
+  public songCode:bigint = BigInt(0)
+  
+  public name:string = ""
+  
+  public singer:string = ""
+  
+  public poster:string = ""
+  
+  public releaseTime:string = ""
+  
+  public type:number = 0
+  
+  public pitchType:number = 0
+  
+  public durationS:number = 0
+  
+  public lyricTypes?:number[]
+  
+  public mvProperties?:MvProperty[]
+  
+  public climaxSegments?:ClimaxSegment[]
+}
+```
+
+<a id="class_music__detailed_desc"></a>
+
+<a id="class_music__parameters"></a>
+
+### `songCode`
+
+音乐资源的编号，用于标识一个音乐资源。
+
+### `name`
+
+音乐资源名称。
+
+### `singer`
+
+歌手名。
+
+### `poster`
+
+音乐资源海报的下载地址。
+
+### `releaseTime`
+
+音乐资源发布的时间。
+
+### `type`
+
+音乐资源类型：
+
+- 1：左声道伴奏，右声道原唱的单音轨音源。
+- 2：只有伴唱的单音轨音源。
+- 3：只有原唱的单音轨音源。
+- 4：多音轨音源。
+
+### `pitchType`
+
+歌曲是否支持演唱评分功能：
+
+- 1：歌曲支持演唱评分功能。
+- 2：歌曲不支持演唱评分功能。
+
+### `durationS`
+
+音乐资源总时长 （秒）。
+
+### `lyricTypes`
+
+支持的歌词类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+### `climaxSegments`
+
+音乐高潮片段列表，详见 [ClimaxSegment](/zh-CN/api-reference/rtc/harmonyos/class-climaxsegment)。
